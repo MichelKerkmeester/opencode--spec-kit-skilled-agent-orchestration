@@ -28,7 +28,7 @@
       "args": [
         ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
-      "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
+      "cwd": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public",
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
         "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite"

@@ -17,7 +17,7 @@ import {
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET,
   sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
 } from '../claude/shared.js';
-import { ensureStateDir, loadState, readAndClearCompactPrime } from '../claude/hook-state.js';
+import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '../claude/hook-state.js';
 import { parseGeminiStdin, formatGeminiOutput } from './shared.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
@@ -34,7 +34,7 @@ async function main(): Promise<void> {
   const sessionId = input.session_id ?? 'unknown';
 
   // One-shot: only inject if there's a pending compact payload
-  const pendingCompactPrime = readAndClearCompactPrime(sessionId);
+  const pendingCompactPrime = readCompactPrime(sessionId);
   if (!pendingCompactPrime) {
     // No cached payload — this is the normal case for non-post-compress turns
     return;
@@ -70,6 +70,9 @@ async function main(): Promise<void> {
   const rawOutput = truncateToTokenBudget(sections.join('\n'), COMPACTION_TOKEN_BUDGET);
   const output = formatGeminiOutput(rawOutput);
   process.stdout.write(output);
+
+  // Clear compact payload only AFTER stdout write succeeds
+  clearCompactPrime(sessionId);
 
   hookLog('info', 'gemini:compact-inject', `Injected ${rawOutput.length} chars for session ${sessionId}`);
 }

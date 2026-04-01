@@ -7,7 +7,7 @@ description: "Task tracking for 13 items across adapter interface, new edge type
 ## Completed
 
 - [x] Item 31: ParserAdapter interface created (`parse(content, language): ParseResult`) — Evidence: structural-indexer.ts, RegexParser wraps all existing logic, `getParser()` dispatches via SPECKIT_PARSER env var
-- [x] Item 31: SPECKIT_PARSER=treesitter throws clear error until WASM impl lands — Evidence: explicit failure, not silent fallback
+- [x] Item 31 / follow-through: `SPECKIT_PARSER=treesitter` now auto-falls back to regex on init/import failure — Completed in Phase 017. Evidence: `getParser()` catches tree-sitter init/import errors, logs a warning, and returns `new RegexParser()`
 - [x] Item 33: DECORATES edge type added (confidence 0.9) — Evidence: indexer-types.ts EdgeType union, extractEdges() in structural-indexer.ts; detects `@decorator` in Python/TS
 - [x] Item 33: OVERRIDES edge type added (confidence 0.9) — Evidence: extractEdges() detects class methods shadowing parent via extends chain tracking
 - [x] Item 33: TYPE_OF edge type added (confidence 0.85) — Evidence: extractEdges() detects `: TypeName` annotations and type references in function signatures
@@ -20,9 +20,12 @@ description: "Task tracking for 13 items across adapter interface, new edge type
 - [x] Item 38: .zsh files discoverable via default globs — Evidence: `**/*.zsh` added to default globs in indexer-types.ts [F017]
 - [x] Regex fallback verified working when SPECKIT_PARSER=regex — Evidence: 18/18 indexer tests pass
 
+## Completed in Phase 017
+
+- [x] Item 32: web-tree-sitter WASM implementation — Completed in Phase 017. Evidence: tree-sitter parser landed and `SPECKIT_PARSER` now defaults to `treesitter`
+- [x] Tree-sitter as default parser (`SPECKIT_PARSER=treesitter`) — Completed in Phase 017. Evidence: default parser selection now prefers tree-sitter, with automatic regex fallback on init/import failure
+- [x] Item 35 follow-through: regex parsing demoted to fallback instead of removed — Completed in Phase 017. Evidence: `RegexParser` still exists in `structural-indexer.ts` (~430 LOC) and is returned on init/import failure or explicit `SPECKIT_PARSER=regex`
+
 ## Deferred
 
-- [ ] Item 32: web-tree-sitter WASM implementation — DEFERRED: requires `web-tree-sitter` npm package + WASM grammar downloads (~1.5MB). ParserAdapter interface ready as integration point. Sub-phase C2.
-- [ ] Item 35: Regex parser removal from structural-indexer.ts — DEFERRED: requires tree-sitter stable in production for 1+ week before removal. Sub-phase C4.
-- [ ] Tree-sitter as default parser (`SPECKIT_PARSER=treesitter`) — DEFERRED: awaits Item 32 implementation and validation
 - [ ] Additional SymbolKinds (decorator, property, constant) extraction — DEFERRED: requires tree-sitter AST for reliable detection

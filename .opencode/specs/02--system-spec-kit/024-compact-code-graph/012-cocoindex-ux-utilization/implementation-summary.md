@@ -1,6 +1,12 @@
 ---
-title: "Implementation Summary: CocoIndex UX, Utilization & Usefulness [024/012]"
-description: "Fixed hook compilation, added CocoIndex to Claude Code MCP, created 3 new MCP tools, enforced CocoIndex-first agent routing across 4 runtimes, and wired semantic search into compaction. 19/19 checklist items verified."
+title: "Implementation Summary: Phase 012 — CocoIndex UX, Utilization & Usefulness"
+description: "Summarize what Phase 012 delivered, what stayed partial, and how the packet now reflects current reality."
+trigger_phrases:
+  - "implementation summary"
+  - "phase 012"
+  - "cocoindex"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Implementation Summary
 
@@ -14,7 +20,7 @@ description: "Fixed hook compilation, added CocoIndex to Claude Code MCP, create
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 024-compact-code-graph/012-cocoindex-ux-utilization |
+| **Spec Folder** | 012-cocoindex-ux-utilization |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -24,57 +30,43 @@ description: "Fixed hook compilation, added CocoIndex to Claude Code MCP, create
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-CocoIndex Code semantic search is now a first-class citizen in the OpenCode ecosystem: hooks compile and run, the MCP server auto-loads in Claude Code, three new MCP tools expose index management without CLI fallback, agent routing enforces CocoIndex-first for semantic queries, and the compaction pipeline includes semantic neighbors.
+Phase 012 made CocoIndex easier to notice and easier to route to, but it did not deliver full readiness automation. This packet now reflects that narrower reality: hooks build and smoke-test cleanly, SessionStart reports binary availability, helper tools expose a small operational surface, and several intended follow-ups remain open.
 
-### Hook Compilation Fix (P0)
+### Hook build and manual verification
 
-The `hooks/claude/*.ts` source files were already covered by the MCP server tsconfig `include` pattern, but the compiled output in `dist/hooks/claude/` was missing — causing every Claude Code `SessionStart:startup` to error. The build pipeline was verified and fixed so `npm run build` reliably produces JS output for all 6 hook files: `shared.js`, `hook-state.js`, `compact-inject.js`, `session-prime.js`, `session-stop.js`, and `claude-transcript.js`. All three executable hooks (`session-prime`, `compact-inject`, `session-stop`) pass the smoke test: `echo '{}' | node dist/hooks/claude/<script>.js` exits 0.
+You can verify the Claude hook outputs with `npm run build` plus manual inspection of `dist/hooks/claude/*.js`. The packet no longer claims a dedicated build verification script because none was implemented in this phase. Hook smoke tests remain manual: `session-prime.js`, `compact-inject.js`, and `session-stop.js` are verified by piping `{}` into each built script and confirming exit code 0.
 
-### CocoIndex MCP Availability
+### SessionStart availability reporting
 
-Added the `cocoindex_code` server entry to `.claude/mcp.json` so Claude Code sessions auto-load the CocoIndex MCP server. `session-prime.ts` now checks CocoIndex availability on startup by inspecting `getStats().lastScanTimestamp` and includes a status line in startup output. When the index is stale (>24h since last scan), a warning section is added prompting the user to re-index.
+SessionStart now reports whether the CocoIndex binary is available. That is the full extent of the startup integration in this phase. It does not call `ensure_ready.sh`, does not ensure CocoIndex readiness, and does not trigger a background CocoIndex re-index.
 
-### New MCP Tools
+### Helper-tool surface
 
-Three new handlers in `handlers/code-graph/`:
+Phase 012 added or documented three helper tools around CocoIndex usage:
 
-- **`ccc_status`** — returns index stats (file count, chunk count, embedding model, last indexed timestamp) without requiring CLI access.
-- **`ccc_reindex`** — triggers an incremental re-index from MCP, providing an explicit refresh path that avoids the `ComponentContext` concurrency errors caused by `refresh_index: true` during search.
-- **`ccc_feedback`** — accepts result quality feedback (`wasUseful`, `resultRank`, `queryTerms`) and stores it for future retrieval quality tuning, mirroring the `memory_validate` pattern.
+- `ccc_status` reports availability, `binaryPath`, `indexExists`, and `indexSize`.
+- `ccc_reindex` provides an explicit re-index path.
+- `ccc_feedback` appends local JSONL feedback under `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl`.
 
-### Agent Routing
+`ccc_feedback` does not write into the CocoIndex database and does not mirror `memory_validate` parameters.
 
-The `@context` agent across all 4 runtimes (`.opencode/agent/context.md`, `.claude/agents/context.md`, `.codex/agents/context.toml`, `.gemini/agents/context.md`, `.agents/agents/context.md`) was updated to enforce CocoIndex-first routing: semantic intent queries go to `mcp__cocoindex_code__search` before falling back to Grep/Glob. Structural intent routes to `code_graph`, session intent routes to Memory. `code_graph_context` now supports reverse semantic augmentation — after expanding graph neighborhoods, `nextActions` suggests CocoIndex queries for additional semantic matches (latency-guarded: skipped if <400ms budget remains).
+### Routing and compaction behavior
 
-### Compaction Integration
+The `@context` routing guidance pushes semantic intent toward CocoIndex first, but PreCompact integration remains hint-only. The compaction payload tells the model to query CocoIndex after recovery, yet it does not execute real CocoIndex lookups and does not cache semantic-neighbor snippets.
 
-`compact-inject.ts` was extended to query CocoIndex for semantic neighbors of the top working-set files during PreCompact, including results in the cached payload under the "Semantic Neighbors" section. This completes the integration noted as optional in the Phase 001 plan.
+### Documentation follow-up status
 
-### Documentation
-
-CocoIndex skill docs (`SKILL.md`) updated with the new MCP Tool Summary covering `ccc_status`, `ccc_reindex`, and `ccc_feedback`. `search_patterns.md` section 8b documents the freshness strategy: re-index triggers, `refresh_index: false` as default, freshness signals, and the feedback loop.
+This phase updated packet content and some CocoIndex guidance, but the broader README and tool reference updates were not completed. Those follow-ups stay open here instead of being reported as done.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `mcp_server/tsconfig.json` | Verified | Confirm hooks/claude/*.ts in build scope |
-| `.claude/mcp.json` | Modified | Add cocoindex_code server entry |
-| `hooks/claude/session-prime.ts` | Modified | CocoIndex status check, stale index warning |
-| `hooks/claude/compact-inject.ts` | Modified | Query CocoIndex for semantic neighbors |
-| `handlers/code-graph/ccc-status.ts` | New | Index stats MCP tool |
-| `handlers/code-graph/ccc-reindex.ts` | New | Incremental re-index MCP tool |
-| `handlers/code-graph/ccc-feedback.ts` | New | Result quality feedback MCP tool |
-| `handlers/code-graph/index.ts` | Modified | Register new ccc_* handlers |
-| `lib/code-graph/code-graph-context.ts` | Modified | Reverse semantic augmentation via nextActions |
-| `.opencode/agent/context.md` | Modified | CocoIndex-first routing |
-| `.claude/agents/context.md` | Modified | CocoIndex-first routing |
-| `.codex/agents/context.toml` | Modified | CocoIndex-first routing |
-| `.gemini/agents/context.md` | Modified | CocoIndex-first routing |
-| `.agents/agents/context.md` | Modified | CocoIndex-first routing |
-| `mcp-coco-index/SKILL.md` | Modified | New MCP tool documentation |
-| `mcp-coco-index/references/search_patterns.md` | Modified | Freshness strategy section 8b |
-| `tests/runtime-routing.vitest.ts` | New | 12 agent routing tests across 5 groups |
+| `spec.md` | Modified | Rebuilt the feature packet on the Level 2 spec template |
+| `plan.md` | Modified | Reframed the plan around actual delivered behavior and manual verification |
+| `tasks.md` | Modified | Separated completed work from explicit not-implemented items |
+| `checklist.md` | Modified | Added required verification anchors, evidence, and deferrals |
+| `implementation-summary.md` | Modified | Corrected metadata and summarized delivered scope and limitations |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -82,7 +74,7 @@ CocoIndex skill docs (`SKILL.md`) updated with the new MCP Tool Summary covering
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Implementation followed the 6-step plan with the P0 hook compilation fix first (unblocking all downstream work), then MCP availability, enhanced tools, agent routing, auto-index, and quality feedback. The parallel agent strategy from the plan was used: Agent A on hook compilation, Agent B on mcp.json + session-prime, Agent C on agent routing + compaction integration, Agent D on new tools + documentation.
+The packet was rewritten from the Level 2 templates and then aligned to the delivered implementation state. Verification remains manual where the phase itself stayed manual: build output inspection, hook smoke tests, and packet validation together provide the evidence base for this summary.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -92,11 +84,11 @@ Implementation followed the 6-step plan with the P0 hook compilation fix first (
 
 | Decision | Why |
 |----------|-----|
-| `refresh_index: false` as default | Avoids `ComponentContext` concurrency errors on parallel MCP queries. Explicit refresh via `ccc_reindex` is safer. |
-| Stale detection via `lastScanTimestamp` | Simpler than file-watching. Checks once at startup, no background polling. |
-| CocoIndex-first in `@context` agent (all runtimes) | Advisory guidance ("prefer CocoIndex") was ignored in practice. Explicit routing enforcement ensures semantic queries actually use semantic search. |
-| `nextActions` suggestion instead of inline CocoIndex call in `code_graph_context` | Keeps `code_graph_context` latency-bounded. The caller decides whether to follow up with CocoIndex based on remaining budget. |
-| `ccc_` prefix for all new tools | Avoids namespace collision with existing `code_graph_*` and `memory_*` tools. Consistent with CocoIndex CLI command prefix. |
+| Describe SessionStart as status-only | That matches shipped behavior and avoids implying readiness guarantees that do not exist |
+| Keep PreCompact marked as hint-only | The phase adds prompt guidance, not live semantic lookup or cache hydration |
+| Document `ccc_status` with four fields only | The helper reports availability, path, and index presence/size, not richer index metadata |
+| Document `ccc_feedback` as local JSONL storage | The helper writes local feedback records and does not integrate with CocoIndex DB internals or `memory_validate` parity |
+| Leave README and tool-reference updates open | Those docs were not completed in this phase and should remain visible as follow-up work |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -106,14 +98,12 @@ Implementation followed the 6-step plan with the P0 hook compilation fix first (
 
 | Check | Result |
 |-------|--------|
-| `npm run build` produces `dist/hooks/claude/*.js` | PASS (6 files) |
-| `echo '{}' \| node dist/hooks/claude/session-prime.js` | PASS (exit 0) |
-| `echo '{}' \| node dist/hooks/claude/compact-inject.js` | PASS (exit 0) |
-| `echo '{}' \| node dist/hooks/claude/session-stop.js` | PASS (exit 0) |
-| CocoIndex entry in `.claude/mcp.json` | Present |
-| `tests/runtime-routing.vitest.ts` | PASS (12/12) |
-| Existing MCP server tests | PASS (no regressions) |
-| Phase 012 checklist | 19/19 items verified (6 P0 + 7 P1 + 6 P2, all checked) |
+| Level 2 packet structure restored | PASS, required anchors and headers were added to all packet docs |
+| Manual `npm run build` verification described accurately | PASS, packet now states manual build output verification only |
+| Hook smoke-test reality documented | PASS, packet records exit-0 checks for built hook scripts |
+| SessionStart readiness bootstrap documented honestly | PASS, packet states it is not implemented |
+| Background CocoIndex re-index from SessionStart | FAIL, not implemented and tracked as an open gap |
+| Broader README and tool reference updates | FAIL, not completed in this phase |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -121,8 +111,10 @@ Implementation followed the 6-step plan with the P0 hook compilation fix first (
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **CocoIndex daemon must be running for MCP tools to function.** `ccc_status`, `ccc_reindex`, and `ccc_feedback` return graceful errors if the daemon is down, but cannot start it.
-2. **Agent routing enforcement is advisory in Codex CLI.** The `.codex/agents/context.toml` format supports routing guidance but Codex CLI does not enforce tool ordering the way Claude Code hooks do.
-3. **Reverse semantic augmentation in `code_graph_context` is suggestion-only.** The tool emits `nextActions` recommending CocoIndex queries but does not execute them inline, requiring the caller to follow through.
-4. **Auto-index triggers a warning only.** Background re-index was designed but startup does not spawn a subprocess; it warns the user to run `ccc index` manually or use `ccc_reindex`.
+1. **SessionStart is status-only.** It reports CocoIndex binary availability but does not call `ensure_ready.sh` and does not ensure readiness.
+2. **PreCompact semantic integration is hint-only.** It does not execute or cache real CocoIndex semantic-neighbor queries.
+3. **`ccc_status` is intentionally narrow.** It reports availability, `binaryPath`, `indexExists`, and `indexSize` only.
+4. **`ccc_feedback` is local only.** It appends JSONL under `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl`, does not write to the CocoIndex database, and does not mirror `memory_validate` parameters.
+5. **Broader docs remain incomplete.** The system-spec-kit README and tool reference were not updated in this phase.
+6. **Background CocoIndex re-index from SessionStart is not implemented.** Any re-index must be triggered separately.
 <!-- /ANCHOR:limitations -->

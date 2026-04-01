@@ -6,6 +6,7 @@
 // query, and status handlers.
 
 import { execSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { relative } from 'node:path';
 import { getDb, getStats, getLastGitHead, setLastGitHead, ensureFreshFiles, isFileStale } from './code-graph-db.js';
 import { indexFiles } from './structural-indexer.js';
@@ -53,38 +54,87 @@ function getCurrentGitHead(rootDir: string): string | null {
   }
 }
 
+function partitionTrackedFiles(filePaths: string[]): { existingFiles: string[]; deletedFiles: string[] } {
+  const existingFiles: string[] = [];
+  const deletedFiles: string[] = [];
+
+  for (const filePath of filePaths) {
+    if (existsSync(filePath)) {
+      existingFiles.push(filePath);
+      continue;
+    }
+
+    deletedFiles.push(filePath);
+  }
+
+  return { existingFiles, deletedFiles };
+}
+
+function cleanupDeletedTrackedFiles(filePaths: string[]): number {
+  for (const filePath of filePaths) {
+    graphDb.removeFile(filePath);
+  }
+
+  return filePaths.length;
+}
+
+function appendCleanupReason(reason: string, removedDeletedCount: number): string {
+  if (removedDeletedCount === 0) {
+    return reason;
+  }
+
+  return `${reason}; removed ${removedDeletedCount} deleted tracked file(s)`;
+}
+
 /** Detect graph state without triggering any reindex */
-function detectState(rootDir: string): { freshness: GraphFreshness; action: ReadyAction; staleFiles: string[]; reason: string } {
+function detectState(rootDir: string): {
+  freshness: GraphFreshness;
+  action: ReadyAction;
+  staleFiles: string[];
+  deletedFiles: string[];
+  reason: string;
+} {
   const d = getDb();
 
   // Condition (a): Graph is empty
   const nodeCount = (d.prepare('SELECT COUNT(*) as c FROM code_nodes').get() as { c: number }).c;
   if (nodeCount === 0) {
-    return { freshness: 'empty', action: 'full_scan', staleFiles: [], reason: 'graph is empty (0 nodes)' };
+    return { freshness: 'empty', action: 'full_scan', staleFiles: [], deletedFiles: [], reason: 'graph is empty (0 nodes)' };
   }
 
   // Condition (b): Git HEAD changed
   const currentHead = getCurrentGitHead(rootDir);
   const storedHead = getLastGitHead();
   if (currentHead && storedHead && currentHead !== storedHead) {
-    return {
-      freshness: 'stale',
-      action: 'full_scan',
-      staleFiles: [],
-      reason: `git HEAD changed: ${storedHead.slice(0, 8)} -> ${currentHead.slice(0, 8)}`,
-    };
+      return {
+        freshness: 'stale',
+        action: 'full_scan',
+        staleFiles: [],
+        deletedFiles: [],
+        reason: `git HEAD changed: ${storedHead.slice(0, 8)} -> ${currentHead.slice(0, 8)}`,
+      };
   }
 
   // Condition (c): Check file mtime drift on tracked files
-  const trackedFiles = d.prepare('SELECT file_path FROM code_files').all() as Array<{ file_path: string }>;
-  const paths = trackedFiles.map(r => r.file_path);
-  if (paths.length === 0) {
-    return { freshness: 'empty', action: 'full_scan', staleFiles: [], reason: 'no tracked files in code_files table' };
+  const trackedFiles = graphDb.getTrackedFiles();
+  if (trackedFiles.length === 0) {
+    return { freshness: 'empty', action: 'full_scan', staleFiles: [], deletedFiles: [], reason: 'no tracked files in code_files table' };
   }
 
-  const { stale } = ensureFreshFiles(paths);
+  const { existingFiles, deletedFiles } = partitionTrackedFiles(trackedFiles);
+  const { stale } = ensureFreshFiles(existingFiles);
   if (stale.length === 0) {
-    return { freshness: 'fresh', action: 'none', staleFiles: [], reason: 'all tracked files are up-to-date' };
+    if (deletedFiles.length > 0) {
+      return {
+        freshness: 'stale',
+        action: 'none',
+        staleFiles: [],
+        deletedFiles,
+        reason: `${deletedFiles.length} tracked file(s) no longer exist on disk`,
+      };
+    }
+
+    return { freshness: 'fresh', action: 'none', staleFiles: [], deletedFiles: [], reason: 'all tracked files are up-to-date' };
   }
 
   // Too many stale files => full scan is more efficient
@@ -93,7 +143,10 @@ function detectState(rootDir: string): { freshness: GraphFreshness; action: Read
       freshness: 'stale',
       action: 'full_scan',
       staleFiles: stale,
-      reason: `${stale.length} stale files exceed selective threshold (${SELECTIVE_REINDEX_THRESHOLD})`,
+      deletedFiles,
+      reason: deletedFiles.length > 0
+        ? `${stale.length} stale files exceed selective threshold (${SELECTIVE_REINDEX_THRESHOLD}); ${deletedFiles.length} tracked file(s) no longer exist on disk`
+        : `${stale.length} stale files exceed selective threshold (${SELECTIVE_REINDEX_THRESHOLD})`,
     };
   }
 
@@ -101,7 +154,10 @@ function detectState(rootDir: string): { freshness: GraphFreshness; action: Read
     freshness: 'stale',
     action: 'selective_reindex',
     staleFiles: stale,
-    reason: `${stale.length} file(s) have newer mtime than indexed_at`,
+    deletedFiles,
+    reason: deletedFiles.length > 0
+      ? `${stale.length} file(s) have newer mtime than indexed_at; ${deletedFiles.length} tracked file(s) no longer exist on disk`
+      : `${stale.length} file(s) have newer mtime than indexed_at`,
   };
 }
 
@@ -165,9 +221,10 @@ export async function ensureCodeGraphReady(rootDir: string): Promise<ReadyResult
   lastCheckAt = now;
 
   const state = detectState(rootDir);
+  const removedDeletedCount = cleanupDeletedTrackedFiles(state.deletedFiles);
 
   if (state.action === 'none') {
-    lastCheckResult = { action: 'none', reason: state.reason };
+    lastCheckResult = { action: 'none', reason: appendCleanupReason(state.reason, removedDeletedCount) };
     return lastCheckResult;
   }
 
@@ -180,7 +237,7 @@ export async function ensureCodeGraphReady(rootDir: string): Promise<ReadyResult
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);
 
-      lastCheckResult = { action: 'full_scan', reason: state.reason };
+      lastCheckResult = { action: 'full_scan', reason: appendCleanupReason(state.reason, removedDeletedCount) };
       return lastCheckResult;
     }
 
@@ -191,17 +248,25 @@ export async function ensureCodeGraphReady(rootDir: string): Promise<ReadyResult
       config.includeGlobs = state.staleFiles.map(f => relative(rootDir, f));
       await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS);
 
-      lastCheckResult = { action: 'selective_reindex', files: state.staleFiles, reason: state.reason };
+      lastCheckResult = {
+        action: 'selective_reindex',
+        files: state.staleFiles,
+        reason: appendCleanupReason(state.reason, removedDeletedCount),
+      };
       return lastCheckResult;
     }
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[ensure-ready] Auto-index failed: ${msg}`);
-    lastCheckResult = { action: state.action, files: state.staleFiles, reason: `${state.reason} (auto-index failed: ${msg})` };
+    lastCheckResult = {
+      action: state.action,
+      files: state.staleFiles,
+      reason: appendCleanupReason(`${state.reason} (auto-index failed: ${msg})`, removedDeletedCount),
+    };
     return lastCheckResult;
   }
 
-  lastCheckResult = { action: 'none', reason: state.reason };
+  lastCheckResult = { action: 'none', reason: appendCleanupReason(state.reason, removedDeletedCount) };
   return lastCheckResult;
 }
 

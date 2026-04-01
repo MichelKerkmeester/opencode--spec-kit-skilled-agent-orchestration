@@ -4,13 +4,18 @@ description: "8 items across P2/P3 for phase 016."
 ---
 # Checklist: Phase 016 — Cross-Runtime UX & Documentation
 
+## Phase Status
+
+**PARTIAL (11/14 items complete; 3 deferred)**
+
+## Completed / In Scope
+
 ## P2
 
 - [x] Near-exact seed tier added (±5 lines, graduated confidence 0.95 - distance*0.02)
 - [ ] CocoIndex score propagation via blended confidence formula — DEFERRED: requires CocoIndex API changes
 - [x] Composite index (file_path, start_line) added to code_nodes
-- [x] Intent pre-classifier routes structural vs semantic queries correctly — classifyQueryIntent() in query-intent-classifier.ts
-- [x] Ambiguous queries routed to both code graph and CocoIndex — hybrid intent returned when signals are mixed
+- [x] Intent pre-classifier annotates structural vs semantic vs hybrid metadata — classifyQueryIntent() in query-intent-classifier.ts feeds `queryIntentMetadata` / `queryIntentRouting`
 - [x] Auto-reindex triggers on git branch switch (HEAD hash change)
 - [x] Auto-reindex on session start via first-call priming
 - [x] Recovery documentation consolidated (single source of truth in root CLAUDE.md) [F018]
@@ -25,4 +30,8 @@ description: "8 items across P2/P3 for phase 016."
 - [x] OpenCode context.md updated with code graph integration
 - [x] GEMINI.md updated with session start protocol (shared via AGENTS.md symlink)
 - [x] CLAUDE.md updated with universal Code Search Protocol
-- [ ] All instruction files verified to load on their respective runtimes — requires manual verification
+
+## Deferred / Out of Scope for This Phase
+
+- [ ] Intent metadata drives backend selection/routing — DEFERRED: current implementation annotates `queryIntentMetadata` / `queryIntentRouting` but does not yet route queries to different backends from that metadata
+- [ ] All instruction files verified to load on their respective runtimes — DEFERRED: requires manual verification

@@ -14,8 +14,8 @@ description: "No Hook Transport tables in all instruction files and @context-pri
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 024-compact-code-graph/021-cross-runtime-instruction-parity |
-| **Completed** | 2026-03-31 (1 item needs verification) |
+| **Spec Folder** | 021-cross-runtime-instruction-parity |
+| **Completed** | 2026-03-31 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -24,7 +24,7 @@ description: "No Hook Transport tables in all instruction files and @context-pri
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All runtime instruction files now contain identical "No Hook Transport" trigger tables so non-hook CLIs know exactly when and what to call. A new `@context-prime` agent provides one-call session priming for OpenCode.
+The runtime guidance now points non-hook CLIs at the current bootstrap flow, and OpenCode now has a verified `@context-prime` entry point. This summary also keeps the remaining parity gap visible instead of overstating completion.
 
 ### No Hook Transport Tables
 
@@ -32,23 +32,22 @@ Added standardized trigger tables to `CODEX.md`, `AGENTS.md`, and `GEMINI.md` wi
 
 | When | What to Call |
 |------|-------------|
-| Fresh session start | `memory_context({ mode: "resume" })` + `code_graph_status()` |
-| After resume/reconnect | `session_resume()` or manual equivalent |
-| After compaction/long gap | `session_health()` → if stale, call `memory_context({ mode: "resume" })` |
+| Fresh session start | `session_resume()` with optional `session_health()` follow-up |
+| After resume/reconnect | `session_resume()` |
+| After compaction/long gap | `session_resume()`; optionally `session_health()` when drift is suspected |
 | After `/clear` | Same as fresh session |
 | Before structural search | `code_graph_context({ subject: "..." })` |
 
-Claude-hook-specific wording was removed from non-Claude instruction files. Each runtime's table is adapted to its lifecycle (e.g., Gemini references its native hooks from Phase 022).
+AGENTS.md advertises `@context-prime` and the session lifecycle guidance, while `.opencode/agent/orchestrate.md` performs the actual first-turn or post-`/clear` delegation. Claude-hook-specific wording was only partially cleaned up in non-Claude agent files, so this phase records that residual wording as a known gap instead of claiming full removal.
 
 ### @context-prime Agent
 
 A new agent at `.opencode/agent/context-prime.md` (227 lines) that:
-1. Calls `memory_context({ mode: "resume" })`
-2. Calls `code_graph_status()`
-3. Calls `ccc_status()`
-4. Returns a compact Prime Package with spec folder, task, blockers, next steps, and graph status
+1. Calls `session_resume()` to recover prior session state plus graph and CocoIndex availability
+2. Optionally calls `session_health()` when a quality score is useful
+3. Returns a compact Prime Package with spec folder, task status, system health, and recommended next steps
 
-This agent is referenced from AGENTS.md for Session Bootstrap delegation and added to the CLAUDE.md Agent Definitions as a LEAF-only retrieval agent.
+F059 is now verified done because `.opencode/agent/orchestrate.md` lines 18-21 explicitly delegate to `@context-prime` on the first user turn or after `/clear`. AGENTS.md remains the advertising and guidance surface, not the delegation executor.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -68,10 +67,39 @@ This agent is referenced from AGENTS.md for Session Bootstrap delegation and add
 
 ---
 
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+This phase landed as a documentation and agent-instruction alignment pass. The final verification step confirmed that AGENTS.md defines and advertises `@context-prime`, while `.opencode/agent/orchestrate.md` is the runtime file that actually delegates to it on the first turn or after `/clear`.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Treat `session_resume()` plus optional `session_health()` as the source of truth for `@context-prime` | The current agent definition says the bootstrap flow is now a 2-step resume and optional score, not the older `memory_context()` plus graph-status sequence. |
+| Record Claude-hook wording as a known residual gap | The non-Claude agent files still contain that wording, so claiming full cleanup would be inaccurate. |
+| Mark F059 verified done | `.opencode/agent/orchestrate.md` already contains the required first-turn and post-`/clear` delegation wiring. |
+<!-- /ANCHOR:decisions -->
+
+---
+
 <!-- ANCHOR:verification -->
 ## Verification
 
 - TypeScript: N/A (documentation and config changes only)
 - Tests: N/A
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
+- Evidence: `.opencode/agent/context-prime.md` lines 34-38, 61-65, 74-87, 229-230; `AGENTS.md` lines 294-299 and 386-399; `.opencode/agent/orchestrate.md` lines 18-21
 <!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **Residual Claude-hook wording remains in non-Claude agent files.** Evidence still exists in `.codex/agents/orchestrate.toml` lines 827-835, `.codex/agents/deep-research.toml` lines 425-429, `.codex/agents/speckit.toml` lines 557-561, and several `.gemini/agents/*.md` files. This phase should treat that cleanup as incomplete follow-up work.
+<!-- /ANCHOR:limitations -->

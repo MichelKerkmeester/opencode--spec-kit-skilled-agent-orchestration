@@ -15,12 +15,13 @@ description: "Task tracking for 15 bug fixes in tree-sitter parser and query-int
 - [x] F036: Multi-word matching with word boundaries — query-intent-classifier.ts:94
 - [x] F037: Confidence scaling by evidence count — query-intent-classifier.ts:147-148
 - [x] F038: Missing structural keyword inflections added — query-intent-classifier.ts:39-41
+- [x] F039: Dedicated test file for tree-sitter parser — mcp_server/tests/tree-sitter-parser.vitest.ts covers readiness/init/error behavior; parser-selection coverage still missing
 - [x] F040: Query-intent classifier wired into routing path — integrated in Phase 020 (memory-context.ts)
 - [x] F041: Nested class fqName threading — walkAST:527-529 threads fqClassName
+- [x] F042: Bash regex for `function foo { }` form — structural-indexer.ts:567-569
 - [x] F043: RawCapture single source of truth — imported from structural-indexer.ts:18
+- [x] F044: SPECKIT_PARSER env var documentation — capability-flags.ts:37-50
 
 ## Deferred
 
-- [ ] F039: Dedicated test file for tree-sitter parser — deferred to future testing phase (F060)
-- [ ] F042: Bash regex for `function foo { }` form — needs investigation
-- [ ] F044: SPECKIT_PARSER env var documentation — demoted to internal-only
+- [ ] Tech debt: `ParserAdapter` remains duplicated in tree-sitter-parser.ts:20-23 and structural-indexer.ts:17-19; consolidate when parser contracts are refactored

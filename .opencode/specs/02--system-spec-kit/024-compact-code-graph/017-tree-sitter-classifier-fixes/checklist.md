@@ -19,8 +19,8 @@ description: "15 items across P1/P2 for phase 017."
 - [x] F036: Multi-word matching uses exact token boundaries, no false positives — query-intent-classifier.ts:94
 - [x] F037: Single keyword match no longer saturates confidence at 0.95 — query-intent-classifier.ts:147-148
 - [x] F038: Structural keyword dictionary expanded with inflections (import/imports, export/exports, caller/callers) — query-intent-classifier.ts:39-41
-- [ ] F039: Dedicated tree-sitter test file — DEFERRED to future testing phase
+- [x] F039: Dedicated tree-sitter test file exists and covers readiness/init/error paths, but not parser-selection behavior — [Test: mcp_server/tests/tree-sitter-parser.vitest.ts:7-79]
 - [x] F040: Query-intent classifier integrated into routing path — wired in Phase 020 memory-context.ts
-- [ ] F042: Bash regex handles `function foo { }` form — DEFERRED, needs investigation
-- [x] F043: RawCapture/ParserAdapter contracts unified to single source of truth — imported from structural-indexer.ts:18
-- [ ] F044: SPECKIT_PARSER env var documented in capability-flags.ts — DEFERRED, internal-only
+- [x] F042: Bash regex handles `function foo { }` form — [Code: structural-indexer.ts:567-569]
+- [x] F043: RawCapture is unified to a single source of truth, but `ParserAdapter` remains duplicated between parser modules as tech debt — [Code: structural-indexer.ts:17-19; tree-sitter-parser.ts:20-23]
+- [x] F044: SPECKIT_PARSER env var documented in capability-flags.ts — [Code: capability-flags.ts:37-50]

@@ -26,10 +26,10 @@ contextType: "planning"
    - Select expansion behavior based on queryMode:
       - `neighborhood`: 1-hop CALLS + IMPORTS + CONTAINS from resolved anchors
       - `outline`: file/package CONTAINS + EXPORTS
-      - `impact`: reverse CALLS + reverse IMPORTS + TESTED_BY
+      - `impact`: reverse CALLS + reverse IMPORTS
     - Execute graph queries via Phase 009 `code_graph_query`
     - Optional reverse semantic augmentation: expanded graph neighbors → CocoIndex search
-    - Collect results into structured response envelope (`queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, `metadata`)
+    - Collect results into the handler response envelope (`status`, `data.queryMode`, `data.anchors`, `data.graphContext`, `data.textBrief`, `data.combinedSummary`, `data.nextActions`, `data.metadata`)
     - Keep formatting helpers inline in `code-graph-context.ts`
     - Note: `ContextArgs` accepts `includeTrace`, but MCP schema does not expose it because `additionalProperties: false` blocks undeclared fields
 3. **Register tool in MCP server:**

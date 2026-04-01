@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Cross-Runtime UX & Documentation [024/016]"
-description: "Near-exact seed resolution, auto-reindex on branch switch, cross-runtime Session Start Protocol, recovery doc consolidation, truth-sync annotations. 11/14 items completed."
+description: "Near-exact seed resolution, query-intent metadata annotation, auto-reindex on branch switch, cross-runtime Session Start Protocol, recovery doc consolidation, truth-sync annotations. Partial: 11/14 items completed, 3 deferred."
 ---
 # Implementation Summary
 
@@ -15,7 +15,8 @@ description: "Near-exact seed resolution, auto-reindex on branch switch, cross-r
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 024-compact-code-graph/016-cross-runtime-ux |
-| **Completed** | 2026-03-31 (3 items deferred) |
+| **Status** | Partial (11/14 items complete; 3 deferred) |
+| **Completed** | 2026-03-31 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -24,7 +25,7 @@ description: "Near-exact seed resolution, auto-reindex on branch switch, cross-r
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Seed resolution is now more precise with a near-exact tier, the index auto-refreshes on branch switches, and all 5 runtimes have session start instructions that auto-trigger code graph and memory context loading.
+Seed resolution is now more precise with a near-exact tier, query intent is annotated for observability, the index auto-refreshes on branch switches, and all 5 runtimes have session start instructions that auto-trigger code graph and memory context loading.
 
 ### Near-Exact Seed Resolution (Item 39)
 
@@ -37,6 +38,10 @@ A new resolution tier sits between exact match and enclosing symbol. When a seed
 ### Seed-Resolver Error Handling (Item 44)
 
 DB query failures in the seed resolver previously degraded silently to file-level placeholder anchors. Now they throw with logged context via `throwResolutionError()`, so callers know resolution actually failed rather than getting a misleading low-confidence anchor.
+
+### Query-Intent Metadata Annotation (Item 40, partial)
+
+`query-intent-classifier.ts` now classifies each query as structural, semantic, or hybrid and records that result in downstream response metadata (`queryIntentMetadata` / `queryIntentRouting`). This phase documents the classifier as an annotation layer only: it does not claim that the metadata is already used to route requests to different retrieval backends.
 
 ### Cross-Runtime Session Start Protocol (Item 42)
 
@@ -60,6 +65,7 @@ Five v1 checklist items that overstated shipped behavior now carry PARTIAL annot
 |------|--------|---------|
 | `lib/code-graph/seed-resolver.ts` | Modified | Near-exact tier, error handling |
 | `lib/code-graph/code-graph-db.ts` | Modified | idx_file_line index, code_graph_metadata table |
+| `lib/code-graph/query-intent-classifier.ts` | Modified | Query intent classification for metadata annotation |
 | `handlers/code-graph/scan.ts` | Modified | Git HEAD detection, auto-reindex |
 | `CODEX.md` | Modified | Session Start Protocol |
 | `AGENTS.md` | Modified | Code graph auto-trigger |
@@ -101,7 +107,7 @@ Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolut
 | `tests/code-graph-scan.vitest.ts` | PASS (git HEAD tracking tests) |
 | `tests/crash-recovery.vitest.ts` | PASS (metadata table, index verification) |
 | `git diff --check` on doc files | PASS |
-| Phase 016 checklist | 11/14 items (3 deferred) |
+| Phase 016 checklist | Partial (11/14 items complete; 3 deferred) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -109,8 +115,7 @@ Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolut
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Intent pre-classifier not implemented (Item 40).** Requires CocoIndex API integration for semantic vs structural routing. Structural queries currently go to code graph, semantic queries require explicit CocoIndex tool use.
-2. **SessionStart scope alignment deferred (Item 45).** Spec describes source-scoped matchers but settings.local.json has a single unscoped entry. Requires settings schema changes.
-3. **CocoIndex score propagation not implemented.** Near-exact confidence is based on line distance only. Blending with CocoIndex relevance scores requires API work.
-4. **Runtime verification is manual.** Each instruction file needs testing on its target runtime to confirm it loads correctly. Automated verification would require CI integration with all 5 CLIs.
+1. **Intent metadata does not yet drive backend routing (Item 40 deferred portion).** `classifyQueryIntent()` annotates `queryIntentMetadata` / `queryIntentRouting`, but this phase does not claim end-to-end routing to different retrieval backends from that metadata.
+2. **CocoIndex score propagation not implemented.** Near-exact confidence is based on line distance only. Blending with CocoIndex relevance scores requires API work.
+3. **Runtime verification is manual.** Each instruction file needs testing on its target runtime to confirm it loads correctly. Automated verification would require CI integration with all 5 CLIs.
 <!-- /ANCHOR:limitations -->

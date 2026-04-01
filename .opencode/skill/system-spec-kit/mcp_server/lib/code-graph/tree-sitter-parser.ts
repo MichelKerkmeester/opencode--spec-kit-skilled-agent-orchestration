@@ -32,6 +32,7 @@ let initPromise: Promise<void> | null = null;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const grammarCache = new Map<SupportedLanguage, any>();
+const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['javascript', 'typescript', 'python', 'bash'];
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -683,14 +684,13 @@ export class TreeSitterParser implements ParserAdapter {
 
   /** Load all supported language grammars */
   static async loadAllLanguages(): Promise<void> {
-    const languages: SupportedLanguage[] = ['javascript', 'typescript', 'python', 'bash'];
-    await Promise.all(languages.map(lang => getLanguageGrammar(lang)));
+    await Promise.all(SUPPORTED_LANGUAGES.map(lang => getLanguageGrammar(lang)));
   }
 
   /** Check if parser and grammars are loaded */
   static isReady(language?: SupportedLanguage): boolean {
     if (!parserInstance) return false;
     if (language) return grammarCache.has(language);
-    return grammarCache.size > 0;
+    return SUPPORTED_LANGUAGES.every(lang => grammarCache.has(lang));
   }
 }

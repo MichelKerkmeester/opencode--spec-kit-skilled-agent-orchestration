@@ -15,20 +15,21 @@ contextType: "implementation"
 
 ## Summary
 
-Extract structural symbols (functions, classes, methods, modules) and their relationships (calls, imports, containment) from JS/TS/Python/Shell source files using tree-sitter. Produce a normalized node/edge vocabulary that feeds Phase 009 storage and Phase 010 context bridge.
+Extract structural symbols (functions, classes, methods, modules) and their relationships (calls, imports, containment) from JS/TS/Python/Shell source files using tree-sitter WASM as the default parser, with regex fallback when tree-sitter is unavailable or `SPECKIT_PARSER=regex`. Produce a normalized node/edge vocabulary that feeds Phase 009 storage and Phase 010 context bridge.
 
 ## What Exists
 
 - CocoIndex Code MCP handles all semantic code search (embeddings, vector similarity, 28+ languages)
-- No structural indexer exists in the repo today (confirmed iteration 055)
-- tree-sitter has mature WASM grammars for all 4 target languages
+- A structural indexer now exists with dual-backend support split across `structural-indexer.ts` and `tree-sitter-parser.ts`
+- `mcp_server/package.json` includes `web-tree-sitter` and `tree-sitter-wasms` for the default parser backend
 - `code-graph.sqlite` schema designed in iteration 042 and refined in iteration 055
 
 ## Design Decisions
 
-- **tree-sitter over LSP**: tree-sitter gives multi-language structural extraction in a single pass without per-language server overhead (DR-010)
+- **tree-sitter default over LSP or regex-only**: tree-sitter gives AST-accurate multi-language structural extraction in a single pass without per-language server overhead, while regex remains available as a fallback backend (DR-010)
 - **Structural only**: No embeddings, no chunking, no vector search — CocoIndex handles all semantic retrieval
-- **Content-hash freshness**: Index files by content hash; skip re-parse when hash matches
+- **Programmatic AST traversal over `.scm` queries**: tree-sitter capture extraction happens in code via AST walking, so separate query files are unnecessary for this phase
+- **Content-hash freshness in the indexer**: Index files by content hash, with parsing and file discovery handled directly in `structural-indexer.ts`
 - **Parser health tracking**: Record whether parse produced a clean tree or error-recovered tree; flag files with parser errors
 
 ## Languages
@@ -75,10 +76,12 @@ Optional edges (extract only when reliable):
 Source files (JS/TS/Python/Shell)
          |
          v
-  tree-sitter parse (per-file, WASM grammars)
+  getParser()
+    ├─ tree-sitter WASM (default)
+    └─ regex fallback (env override or init failure)
          |
          v
-  Capture extraction (standardized @definition/@reference patterns)
+  Programmatic AST traversal / regex capture extraction
          |
          v
   Node normalization (symbolId, fqName, file, line range, kind)
@@ -87,7 +90,7 @@ Source files (JS/TS/Python/Shell)
   Edge extraction (CONTAINS, CALLS, IMPORTS from captures)
          |
          v
-  Content-hash check (skip if file unchanged)
+  File discovery + content-hash freshness in structural-indexer.ts
          |
          v
   Write to code-graph.sqlite (Phase 009)
@@ -98,18 +101,17 @@ Source files (JS/TS/Python/Shell)
 ### 1. `structural-indexer.ts`
 
 Core extraction pipeline:
-- Accept file path + language → parse with tree-sitter
-- Run standardized queries against parse tree
-- Collect captures into normalized `CodeNode[]` and `CodeEdge[]`
+- Accept file path + language → select parser backend via `getParser()`
+- Default to tree-sitter WASM, with regex fallback via `SPECKIT_PARSER=regex` or automatic fallback on init failure
+- Handle file discovery, parse orchestration, normalized `CodeNode[]` / `CodeEdge[]` generation, and content-hash freshness
 - Return structured extraction result with parser health metadata
 
-### 2. `tree-sitter-queries/`
+### 2. `tree-sitter-parser.ts`
 
-Per-language query files:
-- `javascript.scm` — function, class, method, import, export, call captures
-- `typescript.scm` — extends JS with interface, type_alias, enum, implements
-- `python.scm` — function_definition, class_definition, import_statement, decorator
-- `bash.scm` — function_definition, command (conservative subset)
+Tree-sitter backend:
+- Load WASM grammars programmatically for JavaScript, TypeScript, Python, and Bash
+- Walk ASTs directly to extract `RawCapture[]` compatible with `structural-indexer.ts`
+- Avoid `.scm` query files by encoding traversal rules in code
 
 ### 3. `indexer-types.ts`
 
@@ -141,20 +143,14 @@ interface ParseResult {
 }
 ```
 
-### 4. `incremental-index.ts`
-
-Freshness and incremental re-indexing:
-- Content-hash comparison per file
-- Skip re-parse when hash matches stored hash
-- Track `lastIndexedAt` timestamp
-- Report stale files count for `code_graph_status`
-
 ## Acceptance Criteria
 
-- [ ] tree-sitter parses JS/TS/Python/Shell without crashing on any repo file
+- [ ] tree-sitter parses JS/TS/Python/Shell by default without crashing on any repo file
+- [ ] Regex fallback activates when `SPECKIT_PARSER=regex` is set or tree-sitter initialization fails
 - [ ] Standardized captures produce correct nodes for all 4 languages
+- [ ] Programmatic AST traversal produces standardized captures without requiring `.scm` query files
 - [ ] Edge extraction identifies CONTAINS, CALLS, IMPORTS relationships
-- [ ] Content-hash skip works (unchanged files not re-parsed)
+- [ ] Content-hash freshness and file discovery work from `structural-indexer.ts`
 - [ ] Parser health metadata correctly distinguishes clean/recovered/error
 - [ ] Incremental re-index completes in <5s for a 10-file change set
 - [ ] Full index of repo completes in <30s
@@ -163,14 +159,10 @@ Freshness and incremental re-indexing:
 ## Files Modified
 
 - NEW: `mcp_server/lib/code-graph/structural-indexer.ts`
+- NEW: `mcp_server/lib/code-graph/tree-sitter-parser.ts`
 - NEW: `mcp_server/lib/code-graph/indexer-types.ts`
-- NEW: `mcp_server/lib/code-graph/incremental-index.ts`
-- NEW: `mcp_server/lib/code-graph/tree-sitter-queries/javascript.scm`
-- NEW: `mcp_server/lib/code-graph/tree-sitter-queries/typescript.scm`
-- NEW: `mcp_server/lib/code-graph/tree-sitter-queries/python.scm`
-- NEW: `mcp_server/lib/code-graph/tree-sitter-queries/bash.scm`
-- NEW: `package.json` additions: `web-tree-sitter`, language grammars
+- MODIFIED: `mcp_server/package.json` additions: `web-tree-sitter`, `tree-sitter-wasms`
 
 ## LOC Estimate
 
-300-420 lines (core indexer + queries + types + incremental logic)
+850-1100 lines (core indexer + tree-sitter adapter + shared types, with no separate `.scm` query pack or `incremental-index.ts` module)

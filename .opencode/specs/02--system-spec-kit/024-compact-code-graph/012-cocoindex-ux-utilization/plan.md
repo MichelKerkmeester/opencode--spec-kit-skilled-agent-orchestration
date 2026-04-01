@@ -1,116 +1,166 @@
 ---
-title: "Plan: Phase 012 — CocoIndex UX [02--system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization/plan]"
-description: "1. Fix hook compilation (P0, 1-2 hours) — tsconfig + build verification"
+title: "Implementation Plan: Phase 012 — CocoIndex UX, Utilization & Usefulness"
+description: "Restate the Phase 012 delivery plan using the actual shipped CocoIndex behavior and remaining gaps."
 trigger_phrases:
   - "plan"
-  - "phase"
-  - "012"
+  - "phase 012"
   - "cocoindex"
 importance_tier: "important"
 contextType: "planning"
 ---
-# Plan: Phase 012 — CocoIndex UX, Utilization & Usefulness
+# Implementation Plan: Phase 012 — CocoIndex UX, Utilization & Usefulness
 
-## Implementation Order
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-1. **Fix hook compilation** (P0, 1-2 hours) — tsconfig + build verification
-2. **CocoIndex MCP availability** (P1, 2-3 hours) — mcp.json + startup status
-3. **Enhanced MCP tools** (P1, 3-4 hours) — ccc_status + ccc_reindex
-4. **Agent routing** (P1, 2-3 hours) — @context CocoIndex-first + compaction integration
-5. **Auto-index + freshness** (P2, 1-2 hours) — stale detection + background reindex
-6. **Quality feedback** (P2, 2-3 hours) — ccc_feedback tool + storage
+---
 
-## Step A: Fix Hook Compilation (P0)
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-1. **Update `mcp_server/tsconfig.json`** — the `include` field already has `**/*.ts` which covers `hooks/claude/*.ts`. The issue is likely that the hooks/claude/ files import from `node:*` builtins and use top-level `process.exit()` which tsc may handle differently. Check:
-   - Verify `hooks/claude/*.ts` are included in the build scope
-   - If tsconfig excludes them, add explicit include
-   - Run `npm run build` and verify `dist/hooks/claude/` is populated
-   - If build fails, fix any TS errors in the hook files
+### Technical Context
 
-2. **Add build verification** — after `npm run build`, check that these files exist:
-   - `dist/hooks/claude/shared.js`
-   - `dist/hooks/claude/hook-state.js`
-   - `dist/hooks/claude/compact-inject.js`
-   - `dist/hooks/claude/session-prime.js`
-   - `dist/hooks/claude/session-stop.js`
-   - `dist/hooks/claude/claude-transcript.js`
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript hooks, MCP helpers, Markdown packet docs |
+| **Framework** | system-spec-kit Phase 012 packet |
+| **Storage** | Local repo files and local JSONL feedback storage |
+| **Testing** | Manual build checks, hook smoke tests, targeted runtime-routing tests |
 
-3. **Test hooks locally** — run `echo '{}' | node dist/hooks/claude/session-prime.js` and verify it exits 0 with output.
+### Overview
+This plan documents what Phase 012 actually delivered and how to verify it honestly. The emphasis is on status-only SessionStart reporting, hint-only PreCompact guidance, lightweight helper-tool behavior, and explicit tracking of the work that remains undone.
+<!-- /ANCHOR:summary -->
 
-## Step B: CocoIndex MCP Availability
+---
 
-1. **Add to `.claude/mcp.json`** — add cocoindex_code entry matching the opencode.json config:
-   ```json
-   "cocoindex_code": {
-     "command": ".opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc",
-     "args": ["mcp"],
-     "env": { "COCOINDEX_CODE_ROOT_PATH": "." }
-   }
-   ```
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-2. **Update `session-prime.ts` startup handler** — add CocoIndex availability check:
-   - Check if `ccc` binary exists at the expected path
-   - If available, include in startup output: "CocoIndex Code: available"
-   - If not, skip silently (don't fail the hook)
+### Definition of Ready
+- [x] The packet scope is limited to Phase 012 documentation inside this folder
+- [x] Current implementation gaps are identified
+- [x] Required Level 2 sections are defined
 
-3. **Update `session-prime.ts` compact handler** — after injecting cached payload, note CocoIndex availability for the AI to use in recovery.
+### Definition of Done
+- [x] All packet docs use the Level 2 scaffold
+- [x] Current-reality corrections are consistent across docs
+- [x] Verification references manual build checks and hook smoke tests instead of a nonexistent script
+<!-- /ANCHOR:quality-gates -->
 
-## Step C: Enhanced MCP Tools
+---
 
-These are changes to the CocoIndex Code MCP server itself (Python-based, external). Spec only — actual implementation depends on CocoIndex upstream or local fork.
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-1. **`ccc_status` tool** — expose index stats (file count, chunk count, model, last indexed)
-2. **`ccc_reindex` tool** — trigger incremental re-index from MCP
-3. **Document in skill files** — update SKILL.md, README.md, tool_reference.md
+### Pattern
+Documentation alignment for a partially delivered implementation
 
-## Step D: Agent Routing Improvements
+### Key Components
+- **SessionStart path**: Reports CocoIndex binary availability only
+- **PreCompact path**: Adds semantic-search hint text only
+- **Helper tools**: `ccc_status`, `ccc_reindex`, and `ccc_feedback` expose limited operational helpers
+- **Packet docs**: Keep delivered scope and non-implemented items synchronized
 
-1. **Update `@context` agent** across all 4 runtimes — add explicit CocoIndex-first enforcement:
-   - Before Grep/Glob, check if query is semantic → call `mcp__cocoindex_code__search`
-   - Only fall back to Grep/Glob if CocoIndex unavailable or returns no results
+### Data Flow
+Implementation facts flow from shipped hooks and helper tools into the packet. The packet then drives review and validation by describing what exists, how it was verified, and what still requires a future phase.
+<!-- /ANCHOR:architecture -->
 
-2. **Wire PreCompact CocoIndex integration** — in `compact-inject.ts`:
-   - After extracting active file paths from transcript
-   - Query CocoIndex for semantic neighbors of top 3 files (if MCP available)
-   - Include top results in cached payload under "Semantic Neighbors" section
-   - Budget: use COMPACTION_TOKEN_BUDGET overflow from code graph allocation
+---
 
-3. **Wire reverse semantic augmentation** — in `code-graph-context.ts`:
-   - After expanding graph neighborhoods
-   - Query CocoIndex with expanded symbol names/file paths
-   - Include semantic matches in context response
-   - Guard: skip if <400ms budget remains (latency guard from Phase 010 design)
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-## Step E: Auto-Index & Freshness
+### Phase 1: Setup
+- [x] Rebuild the packet around the Level 2 template contract
+- [x] Remove stale or contradictory claims
 
-1. **Stale detection** — in SessionStart startup, check `.cocoindex_code/settings.yml` mtime
-   - If >24h old, trigger background `ccc index` via subprocess (don't wait)
-   - Log: "CocoIndex: triggering background re-index (last indexed >24h ago)"
+### Phase 2: Core Implementation
+- [x] Document SessionStart as status-only binary reporting
+- [x] Document PreCompact as hint-only semantic guidance
+- [x] Document `ccc_status` and `ccc_feedback` with their actual contracts
+- [x] Keep README/tool-reference updates and SessionStart background re-index marked as not implemented
 
-2. **Default `refresh_index: false`** — document recommendation in search_patterns.md and SKILL.md
-   - Avoids concurrency issues on parallel MCP queries
-   - Explicit refresh via `ccc_reindex` or `ccc index` CLI
+### Phase 3: Verification
+- [x] Align checklist evidence with manual build output verification and hook smoke tests
+- [x] Validate the packet after edits
+- [ ] Implement broader CocoIndex readiness automation or background re-indexing
+<!-- /ANCHOR:phases -->
 
-## Step F: Quality Feedback
+---
 
-1. **`ccc_feedback` MCP tool** — accepts search result ID + useful/not-useful signal
-2. **Storage** — append to feedback table in CocoIndex database
-3. **Pattern** — mirror `memory_validate` interface: `wasUseful`, `resultRank`, `queryTerms`
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-## Parallel Work Strategy (4 agents)
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Manual | `npm run build` output review for `dist/hooks/claude/*.js` | Bash |
+| Manual | Hook smoke tests for `session-prime.js`, `compact-inject.js`, `session-stop.js` | Node |
+| Integration | Routing behavior already exercised by runtime-routing coverage | Vitest |
+<!-- /ANCHOR:testing -->
 
-**Agent A**: Step A (hook compilation fix + build verification)
-**Agent B**: Step B (mcp.json + session-prime updates)
-**Agent C**: Step D (agent routing + compact-inject CocoIndex integration)
-**Agent D**: Step C + documentation updates
-
-Steps E and F are P2 and can be deferred to a follow-up.
+---
 
 <!-- ANCHOR:dependencies -->
-## Dependencies
+## 6. DEPENDENCIES
 
-- Step A must complete first (hooks must compile before B can test them)
-- Steps B, C, D can partially parallelize after A
-- Steps E, F are independent and can run after B
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Existing Phase 012 code changes | Internal | Green | Packet cannot stay accurate if implementation facts are wrong |
+| Validator contract in `.opencode/skill/system-spec-kit/templates/level_2/` | Internal | Green | Packet structure drifts and validation fails |
+| Manual build and hook smoke evidence | Internal | Yellow | Verification claims weaken if evidence is not retained |
 <!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Packet validation regresses or packet claims no longer match shipped behavior.
+- **Procedure**: Revert the packet docs to the last accurate revision, re-read current implementation facts, and re-run validation.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | Current packet contents | Core packet rewrite |
+| Core | Setup | Verification |
+| Verification | Core | Completion report |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 20 minutes |
+| Core Implementation | Medium | 45 minutes |
+| Verification | Low | 20 minutes |
+| **Total** | | **85 minutes** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [x] Packet-only scope confirmed
+- [x] Required reality corrections captured
+- [x] Validation command identified
+
+### Rollback Procedure
+1. Restore the last packet revision that matched implementation facts.
+2. Re-check manual build verification and hook smoke-test evidence.
+3. Re-apply only factual corrections that are still true.
+4. Re-run `validate.sh` before closing the packet update.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->

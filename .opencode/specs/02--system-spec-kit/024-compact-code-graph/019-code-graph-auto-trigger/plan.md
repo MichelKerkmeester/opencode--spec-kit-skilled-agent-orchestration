@@ -20,22 +20,31 @@ description: "Implementation order for automatic code graph freshness checking a
 
 3. **Wire into code_graph_context** (10-15 LOC)
    - Call `ensureCodeGraphReady(process.cwd())` at top of context handler
-   - Transparent to caller — query just works
+   - Best-effort auto-index attempt before building context
 
 4. **Wire into code_graph_query** (10-15 LOC)
    - Call `ensureCodeGraphReady(process.cwd())` at top of query handler
-   - Same transparent auto-trigger behavior
+   - Best-effort auto-index attempt before query dispatch
 
-5. **True freshness in code_graph_status** (20-30 LOC)
+5. **Freshness reporting in code_graph_status** (20-30 LOC)
    - Implement `getGraphFreshness()` returning `fresh` / `stale` / `empty`
-   - Fresh = indexed within 5 minutes and no file changes
-   - Stale = files changed since last index
+   - Fresh = graph is non-empty and `detectState()` finds no HEAD or tracked-file drift
+   - Stale = git HEAD changed or tracked files changed since last index
    - Empty = never indexed
+   - No separate 5-minute age window is enforced in the current implementation
 
 6. **Per-file mtime tracking** (30-40 LOC)
    - Add `ensureFreshFiles()` to code-graph-db.ts
    - Store and compare per-file modification timestamps
-   - Return list of changed files for selective reindex
+   - Return list of changed tracked files for selective reindex
+
+## Current Runtime Notes
+
+- `code_graph_context` and `code_graph_query` attempt auto-indexing before use, but failures are logged and not surfaced as blocking errors.
+- `code_graph_status` reports freshness only. It does not trigger reindexing.
+- New files are not detected until a broader scan runs, because freshness checks only cover tracked paths.
+- Deleted-file cleanup still depends on the scan handler full-scan path and is bypassed by the direct auto-trigger indexing path.
+- Selective reindex remains partially degraded by F048, so stale-file refresh can fall back to broader scanning behavior.
 
 ## Dependencies
 - None — can be done independently

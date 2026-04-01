@@ -17,7 +17,9 @@ const FINALIZE_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 /** Limit spec-folder detection to the transcript tail where recent messages live. */
 const SPEC_FOLDER_TAIL_BYTES = 50 * 1024;
-const SPEC_FOLDER_PREFIX = '.opencode/specs/';
+const SPEC_FOLDER_PATH_RE = /(?:\.opencode\/)?specs\/[^\s"'`]+/g;
+const SPEC_FOLDER_PREFIXES = ['.opencode/specs/', 'specs/'] as const;
+const SPEC_FOLDER_CANONICAL_PREFIX = 'specs/';
 const SPEC_FOLDER_SEGMENT_RE = /^\d{2,3}(?:--|-)[\w-]+$/;
 
 /**
@@ -161,7 +163,7 @@ function detectSpecFolder(transcriptPath: string): string | null {
     const buffer = Buffer.alloc(bytesToRead);
     const bytesRead = readSync(fileDescriptor, buffer, 0, bytesToRead, startPosition);
     const content = buffer.toString('utf-8', 0, bytesRead);
-    const specMatches = content.match(/\.opencode\/specs\/[^\s"'`]+/g) ?? [];
+    const specMatches = content.match(SPEC_FOLDER_PATH_RE) ?? [];
     if (specMatches.length === 0) {
       return null;
     }
@@ -197,13 +199,13 @@ function detectSpecFolder(transcriptPath: string): string | null {
 }
 
 function normalizeSpecFolderPath(rawPath: string): string | null {
-  const prefixIndex = rawPath.indexOf(SPEC_FOLDER_PREFIX);
-  if (prefixIndex === -1) {
+  const matchedPrefix = SPEC_FOLDER_PREFIXES.find((prefix) => rawPath.includes(prefix));
+  if (!matchedPrefix) {
     return null;
   }
 
   const relativeSegments = rawPath
-    .slice(prefixIndex + SPEC_FOLDER_PREFIX.length)
+    .slice(rawPath.indexOf(matchedPrefix) + matchedPrefix.length)
     .split('/')
     .filter(Boolean);
   const specSegments: string[] = [];
@@ -219,7 +221,7 @@ function normalizeSpecFolderPath(rawPath: string): string | null {
     return null;
   }
 
-  return `${SPEC_FOLDER_PREFIX}${specSegments.join('/')}`;
+  return `${SPEC_FOLDER_CANONICAL_PREFIX}${specSegments.join('/')}`;
 }
 
 // Run — exit cleanly even on error (async hook, but still must not crash)

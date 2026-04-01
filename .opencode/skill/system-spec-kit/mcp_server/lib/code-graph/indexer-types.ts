@@ -99,7 +99,7 @@ export function detectLanguage(filePath: string): SupportedLanguage | null {
 export function getDefaultConfig(rootDir: string): IndexerConfig {
   return {
     rootDir,
-    includeGlobs: ['**/*.ts', '**/*.js', '**/*.mjs', '**/*.py', '**/*.sh', '**/*.zsh'],
+    includeGlobs: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts', '**/*.js', '**/*.jsx', '**/*.mjs', '**/*.cjs', '**/*.py', '**/*.sh', '**/*.bash', '**/*.zsh'],
     excludeGlobs: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/vendor/**'],
     maxFileSizeBytes: 102_400,
     languages: ['javascript', 'typescript', 'python', 'bash'],

@@ -4,18 +4,78 @@ description: "Task tracking for session metrics and quality scoring."
 ---
 # Tasks: Phase 023 — Context Preservation Metrics
 
-## Completed
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-- [x] SessionMetrics and MetricEvent types defined — lib/session/context-metrics.ts (185 lines)
-- [x] recordMetricEvent() in-memory collector — records session lifecycle events
-- [x] computeQualityScore() with 4 factors — recency, recovery, graphFreshness, continuity → healthy/degraded/critical
-- [x] context-server.ts instrumented with 4 recordMetricEvent call sites — lines 690-699
-- [x] session_health uses computeQualityScore — handlers/session-health.ts wired to quality scoring
+---
 
-## Deferred
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- [ ] Phase C: Dashboard integration — no context metrics section in eval_reporting_dashboard
-- [ ] Phase D: Drift detection — no rule-based alerts implemented
-- [ ] F058: SQLite persistence — in-memory only, periodic writes not implemented
-- [ ] F065: Weight rationale for quality factors undocumented (P2)
-- [ ] F066: 24-hour graphFreshness threshold may be too generous given auto-trigger (P2)
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 Define `SessionMetrics` and `MetricEvent` types (`lib/session/context-metrics.ts`)
+- [x] T002 Establish in-memory metrics collection boundaries (`lib/session/context-metrics.ts`)
+- [x] T003 Document SQLite persistence as deferred instead of shipped (`spec.md`, `plan.md`, `implementation-summary.md`)
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Implement `recordMetricEvent()` aggregate collector (`lib/session/context-metrics.ts`)
+- [x] T005 Implement `computeQualityScore()` with recency, recovery, graph freshness, and continuity factors (`lib/session/context-metrics.ts`)
+- [x] T006 Instrument `context-server.ts` with lifecycle metric events (`context-server.ts`)
+- [x] T007 Surface computed quality details in `session_health` (`handlers/session-health.ts`)
+- [ ] T008 Align final `session_health` status with computed quality score (`handlers/session-health.ts`)
+- [ ] T009 Implement shared response metadata via `lib/response/envelope.ts` (`lib/response/envelope.ts`)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T010 Reconcile phase docs with actual shipped scope (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
+- [x] T011 Correct Spec Folder metadata to basename only (`implementation-summary.md`)
+- [x] T012 Document graph threshold mismatch and aggregate-only metrics limitations (all phase docs)
+- [ ] T013 Add dashboard integration for Phase C (`handlers/eval-reporting.ts`, `lib/eval/reporting-dashboard.ts`)
+- [ ] T014 Add drift detection after baseline data exists (`lib/session/context-drift.ts`)
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] Shipped work is marked complete and unsupported claims are removed
+- [x] Deferred items are explicitly tracked for future follow-up
+- [ ] Dashboard, response envelope, status unification, and persistence work completed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->
+
+---

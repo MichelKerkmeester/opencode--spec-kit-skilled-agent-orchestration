@@ -1,99 +1,176 @@
-# Phase 023: Context Preservation Metrics & Observability
+# Feature Specification: Phase 023 — Context Preservation Metrics
 
-## What This Is
-
-We have no way to measure how well context preservation works across different CLIs. This phase adds metrics collection, quality scoring, and a dashboard so we can see which runtimes are actually delivering good context and which aren't.
-
-## Plain-English Summary
-
-**Problem:** We claim Claude Code has 100% context parity and Codex has 55%. But how do we actually know? There's no measurement. When a user loses context mid-session, we don't detect it. When the code graph goes stale, nobody notices.
-
-**Solution:** Add lightweight metrics collection inside the MCP server that tracks session health, context recovery quality, and tool usage patterns. Then expose a dashboard through the existing `eval_reporting_dashboard` tool.
-
-## What to Build
-
-### Phase A: Session Metrics Collector (build first)
-
-Track events inside `session-manager.ts`:
-- Session start/resume/clear timestamps
-- Tool calls per session (count + names)
-- Memory recovery calls and their success rate
-- Code graph scan frequency and freshness at query time
-- Spec folder transitions (how often context switches)
-
-Store as lightweight in-memory counters + periodic SQLite persistence.
-
-**Files to change:**
-- New `lib/session/context-metrics.ts` — event collector
-- `lib/session/session-manager.ts` — instrument existing session events
-- `lib/response/envelope.ts` — attach metrics to responses
-
-### Phase B: Quality Scoring (build second)
-
-Compute a simple quality score per session:
-
-| Score | Meaning | Criteria |
-|-------|---------|----------|
-| **healthy** | Context preserved | Recent recovery, fresh graph, active spec folder |
-| **degraded** | Some drift | No recovery in >30min, graph stale, no spec folder |
-| **critical** | Context likely lost | Long gap between calls, no recovery attempted, graph empty |
-
-**Files to change:**
-- New `lib/session/context-quality.ts` — scoring logic
-- `handlers/session-health.ts` — expose score via tool
-
-### Phase C: Dashboard (build third)
-
-Add a "Context Preservation" section to the existing `eval_reporting_dashboard`:
-- Per-runtime session counts and quality distribution
-- Average time to first recovery call
-- Code graph freshness at query time
-- Most common context loss patterns
-
-**Files to change:**
-- `handlers/eval-reporting.ts` — add context metrics section
-- `lib/eval/reporting-dashboard.ts` — query and format metrics
-
-### Phase D: Drift Detection (build after baseline data)
-
-Rule-based alerts when quality drops:
-- "Session has been active for 45 minutes with no memory recovery — context may be stale"
-- "Code graph is 6 hours old and 12 files have changed — auto-reindex recommended"
-
-Only build after phases A-C have collected enough baseline data to tune thresholds.
-
-**Files to change:**
-- New `lib/session/context-drift.ts` — drift rules and alert generation
-
-## Cross-Runtime Impact
-
-| Runtime | Before | After |
-|---------|--------|-------|
-| Claude Code | Medium-High (hook estimates) | High (generic quality metrics) |
-| OpenCode | Low | High (full metrics + quality score) |
-| Codex CLI | Low | High |
-| Copilot CLI | Low | High |
-| Gemini CLI | Low | High |
-
-## Estimated LOC: 650-1170 (phases A-C; D deferred)
-## Risk: LOW — purely additive, read-only metrics collection
-## Dependencies: Phase 018 (session health tool) recommended first
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-## Implementation Status (Post-Review Iterations 041-050)
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-| Item | Status | Evidence |
-|------|--------|----------|
-| Phase A: Session Metrics Collector | DONE | lib/session/context-metrics.ts (186 lines) — SessionMetrics, MetricEvent types, recordMetricEvent() |
-| Phase A: Instrument context-server | DONE | context-server.ts:690-699 — 4 recordMetricEvent call sites |
-| Phase B: Quality Scoring | DONE | computeQualityScore() with 4 factors: recency, recovery, graphFreshness, continuity |
-| Phase B: Expose via session_health | DONE | handlers/session-health.ts uses computeQualityScore |
-| Phase C: Dashboard integration | NOT IMPLEMENTED | No context metrics section in eval-reporting dashboard |
-| Phase D: Drift Detection | NOT IMPLEMENTED | No rule-based alerts implemented |
-| SQLite persistence | NOT IMPLEMENTED | F058 — spec promised periodic SQLite writes but implementation is in-memory only |
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Complete with deferred items |
+| **Created** | 2026-03-31 |
+| **Branch** | `024-compact-code-graph` |
+<!-- /ANCHOR:metadata -->
 
-### Review Findings (iter 049)
-- F064 (P2): computeRecency timing edge case with priming. ACCEPTABLE
-- F065 (P2): Weight rationale undocumented. DEFERRED
-- F066 (P2): 24-hour graphFreshness threshold may be too generous given auto-trigger. DEFERRED
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+We needed a way to measure how well session context survives across runtimes instead of relying on parity claims and anecdotal failures. The phase shipped metrics collection and quality scoring, but the current phase record overstated what was delivered and no longer reflects the known gaps in status derivation, graph freshness thresholds, persistence, and reporting.
+
+### Purpose
+Document the implemented metrics baseline accurately so future phases build on the real system state instead of the intended design.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- In-memory metrics collection for session lifecycle, recovery, graph freshness, and spec transitions
+- Quality score computation for session context health
+- Phase record corrections for deferred and not implemented items
+
+### Out of Scope
+- Shared response envelope integration via `lib/response/envelope.ts`
+- Dashboard integration in `eval_reporting_dashboard`
+- SQLite-backed persistence for collected metrics
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `lib/session/context-metrics.ts` | Modify/Create | Metrics collector and quality score computation |
+| `handlers/session-health.ts` | Modify | Consume computed quality data while legacy status remains in place |
+| `context-server.ts` | Modify | Record lifecycle metric events |
+| `lib/response/envelope.ts` | Planned only | No implementation landed in this phase |
+| `handlers/eval-reporting.ts` | Planned only | Dashboard integration deferred |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Record session lifecycle and recovery metrics in-process | Metrics collector stores timestamps and counters for start, resume, clear, recovery, graph checks, and context switches |
+| REQ-002 | Compute a quality score from collected metrics | `computeQualityScore()` returns `healthy`, `degraded`, or `critical` with factor details |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-003 | Expose quality scoring through session health reporting | `session_health` surfaces computed quality information even if final status remains on legacy heuristics |
+| REQ-004 | Document implementation gaps explicitly in the phase record | Spec, plan, tasks, checklist, and implementation summary all reflect the same deferred items and limitations |
+| REQ-005 | Preserve current aggregate-only metrics design | Phase docs state that `toolName` was dropped, counters are aggregate only, and persistence remains in-memory |
+
+### Acceptance Scenarios
+
+- **Given** a session starts or resumes, **when** instrumentation runs, **then** the system records lifecycle metrics in memory.
+- **Given** a health check runs, **when** quality scoring executes, **then** factor-level quality data is computed for the active session.
+- **Given** the code graph age exceeds the stricter scorer threshold, **when** docs describe graph freshness, **then** they must note the current 1-hour vs 24-hour mismatch.
+- **Given** a reader reviews this phase after completion, **when** they compare phase docs, **then** they see the same deferred dashboard, envelope, and persistence limitations everywhere.
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The phase record no longer claims dashboard, SQLite persistence, or response envelope integration as implemented.
+- **SC-002**: The documentation clearly states that `session_health` still uses legacy heuristics for final status despite computed quality scoring.
+- **SC-003**: The documentation captures the graph freshness threshold mismatch and aggregate-only in-memory metrics design.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Phase 018 session health tool | Health reporting depends on existing `session_health` behavior | Document current coupling and defer full status unification |
+| Risk | Legacy status heuristics diverge from computed quality | Readers may assume quality score directly drives health status | Call out the limitation in every phase artifact |
+| Risk | Graph threshold mismatch | Operators may read stale graph state as healthy | Document the 1-hour vs 24-hour mismatch and carry it as follow-up work |
+| Risk | In-memory aggregate counters only | Metrics reset on restart and lose per-tool detail | Keep the limitation explicit until persistence and richer dimensions are added |
+
+### Known Limitations
+1. Quality score is computed, but `session_health` status still follows legacy heuristics.
+2. Graph freshness thresholds do not match: `computeQualityScore()` uses 1 hour while `session-snapshot` still uses 24 hours.
+3. Metrics are aggregate counters only. `toolName` was dropped and SQLite persistence was not implemented.
+4. `lib/response/envelope.ts` was planned but not implemented.
+5. Phase C dashboard integration remains deferred.
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Metrics collection must remain lightweight enough for per-request use inside the MCP server.
+- **NFR-P02**: Quality scoring should run from in-memory session data without requiring blocking persistence.
+
+### Security
+- **NFR-S01**: Metrics documentation must not imply storage beyond the current in-memory process boundary.
+- **NFR-S02**: No new external reporting surface is considered shipped until dashboard integration actually lands.
+
+### Reliability
+- **NFR-R01**: Phase documentation must reflect actual behavior, not intended architecture.
+- **NFR-R02**: Deferred items must be named consistently across all phase docs.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty metrics state: quality scoring can still run, but outputs should be read as heuristic and partial.
+- Process restart: in-memory counters reset and historical metrics are lost.
+- Missing per-tool dimensions: aggregate counters cannot answer tool-level usage questions.
+
+### Error Scenarios
+- Legacy status divergence: computed quality and final traffic-light status may disagree.
+- Threshold mismatch: graph may be considered stale by scoring logic but still fresh in snapshot reporting.
+- Deferred reporting surface: dashboard readers cannot inspect these metrics in `eval_reporting_dashboard` yet.
+
+### State Transitions
+- Session recovery attempted: quality factors update even though final session status remains legacy-driven.
+- Dashboard phase not shipped: implementation remains limited to collection and scoring.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 18/25 | Multiple runtime-facing metrics behaviors and deferred reporting work |
+| Risk | 17/25 | Documentation drift could mislead later phases about shipped behavior |
+| Research | 10/20 | Requires reconciling scorer, snapshot, and reporting expectations |
+| **Total** | **45/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- When should `session_health` switch from legacy heuristics to the computed quality score as its canonical status?
+- Should graph freshness thresholds be unified at 1 hour, 24 hours, or made configurable per runtime?
+<!-- /ANCHOR:questions -->
+
+---

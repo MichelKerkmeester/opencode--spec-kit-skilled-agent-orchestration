@@ -36,7 +36,7 @@ When the MCP server receives its first tool call in a session, it automatically 
 
 A new `session_health` tool that returns a simple traffic-light score:
 - **ok** — session is fresh, context loaded, graph recent
-- **warning** — session may have drifted (long gap between calls, spec folder changed)
+- **warning** — session may have drifted (long gap between calls; spec-folder-change warning was designed but is not currently emitted)
 - **stale** — probable context loss (should call `memory_context` to recover)
 
 When health drops to `warning` or `stale`, the server also injects recovery hints into normal tool responses.
@@ -54,6 +54,8 @@ Update all runtime instruction files to include identical first-turn guidance:
 
 **Files to change:** `CLAUDE.md`, `CODEX.md`, `AGENTS.md`, `GEMINI.md`
 
+**Current-state note:** Runtime gate docs are only partially attributable to this phase. Non-hook guidance landed on the shared/runtime surfaces used here, while `CLAUDE.md` and `GEMINI.md` gate-doc parity was handled later as part of Phase 021.
+
 ## Cross-Runtime Impact
 
 | Runtime | Before | After |
@@ -70,17 +72,28 @@ Update all runtime instruction files to include identical first-turn guidance:
 
 ---
 
-## Implementation Status (Post-Review Iterations 041-050)
+## Implementation Status (Current State)
+
+**Overall phase status:** PARTIAL — core MCP auto-priming shipped, but `session_health` still has known signal gaps and runtime gate documentation ownership spans this phase and Phase 021.
 
 | Item | Status | Evidence |
 |------|--------|----------|
 | Part 1: MCP First-Call Auto-Prime | DONE | primeSessionIfNeeded() in memory-surface.ts, PrimePackage struct, wired into context-server.ts |
-| Part 2: Session Health Monitor | DONE | handlers/session-health.ts, session_health tool registered |
-| Part 3: Gate Doc Instructions | DONE | Updated in Phase 021 (instruction parity) |
+| Part 2: Session Health Monitor | PARTIAL | handlers/session-health.ts and session_health tool shipped, but spec-folder-change warnings and idle-gap reporting still have limitations |
+| Part 3: Gate Doc Instructions | PARTIAL | Runtime docs were split across phases; CLAUDE.md and GEMINI.md parity is handled in Phase 021 |
 | recordToolCall/getSessionTimestamps exports | DONE | memory-surface.ts:101-107 |
 | Token budget enforcement on prime | DONE | enforceAutoSurfaceTokenBudget applied |
+| F045 retry suppression fix | DONE | sessionPrimed now flips after successful priming execution |
+| F046 CocoIndex path fix | DONE | Prime package uses isCocoIndexAvailable() helper instead of process.cwd()-based lookup |
+| F047 dual lastToolCallAt state | DEFERRED | memory-surface.ts and context-metrics.ts still both retain timestamp state |
 
 ### Review Findings (iter 042)
-- F045 (P2): sessionPrimed flag set before try block — retry suppressed on failure. DEFERRED
-- F046 (P2): cocoIndex path hardcoded via process.cwd(). DEFERRED
-- F047 (P2): Dual lastToolCallAt state in memory-surface.ts and context-metrics.ts. DEFERRED
+- F045 (P2): sessionPrimed flag set before try block — retry suppressed on failure. DONE
+- F046 (P2): cocoIndex path hardcoded via process.cwd(). DONE
+- F047 (P2): Dual lastToolCallAt state in memory-surface.ts and context-metrics.ts. DEFERRED / TECH DEBT
+
+### Known Limitations
+- `session_health` resets its own idle-gap timer because tool dispatch records a tool call before the handler computes `lastToolCallAgoMs`.
+- `spec_folder_change` events are tracked in `context-metrics.ts`, but `session_health` does not currently downgrade status or emit a warning from that signal.
+- Gate docs are only partial in this phase. `CLAUDE.md` and `GEMINI.md` gate-language parity is handled by Phase 021, so this phase should not claim full runtime-doc closure.
+- `lastToolCallAt` still exists in both `memory-surface.ts` and `context-metrics.ts`. `session_health` prefers the metrics copy, but the duplicate state remains cleanup debt.

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Structural Indexer [024/008]"
-description: "Built regex-based structural indexer for JS/TS/Python/Shell with normalized node/edge vocabulary, incremental content-hash re-indexing, and parser health tracking. Full repo indexed in 416ms."
+description: "Built a structural indexer with tree-sitter WASM as the default parser, regex fallback support, normalized node/edge vocabulary, and parser health tracking."
 ---
 # Implementation Summary
 
@@ -14,7 +14,7 @@ description: "Built regex-based structural indexer for JS/TS/Python/Shell with n
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 024-compact-code-graph/008-structural-indexer |
+| **Spec Folder** | 02--system-spec-kit/024-compact-code-graph/008-structural-indexer |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -24,11 +24,15 @@ description: "Built regex-based structural indexer for JS/TS/Python/Shell with n
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-A regex-based structural indexer that extracts symbols (functions, classes, methods, modules) and their relationships (CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, TESTED_BY) from JS/TS/Python/Shell source files. Produces a normalized node/edge vocabulary feeding Phase 009 storage and Phase 010 context bridge.
+A structural indexer now extracts symbols (functions, classes, methods, modules) and their relationships (CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, TESTED_BY) from JS/TS/Python/Shell source files using tree-sitter WASM by default, with regex fallback when needed. It produces a normalized node/edge vocabulary feeding Phase 009 storage and Phase 010 context bridge.
 
 ### Core Indexer (`structural-indexer.ts`)
 
-Per-language regex parsers extract structural symbols from source files. JS/TS shares a unified parser (`parseJsTs`) handling functions, classes, methods, interfaces, type aliases, enums, arrow functions, and variable declarators. Python parser handles function_definition, class_definition, and decorated_definition. Shell parser conservatively extracts function_definition only. Each parser returns `CodeNode[]` with deterministic `symbolId` (SHA-256 of filePath + fqName + kind), fully qualified names, line ranges, and language metadata.
+`structural-indexer.ts` now owns the main parse and indexing flow. `getParser()` defaults to the tree-sitter backend and automatically falls back to regex if tree-sitter initialization fails, or immediately uses regex when `SPECKIT_PARSER=regex` is set. The file also handles parse orchestration, file discovery, content hashing, normalized `CodeNode[]` creation, and edge extraction handoff.
+
+### Tree-Sitter Backend (`tree-sitter-parser.ts`)
+
+The tree-sitter backend loads `web-tree-sitter` with `tree-sitter-wasms` grammars for JavaScript, TypeScript, Python, and Bash. It walks the AST programmatically and emits `RawCapture[]` values that stay compatible with `structural-indexer.ts`. No `.scm` query files are needed because capture extraction lives in code rather than external query definitions.
 
 ### Edge Extraction (`extractEdges`)
 
@@ -38,18 +42,18 @@ Edges are derived from parser captures and source text analysis. `CONTAINS` link
 
 `CodeNode`, `CodeEdge`, and `ParseResult` interfaces provide the shared type vocabulary. `ParseResult` includes `parserHealth` (clean/recovered/error) and `parseDurationMs` for performance monitoring.
 
-### Incremental Re-indexing (`incremental-index.ts`)
+### Freshness and Re-indexing
 
-Content-hash comparison per file skips re-parse when the hash matches the stored value. Tracks `lastIndexedAt` timestamp. Reports stale file count for `code_graph_status`. Files exceeding `maxFileSizeBytes` (102400) are skipped with a warning rather than crashing.
+Content hashes are generated during parsing, and the indexing logic now lives in `structural-indexer.ts` rather than a separate `incremental-index.ts` module. Files exceeding `maxFileSizeBytes` (102400) are skipped with a warning rather than crashing. Selective versus full re-index decisions are handled elsewhere in the code-graph pipeline, while this phase provides the parser output and content-hash data they depend on.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `mcp_server/lib/code-graph/structural-indexer.ts` | New | Core extraction pipeline with per-language regex parsers |
+| `mcp_server/lib/code-graph/structural-indexer.ts` | New | Core extraction pipeline, parser selection, file discovery, and content-hash-aware parsing |
+| `mcp_server/lib/code-graph/tree-sitter-parser.ts` | New | Tree-sitter WASM backend with programmatic AST traversal |
 | `mcp_server/lib/code-graph/indexer-types.ts` | New | CodeNode, CodeEdge, ParseResult interfaces |
-| `mcp_server/lib/code-graph/incremental-index.ts` | New | Content-hash freshness and incremental re-indexing |
-| `package.json` | Modified | No tree-sitter dependencies needed (regex approach) |
+| `mcp_server/package.json` | Modified | Adds `web-tree-sitter` and `tree-sitter-wasms` dependencies for the default backend |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -57,7 +61,7 @@ Content-hash comparison per file skips re-parse when the hash matches the stored
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The indexer was implemented incrementally: types first, then JS/TS parser (P0), then edge extraction, then Python/Shell parsers (P1/P2). Each language parser was validated against actual repo files before proceeding. Performance was benchmarked on the full repository (835 files) to confirm sub-second indexing.
+The indexer was implemented incrementally: shared types first, then the parser abstraction, then tree-sitter runtime integration, then fallback-safe extraction and cross-language edge handling. Each language backend was validated against actual repo files before proceeding. Performance was benchmarked on the full repository to confirm the structural pass stays well within the phase targets.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -67,11 +71,12 @@ The indexer was implemented incrementally: types first, then JS/TS parser (P0), 
 
 | Decision | Why |
 |----------|-----|
-| Regex-based parser instead of tree-sitter WASM | Zero external dependencies, sufficient accuracy for structural extraction. Tree-sitter planned as Phase 015 enhancement. |
+| Tree-sitter WASM is the default parser, with regex fallback | AST-accurate extraction gives better structural fidelity, while regex keeps the indexer usable when WASM initialization fails or a lightweight fallback is preferred. |
 | SHA-256 for symbolId | Deterministic, collision-resistant, stable across re-indexing runs. |
 | 100KB file size guard | Prevents pathological parse times on generated/vendored files without crashing. |
 | Conservative Shell extraction | Bash grammar is noisy; restricting to function_definition avoids false positives. |
 | TESTED_BY as heuristic edge | Filename pattern + import analysis provides useful signal despite lower confidence. |
+| Programmatic AST traversal instead of `.scm` queries | Keeping extraction logic in TypeScript avoids a parallel query-file maintenance surface and keeps captures aligned with the shared normalization pipeline. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -96,8 +101,8 @@ The indexer was implemented incrementally: types first, then JS/TS parser (P0), 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Regex parsing is approximate.** Edge cases in string literals, comments, and complex nesting can produce false captures. Tree-sitter (Phase 015) will provide AST-accurate extraction.
-2. **CALLS edge detection** relies on text pattern matching within function bodies, which may miss dynamically constructed calls or produce false positives on identically named functions across modules.
-3. **CONFIGURES edge type** deferred to v2 due to low confidence in automated detection.
-4. **tree-sitter query files** (`.scm`) were not created since the regex approach was used instead; these will be created during Phase 015 migration.
+1. **Regex fallback is less precise than tree-sitter.** If the indexer falls back to regex, edge cases in string literals, comments, and complex nesting can still produce false captures.
+2. **CALLS edge detection** still relies on structural heuristics after parsing, which may miss dynamically constructed calls or produce false positives on identically named functions across modules.
+3. **CONFIGURES edge type** remains deferred to v2 due to low confidence in automated detection.
+4. **`.scm` query files are intentionally absent.** The tree-sitter backend uses programmatic AST traversal, so there is no separate query-file layer to customize in this phase.
 <!-- /ANCHOR:limitations -->

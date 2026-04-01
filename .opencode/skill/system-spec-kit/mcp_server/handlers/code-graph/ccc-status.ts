@@ -11,7 +11,7 @@ export async function handleCccStatus(): Promise<{ content: Array<{ type: string
   try {
     const projectRoot = process.cwd();
     const cccBin = resolve(projectRoot, '.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc');
-    const indexDir = resolve(projectRoot, '.opencode/skill/mcp-coco-index/mcp_server/.coco_index');
+    const indexDir = resolve(projectRoot, '.cocoindex_code');
 
     const available = existsSync(cccBin);
 

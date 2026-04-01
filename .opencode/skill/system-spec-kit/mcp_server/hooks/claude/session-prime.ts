@@ -13,7 +13,7 @@ import {
   calculatePressureAdjustedBudget, sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
   type OutputSection,
 } from './shared.js';
-import { ensureStateDir, loadState, readAndClearCompactPrime } from './hook-state.js';
+import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from './hook-state.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
 
@@ -29,7 +29,7 @@ try {
 /** Handle source=compact: inject cached PreCompact payload (from 3-source merger) */
 function handleCompact(sessionId: string): OutputSection[] {
   const state = loadState(sessionId);
-  const pendingCompactPrime = readAndClearCompactPrime(sessionId);
+  const pendingCompactPrime = readCompactPrime(sessionId);
   if (!pendingCompactPrime) {
     hookLog('warn', 'session-prime', `No cached compact payload for session ${sessionId}`);
     return [{
@@ -200,8 +200,13 @@ async function main(): Promise<void> {
 
   const output = truncateToTokenBudget(formatHookOutput(sections), adjustedBudget);
 
-  // Write to stdout for Claude Code to inject into conversation
+  // Write to stdout for Claude Code to inject into conversation.
+  // Clear compact payload only AFTER stdout write succeeds to prevent
+  // data loss if the process crashes between clear and write.
   process.stdout.write(output);
+  if (source === 'compact') {
+    clearCompactPrime(sessionId);
+  }
   hookLog('info', 'session-prime', `Output ${output.length} chars for source=${source}`);
 }
 

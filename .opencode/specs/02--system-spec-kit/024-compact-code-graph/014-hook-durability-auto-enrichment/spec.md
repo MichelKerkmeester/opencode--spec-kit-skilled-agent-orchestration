@@ -15,14 +15,16 @@ Fix 6 P1 hook reliability and security bugs and implement 8 P2 auto-enrichment a
 **Item 9: Fix pendingCompactPrime delete-before-read race**
 - compact-inject.ts nulls pendingCompactPrime BEFORE session-prime.ts reads it
 - If injection fails after delete, payload is permanently lost
-- Fix: read-then-delete order; only clear after successful stdout write
+- Fix target: read-then-delete order with clear deferred until stdout write succeeds
+- Implementation note: current code only reads before clear. It still clears the persisted payload before stdout write success is confirmed, so this remains a partial fix.
 - Files: `hooks/claude/hook-state.ts`, `hooks/claude/compact-inject.ts`
 - Evidence: review F001, research iter-072, iter-088
 
 **Item 10: Propagate saveState() errors**
 - saveState() returns void; callers assume success
 - Atomic write failures (disk full, permissions) silently swallowed
-- Fix: return boolean or throw; callers handle failure
+- Fix target: return boolean or throw; callers propagate or otherwise explicitly handle failure
+- Implementation note: current code returns boolean, but callers only log `hookLog` warnings and continue instead of propagating disk errors.
 - Files: `hooks/claude/hook-state.ts`
 - Evidence: review F002, research iter-088
 
@@ -46,6 +48,7 @@ Fix 6 P1 hook reliability and security bugs and implement 8 P2 auto-enrichment a
 - ensureFreshFiles() with mtime fast-path + content hash verification
 - Threshold: <=2 files sync reindex, 3-10 async with flag, >10 suggest full scan
 - Schema extension: `file_mtime_ms INTEGER` on code_files table
+- Implementation note: current code uses flat fresh/stale mtime classification. The 3-tier threshold model described here is not implemented.
 - Files: `lib/code-graph/code-graph-db.ts`, handlers
 - LOC: 76-104
 
@@ -59,6 +62,7 @@ Fix 6 P1 hook reliability and security bugs and implement 8 P2 auto-enrichment a
 **Item 15: Stop-hook surrogate save redesign**
 - Current: reuses pendingCompactPrime as surrogate for stop-time save
 - Fix: dedicated save field with truthful naming
+- Implementation note: not implemented. `HookState` has no dedicated `pendingStopSave` field.
 - Files: `hooks/claude/session-stop.ts`
 - LOC: 15-25
 

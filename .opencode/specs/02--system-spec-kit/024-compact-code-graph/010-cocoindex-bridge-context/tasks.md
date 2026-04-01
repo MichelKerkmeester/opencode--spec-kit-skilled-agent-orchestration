@@ -17,7 +17,7 @@ description: "Task tracking for code_graph_context orchestration tool bridging C
 - [x] Implement `outline` mode: file/package CONTAINS + EXPORTS structure — code-graph-context.ts
 - [x] Implement `impact` mode: reverse CALLS + reverse IMPORTS — code-graph-context.ts
 - [x] Implement latency guard: skip reverse augmentation if <400ms budget remains — expandAnchor checks performance.now()
-- [x] Build structured response with `queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, `metadata` — code-graph-context.ts
+- [x] Build structured response with `status`, `data.queryMode`, `data.anchors`, `data.graphContext`, `data.textBrief`, `data.combinedSummary`, `data.nextActions`, `data.metadata` — `handlers/code-graph/context.ts`
 - [x] Implement `combinedSummary` via buildCombinedSummary() — code-graph-context.ts
 - [x] Implement `nextActions` via suggestNextActions() — code-graph-context.ts
 - [x] Implement freshness metadata via computeFreshness() — code-graph-context.ts

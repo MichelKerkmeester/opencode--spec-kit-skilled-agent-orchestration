@@ -14,7 +14,7 @@ description: "Implemented SQLite-based persistent storage for the structural cod
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | .opencode/specs/02--system-spec-kit/024-compact-code-graph/009-code-graph-storage-query |
+| **Spec Folder** | 009-code-graph-storage-query |
 | **Completed** | 2026-03-31 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -79,7 +79,7 @@ Implemented as a single-pass phase following the plan sequence: storage layer fi
 | Ten indexes across files, nodes, and edges | Hot query patterns (callers-of, callees-of, imports-of), outline lookups, and file/path resolution all hit indexed columns. Index cost is negligible for the expected graph size. |
 | Subject resolution fallback chain | symbolId is most precise, fqName is portable across re-scans, and name is the broadest fallback. Chain prevents query failures. |
 | BFS for transitive traversal | Breadth-first ensures bounded depth and predictable result ordering. Avoids stack overflow on cyclic edges. |
-| SCHEMA_VERSION=1 table | Future migrations need a reliable version check. Pattern copied from memory DB. |
+| SCHEMA_VERSION=3 metadata and version tables | Future migrations need a reliable version check and durable graph metadata. The version and metadata tables make that explicit. |
 <!-- /ANCHOR:decisions -->
 
 ---

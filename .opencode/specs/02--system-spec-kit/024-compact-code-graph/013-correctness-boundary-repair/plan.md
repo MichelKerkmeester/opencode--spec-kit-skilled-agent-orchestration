@@ -52,24 +52,25 @@ description: "Implementation order for 15 P0/P1/P2 fixes with zero external depe
    - Deduplicate nodes by ID for converging paths
    - Verify: query with maxDepth=2 returns exactly 2 hops
 
-9. **Item 13: includeTrace implementation or removal** (10-15 LOC)
-   - Option A: implement trace metadata in context handler response
-   - Option B: remove includeTrace from tool-schemas.ts + Phase 010 docs
-   - Decision at implementation time based on trace value assessment
+9. **Item 13: Clarify includeTrace schema boundary** (doc correction)
+   - Document that `code_graph_context` does not expose `includeTrace`
+   - Document that memory schemas (`memory_context`, `memory_search`) still expose `includeTrace`
+   - Remove stale wording that implies global removal from `tool-schemas.ts`
 
 ### Group D: Security & validation (items 4, 5, 15)
 
-10. **Item 4: Tool arg validation via schema validators** (15-20 LOC)
-    - Route ALL code-graph tool inputs through `validateToolArgs()` before dispatch
-    - Validate rootDir: `path.resolve(rootDir).startsWith(process.cwd())`
-    - Return error if validation fails
+10. **Item 4: Document code-graph dispatch validation accurately** (doc correction)
+    - Describe local `getMissingRequiredStringArgs()` checks in `tools/code-graph-tools.ts`
+    - Note that code-graph dispatch does not use unified `validateToolArgs()`
+    - Keep rootDir validation documented separately: `path.resolve(rootDir).startsWith(process.cwd())`
 
 11. **Item 5: Exception sanitization** (15-20 LOC)
     - Wrap handler try/catch blocks with generic error messages
     - Log full error to stderr, return sanitized message to caller
 
-12. **Item 15: ccc_feedback schema length validation** (5-10 LOC)
-    - Enforce `comment` and `resultFile` length limits before disk write
+12. **Item 15: ccc_feedback schema length validation** (doc correction)
+    - Mark full `comment`/`resultFile` length validation as NOT IMPLEMENTED
+    - Note that only required `query`/`rating` presence is checked today
 
 ### Group E: Remaining fixes (items 3, 14, 2)
 
@@ -93,4 +94,4 @@ description: "Implementation order for 15 P0/P1/P2 fixes with zero external depe
 - Verify failed initDb() does not poison singleton (corrupt DB, retry)
 - Verify replaceNodes() is atomic (inject constraint error, check nodes preserved)
 - Verify transitive query with maxDepth=2 returns exactly 2 hops
-- Verify ccc_feedback rejects oversized comment/resultFile
+- Verify docs state that ccc_feedback does not currently reject oversized comment/resultFile via schema length bounds

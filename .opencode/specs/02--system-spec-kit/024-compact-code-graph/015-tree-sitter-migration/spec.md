@@ -1,12 +1,12 @@
 ---
 title: "Spec: Tree-Sitter WASM Migration [024/015]"
-description: "Replace regex parser with tree-sitter WASM for 99% parse accuracy. Add DECORATES, OVERRIDES, TYPE_OF edge types. Adapter interface for fallback. Clean up dead code (TESTED_BY, excludeGlobs, .zsh)."
+description: "Phase 015 laid the adapter and regex-based migration foundation. Tree-sitter WASM and default-parser follow-through landed later in Phase 017, with regex retained as fallback."
 ---
 # Spec: Phase 015 — Tree-Sitter WASM Migration
 
 ## Summary
 
-Migrate the structural indexer from regex patterns (~70% accuracy) to tree-sitter WASM (~99% accuracy). This enables 3 new edge types only possible with AST-level parsing. The adapter interface keeps regex as a permanent fallback. Bundle size: ~1.5MB.
+Phase 015 laid the migration foundation for moving the structural indexer from regex patterns (~70% accuracy) toward tree-sitter WASM (~99% accuracy). It established the adapter interface, shipped regex-based edge and SymbolKind improvements, and kept regex available as the long-term safety net. Tree-sitter WASM, the default-parser switch, and automatic fallback-on-init-failure were completed later in Phase 017. Bundle size: ~1.5MB.
 
 ## Items
 
@@ -43,11 +43,11 @@ Migrate the structural indexer from regex patterns (~70% accuracy) to tree-sitte
 - Files: `indexer-types.ts`, parser implementation
 - LOC: 40-60
 
-**Item 21: Regex removal (sub-phase C4)**
-- Only after tree-sitter proven stable in production
-- Remove regex parsing functions from structural-indexer.ts
-- Keep adapter interface for future parser alternatives
-- LOC: -120 to -150 (net reduction)
+**Item 21: Regex demotion after tree-sitter stabilization (sub-phase C4)**
+- Original plan was to remove regex parsing functions after tree-sitter proved stable in production
+- Current reality: completed in Phase 017 as demotion, not removal; regex remains in `structural-indexer.ts` as the fallback parser (~430 LOC)
+- `getParser()` now defaults to tree-sitter and auto-falls back to `new RegexParser()` if tree-sitter init/import fails
+- Keep adapter interface for fallback safety and future parser alternatives
 
 ## Bundle Size
 
@@ -63,47 +63,37 @@ Migrate the structural indexer from regex patterns (~70% accuracy) to tree-sitte
 ## Migration Path (DR-014)
 
 ```
-C1: Adapter interface (40-60 LOC)        ← DONE
-  → C2: Tree-sitter WASM impl (200-280 LOC) ← DEFERRED (Item 32)
-    → C3: New edge types (83-125 LOC)    ← DONE (via regex)
-      → C4: Remove regex (optional)      ← DEFERRED (Item 35)
+C1: Adapter interface (40-60 LOC)              ← DONE IN PHASE 015
+  → C2: Tree-sitter WASM impl (200-280 LOC)    ← COMPLETED IN PHASE 017
+    → C3: New edge types (83-125 LOC)          ← DONE IN PHASE 015 (via regex)
+      → C4: Regex demoted to fallback          ← COMPLETED IN PHASE 017 (not removed)
 ```
 
 ## Completion Status
 
 | Sub-phase | Status | Notes |
 |-----------|--------|-------|
-| C1: Adapter interface | **DONE** | ParserAdapter + RegexParser + SPECKIT_PARSER env var |
-| C2: Tree-sitter WASM | **DEFERRED** | Requires `web-tree-sitter` package + grammar downloads |
-| C3: New edge types | **DONE** | DECORATES, OVERRIDES, TYPE_OF via regex detection |
-| C3.5: Cleanup | **DONE** | Dead TESTED_BY, excludeGlobs wired, .zsh globs |
-| C4: Regex removal | **DEFERRED** | Requires tree-sitter stable first |
+| C1: Adapter interface | **DONE IN PHASE 015** | ParserAdapter + RegexParser + SPECKIT_PARSER env var |
+| C2: Tree-sitter WASM | **COMPLETED IN PHASE 017** | `web-tree-sitter` landed; tree-sitter is now the default parser |
+| C3: New edge types | **DONE IN PHASE 015** | DECORATES, OVERRIDES, TYPE_OF via regex detection |
+| C3.5: Cleanup | **DONE IN PHASE 015** | Dead TESTED_BY, excludeGlobs wired, .zsh globs |
+| C4: Regex demotion to fallback | **COMPLETED IN PHASE 017** | Regex was not removed; it remains as automatic fallback (~430 LOC) |
 
 ## Deferred Items — Future Work
 
 ### Item 32: Tree-Sitter WASM Implementation
-**Status:** DEFERRED — external dependency required
-**Dependency:** `web-tree-sitter` npm package + WASM grammar files (~1.5MB total)
-**Pre-requisite:** ParserAdapter interface (Item 31) is ready as the integration point
-**Implementation plan:**
-1. `npm install web-tree-sitter`
-2. Download WASM grammars to `lib/code-graph/grammars/`: tree-sitter-javascript (~200KB), tree-sitter-typescript (~500KB), tree-sitter-python (~150KB), tree-sitter-bash (~100KB)
-3. Implement `TreeSitterParser` class implementing `ParserAdapter`
-4. Lazy grammar loading (init on first parse, cache for subsequent)
-5. S-expression queries for all 10 edge types
-6. Set `SPECKIT_PARSER=treesitter` as default after validation
-**Estimated LOC:** 200-280
-**Risk:** HIGH — WASM loading in MCP server context, grammar compatibility across Node.js versions
+**Status:** COMPLETED IN PHASE 017
+**Outcome:** `web-tree-sitter` and grammar assets landed, `TreeSitterParser` was implemented, and `SPECKIT_PARSER` now defaults to `treesitter`.
+**Current behavior:** if tree-sitter init/import fails, `getParser()` logs a warning and returns `new RegexParser()`.
 
 ### Item 35: Regex Parser Removal
-**Status:** DEFERRED — requires tree-sitter stable
-**Dependency:** Item 32 must be stable in production for at least 1 week
-**Implementation plan:**
-1. Set tree-sitter as default (`SPECKIT_PARSER=treesitter`)
-2. Run full test suite with tree-sitter
-3. Monitor for 1 week in production
-4. Remove regex parsing functions (keep adapter interface)
-**Estimated LOC:** -120 to -150 (net reduction)
+**Status:** NOT PURSUED; superseded by Phase 017 fallback posture
+**Outcome:** regex was demoted to fallback instead of being removed and still occupies ~430 LOC in `structural-indexer.ts`.
+**Reason:** Phase 017 kept regex as the resilience path for WASM init/import failures and explicit `SPECKIT_PARSER=regex` usage.
+
+### Remaining Deferred Work
+
+- Additional SymbolKinds (`decorator`, `property`, `constant`) still do not exist in the live `SymbolKind` union and remain deferred.
 
 ### P2 — Cleanup (new from 30-iteration review)
 

@@ -4,6 +4,8 @@ description: "Task tracking for MCP first-call auto-priming and session health."
 ---
 # Tasks: Phase 018 — Non-Hook Auto-Priming & Session Health
 
+**Overall phase state:** PARTIAL — the core MCP behavior shipped, but follow-up limitations and cross-phase doc ownership remain open.
+
 ## Completed
 
 - [x] PrimePackage struct defined — memory-surface.ts (specFolder, codeGraphStatus, cocoIndexAvailable, recommendedCalls)
@@ -13,9 +15,12 @@ description: "Task tracking for MCP first-call auto-priming and session health."
 - [x] recordToolCall/getSessionTimestamps exports — memory-surface.ts:101-107
 - [x] Tool schema registration — session_health registered in tool-schemas.ts and schemas/tool-input-schemas.ts
 - [x] Handler wired in lifecycle-tools.ts — session_health dispatched from tool dispatch
+- [x] F045 fixed — sessionPrimed now flips after successful priming instead of before the try block
+- [x] F046 fixed — CocoIndex availability now uses the shared helper instead of process.cwd()-based lookup
 
-## Deferred
+## Deferred / Follow-Up
 
-- [ ] F045: sessionPrimed flag set before try block — retry suppressed on failure (P2)
-- [ ] F046: cocoIndex path hardcoded via process.cwd() — should use configured path (P2)
-- [ ] F047: Dual lastToolCallAt state in memory-surface.ts and context-metrics.ts — needs consolidation (P2)
+- [ ] session_health idle-gap timer excludes the current health-check call — KNOWN LIMITATION
+- [ ] spec-folder-change warning path is surfaced by session_health — NOT IMPLEMENTED
+- [ ] CLAUDE.md/GEMINI.md gate-doc parity is closed in this phase — handled later in Phase 021 instead
+- [ ] F047: Dual lastToolCallAt state in memory-surface.ts and context-metrics.ts — needs consolidation (P2 tech debt)

@@ -29,15 +29,24 @@ description: "Implementation order for porting Claude hooks to Gemini CLI lifecy
    - One-shot: only fires on first agent turn after compression
 
 5. **Session Stop (SessionEnd)** (50-60 LOC)
-   - Create `hooks/gemini/session-stop.ts`
-   - Track token usage and save session state
-   - Adapted from Claude Stop hook — different transcript format
+    - Create `hooks/gemini/session-stop.ts`
+    - Save session state on Gemini's single `SessionEnd` hook
+    - Token tracking remains partial because Gemini transcript token usage is not parsed
+    - Adapted from Claude Stop hook, but Gemini does not use `AfterAgent` + `AfterModel` here
+    - Note: regex-based spec detection is shallow and can truncate deeper nested phase paths
 
 6. **Settings Registration** (15-20 LOC)
-   - Edit `.gemini/settings.json` to add hooks block
-   - Register all 4 hooks with correct lifecycle event mappings
+    - Treat `.gemini/settings.json` as the expected user-local config target, not a checked-in repo change
+    - Verify the local workspace path before considering registration complete
+    - Existing example paths may be stale until locally verified
+
+7. **Transcript Hardening Follow-up** (deferred)
+   - F056 remains open
+   - `session-stop.ts` has a `MAX_TRANSCRIPT_BYTES` guard
+   - `compact-cache.ts` still uses unbounded `readFileSync(filePath, 'utf-8')` in `tailFile()`, so transcript-size hardening is incomplete
 
 ## Dependencies
 - None — can be done independently of other phases
+- Local Gemini workspace configuration is still environment-specific and must be verified per user workspace
 
 ## Estimated Total LOC: 140-260

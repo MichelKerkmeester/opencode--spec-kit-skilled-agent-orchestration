@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Correctness & Boundary Repair [024/013]"
-description: "Fixed 15 critical bugs across endLine calculation, DB safety, budget allocation, query traversal, and input validation. 20/20 checklist items verified."
+description: "Fixed most Phase 013 correctness bugs across endLine calculation, DB safety, budget allocation, and query traversal. Checklist count reconciled to 25 items, with 1 item explicitly not implemented."
 ---
 # Implementation Summary
 
@@ -14,7 +14,7 @@ description: "Fixed 15 critical bugs across endLine calculation, DB safety, budg
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 024-compact-code-graph/013-correctness-boundary-repair |
+| **Spec Folder** | 013-correctness-boundary-repair |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -24,7 +24,7 @@ description: "Fixed 15 critical bugs across endLine calculation, DB safety, budg
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The code graph and compaction pipeline now produce correct results for multi-line functions, enforce DB integrity under failure, respect caller-provided budgets, and validate all inputs at system boundaries. These 15 fixes unblock every downstream phase.
+The code graph and compaction pipeline now produce correct results for multi-line functions, enforce DB integrity under failure, respect caller-provided budgets, and tighten boundary validation where implemented. One planned guard remains open: `ccc_feedback` still lacks full length-bound enforcement for `comment` and `resultFile`.
 
 ### endLine Fix (Item 1)
 
@@ -40,11 +40,11 @@ The budget allocator had a hard-coded 4000-token ceiling that silently ignored c
 
 ### Query Correctness (Items 12-13)
 
-Transitive BFS traversal allowed nodes at `depth === maxDepth` to expand further, leaking results beyond the requested boundary. Changed to strict `>=` check. Converging paths produced duplicate entries; now deduplicated via `resultSymbolIds` Set. `includeTrace` was advertised in the `code_graph_context` schema but never implemented. Removed from `tool-schemas.ts`.
+Transitive BFS traversal allowed nodes at `depth === maxDepth` to expand further, leaking results beyond the requested boundary. Changed to strict `>=` check. Converging paths produced duplicate entries; now deduplicated via `resultSymbolIds` Set. `includeTrace` is absent from the `code_graph_context` schema, but it still exists on memory tool schemas such as `memory_context` and `memory_search`; Phase 013 docs now reflect that narrower boundary accurately.
 
 ### Validation and Cleanup (Items 3-6, 14-15)
 
-Tool arg validation added via `getMissingRequiredStringArgs()` for `code_graph_query` and `ccc_feedback`. rootDir boundary check prevents path traversal outside `process.cwd()`. Exception strings sanitized in `memory-context.ts` and `context.ts` handlers (generic messages to callers, full errors to stderr). Seed source identity preserved through the context pipeline. Working-set-tracker eviction threshold changed from `maxFiles * 2` to `maxFiles`.
+Code-graph dispatch validation uses local `getMissingRequiredStringArgs()` checks for `code_graph_query` and `ccc_feedback`; unlike memory/lifecycle/checkpoint tools, it does not route through unified `validateToolArgs()`. rootDir boundary check prevents path traversal outside `process.cwd()`. Exception strings sanitized in `memory-context.ts` and `context.ts` handlers (generic messages to callers, full errors to stderr). Seed source identity preserved through the context pipeline. Working-set-tracker eviction threshold changed from `maxFiles * 2` to `maxFiles`. Full `ccc_feedback` length validation for `comment` and `resultFile` remains unimplemented.
 
 ### Files Changed
 
@@ -59,8 +59,8 @@ Tool arg validation added via `getMissingRequiredStringArgs()` for `code_graph_q
 | `handlers/code-graph/context.ts` | Modified | Seed source, exception sanitization |
 | `handlers/code-graph/scan.ts` | Modified | rootDir validation |
 | `handlers/memory-context.ts` | Modified | Exception sanitization |
-| `tools/code-graph-tools.ts` | Modified | Arg validation before dispatch |
-| `tool-schemas.ts` | Modified | includeTrace removed |
+| `tools/code-graph-tools.ts` | Modified | Local required-string checks before dispatch |
+| `tool-schemas.ts` | Modified | `code_graph_context` omits `includeTrace`; memory schemas still retain it |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -80,7 +80,7 @@ Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all
 |----------|-----|
 | Brace-counting heuristic over tree-sitter for endLine | Tree-sitter requires WASM bundles and is Phase 015 scope. Brace-counting is 60 LOC, zero dependencies, and sufficient for the regex parser. |
 | Reset singleton on initDb failure | Rethrowing alone would leave db=null but dbPath set, preventing retry. Full reset ensures clean state. |
-| Remove includeTrace rather than implement | No downstream consumers. Simpler to remove dead schema property than build trace infrastructure. |
+| Keep `includeTrace` absent from `code_graph_context` only | Current schema omits it for code-graph context, while memory schemas still expose it. Docs must not describe this as a global removal. |
 | Strict `>=` for maxDepth check | The previous `>` allowed depth=maxDepth nodes to expand their edges, leaking depth+1 nodes into results. |
 <!-- /ANCHOR:decisions -->
 
@@ -96,7 +96,7 @@ Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all
 | `tests/budget-allocator.vitest.ts` | PASS (15/15) |
 | `tests/compact-merger.vitest.ts` | PASS (15/15 including 3 new tests) |
 | ESLint on 11 modified files | PASS (0 errors) |
-| Phase 013 checklist | 20/20 items verified |
+| Phase 013 checklist | 25 items reviewed; 24 implemented, 1 NOT IMPLEMENTED (`ccc_feedback` length validation) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -105,6 +105,6 @@ Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all
 ## Known Limitations
 
 1. **Brace-counting is approximate.** String literals containing `{` or `}` can shift the count. Tree-sitter (Phase 015) will provide exact AST-based ranges.
-2. **ccc_feedback validation** uses required-field checks in the dispatch layer, not full JSON Schema validation. Sufficient for current needs.
+2. **ccc_feedback length validation is NOT IMPLEMENTED.** The dispatch layer only checks required `query`/`rating`, and `tool-schemas.ts` defines `comment`/`resultFile` without minLength/maxLength constraints.
 3. **Pre-existing TypeScript errors** in `memory-search.ts` and `shadow-evaluation-runtime.ts` prevent `npm run build` from passing. These are unrelated to Phase 013.
 <!-- /ANCHOR:limitations -->

@@ -4,6 +4,7 @@
 // MCP tool handler for code_graph_scan — indexes workspace files.
 
 import { execSync } from 'node:child_process';
+import { existsSync, realpathSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
 import { getDefaultConfig } from '../../lib/code-graph/indexer-types.js';
 import { indexFiles } from '../../lib/code-graph/structural-indexer.js';
@@ -43,6 +44,16 @@ function getCurrentGitHead(rootDir: string): string | null {
   }
 }
 
+function cleanupMissingTrackedFiles(filePaths: string[]): void {
+  for (const filePath of filePaths) {
+    if (existsSync(filePath)) {
+      continue;
+    }
+
+    graphDb.removeFile(filePath);
+  }
+}
+
 /** Handle code_graph_scan tool call */
 export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
   const startTime = Date.now();
@@ -50,15 +61,37 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   const incremental = args.incremental !== false;
   const workspaceRoot = resolve(process.cwd());
   const resolvedRootDir = resolve(rootDir);
-  const workspacePrefix = workspaceRoot.endsWith(sep) ? workspaceRoot : `${workspaceRoot}${sep}`;
 
-  if (resolvedRootDir !== workspaceRoot && !resolvedRootDir.startsWith(workspacePrefix)) {
+  // SECURITY: Canonicalize paths via realpathSync() to prevent symlink bypass.
+  // A symlink inside the workspace pointing outside it would pass a lexical
+  // startsWith() check on the resolved (but not canonicalized) path.
+  let canonicalWorkspace: string;
+  let canonicalRootDir: string;
+  try {
+    canonicalWorkspace = realpathSync(workspaceRoot);
+    canonicalRootDir = realpathSync(resolvedRootDir);
+  } catch {
+    // Broken symlink or non-existent path — reject immediately
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           status: 'error',
-          error: `rootDir must stay within the workspace root: ${workspaceRoot}`,
+          error: `rootDir path is invalid or contains a broken symlink: ${resolvedRootDir}`,
+        }),
+      }],
+    };
+  }
+
+  const workspacePrefix = canonicalWorkspace.endsWith(sep) ? canonicalWorkspace : `${canonicalWorkspace}${sep}`;
+
+  if (canonicalRootDir !== canonicalWorkspace && !canonicalRootDir.startsWith(workspacePrefix)) {
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          status: 'error',
+          error: `rootDir must stay within the workspace root: ${canonicalWorkspace}`,
         }),
       }],
     };
@@ -88,12 +121,13 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   let totalEdges = 0;
   const errors: string[] = [];
 
-  if (!effectiveIncremental) {
+  if (effectiveIncremental) {
+    cleanupMissingTrackedFiles(graphDb.getTrackedFiles());
+  } else {
     const indexedPaths = new Set(results.map((result) => result.filePath));
-    const existingRows = graphDb.getDb().prepare('SELECT file_path FROM code_files').all() as Array<{ file_path: string }>;
-    for (const row of existingRows) {
-      if (!indexedPaths.has(row.file_path)) {
-        graphDb.removeFile(row.file_path);
+    for (const filePath of graphDb.getTrackedFiles()) {
+      if (!indexedPaths.has(filePath)) {
+        graphDb.removeFile(filePath);
       }
     }
   }

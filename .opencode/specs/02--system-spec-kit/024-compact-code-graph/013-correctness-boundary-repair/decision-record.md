@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: Correctness & Boundary Repair [024/013]"
-description: "Key decisions for endLine heuristic, DB singleton recovery, includeTrace removal, and maxDepth semantics."
+description: "Key decisions for endLine heuristic, DB singleton recovery, code_graph_context includeTrace boundary, and maxDepth semantics."
 ---
 # Decision Record: Phase 013
 
@@ -27,16 +27,16 @@ description: "Key decisions for endLine heuristic, DB singleton recovery, includ
 - better-sqlite3 Database constructor can fail on corrupted files or permission issues
 **Impact:** Transient failures (disk full, locked file) are now recoverable without process restart.
 
-## DR-013-C: Remove includeTrace from Schema
+## DR-013-C: Document includeTrace as a Code-Graph-Specific Boundary
 
-**Decision:** Remove `includeTrace` from `code_graph_context` tool schema rather than implement it
+**Decision:** Document `includeTrace` as absent from `code_graph_context`, not as globally removed from `tool-schemas.ts`
 **Date:** 2026-03-31
-**Context:** Review F033 found includeTrace advertised in the schema but never emitting trace data.
+**Context:** Review F033 concerns the `code_graph_context` schema. `memory_context` and `memory_search` still expose `includeTrace`, while `code_graph_context` does not.
 **Rationale:**
-- No downstream consumers depend on trace metadata
-- Implementing trace (seed chain, expansion steps) adds complexity for unclear value
-- If trace is needed later, the schema property can be re-added with a working implementation
-**Impact:** Cleaner schema. No behavioral change since the option was already a no-op.
+- The docs drift came from overstating a code-graph-specific omission as a global schema removal
+- Memory tools still use `includeTrace` for provenance-rich retrieval, so global-removal wording is false
+- The correct boundary is narrower: absent for `code_graph_context`, still present for memory tools
+**Impact:** Phase 013 docs now distinguish code-graph schema reality from memory schema reality.
 
 ## DR-013-D: Strict maxDepth Boundary (>= not >)
 

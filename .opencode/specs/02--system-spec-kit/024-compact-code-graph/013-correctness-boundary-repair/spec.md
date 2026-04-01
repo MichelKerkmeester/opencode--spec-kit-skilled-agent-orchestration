@@ -33,10 +33,10 @@ Fix all P0 and P1 correctness bugs, DB safety issues, and security boundary issu
 - Files: `mcp_server/handlers/code-graph/context.ts`
 - Evidence: review F006, research iter-072
 
-**Item 4: Validate all tool args via schema validators (widened scope)**
-- Schema validators exist (`validateToolArgs()`) but live dispatch still bypasses them
+**Item 4: Document actual code-graph dispatch validation path**
+- Unified schema validators (`validateToolArgs()`) exist elsewhere, but live code-graph dispatch does not use them
 - rootDir has no path validation — arbitrary readable paths accepted
-- Fix: route ALL code-graph tool inputs through `validateToolArgs()` before dispatch; validate rootDir within workspace
+- Current reality: `tools/code-graph-tools.ts` uses local `getMissingRequiredStringArgs()` checks for `code_graph_query` (`operation`, `subject`) and `ccc_feedback` (`query`, `rating`); rootDir is validated separately within workspace
 - Files: `mcp_server/handlers/code-graph/scan.ts`, `mcp_server/lib/code-graph/code-graph-tools.ts`
 - Evidence: review F010 (schema bypass), research iter-091 (rootDir)
 
@@ -97,10 +97,10 @@ Fix all P0 and P1 correctness bugs, DB safety issues, and security boundary issu
 - Files: `mcp_server/handlers/code-graph/query.ts` (or equivalent query handler)
 - Evidence: review F026
 
-**Item 13: Implement or remove includeTrace**
-- `includeTrace` is advertised in the `code_graph_context` schema and described in Phase 010
-- Handler never emits a trace payload — the option is a no-op
-- Fix: either implement trace metadata output or remove from schema + docs
+**Item 13: Clarify includeTrace schema boundary**
+- `includeTrace` is absent from the `code_graph_context` schema
+- `includeTrace` still exists in memory tool schemas (`memory_context`, `memory_search`)
+- Docs must not describe this as a global removal from `tool-schemas.ts`
 - Files: `mcp_server/handlers/code-graph/context.ts`, tool-schemas.ts
 - Evidence: review F033
 
@@ -112,9 +112,9 @@ Fix all P0 and P1 correctness bugs, DB safety issues, and security boundary issu
 - Files: `mcp_server/lib/code-graph/working-set-tracker.ts`
 - Evidence: review F013
 
-**Item 15: Validate ccc_feedback schema length bounds**
-- `comment` and `resultFile` fields in ccc_feedback handler bypass schema length bounds before disk write
-- Fix: enforce length limits from schema before writing to disk
+**Item 15: ccc_feedback full length validation remains open**
+- `comment` and `resultFile` do not have minLength/maxLength constraints in `tool-schemas.ts`
+- Dispatch only checks required `query` and `rating`, so full length-bound enforcement before disk write is NOT IMPLEMENTED
 - Files: `mcp_server/handlers/ccc_feedback` (or equivalent)
 - Evidence: review F031
 
@@ -129,11 +129,11 @@ Fix all P0 and P1 correctness bugs, DB safety issues, and security boundary issu
 | `compact-merger.ts` | 7, 8 | sessionState budgeting, skip zero-budget |
 | `context.ts` (handler) | 3, 5, 12, 13 | Seed identity, sanitization, maxDepth, includeTrace |
 | `memory-context.ts` | 5 | Exception sanitization |
-| `code-graph-tools.ts` | 4 | Route tool args through validateToolArgs() |
+| `code-graph-tools.ts` | 4 | Local required-string checks, not unified `validateToolArgs()` |
 | `query.ts` (handler) | 12 | maxDepth enforcement, dedup |
 | `working-set-tracker.ts` | 14 | maxFiles enforcement |
-| `ccc_feedback` handler | 15 | Schema length validation |
-| `tool-schemas.ts` | 13 | includeTrace: implement or remove |
+| `ccc_feedback` handler | 15 | Full length validation still open |
+| `tool-schemas.ts` | 13, 15 | `code_graph_context` omits `includeTrace`; `ccc_feedback` fields still lack length bounds |
 
 ## Estimated LOC: 190-265
 ## Risk: LOW-MEDIUM — DB safety fixes (items 9-11) require careful transaction handling

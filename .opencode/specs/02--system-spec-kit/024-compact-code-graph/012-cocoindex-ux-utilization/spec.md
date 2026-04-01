@@ -1,142 +1,170 @@
 ---
-title: "Phase 012: CocoIndex UX, Utilization & [02--system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization/spec]"
-description: "Improve the UX, utilization, and usefulness of the CocoIndex Code MCP skill so that semantic code search is more prominent, more reliably invoked, and more deeply integrated wit..."
+title: "Feature Specification: Phase 012 — CocoIndex UX, Utilization & Usefulness"
+description: "Align the Phase 012 packet with actual CocoIndex behavior and remaining gaps."
 trigger_phrases:
-  - "phase"
-  - "012"
+  - "phase 012"
   - "cocoindex"
-  - "utilization"
-  - "spec"
+  - "ux utilization usefulness"
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Phase 012: CocoIndex UX, Utilization & Usefulness
+# Feature Specification: Phase 012 — CocoIndex UX, Utilization & Usefulness
 
-## Summary
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-Improve the UX, utilization, and usefulness of the CocoIndex Code MCP skill so that semantic code search is more prominent, more reliably invoked, and more deeply integrated with the hook system and code graph.
+---
 
-## Problem
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-CocoIndex Code is a mature semantic search tool (28+ languages, vector embeddings, CLI + MCP) but underutilized in practice due to several gaps:
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | In Progress |
+| **Created** | 2026-03-31 |
+| **Branch** | `024-compact-code-graph` |
+<!-- /ANCHOR:metadata -->
 
-1. **Hook compilation blocker** — SessionStart hook TS files (`hooks/claude/*.ts`) are not compiled to `dist/hooks/claude/*.js`. Every Claude Code session start fails with "SessionStart:startup hook error" because the registered JS files don't exist.
-2. **MCP not in `.claude/mcp.json`** — CocoIndex is configured in `opencode.json` but NOT in `.claude/mcp.json`, so Claude Code users may not have it auto-loaded.
-3. **Single MCP tool** — Only `search` is exposed via MCP. Index management (index, status, reset, daemon) requires CLI fallback.
-4. **No auto-index on session start** — Users must manually run `ccc index` or rely on stale indexes.
-5. **Agents underuse CocoIndex** — Despite CLAUDE.md and AGENTS.md mentioning "CocoIndex-first", agents frequently skip it in favor of Grep/Glob because the routing guidance is advisory, not enforced.
-6. **No result quality feedback** — No way to tell CocoIndex which results were useful, so embedding quality can't improve over time.
-7. **Concurrency issue** — Documented `ComponentContext` errors on concurrent MCP queries when `refresh_index=true`.
-8. **No integration with compaction** — PreCompact hook doesn't query CocoIndex for semantic neighbors of active files (noted as optional in Phase 001 plan).
+---
 
-## What to Build
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-### A. Fix Hook Compilation (P0 — blocker)
+### Problem Statement
+Phase 012 improved CocoIndex visibility and routing, but the packet drifted away from the Level 2 template and from current implementation reality. Several claims were overstated: SessionStart only reports binary availability, PreCompact only adds hint text, `ccc_status` and `ccc_feedback` are lightweight helpers, README/tool-reference updates are still pending, and SessionStart does not trigger background CocoIndex re-indexing.
 
-1. Add `hooks/claude/*.ts` to the MCP server TypeScript build so `tsc --build` compiles them to `dist/hooks/claude/*.js`
-2. Verify all 3 hook scripts (compact-inject, session-prime, session-stop) plus libraries (shared, hook-state, claude-transcript) compile and produce JS output
-3. Add a build verification step that checks `dist/hooks/claude/` exists after `npm run build`
+### Purpose
+Keep this phase packet structurally compliant and factually accurate so implementation, review, and validation all reflect the same delivered state.
+<!-- /ANCHOR:problem -->
 
-### B. Ensure CocoIndex MCP Availability (P1)
+---
 
-1. Add CocoIndex server config to `.claude/mcp.json` so it auto-loads in Claude Code sessions
-2. Update SessionStart hook (`session-prime.ts`) to check CocoIndex MCP availability and include a status line in startup output (e.g., "CocoIndex: available (28 indexed files)" or "CocoIndex: not configured")
-3. Add `ensure_ready.sh` call to SessionStart startup path (idempotent, fast if already running)
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-### C. Enhance MCP Tool Surface (P1)
+### In Scope
+- Document the actual delivered behavior of SessionStart, PreCompact, `ccc_status`, `ccc_reindex`, and `ccc_feedback`
+- Record manual build verification and hook smoke-test reality instead of claiming an automated verification script
+- Mark unfinished work consistently across spec, plan, tasks, checklist, and implementation summary
 
-1. Add `ccc_status` MCP tool — exposes index stats (file count, chunk count, embedding model, last indexed) without CLI
-2. Add `ccc_reindex` MCP tool — triggers incremental re-index from MCP (useful after file changes)
-3. Register new tools in CocoIndex MCP server config
-4. Update skill docs (SKILL.md, README.md, tool_reference.md) to document new tools
+### Out of Scope
+- Adding `ensure_ready.sh` to SessionStart or otherwise guaranteeing CocoIndex readiness
+- Executing or caching live CocoIndex semantic-neighbor queries during PreCompact
+- Updating the broader CocoIndex README or tool reference in this phase
 
-### D. Improve Agent Routing & Utilization (P1)
+### Files to Change
 
-1. Update `@context` agent to check CocoIndex FIRST before Grep/Glob when intent is semantic
-2. Add CocoIndex result snippets to compaction context — PreCompact hook queries CocoIndex for semantic neighbors of working-set files, includes top results in cached payload
-3. Update `code_graph_context` to optionally call CocoIndex for reverse semantic augmentation (already designed in Phase 010, needs wiring)
-4. Add agent routing tests validating CocoIndex-first behavior
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Restore Level 2 structure and align requirements with current reality |
+| `plan.md` | Modify | Restate implementation approach and verification using actual delivered behavior |
+| `tasks.md` | Modify | Track completed work versus explicit not-implemented items |
+| `checklist.md` | Modify | Rebuild the verification checklist with evidence and deferrals |
+| `implementation-summary.md` | Modify | Correct metadata and summarize delivered scope and limitations |
+<!-- /ANCHOR:scope -->
 
-### E. Auto-Index and Freshness (P2)
+---
 
-1. Add optional auto-index trigger to SessionStart hook — if index is stale (>24h since last full index), trigger background `ccc index` via daemon
-2. Add `refresh_index: false` default for MCP search to avoid concurrency issues, with explicit refresh available via `ccc_reindex`
-3. Document freshness strategy in skill references
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-### F. Quality Feedback Loop (P2)
+### P0 - Blockers (MUST complete)
 
-1. Add `ccc_feedback` MCP tool — accepts result ID + useful/not-useful signal
-2. Store feedback in CocoIndex database for future retrieval quality tuning
-3. Wire feedback into the existing `memory_validate` pattern (wasUseful, resultRank)
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The packet must use the Level 2 template structure with required anchors and section order. | `validate.sh` no longer reports missing Level 2 headers or anchors for packet docs. |
+| REQ-002 | The packet must stop claiming automated build verification that does not exist. | Verification text describes manual `npm run build` output checks and hook smoke tests only. |
 
-## Architecture
+### P1 - Required (complete OR user-approved deferral)
 
-```
-SessionStart hook
-  ├── Check CocoIndex MCP availability
-  ├── Report status in startup output
-  └── Optional: trigger background re-index if stale
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-003 | SessionStart integration must be described as status-only. | Docs state it reports CocoIndex binary availability and does not call `ensure_ready.sh` or guarantee readiness. |
+| REQ-004 | PreCompact semantic integration must be described as hint-only. | Docs state it adds prompt guidance only and does not execute or cache CocoIndex semantic-neighbor queries. |
+| REQ-005 | `ccc_status` and `ccc_feedback` behavior must match the shipped helpers. | Docs describe `ccc_status` as availability/binaryPath/indexExists/indexSize and `ccc_feedback` as local JSONL append-only feedback. |
+| REQ-006 | Unfinished documentation and automation work must stay marked as not implemented. | Docs consistently mark README/tool-reference updates and SessionStart background re-index as not implemented. |
+<!-- /ANCHOR:requirements -->
 
-PreCompact hook
-  ├── Get working-set files from session
-  ├── Query CocoIndex for semantic neighbors of top files
-  └── Include snippets in cached compact payload
+---
 
-code_graph_context (Phase 010)
-  ├── Resolve seeds via seed-resolver
-  ├── Expand graph neighborhoods
-  └── Optional: reverse semantic augmentation via CocoIndex
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-Agent routing
-  ├── Semantic intent → CocoIndex FIRST
-  ├── Structural intent → code_graph
-  └── Session intent → Memory
-```
+- **SC-001**: **Given** the packet is validated, **When** the validator checks template structure, **Then** it finds the required Level 2 headers and anchors.
+- **SC-002**: **Given** a reader reviews SessionStart notes, **When** they compare them to the implementation, **Then** they see status-only binary reporting rather than readiness bootstrapping.
+- **SC-003**: **Given** a reader reviews PreCompact behavior, **When** they inspect the packet, **Then** they see hint-text-only integration with no live CocoIndex query or cached snippet claims.
+- **SC-004**: **Given** a reader reviews helper-tool behavior, **When** they inspect the packet, **Then** `ccc_status` and `ccc_feedback` descriptions match the shipped helper contracts.
+- **SC-005**: Open gaps stay visible for follow-up work instead of being reported as complete.
+<!-- /ANCHOR:success-criteria -->
 
-## Files to Create/Modify
+---
 
-| Action | File | Purpose |
-|--------|------|---------|
-| FIX | `mcp_server/tsconfig.json` | Ensure hooks/claude/*.ts included in build output |
-| NEW | Build verification script | Check dist/hooks/claude/ after build |
-| EDIT | `.claude/mcp.json` | Add cocoindex_code server entry |
-| EDIT | `hooks/claude/session-prime.ts` | Add CocoIndex status check on startup |
-| NEW | CocoIndex `ccc_status` MCP tool | Index stats without CLI |
-| NEW | CocoIndex `ccc_reindex` MCP tool | Trigger re-index from MCP |
-| EDIT | `hooks/claude/compact-inject.ts` | Query CocoIndex for semantic neighbors |
-| EDIT | Agent `@context` definitions (4 runtimes) | CocoIndex-first routing enforcement |
-| EDIT | `lib/code-graph/code-graph-context.ts` | Wire reverse semantic augmentation |
-| EDIT | `mcp-coco-index/SKILL.md` | Document new MCP tools |
-| EDIT | `mcp-coco-index/README.md` | Update tool count, add new tool docs |
-| EDIT | `mcp-coco-index/references/tool_reference.md` | Add ccc_status and ccc_reindex |
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-## Acceptance Criteria
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Existing Phase 012 implementation state | Packet accuracy depends on matching shipped behavior | Keep statements limited to observed behavior and explicit gaps |
+| Risk | Documentation overstating automation | Reviewers may assume readiness/bootstrap work exists | Mark non-implemented items plainly in every packet document |
+| Risk | Validation drift | Packet remains noisy or fails strict checks | Use the Level 2 template structure and local cross-references only |
+<!-- /ANCHOR:risks -->
 
-- [ ] `npm run build` in mcp_server produces `dist/hooks/claude/*.js` for all 6 files
-- [ ] SessionStart hook no longer errors on fresh Claude Code sessions
-- [ ] CocoIndex MCP server loads in Claude Code sessions (present in `.claude/mcp.json`)
-- [ ] `ccc_status` MCP tool returns index stats
-- [ ] `ccc_reindex` MCP tool triggers incremental re-index
-- [ ] PreCompact hook includes CocoIndex semantic neighbors in cached payload
-- [ ] `@context` agent checks CocoIndex before Grep/Glob for semantic queries
-- [ ] No `ComponentContext` errors on sequential MCP queries (refresh_index defaults to false)
-- [ ] All existing tests still pass after changes
+---
 
-## LOC Estimate
+<!-- ANCHOR:questions -->
 
-~300-450 lines across hook fixes, new MCP tools, agent updates, and documentation.
+---
 
-## Dependencies
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
-- Phases 001-003 (hook scripts exist but need compilation)
-- Phase 010 (code_graph_context reverse augmentation design)
-- CocoIndex Code MCP server (external, already deployed)
+### Performance
+- **NFR-P01**: Packet updates must keep verification guidance concise enough for quick manual review.
 
-## Risk Mitigation
+### Security
+- **NFR-S01**: Packet text must not invent storage, bootstrap, or background execution behavior that is not implemented.
 
-| Risk | Mitigation |
-|------|------------|
-| CocoIndex daemon not running | Graceful fallback — skip CocoIndex sections, don't block hooks |
-| MCP tool registration conflicts | New tools use `ccc_` prefix to avoid namespace collision |
-| Auto-index slows startup | Background only, SessionStart doesn't wait for completion |
-| Stale index gives bad results | Status output warns user, optional manual reindex |
+### Reliability
+- **NFR-R01**: Cross-document statements about gaps and limitations must stay consistent.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty validator context: packet still needs the required Level 2 headers and anchors.
+- Partial implementation state: packet must record shipped behavior and unresolved gaps together.
+
+### Error Scenarios
+- CocoIndex binary missing: SessionStart reports unavailable status only.
+- Build-verification script absent: packet must point to manual build checks rather than a nonexistent script.
+
+### State Transitions
+- Follow-up implementation: unchecked tasks can move to complete without rewriting packet structure again.
+- Deferred documentation: unresolved README/tool-reference work remains tracked until a later phase closes it.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 14/25 | Five packet docs updated with structural and factual corrections |
+| Risk | 12/25 | Incorrect claims would mislead future implementation and review |
+| Research | 8/20 | Requires reconciling packet text with delivered behavior |
+| **Total** | **34/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+## 10. OPEN QUESTIONS
+
+- Should a later phase add true SessionStart readiness bootstrapping, or remain status-only by design?
+- Should PreCompact eventually cache semantic-neighbor snippets, or stay as routing guidance only?
+<!-- /ANCHOR:questions -->

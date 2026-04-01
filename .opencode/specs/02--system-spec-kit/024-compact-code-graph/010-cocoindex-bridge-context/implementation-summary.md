@@ -14,7 +14,7 @@ description: "Implemented code_graph_context orchestration tool bridging CocoInd
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 024-compact-code-graph/010-cocoindex-bridge-context |
+| **Spec Folder** | 010-cocoindex-bridge-context |
 | **Completed** | 2026-03-31 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -34,7 +34,7 @@ The seed resolver normalizes three seed types (CocoIndex, Manual, Graph) into a 
 
 The main handler parses MCP tool input and dispatches to one of three query modes. **Neighborhood** (default) performs 1-hop expansion along CALLS, IMPORTS, and CONTAINS edges from resolved anchors, providing the structural context needed for understanding and debugging. **Outline** returns file/package structure via CONTAINS and EXPORTS edges with minimal expansion, suited for orientation and repo mapping. **Impact** follows reverse CALLS and reverse IMPORTS edges to surface callers and importers, supporting refactor and blast-radius analysis.
 
-The handler returns a compact structured response shaped as `queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, and `metadata`. Three helper functions enrich the response: `buildCombinedSummary()` produces a one-line description of the graph package, `suggestNextActions()` recommends follow-up operations, and `computeFreshness()` reports whether graph data is current.
+The MCP handler wraps the result as `status: "ok"` plus a `data` object containing `queryMode`, `combinedSummary`, `nextActions`, `anchors`, `graphContext`, `textBrief`, and `metadata`. Internally, `buildContext()` still returns `resolvedAnchors`, but `handleCodeGraphContext()` remaps them to outward-facing `anchors` entries with `file`, `line`, `symbol`, `resolution`, `confidence`, and seed `source`. Three helper functions enrich the response: `buildCombinedSummary()` produces a one-line description of the graph package, `suggestNextActions()` recommends follow-up operations, and `computeFreshness()` reports whether graph data is current.
 
 A latency guard checks `performance.now()` against the remaining time budget and breaks early from expansion if less than 400ms remains, preventing timeout on large neighborhoods.
 
@@ -77,7 +77,6 @@ Implemented in plan order: seed-resolver first (foundation), then the context or
 | Decision | Why |
 |----------|-----|
 | Inline formatter rather than separate context-formatter.ts | The formatting logic is tightly coupled to the expansion data structures. A separate file would require re-exporting all internal types for minimal modularity gain. |
-| Inline formatter rather than separate context-formatter.ts | The formatting logic is tightly coupled to the expansion data structures. A separate file would require re-exporting all internal types for minimal modularity gain. |
 | Four-step resolution chain (exact, near_exact, enclosing, file_anchor) | Balances precision with reliability. Near-exact matching recovers from semantic hit offsets while file anchors ensure no seed is ever dropped. |
 | Deterministic truncation order | LLM consumers need predictable output. Non-deterministic truncation would break prompt caching and make debugging impossible. |
 | Latency guard at 400ms | Reverse semantic augmentation involves a CocoIndex round-trip. 400ms leaves enough budget for response formatting without risk of tool timeout. |
@@ -101,6 +100,7 @@ Implemented in plan order: seed-resolver first (foundation), then the context or
 | neighborhood mode returns 1-hop expansion | Verified |
 | outline mode returns structure without deep expansion | Verified |
 | impact mode returns reverse dependencies | Verified |
+| MCP response wrapper exposes `status` + `data.anchors` | Verified |
 | Budget enforcement stays within budgetTokens target | Verified |
 | Text fallback renders compact brief | Verified |
 | Tool registered and callable via MCP | Verified |

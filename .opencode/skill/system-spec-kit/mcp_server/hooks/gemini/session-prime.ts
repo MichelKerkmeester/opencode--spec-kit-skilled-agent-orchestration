@@ -18,7 +18,7 @@ import {
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
   type OutputSection,
 } from '../claude/shared.js';
-import { ensureStateDir, loadState, readAndClearCompactPrime } from '../claude/hook-state.js';
+import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '../claude/hook-state.js';
 import { parseGeminiStdin, formatGeminiOutput, type GeminiHookInput } from './shared.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
@@ -26,7 +26,7 @@ const CACHE_TTL_MS = 30 * 60 * 1000;
 /** Handle source=compact (post-compress): inject cached PreCompress payload */
 function handleCompact(sessionId: string): OutputSection[] {
   const state = loadState(sessionId);
-  const pendingCompactPrime = readAndClearCompactPrime(sessionId);
+  const pendingCompactPrime = readCompactPrime(sessionId);
   if (!pendingCompactPrime) {
     hookLog('warn', 'gemini:session-prime', `No cached compact payload for session ${sessionId}`);
     return [{
@@ -151,9 +151,13 @@ async function main(): Promise<void> {
 
   const rawOutput = truncateToTokenBudget(formatHookOutput(sections), budget);
 
-  // Output as Gemini-compatible JSON with additionalContext
+  // Output as Gemini-compatible JSON with additionalContext.
+  // Clear compact payload only AFTER stdout write succeeds.
   const output = formatGeminiOutput(rawOutput);
   process.stdout.write(output);
+  if (source === 'compact') {
+    clearCompactPrime(sessionId);
+  }
   hookLog('info', 'gemini:session-prime', `Output ${rawOutput.length} chars for source=${source}`);
 }
 

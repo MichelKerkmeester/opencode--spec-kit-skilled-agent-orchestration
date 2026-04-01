@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Gemini CLI (v0.33.1+) supports hooks but we haven't configured any. Claude Code has full hook support (PreCompact, SessionStart, Stop). This phase ports the Claude hooks to Gemini's lifecycle format.
+Gemini CLI (v0.33.1+) supports hooks but needs Gemini-native wiring and caveat tracking. Claude Code has hook support for the same lifecycle concepts; this phase ports the relevant behavior to Gemini's lifecycle format and documents the remaining gaps.
 
 ## Plain-English Summary
 
@@ -17,7 +17,7 @@ Gemini CLI (v0.33.1+) supports hooks but we haven't configured any. Claude Code 
 | `SessionStart` | `SessionStart` | Direct match for startup/resume/clear |
 | `PreCompact` | `PreCompress` | Gemini calls it "compress" not "compact" |
 | `SessionStart(compact)` | `BeforeAgent` (one-shot) | Inject cached context before first agent turn |
-| `Stop` | `AfterAgent` + `AfterModel` | Split into per-turn and per-model hooks |
+| `Stop` | `SessionEnd` | Single Gemini end-of-session hook. Session state is saved there, but token tracking is still partial because Gemini transcript token usage is not parsed. |
 
 ## What to Build
 
@@ -41,13 +41,18 @@ Claude combines PreCompact + SessionStart(compact) into one flow. Gemini needs t
 
 ### 3. Session Stop
 
-Rebuild as `AfterAgent` + `AfterModel` instead of a single Stop hook. Don't reuse `claude-transcript.ts` — Gemini's transcript format is different.
+Implement as a single `SessionEnd` hook. Don't reuse `claude-transcript.ts` — Gemini's transcript format is different, and current logic does not parse Gemini transcript token usage.
 
 **New file:** `mcp_server/hooks/gemini/session-stop.ts`
+- Saves session state on `SessionEnd`
+- Uses a shallow regex for spec-folder detection, so deeper nested phase paths can be truncated
+- Applies `MAX_TRANSCRIPT_BYTES` in `session-stop.ts`, but that does not harden `compact-cache.ts`
 
 ### 4. Settings Registration
 
-**Edit:** `.gemini/settings.json` — add hooks block pointing to the new scripts
+**Expected user config target:** `.gemini/settings.json` — add a hooks block pointing to the new scripts.
+
+**Known limitation:** there is no checked-in `.gemini/settings.json` in this repository. Any example registration remains a user-local target and requires local workspace-path verification before it can be treated as complete.
 
 ### 5. Shared Core Extraction (if port is stable)
 
@@ -62,8 +67,8 @@ If the Gemini hooks work well, extract shared helpers so Claude and Gemini don't
 | New `mcp_server/hooks/gemini/session-prime.ts` | Session start priming |
 | New `mcp_server/hooks/gemini/compact-cache.ts` | Pre-compress context caching |
 | New `mcp_server/hooks/gemini/compact-inject.ts` | Post-compress context injection |
-| New `mcp_server/hooks/gemini/session-stop.ts` | After-agent session tracking |
-| `.gemini/settings.json` | Hook registration |
+| New `mcp_server/hooks/gemini/session-stop.ts` | SessionEnd session tracking |
+| `.gemini/settings.json` | Expected user-local hook registration target; not a checked-in repo change |
 
 ## Cross-Runtime Impact
 
@@ -83,12 +88,19 @@ If the Gemini hooks work well, extract shared helpers so Claude and Gemini don't
 | Item | Status | Evidence |
 |------|--------|----------|
 | 1. Session Prime (SessionStart) | DONE | hooks/gemini/session-prime.ts (165 lines) |
-| 2a. Compact Cache (PreCompress) | DONE | hooks/gemini/compact-cache.ts (138 lines) |
+| 2a. Compact Cache (PreCompress) | DONE WITH LIMITATION | hooks/gemini/compact-cache.ts (138 lines) — `tailFile()` still uses unbounded `readFileSync(filePath, 'utf-8')` |
 | 2b. Compact Inject (BeforeAgent) | DONE | hooks/gemini/compact-inject.ts (83 lines) — F055 FIXED (sanitized payload now used) |
-| 3. Session Stop (SessionEnd) | DONE | hooks/gemini/session-stop.ts (114 lines) |
-| 4. Settings Registration | DONE | .gemini/settings.json hook block |
+| 3. Session Stop (SessionEnd) | DONE WITH LIMITATIONS | hooks/gemini/session-stop.ts (114 lines) — runs on `SessionEnd`, does not parse Gemini transcript token usage, and nested spec detection truncates deeper phase paths |
+| 4. Settings Registration | PARTIAL | Expected `.gemini/settings.json` user config target only; workspace path must be verified locally |
 | 5. Shared utilities | DONE | hooks/gemini/shared.ts (89 lines) — parseGeminiStdin, formatGeminiOutput |
 
 ### Review Findings (iter 046)
 - F055 (P2): sanitized payload unused in compact-inject.ts. FIXED (iter 041-050 fixes)
-- F056 (P2): session-stop reads transcript without size limit. DEFERRED (practical risk is low)
+- F056 (P2): still OPEN. `session-stop.ts` has a transcript-size guard, but `compact-cache.ts` still reads transcripts with unbounded `readFileSync`, so transcript-size hardening is incomplete.
+
+### Known Limitations
+- `.gemini/settings.json` is a user-local target, not a checked-in repo file. Any workspace path must be verified locally.
+- `session-stop.ts` runs once on `SessionEnd`; it is not split into `AfterAgent` and `AfterModel`.
+- Gemini token tracking is partial because Gemini transcript token usage is not parsed.
+- Nested spec-folder detection is shallow and can truncate deeper paths such as nested phase folders.
+- `compact-cache.ts` still uses unbounded `readFileSync` in `tailFile()`, so F056 remains open.

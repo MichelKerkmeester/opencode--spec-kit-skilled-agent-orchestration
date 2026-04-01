@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Query-Routing Integration [024/020]"
-description: "Auto-routing in memory_context via classifyQueryIntent and session_resume composite tool."
+description: "Query-intent enrichment in memory_context, slim session_resume output, and passive enrichment wired into the response path."
 ---
 # Implementation Summary
 
@@ -14,8 +14,8 @@ description: "Auto-routing in memory_context via classifyQueryIntent and session
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 024-compact-code-graph/020-query-routing-integration |
-| **Completed** | 2026-03-31 (Part 3 deferred) |
+| **Spec Folder** | 020-query-routing-integration |
+| **Completed** | 2026-03-31 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -24,53 +24,85 @@ description: "Auto-routing in memory_context via classifyQueryIntent and session
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Users no longer need to know which tool to call for code queries. `memory_context` now auto-classifies the query intent and routes to the correct backend. A new `session_resume` composite tool saves 2-3 round trips on session recovery.
+You can ask code questions through `memory_context` without switching tools yourself, but the implementation does not hand the request off to a different primary backend. The handler now classifies query intent, keeps its normal semantic execution path, and appends graph-aware context when the query looks structural or hybrid and graph context can be built. The same phase also added a slim `session_resume` tool and wired passive enrichment into the response path.
 
-### Auto-Routing in memory_context (Part 1)
+### `memory_context` Query-Intent Enrichment
 
-`classifyQueryIntent()` is now wired into the top of the `memory_context` handler at lines 1087-1145. The routing logic:
-- **Structural** queries ("who calls X", "what imports Y") route to `code_graph_context`
-- **Semantic** queries ("find similar to X", "explain Y") route to the existing memory search path
-- **Hybrid/ambiguous** queries run both backends and merge results
+`classifyQueryIntent()` is wired into `handlers/memory-context.ts` before the traced response is returned. For structural and hybrid queries, the handler may build graph context with `buildContext()` and append that result to the normal traced output. The existing semantic strategy execution still runs through `executeStrategy()`, so this is additive enrichment rather than selective routing away from `memory_context`.
 
-When the structural backend returns empty (totalNodes === 0), it automatically falls back to semantic search. Every response includes `queryIntentMetadata` (appended at line 1391) with the detected intent, routed backend, and whether fallback was applied.
+Every enriched response exposes `queryIntentRouting` with `queryIntent`, `routedBackend`, `confidence`, and optional `matchedKeywords`. The packet now describes that contract exactly and no longer claims a `fallbackApplied` field.
 
-### session_resume Composite Tool (Part 2)
+### `session_resume` Composite Tool
 
-A new `handlers/session-resume.ts` (130 lines) provides a single tool that combines:
-1. `memory_context({ mode: "resume" })` — prior work context
-2. `code_graph_status()` — graph freshness
-3. `ccc_status()` — constitutional cache status
+A new `handlers/session-resume.ts` gives you one resume-oriented tool instead of several manual calls. It:
+1. calls `memory_context({ mode: "resume", profile: "resume" })` unless `minimal` is true
+2. summarizes graph state from `graphDb.getStats()` as `codeGraph { status, lastScan, nodeCount, edgeCount, fileCount }`
+3. checks CocoIndex availability with `isCocoIndexAvailable()` and returns `cocoIndex { available, binaryPath }`
 
-Results are merged into one response, saving 2-3 round trips and approximately 400-900 tokens per session resume.
+It does not call `ccc_status()` and it does not return the full payload from any standalone status tool. The registered input schema is also slim: only `specFolder?` and `minimal?`.
 
-### Deferred: Passive Context Enrichment (Part 3)
+### Passive Context Enrichment
 
-The `runPassiveEnrichment()` pipeline described in the spec was not implemented (tracked as F057). This would have added automatic code graph symbols, session continuity warnings, and memory triggers to every tool response. Deferred due to complexity and latency concerns.
+Part 3 shipped. `context-server.ts` dynamically imports `./lib/enrichment/passive-enrichment.js` and calls `runPassiveEnrichment(result.content[0].text)` on the response text. The code graph symbol enrichment logic now lives inline in `lib/enrichment/passive-enrichment.ts`, alongside path extraction helpers, so the packet no longer references a separate `code-graph-enricher.ts` file.
+
+### Files Changed
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `handlers/memory-context.ts` | Modified | Added intent classification plus optional `graphContext` and `queryIntentRouting` on traced responses. |
+| `handlers/session-resume.ts` | Created | Added the composite resume tool with slim resume, graph, and CocoIndex summaries. |
+| `context-server.ts` | Modified | Invokes passive enrichment on response text. |
+| `lib/enrichment/passive-enrichment.ts` | Modified | Houses passive enrichment plus inline code graph symbol enrichment logic. |
+| `tool-schemas.ts` | Modified | Registers `session_resume`. |
+| `schemas/tool-input-schemas.ts` | Modified | Restricts `session_resume` inputs to `specFolder?` and `minimal?`. |
+| `tools/lifecycle-tools.ts` | Modified | Wires `session_resume` into dispatch. |
+| `tools/types.ts` | Modified | Adds `session_resume` type definitions. |
 <!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:files-changed -->
-## Files Changed
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-| File | Change Type | Description |
-|------|------------|-------------|
-| `handlers/memory-context.ts` | Modified | classifyQueryIntent routing at lines 1087-1145, queryIntentMetadata at 1391 |
-| `handlers/session-resume.ts` | New | session_resume composite tool (130 lines) |
-| `handlers/index.ts` | Modified | Export session-resume handler |
-| `tool-schemas.ts` | Modified | session_resume tool registration |
-| `schemas/tool-input-schemas.ts` | Modified | session_resume input schema |
-| `tools/lifecycle-tools.ts` | Modified | session_resume dispatch wiring |
-| `tools/types.ts` | Modified | session_resume type definitions |
-<!-- /ANCHOR:files-changed -->
+The delivery happened in three layers. First, `memory_context` gained query-intent classification plus optional graph-context enrichment. Next, `session_resume` was added as a composite resume helper with a deliberately narrow schema and payload. Finally, passive enrichment was wired into `context-server.ts`, with the code graph symbol logic consolidated into `lib/enrichment/passive-enrichment.ts` instead of a separate helper file.
+
+This documentation refresh was then aligned against the verified handlers so the packet matches the shipped behavior rather than the earlier design intent.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Keep `memory_context` semantic-first and append graph context opportunistically | This preserves existing behavior while still surfacing structural context when the classifier and graph builder can support it. |
+| Expose `queryIntentRouting` as lightweight metadata | The model can inspect intent and confidence without the packet inventing unsupported fallback fields. |
+| Keep `session_resume` slim | Resume needs fast context and status summaries, not a full `ccc_status()` payload. |
+| Inline code graph symbol enrichment inside `passive-enrichment.ts` | The implementation already consolidated that logic there, so the packet should reference the real file layout. |
+<!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
 ## Verification
 
-- TypeScript: 0 errors
-- Tests: 327 passed, 23 failed (pre-existing, unrelated)
-- Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
+| Check | Result |
+|-------|--------|
+| Implementation audit | PASS, matched `handlers/memory-context.ts` intent classification and appended response metadata behavior |
+| Resume contract audit | PASS, matched `handlers/session-resume.ts`, `tool-schemas.ts`, and `schemas/tool-input-schemas.ts` to the slim `session_resume` schema and payload |
+| Passive enrichment audit | PASS, matched `context-server.ts` import/invocation and `lib/enrichment/passive-enrichment.ts` inline enrichment logic |
+| Packet consistency review | PASS, stale claims about selective routing, `fallbackApplied`, `ccc_status()`, deferred Part 3 work, and `code-graph-enricher.ts` were removed |
 <!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **`matchedKeywords` is optional.** Some responses will include `confidence` without any `matchedKeywords`, so callers should not treat the field as required.
+2. **Graph enrichment is conditional.** Structural or hybrid intent can append `graphContext`, but `memory_context` still succeeds without it.
+3. **`session_resume` is intentionally narrow.** It exposes lightweight graph and CocoIndex summaries only; consumers that need deeper diagnostics still need dedicated status tools.
+<!-- /ANCHOR:limitations -->
+
+---

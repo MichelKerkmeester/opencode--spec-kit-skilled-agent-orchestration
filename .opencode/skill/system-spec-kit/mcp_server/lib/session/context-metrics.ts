@@ -81,8 +81,8 @@ const bootstrapRecords: BootstrapRecord[] = [];
 
 const FIVE_MINUTES_MS = 5 * 60 * 1000;
 const SIXTY_MINUTES_MS = 60 * 60 * 1000;
-// F066: Reduced from 24h to 1h since auto-trigger (ensure-ready) exists
-const GRAPH_FRESHNESS_THRESHOLD_MS = 60 * 60 * 1000; // 1 hour
+// Matches the session-snapshot graph staleness threshold.
+const GRAPH_FRESHNESS_THRESHOLD_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 /* ───────────────────────────────────────────────────────────────
    4. EVENT RECORDING

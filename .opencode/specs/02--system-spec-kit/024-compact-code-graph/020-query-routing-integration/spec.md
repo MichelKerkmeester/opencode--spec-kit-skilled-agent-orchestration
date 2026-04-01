@@ -1,96 +1,170 @@
-# Phase 020: Query-Intent Routing Integration
+# Feature Specification: Query-Routing Integration [024/020]
 
-## What This Is
-
-The v2 remediation added a `classifyQueryIntent()` function that can tell if a question is structural ("who calls X?") or semantic ("find code similar to Y"). But it's not connected to anything. This phase wires it in and adds two convenience tools.
-
-## Plain-English Summary
-
-**Problem:** Users have to know which tool to call. Want structural info? Use `code_graph_context`. Want semantic search? Use `memory_search`. Most users don't know the difference and shouldn't have to.
-
-**Solution:** Make `memory_context` smart — it classifies the query automatically and routes to the right backend. Also create a `session_resume` composite tool that does the 3-4 calls a user needs on resume in one shot.
-
-## What to Build
-
-### Part 1: Auto-Routing in memory_context (from research iter 099)
-
-Add a backend-routing step at the top of `memory_context`:
-
-```
-User query → classifyQueryIntent()
-  → "structural" (calls, imports, extends) → code_graph_context
-  → "semantic" (find, similar, explain) → memory_search (existing)
-  → "hybrid" (ambiguous) → run both, merge results
-```
-
-Every response includes metadata: `{ queryIntent, routedBackend, fallbackApplied }` so the LLM can see what happened.
-
-If the structural backend returns empty → automatically falls back to semantic.
-
-**Files to change:**
-- `handlers/memory-context.ts` — add routing phase before existing logic
-- `handlers/code-graph/context.ts` — accept routed requests
-- `lib/code-graph/code-graph-context.ts` — handle routed queries
-- `tool-schemas.ts` — add classification metadata to response schema
-
-### Part 2: `session_resume` Composite Tool (from research iter 101)
-
-One tool that does what users always need on resume:
-1. Calls `memory_context({ mode: "resume" })`
-2. Calls `code_graph_status()`
-3. Calls `ccc_status()`
-4. Merges results into one response
-
-Saves 2-3 round trips and ~400-900 tokens per session resume.
-
-**Files to change:**
-- New `mcp_server/handlers/session-resume.ts`
-- `mcp_server/tool-schemas.ts` — register tool
-- `mcp_server/tools/context-tools.ts` — wire into dispatcher
-
-### Part 3: Passive Context Enrichment (from research iter 102)
-
-Replace ad-hoc enrichment in `context-server.ts` with a proper pipeline:
-
-```
-Tool response → runPassiveEnrichment()
-  → Code graph: add relevant symbols near mentioned files
-  → Session continuity: warn if context may be stale
-  → Memory: surface high-confidence triggered memories
-```
-
-With hard guards: max 250ms latency, max 200 tokens, no recursive enrichment.
-
-**Files to change:**
-- New `lib/enrichment/passive-enrichment.ts`
-- New `lib/enrichment/code-graph-enricher.ts`
-- `mcp_server/context-server.ts` — call enrichment pipeline
-
-## Cross-Runtime Impact
-
-| Runtime | Before | After |
-|---------|--------|-------|
-| All runtimes | Manual tool selection | Automatic backend routing |
-| Non-hook CLIs | 3-4 calls to resume | 1 `session_resume` call |
-
-## Estimated LOC: 500-900
-## Risk: MEDIUM — routing logic must not break existing memory_context behavior
-## Dependencies: Phase 019 (code graph auto-trigger) recommended first
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-## Implementation Status (Post-Review Iterations 041-050)
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-| Item | Status | Evidence |
-|------|--------|----------|
-| Part 1: Auto-routing in memory_context | DONE | memory-context.ts:1087-1145 — classifyQueryIntent routing with structural/semantic/hybrid |
-| Part 2: session_resume composite tool | DONE | handlers/session-resume.ts (128 lines), tool registered |
-| Part 3: Passive Context Enrichment | DONE | F057 — lib/enrichment/passive-enrichment.ts (180 LOC); wired into context-server.ts response path |
-| Query intent metadata in response | DONE | queryIntentMetadata appended at line 1391 |
-| Structural fallback to semantic | DONE | Falls through if totalNodes === 0 |
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Complete |
+| **Created** | 2026-03-31 |
+| **Branch** | `020-query-routing-integration` |
+<!-- /ANCHOR:metadata -->
 
-### Review Findings (iter 044, 047)
-- F050 (P2): subject=normalizedInput passes prose as symbol name. FIXED (code-identifier heuristic extraction in memory-context.ts)
-- F051 (P2): Duplicated CocoIndex path check in session-resume.ts. FIXED (shared helper lib/utils/cocoindex-path.ts)
-- F052 (P2): session_resume missing metric event. FIXED (added recordMetricEvent in iter 041-050 fixes)
-- F057 (P1): Passive enrichment pipeline (Part 3). FIXED (lib/enrichment/passive-enrichment.ts, wired into context-server.ts)
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+
+This packet drifted away from the shipped implementation. The stale docs described `memory_context` as selective backend routing, documented the wrong response metadata shape, claimed `session_resume` merged `ccc_status()`, and marked passive enrichment as deferred even though it is wired in.
+
+### Purpose
+
+Describe the current implementation precisely so users and future maintainers understand query-intent enrichment, `session_resume`, and passive enrichment as they actually work today.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- Document `memory_context` as additive enrichment over the existing traced semantic flow.
+- Document the actual `queryIntentRouting` response metadata contract.
+- Document `session_resume` as resume context + graph summary + CocoIndex availability, with the real schema and output shape.
+- Document Part 3 passive enrichment as implemented in `context-server.ts` and `lib/enrichment/passive-enrichment.ts`.
+- Remove references to the deleted `code-graph-enricher.ts` file.
+
+### Out of Scope
+- Changing handler behavior or tool schemas in code.
+- Reintroducing selective backend dispatch from `memory_context` into `code_graph_context`.
+- Expanding `session_resume` to return full `ccc_status()` or other status payloads not currently exposed.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `handlers/memory-context.ts` | Modify | Query intent classification remains inside `memory_context`; optional graph context is appended to traced results. |
+| `handlers/session-resume.ts` | Create | Composite resume tool returning memory context, code graph summary, and CocoIndex availability. |
+| `context-server.ts` | Modify | Passive enrichment hook calls `runPassiveEnrichment(result.content[0].text)`. |
+| `lib/enrichment/passive-enrichment.ts` | Create/Modify | Inline path extraction and code graph symbol enrichment logic. |
+| `tool-schemas.ts` | Modify | Registers `session_resume` and the response metadata contract. |
+| `schemas/tool-input-schemas.ts` | Modify | Limits `session_resume` inputs to `specFolder?` and `minimal?`. |
+| `tools/lifecycle-tools.ts` | Modify | Wires `session_resume` into tool dispatch. |
+| `tools/types.ts` | Modify | Adds `session_resume` type definitions. |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | `memory_context` must be described as additive query-intent enrichment, not exclusive backend routing. | **Given** a structural or hybrid query, **when** `memory_context` handles it, **then** the docs state that normal semantic strategy execution still runs and optional `graphContext` is appended when available rather than replacing the main path. |
+| REQ-002 | The response metadata contract must be documented as `queryIntentRouting`. | **Given** a documented `memory_context` response, **when** the metadata object is described, **then** it is named `queryIntentRouting` and lists `queryIntent`, `routedBackend`, `confidence`, and optional `matchedKeywords`, with no `fallbackApplied` field. |
+| REQ-003 | `session_resume` must match the current schema and output behavior. | **Given** `session_resume`, **when** its behavior is documented, **then** the docs say it accepts only `specFolder?` and `minimal?`, calls `memory_context({ mode: "resume", profile: "resume" })` unless `minimal` is true, returns `codeGraph { status, lastScan, nodeCount, edgeCount, fileCount }`, and returns `cocoIndex { available, binaryPath }` without calling `ccc_status()`. |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Part 3 must be documented as implemented. | **Given** the passive enrichment phase, **when** the packet describes status, **then** it states that `context-server.ts` imports `./lib/enrichment/passive-enrichment.js` and calls `runPassiveEnrichment(...)` instead of marking the work deferred. |
+| REQ-005 | The file inventory must reflect the current implementation. | **Given** the enrichment implementation description, **when** code files are listed, **then** the docs reference `lib/enrichment/passive-enrichment.ts` for code graph symbol enrichment and do not mention `code-graph-enricher.ts`. |
+| REQ-006 | All packet files must use the same corrected terminology. | **Given** `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`, **when** they describe this phase, **then** they consistently avoid claims about selective routing, hybrid dual-backend merging, `fallbackApplied`, `ccc_status()` merging, and deferred Part 3 work. |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The packet consistently describes `memory_context` as semantic-first execution with optional graph enrichment for structural or hybrid queries.
+- **SC-002**: Every file that mentions response metadata names `queryIntentRouting` and lists the correct fields only.
+- **SC-003**: Every file that mentions `session_resume` describes the slim graph and CocoIndex summaries and omits `ccc_status()` claims.
+- **SC-004**: Passive enrichment is documented as shipped and the deleted `code-graph-enricher.ts` file is no longer referenced anywhere in the packet.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Verified code audit from `handlers/memory-context.ts`, `handlers/session-resume.ts`, `context-server.ts`, and `lib/enrichment/passive-enrichment.ts` | Medium | Keep packet language tied to the verified implementation facts and line references already confirmed. |
+| Risk | Future handler changes may reintroduce doc drift | Medium | Describe contracts precisely and keep this packet aligned with code on each implementation change. |
+| Risk | Overstating `routedBackend` semantics as hard dispatch | High | Explicitly describe it as metadata on an additive enrichment flow, not as a guarantee that the request left `memory_context`. |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Documentation must not imply extra backend calls that the implementation does not make.
+- **NFR-P02**: Packet language must stay concise enough to serve as an accurate runtime reference during resume and debugging.
+
+### Security
+- **NFR-S01**: No spec file may claim access to tool outputs or status payloads that are not actually returned.
+- **NFR-S02**: The packet must not invent hidden fallback behavior or unavailable diagnostic fields.
+
+### Reliability
+- **NFR-R01**: Terminology must remain internally consistent across all phase documents.
+- **NFR-R02**: Status sections must distinguish shipped behavior from deferred follow-up work accurately.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty or low-signal query: `queryIntentRouting.matchedKeywords` may be absent even when `confidence` is present.
+- Minimal resume request: `session_resume` can skip full resume context when `minimal` is true.
+- No graph context built: `memory_context` still returns the traced semantic result without routing away from its normal path.
+
+### Error Scenarios
+- Code graph unavailable: docs must describe optional enrichment rather than guaranteed structural answers.
+- CocoIndex unavailable: `session_resume` exposes `cocoIndex.available = false` with a fixed `binaryPath`, not a full status dump.
+- Passive enrichment failure: the packet should describe it as best-effort enrichment on response text, not a blocking requirement for tool success.
+
+### State Transitions
+- Structural query with graph support available: traced semantic result gains appended `graphContext` and `queryIntentRouting`.
+- Hybrid query with partial graph support: semantic execution still completes; graph enrichment is additive when available.
+- Resume after idle session: `session_resume` combines resume context with lightweight graph and CocoIndex summaries.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 18/25 | Cross-tool contract alignment across `memory_context`, `session_resume`, and passive enrichment. |
+| Risk | 18/25 | Incorrect wording can mislead users about routing, fallback, and available status payloads. |
+| Research | 13/20 | Requires verified implementation facts from multiple handlers and schema registrations. |
+| **Total** | **49/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None at this time. The current goal is documentation alignment with verified runtime behavior, not additional feature scope.
+<!-- /ANCHOR:questions -->
+
+---

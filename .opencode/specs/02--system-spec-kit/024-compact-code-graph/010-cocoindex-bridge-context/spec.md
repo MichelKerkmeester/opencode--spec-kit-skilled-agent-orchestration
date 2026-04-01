@@ -84,9 +84,9 @@ All seed types normalize to `ArtifactRef` using this resolution chain:
 
 | Mode | Default Edges | Hop Policy | Typical Use |
 |------|---------------|------------|-------------|
-| `neighborhood` | CALLS, IMPORTS, CONTAINS, optional TESTED_BY | 1 hop | Understand, debug, implementation lookup |
-| `outline` | CONTAINS, EXPORTS, ENTRY_POINTS | 0-1 hop | Orientation, repo map, package surface |
-| `impact` | reverse CALLS, reverse IMPORTS, ENTRY_POINTS, TESTED_BY | 1 hop default, 2 hop selective | Refactor, blast radius, verification planning |
+| `neighborhood` | bidirectional CALLS, IMPORTS, CONTAINS | 1 hop | Understand, debug, implementation lookup |
+| `outline` | file outline nodes plus EXPORTS from the anchor | 0-1 hop | Orientation, repo map, package surface |
+| `impact` | reverse CALLS, reverse IMPORTS | 1 hop with latency guard | Refactor, blast radius, verification planning |
 
 ## MCP Tool Schema
 
@@ -109,38 +109,41 @@ interface CodeGraphContextArgs {
 
 ```json
 {
-  "queryMode": "neighborhood",
-  "resolvedAnchors": [
-    {
-      "filePath": "src/auth/middleware.ts",
-      "startLine": 10,
-      "endLine": 42,
-      "symbolId": "auth:middleware:handle",
-      "fqName": "AuthMiddleware.handle",
-      "kind": "function",
-      "confidence": 0.94,
-      "resolution": "near_exact"
+  "status": "ok",
+  "data": {
+    "queryMode": "neighborhood",
+    "combinedSummary": "1 anchor(s) across 1 file(s): AuthMiddleware.handle + 1 symbols, 1 relationships",
+    "nextActions": ["Use `mcp__cocoindex_code__search` for semantic discovery of related code"],
+    "anchors": [
+      {
+        "file": "src/auth/middleware.ts",
+        "line": 10,
+        "symbol": "AuthMiddleware.handle",
+        "resolution": "near_exact",
+        "confidence": 0.94,
+        "source": "cocoindex"
+      }
+    ],
+    "graphContext": [
+      {
+        "anchor": "src/auth/middleware.ts:10 (AuthMiddleware.handle)",
+        "nodes": [{ "name": "TokenVerifier.verify", "kind": "function", "file": "src/auth/token.ts", "line": 18 }],
+        "edges": [{ "from": "AuthMiddleware.handle", "to": "TokenVerifier.verify", "type": "CALLS" }]
+      }
+    ],
+    "textBrief": "### src/auth/middleware.ts:10 (AuthMiddleware.handle)\nSymbols:\n  function TokenVerifier.verify (src/auth/token.ts:18)",
+    "metadata": {
+      "totalNodes": 1,
+      "totalEdges": 1,
+      "budgetUsed": 42,
+      "budgetLimit": 1200,
+      "freshness": { "lastScanAt": "2025-02-10T10:15:00.000Z", "staleness": "fresh" }
     }
-  ],
-  "graphContext": [
-    {
-      "anchor": "src/auth/middleware.ts:10 (AuthMiddleware.handle)",
-      "nodes": [{ "name": "TokenVerifier.verify", "kind": "function", "file": "src/auth/token.ts", "line": 18 }],
-      "edges": [{ "from": "AuthMiddleware.handle", "to": "TokenVerifier.verify", "type": "CALLS" }]
-    }
-  ],
-  "textBrief": "### src/auth/middleware.ts:10 (AuthMiddleware.handle)\nSymbols:\n  function TokenVerifier.verify (src/auth/token.ts:18)",
-  "combinedSummary": "1 anchor(s) across 1 file(s): AuthMiddleware.handle + 1 symbols, 1 relationships",
-  "nextActions": ["Use `mcp__cocoindex_code__search` for semantic discovery of related code"],
-  "metadata": {
-    "totalNodes": 1,
-    "totalEdges": 1,
-    "budgetUsed": 42,
-    "budgetLimit": 1200,
-    "freshness": { "lastScanAt": "2025-02-10T10:15:00.000Z", "staleness": "fresh" }
   }
 }
 ```
+
+> Note: `buildContext()` returns internal `resolvedAnchors`, but `handleCodeGraphContext()` maps those into outward-facing `data.anchors[]` entries with `file`, `line`, `symbol`, `resolution`, `confidence`, and seed `source`.
 
 ### Text Fallback (Compact Brief)
 
@@ -207,7 +210,7 @@ Seed normalization and graph resolution:
 - [ ] `neighborhood` mode returns 1-hop structural expansion
 - [ ] `outline` mode returns file/package structure
 - [ ] `impact` mode returns reverse dependencies (callers, importers)
-- [ ] Structured output matches handler shape: `queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, `metadata`
+- [ ] Structured output matches handler shape: `status`, `data.queryMode`, `data.anchors`, `data.graphContext`, `data.textBrief`, `data.combinedSummary`, `data.nextActions`, `data.metadata`
 - [ ] Text fallback renders compact repo-map style brief
 - [ ] Budget enforcement truncates deterministically within target
 - [ ] Tool registered in MCP server and callable by clients

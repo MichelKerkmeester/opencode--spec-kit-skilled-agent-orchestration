@@ -4,10 +4,14 @@ description: "Task tracking for 14 items across seed resolution, auto-reindex, i
 ---
 # Tasks: Phase 016 — Cross-Runtime UX & Documentation
 
-## Completed
+## Phase Status
+
+**PARTIAL (11/14 items complete; 3 deferred)**
+
+## Completed / In Scope
 
 - [x] Item 39: Near-exact seed resolution tier added — Evidence: seed-resolver.ts queries within +/-5 line window, confidence graduates 0.95 - 0.02*distance, composite index `idx_file_line ON code_nodes(file_path, start_line)` in code-graph-db.ts
-- [x] Item 40: Intent pre-classifier routes structural vs semantic queries — Evidence: `classifyQueryIntent()` in query-intent-classifier.ts; structural keywords to code graph, semantic to CocoIndex, ambiguous to both
+- [x] Item 40: Intent pre-classifier annotates query intent metadata — Evidence: `classifyQueryIntent()` in query-intent-classifier.ts computes structural / semantic / hybrid intent for downstream `queryIntentMetadata` / `queryIntentRouting` annotation; this phase does not claim backend routing delivery
 - [x] Item 41: Auto-reindex triggers on git branch switch — Evidence: scan.ts checks `git rev-parse HEAD` against stored `last_git_head` in `code_graph_metadata` table; stale entries pruned on HEAD change
 - [x] Item 41: Auto-reindex on session start via first-call priming — Evidence: wired into Phase 014 first-call priming pattern in scan.ts
 - [x] Item 42: CODEX.md updated with Session Start Protocol — Evidence: calls `memory_context()` with resume profile + `code_graph_status()` on first turn
@@ -20,7 +24,8 @@ description: "Task tracking for 14 items across seed resolution, auto-reindex, i
 - [x] Item 45: Spec/settings SessionStart scope aligned — Evidence: spec updated to reflect single unscoped entry + in-script branching as correct design [F030]
 - [x] Item 46: Truth-sync checklist annotations applied — Evidence: 5 PARTIAL annotations on v1 parent checklist for phases 005/006/008/011/012 per review iterations 14, 18, 29
 
-## Deferred
+## Deferred / Out of Scope for This Phase
 
+- [ ] Intent-driven backend routing — DEFERRED: classifier output is documented and annotated as `queryIntentMetadata` / `queryIntentRouting`, but selecting different retrieval backends from that metadata was not delivered in this phase.
 - [ ] CocoIndex score propagation via blended confidence formula — DEFERRED: requires CocoIndex API changes to expose relevance scoring endpoint. Near-exact confidence currently based on line distance only.
 - [ ] Runtime instruction file verification on target runtimes — DEFERRED: requires manual testing on all 5 CLIs (Claude Code, OpenCode, Codex CLI, Copilot CLI, Gemini CLI). Automated verification would need CI integration.

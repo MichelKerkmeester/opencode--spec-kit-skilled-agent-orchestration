@@ -5,7 +5,7 @@
 
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 
 export interface ReindexArgs {
   full?: boolean;
@@ -30,10 +30,10 @@ export async function handleCccReindex(args: ReindexArgs): Promise<{ content: Ar
     }
 
     const startTime = Date.now();
-    const cmd = args.full ? `${cccBin} index --full` : `${cccBin} index`;
+    const execArgs = args.full ? ['index', '--full'] : ['index'];
 
     try {
-      const output = execSync(cmd, {
+      const output = execFileSync(cccBin, execArgs, {
         cwd: projectRoot,
         timeout: 120_000,
         encoding: 'utf-8',

@@ -1,17 +1,17 @@
 ---
 title: "Tasks: Structural Indexer [024/008]"
-description: "Task tracking for regex-based structural indexer with tree-sitter-queries, node/edge extraction, and incremental re-indexing."
+description: "Task tracking for the structural indexer with tree-sitter default parsing, regex fallback, node/edge extraction, and content-hash-aware indexing."
 ---
 # Tasks: Phase 008 — Structural Indexer
 
 ## Completed
 
-- [x] Regex-based parser implemented for JS/TS — Evidence: `structural-indexer.ts` parses functions, classes, methods, imports without crash
-- [x] Regex-based parser implemented for Python — Evidence: function_definition, class_definition, decorated_definition extraction
-- [x] Regex-based parser implemented for Shell — Evidence: conservative function_definition extraction
+- [x] Tree-sitter WASM runtime integrated as the default parser backend — Evidence: `structural-indexer.ts#getParser()` defaults to `treesitter`; `tree-sitter-parser.ts` loads grammars via `web-tree-sitter`
+- [x] Regex fallback backend retained for JS/TS/Python/Shell — Evidence: `structural-indexer.ts#getParser()` falls back on init failure and supports `SPECKIT_PARSER=regex`
 - [x] `indexer-types.ts` — `CodeNode`, `CodeEdge`, `ParseResult` interfaces defined
 - [x] `symbolId` generation — deterministic SHA-256 hash of filePath + fqName + kind
 - [x] `fqName` construction — consistent rules across all 4 languages
+- [x] Programmatic AST traversal replaces `.scm` query files — Evidence: `tree-sitter-parser.ts` walks ASTs directly and no `*.scm` files exist in the code-graph area
 - [x] `CONTAINS` edges — classes to methods correctly linked
 - [x] `CALLS` edges — direct function calls identified via `extractEdges`
 - [x] `IMPORTS` edges — import statements correctly identified across JS/TS/Python
@@ -28,6 +28,4 @@ description: "Task tracking for regex-based structural indexer with tree-sitter-
 
 ## Deferred
 
-- [ ] tree-sitter WASM runtime integration — planned as enhancement in Phase 015
-- [ ] tree-sitter query files (`javascript.scm`, `typescript.scm`, `python.scm`, `bash.scm`) — deferred with tree-sitter migration
 - [ ] `CONFIGURES` edge type — low confidence, deferred to v2

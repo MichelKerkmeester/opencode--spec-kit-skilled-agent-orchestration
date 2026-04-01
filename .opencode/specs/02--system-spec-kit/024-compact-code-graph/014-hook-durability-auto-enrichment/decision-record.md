@@ -34,11 +34,11 @@ description: "Key decisions for session hashing, injection fencing, first-call p
 **Date:** 2026-03-31
 **Context:** MCP first-call priming (Item 22) needs to detect the first tool call in a session across all 5 runtimes.
 **Rationale:**
-- Module-level flag resets on MCP server restart, which is the correct session boundary
+- Module-level flag resets on MCP server restart, which is operationally acceptable even though it is not a true session boundary
 - Persistent state (DB or file) would require cleanup logic and could prime stale sessions
 - The flag is idempotent: priming twice causes no harm (constitutional memories are cached)
 - No external dependencies: works identically on all runtimes
-**Impact:** Universal session detection with zero configuration. Trade-off: server restart mid-session causes re-priming (acceptable).
+**Impact:** The implementation is process-global, not truly session-scoped. If multiple sessions share one MCP server process, only the first session is primed until reset or restart. Server restart mid-session still causes re-priming, which remains acceptable.
 
 ## DR-014-D: 250ms Timeout for Graph Enrichment
 

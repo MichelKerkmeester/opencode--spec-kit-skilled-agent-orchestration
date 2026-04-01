@@ -24,7 +24,7 @@ contextType: "planning"
    - Discover files matching patterns
    - Call Phase 008 indexer per file
    - Store results in DB via batch insert
-   - Support incremental mode (content-hash skip)
+   - Support incremental mode (file_mtime_ms skip)
    - Return scan summary (counts, errors, duration)
 3. **Implement `code_graph_query` handler:**
    - `outline`: query code_nodes by file_id, return sorted by start_line
@@ -32,12 +32,12 @@ contextType: "planning"
    - `calls_to`: query code_edges WHERE target_id = X AND edge_type = 'CALLS'
    - `imports_from`: query code_edges WHERE source_id = X AND edge_type = 'IMPORTS'
    - `imports_to`: query code_edges WHERE target_id = X AND edge_type = 'IMPORTS'
-   - Resolve subject to symbol_id via filePath, fqName, or symbolId
+   - Resolve subject to symbol_id via symbolId, fqName, or name
 4. **Implement `code_graph_status` handler:**
-   - Count total/indexed/stale files
-   - Aggregate node/edge counts by type
-   - Report parser health summary
-   - Include last scan timestamp and DB file size
+   - Report totalFiles, totalNodes, totalEdges
+   - Aggregate nodesByKind and edgesByType breakdowns
+   - Report parseHealth summary and freshness state
+   - Include lastScanAt, lastGitHead, dbFileSize, schemaVersion
 5. **Register tools in MCP server:**
    - Add schemas to `tool-schemas.ts`
    - Register handlers in `context-server.ts`
@@ -63,4 +63,4 @@ contextType: "planning"
 | DB file grows too large | Monitor file size in status, add cleanup for orphaned nodes |
 | Concurrent write conflicts | Single-writer model (scan is sequential), reads are concurrent |
 | Schema migration needed later | Version table, migration script pattern from memory DB |
-| Edge cases in subject resolution | Fallback chain: symbolId → fqName → filePath |
+| Edge cases in subject resolution | Fallback chain: symbolId → fqName → name |

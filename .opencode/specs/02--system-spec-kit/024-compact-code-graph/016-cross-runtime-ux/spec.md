@@ -1,12 +1,12 @@
 ---
 title: "Spec: Cross-Runtime UX & Documentation [024/016]"
-description: "Achieve ~85-90% context preservation parity across all 5 runtimes. Near-exact seeds, intent routing, auto-reindex, instruction updates, recovery doc consolidation, seed-resolver error handling, spec/settings truth-sync."
+description: "Achieve ~85-90% context preservation parity across all 5 runtimes. Near-exact seeds, intent metadata annotation, auto-reindex, instruction updates, recovery doc consolidation, seed-resolver error handling, spec/settings truth-sync."
 ---
 # Spec: Phase 016 — Cross-Runtime UX & Documentation
 
 ## Summary
 
-Improve CocoIndex integration (seed resolution, query routing, auto-reindex) and update instruction files across all 5 runtimes to auto-trigger code graph + memory context on session start. Consolidate recovery documentation.
+Improve CocoIndex integration (seed resolution, query-intent metadata, auto-reindex) and update instruction files across all 5 runtimes to auto-trigger code graph + memory context on session start. Consolidate recovery documentation.
 
 ## Cross-Runtime Parity Target
 
@@ -30,11 +30,11 @@ Improve CocoIndex integration (seed resolution, query routing, auto-reindex) and
 - Files: `mcp_server/lib/code-graph/seed-resolver.ts`, `code-graph-db.ts`
 - LOC: 60-80
 
-**Item 23: Query-intent pre-classification**
-- Heuristic classifier: structural keywords → code graph, semantic keywords → CocoIndex
-- Confidence threshold: route to both when ambiguous
-- Fallback: if primary source returns empty, try secondary
-- Files: Intent router (new or extend existing)
+**Item 23: Query-intent pre-classification metadata**
+- Heuristic classifier computes structural vs semantic vs hybrid intent from query terms
+- Current phase scope: surface classifier output as `queryIntentMetadata` / `queryIntentRouting` for observability
+- Backend-specific routing and fallback behavior remain deferred to follow-on integration work
+- Files: `mcp_server/lib/code-graph/query-intent-classifier.ts`, downstream response annotation wiring
 - LOC: 60-100
 
 **Item 24: Auto-reindex triggers**
@@ -91,12 +91,14 @@ Improve CocoIndex integration (seed resolution, query routing, auto-reindex) and
 
 ## Completion Status
 
+**Phase Status:** **PARTIAL (11/14 tracked items complete; 3 deferred)**
+
 | Item | Status | Notes |
 |------|--------|-------|
-| 39: Near-exact seeds | **DONE** | +/-5 lines, graduated confidence, composite index |
-| 40: Intent pre-classifier | **DONE** | classifyQueryIntent() heuristic classifier in query-intent-classifier.ts |
-| 41: Auto-reindex | **DONE** | Git HEAD change detection, stale file pruning |
-| 42: Cross-runtime instructions | **DONE** | CODEX.md, AGENTS.md, context.md, GEMINI.md |
+| 39: Near-exact seeds | **PARTIAL** | +/-5 lines, graduated confidence, composite index complete; CocoIndex score blending deferred |
+| 40: Intent pre-classifier | **PARTIAL** | `classifyQueryIntent()` exists in `query-intent-classifier.ts`; this phase records metadata annotation, not backend routing completion |
+| 41: Auto-reindex | **DONE** | Git HEAD change detection, stale file pruning, first-call priming trigger |
+| 42: Cross-runtime instructions | **PARTIAL** | Instruction updates landed; runtime-by-runtime manual verification remains deferred |
 | 43: Recovery consolidation | **DONE** | Universal in root CLAUDE.md, Claude-specific in .claude/ |
 | 44: Seed-resolver errors | **DONE** | Throws instead of silent placeholder |
 | 45: SessionStart scope | **DONE** | Spec updated to reflect actual single-entry in-script branching |
@@ -104,9 +106,9 @@ Improve CocoIndex integration (seed resolution, query routing, auto-reindex) and
 
 ## Deferred Items — Future Work
 
-### Item 40: Intent Pre-Classifier
-**Status:** DEFERRED — requires CocoIndex API integration
-**Dependency:** CocoIndex MCP server needs to expose a relevance scoring endpoint
+### Item 40: Backend Routing from Intent Metadata
+**Status:** DEFERRED — classifier metadata exists, but backend routing is not counted as delivered in this phase
+**Dependency:** Follow-on integration must consume `queryIntentMetadata` / `queryIntentRouting` to select retrieval backends consistently
 **Implementation plan:**
 1. Define keyword lists: structural (`calls`, `imports`, `implements`, `extends`) vs semantic (`similar`, `like`, `related`, `example`)
 2. Route: structural keywords → code_graph_query, semantic → CocoIndex search
@@ -115,17 +117,27 @@ Improve CocoIndex integration (seed resolution, query routing, auto-reindex) and
 **Estimated LOC:** 60-100
 **Risk:** LOW — heuristic classifier, no ML models
 
-### Item 45: SessionStart Scope Alignment
-**Status:** DEFERRED — requires settings.local.json schema investigation
-**Dependency:** Needs to determine whether `.claude/settings.local.json` supports source-scoped matchers
+### CocoIndex Score Propagation
+**Status:** DEFERRED — requires CocoIndex API integration
+**Dependency:** CocoIndex MCP server needs to expose a relevance scoring endpoint
 **Implementation plan:**
-1. Test whether Claude Code respects `source` matchers in SessionStart hook registration
-2. If supported: add 4 scoped entries (startup, resume, clear, compact) to settings.local.json
-3. If not supported: update spec to reflect actual single-entry registration
-4. Verify hooks fire correctly on each source type
-**Estimated LOC:** 5-20
+1. Expose semantic relevance scores from CocoIndex search responses
+2. Blend semantic and seed-resolution confidence using `resolution * 0.6 + cocoScore * 0.4`
+3. Re-rank mixed results with the blended score
+4. Validate ranking quality on near-exact and semantic queries
+**Estimated LOC:** 20-40
 **Risk:** LOW — configuration change only
 
-## Estimated LOC: 130-208 (completed items ~95 LOC; deferred items ~65-120 LOC)
+### Runtime Verification on Target CLIs
+**Status:** DEFERRED — requires manual verification on all 5 runtimes
+**Dependency:** Access to Claude Code, OpenCode, Codex CLI, Copilot CLI, and Gemini CLI runtime environments
+**Implementation plan:**
+1. Run each updated instruction file on its target runtime
+2. Confirm Session Start Protocol / Code Search Protocol sections load without formatting regressions
+3. Record evidence per runtime
+**Estimated LOC:** 0-10
+**Risk:** LOW — verification only
+
+## Estimated LOC: 130-208 (completed items ~95 LOC; deferred items ~35-110 LOC)
 ## Dependencies: Phase 014 (MCP first-call priming enables auto-trigger patterns)
 ## Risk: LOW — mostly documentation and configuration changes

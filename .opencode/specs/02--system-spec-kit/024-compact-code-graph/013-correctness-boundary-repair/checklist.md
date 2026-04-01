@@ -1,6 +1,6 @@
 ---
 title: "Checklist: Correctness & Boundary Repair [024/013]"
-description: "15 items across P0/P1/P2 for phase 013."
+description: "25 items across P0/P1/P2 for phase 013."
 ---
 # Checklist: Phase 013 — Correctness & Boundary Repair
 
@@ -15,7 +15,7 @@ description: "15 items across P0/P1/P2 for phase 013."
 ## P1
 
 - [x] Seed identity (source type) preserved through code_graph_context pipeline [F006]
-- [x] ALL tool args validated via validateToolArgs() before dispatch — not just rootDir [F010]
+- [x] Code-graph dispatch uses local `getMissingRequiredStringArgs()` checks for required strings in `code_graph_query` and `ccc_feedback` — not unified `validateToolArgs()` [F010]
 - [x] code_graph_scan rejects rootDir outside workspace root [F010]
 - [x] Exception strings sanitized in memory-context.ts handler
 - [x] Exception strings sanitized in code_graph_context handler
@@ -30,10 +30,10 @@ description: "15 items across P0/P1/P2 for phase 013."
 - [x] replaceNodes/Edges wrapped in transaction — constraint error rolls back [F024]
 - [x] Transitive code_graph_query respects maxDepth — no node leak [F026]
 - [x] Converging paths deduplicated in transitive query results [F026]
-- [x] includeTrace either implemented or removed from schema [F033]
+- [x] `includeTrace` is absent from the `code_graph_context` schema; memory tool schemas (`memory_context`, `memory_search`) still expose `includeTrace` [F033]
 - [x] All existing vitest tests still pass after changes — 226/226
 
 ## P2
 
 - [x] Working-set-tracker enforces maxFiles at insertion (no 2x overshoot) [F013]
-- [x] ccc_feedback enforces schema length bounds before disk write [F031]
+- [ ] ccc_feedback length validation for `comment`/`resultFile` is NOT IMPLEMENTED; dispatch only checks required `query`/`rating`, and the schema defines no minLength/maxLength bounds [F031]

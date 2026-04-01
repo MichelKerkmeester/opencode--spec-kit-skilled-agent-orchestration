@@ -13,6 +13,7 @@ import type {
   IndexerConfig, SymbolKind,
 } from './indexer-types.js';
 import { generateSymbolId, generateContentHash, detectLanguage } from './indexer-types.js';
+import { isFileStale } from './code-graph-db.js';
 
 interface ParserAdapter {
   parse(content: string, language: SupportedLanguage): ParseResult;
@@ -320,12 +321,19 @@ function parseJsTs(content: string): RawCapture[] {
       captures.push(currentClass);
     }
 
-    // Class methods
-    const methodMatch = currentClass
+    // Class methods — require at least one modifier keyword OR a method body opener `{`
+    // to distinguish declarations from bare function calls like `baz()`
+    const methodMatchWithModifier = currentClass
       ? line.match(
-        /^\s*(?:(?:public|private|protected|static|readonly|abstract|async|override|get|set)\s+)*(#?\w+)\s*\(([^)]*)\)\s*(?::\s*([^{]+))?\s*\{?/,
+        /^\s*(?:(?:public|private|protected|static|readonly|abstract|async|override|get|set)\s+)+(?:\*\s*)?(#?\w+)\s*(?:<[^>]*>)?\s*\(([^)]*)\)\s*(?::\s*([^{]+))?\s*\{?/,
       )
       : null;
+    const methodMatchShorthand = currentClass && !methodMatchWithModifier
+      ? line.match(
+        /^\s*(#?\w+)\s*\(([^)]*)\)\s*(?::\s*([^{]+))?\s*\{/,
+      )
+      : null;
+    const methodMatch = methodMatchWithModifier ?? methodMatchShorthand;
     if (methodMatch && currentClass) {
       const methodName = methodMatch[1];
       if (methodName !== 'constructor') {
@@ -448,6 +456,8 @@ function parsePython(content: string): RawCapture[] {
   const captures: RawCapture[] = [];
   const lines = content.split('\n');
   let currentClass: RawCapture | null = null;
+  let classIndent = 0; // indentation column of the class keyword
+  let classMethodIndent = -1; // indent of the first def in the class body (auto-detected)
   const pendingDecorators: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
@@ -457,6 +467,8 @@ function parsePython(content: string): RawCapture[] {
 
     if (currentClass && lineNum > currentClass.endLine) {
       currentClass = null;
+      classIndent = 0;
+      classMethodIndent = -1;
     }
 
     if (trimmedLine.startsWith('@')) {
@@ -464,14 +476,15 @@ function parsePython(content: string): RawCapture[] {
       continue;
     }
 
-    const classMatch = line.match(/^class\s+(\w+)(?:\(([^)]*)\))?/);
+    const classMatch = line.match(/^(\s*)class\s+(\w+)(?:\(([^)]*)\))?/);
     if (classMatch) {
-      const bases = classMatch[2]
-        ? classMatch[2].split(',').map(base => base.trim()).filter(Boolean)
+      classIndent = classMatch[1].length;
+      const bases = classMatch[3]
+        ? classMatch[3].split(',').map(base => base.trim()).filter(Boolean)
         : [];
       currentClass = {
-        name: classMatch[1], kind: 'class', startLine: lineNum,
-        endLine: findPythonBlockEndLine(lines, i), startColumn: 0,
+        name: classMatch[2], kind: 'class', startLine: lineNum,
+        endLine: findPythonBlockEndLine(lines, i), startColumn: classIndent,
         endColumn: line.length,
         extendsName: bases[0],
         signature: line.trim(),
@@ -485,7 +498,13 @@ function parsePython(content: string): RawCapture[] {
     if (funcMatch) {
       const indent = funcMatch[1].length;
       const name = funcMatch[2];
-      if (indent > 0 && currentClass) {
+      // Auto-detect class method indent from the first def inside the class body
+      const isClassMemberLevel = currentClass && indent > classIndent && (
+        classMethodIndent === -1
+          ? (classMethodIndent = indent, true)
+          : indent === classMethodIndent
+      );
+      if (isClassMemberLevel && currentClass) {
         const methodCapture: RawCapture = {
           name, kind: 'method', startLine: lineNum,
           endLine: findPythonBlockEndLine(lines, i), startColumn: indent,
@@ -644,16 +663,16 @@ export async function getParser(): Promise<ParserAdapter> {
   const parserEnv = process.env.SPECKIT_PARSER ?? 'treesitter';
 
   if (parserEnv === 'treesitter') {
-    if (treeSitterParser) return treeSitterParser;
-
     try {
       // Dynamic import avoids circular dependency (tree-sitter-parser imports extractEdges from here)
       const { TreeSitterParser } = await import('./tree-sitter-parser.js');
-      if (!TreeSitterParser.isReady()) {
-        await TreeSitterParser.init();
-        await TreeSitterParser.loadAllLanguages();
+      if (treeSitterParser && TreeSitterParser.isReady()) {
+        return treeSitterParser;
       }
-      treeSitterParser = new TreeSitterParser();
+
+      await TreeSitterParser.init();
+      await TreeSitterParser.loadAllLanguages();
+      treeSitterParser ??= new TreeSitterParser();
       return treeSitterParser;
     } catch (err: unknown) {
       // Reset so next call retries instead of returning a broken cached instance
@@ -1080,6 +1099,11 @@ export async function indexFiles(config: IndexerConfig): Promise<ParseResult[]> 
   for (const file of allFiles) {
     const language = detectLanguage(file);
     if (!language || !config.languages.includes(language)) continue;
+
+    // P1 perf: skip read+parse for files whose mtime matches the DB record.
+    // isFileStale returns true when the file is absent from the DB or its
+    // mtime has changed — only then do we pay the I/O + parse cost.
+    if (!isFileStale(file)) continue;
 
     try {
       const content = readFileSync(file, 'utf-8');

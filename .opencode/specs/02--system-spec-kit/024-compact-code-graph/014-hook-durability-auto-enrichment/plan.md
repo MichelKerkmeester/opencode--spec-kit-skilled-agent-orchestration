@@ -9,13 +9,15 @@ description: "Implementation order: fix reliability + security bugs first, then 
 ### Sub-phase B0: Hook Reliability + Security (items 16-21, 25-26)
 
 1. **Item 16: Cache race fix** (10-15 LOC)
-   - In hook-state.ts: add readAndClear() that returns payload then nulls
-   - In session-prime.ts: use readAndClear(), verify stdout success before clear
+    - In hook-state.ts: add readAndClear() that returns payload then nulls
+    - Intended: in session-prime.ts, only clear after stdout success is confirmed
+    - Actual outcome: the implementation reads before clear, but still clears persisted state before stdout write success is confirmed
 
 2. **Item 17: saveState() error propagation** (15-20 LOC)
-   - Change return type to boolean
-   - Wrap atomic write in try/catch, return false on failure
-   - Update callers to check return value
+    - Change return type to boolean
+    - Wrap atomic write in try/catch, return false on failure
+    - Update callers to check return value
+    - Implementation note: callers ended up logging `hookLog` warnings and continuing rather than propagating disk failures
 
 3. **Item 18: Injection fencing for recovered context** (15-20 LOC)
    - Wrap recovered context with `[SOURCE: hook-cache]` provenance markers
@@ -42,8 +44,9 @@ description: "Implementation order: fix reliability + security bugs first, then 
    - In session-prime.ts: check `Date.now() - cachedAt < CACHE_TTL_MS`
 
 8. **Item 26: Stop-hook save redesign** (15-25 LOC)
-   - Add `pendingStopSave` field to HookState (separate from pendingCompactPrime)
-   - Update session-stop.ts to use new field
+    - Planned: add `pendingStopSave` field to HookState (separate from pendingCompactPrime)
+    - Planned: update session-stop.ts to use new field
+    - Actual outcome: not implemented; `HookState` still has no `pendingStopSave` field
 
 ### Sub-phase B1: Token + Stale-on-Read (items 24, 27)
 
@@ -51,18 +54,20 @@ description: "Implementation order: fix reliability + security bugs first, then 
    - Include cache bucket in token summation
 
 10. **Item 24: ensureFreshFiles()** (76-104 LOC)
-    - Add `file_mtime_ms` column to code_files schema
-    - Implement `isFileStale(filePath)`: compare stored mtime vs fs.statSync mtime
-    - Implement `ensureFreshFiles(paths)`: batch stale check + conditional reindex
-    - Wire into query and context handlers
+     - Add `file_mtime_ms` column to code_files schema
+     - Implement `isFileStale(filePath)`: compare stored mtime vs fs.statSync mtime
+     - Implement `ensureFreshFiles(paths)`: batch stale check + conditional reindex
+     - Wire into query and context handlers
+     - Actual outcome: `ensureFreshFiles()` classifies paths as flat `stale`/`fresh`; the planned 3-tier threshold model was not implemented
 
 ### Sub-phase B2: MCP First-Call Priming (item 22)
 
 11. **Item 22: First-call detection + priming** (110-150 LOC)
-    - Track `sessionPrimed` flag in MCP server state
-    - On first tool call: detect via resolveTrustedSession()
-    - Auto-load: constitutional memories, code graph status, working set
-    - Wire into memory-surface.ts tool dispatch
+     - Track module-level `sessionPrimed` flag in MCP server state
+     - On first tool call: detect via resolveTrustedSession()
+     - Auto-load: constitutional memories and code graph status
+     - Wire into memory-surface.ts tool dispatch
+     - Known trade-off: the flag is process-global, so shared-process multi-session priming is not session-scoped
 
 ### Sub-phase B3: Auto-Enrichment (item 23)
 

@@ -2,13 +2,13 @@
 
 ## What This Is
 
-Right now, you have to manually run `code_graph_scan` before the code graph works. This phase makes the code graph automatically index itself when needed — no manual step required.
+Right now, you often have to manually run `code_graph_scan` before the code graph works. This phase adds a best-effort auto-index path so many query/context calls can recover automatically, even though manual scans are still sometimes needed.
 
 ## Plain-English Summary
 
 **Problem:** If you ask "who calls this function?" and the code graph hasn't been indexed, you get an empty result or an error. The user has to remember to run `code_graph_scan` first, which breaks the flow.
 
-**Solution:** Add a shared `ensureCodeGraphReady()` helper that checks if the graph is fresh before every query. If it's stale or empty, it triggers a quick reindex automatically.
+**Solution:** Add a shared `ensureCodeGraphReady()` helper that checks if the graph is fresh before every query/context call. If it's stale or empty, it attempts a quick reindex before continuing.
 
 ## What to Build
 
@@ -22,14 +22,19 @@ This helper is called at the top of `code_graph_context` and `code_graph_query`.
 
 ### Also improve `code_graph_status`:
 
-Make it report **true freshness** instead of just "last scan time":
-- "fresh" = indexed within 5 minutes and no file changes
-- "stale" = files changed since last index
+Make it report freshness from `detectState()` instead of just "last scan time":
+- "fresh" = graph is non-empty, git HEAD is unchanged, and tracked file mtimes still match
+- "stale" = git HEAD changed or tracked files drifted
 - "empty" = never indexed
+
+Current implementation does **not** apply a separate 5-minute age window.
 
 ### Update runtime docs:
 
-Add to all gate docs: "If `code_graph_status` shows stale, the server will auto-reindex on your next query."
+Document the narrower runtime behavior accurately:
+- `code_graph_context` and `code_graph_query` attempt best-effort auto-index before use
+- `code_graph_status` reports freshness only and does not auto-reindex
+- Auto-index failures are non-blocking and can still leave stale or empty results
 
 ## Files to Change
 
@@ -63,17 +68,30 @@ This is the **highest parity gain** of all proposals — every runtime benefits 
 
 ## Implementation Status (Post-Review Iterations 041-050)
 
+Most of Phase 019 shipped, but the behavior is narrower than the original target and two follow-up findings remain deferred.
+
 | Item | Status | Evidence |
 |------|--------|----------|
 | ensure-ready.ts shared helper | DONE | lib/code-graph/ensure-ready.ts (203 lines) |
 | Three freshness conditions (empty/HEAD/mtime) | DONE | detectState() lines 56-105 |
-| context.ts auto-trigger | DONE | ensureCodeGraphReady(process.cwd()) before buildContext |
-| query.ts auto-trigger | DONE | ensureCodeGraphReady(process.cwd()) before query dispatch |
-| status.ts true freshness reporting | DONE | getGraphFreshness() returns fresh/stale/empty |
+| context.ts auto-trigger | PARTIAL | Attempts `ensureCodeGraphReady(process.cwd())` before buildContext; failures are non-blocking |
+| query.ts auto-trigger | PARTIAL | Attempts `ensureCodeGraphReady(process.cwd())` before query dispatch; failures are non-blocking |
+| status.ts freshness reporting | PARTIAL | getGraphFreshness() returns fresh/stale/empty from `detectState()`; no 5-minute age check |
 | 10-second timeout guard | DONE | AUTO_INDEX_TIMEOUT_MS = 10_000 |
-| Selective reindex for stale files | DONE | SELECTIVE_REINDEX_THRESHOLD = 50 |
+| Selective reindex for stale files | PARTIAL | Threshold exists, but F048 leaves the selective path degraded |
 | Per-file mtime tracking | DONE | ensureFreshFiles() in code-graph-db.ts |
 
 ### Review Findings (iter 043)
 - F048 (P2): selective reindex passes raw file paths as includeGlobs. DEFERRED
 - F049 (P2): timeout via AbortController doesn't cancel indexFiles. DEFERRED (fire-and-forget is acceptable)
+
+## Known Limitations
+
+1. Freshness currently ignores any 5-minute age window. It only checks empty graph state, git HEAD drift, and tracked file mtimes.
+2. Debounce is global, not keyed by `rootDir`, because `lastCheckAt` and `lastCheckResult` are module-level state.
+3. New files are invisible to freshness detection until a full scan occurs, because only tracked `code_files` paths are checked.
+4. Deleted files can persist during auto-triggered indexing, because missing-file cleanup only runs in the scan handler full-scan path.
+5. Selective reindex is degraded in practice, because raw relative file paths are assigned to `includeGlobs` and can fall back to broader scanning. See F048.
+6. Auto-index errors are swallowed from the caller perspective. They are logged, but query/context continue and may return stale or empty results.
+7. Runtime docs must describe this as best-effort auto-index on query/context only. `code_graph_status` does not auto-reindex.
+8. Phase status should be treated as mostly shipped with follow-up gaps. F048 and F049 remain deferred, not completed.

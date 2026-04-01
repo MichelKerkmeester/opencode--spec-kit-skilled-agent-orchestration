@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: Tree-Sitter WASM Parser
 // ───────────────────────────────────────────────────────────────
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TreeSitterParser } from '../lib/code-graph/tree-sitter-parser.js';
 
 describe('TreeSitterParser', () => {
@@ -76,5 +76,45 @@ describe('TreeSitterParser', () => {
       const p = TreeSitterParser.loadAllLanguages().catch(() => {});
       expect(p).toBeInstanceOf(Promise);
     });
+  });
+});
+
+afterEach(() => {
+  vi.resetModules();
+  vi.restoreAllMocks();
+});
+
+describe('structural-indexer tree-sitter readiness integration', () => {
+  it('reconciles missing grammars even when a parser instance was already cached', async () => {
+    const parserState = { ready: false };
+    const treeSitterMocks = {
+      init: vi.fn(async () => {}),
+      loadAllLanguages: vi.fn(async () => {
+        parserState.ready = true;
+      }),
+      isReady: vi.fn(() => parserState.ready),
+    };
+
+    vi.resetModules();
+    vi.doMock('../lib/code-graph/tree-sitter-parser.js', () => ({
+      TreeSitterParser: class MockTreeSitterParser {
+        static init = treeSitterMocks.init;
+        static loadAllLanguages = treeSitterMocks.loadAllLanguages;
+        static isReady = treeSitterMocks.isReady;
+      },
+    }));
+
+    const { getParser } = await import('../lib/code-graph/structural-indexer.js');
+
+    const firstParser = await getParser();
+    expect(treeSitterMocks.init).toHaveBeenCalledTimes(1);
+    expect(treeSitterMocks.loadAllLanguages).toHaveBeenCalledTimes(1);
+
+    parserState.ready = false;
+
+    const secondParser = await getParser();
+    expect(treeSitterMocks.init).toHaveBeenCalledTimes(2);
+    expect(treeSitterMocks.loadAllLanguages).toHaveBeenCalledTimes(2);
+    expect(secondParser).toBe(firstParser);
   });
 });

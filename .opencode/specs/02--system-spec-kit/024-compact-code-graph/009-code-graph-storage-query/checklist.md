@@ -35,5 +35,5 @@ contextType: "implementation"
 ## P2
 - [x] `code_graph_query` supports `includeTransitive` for multi-hop traversal — BFS transitiveTraversal
 - [x] DB handles concurrent reads without corruption or locks — WAL journal mode enabled at initDb(), supports concurrent readers natively
-- [x] Schema versioning supports future migrations — SCHEMA_VERSION=1
+- [x] Schema versioning supports future migrations — SCHEMA_VERSION=3
 - [x] Orphaned node cleanup on re-scan — cleanupOrphans()

@@ -307,6 +307,13 @@ export function ensureFreshFiles(filePaths: string[]): { stale: string[]; fresh:
   return { stale, fresh };
 }
 
+/** Get all tracked file paths from the graph database */
+export function getTrackedFiles(): string[] {
+  const d = getDb();
+  const rows = d.prepare('SELECT file_path FROM code_files').all() as Array<{ file_path: string }>;
+  return rows.map((row) => row.file_path);
+}
+
 /** Remove a file and its nodes/edges from the graph */
 export function removeFile(filePath: string): void {
   const d = getDb();

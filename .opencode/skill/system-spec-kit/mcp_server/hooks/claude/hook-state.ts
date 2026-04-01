@@ -77,12 +77,17 @@ export function saveState(sessionId: string, state: HookState): boolean {
   }
 }
 
-/** Read pending compact prime, clear it from state, and return the cached value */
-export function readAndClearCompactPrime(sessionId: string): HookState['pendingCompactPrime'] {
+/** Read pending compact prime without clearing it from state */
+export function readCompactPrime(sessionId: string): HookState['pendingCompactPrime'] {
   const state = loadState(sessionId);
-  const pendingCompactPrime = state?.pendingCompactPrime ?? null;
-  if (!state || !pendingCompactPrime) {
-    return null;
+  return state?.pendingCompactPrime ?? null;
+}
+
+/** Clear pending compact prime from state (call after stdout write confirmed) */
+export function clearCompactPrime(sessionId: string): void {
+  const state = loadState(sessionId);
+  if (!state || !state.pendingCompactPrime) {
+    return;
   }
 
   const nextState: HookState = {
@@ -93,8 +98,19 @@ export function readAndClearCompactPrime(sessionId: string): HookState['pendingC
   if (!saveState(sessionId, nextState)) {
     hookLog('warn', 'state', `Failed to clear pending compact payload for session ${sessionId}`);
   }
+}
 
-  return pendingCompactPrime;
+/**
+ * Read pending compact prime, clear it from state, and return the cached value.
+ * @deprecated Use readCompactPrime() + clearCompactPrime() to avoid data loss
+ * if the process crashes between clear and stdout write.
+ */
+export function readAndClearCompactPrime(sessionId: string): HookState['pendingCompactPrime'] {
+  const prime = readCompactPrime(sessionId);
+  if (prime) {
+    clearCompactPrime(sessionId);
+  }
+  return prime;
 }
 
 /** Load, merge patch, save, and return updated state */

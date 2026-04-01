@@ -20,7 +20,7 @@ contextType: "implementation"
 - [x] `neighborhood` mode returns 1-hop structural expansion from resolved anchors
 - [x] `outline` mode returns file/package structure without deep expansion
 - [x] `impact` mode returns reverse dependencies (callers, importers)
-- [x] Structured output matches handler shape: `queryMode`, `resolvedAnchors`, `graphContext`, `textBrief`, `combinedSummary`, `nextActions`, `metadata`
+- [x] Structured output matches handler shape: `status`, `data.queryMode`, `data.anchors`, `data.graphContext`, `data.textBrief`, `data.combinedSummary`, `data.nextActions`, `data.metadata`
 - [x] Text fallback renders compact brief (not raw JSON dump) — formatTextBrief with never-drops
 - [x] Budget enforcement stays within `budgetTokens` target
 

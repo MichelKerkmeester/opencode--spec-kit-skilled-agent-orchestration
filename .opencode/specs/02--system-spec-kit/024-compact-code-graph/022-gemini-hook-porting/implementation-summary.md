@@ -14,7 +14,7 @@ description: "Full Gemini CLI hook suite: SessionStart, PreCompress, BeforeAgent
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 024-compact-code-graph/022-gemini-hook-porting |
+| **Spec Folder** | 022-gemini-hook-porting |
 | **Completed** | 2026-03-31 (1 item deferred) |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -44,11 +44,11 @@ Maps to Gemini's `BeforeAgent` event (one-shot after compression). Reads the cac
 
 ### Session Stop (hooks/gemini/session-stop.ts — 113 lines)
 
-Maps to Gemini's `SessionEnd` event. Tracks token usage and saves session state. Adapted from Claude's Stop hook but handles Gemini's different transcript format.
+Maps to Gemini's single `SessionEnd` event. It saves session state and can extract limited session context, but token tracking is still partial because Gemini transcript token usage is not parsed. Its regex-based spec detection is also shallow, so deeper nested phase paths can be truncated.
 
 ### Settings Registration (.gemini/settings.json)
 
-All hooks registered with correct lifecycle event mappings in the Gemini settings file.
+`.gemini/settings.json` is the expected user config target, not a checked-in repository file. Registration guidance exists, but the local workspace path must be verified before this can be treated as complete.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -62,9 +62,29 @@ All hooks registered with correct lifecycle event mappings in the Gemini setting
 | `hooks/gemini/session-prime.ts` | New | SessionStart hook — session priming (165 lines) |
 | `hooks/gemini/compact-cache.ts` | New | PreCompress hook — context caching (137 lines) |
 | `hooks/gemini/compact-inject.ts` | New | BeforeAgent hook — context injection (82 lines) |
-| `hooks/gemini/session-stop.ts` | New | SessionEnd hook — token tracking (113 lines) |
-| `.gemini/settings.json` | Modified | Hook registration block added |
+| `hooks/gemini/session-stop.ts` | New | SessionEnd hook — partial token tracking and shallow spec detection (113 lines) |
+| `.gemini/settings.json` | Expected user-local config | Hook registration target only; no checked-in repo file |
 <!-- /ANCHOR:files-changed -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The Gemini hook port shipped as runtime-specific hook scripts plus shared parsing helpers. Review confirmed the lifecycle mapping needed correction: Gemini uses one `SessionEnd` hook for stop handling, not `AfterAgent` plus `AfterModel`, so the documentation now reflects the actual event model and the remaining partial-token-tracking gap.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Document `.gemini/settings.json` as a user-local target | The repository does not include a checked-in settings file, so claiming completion without local workspace-path verification would overstate the status. |
+| Keep F056 open | `session-stop.ts` added a transcript-size guard, but `compact-cache.ts` still performs an unbounded transcript read in `tailFile()`. |
+| Call out shallow spec detection | The current regex only captures `.opencode/specs/<segment>/<segment>/`, which can truncate deeper nested phase paths and affect saved context accuracy. |
+<!-- /ANCHOR:decisions -->
 
 ---
 
@@ -75,3 +95,14 @@ All hooks registered with correct lifecycle event mappings in the Gemini setting
 - Tests: 327 passed, 23 failed (pre-existing, unrelated)
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
 <!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **User-local settings only** `.gemini/settings.json` is not checked into the repo. The workspace path may be stale and must be verified locally.
+2. **Partial token tracking** `session-stop.ts` does not parse Gemini transcript token usage.
+3. **Shallow nested spec detection** The Gemini stop flow uses regex-based shallow detection and can truncate deeper nested phase paths.
+4. **Incomplete transcript hardening** `compact-cache.ts` still uses unbounded `readFileSync(filePath, 'utf-8')`, so F056 remains open.
+<!-- /ANCHOR:limitations -->

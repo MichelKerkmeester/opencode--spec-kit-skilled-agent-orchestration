@@ -100,7 +100,10 @@ const COMPACTION_TOKEN_BUDGET = 4000;
 let constitutionalCache: ConstitutionalMemory[] | null = null;
 let constitutionalCacheTime = 0;
 const CONSTITUTIONAL_CACHE_TTL = 60000; // 1 minute
-let sessionPrimed = false;
+// Per-session priming tracker: a Set of session IDs that have been primed.
+// Replaces the previous process-global boolean to avoid skipping priming
+// for new sessions on long-lived MCP servers.
+const primedSessionIds: Set<string> = new Set();
 
 // T018: Session-level tracking for prime package and session_health
 const serverStartedAt = Date.now();
@@ -116,9 +119,21 @@ function getSessionTimestamps(): { serverStartedAt: number; lastToolCallAt: numb
   return { serverStartedAt, lastToolCallAt };
 }
 
-/** T018: Check if the session has been primed */
-function isSessionPrimed(): boolean {
-  return sessionPrimed;
+/**
+ * T018: Check if a specific session has been primed.
+ * When called without a sessionId, returns true if ANY session has been primed
+ * (backward-compatible with callers that don't track session IDs).
+ */
+function isSessionPrimed(sessionId?: string): boolean {
+  if (sessionId) {
+    return primedSessionIds.has(sessionId);
+  }
+  return primedSessionIds.size > 0;
+}
+
+/** Mark a specific session as primed */
+function markSessionPrimed(sessionId: string): void {
+  primedSessionIds.add(sessionId);
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -455,9 +470,14 @@ function buildPrimePackage(
 
 async function primeSessionIfNeeded(
   toolName: string,
-  toolArgs: Record<string, unknown>
+  toolArgs: Record<string, unknown>,
+  sessionId?: string,
 ): Promise<AutoSurfaceResult | null> {
-  if (sessionPrimed) {
+  // Derive a session key from explicit sessionId, tool args, or fall back to a default.
+  const effectiveSessionId = sessionId
+    ?? (typeof toolArgs.session_id === 'string' ? toolArgs.session_id : '__default__');
+
+  if (isSessionPrimed(effectiveSessionId)) {
     return null;
   }
 
@@ -474,7 +494,7 @@ async function primeSessionIfNeeded(
     const primePackage = buildPrimePackage(toolArgs, codeGraphStatus);
 
     // F045: Mark session as primed AFTER successful execution (not before try)
-    sessionPrimed = true;
+    markSessionPrimed(effectiveSessionId);
 
     // Phase 024 / Item 9: Record bootstrap telemetry for MCP auto-priming
     recordBootstrapEvent('mcp_auto', Date.now() - startTime, 'full');
@@ -513,8 +533,16 @@ async function primeSessionIfNeeded(
   }
 }
 
-function resetSessionPrimed(): void {
-  sessionPrimed = false;
+/**
+ * Reset priming state. When called with a sessionId, clears only that session.
+ * When called without arguments, clears all sessions (backward-compatible).
+ */
+function resetSessionPrimed(sessionId?: string): void {
+  if (sessionId) {
+    primedSessionIds.delete(sessionId);
+  } else {
+    primedSessionIds.clear();
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -630,6 +658,7 @@ export {
   recordToolCall,
   getSessionTimestamps,
   isSessionPrimed,
+  markSessionPrimed,
   getCodeGraphStatusSnapshot,
 };
 
