@@ -114,6 +114,26 @@ interface RerankerStatus {
 
 const cache = new Map<string, { results: RerankResult[]; timestamp: number }>();
 const CACHE_TTL = 300000; // 5 minutes
+const MAX_CACHE_ENTRIES = 200;
+
+/**
+ * Phase C: Enforce cache size bound.
+ * Follows the enforceCacheBound() pattern from graph-signals.ts.
+ * When the cache exceeds MAX_CACHE_ENTRIES, evicts the oldest entry
+ * by timestamp to prevent unbounded memory growth.
+ */
+function enforceCacheBound(): void {
+  if (cache.size <= MAX_CACHE_ENTRIES) return;
+  let oldestKey: string | null = null;
+  let oldestTime = Infinity;
+  for (const [key, entry] of cache) {
+    if (entry.timestamp < oldestTime) {
+      oldestTime = entry.timestamp;
+      oldestKey = key;
+    }
+  }
+  if (oldestKey) cache.delete(oldestKey);
+}
 
 const latencyTracker: { durations: number[] } = { durations: [] };
 const MAX_LATENCY_SAMPLES = 100;
@@ -443,21 +463,11 @@ async function rerankResults(
     }
 
     // Cache results — H19 FIX: use provider+options-aware cache key
+    // Phase C: enforceCacheBound() ensures MAX_CACHE_ENTRIES limit.
     if (useCache) {
       const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider, optionBits);
-      const MAX_CACHE_ENTRIES = 200;
-      if (cache.size >= MAX_CACHE_ENTRIES) {
-        let oldestKey: string | null = null;
-        let oldestTime = Infinity;
-        for (const [key, entry] of cache) {
-          if (entry.timestamp < oldestTime) {
-            oldestTime = entry.timestamp;
-            oldestKey = key;
-          }
-        }
-        if (oldestKey) cache.delete(oldestKey);
-      }
       cache.set(cacheKey, { results, timestamp: Date.now() });
+      enforceCacheBound();
     }
 
     recordSuccess(provider);
@@ -568,4 +578,7 @@ export const __testables = {
   circuitBreakers,
   CIRCUIT_FAILURE_THRESHOLD,
   CIRCUIT_COOLDOWN_MS,
+  enforceCacheBound,
+  MAX_CACHE_ENTRIES,
+  cache,
 };

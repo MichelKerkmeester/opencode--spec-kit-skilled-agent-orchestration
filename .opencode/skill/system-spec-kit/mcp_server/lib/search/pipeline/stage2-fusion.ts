@@ -18,8 +18,9 @@
 // Applied ONCE here only — this is the architectural guard against
 // The G2 double-weighting recurrence bug.
 //
-// SIGNAL APPLICATION ORDER (must not be reordered — 12 steps):
+// SIGNAL APPLICATION ORDER (must not be reordered — 13 steps):
 // 1.  Session boost           — working-memory attention amplification
+// 1a. Recency fusion          — time-decay bonus for recent memories
 // 2.  Causal boost            — graph-traversal neighbor amplification
 // 2a. Co-activation spreading — spreading activation from top-N seeds
 // 2b. Community co-retrieval  — N2c inject community co-members
@@ -69,8 +70,10 @@ import {
   isCommunityDetectionEnabled,
   isGraphCalibrationProfileEnabled,
   isGraphSignalsEnabled,
+  isUsageRankingEnabled,
   resolveGraphWalkRolloutState,
   isLearnedStage2CombinerEnabled,
+  isResultProvenanceEnabled,
 } from '../search-flags.js';
 import { applyCalibrationProfile } from '../graph-calibration.js';
 import { shadowScore, extractFeatureVector, loadModel } from '@spec-kit/shared/ranking/learned-combiner';
@@ -84,6 +87,8 @@ import { enrichResultsWithValidationMetadata } from '../validation-metadata.js';
 import { executeStage2bEnrichment } from './stage2b-enrichment.js';
 import { applyCommunityBoost } from '../../graph/community-detection.js';
 import { applyGraphSignals } from '../../graph/graph-signals.js';
+import { computeUsageBoost } from '../../graph/usage-ranking-signal.js';
+import { ensureUsageColumn } from '../../graph/usage-tracking.js';
 import { isGraphUnifiedEnabled } from '../graph-flags.js';
 import { sortDeterministicRows } from './ranking-contract.js';
 
@@ -116,6 +121,14 @@ interface ValidationMetadataLike {
 /** Number of top results used as seeds for co-activation spreading. */
 const SPREAD_ACTIVATION_TOP_N = 5;
 const DEFAULT_LEARNED_STAGE2_MODEL_RELATIVE_PATH = path.join('models', 'learned-stage2-combiner.json');
+
+/** Recency fusion weight — controls how much recency score contributes to the fused score.
+ *  Env-tunable via SPECKIT_RECENCY_FUSION_WEIGHT (default 0.07). */
+const RECENCY_FUSION_WEIGHT = parseFloat(process.env.SPECKIT_RECENCY_FUSION_WEIGHT || '') || 0.07;
+
+/** Recency fusion cap — maximum bonus a candidate can receive from recency fusion.
+ *  Env-tunable via SPECKIT_RECENCY_FUSION_CAP (default 0.10). */
+const RECENCY_FUSION_CAP = parseFloat(process.env.SPECKIT_RECENCY_FUSION_CAP || '') || 0.10;
 
 const MIN_VALIDATION_MULTIPLIER = 0.8;
 const MAX_VALIDATION_MULTIPLIER = 1.2;
@@ -381,6 +394,139 @@ function applyGraphCalibrationProfileToResults(results: PipelineRow[]): Pipeline
 }
 
 /**
+ * Phase C T026: Populate graphEvidence provenance on each result that received
+ * a graph-based boost. Extracts contributing causal edges, co-activation edges,
+ * and community membership from the database. Gated behind SPECKIT_RESULT_PROVENANCE.
+ *
+ * Fail-open: returns results unchanged on any error.
+ */
+function populateGraphEvidence(results: PipelineRow[]): PipelineRow[] {
+  if (!isResultProvenanceEnabled()) return results;
+  if (!Array.isArray(results) || results.length === 0) return results;
+
+  let db: Database.Database | null = null;
+  try {
+    db = requireDb();
+  } catch (_err: unknown) {
+    return results;
+  }
+
+  // Collect IDs of results that received any graph-based contribution
+  const graphBoostedIds: number[] = [];
+  for (const row of results) {
+    const gc = row.graphContribution as Record<string, unknown> | undefined;
+    if (!gc) continue;
+    const totalDelta = typeof gc.totalDelta === 'number' ? gc.totalDelta : 0;
+    if (totalDelta > 0 || gc.injected === true) {
+      graphBoostedIds.push(row.id);
+    }
+  }
+
+  if (graphBoostedIds.length === 0) return results;
+
+  // Batch-fetch contributing causal edges for all boosted IDs
+  const edgeMap = new Map<number, Array<{ sourceId: number; targetId: number; relation: string; strength: number }>>();
+  try {
+    const placeholders = graphBoostedIds.map(() => '?').join(', ');
+    const edgeRows = (db.prepare(`
+      SELECT source_id, target_id, relation, COALESCE(strength, 1.0) AS strength
+      FROM causal_edges
+      WHERE source_id IN (${placeholders}) OR target_id IN (${placeholders})
+    `) as Database.Statement).all(
+      ...graphBoostedIds.map(String),
+      ...graphBoostedIds.map(String),
+    ) as Array<{ source_id: number; target_id: number; relation: string; strength: number }>;
+
+    for (const edge of edgeRows) {
+      const sourceId = typeof edge.source_id === 'number' ? edge.source_id : Number(edge.source_id);
+      const targetId = typeof edge.target_id === 'number' ? edge.target_id : Number(edge.target_id);
+      if (!Number.isFinite(sourceId) || !Number.isFinite(targetId)) continue;
+
+      const entry = {
+        sourceId,
+        targetId,
+        relation: typeof edge.relation === 'string' ? edge.relation : 'unknown',
+        strength: typeof edge.strength === 'number' && Number.isFinite(edge.strength) ? edge.strength : 1.0,
+      };
+
+      // Associate edge with both source and target if they are in the boosted set
+      const boostedIdSet = new Set(graphBoostedIds);
+      for (const id of [sourceId, targetId]) {
+        if (boostedIdSet.has(id)) {
+          const existing = edgeMap.get(id) ?? [];
+          existing.push(entry);
+          edgeMap.set(id, existing);
+        }
+      }
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`[stage2-fusion] provenance edge fetch failed: ${message}`);
+  }
+
+  // Batch-fetch community memberships for boosted IDs
+  const communityMap = new Map<number, Array<{ communityId: number; summary?: string }>>();
+  try {
+    const placeholders = graphBoostedIds.map(() => '?').join(', ');
+    const communityRows = (db.prepare(`
+      SELECT cm.memory_id, cm.community_id, c.summary
+      FROM community_members cm
+      LEFT JOIN communities c ON c.id = cm.community_id
+      WHERE cm.memory_id IN (${placeholders})
+    `) as Database.Statement).all(
+      ...graphBoostedIds.map(String),
+    ) as Array<{ memory_id: number; community_id: number; summary?: string }>;
+
+    for (const row of communityRows) {
+      const memoryId = typeof row.memory_id === 'number' ? row.memory_id : Number(row.memory_id);
+      if (!Number.isFinite(memoryId)) continue;
+      const existing = communityMap.get(memoryId) ?? [];
+      existing.push({
+        communityId: typeof row.community_id === 'number' ? row.community_id : Number(row.community_id),
+        summary: typeof row.summary === 'string' ? row.summary : undefined,
+      });
+      communityMap.set(memoryId, existing);
+    }
+  } catch (err: unknown) {
+    // Community tables may not exist — fail-open
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`[stage2-fusion] provenance community fetch failed (non-fatal): ${message}`);
+  }
+
+  // Attach graphEvidence to each boosted result
+  return results.map((row) => {
+    const gc = row.graphContribution as Record<string, unknown> | undefined;
+    if (!gc) return row;
+    const totalDelta = typeof gc.totalDelta === 'number' ? gc.totalDelta : 0;
+    if (totalDelta <= 0 && gc.injected !== true) return row;
+
+    const edges = edgeMap.get(row.id) ?? [];
+    const communities = communityMap.get(row.id) ?? [];
+
+    // Build boost factors from the graph contribution deltas
+    const boostFactors: Array<{ type: string; delta: number }> = [];
+    const causalDelta = typeof gc.causalDelta === 'number' ? gc.causalDelta : 0;
+    const coActivationDelta = typeof gc.coActivationDelta === 'number' ? gc.coActivationDelta : 0;
+    const communityDelta = typeof gc.communityDelta === 'number' ? gc.communityDelta : 0;
+    const graphSignalDelta = typeof gc.graphSignalDelta === 'number' ? gc.graphSignalDelta : 0;
+
+    if (causalDelta !== 0) boostFactors.push({ type: 'causal', delta: causalDelta });
+    if (coActivationDelta !== 0) boostFactors.push({ type: 'co-activation', delta: coActivationDelta });
+    if (communityDelta !== 0) boostFactors.push({ type: 'community', delta: communityDelta });
+    if (graphSignalDelta !== 0) boostFactors.push({ type: 'graph-signals', delta: graphSignalDelta });
+
+    return {
+      ...row,
+      graphEvidence: {
+        edges,
+        communities,
+        boostFactors,
+      },
+    };
+  });
+}
+
+/**
  * Write an FSRS strengthening update for a single memory access.
  *
  * Mirrors the `strengthenOnAccess` logic from the legacy memory-search
@@ -632,6 +778,65 @@ function applyFeedbackSignals(
   });
 }
 
+function applyUsageRankingBoost(
+  db: Database.Database,
+  results: PipelineRow[],
+): PipelineRow[] {
+  if (!isUsageRankingEnabled() || !Array.isArray(results) || results.length === 0) {
+    return results;
+  }
+
+  try {
+    ensureUsageColumn(db);
+    const resultIds = results
+      .map((row) => row.id)
+      .filter((id): id is number => typeof id === 'number' && Number.isFinite(id));
+
+    if (resultIds.length === 0) {
+      return results;
+    }
+
+    const placeholders = resultIds.map(() => '?').join(',');
+    const usageRows = db.prepare(`
+      SELECT id, COALESCE(access_count, 0) AS access_count
+      FROM memory_index
+      WHERE id IN (${placeholders})
+    `).all(...resultIds) as Array<{ id: number; access_count: number }>;
+
+    if (usageRows.length === 0) {
+      return results;
+    }
+
+    const maxAccess = usageRows.reduce((currentMax, row) =>
+      Math.max(currentMax, Number.isFinite(row.access_count) ? row.access_count : 0), 0);
+
+    if (maxAccess <= 0) {
+      return results;
+    }
+
+    const usageMap = new Map(usageRows.map((row) => [row.id, row.access_count]));
+    const boosted = results.map((row) => {
+      const accessCount = usageMap.get(row.id) ?? 0;
+      const usageBoost = computeUsageBoost(accessCount, maxAccess);
+
+      if (usageBoost <= 0) {
+        return row;
+      }
+
+      return {
+        ...withSyncedScoreAliases(row, resolveBaseScore(row) + usageBoost),
+        usageBoost,
+      };
+    });
+
+    return sortDeterministicRows(boosted as Array<PipelineRow & { id: number }>);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`[stage2-fusion] usage ranking failed: ${message}`);
+    return results;
+  }
+}
+
 /**
  * Apply FSRS testing effect (strengthening write-back) for all accessed memories.
  *
@@ -721,8 +926,9 @@ function recordAdaptiveAccessSignals(
  * applied. The ordering is fixed and must not be changed without updating
  * the architectural documentation (see types.ts Stage2 comment block).
  *
- * Signal application order (12 steps):
+ * Signal application order (13 steps):
  *   1.  Session boost      (hybrid only — working memory attention)
+ *   1a. Recency fusion     (all types — time-decay bonus)
  *   2.  Causal boost       (hybrid only — graph-traversal amplification)
  *   2a. Co-activation      (spreading activation from top-N seeds)
  *   2b. Community boost    (N2c — inject co-members)
@@ -787,6 +993,38 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
       console.warn(`[stage2-fusion] session boost failed: ${message}`);
       metadata.sessionBoostApplied = 'failed';
     }
+  }
+
+  // -- 1a. Recency fusion --
+  // Applies a time-decay bonus to each candidate based on its created_at timestamp.
+  // Uses computeRecencyScore (already imported but previously unused in hybrid path).
+  // Bonus is capped at RECENCY_FUSION_CAP and clamped to keep score in [0, 1].
+  try {
+    let recencyBoostedCount = 0;
+    results = results.map((row) => {
+      const recencyTimestamp = (row.created_at as string | undefined) ?? '';
+      const importanceTier = (row.importance_tier as string | undefined) ?? 'normal';
+      if (!recencyTimestamp) return row;
+
+      const recencyScore = computeRecencyScore(recencyTimestamp, importanceTier);
+      const bonus = Math.min(RECENCY_FUSION_CAP, recencyScore * RECENCY_FUSION_WEIGHT);
+      if (bonus <= 0) return row;
+
+      const baseScore = resolveBaseScore(row);
+      const boostedScore = Math.min(1.0, baseScore + bonus);
+      if (boostedScore === baseScore) return row;
+
+      recencyBoostedCount++;
+      return withSyncedScoreAliases(row, boostedScore);
+    });
+    if (recencyBoostedCount > 0) {
+      syncScoreAliasesInPlace(results);
+      (metadata as Record<string, unknown>).recencyFusionApplied = true;
+      (metadata as Record<string, unknown>).recencyFusionBoosted = recencyBoostedCount;
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`[stage2-fusion] recency fusion failed: ${message}`);
   }
 
   // -- 2. Causal boost --
@@ -930,6 +1168,27 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] graph signals failed: ${message}`);
     }
+  }
+
+  // -- 2d. Usage-weighted ranking (Phase D T034) --
+  if (isUsageRankingEnabled()) {
+    try {
+      const db = requireDb();
+      results = applyUsageRankingBoost(db, results);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`[stage2-fusion] usage ranking skipped (db unavailable): ${message}`);
+    }
+  }
+
+  // -- 2e. Graph evidence provenance (Phase C T026) --
+  // Populate graphEvidence on results that received graph-based boosts.
+  // Gated behind SPECKIT_RESULT_PROVENANCE. Fail-open.
+  try {
+    results = populateGraphEvidence(results);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`[stage2-fusion] graph evidence provenance failed: ${message}`);
   }
 
   // -- 3. Testing effect (FSRS write-back) --
@@ -1115,6 +1374,7 @@ export const __testables = {
   applyIntentWeightsToResults,
   applyArtifactRouting,
   applyFeedbackSignals,
+  applyUsageRankingBoost,
   applyTestingEffect,
   enrichResultsWithAnchorMetadata,
   enrichResultsWithValidationMetadata,

@@ -603,7 +603,34 @@ function getIntentDescription(intent: IntentType): string {
   return descriptions[intent] || 'Unknown intent';
 }
 
-/* --- 4. EXPORTS --- */
+/* --- 4. INTENT-TO-PROFILE MAPPING --- */
+
+/**
+ * Phase C: Intent-to-profile auto-routing.
+ * Maps detected intent types to the most appropriate response profile.
+ * Used when no explicit profile is specified by the caller.
+ */
+const INTENT_TO_PROFILE: Readonly<Record<IntentType, 'quick' | 'research' | 'debug'>> = {
+  fix_bug: 'debug',
+  security_audit: 'debug',
+  understand: 'research',
+  find_spec: 'research',
+  find_decision: 'research',
+  add_feature: 'quick',
+  refactor: 'quick',
+} as const;
+
+/**
+ * Get the auto-routed response profile for a detected intent.
+ *
+ * @param intent - Detected intent type
+ * @returns Response profile name or null if no mapping exists
+ */
+function getProfileForIntent(intent: IntentType): 'quick' | 'research' | 'debug' | null {
+  return INTENT_TO_PROFILE[intent] ?? null;
+}
+
+/* --- 5. EXPORTS --- */
 
 /**
  * C138: Intent-to-MMR-lambda mapping.
@@ -627,6 +654,7 @@ export {
   INTENT_PATTERNS,
   INTENT_WEIGHT_ADJUSTMENTS,
   INTENT_LAMBDA_MAP,
+  INTENT_TO_PROFILE,
 
   // Scoring
   calculateKeywordScore,
@@ -645,6 +673,7 @@ export {
   isValidIntent,
   getValidIntents,
   getIntentDescription,
+  getProfileForIntent,
 };
 
 export type {

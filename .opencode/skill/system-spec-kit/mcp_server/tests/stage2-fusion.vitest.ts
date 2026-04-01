@@ -358,4 +358,56 @@ describe('Stage 2 fusion regression coverage', () => {
     expect(insertRun).toHaveBeenNthCalledWith(1, 1, 'access', 1.0, 'graph rollout regression', '', '{}');
     expect(insertRun).toHaveBeenNthCalledWith(2, 2, 'access', 1.0, 'graph rollout regression', '', '{}');
   });
+
+  it('reports sessionBoostApplied as "enabled" when boost runs but finds no data', async () => {
+    vi.doMock('../lib/search/session-boost', () => ({
+      applySessionBoost: <T>(rows: T[]) => ({
+        results: rows,
+        metadata: { applied: false, enabled: true, sessionId: 'test-001', boostedCount: 0, maxBoostApplied: 0 },
+      }),
+    }));
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const input = createStage2Input([
+      { id: 1, score: 0.5, similarity: 50 },
+    ]);
+    input.config.searchType = 'hybrid';
+    input.config.enableSessionBoost = true;
+    input.config.sessionId = 'test-001';
+
+    const result = await executeStage2(input);
+    expect(result.metadata.sessionBoostApplied).toBe('enabled');
+  });
+
+  it('reports causalBoostApplied as "enabled" when boost runs but finds no edges', async () => {
+    vi.doMock('../lib/search/causal-boost', () => ({
+      applyCausalBoost: <T>(rows: T[]) => ({
+        results: rows,
+        metadata: { applied: false, enabled: true, boostedCount: 0, injectedCount: 0, maxBoostApplied: 0, traversalDepth: 2 },
+      }),
+    }));
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const input = createStage2Input([
+      { id: 1, score: 0.5, similarity: 50 },
+    ]);
+    input.config.searchType = 'hybrid';
+    input.config.enableCausalBoost = true;
+
+    const result = await executeStage2(input);
+    expect(result.metadata.causalBoostApplied).toBe('enabled');
+  });
+
+  it('reports sessionBoostApplied as "off" when feature is disabled', async () => {
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const input = createStage2Input([
+      { id: 1, score: 0.5, similarity: 50 },
+    ]);
+    input.config.searchType = 'hybrid';
+    input.config.enableSessionBoost = false;
+    input.config.sessionId = 'test-001';
+
+    const result = await executeStage2(input);
+    expect(result.metadata.sessionBoostApplied).toBe('off');
+  });
 });

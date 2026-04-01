@@ -4,11 +4,12 @@
 // Tests:
 // 1. Table creation (initScoringObservability)
 // 2. Sampling rate (~5% over 1000 calls)
-// 3. Observation logging — N4 fields populated
+// 3. Observation logging — fields populated
 // 4. Observation logging — TM-01 fields populated
 // 5. Stats aggregation
 // 6. Fail-safe behavior (logging errors don't affect scoring)
 // 7. No scoring behavior change when observability is active
+// Phase D cleanup: N4 novelty boost fields removed (dead code).
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
@@ -26,7 +27,6 @@ import {
 import {
   calculateFiveFactorScore,
   calculateCompositeScore,
-  calculateNoveltyBoost,
   INTERFERENCE_PENALTY_COEFFICIENT,
 } from '../lib/scoring/composite-scoring';
 
@@ -68,7 +68,6 @@ describe('T010-1: Table Creation (initScoringObservability)', () => {
   afterEach(() => {
     db.close();
     resetDb();
-    delete process.env.SPECKIT_NOVELTY_BOOST;
     delete process.env.SPECKIT_INTERFERENCE_SCORE;
   });
 
@@ -88,8 +87,6 @@ describe('T010-1: Table Creation (initScoringObservability)', () => {
     expect(colNames).toContain('memory_id');
     expect(colNames).toContain('query_id');
     expect(colNames).toContain('timestamp');
-    expect(colNames).toContain('novelty_boost_applied');
-    expect(colNames).toContain('novelty_boost_value');
     expect(colNames).toContain('memory_age_days');
     expect(colNames).toContain('interference_applied');
     expect(colNames).toContain('interference_score');
@@ -157,7 +154,7 @@ describe('T010-2: Sampling Rate (~5%)', () => {
     }
   });
 
-  it('T010-2f: boundary: Math.random = 0.0499 → sampled', () => {
+  it('T010-2f: boundary: Math.random = 0.0499 -> sampled', () => {
     const mockRandom = vi.spyOn(Math, 'random').mockReturnValue(0.0499);
     try {
       expect(shouldSample()).toBe(true);
@@ -166,7 +163,7 @@ describe('T010-2: Sampling Rate (~5%)', () => {
     }
   });
 
-  it('T010-2g: boundary: Math.random = 0.05 → not sampled', () => {
+  it('T010-2g: boundary: Math.random = 0.05 -> not sampled', () => {
     const mockRandom = vi.spyOn(Math, 'random').mockReturnValue(0.05);
     try {
       expect(shouldSample()).toBe(false);
@@ -176,8 +173,8 @@ describe('T010-2: Sampling Rate (~5%)', () => {
   });
 });
 
-// 3. Observation Logging — N4 Fields
-describe('T010-3: Observation Logging (N4 fields)', () => {
+// 3. Observation Logging — Core Fields
+describe('T010-3: Observation Logging (core fields)', () => {
   let db: Database.Database;
 
   beforeEach(() => {
@@ -189,7 +186,6 @@ describe('T010-3: Observation Logging (N4 fields)', () => {
   afterEach(() => {
     db.close();
     resetDb();
-    delete process.env.SPECKIT_NOVELTY_BOOST;
     delete process.env.SPECKIT_INTERFERENCE_SCORE;
   });
 
@@ -198,8 +194,6 @@ describe('T010-3: Observation Logging (N4 fields)', () => {
       memoryId: 42,
       queryId: 'test-q-1',
       timestamp: new Date().toISOString(),
-      noveltyBoostApplied: true,
-      noveltyBoostValue: 0.12,
       memoryAgeDays: 0.5,
       interferenceApplied: false,
       interferenceScore: 0,
@@ -215,13 +209,11 @@ describe('T010-3: Observation Logging (N4 fields)', () => {
     expect(rows[0].query_id).toBe('test-q-1');
   });
 
-  it('T010-3b: N4 fields are persisted correctly', () => {
+  it('T010-3b: memory_age_days field is persisted correctly', () => {
     logScoringObservation({
       memoryId: 1,
-      queryId: 'n4-test',
+      queryId: 'age-test',
       timestamp: new Date().toISOString(),
-      noveltyBoostApplied: true,
-      noveltyBoostValue: 0.1,
       memoryAgeDays: 1.0,
       interferenceApplied: false,
       interferenceScore: 0,
@@ -232,30 +224,7 @@ describe('T010-3: Observation Logging (N4 fields)', () => {
     });
 
     const row = db.prepare('SELECT * FROM scoring_observations LIMIT 1').get() as Record<string, unknown>;
-    expect(row.novelty_boost_applied).toBe(1);
-    expect(row.novelty_boost_value).toBeCloseTo(0.1, 3);
     expect(row.memory_age_days).toBeCloseTo(1.0, 3);
-  });
-
-  it('T010-3c: N4 not applied — persisted with 0 values', () => {
-    logScoringObservation({
-      memoryId: 2,
-      queryId: 'n4-not-applied',
-      timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false,
-      noveltyBoostValue: 0,
-      memoryAgeDays: 15.0,
-      interferenceApplied: false,
-      interferenceScore: 0,
-      interferencePenalty: 0,
-      scoreBeforeBoosts: 0.6,
-      scoreAfterBoosts: 0.6,
-      scoreDelta: 0,
-    });
-
-    const row = db.prepare('SELECT * FROM scoring_observations LIMIT 1').get() as Record<string, unknown>;
-    expect(row.novelty_boost_applied).toBe(0);
-    expect(row.novelty_boost_value).toBe(0);
   });
 });
 
@@ -272,7 +241,6 @@ describe('T010-4: Observation Logging (TM-01 fields)', () => {
   afterEach(() => {
     db.close();
     resetDb();
-    delete process.env.SPECKIT_NOVELTY_BOOST;
     delete process.env.SPECKIT_INTERFERENCE_SCORE;
   });
 
@@ -281,8 +249,6 @@ describe('T010-4: Observation Logging (TM-01 fields)', () => {
       memoryId: 10,
       queryId: 'tm01-test',
       timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false,
-      noveltyBoostValue: 0,
       memoryAgeDays: 20,
       interferenceApplied: true,
       interferenceScore: 3.0,
@@ -303,8 +269,6 @@ describe('T010-4: Observation Logging (TM-01 fields)', () => {
       memoryId: 11,
       queryId: 'tm01-not-applied',
       timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false,
-      noveltyBoostValue: 0,
       memoryAgeDays: 5,
       interferenceApplied: false,
       interferenceScore: 0,
@@ -325,8 +289,6 @@ describe('T010-4: Observation Logging (TM-01 fields)', () => {
       memoryId: 12,
       queryId: 'delta-test',
       timestamp: new Date().toISOString(),
-      noveltyBoostApplied: true,
-      noveltyBoostValue: 0.1,
       memoryAgeDays: 0.5,
       interferenceApplied: true,
       interferenceScore: 2.0,
@@ -361,9 +323,7 @@ describe('T010-5: Stats Aggregation (getScoringStats)', () => {
   it('T010-5a: empty table returns zero-value stats', () => {
     const stats = getScoringStats();
     expect(stats.totalObservations).toBe(0);
-    expect(stats.avgNoveltyBoost).toBe(0);
     expect(stats.avgInterferencePenalty).toBe(0);
-    expect(stats.pctWithNoveltyBoost).toBe(0);
     expect(stats.pctWithInterferencePenalty).toBe(0);
     expect(stats.avgScoreDelta).toBe(0);
   });
@@ -374,8 +334,6 @@ describe('T010-5: Stats Aggregation (getScoringStats)', () => {
         memoryId: i,
         queryId: `q${i}`,
         timestamp: new Date().toISOString(),
-        noveltyBoostApplied: false,
-        noveltyBoostValue: 0,
         memoryAgeDays: 10,
         interferenceApplied: false,
         interferenceScore: 0,
@@ -389,43 +347,16 @@ describe('T010-5: Stats Aggregation (getScoringStats)', () => {
     expect(stats.totalObservations).toBe(5);
   });
 
-  it('T010-5c: avgNoveltyBoost computed from applied-only observations', () => {
-    // 2 with N4 applied (0.1 and 0.2), 1 without
-    logScoringObservation({
-      memoryId: 1, queryId: 'q1', timestamp: new Date().toISOString(),
-      noveltyBoostApplied: true, noveltyBoostValue: 0.1, memoryAgeDays: 0.5,
-      interferenceApplied: false, interferenceScore: 0, interferencePenalty: 0,
-      scoreBeforeBoosts: 0.5, scoreAfterBoosts: 0.6, scoreDelta: 0.1,
-    });
-    logScoringObservation({
-      memoryId: 2, queryId: 'q2', timestamp: new Date().toISOString(),
-      noveltyBoostApplied: true, noveltyBoostValue: 0.2, memoryAgeDays: 0.2,
-      interferenceApplied: false, interferenceScore: 0, interferencePenalty: 0,
-      scoreBeforeBoosts: 0.4, scoreAfterBoosts: 0.6, scoreDelta: 0.2,
-    });
-    logScoringObservation({
-      memoryId: 3, queryId: 'q3', timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false, noveltyBoostValue: 0, memoryAgeDays: 20,
-      interferenceApplied: false, interferenceScore: 0, interferencePenalty: 0,
-      scoreBeforeBoosts: 0.7, scoreAfterBoosts: 0.7, scoreDelta: 0,
-    });
-
-    const stats = getScoringStats();
-    expect(stats.totalObservations).toBe(3);
-    expect(stats.avgNoveltyBoost).toBeCloseTo(0.15, 3); // (0.1 + 0.2) / 2
-    expect(stats.pctWithNoveltyBoost).toBeCloseTo(66.67, 1); // 2/3 * 100
-  });
-
   it('T010-5d: avgInterferencePenalty computed from applied-only observations', () => {
     logScoringObservation({
       memoryId: 1, queryId: 'q1', timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false, noveltyBoostValue: 0, memoryAgeDays: 10,
+      memoryAgeDays: 10,
       interferenceApplied: true, interferenceScore: 2.0, interferencePenalty: 0.16,
       scoreBeforeBoosts: 0.8, scoreAfterBoosts: 0.64, scoreDelta: -0.16,
     });
     logScoringObservation({
       memoryId: 2, queryId: 'q2', timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false, noveltyBoostValue: 0, memoryAgeDays: 10,
+      memoryAgeDays: 10,
       interferenceApplied: false, interferenceScore: 0, interferencePenalty: 0,
       scoreBeforeBoosts: 0.5, scoreAfterBoosts: 0.5, scoreDelta: 0,
     });
@@ -439,7 +370,6 @@ describe('T010-5: Stats Aggregation (getScoringStats)', () => {
     resetDb(); // clear the db handle
     const stats = getScoringStats();
     expect(stats.totalObservations).toBe(0);
-    expect(stats.avgNoveltyBoost).toBe(0);
   });
 });
 
@@ -447,7 +377,6 @@ describe('T010-5: Stats Aggregation (getScoringStats)', () => {
 describe('T010-6: Fail-Safe Behavior', () => {
   afterEach(() => {
     resetDb();
-    delete process.env.SPECKIT_NOVELTY_BOOST;
     delete process.env.SPECKIT_INTERFERENCE_SCORE;
   });
 
@@ -457,8 +386,6 @@ describe('T010-6: Fail-Safe Behavior', () => {
       memoryId: 1,
       queryId: 'safe-test',
       timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false,
-      noveltyBoostValue: 0,
       memoryAgeDays: 0,
       interferenceApplied: false,
       interferenceScore: 0,
@@ -507,8 +434,6 @@ describe('T010-6: Fail-Safe Behavior', () => {
         memoryId: 1,
         queryId: 'no-table',
         timestamp: new Date().toISOString(),
-        noveltyBoostApplied: false,
-        noveltyBoostValue: 0,
         memoryAgeDays: 0,
         interferenceApplied: false,
         interferenceScore: 0,
@@ -543,7 +468,6 @@ describe('T010-7: No Scoring Behavior Change When Observability Active', () => {
   afterEach(() => {
     db.close();
     resetDb();
-    delete process.env.SPECKIT_NOVELTY_BOOST;
     delete process.env.SPECKIT_INTERFERENCE_SCORE;
   });
 
@@ -573,16 +497,6 @@ describe('T010-7: No Scoring Behavior Change When Observability Active', () => {
     }
   });
 
-  it('T010-7c: N4 boost is REMOVED — calculateNoveltyBoost always returns 0', () => {
-    process.env.SPECKIT_NOVELTY_BOOST = 'true'; // flag is inert — function always returns 0
-    const freshRow = { ...BASE_ROW, created_at: hoursAgo(1) };
-    const oldRow = { ...BASE_ROW, created_at: daysAgo(100) };
-
-    // With N4 removed, both get 0 novelty boost → scores differ only by base factors
-    expect(calculateNoveltyBoost(freshRow.created_at)).toBe(0);
-    expect(calculateNoveltyBoost(oldRow.created_at)).toBe(0);
-  });
-
   it('T010-7d: TM-01 penalty reduces score (never increases it)', () => {
     process.env.SPECKIT_INTERFERENCE_SCORE = 'true';
     const rowWithInterference = { ...BASE_ROW, interference_score: 3.0 };
@@ -594,13 +508,10 @@ describe('T010-7: No Scoring Behavior Change When Observability Active', () => {
     expect(scoreWith).toBeLessThanOrEqual(scoreWithout + 0.001);
   });
 
-  it('T010-7e: flags disabled → N4 (REMOVED) always 0, TM-01 (graduated) must explicitly disable', () => {
-    delete process.env.SPECKIT_NOVELTY_BOOST;
+  it('T010-7e: TM-01 (graduated) must explicitly disable to remove penalty', () => {
     process.env.SPECKIT_INTERFERENCE_SCORE = 'false'; // graduated — must explicitly disable
 
-    // N4 is REMOVED — always returns 0 regardless of env var
-    expect(calculateNoveltyBoost(hoursAgo(0.5))).toBe(0);
-    // TM-01 is graduated — explicitly disabled with 'false' → returns score unchanged
+    // TM-01 is graduated — explicitly disabled with 'false' -> returns score unchanged
     expect(applyInterferencePenalty(0.7, 5.0)).toBe(0.7);
   });
 

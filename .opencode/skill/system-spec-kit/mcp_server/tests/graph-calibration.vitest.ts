@@ -326,9 +326,9 @@ describe('runAblation', () => {
 =============================================================== */
 
 describe('applyGraphWeightCap', () => {
-  it('clamps value to GRAPH_WEIGHT_CAP (0.05)', () => {
-    expect(applyGraphWeightCap(0.10)).toBe(GRAPH_WEIGHT_CAP);
-    expect(applyGraphWeightCap(0.05)).toBe(0.05);
+  it('clamps value to GRAPH_WEIGHT_CAP (0.15)', () => {
+    expect(applyGraphWeightCap(0.20)).toBe(GRAPH_WEIGHT_CAP);
+    expect(applyGraphWeightCap(0.15)).toBe(0.15);
   });
 
   it('passes through values below cap unchanged', () => {
@@ -799,7 +799,7 @@ describe('edge cases', () => {
 
   describe('calibration profile constants', () => {
     it('DEFAULT_PROFILE has expected values', () => {
-      expect(DEFAULT_PROFILE.graphWeightCap).toBe(0.05);
+      expect(DEFAULT_PROFILE.graphWeightCap).toBe(0.15);
       expect(DEFAULT_PROFILE.n2aCap).toBe(0.10);
       expect(DEFAULT_PROFILE.n2bCap).toBe(0.10);
       expect(DEFAULT_PROFILE.louvainMinDensity).toBe(0.3);
@@ -814,8 +814,8 @@ describe('edge cases', () => {
       expect(AGGRESSIVE_PROFILE.louvainMinSize).toBeGreaterThanOrEqual(DEFAULT_PROFILE.louvainMinSize);
     });
 
-    it('GRAPH_WEIGHT_CAP is 0.05', () => {
-      expect(GRAPH_WEIGHT_CAP).toBe(0.05);
+    it('GRAPH_WEIGHT_CAP is 0.15', () => {
+      expect(GRAPH_WEIGHT_CAP).toBe(0.15);
     });
 
     it('COMMUNITY_SCORE_CAP is 0.03', () => {

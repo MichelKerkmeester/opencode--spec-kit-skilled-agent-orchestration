@@ -203,7 +203,7 @@ beforeEach(() => {
   process.env.SPECKIT_AUTO_ENTITIES = 'false';
   process.env.SPECKIT_MEMORY_SUMMARIES = 'false';
   process.env.SPECKIT_ENTITY_LINKING = 'false';
-  delete process.env.SPECKIT_QUALITY_LOOP;
+  process.env.SPECKIT_QUALITY_LOOP = 'false';
   delete process.env.SPECKIT_SAVE_QUALITY_GATE;
 });
 

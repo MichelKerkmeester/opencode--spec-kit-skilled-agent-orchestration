@@ -1,9 +1,10 @@
 // ───────────────────────────────────────────────────────────────
 // 1. TEST — FEATURE EVALUATION — SCORING CALIBRATION
 // ───────────────────────────────────────────────────────────────
-// Rigorous feature evaluation covering T001 (embedding cache), T002 (cold-start
-// Boost N4), T004 (score normalization), T005 (interference TM-01), and
+// Rigorous feature evaluation covering T001 (embedding cache),
+// T004 (score normalization), T005 (interference TM-01), and
 // T006 (classification-based decay TM-03).
+// Phase D cleanup: T002 (cold-start N4) removed — NOVELTY_BOOST was dead code.
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
@@ -18,13 +19,9 @@ import {
   computeContentHash,
 } from '../lib/cache/embedding-cache';
 
-// --- T002 + T004: Composite Scoring (novelty boost, normalization) ---
+// --- T004: Composite Scoring (normalization) ---
 import {
-  calculateNoveltyBoost,
   calculateFiveFactorScore,
-  NOVELTY_BOOST_MAX,
-  NOVELTY_BOOST_HALF_LIFE_HOURS,
-  NOVELTY_BOOST_SCORE_CAP,
   normalizeCompositeScores,
   isCompositeNormalizationEnabled,
 } from '../lib/scoring/composite-scoring';
@@ -143,60 +140,7 @@ describe('T001: Embedding Cache', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════
-// T002: COLD-START BOOST (N4)
-// ═══════════════════════════════════════════════════════════════════
-
-describe('T002: Cold-start Novelty Boost (N4)', () => {
-  afterEach(() => {
-    vi.unstubAllEnvs();
-  });
-
-  // T041-05: Novelty boost REMOVED — always returns 0
-  it('T041-05: novelty boost always returns 0 (feature removed)', () => {
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
-    const createdAt = new Date(Date.now() - 500).toISOString(); // ~0h
-    const boost = calculateNoveltyBoost(createdAt);
-    expect(boost).toBe(0);
-  });
-
-  // T041-06: Novelty boost REMOVED — always returns 0 regardless of age
-  it('T041-06: novelty boost returns 0 for 12h-old memory (feature removed)', () => {
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
-    const createdAt = new Date(hoursAgo(12)).toISOString();
-    const boost = calculateNoveltyBoost(createdAt);
-    expect(boost).toBe(0);
-  });
-
-  // T041-07: 30-day-old memory (720h) gets zero (beyond 48h window)
-  it('T041-07: 30-day-old memory (720h) returns 0 — beyond 48h window', () => {
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
-    const createdAt = new Date(hoursAgo(720)).toISOString();
-    const boost = calculateNoveltyBoost(createdAt);
-    expect(boost).toBe(0);
-  });
-
-  // T041-08: Boost + high base score does not exceed NOVELTY_BOOST_SCORE_CAP
-  it('T041-08: boost + base score capped at NOVELTY_BOOST_SCORE_CAP (0.95)', () => {
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
-    // Construct a row that maximizes base score
-    const row = makeRow(Date.now() - 500, {
-      importance_tier: 'constitutional',
-      importance_weight: 1.0,
-      similarity: 100,
-      access_count: 200,
-    });
-    const score = calculateFiveFactorScore(row);
-    expect(score).toBeLessThanOrEqual(NOVELTY_BOOST_SCORE_CAP);
-  });
-
-  // T041-09: Flag disabled → boost is exactly 0
-  it('T041-09: flag disabled returns exactly 0', () => {
-    // Env not set (default disabled)
-    const boost = calculateNoveltyBoost(new Date().toISOString());
-    expect(boost).toBe(0);
-  });
-});
+// T002: COLD-START BOOST (N4) — removed in Phase D cleanup (dead code).
 
 // ═══════════════════════════════════════════════════════════════════
 // T005: INTERFERENCE SCORING (TM-01)

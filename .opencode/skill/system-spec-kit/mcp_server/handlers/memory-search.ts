@@ -9,7 +9,8 @@ import * as toolCache from '../lib/cache/tool-cache.js';
 import * as sessionManager from '../lib/session/session-manager.js';
 import * as intentClassifier from '../lib/search/intent-classifier.js';
 // TierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
-import { isSessionBoostEnabled, isCausalBoostEnabled } from '../lib/search/search-flags.js';
+import { isSessionBoostEnabled, isCausalBoostEnabled, isCommunitySearchFallbackEnabled, isDualRetrievalEnabled, isIntentAutoProfileEnabled } from '../lib/search/search-flags.js';
+import { searchCommunities } from '../lib/search/community-search.js';
 // 4-stage pipeline architecture
 import { executePipeline } from '../lib/search/pipeline/index.js';
 import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline/index.js';
@@ -202,6 +203,8 @@ interface SearchArgs {
   sessionTransition?: SessionTransitionTrace;
   /** REQ-D5-003: Presentation profile ('quick'|'research'|'resume'|'debug'). Default: full response. */
   profile?: string;
+  /** Phase B T019: Dual-level retrieval — 'local' (entity), 'global' (community), 'auto' (local + fallback). */
+  retrievalLevel?: 'local' | 'global' | 'auto';
 }
 
 // resolveRowContextType — now imported from lib/search/search-utils.ts
@@ -435,6 +438,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     includeTrace: includeTraceArg = false,
     sessionTransition,
     profile,
+    retrievalLevel: retrievalLevel = 'auto',
   } = args;
   const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
@@ -596,6 +600,21 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     intentWeights = intentClassifier.getIntentWeights('understand' as IntentType);
   }
 
+  // Phase C: Intent-to-profile auto-routing.
+  // Explicit caller `profile` always takes precedence; auto-detect fills in when absent.
+  let effectiveProfile: string | undefined = profile;
+  if (!effectiveProfile && detectedIntent && isIntentAutoProfileEnabled()) {
+    try {
+      const autoProfile = intentClassifier.getProfileForIntent(detectedIntent as IntentType);
+      if (autoProfile) {
+        effectiveProfile = autoProfile;
+        console.error(`[memory-search] Intent-to-profile auto-routing: '${detectedIntent}' → profile '${autoProfile}'`);
+      }
+    } catch (_autoProfileErr: unknown) {
+      // Auto-profile is best-effort — never breaks search
+    }
+  }
+
   // Re-run artifact routing with detected intent for fallback coverage
   if (detectedIntent && artifactRouting?.detectedClass === 'unknown' && artifactRouting?.confidence === 0) {
     artifactRouting = getStrategyForQuery(artifactRoutingQuery, specFolder, detectedIntent);
@@ -701,6 +720,57 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
     const pipelineResult: PipelineResult = await executePipeline(pipelineConfig);
     let resultsForFormatting = pipelineResult.results as unknown as SessionAwareResult[];
+
+    // Phase B T018/T019: Community search fallback — inject community members on weak results
+    let communityFallbackApplied = false;
+    const shouldRunCommunitySearch = (
+      isDualRetrievalEnabled() &&
+      isCommunitySearchFallbackEnabled() &&
+      effectiveQuery.length > 0 &&
+      (retrievalLevel === 'global' || retrievalLevel === 'auto')
+    );
+    if (shouldRunCommunitySearch) {
+      const isWeakResult = resultsForFormatting.length === 0 ||
+        (retrievalLevel === 'global') ||
+        (resultsForFormatting.length < 3 && retrievalLevel === 'auto');
+      if (isWeakResult) {
+        try {
+          const communityResults = searchCommunities(effectiveQuery, requireDb(), 5);
+          if (communityResults.totalMemberIds.length > 0) {
+            // Fetch the actual memory rows for community member IDs
+            const memberIds = communityResults.totalMemberIds.slice(0, 20);
+            const placeholders = memberIds.map(() => '?').join(', ');
+            const db = requireDb();
+            const memberRows = db.prepare(`
+              SELECT id, title, similarity, content, file_path, importance_tier, context_type,
+                     quality_score, created_at
+              FROM memory_index
+              WHERE id IN (${placeholders})
+            `).all(...memberIds) as Array<Record<string, unknown> & { id: number }>;
+
+            if (memberRows.length > 0) {
+              // Mark community-sourced results and assign a base score
+              const communityRows = memberRows.map((row) => ({
+                ...row,
+                similarity: typeof row.similarity === 'number' ? row.similarity : 0.5,
+                score: 0.45,
+                _communityFallback: true,
+              }));
+              // Merge: append community results not already in pipeline results
+              const existingIds = new Set(resultsForFormatting.map((r) => (r as Record<string, unknown>).id as number));
+              const newRows = communityRows.filter((r) => !existingIds.has(r.id));
+              if (newRows.length > 0) {
+                resultsForFormatting = [...resultsForFormatting, ...newRows as unknown as SessionAwareResult[]];
+                communityFallbackApplied = true;
+              }
+            }
+          }
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          console.warn(`[memory-search] Community search fallback failed (fail-open): ${msg}`);
+        }
+      }
+    }
 
     // Fix 4 (RC1-B): Apply folder boost — multiply similarity for results matching discovered folder
     if (folderBoost && folderBoost.folder && folderBoost.factor > 1) {
@@ -818,6 +888,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     };
     if (folderBoost && folderBoost.folder) {
       appliedBoosts.folder = { applied: true, folder: folderBoost.folder, factor: folderBoost.factor };
+    }
+    if (communityFallbackApplied) {
+      appliedBoosts.communityFallback = { applied: true, retrievalLevel };
     }
     extraData.appliedBoosts = appliedBoosts;
     extraData.applied_boosts = appliedBoosts;
@@ -1104,12 +1177,13 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   } catch (_error: unknown) { /* feedback logging must never break search */ }
 
-  // REQ-D5-003: Apply presentation profile when flag is enabled and profile is specified
-  if (profile && typeof profile === 'string' && isResponseProfileEnabled()) {
+  // REQ-D5-003: Apply presentation profile when flag is enabled and profile is specified.
+  // Phase C: effectiveProfile includes auto-routed profile from intent detection.
+  if (effectiveProfile && typeof effectiveProfile === 'string' && isResponseProfileEnabled()) {
     const firstEntry = responseToReturn?.content?.[0];
     if (firstEntry && typeof firstEntry.text === 'string') {
       try {
-        const profiled = applyProfileToEnvelope(profile, firstEntry.text);
+        const profiled = applyProfileToEnvelope(effectiveProfile, firstEntry.text);
         if (profiled !== firstEntry.text) {
           responseToReturn = {
             ...responseToReturn,

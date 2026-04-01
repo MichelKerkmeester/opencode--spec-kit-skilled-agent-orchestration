@@ -54,6 +54,7 @@ import {
   isAutoResumeEnabled,
   isFolderDiscoveryEnabled,
   isPressurePolicyEnabled,
+  isIntentAutoProfileEnabled,
 } from '../lib/search/search-flags.js';
 
 // Feature catalog: Unified context retrieval (memory_context)
@@ -1272,6 +1273,24 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     resumeHeuristicApplied,
     source: intentSource,
   } = intentClassification;
+
+  // Phase C: Intent-to-profile auto-routing for memory_context.
+  // Explicit caller `profile` always takes precedence; auto-detect fills in when absent.
+  // Skip for 'quick' mode: quick routes through handleMemoryMatchTriggers which does not
+  // support profile formatting — setting a profile there would be a no-op.
+  if (!options.profile && detectedIntent && effectiveMode !== 'quick' && isIntentAutoProfileEnabled()) {
+    try {
+      const autoProfile = intentClassifier.getProfileForIntent(
+        detectedIntent as import('../lib/search/intent-classifier.js').IntentType
+      );
+      if (autoProfile) {
+        options.profile = autoProfile;
+        console.error(`[memory-context] Intent-to-profile auto-routing: '${detectedIntent}' → profile '${autoProfile}'`);
+      }
+    } catch (_autoProfileErr: unknown) {
+      // Auto-profile is best-effort — never breaks context retrieval
+    }
+  }
 
   const sessionTransition = buildSessionTransitionTrace({
     previousState,

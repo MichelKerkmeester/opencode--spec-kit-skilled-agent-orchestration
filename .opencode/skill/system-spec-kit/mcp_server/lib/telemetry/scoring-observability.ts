@@ -1,12 +1,11 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Scoring Observability (T010)
 // ───────────────────────────────────────────────────────────────
-// Lightweight observability logging for N4 cold-start boost and
-// TM-01 interference scoring values at query time.
+// Lightweight observability logging for TM-01 interference scoring
+// values at query time.
 // Sampled at 5% of queries to avoid performance overhead.
 // All logging is best-effort (fail-safe, never throws).
 // Feature flags:
-// SPECKIT_NOVELTY_BOOST     — N4 cold-start boost
 // SPECKIT_INTERFERENCE_SCORE — TM-01 interference penalty
 import type Database from 'better-sqlite3';
 
@@ -29,9 +28,6 @@ export interface ScoringObservation {
   memoryId: number;
   queryId: string;
   timestamp: string;
-  // N4 fields
-  noveltyBoostApplied: boolean;
-  noveltyBoostValue: number;
   memoryAgeDays: number;
   // TM-01 fields
   interferenceApplied: boolean;
@@ -46,9 +42,7 @@ export interface ScoringObservation {
 /** Aggregate stats returned by getScoringStats() */
 export interface ScoringStats {
   totalObservations: number;
-  avgNoveltyBoost: number;
   avgInterferencePenalty: number;
-  pctWithNoveltyBoost: number;
   pctWithInterferencePenalty: number;
   avgScoreDelta: number;
 }
@@ -74,8 +68,6 @@ export function initScoringObservability(db: Database.Database): void {
         memory_id INTEGER,
         query_id TEXT,
         timestamp TEXT DEFAULT (datetime('now')),
-        novelty_boost_applied INTEGER DEFAULT 0,
-        novelty_boost_value REAL DEFAULT 0,
         memory_age_days REAL DEFAULT 0,
         interference_applied INTEGER DEFAULT 0,
         interference_score REAL DEFAULT 0,
@@ -121,12 +113,12 @@ export function logScoringObservation(obs: ScoringObservation): void {
     _db.prepare(`
       INSERT INTO scoring_observations (
         memory_id, query_id, timestamp,
-        novelty_boost_applied, novelty_boost_value, memory_age_days,
+        memory_age_days,
         interference_applied, interference_score, interference_penalty,
         score_before, score_after, score_delta
       ) VALUES (
         ?, ?, ?,
-        ?, ?, ?,
+        ?,
         ?, ?, ?,
         ?, ?, ?
       )
@@ -134,8 +126,6 @@ export function logScoringObservation(obs: ScoringObservation): void {
       obs.memoryId,
       obs.queryId,
       obs.timestamp,
-      obs.noveltyBoostApplied ? 1 : 0,
-      obs.noveltyBoostValue,
       obs.memoryAgeDays,
       obs.interferenceApplied ? 1 : 0,
       obs.interferenceScore,
@@ -162,9 +152,7 @@ export function logScoringObservation(obs: ScoringObservation): void {
 export function getScoringStats(): ScoringStats {
   const empty: ScoringStats = {
     totalObservations: 0,
-    avgNoveltyBoost: 0,
     avgInterferencePenalty: 0,
-    pctWithNoveltyBoost: 0,
     pctWithInterferencePenalty: 0,
     avgScoreDelta: 0,
   };
@@ -175,18 +163,14 @@ export function getScoringStats(): ScoringStats {
     const row = _db.prepare(`
       SELECT
         COUNT(*) AS total,
-        AVG(CASE WHEN novelty_boost_applied = 1 THEN novelty_boost_value ELSE NULL END) AS avg_novelty_boost,
         AVG(CASE WHEN interference_applied = 1 THEN interference_penalty ELSE NULL END) AS avg_interference_penalty,
         AVG(score_delta) AS avg_score_delta,
-        SUM(novelty_boost_applied) AS n4_count,
         SUM(interference_applied) AS tm01_count
       FROM scoring_observations
     `).get() as {
       total: number;
-      avg_novelty_boost: number | null;
       avg_interference_penalty: number | null;
       avg_score_delta: number | null;
-      n4_count: number;
       tm01_count: number;
     } | undefined;
 
@@ -194,9 +178,7 @@ export function getScoringStats(): ScoringStats {
 
     return {
       totalObservations: row.total,
-      avgNoveltyBoost: row.avg_novelty_boost ?? 0,
       avgInterferencePenalty: row.avg_interference_penalty ?? 0,
-      pctWithNoveltyBoost: row.total > 0 ? (row.n4_count / row.total) * 100 : 0,
       pctWithInterferencePenalty: row.total > 0 ? (row.tm01_count / row.total) * 100 : 0,
       avgScoreDelta: row.avg_score_delta ?? 0,
     };

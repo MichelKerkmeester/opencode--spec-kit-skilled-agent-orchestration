@@ -14,10 +14,7 @@ import {
 
 import {
   normalizeCompositeScores,
-  calculateNoveltyBoost,
   calculateCompositeScore,
-  NOVELTY_BOOST_MAX,
-  NOVELTY_BOOST_SCORE_CAP,
 } from '../lib/scoring/composite-scoring';
 
 import {
@@ -160,14 +157,13 @@ describe('B. Composite Score Normalization', () => {
   });
 });
 
-// C. N4 + TM-01 Interaction (N4 cold-start boost + TM-01 interference penalty)
-describe('C. N4 + TM-01 Interaction', () => {
+// C. TM-01 Interference Penalty (Phase D cleanup: N4 novelty boost removed)
+describe('C. TM-01 Interference Penalty', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
-  it('C1: Novelty boost + interference penalty never produces a negative score', () => {
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
+  it('C1: Interference penalty never produces a negative score', () => {
     vi.stubEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
 
     // Very low base score to stress-test the floor
@@ -180,11 +176,9 @@ describe('C. N4 + TM-01 Interaction', () => {
     expect(afterPenalty).toBeGreaterThanOrEqual(0);
   });
 
-  it('C2: Combined N4+TM-01 score respects 0.95 cap when both are active', () => {
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
+  it('C2: Composite score respects 0.95 cap', () => {
     vi.stubEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
 
-    // Use a row with very recent creation (< 1 hour) to trigger N4
     const recentMs = Date.now() - 600_000; // 10 minutes ago
     const row = {
       id: 1,
@@ -192,30 +186,23 @@ describe('C. N4 + TM-01 Interaction', () => {
       importance_weight: 0.9,
       similarity: 90,
       access_count: 50,
-      interference_score: 0, // keep TM-01 at 0 here — test the cap from N4
+      interference_score: 0,
       created_at: new Date(recentMs).toISOString(),
       updated_at: new Date(recentMs).toISOString(),
     };
 
     const score = calculateCompositeScore(row);
 
-    // Score must never exceed NOVELTY_BOOST_SCORE_CAP (0.95) when N4 is active
-    expect(score).toBeLessThanOrEqual(NOVELTY_BOOST_SCORE_CAP + 0.001); // small float tolerance
+    expect(score).toBeLessThanOrEqual(0.95 + 0.001); // small float tolerance
     expect(score).toBeGreaterThanOrEqual(0);
   });
 
-  it('C3: Disabling N4 boost does not affect TM-01 penalty, and vice versa', () => {
-    // With neither flag set
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'false');
+  it('C3: Disabling TM-01 penalty removes interference effect', () => {
     vi.stubEnv('SPECKIT_INTERFERENCE_SCORE', 'false');
 
     const baseScore = 0.5;
     const score = applyInterferencePenalty(baseScore, 5);
     expect(score).toBe(baseScore); // no penalty applied
-
-    // N4 boost also returns 0 when disabled
-    const boost = calculateNoveltyBoost(new Date().toISOString());
-    expect(boost).toBe(0);
   });
 });
 
@@ -283,9 +270,8 @@ describe('E. Feature Flag Independence', () => {
     expect(results.some(r => r.rrfScore === 1.0)).toBe(false);
   });
 
-  it('E2: SPECKIT_SCORE_NORMALIZATION alone does not require SPECKIT_NOVELTY_BOOST', () => {
+  it('E2: SPECKIT_SCORE_NORMALIZATION works independently', () => {
     vi.stubEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
-    // SPECKIT_NOVELTY_BOOST deliberately NOT set
 
     const scores = [0.3, 0.6, 0.9];
     const normalized = normalizeCompositeScores(scores);
@@ -295,8 +281,7 @@ describe('E. Feature Flag Independence', () => {
     expect(normalized).toHaveLength(3);
   });
 
-  it('E3: SPECKIT_NOVELTY_BOOST alone does not trigger interference penalty', () => {
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
+  it('E3: Disabling interference prevents penalty', () => {
     vi.stubEnv('SPECKIT_INTERFERENCE_SCORE', 'false'); // explicitly disable (graduated: default ON)
 
     const score = 0.5;
@@ -306,19 +291,10 @@ describe('E. Feature Flag Independence', () => {
     expect(afterPenalty).toBe(score);
   });
 
-  it('E4: SPECKIT_INTERFERENCE_SCORE alone does not affect novelty boost', () => {
-    vi.stubEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
-    // SPECKIT_NOVELTY_BOOST deliberately NOT set
+  // E4 removed: N4 novelty boost dead code (Phase D cleanup)
 
-    const boost = calculateNoveltyBoost(new Date().toISOString());
-
-    // Without SPECKIT_NOVELTY_BOOST=true, boost must be 0
-    expect(boost).toBe(0);
-  });
-
-  it('E5: All flags disabled = baseline behavior (no normalization, no boost, no penalty)', () => {
+  it('E5: All flags disabled = baseline behavior (no normalization, no penalty)', () => {
     vi.stubEnv('SPECKIT_SCORE_NORMALIZATION', 'false');
-    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'false');
     vi.stubEnv('SPECKIT_INTERFERENCE_SCORE', 'false');
 
     // RRF scores unchanged
@@ -332,21 +308,12 @@ describe('E. Feature Flag Independence', () => {
     const scores = [0.3, 0.7];
     expect(normalizeCompositeScores(scores)).toEqual(scores);
 
-    // No novelty boost
-    expect(calculateNoveltyBoost(new Date().toISOString())).toBe(0);
-
     // No interference penalty
     const base = 0.6;
     expect(applyInterferencePenalty(base, 5)).toBe(base);
   });
 
-  it('E6: NOVELTY_BOOST_MAX constant is 0.15', () => {
-    expect(NOVELTY_BOOST_MAX).toBe(0.15);
-  });
-
-  it('E7: NOVELTY_BOOST_SCORE_CAP constant is 0.95', () => {
-    expect(NOVELTY_BOOST_SCORE_CAP).toBe(0.95);
-  });
+  // E6, E7 removed: NOVELTY_BOOST constants removed (Phase D cleanup)
 
   it('E8: INTERFERENCE_PENALTY_COEFFICIENT constant is negative (penalty)', () => {
     expect(INTERFERENCE_PENALTY_COEFFICIENT).toBeLessThan(0);

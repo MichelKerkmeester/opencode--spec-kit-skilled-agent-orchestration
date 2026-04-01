@@ -224,9 +224,9 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       }
     });
 
-    it('RF1: Disabled by default when env var is unset', () => {
+    it('RF1: Enabled by default when env var is unset (graduated)', () => {
       delete process.env.SPECKIT_RECONSOLIDATION;
-      expect(isReconsolidationEnabled()).toBe(false);
+      expect(isReconsolidationEnabled()).toBe(true);
     });
 
     it('RF2: Enabled when env var is "true"', () => {
@@ -1058,9 +1058,9 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('Checkpoint Requirement', () => {
-    it('CHK1: SPECKIT_RECONSOLIDATION defaults to OFF and can be explicitly enabled', () => {
+    it('CHK1: SPECKIT_RECONSOLIDATION defaults to ON and can be explicitly disabled', () => {
       delete process.env.SPECKIT_RECONSOLIDATION;
-      expect(isReconsolidationEnabled()).toBe(false);
+      expect(isReconsolidationEnabled()).toBe(true);
 
       process.env.SPECKIT_RECONSOLIDATION = 'true';
       expect(isReconsolidationEnabled()).toBe(true);
@@ -1069,15 +1069,15 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(isReconsolidationEnabled()).toBe(false);
     });
 
-    it('CHK2: Documentation note — checkpoint MUST be created before enabling', () => {
+    it('CHK2: Documentation note — checkpoint MUST be created before reconsolidation runs', () => {
       // This is a documentation-level test. The actual checkpoint creation
       // Is handled by the caller before allowing reconsolidation to proceed.
       // We verify the flag mechanism exists to enforce this workflow.
       expect(typeof isReconsolidationEnabled).toBe('function');
-      // The feature being behind a flag means:
+      // The feature is now default-ON (graduated). The safety workflow is:
       // 1. User creates checkpoint via checkpoint_create()
-      // 2. User explicitly opts in with SPECKIT_RECONSOLIDATION=true
-      // 3. The bridge/runtime guard can still reject unsafe flows
+      // 2. Bridge guard checks for checkpoint before running reconsolidation
+      // 3. Set SPECKIT_RECONSOLIDATION=false to opt out
     });
   });
 

@@ -506,29 +506,8 @@ export function calculateRecencyScore(timestamp: string | undefined, tier: strin
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3a. NOVELTY BOOST (test-only exports, not consumed by production scoring)
+// 3a. (NOVELTY BOOST removed — Phase D cleanup)
 // ───────────────────────────────────────────────────────────────
-/**
- * N4: Cold-start boost constants (exported for observability tests).
- * Novelty boost disabled. Retained for test compatibility.
- */
-export const NOVELTY_BOOST_MAX = 0.15;
-/** Novelty boost disabled. Retained for test compatibility. */
-export const NOVELTY_BOOST_HALF_LIFE_HOURS = 12;
-/** Novelty boost disabled. Retained for test compatibility. */
-export const NOVELTY_BOOST_SCORE_CAP = 0.95;
-
-/**
- * N4: Calculate cold-start novelty boost with exponential decay.
- * Eval complete. Marginal value confirmed.
- * SPECKIT_NOVELTY_BOOST env var is inert. Always returns 0.
- *
- * @param createdAt - ISO creation timestamp
- * @returns 0 (novelty boost permanently disabled)
- */
-export function calculateNoveltyBoost(_createdAt: string | undefined): number {
-  return 0;
-}
 
 /**
  * BUG-013 FIX: Use centralized tier values from importance-tiers.js.
@@ -545,14 +524,14 @@ export function getTierBoost(tier: string): number {
 // 3b. SHARED POST-PROCESSING
 // ───────────────────────────────────────────────────────────────
 /**
- * Apply doc-type multiplier, novelty boost, interference penalty, and
+ * Apply doc-type multiplier, interference penalty, and
  * observability telemetry to an already-computed weighted composite score.
  *
  * Called by both calculateFiveFactorScore ('5f') and calculateCompositeScore ('cs').
  * The queryIdPrefix is the only difference between the two call sites.
  *
  * @param composite  Raw weighted-sum composite score (pre-multiplier)
- * @param row        Scoring input row (used for doc type, novelty, interference, telemetry)
+ * @param row        Scoring input row (used for doc type, interference, telemetry)
  * @param queryIdPrefix  Short label identifying the scoring model ('5f' | 'cs')
  * @returns Final clamped score in [0, 1]
  */
@@ -584,8 +563,6 @@ function applyPostProcessingAndObserve(
         memoryId: (row.id as number) || 0,
         queryId: `${queryIdPrefix}-${Date.now()}`,
         timestamp: new Date().toISOString(),
-        noveltyBoostApplied: false,
-        noveltyBoostValue: 0,
         memoryAgeDays: isNaN(createdMs) ? 0 : (Date.now() - createdMs) / 86400000,
         // Graduated flag — default ON. Use !== 'false' to match graduated semantics (BUG-4 fix).
         interferenceApplied: interferenceScore > 0 && process.env.SPECKIT_INTERFERENCE_SCORE?.toLowerCase() !== 'false',

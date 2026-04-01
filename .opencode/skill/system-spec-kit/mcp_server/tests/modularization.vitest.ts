@@ -28,7 +28,7 @@ const EXTENDED_LIMITS: Record<string, number> = {
   'handlers/memory-save.js': 2200,  // actual: 1210 — Save logic with parsing, validation, indexing + quality gate + reconsolidation
   'handlers/memory-index.js': 700,  // actual: 421 — Index operations with scanning + spec document discovery (Spec 126)
   'handlers/checkpoints.js': 620,   // actual: 611 — Checkpoint operations plus scoped metadata guards, restore/delete safety checks, SEC-002 scope enforcement, and T012 follow-up fixes
-  'hooks/memory-surface.js': 400,   // actual: 383 — Memory surface hooks with constitutional cache, auto-surface, priming, and Phase 024 bootstrap telemetry
+  'hooks/memory-surface.js': 480,   // actual: 462 — Memory surface hooks with constitutional cache, auto-surface, attention-enriched hints, priming, and Phase 024 bootstrap telemetry
 };
 
 type CoreIndexModule = typeof import('../core/index');

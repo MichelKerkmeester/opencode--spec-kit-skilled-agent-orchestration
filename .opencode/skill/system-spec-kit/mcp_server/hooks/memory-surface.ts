@@ -11,6 +11,7 @@ import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directive
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
+import * as workingMemory from '../lib/cognitive/working-memory.js';
 
 import type { Database } from '@spec-kit/shared/types';
 
@@ -67,6 +68,11 @@ interface PrimePackage {
   codeGraphStatus: 'fresh' | 'stale' | 'empty';
   cocoIndexAvailable: boolean;
   recommendedCalls: string[];
+  /** Phase 009 T041: Graph retrieval routing rules for AI session priming */
+  routingRules?: {
+    graphRetrieval: string;
+    communitySearch: string;
+  };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -270,6 +276,69 @@ function enforceAutoSurfaceTokenBudget(
   return boundedResult;
 }
 
+/**
+ * Phase C: Get top-N attention-weighted memory IDs from working memory.
+ * Used to boost trigger-matched results that also appear in the active
+ * working set, improving surface relevance.
+ *
+ * @param limit - Maximum number of memory IDs to return
+ * @returns Set of memory IDs with high attention in working memory
+ */
+function getAttentionWeightedMemoryIds(limit: number = 5): Set<number> {
+  try {
+    const db: Database | null = vectorIndex.getDb();
+    if (!db) return new Set();
+
+    // Query top attention-weighted memories, scoped to the current session
+    // by filtering to entries focused within the last hour. This prevents
+    // stale cross-session entries from influencing auto-surface ordering.
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const rows = db.prepare(`
+      SELECT DISTINCT wm.memory_id
+      FROM working_memory wm
+      WHERE wm.memory_id IS NOT NULL
+        AND wm.attention_score > ?
+        AND wm.last_focused >= ?
+      ORDER BY wm.attention_score DESC, wm.last_focused DESC
+      LIMIT ?
+    `).all(workingMemory.DECAY_FLOOR, oneHourAgo, limit) as Array<{ memory_id: number }>;
+
+    return new Set(rows.map(r => r.memory_id));
+  } catch (_err: unknown) {
+    // Graceful degradation — working memory boost is optional
+    return new Set();
+  }
+}
+
+/**
+ * Phase C: Apply 1.3x boost to trigger-matched results that also appear
+ * in the attention-weighted working memory set. Re-sorts results by
+ * boosted composite score.
+ *
+ * @param triggered - Trigger-matched results from matchTriggerPhrases()
+ * @param attentionIds - Set of memory IDs from working memory
+ * @returns Re-sorted trigger matches with working memory boost applied
+ */
+const ATTENTION_BOOST_FACTOR = 1.3;
+
+function applyAttentionBoost(
+  triggered: triggerMatcher.TriggerMatch[],
+  attentionIds: Set<number>,
+): triggerMatcher.TriggerMatch[] {
+  if (attentionIds.size === 0 || triggered.length === 0) return triggered;
+
+  // Score each result: base = matchedPhrases.length + (importanceWeight * 0.1)
+  // Apply 1.3x multiplier when memory is in working memory set.
+  return [...triggered]
+    .sort((a, b) => {
+      const scoreA = (a.matchedPhrases.length + a.importanceWeight * 0.1) *
+        (attentionIds.has(a.memoryId) ? ATTENTION_BOOST_FACTOR : 1.0);
+      const scoreB = (b.matchedPhrases.length + b.importanceWeight * 0.1) *
+        (attentionIds.has(b.memoryId) ? ATTENTION_BOOST_FACTOR : 1.0);
+      return scoreB - scoreA;
+    });
+}
+
 async function autoSurfaceMemories(
   contextHint: string,
   tokenBudget: number = TOOL_DISPATCH_TOKEN_BUDGET,
@@ -282,7 +351,18 @@ async function autoSurfaceMemories(
     const constitutional = await getConstitutionalMemories();
 
     // Get triggered memories via fast phrase matching
-    const triggered = triggerMatcher.matchTriggerPhrases(contextHint, 5);
+    let triggered = triggerMatcher.matchTriggerPhrases(contextHint, 5);
+
+    // Phase C: Attention-enriched boost — re-rank triggered results that
+    // also appear in the working memory active set.
+    try {
+      const attentionIds = getAttentionWeightedMemoryIds(5);
+      if (attentionIds.size > 0 && triggered.length > 0) {
+        triggered = applyAttentionBoost(triggered, attentionIds);
+      }
+    } catch (_boostErr: unknown) {
+      // Graceful degradation — attention boost is optional
+    }
 
     const latencyMs = Date.now() - startTime;
 
@@ -360,7 +440,13 @@ function buildPrimePackage(
     recommendedCalls.push('memory_match_triggers({ prompt: "<your task>" })');
   }
 
-  return { specFolder, currentTask, codeGraphStatus, cocoIndexAvailable, recommendedCalls };
+  return {
+    specFolder, currentTask, codeGraphStatus, cocoIndexAvailable, recommendedCalls,
+    routingRules: {
+      graphRetrieval: 'For broad topic questions, use memory_search with retrievalLevel: "global" for community-level results. For specific memories, use "local" (default). Use "auto" for automatic fallback.',
+      communitySearch: 'When primary search returns weak results, community search fallback activates automatically (SPECKIT_COMMUNITY_SEARCH_FALLBACK). Graph provenance is visible in graphEvidence field.',
+    },
+  };
 }
 
 async function primeSessionIfNeeded(

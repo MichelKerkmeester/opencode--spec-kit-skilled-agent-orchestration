@@ -79,13 +79,18 @@ let db: Database.Database | null = null;
 /** Simple TTL + size-capped cache for getRelatedMemories() results. */
 const RELATED_CACHE = new Map<string, { results: RelatedMemory[]; expiresAt: number }>();
 const RELATED_CACHE_TTL_MS = 30_000; // 30 seconds
-const RELATED_CACHE_MAX_SIZE = 100;
+const RELATED_CACHE_MAX_SIZE = 200;
 
-function pruneRelatedCache(): void {
-  if (RELATED_CACHE.size < RELATED_CACHE_MAX_SIZE) return;
-  // Evict the oldest entry (Map preserves insertion order)
-  const firstKey = RELATED_CACHE.keys().next().value;
-  if (firstKey !== undefined) RELATED_CACHE.delete(firstKey);
+/**
+ * Enforce cache bound using the enforceCacheBound() pattern from graph-signals.ts.
+ * Clears the entire cache when the limit is exceeded, since Map iteration order
+ * is insertion order and partial eviction of "oldest" entries would require
+ * iterating anyway.
+ */
+function enforceCacheBound(): void {
+  if (RELATED_CACHE.size > RELATED_CACHE_MAX_SIZE) {
+    RELATED_CACHE.clear();
+  }
 }
 
 /** Clear the getRelatedMemories cache (called on init to avoid stale data across DB reloads). */
@@ -219,8 +224,8 @@ function getRelatedMemories(
     });
 
     // Cache miss: store results before returning
-    pruneRelatedCache();
     RELATED_CACHE.set(cacheKey, { results, expiresAt: Date.now() + RELATED_CACHE_TTL_MS });
+    enforceCacheBound();
     return results;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);

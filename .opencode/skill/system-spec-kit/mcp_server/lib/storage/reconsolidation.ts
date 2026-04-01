@@ -140,7 +140,7 @@ const SIMILAR_MEMORY_LIMIT = 3;
 
 // ───────────────────────────────────────────────────────────────
 // Reconsolidation gate — canonical implementation in search-flags.ts.
-// Opt-in: requires explicit SPECKIT_RECONSOLIDATION=true.
+// Default: ON (graduated). Set SPECKIT_RECONSOLIDATION=false to disable.
 import { isReconsolidationEnabled } from '../search/search-flags.js';
 export { isReconsolidationEnabled };
 

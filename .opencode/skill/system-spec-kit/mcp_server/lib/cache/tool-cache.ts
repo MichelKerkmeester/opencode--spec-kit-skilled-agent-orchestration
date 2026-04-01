@@ -68,6 +68,19 @@ const cache = new Map<string, CacheEntry>();
 const inFlight = new Map<string, InFlightEntry>();
 const toolGenerations = new Map<string, number>();
 
+/** Maximum size for auxiliary maps (inFlight, toolGenerations). */
+const AUX_CACHE_MAX_SIZE = 200;
+
+/**
+ * Enforce size bound on an auxiliary Map using the enforceCacheBound() pattern.
+ * Clears the entire map when the limit is exceeded.
+ */
+function enforceAuxCacheBound<K, V>(map: Map<K, V>): void {
+  if (map.size > AUX_CACHE_MAX_SIZE) {
+    map.clear();
+  }
+}
+
 const stats = {
   hits: 0,
   misses: 0,
@@ -197,6 +210,7 @@ function getToolGeneration(toolName: string): number {
 
 function bumpToolGeneration(toolName: string): void {
   toolGenerations.set(toolName, getToolGeneration(toolName) + 1);
+  enforceAuxCacheBound(toolGenerations);
 }
 
 function removeInFlightWhere(predicate: (entry: InFlightEntry) => boolean): number {
@@ -427,6 +441,7 @@ async function withCache<T>(
 
   pendingEntry.promise = pending;
   inFlight.set(key, pendingEntry);
+  enforceAuxCacheBound(inFlight);
   try {
     return await pending;
   } finally {

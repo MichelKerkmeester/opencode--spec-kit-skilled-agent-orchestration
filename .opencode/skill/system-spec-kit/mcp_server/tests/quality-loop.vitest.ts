@@ -454,16 +454,14 @@ describe('runQualityLoop', () => {
     expect(result.score.total).toBeGreaterThan(0.6);
   });
 
-  it('always passes when SPECKIT_QUALITY_LOOP is not set (env gate)', () => {
+  it('enforces quality loop when SPECKIT_QUALITY_LOOP is not set (graduated default-ON)', () => {
     delete process.env.SPECKIT_QUALITY_LOOP;
     const result = runQualityLoop(BAD_CONTENT, BAD_METADATA);
-    expect(result.passed).toBe(true);
-    expect(result.rejected).toBe(false);
-    // Still computes score even when disabled
+    // Quality loop is now active by default — bad content is rejected
     expect(result.score.total).toBeLessThan(0.6);
   });
 
-  it('always passes when SPECKIT_QUALITY_LOOP is "false"', () => {
+  it('always passes when SPECKIT_QUALITY_LOOP is "false" (opt-out)', () => {
     process.env.SPECKIT_QUALITY_LOOP = 'false';
     const result = runQualityLoop(BAD_CONTENT, BAD_METADATA);
     expect(result.passed).toBe(true);
@@ -604,13 +602,23 @@ describe('isQualityLoopEnabled', () => {
     expect(isQualityLoopEnabled()).toBe(true);
   });
 
-  it('returns false when not set', () => {
+  it('returns true when not set (graduated default-ON)', () => {
     delete process.env.SPECKIT_QUALITY_LOOP;
+    expect(isQualityLoopEnabled()).toBe(true);
+  });
+
+  it('returns true for non-false/non-0 values', () => {
+    process.env.SPECKIT_QUALITY_LOOP = '1';
+    expect(isQualityLoopEnabled()).toBe(true);
+  });
+
+  it('returns false when explicitly set to false', () => {
+    process.env.SPECKIT_QUALITY_LOOP = 'false';
     expect(isQualityLoopEnabled()).toBe(false);
   });
 
-  it('returns false for non-true values', () => {
-    process.env.SPECKIT_QUALITY_LOOP = '1';
+  it('returns false when explicitly set to 0', () => {
+    process.env.SPECKIT_QUALITY_LOOP = '0';
     expect(isQualityLoopEnabled()).toBe(false);
   });
 

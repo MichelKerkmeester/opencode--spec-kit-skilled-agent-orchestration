@@ -156,10 +156,10 @@ export function isChannelMinRepEnabled(): boolean {
 
 /**
  * TM-06: Reconsolidation-on-save for memory deduplication.
- * Default: FALSE (opt-in). Set SPECKIT_RECONSOLIDATION=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_RECONSOLIDATION=false to disable.
  */
 export function isReconsolidationEnabled(): boolean {
-  return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase().trim() === 'true';
+  return isFeatureEnabled('SPECKIT_RECONSOLIDATION');
 }
 
 /**
@@ -240,6 +240,14 @@ export function isCommunityDetectionEnabled(): boolean {
 }
 
 /**
+ * Community summary generation and search channel.
+ * Default: TRUE (enabled). Set SPECKIT_COMMUNITY_SUMMARIES=false to disable.
+ */
+export function isCommunitySummariesEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_COMMUNITY_SUMMARIES');
+}
+
+/**
  * R8: Memory summary generation (TF-IDF extractive summaries as search channel).
  * Default: TRUE (enabled). Set SPECKIT_MEMORY_SUMMARIES=false to disable.
  */
@@ -311,10 +319,10 @@ export function isLocalRerankerEnabled(): boolean {
 
 /**
  * T008: Verify-fix-verify memory quality loop.
- * Default: FALSE (opt-in). Set SPECKIT_QUALITY_LOOP=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_QUALITY_LOOP=false to disable.
  */
 export function isQualityLoopEnabled(): boolean {
-  return process.env.SPECKIT_QUALITY_LOOP?.toLowerCase().trim() === 'true';
+  return isFeatureEnabled('SPECKIT_QUALITY_LOOP');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -571,4 +579,98 @@ export function isResultExplainEnabled(): boolean {
  */
 export function isResponseProfileEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_RESPONSE_PROFILE_V1');
+}
+
+/* ───────────────────────────────────────────────────────────────
+   14. PHASE B GRAPH RETRIEVAL FLAGS
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * Phase B T016: Query concept expansion for hybrid search.
+ * When concept routing matches aliases, expands query with related terms.
+ * Default: TRUE (graduated). Set SPECKIT_QUERY_CONCEPT_EXPANSION=false to disable.
+ */
+export function isQueryConceptExpansionEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_QUERY_CONCEPT_EXPANSION');
+}
+
+/**
+ * Phase B T017: Graph-expanded fallback on zero/weak results.
+ * Queries causal_edges for neighbor titles when recovery triggers.
+ * Default: TRUE (graduated). Set SPECKIT_GRAPH_FALLBACK=false to disable.
+ */
+export function isGraphFallbackEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_GRAPH_FALLBACK');
+}
+
+/**
+ * Phase B T020: Always-on graph context injection.
+ * Runs concept routing + graph neighbor lookup even without seed results.
+ * Default: TRUE (graduated). Set SPECKIT_GRAPH_CONTEXT_INJECTION=false to disable.
+ */
+export function isGraphContextInjectionEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_GRAPH_CONTEXT_INJECTION');
+}
+
+/**
+ * Phase C T027: Result provenance — include graph evidence metadata in search results.
+ * When enabled, search results include graphEvidence with contributing edges,
+ * communities, and boost factors for transparency and debuggability.
+ * Default: TRUE (enabled). Set SPECKIT_RESULT_PROVENANCE=false to disable.
+ */
+export function isResultProvenanceEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_RESULT_PROVENANCE');
+}
+
+/**
+ * Phase D T036: Temporal validity tracking for causal edges.
+ * Default: TRUE (graduated). Set SPECKIT_TEMPORAL_EDGES=false to disable.
+ */
+export function isTemporalEdgesEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_TEMPORAL_EDGES');
+}
+
+/**
+ * Phase D T036: Usage-weighted ranking signal.
+ * Default: TRUE (graduated). Set SPECKIT_USAGE_RANKING=false to disable.
+ */
+export function isUsageRankingEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_USAGE_RANKING');
+}
+
+/**
+ * Phase D T036: Ontology-guided extraction validation hooks.
+ * Default: TRUE (graduated). Set SPECKIT_ONTOLOGY_HOOKS=false to disable.
+ */
+export function isOntologyHooksEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_ONTOLOGY_HOOKS');
+}
+
+/**
+ * Phase B T018: Community-level search as fallback channel.
+ * When primary search returns weak/no results, searches community summaries
+ * and injects matching community members as candidates.
+ * Default: TRUE (graduated). Set SPECKIT_COMMUNITY_SEARCH_FALLBACK=false to disable.
+ */
+export function isCommunitySearchFallbackEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_COMMUNITY_SEARCH_FALLBACK');
+}
+
+/**
+ * Phase B T019: Dual-level retrieval mode.
+ * Adds retrievalLevel parameter: 'local' (entity), 'global' (community), 'auto' (local + fallback).
+ * Default: TRUE (graduated). Set SPECKIT_DUAL_RETRIEVAL=false to disable.
+ */
+export function isDualRetrievalEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_DUAL_RETRIEVAL');
+}
+
+/**
+ * Phase C: Intent-to-profile auto-routing.
+ * When enabled, classifyIntent() results automatically select a response profile
+ * (quick, research, resume, debug) when no explicit profile is specified by the caller.
+ * Default: TRUE (graduated). Set SPECKIT_INTENT_AUTO_PROFILE=false to disable.
+ */
+export function isIntentAutoProfileEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_INTENT_AUTO_PROFILE');
 }

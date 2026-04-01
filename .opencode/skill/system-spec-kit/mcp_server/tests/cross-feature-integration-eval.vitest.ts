@@ -45,11 +45,7 @@ import {
 // -- Composite Scoring --
 import {
   calculateCompositeScore,
-  calculateNoveltyBoost,
   calculateRetrievabilityScore,
-  NOVELTY_BOOST_MAX,
-  NOVELTY_BOOST_HALF_LIFE_HOURS,
-  NOVELTY_BOOST_SCORE_CAP,
   normalizeCompositeScores,
   type ScoringInput,
 } from '../lib/scoring/composite-scoring';
@@ -155,7 +151,6 @@ describe('Cross-Sprint Integration', () => {
       setEnv('SPECKIT_RSF_FUSION', 'false');
       setEnv('SPECKIT_CHANNEL_MIN_REP', 'false');
       setEnv('SPECKIT_CONFIDENCE_TRUNCATION', 'false');
-      setEnv('SPECKIT_NOVELTY_BOOST', 'false');
       setEnv('SPECKIT_INTERFERENCE_SCORE', 'false');
       setEnv('SPECKIT_SCORE_NORMALIZATION', 'false');
 
@@ -196,7 +191,6 @@ describe('Cross-Sprint Integration', () => {
       setEnv('SPECKIT_RSF_FUSION', 'true');
       setEnv('SPECKIT_CHANNEL_MIN_REP', 'true');
       setEnv('SPECKIT_CONFIDENCE_TRUNCATION', 'true');
-      setEnv('SPECKIT_NOVELTY_BOOST', 'true');
       setEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
       setEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
 
@@ -215,7 +209,7 @@ describe('Cross-Sprint Integration', () => {
       const fused = fuseResults(listA, listB);
       expect(fused.length).toBeGreaterThan(0);
 
-      // Composite scoring with novelty + interference
+      // Composite scoring with interference
       const row = makeScoringInput({
         created_at: new Date().toISOString(),
         interference_score: 2,
@@ -245,7 +239,6 @@ describe('Cross-Sprint Integration', () => {
       clearEnv('SPECKIT_CONFIDENCE_TRUNCATION');
 
       // S2 features on
-      setEnv('SPECKIT_NOVELTY_BOOST', 'true');
       setEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
 
       // Co-activation boost works
@@ -260,7 +253,7 @@ describe('Cross-Sprint Integration', () => {
       ]);
       expect(fused.length).toBeGreaterThan(0);
 
-      // Composite with N4 and TM-01 produces valid score
+      // Composite with TM-01 produces valid score
       const row = makeScoringInput({
         created_at: new Date().toISOString(),
         interference_score: 1,
@@ -300,8 +293,7 @@ describe('Cross-Sprint Integration', () => {
       expect(complexBudget.applied).toBe(true);
     });
 
-    it('5. N4 cold-start + interference do not conflict: new memory with interference gets valid score', () => {
-      setEnv('SPECKIT_NOVELTY_BOOST', 'true');
+    it('5. Interference penalty applies correctly: new memory with interference gets valid score', () => {
       setEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
 
       // Brand-new memory (seconds ago) with high interference
@@ -313,13 +305,9 @@ describe('Cross-Sprint Integration', () => {
 
       const score = calculateCompositeScore(row);
 
-      // TM-01 subtracts penalty; N4 novelty boost removed (always 0)
+      // TM-01 subtracts penalty
       expect(score).toBeGreaterThanOrEqual(0);
       expect(score).toBeLessThanOrEqual(1);
-
-      // Novelty boost always returns 0 (feature removed)
-      const noveltyBoost = calculateNoveltyBoost(row.created_at!);
-      expect(noveltyBoost).toBe(0);
 
       // Verify interference penalty would be applied
       const penalized = applyInterferencePenalty(0.5, 5);
@@ -382,22 +370,7 @@ describe('Cross-Sprint Integration', () => {
 
   describe('Numeric Correctness', () => {
 
-    it('8. N4 novelty boost removed: always returns 0 regardless of age', () => {
-      setEnv('SPECKIT_NOVELTY_BOOST', 'true');
-
-      // Feature removed — all ages return 0
-      const twelveHoursAgo = new Date(Date.now() - 12 * 3600000).toISOString();
-      const boost = calculateNoveltyBoost(twelveHoursAgo);
-      expect(boost).toBe(0);
-
-      const justNow = new Date().toISOString();
-      const boostNow = calculateNoveltyBoost(justNow);
-      expect(boostNow).toBe(0);
-
-      const fortyEightHoursAgo = new Date(Date.now() - 48.1 * 3600000).toISOString();
-      const boostOld = calculateNoveltyBoost(fortyEightHoursAgo);
-      expect(boostOld).toBe(0);
-    });
+    // Test 8 removed: N4 novelty boost dead code (Phase D cleanup)
 
     it('9. Interference penalty bounds: score never goes below 0 after penalty', () => {
       setEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
@@ -420,7 +393,6 @@ describe('Cross-Sprint Integration', () => {
     });
 
     it('10. Composite scores in [0,1]: after all boosts/penalties, final score is clamped', () => {
-      setEnv('SPECKIT_NOVELTY_BOOST', 'true');
       setEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
 
       // High everything: test upper bound
@@ -495,11 +467,6 @@ describe('Cross-Sprint Integration', () => {
       expect(emptyIntent.intent).toBe('understand');
       expect(emptyIntent.confidence).toBe(0);
 
-      // Novelty boost with undefined
-      clearEnv('SPECKIT_NOVELTY_BOOST');
-      const noNovelty = calculateNoveltyBoost(undefined);
-      expect(noNovelty).toBe(0);
-
       // Interference with 0 score
       setEnv('SPECKIT_INTERFERENCE_SCORE', 'true');
       const noInterference = applyInterferencePenalty(0.7, 0);
@@ -567,16 +534,11 @@ describe('Cross-Sprint Integration', () => {
       expect(tiedFusion[1].rrfScore).toBe(1.0);
     });
 
-    it('15. Very old memory: N4 boost negligible, decay applied, still scores > 0', () => {
-      setEnv('SPECKIT_NOVELTY_BOOST', 'true');
+    it('15. Very old memory: decay applied, still scores > 0', () => {
       clearEnv('SPECKIT_INTERFERENCE_SCORE');
 
       // Memory created 1 year ago
       const oneYearAgo = new Date(Date.now() - 365 * 86400000).toISOString();
-
-      // Novelty boost should be 0 (beyond 48h window)
-      const novelty = calculateNoveltyBoost(oneYearAgo);
-      expect(novelty).toBe(0);
 
       // Retrievability should be very low but > 0
       const retrievability = calculateRetrievabilityScore({

@@ -68,13 +68,13 @@ describe('Search Feature Flags', () => {
     crossEncoder.resetProvider();
   });
 
-  it('defaults graduated gates on while keeping reconsolidation opt-in', () => {
+  it('defaults all graduated gates on including reconsolidation', () => {
     expect(isMMREnabled()).toBe(true);
     expect(isTRMEnabled()).toBe(true);
     expect(isMultiQueryEnabled()).toBe(true);
     expect(isCrossEncoderEnabled()).toBe(true);
     expect(isContextHeadersEnabled()).toBe(true);
-    expect(isReconsolidationEnabled()).toBe(false);
+    expect(isReconsolidationEnabled()).toBe(true);
   });
 
   it('disables each gate only when explicitly set to false', () => {
@@ -109,14 +109,20 @@ describe('Search Feature Flags', () => {
     expect(isReconsolidationEnabled()).toBe(true);
   });
 
-  it('reconsolidation only enables for an explicit true value', () => {
+  it('reconsolidation defaults on and disables only for explicit false/0', () => {
+    delete process.env.SPECKIT_RECONSOLIDATION;
+    expect(isReconsolidationEnabled()).toBe(true);
+
     process.env.SPECKIT_RECONSOLIDATION = 'TRUE';
     expect(isReconsolidationEnabled()).toBe(true);
 
     process.env.SPECKIT_RECONSOLIDATION = '1';
+    expect(isReconsolidationEnabled()).toBe(true);
+
+    process.env.SPECKIT_RECONSOLIDATION = 'false';
     expect(isReconsolidationEnabled()).toBe(false);
 
-    delete process.env.SPECKIT_RECONSOLIDATION;
+    process.env.SPECKIT_RECONSOLIDATION = '0';
     expect(isReconsolidationEnabled()).toBe(false);
   });
 

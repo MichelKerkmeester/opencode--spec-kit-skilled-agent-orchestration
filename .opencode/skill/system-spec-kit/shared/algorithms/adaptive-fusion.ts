@@ -79,8 +79,10 @@ const DEFAULT_WEIGHTS: FusionWeights = {
 
 const FEATURE_FLAG = 'SPECKIT_ADAPTIVE_FUSION';
 
-/** Small weight shift applied per document type to fine-tune intent weights. */
-const DOC_TYPE_WEIGHT_SHIFT = 0.1;
+/** Proportional weight shift factor applied per document type to fine-tune intent weights.
+ *  Multiplied against the base weight (20% shift) so small weights aren't disproportionately affected.
+ *  Env-tunable via SPECKIT_DOC_TYPE_WEIGHT_FACTOR (default 1.2 = 20% proportional shift). */
+const DOC_TYPE_WEIGHT_FACTOR = parseFloat(process.env.SPECKIT_DOC_TYPE_WEIGHT_FACTOR || '') || 1.2;
 
 /** Scaling factor applied to recency freshness before adding to RRF score. */
 const RECENCY_BOOST_SCALE = 0.1;
@@ -139,23 +141,26 @@ export function getAdaptiveWeights(
   const base = INTENT_WEIGHT_PROFILES[intent] ?? { ...DEFAULT_WEIGHTS };
   const weights: FusionWeights = { ...base };
 
-  // Document-type adjustments (small shifts, keep sum <= 1.0)
+  // Document-type adjustments (proportional shifts, keep sum <= 1.0)
+  // Uses DOC_TYPE_WEIGHT_FACTOR (default 1.2 = 20% proportional shift) so
+  // small weights aren't disproportionately affected by flat additive shifts.
   if (documentType) {
+    const inverseFactor = 2 - DOC_TYPE_WEIGHT_FACTOR; // e.g. 0.8 when factor is 1.2
     switch (documentType) {
       case 'decision':
         // Decisions are best found by exact keyword matches
-        weights.keywordWeight = Math.min(1.0, weights.keywordWeight + DOC_TYPE_WEIGHT_SHIFT);
-        weights.semanticWeight = Math.max(0, weights.semanticWeight - DOC_TYPE_WEIGHT_SHIFT);
+        weights.keywordWeight = Math.min(1.0, weights.keywordWeight * DOC_TYPE_WEIGHT_FACTOR);
+        weights.semanticWeight = Math.max(0, weights.semanticWeight * inverseFactor);
         break;
       case 'implementation':
         // Implementation docs: recency matters more
-        weights.recencyWeight = Math.min(1.0, weights.recencyWeight + DOC_TYPE_WEIGHT_SHIFT);
-        weights.semanticWeight = Math.max(0, weights.semanticWeight - DOC_TYPE_WEIGHT_SHIFT);
+        weights.recencyWeight = Math.min(1.0, weights.recencyWeight * DOC_TYPE_WEIGHT_FACTOR);
+        weights.semanticWeight = Math.max(0, weights.semanticWeight * inverseFactor);
         break;
       case 'research':
         // Research docs: semantic similarity is paramount
-        weights.semanticWeight = Math.min(1.0, weights.semanticWeight + DOC_TYPE_WEIGHT_SHIFT);
-        weights.keywordWeight = Math.max(0, weights.keywordWeight - DOC_TYPE_WEIGHT_SHIFT);
+        weights.semanticWeight = Math.min(1.0, weights.semanticWeight * DOC_TYPE_WEIGHT_FACTOR);
+        weights.keywordWeight = Math.max(0, weights.keywordWeight * inverseFactor);
         break;
       // No default adjustment needed
     }

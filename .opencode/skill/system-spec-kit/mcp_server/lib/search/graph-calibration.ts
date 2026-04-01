@@ -21,8 +21,10 @@
    2. CONSTANTS
 ---------------------------------------------------------------- */
 
-/** Maximum graph contribution allowed in Stage 2 scoring. */
-export const GRAPH_WEIGHT_CAP = 0.05;
+/** Maximum graph contribution allowed in Stage 2 scoring.
+ *  Env-tunable via SPECKIT_GRAPH_WEIGHT_CAP (default 0.15).
+ *  Note: per-mechanism inner caps (e.g. STAGE2_GRAPH_BONUS_CAP=0.03) are unchanged. */
+export const GRAPH_WEIGHT_CAP = parseFloat(process.env.SPECKIT_GRAPH_WEIGHT_CAP || '') || 0.15;
 
 /** Maximum community score boost --- secondary signal only. */
 export const COMMUNITY_SCORE_CAP = 0.03;
