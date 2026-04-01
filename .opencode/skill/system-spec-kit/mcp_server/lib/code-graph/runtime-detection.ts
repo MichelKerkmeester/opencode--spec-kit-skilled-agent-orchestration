@@ -3,6 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Detects the active AI runtime and its hook policy.
 
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
 /** Supported runtime identifiers */
 export type RuntimeId = 'claude-code' | 'codex-cli' | 'copilot-cli' | 'gemini-cli' | 'unknown';
 
@@ -35,11 +38,32 @@ export function detectRuntime(): RuntimeInfo {
   }
 
   // Gemini CLI: sets specific env patterns
+  // Gemini supports hooks when .gemini/settings.json has a 'hooks' or 'hooksConfig' block.
   if (env.GEMINI_CLI === '1' || env.GOOGLE_GENAI_USE_VERTEXAI) {
-    return { runtime: 'gemini-cli', hookPolicy: 'disabled_by_scope' };
+    const hookPolicy = detectGeminiHookPolicy();
+    return { runtime: 'gemini-cli', hookPolicy };
   }
 
   return { runtime: 'unknown', hookPolicy: 'unknown' };
+}
+
+/**
+ * Detect whether Gemini CLI has hooks configured.
+ * Checks .gemini/settings.json for a 'hooks' or 'hooksConfig' block.
+ */
+function detectGeminiHookPolicy(): HookPolicy {
+  try {
+    const settingsPath = resolve(process.cwd(), '.gemini', 'settings.json');
+    if (!existsSync(settingsPath)) return 'unavailable';
+    const raw = readFileSync(settingsPath, 'utf-8');
+    const parsed = JSON.parse(raw);
+    if (parsed && (typeof parsed.hooks === 'object' || typeof parsed.hooksConfig === 'object')) {
+      return 'enabled';
+    }
+    return 'disabled_by_scope';
+  } catch {
+    return 'unavailable';
+  }
 }
 
 /** Check if hooks are available for the current runtime */

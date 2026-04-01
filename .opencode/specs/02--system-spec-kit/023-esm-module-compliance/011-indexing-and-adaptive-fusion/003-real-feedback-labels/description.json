@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/003-real-feedback-labels",
+  "description": "Feature Specification: Real Feedback Labels for Evaluation",
+  "keywords": [
+    "feature",
+    "specification",
+    "real",
+    "feedback",
+    "labels",
+    "evaluation"
+  ],
+  "lastUpdated": "2026-04-01T05:46:23.314Z",
+  "specId": "003",
+  "folderSlug": "real-feedback-labels",
+  "parentChain": [
+    "02--system-spec-kit",
+    "023-esm-module-compliance",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

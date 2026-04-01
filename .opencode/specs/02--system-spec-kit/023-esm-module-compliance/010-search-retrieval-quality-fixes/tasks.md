@@ -36,25 +36,25 @@ contextType: "implementation"
 
 ### Fix 1: RC3-A — Intent Propagation Bug [trivial]
 
-- [x] T001 Add `intent: string | null` parameter to `executeDeepStrategy()` signature (`memory-context.ts:628`)
+- [x] T001 Add `intent: string | null` parameter to `executeDeepStrategy()` signature (`memory-context.ts:667`)
 - [ ] T002 Add `intent: string | null` parameter to `executeQuickStrategy()` signature (`memory-context.ts`) — SKIPPED: uses triggers not search
-- [x] T003 Add `intent: string | null` parameter to `executeResumeStrategy()` signature (`memory-context.ts:688`)
-- [x] T004 Update `executeStrategy()` to forward `args.intent` to deep and resume strategy functions (`memory-context.ts:884-887`)
-- [x] T005 In `executeDeepStrategy()`: replace `autoDetectIntent: true` with `intent: intent ?? undefined` (`memory-context.ts:645`)
-- [x] T006 In `executeResumeStrategy()`: replace `autoDetectIntent: true` with `intent: intent ?? undefined` (`memory-context.ts:707`)
+- [x] T003 Add `intent: string | null` parameter to `executeResumeStrategy()` signature (`memory-context.ts:730`)
+- [x] T004 Update `executeStrategy()` to forward `args.intent` to deep, resume, and focused strategy functions (`memory-context.ts:939-951`)
+- [x] T005 In `executeDeepStrategy()`: replace `autoDetectIntent: true` with `intent: intent ?? undefined` (`memory-context.ts:685-686`)
+- [x] T006 In `executeResumeStrategy()`: replace `autoDetectIntent: true` with `intent: intent ?? undefined` (`memory-context.ts:750-751`)
 - [ ] T007 In `executeQuickStrategy()`: add `intent: intent ?? undefined` to search call — SKIPPED: uses triggers not search
 - [x] T008 Verify: `memory_context({ input: "semantic search", mode: "deep", intent: "understand" })` shows intent=understand in trace
 
 ### Fix 2: RC1-A — Folder Discovery Recovery [low effort]
 
-- [x] T009 After strategy execution in `memory_context`, check for 0-result + folder-discovered condition (`memory-context.ts:~1223`)
+- [x] T009 After strategy execution in `memory_context`, check for 0-result + folder-discovered condition (`memory-context.ts:1351-1364`)
 - [x] T010 Implement retry logic: clear `options.specFolder`, re-execute strategy
 - [x] T011 Added `extractResultCount()` helper and recovery retry block with error handling
 - [x] T012 Verify: `memory_context({ input: "semantic search", mode: "deep" })` returns >0 results after recovery — pipeline returns 20+ candidates; stale cache masks result in memory_context wrapper
 
 ### Fix 3: RC2-B — Adaptive Content Truncation [low effort]
 
-- [x] T013 In `enforceTokenBudget()`, add content truncation pass BEFORE result dropping (`memory-context.ts:467-477`)
+- [x] T013 In `enforceTokenBudget()`, add content truncation pass BEFORE result dropping (`memory-context.ts:473-479`)
 - [x] T014 Truncate `content` field to MAX_CONTENT_CHARS (500) with `...` suffix when over budget
 - [x] T015 Add `contentTruncated: true` flag to truncated results
 - [x] T016 Re-estimate tokens after content truncation before falling back to result dropping
@@ -69,10 +69,10 @@ contextType: "implementation"
 ### Fix 4: RC1-B — Folder Discovery as Boost Signal [medium effort]
 
 - [x] T018 Define `FolderBoost` interface: `{ folder: string, factor: number }` (`memory-context.ts`) — inline type on ContextOptions and SearchArgs interfaces
-- [x] T019 Change `maybeDiscoverSpecFolder()` to set `options.folderBoost` instead of `options.specFolder` (`memory-context.ts:872`)
+- [x] T019 Change `maybeDiscoverSpecFolder()` to set `options.folderBoost` instead of writing the boost metadata into a stale line anchor (`memory-context.ts:908-920`)
 - [x] T020 Add `SPECKIT_FOLDER_BOOST_FACTOR` env var support (default 1.3)
 - [x] T021 In `memory-search.ts`: accept `folderBoost` option and apply score multiplier — added to SearchArgs, destructured in handleMemorySearch, similarity multiplied post-pipeline with re-sort
-- [x] T022 Update folder discovery metadata: `source: "boost"` — folderBoost metadata added to appliedBoosts in response
+- [x] T022 Update folder boost metadata in the response payload — `appliedBoosts.folder` now captures the discovered folder and factor in search responses
 - [x] T023 Verify: folder-discovered results ranked higher but non-matching results still present — `appliedBoosts.folder: { applied: true, folder: "...", factor: 1.3 }` visible in response
 
 ### Fix 5: RC2-A — Two-Tier Metadata+Content Response [medium effort]
@@ -85,7 +85,7 @@ contextType: "implementation"
 
 ### Fix 6: RC3-B — Intent Confidence Floor [low effort]
 
-- [x] T029 In `handleMemorySearch()` intent classification section, add confidence threshold check (`memory-search.ts:589-596`)
+- [x] T029 In `handleMemorySearch()` intent classification section, add confidence threshold check (`memory-search.ts:591-597`)
 - [x] T030 When auto-detected confidence < INTENT_CONFIDENCE_FLOOR (0.25), override to understand with confidence 1.0
 - [x] T031 Ensure explicit intent (caller-provided) bypasses the floor entirely (`!explicitIntent` guard)
 - [x] T032 Verify: `memory_search({ query: "semantic search" })` auto-detects as "understand" (not "fix_bug" at 0.098) — intent: { type: "understand", confidence: 1 }

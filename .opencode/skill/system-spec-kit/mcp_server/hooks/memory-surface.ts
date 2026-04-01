@@ -10,6 +10,7 @@ import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
 import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
+import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
 
 import type { Database } from '@spec-kit/shared/types';
 
@@ -384,6 +385,9 @@ async function primeSessionIfNeeded(
 
     // F045: Mark session as primed AFTER successful execution (not before try)
     sessionPrimed = true;
+
+    // Phase 024 / Item 9: Record bootstrap telemetry for MCP auto-priming
+    recordBootstrapEvent('mcp_auto', Date.now() - startTime, 'full');
 
     if (enrichedConstitutional.length === 0 && codeGraphStatus.status !== 'ok') {
       // Still return the prime package even when no constitutional memories

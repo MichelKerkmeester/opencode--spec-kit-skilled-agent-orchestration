@@ -9,8 +9,7 @@ import * as toolCache from '../lib/cache/tool-cache.js';
 import * as sessionManager from '../lib/session/session-manager.js';
 import * as intentClassifier from '../lib/search/intent-classifier.js';
 // TierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
-import { isEnabled as isSessionBoostEnabled } from '../lib/search/session-boost.js';
-import { isEnabled as isCausalBoostEnabled } from '../lib/search/causal-boost.js';
+import { isSessionBoostEnabled, isCausalBoostEnabled } from '../lib/search/search-flags.js';
 // 4-stage pipeline architecture
 import { executePipeline } from '../lib/search/pipeline/index.js';
 import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline/index.js';
@@ -558,7 +557,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     normalizedQuery,
     hasValidConcepts ? concepts : undefined
   );
-  const artifactRouting = getStrategyForQuery(artifactRoutingQuery, specFolder);
+  let artifactRouting = getStrategyForQuery(artifactRoutingQuery, specFolder);
 
   // Intent-aware retrieval
   let detectedIntent: string | null = null;
@@ -595,6 +594,11 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     detectedIntent = 'understand';
     intentConfidence = 1.0;
     intentWeights = intentClassifier.getIntentWeights('understand' as IntentType);
+  }
+
+  // Re-run artifact routing with detected intent for fallback coverage
+  if (detectedIntent && artifactRouting?.detectedClass === 'unknown' && artifactRouting?.confidence === 0) {
+    artifactRouting = getStrategyForQuery(artifactRoutingQuery, specFolder, detectedIntent);
   }
 
   // Create retrieval trace at pipeline entry

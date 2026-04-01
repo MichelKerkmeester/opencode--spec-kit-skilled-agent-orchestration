@@ -362,15 +362,24 @@ function mergeCandidateBatches(
  */
 async function buildDeepQueryVariants(query: string): Promise<string[]> {
   try {
-    // 038 fix: Skip rule-based expansion for simple queries (consistent with R12 path)
-    if (!isExpansionActive(query)) {
-      return [query];
-    }
     const expanded = expandQuery(query);
     const variants = new Set<string>(expanded);
     // ExpandQuery already includes the original as the first entry,
     // But be explicit in case the implementation changes.
     variants.add(query);
+
+    // Deep mode: ensure at least 2 variants so the multi-search branch fires.
+    // When synonym expansion produces no new variants (simple/domain-specific queries),
+    // generate a basic reformulation to trigger the parallel search path.
+    if (variants.size < 2) {
+      const words = query.trim().split(/\s+/);
+      if (words.length >= 2) {
+        variants.add(words.slice().reverse().join(' '));
+      } else {
+        variants.add(`about ${query}`);
+      }
+    }
+
     return Array.from(variants).slice(0, MAX_DEEP_QUERY_VARIANTS);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);

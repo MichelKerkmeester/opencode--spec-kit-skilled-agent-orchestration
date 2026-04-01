@@ -42,7 +42,7 @@ This is **Phase 10** of the ESM Module Compliance specification. It addresses si
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Planned |
+| **Status** | Completed |
 | **Created** | 2026-03-31 |
 | **Branch** | `system-speckit/024-compact-code-graph` |
 <!-- /ANCHOR:metadata -->
@@ -107,7 +107,7 @@ Restore retrieval quality so that `memory_context` reliably returns relevant res
 3. Implement adaptive content truncation — truncate content of large results rather than dropping them entirely
 
 **Architecture (Fixes 4-6):**
-4. Convert folder discovery from hard filter to boost signal in fusion scoring
+4. Add folder-boost scoring for discovered folders while preserving the 0-result recovery path when the initial discovered-folder scope is too narrow
 5. Implement two-tier response: metadata for all results, content for top N that fit budget
 6. Add confidence floor (0.25) for auto-detected intent in `memory-search.ts`
 
@@ -168,7 +168,7 @@ All paths relative to `.opencode/skill/system-spec-kit/`.
 - **SC-001**: `memory_context({ input: "semantic search", mode: "deep", intent: "understand" })` returns relevant results (not 0)
 - **SC-002**: Intent trace shows "understand" (explicit) not "fix_bug" (auto-detected) when caller specifies intent
 - **SC-003**: Token budget truncation preserves at least 5 of 20 results with truncated content
-- **SC-004**: Folder discovery metadata shows `source: "boost"` instead of hard filter when applied
+- **SC-004**: Search responses surface folder boost data via `appliedBoosts.folder`, while the L1 response meta continues to report `folderDiscovery.source: "folder-discovery"`
 - **SC-005**: Short ambiguous queries ("semantic search") get `understand` intent (not random low-confidence classifications)
 <!-- /ANCHOR:success-criteria -->
 

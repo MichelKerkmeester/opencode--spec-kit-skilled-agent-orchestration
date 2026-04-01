@@ -1,0 +1,27 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout",
+  "description": "Default-ON Boost Rollout — Session, Causal & Deep Expansion",
+  "keywords": [
+    "session-boost",
+    "causal-boost",
+    "deep-expansion",
+    "default-on",
+    "feature-flag",
+    "rollout",
+    "SPECKIT_SESSION_BOOST",
+    "SPECKIT_CAUSAL_BOOST",
+    "search-pipeline"
+  ],
+  "lastUpdated": "2026-04-01T00:00:00.000Z",
+  "specId": "006",
+  "folderSlug": "default-on-boost-rollout",
+  "parentChain": [
+    "02--system-spec-kit",
+    "023-esm-module-compliance",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-04-26_07-35__implemented-default-on-boost-rollout-for-session.md"
+  ]
+}

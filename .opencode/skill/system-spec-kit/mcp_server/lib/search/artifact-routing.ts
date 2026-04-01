@@ -171,7 +171,7 @@ const QUERY_PATTERNS: Array<{ keywords: string[]; patterns: RegExp[]; artifactCl
   },
   {
     artifactClass: 'implementation-summary',
-    keywords: ['implementation-summary', 'implementation summary', 'summary of changes', 'what was implemented'],
+    keywords: ['implementation-summary', 'implementation summary', 'summary of changes', 'what was implemented', 'config', 'setup', 'env', 'flag', 'setting'],
     patterns: [/implementation[\s-]summary/i, /what\s+(?:was|got)\s+implemented/i, /summary\s+of\s+(?:changes|implementation)/i],
   },
   {
@@ -186,12 +186,12 @@ const QUERY_PATTERNS: Array<{ keywords: string[]; patterns: RegExp[]; artifactCl
   },
   {
     artifactClass: 'research',
-    keywords: ['research', 'investigation', 'analysis', 'findings', 'study', 'evaluation'],
+    keywords: ['research', 'investigation', 'analysis', 'findings', 'study', 'evaluation', 'search', 'retrieval', 'pipeline', 'indexing', 'embedding', 'vector', 'semantic'],
     patterns: [/research\.md/i, /research\s+(?:findings|results|notes)/i],
   },
   {
     artifactClass: 'memory',
-    keywords: ['memory', 'context', 'session', 'previous session', 'prior work', 'last time', 'continue'],
+    keywords: ['memory', 'context', 'session', 'previous session', 'prior work', 'last time', 'continue', 'resume', 'recover', 'continuation'],
     patterns: [/memory/i, /(?:previous|prior|last)\s+(?:session|work|context)/i, /what\s+(?:did|was)\s+(?:we|I)\s+(?:do|work\s+on)\s+(?:last|before)/i],
   },
 ];
@@ -236,7 +236,7 @@ function getStrategy(artifactClass: ArtifactClass): RetrievalStrategy {
  * Detect artifact class from a natural language query and optional specFolder.
  * Returns a RoutingResult with the detected class, strategy, and confidence.
  */
-function getStrategyForQuery(query: string, specFolder?: string): RoutingResult {
+function getStrategyForQuery(query: string, specFolder?: string, intent?: string): RoutingResult {
   const defaultResult: RoutingResult = {
     strategy: ROUTING_TABLE.unknown,
     detectedClass: 'unknown',
@@ -281,6 +281,26 @@ function getStrategyForQuery(query: string, specFolder?: string): RoutingResult 
   // Confidence: normalize score. Max realistic score ~6-8 (3 keywords + 2 patterns).
   // Use a soft cap at 6 to map to 0-1 range.
   const confidence = bestScore > 0 ? Math.min(1, bestScore / 6) : 0;
+
+  // Intent-based fallback: map detected intent to artifact class
+  const INTENT_TO_ARTIFACT: Record<string, ArtifactClass> = {
+    understand: 'research',
+    find_spec: 'spec',
+    find_decision: 'decision-record',
+    add_feature: 'implementation-summary',
+    fix_bug: 'memory',
+    refactor: 'implementation-summary',
+    security_audit: 'research',
+  };
+
+  if (bestScore === 0 && intent && INTENT_TO_ARTIFACT[intent]) {
+    const mappedClass = INTENT_TO_ARTIFACT[intent];
+    return {
+      strategy: ROUTING_TABLE[mappedClass],
+      detectedClass: mappedClass,
+      confidence: 0.4,
+    };
+  }
 
   // If specFolder hints at an artifact type, use it as tiebreaker
   if (bestScore === 0 && specFolder) {

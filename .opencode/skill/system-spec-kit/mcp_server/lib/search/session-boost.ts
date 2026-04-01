@@ -25,6 +25,12 @@ interface SessionBoostMetadata {
   maxBoostApplied: number;
 }
 
+/**
+ * Check whether session boost is enabled.
+ * Default: ON (graduated). Set SPECKIT_SESSION_BOOST=false to disable.
+ * When enabled, session attention scores from working_memory are used
+ * to boost results that the user recently interacted with.
+ */
 function isEnabled(sessionId?: string | null): boolean {
   return isFeatureEnabled('SPECKIT_SESSION_BOOST', sessionId ?? undefined);
 }

@@ -40,7 +40,18 @@ export type MetricEventKind =
   | 'tool_call'
   | 'memory_recovery'
   | 'code_graph_query'
-  | 'spec_folder_change';
+  | 'spec_folder_change'
+  | 'bootstrap';
+
+export type BootstrapSource = 'hook' | 'mcp_auto' | 'agent' | 'manual' | 'tool';
+export type BootstrapCompleteness = 'full' | 'partial' | 'minimal';
+
+export interface BootstrapRecord {
+  source: BootstrapSource;
+  durationMs: number;
+  completeness: BootstrapCompleteness;
+  timestamp: string;
+}
 
 export interface MetricEvent {
   kind: MetricEventKind;
@@ -62,6 +73,7 @@ let codeGraphQueries = 0;
 let specFolderTransitions = 0;
 let currentSpecFolder: string | null = null;
 let primed = false;
+const bootstrapRecords: BootstrapRecord[] = [];
 
 /* ───────────────────────────────────────────────────────────────
    3. CONSTANTS
@@ -99,7 +111,30 @@ export function recordMetricEvent(event: MetricEvent): void {
         currentSpecFolder = event.specFolder;
       }
       break;
+
+    case 'bootstrap':
+      // Handled by recordBootstrapEvent — no-op here
+      break;
   }
+}
+
+/** Phase 024 / Item 9: Record a bootstrap telemetry event. */
+export function recordBootstrapEvent(
+  source: BootstrapSource,
+  durationMs: number,
+  completeness: BootstrapCompleteness,
+): void {
+  bootstrapRecords.push({
+    source,
+    durationMs,
+    completeness,
+    timestamp: new Date().toISOString(),
+  });
+}
+
+/** Get all bootstrap records for diagnostics. */
+export function getBootstrapRecords(): readonly BootstrapRecord[] {
+  return bootstrapRecords;
 }
 
 /* ───────────────────────────────────────────────────────────────

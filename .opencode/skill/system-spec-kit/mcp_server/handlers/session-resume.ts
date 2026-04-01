@@ -7,7 +7,7 @@
 import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import { handleMemoryContext } from './memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
-import { recordMetricEvent } from '../lib/session/context-metrics.js';
+import { recordMetricEvent, recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -16,6 +16,7 @@ import type { MCPResponse } from '@spec-kit/shared/types';
 
 interface SessionResumeArgs {
   specFolder?: string;
+  minimal?: boolean;
 }
 
 interface CodeGraphStatus {
@@ -46,30 +47,37 @@ interface SessionResumeResult {
 export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPResponse> {
   // F052: Record memory recovery metric for session_resume
   recordMetricEvent({ kind: 'memory_recovery' });
+
+  // Phase 024: Record bootstrap telemetry
+  const startMs = Date.now();
   const hints: string[] = [];
 
-  // ── Sub-call 1: Memory context resume ───────────────────────
+  // ── Sub-call 1: Memory context resume (skip in minimal mode) ──
   let memoryResult: Record<string, unknown> = {};
-  try {
-    const mcpResponse = await handleMemoryContext({
-      input: 'resume previous work continue session',
-      mode: 'resume',
-      profile: 'resume',
-      specFolder: args.specFolder,
-    });
-    // Extract data from MCP envelope
-    if (mcpResponse?.content?.[0]?.text) {
-      try {
-        const parsed = JSON.parse(mcpResponse.content[0].text);
-        memoryResult = parsed?.data ?? parsed ?? {};
-      } catch {
-        memoryResult = { raw: mcpResponse.content[0].text };
+  if (args.minimal) {
+    memoryResult = { skipped: true, reason: 'minimal mode' };
+  } else {
+    try {
+      const mcpResponse = await handleMemoryContext({
+        input: 'resume previous work continue session',
+        mode: 'resume',
+        profile: 'resume',
+        specFolder: args.specFolder,
+      });
+      // Extract data from MCP envelope
+      if (mcpResponse?.content?.[0]?.text) {
+        try {
+          const parsed = JSON.parse(mcpResponse.content[0].text);
+          memoryResult = parsed?.data ?? parsed ?? {};
+        } catch {
+          memoryResult = { raw: mcpResponse.content[0].text };
+        }
       }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      memoryResult = { error: message };
+      hints.push('Memory resume failed. Try memory_context manually.');
     }
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    memoryResult = { error: message };
-    hints.push('Memory resume failed. Try memory_context manually.');
   }
 
   // ── Sub-call 2: Code graph status ───────────────────────────
@@ -118,6 +126,13 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     cocoIndex,
     hints,
   };
+
+  // Phase 024 / Item 9: Record bootstrap telemetry
+  recordBootstrapEvent(
+    'tool',
+    Date.now() - startMs,
+    args.minimal ? 'minimal' : 'full',
+  );
 
   return {
     content: [{

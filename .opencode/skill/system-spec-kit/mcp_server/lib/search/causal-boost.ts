@@ -140,7 +140,12 @@ interface NeighborBoost {
 
 let db: Database.Database | null = null;
 
-/** Check whether the causal boost feature flag is enabled. */
+/**
+ * Check whether the causal boost feature flag is enabled.
+ * Default: ON (graduated). Set SPECKIT_CAUSAL_BOOST=false to disable.
+ * When enabled, causal graph traversal amplifies scores for results
+ * connected to top-ranked results via causal edges.
+ */
 function isEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_CAUSAL_BOOST');
 }

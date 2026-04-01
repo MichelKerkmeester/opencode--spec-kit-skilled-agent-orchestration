@@ -13,8 +13,7 @@ import {
   getAdaptiveMode,
   tuneAdaptiveThresholdsAfterEvaluation,
 } from '../cognitive/adaptive-ranking.js';
-import { isEnabled as isSessionBoostEnabled } from '../search/session-boost.js';
-import { isEnabled as isCausalBoostEnabled } from '../search/causal-boost.js';
+import { isSessionBoostEnabled, isCausalBoostEnabled } from '../search/search-flags.js';
 import { executePipeline, type PipelineConfig } from '../search/pipeline/index.js';
 import { initConsumptionLog } from '../telemetry/consumption-logger.js';
 import type { RankedItem } from './rank-metrics.js';
@@ -455,7 +454,7 @@ async function runScheduledShadowEvaluationCycle(
         + `recommendation=${report.promotionGate.recommendation}`,
       );
 
-      if (getAdaptiveMode() !== 'disabled' && report.promotionGate?.ready) {
+      if (getAdaptiveMode() !== 'disabled' && report.promotionGate) {
         try {
           tuneAdaptiveThresholdsAfterEvaluation(db, report.promotionGate);
         } catch (err) {

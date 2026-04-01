@@ -23,9 +23,9 @@ Two targeted fixes in the validation pipeline. No architectural changes.
 **Solution:** Extract the spec folder from each file's path before validation. Pass it as context to `validateMemoryQualityContent` so the contamination checker can distinguish "references own spec's phases" (allowed) from "dominated by foreign spec content" (genuine contamination).
 
 **Files to modify:**
-- `scripts/src/lib/validate-memory-quality.ts` — Accept optional `specFolder` parameter in the contamination check
+- `scripts/lib/validate-memory-quality.ts` — Accept optional `specFolder` parameter in the contamination check
 - `mcp_server/handlers/memory-save.ts` — Already passes context correctly (no change needed)
-- `mcp_server/handlers/memory-index.js` — Pass extracted spec folder to validator during batch scan
+- `mcp_server/handlers/memory-index.ts` — Pass extracted spec folder to validator during batch scan
 
 **Key logic change:**
 ```
@@ -42,19 +42,19 @@ The contamination checker already has an allowlist mechanism for child phase fol
 **Solution:** Change the threshold from "any > 0" to "at least 1 match OR file is in a known memory/ directory". Memory files in `specs/**/memory/` directories are already structurally validated by the save pipeline — they don't need a second topical gate at index time.
 
 **Files to modify:**
-- `scripts/src/lib/validate-memory-quality.ts` — Adjust V12 check: if file path contains `/memory/`, skip topical coherence check (trust the save pipeline)
+- `scripts/lib/validate-memory-quality.ts` — Adjust V12 check for bulk indexing without relying on a non-existent `scripts/src/` source path
 
 **Alternative:** Lower blockOnIndex to `false` for V12 entirely. The rule still provides diagnostic value via warnings without preventing indexing.
 
 ### Fix 3: Spec Doc Indexing — Verify Warn-Only Path Inserts
 
-**Problem:** Spec docs (spec.md, plan.md, checklist.md) get V8 "warn-only" during reindex but still don't appear in the DB (0 entries with `document_type: 'spec_doc'`).
+**Problem:** Spec docs (spec.md, plan.md, checklist.md) get V8 "warn-only" during reindex but still don't appear in the DB under their per-document-type buckets (`spec`, `plan`, `checklist`, etc.).
 
 **Investigation:** The warn-only code path in `memory-save.ts` may skip the actual DB insert for spec docs. Need to trace the code path when `disposition === 'warn_only'` for spec doc types.
 
 **Files to investigate:**
 - `mcp_server/handlers/memory-save.ts` — Trace the spec doc warn-only path
-- `mcp_server/handlers/memory-index.js` — Check if spec docs are processed through the same save path
+- `mcp_server/handlers/memory-index.ts` — Check if spec docs are processed through the same save path
 
 ## Execution Order
 
@@ -75,9 +75,9 @@ node -e "
 const Database = require('better-sqlite3');
 const db = new Database('database/context-index__voyage__voyage-4__1024.sqlite', { readonly: true });
 console.log('Memory files:', db.prepare(\"SELECT COUNT(*) as c FROM memory_index WHERE file_path LIKE '%/memory/%'\").get().c);
-console.log('Spec docs:', db.prepare(\"SELECT COUNT(*) as c FROM memory_index WHERE document_type = 'spec_doc'\").get().c);
+console.log('Spec docs:', db.prepare(\"SELECT COUNT(*) as c FROM memory_index WHERE document_type IN ('spec', 'plan', 'tasks', 'implementation_summary', 'checklist', 'decision_record', 'research', 'handover')\").get().c);
 console.log('Total:', db.prepare('SELECT COUNT(*) as c FROM memory_index').get().c);
 db.close();
 "
-# Target: memory files >= 90, spec docs > 0, total > 56
+# Target: memory files >= 90, spec docs > 0 across the per-document-type buckets, total > 56
 ```

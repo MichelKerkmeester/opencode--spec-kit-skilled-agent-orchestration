@@ -47,7 +47,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 3500,
     priority: 1,
     useCase: 'Default entry point for context retrieval. Automatically routes based on intent.',
-    tools: ['memory_context', 'session_resume']
+    tools: ['memory_context', 'session_resume', 'session_bootstrap']
   },
   L2: {
     id: 'L2',

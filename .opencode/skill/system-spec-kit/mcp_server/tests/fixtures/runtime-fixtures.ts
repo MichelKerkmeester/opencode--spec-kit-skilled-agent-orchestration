@@ -52,9 +52,11 @@ export function createRuntimeFixture(runtime: RuntimeFixture['runtime']): Runtim
         },
       };
     case 'gemini-cli':
+      // Phase 024: Gemini hookPolicy is now dynamic — detected from .gemini/settings.json.
+      // In test environment without the file, it resolves to 'unavailable'.
       return {
         runtime: 'gemini-cli',
-        hookPolicy: 'disabled_by_scope',
+        hookPolicy: 'unavailable',
         supports: {
           sessionStartHook: false,
           preCompactHook: false,

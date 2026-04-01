@@ -204,6 +204,12 @@ export interface SharedMemoryStatusArgs {
 /** Arguments for session resume requests. */
 export interface SessionResumeArgs {
   specFolder?: string;
+  minimal?: boolean;
+}
+
+/** Arguments for session bootstrap requests. */
+export interface SessionBootstrapArgs {
+  specFolder?: string;
 }
 
 /** Arguments for checkpoint creation requests. */

@@ -19,6 +19,7 @@ import {
   handleSharedSpaceUpsert,
   handleSessionHealth,
   handleSessionResume,
+  handleSessionBootstrap,
 } from '../handlers/index.js';
 import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 
@@ -38,6 +39,7 @@ import type {
   SharedSpaceUpsertArgs,
   SharedMemoryStatusArgs,
   SessionResumeArgs,
+  SessionBootstrapArgs,
 } from './types.js';
 
 /** Tool names handled by this module */
@@ -57,6 +59,7 @@ export const TOOL_NAMES = new Set([
   'shared_memory_enable',
   'session_health',
   'session_resume',
+  'session_bootstrap',
 ]);
 
 /** Dispatch a tool call. Returns null if tool name not handled. */
@@ -77,6 +80,7 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
     case 'shared_memory_enable':       return handleSharedMemoryEnable(parseArgs<Record<string, unknown>>(validateToolArgs('shared_memory_enable', args)));
     case 'session_health':             return handleSessionHealth();
     case 'session_resume':             return handleSessionResume(parseArgs<SessionResumeArgs>(validateToolArgs('session_resume', args)));
+    case 'session_bootstrap':          return handleSessionBootstrap(parseArgs<SessionBootstrapArgs>(validateToolArgs('session_bootstrap', args)));
     default: return null;
   }
 }

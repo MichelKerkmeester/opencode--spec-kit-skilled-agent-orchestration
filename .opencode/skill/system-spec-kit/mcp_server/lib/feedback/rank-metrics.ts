@@ -66,11 +66,7 @@ function isJudgedItem(item: RankedItem): item is RankedItem & { relevanceScore: 
 function condenseJudgedRanking(rankedItems: RankedItem[]): RankedItem[] {
   return rankedItems
     .filter(isJudgedItem)
-    .sort((left, right) => left.rank - right.rank)
-    .map((item, index) => ({
-      ...item,
-      rank: index + 1,
-    }));
+    .sort((left, right) => left.rank - right.rank);
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -153,6 +149,9 @@ export function computeKendallTau(
  * Uses the log2 discount: DCG = sum(rel_i / log2(rank_i + 1)).
  * NDCG = DCG / IDCG where IDCG uses the ideal ordering.
  *
+ * Accepts sparse rankings with gaps. Missing positions are treated as
+ * zero-relevance items in the production ranking.
+ *
  * @param rankedItems - Items in rank order (rank 1 first)
  * @param k - Cutoff depth (default: rankedItems.length)
  * @returns NDCG in [0, 1]
@@ -160,14 +159,16 @@ export function computeKendallTau(
 export function computeNDCG(rankedItems: RankedItem[], k?: number): number {
   if (rankedItems.length === 0) return 0;
 
-  const cutoff = k ?? rankedItems.length;
-  const items = rankedItems.slice(0, cutoff);
+  const cutoff = k ?? Math.max(...rankedItems.map((item) => item.rank));
+  const items = [...rankedItems]
+    .sort((left, right) => left.rank - right.rank)
+    .filter((item) => item.rank <= cutoff);
 
   // DCG
   let dcg = 0;
-  for (let i = 0; i < items.length; i++) {
-    const rel = items[i].relevanceScore ?? 0;
-    dcg += rel / Math.log2(i + 2); // i+2 because rank is 1-based: log2(1+1), log2(2+1), ...
+  for (const item of items) {
+    const rel = item.relevanceScore ?? 0;
+    dcg += rel / Math.log2(item.rank + 1);
   }
 
   // IDCG — sort by relevance descending
@@ -196,7 +197,7 @@ export function computeNDCG(rankedItems: RankedItem[], k?: number): number {
  * or 0 if no relevant result is found.
  */
 export function computeMRR(rankedItems: RankedItem[]): number {
-  for (const item of rankedItems) {
+  for (const item of [...rankedItems].sort((left, right) => left.rank - right.rank)) {
     if ((item.relevanceScore ?? 0) > 0) {
       return 1 / item.rank;
     }
@@ -262,7 +263,8 @@ export function compareRanks(
   // Kendall tau
   const kendallTau = computeKendallTau(liveRankMap, shadowRankMap);
 
-  // Skip unlabeled items so evaluation only reflects real feedback labels.
+  // Preserve original rank positions so unlabeled items still occupy zero-relevance
+  // slots in the evaluated ranking instead of compressing judged survivors upward.
   const liveJudged = condenseJudgedRanking(liveRanked);
   const shadowJudged = condenseJudgedRanking(shadowRanked);
 

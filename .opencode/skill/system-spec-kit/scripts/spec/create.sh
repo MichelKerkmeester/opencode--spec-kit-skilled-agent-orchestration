@@ -154,6 +154,19 @@ while [[ $i -le $# ]]; do
             fi
             PHASE_PARENT="$next_arg"
             ;;
+        --phase-parent)
+            if [[ $((i + 1)) -gt $# ]]; then
+                echo 'Error: --phase-parent requires an existing spec folder path' >&2
+                exit 1
+            fi
+            i=$((i + 1))
+            next_arg="${!i}"
+            if [[ "$next_arg" == --* ]]; then
+                echo 'Error: --phase-parent requires an existing spec folder path' >&2
+                exit 1
+            fi
+            PHASE_PARENT="$next_arg"
+            ;;
         --short-name)
             if [[ $((i + 1)) -gt $# ]]; then
                 echo 'Error: --short-name requires a value' >&2
@@ -202,6 +215,7 @@ while [[ $i -le $# ]]; do
             echo "  --phases <N>        Number of initial child phases (default: 3)"
             echo "  --phase-names <list>  Comma-separated names for child phases"
             echo "  --parent <path>     Add phases to existing parent spec folder (with --phase)"
+            echo "  --phase-parent <path>  Alias for --parent in phase mode (supports nested .opencode/specs/ paths)"
             echo "                      Example: --phase-names \"foundation,implementation,integration\""
             echo "  --short-name <name> Provide a custom short name (2-4 words) for the branch"
             echo "  --number N          Specify branch number manually (overrides auto-detection)"
@@ -247,6 +261,7 @@ while [[ $i -le $# ]]; do
             echo "  $0 --phase --phases 3 'OAuth2 implementation'"
             echo "  $0 --phase --phases 3 --phase-names 'foundation,implementation,integration' 'OAuth2 flow'"
             echo "  $0 --phase --parent specs/042-oauth2-flow --phases 2 --phase-names 'stabilization,rollout' 'OAuth2 flow'"
+            echo '  $0 --phase --phase-parent .opencode/specs/02--system-spec-kit/023-esm/011-fusion --phase-names "research,implementation" "Graph improvements"'
             echo ""
             echo "  Creates: specs/042-oauth2-flow/"
             echo "           specs/042-oauth2-flow/001-foundation/"
@@ -273,9 +288,9 @@ if [[ "$PHASE_MODE" = true ]] && [[ "$SUBFOLDER_MODE" = true ]]; then
     exit 1
 fi
 
-# --parent is only valid in phase mode
+# --parent/--phase-parent are only valid in phase mode
 if [[ -n "$PHASE_PARENT" ]] && [[ "$PHASE_MODE" != true ]]; then
-    echo "Error: --parent can only be used with --phase" >&2
+    echo "Error: --parent and --phase-parent can only be used with --phase" >&2
     exit 1
 fi
 
@@ -354,6 +369,7 @@ validate_spec_folder_basename() {
 resolve_and_validate_spec_path() {
     local raw_path="$1"
     local label="${2:-spec folder}"
+    local skip_basename_validation="${3:-false}"
     local candidate resolved
 
     if [[ "$raw_path" = /* ]]; then
@@ -391,7 +407,9 @@ resolve_and_validate_spec_path() {
         exit 1
     fi
 
-    validate_spec_folder_basename "$(basename "$resolved")"
+    if [[ "$skip_basename_validation" != "true" ]]; then
+        validate_spec_folder_basename "$(basename "$resolved")"
+    fi
     printf '%s\n' "$resolved"
 }
 
@@ -620,7 +638,7 @@ if [[ "$PHASE_MODE" = true ]]; then
 
     # Optional append mode: add phases to an existing parent folder.
     if [[ -n "$PHASE_PARENT" ]]; then
-        PHASE_PARENT_RESOLVED="$(resolve_and_validate_spec_path "$PHASE_PARENT" "--parent folder")"
+        PHASE_PARENT_RESOLVED="$(resolve_and_validate_spec_path "$PHASE_PARENT" "--parent folder" "true")"
 
         if [[ ! -f "$PHASE_PARENT_RESOLVED/spec.md" ]]; then
             echo "Error: --parent folder must contain spec.md: $PHASE_PARENT" >&2

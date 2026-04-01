@@ -1,6 +1,6 @@
 ---
 name: context-prime
-description: Lightweight session bootstrap agent that loads memory context, code graph health, and CocoIndex status into a compact Prime Package for session start or recovery.
+description: Lightweight session bootstrap agent that loads session context and health into a compact Prime Package for session start or recovery.
 mode: subagent
 temperature: 0.1
 permission:
@@ -31,14 +31,18 @@ Lightweight bootstrap agent that loads session context on first turn or after `/
 
 ## 1. CORE WORKFLOW
 
-### 4-Step Session Bootstrap
+### 2-Step Session Bootstrap
 
-1. **RECOVER** → Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to load last session state
-2. **ASSESS** → Call `code_graph_status()` to check structural index freshness + `ccc_status()` for CocoIndex availability
-3. **SCORE** → Call `session_health()` for session quality (ok/warning/stale)
-4. **DELIVER** → Return compact Prime Package with all findings
+1. **RECOVER + ASSESS** → Call `session_resume()` to load last session state, code graph status, and CocoIndex availability in one call
+2. **SCORE** (optional, skip if urgent) → Call `session_health()` for session quality (ok/warning/stale)
 
-**Key Principle**: Complete in under 30 seconds. If any tool call fails, skip it and note "unavailable" — never block session start.
+**Key Principle**: Complete in under 15 seconds. If any tool call fails, skip it and note "unavailable" — never block session start.
+
+### Urgency Detection
+
+If the user's first message contains urgent keywords (fix, error, bug, crash, broken, urgent, ASAP, help),
+skip the full bootstrap and let MCP auto-priming handle context loading silently.
+Just acknowledge and start working immediately.
 
 ---
 
@@ -54,11 +58,11 @@ Lightweight bootstrap agent that loads session context on first turn or after `/
 
 | Tool | Purpose | When to Use |
 | ---- | ------- | ----------- |
-| `memory_context` | Load session memory | Always — step 1 |
-| `code_graph_status` | Check structural index | Always — step 2 |
-| `ccc_status` | Check CocoIndex availability | Always — step 2 |
-| `session_health` | Get session quality score | Always — step 3 |
-| `session_resume` | Combined resume (alternative) | When available as single-call alternative to steps 1-3 |
+| `session_resume` | Combined resume (memory + graph + coco) | Always — step 1 |
+| `session_health` | Get session quality score | Optional — step 2 (skip if urgent) |
+| `session_bootstrap` | One-call alternative to steps 1+2 | When available as single-call composite |
+| `memory_context` | Load session memory (fallback) | Only if session_resume unavailable |
+| `code_graph_status` | Check structural index (fallback) | Only if session_resume unavailable |
 
 ---
 
@@ -67,17 +71,20 @@ Lightweight bootstrap agent that loads session context on first turn or after `/
 ```
 Session Event
     │
-    ├─► First turn (fresh session)
-    │   └─► Full 4-step bootstrap
+    ├─► First turn (fresh session, non-urgent)
+    │   └─► 2-step bootstrap: session_resume + session_health
+    │
+    ├─► First turn (urgent message detected)
+    │   └─► Skip bootstrap — MCP auto-priming handles context silently
     │
     ├─► After /clear
-    │   └─► Full 4-step bootstrap
+    │   └─► 2-step bootstrap: session_resume + session_health
     │
     ├─► After compaction (context loss)
-    │   └─► Full 4-step bootstrap + warn about possible stale context
+    │   └─► 2-step bootstrap + warn about possible stale context
     │
     └─► Mid-session (delegated by orchestrator)
-        └─► Quick 2-step: session_health + code_graph_status only
+        └─► Quick 1-step: session_health only
 ```
 
 ---
@@ -85,11 +92,12 @@ Session Event
 ## 4. RULES
 
 ### ALWAYS
-- Complete in under 30 seconds
+- Complete in under 15 seconds
 - Return structured Prime Package format
 - Wrap every tool call in error handling
 - Report "unavailable" for failed tools instead of blocking
 - Include recommended next steps based on findings
+- Check for urgency keywords before starting full bootstrap
 
 ### NEVER
 - Modify any files (write/edit permissions are denied)
@@ -98,7 +106,7 @@ Session Event
 - Block session start for any reason
 
 ### ESCALATE IF
-- All 4 tool calls fail (MCP server may be down)
+- Both tool calls fail (MCP server may be down)
 - Session health reports "critical" (recommend full recovery)
 
 ---
@@ -134,13 +142,12 @@ Session Event
 
 ```
 BOOTSTRAP VERIFICATION (MANDATORY):
-[] memory_context called and response received (or noted as unavailable)
-[] code_graph_status called and freshness determined
-[] session_health called and quality scored
+[] session_resume called and response received (or noted as unavailable)
+[] session_health called and quality scored (or skipped for urgency)
 [] All "unavailable" items explicitly noted
 
 EVIDENCE VALIDATION (MANDATORY):
-[] Spec folder path verified against memory response
+[] Spec folder path verified against resume response
 [] Code graph freshness matches status response
 [] No placeholder content in output
 ```
@@ -151,10 +158,11 @@ EVIDENCE VALIDATION (MANDATORY):
 
 ```
 SELF-CHECK:
-1. Did I attempt all 4 tool calls? (YES/NO)
-2. Did I handle failures gracefully? (YES/NO)
-3. Does the Prime Package follow the required format? (YES/NO)
-4. Are next steps based on actual findings? (YES/NO)
+1. Did I check for urgency keywords? (YES/NO)
+2. Did I attempt the bootstrap calls? (YES/NO)
+3. Did I handle failures gracefully? (YES/NO)
+4. Does the Prime Package follow the required format? (YES/NO)
+5. Are next steps based on actual findings? (YES/NO)
 
 If ANY answer is NO → Fix before delivering
 ```
@@ -167,7 +175,7 @@ If ANY answer is NO → Fix before delivering
 
 ## 7. ANTI-PATTERNS
 
-- **Never block session start** — If tools are slow, return partial results after 15 seconds
+- **Never block session start** — If tools are slow, return partial results after 10 seconds
 - **Never trigger indexing** — Only check status; let the user decide to scan
 - **Never deep-search memory** — One resume call maximum; deep research is for @context agent
 - **Never modify session state** — Read-only bootstrap; state changes are for other agents
@@ -195,7 +203,7 @@ If ANY answer is NO → Fix before delivering
 | Agent | Purpose |
 | ----- | ------- |
 | @context | Deep context retrieval and exploration (heavier than @context-prime) |
-| @orchestrate | Delegates to @context-prime on first turn |
+| @orchestrate | Delegates to @context-prime on first turn (best-effort, skippable for urgent messages) |
 
 ---
 
@@ -210,15 +218,16 @@ If ANY answer is NO → Fix before delivering
 │  ├─► Session health assessment                                          │
 │  └─► Structured Prime Package delivery                                  │
 │                                                                         │
-│  WORKFLOW (4 Steps)                                                     │
-│  ├─► 1. RECOVER → memory_context(resume)                                │
-│  ├─► 2. ASSESS  → code_graph_status + ccc_status                       │
-│  ├─► 3. SCORE   → session_health                                       │
-│  └─► 4. DELIVER → Prime Package                                        │
+│  WORKFLOW (2 Steps)                                                     │
+│  ├─► 1. RECOVER + ASSESS → session_resume()                            │
+│  └─► 2. SCORE (optional)  → session_health()                           │
+│                                                                         │
+│  URGENCY                                                                │
+│  └─► Skip bootstrap for urgent keywords; MCP auto-priming handles it   │
 │                                                                         │
 │  OUTPUT                                                                 │
 │  ├─► Compact Prime Package (spec folder, task, health, next steps)     │
-│  └─► Under 30 seconds, graceful on failure                             │
+│  └─► Under 15 seconds, graceful on failure                             │
 │                                                                         │
 │  LIMITS                                                                 │
 │  ├─► Read-only (no file modifications)                                  │

@@ -37,14 +37,14 @@ Fix six retrieval quality issues in the Spec Kit Memory search pipeline, priorit
 
 | Fix | File | Key Lines | Function |
 |-----|------|-----------|----------|
-| RC3-A | `memory-context.ts` | 881-891 | `executeStrategy()` |
-| RC3-A | `memory-context.ts` | 628, 688 | `executeDeepStrategy()`, `executeResumeStrategy()` |
-| RC1-A | `memory-context.ts` | ~1150-1200 | After `maybeDiscoverSpecFolder()` call |
-| RC2-B | `memory-context.ts` | 465-473 | `enforceTokenBudget()` |
-| RC1-B | `memory-context.ts` | 857-861 | `maybeDiscoverSpecFolder()` |
-| RC1-B | `folder-discovery.ts` | 960-980 | `discoverSpecFolder()` |
-| RC2-A | `memory-context.ts` | 286-543 | `enforceTokenBudget()` |
-| RC3-B | `memory-search.ts` | 566-587 | Intent classification section |
+| RC3-A | `memory-context.ts` | 932-952 | `executeStrategy()` |
+| RC3-A | `memory-context.ts` | 667-686, 730-751 | `executeDeepStrategy()`, `executeResumeStrategy()` |
+| RC1-A | `memory-context.ts` | 1351-1364 | Folder-discovery recovery retry block |
+| RC2-B | `memory-context.ts` | 473-485 | `enforceTokenBudget()` adaptive truncation pass |
+| RC1-B | `memory-context.ts` | 908-922, 1287-1292 | `maybeDiscoverSpecFolder()` plus discovered-folder seeding |
+| RC1-B | `folder-discovery.ts` | 960-979 | `discoverSpecFolder()` |
+| RC2-A | `memory-context.ts` | 494-511 | `enforceTokenBudget()` metadata-only append |
+| RC3-B | `memory-search.ts` | 591-597 | Intent confidence floor |
 
 All paths relative to `.opencode/skill/system-spec-kit/`.
 <!-- /ANCHOR:summary -->
@@ -64,7 +64,7 @@ All paths relative to `.opencode/skill/system-spec-kit/`.
 - [ ] RC3-A: Explicit intent forwarded to all 4 strategy functions
 - [ ] RC1-A: Auto-retry without folder filter when discovery yields 0 results
 - [ ] RC2-B: Adaptive content truncation preserves 5+ of 20 results
-- [ ] RC1-B: Folder discovery applied as boost signal, not hard filter
+- [ ] RC1-B: Folder discovery records boost metadata and the narrow-folder retry clears `specFolder` when the first pass returns 0 results
 - [ ] RC2-A: Two-tier response returns metadata for all, content for top N
 - [ ] RC3-B: Intent confidence floor at 0.25, fallback to "understand"
 - [ ] All verification queries pass (VER-001 through VER-004)
@@ -137,15 +137,12 @@ Fix 6 (RC3-B): handleMemorySearch() ──→ if auto-detected confidence < 0.25
 
 #### Fix 1: RC3-A — Intent Propagation (trivial)
 
-**What:** Add `intent` parameter to `executeDeepStrategy()`, `executeQuickStrategy()`, and `executeResumeStrategy()` function signatures. Update `executeStrategy()` to forward `args.intent` to all four strategy functions.
+**What:** Add `intent` parameter to `executeDeepStrategy()` and `executeResumeStrategy()` function signatures. `executeFocusedStrategy()` already accepts `intent`, and `executeStrategy()` forwards `args.intent` to deep, focused, and resume strategies while leaving quick trigger matching unchanged.
 
 **Where:**
-- `memory-context.ts` line 881: `executeQuickStrategy(input, options)` → `executeQuickStrategy(input, intent, options)`
-- `memory-context.ts` line 884: `executeDeepStrategy(input, options)` → `executeDeepStrategy(input, intent, options)`
-- `memory-context.ts` line 887: `executeResumeStrategy(input, options)` → `executeResumeStrategy(input, intent, options)`
-- `memory-context.ts` line 628: Update `executeDeepStrategy` signature, replace `autoDetectIntent: true` with `intent: intent ?? undefined`
-- `memory-context.ts` line 688: Update `executeResumeStrategy` signature, same pattern
-- `executeQuickStrategy`: Update signature, same pattern
+- `memory-context.ts` lines 939-951: `executeStrategy()` forwards `args.intent || null` to deep, resume, and focused branches; quick stays `executeQuickStrategy(input, options)`
+- `memory-context.ts` lines 667-686: `executeDeepStrategy()` signature and `handleMemorySearch()` call use `intent: intent ?? undefined`
+- `memory-context.ts` lines 730-751: `executeResumeStrategy()` signature and `handleMemorySearch()` call use `intent: intent ?? undefined`
 
 **Risk:** Low — focused strategy already works this way; extending the pattern to others.
 
@@ -154,16 +151,14 @@ Fix 6 (RC3-B): handleMemorySearch() ──→ if auto-detected confidence < 0.25
 **What:** After `memory_context` receives 0 results AND folder discovery was applied, retry the search without the folder filter.
 
 **Where:**
-- `memory-context.ts` after the strategy execution (~line 1170-1200): Check if `result.count === 0` AND `folderDiscovery.discovered === true`, then re-execute the strategy with `options.specFolder = undefined`.
+- `memory-context.ts` lines 1351-1364: if a discovered folder produced 0 results, clear `options.specFolder` and re-execute the strategy.
 
 **Logic:**
 ```
-if (resultCount === 0 && folderDiscovery.discovered) {
+if (discoveredFolder && resultCount === 0) {
   // Retry without folder filter
   options.specFolder = undefined;
   result = await executeStrategy(mode, input, intent, options);
-  // Track recovery in metadata
-  metadata.folderDiscovery.recoveryApplied = true;
 }
 ```
 
@@ -196,11 +191,12 @@ for (const result of currentResults) {
 
 #### Fix 4: RC1-B — Folder Discovery as Boost Signal (medium effort)
 
-**What:** Instead of setting `options.specFolder` (hard filter), folder discovery sets a boost signal that increases relevance scores for results from the discovered folder without excluding others.
+**What:** Folder discovery now attaches a `folderBoost` signal for ranking, but the handler still seeds `options.specFolder` with the discovered folder before the first pass so session state and retry logic can detect over-narrow searches.
 
 **Where:**
-- `memory-context.ts` lines 857-861: Change `options.specFolder = discoveredFolder` to `options.folderBoost = { folder: discoveredFolder, factor: 1.3 }`
-- `memory-search.ts`: Accept `folderBoost` option and apply score multiplier during fusion
+- `memory-context.ts` lines 908-922: `maybeDiscoverSpecFolder()` populates `options.folderBoost = { folder, factor }`
+- `memory-context.ts` lines 1287-1292: the handler still copies the discovered folder into `options.specFolder` before the initial execution
+- `memory-search.ts` lines 701-721: accept `folderBoost` and apply a post-pipeline similarity multiplier for matching file paths
 - `folder-discovery.ts`: No changes needed (returns folder path, consumer decides how to use it)
 
 **Design Decision:** The boost factor (1.3x) should be configurable via `SPECKIT_FOLDER_BOOST_FACTOR` env var with 1.3 default.
@@ -235,12 +231,13 @@ const contentResults = packContentByBudget(results, remainingBudget);
 **What:** In `handleMemorySearch()`, when auto-detected intent confidence is below 0.25, default to `understand` intent instead of applying a nonsense classification.
 
 **Where:**
-- `memory-search.ts` lines 576-587: After intent auto-detection, add confidence check.
+- `memory-search.ts` lines 591-597: After intent auto-detection, add confidence check.
 
 **Logic:**
 ```
-if (detectedIntent && detectedIntent.confidence < 0.25) {
-  detectedIntent = { type: 'understand', confidence: 1.0, source: 'confidence-floor' };
+if (detectedIntent && intentConfidence < 0.25 && !explicitIntent) {
+  detectedIntent = 'understand';
+  intentConfidence = 1.0;
 }
 ```
 

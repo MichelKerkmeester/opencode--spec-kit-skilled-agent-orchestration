@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/005-e2e-integration-test",
+  "description": "Feature Specification: Phase 5 — End-to-End Integration Test",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "end-to-end",
+    "integration",
+    "test"
+  ],
+  "lastUpdated": "2026-04-01T05:46:23.321Z",
+  "specId": "005",
+  "folderSlug": "e2e-integration-test",
+  "parentChain": [
+    "02--system-spec-kit",
+    "023-esm-module-compliance",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

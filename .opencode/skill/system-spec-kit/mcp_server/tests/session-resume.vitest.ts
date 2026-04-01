@@ -24,6 +24,7 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
 
 vi.mock('../lib/session/context-metrics.js', () => ({
   recordMetricEvent: vi.fn(),
+  recordBootstrapEvent: vi.fn(),
 }));
 
 import { handleSessionResume } from '../handlers/session-resume.js';

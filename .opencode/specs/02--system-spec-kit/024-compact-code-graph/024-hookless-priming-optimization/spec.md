@@ -1,0 +1,44 @@
+# Phase 024: Hookless Priming Optimization
+
+## What This Is
+
+Optimize the two hookless context priming mechanisms so they work better together, load faster, and get closer to hook-level automation — all without requiring runtime hooks.
+
+## Recommendations from Research 106-110
+
+### Immediate — Items 1-3 (~50 LOC)
+
+| # | Item | What | Files |
+|---|------|------|-------|
+| 1 | Reframe @context-prime as best-effort | Remove "mandatory" language from orchestrate.md; add "skip if urgent" logic | .opencode/agent/context-prime.md, orchestrate.md |
+| 2 | Slim agent to 2 calls | Change from 4 calls (memory_context + code_graph_status + ccc_status + session_health) to 2 (session_resume + session_health) | .opencode/agent/context-prime.md + all runtime copies |
+| 3 | Urgency-aware bootstrap | If first message looks urgent ("fix", "error", "bug"), skip blocking prime and let MCP auto-prime handle it | .opencode/agent/context-prime.md |
+
+### Near-Term — Items 4-6 (~200 LOC)
+
+| # | Item | What | Files |
+|---|------|------|-------|
+| 4 | Enrich buildServerInstructions() | Add session recovery digest: last spec folder, task, graph freshness, recommended action (~150-400 tokens) | context-server.ts |
+| 5 | Shared snapshot helpers | Extract freshness/status helpers so startup instructions, PrimePackage, and session_health share definitions | lib/session/session-snapshot.ts (new) |
+| 6 | Stronger tool descriptions | Add recovery affordances to memory_context, session_resume, session_health descriptions | tool-schemas.ts |
+
+### Medium-Term — Items 7-9 (~300 LOC)
+
+| # | Item | What | Files |
+|---|------|------|-------|
+| 7 | session_bootstrap() composite | Single tool returning memory + graph + coco + health in one call | handlers/session-bootstrap.ts (new) |
+| 8 | session_resume minimal mode | Add `minimal: true` option for lightweight recovery with reduced anchors | handlers/session-resume.ts |
+| 9 | Bootstrap telemetry | Track bootstrap_source, duration_ms, completeness per session | lib/session/context-metrics.ts |
+
+### Prerequisite — Item 10
+
+| # | Item | What | Files |
+|---|------|------|-------|
+| 10 | Resolve Gemini hook/detection mismatch | Runtime detection says tool_fallback but hooks are configured | lib/code-graph/runtime-detection.ts, .gemini/settings.json |
+
+## Dependencies
+- Phases 018-023 (all complete)
+- Research iterations 106-110 (complete)
+
+## Estimated LOC: 350-550
+## Risk: LOW — all changes are additive

@@ -263,7 +263,7 @@ describe('shadow-evaluation-runtime', () => {
     expect(isShadowEvaluationSchedulerRunning()).toBe(false);
   });
 
-  it('calls tuneAdaptiveThresholdsAfterEvaluation when adaptive ranking enabled and promotionGate is ready', async () => {
+  it('calls tuneAdaptiveThresholdsAfterEvaluation when adaptive ranking enabled and promotionGate exists', async () => {
     insertSearchEvent(db, 401, 'adaptive enabled query', new Date().toISOString());
     insertQueryFeedbackLabels(db, 'adaptive enabled query', [42, 41]);
     recordCycleResult(db, {
@@ -310,6 +310,43 @@ describe('shadow-evaluation-runtime', () => {
     expect(vi.mocked(tuneAdaptiveThresholdsAfterEvaluation)).toHaveBeenCalledWith(db, report?.promotionGate);
   });
 
+  it('calls tuneAdaptiveThresholdsAfterEvaluation for completed non-ready evaluations', async () => {
+    insertSearchEvent(db, 451, 'adaptive wait query', new Date().toISOString());
+    insertQueryFeedbackLabels(db, 'adaptive wait query', [52, 51]);
+    vi.mocked(getAdaptiveMode).mockReturnValue('shadow');
+
+    vi.mocked(executePipeline).mockResolvedValue({
+      results: [{ id: 51, score: 0.7 }, { id: 52, score: 0.5 }],
+    } as unknown as Awaited<ReturnType<typeof executePipeline>>);
+
+    vi.mocked(buildAdaptiveShadowProposal).mockReturnValue({
+      mode: 'shadow',
+      bounded: true,
+      maxDeltaApplied: 0.08,
+      query: 'adaptive wait query',
+      promotedIds: [52],
+      demotedIds: [51],
+      rows: [
+        { memoryId: 52, productionRank: 2, shadowRank: 1, productionScore: 0.5, shadowScore: 0.9, scoreDelta: 0.4 },
+        { memoryId: 51, productionRank: 1, shadowRank: 2, productionScore: 0.7, shadowScore: 0.6, scoreDelta: -0.1 },
+      ],
+    });
+
+    const report = await runScheduledShadowEvaluationCycle(db, {
+      holdoutPercent: 1,
+      queryLookbackMs: 14 * 24 * 60 * 60 * 1000,
+      maxQueryPoolSize: 10,
+      searchLimit: 5,
+      seed: 42,
+    });
+
+    expect(report).not.toBeNull();
+    expect(report?.promotionGate.ready).toBe(false);
+    expect(report?.promotionGate.recommendation).toBe('wait');
+    expect(vi.mocked(tuneAdaptiveThresholdsAfterEvaluation)).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(tuneAdaptiveThresholdsAfterEvaluation)).toHaveBeenCalledWith(db, report?.promotionGate);
+  });
+
   it('skips tuneAdaptiveThresholdsAfterEvaluation when adaptive ranking disabled', async () => {
     insertSearchEvent(db, 501, 'adaptive disabled query', new Date().toISOString());
     insertQueryFeedbackLabels(db, 'adaptive disabled query', [52, 51]);
@@ -344,7 +381,7 @@ describe('shadow-evaluation-runtime', () => {
     expect(vi.mocked(tuneAdaptiveThresholdsAfterEvaluation)).not.toHaveBeenCalled();
   });
 
-  it('handles tuneAdaptiveThresholdsAfterEvaluation errors gracefully when promotionGate is ready', async () => {
+  it('handles tuneAdaptiveThresholdsAfterEvaluation errors gracefully when promotionGate exists', async () => {
     insertSearchEvent(db, 601, 'adaptive error query', new Date().toISOString());
     insertQueryFeedbackLabels(db, 'adaptive error query', [62, 61]);
     recordCycleResult(db, {
@@ -509,8 +546,8 @@ describe('shadow-evaluation-runtime', () => {
 
     expect(report).not.toBeNull();
     expect(report?.comparisons).toHaveLength(1);
-    expect(report?.comparisons[0]?.metrics.ndcgDelta).toBe(0);
-    expect(report?.comparisons[0]?.metrics.mrrDelta).toBe(0);
+    expect(report?.comparisons[0]?.metrics.ndcgDelta).toBeLessThan(0);
+    expect(report?.comparisons[0]?.metrics.mrrDelta).toBeLessThan(0);
   });
 
   it('matches replay feedback via metadata.queryText when query column is unavailable', async () => {

@@ -23,7 +23,7 @@ contextType: "implementation"
 
 ## P1 — Required
 
-- [x] CHK-005 Folder discovery applied as boost signal (not hard filter) — `appliedBoosts.folder: { applied: true, folder: "...", factor: 1.3 }` visible in response metadata
+- [x] CHK-005 Folder boost metadata is surfaced alongside folder discovery state — `appliedBoosts.folder: { applied: true, folder: "...", factor: 1.3 }` is present in search responses while `folderDiscovery.source` remains `"folder-discovery"` in L1 metadata
 - [x] CHK-006 Two-tier response: metadata for all results, content for top N — metadata-only entries appended for dropped results in enforceTokenBudget Phase 2
 - [x] CHK-007 Intent confidence floor: queries below 0.25 confidence get `understand` — memory_search "semantic search" auto-detects intent=understand (previously fix_bug at 0.098)
 - [x] CHK-008 TypeScript compiles without errors — 0 new errors (3 pre-existing minState type errors unrelated to our changes)

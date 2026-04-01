@@ -78,6 +78,7 @@ type MemoryContextModule = typeof import('./memory-context.js');
 type SharedMemoryModule = typeof import('./shared-memory.js');
 type SessionHealthModule = typeof import('./session-health.js');
 type SessionResumeModule = typeof import('./session-resume.js');
+type SessionBootstrapModule = typeof import('./session-bootstrap.js');
 
 let memorySearchModule: Promise<MemorySearchModule> | null = null;
 let memoryTriggersModule: Promise<MemoryTriggersModule> | null = null;
@@ -95,6 +96,7 @@ let memoryContextModule: Promise<MemoryContextModule> | null = null;
 let sharedMemoryModule: Promise<SharedMemoryModule> | null = null;
 let sessionHealthModule: Promise<SessionHealthModule> | null = null;
 let sessionResumeModule: Promise<SessionResumeModule> | null = null;
+let sessionBootstrapModule: Promise<SessionBootstrapModule> | null = null;
 
 function getMemorySearchModule(): Promise<MemorySearchModule> {
   if (!memorySearchModule) {
@@ -206,6 +208,13 @@ function getSessionResumeModule(): Promise<SessionResumeModule> {
     sessionResumeModule = loadHandlerModule<SessionResumeModule>('session-resume');
   }
   return sessionResumeModule;
+}
+
+function getSessionBootstrapModule(): Promise<SessionBootstrapModule> {
+  if (!sessionBootstrapModule) {
+    sessionBootstrapModule = loadHandlerModule<SessionBootstrapModule>('session-bootstrap');
+  }
+  return sessionBootstrapModule;
 }
 
 // Memory search handlers
@@ -321,6 +330,9 @@ export const handleSessionHealth = lazyFunction(getSessionHealthModule, 'handleS
 
 // Session resume handler
 export const handleSessionResume = lazyFunction(getSessionResumeModule, 'handleSessionResume');
+
+// Session bootstrap handler
+export const handleSessionBootstrap = lazyFunction(getSessionBootstrapModule, 'handleSessionBootstrap');
 
 // Sub-module references
 export const memorySave = lazyModule(getMemorySaveModule);

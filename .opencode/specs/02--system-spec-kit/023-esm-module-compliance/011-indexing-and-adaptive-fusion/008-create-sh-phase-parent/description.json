@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent",
+  "description": "Feature Specification: Append Nested Child Phases in create.sh",
+  "keywords": [
+    "feature",
+    "specification",
+    "append",
+    "nested",
+    "child",
+    "phases",
+    "create"
+  ],
+  "lastUpdated": "2026-04-01T06:21:34.288Z",
+  "specId": "008",
+  "folderSlug": "create-sh-phase-parent",
+  "parentChain": [
+    "02--system-spec-kit",
+    "023-esm-module-compliance",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-04-26_07-21__prepared-the-create-sh-nested-phase-parent.md"
+  ]
+}

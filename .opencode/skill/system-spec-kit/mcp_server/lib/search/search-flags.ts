@@ -17,7 +17,27 @@ import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 // Feature catalog: Negative feedback confidence signal
 
 /* ───────────────────────────────────────────────────────────────
-   2. CORE FLAGS
+   2. BOOST FLAGS (Graduated default-ON)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * Session attention boost for search result re-ranking.
+ * Default: TRUE (graduated). Set SPECKIT_SESSION_BOOST=false to disable.
+ */
+export function isSessionBoostEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_SESSION_BOOST');
+}
+
+/**
+ * Causal graph traversal boost for search result amplification.
+ * Default: TRUE (graduated). Set SPECKIT_CAUSAL_BOOST=false to disable.
+ */
+export function isCausalBoostEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_CAUSAL_BOOST');
+}
+
+/* ───────────────────────────────────────────────────────────────
+   3. CORE FLAGS
 ──────────────────────────────────────────────────────────────── */
 
 /**

@@ -381,10 +381,10 @@ Every search checks five channels at once:
 
 Every search passes through 4 stages:
 
-- **Gather** - Parallel retrieval from active channels. Constitutional-tier memories always inject.
-- **Score** - RRF fusion with 8 post-fusion signals (co-activation, FSRS decay, interference penalties, intent-specific weights).
-- **Rerank** - Local cross-encoder model via node-llama-cpp. Gracefully skips without VRAM.
-- **Filter** - Confidence labels, state filtering, score immutability.
+- **Candidate generation** - Parallel retrieval from the active channels plus constitutional injection where applicable.
+- **Fusion** - RRF-based scoring with post-fusion signals such as co-activation, FSRS decay, interference control, intent weights, and graph/session boosts when enabled.
+- **Rerank** - Cross-encoder reranking with chunk reassembly; if the reranker is unavailable, Stage 2 order is preserved with degraded metadata.
+- **Filtering** - State/quality filtering, confidence annotation, token-budget enforcement, and final response shaping without mutating post-rerank scores.
 
 
 #### QUERY INTELLIGENCE
@@ -893,7 +893,7 @@ Feature flags control search channels, scoring signals, save-time enforcement, a
 - **Session/Cache** - Working memory, cache invalidation on DB rebind, session deduplication, recovery helpers.
 - **Memory/Storage** - Save quality gate, reconsolidation, governed scopes, causal graph maintenance, projection cleanup.
 - **Embedding/API** - Startup provider resolution, fail-fast dimension checks, structured fallback metadata for effective vs requested provider.
-- **Evaluation/Debug** - Trace mode, eval logging, ablation/reporting guardrails, optional shadow-style diagnostics.
+- **Evaluation/Debug** - Trace mode, eval logging, ablation/reporting guardrails, shadow-feedback evaluation, and adaptive-shadow diagnostics that observe proposals without reordering live results.
 
 For the complete flag reference with per-flag defaults, see [MCP Server README Section 5](.opencode/skill/system-spec-kit/mcp_server/README.md#5-configuration).
 

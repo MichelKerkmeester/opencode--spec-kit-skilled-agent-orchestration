@@ -209,7 +209,7 @@ export interface Stage1Output {
  * by config" ('off') from "feature crashed" ('failed') from "feature applied
  * successfully" ('applied').
  */
-export type SignalStatus = 'off' | 'applied' | 'failed';
+export type SignalStatus = 'off' | 'applied' | 'enabled' | 'failed';
 
 /**
  * Stage 2: Fusion + Signal Integration

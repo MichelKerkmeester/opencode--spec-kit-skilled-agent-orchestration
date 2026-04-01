@@ -781,7 +781,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
       // FIX #4: Sync aliases immediately after session boost score mutations
       // so rrfScore/intentAdjustedScore are not stale for subsequent steps.
       syncScoreAliasesInPlace(results);
-      metadata.sessionBoostApplied = sbMeta.applied ? 'applied' : 'off';
+      metadata.sessionBoostApplied = sbMeta.applied ? 'applied' : 'enabled';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] session boost failed: ${message}`);
@@ -805,7 +805,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
       });
       // FIX #4: Sync aliases immediately after causal boost score mutations.
       syncScoreAliasesInPlace(results);
-      metadata.causalBoostApplied = cbMeta.applied ? 'applied' : 'off';
+      metadata.causalBoostApplied = cbMeta.applied ? 'applied' : 'enabled';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] causal boost failed: ${message}`);

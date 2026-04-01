@@ -626,13 +626,14 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 - **Indexing persistence** — After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
 - **Artifact routing** — 9 artifact classes (spec, plan, tasks, checklist, decision-record, implementation-summary, memory, research, unknown) with per-type retrieval strategies applied at query time
 - **Adaptive fusion** — Intent-aware weighted RRF with 7 task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision), plus corrected channel fallback and normalization behavior in the live hybrid pipeline
+- **Adaptive ranking** — Feedback-driven shadow ranking that accumulates access/outcome/correction signals and applies bounded score deltas (±0.08 max) per memory. Each signal event carries an optional `query` field for per-query attribution. Runs silently in shadow mode by default; promote to active ranking via `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted`. Thresholds persist to SQLite with `last_tune_watermark` idempotency. Enable with `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`.
 - **Causal graph diagnostics** — `memory_drift_why()` now wraps traversal reads in a read transaction and returns truncation metadata when per-node edge caps make lineage incomplete
 - **Eval guardrails** — Ablation reporting preserves per-channel dashboard breakdowns, treats missing query IDs explicitly, and avoids persisting synthetic zeroed token-usage snapshots as if they were measured results
 - **Runtime-resolved flags** — Long-lived MCP processes re-read rollout and scoring flags at runtime for graph-walk rollout, co-activation, relation handling, and related search toggles instead of freezing values at import time
 - **Retrieval trace** — Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
-- **Hydra roadmap metadata** — `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` plus canonical `SPECKIT_MEMORY_*` and legacy `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
+- **Hydra roadmap metadata** — `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` plus canonical `SPECKIT_MEMORY_*` and legacy `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars. Note: `SPECKIT_MEMORY_ADAPTIVE_RANKING=true` does affect live retrieval (shadow or promoted ranking stage); the remaining roadmap flags are metadata-only.
 - **Feature catalog** — 255 documented features across 21 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
@@ -689,18 +690,19 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_HYDRA_PHASE` | `shared-rollout` | Legacy alias for the roadmap phase selector |
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Canonical capability flag for the lineage-state milestone |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Canonical capability flag for the unified-graph milestone |
-| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Canonical capability flag for adaptive-ranking experiments; remains dormant unless explicitly enabled |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Enables shadow adaptive ranking (feedback-driven score adjustments, SQLite-persisted thresholds). Set `true` for shadow mode; combine with `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted` to apply to live results. |
+| `SPECKIT_MEMORY_ADAPTIVE_MODE` | `shadow` | Ranking mode when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`: `shadow` (silent proposals) or `promoted` (applied to live ranking). No effect when ranking is disabled. |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `false` | Canonical capability flag for scope-enforcement rollout tracking |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `false` | Canonical capability flag for governance-guardrail rollout tracking |
 | `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Shared-memory capability flag; default OFF, requires opt-in via `/memory:manage shared` or explicit env enablement |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | Legacy alias for `SPECKIT_MEMORY_LINEAGE_STATE` |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | Legacy alias for `SPECKIT_MEMORY_GRAPH_UNIFIED` |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; dormant unless explicitly enabled |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; accepts same `true`/`false` values |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | Legacy alias for `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | Legacy alias for `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` |
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | Legacy alias for `SPECKIT_MEMORY_SHARED_MEMORY`; default OFF |
 
-> **47 flags total across both tables.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
+> **48 flags total across both tables.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 
 > **Token budgets per layer:** L1:3500, L2:3500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/4` approximation).
 

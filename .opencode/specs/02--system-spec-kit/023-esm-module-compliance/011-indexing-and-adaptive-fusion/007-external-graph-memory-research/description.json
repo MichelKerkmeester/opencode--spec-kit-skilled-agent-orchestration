@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/007-external-graph-memory-research",
+  "description": "Feature Specification: External Graph Memory Research",
+  "keywords": [
+    "feature",
+    "specification",
+    "external",
+    "graph",
+    "memory",
+    "research"
+  ],
+  "lastUpdated": "2026-04-01T06:21:07.290Z",
+  "specId": "007",
+  "folderSlug": "external-graph-memory-research",
+  "parentChain": [
+    "02--system-spec-kit",
+    "023-esm-module-compliance",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-04-26_07-21__prepared-the-external-graph-memory-research-phase.md"
+  ]
+}

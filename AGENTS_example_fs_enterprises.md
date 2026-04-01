@@ -311,7 +311,7 @@ Use the agent directory that matches the active runtime/provider profile:
 ### Agent Definitions
 
 - **`@general`** — Implementation, complex tasks
-- **`@context`** — ALL codebase exploration, file search, pattern discovery, context loading. Dispatches sub-agents for fast search and deep investigation
+- **`@context`** — Retrieval-first exploration agent for codebase search, pattern discovery, and context loading. Uses memory triggers/context, memory search, CocoIndex, and direct code evidence as needed.
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
 - **`@write`** — Creating READMEs, Skills, Guides
 - **`@review`** — Code review, PRs, quality gates (READ-ONLY)

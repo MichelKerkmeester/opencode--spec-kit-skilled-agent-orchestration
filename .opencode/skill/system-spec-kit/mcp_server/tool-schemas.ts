@@ -39,7 +39,7 @@ export interface ToolDefinition {
 // T061: L1 Orchestration - Unified entry point (Token Budget: 3500)
 const memoryContext: ToolDefinition = {
   name: 'memory_context',
-  description: '[L1:Orchestration] Unified entry point for context retrieval with intent-aware routing. START HERE for most memory operations. Automatically detects task intent (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and routes to optimal retrieval strategy. Modes: auto (default), quick (trigger-based), deep (comprehensive), focused (intent-optimized), resume (session recovery). Token Budget: 3500.',
+  description: '[L1:Orchestration] Unified entry point for context retrieval with intent-aware routing. START HERE for most memory operations. For session recovery, use mode: \'resume\' with profile: \'resume\'. Automatically detects task intent (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and routes to optimal retrieval strategy. Modes: auto (default), quick (trigger-based), deep (comprehensive), focused (intent-optimized), resume (session recovery). Token Budget: 3500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: { input: { type: 'string', minLength: 1, description: 'The query, prompt, or context description (required)' }, mode: { type: 'string', enum: ['auto', 'quick', 'deep', 'focused', 'resume'], default: 'auto', description: 'Context retrieval mode: auto (detect intent), quick (fast triggers), deep (comprehensive search), focused (intent-optimized), resume (session recovery)' }, intent: { type: 'string', enum: ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'], description: 'Explicit task intent. If not provided and mode=auto, intent is auto-detected from input.' }, specFolder: { type: 'string', description: 'Limit context to specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval when memory_context routes to memory_search.' }, userId: { type: 'string', description: 'User boundary for governed retrieval when memory_context routes to memory_search.' }, agentId: { type: 'string', description: 'Agent boundary for governed retrieval when memory_context routes to memory_search.' }, sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed retrieval when memory_context routes to memory_search.' }, limit: { type: 'number', minimum: 1, maximum: 100, description: 'Maximum results (mode-specific defaults apply)' }, sessionId: { type: 'string', description: 'Optional server-issued session identifier for working-memory continuity. When provided, it must match an existing server-managed session or the call is rejected. Omit it to let the server generate a new session for this request.' }, enableDedup: { type: 'boolean', default: true, description: 'Enable session deduplication' }, includeContent: { type: 'boolean', default: false, description: 'Include full file content in results' }, includeTrace: { type: 'boolean', default: false, description: 'Include provenance-rich trace data (scores, source, trace) in results when underlying memory_search is called' }, tokenUsage: { type: 'number', minimum: 0.0, maximum: 1.0, description: "Optional caller token usage ratio (0.0-1.0)" }, anchors: { type: 'array', items: { type: 'string' }, description: 'Filter content to specific anchors (e.g., ["state", "next-steps"] for resume mode)' }, profile: { type: 'string', enum: ['quick', 'research', 'resume', 'debug'], description: 'Optional response profile formatter. Returns a reduced or mode-aware response shape when profile formatting is enabled.' } }, required: ['input'] },
 };
 
@@ -728,14 +728,29 @@ const cccFeedback: ToolDefinition = {
 // T018: Session health diagnostic tool
 const sessionHealth: ToolDefinition = {
   name: 'session_health',
-  description: '[L3:Discovery] Check session readiness: priming status, code graph freshness, time since last tool call. Returns ok/warning/stale with actionable hints. No arguments required.',
+  description: '[L3:Discovery] Check session readiness: priming status, code graph freshness, time since last tool call. Call periodically during long sessions to check for context drift. Returns ok/warning/stale with actionable hints. No arguments required.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
 // Phase 020: Composite session resume tool
 const sessionResume: ToolDefinition = {
   name: 'session_resume',
-  description: '[L1:Orchestration] Resume session with combined memory, code graph, and CocoIndex status. Returns merged context from memory_context (resume mode), code graph statistics, and CocoIndex availability in a single call.',
+  description: '[L1:Orchestration] Recommended as first call on session start or after /clear. Resume session with combined memory, code graph, and CocoIndex status. Returns merged context from memory_context (resume mode), code graph statistics, and CocoIndex availability in a single call. Use minimal: true to skip heavy memory context and return only graph + coco + health.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      specFolder: { type: 'string', description: 'Optional spec folder to scope the resume context' },
+      minimal: { type: 'boolean', description: 'When true, skip heavy memory context call and return only graph status + coco status + health score' },
+    },
+    required: [],
+  },
+};
+
+// Phase 024 / Item 7: Composite session bootstrap tool
+const sessionBootstrap: ToolDefinition = {
+  name: 'session_bootstrap',
+  description: '[L1:Orchestration] Complete session bootstrap in one call. Returns session context, system health, and recommended next actions. Combines session_resume (minimal) + session_health into a single round-trip.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
@@ -757,6 +772,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   // L1: Orchestration
   memoryContext,
   sessionResume,
+  sessionBootstrap,
   // L2: Core
   memorySearch,
   memoryQuickSearch,

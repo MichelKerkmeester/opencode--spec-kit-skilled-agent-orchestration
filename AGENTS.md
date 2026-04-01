@@ -294,7 +294,7 @@ Use the agent directory that matches the active runtime/provider profile:
 ### Agent Definitions
 
 - **`@general`** — Implementation, complex tasks
-- **`@context`** — LEAF-only retrieval agent for all codebase exploration, file search, pattern discovery, and context loading
+- **`@context`** — Retrieval-first exploration agent for codebase search, pattern discovery, and context loading using memory triggers/context, memory search, CocoIndex, and direct code evidence as needed
 - **`@context-prime`** — Lightweight bootstrap agent for session start or after `/clear`. Loads memory context, checks code graph and CocoIndex health, returns a compact Prime Package with spec folder, task status, system health, and recommended next steps
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
 - **`@write`** — Creating READMEs, Skills, Guides

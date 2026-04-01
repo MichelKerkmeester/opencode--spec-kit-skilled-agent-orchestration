@@ -17,7 +17,7 @@ permission:
 
 ## Session Bootstrap
 
-On the first user turn or after `/clear`, delegate to `@context-prime` to load session context before proceeding with the user's request.
+On the first user turn or after `/clear`, delegate to `@context-prime` (best-effort — skip if user message is urgent or time-sensitive) to load session context before proceeding with the user's request.
 
 # The Orchestrator: Senior Task Commander
 

@@ -89,12 +89,12 @@ describe('cross-runtime fallback', () => {
       expect(getRecoveryApproach()).toBe('tool_fallback');
     });
 
-    // Scenario 5: Gemini CLI
-    it('gemini-cli: runtime is gemini-cli, hookPolicy is disabled_by_scope, recovery is tool_fallback', () => {
+    // Scenario 5: Gemini CLI (Phase 024: hookPolicy is dynamic, 'unavailable' without .gemini/settings.json)
+    it('gemini-cli: runtime is gemini-cli, hookPolicy is unavailable (no settings.json), recovery is tool_fallback', () => {
       setRuntimeEnv('gemini-cli');
       const detected = detectRuntime();
       expect(detected.runtime).toBe('gemini-cli');
-      expect(detected.hookPolicy).toBe('disabled_by_scope');
+      expect(detected.hookPolicy).toBe('unavailable');
       expect(getRecoveryApproach()).toBe('tool_fallback');
     });
 

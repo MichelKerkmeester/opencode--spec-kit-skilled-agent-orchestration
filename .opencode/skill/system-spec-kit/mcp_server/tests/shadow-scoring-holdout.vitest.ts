@@ -396,6 +396,26 @@ describe('computeNDCG', () => {
     ];
     expect(computeNDCG(items)).toBeCloseTo(1, 5);
   });
+
+  it('preserves sparse rank gaps instead of compressing judged items upward', () => {
+    const items: RankedItem[] = [
+      { resultId: 'a', rank: 1 },
+      { resultId: 'b', rank: 2, relevanceScore: 3 },
+      { resultId: 'c', rank: 3 },
+      { resultId: 'd', rank: 4, relevanceScore: 2 },
+    ];
+
+    const compressedEquivalent: RankedItem[] = [
+      { resultId: 'b', rank: 1, relevanceScore: 3 },
+      { resultId: 'd', rank: 2, relevanceScore: 2 },
+    ];
+
+    expect(computeNDCG(items)).toBeLessThan(computeNDCG(compressedEquivalent));
+    expect(computeNDCG(items)).toBeCloseTo(
+      (3 / Math.log2(3) + 2 / Math.log2(5)) / (3 + 2 / Math.log2(3)),
+      6,
+    );
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────
@@ -437,6 +457,16 @@ describe('computeMRR', () => {
       { resultId: 'b', rank: 2, relevanceScore: 0 },
       { resultId: 'c', rank: 3, relevanceScore: 1 },
     ];
+    expect(computeMRR(items)).toBeCloseTo(1 / 3, 5);
+  });
+
+  it('uses original sparse ranks for the first relevant result', () => {
+    const items: RankedItem[] = [
+      { resultId: 'a', rank: 1 },
+      { resultId: 'b', rank: 2 },
+      { resultId: 'c', rank: 3, relevanceScore: 1 },
+    ];
+
     expect(computeMRR(items)).toBeCloseTo(1 / 3, 5);
   });
 });
@@ -534,6 +564,29 @@ describe('compareRanks', () => {
     const result = compareRanks('q1', live, shadow);
     // liveMRR = 0.5, shadowMRR = 1.0, delta = 0.5
     expect(result.metrics.mrrDelta).toBeCloseTo(0.5, 5);
+  });
+
+  it('keeps unjudged positions in NDCG and MRR deltas', () => {
+    const live: RankedItem[] = [
+      { resultId: 'x', rank: 1 },
+      { resultId: 'a', rank: 2, relevanceScore: 3 },
+      { resultId: 'b', rank: 3, relevanceScore: 1 },
+    ];
+    const shadow: RankedItem[] = [
+      { resultId: 'a', rank: 1, relevanceScore: 3 },
+      { resultId: 'x', rank: 2 },
+      { resultId: 'b', rank: 3, relevanceScore: 1 },
+    ];
+
+    const result = compareRanks('q1', live, shadow);
+
+    expect(result.metrics.ndcgDelta).toBeGreaterThan(0);
+    expect(result.metrics.ndcgDelta).toBeCloseTo(
+      ((3 / Math.log2(2) + 1 / Math.log2(4)) / (3 + 1 / Math.log2(3)))
+      - ((3 / Math.log2(3) + 1 / Math.log2(4)) / (3 + 1 / Math.log2(3))),
+      6,
+    );
+    expect(result.metrics.mrrDelta).toBeCloseTo(0.5, 6);
   });
 
   it('handles identical rankings', () => {

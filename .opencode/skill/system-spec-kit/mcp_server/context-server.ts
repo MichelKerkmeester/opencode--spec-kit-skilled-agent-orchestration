@@ -616,13 +616,33 @@ async function buildServerInstructions(): Promise<string> {
     ? ` Warning: ${stats.staleCount} stale memories detected. Consider running memory_index_scan.`
     : '';
 
-  return [
+  const lines = [
     `Spec Kit Memory MCP has ${stats.totalMemories} indexed memories across ${stats.specFolderCount} spec folders.`,
     `Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.`,
     `Search channels: ${channels.join(', ')}.`,
     'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
     staleWarning.trim(),
-  ].filter(Boolean).join(' ');
+  ];
+
+  // Phase 024 / Item 4: Session recovery digest from session-snapshot
+  try {
+    const { getSessionSnapshot } = await import('./lib/session/session-snapshot.js');
+    const snap = getSessionSnapshot();
+    const hasData = snap.specFolder || snap.graphFreshness !== 'error' || snap.sessionQuality !== 'unknown';
+    if (hasData) {
+      const recommended = !snap.primed ? 'call session_resume()' :
+        snap.graphFreshness === 'empty' ? 'run code_graph_scan' :
+        snap.sessionQuality === 'critical' ? 'call memory_context(resume)' : 'ready';
+      lines.push('');
+      lines.push('## Session Recovery');
+      lines.push(`- Last spec folder: ${snap.specFolder || 'none'}`);
+      lines.push(`- Code graph: ${snap.graphFreshness}`);
+      lines.push(`- Session quality: ${snap.sessionQuality}`);
+      lines.push(`- Recommended: ${recommended}`);
+    }
+  } catch { /* session-snapshot not available — skip digest */ }
+
+  return lines.filter(Boolean).join(' ');
 }
 
 /** Register a callback to be invoked asynchronously after each tool call completes. */

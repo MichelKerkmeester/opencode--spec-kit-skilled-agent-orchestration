@@ -33,7 +33,7 @@ Six fixes to the Spec Kit Memory search pipeline addressing intent propagation, 
 
 - Added `extractResultCount()` helper to parse result count from MCPResponse JSON
 - After strategy execution, checks for 0-result + folder-discovered condition
-- On match: clears `options.specFolder`, re-executes strategy, marks `recoveryApplied: true` in metadata
+- On match: clears `options.specFolder`, re-executes strategy, and preserves the original 0-result response if the retry throws
 
 ### Fix 3: RC2-B — Adaptive Content Truncation
 
@@ -47,7 +47,8 @@ Six fixes to the Spec Kit Memory search pipeline addressing intent propagation, 
 
 **Files:** `mcp_server/handlers/memory-context.ts`, `mcp_server/handlers/memory-search.ts`
 
-- `maybeDiscoverSpecFolder()` sets `options.folderBoost = { folder, factor }` instead of `options.specFolder`
+- `maybeDiscoverSpecFolder()` sets `options.folderBoost = { folder, factor }`
+- The handler still seeds `options.specFolder` with the discovered folder before the first pass so session state and recovery logic can detect over-narrow searches
 - Factor configurable via `SPECKIT_FOLDER_BOOST_FACTOR` env var (default 1.3)
 - Added `folderBoost` to `ContextOptions` interface
 - Strategy functions (deep, focused, resume) forward `folderBoost` to `handleMemorySearch()`
@@ -67,7 +68,7 @@ Six fixes to the Spec Kit Memory search pipeline addressing intent propagation, 
 
 **Files:** `mcp_server/handlers/memory-search.ts`
 
-- After auto-detection, if confidence < `INTENT_CONFIDENCE_FLOOR` (0.25) and no explicit intent provided, overrides to `{ type: "understand", confidence: 1.0, source: "confidence-floor" }`
+- After auto-detection, if confidence < `INTENT_CONFIDENCE_FLOOR` (0.25) and no explicit intent provided, overrides `detectedIntent` to `"understand"` and raises confidence to `1.0`
 - Explicit caller-provided intents bypass the floor entirely
 
 ## Files Modified

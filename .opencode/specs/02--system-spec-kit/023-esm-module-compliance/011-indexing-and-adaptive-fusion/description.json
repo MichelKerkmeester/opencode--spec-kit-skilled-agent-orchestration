@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion",
+  "description": "Spec: Indexing & Adaptive Fusion Enablement",
+  "keywords": [
+    "spec",
+    "indexing",
+    "adaptive",
+    "fusion",
+    "enablement"
+  ],
+  "lastUpdated": "2026-04-01T05:46:23.301Z",
+  "specId": "011",
+  "folderSlug": "indexing-and-adaptive-fusion",
+  "parentChain": [
+    "02--system-spec-kit",
+    "023-esm-module-compliance"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

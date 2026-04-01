@@ -1,0 +1,102 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Session Bootstrap Handler
+// ───────────────────────────────────────────────────────────────
+// Phase 024 / Item 7: Composite tool that runs session_resume(minimal)
+// + session_health in one call, merging results with hints.
+
+import { handleSessionResume } from './session-resume.js';
+import { handleSessionHealth } from './session-health.js';
+import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
+import type { MCPResponse } from '@spec-kit/shared/types';
+
+/* ───────────────────────────────────────────────────────────────
+   1. TYPES
+──────────────────────────────────────────────────────────────── */
+
+interface SessionBootstrapArgs {
+  specFolder?: string;
+}
+
+interface SessionBootstrapResult {
+  resume: Record<string, unknown>;
+  health: Record<string, unknown>;
+  hints: string[];
+}
+
+/* ───────────────────────────────────────────────────────────────
+   2. HELPERS
+──────────────────────────────────────────────────────────────── */
+
+function extractData(response: MCPResponse): Record<string, unknown> {
+  try {
+    const text = response?.content?.[0]?.text;
+    if (typeof text === 'string') {
+      const parsed = JSON.parse(text);
+      return parsed?.data ?? parsed ?? {};
+    }
+  } catch { /* parse failed */ }
+  return {};
+}
+
+function extractHints(data: Record<string, unknown>): string[] {
+  if (Array.isArray(data.hints)) return data.hints as string[];
+  return [];
+}
+
+/* ───────────────────────────────────────────────────────────────
+   3. HANDLER
+──────────────────────────────────────────────────────────────── */
+
+/** Handle session_bootstrap tool call — one-call session setup */
+export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promise<MCPResponse> {
+  const startMs = Date.now();
+  const allHints: string[] = [];
+
+  // Sub-call 1: session_resume in minimal mode
+  let resumeData: Record<string, unknown> = {};
+  try {
+    const resumeResponse = await handleSessionResume({
+      specFolder: args.specFolder,
+      minimal: true,
+    });
+    resumeData = extractData(resumeResponse);
+    allHints.push(...extractHints(resumeData));
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    resumeData = { error: message };
+    allHints.push('session_resume failed. Try calling it manually.');
+  }
+
+  // Sub-call 2: session_health
+  let healthData: Record<string, unknown> = {};
+  try {
+    const healthResponse = await handleSessionHealth();
+    healthData = extractData(healthResponse);
+    allHints.push(...extractHints(healthData));
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    healthData = { error: message };
+    allHints.push('session_health failed. Try calling it manually.');
+  }
+
+  // Deduplicate hints
+  const uniqueHints = [...new Set(allHints)];
+
+  // Record bootstrap telemetry
+  const durationMs = Date.now() - startMs;
+  const completeness = resumeData.error || healthData.error ? 'partial' : 'minimal';
+  recordBootstrapEvent('tool', durationMs, completeness);
+
+  const result: SessionBootstrapResult = {
+    resume: resumeData,
+    health: healthData,
+    hints: uniqueHints,
+  };
+
+  return {
+    content: [{
+      type: 'text',
+      text: JSON.stringify({ status: 'ok', data: result }, null, 2),
+    }],
+  };
+}

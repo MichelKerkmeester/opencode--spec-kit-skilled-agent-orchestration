@@ -154,7 +154,7 @@ describe('Context Server', () => {
   // =================================================================
   // GROUP 2: Tool Definition Completeness
   // =================================================================
-  describe('Group 2: Tool Definitions (42 tools)', () => {
+  describe('Group 2: Tool Definitions (43 tools)', () => {
     const EXPECTED_TOOLS = [
       'memory_context',
       'memory_search',
@@ -198,6 +198,7 @@ describe('Context Server', () => {
       'ccc_feedback',
       'session_health',
       'session_resume',
+      'session_bootstrap',
     ]
 
     // T11: TOOL_DEFINITIONS export exists

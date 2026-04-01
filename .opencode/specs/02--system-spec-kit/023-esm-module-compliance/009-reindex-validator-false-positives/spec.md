@@ -28,7 +28,7 @@ Running `reindex-embeddings.js` discovers 184 memory files on disk but only 56 e
 
 **Config:** `severity: 'high'`, `blockOnWrite: true`, `blockOnIndex: true`
 
-**File:** `scripts/dist/lib/validate-memory-quality.js` line 88
+**File:** `scripts/lib/validate-memory-quality.ts` lines 101-107
 
 ### 2. Topical Coherence Mismatch (rule `V12`)
 
@@ -40,7 +40,7 @@ Running `reindex-embeddings.js` discovers 184 memory files on disk but only 56 e
 
 **Config:** `severity: 'medium'`, `blockOnWrite: false`, `blockOnIndex: true`
 
-**File:** `scripts/dist/lib/validate-memory-quality.js` line 120
+**File:** `scripts/lib/validate-memory-quality.ts` lines 133-139
 
 ## Evidence
 
@@ -72,7 +72,7 @@ Gap:         36 files never indexed
 
 **Impact:** Every backfill run re-introduced `contextType: "decision"` across all spec and plan docs, undoing manual fixes. The spec 008 compliance audit fixed files, then the next backfill reverted them.
 
-**File:** `scripts/lib/frontmatter-migration.ts` lines 101, 134, 834
+**File:** `scripts/lib/frontmatter-migration.ts` lines 101-107, 135-146, 834-840
 
 ## Scope
 

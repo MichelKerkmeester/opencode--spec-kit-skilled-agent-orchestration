@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-31T17:41:49.089Z",
+  "generated": "2026-04-01T06:38:50.434Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared",
@@ -12,7 +12,7 @@
         "shared",
         "parent"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -36,7 +36,7 @@
         "knowledge",
         "phase"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/003-hvr-refinement-repo-analysis",
@@ -87,7 +87,7 @@
         "flows",
         "parent"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "00--ai-systems-non-dev/002-sales-communication-flows/001-initial-creation",
@@ -113,7 +113,7 @@
         "automation",
         "parent"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "00--ai-systems-non-dev/003-sales-process-automation/001-initial-creation",
@@ -139,7 +139,7 @@
         "improver",
         "parent"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "00--ai-systems-non-dev/004-prompt-improver/001-content-submission",
@@ -168,7 +168,7 @@
         "communication",
         "parent"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "00--ai-systems-non-dev/005-sales-direct-communication/001-speed-of-execution",
@@ -193,7 +193,7 @@
         "phase",
         "wrapper"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "00--ai-systems-non-dev/006-product-owner/001-variables-cg-p-2",
@@ -206,7 +206,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
@@ -352,7 +352,7 @@
         "table",
         "content"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
@@ -892,7 +892,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -904,7 +904,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -915,7 +915,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -927,7 +927,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -939,7 +939,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -1292,7 +1292,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -2160,7 +2160,7 @@
         "indexing",
         "bypass"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity",
@@ -2172,7 +2172,7 @@
         "benchmark",
         "integrity"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix",
@@ -2334,7 +2334,7 @@
         "false",
         "positives"
       ],
-      "lastUpdated": "2026-03-31T14:13:44.224Z"
+      "lastUpdated": "2026-04-01T06:38:42.589Z"
     },
     {
       "specFolder": "02--system-spec-kit/023-esm-module-compliance/010-search-retrieval-quality-fixes",
@@ -2347,7 +2347,126 @@
         "quality",
         "fixes"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:42.596Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion",
+      "description": "Spec: Indexing & Adaptive Fusion Enablement",
+      "keywords": [
+        "spec",
+        "indexing",
+        "adaptive",
+        "fusion",
+        "enablement"
+      ],
+      "lastUpdated": "2026-04-01T05:46:23.301Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/001-wire-promotion-gate",
+      "description": "Feature Specification: Wire PromotionGate to Action",
+      "keywords": [
+        "feature",
+        "specification",
+        "wire",
+        "promotiongate",
+        "action"
+      ],
+      "lastUpdated": "2026-04-01T05:46:23.306Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds",
+      "description": "Feature Specification: Phase 2 — Persist Tuned Thresholds",
+      "keywords": [
+        "feature",
+        "specification",
+        "phase",
+        "persist",
+        "tuned",
+        "thresholds"
+      ],
+      "lastUpdated": "2026-04-01T05:46:23.310Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/003-real-feedback-labels",
+      "description": "Feature Specification: Real Feedback Labels for Evaluation",
+      "keywords": [
+        "feature",
+        "specification",
+        "real",
+        "feedback",
+        "labels",
+        "evaluation"
+      ],
+      "lastUpdated": "2026-04-01T05:46:23.314Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/004-fix-access-signal-path",
+      "description": "Feature Specification: Fix Access Signal Path",
+      "keywords": [
+        "feature",
+        "specification",
+        "fix",
+        "access",
+        "signal",
+        "path"
+      ],
+      "lastUpdated": "2026-04-01T05:46:23.318Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/005-e2e-integration-test",
+      "description": "Feature Specification: Phase 5 — End-to-End Integration Test",
+      "keywords": [
+        "feature",
+        "specification",
+        "phase",
+        "end-to-end",
+        "integration",
+        "test"
+      ],
+      "lastUpdated": "2026-04-01T05:46:23.321Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout",
+      "description": "Default-ON Boost Rollout — Session, Causal & Deep Expansion",
+      "keywords": [
+        "session-boost",
+        "causal-boost",
+        "deep-expansion",
+        "default-on",
+        "feature-flag",
+        "rollout",
+        "SPECKIT_SESSION_BOOST",
+        "SPECKIT_CAUSAL_BOOST",
+        "search-pipeline"
+      ],
+      "lastUpdated": "2026-04-01T00:00:00.000Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/007-external-graph-memory-research",
+      "description": "Feature Specification: External Graph Memory Research",
+      "keywords": [
+        "feature",
+        "specification",
+        "external",
+        "graph",
+        "memory",
+        "research"
+      ],
+      "lastUpdated": "2026-04-01T06:21:07.290Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent",
+      "description": "Feature Specification: Append Nested Child Phases in create.sh",
+      "keywords": [
+        "feature",
+        "specification",
+        "append",
+        "nested",
+        "child",
+        "phases",
+        "create"
+      ],
+      "lastUpdated": "2026-04-01T06:21:34.288Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph",
@@ -2374,7 +2493,7 @@
         "precompact",
         "sessionstart"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/002-session-start-hook",
@@ -2386,7 +2505,7 @@
         "session",
         "priming"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/003-stop-hook-tracking",
@@ -2398,7 +2517,7 @@
         "token",
         "tracking"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/004-cross-runtime-fallback",
@@ -2408,7 +2527,7 @@
         "cross-runtime",
         "fallback"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/005-command-agent-alignment",
@@ -2419,7 +2538,7 @@
         "agent",
         "alignment"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/006-documentation-alignment",
@@ -2429,7 +2548,7 @@
         "documentation",
         "alignment"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/007-testing-validation",
@@ -2439,7 +2558,7 @@
         "testing",
         "validation"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/008-structural-indexer",
@@ -2451,7 +2570,7 @@
         "indexer",
         "tree-sitter"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/009-code-graph-storage-query",
@@ -2464,7 +2583,7 @@
         "storage",
         "query"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context",
@@ -2475,7 +2594,7 @@
         "cocoindex",
         "bridge"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/011-compaction-working-set",
@@ -2487,7 +2606,7 @@
         "working-set",
         "integration"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization",
@@ -2499,7 +2618,7 @@
         "utilization",
         "usefulness"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair",
@@ -2512,7 +2631,7 @@
         "boundary",
         "repair"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment",
@@ -2525,7 +2644,7 @@
         "durability",
         "auto-enrichment"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/015-tree-sitter-migration",
@@ -2538,7 +2657,7 @@
         "wasm",
         "migration"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-compact-code-graph/016-cross-runtime-ux",
@@ -2550,7 +2669,108 @@
         "cross-runtime",
         "documentation"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/017-tree-sitter-classifier-fixes",
+      "description": "Phase 017: Tree-Sitter & Query-Intent Classifier Fixes",
+      "keywords": [
+        "phase",
+        "017",
+        "tree-sitter",
+        "query-intent",
+        "classifier",
+        "fixes"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming",
+      "description": "Phase 018: Non-Hook CLI Auto-Priming & Session Health",
+      "keywords": [
+        "phase",
+        "018",
+        "non-hook",
+        "cli",
+        "auto-priming",
+        "session",
+        "health"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/019-code-graph-auto-trigger",
+      "description": "Phase 019: Code Graph Auto-Trigger",
+      "keywords": [
+        "phase",
+        "019",
+        "code",
+        "graph",
+        "auto-trigger"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/020-query-routing-integration",
+      "description": "Phase 020: Query-Intent Routing Integration",
+      "keywords": [
+        "phase",
+        "020",
+        "query-intent",
+        "routing",
+        "integration"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity",
+      "description": "Phase 021: Cross-Runtime Instruction Parity",
+      "keywords": [
+        "phase",
+        "021",
+        "cross-runtime",
+        "instruction",
+        "parity"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/022-gemini-hook-porting",
+      "description": "Phase 022: Gemini CLI Hook Porting",
+      "keywords": [
+        "phase",
+        "022",
+        "gemini",
+        "cli",
+        "hook",
+        "porting"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/023-context-preservation-metrics",
+      "description": "Phase 023: Context Preservation Metrics & Observability",
+      "keywords": [
+        "phase",
+        "023",
+        "context",
+        "preservation",
+        "metrics",
+        "observability"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/024-compact-code-graph/024-hookless-priming-optimization",
+      "description": "Phase 024: Hookless Priming Optimization",
+      "keywords": [
+        "phase",
+        "024",
+        "hookless",
+        "priming",
+        "optimization"
+      ],
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/025-hybrid-rag-fusion-upgrade",
@@ -2563,7 +2783,7 @@
         "fusion",
         "upgrade"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "02--system-spec-kit/999-sqlite-to-turso",
@@ -4477,7 +4697,7 @@
         "first",
         "upgrade"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "03--commands-and-skills/030-sk-deep-research-review-mode",
@@ -4501,7 +4721,7 @@
         "command",
         "integration"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "03--commands-and-skills/032-sk-doc-readme-hvr-improvements",
@@ -4552,7 +4772,7 @@
         "path",
         "migration"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "03--commands-and-skills/036-sk-deep-research-review-split",
@@ -4566,7 +4786,7 @@
         "mode",
         "sk-deep-review"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "03--commands-and-skills/037-cmd-merge-spec-kit-phase",
@@ -4594,7 +4814,7 @@
         "release",
         "creation"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "04--agent-orchestration/018-opencode-agent-path-only",
@@ -4681,7 +4901,7 @@
         "agent",
         "ultra-think"
       ],
-      "lastUpdated": "2026-03-31T17:41:49.089Z"
+      "lastUpdated": "2026-04-01T06:38:50.434Z"
     },
     {
       "specFolder": "04--agent-orchestration/025-codex-cli-agents",

@@ -26,13 +26,15 @@
         "EMBEDDINGS_PROVIDER": "auto",
         "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite",
         "SPECKIT_ADAPTIVE_FUSION": "true",
+        "SPECKIT_SESSION_BOOST": "true",
+        "SPECKIT_CAUSAL_BOOST": "true",
         "_NOTE_1_DATABASE": "Stores vectors in: .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite",
         "_NOTE_2_PROVIDERS": "Supports: Voyage (1024 dims), OpenAI (1536/3072 dims), HF Local (768 dims, no API needed)",
         "_NOTE_3_EMBEDDINGS_PROVIDER": "Current: 'auto' (VOYAGE_API_KEY -> OPENAI_API_KEY -> hf-local). Options: 'auto', 'voyage', 'openai', 'hf-local'",
         "_NOTE_4_CLOUD_PROVIDERS": "VOYAGE_API_KEY and OPENAI_API_KEY must come from the parent shell/launcher environment; startup still fails fast on dimension mismatch",
         "_NOTE_5_GET_VOYAGE_KEY": "Get Voyage key: https://dash.voyageai.com/api-keys (recommended, 8% better than OpenAI)",
         "_NOTE_6_GET_OPENAI_KEY": "Get OpenAI key: https://platform.openai.com/api-keys",
-        "_NOTE_7_FEATURE_FLAGS": "Opt-out flags (all default ON): SPECKIT_ADAPTIVE_FUSION, SPECKIT_EXTENDED_TELEMETRY"
+        "_NOTE_7_FEATURE_FLAGS": "Opt-out flags (all default ON): SPECKIT_ADAPTIVE_FUSION, SPECKIT_EXTENDED_TELEMETRY, SPECKIT_SESSION_BOOST, SPECKIT_CAUSAL_BOOST"
       }
     },
     "cocoindex_code": {
