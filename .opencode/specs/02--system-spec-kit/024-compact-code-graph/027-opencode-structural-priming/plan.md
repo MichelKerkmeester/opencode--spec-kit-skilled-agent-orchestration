@@ -50,11 +50,11 @@ Two planning decisions are locked here:
 - [x] Structural bootstrap contract decisions locked before implementation
 
 ### Definition of Done
-- [ ] Auto-prime/bootstrap flows include compact structural context for non-hook runtimes when graph data exists
-- [ ] First-turn guidance tells OpenCode what was auto-injected and what to call when structural context is missing
-- [ ] Recovery wording across `session_bootstrap`, `session_resume`, and `session_health` is consistent
-- [ ] Parent packet docs register `027-opencode-structural-priming` and distinguish it from `026-session-start-injection-debug`
-- [ ] Verification artifacts cover both ready and degraded graph states
+- [x] Auto-prime/bootstrap flows include compact structural context for non-hook runtimes when graph data exists
+- [x] First-turn guidance tells OpenCode what was auto-injected and what to call when structural context is missing
+- [x] Recovery wording across `session_bootstrap`, `session_resume`, and `session_health` is consistent
+- [x] Parent packet docs register `027-opencode-structural-priming` and distinguish it from `026-session-start-injection-debug`
+- [x] Verification artifacts cover both ready and degraded graph states
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -196,9 +196,9 @@ Phase 1 (Structural Contract) ──► Phase 2 (OpenCode Guidance) ──► Ph
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Capture current non-hook startup wording and payload examples
-- [ ] Confirm hook-runtime startup behavior is unchanged
-- [ ] Identify where OpenCode-specific wording diverges from other runtimes
+- [x] Capture current non-hook startup wording and payload examples
+- [x] Confirm hook-runtime startup behavior is unchanged
+- [x] Identify where OpenCode-specific wording diverges from other runtimes
 
 ### Rollback Procedure
 1. Remove structural digest injection from the affected non-hook bootstrap surface

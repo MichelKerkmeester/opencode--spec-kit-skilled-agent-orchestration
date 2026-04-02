@@ -57,10 +57,10 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 
 | Category | Count | Details |
 |----------|-------|---------|
-| **MCP Tools** | 33 | Across 7 layers (L1-L7), 11,100 total token budget |
+| **MCP Tools** | 43 | Across 7 layers (L1-L7), including code graph, CocoIndex lifecycle, and session bootstrap tools |
 | **Commands** | 12 | 8 spec_kit + 4 memory |
 | **Documentation Levels** | 4 | Levels 1, 2, 3, 3+ |
-| **Feature Catalog Entries** | 255 | Across 21 categories |
+| **Feature Catalog Entries** | 291 | Across 22 categories |
 | **Search Channels** | 5 | Vector, FTS5, BM25, Causal Graph, Degree |
 | **Pipeline Stages** | 4 | Gather, Score, Rerank, Filter |
 | **Importance Tiers** | 6 | constitutional through deprecated |
@@ -87,8 +87,8 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 |---------|-------------|
 | **Spec Folder Workflow** | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs |
-| **Spec Kit Memory MCP** | 37-tool MCP server providing persistent semantic memory with hybrid search across sessions, models and tools |
-| **Hook System** | Automated context preservation via Claude Code hooks (PreCompact, SessionStart, Stop) with cross-runtime tool fallback |
+| **Spec Kit Memory MCP** | 43-tool MCP server providing persistent semantic memory, graph intelligence, and session orchestration across sessions, models and tools |
+| **Hook System** | Automated context preservation via runtime hooks where available, with `session_bootstrap()` fallback when hooks are unavailable |
 | **Code Graph** | Structural code analysis: tree-sitter WASM indexer + SQLite storage + 10 MCP tools (4 graph query, 3 CCC, 3 session lifecycle) for call graphs, imports, LLM-oriented neighborhoods, and CocoIndex integration |
 | **Session Continuity** | Context preserved across session boundaries via `generate-context.js` and semantic indexing |
 | **Validation Scripts** | 20-rule validation, completeness checks and placeholder detection for spec folders |
@@ -308,7 +308,7 @@ The memory system lives in an MCP server that gives AI assistants persistent mem
 
 Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task. Switch from Claude to GPT to Gemini and back -- the memory stays the same because it lives on your machine, not inside any AI's context window.
 
-For full architecture details, the 37-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
+For full architecture details, the 43-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
 #### Hybrid Search
 
@@ -598,11 +598,11 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 │   ├── contracts/              # Typed trace/envelope contracts
 │   ├── embeddings/             # Provider implementations
 │   └── ...                     # Chunker, scoring, parsing, utilities
-├── references/                 # Reference documentation (26 files)
+├── references/                 # Reference documentation (27 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
-├── feature_catalog/            # Feature documentation (21 categories, 255 features)
-└── manual_testing_playbook/    # Manual validation scenarios (19 categories)
+├── feature_catalog/            # Feature documentation (22 categories, 291 features)
+└── manual_testing_playbook/    # Manual validation scenarios (22 categories, 311 scenario files)
 ```
 
 ### Key Files
@@ -613,13 +613,13 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`README.md`](./README.md) | This file -- what Spec Kit does, how to use it, where to find things |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
 | [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md) | Shared memory guide with spaces, roles and kill switch |
-| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 37-tool API reference, search pipeline, cognitive memory, configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 43-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md) | Step-by-step installation with embedding providers and environment |
 | [`templates/core/`](./templates/core/) | Four foundation templates used at all documentation levels |
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh) | Create spec folders with level-appropriate template files |
 | [`scripts/spec/validate.sh`](./scripts/spec/validate.sh) | Run 20-rule validation on any spec folder |
 | `scripts/dist/memory/generate-context.js` | Primary workflow for saving session context to memory |
-| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 255 implemented features across 21 categories |
+| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 291 implemented features across 22 categories |
 
 ### How the Pieces Connect
 
@@ -627,7 +627,7 @@ Think of Spec Kit as a filing system with a librarian attached.
 
 The **spec folder workflow** is the filing system. Every time you modify files, it creates a numbered folder with the right paperwork (specification, plan, tasks). Templates make sure every folder follows the same structure. Validation checks that nothing is missing.
 
-The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, `memory_match_triggers` can fast-surface trigger-based context and `memory_context` can route a full hybrid retrieval pass before work begins.
+The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, hook-capable runtimes auto-prime that context. Hookless runtimes should start with `session_bootstrap`, which bundles resume context, health, and structural readiness into one recovery call before deeper `memory_context` work begins.
 
 The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation. `/memory:save` saves context. `/spec_kit:resume` recovers or continues a previous session.
 
@@ -648,8 +648,8 @@ Session starts
             │
             ▼
   Next session starts
-  └─► memory_match_triggers() surfaces relevant context
-       └─► AI resumes with full prior context
+  └─► Hooks auto-prime OR session_bootstrap() runs once
+       └─► AI resumes with context + health + structural readiness
 ```
 
 <!-- /ANCHOR:structure -->
@@ -983,7 +983,7 @@ A: Level 3 adds a `decision-record.md` for architecture decision records. Use it
 
 **Q: How do spec folders and memory work together?**
 
-A: Spec folders capture what happened in structured documentation. The memory system makes that documentation searchable across sessions. When a session ends, `generate-context.js` writes a summary to the spec folder's `memory/` directory. The MCP server indexes it. When the next session starts, `memory_context` or `memory_match_triggers` retrieves the relevant context. One captures, the other retrieves.
+A: Spec folders capture what happened in structured documentation. The memory system makes that documentation searchable across sessions. When a session ends, `generate-context.js` writes a summary to the spec folder's `memory/` directory. The MCP server indexes it. When the next session starts, hook-capable runtimes auto-prime that context, while hookless runtimes should call `session_bootstrap` first and then drop into `memory_context` or `memory_match_triggers` for deeper retrieval. One side captures, the recovery surfaces retrieve.
 
 ---
 
@@ -995,7 +995,7 @@ A: The memory system can index any markdown file, beyond spec folder contents. B
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 37-tool API reference, 5-channel hybrid retrieval, runtime-resolved rollout behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 43-tool API reference, 5-channel hybrid retrieval, code graph and session lifecycle tooling, runtime-resolved rollout behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 
@@ -1039,7 +1039,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 |----------|---------|
 | [`SKILL.md`](./SKILL.md) | AI agent instructions: routing, gates, validation, template application |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
-| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 37-tool API reference, search pipeline, cognitive memory, configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture: 43-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md) | Step-by-step installation with embedding providers and environment variables |
 | [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md) | Shared memory guide with spaces, roles, kill switch |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md) | Detailed memory system reference |
@@ -1048,7 +1048,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | [`references/templates/template_guide.md`](./references/templates/template_guide.md) | Template usage and composition rules |
 | [`references/config/environment_variables.md`](./references/config/environment_variables.md) | Full environment variable reference |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedures |
-| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 255 features across 21 categories |
+| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 291 features across 22 categories |
 
 ### Cross-Skill Alignment
 
@@ -1065,7 +1065,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | `AGENTS.md` (project root) | Gate definitions, AI behavior framework, mandatory workflow rules |
 | `.opencode/specs/` | All spec folders created by Spec Kit |
 | `.opencode/command/spec_kit/` | Spec Kit command definitions (8 commands) |
-| `.opencode/command/memory/` | Memory command definitions (5 commands) |
+| `.opencode/command/memory/` | Memory command definitions (4 top-level commands plus subcommand namespaces) |
 
 ### External Resources
 
@@ -1079,4 +1079,4 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 
 ---
 
-*Documentation version: 3.0 | Last updated: 2026-03-25 | Skill version: 2.2.27.0*
+*Documentation version: 3.0 | Last updated: 2026-03-25 | Skill version: 3.2.0.0*

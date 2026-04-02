@@ -25,14 +25,18 @@ mcp_server/lib/code-graph/code-graph-db.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `Lib` | SQLite schema and CRUD | mcp_server/handlers/code-graph/scan.ts |
-| `Handler` | Workspace scan handler | mcp_server/tests/code-graph-indexer.vitest.ts |
+| `mcp_server/lib/code-graph/code-graph-db.ts` | Lib | SQLite schema, storage helpers, and graph CRUD operations |
+| `mcp_server/handlers/code-graph/scan.ts` | Handler | Implements `code_graph_scan` for structural indexing |
+| `mcp_server/handlers/code-graph/query.ts` | Handler | Implements `code_graph_query` for callers, imports, and outlines |
+| `mcp_server/handlers/code-graph/status.ts` | Handler | Implements `code_graph_status` for readiness and health checks |
+| `mcp_server/handlers/code-graph/context.ts` | Handler | Implements `code_graph_context` for compact structural neighborhoods |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `Indexer integration` | phase 009 |
+| `mcp_server/tests/code-graph-scan.vitest.ts` | Scan flow, persistence, and incremental refresh behavior |
+| `mcp_server/tests/code-graph-indexer.vitest.ts` | Indexer-to-storage integration and edge persistence coverage |
 
 ---
 
@@ -40,4 +44,4 @@ mcp_server/lib/code-graph/code-graph-db.ts
 
 - Group: Context Preservation and Code Graph
 - Source feature title: Code graph SQLite storage and MCP query tools
-- Current reality source: spec 024-compact-code-graph 
+- Current reality source: spec 024-compact-code-graph phases 009, 019, and 020

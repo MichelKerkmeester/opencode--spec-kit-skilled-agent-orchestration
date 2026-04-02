@@ -64,6 +64,13 @@ contextType: "implementation"
 - Never modify the search pipeline without a feature flag gate
 - Benchmark retrieval latency before and after each phase
 
+### Status Reporting Format
+- Use `IN_PROGRESS`, `BLOCKED`, or `DONE` with the active phase and the concrete area being changed, such as diagnosis, retrieval, provenance, or maintenance.
+
+### Blocked Task Protocol
+- If Phase 0 diagnosis proves an improvement is already covered by existing behavior, record the finding and reduce scope before implementation.
+- If an improvement cannot be delivered behind an independent feature flag, stop and document the rollback risk before widening the change.
+
 ---
 
 <!-- ANCHOR:architecture -->

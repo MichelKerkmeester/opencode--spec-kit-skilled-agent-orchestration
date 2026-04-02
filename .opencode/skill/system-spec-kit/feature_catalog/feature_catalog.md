@@ -50,16 +50,16 @@ Use this catalog as the canonical inventory for both current behavior and delive
 
 ### Command-Surface Contract
 
-The Spec Kit Memory MCP server exposes **33 tools** organized under **4 memory slash commands**, with session recovery now owned by `/spec_kit:resume` as a spec-folder workflow using shared memory tools. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for memory ownership remains the `allowed-tools` field in each command file under `.opencode/command/memory/`, with recovery behavior documented in `.opencode/command/spec_kit/resume.md`.
+The Spec Kit Memory MCP server exposes **43 tools** overall across the 7-layer MCP surface. The command layer wraps the memory-focused subset under **4 top-level memory slash commands** plus the `/memory:manage shared` subcommand namespace, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the memory/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|
 | `/memory:search` | 13 | owns | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
 | `/memory:learn` | 6 | shared | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
-| `/memory:manage` | 16 | owns | `memory_stats`, `memory_list`, `memory_search`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` |
+| `/memory:manage` | 19 primary + 1 helper | owns + borrows | Primary home: `memory_stats`, `memory_list`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`; helper access: `memory_search` |
 | `/memory:save` | 4 | shared | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
-| `/memory:manage shared` | 4 | owns | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
-| `/spec_kit:resume` | 4 | shared | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
+| `/memory:manage shared` | 4 | subcommand namespace | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
+| `/spec_kit:resume` | broader helper surface | shared | Primary recovery chain: `memory_context`, `memory_search`, `memory_list`; wrapper also allows `memory_stats`, `memory_match_triggers`, `memory_delete`, `memory_update`, plus health, indexing, validation, checkpoint, and CocoIndex helpers |
 
 **Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
 
@@ -289,7 +289,7 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 
 #### Current Reality
 
-**SHIPPED.** `/spec_kit:resume` owns session recovery and continuation. It uses 4 shared MCP tools: `memory_context`, `memory_search`, `memory_list`, and `memory_stats`.
+**SHIPPED.** `/spec_kit:resume` owns session recovery and continuation. Its primary recovery chain relies on 3 shared memory tools: `memory_context`, `memory_search`, and `memory_list`. `memory_stats` remains diagnostic/helper access, and the live wrapper also permits `memory_match_triggers`, `memory_delete`, `memory_update`, health, indexing, validation, checkpoint, and CocoIndex helpers that support the broader recovery workflow.
 
 The primary recovery path calls `memory_context` in `resume` mode with anchors targeting `state`, `next-steps`, `summary`, and `blockers`. Resume mode uses a 1200-token budget with `minState=WARM`, `includeContent=true`, dedup and decay both disabled.
 
@@ -3199,7 +3199,7 @@ AI assistants sometimes invent parameters that do not exist when calling tools. 
 
 #### Current Reality
 
-**IMPLEMENTED (Sprint 019).** All 33 live MCP tool definitions (L1-L7) have Zod runtime schemas defined in `mcp_server/schemas/tool-input-schemas.ts` (re-exported via `tool-schemas.ts`), controlled by `SPECKIT_STRICT_SCHEMAS` (`.strict()` vs `.passthrough()`). Hallucinated parameters from calling LLMs are rejected with clear Zod errors and logged to stderr for audit trail (CHK-029). Adds `zod` dependency.
+**IMPLEMENTED (Sprint 019, later expanded by session/code-graph additions).** All 43 live MCP tool definitions (L1-L7) have Zod runtime schemas defined in `mcp_server/schemas/tool-input-schemas.ts` (re-exported via `tool-schemas.ts`), controlled by `SPECKIT_STRICT_SCHEMAS` (`.strict()` vs `.passthrough()`). Hallucinated parameters from calling LLMs are rejected with clear Zod errors and logged to stderr for audit trail (CHK-029). Adds `zod` dependency.
 
 #### Source Files
 
@@ -4500,7 +4500,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_SHADOW_SCORING` | inert | boolean | `lib/eval/shadow-scoring.ts` | **Deprecated.** Shadow scoring runtime is permanently disabled: `runShadowScoring()` returns `null` and `logShadowComparison()` returns `false`. The env var is retained for compatibility/testing context but does not enable production scoring paths. |
 | `SPECKIT_SIGNAL_VOCAB` | `true` | boolean | `lib/parsing/trigger-matcher.ts` | Enables signal vocabulary expansion in the trigger matcher. Augments the trigger phrase vocabulary with derived signal terms during matching. Disabled with explicit `'false'`. |
 | `SPECKIT_SKIP_API_VALIDATION` | `false` | boolean | `context-server.ts` | When `'true'`, skips API key validation at startup. Useful for testing without a real embedding provider. Default is to validate API credentials. |
-| `SPECKIT_STRICT_SCHEMAS` | `true` | boolean | `schemas/tool-input-schemas.ts` | **IMPLEMENTED (Sprint 019).** P0-1: Controls Zod schema enforcement mode for all 33 live MCP tool definitions. When `true`, `.strict()` rejects unexpected parameters with stderr logging (CHK-029). When `false`, `.passthrough()` allows undocumented parameters for backward compatibility. Validation runs per-tool in the handler layer. |
+| `SPECKIT_STRICT_SCHEMAS` | `true` | boolean | `schemas/tool-input-schemas.ts` | **IMPLEMENTED (Sprint 019, later expanded by session/code-graph additions).** P0-1: Controls Zod schema enforcement mode for the schema-backed L1-L7 MCP tool surface. When `true`, `.strict()` rejects unexpected parameters with stderr logging (CHK-029). When `false`, `.passthrough()` allows undocumented parameters for backward compatibility. The L8 code-graph/CocoIndex dispatch helpers still use lighter required-field guards instead of the same `validateToolArgs` path. |
 | `SPECKIT_TRM` | `true` | boolean | `lib/search/search-flags.ts` | Enables the Transparent Reasoning Module (evidence-gap detection). Stage 4 runs a TRM Z-score analysis to detect evidence gaps and annotate results accordingly. |
 | `SPECKIT_TYPED_TRAVERSAL` | `true` | boolean | `lib/search/causal-boost.ts` | **Default ON (graduated).** Sparse-first policy + intent-aware edge traversal. Density < 0.5 constrains to 1-hop. Score: seedScore * edgePrior * hopDecay * freshness. |
 | `SPECKIT_WORKING_MEMORY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables the working memory system which tracks attention scores for memories seen in the current session. Working memory context is injected during resume mode and influences session-boost scoring. |

@@ -99,3 +99,12 @@ Implementation completed in current session. 4 parallel agents executed Waves 1-
 - **P1-001**: Unsafe spread merge with double cast chain (workflow.ts:618-619) -- RETAINED after adversarial re-check
 - **P1-002**: DR-002 _source:'json' flag unimplemented (conversation-extractor.ts) -- RETAINED after adversarial re-check
 - **Verdict**: CONDITIONAL (no P0, active P1s remain)
+
+
+## 2026-04-02 Strategy Update
+
+- Review target: `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline`
+- This pass runs 4 iterations across: correctness, traceability, completeness, synthesis.
+- Strict validation status at start: `PASS`.
+- Unchecked tasks/checklist: 7/26.
+- Existing active review iterations before this pass: 5.

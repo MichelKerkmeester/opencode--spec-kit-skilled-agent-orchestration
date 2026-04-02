@@ -1,22 +1,22 @@
 ---
-title: "INT-002 -- Hybrid intent queries merge code graph and CocoIndex results"
-description: "This scenario validates that hybrid intent queries produce merged results from both the structural code graph and CocoIndex semantic search."
+title: "INT-002 -- Hybrid intent queries add graph context on top of semantic retrieval"
+description: "This scenario validates that hybrid intent queries append structural graph context while the normal semantic retrieval payload remains intact."
 ---
 
-# INT-002 -- Hybrid intent queries merge code graph and CocoIndex results
+# INT-002 -- Hybrid intent queries add graph context on top of semantic retrieval
 
 ## 1. OVERVIEW
 
-This scenario validates that queries classified as 'hybrid' by the query-intent classifier trigger both the code graph (structural) and CocoIndex (semantic) backends, and that results from both are merged into the response.
+This scenario validates that queries classified as `hybrid` by the query-intent classifier append code-graph context to the standard semantic retrieval response.
 
 ---
 
 ## 2. CURRENT REALITY
 
-- Objective: Verify that hybrid queries (mixing structural keywords like "function", "calls" with semantic keywords like "explain", "examples") trigger both backends and merge results. The merged response must contain code graph data (symbols, edges) alongside CocoIndex semantic matches (file paths, similarity scores).
-- Prompt: `Send a hybrid query like "find all validation functions and explain their error handling approach" to memory_context. Capture the evidence needed to prove: (1) query-intent classifier returns intent=hybrid, (2) code graph results include function symbols matching "validation", (3) CocoIndex results include files with error handling patterns, (4) both result sets are present in the merged response. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: Intent classified as 'hybrid', response contains both structural (code graph symbols) and semantic (CocoIndex file matches) results, confidence scores present for both
-- Pass/fail: PASS if both backends contribute results in merged response; FAIL if only one backend's results present or merge fails
+- Objective: Verify that hybrid queries (mixing structural keywords like "function", "calls" with semantic keywords like "explain", "examples") are classified as hybrid and append `graphContext` metadata to the normal `memory_context` response.
+- Prompt: `Send a hybrid query like "find all validation functions and explain their error handling approach" to memory_context. Capture the evidence needed to prove: (1) query-intent classifier returns intent=hybrid, (2) routedBackend is hybrid or structural as appropriate, (3) graphContext is present when the graph has matching anchors, and (4) the base memory_context response still remains intact. Return a concise user-facing pass/fail verdict with the main reason.`
+- Expected signals: Intent classified as `hybrid`, response contains `queryIntentRouting`, `graphContext` appears when graph seeds resolve, and the normal semantic response body remains present
+- Pass/fail: PASS if hybrid routing is confirmed and graphContext is appended successfully; FAIL if graph augmentation is missing when expected or the response structure breaks
 
 
 ---
@@ -25,7 +25,7 @@ This scenario validates that queries classified as 'hybrid' by the query-intent 
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| INT-002 | Hybrid query result merging | Hybrid intent triggers both code graph and CocoIndex | `Send "find all validation functions and explain their error handling approach" to memory_context` | 1. `memory_context({ input: "find all validation functions and explain their error handling approach" })` | Intent classified as 'hybrid', response includes code graph symbols AND CocoIndex semantic matches | memory_context response showing merged results | PASS if both code graph and CocoIndex results present in response; FAIL if only one backend represented | Check hybrid scoring threshold in query-intent-classifier.ts; verify both code graph and CocoIndex are available via `code_graph_status` and `ccc status` |
+| INT-002 | Hybrid query result augmentation | Hybrid intent appends graphContext to the semantic response | `Send "find all validation functions and explain their error handling approach" to memory_context` | 1. `memory_context({ input: "find all validation functions and explain their error handling approach" })` | Intent classified as `hybrid`, `queryIntentRouting` present, `graphContext` appended when graph anchors resolve | memory_context response showing routing metadata plus graphContext | PASS if hybrid routing and graphContext augmentation are both present; FAIL if graph augmentation never appears when the graph has matching anchors | Check hybrid scoring threshold in query-intent-classifier.ts and graph augmentation path in memory-context.ts |
 
 
 ---

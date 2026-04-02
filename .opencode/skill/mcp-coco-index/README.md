@@ -63,6 +63,7 @@ Indexing is incremental and daemon-backed. The first run scans and embeds all su
 | Tool | Use When | Limitation |
 |---|---|---|
 | `ccc search` (CocoIndex) | You know what code does but not where it lives | Approximate, needs verification |
+| `code_graph_query` | You need exact callers, imports, or structural dependencies | Requires the structural graph to be indexed first |
 | `Grep` | You know the exact text, symbol, or regex pattern | Cannot find conceptual matches |
 | `Glob` | You know the file name or extension pattern | Cannot search file contents |
 | `Read` | You know the exact file path | No search capability |
@@ -77,8 +78,11 @@ Indexing is incremental and daemon-backed. The first run scans and embeds all su
 | Path filters | `--path` (CLI) or `paths` (MCP) scopes results to a directory |
 | Incremental indexing | Only re-embeds changed files on subsequent runs |
 | Daemon architecture | Auto-starts, auto-restarts on version or settings change |
+| Spec Kit integration | Companion lifecycle tools (`ccc_status`, `ccc_reindex`, `ccc_feedback`) and code-graph/session integration are available through system-spec-kit |
 | Two embedding models | Local (no API key) or cloud (higher quality) |
 | 28+ languages | Language-aware chunk splitting preserves function and class boundaries |
+
+In the broader system-spec-kit stack, CocoIndex is the semantic half of a three-system retrieval model: CocoIndex finds conceptually similar code, Code Graph answers structural questions, and session bootstrap surfaces CocoIndex readiness during recovery. The companion lifecycle helpers exposed through system-spec-kit are `ccc_status`, `ccc_reindex`, and `ccc_feedback`.
 
 <!-- /ANCHOR:overview -->
 
@@ -161,7 +165,8 @@ The CLI and MCP interfaces are complementary, not redundant. The CLI handles ind
 | `query` | string | Yes | - | Natural-language search query |
 | `languages` | list or null | No | null | Filter by programming languages |
 | `paths` | list or null | No | null | Filter by file paths |
-| `num_results` | integer | No | 5 | Number of results to return |
+| `limit` | integer | No | 5 | Maximum number of results to return |
+| `offset` | integer | No | 0 | Number of results to skip for pagination |
 | `refresh_index` | boolean | No | true | Trigger index refresh before searching |
 
 **CLI vs. MCP parameter differences**
@@ -170,9 +175,9 @@ The CLI and MCP interfaces are complementary, not redundant. The CLI handles ind
 |---|---|---|---|
 | Language filter | `--lang` (repeatable flag) | `languages` (list) | CLI: one flag per language. MCP: list of strings |
 | Path filter | `--path` (single string) | `paths` (list) | CLI: one path. MCP: multiple paths |
-| Result limit | `--limit` (default 10) | `num_results` (default 5) | Different defaults |
+| Result limit | `--limit` (default 10) | `limit` (default 5) | Different defaults |
 | Index refresh | `--refresh` (default false) | `refresh_index` (default true) | Different defaults |
-| Pagination | `--offset` | not available | CLI only |
+| Pagination | `--offset` | `offset` (default 0) | Available on both surfaces |
 
 **Embedding models**
 
@@ -357,7 +362,8 @@ An AI agent calls the MCP `search` tool directly. Set `refresh_index` to `false`
   "query": "database connection pooling setup",
   "languages": ["python", "typescript"],
   "paths": ["src/db/"],
-  "num_results": 10,
+  "limit": 10,
+  "offset": 0,
   "refresh_index": false
 }
 ```

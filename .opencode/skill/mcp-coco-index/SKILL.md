@@ -238,7 +238,7 @@ The MCP server exposes **1 tool only**: `search`. The `status`, `index`, and `re
 
 | Tool     | Purpose                         | Key Parameters                                                                  |
 | -------- | ------------------------------- | ------------------------------------------------------------------------------- |
-| `search` | Semantic search across codebase | `query` (str, required), `languages` (list\|null), `paths` (list\|null), `num_results` (int, default 5), `refresh_index` (bool, default True) |
+| `search` | Semantic search across codebase | `query` (str, required), `languages` (list\|null), `paths` (list\|null), `limit` (int, default 5), `offset` (int, default 0), `refresh_index` (bool, default True) |
 
 ### Embedding Models
 
@@ -456,12 +456,14 @@ The CocoIndex MCP server exposes `search` as its primary tool. Additionally, 3 m
 
 | Tool     | Server | Description                    | Key Parameters                                                                  |
 | -------- | ------ | ------------------------------ | ------------------------------------------------------------------------------- |
-| `search` | CocoIndex | Semantic search across code    | `query` (str), `languages` (list\|null), `paths` (list\|null), `num_results` (int, default 5), `refresh_index` (bool, default false) |
+| `search` | CocoIndex | Semantic search across code    | `query` (str), `languages` (list\|null), `paths` (list\|null), `limit` (int, default 5), `offset` (int, default 0), `refresh_index` (bool, default true) |
 | `ccc_status` | Spec Kit Memory | Check CocoIndex availability and index stats | none |
 | `ccc_reindex` | Spec Kit Memory | Trigger incremental or full re-indexing | `full` (bool, default false) |
 | `ccc_feedback` | Spec Kit Memory | Submit search result quality feedback | `query` (str), `rating` (helpful\|not_helpful\|partial), `comment` (str, optional) |
 
-> **Note**: `refresh_index` defaults to `false` to avoid `ComponentContext` errors. The index refreshes automatically on first query per session.
+> **Note**: `refresh_index` defaults to `true`. Use the default on the first query in a session, then switch follow-up queries to `false` when the codebase has not changed to avoid `ComponentContext` errors.
+>
+> **Companion recovery surface**: In the integrated Spec Kit workflow, hookless runtimes should use `session_bootstrap` as the first recovery call, then use `session_resume` when they need the fuller merged recovery payload that includes direct CocoIndex availability fields.
 
 ### Supported Languages
 

@@ -9,7 +9,7 @@ description: "CocoIndex bridge resolves semantic search results to code graph no
 
 CocoIndex bridge resolves semantic search results to code graph nodes and expands into LLM-oriented neighborhoods.
 
-Seed resolver normalizes CocoIndex file:line results to ArtifactRef via resolution chain: exact symbol, enclosing symbol, file anchor. code_graph_context expands resolved anchors in 3 modes: neighborhood (1-hop), outline (file symbols), impact (reverse callers). Budget-aware truncation.
+Seed resolver normalizes CocoIndex file:line results to ArtifactRef via resolution chain: exact symbol, near-exact symbol, enclosing symbol, file anchor. `code_graph_context` expands resolved anchors in 3 modes: neighborhood (1-hop), outline (file symbols), and impact (reverse callers plus reverse imports). Budget-aware truncation.
 
 ---
 
@@ -25,14 +25,15 @@ mcp_server/lib/code-graph/seed-resolver.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `Lib` | CocoIndex to graph node resolution | mcp_server/lib/code-graph/code-graph-context.ts |
-| `Lib` | Graph neighborhood expansion | mcp_server/tests/code-graph-indexer.vitest.ts |
+| `mcp_server/lib/code-graph/seed-resolver.ts` | Lib | Resolves CocoIndex file-range hits to graph anchors or file-level fallbacks |
+| `mcp_server/lib/code-graph/code-graph-context.ts` | Lib | Expands resolved seeds into budget-aware structural neighborhoods |
+| `mcp_server/handlers/code-graph/context.ts` | Handler | Exposes `code_graph_context` over MCP |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `Indexer type tests` | phase 010 |
+| `mcp_server/tests/code-graph-seed-resolver.vitest.ts` | Seed resolution across exact-symbol, enclosing-symbol, and file-anchor fallbacks |
 
 ---
 
@@ -40,4 +41,4 @@ mcp_server/lib/code-graph/seed-resolver.ts
 
 - Group: Context Preservation and Code Graph
 - Source feature title: CocoIndex bridge and code_graph_context
-- Current reality source: spec 024-compact-code-graph 
+- Current reality source: spec 024-compact-code-graph phases 010 and 020

@@ -210,6 +210,17 @@ Template compliance shim section. Legacy phase content continues below.
 **Alternatives Considered:** Keep 26-item scope (rejected: misses 7 P1 blockers), create Phase 017 for new findings (rejected: findings naturally fit existing phases)
 **Impact:** Phases 013-016 expanded from 26 to 45 items. LOC estimate: 911-1,317 (up from 711-1,037). Phase 013 grows most (8→15 items) due to DB safety findings.
 
+### DR-017: Startup Highlights Retention with Quality Gates
+**Decision:** Retain the startup highlights section but gate it behind quality improvements: (1) fix deduplication via GROUP BY on display fields, (2) add path exclusion filters for vendored/test code, (3) replace outgoing-call-count with incoming-call-count heuristic, (4) add per-file diversity limits. If highlights remain low-value after fixes, remove the section entirely.
+**Date:** 2026-04-02
+**Context:** Deep review (2026-04-02) found that queryStartupHighlights() produced low-signal output: duplicate entries (GROUP BY bug), vendored/test code domination (no path filtering), wrong heuristic (outgoing calls instead of incoming), and no spec traceability for the highlights section. Review verdict: CONDITIONAL with P1=3 P2=4.
+**Rationale:**
+- The hook infrastructure is sound and the token cost (~100 of 2000) is low
+- The problem is signal quality, not architecture
+- Fixing the query is less disruptive than removing the section
+- The session continuity and stale-index detection sections are confirmed valuable and unaffected
+**Status:** Implemented (Phase 028, 2026-04-02). All 4 quality gates applied: dedup, path exclusion, incoming-call heuristic, diversity limits. Live output verified — 5/5 project symbols, 0 duplicates, 0 vendored/test.
+
 ### Context
 Decision context and constraints are captured from the active phase deliverables.
 

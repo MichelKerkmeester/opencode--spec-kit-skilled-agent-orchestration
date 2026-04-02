@@ -108,6 +108,7 @@ Based on Claude Code hooks API (25 lifecycle events, 4 handler types — iterati
 - **SessionStart** → single unscoped hook registration; in-script branching via `input.source`
   - `source=compact` → injects cached PreCompact context via stdout
   - `source=startup` → primes new session with tool overview + stale-index detection
+  - SessionStart source=startup MAY inject top-N architecturally significant project symbols as orientation highlights, subject to quality gates (deduplication, path filtering, relevance heuristic, diversity controls). See DR-017.
   - `source=resume` → loads last spec folder and resume guidance
   - `source=clear` → minimal context after `/clear`
   - Plain stdout becomes model-visible context

@@ -28,7 +28,13 @@ export function detectRuntime(): RuntimeInfo {
   }
 
   // Codex CLI: sets CODEX_CLI or specific env patterns
-  if (env.CODEX_CLI === '1' || env.OPENAI_API_KEY && env.CODEX_SANDBOX) {
+  if (
+    env.CODEX_CLI === '1'
+    || typeof env.CODEX_THREAD_ID === 'string'
+    || env.CODEX_TUI_RECORD_SESSION === '1'
+    || typeof env.CODEX_TUI_SESSION_LOG_PATH === 'string'
+    || env.OPENAI_API_KEY && env.CODEX_SANDBOX
+  ) {
     return { runtime: 'codex-cli', hookPolicy: 'unavailable' };
   }
 

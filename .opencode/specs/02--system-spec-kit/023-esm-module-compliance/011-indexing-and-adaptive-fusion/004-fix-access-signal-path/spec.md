@@ -21,7 +21,6 @@ contextType: "implementation"
 | **Successor** | 005-e2e-integration-test |
 | **Handoff Criteria** | `trackAccess` writes adaptive access signals through the batched stage-2 path |
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 4** of the adaptive-ranking packet.
@@ -37,7 +36,6 @@ This is **Phase 4** of the adaptive-ranking packet.
 - Batched stage-2 access writes
 - Query-aware access rows
 - Non-blocking warning logs on failure
-<!-- /ANCHOR:phase-context -->
 
 # Feature Specification: Fix Access Signal Path
 

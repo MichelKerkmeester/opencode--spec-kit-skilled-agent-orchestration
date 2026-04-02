@@ -260,6 +260,26 @@ function resolveToolCallId(request: { id?: unknown }): string {
   return `generated-${generatedCallIdCounter}`;
 }
 
+function resolveSessionTrackingId(
+  args: Record<string, unknown>,
+  extra: unknown,
+): string | undefined {
+  const transportSessionId = typeof (extra as { sessionId?: unknown } | null)?.sessionId === 'string'
+    ? ((extra as { sessionId?: string }).sessionId ?? null)
+    : null;
+  const explicitSessionId = typeof args.sessionId === 'string'
+    ? args.sessionId
+    : typeof args.session_id === 'string'
+      ? args.session_id
+      : null;
+  const codexThreadId = typeof process.env.CODEX_THREAD_ID === 'string'
+    && process.env.CODEX_THREAD_ID.trim().length > 0
+    ? process.env.CODEX_THREAD_ID.trim()
+    : null;
+
+  return explicitSessionId ?? transportSessionId ?? codexThreadId ?? undefined;
+}
+
 function runAfterToolCallbacks(tool: string, callId: string, result: unknown): void {
   if (afterToolCallbacks.length === 0) {
     return;
@@ -651,6 +671,14 @@ async function buildServerInstructions(): Promise<string> {
     }
   } catch { /* session-snapshot not available — skip digest */ }
 
+  // Phase 027: Structural bootstrap guidance for non-hook runtimes
+  lines.push('');
+  lines.push('## Structural Bootstrap (Phase 027)');
+  lines.push('Non-hook runtimes receive automatic structural context via session_bootstrap, session_resume, and auto-prime.');
+  lines.push('- If structural context shows "ready": code_graph_query is available for structural lookups');
+  lines.push('- If "stale" or "missing": call session_bootstrap first to refresh structural context');
+  lines.push('- Recovery priority: session_bootstrap → session_resume → code_graph_scan');
+
   // Phase 024: Tool routing decision tree
   try {
     const { getSessionSnapshot: getSnap } = await import('./lib/session/session-snapshot.js');
@@ -726,15 +754,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   const { name } = requestParams;
   const args: Record<string, unknown> = requestParams.arguments ?? {};
   const callId = resolveToolCallId(request as { id?: unknown });
-  const transportSessionId = typeof (_extra as { sessionId?: unknown } | null)?.sessionId === 'string'
-    ? ((_extra as { sessionId?: string }).sessionId ?? null)
-    : null;
-  const explicitSessionId = typeof args.sessionId === 'string'
-    ? args.sessionId
-    : typeof args.session_id === 'string'
-      ? args.session_id
-      : null;
-  const sessionTrackingId = explicitSessionId ?? transportSessionId ?? undefined;
+  const sessionTrackingId = resolveSessionTrackingId(args, _extra);
 
   try {
     // SEC-003: Validate input lengths before processing (CWE-400 mitigation)

@@ -145,8 +145,9 @@ Implementation proceeded in three waves. v1 phases (001-012) were built sequenti
 | DR-014 | Tree-sitter WASM with regex fallback | 99% parse accuracy via adapter pattern; regex stays as permanent fallback |
 | DR-015 | MCP first-call priming for all runtimes | Works on all 5 runtimes without hooks; achieves ~85-90% parity with Claude hooks |
 | DR-016 | 45-item remediation scope expansion | 30-iteration review found 19 additional issues beyond the initial 26 |
+| DR-017 | Startup highlights retention with quality gates | Keep highlights only if deduplication, path filtering, relevance, and diversity fixes restore signal quality |
 
-Full decision record: see `decision-record.md` (16 decisions, DR-001 through DR-016).
+Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-017).
 ---
 
 <!-- ANCHOR:verification -->
@@ -173,7 +174,8 @@ Full decision record: see `decision-record.md` (16 decisions, DR-001 through DR-
 1. **1 deferred item remains.** Additional SymbolKinds extraction beyond the current tree-sitter set is still tracked in tasks.md.
 2. **Regex parser is still available.** Tree-sitter is the default parser, but the regex fallback remains via `SPECKIT_PARSER=regex` env var. Brace-counting for endLine is approximate -- string literals with `{`/`}` can shift the count.
 3. **Compaction pipeline emits CocoIndex follow-up guidance, not retrieved results.** The 3-source merge includes semantic neighbor suggestions rather than fetched CocoIndex content.
-4. **Working-set integration is partial.** Tracker structures exist, but compaction still relies primarily on transcript heuristics instead of fully working-set-driven retrieval.
-5. **MCP-level compaction detection is not implementable** without runtime SDK changes. Deferred indefinitely.
-6. **Pre-existing TypeScript errors** in `memory-search.ts` and `shadow-evaluation-runtime.ts` prevent `npm run build` from passing clean. Unrelated to spec 024.
+4. **~~Startup highlights quality gates pending.~~ Resolved (Phase 028).** The queryStartupHighlights() function now uses: (a) GROUP BY on display fields for deduplication, (b) 10 NOT LIKE path exclusion filters for vendored/test code, (c) incoming-call-count heuristic via target_id JOIN, and (d) per-file diversity controls via ROW_NUMBER(). All 3 P1 findings from deep review 2026-04-02 are fixed. See DR-017 and Phase 028.
+5. **Working-set integration is partial.** Tracker structures exist, but compaction still relies primarily on transcript heuristics instead of fully working-set-driven retrieval.
+6. **MCP-level compaction detection is not implementable** without runtime SDK changes. Deferred indefinitely.
+7. **Pre-existing TypeScript errors** in `memory-search.ts` and `shadow-evaluation-runtime.ts` prevent `npm run build` from passing clean. Unrelated to spec 024.
 <!-- /ANCHOR:limitations -->

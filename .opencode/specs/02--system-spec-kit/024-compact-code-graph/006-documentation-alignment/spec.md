@@ -65,7 +65,7 @@ Template compliance shim anchor for questions.
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 ### Summary
-Update all documentation to reflect the new hook system. This covers the feature catalog, manual testing playbook, SKILL.md, ARCHITECTURE.md, README files, and agent reference docs.
+Update all documentation to reflect the new hook system. This covers the feature catalog, manual testing playbook, `../../../../skill/system-spec-kit/SKILL.md`, ARCHITECTURE.md, README files, and agent reference docs.
 
 ### What to Document
 
@@ -95,7 +95,7 @@ New test scenarios:
 | Codex CLI recovery | Trigger compaction in Codex | Tool-based recovery fires via Gate 1 |
 | Cross-runtime consistency | Compare recovery across runtimes | Same context surfaced regardless of runtime |
 
-### 3. SKILL.md Updates (`.opencode/skill/system-spec-kit/SKILL.md`)
+### 3. SKILL.md Updates (`../../../../skill/system-spec-kit/SKILL.md`)
 
 Add section covering:
 - Hook system overview (PreCompact, SessionStart, Stop)
@@ -163,7 +163,7 @@ Add hook architecture:
 
 ---
 
-## v2: Code Graph Documentation Alignment (2026-04-02)
+**V2 Addendum: Code Graph Documentation Alignment (2026-04-02)**
 
 ### Problem
 
@@ -173,10 +173,10 @@ Phases 008-025 implemented the Code Graph system (4 MCP tools, 3 CCC tools, 3 se
 
 | File | Coverage | Gap Severity |
 |------|----------|-------------|
-| `SKILL.md` (lines 756-771) | Partial — 4 tools listed but says "regex-based" (incorrect, now tree-sitter default) | P1 |
+| `../../../../skill/system-spec-kit/SKILL.md` (lines 756-771) | Partial — 4 tools listed but says "regex-based" (incorrect, now tree-sitter default) | P1 |
 | `README.md` (line 92) | Minimal — 1-line feature table entry, no section | P2 |
-| `mcp_server/README.md` | **Zero** — no code graph tools in L6/L7 tool reference; tool count says 33, actual is 43 | **P0** |
-| `mcp_server/INSTALL_GUIDE.md` | **Zero** — no code graph tools, no tree-sitter deps, no code-graph.sqlite | **P0** |
+| `../../../../skill/system-spec-kit/mcp_server/README.md` | **Zero** — no code graph tools in L6/L7 tool reference; tool count says 33, actual is 43 | **P0** |
+| `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` | **Zero** — no code graph tools, no tree-sitter deps, no code-graph.sqlite | **P0** |
 | `assets/` | Zero — no code graph content in 4 files | P2 |
 | `references/` | Zero — no code graph content in 27 files | P2 |
 
@@ -184,36 +184,36 @@ Phases 008-025 implemented the Code Graph system (4 MCP tools, 3 CCC tools, 3 se
 
 | Tool | Actual Layer | Missing From |
 |------|-------------|--------------|
-| `session_resume` | L1 | mcp_server/README, INSTALL_GUIDE |
-| `session_bootstrap` | L1 | mcp_server/README, INSTALL_GUIDE |
-| `session_health` | L3 | mcp_server/README, INSTALL_GUIDE |
-| `code_graph_query` | L6 | mcp_server/README, INSTALL_GUIDE |
-| `code_graph_context` | L6 | mcp_server/README, INSTALL_GUIDE |
-| `code_graph_scan` | L7 | mcp_server/README, INSTALL_GUIDE |
-| `code_graph_status` | L7 | mcp_server/README, INSTALL_GUIDE |
-| `ccc_status` | L7 | mcp_server/README, INSTALL_GUIDE, SKILL.md |
-| `ccc_reindex` | L7 | mcp_server/README, INSTALL_GUIDE, SKILL.md |
-| `ccc_feedback` | L7 | mcp_server/README, INSTALL_GUIDE, SKILL.md |
+| `session_resume` | L1 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` |
+| `session_bootstrap` | L1 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` |
+| `session_health` | L3 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` |
+| `code_graph_query` | L6 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` |
+| `code_graph_context` | L6 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` |
+| `code_graph_scan` | L7 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` |
+| `code_graph_status` | L7 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` |
+| `ccc_status` | L7 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`, `../../../../skill/system-spec-kit/SKILL.md` |
+| `ccc_reindex` | L7 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`, `../../../../skill/system-spec-kit/SKILL.md` |
+| `ccc_feedback` | L7 | `../../../../skill/system-spec-kit/mcp_server/README.md`, `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`, `../../../../skill/system-spec-kit/SKILL.md` |
 
 ### Incorrect Claims
 
-1. **SKILL.md:758** — says "regex-based indexing"; actual default is tree-sitter WASM since Phase 015/017
-2. **mcp_server/README.md:55** — says "33" MCP tools; actual count from `layer-definitions.ts` is 43
-3. **mcp_server/README.md:867** — L6 "8 tools"; actual: 10 (+ code_graph_query, code_graph_context)
-4. **mcp_server/README.md:981** — L7 "5 tools"; actual: 10 (+ code_graph_scan, code_graph_status, ccc_status, ccc_reindex, ccc_feedback)
-5. **mcp_server/README.md:1092** — L1 "1 tool"; actual: 3 (+ session_resume, session_bootstrap)
-6. **mcp_server/README.md:1094** — L3 "3 tools"; actual: 4 (+ session_health)
+1. **`../../../../skill/system-spec-kit/SKILL.md:758`** — says "regex-based indexing"; actual default is tree-sitter WASM since Phase 015/017
+2. **`../../../../skill/system-spec-kit/mcp_server/README.md:55`** — says "33" MCP tools; actual count from `layer-definitions.ts` is 43
+3. **`../../../../skill/system-spec-kit/mcp_server/README.md:867`** — L6 "8 tools"; actual: 10 (+ code_graph_query, code_graph_context)
+4. **`../../../../skill/system-spec-kit/mcp_server/README.md:981`** — L7 "5 tools"; actual: 10 (+ code_graph_scan, code_graph_status, ccc_status, ccc_reindex, ccc_feedback)
+5. **`../../../../skill/system-spec-kit/mcp_server/README.md:1092`** — L1 "1 tool"; actual: 3 (+ session_resume, session_bootstrap)
+6. **`../../../../skill/system-spec-kit/mcp_server/README.md:1094`** — L3 "3 tools"; actual: 4 (+ session_health)
 
 ### v2 Scope
 
 #### In Scope
-- Fix incorrect tool counts and layer totals in `mcp_server/README.md`
+- Fix incorrect tool counts and layer totals in `../../../../skill/system-spec-kit/mcp_server/README.md`
 - Add 10 missing MCP tool reference entries with parameter tables
-- Add Code Graph concept section (3.1.x) to `mcp_server/README.md`
-- Fix "regex-based" to "tree-sitter WASM (default) with regex fallback" in `SKILL.md`
-- Add edge types, auto-trigger, query routing, CCC tools, session tools to `SKILL.md`
-- Add code graph tools to `mcp_server/INSTALL_GUIDE.md` validation checklist
-- Add tree-sitter dependency and code-graph.sqlite to `mcp_server/INSTALL_GUIDE.md`
+- Add Code Graph concept section (3.1.x) to `../../../../skill/system-spec-kit/mcp_server/README.md`
+- Fix "regex-based" to "tree-sitter WASM (default) with regex fallback" in `../../../../skill/system-spec-kit/SKILL.md`
+- Add edge types, auto-trigger, query routing, CCC tools, session tools to `../../../../skill/system-spec-kit/SKILL.md`
+- Add code graph tools to `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` validation checklist
+- Add tree-sitter dependency and code-graph.sqlite to `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`
 - Expand `README.md` code graph entry from 1-line to subsection
 
 #### Out of Scope
@@ -222,13 +222,13 @@ Phases 008-025 implemented the Code Graph system (4 MCP tools, 3 CCC tools, 3 se
 - Root README.md updates (tracked as existing follow-up gap)
 
 ### v2 Acceptance Criteria
-- [ ] `mcp_server/README.md` tool count matches `layer-definitions.ts` (43 tools)
-- [ ] All 10 missing tools have parameter-table entries in `mcp_server/README.md`
-- [ ] Code Graph concept section exists in `mcp_server/README.md`
-- [ ] `SKILL.md` correctly describes tree-sitter WASM default with regex fallback
-- [ ] `SKILL.md` documents edge types, auto-trigger, query routing, CCC tools, session tools
-- [ ] `mcp_server/INSTALL_GUIDE.md` lists code graph tools in validation checklist
-- [ ] `mcp_server/INSTALL_GUIDE.md` documents tree-sitter dependency and code-graph.sqlite
+- [ ] `../../../../skill/system-spec-kit/mcp_server/README.md` tool count matches `layer-definitions.ts` (43 tools)
+- [ ] All 10 missing tools have parameter-table entries in `../../../../skill/system-spec-kit/mcp_server/README.md`
+- [ ] Code Graph concept section exists in `../../../../skill/system-spec-kit/mcp_server/README.md`
+- [ ] `../../../../skill/system-spec-kit/SKILL.md` correctly describes tree-sitter WASM default with regex fallback
+- [ ] `../../../../skill/system-spec-kit/SKILL.md` documents edge types, auto-trigger, query routing, CCC tools, session tools
+- [ ] `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` lists code graph tools in validation checklist
+- [ ] `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` documents tree-sitter dependency and code-graph.sqlite
 - [ ] `README.md` code graph feature has expanded subsection
 
 ### Problem Statement

@@ -736,13 +736,13 @@ const sessionHealth: ToolDefinition = {
 // Phase 020: Composite session resume tool
 const sessionResume: ToolDefinition = {
   name: 'session_resume',
-  description: '[L1:Orchestration] Recommended as first call on session start or after /clear. Resume session with combined memory, code graph, and CocoIndex status. Returns merged context from memory_context (resume mode), code graph statistics, and CocoIndex availability in a single call. Use minimal: true to skip heavy memory context and return only graph + coco + health.',
+  description: '[L1:Orchestration] Resume session with combined memory, code graph, and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. For the canonical first-call recovery path on session start or after /clear, prefer session_bootstrap. Use minimal: true to skip the heavy memory context call and return code graph, CocoIndex, structural context, hints, and session-quality metadata without the full memory payload.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
     properties: {
       specFolder: { type: 'string', description: 'Optional spec folder to scope the resume context' },
-      minimal: { type: 'boolean', description: 'When true, skip heavy memory context call and return only graph status + coco status + health score' },
+      minimal: { type: 'boolean', description: 'When true, skip the heavy memory context call and return code-graph, CocoIndex, structural-context, hints, and session-quality fields without the full memory payload' },
     },
     required: [],
   },

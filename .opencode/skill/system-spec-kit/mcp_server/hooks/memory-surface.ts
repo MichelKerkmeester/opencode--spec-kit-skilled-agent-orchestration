@@ -10,8 +10,10 @@ import * as graphDb from '../lib/code-graph/code-graph-db.js';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import * as workingMemory from '../lib/cognitive/working-memory.js';
+import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 
 import type { Database } from '@spec-kit/shared/types';
+import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -66,6 +68,8 @@ interface PrimePackage {
   codeGraphStatus: 'fresh' | 'stale' | 'empty';
   cocoIndexAvailable: boolean;
   recommendedCalls: string[];
+  /** Phase 027: Structural bootstrap contract for non-hook runtimes */
+  structuralContext?: StructuralBootstrapContract;
   /** Phase 009 T041: Graph retrieval routing rules for AI session priming */
   routingRules?: {
     graphRetrieval: string;
@@ -468,8 +472,12 @@ function buildPrimePackage(
   }
   toolRoutingRules.push('exact text/regex → Grep');
 
+  // Phase 027: Structural bootstrap contract for auto-prime surface
+  const structuralContext = buildStructuralBootstrapContract('auto-prime');
+
   return {
     specFolder, currentTask, codeGraphStatus, cocoIndexAvailable, recommendedCalls,
+    structuralContext,
     routingRules: {
       graphRetrieval: 'For broad topic questions, use memory_search with retrievalLevel: "global" for community-level results. For specific memories, use "local" (default). Use "auto" for automatic fallback.',
       communitySearch: 'When primary search returns weak results, community search fallback activates automatically (SPECKIT_COMMUNITY_SEARCH_FALLBACK). Graph provenance is visible in graphEvidence field.',

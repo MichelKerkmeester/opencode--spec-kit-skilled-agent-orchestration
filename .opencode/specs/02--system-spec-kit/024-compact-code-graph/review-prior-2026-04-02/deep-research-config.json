@@ -1,0 +1,46 @@
+{
+  "topic": "Review of Hybrid Context Injection — Hook + Tool Architecture (spec 024-compact-code-graph)",
+  "mode": "review",
+  "reviewTarget": ".opencode/specs/02--system-spec-kit/024-compact-code-graph",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "maxIterations": 10,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": []
+  },
+  "qualityGateThreshold": true,
+  "specFolder": "02--system-spec-kit/024-compact-code-graph",
+  "createdAt": "2026-03-31T13:00:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "implementationFiles": [
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/index.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tools/code-graph-tools.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tools/index.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+    ".claude/CLAUDE.md",
+    ".claude/settings.local.json"
+  ],
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    ".deep-research-pause": "mutable",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

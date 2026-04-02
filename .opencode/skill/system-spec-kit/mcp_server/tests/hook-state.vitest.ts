@@ -2,7 +2,7 @@
 // TEST: Hook State Management
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdirSync, rmSync, existsSync, statSync } from 'node:fs';
+import { mkdirSync, rmSync, existsSync, statSync, utimesSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -11,6 +11,7 @@ import {
   getStatePath,
   ensureStateDir,
   loadState,
+  loadMostRecentState,
   saveState,
   updateState,
   cleanStaleStates,
@@ -125,6 +126,83 @@ describe('hook state management', () => {
       const updated = updateState(testSessionId, { pendingCompactPrime: { payload: 'test', cachedAt: new Date().toISOString() } });
       expect(updated.lastSpecFolder).toBe('specs/first');
       expect(updated.pendingCompactPrime).not.toBeNull();
+    });
+  });
+
+  describe('loadMostRecentState', () => {
+    it('returns the newest state file when within the recency window', () => {
+      const originalCwd = process.cwd();
+      const projectCwd = join(tmpdir(), `speckit-recent-state-${Date.now()}`);
+      mkdirSync(projectCwd, { recursive: true });
+
+      try {
+        process.chdir(projectCwd);
+        ensureStateDir();
+        const olderSessionId = 'older-session';
+        const newerSessionId = 'newer-session';
+
+        const baseState: Omit<HookState, 'claudeSessionId'> = {
+          speckitSessionId: 'sk',
+          lastSpecFolder: 'specs/test',
+          sessionSummary: { text: 'Summary', extractedAt: new Date().toISOString() },
+          pendingCompactPrime: null,
+          metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        saveState(olderSessionId, { ...baseState, claudeSessionId: olderSessionId });
+        saveState(newerSessionId, { ...baseState, claudeSessionId: newerSessionId });
+
+        const olderPath = getStatePath(olderSessionId);
+        const newerPath = getStatePath(newerSessionId);
+        const olderTime = new Date(Date.now() - 5 * 60 * 1000);
+        const newerTime = new Date();
+        utimesSync(olderPath, olderTime, olderTime);
+        utimesSync(newerPath, newerTime, newerTime);
+
+        const state = loadMostRecentState();
+        expect(state?.claudeSessionId).toBe(newerSessionId);
+
+        try { rmSync(olderPath); } catch { /* ok */ }
+        try { rmSync(newerPath); } catch { /* ok */ }
+      } finally {
+        process.chdir(originalCwd);
+        rmSync(projectCwd, { recursive: true, force: true });
+      }
+    });
+
+    it('returns null when the newest state is older than 24 hours', () => {
+      const originalCwd = process.cwd();
+      const projectCwd = join(tmpdir(), `speckit-stale-state-${Date.now()}`);
+      mkdirSync(projectCwd, { recursive: true });
+
+      try {
+        process.chdir(projectCwd);
+        ensureStateDir();
+        const staleSessionId = 'stale-session';
+        const staleState: HookState = {
+          claudeSessionId: staleSessionId,
+          speckitSessionId: 'sk-stale',
+          lastSpecFolder: 'specs/stale',
+          sessionSummary: null,
+          pendingCompactPrime: null,
+          metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        saveState(staleSessionId, staleState);
+
+        const stalePath = getStatePath(staleSessionId);
+        const staleTime = new Date(Date.now() - 26 * 60 * 60 * 1000);
+        utimesSync(stalePath, staleTime, staleTime);
+
+        expect(loadMostRecentState()).toBeNull();
+        try { rmSync(stalePath); } catch { /* ok */ }
+      } finally {
+        process.chdir(originalCwd);
+        rmSync(projectCwd, { recursive: true, force: true });
+      }
     });
   });
 });

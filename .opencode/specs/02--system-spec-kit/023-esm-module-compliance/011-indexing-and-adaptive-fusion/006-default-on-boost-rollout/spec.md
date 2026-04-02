@@ -204,8 +204,7 @@ Graduate session boost, causal boost, and deep expansion to default-ON status so
 
 ---
 
-<!-- ANCHOR:future -->
-## 9. FUTURE CONSIDERATIONS — Artifact Classifier
+**Future Considerations: Artifact Classifier**
 
 These are longer-term improvements beyond the quick wins in this phase:
 
@@ -221,7 +220,6 @@ These are longer-term improvements beyond the quick wins in this phase:
 - Scoring: 1pt per keyword, 2pt per regex, confidence = `min(1, score/6)`
 - `unknown` class gets `boostFactor: 1.0` (neutral) — not harmful, but misses optimization opportunity
 - No partial matching: "search" doesn't partially match "research" keyword list
-<!-- /ANCHOR:future -->
 
 ---
 

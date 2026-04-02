@@ -64,19 +64,16 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:performance -->
-## Performance
+### Performance
 
 - [x] CHK-030 [P0] Retrieval latency stays within 200ms overhead [EVIDENCE: Community search uses SQLite keyword matching (<5ms), not vector embeddings; baseline pipeline 650ms from Phase 0 diagnosis]
 - [x] CHK-031 [P1] Community summary generation completes within 30s [EVIDENCE: community-summaries.ts uses template-based aggregation (no LLM calls), processes in-memory — sub-second for current graph size]
 - [x] CHK-032 [P1] Benchmark recorded before/after each phase [EVIDENCE: Phase 0 baseline: 650ms for "Semantic Search"; community search adds <5ms keyword match]
 - [x] CHK-033 [P2] Caching in place for community summaries [EVIDENCE: community_summaries table persists in SQLite — regenerated only when communities change, not per-query]
-<!-- /ANCHOR:performance -->
 
 ---
 
-<!-- ANCHOR:feature-flags -->
-## Feature Flags
+### Feature Flags
 
 - [x] CHK-040 [P0] `SPECKIT_COMMUNITY_SUMMARIES` flag exists and gates Phase A [EVIDENCE: search-flags.ts:247 isCommunitySummariesEnabled()]
 - [x] CHK-041 [P0] `SPECKIT_GRAPH_FALLBACK` flag exists and gates zero-result recovery [EVIDENCE: search-flags.ts:603 isGraphFallbackEnabled()]
@@ -87,7 +84,6 @@ contextType: "implementation"
 - [x] CHK-046 [P1] `SPECKIT_USAGE_RANKING` flag exists [EVIDENCE: search-flags.ts:638 isUsageRankingEnabled()]
 - [x] CHK-047 [P2] `SPECKIT_ONTOLOGY_HOOKS` flag exists [EVIDENCE: search-flags.ts:646 isOntologyHooksEnabled()]
 - [x] CHK-048 [P1] Each flag independently toggleable without side effects [EVIDENCE: Each flag uses isFeatureEnabled() with independent env var; tested via vi.mock in test suites]
-<!-- /ANCHOR:feature-flags -->
 
 ---
 
@@ -111,15 +107,22 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-025 -->
-## Phase 025 Cross-Dependency (from tool routing enforcement research)
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-063 [P1] Phase artifacts stay grouped under the 009 phase folder [EVIDENCE: spec, plan, tasks, checklist, decision-record, implementation-summary, scratch, review, and memory artifacts remain co-located]
+- [x] CHK-064 [P2] Cross-spec references point to valid packet artifacts [EVIDENCE: remediation pass updated prior-research and routing-enforcement references]
+<!-- /ANCHOR:file-org -->
+
+---
+
+### Phase 025 Cross-Dependency (from tool routing enforcement research)
 
 - [x] CHK-070 [P1] Existing `query-intent-classifier.ts` audited before creating new concept extractor [EVIDENCE: T005b — structural/semantic/hybrid heuristic identified; extended entity-linker.ts with extractConcepts() rather than separate extractor]
 - [x] CHK-071 [P1] Provenance uses existing `envelope.hints` pipeline, not parallel plumbing [EVIDENCE: T042 — formatters/search-results.ts:486-490 populates graphEvidence from pipeline row within existing response format]
 - [x] CHK-072 [P1] `buildServerInstructions()` updated to advertise graph retrieval capabilities after Phase B [EVIDENCE: T040 — context-server.ts:624 graph retrieval line added]
 - [x] CHK-073 [P1] `PrimePackage.routingRules` includes graph modes after Phase B [EVIDENCE: T041 — memory-surface.ts routingRules field with graphRetrieval and communitySearch added]
-- [x] CHK-074 [P2] `gate-tool-routing.md` constitutional memory references graph retrieval [EVIDENCE: T043 — constitutional/gate-tool-routing.md created with tool routing decision tree and retrieval levels]
-<!-- /ANCHOR:phase-025 -->
+- [x] CHK-074 [P2] `../../../../../skill/system-spec-kit/constitutional/gate-tool-routing.md` references graph retrieval [EVIDENCE: T043 — `../../../../../skill/system-spec-kit/constitutional/gate-tool-routing.md` contains the tool routing decision tree and retrieval levels]
 
 ---
 

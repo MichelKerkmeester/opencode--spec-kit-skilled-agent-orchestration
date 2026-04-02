@@ -1,37 +1,14 @@
-# Claude Code — Hook-Aware Recovery Additions
+# Claude-Specific Recovery Notes
 
-> Claude-specific additions only. Universal recovery instructions live in the root CLAUDE.md.
+This file supplements `../CLAUDE.md`.
 
 ## Hook-Aware Recovery
 
-When context is compacted, Claude Code hooks automatically inject recovered context. If hook-injected context appears in the conversation, use it directly and avoid repeating the manual recovery flow unless the injected payload is missing, stale, or clearly incomplete.
+- If Claude hook payloads appear in the conversation, treat them as additive context rather than a replacement for the root recovery protocol.
+- If compaction happens and no hook payload is visible, immediately follow the recovery steps in `../CLAUDE.md`.
+- Keep the root `../CLAUDE.md` file as the source of truth for gates, tool routing, and cross-runtime recovery behavior.
 
-If no hook context is present (hooks may be disabled or unavailable), follow the root `CLAUDE.md` recovery protocol.
+## SessionStart Guidance
 
-## Session Start
-
-On fresh sessions, SessionStart hooks may inject startup or resume context before the first user turn. Treat that payload as additive context; if no hook payload appears, fall back to the normal first-turn protocol defined by the active runtime instructions.
-
-## Hook System
-
-This project uses Claude Code hooks for automated context preservation:
-- **PreCompact**: Caches critical context before compaction
-- **SessionStart**: Injects context on session start (startup/resume/compact/clear)
-- **Stop**: Tracks token usage and saves session state (async)
-
-Hook scripts: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/`
-Registration: `.claude/settings.local.json`
-
-## Tool Routing Enforcement
-
-Claude Code hooks inject tool routing rules via MCP server instructions and session priming. When hooks fire, routing is enforced automatically. When working without hooks (fallback mode), follow the decision tree in root CLAUDE.md.
-
-### Hook-Injected Routing
-- **SessionStart**: PrimePackage includes `routingRules.toolRouting` with search tool decision tree
-- **buildServerInstructions()**: MCP server instructions include Tool Routing section with availability-aware rules
-- **Tool response hints**: When memory_search/memory_context detects a code-search query, response includes a routing hint
-
-### Routing Decision Tree (reinforcement)
-- Semantic/concept search → `mcp__cocoindex_code__search`
-- Structural queries (callers, imports) → `code_graph_query`
-- Exact text/regex → `Grep`
+- `source=compact`: use the injected compact-recovery payload first, then continue with the normal root recovery flow if more context is needed.
+- `source=startup`, `source=resume`, or `source=clear`: use the injected bootstrap context when present, then continue under the same guardrails and search-routing rules defined in `../CLAUDE.md`.

@@ -55,3 +55,12 @@ All 7: correctness, security, traceability, maintainability, performance, reliab
 - Threshold: 0.10 (new findings ratio)
 - P0 override: any new P0 blocks convergence
 - Max iterations: 10
+
+
+## 2026-04-02 Strategy Update
+
+- Review target: `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives`
+- This pass runs 4 iterations across: correctness, traceability, completeness, synthesis.
+- Strict validation status at start: `PASS`.
+- Unchecked tasks/checklist: 6/7.
+- Existing active review iterations before this pass: 10.

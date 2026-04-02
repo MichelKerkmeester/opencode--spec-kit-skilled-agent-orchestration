@@ -108,7 +108,7 @@ Template compliance shim anchor for rollback.
 
 ---
 
-## v2: Code Graph Documentation Alignment Plan (2026-04-02)
+**V2 Addendum: Code Graph Documentation Alignment Plan (2026-04-02)**
 
 ### Evidence Base
 - Direct file inspection of all 6 target locations
@@ -116,9 +116,9 @@ Template compliance shim anchor for rollback.
 - Copilot CLI GPT-5.4 review agents (3 parallel, `--model gpt-5.4`, high reasoning) confirmed gaps
 - Spec 024 implementation-summary.md and phase spec folders 008-025
 
-### Steps
+### Phase 1: MCP Documentation Surfaces
 
-#### Step 1: Fix `mcp_server/README.md` — P0 (largest gap)
+#### Step 1: Fix `../../../../skill/system-spec-kit/mcp_server/README.md` — P0 (largest gap)
 
 1a. **Update layer summary table** (line ~1091-1099):
    - L1: 1 → 3 tools (add session_resume, session_bootstrap)
@@ -141,9 +141,9 @@ Template compliance shim anchor for rollback.
    - L6: `code_graph_query`, `code_graph_context` with parameter tables
    - L7: `code_graph_scan`, `code_graph_status`, `ccc_status`, `ccc_reindex`, `ccc_feedback` with parameter tables
 
-   Source for parameter tables: `mcp_server/schemas/tool-input-schemas.ts` + `mcp_server/tool-schemas.ts`
+	   Source for parameter tables: `mcp_server/schemas/tool-input-schemas.ts` + `mcp_server/tool-schemas.ts`
 
-#### Step 2: Fix `mcp_server/INSTALL_GUIDE.md` — P0
+#### Step 2: Fix `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` — P0
 
 2a. **Update validation checklist** (line ~429-435):
    - Add `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context`
@@ -158,7 +158,9 @@ Template compliance shim anchor for rollback.
    - Auto-created on first `code_graph_scan`
    - Tables: `code_files`, `code_nodes`, `code_edges`
 
-#### Step 3: Fix `SKILL.md` — P1
+### Phase 2: Skill And README Alignment
+
+#### Step 3: Fix `../../../../skill/system-spec-kit/SKILL.md` — P1
 
 3a. **Fix incorrect parser description** (line 758):
    - "regex-based indexing" → "tree-sitter WASM (default) with regex fallback"
@@ -176,7 +178,7 @@ Template compliance shim anchor for rollback.
 4a. **Expand code graph feature table entry** (line 92) into a subsection with:
    - Tool list (4 code graph + 3 CCC + 3 session)
    - Tree-sitter + SQLite architecture one-liner
-   - Pointer to mcp_server/README.md for full reference
+   - Pointer to `../../../../skill/system-spec-kit/mcp_server/README.md` for full reference
 
 ### Dependencies
 - Source of truth: `mcp_server/lib/architecture/layer-definitions.ts`

@@ -6,23 +6,13 @@
 
 ## 1. 🚨 CRITICAL RULES
 
+### Safety Constraints
+
 **HARD BLOCKERS (The "Four Laws" of Agent Safety):**
 1. **READ FIRST:** Never edit a file without reading it first. Understand context before modifying.
 2. **SCOPE LOCK:** Only modify files explicitly in scope. **NO** "cleaning up" or "improving" adjacent code. Scope in `spec.md` is FROZEN.
 3. **VERIFY:** Syntax checks and tests **MUST** pass before claiming completion. **NO** blind commits.
-4. **HALT:** Stop immediately if uncertain, if line numbers don't match, or if tests fail. (See "Halt Conditions" below).
-
-**OPERATIONAL MANDATES:**
-- **All file modifications require a spec folder** (Gate 3).
-- **Never lie or fabricate** - use "UNKNOWN" when uncertain.
-- **Clarify** if confidence < 80% (see §5 Confidence Framework).
-- **Use explicit uncertainty:** Prefix claims with "I'M UNCERTAIN ABOUT THIS:".
-
-**QUALITY PRINCIPLES:**
-- **Prefer simplicity**, reuse existing patterns, and cite evidence with sources
-- Solve only the stated problem; **avoid over-engineering** and premature optimization
-- **Verify with checks** (simplicity, performance, maintainability, scope) before making changes
-- **Truth over agreement** - correct user misconceptions with evidence; do not agree for conversational flow
+4. **HALT:** Stop immediately if uncertain, if line numbers don't match, or if tests fail.
 
 **HALT CONDITIONS (Stop and Report):**
 - [ ] Target file does not exist or line numbers don't match.
@@ -31,53 +21,23 @@
 - [ ] Edit tool reports "string not found".
 - [ ] Test/Production boundary is unclear.
 
+**OPERATIONAL MANDATES:**
+- **All file modifications require a spec folder** (Gate 3).
+- **Never lie or fabricate** — use "UNKNOWN" when uncertain.
+- **Clarify** if confidence < 80% (see §5 Confidence Framework).
+- **Use explicit uncertainty:** Prefix claims with "I'M UNCERTAIN ABOUT THIS:".
+
+---
+
+### Tools & Search
+
 **MANDATORY TOOLS:**
-- **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work.  **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`** — NEVER manually create memory files.
+- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` — NEVER manually create memory files.
   - AI composes structured JSON → `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` or writes to `/tmp/save-context-data.json` and passes as first arg.
-- **CocoIndex Code MCP** for semantic code search. **MUST use** when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
+- **CocoIndex Code MCP** — semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
+- **Git (sk-git)** — worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
 
-**GIT WORKFLOW:** 
-Full details: `.opencode/skill/sk-git/`
-- Worktree setup, conventional commits, PR creation, branch management
-- Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
-
-### Quick Reference: Common Workflows
-
-| Task                      | Flow                                                                                                                               |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                                         |
-| **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings                       |
-| **Code search**           | `CocoIndex search` for semantic/intent queries → `Grep()` for exact text → `Glob()` for file paths → `Read()` for contents         |
-| **Resume prior work**     | `/spec_kit:resume` OR `memory_context({ input: "resume previous work continue session", mode: "resume", profile: "resume", specFolder })` → Review checklist → Continue |
-| **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed |
-| **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
-| **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                                  |
-| **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
-| **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
-| **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate (`validate_document.py`) → DQI score → Verify                            |
-| **Web code**              | sk-code--web skill → Webflow/CDN standards, minification, browser testing                                                           |
-| **OpenCode system code**  | sk-code--opencode skill → JS/TS/Python/Shell standards, language detection, quality checklists                                       |
-| **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                                |
-| **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → `create.sh --phase` → Populate → Plan first child  |
-| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
-| **Deep research**         | `/spec_kit:deep-research` → Init state → Loop (@deep-research iterations) → Convergence → Synthesize → Memory save                            |
-| **Deep review**           | `/spec_kit:deep-review` → Scope discovery → Loop (@deep-review iterations) → Review convergence → review-report.md → Memory save               |
-| **Analysis/evaluation**   | `/memory:search` → preflight, postflight, causal graph, ablation, dashboard, history                                             |
-| **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
-| **Shared memory**         | `/memory:manage shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                             |
-
-### Session Start Protocol (Copilot CLI + Gemini CLI)
-
-For Copilot CLI agents and Gemini CLI sessions, treat the first turn of every session as a recovery and graph-health check:
-
-1. Call `memory_context({ input: "resume previous work continue session", mode: "resume", profile: "resume" })`
-2. Call `code_graph_status({})` before structural exploration or implementation planning
-3. If the graph is stale, empty, or unavailable, fall back to CocoIndex plus direct file reads until graph-backed tools are trustworthy
-4. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
-
-### Code Search Protocol
-
-**When exploring code by concept or intent, ALWAYS try CocoIndex BEFORE falling back to Grep/Glob.**
+**CODE SEARCH DECISION TREE:**
 
 ```text
 Need to find code?
@@ -97,22 +57,63 @@ Need to find code?
         YES --> CocoIndex search FIRST, then Grep/Glob to fill gaps
 ```
 
-**CocoIndex Activation Triggers** (use CocoIndex when you see these patterns):
-- "find code that does X", "how is X implemented", "where is the logic for X"
-- "similar code", "find patterns", "search codebase for"
-- Exploring unfamiliar modules or understanding architecture
-- Any intent-based query where exact tokens are unknown
-
-**Quick Reference:**
+CocoIndex triggers: "find code that does X", "how is X implemented", "where is the logic for X", "similar code", "find patterns", exploring unfamiliar modules, any intent-based query where exact tokens are unknown.
 
 | Approach | Command | When |
 | --- | --- | --- |
 | **MCP tool** | `search(query, languages, paths, num_results, refresh_index)` | AI agent integration |
 | **CLI** | `ccc search "query" --lang X --path Y --limit N` | Direct terminal use |
 
-**Follow-up queries**: Set `refresh_index=false` after the first search in a session unless the codebase changed.
+Set `refresh_index=false` after the first search in a session unless the codebase changed.
 
-### Coding Analysis Lenses
+---
+
+### Session Start & Recovery
+
+**Hook-capable runtimes** (Claude Code, Codex CLI, Copilot CLI, Gemini CLI) auto-inject startup context via `session-prime.ts` hooks — no manual action needed. Structural context from the code graph is included automatically when available (Phase 027).
+
+**OpenCode** is the only runtime without hook support. On every first turn, treat it as a recovery:
+
+1. Call `session_bootstrap()` — one composite call that runs `session_resume` + `session_health` and returns structural context
+2. If structural context shows `stale` or `missing`, run `code_graph_scan` to rebuild
+3. If the graph remains unavailable, fall back to CocoIndex + direct file reads
+4. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
+
+**Session lifecycle calls** (OpenCode, or any runtime after hooks fail):
+
+| When | What to Call |
+|------|-------------|
+| **Fresh session start** | `session_bootstrap()` — returns resume + health + structural context in one call |
+| **After resume/reconnect** | `session_resume()` |
+| **Suspected context loss** | `session_health()` → if structural context is stale/missing, call `session_bootstrap()` |
+| **After `/clear`** | Same as fresh session start |
+| **Before structural search** | `code_graph_context({ subject: "..." })` — auto-indexes if stale |
+| **Before saving context** | Use `generate-context.js` via Spec Kit Memory |
+
+The MCP server auto-primes on the first tool call per session. All bootstrap and recovery surfaces share the same structural contract (`ready`/`stale`/`missing`) and recommend `session_bootstrap` as the canonical recovery step.
+
+---
+
+### Quality & Anti-Patterns
+
+**QUALITY PRINCIPLES:**
+- **Prefer simplicity**, reuse existing patterns, and cite evidence with sources
+- Solve only the stated problem; **avoid over-engineering** and premature optimization
+- **Verify with checks** (simplicity, performance, maintainability, scope) before making changes
+- **Truth over agreement** — correct user misconceptions with evidence; do not agree for conversational flow
+
+**ANTI-PATTERNS (Detect Silently):**
+
+| Anti-Pattern           | Trigger Phrases                                 | Response                                                                    |
+| ---------------------- | ----------------------------------------------- | --------------------------------------------------------------------------- |
+| Over-engineering       | "for flexibility", "future-proof", "might need" | Ask: "Is this solving a current problem or a hypothetical one?"             |
+| Premature optimization | "could be slow", "might bottleneck"             | Ask: "Has this been measured? What's the actual performance?"               |
+| Cargo culting          | "best practice", "always should"                | Ask: "Does this pattern fit this specific case?"                            |
+| Gold-plating           | "while we're here", "might as well"             | Flag scope creep: "That's a separate change - shall I note it for later?"   |
+| Wrong abstraction      | "DRY this up" for 2 instances                   | "These look similar but might not be the same concept. Let's verify first." |
+| Scope creep            | "also add", "bonus feature"                     | "That's outside the current scope. Want to track it separately?"            |
+
+**ANALYSIS LENSES:**
 
 | Lens               | Focus            | Detection Questions                                                                |
 | ------------------ | ---------------- | ---------------------------------------------------------------------------------- |
@@ -123,16 +124,32 @@ Need to find code?
 | **VALUE**          | Actual impact    | Does this change behavior or just refactor? Is it cosmetic or functional?          |
 | **SCOPE**          | Complexity match | Does solution complexity match problem size? Single-line fix or new abstraction?   |
 
-### Coding Anti-Patterns (Detect Silently)
+---
 
-| Anti-Pattern           | Trigger Phrases                                 | Response                                                                    |
-| ---------------------- | ----------------------------------------------- | --------------------------------------------------------------------------- |
-| Over-engineering       | "for flexibility", "future-proof", "might need" | Ask: "Is this solving a current problem or a hypothetical one?"             |
-| Premature optimization | "could be slow", "might bottleneck"             | Ask: "Has this been measured? What's the actual performance?"               |
-| Cargo culting          | "best practice", "always should"                | Ask: "Does this pattern fit this specific case?"                            |
-| Gold-plating           | "while we're here", "might as well"             | Flag scope creep: "That's a separate change - shall I note it for later?"   |
-| Wrong abstraction      | "DRY this up" for 2 instances                   | "These look similar but might not be the same concept. Let's verify first." |
-| Scope creep            | "also add", "bonus feature"                     | "That's outside the current scope. Want to track it separately?"            |
+### Quick Reference: Common Workflows
+
+| Task                      | Flow                                                                                                                               |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                                         |
+| **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings                       |
+| **Code search**           | CocoIndex for semantic/intent → Grep for exact text → Glob for file paths → Read for contents                                       |
+| **Resume prior work**     | `/spec_kit:resume` OR `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` → Review → Continue    |
+| **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed                                 |
+| **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
+| **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                                  |
+| **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
+| **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
+| **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate → DQI score → Verify                                                     |
+| **Web code**              | sk-code--web skill → Webflow/CDN standards, minification, browser testing                                                           |
+| **OpenCode system code**  | sk-code--opencode skill → JS/TS/Python/Shell standards, language detection, quality checklists                                       |
+| **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                                |
+| **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → Populate → Plan first child                        |
+| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
+| **Deep research**         | `/spec_kit:deep-research` → Init → Loop iterations → Convergence → Synthesize → Memory save                                        |
+| **Deep review**           | `/spec_kit:deep-review` → Scope → Loop iterations → Convergence → review-report.md → Memory save                                   |
+| **Analysis/evaluation**   | `/memory:search` → preflight, postflight, causal graph, ablation, dashboard, history                                               |
+| **Constitutional memory** | `/memory:learn` → create, list, edit, remove, budget                                                                                |
+| **Shared memory**         | `/memory:manage shared` → create spaces, manage memberships, inspect rollout                                                        |
 
 ---
 
@@ -380,20 +397,3 @@ For ALL git workflows, `sk-git` orchestrates workspace setup, commit hygiene, an
 **Trigger Keywords:** worktree, branch, commit, merge, pr, pull request, git workflow, conventional commits, finish work, integrate changes
 
 **Invocation:** Automatic via Gate 2 routing when git tasks detected, or manually via `Read(".opencode/skill/sk-git/SKILL.md")`.
-
----
-
-## No Hook Transport — Session Lifecycle
-
-When hooks are not available (OpenCode, Codex CLI, Copilot CLI, Gemini CLI without hooks), use these MCP tool calls:
-
-| When | What to Call |
-|------|-------------|
-| **Fresh session start** | `session_resume()` or `memory_context({ mode: "resume", profile: "resume" })` + `code_graph_status()` |
-| **After resume/reconnect** | `session_resume()` |
-| **Suspected context loss** | `session_health()` → if warning/stale, call `memory_context({ mode: "resume" })` |
-| **After `/clear`** | Same as fresh session start |
-| **Before structural search** | `code_graph_context({ subject: "..." })` — auto-indexes if stale |
-| **Before saving context** | Use `generate-context.js` via Spec Kit Memory |
-
-The MCP server auto-primes on the first tool call per session. Use `session_health()` to check if context has drifted during long sessions.

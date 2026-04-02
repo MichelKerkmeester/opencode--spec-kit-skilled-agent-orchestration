@@ -22,7 +22,6 @@ contextType: "implementation"
 | **Successor** | 003-real-feedback-labels |
 | **Handoff Criteria** | Thresholds persisted in SQLite; get/set verified by tests |
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 2** of the adaptive-ranking-prerequisites specification.
@@ -37,7 +36,6 @@ This is **Phase 2** of the adaptive-ranking-prerequisites specification.
 - `setAdaptiveThresholdOverrides()` writes to SQLite
 - `getAdaptiveThresholdConfig()` reads from SQLite with WeakMap as in-process cache
 - Tests proving persistence survives get/set cycles and cache invalidation
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -171,7 +169,7 @@ Persist the tuned threshold values to SQLite so that every process start resumes
 
 ---
 
-## 8. POST-IMPLEMENTATION REVIEW FINDINGS
+**Post-Implementation Review Findings**
 
 > Deep review completed (15 iterations across two rounds). All P1 findings are fixed. No deferred items remain.
 

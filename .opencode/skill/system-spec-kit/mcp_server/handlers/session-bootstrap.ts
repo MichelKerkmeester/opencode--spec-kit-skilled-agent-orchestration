@@ -7,6 +7,8 @@
 import { handleSessionResume } from './session-resume.js';
 import { handleSessionHealth } from './session-health.js';
 import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
+import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
+import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -20,6 +22,7 @@ interface SessionBootstrapArgs {
 interface SessionBootstrapResult {
   resume: Record<string, unknown>;
   health: Record<string, unknown>;
+  structuralContext?: StructuralBootstrapContract;
   hints: string[];
 }
 
@@ -79,6 +82,14 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
     allHints.push('session_health failed. Try calling it manually.');
   }
 
+  // Phase 027: Structural bootstrap contract
+  const structuralContext = buildStructuralBootstrapContract('session_bootstrap');
+  if (structuralContext.status === 'stale' || structuralContext.status === 'missing') {
+    allHints.push(
+      `Structural context is ${structuralContext.status}. Run code_graph_scan if needed, then re-run session_bootstrap.`
+    );
+  }
+
   // Deduplicate hints
   const uniqueHints = [...new Set(allHints)];
 
@@ -90,6 +101,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const result: SessionBootstrapResult = {
     resume: resumeData,
     health: healthData,
+    structuralContext,
     hints: uniqueHints,
   };
 

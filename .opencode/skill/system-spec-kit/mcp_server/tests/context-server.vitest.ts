@@ -304,6 +304,12 @@ describe('Context Server', () => {
       expect(sourceCode).not.toMatch(/name !== 'session_health' && name !== 'session_bootstrap'/)
     })
 
+    it('T16e: session tracking falls back to CODEX_THREAD_ID when request session ids are absent', () => {
+      expect(sourceCode).toMatch(/function\s+resolveSessionTrackingId\s*\(/)
+      expect(sourceCode).toMatch(/process\.env\.CODEX_THREAD_ID/)
+      expect(sourceCode).toMatch(/return explicitSessionId \?\? transportSessionId \?\? codexThreadId \?\? undefined;/)
+    })
+
     // T17: All tools dispatched via tool modules
     it('T17: All expected tools dispatched via modules', () => {
       const toolsDir = path.join(SERVER_DIR, 'tools')

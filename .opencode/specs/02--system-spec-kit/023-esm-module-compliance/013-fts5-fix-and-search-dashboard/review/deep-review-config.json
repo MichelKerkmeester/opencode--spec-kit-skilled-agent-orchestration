@@ -1,0 +1,15 @@
+{
+  "reviewTarget": ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/013-fts5-fix-and-search-dashboard",
+  "reviewTargetType": "spec-folder",
+  "executionMode": "AUTONOMOUS",
+  "maxIterations": 4,
+  "convergenceThreshold": 0.1,
+  "dimensions": [
+    "correctness",
+    "traceability",
+    "completeness",
+    "synthesis"
+  ],
+  "createdBy": "Four-Iteration Deep Review Sweep",
+  "createdAt": "2026-04-02"
+}

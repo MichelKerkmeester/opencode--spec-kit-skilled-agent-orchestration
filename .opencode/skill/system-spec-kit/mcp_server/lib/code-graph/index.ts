@@ -12,3 +12,4 @@ export * from './compact-merger.js';
 export * from './tree-sitter-parser.js';
 export * from './query-intent-classifier.js';
 export * from './ensure-ready.js';
+export * from './startup-brief.js';

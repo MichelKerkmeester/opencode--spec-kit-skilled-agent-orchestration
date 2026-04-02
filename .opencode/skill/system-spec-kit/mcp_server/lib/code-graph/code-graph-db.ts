@@ -13,6 +13,13 @@ import { DATABASE_DIR } from '../../core/config.js';
 let db: Database.Database | null = null;
 let dbPath: string | null = null;
 
+export interface StartupHighlight {
+  name: string;
+  kind: string;
+  filePath: string;
+  callCount: number;
+}
+
 /** Schema version for migration tracking */
 export const SCHEMA_VERSION = 3;
 
@@ -337,6 +344,75 @@ export function queryOutline(filePath: string): CodeNode[] {
   `).all(filePath) as Record<string, unknown>[];
 
   return rows.map(rowToNode);
+}
+
+/** Query: startup-friendly highlights — most-called project symbols (incoming calls). */
+export function queryStartupHighlights(limit: number = 5): StartupHighlight[] {
+  const d = getDb();
+  const safeLimit = Number.isFinite(limit) ? Math.max(1, Math.min(Math.trunc(limit), 20)) : 5;
+  const rows = d.prepare(`
+    WITH filtered_nodes AS (
+      SELECT n.symbol_id, n.name, n.kind, n.file_path, n.start_line
+      FROM code_nodes n
+      WHERE n.kind IN ('class', 'function', 'method', 'interface', 'type_alias', 'module')
+        AND n.file_path NOT LIKE '%/site-packages/%'
+        AND n.file_path NOT LIKE '%/node_modules/%'
+        AND n.file_path NOT LIKE '%/.venv/%'
+        AND n.file_path NOT LIKE '%/vendor/%'
+        AND n.file_path NOT LIKE '%/dist/%'
+        AND n.file_path NOT LIKE '%/build/%'
+        AND n.file_path NOT LIKE '%/__pycache__/%'
+        AND n.file_path NOT LIKE '%/tests/%'
+        AND n.file_path NOT LIKE '%/test_%'
+        AND n.file_path NOT LIKE '%__tests__%'
+    ),
+    aggregated AS (
+      SELECT
+        fn.name as name,
+        fn.kind as kind,
+        fn.file_path as file_path,
+        MIN(fn.start_line) as start_line,
+        COALESCE(SUM(CASE WHEN UPPER(e.edge_type) = 'CALLS' THEN 1 ELSE 0 END), 0) as call_count
+      FROM filtered_nodes fn
+      LEFT JOIN code_edges e
+        ON e.target_id = fn.symbol_id
+      GROUP BY fn.name, fn.kind, fn.file_path
+    ),
+    ranked AS (
+      SELECT
+        name,
+        kind,
+        file_path,
+        call_count,
+        start_line,
+        ROW_NUMBER() OVER (
+          PARTITION BY file_path
+          ORDER BY call_count DESC, start_line ASC
+        ) as file_rank
+      FROM aggregated
+    )
+    SELECT
+      name,
+      kind,
+      file_path,
+      call_count
+    FROM ranked
+    WHERE file_rank <= 2
+    ORDER BY call_count DESC, start_line ASC
+    LIMIT ?
+  `).all(safeLimit) as Array<{
+    name: string;
+    kind: string;
+    file_path: string;
+    call_count: number;
+  }>;
+
+  return rows.map((row) => ({
+    name: row.name,
+    kind: row.kind,
+    filePath: row.file_path,
+    callCount: row.call_count,
+  }));
 }
 
 /** Query: get edges from a symbol */

@@ -307,7 +307,7 @@ All result paths begin with `.opencode/skill/`; no results from other directorie
 ### MCP-005 | Combined filters
 
 #### Description
-Verify `languages`, `paths`, and `num_results` work together.
+Verify `languages`, `paths`, and `limit` work together.
 
 #### Current Reality
 Prompt: `Search CocoIndex for "config" in Python under .opencode/ with 2 results. Capture the evidence needed to prove Result count <= 2; all files are .py; all paths start with .opencode/. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -320,7 +320,7 @@ Result count <= 2; all files are `.py`; all paths start with `.opencode/`
 ### MCP-006 | Result limit
 
 #### Description
-Verify `num_results` controls output count.
+Verify `limit` controls output count.
 
 #### Current Reality
 Prompt: `Compare CocoIndex search with 1 result vs 10 results. Capture the evidence needed to prove Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -467,17 +467,17 @@ Response is valid (not an exception or error); result array is empty or contains
 
 ## 13. CODE GRAPH INTEGRATION
 
-These scenarios validate CocoIndex behavior when the Spec Kit Memory query-intent classifier and code graph are active. They ensure semantic queries continue routing to CocoIndex, hybrid queries merge both backends, and session_resume includes CocoIndex status.
+These scenarios validate CocoIndex-related behavior when the Spec Kit Memory query-intent classifier, code graph, and recovery surfaces are active. They ensure semantic queries stay on the semantic path without unexpected graph augmentation, hybrid queries append graph context when structural anchors resolve, and the recovery flow exposes CocoIndex status through `session_bootstrap` first and `session_resume` as the detailed follow-up surface.
 
 ### INT-001 | Semantic queries route to CocoIndex
 
 #### Description
-Verify that semantic/conceptual queries are classified as intent=semantic and routed to CocoIndex vector search, not the structural code graph.
+Verify that semantic/conceptual queries are classified as intent=semantic and stay on the semantic path rather than the structural code graph path.
 
 #### Current Reality
-Prompt: `Send "find examples of error handling patterns in this codebase" to memory_context. Confirm intent is classified as semantic and CocoIndex results are present.`
+Prompt: `Send "find examples of error handling patterns in this codebase" to memory_context. Confirm intent is classified as semantic, routedBackend is semantic when present, and no graphContext is injected.`
 
-Intent classified as 'semantic', results include vector similarity file matches, no structural graph data in primary results.
+Intent classified as 'semantic', semantic response shape preserved, no structural graph data injected via graphContext.
 
 #### Test Execution
 > **Feature File:** [INT-001](07--code-graph-integration/001-query-intent-semantic-routing.md)
@@ -485,25 +485,25 @@ Intent classified as 'semantic', results include vector similarity file matches,
 ### INT-002 | Hybrid queries merge code graph and CocoIndex
 
 #### Description
-Verify that hybrid intent queries trigger both the structural code graph and CocoIndex, merging results from both backends.
+Verify that hybrid intent queries append structural graph context to the normal semantic response when graph anchors resolve.
 
 #### Current Reality
-Prompt: `Send "find all validation functions and explain their error handling approach" to memory_context. Confirm intent=hybrid and both code graph and CocoIndex results are present.`
+Prompt: `Send "find all validation functions and explain their error handling approach" to memory_context. Confirm intent=hybrid, routing metadata is present, and graphContext is appended when the graph resolves anchors.`
 
-Intent classified as 'hybrid', response contains code graph symbols and CocoIndex semantic matches merged together.
+Intent classified as 'hybrid', response contains routing metadata plus graphContext when graph anchors resolve.
 
 #### Test Execution
 > **Feature File:** [INT-002](07--code-graph-integration/002-hybrid-query-merges-results.md)
 
-### INT-003 | Session resume includes CocoIndex status
+### INT-003 | Session recovery surfaces include CocoIndex status
 
 #### Description
-Verify that session_resume includes CocoIndex availability (available boolean, binaryPath) in its composite response and degrades gracefully when CocoIndex is unavailable.
+Verify that `session_bootstrap` exposes CocoIndex availability on the canonical first-call recovery path, and that `session_resume` still exposes the direct CocoIndex field on the detailed resume surface.
 
 #### Current Reality
-Prompt: `Call session_resume and verify the cocoIndex field contains available and binaryPath. Stop daemon and verify graceful degradation.`
+Prompt: `Call session_bootstrap and session_resume, verify the CocoIndex availability fields on both surfaces, then validate graceful degradation in an environment where the ccc binary is absent.`
 
-cocoIndex.available matches daemon state, binaryPath is valid string, session_resume succeeds even when CocoIndex unavailable.
+Bootstrap exposes `resume.cocoIndex` plus structural context, direct resume exposes `cocoIndex`, and both calls succeed even when the `ccc` binary is unavailable.
 
 #### Test Execution
 > **Feature File:** [INT-003](07--code-graph-integration/003-session-resume-includes-cocoindex.md)

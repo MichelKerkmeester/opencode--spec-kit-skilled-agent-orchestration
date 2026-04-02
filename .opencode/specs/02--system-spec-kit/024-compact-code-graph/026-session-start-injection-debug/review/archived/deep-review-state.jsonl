@@ -1,0 +1,10 @@
+{"iteration":1,"dimension":"correctness","status":"complete","findings":{"p0":3,"p1":1,"p2":0},"newFindingsRatio":1.0,"notes":"Missing startup brief implementation and hook wiring."}
+{"iteration":2,"dimension":"reliability","status":"complete","findings":{"p0":2,"p1":2,"p2":0},"newFindingsRatio":0.8,"notes":"No recent-state loader and no explicit empty-graph behavior."}
+{"iteration":3,"dimension":"traceability","status":"complete","findings":{"p0":1,"p1":2,"p2":1},"newFindingsRatio":0.6,"notes":"Packet docs and README still described cross-runtime scope."}
+{"iteration":4,"dimension":"security","status":"complete","findings":{"p0":1,"p1":1,"p2":1},"newFindingsRatio":0.45,"notes":"Startup output path hygiene and guidance clarity required hardening."}
+{"iteration":5,"dimension":"maintainability","status":"complete","findings":{"p0":0,"p1":2,"p2":1},"newFindingsRatio":0.32,"notes":"No dedicated tests for startup-brief edge states."}
+{"iteration":6,"dimension":"correctness","status":"complete","findings":{"p0":0,"p1":1,"p2":0},"newFindingsRatio":0.15,"notes":"Implementation landed; residual packet completion gaps remained."}
+{"iteration":7,"dimension":"completeness","status":"complete","findings":{"p0":0,"p1":1,"p2":0},"newFindingsRatio":0.12,"notes":"Tasks/checklist/implementation-summary required closeout synchronization."}
+{"iteration":8,"dimension":"testing","status":"complete","findings":{"p0":0,"p1":0,"p2":0},"newFindingsRatio":0.05,"notes":"Build and targeted Vitest suites passed after remediation."}
+{"iteration":9,"dimension":"verification","status":"complete","findings":{"p0":0,"p1":0,"p2":0},"newFindingsRatio":0.02,"notes":"Strict spec validation passed with 0 errors and 0 warnings."}
+{"iteration":10,"dimension":"synthesis","status":"complete","findings":{"p0":0,"p1":0,"p2":0},"newFindingsRatio":0.0,"notes":"All active findings closed; release gate clear for phase scope."}

@@ -74,8 +74,8 @@ If a task unexpectedly grows beyond Level 1 scope, consider escalating to Level 
 ## 5. RELATED
 <!-- ANCHOR:related -->
 
-- `../level_2/README.md`
-- `../../references/templates/level_specifications.md`
-- `../../references/validation/validation_rules.md`
+- `../../../../../skill/system-spec-kit/templates/level_2/README.md`
+- `../../../../../skill/system-spec-kit/references/templates/level_specifications.md`
+- `../../../../../skill/system-spec-kit/references/validation/validation_rules.md`
 
 <!-- /ANCHOR:related -->

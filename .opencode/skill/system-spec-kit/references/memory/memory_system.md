@@ -41,16 +41,16 @@ The memory system indexes content from three distinct sources:
 |--------|-----------------|-------------|--------------|-----------|
 | **Memory Files** | `specs/*/memory/*.{md,txt}` | Varies (episodic, procedural, etc.) | `normal` | `findMemoryFiles()` |
 | **Constitutional Rules** | `.opencode/skill/*/constitutional/*.md` | `meta-cognitive` | `constitutional` | `findConstitutionalFiles()` |
-| **Spec Documents** | `.opencode/specs/**/*.md` | Per-type (spec, plan, tasks, etc.) | `normal` | `findSpecDocuments()` |
+| **Spec Documents** | `specs/**/*.md` and `.opencode/specs/**/*.md` | Per-type (spec, plan, tasks, etc.) | `normal` | `findSpecDocuments()` |
 
 **Content Source Behavior:**
 
 - **Memory Files** — Session-specific context generated via `generate-context.js`. Subject to temporal decay.
 - **Constitutional Rules** — Always-surface critical rules. Injected at top of every search result. No decay.
-- **Spec Documents** — Discovered via `findSpecDocuments()` which walks `.opencode/specs/`. Indexes spec folder documentation (specs, plans, tasks, checklists, decision records, implementation summaries, research, handovers) with per-type scoring multipliers. Controlled by `includeSpecDocs` parameter (default: `true`) or the `SPECKIT_INDEX_SPEC_DOCS` environment variable. Causal chains are created via `createSpecDocumentChain()` linking spec->plan->tasks->implementation_summary.
+- **Spec Documents** — Discovered via `findSpecDocuments()` which walks both `specs/` and `.opencode/specs/`. Indexes spec folder documentation (specs, plans, tasks, checklists, decision records, implementation summaries, research, handovers) with per-type scoring multipliers. Controlled by `includeSpecDocs` parameter (default: `true`) or the `SPECKIT_INDEX_SPEC_DOCS` environment variable. Causal chains are created via `createSpecDocumentChain()` linking spec->plan->tasks->implementation_summary.
 
 **Spec Document Indexing Pipeline:**
-1. `findSpecDocuments()` walks the specs tree and discovers supported doc filenames
+1. `findSpecDocuments()` walks both supported specs roots and discovers supported doc filenames
 2. `isMemoryFile()` validates each document as an indexable file
 3. `extractDocumentType()` infers `document_type` (spec/plan/tasks/etc.) for scoring
 4. Documents are indexed alongside memory and constitutional files
@@ -96,11 +96,13 @@ Six-tier system for prioritizing memory relevance:
 
 > **Note:** MCP tool names use plain names such as `memory_search`, `memory_save`, and `shared_memory_enable`.
 
-### Tool Reference (33 tools)
+### Tool Reference (43 tools)
 
 | Layer | Tool | Purpose | Example Use |
 |-------|------|---------|-------------|
 | L1: Orchestration | `memory_context()` | Unified entry point with intent-aware routing (7 intents) | START HERE for most memory operations |
+| L1: Orchestration | `session_resume()` | Resume memory, code graph, and CocoIndex state in one call | Detailed recovery payload after reconnect, or when you want direct merged resume state |
+| L1: Orchestration | `session_bootstrap()` | Composite bootstrap combining resume and health checks | Canonical first tool call in a fresh OpenCode-style session or after `/clear` |
 | L2: Core | `memory_search()` | Semantic search with vector similarity | Find prior decisions on auth |
 | L2: Core | `memory_quick_search()` | Simplified search wrapper for fast lookups | Quick keyword-based retrieval |
 | L2: Core | `memory_match_triggers()` | Fast keyword matching (<50ms) with cognitive features | Gate enforcement |
@@ -108,6 +110,7 @@ Six-tier system for prioritizing memory relevance:
 | L3: Discovery | `memory_list()` | Browse stored memories with pagination (parent rows by default) | Review session history |
 | L3: Discovery | `memory_stats()` | Get memory system statistics with composite scoring | Check index health |
 | L3: Discovery | `memory_health()` | Check health status of memory system | Diagnose issues |
+| L3: Discovery | `session_health()` | Report session readiness, graph freshness, and priming status | Detect stale session context before continuing |
 | L4: Mutation | `memory_delete()` | Delete memory by ID or bulk delete by spec folder | Remove outdated memories |
 | L4: Mutation | `memory_update()` | Update memory metadata (title, tier, triggers) | Correct memory properties |
 | L4: Mutation | `memory_validate()` | Mark memory as useful/not useful | Confidence scoring |
@@ -128,11 +131,18 @@ Six-tier system for prioritizing memory relevance:
 | L6: Analysis | `memory_causal_unlink()` | Remove a causal relationship by edge ID | Clean up incorrect links |
 | L6: Analysis | `eval_run_ablation()` | Run ablation study on memory scoring components | Compare scoring strategies |
 | L6: Analysis | `eval_reporting_dashboard()` | Generate evaluation and reporting dashboard data | Review system metrics |
+| L6: Analysis | `code_graph_query()` | Query structural relationships such as callers, imports, and outlines | Find what calls a symbol or which files import a module |
+| L6: Analysis | `code_graph_context()` | Expand CocoIndex or symbol seeds into compact graph neighborhoods | Pull structural context for an LLM prompt |
 | L7: Maintenance | `memory_index_scan()` | Bulk scan and index memory files | After creating multiple files |
 | L7: Maintenance | `memory_ingest_start()` | Start async bulk memory ingestion | Import large memory sets |
 | L7: Maintenance | `memory_ingest_status()` | Check status of running ingestion job | Monitor import progress |
 | L7: Maintenance | `memory_ingest_cancel()` | Cancel a running ingestion job | Stop runaway imports |
 | L7: Maintenance | `memory_get_learning_history()` | Get learning history (preflight/postflight records) | Analyze learning patterns |
+| L7: Maintenance | `code_graph_scan()` | Build or refresh the structural code graph index | Re-index after branch switches or large code changes |
+| L7: Maintenance | `code_graph_status()` | Report code graph freshness and node/edge counts | Check whether the structural index is usable |
+| L7: Maintenance | `ccc_status()` | Report CocoIndex availability and index health | Confirm semantic code search is ready |
+| L7: Maintenance | `ccc_reindex()` | Trigger incremental or full CocoIndex re-indexing | Refresh semantic search after a refactor |
+| L7: Maintenance | `ccc_feedback()` | Submit search-quality feedback for CocoIndex results | Record whether semantic hits were helpful |
 
 ### memory_index_scan() Parameters
 
@@ -427,7 +437,7 @@ memory_search({
 
 ### Current Limitation
 
-> **Note:** Memory files are indexed on MCP server startup. Changes made to memory files after startup are NOT automatically detected.
+> **Note:** By default, memory files are indexed on MCP server startup. Changes made after startup are not automatically detected unless the optional `SPECKIT_FILE_WATCHER` feature is enabled.
 
 ### Workarounds
 
@@ -443,11 +453,12 @@ To index new or modified memory files:
    memory_index_scan({ specFolder: "007-auth" })
    ```
 
-3. **Full restart:** Restart the MCP server (indexes all files on startup)
+3. **Enable watcher:** Set `SPECKIT_FILE_WATCHER=true` to opt into automatic markdown re-indexing after startup
+4. **Full restart:** Restart the MCP server (indexes all files on startup)
 
 ### Future Enhancement
 
-Real-time file watching is not supported. Use `memory_save()` or `memory_index_scan()` to index new or modified files.
+Real-time file watching is optional rather than always-on. By default, use `memory_save()` or `memory_index_scan()` to index new or modified files. Enable `SPECKIT_FILE_WATCHER=true` when you want automatic markdown re-indexing after startup.
 
 ### Rate Limiting
 

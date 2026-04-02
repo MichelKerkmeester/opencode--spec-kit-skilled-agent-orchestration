@@ -46,14 +46,16 @@ Template compliance shim anchor for cross-refs.
 <!-- /ANCHOR:cross-refs -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
-### Completed
+### Historical Phase 006 Completion Record
+
+These checklist items preserve the original Phase 006 hook-documentation delivery record. They are historical packet context, not a claim that every file listed below still appears in the current 2026-04-02 worktree diff.
 
 - [x] Create feature catalog entries for PreCompact Hook, SessionStart Priming, Stop Token Tracking, Cross-Runtime Fallback, Runtime Detection, CocoIndex Integration — entries in `.opencode/skill/system-spec-kit/feature_catalog/`
 - [x] Create manual testing playbook scenarios for each hook type and cross-runtime fallback — 11 playbook files in category 22 enhanced with prereqs, sub-scenarios, pass/fail criteria; dedicated cross-runtime consistency playbook remains a future gap
-- [x] Update SKILL.md with Hook System section — lifecycle, registration (`.claude/settings.local.json`), script locations, design principle (hooks = transport)
-- [x] Update SKILL.md with Code Graph section — CocoIndex (semantic) + Code Graph (structural) + Memory (session) complementary architecture
-- [x] Update ARCHITECTURE.md with hook architecture diagram — Mermaid diagram section added covering PreCompact -> cache -> SessionStart -> inject lifecycle
-- [x] Update ARCHITECTURE.md with token tracking data flow — current wording should use `session-stop.ts`, `pendingStopSave`, and JSON hook-state files; dedicated runtime adapter docs remain a future gap
+- [x] Update `.opencode/skill/system-spec-kit/SKILL.md` with Hook System section — lifecycle, registration (`.claude/settings.local.json`), script locations, design principle (hooks = transport)
+- [x] Update `.opencode/skill/system-spec-kit/SKILL.md` with Code Graph section — CocoIndex (semantic) + Code Graph (structural) + Memory (session) complementary architecture
+- [x] Update `.opencode/skill/system-spec-kit/ARCHITECTURE.md` with hook architecture diagram — Mermaid diagram section added covering PreCompact -> cache -> SessionStart -> inject lifecycle
+- [x] Update `.opencode/skill/system-spec-kit/ARCHITECTURE.md` with token tracking data flow — current wording should use `session-stop.ts`, `pendingStopSave`, and JSON hook-state files; dedicated runtime adapter docs remain a future gap
 - [x] Capture root `README.md` context preservation status accurately — not delivered in Phase 006 and tracked as a future gap
 - [x] Update `.opencode/skill/system-spec-kit/README.md` with hook features in feature list
 - [x] Update `.opencode/skill/README.md` with revised system-spec-kit description
@@ -65,22 +67,32 @@ Template compliance shim anchor for cross-refs.
 - [x] Capture reference-doc status accurately — no spec-local evidence that an additional follow-up reference doc was created in this phase, so it is marked as not created
 - [x] Capture asset-template status accurately — no spec-local evidence that an additional prompt/template asset was created in this phase, so it is marked as not created
 - [x] All updated docs pass sk-doc DQI quality standards — proper frontmatter, anchors, and sections
-- [x] Cross-references between feature catalog, playbook, SKILL.md, and ARCHITECTURE.md verified consistent
-- [x] Record future documentation gaps explicitly — dedicated cross-runtime consistency playbook, fuller ARCHITECTURE.md runtime adapter docs, and root README context preservation mention remain follow-up work
+- [x] Cross-references between feature catalog, playbook, `.opencode/skill/system-spec-kit/SKILL.md`, and `.opencode/skill/system-spec-kit/ARCHITECTURE.md` verified consistent
+- [x] Record future documentation gaps explicitly — dedicated cross-runtime consistency playbook, fuller `.opencode/skill/system-spec-kit/ARCHITECTURE.md` runtime adapter docs, and root README context preservation mention remain follow-up work
 - [x] No stale references to pre-hook compaction approach remain in updated files
 
 ---
 
-## v2: Code Graph Documentation Alignment (2026-04-02)
+**V2 Addendum: Code Graph Documentation Alignment (2026-04-02)**
+
+These step labels preserve the earlier audit lineage for this follow-up packet. The current worktree delta is narrower than the original planning list; files not present in the live diff should be treated as historical context rather than as newly edited artifacts in this pass.
 
 ### Completed (2026-04-02, Copilot CLI GPT-5.4 agents)
 
-- [x] **Step 1a**: Update `mcp_server/README.md` layer summary table — L1: 1→3, L3: 3→4, L6: 8→10, L7: 5→10, Total: 33→43 (+152 -14 lines)
-- [x] **Step 1b**: Add Code Graph concept section (3.1.13) to `mcp_server/README.md` — architecture, edge types, auto-trigger, query routing, budget allocator
-- [x] **Step 1c**: Add 10 tool reference entries with parameter tables to `mcp_server/README.md` — session_resume, session_bootstrap (L1); session_health (L3); code_graph_query, code_graph_context (L6); code_graph_scan, code_graph_status, ccc_status, ccc_reindex, ccc_feedback (L7)
-- [x] **Step 2a**: Update `mcp_server/INSTALL_GUIDE.md` validation checklist with code graph + session tools (+15 lines)
-- [x] **Step 2b**: Add tree-sitter WASM dependency to `mcp_server/INSTALL_GUIDE.md` prerequisites
-- [x] **Step 2c**: Document `code-graph.sqlite` location and auto-creation in `mcp_server/INSTALL_GUIDE.md`
-- [x] **Step 3a**: Fix `SKILL.md` "regex-based indexing" → "tree-sitter WASM (default) with regex fallback" (+27 -1 lines)
-- [x] **Step 3b**: Expand `SKILL.md` Code Graph section — edge types, auto-trigger, query routing, CCC tools, session tools, CocoIndex seed resolution
+- [x] **Step 1a**: Update `../../../../skill/system-spec-kit/mcp_server/README.md` layer summary table — L1: 1→3, L3: 3→4, L6: 8→10, L7: 5→10, Total: 33→43 (+152 -14 lines)
+- [x] **Step 1b**: Add Code Graph concept section (3.1.13) to `../../../../skill/system-spec-kit/mcp_server/README.md` — architecture, edge types, auto-trigger, query routing, budget allocator
+- [x] **Step 1c**: Add 10 tool reference entries with parameter tables to `../../../../skill/system-spec-kit/mcp_server/README.md` — session_resume, session_bootstrap (L1); session_health (L3); code_graph_query, code_graph_context (L6); code_graph_scan, code_graph_status, ccc_status, ccc_reindex, ccc_feedback (L7)
+- [x] **Step 2a**: Update `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` validation checklist with code graph + session tools (+15 lines)
+- [x] **Step 2b**: Add tree-sitter WASM dependency to `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` prerequisites
+- [x] **Step 2c**: Document `code-graph.sqlite` location and auto-creation in `../../../../skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`
+- [x] **Step 3a**: Fix `../../../../skill/system-spec-kit/SKILL.md` "regex-based indexing" → "tree-sitter WASM (default) with regex fallback" (+27 -1 lines)
+- [x] **Step 3b**: Expand `../../../../skill/system-spec-kit/SKILL.md` Code Graph section — edge types, auto-trigger, query routing, CCC tools, session tools, CocoIndex seed resolution
 - [x] **Step 4a**: Expand `README.md` code graph feature entry from 1-line to subsection (+15 -1 lines)
+
+### Completed (2026-04-02, follow-up summary parity audit)
+
+- [x] Refresh stale top-level totals in `../../../../skill/system-spec-kit/SKILL.md` — MCP tool count now reflects 43 tools, feature catalog count reflects 291 entries across 22 categories, and testing playbook count reflects 311 scenario files across 22 categories
+- [x] Refresh stale summary references in `../../../../skill/system-spec-kit/README.md` and `../../../../skill/system-spec-kit/mcp_server/README.md` — top-level stats, related-doc cross-references, feature catalog counts, reference-file counts, and manual playbook counts now match the checked-in docs
+- [x] Refresh command-surface wording in `../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md` and `../../../../skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` — both roots now distinguish the 43-tool MCP surface from the smaller slash-command subset
+- [x] Refresh stale tool-surface totals in `../../../../skill/system-spec-kit/references/memory/memory_system.md` and `../../../../skill/system-spec-kit/references/config/environment_variables.md` — memory reference now lists the code graph, session, and CCC tools; strict-schema docs now point to all 43 tools
+- [x] Audit `../../../../skill/mcp-coco-index/` for 023/024 follow-through — follow-up edits were required in `.opencode/skill/mcp-coco-index/README.md`, `.opencode/skill/mcp-coco-index/SKILL.md`, and the category-07 / root manual testing playbook docs to align recovery semantics and integrated code-graph wording with current behavior

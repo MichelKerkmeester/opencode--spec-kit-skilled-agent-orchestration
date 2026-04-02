@@ -1,56 +1,132 @@
-# Iteration 003: D1 Correctness
+# Review Iteration 3: On-Demand Comparison + Architectural Alignment
+
+## Focus
+Two dimensions examined together due to their interplay:
+1. **on_demand_comparison** -- What does proactive startup injection add that on-demand MCP tools do not?
+2. **architectural_alignment** -- Does the startup injection serve its intended purpose per spec 024 and the decision record?
 
 ## Scope
+- Review target: startup-brief.ts, session-prime.ts (handleStartup path), code-graph-db.ts (queryStartupHighlights)
+- Spec refs: spec.md (Layer 3, Phase 002, SessionStart Priming), decision-record.md (DR-002, DR-003, DR-010, DR-012)
+- Dimensions: on_demand_comparison, architectural_alignment
 
-- `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-context.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/seed-resolver.ts`
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| startup-brief.ts | 7/10 | 8/10 | 5/10 | 7/10 |
+| session-prime.ts (handleStartup) | 7/10 | 7/10 | 6/10 | 7/10 |
+| code-graph-db.ts (queryStartupHighlights) | 6/10 | 8/10 | 4/10 | 6/10 |
+
+## On-Demand Comparison Matrix
+
+| Capability | Proactive Injection (startup-brief.ts) | On-Demand MCP Tools | Delta |
+|-----------|---------------------------------------|---------------------|-------|
+| **Scale context** (file/node/edge counts) | Provided automatically: "15488 files, 382268 nodes, 198135 edges" | `code_graph_status` returns same data on demand | Low -- AI can get this any time with one tool call |
+| **Freshness indicator** (lastScan) | Provided + stale warning if >24h | `code_graph_status` also returns lastScanTimestamp | Low -- same data, same stale logic possible |
+| **Top-connectivity nodes** (highlights) | 5 most-connected nodes by outgoing CALLS edges | `code_graph_query({ operation: "calls_from", subject: X })` returns task-relevant call graph | **Negative** -- on-demand is superior because it is task-targeted |
+| **Task-relevant context** | No task context available at startup; highlights are generic | `code_graph_context` accepts seeds from CocoIndex, resolves neighborhoods | **Negative** -- on-demand provides exactly what the task needs |
+| **Zero-tool-call cost** | Free -- injected without AI action | Requires 1 tool call per query | Marginal positive -- saves 1 tool call |
+| **Token cost** | ~100 tokens consumed unconditionally every session | 0 tokens when not needed; variable when needed | **Negative** -- proactive pays cost even when unused |
+| **Relevance to actual task** | Evidence: AI ignored highlights entirely in observed session | On-demand: code_graph_context returned focused, task-relevant results | **Negative** -- proactive was irrelevant; on-demand was useful |
+
+**Summary**: The proactive injection provides information that is either (a) already available via on-demand tools at equal quality, or (b) worse than on-demand alternatives because it lacks task context. The only advantage is saving one tool call for scale/freshness data, which the AI did not need in the observed session.
+
+## Architectural Alignment Analysis
+
+### Spec 024 Requirements vs. Actual Behavior
+
+**Spec Problem Statement (spec.md line 91-95):**
+> "Session-start is generic, not recovery-aware -- startup instructions only announce memory stats, not last task or spec folder"
+
+**Analysis**: The structural context section (startup-brief.ts) does NOT address this gap. It is generic by design -- it shows global graph statistics and top-connected nodes regardless of session context, prior task, or recovery needs. The `sessionContinuity` field in StartupBriefResult (startup-brief.ts:19) does address recovery awareness by showing the last spec folder and session summary, but this is a separate concern from the structural context highlights.
+
+### DR-002: Hybrid Hook + Tool Architecture
+- **Decision**: "Use Claude Code hooks where available, tool-based fallback for all runtimes"
+- **Alignment**: The structural context section is injected via hook (session-prime.ts:118-129). This aligns with the transport mechanism decision. However, DR-002's rationale states "Hooks provide guaranteed context injection at lifecycle boundaries." The structural context highlights are not lifecycle-boundary context -- they are static global statistics.
+
+### DR-003: Direct Import over MCP Call for Hook Scripts
+- **Decision**: "Hook scripts import from compiled dist directly, not via MCP tool calls"
+- **Alignment**: startup-brief.ts imports directly from code-graph-db.ts (line 7). Technically aligned with the direct-import decision. However, this decision was motivated by latency ("must complete in <2s / <3s"), not by the value of the data being injected.
+
+### DR-010: CocoIndex as Complementary Semantic Layer
+- **Decision**: "CocoIndex = 'what resembles what', Code Graph = 'what connects to what'"
+- **Alignment**: The startup highlights show "what is most connected globally" -- a valid code graph question. But this is not what the AI needs at startup. The AI needs structural context for its current task, not a global leaderboard.
+
+### DR-012: Token Budget Allocation
+- **Decision**: "SessionStart allocation: constitutional 500, graph 700, CocoIndex 400, triggered 200, overflow 200"
+- **Alignment**: The structural context section consumes part of the graph's 700-token budget. Given the evidence that the highlights were unused, this is budget spent without return.
+
+### Missing Requirement Traceability
+- [SOURCE: spec.md lines 99-115] The spec describes SessionStart source=startup as: "primes new session with tool overview + stale-index detection."
+- The tool overview is in session-prime.ts:101-115 (handleStartup's "Session Priming" section) -- this is useful and aligned.
+- Stale-index detection is in session-prime.ts:139-153 -- this is useful and aligned.
+- The structural context highlights (startup-brief.ts:65-73) are NOT mentioned in the spec's SessionStart description. The highlights appear to have been added as an enhancement beyond the spec requirement.
 
 ## Findings
 
-No P0 issues found.
+### P2-001: Structural Context Highlights Provide No Value Over On-Demand Tools
+- Dimension: on_demand_comparison
+- Evidence: [SOURCE: startup-brief.ts:65-73] -- highlights are generic top-5-by-CALLS nodes
+- Evidence: [SOURCE: session-prime.ts:118-129] -- handleStartup injects graphOutline unconditionally
+- Evidence: [INFERENCE: Live session evidence shows AI ignored all 5 highlights and used CocoIndex search instead]
+- Impact: ~100 tokens consumed every session startup with information that (a) was not used in observed sessions, (b) is available on-demand via code_graph_status, and (c) is inferior to task-targeted on-demand alternatives like code_graph_context. This is dead weight in the context window.
+- Final severity: P2
 
-### [P1] Symbol ranges never extend beyond the declaration line, which breaks both `CALLS` extraction and enclosing-seed resolution
-- **Files**: `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts:41-47`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts:57-59`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts:67-79`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts:171-191`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts:282-313`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/seed-resolver.ts:172-225`; `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:146-150`; `.opencode/specs/02--system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context/spec.md:83-88`
-- **Issue**: Every JS/TS capture is created with `endLine: lineNum`, and `capturesToNodes()` copies that one-line range into the stored `CodeNode`. `extractEdges()` then scans `contentLines.slice(caller.startLine - 1, caller.endLine)`, which means multi-line functions and classes only contribute their declaration line to `CALLS` detection. The same collapsed range also defeats the resolver's "enclosing symbol" fallback, because any CocoIndex hit inside a function body falls outside the stored symbol range and degrades straight to a file anchor.
-- **Why it matters**: The code graph loses most real call edges for normal multi-line code, and `code_graph_context` cannot honor the documented `exact -> enclosing -> file anchor` resolution chain for snippets that land inside a function body.
-- **Hunter**: The parser hard-codes one-line ranges at capture time, and both the call extractor and seed resolver trust those stored ranges as if they were full symbol spans.
-- **Skeptic**: This would be harmless only if the implementation intentionally targeted single-line declarations, but both the plan and phase-010 spec explicitly rely on enclosing-symbol resolution for arbitrary line hits.
-- **Referee**: `P1` is appropriate because this breaks the core correctness of the structural graph for ordinary multi-line functions and classes without needing unusual input.
+### P2-002: Startup Injection Structural Section Not Traceable to Any Spec Requirement
+- Dimension: architectural_alignment
+- Evidence: [SOURCE: spec.md:99-115] -- SessionStart source=startup described as "tool overview + stale-index detection"
+- Evidence: [SOURCE: startup-brief.ts:47-87] -- buildGraphOutline() produces highlights not required by spec
+- Evidence: [SOURCE: decision-record.md] -- No DR specifically requires or justifies startup highlights
+- Impact: The structural context highlights section was implemented without a corresponding spec requirement or decision record. While the tool overview and stale-index detection are traceable to spec requirements, the highlights section is not. This creates traceability debt -- future reviewers cannot understand why this code exists from the spec alone.
+- Final severity: P2
 
-### [P1] The public `code_graph_context` handler strips manual and graph seed identity, so 2 of the 3 advertised seed types never resolve
-- **Files**: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:39-45`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-context.ts:51-57`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/seed-resolver.ts:27-40`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/seed-resolver.ts:243-247`; `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:661-690`; `.opencode/specs/02--system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context/spec.md:209-216`
-- **Issue**: `handleCodeGraphContext()` normalizes every incoming seed to a plain `{ filePath, startLine, endLine, query }` object. That conversion preserves CocoIndex `file/range`, but it discards `provider`, `symbolName`, and `symbolId`, so `resolveSeeds()` never sees a `ManualSeed` or `GraphSeed` at runtime. The resolver does have dedicated branches for those seed types, but the public handler makes them unreachable.
-- **Why it matters**: The schema and spec both claim `code_graph_context` accepts `provider: manual` and `provider: graph`, yet those calls silently degrade into empty-path file anchors instead of resolving the requested symbol.
-- **Hunter**: The handler is the only public entry point, and it erases exactly the discriminators that `resolveAnySeed()` needs to dispatch to `resolveManualSeed()` and `resolveGraphSeed()`.
-- **Skeptic**: If every caller pre-normalized seeds internally this would not surface, but the tool schema explicitly exposes provider-typed seeds to external callers, so the handler has to preserve them.
-- **Referee**: `P1` fits because the MCP surface is contractually advertising behavior that the live path cannot perform.
+### P2-003: queryStartupHighlights Uses Outgoing CALLS as Sole Heuristic
+- Dimension: on_demand_comparison (architectural_alignment secondary)
+- Evidence: [SOURCE: code-graph-db.ts:350-379] -- `ORDER BY call_count DESC` using `SUM(CASE WHEN UPPER(e.edge_type) = 'CALLS' THEN 1 ELSE 0 END)`
+- Evidence: [SOURCE: code-graph-db.ts:358] -- Only counts edges where the node is the SOURCE (outgoing calls), not the target (incoming calls / callers)
+- Impact: The heuristic measures "what calls the most other things" rather than "what is called the most." A node that is a callee of 50 functions is more architecturally significant than a test helper that calls 50 other functions. The observed result (test_specific with 51 outgoing calls) demonstrates this inversion -- test files are over-represented because test methods call many functions. Even if highlights were kept, the selection heuristic is directionally wrong for surfacing architecturally significant nodes.
+- Final severity: P2
 
-### [P1] Incremental re-indexing leaves stale inbound edges behind when a changed file deletes or renames symbols
-- **Files**: `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:127-168`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:283-297`; `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/scan.ts:47-74`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-context.ts:194-203`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-context.ts:232-234`
-- **Issue**: Re-indexing a file deletes and recreates that file's nodes, then deletes only edges whose `source_id` belongs to the newly indexed file. Any edges from unchanged files that still point at removed symbol IDs remain in `code_edges`. `cleanupOrphans()` can remove those rows, but the scan handler never calls it after updating the graph.
-- **Why it matters**: After a rename or symbol removal, impact/neighborhood queries can return dead edge IDs or `null` endpoint nodes until another full cleanup happens. In incremental mode, that stale state persists indefinitely for unchanged callers/importers.
-- **Hunter**: The DB layer explicitly lacks foreign keys on `code_edges`, so deleting nodes for a changed file does not repair inbound references automatically.
-- **Skeptic**: One could argue a later full scan repairs this, but the default handler runs incrementally and reports success immediately, so callers see an inconsistent graph in the normal path.
-- **Referee**: `P1` is warranted because the persisted graph can become internally inconsistent after ordinary edits, which directly corrupts query results.
+### P2-004: Graph Scale Stats Duplicate code_graph_status MCP Tool
+- Dimension: on_demand_comparison
+- Evidence: [SOURCE: startup-brief.ts:49-53] -- getStats() returns totalFiles, totalNodes, totalEdges, lastScanTimestamp
+- Evidence: [SOURCE: code-graph-db.ts] -- Same getStats() function is used by the code_graph_status MCP tool handler
+- Evidence: [SOURCE: session-prime.ts:101-115] -- handleStartup already tells the AI that `code_graph_status` is available
+- Impact: The proactive injection tells the AI "15488 files, 382268 nodes, 198135 edges" and separately tells it that `code_graph_status` is available. The AI could get the same stats by calling that tool if it ever needed them. The proactive stats are informational but not actionable -- knowing the graph has 382K nodes does not inform any decision the AI needs to make at session start.
+- Final severity: P2
 
-### [P1] JavaScript and TypeScript methods are never indexed, so class containment and method-level graphing are missing in the primary languages
-- **Files**: `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts:38-104`; `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/structural-indexer.ts:210-223`; `.opencode/specs/02--system-spec-kit/024-compact-code-graph/008-structural-indexer/spec.md:36-39`; `.opencode/specs/02--system-spec-kit/024-compact-code-graph/008-structural-indexer/spec.md:47-63`; `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-indexer.vitest.ts:137-145`
-- **Issue**: `parseJsTs()` only emits nodes for top-level functions, const-assigned arrows, classes, interfaces, type aliases, enums, imports, and exports. There is no branch that recognizes `method` declarations inside JS/TS classes. `extractEdges()` can only create `CONTAINS` edges from `class -> method`, so those edges never exist for the two highest-priority languages.
-- **Why it matters**: `outline` and `neighborhood` views omit class methods in JavaScript and TypeScript, and method-level call graphing is absent even though phase 008 defines methods as required node types.
-- **Hunter**: The implementation has a hard dependency on `method` nodes for containment, but the JS/TS parser never produces that kind at all.
-- **Skeptic**: Python does cover methods, and the current unit suite only exercises `CONTAINS` through Python, which can make the gap easy to miss.
-- **Referee**: `P1` is justified because this is a primary-language feature omission, not an edge-case parser miss.
+## Cross-Reference Results
+### Core Protocols
+- Confirmed: DR-003 (direct import) is followed in startup-brief.ts import chain
+- Confirmed: DR-010 (CocoIndex complementary) separation is maintained -- startup-brief only queries code graph, not CocoIndex
+- Contradictions: The structural context highlights section is not traceable to any spec requirement (spec.md SessionStart description says "tool overview + stale-index detection," not "highlights")
+- Unknowns: Whether the original author intended highlights as a discovery aid or a debugging artifact
 
-## Verification Notes
+### Overlay Protocols
+- Confirmed: Hook transport mechanism aligns with DR-002
+- Contradictions: None at overlay level
+- Unknowns: None
 
-- Reviewed the four scoped code-graph library files line-by-line.
-- Cross-checked phase specs and plan contracts for seed handling and structural vocabulary.
-- Ran `TMPDIR=/Users/michelkerkmeester/MEGA/Development/Opencode\ Env/Public/.tmp/vitest-tmp npm run test:core -- --run tests/code-graph-indexer.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server` to confirm the current tests still pass despite these gaps.
+## Ruled Out
+- **Session continuity section**: startup-brief.ts:89-103 (buildSessionContinuity) was examined but found to be genuinely useful -- it provides last spec folder and session summary, directly addressing the "session-start is generic" gap identified in the spec. Not a finding.
+- **Stale index detection**: session-prime.ts:139-153 was examined but found to be genuinely useful -- it warns about indexes >24h old, directly traceable to spec requirement. Not a finding.
+- **Tool overview section**: session-prime.ts:101-115 was examined but found to be genuinely useful -- it lists available tools, directly traceable to spec's "tool overview" requirement. Not a finding.
+- **handleCompact path**: Not in scope for this dimension (compact recovery is a different concern from startup priming).
 
-## Summary
+## Sources Reviewed
+- [SOURCE: startup-brief.ts:1-113] -- Full file, startup brief builder
+- [SOURCE: session-prime.ts:1-253] -- Full file, SessionStart hook handler
+- [SOURCE: code-graph-db.ts:350-379] -- queryStartupHighlights function
+- [SOURCE: spec.md:86-167] -- Solution architecture, Layer 3, SessionStart description
+- [SOURCE: decision-record.md:39-161] -- DR-002 through DR-012
 
-- P0: 0 findings
-- P1: 4 findings
-- P2: 0 findings
+## Assessment
+- Confirmed findings: 4
+- New findings ratio: 1.00
+- noveltyJustification: All 4 findings are new (first iteration to cover on_demand_comparison and architectural_alignment dimensions); weightedNew = 4x1.0 = 4.0, weightedTotal = 4.0, ratio = 1.0
+- Dimensions addressed: on_demand_comparison, architectural_alignment
+
+## Reflection
+- What worked: The comparison matrix approach was effective for on_demand_comparison. Tracing each startup injection component back to specific spec requirements and DRs revealed the traceability gap clearly.
+- What did not work: N/A -- both dimensions were productive on first examination.
+- Next adjustment: If subsequent iterations revisit these dimensions, focus on quantifying token cost vs. benefit across multiple sessions rather than a single observed session.

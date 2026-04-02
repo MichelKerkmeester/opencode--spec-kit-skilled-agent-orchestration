@@ -15,6 +15,7 @@
 
 import {
   hookLog, formatHookOutput, truncateToTokenBudget,
+  sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
   type OutputSection,
 } from '../claude/shared.js';
@@ -22,6 +23,20 @@ import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '
 import { parseGeminiStdin, formatGeminiOutput } from './shared.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
+type StartupBrief = {
+  graphOutline: string | null;
+  sessionContinuity: string | null;
+  graphSummary: { files: number; nodes: number; edges: number; lastScan: string | null } | null;
+  graphState: 'ready' | 'empty' | 'missing';
+};
+
+let buildStartupBrief: (() => StartupBrief) | null = null;
+try {
+  const mod = await import('../../lib/code-graph/startup-brief.js');
+  buildStartupBrief = mod.buildStartupBrief;
+} catch {
+  // Startup brief module not available — keep static startup output
+}
 
 /** Handle source=compact (post-compress): inject cached PreCompress payload */
 function handleCompact(sessionId: string): OutputSection[] {
@@ -48,8 +63,9 @@ function handleCompact(sessionId: string): OutputSection[] {
 
   hookLog('info', 'gemini:session-prime', `Injecting cached compact brief (${payload.length} chars, cached at ${cachedAt})`);
 
+  const sanitizedPayload = sanitizeRecoveredPayload(payload);
   const sections: OutputSection[] = [
-    { title: 'Recovered Context (Post-Compression)', content: payload },
+    { title: 'Recovered Context (Post-Compression)', content: sanitizedPayload },
     {
       title: 'Recovery Instructions',
       content: 'Context was compressed and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
@@ -68,7 +84,7 @@ function handleCompact(sessionId: string): OutputSection[] {
 
 /** Handle source=startup: prime new session with tool overview */
 function handleStartup(): OutputSection[] {
-  return [
+  const sections: OutputSection[] = [
     {
       title: 'Session Priming',
       content: [
@@ -82,6 +98,36 @@ function handleStartup(): OutputSection[] {
       ].join('\n'),
     },
   ];
+
+  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  if (startupBrief?.graphOutline) {
+    sections.push({
+      title: 'Structural Context',
+      content: startupBrief.graphOutline,
+    });
+  } else if (startupBrief?.graphState === 'empty') {
+    sections.push({
+      title: 'Structural Context',
+      content: 'Code graph index is empty. Run `code_graph_scan` to build structural context.',
+    });
+  }
+
+  if (startupBrief?.sessionContinuity) {
+    sections.push({
+      title: 'Session Continuity',
+      content: startupBrief.sessionContinuity,
+    });
+  }
+
+  const lastScan = startupBrief?.graphSummary?.lastScan ?? null;
+  if (startupBrief?.graphState === 'ready' && (!lastScan || (Date.now() - new Date(lastScan).getTime() > 24 * 60 * 60 * 1000))) {
+    sections.push({
+      title: 'Stale Code Graph Warning',
+      content: 'Code graph index is >24h old. Run `code_graph_scan` for fresh structural context.',
+    });
+  }
+
+  return sections;
 }
 
 /** Handle source=resume: load resume context */

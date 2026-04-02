@@ -1,98 +1,117 @@
-# Review Iteration 1: Correctness - Hook Scripts
+# Review Iteration 1: signal_quality, deduplication - Startup Highlights Analysis
 
 ## Focus
-
-D1 Correctness for the Claude hook scripts, with emphasis on cache lifecycle, persisted-state invariants, fallback behavior, and edge-case handling in `compact-inject.ts`, `session-prime.ts`, and `hook-state.ts`.
+Two dimensions reviewed in a single pass: (1) signal_quality -- whether the startup highlights provide actionable intelligence to the AI; (2) deduplication -- why `test_specific` appears 3 times identically in the output.
 
 ## Scope
-
-- Reviewed `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts`
-- Reviewed `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`
-- Reviewed `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`
-- Cross-checked `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md`
-- Cross-checked `.opencode/specs/02--system-spec-kit/024-compact-code-graph/001-precompact-hook/spec.md`
-- Cross-checked `.opencode/specs/02--system-spec-kit/024-compact-code-graph/002-session-start-hook/spec.md`
-- Cross-checked hook playbook coverage in `248-precompact-hook.md`, `249-session-start-compact.md`, and `250-session-start-startup.md`
-- Spot-checked supporting runtime helpers in `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`, and `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/compact-merger.ts`
+- Review target: Code Graph session start injection (hook output at startup)
+- Files reviewed:
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts` (lines 350-379: `queryStartupHighlights()`)
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts` (full file: `buildGraphOutline()`, `formatHighlight()`)
+  - `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` (full file: `handleStartup()`)
+- Spec refs: Phase 026 (session start injection debug)
+- Dimensions: signal_quality, deduplication
 
 ## Scorecard
-
-- Verdict: CONDITIONAL
-- Findings: 0 P0, 2 P1, 2 P2
-- Verification:
-  - `TMPDIR="$PWD/.tmp/vitest-tmp" node .opencode/skill/system-spec-kit/mcp_server/node_modules/vitest/vitest.mjs run .opencode/skill/system-spec-kit/mcp_server/tests/hook-state.vitest.ts .opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts .opencode/skill/system-spec-kit/mcp_server/tests/hook-precompact.vitest.ts .opencode/skill/system-spec-kit/mcp_server/tests/session-token-resume.vitest.ts --root .opencode/skill/system-spec-kit/mcp_server`
-  - Result: PASS (4 files, 24 tests)
-- Confidence: High
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| code-graph-db.ts (queryStartupHighlights) | 5/10 | N/A | 7/10 | 6/10 |
+| startup-brief.ts | 7/10 | N/A | 7/10 | 8/10 |
+| session-prime.ts (handleStartup) | 8/10 | N/A | 7/10 | 8/10 |
 
 ## Findings
 
-### [P1] `SessionStart(source=compact)` clears the only recovery payload before stdout injection succeeds
+### P1-001: Duplicate Highlights Due to GROUP BY on symbol_id Instead of Display Fields
 
-- **Evidence:** `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:49-53`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:212-215`, `.opencode/specs/02--system-spec-kit/024-compact-code-graph/002-session-start-hook/spec.md:49-52`, `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/249-session-start-compact.md:16-27`
-- **Issue:** `handleCompact()` deletes `pendingCompactPrime` immediately after reading it, but the actual injection does not happen until `main()` later formats the sections, truncates the output, and writes to stdout. Any failure between those two points drops the only cached recovery payload and degrades the next startup to the generic fallback.
-- **Impact:** Compact recovery becomes one-shot and fragile. A transient output failure permanently discards the only cached context the hook was meant to preserve.
-- **Hunter:** I traced the exact control flow: read cache, clear cache, return sections, then only later format and emit to stdout. There is no retry or restore path if the post-clear path fails.
-- **Skeptic:** The post-clear path is short and mostly synchronous, so failures here may be uncommon in normal local runs.
-- **Referee:** The invariant is still broken. This cache exists specifically to survive compaction; deleting it before confirmed injection turns any rare output failure into permanent data loss. The phase contract and manual playbook both describe cleanup after successful injection, not before it.
+- Dimension: correctness
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:363]
+- Cross-reference: [SOURCE: Live session output showing `test_specific (method) - special/tests/test_legendre.py [calls: 51]` x3]
+- Impact: Users see visually identical highlight lines, wasting 2 of 5 highlight slots and creating the appearance of a broken system. In the observed session, 3 of 5 highlights were duplicates, reducing useful highlights from 5 to 3.
 
-### [P1] State persistence failures are silently converted into false-positive success
+**Root Cause Analysis:**
 
-- **Evidence:** `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:66-95`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:234-241`, `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/248-precompact-hook.md:16-29`
-- **Issue:** `saveState()` logs write/rename failures but does not signal them back to callers. `updateState()` always returns the in-memory object as if persistence succeeded, and `compact-inject.ts` logs "Cached compact context" unconditionally right after calling it. If the temp directory is unwritable or the atomic rename fails, PreCompact reports success but SessionStart has no cached payload to recover from.
-- **Impact:** Operators and later hooks receive a false success signal precisely when the compact-recovery bridge has failed, which makes the failure mode both user-visible and harder to debug.
-- **Hunter:** I verified that `saveState()` swallows errors, `updateState()` does not inspect the result of persistence, and `compact-inject.ts` has no read-after-write or boolean success check before logging the cache success message.
-- **Skeptic:** The temp directory may be reliably writable in the intended runtime, making this mostly a degraded-path concern.
-- **Referee:** Hooks are explicitly designed to fail soft rather than crash, so degraded-path honesty matters. Reporting a successful cache when nothing was persisted violates the recovery contract and will mislead anyone debugging compact recovery.
+The SQL query at line 363 uses `GROUP BY n.symbol_id`. The `code_nodes` table enforces `symbol_id TEXT NOT NULL UNIQUE` (line 43), so each row has a unique symbol_id. However, a single Python method like `test_specific` can generate multiple `code_nodes` rows with different `symbol_id` values when the indexer treats each overload, decorator variant, or re-parsed occurrence as a separate symbol. These distinct symbol_ids share identical `name`, `kind`, and `file_path`.
 
-### [P2] Compact recovery never validates cache freshness, so stale payloads remain injectable indefinitely
+The `formatHighlight()` function in startup-brief.ts (line 42) renders only `name`, `kind`, `filePath`, and `callCount` -- never `symbol_id`. So three symbols with different IDs but the same display-visible fields produce three identical output lines.
 
-- **Evidence:** `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:49-50`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:98-117`, `.opencode/specs/02--system-spec-kit/024-compact-code-graph/001-precompact-hook/spec.md:113-119`
-- **Issue:** The compact path reads `cachedAt` only for logging and never checks whether the payload is still fresh before injecting it. `cleanStaleStates()` exists, but it only runs in the manual `--finalize` path and is not part of normal SessionStart reads.
-- **Impact:** An old compact payload can be injected into a later session even when the cached recovery state is no longer trustworthy.
+**Fix**: Change the GROUP BY clause from `GROUP BY n.symbol_id` to `GROUP BY n.name, n.kind, n.file_path` and use `MAX(call_count)` or `SUM(...)` as the aggregation. Alternatively, add deduplication in `formatHighlight()` or `buildGraphOutline()`.
 
-### [P2] The startup "Working Memory" section is unreachable because `workingSet` is not part of hook state and has no producer
+- Skeptic: Could the three entries have different call counts that happen to be the same? Checked: all three show `[calls: 51]`, confirming they are visually identical. Even if counts differed, showing three lines for the same symbol name in the same file is confusing.
+- Referee: Confirmed P1. This is a correctness bug in the query that produces user-facing duplicate output. It degrades the signal quality of every session start. Not P0 because it does not cause data loss or security exposure; it wastes highlight slots.
 
-- **Evidence:** `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:119-128`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-28`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:82-88`, `.opencode/skill/system-spec-kit/references/config/hook_system.md:31-35`
-- **Issue:** `handleStartup()` tries to render a `workingSet` array from hook state, but `HookState` does not define that field, the default state initializer does not allocate it, and the reviewed hook-state paths do not populate it.
-- **Impact:** The startup output contains a dead branch that can never produce real-session output, which quietly narrows the context the feature appears to promise.
+```json
+{"type":"claim-adjudication","claim":"queryStartupHighlights() produces duplicate highlight lines because GROUP BY operates on symbol_id (unique per node row) rather than the display-visible fields (name, kind, file_path) that formatHighlight() renders.","evidenceRefs":[".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:363",".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:43",".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts:42"],"counterevidenceSought":"Checked whether symbol_id uniqueness in code_nodes table prevents duplicates. It does not, because multiple symbol_ids can map to the same (name, kind, file_path) tuple. Verified live output confirms 3 identical lines.","alternativeExplanation":"The three entries could represent genuinely different symbols that happen to share name/kind/file. However, displaying them identically without disambiguation is still a bug in the output layer even if the data model is correct.","finalSeverity":"P1","confidence":0.95,"downgradeTrigger":"If the indexer is proven to never create multiple symbol_ids for the same (name, kind, file_path) tuple, the bug would shift to a data quality issue in the indexer rather than a query bug. Severity would remain P1 either way."}
+```
+
+### P1-002: Startup Highlights Surface Vendored/Test Code Instead of Project Code
+
+- Dimension: correctness
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:362]
+- Cross-reference: [SOURCE: Live session output; SOURCE: strategy Known Context section]
+- Impact: The "top by call count" heuristic surfaces high-connectivity nodes from vendored dependencies (`site-packages/yaml/scanner.py`) and test files (`special/tests/test_legendre.py`) rather than user project code. In the observed session, 4 of 5 highlights were from non-project code. The AI completely ignored these highlights, going directly to CocoIndex for the user's actual query.
+
+**Root Cause Analysis:**
+
+The SQL WHERE clause at line 362 filters only by `kind` (class, function, method, etc.) but applies no filtering for:
+- Vendored directories (`node_modules/`, `site-packages/`, `.venv/`, `vendor/`)
+- Test files (`**/test_*`, `**/tests/`, `**/*.test.*`, `**/*.spec.*`)
+- Generated files, build outputs, or cache directories
+
+In a workspace with 15,488 files (as observed), vendored Python packages and test suites vastly outnumber project source files. The ORDER BY `call_count DESC` naturally favors these high-connectivity non-project files.
+
+**Fix**: Add a WHERE clause excluding common vendored/test paths: `WHERE n.file_path NOT LIKE '%/node_modules/%' AND n.file_path NOT LIKE '%/site-packages/%' AND n.file_path NOT LIKE '%/.venv/%'`. Optionally, prefer files matching a configurable project root prefix.
+
+- Skeptic: Could vendored code highlights be useful? In some edge cases (debugging a dependency), yes. But for session start priming, the purpose is to orient the AI to the project structure, not to highlight third-party test utilities.
+- Referee: Confirmed P1. This is the primary reason the highlights provide zero actionable signal. The fix is straightforward (path exclusion patterns). Not P0 because the AI can function without highlights; it merely wastes token budget and provides no value.
+
+```json
+{"type":"claim-adjudication","claim":"queryStartupHighlights() surfaces vendored dependency and test file nodes instead of project code because the SQL WHERE clause has no path-based exclusion filters.","evidenceRefs":[".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:362","Live session output showing 4/5 highlights from non-project code"],"counterevidenceSought":"Checked whether the code_graph_scan indexer excludes vendored paths before insertion. It may partially exclude via glob patterns, but clearly test_legendre.py and yaml/scanner.py were indexed. The query is the last line of defense and has no exclusion logic.","alternativeExplanation":"The indexer is supposed to exclude these paths but failed. Even so, the query should have defense-in-depth exclusion for common non-project paths.","finalSeverity":"P1","confidence":0.92,"downgradeTrigger":"If the indexer's exclude patterns are fixed to never index vendored/test code, the query-side exclusion becomes redundant (but still advisable as defense-in-depth). Severity could drop to P2 as a hardening suggestion."}
+```
+
+### P2-001: Startup Highlights Provide No Actionable Signal for Task Routing
+
+- Dimension: signal_quality
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts:65-73]
+- Impact: Even if deduplication and vendored-path issues are fixed, "top 5 nodes by call count" is a generic connectivity metric that does not help the AI make better decisions. The AI needs to know what the user's project does, what the entry points are, or what was recently changed -- not which functions have the most outgoing edges. In the observed session, the AI went straight to CocoIndex semantic search, demonstrating that the highlights added no decision-making value.
+- Final severity: P2
+
+### P2-002: No Exclude Patterns for node_modules or Common Build Artifacts in Highlight Query
+
+- Dimension: maintainability
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:353-366]
+- Impact: The query has no exclusion for `node_modules/`, `dist/`, `build/`, `.next/`, or other common artifact directories. While related to P1-002, this is a separate maintainability concern: as new vendored or build directories appear, the query will continue to surface irrelevant nodes without a configurable exclusion mechanism.
+- Final severity: P2
 
 ## Cross-Reference Results
+### Core Protocols
+- Confirmed: The session-prime.ts hook correctly gates on `buildStartupBrief` availability (line 118) and handles the empty/missing graph states (lines 124-128)
+- Confirmed: Token budget truncation is applied (line 236) so highlights cannot overflow the context window
+- Contradictions: The highlights are injected unconditionally when the graph is "ready" -- no quality check on whether highlights are actually useful
 
-- The two-step transport model from DR-006 is present: `PreCompact` caches state and `SessionStart(source=compact)` injects it.
-- The D1 failure modes above show that the transport is not yet robust: cache cleanup happens too early, persistence failures are over-reported as success, and freshness is never checked on read.
-- The reviewed recovery copy does correctly include `profile: "resume"` alongside `mode: "resume"` in the resume instructions, so the earlier DR-007 regression is not present in these target files.
-- `compact-inject.ts` still does not retrieve real Memory / Code Graph / CocoIndex content; it merges transcript-derived strings and hints. I am not scoring that as a D1 finding in this pass, but it should stay in play for the packet's traceability review because the implementation claims a stronger hybrid merge than the hook currently performs.
+### Overlay Protocols
+- Confirmed: startup-brief.ts correctly isolates graph logic from hook logic (clean separation of concerns)
+- Contradictions: None found
+- Unknowns: Whether the code_graph_scan indexer's exclude patterns are supposed to prevent vendored code from entering the database
 
 ## Ruled Out
-
-- I did not find a crash-on-empty-stdin defect in these three files. Both reviewed hook entrypoints degrade to clean exit behavior when stdin parsing fails or returns no data.
-- I did not find an atomic-write bug in the happy-path `hook-state.ts` save routine; the temp-file + rename pattern is correct within one directory.
-- I did not find a wrong-return-type or obvious sync/async mismatch in the reviewed hook entrypoints.
+- **Session-prime.ts hook logic bug**: Investigated whether the hook incorrectly calls `queryStartupHighlights` multiple times or concatenates results. It does not -- the duplication is entirely in the SQL result set from code-graph-db.ts.
+- **formatHighlight rendering bug**: Investigated whether the formatter adds duplicate lines. It does not -- it maps 1:1 from query results.
+- **Token budget overflow**: Investigated whether highlights could consume excessive tokens. The `truncateToTokenBudget()` call at line 236 prevents this.
 
 ## Sources Reviewed
-
-- `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/compact-merger.ts`
-- `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md`
-- `.opencode/specs/02--system-spec-kit/024-compact-code-graph/001-precompact-hook/spec.md`
-- `.opencode/specs/02--system-spec-kit/024-compact-code-graph/002-session-start-hook/spec.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/248-precompact-hook.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/249-session-start-compact.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/250-session-start-startup.md`
-- `.opencode/skill/system-spec-kit/references/config/hook_system.md`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/hook-state.vitest.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/hook-precompact.vitest.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/session-token-resume.vitest.ts`
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:0-150] -- Schema, table definitions
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts:350-379] -- queryStartupHighlights function
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts:1-114] -- Full file
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:1-254] -- Full file
+- [SOURCE: .opencode/skill/sk-code--review/references/review_core.md:1-80] -- Severity definitions
 
 ## Assessment
-
-This hook slice is stable enough to build and pass the existing targeted tests, but the recovery contract is still brittle in the places where persistence and reinjection matter most. The main risk is not a crash; it is silent recovery degradation that leaves Claude with less context than the hook layer claims it preserved.
+- Confirmed findings: 4 (P0: 0, P1: 2, P2: 2)
+- New findings ratio: 1.00
+- noveltyJustification: First iteration; all 4 findings are new (weighted: 2*5.0 + 2*1.0 = 12.0 new out of 12.0 total)
+- Dimensions addressed: signal_quality, deduplication
 
 ## Reflection
-
-The current tests validate helper behavior and happy-path file fixtures, but they do not execute end-to-end failure paths around cache deletion, save failures, or stale reads. That gap explains why the reviewed D1 defects can coexist with a green targeted hook test slice. The next security and traceability passes should keep treating temp-state handling and claimed hybrid-recovery behavior as first-class review surfaces.
+- What worked: Reading the SQL query directly and cross-referencing with live output evidence was highly effective. The GROUP BY mismatch was immediately visible when comparing the UNIQUE constraint on symbol_id with the display fields used in formatHighlight.
+- What did not work: N/A (first iteration)
+- Next adjustment: For next iteration, investigate the node_selection heuristic deeper -- what alternative selection strategies could replace "top by call count" to provide genuinely actionable highlights (e.g., recently changed files, entry points, files matching common task patterns).

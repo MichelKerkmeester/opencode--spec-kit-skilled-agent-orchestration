@@ -175,8 +175,7 @@ memory_search(mode: "deep", sessionId: "xyz")
 
 ---
 
-<!-- ANCHOR:future -->
-## L2: FUTURE ARTIFACT CLASSIFIER IMPROVEMENTS
+**Future Artifact Classifier Improvements**
 
 Beyond the quick wins in this phase, longer-term classifier improvements include:
 
@@ -184,7 +183,6 @@ Beyond the quick wins in this phase, longer-term classifier improvements include
 2. **Embedding-based fallback** — When all deterministic channels score 0, compute cosine similarity between query embedding and pre-computed class centroid embeddings (one embedding per class from aggregated keywords)
 3. **Learned classifier** — Train on actual query→class mappings from `access_log` table + CCC feedback signals. Requires evaluation dataset first
 4. **Cross-classifier fusion** — Combine query complexity router (`query-router.ts`), intent classifier, and artifact classifier via weighted ensemble instead of sequential independent scoring
-<!-- /ANCHOR:future -->
 
 ---
 

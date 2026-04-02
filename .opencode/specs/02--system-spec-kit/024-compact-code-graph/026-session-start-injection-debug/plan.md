@@ -52,12 +52,12 @@ This follows the existing design principle (spec Phase 013): **hooks are transpo
 - [x] Sibling boundary to `027-opencode-structural-priming` is mapped
 
 ### Definition of Done
-- [ ] Shared `buildStartupBrief()` returns graph outline + session continuity
-- [ ] Claude fresh session injects enriched startup
-- [ ] Gemini fresh session injects enriched startup
-- [ ] `026` no longer claims hookless `PrimePackage` / `session_bootstrap` payload ownership
-- [ ] Hook startup path stays within token/time budgets
-- [ ] No regression on compaction/resume/clear
+- [x] Shared `buildStartupBrief()` returns graph outline + session continuity
+- [x] Claude fresh session injects enriched startup
+- [x] Gemini fresh session injects enriched startup
+- [x] `026` no longer claims hookless `PrimePackage` / `session_bootstrap` payload ownership
+- [x] Hook startup path stays within token/time budgets
+- [x] No regression on compaction/resume/clear
 <!-- /ANCHOR:quality-gates -->
 
 ---

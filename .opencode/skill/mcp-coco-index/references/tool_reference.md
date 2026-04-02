@@ -243,13 +243,15 @@ Perform semantic search across the indexed codebase.
 | `query`         | string                  | Yes      | -       | Natural language search query            |
 | `languages`     | list of strings \| null | No       | null    | Filter by programming languages          |
 | `paths`         | list of strings \| null | No       | null    | Filter by file paths                     |
-| `num_results`   | integer                 | No       | 5       | Number of results to return              |
+| `limit`         | integer                 | No       | 5       | Maximum number of results to return      |
+| `offset`        | integer                 | No       | 0       | Number of results to skip for pagination |
 | `refresh_index` | boolean                 | No       | true    | Trigger index refresh before searching   |
 
 **Parameter notes:**
 - `languages` accepts a list (e.g., `["python", "typescript"]`), not a single string
 - `paths` accepts a list (e.g., `["src/api/", "lib/"]`), not a single string
-- `num_results` defaults to **5** for MCP (CLI `--limit` defaults to 10)
+- `limit` defaults to **5** for MCP (CLI `--limit` defaults to 10)
+- `offset` defaults to **0** for MCP and can be used for pagination
 - `refresh_index` defaults to `true` -- set to `false` after the first query in a multi-query session when the codebase has not changed
 
 **MCP request example:**
@@ -258,7 +260,8 @@ Perform semantic search across the indexed codebase.
   "query": "error handling in API routes",
   "languages": ["python", "typescript"],
   "paths": ["src/api/"],
-  "num_results": 10,
+  "limit": 10,
+  "offset": 0,
   "refresh_index": false
 }
 ```
@@ -281,8 +284,8 @@ Perform semantic search across the indexed codebase.
 | Search query     | `QUERY` (positional)| `query`          | Same behavior                               |
 | Language filter   | `--lang` (repeatable) | `languages` (list) | CLI: repeatable flag. MCP: list of strings |
 | Path filter      | `--path` (string)   | `paths` (list)   | CLI: single path. MCP: list of paths        |
-| Result limit     | `--limit` (default: 10) | `num_results` (default: 5) | Different defaults        |
-| Pagination       | `--offset`          | (not available)  | CLI only                                    |
+| Result limit     | `--limit` (default: 10) | `limit` (default: 5) | Different defaults        |
+| Pagination       | `--offset`          | `offset` (default: 0)  | Available on both surfaces                   |
 | Index refresh before search | `--refresh` on `ccc search` | `refresh_index` | CLI search: default false. MCP: default true |
 
 ---

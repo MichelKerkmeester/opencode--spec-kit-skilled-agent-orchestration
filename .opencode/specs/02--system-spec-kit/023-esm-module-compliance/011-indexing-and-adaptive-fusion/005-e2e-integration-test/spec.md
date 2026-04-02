@@ -21,7 +21,6 @@ contextType: "implementation"
 | **Successor** | 006-default-on-boost-rollout |
 | **Handoff Criteria** | Lifecycle coverage proves the Phase 3 and Phase 4 seams compose correctly under real SQLite state |
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 5** of the adaptive-ranking packet.
@@ -37,7 +36,6 @@ This is **Phase 5** of the adaptive-ranking packet.
 - Accurate description of the four-scenario lifecycle suite
 - Correct signal-count documentation
 - Explicit coverage of replay and access seams
-<!-- /ANCHOR:phase-context -->
 
 # Feature Specification: Phase 5 — End-to-End Integration Test
 

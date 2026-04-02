@@ -1,0 +1,20 @@
+# 2026-04-02 Sweep Snapshot
+
+- Phase: `018-non-hook-auto-priming`
+- Verdict: **CONDITIONAL**
+- Strict validation: `PASS`
+- Unchecked tasks: 4
+- Unchecked checklist items: 3
+- Iterations added this pass: 4
+- Active review iterations after this pass: 4
+
+
+## 2026-04-02 Sweep Snapshot
+
+- Phase: `018-non-hook-auto-priming`
+- Verdict: **CONDITIONAL**
+- Strict validation: `PASS`
+- Unchecked tasks: 4
+- Unchecked checklist items: 3
+- Iterations added this pass: 4
+- Active review iterations after this pass: 8

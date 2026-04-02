@@ -79,9 +79,9 @@ Template compliance shim anchor for cross-refs.
 
 - [x] T-016: Create constitutional memory `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md` with search decision tree (already existed with richer content)
 - [x] T-017: Update root `CLAUDE.md` -- replace passive "MUST use" with active decision tree
-- [x] T-018: Update `.claude/CLAUDE.md` with hook-aware routing reinforcement
-- [x] T-019: Update `.codex/CODEX.md` with non-hook routing enforcement
-- [x] T-020: Update `.gemini/GEMINI.md` with partial-hook routing enforcement
+- [x] T-018: Keep Claude-aware routing reinforcement consolidated in `../../../../../CLAUDE.md`
+- [x] T-019: Update `../../../../../CODEX.md` with non-hook routing enforcement
+- [x] T-020: Update `../../../../../GEMINI.md` with Gemini runtime routing enforcement
 
 ### Layer 5: Agent Updates
 

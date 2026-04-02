@@ -2,11 +2,11 @@
 
 ## Overview
 
-The hook system provides automated context preservation at Claude Code lifecycle boundaries. Hooks are transport reliability — they call the same retrieval primitives that other runtimes call explicitly.
+The hook system provides automated context preservation at hook-capable runtime lifecycle boundaries. Hooks are transport reliability — they call the same retrieval primitives that other runtimes call explicitly.
 
 ## Hook Registration
 
-Hooks are registered in `.claude/settings.local.json`:
+Claude Code hooks are registered in `.claude/settings.local.json`:
 
 ```json
 {
@@ -47,10 +47,11 @@ Compiled: `mcp_server/dist/hooks/claude/*.js`
 
 ## Cross-Runtime Fallback
 
-Runtimes without hook support (Codex CLI, Copilot CLI, Gemini CLI) use tool-based recovery via CLAUDE.md/CODEX.md instructions directing the AI to call `memory_context({ mode: "resume", profile: "resume" })` after compaction.
+Hook-capable runtimes include Claude Code, Codex CLI, Copilot CLI, and Gemini CLI when their adapters are available. OpenCode is the non-hook runtime and should use `session_bootstrap()` on fresh start or after `/clear`, then `session_resume()` after reconnect when a detailed follow-up recovery payload is needed. If hook context is unavailable in a hook-capable runtime for any reason, fall back to the same tool-based recovery path.
 
 ## Retrieval Primitives
 
-Only two retrieval primitives exist across all runtimes:
+The same retrieval building blocks power both hook delivery and explicit recovery:
 1. `memory_match_triggers(prompt)` — Fast turn-start context
-2. `memory_context({ mode: "resume", profile: "resume" })` — Continuation/compaction recovery
+2. `memory_context({ mode: "resume", profile: "resume" })` — Continuation and compaction recovery core
+3. `session_resume()` / `session_bootstrap()` — Session-oriented wrappers that add code graph and CocoIndex health on top of resume retrieval

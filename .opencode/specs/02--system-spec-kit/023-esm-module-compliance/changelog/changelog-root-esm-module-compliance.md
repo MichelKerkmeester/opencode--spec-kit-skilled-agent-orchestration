@@ -1,6 +1,83 @@
+## [v1.1.0] - 2026-04-02
+
+This follow-on release extends the packet after the original migration closure recorded in `v1.0.0`. Phase 13 hardened search correctness, search visibility, and SQLite path stability: multi-word FTS5 searches keep their exact-word matches, `/memory:search` now groups results by leaf spec folder, vector search stays pinned to the populated `context-index.sqlite`, and the search pipeline now warns instead of failing quietly on unexpected empty paths. Phase 13 verified all P0 and P1 checklist items and leaves one P2 follow-up open for saving the supporting research and review findings into `memory/`.
+
+> Spec folder: `.opencode/specs/02--system-spec-kit/023-esm-module-compliance` (Level 2)
+
+---
+
+## Search Hardening (4)
+
+This release turns the packet's post-migration search follow-up into a recorded shipped state instead of leaving it buried in a late child phase.
+
+### Multi-word phrase queries now survive FTS5 normalization
+
+**Problem:** Phrase tokens that already arrived quoted from the lexical normalization path were being wrapped in a second pair of quotes before the FTS5 search executed. That created invalid `""phrase""` syntax and silently dropped the FTS-backed portion of multi-word hybrid searches.
+
+**Fix:** The FTS5 search path now detects already-quoted phrase tokens and leaves them alone. Multi-word searches can return FTS-backed results again instead of losing them at the last minute.
+
+### `/memory:search` results are easier to scan by folder
+
+**Problem:** Search results were rendered with full spec-folder paths in a dense layout. Even when the ranking was right, the output was harder to scan than it needed to be.
+
+**Fix:** The dashboard now uses the chosen Design 10 layout, grouping results by leaf spec folder and shortening the path presentation. The same layout is applied in both command surfaces so the output story is consistent.
+
+### Focused and deep search no longer lose candidates because of over-eager narrowing
+
+**Problem:** The search path still had two correctness traps after the earlier retrieval fixes. Focused mode could promote a discovered folder into a hard search filter, and deep mode could let an ephemeral `sessionId` act like governance scope input. Both cases made legitimate candidates disappear.
+
+**Fix:** Folder discovery no longer turns into a hard scope filter in `memory_context`, and stage-1 candidate generation no longer treats a plain `sessionId` as governed scope input. Focused mode returns candidates again, and deep mode keeps its expected hybrid recall.
+
+### Search traces now show active channels and zero graph contribution explicitly
+
+**Problem:** When hybrid search blended multiple ranking signals, it was still hard to tell which channels actually contributed and whether graph signals were active or merely configured.
+
+**Fix:** Stage 1 now reports `activeChannels`, and Stage 2 emits a zero-contribution graph diagnostic when graph rollout state is present but no graph boosts fired. Operators can inspect the search path more directly instead of inferring it from the final ranking alone.
+
+---
+
+## Reliability (2)
+
+### Vector search no longer drifts onto the empty provider-specific database
+
+**Problem:** After lazy Voyage-4 initialization, the vector-index store could re-resolve its SQLite path and drift from the populated `context-index.sqlite` to the empty provider-specific database. The search path still ran, but it was reading from the wrong place.
+
+**Fix:** Database path resolution is now stabilized around the active populated database, with conflict logging and post-validation connection caching. Vector search stays bound to the correct store instead of silently swapping itself onto an empty one.
+
+### Startup and rebinding now defend the populated database path
+
+**Problem:** Even with the main path fix in place, startup and lifecycle rebinding could still weaken the guarantee if projection state was empty or if consumers rebound to a newly derived but empty database.
+
+**Fix:** Startup now logs and checks the active database state, triggers lineage backfill when projection data is missing but `memory_index` is populated, and refuses to rebind consumers onto an empty database unless explicitly overridden. The packet now guards the whole lifecycle, not just one call site.
+
+---
+
+## Operations (1)
+
+### Silent failure paths now warn before returning empty results
+
+**Problem:** Several unexpected empty or null exits in the hybrid search path returned quietly. That made operational troubleshooting much harder because broken conditions looked too similar to ordinary "no result" cases.
+
+**Fix:** The search pipeline now emits warning logs across the affected failure paths in `hybrid-search.ts`, `stage1-candidate-gen.ts`, and `vector-index-queries.ts`, and the FTS scope filter now matches exact-or-descendant folders consistently. Search failures are still bounded, but they are no longer invisible.
+
+---
+
+## Test Impact
+
+| Metric | Before | After |
+| ------ | ------ | ----- |
+| Multi-word hybrid search | FTS5 matches silently dropped | Runtime verification returned 5 results |
+| `memory_context` focused mode | Broken path could return 0 candidates | Runtime verification returned 5 candidates |
+| Hybrid pipeline visibility | Active channels not exposed | `activeChannels: 2` present in stage-1 metadata |
+| Phase 13 checklist closure | P0/P1 not yet verified | P0 13/13 and P1 11/11 verified |
+
+The original `v1.0.0` entry below remains the migration-closure release. This `v1.1.0` entry records the later post-closure stabilization phase that expanded the packet to 13 phases.
+
+---
+
 ## [v1.0.0] - 2026-04-01
 
-This release closes the full 12-phase ESM Module Compliance packet at `.opencode/specs/02--system-spec-kit/023-esm-module-compliance`. The point of the work was simple: make the runtime tell the truth, make search trustworthy again, and make saved memory useful instead of boilerplate.
+This release closed the original 12-phase ESM Module Compliance packet at `.opencode/specs/02--system-spec-kit/023-esm-module-compliance`. The point of the work was simple: make the runtime tell the truth, make search trustworthy again, and make saved memory useful instead of boilerplate.
 
 Across 10 days, the packet migrated `@spec-kit/shared` and `@spec-kit/mcp-server` to native ESM (Node's modern module system), kept `@spec-kit/scripts` on CommonJS (Node's older module system) without faking compatibility, fixed search failures that could return zero results, audited 186 spec folders, rebuilt the memory database from clean inputs, and raised JSON-mode memory saves from unusable 0/100 output to a repeatable 55-75/100 range. Final verification ended at 9480+ passing tests with 0 failures and 0 skipped.
 
@@ -171,7 +248,7 @@ Backward compatibility was preserved by migrating legacy data before the stricte
 | `023-esm-module-compliance/009-reindex-validator-false-positives/` | File-aware validation, canonical `contextType` cleanup, schema v25, duplicate-row cleanup |
 | `023-esm-module-compliance/010-search-retrieval-quality-fixes/` | Intent propagation, folder recovery, adaptive truncation, metadata-only fallback, confidence floor |
 | `023-esm-module-compliance/011-indexing-and-adaptive-fusion/` | Search index repair after repo move, CocoIndex re-index, adaptive fusion enablement, lexical score propagation |
-| `023-esm-module-compliance/012-memory-save-quality-pipeline/` | Normalization wiring, message synthesis, title derivation, decision dedup, V8 relaxation, quality floor |
+| `023-esm-module-compliance/012-memory-save-quality-pipeline` | Normalization wiring, message synthesis, title derivation, decision dedup, V8 relaxation, quality floor |
 
 ### Tests
 

@@ -74,7 +74,10 @@ export function setRuntimeEnv(runtime: RuntimeFixture['runtime']): void {
   delete process.env.CLAUDE_SESSION_ID;
   delete process.env.MCP_SERVER_NAME;
   delete process.env.CODEX_CLI;
+  delete process.env.CODEX_THREAD_ID;
   delete process.env.CODEX_SANDBOX;
+  delete process.env.CODEX_TUI_RECORD_SESSION;
+  delete process.env.CODEX_TUI_SESSION_LOG_PATH;
   delete process.env.COPILOT_CLI;
   delete process.env.GITHUB_COPILOT_TOKEN;
   delete process.env.GEMINI_CLI;
@@ -86,6 +89,7 @@ export function setRuntimeEnv(runtime: RuntimeFixture['runtime']): void {
       break;
     case 'codex-cli':
       process.env.CODEX_CLI = '1';
+      process.env.CODEX_THREAD_ID = 'fixture-codex-thread';
       break;
     case 'copilot-cli':
       process.env.COPILOT_CLI = '1';
@@ -102,7 +106,10 @@ export function clearRuntimeEnv(): void {
   delete process.env.CLAUDE_SESSION_ID;
   delete process.env.MCP_SERVER_NAME;
   delete process.env.CODEX_CLI;
+  delete process.env.CODEX_THREAD_ID;
   delete process.env.CODEX_SANDBOX;
+  delete process.env.CODEX_TUI_RECORD_SESSION;
+  delete process.env.CODEX_TUI_SESSION_LOG_PATH;
   delete process.env.COPILOT_CLI;
   delete process.env.GITHUB_COPILOT_TOKEN;
   delete process.env.GEMINI_CLI;

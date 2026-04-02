@@ -23,7 +23,7 @@ The Spec Kit Memory graph has 3,854 causal edges at 79.92% coverage but is under
 
 **Key Decisions**: Diagnose first (trace existing pipeline before building), then Build graph artifacts, then improve Retrieval, then Surface provenance, then add Maintenance features.
 
-**Critical Dependencies**: Existing search pipeline, causal graph, feature flag system, research findings from `007-external-graph-memory-research/research/research.md`.
+**Critical Dependencies**: Existing search pipeline, causal graph, feature flag system, research findings from `../007-external-graph-memory-research/research/research.md`.
 
 ---
 
@@ -150,6 +150,17 @@ Implement 8 improvements that turn the existing graph from a passive structure i
 
 ---
 
+### Acceptance Scenarios
+
+- **Given** a query like `memory_search("Semantic Search")` starts with weak primary recall, **When** concept expansion and graph fallback are enabled, **Then** the query returns relevant graph-assisted results.
+- **Given** the graph contains stable communities, **When** community summaries are generated, **Then** topic-level retrieval can surface a useful summary even when direct memory matches are weak.
+- **Given** a structural retrieval result is returned, **When** provenance is enabled, **Then** the envelope includes graph evidence with edges or communities that explain the result.
+- **Given** an older edge is contradicted by newer information, **When** contradiction detection runs, **Then** the stale edge receives an `invalid_at` timestamp.
+- **Given** a memory is retrieved successfully multiple times, **When** usage-weighted ranking is enabled, **Then** that memory gains a bounded ranking boost.
+- **Given** a rollout issue appears in any improvement, **When** the corresponding `SPECKIT_*` feature flag is disabled, **Then** retrieval falls back to the prior behavior without breaking the rest of the pipeline.
+
+---
+
 <!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
@@ -269,7 +280,7 @@ Implement 8 improvements that turn the existing graph from a passive structure i
 ## RELATED DOCUMENTS
 
 - **Prior Research**: See `../007-external-graph-memory-research/research/research.md`
-- **Cross-Dependency**: See `../../024-compact-code-graph/025-tool-routing-enforcement/spec.md` — tool routing enforcement must coordinate with graph improvements
+- **Cross-Dependency**: See `../../../024-compact-code-graph/025-tool-routing-enforcement/spec.md` — tool routing enforcement must coordinate with graph improvements
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`

@@ -1,18 +1,21 @@
 {
-  "specFolder": "024-compact-code-graph",
-  "description": "Compact code graph session-start injection debug",
+  "specFolder": "02--system-spec-kit/024-compact-code-graph",
+  "description": "Spec: Hybrid Context Injection — Hook + Tool Architecture",
   "keywords": [
-    "compact",
-    "code",
-    "graph",
-    "session-start",
+    "spec",
+    "hybrid",
+    "context",
     "injection",
-    "debug"
+    "hook",
+    "tool",
+    "architecture"
   ],
-  "lastUpdated": "2026-04-02T09:26:00.639Z",
+  "lastUpdated": "2026-04-02T15:04:54.037Z",
   "specId": "024",
   "folderSlug": "compact-code-graph",
-  "parentChain": [],
+  "parentChain": [
+    "02--system-spec-kit"
+  ],
   "memorySequence": 11,
   "memoryNameHistory": [
     "30-03-26_16-53__updated-all-15-spec-documentation-files-in-024.md",

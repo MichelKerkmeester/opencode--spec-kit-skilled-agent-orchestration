@@ -7,9 +7,9 @@ description: "Cross-runtime tool fallback ensures context injection works on run
 
 ## 1. OVERVIEW
 
-Cross-runtime tool fallback ensures context injection works on runtimes without hook support via tool-based approach.
+Cross-runtime fallback ensures context injection remains available when runtime hooks are missing or unavailable.
 
-Runtimes without Claude Code hooks (Codex CLI, Copilot CLI, Gemini CLI) use tool-based recovery. CLAUDE.md and agent definitions instruct the AI to call memory_context and memory_match_triggers manually after compaction. Runtime detection identifies the active runtime and its hook policy.
+Hook-capable runtimes can auto-prime through their runtime-specific adapters when available. OpenCode is the non-hook runtime and should recover through the tool-based path, starting with `session_bootstrap()` on fresh start or after `/clear`. If hook context is unavailable in another runtime, fall back to the same tool-based recovery sequence. Runtime detection identifies the active runtime and its hook policy.
 
 ---
 

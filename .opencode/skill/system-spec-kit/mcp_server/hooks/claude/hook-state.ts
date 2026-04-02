@@ -27,6 +27,8 @@ export interface HookState {
   updatedAt: string;
 }
 
+const MAX_RECENT_STATE_AGE_MS = 24 * 60 * 60 * 1000;
+
 /** SHA-256 hash of cwd, first 12 chars */
 export function getProjectHash(): string {
   return createHash('sha256').update(process.cwd()).digest('hex').slice(0, 12);
@@ -56,6 +58,44 @@ export function ensureStateDir(): void {
 export function loadState(sessionId: string): HookState | null {
   try {
     const raw = readFileSync(getStatePath(sessionId), 'utf-8');
+    return JSON.parse(raw) as HookState;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Load the most recently updated hook state file for this project.
+ * Returns null when no state exists or the newest state is older than maxAgeMs.
+ */
+export function loadMostRecentState(maxAgeMs: number = MAX_RECENT_STATE_AGE_MS): HookState | null {
+  try {
+    const dir = getStateDir();
+    const candidates = readdirSync(dir).filter((file) => file.endsWith('.json'));
+    if (candidates.length === 0) {
+      return null;
+    }
+
+    let newestPath: string | null = null;
+    let newestMtimeMs = -1;
+    for (const file of candidates) {
+      const filePath = join(dir, file);
+      const mtimeMs = statSync(filePath).mtimeMs;
+      if (mtimeMs > newestMtimeMs) {
+        newestMtimeMs = mtimeMs;
+        newestPath = filePath;
+      }
+    }
+
+    if (!newestPath) {
+      return null;
+    }
+
+    if (Date.now() - newestMtimeMs > maxAgeMs) {
+      return null;
+    }
+
+    const raw = readFileSync(newestPath, 'utf-8');
     return JSON.parse(raw) as HookState;
   } catch {
     return null;

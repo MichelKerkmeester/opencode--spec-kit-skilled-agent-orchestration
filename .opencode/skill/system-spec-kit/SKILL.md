@@ -2,7 +2,7 @@
 name: system-spec-kit
 description: "Unified documentation and context preservation: spec folder workflow (levels 1-3+), CORE + ADDENDUM template architecture (v2.2), validation, and Spec Kit Memory for context preservation. Mandatory for all file modifications."
 allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
-version: 2.2.27.0
+version: 3.2.0.0
 ---
 
 <!-- Keywords: spec-kit, speckit, documentation-workflow, spec-folder, template-enforcement, context-preservation, progressive-documentation, validation, spec-kit-memory, vector-search, hybrid-search, bm25, rrf-fusion, fsrs-decay, constitutional-tier, checkpoint, importance-tiers, cognitive-memory, co-activation, tiered-injection -->
@@ -556,11 +556,11 @@ Memory files are always saved to the child folder's `memory/` directory (e.g., `
 
 Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` with 33 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
+**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` with 43 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
-**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, with shared-memory operations available under `/memory:manage shared`, while `/spec_kit:resume` owns session recovery using shared memory tools. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
+**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, with shared-memory operations available under `/memory:manage shared`, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
-**MCP Tools (18 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
+**MCP Tools (18 most-used of 43 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
 | Tool                            | Layer | Purpose                                           |
 | ------------------------------- | ----- | ------------------------------------------------- |
@@ -634,7 +634,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
 - **Hydra roadmap metadata** — `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` plus canonical `SPECKIT_MEMORY_*` and legacy `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars. Note: `SPECKIT_MEMORY_ADAPTIVE_RANKING=true` does affect live retrieval (shadow or promoted ranking stage); the remaining roadmap flags are metadata-only.
-- **Feature catalog** — 255 documented features across 21 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Feature catalog** — 291 documented features across 22 categories (`feature_catalog/01--retrieval/` through `22--context-preservation-and-code-graph/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 - **Tree-thinning threshold** — 150 tokens with merge group cap of 3 for improved file visibility in memory context
@@ -660,7 +660,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_ENTITY_LINKING`     | on      | Links memories sharing extracted entities during search |
 | `SPECKIT_QUALITY_LOOP`       | off     | Enables verify-fix-verify quality loop on save with up to 2 autofix retries |
 | `SPECKIT_RELATIONS`          | on      | Correction tracking with undo semantics (superseded/deprecated/refined/merged). Graduated to default ON |
-| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 33 MCP tools; rejects hallucinated parameters |
+| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 43 MCP tools; rejects hallucinated parameters |
 | `SPECKIT_DEGREE_BOOST`       | on      | Typed weighted-degree channel in graph signal scoring |
 | `SPECKIT_GRAPH_SIGNALS`      | on      | Graph momentum and causal depth scoring signals |
 | `SPECKIT_COMMUNITY_DETECTION` | on     | Community detection clustering for graph-aware retrieval |
@@ -747,7 +747,7 @@ Automated context preservation via Claude Code hooks. Hooks are transport reliab
 
 **Lifecycle flow:** PreCompact → cache → SessionStart(compact) → inject cached context. On startup: primes with tool overview + CocoIndex status. On resume: loads prior session state.
 
-**Cross-runtime fallback:** Non-hook runtimes (Codex CLI, Copilot CLI, Gemini CLI) use tool-based recovery via CLAUDE.md instructions: `memory_context({ mode: "resume", profile: "resume" })`.
+**Cross-runtime handling:** Hook-capable runtimes use runtime-specific adapters where available. OpenCode remains the primary non-hook runtime and should recover with `session_bootstrap()` on fresh start or after `/clear`, then `session_resume()` after reconnect when needed.
 
 **Token budgets:** Compaction injection: 4000 tokens. Session priming: 2000 tokens. Hook timeout: 1800ms (<2s hard cap).
 
@@ -965,8 +965,8 @@ Automated context preservation via Claude Code hooks. Hooks are transport reliab
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
 | Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
-| Feature Catalog   | `feature_catalog/` (21 categories, 255 documented features)                | Per-feature current-reality docs  |
-| Testing Playbook  | `manual_testing_playbook/` (19 categories, 227 per-test files)             | Manual validation matrix          |
+| Feature Catalog   | `feature_catalog/` (22 categories, 291 documented features)                | Per-feature current-reality docs  |
+| Testing Playbook  | `manual_testing_playbook/` (22 categories, 311 scenario files)             | Manual validation matrix          |
 
 ---
 

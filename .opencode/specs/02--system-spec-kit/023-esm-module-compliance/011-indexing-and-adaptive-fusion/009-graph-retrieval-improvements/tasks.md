@@ -30,8 +30,10 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-0 -->
-## Phase 0: Diagnosis
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Diagnosis
 
 - [x] T001 Trace `memory_search("Semantic Search")` through full pipeline, log each stage output (`scratch/diagnosis-trace.md`) [EVIDENCE: 5 results returned (not 0), confidence 0.341, 650ms pipeline, all stages traced]
 - [x] T002 Check if `SPECKIT_EMPTY_RESULT_RECOVERY_V1` fires and what it returns — recovery fires with status "low_confidence", reason "low_signal_query", recommendedAction "switch_mode". Does NOT use graph expansion.
@@ -42,12 +44,11 @@ contextType: "implementation"
 - [x] T005c **[025]** Map existing `envelope.hints` pipeline in context-server.ts for provenance reuse — existing hint injection pipeline identified for Phase C provenance display
 - [x] T005d **[025]** Verify `SessionSnapshot.cocoIndexAvailable` — confirmed exists, graph improvements integrate naturally with session snapshot
 - [x] T006 Update this plan with reduced/expanded scope based on diagnosis — no scope reduction, all 8 improvements needed. Minor reuse: extend query-intent-classifier, recovery-payload, envelope.hints
-<!-- /ANCHOR:phase-0 -->
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- ANCHOR:phase-a -->
-## Phase A: Build Graph Artifacts
+### Build Graph Artifacts
 
 - [x] T007 Research clustering — prior work chose BFS connected-component + Louvain escalation [EVIDENCE: community-detection.ts exists from prior implementation, 22KB]
 - [x] T008 Implement community detection — already exists in `lib/graph/community-detection.ts` (BFS + Louvain escalation check) [EVIDENCE: 22KB, detectCommunitiesBFS(), shouldEscalateToLouvain()]
@@ -57,12 +58,13 @@ contextType: "implementation"
 - [x] T012 [P] Create feature catalog entry for community summaries — 12 feature catalog entries created covering all 8 improvements [EVIDENCE: feature_catalog/14-community-search-fallback.md, 15-dual-level-retrieval.md, 17-temporal-edges.md, 18-contradiction-detection.md, 20-result-provenance.md, 23-usage-weighted-ranking.md, etc.]
 - [x] T013 [P] Unit tests for community detection — `tests/community-detection.vitest.ts` exists from prior work [EVIDENCE: tests exist]
 - [x] T014 Verify community summaries are searchable via memory_search [EVIDENCE: community_summaries table exists with summaries; searchCommunities() tested (5/5 pass); community-search.ts wired into memory-search.ts handler; requires MCP server restart for live test]
-<!-- /ANCHOR:phase-a -->
 
 ---
 
-<!-- ANCHOR:phase-b -->
-## Phase B: Improve Retrieval
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Improve Retrieval
 
 - [x] T015 Implement query-time concept extraction — extended entity-linker.ts with "semantic"→"search", "semantics"→"search", "ranking"→"search", "relevance"→"search" aliases + getConceptExpansionTerms() [EVIDENCE: entity-linker.ts:127-130, all 9269 tests pass]
 - [x] T016 Wire concept expansion into Stage 1 candidate generation — D2 concept routing now expands query with alias terms via effectiveQuery, gated by SPECKIT_QUERY_CONCEPT_EXPANSION [EVIDENCE: stage1-candidate-gen.ts, 0 TS errors]
@@ -74,24 +76,20 @@ contextType: "implementation"
 - [x] T022 [P] Write unit tests for concept extraction — `tests/concept-extraction.vitest.ts` covers nounPhrases, routeQueryConcepts, getConceptExpansionTerms [EVIDENCE: 5/5 tests pass]
 - [x] T023 [P] Write integration test: community search returns results — `tests/community-search.vitest.ts` covers searchCommunities with scoring, ranking, dedup [EVIDENCE: 5/5 tests pass]
 - [x] T024 Benchmark retrieval latency — prior session diagnosis: 650ms pipeline total for "Semantic Search" query, within 200ms overhead budget per NFR-P01. Community search fallback adds keyword matching (sub-5ms) not embedding calls. [EVIDENCE: scratch/diagnosis-trace.md 650ms baseline, community-search uses SQLite LIKE not vector search]
-<!-- /ANCHOR:phase-b -->
 
 ---
 
-<!-- ANCHOR:phase-c -->
-## Phase C: Surface Provenance
+### Surface Provenance
 
 - [x] T025 Add `graphEvidence` field to search result type — added to PipelineRow in types.ts and MemoryResultEnvelope in search-results.ts [EVIDENCE: types.ts:47, formatters/search-results.ts:155]
 - [x] T026 Populate graphEvidence with edges and communities in stage2-fusion.ts — populated during causal/co-activation boost [EVIDENCE: stage2-fusion.ts:385-508]
 - [x] T027 Add `SPECKIT_RESULT_PROVENANCE` feature flag [EVIDENCE: search-flags.ts:613 isResultProvenanceEnabled()]
 - [x] T028 [P] Write tests for provenance envelope — `tests/provenance-envelope.vitest.ts` covers graphEvidence shape, backward compat, edge/community/boostFactor fields [EVIDENCE: 5/5 tests pass]
 - [x] T029 graphEvidence included in formatted memory_search response via search-results.ts [EVIDENCE: formatters/search-results.ts:486-490]
-<!-- /ANCHOR:phase-c -->
 
 ---
 
-<!-- ANCHOR:phase-d -->
-## Phase D: Maintenance Features
+### Maintenance Features
 
 - [x] T030 Add `valid_at`/`invalid_at` to edge schema — `lib/graph/temporal-edges.ts` (5.4KB): ensureTemporalColumns(), invalidateEdge(), getValidEdges() [EVIDENCE: file created]
 - [x] T031 Implement contradiction detection — `lib/graph/contradiction-detection.ts` (4.9KB): detectContradictions() checks supersedes relations and conflicting same-source-target edges [EVIDENCE: file created]
@@ -103,18 +101,20 @@ contextType: "implementation"
 - [x] T037 [P] Write tests for contradiction detection — `tests/contradiction-detection.vitest.ts` covers flag gating, supersedes, conflicting pairs, non-conflicting [EVIDENCE: 5/5 tests pass]
 - [x] T038 [P] Write tests for usage-weighted ranking — `tests/usage-weighted-ranking.vitest.ts` covers ensureUsageColumn, incrementAccessCount, getAccessCount, computeUsageBoost [EVIDENCE: 6/6 tests pass]
 - [x] T039 Verify outdated facts appear with appropriate markers — contradiction detection unit tested: supersedes edges invalidated, conflicting relations detected, invalid_at timestamp set. [EVIDENCE: tests/contradiction-detection.vitest.ts 5/5 pass; temporal-edges.vitest.ts 24/24 pass; invalidateEdge() sets ISO timestamp on old edges]
-<!-- /ANCHOR:phase-d -->
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:phase-025-coord -->
-## Phase 025 Coordination (cross-dependency)
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Phase 025 Coordination (cross-dependency)
 
 - [x] T040 **[025]** After Phase B (always-on graph), update `buildServerInstructions()` routing to advertise graph retrieval modes [EVIDENCE: context-server.ts:624 — graph retrieval line added to server instructions]
 - [x] T041 **[025]** After Phase B, add community search to `PrimePackage.routingRules` [EVIDENCE: memory-surface.ts — routingRules field with graphRetrieval and communitySearch added to PrimePackage interface and buildPrimePackage()]
 - [x] T042 **[025]** After Phase C (provenance), verify provenance flows through existing `envelope.hints` pipeline [EVIDENCE: formatters/search-results.ts:486-490 — graphEvidence populated from pipeline row when SPECKIT_RESULT_PROVENANCE enabled]
-- [x] T043 **[025]** Ensure `gate-tool-routing.md` constitutional memory includes graph retrieval routing rules [EVIDENCE: constitutional/gate-tool-routing.md created with tool routing decision tree, retrieval levels, and graph feature flags]
-<!-- /ANCHOR:phase-025-coord -->
+- [x] T043 **[025]** Ensure `../../../../../skill/system-spec-kit/constitutional/gate-tool-routing.md` constitutional memory includes graph retrieval routing rules [EVIDENCE: `../../../../../skill/system-spec-kit/constitutional/gate-tool-routing.md` contains the routing decision tree, retrieval levels, and graph feature flags]
+<!-- /ANCHOR:phase-3 -->
 
 ---
 

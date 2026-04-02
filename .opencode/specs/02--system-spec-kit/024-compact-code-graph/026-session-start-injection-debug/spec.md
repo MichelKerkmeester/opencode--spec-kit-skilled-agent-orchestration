@@ -56,7 +56,7 @@ This is **Phase 26** of the Compact Code Graph specification.
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-02 |
 | **Branch** | `system-speckit/024-compact-code-graph` |
 <!-- /ANCHOR:metadata -->

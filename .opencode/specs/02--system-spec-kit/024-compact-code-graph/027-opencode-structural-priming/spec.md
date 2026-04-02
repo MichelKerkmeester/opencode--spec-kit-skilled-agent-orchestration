@@ -18,7 +18,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 27 (`027-opencode-structural-priming`) |
 | **Predecessor** | Groundwork from `018-non-hook-auto-priming`, `024-hookless-priming-optimization`, and the startup-priming investigation in `026-session-start-injection-debug` |
-| **Successor** | TBD — future follow-on must reference the full folder slug `027-opencode-structural-priming` |
+| **Successor** | `028-startup-highlights-remediation` |
 | **Handoff Criteria** | Non-hook runtimes, with OpenCode as the primary example, receive automatic structural bootstrap context plus explicit recovery/tool-routing guidance on first turn |
 
 <!-- ANCHOR:phase-context -->
@@ -52,7 +52,7 @@ This is **Phase 27** under the Compact Code Graph packet.
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-02 |
 | **Branch** | `system-speckit/024-compact-code-graph` |
 <!-- /ANCHOR:metadata -->

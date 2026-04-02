@@ -10,6 +10,9 @@ importance_tier: "normal"
 contextType: "implementation"
 ---
 
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
 <!-- SPECKIT_ADDENDUM: Phase - Child Header -->
 
 | **Parent Spec** | ../spec.md |
@@ -19,7 +22,6 @@ contextType: "implementation"
 | **Successor** | 002-persist-tuned-thresholds |
 | **Handoff Criteria** | promotionGate result triggers threshold tuning; test proves gate→action path |
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 1** of the adaptive-ranking-prerequisites specification.
@@ -34,14 +36,10 @@ This is **Phase 1** of the adaptive-ranking-prerequisites specification.
 **Deliverables**:
 - Wired promotionGate→action path in shadow evaluation scheduler
 - Unit tests proving the connection
-<!-- /ANCHOR:phase-context -->
 
 ---
 
 # Feature Specification: Wire PromotionGate to Action
-
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -147,7 +145,14 @@ Close the feedback loop: when the shadow evaluation scheduler completes a cycle,
 
 ---
 
-## 8. POST-IMPLEMENTATION REVIEW FINDINGS
+### Acceptance Scenarios
+
+- **Given** adaptive ranking is enabled and `runShadowEvaluation()` returns a ready promotion gate, **When** the scheduler finishes the cycle, **Then** `tuneAdaptiveThresholdsAfterEvaluation()` is invoked.
+- **Given** adaptive ranking is disabled, **When** a shadow evaluation cycle completes, **Then** the tuning path exits without mutating thresholds.
+- **Given** the promotion gate fails, **When** the scheduler processes the result, **Then** threshold tuning does not run.
+- **Given** the phase regression suite runs after wiring is added, **When** TypeScript and Vitest checks complete, **Then** the new gate-path tests pass with no regressions.
+
+**Post-Implementation Review Findings**
 
 > Deep review completed (15 iterations across two rounds). All P1 findings are fixed. No deferred items remain.
 

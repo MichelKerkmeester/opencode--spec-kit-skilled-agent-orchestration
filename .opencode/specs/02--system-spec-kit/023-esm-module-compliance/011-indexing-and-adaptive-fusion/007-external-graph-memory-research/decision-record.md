@@ -117,8 +117,7 @@ We already know the internal graph is structurally healthy but not clearly helpi
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Prioritize Community Summarization and Query Expansion Over Temporal Edges
+### ADR-002: Prioritize Community Summarization and Query Expansion Over Temporal Edges
 
 ### Metadata
 
@@ -165,6 +164,5 @@ The research survey identified 12 improvement candidates. The most impactful div
 | 5 | **Open Horizons?** | PASS | Construction improvements remain valid for later phases |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002 -->
 
 ---

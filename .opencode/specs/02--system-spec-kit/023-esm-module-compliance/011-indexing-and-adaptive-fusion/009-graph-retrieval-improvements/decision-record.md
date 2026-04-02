@@ -62,8 +62,7 @@ The system already has empty-result recovery (`SPECKIT_EMPTY_RESULT_RECOVERY_V1`
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Feature Flag Per Improvement
+### ADR-002: Feature Flag Per Improvement
 
 ### Metadata
 
@@ -94,12 +93,10 @@ The system already has empty-result recovery (`SPECKIT_EMPTY_RESULT_RECOVERY_V1`
 
 **What improves**: Any single improvement can be disabled without affecting others.
 **What it costs**: 8 new feature flags in the flag registry.
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Community Summaries as Searchable Artifacts
+### ADR-003: Community Summaries as Searchable Artifacts
 
 ### Metadata
 
@@ -130,12 +127,10 @@ Community detection produces clusters. The summaries need to be accessible durin
 
 **What improves**: Community summaries can be ranked differently from individual memories, regenerated without affecting memory records, and filtered out of results when not wanted.
 **What it costs**: New artifact type in the schema (table or collection).
-<!-- /ANCHOR:adr-003 -->
 
 ---
 
-<!-- ANCHOR:adr-004 -->
-## ADR-004: Coordinate with Phase 025 Tool Routing Enforcement
+### ADR-004: Coordinate with Phase 025 Tool Routing Enforcement
 
 ### Metadata
 
@@ -173,6 +168,5 @@ Additionally, Phase 025 found:
 
 **What improves**: Graph improvements are discoverable by AI assistants via server instructions, PrimePackage, and constitutional memory. Existing code (query-intent-classifier, envelope.hints) is reused rather than duplicated.
 **What it costs**: Cross-spec coordination overhead. Tasks T040-T043 added for coordination checkpoints.
-<!-- /ANCHOR:adr-004 -->
 
 ---

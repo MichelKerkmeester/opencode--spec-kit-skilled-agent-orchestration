@@ -8,19 +8,74 @@ contextType: "implementation"
 ---
 # Tasks: Wire PromotionGate to Action
 
-## Task List
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-- [x] **T1** [P0] Import `tuneAdaptiveThresholdsAfterEvaluation` and `getAdaptiveMode` into `shadow-evaluation-runtime.ts`
-- [x] **T2** [P0] Add conditional tuning call after `runShadowEvaluation()` returns in scheduler cycle
-- [x] **T3** [P0] Verify type compatibility between evaluation result shape and tuning function signature
-- [x] **T4** [P0] Add test: gate pass + adaptive enabled → tune called (`shadow-evaluation-runtime.vitest.ts`)
-- [x] **T5** [P0] Add test: gate fail → tune skipped (`shadow-evaluation-runtime.vitest.ts`)
-- [x] **T6** [P0] Add test: adaptive disabled → no-op (`shadow-evaluation-runtime.vitest.ts`)
-- [x] **T7** [P0] Run full vitest suite (41 existing + 3 new must pass)
-- [x] **T8** [P0] Compile check: `npx tsc --noEmit`
+---
 
-## Estimated LOC
-~30-50 lines (import + conditional call + 3 test cases)
+<!-- ANCHOR:notation -->
+## Task Notation
 
-## Priority
-All tasks are P0 — required for phase completion.
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P0/P1] Description (file path)`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 [P0] Import `tuneAdaptiveThresholdsAfterEvaluation` and `getAdaptiveMode` into `mcp_server/lib/feedback/shadow-evaluation-runtime.ts`
+- [x] T002 [P0] Add the guarded tuning call immediately after `runShadowEvaluation()` returns in the scheduler cycle
+- [x] T003 [P0] Verify the evaluation result shape is compatible with the tuning function contract
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 [P0] Add test: gate pass + adaptive enabled triggers tuning in `mcp_server/tests/shadow-evaluation-runtime.vitest.ts`
+- [x] T005 [P0] Add test: gate fail skips tuning in `mcp_server/tests/shadow-evaluation-runtime.vitest.ts`
+- [x] T006 [P0] Add test: adaptive disabled exits as a no-op in `mcp_server/tests/shadow-evaluation-runtime.vitest.ts`
+- [x] T007 [P0] Keep the change local to runtime wiring and tests so the phase stays inside the planned 30-50 LOC scope
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 [P0] Run the phase-specific shadow evaluation test paths and confirm pass/fail/no-op behavior
+- [x] T009 [P0] Run the full Vitest suite for closure
+- [x] T010 [P0] Run `npx tsc --noEmit` and confirm the phase remains type-safe
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All P0 tasks marked `[x]`
+- [x] No `[B]` blocked tasks remain
+- [x] Gate-pass, gate-fail, and adaptive-disabled paths are covered by tests
+- [x] `npx tsc --noEmit` passes
+- [x] Handoff criteria met: promotionGate results now drive adaptive tuning when the gate is ready
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Implementation Summary**: See `implementation-summary.md`
+- **Successor**: See `../002-persist-tuned-thresholds/spec.md`
+<!-- /ANCHOR:cross-refs -->

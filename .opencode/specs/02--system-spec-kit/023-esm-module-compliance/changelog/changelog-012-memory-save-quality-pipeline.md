@@ -1,6 +1,6 @@
 ## [v0.12.0] - 2026-04-01
 
-Memories saved through the automated pipeline now contain useful context instead of empty templates. This phase focused on structured save requests (save inputs submitted as organized fields instead of a full chat transcript), with six behavior fixes across nine source files so JSON-based saves (saves submitted as structured data) keep clear summaries, decisions, file references, and fair quality scores while the normal transcript-based path stays unchanged.
+This phase implemented the structured-save quality remediation work for the memory pipeline, then received a structural doc-alignment pass on 2026-04-02. The code changes are in place across the existing save pipeline, but the phase packet still leaves fresh runtime score evidence and final validator capture open, so these notes describe implemented behavior without claiming full rerun closure.
 
 > Spec folder: `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline` (Level 3)
 
@@ -8,49 +8,63 @@ Memories saved through the automated pipeline now contain useful context instead
 
 ## Saving Memories (4)
 
-These changes repair the part of the save pipeline that was dropping useful context before it could be turned into a readable memory.
+These changes repair the part of the save pipeline that was dropping useful context before it could become a readable memory.
 
 ### Structured save requests now keep the details they were given
 
-**Problem:** Structured save requests arrived with the right information, but not in the shape the rest of the save pipeline expected. That caused later stages to treat real summaries, decisions, and changed files as if they were missing, so the final memory read like a blank template instead of a record of real work.
+**Problem:** Structured save requests arrived with the right information, but not in the shape the rest of the save pipeline expected.
 
-**Fix:** The system now converts structured save requests into the format the pipeline expects before extraction begins. As a result, structured saves now carry forward the important session details that transcript-based saves already preserved.
+**Fix:** The workflow now routes JSON and STDIN payloads through the existing normalization path before extraction begins.
 
 ### JSON-only saves can now tell a readable story
 
-**Problem:** Many JSON-based saves do not include a transcript (the back-and-forth conversation between a user and an assistant). Without that conversation shape, the memory generator had very little material to explain what happened, so it produced thin placeholder text instead of a useful narrative.
+**Problem:** Structured saves without a transcript did not have enough narrative material for the extractor chain to explain what happened.
 
-**Fix:** The system now builds a simple conversation from the structured fields when no transcript is present. That gives JSON-only saves enough context to explain what work happened and why, instead of falling back to an empty shell.
+**Fix:** The extractor stack now synthesizes a minimal structured conversation when prompts are absent so JSON-only saves no longer collapse into a thin placeholder.
 
 ### Titles and summaries now reflect the actual work
 
-**Problem:** Even when a save request included a strong session summary, the final memory often used a generic title and description. That made different saves look interchangeable and forced readers to search through the body to understand what the session was actually about.
+**Problem:** Even strong session summaries could still end up as generic titles and generic opening text.
 
-**Fix:** Saved memories now use the session's own summary to produce specific titles and opening descriptions. Readers can tell what changed and why from the top of the memory instead of decoding boilerplate text.
+**Fix:** The collection path now derives title and summary fields from the structured session data instead of relying on boilerplate.
 
 ### Decision and file lists are easier to trust
 
-**Problem:** Decision lists could repeat the same point several times, and file lists could grow noisy enough to bury the most important references. That made saved memories feel less reliable and harder to scan during later review.
+**Problem:** Decision strings could repeat themselves and file lists could become noisy enough to bury the important references.
 
-**Fix:** Saved memories now remove repeated decisions and keep file references focused on the most relevant work. The result is a cleaner summary that is easier to review and more useful as future context.
+**Fix:** The phase reduced repeated decisions and tightened key-file shaping so saved memories stay easier to scan later.
 
 ---
 
-## Bug Fixes (2)
+## Safeguards (2)
 
-These changes fix quality checks that were unfairly dragging down good structured saves.
+### Related sibling phases no longer look like contamination by default
 
-### Related phase references no longer look like contamination
+**Problem:** Structured saves often mention nearby child phases from the same workstream. The quality validator could treat those valid references as foreign contamination and unfairly drag scores down.
 
-**Problem:** Structured saves often mention nearby phases from the same workstream. The internal quality checker that prevents cross-contamination (unrelated material leaking in from another documentation area) sometimes treated those valid references as foreign content, which lowered scores even when the memory was accurate and on topic.
+**Fix:** The validator now relaxes this check only for structured same-parent sibling references, without turning it into a broad cross-spec bypass.
 
-**Fix:** The checker now allows valid references to closely related phase work when evaluating structured saves. It still guards against real cross-contamination, but it no longer penalizes memories for mentioning nearby work that belongs in the same story.
+### Structured saves now have a bounded quality floor instead of a cliff
 
-### Useful structured saves now receive a fair baseline score
+**Problem:** A structured save could show strong signal in most areas and still receive a near-zero quality outcome.
 
-**Problem:** A structured save could show clear value across most quality checks and still end up with a near-zero score. That made good saves look broken, hid real progress, and pushed the pipeline toward generic output.
+**Fix:** The scorer now applies a damped, capped quality floor for structured input so obviously useful saves are not graded like empty output.
 
-**Fix:** The scoring system now gives clearly useful structured saves a fair minimum score when they show strong signal across most quality dimensions. This keeps quality reports aligned with what a reader would actually see: a useful memory should no longer be scored like an empty one.
+---
+
+## Verification State (2)
+
+### Structural packet alignment is complete
+
+**Problem:** The Level 3 phase docs needed anchor and template cleanup before strict recursive validation could succeed.
+
+**Fix:** The phase artifacts were aligned to the current template contract on 2026-04-02.
+
+### Fresh runtime evidence is still tracked in the phase packet
+
+**Problem:** The implementation landed before the phase completed its fresh structured-save reruns and final validator snapshot.
+
+**Fix:** The changelog now reflects that truth directly. The phase tasks, checklist, and implementation summary still leave runtime score outcomes, transcript-mode regression evidence, and final closure artifacts marked pending.
 
 ---
 
@@ -58,38 +72,41 @@ These changes fix quality checks that were unfairly dragging down good structure
 
 | Metric | Before | After |
 | ------ | ------ | ----- |
-| Structured save quality | `0/100` | `55-75/100` |
-| TypeScript errors | `0` | `0` |
-| Phase sub-tasks complete | `0/22` | `22/22` |
+| Structured-save remediation themes implemented | `0/6` | `6/6` |
+| Core modules tracked in implementation summary | `0` | `6` |
+| Structural phase docs aligned to current template | `0/4` | `4/4` |
+| Fresh runtime reruns and final validator capture | `0/5` | `Pending in phase docs` |
 
-Verification focused on restoring useful structured-save output and keeping the codebase at zero TypeScript errors. No new automated test files were added in this phase.
+This phase changed the save pipeline behavior and the packet structure, but it still carries open rerun evidence in the phase checklist.
 
 ---
 
 <details>
-<summary>Technical Details: Files Changed (9 total)</summary>
+<summary>Technical Details: Files Changed (10 total)</summary>
 
-### Source (9 files)
+### Source (6 files)
 
 | File | Changes |
 | ---- | ------- |
-| `scripts/types/session-types.ts` | Added `filesChanged` support to the structured session payload type. |
-| `scripts/utils/input-normalizer.ts` | Normalized `sessionSummary`, `keyDecisions`, and `filesChanged` into the fields expected by the save workflow. |
-| `scripts/core/workflow.ts` | Routed preloaded structured data through `normalizeInputData()` before downstream extraction. |
-| `scripts/extractors/conversation-extractor.ts` | Added `extractFromJsonPayload()` so JSON-only saves can produce a synthetic conversation when no transcript exists. |
-| `scripts/extractors/collect-session-data.ts` | Derived title and summary fields from `sessionSummary` instead of boilerplate text. |
-| `scripts/extractors/decision-extractor.ts` | Deduplicated plain-string decisions across repeated output fields. |
-| `scripts/core/workflow-path-utils.ts` | Limited `key_files` discovery, filtered research and review iteration folders, and kept file lists focused. |
-| `scripts/lib/validate-memory-quality.ts` | Relaxed V8 allowlist behavior for sibling phase references and adjusted structured-input mode contamination checks. |
-| `scripts/core/quality-scorer.ts` | Added the structured-save scoring floor, including threshold mechanics and the capped fairness rule. |
+| `scripts/core/workflow.ts` | Routed structured payloads through the save workflow with the right normalization and metadata handling. |
+| `scripts/extractors/conversation-extractor.ts` | Added the structured message synthesis path for transcript-free saves. |
+| `scripts/extractors/collect-session-data.ts` | Derived title and summary output from structured session data. |
+| `scripts/extractors/decision-extractor.ts` | Reduced repetition in plain decision-string output. |
+| `scripts/lib/validate-memory-quality.ts` | Added structured sibling-phase contamination handling. |
+| `scripts/core/quality-scorer.ts` | Added the bounded structured quality floor behavior. |
 
 ### Tests (0 files)
 
-No new test files were listed in the implementation summary for this phase.
+No new test files were recorded in the implementation summary for this phase. The packet still tracks fresh runtime score scenarios and transcript-regression reruns as pending follow-up evidence.
 
-### Documentation (0 files)
+### Documentation (4 files)
 
-No documentation files were listed in the implementation summary for this phase.
+| File | Changes |
+| ---- | ------- |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/plan.md` | Records the implementation sequence and the still-open verification gate. |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/tasks.md` | Leaves runtime evidence capture and final closure tasks open instead of overclaiming completion. |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/implementation-summary.md` | Syncs the phase summary to the actual code scope and pending rerun state. |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/changelog/changelog-012-memory-save-quality-pipeline.md` | Updates the release notes to match the implemented work and the still-open verification evidence. |
 
 </details>
 
@@ -99,7 +116,4 @@ No documentation files were listed in the implementation summary for this phase.
 
 No migration required.
 
-Behavior changes to expect:
-
-- JSON-based saves created through `--json` and `--stdin` now preserve specific titles, summaries, decisions, and focused file references instead of boilerplate.
-- Structured saves that are clearly useful now receive quality scores that better match the content they contain.
+Structured saves now pass through a better normalization, synthesis, and quality path. The phase packet still expects fresh runtime evidence before it can claim final rerun closure.

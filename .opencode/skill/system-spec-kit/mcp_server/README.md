@@ -52,7 +52,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 | What | Count | Details |
 |------|-------|---------|
-| **MCP tools** | 43 | Organized across 7 layers (L1 through L7) |
+| **MCP tools** | 43 | Organized across core memory layers plus dedicated code-graph and CocoIndex dispatch groups |
 | **Search channels** | 5 | Vector, FTS5, BM25, Causal Graph, Degree |
 | **Pipeline stages** | 4 | Gather, Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
@@ -87,9 +87,9 @@ The memory system exposes 43 MCP tools through 4 memory slash commands plus the 
 |---------|-------------|------------|
 | `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
-| `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, shared-memory spaces and memberships | 16 tools |
+| `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, shared-memory spaces and memberships | 19 primary tools + 1 helper |
 | `/memory:save` | Save conversation context | 4 tools |
-| `/spec_kit:resume` | Continue or recover an interrupted spec-folder session using shared memory tools | 4 borrowed tools |
+| `/spec_kit:resume` | Continue or recover an interrupted spec-folder session through the broader memory/session recovery stack | Broad helper surface; primary chain uses 3 shared memory tools |
 
 ### Requirements
 
@@ -570,18 +570,18 @@ The smart entry point. You describe what you need and it figures out the best wa
 
 ##### `session_resume`
 
-Resume session with combined memory, code graph and CocoIndex status in a single call. Recommended as the first call on session start or after `/clear`. Returns merged context.
+Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `specFolder` | string | Scope resume to a specific spec folder |
-| `minimal` | boolean | Skip heavy memory context, return only graph + coco + health |
+| `minimal` | boolean | Skip heavy memory context, return code graph, CocoIndex, structural context, hints, and optional session quality without the full memory payload |
 
 ---
 
 ##### `session_bootstrap`
 
-Complete session bootstrap in one call. Combines `session_resume` (minimal) plus `session_health` into a single round-trip. Returns context, health and recommended next actions.
+Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. Combines `session_resume` (minimal) plus `session_health` into a single round-trip and returns context, health, structural readiness and recommended next actions.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -915,7 +915,7 @@ Turn on the shared-memory subsystem. First-time setup creates the database table
 
 ---
 
-#### L6: Analysis (10 tools)
+#### L6: Analysis (8 tools)
 
 ##### `task_preflight`
 
@@ -1060,7 +1060,7 @@ Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results a
 
 ---
 
-#### L7: Maintenance (10 tools)
+#### L7: Maintenance (5 tools)
 
 ##### `memory_index_scan`
 
@@ -1504,7 +1504,8 @@ For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](../SHARED_MEMO
 
 | What You Want To Do | Tool | How |
 |---------------------|------|-----|
-| Resume a session | `memory_context` | Set `mode: "resume"` |
+| Resume a session from scratch | `session_bootstrap` | Use as the first recovery call on session start or after `/clear` |
+| Inspect the detailed merged resume payload | `session_resume` | Use when you want direct resume details without the full bootstrap wrapper |
 | Find a past decision | `memory_context` | Set `intent: "find_decision"` |
 | Search for specific terms | `memory_search` | Use `concepts: ["term1", "term2"]` for AND search |
 | Check triggers on every prompt | `memory_match_triggers` | Pass the user's prompt text |
@@ -1715,7 +1716,7 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | [hooks/README.md](./hooks/README.md) | Lifecycle hook documentation for post-mutation wiring |
 | [../README.md](../README.md) | Parent skill README: system-spec-kit overview |
 | [../SKILL.md](../SKILL.md) | AI agent workflow instructions for this skill |
-| [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 21 categories, 255 features with code references |
+| [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 22 categories, 291 features with code references |
 | [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
 | [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
 

@@ -16,6 +16,12 @@ import {
 import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from './hook-state.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
+type StartupBrief = {
+  graphOutline: string | null;
+  sessionContinuity: string | null;
+  graphSummary: { files: number; nodes: number; edges: number; lastScan: string | null } | null;
+  graphState: 'ready' | 'empty' | 'missing';
+};
 
 // Dynamic import for code-graph-db — may not be available
 let getStats: (() => { lastScanTimestamp: string | null; [key: string]: unknown }) | null = null;
@@ -24,6 +30,15 @@ try {
   getStats = mod.getStats;
 } catch {
   // Code graph module not available — skip stale index detection
+}
+
+// Dynamic import for startup brief builder — may not be available
+let buildStartupBrief: (() => StartupBrief) | null = null;
+try {
+  const mod = await import('../../lib/code-graph/startup-brief.js');
+  buildStartupBrief = mod.buildStartupBrief;
+} catch {
+  // Startup brief module not available — keep static startup output
 }
 
 /** Handle source=compact: inject cached PreCompact payload (from 3-source merger) */
@@ -100,9 +115,29 @@ function handleStartup(): OutputSection[] {
     },
   ];
 
+  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  if (startupBrief?.graphOutline) {
+    sections.push({
+      title: 'Structural Context',
+      content: startupBrief.graphOutline,
+    });
+  } else if (startupBrief?.graphState === 'empty') {
+    sections.push({
+      title: 'Structural Context',
+      content: 'Code graph index is empty. Run `code_graph_scan` to build structural context.',
+    });
+  }
+
+  if (startupBrief?.sessionContinuity) {
+    sections.push({
+      title: 'Session Continuity',
+      content: startupBrief.sessionContinuity,
+    });
+  }
+
   // Stale code graph index detection
   try {
-    if (getStats) {
+    if (getStats && startupBrief?.graphState !== 'empty') {
       const stats = getStats();
       const ts = stats.lastScanTimestamp;
       const isStale = !ts || (Date.now() - new Date(ts).getTime() > 24 * 60 * 60 * 1000);

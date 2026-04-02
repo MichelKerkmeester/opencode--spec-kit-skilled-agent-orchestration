@@ -1,9 +1,10 @@
 ---
 title: "Implementation Summary: Startup Context Injection Debug — Hook Runtime Brief + Sibling Handoff"
-description: "Phase 026 has not been implemented yet. This placeholder preserves the required Level 2 structure until work begins."
+description: "Delivered Phase 026 hook-runtime startup brief implementation and verification evidence."
 trigger_phrases:
   - "026 implementation summary"
-importance_tier: "normal"
+  - "startup brief implementation"
+importance_tier: "critical"
 contextType: "summary"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -20,8 +21,9 @@ contextType: "summary"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 026-session-start-injection-debug |
-| **Completed** | Not yet implemented |
+| **Completed** | 2026-04-02 |
 | **Level** | 2 |
+| **Status** | Complete |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -29,20 +31,24 @@ contextType: "summary"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 026 has not been implemented yet. This packet currently captures the startup-injection analysis, the hook-runtime scope boundary, and the handoff to `027-opencode-structural-priming`.
+Phase 026 now ships the hook-runtime startup brief path for Claude and Gemini, while preserving the sibling handoff to `027-opencode-structural-priming` for hookless contract work.
 
-### Current State
+### Delivered Runtime Changes
 
-The specification, plan, tasks, and checklist now reflect the narrowed phase scope: Claude and Gemini startup injection plus reusable helper design live here, while hookless bootstrap payload ownership lives in `027-opencode-structural-priming`.
-
-### Files Changed
-
-| File | Action | Purpose |
+| File | Change | Outcome |
 |------|--------|---------|
-| `spec.md` | Modified | Narrow phase ownership to hook-runtime startup injection and sibling handoff |
-| `plan.md` | Modified | Remove hookless implementation ownership from this phase |
-| `tasks.md` | Modified | Align tasks with the narrowed phase boundary |
-| `checklist.md` | Modified | Align verification with hook-runtime scope |
+| `mcp_server/hooks/claude/hook-state.ts` | Added `loadMostRecentState()` | Cross-session continuity can now reuse the newest state file under 24h |
+| `mcp_server/lib/code-graph/code-graph-db.ts` | Added `queryStartupHighlights()` | Startup highlights now come from existing graph schema without assuming `parent_id` |
+| `mcp_server/lib/code-graph/startup-brief.ts` | New | `buildStartupBrief()` composes graph outline + continuity with graceful fallbacks |
+| `mcp_server/hooks/claude/session-prime.ts` | Updated startup flow | Claude startup now injects structural context + continuity when available |
+| `mcp_server/hooks/gemini/session-prime.ts` | Updated startup flow | Gemini startup now injects the same shared brief contract |
+
+### Packet Synchronization
+
+| File | Change |
+|------|--------|
+| `README.md` | Updated scope text to hook-runtime-only + explicit 027 handoff |
+| `spec.md`, `plan.md`, `tasks.md`, `checklist.md` | Marked complete and synchronized with delivered scope |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -50,7 +56,10 @@ The specification, plan, tasks, and checklist now reflect the narrowed phase sco
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-This packet update was delivered as documentation-only clarification. No runtime implementation has been shipped yet.
+1. Implemented shared startup brief dependencies (`loadMostRecentState`, startup-highlight query, `buildStartupBrief`).
+2. Wired both hook runtime startup handlers to consume shared startup brief output.
+3. Added focused tests covering recency-state behavior and startup brief edge handling.
+4. Re-ran build and targeted runtime test suites before packet closeout.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -60,8 +69,9 @@ This packet update was delivered as documentation-only clarification. No runtime
 
 | Decision | Why |
 |----------|-----|
-| Keep hook startup work in `026` | This phase is the right place to isolate Claude/Gemini startup injection and shared helper design |
-| Hand hookless bootstrap contract to `027-opencode-structural-priming` | That keeps non-hook payload design from being mixed into startup-specific debugging work |
+| Keep startup brief local to hook runtime path | Hooks cannot call MCP during startup; direct read path is required |
+| Keep hookless bootstrap contract in Phase 027 | Prevented overlap and preserved packet boundary clarity |
+| Treat empty graph as an explicit startup state | Distinguishes missing index data from injection failures |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -71,8 +81,12 @@ This packet update was delivered as documentation-only clarification. No runtime
 
 | Check | Result |
 |-------|--------|
-| Phase 026 validation | Pending while packet structure is brought into full template compliance |
-| Parent packet validation | See current packet validation results for `024-compact-code-graph` |
+| `npm run build` (system-spec-kit workspace) | PASS |
+| `TMPDIR=.tmp/vitest-tmp npx vitest run tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/startup-brief.vitest.ts tests/session-resume.vitest.ts tests/session-lifecycle.vitest.ts tests/session-state.vitest.ts tests/context-server.vitest.ts tests/startup-checks.vitest.ts tests/handler-memory-health-edge.vitest.ts` | PASS (9 files, 502 tests) |
+
+### Verification Notes
+- New startup brief test coverage validates ready/empty/missing graph states.
+- Hook-state tests now validate most-recent-state recency filtering.
 <!-- /ANCHOR:verification -->
 
 ---
@@ -80,5 +94,9 @@ This packet update was delivered as documentation-only clarification. No runtime
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Not implemented yet** This file is a structured placeholder until Phase 026 moves from packet clarification to actual code changes.
+1. Startup output is intentionally compact and does not include full graph traversal details.
+2. Hookless bootstrap payload evolution remains intentionally deferred to `027-opencode-structural-priming`.
+3. **Cross-session continuity (P1-S01)**: `loadMostRecentState()` returns the most recent session state by project hash, not by session ID. In concurrent multi-session use, one session may surface another's last spec folder. Documented as by-design for single-user workflows.
+4. **Handler duplication (P1-M01)**: Claude and Gemini session-prime handlers share dispatch logic but have diverged (Claude adds pressure-adjusted budgets, Gemini uses fixed budgets). Refactoring into a shared runtime-agnostic module is tracked for a future phase.
+5. **Claude-specific paths (P1-M02)**: `startup-brief.ts` imports `loadMostRecentState` from `hooks/claude/hook-state.ts`, coupling the shared builder to Claude-specific naming. Extracting hook state into a runtime-neutral module is tracked for a future phase.
 <!-- /ANCHOR:limitations -->

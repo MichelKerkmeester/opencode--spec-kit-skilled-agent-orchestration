@@ -29,9 +29,9 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md [File: spec.md]
-- [x] CHK-002 [P0] Technical approach defined in plan.md [File: plan.md]
-- [x] CHK-003 [P1] Dependencies identified and available [File: `adaptive-ranking-e2e.vitest.ts:28-44,103-124`]
+- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: Verified against the cited packet document.] [File: spec.md]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: Verified against the cited packet document.] [File: plan.md]
+- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: Verified against the cited implementation and test locations.] [File: `adaptive-ranking-e2e.vitest.ts:28-44,103-124`]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -39,10 +39,10 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Fresh in-memory SQLite state created in `beforeEach` [File: `adaptive-ranking-e2e.vitest.ts:103-115`]
-- [x] CHK-011 [P0] Env flags are restored in teardown [File: `adaptive-ranking-e2e.vitest.ts:117-124`]
-- [x] CHK-012 [P1] Runtime mocks are explicit and bounded to the suite edge [File: `adaptive-ranking-e2e.vitest.ts:28-44`]
-- [x] CHK-013 [P1] Signal counts in the docs match the current assertions [File: `adaptive-ranking-e2e.vitest.ts:205-213,286-323`]
+- [x] CHK-010 [P0] Fresh in-memory SQLite state created in `beforeEach` [EVIDENCE: Verified against the cited test setup.] [File: `adaptive-ranking-e2e.vitest.ts:103-115`]
+- [x] CHK-011 [P0] Env flags are restored in teardown [EVIDENCE: Verified against the cited test setup.] [File: `adaptive-ranking-e2e.vitest.ts:117-124`]
+- [x] CHK-012 [P1] Runtime mocks are explicit and bounded to the suite edge [EVIDENCE: Verified against the cited test setup.] [File: `adaptive-ranking-e2e.vitest.ts:28-44`]
+- [x] CHK-013 [P1] Signal counts in the docs match the current assertions [EVIDENCE: Verified against the cited assertions.] [File: `adaptive-ranking-e2e.vitest.ts:205-213,286-323`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -50,10 +50,10 @@ contextType: "implementation"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Full lifecycle case covers proposal, evaluation, tuning, and reset [Test: `adaptive-ranking-e2e.vitest.ts:126-218`]
-- [x] CHK-021 [P0] Proposal delta case verifies direct score movement [Test: `adaptive-ranking-e2e.vitest.ts:221-242`]
-- [x] CHK-022 [P1] Threshold persistence case verifies repeated reads [Test: `adaptive-ranking-e2e.vitest.ts:244-275`]
-- [x] CHK-023 [P1] Scheduled replay case covers `runScheduledShadowEvaluationCycle()` [Test: `adaptive-ranking-e2e.vitest.ts:277-342`]
+- [x] CHK-020 [P0] Full lifecycle case covers proposal, evaluation, tuning, and reset [EVIDENCE: Covered by the cited test case.] [Test: `adaptive-ranking-e2e.vitest.ts:126-218`]
+- [x] CHK-021 [P0] Proposal delta case verifies direct score movement [EVIDENCE: Covered by the cited test case.] [Test: `adaptive-ranking-e2e.vitest.ts:221-242`]
+- [x] CHK-022 [P1] Threshold persistence case verifies repeated reads [EVIDENCE: Covered by the cited test case.] [Test: `adaptive-ranking-e2e.vitest.ts:244-275`]
+- [x] CHK-023 [P1] Scheduled replay case covers `runScheduledShadowEvaluationCycle()` [EVIDENCE: Covered by the cited test case.] [Test: `adaptive-ranking-e2e.vitest.ts:277-342`]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -61,9 +61,9 @@ contextType: "implementation"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] Test data remains synthetic [Review: test file]
-- [x] CHK-031 [P0] No hardcoded secrets introduced [Review: docs only]
-- [x] CHK-032 [P1] DB handles are closed during teardown [File: `adaptive-ranking-e2e.vitest.ts:122-123`]
+- [x] CHK-030 [P0] Test data remains synthetic [EVIDENCE: Confirmed during scoped review.] [Review: test file]
+- [x] CHK-031 [P0] No hardcoded secrets introduced [EVIDENCE: Confirmed during scoped review.] [Review: docs only]
+- [x] CHK-032 [P1] DB handles are closed during teardown [EVIDENCE: Verified against the cited test teardown.] [File: `adaptive-ranking-e2e.vitest.ts:122-123`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -71,8 +71,8 @@ contextType: "implementation"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec, plan, and tasks synchronized [File: phase folder docs]
-- [x] CHK-041 [P1] Docs state the suite uses targeted mocks, not a fully unmocked pipeline [File: spec.md, plan.md]
+- [x] CHK-040 [P1] Spec, plan, and tasks synchronized [EVIDENCE: Verified against the cited packet documents.] [File: phase folder docs]
+- [x] CHK-041 [P1] Docs state the suite uses targeted mocks, not a fully unmocked pipeline [EVIDENCE: Verified against the cited packet documents.] [File: spec.md, plan.md]
 - [x] CHK-042 [P2] README updated with the shipped suite summary [File: README.md]
 <!-- /ANCHOR:docs -->
 
@@ -81,8 +81,8 @@ contextType: "implementation"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only [Review: no committed scratch changes]
-- [x] CHK-051 [P1] scratch/ cleaned before completion [Review: no scratch edits required]
+- [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: Confirmed during scoped review.] [Review: no committed scratch changes]
+- [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: Confirmed during scoped review.] [Review: no scratch edits required]
 - [x] CHK-052 [P2] Findings captured in spec docs for future retrieval [File: spec.md, implementation-summary.md]
 <!-- /ANCHOR:file-org -->
 

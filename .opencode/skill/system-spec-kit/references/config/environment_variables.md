@@ -27,7 +27,7 @@ These variables control memory system behavior, token budgets, script execution,
 | `MEMORY_ALLOWED_PATHS` | `specs/,.opencode/` (Note: effective read boundary also includes `process.cwd()` and `~/.claude/` at runtime. For tighter isolation, explicitly set this variable to restrict filesystem access.) | Additional allowed paths (colon-separated) |
 | `DEBUG_TRIGGER_MATCHER` | `false` | Enable verbose trigger matching logs |
 | `ENABLE_RERANKER` | `false` | Enable experimental ML reranking (requires Python) |
-| `SPECKIT_STRICT_SCHEMAS` | `true` | Enforce strict Zod MCP tool input validation for all 33 tools (`false` allows unknown passthrough keys) |
+| `SPECKIT_STRICT_SCHEMAS` | `true` | Enforce strict Zod MCP tool input validation for all 43 tools (`false` allows unknown passthrough keys) |
 | `SPECKIT_RESPONSE_TRACE` | `false` | Include provenance-rich `scores`/`source`/`trace` fields by default in search responses |
 | `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` | Auto-detected | Fallback chain for database directory path. `SPEC_KIT_DB_DIR` checked first, then `SPECKIT_DB_DIR` |
 | `DISABLE_SESSION_DEDUP` | `false` | Disables session-level deduplication when set to `true` |
@@ -165,22 +165,15 @@ VOYAGE_EMBEDDINGS_MODEL=voyage-4-large VOYAGE_API_KEY=your-key node mcp_server/d
 
 Feature flags control experimental and optional functionality. All flags default to production-safe values.
 
-### 8.1 Core System Flags (SPEC_KIT_ prefix)
+### 8.1 Canonical Flag Families
 
-| Flag | Default | Purpose |
-|------|---------|---------|
-| `SPEC_KIT_ENABLE_DEDUP` | `true` | Session deduplication (removes redundant memory entries) |
-| `SPEC_KIT_ENABLE_DECAY` | `true` | Attention decay system (time-weighted memory retrieval) |
-| `SPEC_KIT_ENABLE_EMBEDDING` | `true` | Vector embeddings for semantic search |
-| `SPEC_KIT_ENABLE_CHECKPOINT` | `true` | Incremental checkpointing (save context at intervals) |
-| `SPEC_KIT_ENABLE_CAUSAL` | `false` | Enables causal graph system (link/unlink/stats/drift-why tools) for decision dependency tracking. Mature — used by `/memory:search` |
-| `SPEC_KIT_ENABLE_VALIDATION` | `true` | Auto-validation on memory save |
-| `SPEC_KIT_ENABLE_INDEXING` | `true` | Automatic re-indexing after memory updates |
-| `SPEC_KIT_ENABLE_TRIGGERS` | `true` | Proactive memory surfacing via trigger matching |
-| `SPEC_KIT_VERBOSE_LOGGING` | `false` | Debug logging (detailed diagnostic output) |
-| `SPEC_KIT_OFFLINE_MODE` | `false` | Offline-first operation (no external API calls) |
-| `SPEC_KIT_LAZY_EMBEDDING` | `true` | Lazy embedding model loading (reduces startup time) |
-| `SPEC_KIT_PROVIDER_FALLBACK` | `true` | Auto-switch embedding providers on failure |
+The canonical runtime surface now uses `SPECKIT_*`, `SPECKIT_MEMORY_*`, and related `SPECKIT_*` rollout flags rather than the older `SPEC_KIT_*` family shown in early drafts. Use `mcp_server/ENV_REFERENCE.md` as the source of truth for exact variable names, defaults, and aliases.
+
+| Family | Examples | Use |
+|--------|----------|-----|
+| `SPECKIT_*` | `SPECKIT_RRF`, `SPECKIT_PARSER`, `SPECKIT_FILE_WATCHER` | Core retrieval, graph, indexing, and response behavior |
+| `SPECKIT_MEMORY_*` | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT`, `SPECKIT_MEMORY_SHARED_MEMORY` | Memory roadmap and governance controls |
+| Compatibility aliases | `SPEC_KIT_DB_DIR` (alias for `SPECKIT_DB_DIR`) | Legacy compatibility only where explicitly documented |
 
 ### 8.2 Graduated Search Pipeline Flags (SPECKIT_ prefix)
 
@@ -211,9 +204,10 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_TRM` | ON | S5 | Transparent Reasoning Module (evidence-gap detection) |
 | `ENABLE_BM25` | ON | S3 | Enables in-memory BM25 scoring channel. Set `false` to disable |
 | `SPECKIT_SHADOW_SCORING` | OFF | S7 | Shadow attribution logging (comparison path disabled; attribution tracking only) |
-| `SPECKIT_DASHBOARD_LIMIT` | `100` | S7 | Row cap for `eval_reporting_dashboard` queries |
+| `SPECKIT_DASHBOARD_LIMIT` | `10000` | S7 | Row cap for `eval_reporting_dashboard` queries |
 | `SPECKIT_GRAPH_UNIFIED` | ON | S7 | Unified graph retrieval with deterministic ranking, explainability trace, and rollback support |
-| `SPECKIT_GRAPH_REFRESH_MODE` | `write_local` | R-011 | Graph refresh policy: off, write_local, write_global. Graduated default: write_local |
+| `SPECKIT_PARSER` | `treesitter` | R-024 | Structural parser backend for code graph indexing: `treesitter` (default WASM AST parser) or `regex` (lightweight fallback) |
+| `SPECKIT_GRAPH_REFRESH_MODE` | `write_local` | R-011 | Graph refresh policy: off, write_local, scheduled. Graduated default: write_local |
 | `SPECKIT_GRAPH_WALK_ROLLOUT` | `bounded_runtime` | S5 | Graph walk rollout state: off, trace_only, bounded_runtime. Default: bounded_runtime |
 | `SPECKIT_HYDE` | ON | R-011 | HyDE shadow document generation for embedding enrichment |
 | `SPECKIT_HYDE_ACTIVE` | ON | R-011 | Promote HyDE from shadow to active query pipeline. Set `false` to disable merging |
@@ -351,7 +345,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
-| `SPECKIT_RERANKER_TIMEOUT_MS` | `5000` | S9 | Timeout in milliseconds for local reranker inference |
+| `SPECKIT_RERANKER_TIMEOUT_MS` | `30000` | S9 | Timeout in milliseconds for local reranker inference |
 | `SPECKIT_RECENCY_DECAY_DAYS` | `30` | S7 | Recency decay window in days for access tracking |
 | `SPECKIT_TOKEN_BUDGET` | auto | S5 | Override token budget for hybrid search responses |
 | `SPECKIT_FOLDER_TOP_K` | `5` | S3 | Top-K folder candidates for folder-scoped retrieval |
@@ -367,11 +361,11 @@ SPECKIT_ABLATION=true node mcp_server/dist/context-server.js
 # Adjust numeric parameters
 SPECKIT_COACTIVATION_STRENGTH=0.3 SPECKIT_FOLDER_TOP_K=10 node mcp_server/dist/context-server.js
 
-# Disable deduplication for testing
-SPEC_KIT_ENABLE_DEDUP=false node mcp_server/dist/context-server.js
+# Enable optional real-time markdown watching in a dev session
+SPECKIT_FILE_WATCHER=true node mcp_server/dist/context-server.js
 
-# Offline mode (no API calls, local embeddings only)
-SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/dist/context-server.js
+# Turn on response trace envelopes while debugging retrieval behavior
+SPECKIT_RESPONSE_TRACE=true node mcp_server/dist/context-server.js
 ```
 
 ### Production Recommendations
@@ -379,14 +373,14 @@ SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/dist/con
 **Always Enabled (graduated defaults):** All `SPECKIT_*` graduated-ON flags should remain at their defaults in production.
 
 **Development/Testing:**
-- `SPEC_KIT_VERBOSE_LOGGING=true` — Detailed diagnostics
+- `SPECKIT_RESPONSE_TRACE=true` — Provenance-rich response envelopes
 - `SPECKIT_ABLATION=true` — A/B testing framework
 - `SPECKIT_EVAL_LOGGING=true` — Retrieval quality metrics
 - `SPECKIT_DEBUG_INDEX_SCAN=true` — Index scan diagnostics
+- `SPECKIT_FILE_WATCHER=true` — Automatic markdown re-indexing in active dev sessions
 
 **Disable Only If:**
-- `SPEC_KIT_OFFLINE_MODE=true` — No network access
-- `SPEC_KIT_LAZY_EMBEDDING=false` — Faster first query (slower startup)
+- Use targeted `SPECKIT_*` overrides only when you are intentionally testing or isolating a subsystem
 
 ---
 

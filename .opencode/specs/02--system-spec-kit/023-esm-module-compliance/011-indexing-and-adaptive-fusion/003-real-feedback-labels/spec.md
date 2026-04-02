@@ -22,7 +22,6 @@ contextType: "implementation"
 | **Successor** | 004-fix-access-signal-path |
 | **Handoff Criteria** | Replay uses query-scoped feedback, centered normalization, and skips unlabeled holdout queries |
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 3** of the adaptive-ranking packet.
@@ -38,7 +37,6 @@ This is **Phase 3** of the adaptive-ranking packet.
 - Query-scoped replay feedback lookup
 - Centered normalization for outcome and correction totals
 - `queryText` persistence in validation feedback metadata
-<!-- /ANCHOR:phase-context -->
 
 # Feature Specification: Real Feedback Labels for Evaluation
 

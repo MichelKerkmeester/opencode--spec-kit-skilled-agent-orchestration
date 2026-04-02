@@ -21,6 +21,7 @@
 - [Features](#-features)
   - [Spec Kit Documentation](#-spec-kit-documentation)
   - [Memory Engine](#-memory-engine)
+  - [CocoIndex + Compact Code Graph](#-cocoindex--compact-code-graph)
   - [Agent Network](#-agent-network)
   - [Command Architecture](#-command-architecture)
   - [Skills Library](#-skills-library)
@@ -101,7 +102,7 @@ The framework adds three layers on top of the base platform:
          │  5-channel hybrid: Vector, BM25, FTS5,   │
          │  Causal Graph, Degree                    │
          │  FSRS decay ─ RRF fusion ─ query intel   │
-         │  runtime flags ─ eval guardrails         │
+         │  runtime flags ─ eval guardrails          │
          │  Voyage │ OpenAI │ HuggingFace Local     │
          └──────────────────────┬───────────────────┘
                                 │
@@ -504,6 +505,36 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Voyage AI** - Set `VOYAGE_API_KEY` env var. Best quality, recommended.
 - **OpenAI** - Set `OPENAI_API_KEY` env var. Strong alternative.
 - **HuggingFace Local** - No setup needed. Free, auto-detected fallback.
+
+---
+
+### 🔍 CocoIndex + Compact Code Graph
+
+The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Compact Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
+
+Together they form the code-context layer described in [`024-compact-code-graph`](.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md), with the README-facing wording for this area tracked in [`006-documentation-alignment`](.opencode/specs/02--system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md). The intended split is simple: CocoIndex finds semantic candidates, the code graph expands structural neighbors, and Memory preserves session decisions and active-task context.
+
+#### What Each System Does
+
+| System | Best for | Primary surface |
+|-------|----------|-----------------|
+| **CocoIndex** | Concept search, similar implementations, unfamiliar modules | `mcp__cocoindex_code__search` |
+| **Compact Code Graph** | Callers, imports, symbol outlines, impact analysis, neighborhood expansion | `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context` |
+| **Session bridge tools** | Session bootstrap, resume, and health checks around graph availability | `session_bootstrap`, `session_resume`, `session_health` |
+| **CCC utilities** | CocoIndex availability, reindexing, result feedback | `ccc_status`, `ccc_reindex`, `ccc_feedback` |
+
+#### How Query Routing Works
+
+- Use **CocoIndex** for semantic and intent-based questions: "find code that validates memory quality", "show similar routing patterns", "where is the logic for X?"
+- Use the **Compact Code Graph** for structural questions: callers, callees, imports, hierarchy, file outlines, and reverse impact.
+- Use **session tools** when recovering or checking environment readiness: bootstrap on startup, resume after context loss, health-check stale graph state.
+- Use **Memory** when the question is about prior decisions, spec history, handovers, or task continuity.
+
+#### Why It Matters
+
+This split avoids forcing one search system to do everything poorly. Semantic search is good at resemblance. Structural search is good at relationships. Keeping both lets the framework move from "this code looks relevant" to "this is how it connects" without collapsing those concerns into a single noisy result set.
+
+For the full tool and architecture reference, see [`mcp_server/README.md`](.opencode/skill/system-spec-kit/mcp_server/README.md) and the system skill docs in [`.opencode/skill/system-spec-kit/README.md`](.opencode/skill/system-spec-kit/README.md).
 
 ---
 

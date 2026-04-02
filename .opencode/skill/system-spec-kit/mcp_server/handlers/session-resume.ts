@@ -8,6 +8,8 @@ import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import { handleMemoryContext } from './memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
 import { computeQualityScore, recordMetricEvent, recordBootstrapEvent } from '../lib/session/context-metrics.js';
+import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
+import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -36,6 +38,7 @@ interface SessionResumeResult {
   memory: Record<string, unknown>;
   codeGraph: CodeGraphStatus;
   cocoIndex: CocoIndexStatus;
+  structuralContext?: StructuralBootstrapContract;
   sessionQuality?: 'healthy' | 'degraded' | 'critical' | 'unknown';
   hints: string[];
 }
@@ -98,14 +101,8 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
       edgeCount: stats.totalEdges,
       fileCount: stats.totalFiles,
     };
-    if (codeGraph.status === 'empty') {
-      hints.push('Code graph is empty. Run `code_graph_scan` to build structural context.');
-    } else if (codeGraph.lastScan) {
-      const ageMs = Date.now() - new Date(codeGraph.lastScan).getTime();
-      if (ageMs > 24 * 60 * 60 * 1000) {
-        hints.push('Code graph is >24h old. Run `code_graph_scan` to refresh.');
-      }
-    }
+    // Graph status hints deferred to structural contract (Phase 027)
+    // — structural context hints at lines 128-130 provide preferred recovery path
   } catch {
     codeGraph = { status: 'error', lastScan: null, nodeCount: 0, edgeCount: 0, fileCount: 0 };
     hints.push('Code graph unavailable. Run `code_graph_scan` to initialize.');
@@ -118,6 +115,12 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
   };
   if (!cocoIndex.available) {
     hints.push('CocoIndex not installed. Install: `bash .opencode/skill/mcp-coco-index/scripts/install.sh`');
+  }
+
+  // Phase 027: Structural bootstrap contract for resume surface
+  const structuralContext = buildStructuralBootstrapContract('session_resume');
+  if (structuralContext.status === 'stale' || structuralContext.status === 'missing') {
+    hints.push(`Structural context is ${structuralContext.status}. Call session_bootstrap to refresh.`);
   }
 
   let sessionQuality: SessionResumeResult['sessionQuality'];
@@ -134,6 +137,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     memory: memoryResult,
     codeGraph,
     cocoIndex,
+    structuralContext,
     ...(sessionQuality ? { sessionQuality } : {}),
     hints,
   };

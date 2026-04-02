@@ -1,64 +1,86 @@
-## [v0.11.0] - 2026-04-01
+## [v0.11.0] - 2026-04-02
 
-This phase matters because search is only trustworthy when its indexes, generated output, and release record stay in step after a repository move. It captures seven completed changes across CocoIndex Code (the semantic code search service), BM25 (exact-word matching), Code Graph (the structural map of files, imports, and calls), build output, and retroactive documentation, with fresh rebuild and health data confirming the stack is usable again.
+This phase now records two layers of work: the parent stabilization pass that repaired indexing and adaptive-fusion drift after the repository move, and the nested `001` through `009` child phases that expanded adaptive feedback, retrieval behavior, graph search, and supporting tooling. The parent wrapper still leaves fresh restart and final validator evidence open, but the underlying child phases carry substantial completed implementation and verification work that the earlier changelog did not reflect.
 
-> Spec folder: `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion` (Level 1)
-
----
-
-## Search (5)
-
-These five changes restore the parts of the search stack that were weakened by the repository move and the follow-up cleanup work. Together they make semantic search, exact-word matching, structural lookup, and ranking explanations easier to trust again.
-
-### CocoIndex Code lost its bearings after the repository move
-
-**Problem:** CocoIndex Code (the semantic code search service) was still tied to the old repository location and stale local index state after the move. That left concept-based search in a shaky state where results could be outdated or shaped by folders that should not influence code discovery. It was like moving a library but forgetting to update the catalog and shelf map.
-
-**Fix:** Semantic code search now rebuilds from clean state against the current repository and skips noisy documentation folders that should not shape code results. That gives users a current, cleaner search map of the codebase instead of a half-stale one.
-
-### BM25 memory search needed a clean rebuild of its index
-
-**Problem:** BM25 (exact-word matching) depends on a current memory index to surface the right documents when the query wording matters. After the repository move and related search repairs, that index needed a full rebuild so memory search would reflect the live repository instead of older state.
-
-**Fix:** Exact-word memory search now works from a freshly rebuilt index of the current memory set. Users get results based on what is actually stored now, not leftovers from an earlier repository layout.
-
-### Code Graph could fail on the very first lookup
-
-**Problem:** Code Graph (the structural map of files, imports, and calls) expected its storage to be prepared in advance. If that had not happened yet, a perfectly valid structural search could fail on first use instead of starting itself.
-
-**Fix:** Structural lookup now prepares its own storage the first time it is needed. That changes the experience from a setup-order failure to a tool that starts working when someone asks a graph question.
-
-### Adaptive fusion was hard to trust across MCP clients
-
-**Problem:** Adaptive fusion decides how much influence each search channel gets, but that default behavior was not clearly shown across MCP (the protocol layer that connects tools to the assistant) client configurations. When code and configuration tell different stories, operators cannot easily tell whether ranking behavior is intentional or accidental.
-
-**Fix:** The runtime configurations now state the intended adaptive behavior directly, so assistant integrations read the same default story everywhere. That makes rollouts easier to understand and reduces doubt when ranking behavior changes.
-
-### Exact-word score traces vanished after blended ranking
-
-**Problem:** BM25 and FTS5 (SQLite's built-in full-text search engine) both provide exact-word evidence that helps explain why a result ranked well. After the blended ranking step, that evidence could disappear from the final trace, which made search results harder to inspect and harder to debug.
-
-**Fix:** Final search traces now keep exact-word scoring evidence visible after ranking is blended. Users and maintainers can see when word-based matching helped a result, instead of losing that explanation at the last step.
+> Spec folder: `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion` (Level 1 parent with nested child phases)
 
 ---
 
-## Bug Fixes (1)
+## Indexing and Runtime Stabilization (5)
 
-### Generated runtime output had to catch up with the source changes
+### CocoIndex Code was still pointed at stale repository state
 
-**Problem:** The source-side search repairs were complete, but generated runtime output still needed to be rebuilt so packaged execution would reflect the same behavior. Without that refresh, people relying on compiled output could see older behavior than the phase record described.
+**Problem:** Semantic code search was tied to an older repository location and stale local index artifacts after the workspace move.
 
-**Fix:** The generated runtime output is now rebuilt to match the current source state. That keeps packaged execution aligned with the documented fixes instead of leaving a gap between source and shipped output.
+**Fix:** The parent phase rebuilt the CocoIndex environment against the active repository and tightened exclusions so code search skips packet and changelog noise.
+
+### BM25 memory search needed a clean rebuild
+
+**Problem:** Exact-word memory search was only as reliable as the memory index it was reading, and that index had drifted with the workspace move and earlier repairs.
+
+**Fix:** The phase reran memory indexing against the live corpus so exact-word retrieval aligned with the current repository state.
+
+### Code Graph could fail on first use
+
+**Problem:** Structural graph queries expected storage to exist before the first lookup, which made a valid first query fail for setup-order reasons.
+
+**Fix:** The code-graph DB access path now initializes itself lazily so first-use lookups do not die on missing setup.
+
+### Adaptive-fusion defaults were not equally visible across clients
+
+**Problem:** Runtime configuration and client-facing MCP config surfaces did not tell a single clear story about adaptive-fusion defaults.
+
+**Fix:** The phase made adaptive-fusion behavior explicit across the active config surfaces so operators can inspect the same default behavior everywhere.
+
+### Lexical score traces were getting lost after fusion
+
+**Problem:** Exact-word evidence from BM25 and FTS5 could disappear after reciprocal-rank fusion, which made final ranking traces harder to inspect.
+
+**Fix:** The formatter now preserves lexical provenance fields through the fused output path.
 
 ---
 
-## Documentation (1)
+## Nested Child Phases (4)
 
-### This phase needed its own audit trail
+### Phases 001 through 006 turned adaptive ranking from a paper design into a wired runtime path
 
-**Problem:** The work was complete, but without a dedicated spec folder its scope, task list, and implementation record were harder to follow later. That weakens traceability for anyone trying to understand why these search repairs were made.
+**Problem:** The adaptive-fusion stack still had important seams missing or under-documented: promotion-gate actions were not wired through, tuned thresholds were not persisted, replay feedback labeling needed real query context, access signals were not recorded correctly, the lifecycle suite needed an honest boundary description, and several "default-on" retrieval boosts still behaved like opt-in or misreported their active state.
 
-**Fix:** This phase now has a retroactive spec folder that gathers the scope, plan, tasks, and implementation summary in one place. Reviewers and future maintainers get a single record instead of scattered notes.
+**Fix:** Child phases `001` through `006` closed those seams. They wired promotion-gate tuning, persisted threshold overrides in SQLite, carried real feedback labels, fixed access-signal writes, clarified the adaptive lifecycle end-to-end suite, and graduated session boost, causal boost, and deep expansion to a truthful default-on state with clearer classifier routing.
+
+### Phase 007 produced the external graph-memory research backlog
+
+**Problem:** The packet needed evidence-based direction for graph-memory improvements instead of local guesswork.
+
+**Fix:** Phase `007` surveyed seven external systems, produced a ranked backlog, and captured ADRs that informed the later graph-retrieval work.
+
+### Phase 008 improved `create.sh` for nested phase-parent workflows
+
+**Problem:** The packet had already moved into nested child phases, but the phase-creation tooling still handled nested parent paths poorly.
+
+**Fix:** Phase `008` added and verified `--phase-parent` support, relaxed nested-parent validation correctly, preserved backward compatibility with `--parent`, and documented the behavior in Level 3 phase artifacts.
+
+### Phase 009 shipped the largest retrieval expansion in the subtree
+
+**Problem:** Search still needed graph-aware fallback, provenance, contradiction handling, usage-aware ranking, and community-level retrieval if it was going to benefit from the research backlog.
+
+**Fix:** Phase `009` delivered those capabilities behind feature flags. It completed `51/51` tracked tasks, added graph-expanded fallback, community search, provenance envelopes, temporal edge invalidation, usage-weighted ranking, ontology hooks, and the related tests and feature-catalog coverage.
+
+---
+
+## Verification State (2)
+
+### The parent wrapper is intentionally less "done" than several child phases
+
+**Problem:** The earlier changelog flattened the whole subtree into one fully closed story, but the parent `011` wrapper still marks fresh restart checks and final validator capture as pending.
+
+**Fix:** This changelog now distinguishes the wrapper from the child phases. The parent packet documents stabilization work and open rerun evidence, while the nested child phases record their own completed implementations and verification results.
+
+### The packet has stronger evidence than the earlier `011` release notes showed
+
+**Problem:** The previous changelog stopped at the parent stabilization layer and hid the volume of completed work in the nested subtree.
+
+**Fix:** The release notes now acknowledge the completed adaptive-feedback, graph-retrieval, and tooling phases that actually landed under `011`.
 
 ---
 
@@ -66,49 +88,48 @@ These five changes restore the parts of the search stack that were weakened by t
 
 | Metric | Before | After |
 | ------ | ------ | ----- |
-| Fresh semantic code rebuild coverage | 0 files | 51,820 files |
-| Fresh semantic code rebuild detail | 0 chunks | 663,336 chunks |
-| Fresh BM25 memory rebuild coverage | 0 memories | 1,228 memories |
-| Verified healthy memory records | 0 verified | 2,961 verified healthy |
-| TypeScript dist rebuilds completed | 0 | 1 |
+| CocoIndex rebuild coverage | `0` | `51,820 files / 663,336 chunks` |
+| Fresh BM25 re-index coverage | `0` | `1,228 memories` |
+| Verified healthy memory records | `0` | `2,961` |
+| Child graph-retrieval phase tasks | `0/51` | `51/51` |
+| Parent wrapper fresh restart and validator reruns | `0/4` | `Pending in parent phase docs` |
 
-No new automated test files were added in this phase. Validation came from runtime health checks, a full semantic-code rebuild, a full memory re-index, and a TypeScript build that refreshed generated output while surfacing the same 3 unrelated pre-existing compiler errors recorded in the implementation summary.
+This subtree delivered substantial verified implementation work, even though the parent `011` wrapper still keeps its final fresh-session rerun evidence open.
 
 ---
 
 <details>
-<summary>Technical Details: Files Changed (17 total)</summary>
+<summary>Technical Details: Workstreams Covered</summary>
 
-### Source (13 files)
+### Parent Stabilization
 
-| File | Changes |
+| Area | Changes |
 | ---- | ------- |
-| `.opencode/skill/mcp-coco-index/mcp_server/.venv/` | Recreated the Python environment so the semantic code search service resolves against the current repository path. |
-| `.opencode/skill/mcp-coco-index/mcp_server/.cocoindex_code/settings.yml` | Tightened crawler exclusions so semantic code search skips spec and changelog noise during rebuilds. |
-| `.opencode/skill/mcp-coco-index/mcp_server/.cocoindex_code/cocoindex.db/` | Cleared stale local index state before the fresh semantic code rebuild. |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts` | Added first-use database initialization for structural graph lookups. |
-| `.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts` | Preserved BM25 and FTS5 source scores after reciprocal rank fusion (RRF, the method that blends ranked lists). |
-| `.opencode/skill/system-spec-kit/mcp_server/dist/` | Rebuilt the generated runtime output so packaged MCP server execution matches the source-side search fixes. |
-| `.mcp.json` | Made adaptive fusion explicit in the Public MCP runtime configuration. |
-| `.claude/mcp.json` | Made adaptive fusion explicit in the Claude runtime configuration for the Public repo. |
-| `.vscode/mcp.json` | Made adaptive fusion explicit in the VS Code runtime configuration for the Public repo and corrected the note about defaults. |
-| `opencode.json` | Made adaptive fusion explicit in the OpenCode runtime configuration for the Public repo. |
-| `Barter/.claude/mcp.json` | Added the same adaptive-fusion setting to the paired Claude runtime configuration in the companion repo. |
-| `Barter/.vscode/mcp.json` | Added the same adaptive-fusion setting and note correction to the paired VS Code runtime configuration in the companion repo. |
-| `Barter/opencode.json` | Added the same adaptive-fusion setting to the paired OpenCode runtime configuration in the companion repo. |
+| `.opencode/skill/mcp-coco-index/mcp_server/.cocoindex_code/` | Rebuilt semantic-code indexing against the active repository and tightened exclusions. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts` | Added first-use initialization for structural graph lookups. |
+| `.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts` | Preserved lexical provenance after fused ranking. |
+| `.mcp.json`, `.claude/mcp.json`, `.vscode/mcp.json`, `opencode.json`, and paired Barter config surfaces | Made adaptive-fusion defaults explicit across active client configurations. |
 
-### Tests (0 files)
+### Nested Implementation Phases
 
-No dedicated automated test files changed in this phase. Validation covered `memory_health()` with 2,961 healthy memories, `memory_index_scan(force: true)` with 1,228 memories re-indexed, `ccc doctor` with a verified binary and running daemon, `ccc index` with 51,820 files indexed, and a TypeScript build that refreshed generated `dist/` output while leaving the same 3 unrelated pre-existing compiler errors noted in the implementation summary.
+| Child Phase | Shipped Work |
+| ---------- | ------------ |
+| `001-wire-promotion-gate` | Wired PromotionGate output into adaptive tuning and verified gate-pass, gate-fail, and no-op paths. |
+| `002-persist-tuned-thresholds` | Persisted tuned thresholds in SQLite and verified cold-cache and warm-cache behavior. |
+| `003-real-feedback-labels` | Scoped replay feedback by query and centered replay scoring around corrections vs outcomes. |
+| `004-fix-access-signal-path` | Batched access-signal writes and kept search delivery resilient when adaptive writes fail. |
+| `005-e2e-integration-test` | Turned the adaptive lifecycle into one honest in-memory SQLite regression suite. |
+| `006-default-on-boost-rollout` | Graduated session boost, causal boost, deep expansion, and artifact-routing improvements. |
+| `007-external-graph-memory-research` | Produced a seven-system comparative survey and ranked graph-memory backlog. |
+| `008-create-sh-phase-parent` | Added nested `--phase-parent` support to `create.sh` while preserving backward compatibility. |
+| `009-graph-retrieval-improvements` | Delivered graph fallback, community retrieval, provenance, temporal edges, usage ranking, ontology hooks, and related tests. |
 
-### Documentation (4 files)
+### Documentation
 
-| File | Changes |
-| ---- | ------- |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/spec.md` | Captured the retroactive scope, problem statement, and solution summary for the phase. |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/plan.md` | Recorded the implementation sequence and completion status for the phase work. |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/tasks.md` | Recorded the completed task checklist, including the dist rebuild, BM25 re-index, and retroactive spec creation. |
-| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/implementation-summary.md` | Captured the verification results and source-level detail behind the phase summary. |
+| File Group | Changes |
+| ---------- | ------- |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/*.md` | Parent wrapper docs aligned to the current template and open verification state. |
+| `.opencode/specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/*/*.md` | Child phase artifacts capture the shipped work and child-level evidence in more detail than the previous parent changelog exposed. |
 
 </details>
 
@@ -117,3 +138,5 @@ No dedicated automated test files changed in this phase. Validation covered `mem
 ## Upgrade
 
 No migration required.
+
+Treat this changelog as a subtree summary: the parent `011` wrapper still expects fresh-session follow-up evidence, but the nested adaptive-fusion phases beneath it document substantial completed implementation and verification work.

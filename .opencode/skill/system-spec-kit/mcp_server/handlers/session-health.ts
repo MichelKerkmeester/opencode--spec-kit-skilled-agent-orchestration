@@ -12,6 +12,8 @@ import {
 } from '../hooks/memory-surface.js';
 
 import { computeQualityScore, getLastToolCallAt } from '../lib/session/context-metrics.js';
+import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
+import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { QualityScore } from '../lib/session/context-metrics.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
@@ -33,6 +35,7 @@ interface SessionHealthResult {
   status: SessionStatus;
   details: SessionHealthDetails;
   qualityScore: QualityScore;
+  structuralContext?: StructuralBootstrapContract;
   hints: string[];
 }
 
@@ -84,6 +87,9 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
     graphFreshness = 'error';
   }
 
+  // Phase 027: Structural bootstrap contract for health surface
+  const structuralContext = buildStructuralBootstrapContract('session_health');
+
   const sessionAgeMs = now - serverStartedAt;
   const lastToolCallAgoMs = now - lastToolCallAt;
 
@@ -102,10 +108,10 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
   if (!primed) {
     hints.push('Session has not been primed yet. Make any tool call to trigger auto-priming.');
   }
-  if (graphFreshness === 'stale') {
-    hints.push('Code graph is >24h old. Run `code_graph_scan` for fresh structural context.');
-  } else if (graphFreshness === 'empty') {
-    hints.push('Code graph is empty. Run `code_graph_scan` to build it.');
+  if (structuralContext.status === 'stale') {
+    hints.push('Structural context is stale. Call session_bootstrap to refresh, or run code_graph_scan for a full rescan.');
+  } else if (structuralContext.status === 'missing') {
+    hints.push('No structural context available. Call session_bootstrap first, then run code_graph_scan.');
   }
   if (lastToolCallAgoMs > SIXTY_MINUTES_MS) {
     hints.push('No tool calls in >60 min. Consider calling `memory_context` to refresh session state.');
@@ -126,6 +132,7 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
       primingStatus: primed ? 'primed' : 'not_primed',
     },
     qualityScore,
+    structuralContext,
     hints,
   };
 

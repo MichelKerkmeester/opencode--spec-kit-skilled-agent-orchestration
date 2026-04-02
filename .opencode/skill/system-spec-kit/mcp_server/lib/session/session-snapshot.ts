@@ -25,6 +25,19 @@ export interface SessionSnapshot {
   routingRecommendation: string;
 }
 
+/**
+ * Phase 027: Structural Bootstrap Contract — shared by all non-hook surfaces.
+ * Single source of truth for structural context in startup/recovery flows.
+ * Token budget: 250-400 tokens (hard ceiling 500 including guidance).
+ */
+export interface StructuralBootstrapContract {
+  status: 'ready' | 'stale' | 'missing';
+  summary: string;
+  highlights?: string[];
+  recommendedAction: string;
+  sourceSurface: 'auto-prime' | 'session_bootstrap' | 'session_resume' | 'session_health';
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. CONSTANTS
 ──────────────────────────────────────────────────────────────── */
@@ -119,4 +132,62 @@ export function getSessionSnapshot(): SessionSnapshot {
     primed,
     routingRecommendation,
   };
+}
+
+/**
+ * Phase 027: Build a structural bootstrap contract for a given surface.
+ * Reuses resolveGraphFreshness() and getGraphStats() from this module.
+ * Keeps output compact (targets 250-400 tokens, ceiling 500).
+ */
+export function buildStructuralBootstrapContract(
+  sourceSurface: StructuralBootstrapContract['sourceSurface']
+): StructuralBootstrapContract {
+  const graphFreshness = resolveGraphFreshness();
+
+  let status: StructuralBootstrapContract['status'];
+  if (graphFreshness === 'fresh') {
+    status = 'ready';
+  } else if (graphFreshness === 'stale') {
+    status = 'stale';
+  } else {
+    status = 'missing';
+  }
+
+  let summary: string;
+  let highlights: string[] | undefined;
+
+  if (status === 'ready') {
+    try {
+      const stats = getGraphStats();
+      summary = `Code graph: ${stats.totalFiles} files, ${stats.totalNodes} nodes, ${stats.totalEdges} edges (fresh)`;
+      const topKinds = Object.entries(stats.nodesByKind)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+      if (topKinds.length > 0) {
+        highlights = topKinds.map(([kind, count]) => `${kind}: ${count}`);
+      }
+    } catch {
+      summary = 'Code graph available (structural context ready)';
+    }
+  } else if (status === 'stale') {
+    try {
+      const stats = getGraphStats();
+      summary = `Code graph: ${stats.totalFiles} files, ${stats.totalNodes} nodes (stale — >24h since last scan)`;
+    } catch {
+      summary = 'Code graph data is stale — structural context may be outdated';
+    }
+  } else {
+    summary = 'No structural context available — code graph is empty or unavailable';
+  }
+
+  let recommendedAction: string;
+  if (status === 'ready') {
+    recommendedAction = 'Structural context available. Use code_graph_query for structural lookups.';
+  } else if (status === 'stale') {
+    recommendedAction = 'Call session_bootstrap to refresh structural context, or run code_graph_scan for a full rescan.';
+  } else {
+    recommendedAction = 'Call session_bootstrap first. Then run code_graph_scan if structural context is needed.';
+  }
+
+  return { status, summary, highlights, recommendedAction, sourceSurface };
 }

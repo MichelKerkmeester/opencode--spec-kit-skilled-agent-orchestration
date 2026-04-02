@@ -1,0 +1,10 @@
+{"iteration":1,"dimension":"correctness","status":"complete","findings":{"p0":2,"p1":2,"p2":0},"newFindingsRatio":1.0,"notes":"Structural contract integration incomplete across surfaces."}
+{"iteration":2,"dimension":"traceability","status":"complete","findings":{"p0":1,"p1":2,"p2":1},"newFindingsRatio":0.7,"notes":"Parent/child packet and guidance docs not fully synchronized."}
+{"iteration":3,"dimension":"security","status":"complete","findings":{"p0":1,"p1":1,"p2":1},"newFindingsRatio":0.5,"notes":"Recovery wording needed clearer non-bypass guidance."}
+{"iteration":4,"dimension":"reliability","status":"complete","findings":{"p0":1,"p1":2,"p2":0},"newFindingsRatio":0.4,"notes":"Stale/missing handling hints differed between handlers."}
+{"iteration":5,"dimension":"maintainability","status":"complete","findings":{"p0":0,"p1":2,"p2":1},"newFindingsRatio":0.28,"notes":"Packet lacked implementation-summary and completed evidence links."}
+{"iteration":6,"dimension":"correctness","status":"complete","findings":{"p0":0,"p1":1,"p2":0},"newFindingsRatio":0.15,"notes":"Residual checklist/doc integrity fixes needed."}
+{"iteration":7,"dimension":"completeness","status":"complete","findings":{"p0":0,"p1":1,"p2":0},"newFindingsRatio":0.1,"notes":"Checklist evidence and metadata alignment completed."}
+{"iteration":8,"dimension":"testing","status":"complete","findings":{"p0":0,"p1":0,"p2":0},"newFindingsRatio":0.04,"notes":"Build and targeted tests passed post-remediation."}
+{"iteration":9,"dimension":"validation","status":"complete","findings":{"p0":0,"p1":0,"p2":0},"newFindingsRatio":0.02,"notes":"Strict spec validation passed after path integrity fix."}
+{"iteration":10,"dimension":"synthesis","status":"complete","findings":{"p0":0,"p1":0,"p2":0},"newFindingsRatio":0.0,"notes":"No active findings remain; phase release-ready."}

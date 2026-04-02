@@ -96,9 +96,9 @@ Template compliance shim anchor for summary.
 
 - [x] T-016: Create constitutional memory `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md` with search decision tree (already existed with richer content) [EVIDENCE: verified in implementation-summary.md]
 - [x] T-017: Update root `CLAUDE.md` -- replace passive "MUST use" with active decision tree [EVIDENCE: verified in implementation-summary.md]
-- [x] T-018: Update `.claude/CLAUDE.md` with hook-aware routing reinforcement [EVIDENCE: verified in implementation-summary.md]
-- [x] T-019: Update `.codex/CODEX.md` with non-hook routing enforcement [EVIDENCE: verified in implementation-summary.md]
-- [x] T-020: Update `.gemini/GEMINI.md` with partial-hook routing enforcement [EVIDENCE: verified in implementation-summary.md]
+- [x] T-018: Keep Claude-aware routing reinforcement consolidated in `../../../../../CLAUDE.md` [EVIDENCE: verified in implementation-summary.md]
+- [x] T-019: Update `../../../../../CODEX.md` with non-hook routing enforcement [EVIDENCE: verified in implementation-summary.md]
+- [x] T-020: Update `../../../../../GEMINI.md` with Gemini runtime routing enforcement [EVIDENCE: verified in implementation-summary.md]
 
 ### Layer 5: Agent Updates
 

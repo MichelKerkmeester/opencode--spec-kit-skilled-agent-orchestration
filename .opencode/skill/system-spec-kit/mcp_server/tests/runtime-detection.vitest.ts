@@ -36,10 +36,20 @@ describe('runtime detection', () => {
       expect(result.hookPolicy).toBe('enabled');
     });
 
+    it('detects codex-cli when CODEX_THREAD_ID is present', () => {
+      process.env.CODEX_THREAD_ID = 'thread-123';
+      const result = detectRuntime();
+      expect(result.runtime).toBe('codex-cli');
+      expect(result.hookPolicy).toBe('unavailable');
+    });
+
     it('detects unknown runtime by default', () => {
       delete process.env.CLAUDE_CODE;
       delete process.env.CLAUDE_SESSION_ID;
       delete process.env.CODEX_CLI;
+      delete process.env.CODEX_THREAD_ID;
+      delete process.env.CODEX_TUI_RECORD_SESSION;
+      delete process.env.CODEX_TUI_SESSION_LOG_PATH;
       delete process.env.COPILOT_CLI;
       delete process.env.GEMINI_CLI;
       const result = detectRuntime();
@@ -51,6 +61,9 @@ describe('runtime detection', () => {
       delete process.env.CLAUDE_SESSION_ID;
       delete process.env.MCP_SERVER_NAME;
       delete process.env.CODEX_CLI;
+      delete process.env.CODEX_THREAD_ID;
+      delete process.env.CODEX_TUI_RECORD_SESSION;
+      delete process.env.CODEX_TUI_SESSION_LOG_PATH;
       delete process.env.COPILOT_CLI;
       process.env.GEMINI_CLI = '1';
 
