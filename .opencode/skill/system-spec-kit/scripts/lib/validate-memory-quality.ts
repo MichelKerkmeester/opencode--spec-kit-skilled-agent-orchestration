@@ -800,15 +800,6 @@ function validateMemoryQualityContent(content: string, options?: { filePath?: st
     scatteredForeignSpec = scatteredForeignMentions.length >= 2 && totalForeignMentions >= 2 && strongestForeignMentions <= 2;
   }
 
-  // Rec 5: Skip scattered foreign spec detection for structured input mode.
-  // JSON-mode content is AI-composed and may legitimately reference sibling specs
-  // in descriptive context (e.g., "related to 011-skill-alignment work").
-  // Only genuine dominance-based contamination (dominatesForeignSpec) is kept.
-  const sourceCapabilities = getSourceCapabilities(options?.source);
-  if (sourceCapabilities.inputMode === 'structured') {
-    scatteredForeignSpec = false;
-  }
-
   const frontmatterForeignSpec = foreignFrontmatterMentions.length > 0;
   const v8Matches = [
     ...(frontmatterForeignSpec ? foreignFrontmatterMentions.map((match) => `frontmatter:${match}`) : []),

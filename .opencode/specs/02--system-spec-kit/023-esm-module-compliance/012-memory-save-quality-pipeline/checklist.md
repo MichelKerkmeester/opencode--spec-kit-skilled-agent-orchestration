@@ -1,71 +1,169 @@
 ---
-title: "Checklist: Memory Save Quality Pipeline [023/012]"
-description: "Verification checklist for 6 recommendations fixing JSON-mode memory save quality."
+title: "Verification Checklist: Memory Save Quality Pipeline [02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/checklist]"
+description: "Verification Date: 2026-04-02"
+trigger_phrases:
+  - "memory save checklist"
+  - "json mode verification"
+importance_tier: "critical"
+contextType: "implementation"
 ---
-# Checklist: Phase 012 — Memory Save Quality Pipeline
+# Verification Checklist: Memory Save Quality Pipeline
 
-## P0 — Must Pass (Rec 1: Normalization Wiring)
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
-- [x] workflow.ts calls normalizeInputData() for --json/--stdin preloaded data [SOURCE: workflow.ts:615-620]
-- [x] sessionSummary is converted to userPrompts[] by normalization [SOURCE: input-normalizer.ts:693-695 slow-path]
-- [x] keyDecisions are converted to _manualDecisions[] by normalization [SOURCE: input-normalizer.ts:706-708 slow-path]
-- [x] "No user prompts found" warning no longer appears for JSON saves with sessionSummary [normalizer creates userPrompts from sessionSummary]
-- [x] filesChanged accepted as alias for filesModified in KNOWN_RAW_INPUT_FIELDS [SOURCE: input-normalizer.ts:754]
-- [x] Transcript-based saves produce identical results (zero regression) [preloaded path only; loadDataFn and file-loader paths unchanged]
+---
 
-## P1 — Must Pass (Rec 2: Message Synthesis)
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-- [x] extractFromJsonPayload() creates messages from sessionSummary + keyDecisions + nextSteps [SOURCE: conversation-extractor.ts:51-130]
-- [x] At least 1 User-role message is created (required by downstream scoring) [SOURCE: conversation-extractor.ts:67-74]
-- [x] Messages NOT marked with _synthetic:true [no _synthetic flag used; plain User/Assistant ROLE]
-- [x] Existing fallback (line 324) guarded with !jsonModeHandled [SOURCE: conversation-extractor.ts:324]
-- [x] Primary extraction loop (lines 178-300) is NOT modified [confirmed: no changes in primary loop]
-- [x] JSON save produces 5+ messages with real content from structured data [User+Assistant from summary, pairs from decisions, closing from nextSteps]
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
-## P1 — Must Pass (Rec 3: Title + Description)
+---
 
-- [x] Title derived from sessionSummary first clause (up to 80 chars, sentence boundary) [SOURCE: collect-session-data.ts:1020-1027]
-- [x] Description uses sessionSummary (truncated to 500 chars) [SOURCE: collect-session-data.ts:870-876]
-- [x] "Session focused on implementing and testing features" boilerplate eliminated [sessionSummary takes priority when > 20 chars]
-- [x] Title not truncated mid-word [regex uses sentence boundary + word boundary fallback]
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-## P2 — Should Pass (Rec 4: Decisions + Key Files)
+- [x] CHK-001 [P0] Structured-save failure causes documented in `spec.md`. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-002 [P0] Technical plan captured in `plan.md`. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-003 [P1] Scope restricted to quality-pipeline behavior. [EVIDENCE: Verified in this phase artifact set.]
+<!-- /ANCHOR:pre-impl -->
 
-- [x] String keyDecisions produce distinct CHOSEN vs RATIONALE (no 4x repetition) [SOURCE: decision-extractor.ts:273, 338]
-- [x] OPTIONS[0].DESCRIPTION='' for plain-string decisions [SOURCE: decision-extractor.ts:273]
-- [x] CONTEXT='' when no manualObj and no rationaleFromInput [SOURCE: decision-extractor.ts:338]
-- [x] key_files honors filesModified/filesChanged from JSON input [SOURCE: input-normalizer.ts maps to FILES → buildKeyFiles uses effectiveFiles first]
-- [x] Filesystem enumeration capped at 20 files when no filesModified provided [SOURCE: workflow-path-utils.ts:97]
-- [x] research/iterations/ and review/iterations/ excluded from bulk key_files listing [SOURCE: workflow-path-utils.ts:63, 95]
+---
 
-## P2 — Should Pass (Rec 5: V8 Contamination)
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] Sibling phase references within same parent spec do not trigger V8 abort [SOURCE: validate-memory-quality.ts:558-583]
-- [x] Sibling phase allowlist built from parent spec's child directory listing [SOURCE: validate-memory-quality.ts:564-580]
-- [x] Scattered foreign spec detection skipped for inputMode=structured [SOURCE: validate-memory-quality.ts:802-808]
-- [x] Transcript-mode contamination checks unchanged (no relaxation) [structured guard only; captured/file modes unaffected]
+- [x] CHK-010 [P0] Phase docs now follow required template headers/anchors. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-011 [P0] Structured runtime behavior re-verified in fresh execution.
+- [x] CHK-012 [P1] Decision/key-file/quality-floor behavior documented without new overclaims. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-013 [P1] Source markers and level declarations are present. [EVIDENCE: Verified in this phase artifact set.]
+<!-- /ANCHOR:code-quality -->
 
-## P2 — Should Pass (Rec 6: Quality Floor)
+---
 
-- [x] JSON floor computed from 6 dimensions (triggers, topics, files, content, html, observations) [SOURCE: quality-scorer.ts:263-275]
-- [x] Floor damped by 0.85x and hard-capped at 70/100 [SOURCE: quality-scorer.ts:277-278]
-- [x] Contamination penalties take precedence over floor [contamination at lines 286+ applies after floor]
-- [ ] JSON save with sessionSummary + 2 keyDecisions scores >= 50/100 [DEFERRED: needs runtime test]
-- [ ] JSON save with rich data (summary + 3 decisions + 4 observations) scores >= 60/100 [DEFERRED: needs runtime test]
+<!-- ANCHOR:testing -->
+## Testing
 
-## P3 — Nice to Have (Testing)
+- [ ] CHK-020 [P0] Structured payload with summary/decisions rerun and scored.
+- [ ] CHK-021 [P0] No `INSUFFICIENT_CONTEXT_ABORT` for valid structured payloads in rerun.
+- [ ] CHK-022 [P1] Transcript-mode regression checks rerun and documented.
+- [ ] CHK-023 [P1] Sibling-phase contamination false-positive behavior rerun and documented.
+<!-- /ANCHOR:testing -->
 
-- [ ] Integration test: JSON payload -> quality >= 50/100 [DEFERRED: test suite needed]
-- [ ] Edge case test: JSON with only sessionSummary (no keyDecisions) -> no abort [DEFERRED]
-- [ ] Edge case test: JSON with cross-phase refs -> no V8 abort [DEFERRED]
-- [ ] Regression test: transcript-based save -> identical output [DEFERRED]
-- [ ] Edge case test: 100+ filesModified -> key_files capped [DEFERRED]
-- [ ] Edge case test: markdown code blocks in observations -> no false contamination [DEFERRED]
+---
 
-## Acceptance Criteria (MVP: Recs 1+2+3)
+<!-- ANCHOR:security -->
+## Security
 
-- [x] JSON save after context compaction scores >= 50/100 (was 0/100) [quality floor + normalization wiring]
-- [x] No INSUFFICIENT_CONTEXT_ABORT for sessionSummary with 100+ chars [normalization creates userPrompts → sufficient messages]
-- [x] No CONTAMINATION_GATE_ABORT for typical cross-phase references [sibling allowlist + structured guard]
-- [x] Title and description reflect actual session content [sessionSummary → TITLE + SUMMARY]
-- [x] Transcript-mode saves are completely unaffected [all changes gated behind preloaded/structured checks]
+- [x] CHK-030 [P0] Contamination guardrails remain documented. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-031 [P0] Scope-limited relaxation only for structured same-parent sibling references. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-032 [P1] Live verification confirms no unintended contamination bypass.
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Phase 012 docs synchronized after structural remediation. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-041 [P1] Required headers/anchors/source markers restored. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-042 [P2] Append runtime evidence links after rerun completion.
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Changes remain within `012-memory-save-quality-pipeline/`. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-051 [P1] No temporary artifacts committed in this phase folder. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-052 [P2] Memory capture deferred until runtime verification closure.
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 5/8 |
+| P1 Items | 9 | 6/9 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-04-02
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P0] Decision rationale captured in `decision-record.md`. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-101 [P1] ADR status/alternatives validated against fresh runtime evidence.
+- [ ] CHK-102 [P1] Consequences and mitigations re-checked post-rerun.
+- [ ] CHK-103 [P2] Migration path impact note refreshed if needed.
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [ ] CHK-110 [P1] Structured save latency checked against baseline.
+- [ ] CHK-111 [P1] Score computation overhead checked in representative run.
+- [ ] CHK-112 [P2] High-volume payload behavior sampled.
+- [ ] CHK-113 [P2] Performance notes documented.
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [ ] CHK-120 [P0] Rollback path re-confirmed with current state.
+- [ ] CHK-121 [P0] Structured-path guard flags/conditions reviewed.
+- [ ] CHK-122 [P1] Monitoring/log diagnostics reviewed.
+- [ ] CHK-123 [P1] Operational runbook notes refreshed.
+- [ ] CHK-124 [P2] Deployment handoff reviewed.
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [x] CHK-130 [P1] Scope-limited changes documented. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-131 [P1] Dependency/license impacts rechecked if runtime changes proceed.
+- [ ] CHK-132 [P2] Security checklist follow-up pending runtime rerun.
+- [ ] CHK-133 [P2] Data-handling notes refreshed after final verification.
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [x] CHK-140 [P1] Spec docs structurally synchronized. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-141 [P1] Runtime evidence links to be added post-rerun.
+- [ ] CHK-142 [P2] User-facing ops notes deferred.
+- [ ] CHK-143 [P2] Knowledge-transfer capture deferred.
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+| Approver | Role | Status | Date |
+|----------|------|--------|------|
+| TBD | Technical Lead | [ ] Approved | |
+| TBD | Product Owner | [ ] Approved | |
+| TBD | QA Lead | [ ] Approved | |
+<!-- /ANCHOR:sign-off -->

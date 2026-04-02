@@ -71,7 +71,7 @@ Together, these systems enable context-aware development with traceability, hard
 ```
 .opencode/
 ├── agent/           — 10 specialized AI agent definitions for task delegation
-├── command/         — 22 slash command entry points for workflow automation (spec_kit, memory, create, agent_router)
+├── command/         — 20 slash command entry points for workflow automation (spec_kit, memory, create, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
 ├── skill/           — 19 domain expertise skill modules with bundled resources

@@ -19,7 +19,7 @@ import {
   type OutputSection,
 } from '../claude/shared.js';
 import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '../claude/hook-state.js';
-import { parseGeminiStdin, formatGeminiOutput, type GeminiHookInput } from './shared.js';
+import { parseGeminiStdin, formatGeminiOutput } from './shared.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
 

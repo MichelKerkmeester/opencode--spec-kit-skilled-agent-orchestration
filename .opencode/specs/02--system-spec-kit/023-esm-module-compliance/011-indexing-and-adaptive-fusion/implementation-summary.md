@@ -1,27 +1,89 @@
-# Implementation Summary: Indexing & Adaptive Fusion Enablement
+---
+title: "Implementation Summary: Indexing and Adaptive Fusion Enablement [02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/implementation-summary]"
+description: "Summary of indexing-channel stabilization and adaptive-fusion alignment work."
+trigger_phrases:
+  - "indexing implementation summary"
+  - "adaptive fusion implementation summary"
+importance_tier: "important"
+contextType: "implementation"
+---
+# Implementation Summary
 
-## Changes Made
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
-### CocoIndex Code (venv + settings + re-index)
-- **`.opencode/skill/mcp-coco-index/mcp_server/.venv/`** — Deleted and recreated; old venv had hardcoded path to `Opencode Env/Public` which no longer exists
-- **`.cocoindex_code/settings.yml`** — Replaced blanket `**/.* ` exclude with targeted exclusions; added `.opencode/specs/**` and `.opencode/changelog/**` to skip spec folders
-- **`.cocoindex_code/cocoindex.db/`** — Deleted stale LMDB (MDB_READERS_FULL); fresh re-index produced 51,820 files / 663,336 chunks
+---
 
-### Code Graph lazy-init
-- **`mcp_server/lib/code-graph/code-graph-db.ts`** — Added `import { DATABASE_DIR } from '../../core/config.js'`; changed `getDb()` from `throw new Error(...)` to `initDb(DATABASE_DIR)` for automatic initialization on first access
+<!-- ANCHOR:metadata -->
+## Metadata
 
-### Adaptive Fusion config
-- **7 MCP config files** — Added `"SPECKIT_ADAPTIVE_FUSION": "true"` to env blocks:
-  - Public: `.mcp.json`, `.claude/mcp.json`, `.vscode/mcp.json`, `opencode.json`
-  - Barter: `.claude/mcp.json`, `.vscode/mcp.json`, `opencode.json`
-- Fixed `_NOTE_7` in `.vscode/mcp.json` (both repos): was "Default OFF", now correctly "all default ON"
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 011-indexing-and-adaptive-fusion |
+| **Completed** | 2026-03-31 (implementation), 2026-04-02 (structural doc alignment) |
+| **Level** | 1 |
+<!-- /ANCHOR:metadata -->
 
-### Lexical score propagation
-- **`mcp_server/formatters/search-results.ts:461`** — Added fallback chain: `rawResult.sourceScores?.keyword ?? rawResult.sourceScores?.fts ?? rawResult.sourceScores?.bm25` so BM25/FTS5 per-channel scores survive RRF fusion and appear in trace output
+---
 
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+This phase stabilized three indexing channels and clarified adaptive-fusion behavior in configuration surfaces after repository-path drift and runtime initialization issues.
+
+### Channel Stabilization
+
+CocoIndex environment/settings were corrected for the active workspace path, code-graph DB access gained safer lazy initialization behavior, and search formatter output now preserves lexical provenance fields through fused output pathways.
+
+### Files Changed
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `.cocoindex_code/settings.yml` | Modified | Correct include/exclude targeting for live repo |
+| `mcp_server/lib/code-graph/code-graph-db.ts` | Modified | Prevent uninitialized access failure on first use |
+| `mcp_server/formatters/search-results.ts` | Modified | Preserve lexical fallback score visibility |
+| MCP config surfaces (`opencode.json`, variants) | Modified | Align adaptive-fusion explicit env semantics |
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+Implementation was completed in targeted reliability fixes and documented with follow-up notes for runtime reconfirmation. This document update focuses on structural template compliance and accurate scope reporting.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Prefer targeted reliability fixes over broad pipeline redesign | Minimized risk and delivery time |
+| Keep adaptive-fusion behavior explicit in config docs/env | Prevents drift between code defaults and operator expectations |
+| Separate structural documentation cleanup from fresh runtime claims | Keeps truth-state coherent when live reruns are pending |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
 ## Verification
-- `memory_health()` — 2,961 memories, healthy
-- `memory_index_scan(force: true)` — 1,228 memories re-indexed
-- `ccc doctor` — binary verified, daemon running
-- `ccc index` — 51,820 files indexed successfully
-- TypeScript build emits all changes to dist (3 pre-existing errors unrelated to this work)
+
+| Check | Result |
+|-------|--------|
+| Required section headers/anchors in this file | PASS |
+| Phase 011 docs now include required template source markers | PASS |
+| Runtime channel checks after restart | PENDING |
+| Recursive strict validator post-patch snapshot | PENDING |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. Runtime channel validation evidence must be refreshed in the active session.
+2. This summary intentionally avoids adding new unverified completion statements.
+<!-- /ANCHOR:limitations -->

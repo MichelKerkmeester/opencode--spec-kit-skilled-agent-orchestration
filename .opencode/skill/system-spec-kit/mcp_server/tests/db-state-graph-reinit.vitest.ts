@@ -6,9 +6,26 @@ import { describe, expect, it, vi } from 'vitest';
 import { checkDatabaseUpdated, init, reinitializeDatabase } from '../core/db-state';
 import type { DatabaseLike } from '../core/db-state';
 
+function createPopulatedFakeDb(memoryCount = 2): DatabaseLike {
+  return {
+    prepare: vi.fn((sql: string) => {
+      if (sql.includes('COUNT(*) as cnt FROM memory_index')) {
+        return { get: vi.fn(() => ({ cnt: memoryCount })) };
+      }
+      if (sql.includes('PRAGMA database_list')) {
+        return { all: vi.fn(() => [{ name: 'main', file: '/tmp/context-index.sqlite' }]) };
+      }
+      return {
+        get: vi.fn(() => ({})),
+        all: vi.fn(() => []),
+      };
+    }),
+  } as unknown as DatabaseLike;
+}
+
 describe('db-state graph search wiring', () => {
   it('reuses configured graphSearchFn during database reinitialization', async () => {
-    const fakeDb = {} as unknown as DatabaseLike;
+    const fakeDb = createPopulatedFakeDb();
     const fakeGraphFn = vi.fn();
 
     const vectorIndex = {
@@ -49,7 +66,7 @@ describe('db-state graph search wiring', () => {
 
     try {
       process.env.SPEC_KIT_DB_DIR = tempDbDir;
-      const fakeDb = {} as unknown as DatabaseLike;
+      const fakeDb = createPopulatedFakeDb();
       let dbAvailable = false;
 
       const vectorIndex = {
@@ -91,7 +108,7 @@ describe('db-state graph search wiring', () => {
   });
 
   it('returns false when session manager rebind fails', async () => {
-    const fakeDb = {} as unknown as DatabaseLike;
+    const fakeDb = createPopulatedFakeDb();
     const vectorIndex = {
       initializeDb: vi.fn(),
       getDb: vi.fn(() => fakeDb),

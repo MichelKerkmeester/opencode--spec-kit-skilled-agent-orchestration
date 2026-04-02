@@ -590,14 +590,48 @@ More content follows.
 
       expect(result.isDuplicate).toBe(true);
       expect(result.duplicate_type).toBe('similar');
+      expect(result.existingId).toBeNull();
       expect(result.existing_path).toBeNull();
       expect(result.redactedForScope).toBe(true);
-      expect(result.existing_scope).toEqual({
-        tenantId: 'tenant-b',
-        userId: null,
-        agentId: null,
-        sharedSpaceId: null,
-      });
+      expect(result.existing_scope).toBeUndefined();
+    });
+
+    it('redacts exact-duplicate identifiers when cross-scope match is detected', () => {
+      const testContent = 'Cross-scope exact duplicate';
+      const contentHash = preflight.computeContentHash(testContent);
+      const mockDatabase = {
+        prepare: (_sql: string) => ({
+          get: (...params: unknown[]) => {
+            expect(params[0]).toBe(contentHash);
+            return {
+              id: 404,
+              file_path: '/specs/test/memory/foreign.md',
+              tenant_id: 'tenant-b',
+              user_id: 'user-b',
+              agent_id: null,
+              shared_space_id: null,
+              content_text: testContent,
+            };
+          },
+        }),
+      };
+
+      const result = preflight.checkDuplicate(
+        {
+          content: testContent,
+          database: mockDatabase,
+          tenantId: 'tenant-a',
+          userId: 'user-a',
+        } as unknown as DuplicateParams,
+        { check_exact: true },
+      );
+
+      expect(result.isDuplicate).toBe(true);
+      expect(result.duplicate_type).toBe('exact');
+      expect(result.redactedForScope).toBe(true);
+      expect(result.existingId).toBeNull();
+      expect(result.existing_path).toBeNull();
+      expect(result.existing_scope).toBeUndefined();
     });
   });
 

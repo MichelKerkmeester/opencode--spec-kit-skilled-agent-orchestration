@@ -14,6 +14,9 @@ This scenario validates CocoIndex bridge.
 ## 2. CURRENT REALITY
 
 - **Objective**: Verify that the CocoIndex bridge correctly routes between semantic and structural queries. The seed resolver (`seed-resolver.ts`) normalizes CocoIndex file:line results to ArtifactRef via a resolution chain (exact symbol, enclosing symbol, file anchor). `code_graph_context` expands resolved anchors in 3 modes: neighborhood (1-hop graph neighbors), outline (file symbol listing), and impact (reverse callers). Budget-aware truncation must apply to context output.
+- **Schema contract examples**:
+  - Semantic: `mcp__cocoindex_code__search({ query: "memory search pipeline" })`
+  - Structural: `code_graph_query({ operation: "calls_to", subject: "allocateBudget" })` (`operation` + `subject` are required)
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
@@ -39,7 +42,7 @@ This scenario validates CocoIndex bridge.
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
 | 255a | CocoIndex bridge | Semantic query routes to CocoIndex and returns meaning-based results | `How does the memory search pipeline work?` | `Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" })` | Results are semantically related files (e.g., search handler, query router) rather than exact string matches | CocoIndex search output listing relevant file paths with similarity scores | PASS if results are conceptually relevant to the query meaning | Verify CocoIndex MCP server is running and index is built |
-| 255b | CocoIndex bridge | Structural query routes to code_graph and returns edge-based results | `What functions call allocateBudget?` | `Manual: call code_graph_query({ mode: "calls", symbol: "allocateBudget" })` | Returns exact caller functions with file paths and line numbers from code_edges table | Code graph query output showing caller/callee relationships | PASS if callers are exact function references from the graph database | Verify code graph is indexed and contains allocateBudget node |
+| 255b | CocoIndex bridge | Structural query routes to code_graph and returns edge-based results | `What functions call allocateBudget?` | `Manual: call code_graph_query({ operation: "calls_to", subject: "allocateBudget" })` | Returns exact caller functions with file paths and line numbers from code_edges table | Code graph query output showing caller/callee relationships | PASS if callers are exact function references from the graph database | Verify code graph is indexed and contains allocateBudget node |
 | 255c | CocoIndex bridge | code_graph_context expands in neighborhood, outline, and impact modes | `Validate 255c context expansion modes` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts` | Neighborhood returns 1-hop neighbors, outline returns file symbols, impact returns reverse callers | Test output showing each mode's distinct results | PASS if all 3 modes return non-empty, mode-appropriate results | Check `code-graph-context.ts` for mode handling logic |
 
 ---

@@ -35,6 +35,9 @@ contextType: "implementation"
 | **Status** | Implemented |
 | **Created** | 2026-04-01 |
 | **Branch** | `011-008-create-sh-phase-parent` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | 007-external-graph-memory-research |
+| **Successor** | 009-graph-retrieval-improvements |
 
 ---
 

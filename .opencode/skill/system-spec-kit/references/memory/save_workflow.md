@@ -242,7 +242,7 @@ If that explicit CLI argument resolves to a phase folder, the command keeps that
 | Checkpoint         | Verification                                           | Action on Failure        |
 | ------------------ | ------------------------------------------------------ | ------------------------ |
 | Node.js installed  | `node --version`                                       | Install Node.js          |
-| Script exists      | `test -f .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Check skill installation |
+| Script exists      | `test -f .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` | Check skill installation |
 | JSON valid         | `jq . < input.json`                                    | Fix JSON syntax          |
 | Spec folder exists | `test -d specs/###/`                                   | Create spec folder       |
 | Target exists under specs roots | Use the exact root-spec or phase-folder path you want to save into | Re-run with an explicit CLI target |

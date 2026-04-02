@@ -7,6 +7,7 @@
 import {
   isSessionPrimed,
   getSessionTimestamps,
+  getLastActiveSessionId,
   getCodeGraphStatusSnapshot,
 } from '../hooks/memory-surface.js';
 
@@ -55,7 +56,8 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
   // to eliminate dual-state drift with memory-surface's separate timestamp.
   const metricsLastToolCall = getLastToolCallAt();
   const lastToolCallAt = metricsLastToolCall ?? serverStartedAt;
-  const primed = isSessionPrimed();
+  const primingSessionId = getLastActiveSessionId();
+  const primed = primingSessionId ? isSessionPrimed(primingSessionId) : false;
 
   // Determine graph freshness
   let graphFreshness: SessionHealthDetails['graphFreshness'] = 'error';

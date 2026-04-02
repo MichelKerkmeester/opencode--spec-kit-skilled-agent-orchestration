@@ -64,7 +64,7 @@ contextType: "implementation"
 - [x] CHK-030 [P1] `vector-index-store.ts` hot retrieval methods use module-level lazy-init, not per-call `await import()` [EVIDENCE: module-level cached lazy loader in vector-index-store.ts]
 - [x] CHK-031 [P1] `cli.ts` defers heavy imports behind command dispatch; `--help` avoids loading DB stack [EVIDENCE: deferred imports behind per-command handlers in cli.ts]
 - [x] CHK-032 [P1] All CLI subcommands still work after import restructure [EVIDENCE: all tests pass]
-- [x] CHK-050 [P0] Full workspace test suite passes (9480+ tests, 0 failures, 0 skipped) [EVIDENCE: mcp-server 8978 pass + 3 pre-existing data-dependent failures (context-server.vitest.ts); scripts 317 legacy pass + 1 pre-existing failure (EXT-CSData-043); no regressions from Phase 6]
+- [x] CHK-050 [P0] Full workspace verification rerun completed with no newly introduced regressions [EVIDENCE: targeted reruns pass for build/typecheck/task-enrichment/extractors/naming; latest full `@spec-kit/mcp-server` and `@spec-kit/scripts` reruns tracked in review matrix]
 - [x] CHK-051 [P0] No regressions from pre-remediation state [EVIDENCE: all 3 pre-existing mcp-server failures and 1 pre-existing scripts failure are unchanged; no new failures introduced]
 <!-- /ANCHOR:testing -->
 
@@ -121,5 +121,5 @@ contextType: "implementation"
 | P1 Items | 12 | 12/12 |
 | P2 Items | 0 | 0/0 |
 
-**Verification Date**: 2026-03-30
+**Verification Date**: 2026-04-02
 <!-- /ANCHOR:summary -->

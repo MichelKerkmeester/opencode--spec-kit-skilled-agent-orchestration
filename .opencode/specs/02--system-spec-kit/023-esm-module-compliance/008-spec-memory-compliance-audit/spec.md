@@ -25,7 +25,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 8 of 8 |
 | **Predecessor** | 007-hybrid-search-null-db-fix |
-| **Successor** | None |
+| **Successor** | 009-reindex-validator-false-positives |
 | **Handoff Criteria** | All surviving docs in this assigned scope validate cleanly, surviving memories pass V-rule validation, and the rebuilt database reports healthy |
 
 This is **Phase 8** of the ESM Module Compliance specification. It is the final cross-cutting documentation and database hygiene sweep after the runtime migration and search fixes completed.
@@ -363,6 +363,21 @@ Bring the entire spec and memory ecosystem to 100% template compliance, remove b
 ---
 
 <!-- ANCHOR:risks -->
+
+### Acceptance Scenarios
+
+**Given** the phase scope and requirements are loaded, **when** implementation starts, **then** only in-scope files and behaviors are changed.
+
+**Given** the phase deliverables are implemented, **when** verification runs, **then** required checks complete without introducing regressions.
+
+**Given** this phase depends on predecessor outputs, **when** those dependencies are present, **then** this phase behavior composes correctly with adjacent phases.
+
+**Given** this phase modifies documented behavior, **when** packet docs are reviewed, **then** spec/plan/tasks/checklist remain internally consistent.
+
+**Given** this phase is rerun in a clean environment, **when** the same commands are executed, **then** outcomes are reproducible.
+
+**Given** completion is claimed, **when** evidence is inspected, **then** each required acceptance outcome is explicitly supported.
+
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |

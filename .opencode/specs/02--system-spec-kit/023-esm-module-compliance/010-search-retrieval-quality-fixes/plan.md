@@ -276,7 +276,6 @@ if (detectedIntent && intentConfidence < 0.25 && !explicitIntent) {
 
 ---
 
-<!-- ANCHOR:critical-files -->
 ### Critical Files
 
 | File | Role | Edit Type |
@@ -286,7 +285,6 @@ if (detectedIntent && intentConfidence < 0.25 && !explicitIntent) {
 | `mcp_server/lib/search/folder-discovery.ts` | Folder discovery utility | Read-only (Fix 4 may modify) |
 
 All paths relative to `.opencode/skill/system-spec-kit/`.
-<!-- /ANCHOR:critical-files -->
 
 ---
 

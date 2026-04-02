@@ -65,6 +65,7 @@ describe('shared-memory admin handlers', () => {
   beforeEach(() => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
     process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'user-owner';
+    process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = 'true';
     delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID;
     dbHolder.current = new Database(':memory:');
     mockRequireDb.mockClear();
@@ -74,6 +75,7 @@ describe('shared-memory admin handlers', () => {
     delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
     delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
     delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID;
+    delete process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY;
     vi.restoreAllMocks();
     dbHolder.current?.close();
     dbHolder.current = null;
@@ -119,6 +121,23 @@ describe('shared-memory admin handlers', () => {
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
     expect(envelope.data.details?.reason).toBe('shared_memory_admin_unconfigured');
+  });
+
+  it('fails closed for shared-space admin mutations when trusted caller binding is not enabled', async () => {
+    delete process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY;
+
+    const response = await handleSharedSpaceUpsert({
+      spaceId: 'space-trust-gate',
+      tenantId: 'tenant-a',
+      name: 'Trust Gate',
+      actorUserId: 'user-owner',
+      rolloutEnabled: true,
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.code).toBe('E_AUTHORIZATION');
+    expect(envelope.data.details?.reason).toBe('shared_memory_trusted_binding_required');
   });
 
   it('auto-bootstraps the creator as owner when creating a shared space', async () => {

@@ -69,6 +69,8 @@ Package-local ESM override within an npm workspace that still has a CommonJS roo
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
+### Phase 1: Delivery
+
 ### Step 1: Package Metadata
 - [x] Add `"type": "module"` to `shared/package.json`
 - [x] Update `exports` field to point at ESM dist output

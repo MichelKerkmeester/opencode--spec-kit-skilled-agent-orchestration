@@ -71,6 +71,8 @@ CommonJS package with explicit async `import()` bridges to ESM sibling packages.
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
+### Phase 1: Delivery
+
 ### Step 1: Create Interop Helper
 - [x] Create `scripts/lib/esm-interop.ts` with typed dynamic `import()` wrappers
 - [x] Export helper functions for `@spec-kit/shared` and `@spec-kit/mcp-server/api*` surfaces

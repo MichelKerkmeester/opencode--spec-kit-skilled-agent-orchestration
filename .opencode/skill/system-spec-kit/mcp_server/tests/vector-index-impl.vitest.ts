@@ -1547,7 +1547,8 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
 
     it('rejects path traversal (../..)', () => {
-      const result = mod.validateFilePath(path.join(TMP_DIR, '..', '..', 'etc', 'passwd'));
+      // Use enough parent traversals to escape TMP_DIR + process.cwd() roots.
+      const result = mod.validateFilePath(path.join(TMP_DIR, '..', '..', '..', '..', 'etc', 'passwd'));
       expect(result).toBeNull();
     });
 

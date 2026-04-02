@@ -24,7 +24,7 @@ This is **Phase 4** of the ESM Module Compliance specification.
 | **Parent Plan** | ../plan.md |
 | **Phase** | 4 of 4 |
 | **Predecessor** | 003-scripts-interop-refactor |
-| **Successor** | None |
+| **Successor** | 005-test-and-scenario-remediation |
 | **Handoff Criteria** | Full verification matrix passes, standards docs updated from verified runtime state |
 
 **Scope Boundary**: Verification, highest-risk retests, and deferred standards-doc sync. No new runtime code changes (unless verification reveals regressions requiring targeted fixes).
@@ -126,6 +126,21 @@ Close the migration by running the full verification suite, re-testing hot runti
 ---
 
 <!-- ANCHOR:risks -->
+
+### Acceptance Scenarios
+
+**Given** the phase scope and requirements are loaded, **when** implementation starts, **then** only in-scope files and behaviors are changed.
+
+**Given** the phase deliverables are implemented, **when** verification runs, **then** required checks complete without introducing regressions.
+
+**Given** this phase depends on predecessor outputs, **when** those dependencies are present, **then** this phase behavior composes correctly with adjacent phases.
+
+**Given** this phase modifies documented behavior, **when** packet docs are reviewed, **then** spec/plan/tasks/checklist remain internally consistent.
+
+**Given** this phase is rerun in a clean environment, **when** the same commands are executed, **then** outcomes are reproducible.
+
+**Given** completion is claimed, **when** evidence is inspected, **then** each required acceptance outcome is explicitly supported.
+
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |

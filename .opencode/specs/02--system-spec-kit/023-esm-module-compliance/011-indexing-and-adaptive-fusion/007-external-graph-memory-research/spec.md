@@ -36,6 +36,9 @@ The Spec Kit Memory causal graph currently has 3,854 edges at 79.92% coverage, d
 | **Status** | Complete |
 | **Created** | 2026-04-01 |
 | **Branch** | `011-007-external-graph-memory-research` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | 006-default-on-boost-rollout |
+| **Successor** | 008-create-sh-phase-parent |
 
 ---
 

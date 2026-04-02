@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/checklist]"
-description: "Verification gates for the pending shared plus mcp_server native ESM migration, with scripts retained as CommonJS and standards docs deferred until runtime proof."
+description: "Verification gates for the completed shared plus mcp_server native ESM migration, with scripts retained as CommonJS and follow-on documentation convergence tracked in child phases."
 trigger_phrases:
   - "esm checklist"
   - "mcp_server esm verification"
@@ -30,7 +30,7 @@ contextType: "implementation"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Current-state evidence distinguishes authoring syntax from runtime module mode [EVIDENCE: `research/research.md` locks the baseline and `spec.md` sections 3-7 now mirror it]
-- [x] CHK-010 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` are synchronized to the finished 20-iteration research [EVIDENCE: packet docs now consistently reference `research/research.md` as source of truth and keep runtime implementation pending]
+- [x] CHK-010 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` are synchronized to the finished 20-iteration research [EVIDENCE: packet docs now consistently reference `research/research.md` as source of truth and reflect completed runtime implementation]
 - [x] CHK-011 [P1] First-pass module strategy is locked: `@spec-kit/shared` plus `@spec-kit/mcp-server` migrate together, `@spec-kit/scripts` stays CommonJS [EVIDENCE: `research/research.md` recommendation and `spec.md` requirements/plan phases match]
 - [x] CHK-012 [P1] Dual-build or conditional exports is explicitly rejected as the first pass and preserved only as fallback if scripts interop proves too invasive [EVIDENCE: `research/research.md` rejected-options guidance and `plan.md` Phases 3/7 rollback rules]
 - [x] CHK-013 [P1] Standards-doc updates outside 023 remain deferred until runtime verification passes [EVIDENCE: `spec.md` scope and `plan.md` Phase 4 defer downstream standards docs]
@@ -98,5 +98,5 @@ contextType: "implementation"
 | P1 Items | 8 | 8/8 |
 | P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-30
+**Verification Date**: 2026-04-02
 <!-- /ANCHOR:summary -->

@@ -32,6 +32,7 @@ This document combines two complementary views of the Spec Kit Memory system int
 - [19. FEATURE FLAG REFERENCE](#19-feature-flag-reference)
 - [20. REMEDIATION REVALIDATION](#20-remediation-revalidation)
 - [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21-implement-and-remove-deprecated-features)
+- [22. CONTEXT PRESERVATION AND CODE GRAPH](#22-context-preservation-and-code-graph)
 
 ---
 
@@ -258,7 +259,7 @@ Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhan
 
 See [`01--retrieval/08-quality-aware-3-tier-search-fallback.md`](01--retrieval/08-quality-aware-3-tier-search-fallback.md) for full implementation and test file listings.
 
-> **Playbook:** [109](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [109](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -537,7 +538,7 @@ The history log is written by mutation handlers (`memory_save`, `memory_update`,
 
 See [`02--mutation/10-per-memory-history-log.md`](02--mutation/10-per-memory-history-log.md) for full implementation and test file listings.
 
-> **Playbook:** [110](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [110](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -1733,7 +1734,7 @@ Rollback is controlled by the runtime graph gate (`SPECKIT_GRAPH_UNIFIED`). Disa
 
 See [`10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`](10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) for full implementation and test file listings.
 
-> **Playbook:** [120](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [120](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2159,7 +2160,7 @@ Rollback is immediate via feature gating (`SPECKIT_MEMORY_ADAPTIVE_RANKING`). Wh
 
 See [`11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`](11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) for full implementation and test file listings.
 
-> **Playbook:** [121](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [121](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2761,7 +2762,7 @@ Async embedding fallback via `index_memory_deferred()`. When embedding generatio
 
 See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
 
-> **Playbook:** [111](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [111](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2781,7 +2782,7 @@ This allows agents to preview validation outcomes before committing while still 
 
 See [`13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md`](13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) for full implementation and test file listings.
 
-> **Playbook:** [122](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [122](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2806,7 +2807,7 @@ Status: Implemented. Spec folder `015-outsourced-agent-handback` is complete and
 
 See [`13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`](13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md) for full implementation and test file listings.
 
-> **Playbook:** [M-005](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [M-005](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2837,7 +2838,7 @@ Status: Implemented and covered by targeted Vitest regressions.
 
 See [`13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md`](13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md) for full implementation and test file listings.
 
-> **Playbook:** [M-006](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [M-006](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3268,7 +3269,7 @@ Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When
 
 See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipeline-architecture/17-cross-process-db-hot-rebinding.md) for full implementation and test file listings.
 
-> **Playbook:** [112](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [112](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3362,7 +3363,7 @@ Schema support is now part of vector index setup, and save handlers integrate li
 
 See [`14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md`](14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md) for full implementation and test file listings.
 
-> **Playbook:** [129](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md), [130](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [129](../manual_testing_playbook/manual_testing_playbook.md), [130](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3697,7 +3698,7 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 
 See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scripts/07-standalone-admin-cli.md) for full implementation and test file listings.
 
-> **Playbook:** [113](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [113](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3717,7 +3718,7 @@ Verification also closed active documentation drift outside the original spec fi
 
 See [`16--tooling-and-scripts/13-constitutional-memory-manager-command.md`](16--tooling-and-scripts/13-constitutional-memory-manager-command.md) for full implementation and verification file listings.
 
-> **Playbook:** [147](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [147](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3735,7 +3736,7 @@ Source-dist alignment enforcement validates that every `.js` file in `mcp_server
 
 See [`16--tooling-and-scripts/14-source-dist-alignment-enforcement.md`](16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) for full implementation and verification file listings.
 
-> **Playbook:** [150](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [150](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3753,7 +3754,7 @@ MODULE_MAP.md documents internal module ownership, dependency directions, featur
 
 See [`16--tooling-and-scripts/15-module-boundary-map.md`](16--tooling-and-scripts/15-module-boundary-map.md) for full implementation and verification file listings.
 
-> **Playbook:** [151](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md), [152](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [151](../manual_testing_playbook/manual_testing_playbook.md), [152](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3771,7 +3772,7 @@ The session capturing pipeline accepts richer structured JSON summaries via `--j
 
 See [`16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md`](16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) for full implementation and test file listings.
 
-> **Playbook:** [153](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [153](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3789,7 +3790,7 @@ Direct positional saves exit non-zero with migration guidance. `--json` and `--s
 
 See [`16--tooling-and-scripts/17-json-primary-deprecation-posture.md`](16--tooling-and-scripts/17-json-primary-deprecation-posture.md) for full implementation and test file listings.
 
-> **Playbook:** [154](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [154](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3975,7 +3976,7 @@ The governance audit trail captures scope decisions so policy behavior can be re
 
 See [`17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`](17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) for full implementation and test file listings.
 
-> **Playbook:** [122](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [122](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3999,7 +4000,7 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`](17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) for full implementation and test file listings.
 
-> **Playbook:** [123](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md), [148](../manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md)
+> **Playbook:** [123](../manual_testing_playbook/manual_testing_playbook.md), [148](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -4280,7 +4281,7 @@ Mode-aware response profiles route search and context results through one of fou
 
 #### Current Reality
 
-Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON, set `SPECKIT_RESPONSE_PROFILE_V1=false` to disable. **Note:** Runtime wiring is partial: `memory_search` applies the selected profile formatter, and the public tool schemas now expose `profile` for both tools, but `memory_context` still declares `profile?: string` without using it.
+Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON, set `SPECKIT_RESPONSE_PROFILE_V1=false` to disable. Runtime wiring is active on both `memory_search` and `memory_context`, with explicit profile selection and intent-to-profile auto-routing when a profile is not provided.
 
 #### Source Files
 
@@ -4675,3 +4676,21 @@ Source file references are included in the flag table above.
 
 See [`19--feature-flag-reference/07-7-ci-and-build-informational.md`](19--feature-flag-reference/07-7-ci-and-build-informational.md) for full flag reference details.
 <!-- /ANCHOR:state -->
+
+---
+
+## 22. CONTEXT PRESERVATION AND CODE GRAPH
+
+### Description
+
+This category tracks the compact-code-graph rollout: hook lifecycle capture, hookless priming, code-graph retrieval, CocoIndex bridging, and routing enforcement surfaces that preserve context across long-running sessions.
+
+### Current Reality
+
+The active package includes a dedicated category folder with 23 feature records that mirror phases 001-025 from the compact-code-graph packet, including precompact/session-start/stop hooks, non-hook MCP priming, session health/resume tools, metrics, and tool-routing guidance.
+
+### Source Files
+
+- Category overview: [`22--context-preservation-and-code-graph/01-category-overview.md`](22--context-preservation-and-code-graph/01-category-overview.md)
+- Latest enforcement feature: [`22--context-preservation-and-code-graph/23-tool-routing-enforcement.md`](22--context-preservation-and-code-graph/23-tool-routing-enforcement.md)
+- Playbook counterpart: [`../manual_testing_playbook/22--context-preservation-and-code-graph/`](../manual_testing_playbook/22--context-preservation-and-code-graph/)

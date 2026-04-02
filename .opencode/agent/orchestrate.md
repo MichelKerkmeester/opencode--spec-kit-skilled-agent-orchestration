@@ -94,6 +94,7 @@ flowchart TD
 
 | Priority | Task Type                                                                 | Agent                  | Tier | Skills                                                                            | subagent_type |
 | -------- | ------------------------------------------------------------------------- | ---------------------- | ---- | --------------------------------------------------------------------------------- | ------------- |
+| 0        | Session bootstrap on first turn / after `/clear`                          | `@context-prime`       | LEAF | `system-spec-kit`                                                                 | `"general"`   |
 | 1        | ALL codebase exploration, file search, pattern discovery, context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                                    | `"general"`   |
 | 2        | Evidence / iterative investigation                                        | `@deep-research`       | LEAF | `system-spec-kit`, `sk-deep-research`                                             | `"general"`   |
 | 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
@@ -113,7 +114,7 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 | Tier             | Dispatch Authority               | Who                                                                                   |
 | ---------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
 | **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                           |
-| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @deep-research, @deep-review |
+| **LEAF**         | MUST NOT dispatch any sub-agents | @context-prime, @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @deep-research, @deep-review |
 
 #### Absolute Depth Rules
 
@@ -169,6 +170,7 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 
 | Agent     | File                          | Notes                                                                                  |
 | --------- | ----------------------------- | -------------------------------------------------------------------------------------- |
+| @context-prime | `.opencode/agent/context-prime.md` | Session bootstrap specialist for first-turn / post-`/clear` recovery               |
 | @context  | `.opencode/agent/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
 | @deep-research | `.opencode/agent/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state          |
 | @ultra-think | `.opencode/agent/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
@@ -194,7 +196,7 @@ TASK #N: [Descriptive Title]
 ├─ Objective: [WHY this task exists]
 ├─ Scope: [Explicit inclusions AND exclusions]
 ├─ Boundary: [What this agent MUST NOT do]
-├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @speckit | @debug | @handover
+├─ Agent: @general | @context-prime | @context | @deep-research | @ultra-think | @write | @review | @speckit | @debug | @handover
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
 ├─ Agent Definition: [.opencode/agent/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]

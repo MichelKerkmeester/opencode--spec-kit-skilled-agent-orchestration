@@ -149,21 +149,6 @@ function normalizeIsoTimestamp(value: unknown): string | undefined {
   return date.toISOString();
 }
 
-// A6: Returns `true` by default (when no env var is set) — this is intentional
-// for shipped rollout features where governance is ON unless explicitly disabled.
-function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
-  for (const flagName of flagNames) {
-    const rawValue = process.env[flagName]?.trim().toLowerCase();
-    if (rawValue === 'false' || rawValue === '0') {
-      return false;
-    }
-    if (rawValue === 'true' || rawValue === '1') {
-      return true;
-    }
-  }
-  return true;
-}
-
 /**
  * Trim and normalize optional scope identifiers before enforcement.
  *

@@ -379,9 +379,23 @@ async function testCollectSessionData() {
     }
 
     const originalWarn = console.warn;
+    const originalStderrWrite = process.stderr.write.bind(process.stderr);
     const capturedWarns = [];
     try {
       console.warn = (...args) => capturedWarns.push(args.join(' '));
+      process.stderr.write = (chunk, encoding, callback) => {
+        const payload = Buffer.isBuffer(chunk) ? chunk.toString('utf8') : String(chunk);
+        capturedWarns.push(payload.trim());
+
+        if (typeof encoding === 'function') {
+          encoding();
+          return true;
+        }
+        if (typeof callback === 'function') {
+          callback();
+        }
+        return true;
+      };
       const manyObservations = Array.from({ length: 200 }, (_, index) => ({
         type: 'feature',
         title: `Observation ${index + 1}`,
@@ -397,6 +411,7 @@ async function testCollectSessionData() {
       }, '007-test-spec');
     } finally {
       console.warn = originalWarn;
+      process.stderr.write = originalStderrWrite;
     }
 
     const truncationLog = capturedWarns.find((entry) => entry.includes('"message":"observation_truncation_applied"'));
@@ -474,14 +489,14 @@ async function testSessionExtractor() {
     assertEqual(detectContextType({}, 0), 'general', 'EXT-Session-020: Empty tools = general');
     assertEqual(detectContextType({ Read: 10, Grep: 5, Write: 1 }, 0), 'research', 'EXT-Session-021: Read-heavy = research');
     assertEqual(detectContextType({ Write: 5, Edit: 5, Read: 2 }, 0), 'implementation', 'EXT-Session-022: Write-heavy = implementation');
-    assertEqual(detectContextType({ Read: 5 }, 2), 'decision', 'EXT-Session-023: With decisions = decision');
-    assertEqual(detectContextType({ WebSearch: 5, WebFetch: 5, Read: 2 }, 0), 'discovery', 'EXT-Session-024: Web-heavy = discovery');
+    assertEqual(detectContextType({ Read: 5 }, 2), 'planning', 'EXT-Session-023: With decisions = planning');
+    assertEqual(detectContextType({ WebSearch: 5, WebFetch: 5, Read: 2 }, 0), 'research', 'EXT-Session-024: Web-heavy = research');
 
     // Test detectImportanceTier
     const { detectImportanceTier } = sessionExtractor;
     assertEqual(detectImportanceTier(['/src/core/auth.js'], 'general'), 'critical', 'EXT-Session-025: Core path = critical');
     assertEqual(detectImportanceTier(['/src/security/tokens.js'], 'general'), 'critical', 'EXT-Session-026: Security path = critical');
-    assertEqual(detectImportanceTier(['/src/utils/helpers.js'], 'decision'), 'important', 'EXT-Session-027: Decision context = important');
+    assertEqual(detectImportanceTier(['/src/utils/helpers.js'], 'planning'), 'important', 'EXT-Session-027: Planning context = important');
     assertEqual(detectImportanceTier(['/src/utils/helpers.js'], 'general'), 'normal', 'EXT-Session-028: Normal path/context = normal');
 
     // Test detectProjectPhase

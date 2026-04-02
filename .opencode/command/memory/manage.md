@@ -835,7 +835,7 @@ This namespace manages shared-memory setup, shared-space creation, membership ch
 
 ### Shared Enablement Gate
 
-Before routing any `shared` subcommand, call `shared_memory_status()` with exactly one actor identity unless the explicit subcommand is `enable`.
+Before routing any `shared` subcommand, call `shared_memory_status()` unless the explicit subcommand is `enable`.
 
 ```text
 1. Parse the nested subcommand after `shared`
@@ -963,7 +963,7 @@ STATUS=OK ACTION=shared-member SPACE=<spaceId>
 **Trigger:** `/memory:manage shared status [--tenant <id>] (--actor-user <id> | --actor-agent <id>)`
 
 Workflow:
-1. Parse the optional `tenantId`
+1. Parse optional `tenantId`
 2. Validate exactly one actor identity is present: `--actor-user <id>` or `--actor-agent <id>`
 3. Call `shared_memory_status({ tenantId, actorUserId, actorAgentId })`
 4. Display rollout state and accessible spaces for that caller

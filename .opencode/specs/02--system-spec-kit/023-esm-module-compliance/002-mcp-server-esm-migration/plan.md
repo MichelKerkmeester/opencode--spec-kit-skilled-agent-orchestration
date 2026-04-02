@@ -73,6 +73,8 @@ Package-local ESM override with CommonJS global cleanup and cross-package import
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
+### Phase 1: Delivery
+
 ### Step 1: Package Metadata
 - [x] Add `"type": "module"` to `mcp_server/package.json`
 - [x] Update `main`, `exports`, and `bin` fields for ESM dist output

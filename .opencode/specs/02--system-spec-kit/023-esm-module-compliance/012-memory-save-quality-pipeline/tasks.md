@@ -1,54 +1,92 @@
 ---
-title: "Tasks: Memory Save Quality Pipeline [023/012]"
-description: "6 tasks fixing JSON-mode memory save quality. 253 LOC across 9 files."
+title: "Tasks: Memory Save Quality Pipeline [02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/tasks]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "memory save quality tasks"
+  - "json mode tasks"
+importance_tier: "critical"
+contextType: "implementation"
 ---
-# Tasks: Phase 012 — Memory Save Quality Pipeline
+# Tasks: Memory Save Quality Pipeline
 
-## Wave 1 — Foundation
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-- [x] Rec 1: Wire JSON data through normalization (~64 LOC)
-  - [x] 1a: Add `filesChanged?: string[]` to CollectedDataBase in session-types.ts
-  - [x] 1b: Add `filesChanged`/`files_changed` to RawInputData + KNOWN_RAW_INPUT_FIELDS in input-normalizer.ts, map to FILES
-  - [x] 1c: Add filesChanged validation in validateInputData()
-  - [x] 1d: Call normalizeInputData() for preloaded JSON data at workflow.ts:615
-  - Evidence: preloaded data now normalized — sessionSummary → userPrompts, keyDecisions → _manualDecisions
+---
 
-## Wave 2 — Message Synthesis
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- [x] Rec 2: Build messages from JSON when transcripts are empty (~88 LOC)
-  - [x] 2a: Add extractFromJsonPayload() function in conversation-extractor.ts
-  - [x] 2b: Insert JSON-mode branch before primary loop (userPrompts.length === 0 && sessionSummary)
-  - [x] 2c: Mark messages with User + Assistant roles (no _synthetic flag needed)
-  - [x] 2d: Ensure at least 1 User-role message is created
-  - [x] 2e: Guard existing fallback (line 324) with !jsonModeHandled
-  - Evidence: JSON save produces User+Assistant messages from sessionSummary, keyDecisions, nextSteps
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-## Wave 3 — Output Quality
+**Task Format**: `T### [P?] Description (file path)`
 
-- [x] Rec 3: Derive title and description from sessionSummary (~23 LOC)
-  - [x] 3a: Use sessionSummary as SUMMARY in collect-session-data.ts (>20 chars, capped at 500)
-  - [x] 3b: Derive TITLE from sessionSummary first clause (80 chars, sentence boundary)
-  - Evidence: Title reflects session content, no "Session focused on..." boilerplate
+- **AI Execution Protocol**: Confirm Phase 012 scope and evidence targets before execution.
+- **Pre-Task Checklist**: Confirm scope is limited to Phase 012 and verification targets are explicit before editing.
+- **TASK-SEQ**: Execute setup -> implementation -> verification in order.
+- **TASK-SCOPE**: Do not modify files outside declared Phase 012 scope.
+- **Status Reporting**: Use `in-progress`, `blocked`, or `completed` with command evidence.
+- **Blocked Task Protocol**: If blocked by missing runtime evidence, keep task pending and capture blocker + next action.
+<!-- /ANCHOR:notation -->
 
-- [x] Rec 4: Fix decision rendering + key_files scoping (~10 LOC)
-  - [x] 4a: Set OPTIONS[0].DESCRIPTION='' for plain-string decisions in decision-extractor.ts
-  - [x] 4b: Set CONTEXT='' when no manualObj and no rationaleFromInput
-  - [x] 4c: Add 'iterations' to ignoredDirs in listSpecFolderKeyFiles
-  - [x] 4d: Cap filesystem enumeration at 20 files, filter research/review iterations
-  - Evidence: No 4x decision repetition, key_files capped at 20
+---
 
-## Wave 4 — Safety & Scoring
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-- [x] Rec 5: Relax V8 for same-parent phase references (~58 LOC)
-  - [x] 5a: Build sibling phase allowlist from parent spec child directories
-  - [x] 5b: Add sibling phase names + display names to V8 allowedIds set
-  - [x] 5c: Skip scattered foreign spec detection for inputMode=structured
-  - [x] 5d: Accept source parameter in validateMemoryQualityContent
-  - Evidence: No CONTAMINATION_GATE_ABORT for cross-phase refs within same parent
+- [x] T001 Confirm structured-save failure patterns and root causes.
+- [x] T002 Map affected modules across normalization/extraction/scoring/validation.
+- [x] T003 Define scope boundaries to preserve transcript-mode behavior.
+<!-- /ANCHOR:phase-1 -->
 
-- [x] Rec 6: Add JSON-mode quality floor (~24 LOC)
-  - [x] 6a: Compute JSON floor from 6 dimensions (triggers, topics, files, content, html, observations)
-  - [x] 6b: Apply floor when all dimensions contribute > 0 AND >= 4/6 pass thresholds
-  - [x] 6c: Floor damped by 0.85x and hard-capped at 0.70
-  - [x] 6d: Contamination penalties at lines 286+ apply after floor and can override it
-  - Evidence: JSON save with rich data scores >= 50/100
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Wire JSON/STDIN data through normalization path in workflow.
+- [x] T005 Add structured message synthesis when transcript prompts are absent.
+- [x] T006 [P] Improve title and summary derivation from session summary.
+- [x] T007 [P] Reduce decision repetition and bound key-file enumeration.
+- [x] T008 [P] Add structured sibling-phase contamination relaxation safeguards.
+- [x] T009 [P] Add constrained structured quality floor behavior.
+- [ ] T010 Capture fresh runtime evidence for score and contamination outcomes.
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T011 Run recursive strict validator and confirm Phase 012 structural errors are cleared.
+- [ ] T012 Run structured-save scenarios and capture quality outcomes.
+- [ ] T013 Confirm transcript-mode regression safety in rerun evidence.
+- [ ] T014 Update checklist and implementation summary with final verification artifacts.
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [ ] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Decision Record**: See `decision-record.md`
+- **Implementation Summary**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->

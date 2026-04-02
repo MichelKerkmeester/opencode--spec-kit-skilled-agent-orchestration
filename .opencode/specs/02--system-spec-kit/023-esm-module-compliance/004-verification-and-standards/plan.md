@@ -68,6 +68,8 @@ Run highest-risk retests -> run full verification matrix -> pass/fail gate -> on
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
+### Phase 1: Delivery
+
 ### Step 1: Highest-Risk Retests
 - [x] Re-test `mcp_server/handlers/memory-save.ts` runtime paths
 - [x] Re-test `mcp_server/handlers/memory-index.ts` runtime paths

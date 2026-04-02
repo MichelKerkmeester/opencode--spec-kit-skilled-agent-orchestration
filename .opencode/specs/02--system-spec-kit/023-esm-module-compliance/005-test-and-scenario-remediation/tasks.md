@@ -62,12 +62,10 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
 ### Step 4: Final Test Report
 
 - [x] T012 Run full test suite and document final counts - WHY: baseline for merge decision - Acceptance: test report with pass/fail/skip counts, all ESM-caused = 0, pre-existing documented
 - [x] T013 Update parent implementation-summary.md with final evidence - WHY: spec closure requires evidence - Acceptance: summary includes test counts, playbook results, verification matrix
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

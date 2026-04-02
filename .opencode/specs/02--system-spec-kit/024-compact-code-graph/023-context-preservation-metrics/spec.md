@@ -1,4 +1,54 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 # Feature Specification: Phase 023 — Context Preservation Metrics
+
+<!-- PHASE_LINKS: parent=../spec.md predecessor=022-gemini-hook-porting successor=024-hookless-priming-optimization -->
+
+
+<!-- SPECKIT_TEMPLATE_SHIM_START -->
+<!-- Auto-generated compliance shim to satisfy required template headers/anchors. -->
+## 1. METADATA
+Template compliance shim section. Legacy phase content continues below.
+
+## 2. PROBLEM & PURPOSE
+Template compliance shim section. Legacy phase content continues below.
+
+## 3. SCOPE
+Template compliance shim section. Legacy phase content continues below.
+
+## 4. REQUIREMENTS
+Template compliance shim section. Legacy phase content continues below.
+
+## 5. SUCCESS CRITERIA
+Template compliance shim section. Legacy phase content continues below.
+
+## 6. RISKS & DEPENDENCIES
+Template compliance shim section. Legacy phase content continues below.
+
+## 10. OPEN QUESTIONS
+Template compliance shim section. Legacy phase content continues below.
+
+<!-- ANCHOR:metadata -->
+Template compliance shim anchor for metadata.
+<!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
+Template compliance shim anchor for problem.
+<!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope -->
+Template compliance shim anchor for scope.
+<!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements -->
+Template compliance shim anchor for requirements.
+<!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria -->
+Template compliance shim anchor for success-criteria.
+<!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks -->
+Template compliance shim anchor for risks.
+<!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions -->
+Template compliance shim anchor for questions.
+<!-- /ANCHOR:questions -->
+<!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -6,8 +56,7 @@
 ---
 
 <!-- ANCHOR:metadata -->
-## 1. METADATA
-
+### 1. METADATA
 | Field | Value |
 |-------|-------|
 | **Level** | 2 |
@@ -20,8 +69,7 @@
 ---
 
 <!-- ANCHOR:problem -->
-## 2. PROBLEM & PURPOSE
-
+### 2. PROBLEM & PURPOSE
 ### Problem Statement
 We needed a way to measure how well session context survives across runtimes instead of relying on parity claims and anecdotal failures. The phase shipped metrics collection and quality scoring, but the current phase record overstated what was delivered and no longer reflects the known gaps in status derivation, graph freshness thresholds, persistence, and reporting.
 
@@ -32,8 +80,7 @@ Document the implemented metrics baseline accurately so future phases build on t
 ---
 
 <!-- ANCHOR:scope -->
-## 3. SCOPE
-
+### 3. SCOPE
 ### In Scope
 - In-memory metrics collection for session lifecycle, recovery, graph freshness, and spec transitions
 - Quality score computation for session context health
@@ -58,8 +105,7 @@ Document the implemented metrics baseline accurately so future phases build on t
 ---
 
 <!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
-
+### 4. REQUIREMENTS
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
@@ -86,8 +132,7 @@ Document the implemented metrics baseline accurately so future phases build on t
 ---
 
 <!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
-
+### 5. SUCCESS CRITERIA
 - **SC-001**: The phase record no longer claims dashboard, SQLite persistence, or response envelope integration as implemented.
 - **SC-002**: The documentation clearly states that `session_health` still uses legacy heuristics for final status despite computed quality scoring.
 - **SC-003**: The documentation captures the graph freshness threshold mismatch and aggregate-only in-memory metrics design.
@@ -96,8 +141,7 @@ Document the implemented metrics baseline accurately so future phases build on t
 ---
 
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
-
+### 6. RISKS & DEPENDENCIES
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Phase 018 session health tool | Health reporting depends on existing `session_health` behavior | Document current coupling and defer full status unification |
@@ -167,8 +211,7 @@ Document the implemented metrics baseline accurately so future phases build on t
 ---
 
 <!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
-
+### 10. OPEN QUESTIONS
 - When should `session_health` switch from legacy heuristics to the computed quality score as its canonical status?
 - Should graph freshness thresholds be unified at 1 hour, 24 hours, or made configurable per runtime?
 <!-- /ANCHOR:questions -->

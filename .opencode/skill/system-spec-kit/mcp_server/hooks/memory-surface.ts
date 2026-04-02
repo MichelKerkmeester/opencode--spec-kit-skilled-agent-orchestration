@@ -2,8 +2,6 @@
 // MODULE: Memory Surface
 // ───────────────────────────────────────────────────────────────
 // Lib modules
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import * as vectorIndex from '../lib/search/vector-index.js';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
@@ -108,10 +106,14 @@ const primedSessionIds: Set<string> = new Set();
 // T018: Session-level tracking for prime package and session_health
 const serverStartedAt = Date.now();
 let lastToolCallAt = Date.now();
+let lastActiveSessionId: string | null = null;
 
 /** T018: Update last tool call timestamp (called from context-server dispatch). */
-function recordToolCall(): void {
+function recordToolCall(sessionId?: string): void {
   lastToolCallAt = Date.now();
+  if (typeof sessionId === 'string' && sessionId.trim().length > 0) {
+    lastActiveSessionId = sessionId.trim();
+  }
 }
 
 /** T018: Get session tracking timestamps */
@@ -121,19 +123,20 @@ function getSessionTimestamps(): { serverStartedAt: number; lastToolCallAt: numb
 
 /**
  * T018: Check if a specific session has been primed.
- * When called without a sessionId, returns true if ANY session has been primed
- * (backward-compatible with callers that don't track session IDs).
+ * Session identity is required to avoid cross-session bleed-through.
  */
-function isSessionPrimed(sessionId?: string): boolean {
-  if (sessionId) {
-    return primedSessionIds.has(sessionId);
-  }
-  return primedSessionIds.size > 0;
+function isSessionPrimed(sessionId: string): boolean {
+  return primedSessionIds.has(sessionId);
 }
 
 /** Mark a specific session as primed */
 function markSessionPrimed(sessionId: string): void {
   primedSessionIds.add(sessionId);
+  lastActiveSessionId = sessionId;
+}
+
+function getLastActiveSessionId(): string | null {
+  return lastActiveSessionId;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -480,9 +483,14 @@ async function primeSessionIfNeeded(
   toolArgs: Record<string, unknown>,
   sessionId?: string,
 ): Promise<AutoSurfaceResult | null> {
-  // Derive a session key from explicit sessionId, tool args, or fall back to a default.
+  // Derive a session key from explicit sessionId or tool args.
   const effectiveSessionId = sessionId
-    ?? (typeof toolArgs.session_id === 'string' ? toolArgs.session_id : '__default__');
+    ?? (typeof toolArgs.sessionId === 'string' ? toolArgs.sessionId : null)
+    ?? (typeof toolArgs.session_id === 'string' ? toolArgs.session_id : null);
+
+  if (!effectiveSessionId || effectiveSessionId.trim().length === 0) {
+    return null;
+  }
 
   if (isSessionPrimed(effectiveSessionId)) {
     return null;
@@ -664,6 +672,7 @@ export {
   // T018: Session tracking for session_health tool
   recordToolCall,
   getSessionTimestamps,
+  getLastActiveSessionId,
   isSessionPrimed,
   markSessionPrimed,
   getCodeGraphStatusSnapshot,

@@ -1,48 +1,112 @@
 ---
-title: "Decision Record: Memory Save Quality Pipeline [023/012]"
-description: "Architecture decisions for fixing JSON-mode memory save quality, informed by 20 research iterations."
+title: "Decision Record: Memory Save Quality Pipeline [02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/decision-record]"
+description: "Architecture decisions for structured memory-save quality remediation."
+trigger_phrases:
+  - "decision record"
+  - "memory save quality decisions"
+importance_tier: "important"
+contextType: "planning"
 ---
-# Decision Record: Phase 012 — Memory Save Quality Pipeline
+# Decision Record: Memory Save Quality Pipeline
 
-## DR-001: Use existing normalizeInputData() over new dual-source extractor
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
-**Context**: Two options to get JSON data to extractors: (A) call existing `normalizeInputData()` for JSON input too, or (B) write a completely new extraction path.
-**Decision**: Option A — wire JSON through existing normalization at `workflow.ts:613`.
-**Rationale**: The normalization already converts sessionSummary → userPrompts and keyDecisions → _manualDecisions. Only 12 LOC to activate for JSON path. Option B would be 60-75 LOC of new code duplicating what normalization already does.
-**Evidence**: Research iteration 010 confirmed normalization bypass as root cause.
+---
 
-## DR-002: Plain roles over _synthetic (amended)
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Reuse Existing Normalization Instead of Building a Parallel Structured Pipeline
 
-**Context**: Synthesized messages from JSON need to be distinguishable from transcript messages. Using `_synthetic: true` would cause downstream filters to discard them.
-**Decision**: Use plain User/Assistant roles without any source flag. Originally planned as `_source: 'json'`, simplified during implementation.
-**Rationale**: The existing `_synthetic` flag triggers penalization/filtering in quality scoring and template rendering. Investigation confirmed no downstream code filters by message source — only by role. Adding an unused `_source` field would be dead code. Plain User/Assistant roles achieve the goal (not penalized) without adding complexity.
-**Evidence**: Research iteration 011 traced `_synthetic` filtering in 3 downstream consumers. Implementation review confirmed no `_source` consumers exist.
-**Amendment**: Original DR-002 specified `_source: 'json'` flag. Dropped during implementation as unnecessary — documented 2026-04-01.
+### Metadata
 
-## DR-003: Relax V8 for sibling phases, not all JSON
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-01 |
+| **Deciders** | Spec-kit maintainers |
 
-**Context**: V8 contamination flags "Phase 015" as cross-spec pollution in a memory for spec 024.
-**Decision**: Add sibling phase names to V8's existing allowedIds mechanism. Do NOT disable V8 for all JSON input.
-**Rationale**: V8 correctly catches genuine cross-spec contamination. The bug is that sibling phases within the same parent aren't in the allowlist. Surgical fix preserves contamination detection for real leaks.
-**Evidence**: Research iteration 013 confirmed V8 already has allowlist infrastructure — just missing sibling population.
+---
 
-## DR-004: Quality floor with damping over hard minimum
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-**Context**: JSON saves need a minimum quality guarantee, but a hard floor could mask genuine rendering problems.
-**Decision**: Floor = `jsonFloor * 0.85`, capped at 70/100. Contamination penalties override.
-**Rationale**: The 0.85x damping ensures that a poorly-structured JSON payload doesn't artificially score high. The 70 cap ensures the floor never produces a "perfect" score. Contamination override prevents masking real issues.
-**Evidence**: Research iteration 012 modeled scoring projections showing 0.85x produces 55-65 effective floor for typical inputs.
+Structured (`--json`/`--stdin`) saves were underperforming because the primary path still assumed transcript-heavy inputs. The team needed a fix that improved structured quality without destabilizing transcript behavior.
 
-## DR-005: Accept filesChanged as field alias
+### Constraints
 
-**Context**: AI agents use `filesChanged` in JSON payloads but the script only accepts `filesModified`/`files_modified`.
-**Decision**: Add `filesChanged` as accepted alias, mapped to `filesModified` during normalization.
-**Rationale**: The field name mismatch caused silent data loss in every JSON save that used `filesChanged`. This is a one-line fix with high impact.
-**Evidence**: Research iteration 006 discovered the mismatch via KNOWN_RAW_INPUT_FIELDS set analysis.
+- Changes had to stay compatible with existing workflow/extractor contracts.
+- Validation safety could not be broadly relaxed.
+<!-- /ANCHOR:adr-001-context -->
 
-## DR-006: Cap key_files at 20, exclude iteration directories
+---
 
-**Context**: Without scoping, key_files lists 300+ entries including every research/review iteration.
-**Decision**: Cap at 20 files sorted by mtime desc. Exclude `research/iterations/` and `review/iterations/` from enumeration.
-**Rationale**: Key files should highlight the most relevant recent files, not provide a complete directory listing. Research/review iterations are auxiliary — they inflate the list without adding retrieval value.
-**Evidence**: Research iteration 014 traced the uncapped enumeration in `buildKeyFiles()` / `listSpecFolderKeyFiles()`.
+<!-- ANCHOR:adr-001-decision -->
+### Decision
+
+**We chose**: Extend existing normalization and extraction paths with structured-aware guards rather than create an independent structured-only pipeline.
+
+**How it works**: Structured fields are normalized into canonical forms, synthesis fills message gaps when needed, and quality/validation modules apply constrained structured-aware logic.
+<!-- /ANCHOR:adr-001-decision -->
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Extend existing pipeline (chosen)** | Lower risk, less duplication, easier maintenance | Requires careful guard conditions | 9/10 |
+| Build separate structured pipeline | Clear isolation | High duplication and regression risk | 5/10 |
+
+**Why this one**: It solved the root cause while minimizing blast radius and preserving existing transcript behavior.
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
+
+**What improves**:
+- Structured saves produce higher-signal outputs.
+- Existing pipeline remains unified and maintainable.
+
+**What it costs**:
+- Guard-condition complexity increases. Mitigation: keep behavior explicitly documented and tested.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Structured-mode over-permissiveness in validation | H | Restrict relaxations to same-parent sibling references |
+| Quality-floor inflation | M | Damped and capped floor with contamination override |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Root-cause analysis showed structured path quality collapse |
+| 2 | **Beyond Local Maxima?** | PASS | Alternative architecture was considered and rejected |
+| 3 | **Sufficient?** | PASS | Existing pipeline extension covers required fixes |
+| 4 | **Fits Goal?** | PASS | Targets core save-quality failures directly |
+| 5 | **Open Horizons?** | PASS | Keeps future improvements centralized |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- Workflow normalization wiring for structured payloads.
+- Structured extraction, decision shaping, contamination, and quality-score refinements.
+
+**How to roll back**: Revert structured-path patches module-by-module and rebuild scripts/dist.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->

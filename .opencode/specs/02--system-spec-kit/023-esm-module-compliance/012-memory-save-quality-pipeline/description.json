@@ -1,16 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline",
-  "description": "Spec: Phase 012 — Memory Save Quality Pipeline",
+  "description": "Feature Specification: Memory Save Quality Pipeline",
   "keywords": [
-    "spec",
-    "phase",
-    "012",
+    "feature",
+    "specification",
     "memory",
     "save",
     "quality",
     "pipeline"
   ],
-  "lastUpdated": "2026-04-01T08:40:52.928Z",
+  "lastUpdated": "2026-04-02T09:56:16.590Z",
   "specId": "012",
   "folderSlug": "memory-save-quality-pipeline",
   "parentChain": [

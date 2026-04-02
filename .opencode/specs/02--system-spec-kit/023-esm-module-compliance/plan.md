@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/plan]"
-description: "Research-ordered implementation plan for the pending shared plus mcp_server native ESM migration, with scripts retained as CommonJS and standards docs deferred until runtime proof."
+description: "Research-ordered implementation plan for the completed shared plus mcp_server native ESM migration, with scripts retained as CommonJS and follow-on documentation convergence tracked in child phases."
 trigger_phrases:
   - "esm plan"
   - "mcp_server esm migration plan"

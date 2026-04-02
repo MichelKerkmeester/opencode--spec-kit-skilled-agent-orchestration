@@ -1,100 +1,91 @@
 ---
-title: "Implementation Summary: Memory Save Quality Pipeline [023/012]"
-description: "6 recommendations implemented across 9 files, fixing JSON-mode memory save quality from 0/100 to 55-75/100."
-SPECKIT_LEVEL: 3
+title: "Implementation Summary: Memory Save Quality Pipeline [02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/implementation-summary]"
+description: "Summary of structured save quality remediation and current verification state."
+trigger_phrases:
+  - "memory save implementation summary"
+  - "json save quality summary"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Implementation Summary
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
 
 <!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
 |-------|-------|
-| Spec | 023-esm-module-compliance / 012-memory-save-quality-pipeline |
-| LOC | 253 insertions, 14 deletions (239 net) |
-| Files Modified | 9 |
-| Estimated | 156-171 LOC |
-| Actual | 253 LOC (larger extractFromJsonPayload function + V8 rule enhancements) |
-| TypeScript Errors | 0 |
-| Regression Risk | LOW — all changes gated behind preloaded/structured checks |
+| **Spec Folder** | 012-memory-save-quality-pipeline |
+| **Completed** | 2026-04-01 (implementation), 2026-04-02 (structural doc alignment) |
+| **Level** | 3 |
+<!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Fixed the `generate-context.js` pipeline so JSON-mode saves (via `--json`/`--stdin`) produce 55-75/100 quality memories instead of 0/100 boilerplate. The root cause was a normalization bypass at `workflow.ts:613` that left all downstream extractors with empty data arrays.
+This phase remediated structured save quality issues by tightening normalization, improving structured message synthesis, refining summary/decision output shaping, and adding bounded quality/validation safeguards.
 
-### 6 Recommendations Implemented
+### Structured Save Quality Remediation
 
-1. **Normalization wiring** (Rec 1): `normalizeInputData()` now runs on preloaded JSON data, converting `sessionSummary` → `userPrompts[]`, `keyDecisions` → `_manualDecisions[]`, and `filesChanged` → `FILES[]`.
+The implementation focused on six remediation themes: normalization wiring, JSON-path synthesis, summary/title derivation, decision/key-file quality, structured contamination relaxation for same-parent siblings, and damped quality-floor behavior.
 
-2. **Message synthesis** (Rec 2): New `extractFromJsonPayload()` function creates User+Assistant exchange pairs from structured JSON when no transcript-based userPrompts exist. Safety net for cases where normalization alone doesn't produce messages.
+### Files Changed
 
-3. **Title/description** (Rec 3): TITLE and SUMMARY now derived from `sessionSummary` when available, eliminating the generic "Session focused on implementing and testing features" boilerplate.
+| File | Action | Purpose |
+|------|--------|---------|
+| `scripts/core/workflow.ts` | Modified | Structured normalization and metadata routing |
+| `scripts/extractors/conversation-extractor.ts` | Modified | Structured message synthesis path |
+| `scripts/extractors/collect-session-data.ts` | Modified | Summary/title derivation improvements |
+| `scripts/extractors/decision-extractor.ts` | Modified | Reduced repetition for plain decision strings |
+| `scripts/lib/validate-memory-quality.ts` | Modified | Structured sibling-phase contamination handling |
+| `scripts/core/quality-scorer.ts` | Modified | Bounded structured quality floor |
+<!-- /ANCHOR:what-built -->
 
-4. **Decision dedup + key_files cap** (Rec 4): Plain-string decisions no longer repeat the same text in 4 fields (TITLE, CONTEXT, OPTIONS, CHOSEN). Filesystem key_files enumeration capped at 20, excluding research/review iterations.
-
-5. **V8 contamination relaxation** (Rec 5): Sibling phase names added to V8 allowlist. Scattered foreign spec detection disabled for structured input mode (AI-composed content may legitimately reference siblings).
-
-6. **Quality floor** (Rec 6): When all 6 scoring dimensions contribute > 0 and >= 4/6 pass thresholds, a floor of `(passCount/6) * 0.85` is applied, capped at 0.70. Contamination penalties override.
+---
 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-**4-wave parallel implementation** using autonomous agents:
-- Wave 1 (Foundation): session-types.ts, input-normalizer.ts, workflow.ts
-- Wave 2 (Message Synthesis): conversation-extractor.ts
-- Wave 3 (Output Quality): collect-session-data.ts, decision-extractor.ts, workflow-path-utils.ts
-- Wave 4 (Safety & Scoring): validate-memory-quality.ts, quality-scorer.ts
+Work was delivered as targeted updates in existing pipeline modules rather than a full architectural replacement. This document update aligns phase artifacts to strict template/anchor requirements and keeps runtime verification status explicit.
+<!-- /ANCHOR:how-delivered -->
 
-All 4 waves executed in parallel, each touching independent files. TypeScript compilation verified with zero errors after all waves completed.
+---
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **DR-001**: Used existing `normalizeInputData()` over new dual-source extractor (12 LOC activation vs 60-75 LOC new code).
-2. **DR-002**: Messages use plain User/Assistant roles without `_synthetic` or `_source` flags — simpler than originally planned since no downstream code filters by source flag.
-3. **DR-004**: Quality floor uses 6-dimension threshold check with 0.85x damping, capped at 0.70. Only activates when ALL dimensions contribute.
-4. **DR-005**: `filesChanged` accepted as alias in both fast-path and slow-path normalization, with validation.
-5. **DR-006**: Key_files capped at 20 via `.slice(0, 20)` after filtering `research/iterations/` and `review/iterations/`.
+| Decision | Why |
+|----------|-----|
+| Extend existing normalization pipeline | Lower risk and better maintainability than a parallel stack |
+| Keep contamination relaxation scoped to structured same-parent sibling refs | Prevents broad weakening of safeguards |
+| Use damped/capped quality floor | Improves structured quality baseline without masking severe issues |
+<!-- /ANCHOR:decisions -->
+
+---
 
 <!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
 |-------|--------|
-| TypeScript compilation | Zero errors |
-| All tasks marked [x] | 22/22 sub-tasks complete |
-| P0 checklist items | 6/6 pass |
-| P1 checklist items | 10/10 pass |
-| P2 checklist items | 10/10 pass (2 deferred to runtime test) |
-| P3 testing items | 6 deferred (test suite needed) |
-| MVP acceptance criteria | 5/5 pass |
+| Required section headers and anchors present in this file | PASS |
+| Phase 012 docs now include template source markers | PASS |
+| Structured runtime score outcomes re-verified in fresh run | PENDING |
+| Recursive strict validator post-patch snapshot | PENDING |
+<!-- /ANCHOR:verification -->
 
-### Files Modified
-
-| File | Rec | LOC | Change |
-|------|-----|-----|--------|
-| types/session-types.ts | 1 | +2 | filesChanged field on CollectedDataBase |
-| utils/input-normalizer.ts | 1 | +53 | KNOWN_RAW_INPUT_FIELDS, fast/slow path mapping, validation |
-| core/workflow.ts | 1 | +9 | Import + normalizeInputData() call for preloaded data |
-| extractors/conversation-extractor.ts | 2 | +88 | extractFromJsonPayload() + JSON-mode branch + fallback guard |
-| extractors/collect-session-data.ts | 3 | +23 | sessionSummary → SUMMARY + TITLE derivation |
-| extractors/decision-extractor.ts | 4 | +4 | Empty CONTEXT/OPTIONS for plain-string decisions |
-| core/workflow-path-utils.ts | 4 | +6 | iterations in ignoredDirs, .slice(0,20), filter |
-| lib/validate-memory-quality.ts | 5 | +58 | Sibling allowlist, structured input guard, source param |
-| core/quality-scorer.ts | 6 | +24 | JSON quality floor with 6-dimension check |
+---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **No automated tests** — P3 testing items deferred. Runtime validation needed to confirm actual score improvement.
-2. **Quality floor is heuristic** — the 0.85x damping and 0.70 cap are estimates from research iteration 012. May need tuning based on production data.
-3. **extractFromJsonPayload creates timestampless messages** — all messages share the same `formatTimestamp(undefined)` value, which may affect time-based sorting in the primary loop (mitigated by early return before loop).
-4. **V8 sibling scanning reads parent directory** — adds fs.readdirSync call per memory save. Non-blocking since spec folders are small.
-
-<!-- /ANCHOR: metadata -->
-<!-- /ANCHOR: what-built -->
-<!-- /ANCHOR: how-delivered -->
-<!-- /ANCHOR: decisions -->
-<!-- /ANCHOR: verification -->
-<!-- /ANCHOR: limitations -->
+1. Fresh runtime evidence for structured quality score outcomes is still pending.
+2. This summary intentionally avoids introducing unverified closure claims.
+<!-- /ANCHOR:limitations -->

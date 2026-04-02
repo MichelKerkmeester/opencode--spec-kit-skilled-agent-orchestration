@@ -1,95 +1,88 @@
 ---
 title: "Implementation Summary: Search Retrieval Quality Fixes [02--system-spec-kit/023-esm-module-compliance/010-search-retrieval-quality-fixes/implementation-summary]"
-description: "Six search retrieval quality fixes: intent propagation, folder discovery recovery, adaptive content truncation, folder boost signal, two-tier response, and intent confidence floor."
+description: "Structured summary of the six retrieval quality fixes in memory context/search pipelines."
 trigger_phrases:
   - "search retrieval implementation summary"
   - "retrieval quality fixes summary"
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Implementation Summary: Search Retrieval Quality Fixes
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-## What Changed
+<!-- ANCHOR:metadata -->
+## Metadata
 
-Six fixes to the Spec Kit Memory search pipeline addressing intent propagation, folder discovery behavior, token budget enforcement, and intent classification quality.
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 010-search-retrieval-quality-fixes |
+| **Completed** | 2026-04-01 (implementation pass), 2026-04-02 (structural doc alignment) |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
-### Fix 1: RC3-A — Intent Propagation
+---
 
-**Files:** `mcp_server/handlers/memory-context.ts`
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-- Added `intent: string | null` parameter to `executeDeepStrategy()` and `executeResumeStrategy()` signatures
-- Updated `executeStrategy()` to forward `args.intent` to deep, focused, and resume strategy functions
-- Strategy functions now pass `intent: intent ?? undefined` and `autoDetectIntent: intent ? false : true` to `handleMemorySearch()`
-- Quick strategy skipped (uses triggers, not search)
+This phase implemented six retrieval-quality fixes across context routing, folder discovery behavior, token budget handling, and intent classification. The changes targeted false zero-result outcomes and low-quality intent auto-detection paths.
 
-### Fix 2: RC1-A — Folder Discovery Recovery
+### Retrieval Quality Remediation
 
-**Files:** `mcp_server/handlers/memory-context.ts`
+The implementation updated strategy intent propagation, added recovery for over-narrow folder scope, introduced adaptive truncation behavior, wired folder boost scoring metadata, added two-tier metadata/content response behavior, and added a confidence floor that defaults weak auto-detections to `understand`.
 
-- Added `extractResultCount()` helper to parse result count from MCPResponse JSON
-- After strategy execution, checks for 0-result + folder-discovered condition
-- On match: clears `options.specFolder`, re-executes strategy, and preserves the original 0-result response if the retry throws
+### Files Changed
 
-### Fix 3: RC2-B — Adaptive Content Truncation
+| File | Action | Purpose |
+|------|--------|---------|
+| `mcp_server/handlers/memory-context.ts` | Modified | Intent propagation, folder recovery, adaptive truncation, two-tier behavior |
+| `mcp_server/handlers/memory-search.ts` | Modified | Folder boost application + intent confidence floor |
+| `mcp_server/lib/search/folder-discovery.ts` | Modified | Folder discovery support for scoring signal integration |
+<!-- /ANCHOR:what-built -->
 
-**Files:** `mcp_server/handlers/memory-context.ts`
+---
 
-- In `enforceTokenBudget()`, Phase 1 now truncates `content` to 500 chars before Phase 2 drops results
-- Adds `contentTruncated: true` flag to truncated results
-- Re-estimates tokens after truncation; only drops results if still over budget
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-### Fix 4: RC1-B — Folder Discovery as Boost Signal
+Implementation was performed in staged fixes with incremental verification. Structural documentation in this phase was realigned on 2026-04-02 to match required template anchors and headers so strict recursive validation can pass without format errors.
+<!-- /ANCHOR:how-delivered -->
 
-**Files:** `mcp_server/handlers/memory-context.ts`, `mcp_server/handlers/memory-search.ts`
+---
 
-- `maybeDiscoverSpecFolder()` sets `options.folderBoost = { folder, factor }`
-- The handler still seeds `options.specFolder` with the discovered folder before the first pass so session state and recovery logic can detect over-narrow searches
-- Factor configurable via `SPECKIT_FOLDER_BOOST_FACTOR` env var (default 1.3)
-- Added `folderBoost` to `ContextOptions` interface
-- Strategy functions (deep, focused, resume) forward `folderBoost` to `handleMemorySearch()`
-- `SearchArgs` interface extended with `folderBoost` field
-- Post-pipeline: multiplies `similarity` score by factor for matching results (capped at 1.0), re-sorts
-- Folder boost metadata added to `appliedBoosts` in response
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
-### Fix 5: RC2-A — Two-Tier Metadata+Content Response
+| Decision | Why |
+|----------|-----|
+| Keep recovery logic for narrow folder scope while introducing folder boost signal | Preserves safe fallback behavior for known 0-result edge case |
+| Apply confidence floor only to auto-detected intents | Explicit caller intent should not be overridden |
+| Separate structural doc remediation from runtime verification claims | Prevents overstating confidence when cache-sensitive runtime checks are pending |
+<!-- /ANCHOR:decisions -->
 
-**Files:** `mcp_server/handlers/memory-context.ts`
+---
 
-- After Phase 2 dropping in `enforceTokenBudget()`, collects dropped results
-- Maps dropped results to metadata-only entries: `{ id, title, similarity, specFolder, confidence, importanceTier, isConstitutional, metadataOnly: true }`
-- Appends metadata entries if they fit within remaining token budget
+<!-- ANCHOR:verification -->
+## Verification
 
-### Fix 6: RC3-B — Intent Confidence Floor
+| Check | Result |
+|-------|--------|
+| Phase docs now use required template section headers | PASS |
+| Required anchor pairs in this file present | PASS |
+| Runtime retrieval checks (fresh restart/cache state) | PENDING |
+| Recursive strict validator rerun after full phase patchset | PENDING |
+<!-- /ANCHOR:verification -->
 
-**Files:** `mcp_server/handlers/memory-search.ts`
+---
 
-- After auto-detection, if confidence < `INTENT_CONFIDENCE_FLOOR` (0.25) and no explicit intent provided, overrides `detectedIntent` to `"understand"` and raises confidence to `1.0`
-- Explicit caller-provided intents bypass the floor entirely
-
-## Files Modified
-
-| File | Changes |
-|------|---------|
-| `mcp_server/handlers/memory-context.ts` | Fixes 1-5: intent forwarding, folder recovery, adaptive truncation, folder boost, two-tier metadata |
-| `mcp_server/handlers/memory-search.ts` | Fix 4: folderBoost consumption + score multiplier; Fix 6: intent confidence floor |
-
-All paths relative to `.opencode/skill/system-spec-kit/`.
-
-## Verification Evidence
-
-- **Pipeline health:** 31 candidates → 20 results for "search retrieval quality improvements" (bypassCache)
-- **Intent propagation:** `intent: { type: "understand", confidence: 1, source: "explicit" }` in memory_context trace
-- **Folder boost:** `appliedBoosts.folder: { applied: true, folder: "...", factor: 1.3 }` in response
-- **Confidence floor:** memory_search auto-detects "understand" (not "fix_bug" at 0.098) for "semantic search"
-- **TypeScript:** 0 new errors (3 pre-existing minState type errors)
-- **Regression:** memory_match_triggers, memory_list, memory_health, memory_search all passing
-
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- **Stale tool cache:** After recompilation, memory_context deep mode may return cached 0-results from previous code. TTL-based expiry resolves this automatically.
-- **memory_search budget truncation:** The `formatSearchResults` function in memory_search has its own token budget that truncates results independently of the memory_context `enforceTokenBudget`. Fixes 3 and 5 only apply to the memory_context pathway.
+1. Runtime confirmation for all retrieval scenarios is pending a fresh server/cache verification pass.
+2. This summary intentionally avoids introducing new completion claims beyond documented implementation scope.
+<!-- /ANCHOR:limitations -->

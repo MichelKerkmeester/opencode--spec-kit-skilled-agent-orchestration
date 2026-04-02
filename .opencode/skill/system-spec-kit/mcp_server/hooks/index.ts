@@ -12,6 +12,7 @@ export {
   // T018: Session tracking for session_health tool
   recordToolCall,
   getSessionTimestamps,
+  getLastActiveSessionId,
   isSessionPrimed,
   getCodeGraphStatusSnapshot,
 } from './memory-surface.js';

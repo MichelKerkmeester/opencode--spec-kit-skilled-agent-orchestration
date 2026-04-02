@@ -762,19 +762,6 @@ async function executeResumeStrategy(input: string, intent: string | null, optio
   };
 }
 
-function extractResultCount(result: ContextResult): number {
-  try {
-    const contentArr = (result as Record<string, unknown>).content as Array<{ type: string; text: string }> | undefined;
-    if (contentArr && Array.isArray(contentArr) && contentArr.length > 0 && contentArr[0]?.text) {
-      const envelope = JSON.parse(contentArr[0].text);
-      return envelope?.data?.count ?? envelope?.data?.results?.length ?? 0;
-    }
-  } catch {
-    // Parse failed — assume non-zero to avoid false recovery
-  }
-  return -1;
-}
-
 /* ───────────────────────────────────────────────────────────────
    6. HANDLER HELPERS
 ──────────────────────────────────────────────────────────────── */

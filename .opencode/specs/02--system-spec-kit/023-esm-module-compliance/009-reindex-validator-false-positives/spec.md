@@ -1,145 +1,188 @@
 ---
-title: "Phase 009: Reindex [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/spec]"
-description: "Fix false-positive validation rules that block legitimate memory and spec doc files from being indexed during bulk reindex. Two rules cause the majority of rejections."
+title: "Feature Specification: Reindex Validator False Positives [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/spec]"
+description: "Fix false-positive validation behavior that blocked legitimate memory and spec files during batch reindex."
 trigger_phrases:
   - "reindex false positive"
   - "validator blocking index"
   - "memory files not indexed"
   - "cross-spec contamination false positive"
   - "topical coherence mismatch"
-  - "bulk reindex missing files"
-  - "memory_index_scan rejections"
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Phase 009: Reindex Validator False Positives
+# Feature Specification: Reindex Validator False Positives
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
-## Problem
+---
 
-Running `reindex-embeddings.js` discovers 184 memory files on disk but only 56 end up in the database. Two validation rules cause false-positive rejections during bulk reindex:
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-### 1. Cross-Spec Contamination (rule `V8`)
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P0 |
+| **Status** | Review |
+| **Created** | 2026-03-31 |
+| **Branch** | `system-speckit/024-compact-code-graph` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | 008-spec-memory-compliance-audit |
+| **Successor** | 010-search-retrieval-quality-fixes |
+<!-- /ANCHOR:metadata -->
 
-**What it does:** Blocks files whose body text mentions other spec folder IDs (e.g., a memory in spec 022 that references spec 024).
+---
 
-**Why it's a false positive during reindex:** The validator receives `current_spec: unknown` when run in batch mode because `runMemoryIndexScan` doesn't propagate the per-file spec folder context to the contamination checker. Without knowing which spec a file belongs to, ANY cross-reference triggers the rule.
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-**Impact:** Blocks nearly all spec docs (spec.md, plan.md, checklist.md, tasks.md, implementation-summary.md, decision-record.md) — 1,106 "would-reject" events in a single reindex run. Also blocks memory files that legitimately reference related specs.
+### Problem Statement
+Batch reindex discovered substantially more files on disk than were inserted into the memory index. Two validation rules were producing false positives in bulk mode, which blocked valid memory and spec documentation content from indexing.
 
-**Config:** `severity: 'high'`, `blockOnWrite: true`, `blockOnIndex: true`
+### Purpose
+Make bulk reindex permissive for valid spec-memory content while keeping contamination safeguards intact for real cross-spec leakage.
+<!-- /ANCHOR:problem -->
 
-**File:** `scripts/lib/validate-memory-quality.ts` lines 101-107
+---
 
-### 2. Topical Coherence Mismatch (rule `V12`)
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-**What it does:** Blocks memory files whose content has zero overlap with the parent spec's `trigger_phrases` from `spec.md`.
+### In Scope
+- Repair V8 cross-spec contamination handling for batch mode context.
+- Repair V12 topical coherence handling for memory/spec-document indexing paths.
+- Keep existing interactive `memory_save` behavior stable.
+- Align context type handling to canonical values used by runtime and schema.
 
-**Why it's a false positive:** Legitimate memory files (e.g., deep-review results, implementation summaries, next-steps notes) may use different terminology than the parent spec's trigger phrases. The rule is too strict — zero overlap is a high bar when trigger phrases are narrow.
+### Out of Scope
+- New validation rule families.
+- Retrieval algorithm redesign.
+- Dashboard formatting redesign.
 
-**Impact:** Blocks 6 confirmed memory files from being indexed. These files are written, saved to disk, but silently excluded from the vector index, making them invisible to `memory_search` and `memory_context`.
+### Files to Change
 
-**Config:** `severity: 'medium'`, `blockOnWrite: false`, `blockOnIndex: true`
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `scripts/lib/validate-memory-quality.ts` | Modify | Adjust V8/V12 behavior for bulk index path |
+| `mcp_server/handlers/memory-index.ts` | Modify | Pass contextual path/scope data into validation |
+| `scripts/lib/frontmatter-migration.ts` | Modify | Normalize context type defaults and aliases |
+| `mcp_server/lib/search/vector-index-schema.ts` | Modify | Enforce canonical context type values in schema |
+| `shared/context-types.ts` | Create/Modify | Shared canonical context type mapping |
+<!-- /ANCHOR:scope -->
 
-**File:** `scripts/lib/validate-memory-quality.ts` lines 133-139
+---
 
-## Evidence
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-```
-# Reindex output analysis (2026-03-31):
-On disk:     92 memory .md files (find .opencode/specs -path "*/memory/*.md")
-In database: 56 entries (SELECT COUNT(*) FROM memory_index)
-Gap:         36 files never indexed
+### P0 - Blockers (MUST complete)
 
-# V8 false positives during reindex:
-- 1,106 "would-reject: true" events
-- 176 spec.md hard blocks, 78 checklist.md, 55 plan.md, etc.
-- Root cause: current_spec: unknown → all cross-references trigger
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Bulk reindex no longer false-blocks same-spec references | Batch indexing no longer rejects valid same-parent/same-scope files due V8 alone |
+| REQ-002 | V12 no longer blocks eligible memory/spec docs during index | Memory and spec-doc paths are indexable without false V12 hard-blocks |
+| REQ-003 | Canonical context types are enforced consistently | Runtime + migration + schema all accept canonical context set |
 
-# V12 index blocks:
-- 6 memory files hard-blocked from index
-- Example: "01-03-26_08-52__feature-verification-flag-graduation.md: V12"
-- These files exist on disk but are invisible to search
-```
+### P1 - Required (complete OR user-approved deferral)
 
-### 3. Frontmatter Source of Truth — Wrong Defaults
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Duplicates are prevented during forced reindex | Reindex does not keep accumulating duplicate rows for identical content |
+| REQ-005 | Rule output is diagnosable | Validation outputs include human-readable rule identity |
+<!-- /ANCHOR:requirements -->
 
-**What it does:** `scripts/lib/frontmatter-migration.ts` assigns `contextType` to all spec documents via defaults and normalization. Both `create.sh` (new docs) and `backfill-frontmatter.js` (bulk normalization) use this module.
+---
 
-**Three bugs in the source:**
-1. `VALID_CONTEXT_TYPES` set didn't include `"planning"` — any file with `contextType: "planning"` got rejected as invalid
-2. `DOC_DEFAULT_CONTEXT` mapped spec/plan/decision-record to `"decision"` — not a valid downstream value
-3. `normalizeContextType()` aliased `"planning"` → `"decision"` — actively reversed any manual fix
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-**Impact:** Every backfill run re-introduced `contextType: "decision"` across all spec and plan docs, undoing manual fixes. The spec 008 compliance audit fixed files, then the next backfill reverted them.
+- **SC-001**: Recursive strict validator reports no structural errors for Phase 009 docs.
+- **SC-002**: Phase documentation reflects implemented remediation scope without overstating fresh runtime verification.
+- **SC-003**: Canonical context handling is documented consistently across spec, plan, tasks, checklist, and implementation summary.
+<!-- /ANCHOR:success-criteria -->
 
-**File:** `scripts/lib/frontmatter-migration.ts` lines 101-107, 135-146, 834-840
+---
 
-## Scope
+<!-- ANCHOR:risks -->
 
-**In scope:**
-- Fix cross-spec contamination to pass spec folder context during bulk reindex
-- Fix topical coherence to skip memory-dir files and spec doc files
-- Fix template contract to use warn-only during force reindex
-- Fix frontmatter-migration.ts source of truth: VALID_CONTEXT_TYPES, DOC_DEFAULT_CONTEXT, normalizeContextType alias
-- Retroactive backfill across all spec docs
-- Ensure all memory files on disk get indexed after fix
-- Ensure spec docs get indexed with correct document_type
-- Deep review P1 remediation: regex fix, dedup fix, test coverage, log fixes, descriptive V-rule names
-- Extract shared `CONTEXT_TYPE_CANONICAL_MAP` constant across 6 consumers (P1-3)
-- Schema migration v25 to retrofit strict CHECK constraint on existing databases (P1-5)
+### Acceptance Scenarios
 
-**Out of scope:**
-- Changing validation behavior during interactive `memory_save` (single-file saves work correctly)
-- Adding new validation rules
-- Restructuring the validation pipeline
+**Given** the phase scope and requirements are loaded, **when** implementation starts, **then** only in-scope files and behaviors are changed.
 
-## Resolution
+**Given** the phase deliverables are implemented, **when** verification runs, **then** required checks complete without introducing regressions.
 
-All issues resolved. Changes made:
+**Given** this phase depends on predecessor outputs, **when** those dependencies are present, **then** this phase behavior composes correctly with adjacent phases.
 
-1. **Cross-spec contamination** — `validate-memory-quality.ts`: extract spec folder from file path as fallback when frontmatter `spec_folder` is empty
-2. **Topical coherence** — `validate-memory-quality.ts`: skip check for `*/memory/` directory files and spec doc files
-3. **Template contract** — `memory-index.ts`: force reindex uses `warn-only` mode for all files
-4. **File path threading** — `v-rule-bridge.ts` + `memory-save.ts`: pass `filePath` through validation bridge
-5. **Frontmatter defaults** — `frontmatter-migration.ts`: add `"planning"` to valid types, fix DOC_DEFAULT_CONTEXT (spec→implementation, plan→planning, decision_record→planning), reverse alias (decision→planning), override existing "decision" values
-6. **MCP parser** — `memory-parser.ts`: fix CONTEXT_TYPE_MAP (decision→planning, discovery→general), add "planning" to ContextType union
-7. **DB schema** — `vector-index-schema.ts` + `schema-downgrade.ts`: add "planning" to CHECK constraint on context_type column
-8. **Retroactive backfill** — 828 files updated across all specs including z_archive (0 "decision" remaining on disk)
-9. **DB migration** — direct UPDATE: 2006 decision→planning, 3 discovery→general
-10. **DB dedup** — removed 13,211 duplicate rows from force reindex accumulation (1,200 unique entries remain)
-11. **context_template.md** — updated detection logic comment and pseudo-code from decision/discovery to planning/research
-12. **session-extractor.ts** — `detectContextType()` returns `'planning'` instead of `'decision'`, web-heavy sessions return `'research'` instead of `'discovery'`, `detectImportanceTier()` checks `'planning'`
-13. **intent-classifier.ts** — `find_spec` and `find_decision` intent weights use `contextType: 'planning'`
-14. **save-quality-gate.ts** — `isShortCriticalException()` accepts both `'planning'` and legacy `'decision'`
-15. **fsrs-scheduler.ts** — `CONTEXT_TYPE_STABILITY_MULTIPLIER` and `HYBRID_NO_DECAY_CONTEXT_TYPES` include `'planning'` with `'decision'` as legacy alias
-16. **memory-state-baseline.ts** — validation query includes `'planning'` in valid context_type set
+**Given** this phase modifies documented behavior, **when** packet docs are reviewed, **then** spec/plan/tasks/checklist remain internally consistent.
 
-### Phase 3: Deep Review Remediation
+**Given** this phase is rerun in a clean environment, **when** the same commands are executed, **then** outcomes are reproducible.
 
-17. **Parser test T08** — `memory-parser-extended.vitest.ts`: removed legacy `decision`/`discovery` from canonical valid types set
-18. **V8 regex fix** — `validate-memory-quality.ts`: fixed regex to match single-level spec paths like `specs/001-feature/`
-19. **Force reindex dedup** — `dedup.ts`: removed `!force` bypass from `checkExistingRow` to prevent duplicate row accumulation
-20. **filePath test coverage** — `validate-memory-quality.vitest.ts`: added 5 new tests for V8 multi/single-level paths, V12 memory/spec-doc skip, descriptive name field
-21. **Log message fix** — `save-quality-gate.ts`: replaced hardcoded `context_type=decision` with `context_type=${params.contextType}`, updated to use `resolveCanonicalContextType()`
-22. **V-rule descriptive names** — `validate-memory-quality.ts`: added `name` field to `ValidationRuleMetadata` and `RuleResult` interfaces for all 14 V-rules
-23. **Shared context types** — `shared/context-types.ts`: single source of truth for `CanonicalContextType`, `LEGACY_CONTEXT_TYPE_ALIASES`, `resolveCanonicalContextType()`. 5 consumers updated to import from shared
-24. **Schema migration v25** — `vector-index-schema.ts`: UPDATEs legacy values then rebuilds `memory_index` table with strict `CHECK(context_type IN ('research', 'implementation', 'planning', 'general'))`. `SCHEMA_VERSION` bumped to 25
-25. **CHECK constraint cleanup** — `vector-index-schema.ts` + `schema-downgrade.ts`: CREATE TABLE now uses canonical-only CHECK constraint
+**Given** completion is claimed, **when** evidence is inspected, **then** each required acceptance outcome is explicitly supported.
 
-## Success Criteria — All Met
+## 6. RISKS & DEPENDENCIES
 
-- Force reindex: 0 V-rule blocks, 0 failures (was 1106 blocks + 90 failures)
-- Main database: 1,200 unique entries after dedup (95 memories, 1,104 spec docs, 1 constitutional)
-- Spec docs indexed with correct document_type: spec (221), plan (221), tasks (207), implementation_summary (201), checklist (186), decision_record (41), research (19), handover (8)
-- 0 files with "decision" contextType in frontmatter across all 186 folders from spec 008
-- 0 duplicates, 0 test files, 0 orphaned entries
-- All runtime consumers (session extractor, intent classifier, quality gate, FSRS scheduler, eval baseline) updated to use "planning"
-- Templates, assets, references, README.md, SKILL.md verified clean
-- Deep review P1 findings: 8/8 addressed (6 fixed, 2 resolved via shared constant + migration)
-- Shared `context-types.ts` module created as single source of truth for contextType definitions
-- Schema migration v25 rebuilds CHECK constraint to canonical-only types
-- 139 tests pass across 4 suites (validate-memory-quality 7, memory-parser-extended 46, content-hash-dedup 31, fsrs-scheduler 55)
-- sk-code--opencode alignment verifier: PASS (0 findings)
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Risk | Over-relaxing contamination checks | May allow noisy content into index | Keep structured-path scoping explicit and narrow |
+| Risk | Documentation drift from code truth | Misleading completion signals | Keep status as review-oriented and reference implementation artifacts |
+| Dependency | Runtime DB state | Required for end-to-end confidence | Keep runtime validation explicitly separated from structural doc cleanup |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Batch reindex should complete without pathological retry/duplicate growth.
+- **NFR-P02**: Validation overhead remains bounded per file.
+
+### Security
+- **NFR-S01**: Contamination defenses remain active for genuinely foreign-spec content.
+- **NFR-S02**: No sensitive data handling behavior is weakened by documentation changes.
+
+### Reliability
+- **NFR-R01**: Canonical context type mapping remains deterministic across services.
+- **NFR-R02**: Forced reindex remains idempotent for unchanged content.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty `spec_folder` metadata during batch mode must still derive valid scope from file path.
+- Multi-level and single-level spec paths must resolve consistently.
+
+### Error Scenarios
+- Batch mode should warn with context when rule checks are skipped or relaxed.
+- Unknown legacy context values should be normalized before persistence.
+
+### State Transitions
+- Forced reindex should avoid duplicate insert churn on repeated runs.
+- Legacy DBs should migrate to canonical context constraints safely.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 18/25 | Touches validation, schema, migration, and handlers |
+| Risk | 17/25 | Risky if contamination checks are loosened incorrectly |
+| Research | 14/20 | Driven by deep-review and incident analysis |
+| **Total** | **49/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- Should additional guardrails be added for future rule relaxation changes in bulk mode?
+- Should reindex telemetry expose per-rule counters by default?
+<!-- /ANCHOR:questions -->

@@ -21,7 +21,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives |
+| **Spec Folder** | 009-reindex-validator-false-positives |
 | **Completed** | 2026-04-01 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->

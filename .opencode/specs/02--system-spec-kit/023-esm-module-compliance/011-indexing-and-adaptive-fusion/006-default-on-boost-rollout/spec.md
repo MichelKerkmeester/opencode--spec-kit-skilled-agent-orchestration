@@ -29,6 +29,9 @@ contextType: "implementation"
 | **Status** | Draft |
 | **Created** | 2026-04-01 |
 | **Branch** | `system-speckit/024-compact-code-graph` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | 005-e2e-integration-test |
+| **Successor** | 007-external-graph-memory-research |
 | **Parent Epic** | `011-indexing-and-adaptive-fusion` |
 | **Phase** | 006 of 011 |
 <!-- /ANCHOR:metadata -->

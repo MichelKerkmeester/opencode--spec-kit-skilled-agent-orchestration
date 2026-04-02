@@ -1,19 +1,17 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: 001-wire-promotion-gate"
+description: "Wired PromotionGate outcomes to adaptive threshold tuning so successful shadow evaluations can adjust thresholds automatically."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "implementation summary"
+  - "promotion gate wiring"
+  - "adaptive tuning trigger"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,9 +20,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 001-wire-promotion-gate |
+| **Completed** | 2026-04-02 |
+| **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,28 +30,22 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+This phase connected shadow-evaluation outcomes to adaptive threshold tuning so threshold adjustments can execute automatically when promotion criteria are met.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### PromotionGate to tuning action wiring
 
-### [Feature Name]
+`shadow-evaluation-runtime.ts` now imports and invokes `tuneAdaptiveThresholdsAfterEvaluation` behind explicit gate and mode checks, preventing accidental tuning when gate conditions fail or adaptive mode is disabled.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Test coverage for decision paths
+
+Three decision-path tests were added/updated to prove behavior for: gate pass + adaptive enabled, gate fail, and adaptive disabled.
 
 ### Files Changed
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
 | File | Action | Purpose |
 |------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+| `mcp_server/lib/feedback/shadow-evaluation-runtime.ts` | Modified | Invoke adaptive tuning only when PromotionGate and mode conditions pass |
+| `mcp_server/tests/shadow-evaluation-runtime.vitest.ts` | Modified | Verify pass/fail/no-op decision branches |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +53,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+Work followed a strict sequence: import/function wiring, guarded call insertion, decision-path tests, then compile/test verification (`T1`-`T8` in tasks.md).
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +61,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Gate tuning execution behind PromotionGate outcome | Prevents adaptive mutations from low-confidence or blocked evaluations |
+| Add explicit adaptive-enabled no-op test | Keeps behavior deterministic when feature mode is disabled |
+| Keep implementation small and local to runtime + tests | Matches phase scope (~30-50 LOC) and avoids cross-module churn |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +73,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| `npx tsc --noEmit` | PASS |
+| Phase-specific shadow evaluation tests (`T4`-`T6`) | PASS |
+| Full vitest suite run for phase closure (`T7`) | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +85,5 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **Scope intentionally narrow**: this phase wires and validates invocation behavior only; persisted-threshold storage is handled in successor phase `002-persist-tuned-thresholds`.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

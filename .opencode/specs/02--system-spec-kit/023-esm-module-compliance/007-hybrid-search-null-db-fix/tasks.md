@@ -75,7 +75,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
 ### Phase 4: Search Engine Optimization
 
 > Source: 10-iteration deep research on live search pipeline post-fix. All tasks target `.opencode/skill/system-spec-kit/mcp_server/lib/` unless noted.
@@ -90,11 +89,9 @@ contextType: "implementation"
 - [x] T031 [P] computeBackfillQualityScore() + wired into Stage 1 read path (`validation/save-quality-gate.ts`, `pipeline/stage1-candidate-gen.ts`)
 - [x] T032 [P] Chunk children parent_id propagation (`handlers/chunking-orchestrator.ts`)
 - [x] T033 [P] Embedding cache hit/miss counters + getCacheStats() (`cache/embedding-cache.ts`)
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
 ### Phase 5: Ultra-Think Review P1 Fixes
 
 > Source: GPT-5.4 ultra-think review found 4 P1 issues in the Phase 4 changes.
@@ -103,7 +100,6 @@ contextType: "implementation"
 - [x] T035 Update tool-input-schema tests for simplified schemas (`tests/tool-input-schema.vitest.ts`)
 - [x] T036 Fix scalar related_memories similarity scale 0.5→50 (`cognitive/co-activation.ts`)
 - [x] T037 Wire computeBackfillQualityScore into Stage 1 candidate pipeline (`pipeline/stage1-candidate-gen.ts`)
-<!-- /ANCHOR:phase-5 -->
 
 ---
 

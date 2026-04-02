@@ -1,19 +1,17 @@
 ---
-title: "Implementation [02--system-spec-kit/023-esm-module-compliance/003-scripts-interop-refactor/implementation-summary]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: 003-scripts-interop-refactor"
+description: "Phase 3 stabilized scripts-side CommonJS to ESM interop and hardened the memory-save pipeline for mixed-runtime operation."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "implementation summary"
+  - "scripts interop refactor"
+  - "memory-save hardening"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -32,28 +30,27 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+This phase kept `@spec-kit/scripts` on CommonJS while making it interoperable with newly ESM-migrated sibling packages. In parallel, the memory-save pipeline was hardened so structured and fallback save paths continue to work through migration-era edge cases.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Scripts interop boundary
 
-### [Feature Name]
+Scripts-side imports that previously depended on direct `require()` access to ESM siblings were updated to use an explicit interop path compatible with Node 25 `require(esm)` behavior and async import boundaries.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Module-sensitive test alignment
+
+Module-boundary and integration suites were updated to assert runtime-truth behavior for the new interop model rather than historical CommonJS assumptions.
+
+### Memory-save hardening tranche
+
+`workflow.ts` was decoupled from direct server-runtime imports, V8 descendant phase detection was expanded for valid phase references, and manual fallback save handling was added for structured-save recovery scenarios.
 
 ### Files Changed
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
 | File | Action | Purpose |
 |------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+| `scripts/core/workflow.ts` | Modified | Remove brittle direct runtime coupling and improve fallback handling |
+| `scripts/**` and module-sensitive tests | Modified | Align CJS/ESM interop behavior and verification |
+| Memory-save related helpers/validators | Modified | Preserve save reliability during mixed-runtime transitions |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +58,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+Delivery combined targeted interop refactors with verification-first test updates, then validated the runtime entry surfaces and scripts suite behavior under the mixed-runtime boundary.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +66,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Keep scripts package CommonJS | Minimized migration blast radius while still supporting ESM siblings |
+| Use explicit interop boundary instead of dual-build fallback | Preserved a simpler delivery path once Node 25 runtime proof succeeded |
+| Harden memory-save fallback paths in the same phase | Reduced risk of user-facing save regressions during migration churn |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +78,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| `node scripts/dist/memory/generate-context.js --help` | PASS |
+| `npm run test --workspace=@spec-kit/scripts` | PASS (phase closeout evidence) |
+| Module-sensitive interop verification suite | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +90,5 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **CommonJS remains intentional**: scripts package stays CJS by design; full scripts-native ESM conversion was explicitly out of scope.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

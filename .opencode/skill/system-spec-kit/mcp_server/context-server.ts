@@ -726,6 +726,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   const { name } = requestParams;
   const args: Record<string, unknown> = requestParams.arguments ?? {};
   const callId = resolveToolCallId(request as { id?: unknown });
+  const transportSessionId = typeof (_extra as { sessionId?: unknown } | null)?.sessionId === 'string'
+    ? ((_extra as { sessionId?: string }).sessionId ?? null)
+    : null;
+  const explicitSessionId = typeof args.sessionId === 'string'
+    ? args.sessionId
+    : typeof args.session_id === 'string'
+      ? args.session_id
+      : null;
+  const sessionTrackingId = explicitSessionId ?? transportSessionId ?? undefined;
 
   try {
     // SEC-003: Validate input lengths before processing (CWE-400 mitigation)
@@ -735,7 +744,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
 
     // T018: Track last tool call timestamp for all tools except session_health.
     if (name !== 'session_health') {
-      recordToolCall();
+      recordToolCall(sessionTrackingId);
 
       // Phase 023: Record metric event for context quality tracking
       recordMetricEvent({ kind: 'tool_call', toolName: name });
@@ -758,7 +767,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
 
     let sessionPrimeContext: AutoSurfaceResult | null = null;
     try {
-      sessionPrimeContext = await primeSessionIfNeeded(name, args);
+      sessionPrimeContext = await primeSessionIfNeeded(
+        name,
+        args,
+        sessionTrackingId,
+      );
     } catch (primeErr: unknown) {
       const msg = primeErr instanceof Error ? primeErr.message : String(primeErr);
       console.error(`[context-server] Session priming failed (non-fatal): ${msg}`);

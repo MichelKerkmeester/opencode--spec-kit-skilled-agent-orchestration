@@ -25,12 +25,6 @@ function resolvePackageRoot(): string {
   if (fromPackageJson && fs.existsSync(path.join(fromPackageJson, 'mcp_server', 'database'))) {
     return fromPackageJson;
   }
-
-  const fromCwd = findUp('package.json', process.cwd());
-  if (fromCwd && fs.existsSync(path.join(fromCwd, 'mcp_server', 'database'))) {
-    return fromCwd;
-  }
-
   return fromPackageJson || path.resolve(import.meta.dirname, '..');
 }
 
@@ -41,7 +35,10 @@ const DEFAULT_DB_DIR = path.join(PACKAGE_ROOT, 'mcp_server', 'database');
 export const DB_UPDATED_FILE: string = (() => {
   const configuredDir = getDbDir();
   if (configuredDir) {
-    return path.resolve(process.cwd(), configuredDir, '.db-updated');
+    const resolvedDir = path.isAbsolute(configuredDir)
+      ? configuredDir
+      : path.resolve(PACKAGE_ROOT, configuredDir);
+    return path.join(resolvedDir, '.db-updated');
   }
   return path.join(DEFAULT_DB_DIR, '.db-updated');
 })();

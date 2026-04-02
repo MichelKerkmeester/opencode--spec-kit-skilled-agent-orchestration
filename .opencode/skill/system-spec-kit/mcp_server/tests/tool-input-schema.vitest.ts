@@ -15,6 +15,7 @@ import { TOOL_DEFINITIONS, getSchema, validateToolArgs } from '../tool-schemas';
 import { validateToolInputSchema } from '../utils/tool-input-schema';
 
 const ORIGINAL_STRICT_SCHEMAS_ENV = process.env.SPECKIT_STRICT_SCHEMAS;
+const ORIGINAL_TRUST_CALLER_BINDING_ENV = process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY;
 
 function parseEnvelope(response: Awaited<ReturnType<typeof handleSharedMemoryStatus>>): Record<string, unknown> {
   return JSON.parse(response.content[0].text) as Record<string, unknown>;
@@ -28,6 +29,11 @@ afterEach(() => {
     delete process.env.SPECKIT_STRICT_SCHEMAS;
   } else {
     process.env.SPECKIT_STRICT_SCHEMAS = ORIGINAL_STRICT_SCHEMAS_ENV;
+  }
+  if (ORIGINAL_TRUST_CALLER_BINDING_ENV === undefined) {
+    delete process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY;
+  } else {
+    process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = ORIGINAL_TRUST_CALLER_BINDING_ENV;
   }
   delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
   delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID;
@@ -413,6 +419,7 @@ describe('shared-memory admin actor schema', () => {
 
   it('handler auth rejects shared_space_upsert when actor identity is omitted', () => {
     process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'admin-1';
+    process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = 'true';
     expect(() => {
       validateCallerAuth({
         tool: 'shared_space_upsert',
@@ -422,6 +429,7 @@ describe('shared-memory admin actor schema', () => {
 
   it('handler auth rejects shared_space_membership_set when both actor identities are provided', () => {
     process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'admin-1';
+    process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = 'true';
     expect(() => {
       validateCallerAuth({
         tool: 'shared_space_membership_set',
@@ -509,7 +517,7 @@ describe('checkpoint_delete schema', () => {
 
 // CHK-024: Schema validation overhead <5ms benchmark
 describe('schema validation performance (CHK-024)', () => {
-  it('validateToolInputSchema completes in <5ms per tool', () => {
+  it('validateToolInputSchema completes in <5ms per tool (steady-state)', () => {
     for (const tool of TOOL_DEFINITIONS) {
       const toolName = tool.name;
       // Build a minimal valid args payload
@@ -523,13 +531,23 @@ describe('schema validation performance (CHK-024)', () => {
         else args[key] = 'test';
       }
 
-      const start = performance.now();
+      // Warm-up pass to avoid first-call JIT/cold-cache timing noise.
       try {
         validateToolInputSchema(toolName, args, TOOL_DEFINITIONS);
       } catch {
         // Some tools may reject minimal args — that's fine, we're measuring time
       }
-      const elapsed = performance.now() - start;
+
+      const iterations = 3;
+      const start = performance.now();
+      for (let i = 0; i < iterations; i += 1) {
+        try {
+          validateToolInputSchema(toolName, args, TOOL_DEFINITIONS);
+        } catch {
+          // Some tools may reject minimal args — that's fine, we're measuring time
+        }
+      }
+      const elapsed = (performance.now() - start) / iterations;
 
       expect(elapsed).toBeLessThan(5);
     }

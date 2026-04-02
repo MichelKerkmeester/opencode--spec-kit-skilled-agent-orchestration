@@ -12,7 +12,9 @@
   },
   "scripts": {
     "build": "tsc --build",
-    "test": "echo 'No tests in shared workspace'"
+    "typecheck": "tsc --noEmit --composite false -p tsconfig.json",
+    "test": "echo 'No tests in shared workspace'",
+    "test:task-enrichment": "echo 'No task-enrichment tests in @spec-kit/shared'"
   },
   "engines": {
     "node": ">=20.11.0"

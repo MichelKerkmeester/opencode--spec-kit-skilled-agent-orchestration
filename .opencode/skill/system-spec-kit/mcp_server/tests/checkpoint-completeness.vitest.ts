@@ -525,7 +525,9 @@ describe('Checkpoint completeness', () => {
     expect(entityCount.count).toBeGreaterThan(0);
     expect(catalogCount.count).toBeGreaterThan(0);
     expect(degreeCount.count).toBe(2);
-    expect(communityCount.count).toBe(2);
+    // Community detection keeps a minimum cluster size of 3, so this 2-node seed
+    // intentionally rebuilds degree/fts artifacts while leaving assignments empty.
+    expect(communityCount.count).toBe(0);
     expect(ftsCount.count).toBe(2);
 
     restoreDb.close();

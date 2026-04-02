@@ -6,7 +6,7 @@
 // single object for buildServerInstructions() and agent bootstrap.
 
 import { getSessionMetrics, computeQualityScore, getLastToolCallAt } from './context-metrics.js';
-import { isSessionPrimed } from '../../hooks/memory-surface.js';
+import { isSessionPrimed, getLastActiveSessionId } from '../../hooks/memory-surface.js';
 import { getStats as getGraphStats } from '../code-graph/code-graph-db.js';
 import { isCocoIndexAvailable } from '../utils/cocoindex-path.js';
 
@@ -94,7 +94,8 @@ export function getSessionSnapshot(): SessionSnapshot {
   // Priming status
   let primed = false;
   try {
-    primed = isSessionPrimed();
+    const primingSessionId = getLastActiveSessionId();
+    primed = primingSessionId ? isSessionPrimed(primingSessionId) : false;
   } catch { /* not primed */ }
 
   // Build routing recommendation

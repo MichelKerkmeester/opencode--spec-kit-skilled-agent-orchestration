@@ -1,19 +1,17 @@
 ---
-title: "Implementation [02--system-spec-kit/023-esm-module-compliance/002-mcp-server-esm-migration/implementation-summary]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: 002-mcp-server-esm-migration"
+description: "Phase 2 migrated @spec-kit/mcp-server to native ESM and removed CommonJS runtime assumptions from production server paths."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "implementation summary"
+  - "mcp server esm migration"
+  - "phase 2 closeout"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 1 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -32,28 +30,27 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+This phase migrated the MCP server package from CommonJS assumptions to a native ESM runtime surface. The change set covered package metadata, compiler config, import specifiers, CommonJS globals, and dynamic-loading paths used by handlers.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Package/runtime ESM conversion
 
-### [Feature Name]
+`mcp_server/package.json` now exposes ESM entrypoints (`main`, `exports`, `bin`) and declares `"type": "module"`. Runtime constraints were aligned to Node `>=20.11.0`.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### TypeScript and import hygiene
+
+The package compiler profile moved to NodeNext ESM with `verbatimModuleSyntax`, and relative imports/re-exports were rewritten to explicit `.js` specifiers. Cross-package sibling hops were replaced with package imports (`@spec-kit/shared/...`).
+
+### CommonJS global and loader cleanup
+
+Production code replaced `__dirname`/`__filename` usage with `import.meta.dirname` / `import.meta.filename` and converted remaining bare `require()` call sites to ESM-safe loading patterns.
 
 ### Files Changed
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
 | File | Action | Purpose |
 |------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+| `mcp_server/package.json` | Modified | Publish ESM entrypoints and runtime floor |
+| `mcp_server/tsconfig.json` | Modified | Emit NodeNext ESM output |
+| `mcp_server/**/*.ts` | Modified | Normalize `.js` specifiers and ESM-safe runtime patterns |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +58,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+The migration shipped in commit `d4fa69b4b` and was validated by package build plus server startup smoke checks against the compiled `dist/` output.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +66,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Keep one native ESM artifact surface | Reduces maintenance risk from parallel CJS/ESM output divergence |
+| Prefer package imports for shared code | Makes cross-package boundaries explicit and ESM-resolver-safe |
+| Convert dynamic loader paths to ESM-safe patterns | Prevents runtime loader failures in production handler registration |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +78,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| `npm run build --workspace=@spec-kit/mcp-server` | PASS |
+| `node dist/context-server.js` startup smoke | PASS |
+| Dist output inspected for native ESM import/export shape | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +90,5 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **Broad test proof lives in later phases**: this phase proves build/startup migration safety; complete system verification is documented in subsequent phases.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

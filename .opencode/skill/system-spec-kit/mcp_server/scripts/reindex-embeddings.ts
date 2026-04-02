@@ -6,7 +6,7 @@
 import { spawnSync } from 'child_process';
 import path from 'path';
 
-const targetScript = path.resolve(import.meta.dirname, '../../scripts/dist/memory/reindex-embeddings.js');
+const targetScript = path.resolve(import.meta.dirname, '../../../scripts/dist/memory/reindex-embeddings.js');
 const result = spawnSync(process.execPath, [targetScript, ...process.argv.slice(2)], {
   stdio: 'inherit',
 });

@@ -56,12 +56,10 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
 ### Phase 4: Build Verification
 
 - [x] T007 Update `shared/package.json` build script from no-op echo to `tsc --build`, then run `npm run build --workspace=@spec-kit/shared` - WHY: current build is `echo 'No build step needed'` which would pass on stale artifacts; need real TypeScript compilation - Acceptance: exit code 0, `dist/` contains freshly compiled ESM output. Evidence: shared build passes after `018f3360b`.
 - [x] T008 Inspect `shared/dist/*.js` output for ESM syntax - WHY: runtime output must be truthful ESM, not CJS wrappers - Acceptance: emitted files use `import`/`export`, not `require()`/`exports`. Evidence: Phase 1 verification records that `shared/dist/*.js` emits ESM, not CommonJS wrappers.
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

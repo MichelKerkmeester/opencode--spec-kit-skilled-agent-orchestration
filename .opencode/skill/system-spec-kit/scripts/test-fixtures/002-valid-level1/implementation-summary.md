@@ -2,7 +2,7 @@
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+# Known Limitations
 
 No known limitations.
 <!-- /ANCHOR:limitations -->

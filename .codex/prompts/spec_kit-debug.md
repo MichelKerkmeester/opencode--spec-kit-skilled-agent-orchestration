@@ -1,0 +1,1 @@
+../../.opencode/command/spec_kit/debug.md

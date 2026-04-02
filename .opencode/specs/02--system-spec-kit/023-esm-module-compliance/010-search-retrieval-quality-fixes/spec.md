@@ -27,7 +27,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 10 of N |
 | **Predecessor** | 009-reindex-validator-false-positives |
-| **Successor** | TBD |
+| **Successor** | 011-indexing-and-adaptive-fusion |
 | **Handoff Criteria** | `memory_context` deep mode returns relevant results for "semantic search" without evidence gap; all 6 fixes verified |
 
 This is **Phase 10** of the ESM Module Compliance specification. It addresses six retrieval quality issues discovered during root-cause analysis of `memory_context` returning 0 results for "semantic search" — a query that should match 20+ memories.
@@ -42,7 +42,7 @@ This is **Phase 10** of the ESM Module Compliance specification. It addresses si
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Completed |
+| **Status** | Review |
 | **Created** | 2026-03-31 |
 | **Branch** | `system-speckit/024-compact-code-graph` |
 <!-- /ANCHOR:metadata -->
@@ -175,6 +175,21 @@ All paths relative to `.opencode/skill/system-spec-kit/`.
 ---
 
 <!-- ANCHOR:risks -->
+
+### Acceptance Scenarios
+
+**Given** the phase scope and requirements are loaded, **when** implementation starts, **then** only in-scope files and behaviors are changed.
+
+**Given** the phase deliverables are implemented, **when** verification runs, **then** required checks complete without introducing regressions.
+
+**Given** this phase depends on predecessor outputs, **when** those dependencies are present, **then** this phase behavior composes correctly with adjacent phases.
+
+**Given** this phase modifies documented behavior, **when** packet docs are reviewed, **then** spec/plan/tasks/checklist remain internally consistent.
+
+**Given** this phase is rerun in a clean environment, **when** the same commands are executed, **then** outcomes are reproducible.
+
+**Given** completion is claimed, **when** evidence is inspected, **then** each required acceptance outcome is explicitly supported.
+
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |

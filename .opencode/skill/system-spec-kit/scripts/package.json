@@ -9,8 +9,10 @@
   },
   "scripts": {
     "build": "tsc --build",
+    "typecheck": "tsc --noEmit --composite false -p tsconfig.json",
     "lint": "tsc --noEmit",
     "test": "vitest run --config ../mcp_server/vitest.config.ts --root . && npm run test:legacy",
+    "test:task-enrichment": "vitest run tests/task-enrichment.vitest.ts --config ../mcp_server/vitest.config.ts --root .",
     "test:legacy": "npm run build && node tests/test-scripts-modules.js && node tests/test-extractors-loaders.js",
     "check:ast": "npx tsx evals/check-no-mcp-lib-imports-ast.ts && npx tsx evals/check-handler-cycles-ast.ts",
     "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts && npx tsx evals/check-allowlist-expiry.ts && npx tsx evals/check-source-dist-alignment.ts && npx tsx evals/check-no-mcp-lib-imports-ast.ts && npx tsx evals/check-handler-cycles-ast.ts"

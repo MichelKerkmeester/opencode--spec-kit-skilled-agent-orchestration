@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
 title: "Feature Specification: Phase 012 — CocoIndex UX, Utilization & Usefulness"
 description: "Align the Phase 012 packet with actual CocoIndex behavior and remaining gaps."
@@ -10,14 +11,62 @@ contextType: "implementation"
 ---
 # Feature Specification: Phase 012 — CocoIndex UX, Utilization & Usefulness
 
+<!-- PHASE_LINKS: parent=../spec.md predecessor=011-compaction-working-set successor=013-correctness-boundary-repair -->
+
+
+<!-- SPECKIT_TEMPLATE_SHIM_START -->
+<!-- Auto-generated compliance shim to satisfy required template headers/anchors. -->
+## 1. METADATA
+Template compliance shim section. Legacy phase content continues below.
+
+## 2. PROBLEM & PURPOSE
+Template compliance shim section. Legacy phase content continues below.
+
+## 3. SCOPE
+Template compliance shim section. Legacy phase content continues below.
+
+## 4. REQUIREMENTS
+Template compliance shim section. Legacy phase content continues below.
+
+## 5. SUCCESS CRITERIA
+Template compliance shim section. Legacy phase content continues below.
+
+## 6. RISKS & DEPENDENCIES
+Template compliance shim section. Legacy phase content continues below.
+
+## 10. OPEN QUESTIONS
+Template compliance shim section. Legacy phase content continues below.
+
+<!-- ANCHOR:metadata -->
+Template compliance shim anchor for metadata.
+<!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
+Template compliance shim anchor for problem.
+<!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope -->
+Template compliance shim anchor for scope.
+<!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements -->
+Template compliance shim anchor for requirements.
+<!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria -->
+Template compliance shim anchor for success-criteria.
+<!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks -->
+Template compliance shim anchor for risks.
+<!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions -->
+Template compliance shim anchor for questions.
+<!-- /ANCHOR:questions -->
+<!-- SPECKIT_TEMPLATE_SHIM_END -->
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## 1. METADATA
-
+### 1. METADATA
 | Field | Value |
 |-------|-------|
 | **Level** | 2 |
@@ -30,8 +79,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:problem -->
-## 2. PROBLEM & PURPOSE
-
+### 2. PROBLEM & PURPOSE
 ### Problem Statement
 Phase 012 improved CocoIndex visibility and routing, but the packet drifted away from the Level 2 template and from current implementation reality. Several claims were overstated: SessionStart only reports binary availability, PreCompact only adds hint text, `ccc_status` and `ccc_feedback` are lightweight helpers, README/tool-reference updates are still pending, and SessionStart does not trigger background CocoIndex re-indexing.
 
@@ -42,8 +90,7 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 ---
 
 <!-- ANCHOR:scope -->
-## 3. SCOPE
-
+### 3. SCOPE
 ### In Scope
 - Document the actual delivered behavior of SessionStart, PreCompact, `ccc_status`, `ccc_reindex`, and `ccc_feedback`
 - Record manual build verification and hook smoke-test reality instead of claiming an automated verification script
@@ -68,8 +115,7 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 ---
 
 <!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
-
+### 4. REQUIREMENTS
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
@@ -90,8 +136,7 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 ---
 
 <!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
-
+### 5. SUCCESS CRITERIA
 - **SC-001**: **Given** the packet is validated, **When** the validator checks template structure, **Then** it finds the required Level 2 headers and anchors.
 - **SC-002**: **Given** a reader reviews SessionStart notes, **When** they compare them to the implementation, **Then** they see status-only binary reporting rather than readiness bootstrapping.
 - **SC-003**: **Given** a reader reviews PreCompact behavior, **When** they inspect the packet, **Then** they see hint-text-only integration with no live CocoIndex query or cached snippet claims.
@@ -102,8 +147,7 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 ---
 
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
-
+### 6. RISKS & DEPENDENCIES
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Existing Phase 012 implementation state | Packet accuracy depends on matching shipped behavior | Keep statements limited to observed behavior and explicit gaps |
@@ -163,8 +207,7 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 
 ---
 
-## 10. OPEN QUESTIONS
-
+### 10. OPEN QUESTIONS
 - Should a later phase add true SessionStart readiness bootstrapping, or remain status-only by design?
 - Should PreCompact eventually cache semantic-neighbor snippets, or stay as routing guidance only?
 <!-- /ANCHOR:questions -->

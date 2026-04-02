@@ -1,86 +1,170 @@
 ---
-title: "Plan: Phase 009 — Reindex [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/plan]"
-description: "Fix two validation rules (cross-spec contamination, topical coherence) that false-positive reject legitimate files during bulk reindex."
+title: "Implementation Plan: Reindex Validator False Positives [02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives/plan]"
+description: "Plan to remediate false-positive batch indexing behavior while preserving guardrail intent."
 trigger_phrases:
-  - "fix reindex validator"
-  - "cross-spec contamination fix"
-  - "topical coherence threshold"
-  - "bulk reindex context propagation"
-  - "validator false positive plan"
+  - "reindex validator plan"
+  - "cross-spec contamination plan"
+  - "topical coherence plan"
 importance_tier: "normal"
 contextType: "planning"
 ---
-# Plan: Phase 009 — Reindex Validator False Positives
+# Implementation Plan: Reindex Validator False Positives
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-## Approach
+---
 
-Two targeted fixes in the validation pipeline. No architectural changes.
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Fix 1: Cross-Spec Contamination — Propagate Spec Folder Context
+### Technical Context
 
-**Problem:** `handleMemoryIndexScan` calls `validateMemoryQualityContent(content)` but doesn't pass the file's spec folder. The contamination checker sees `current_spec: unknown` and triggers on any cross-reference.
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript + Node.js |
+| **Framework** | Spec Kit Memory MCP server + scripts workspace |
+| **Storage** | SQLite vector index + migration tooling |
+| **Testing** | Vitest + script-level verification |
 
-**Solution:** Extract the spec folder from each file's path before validation. Pass it as context to `validateMemoryQualityContent` so the contamination checker can distinguish "references own spec's phases" (allowed) from "dominated by foreign spec content" (genuine contamination).
+### Overview
+This phase repairs false-positive validation behavior that blocked valid files during bulk reindex. The plan focuses on context propagation, rule tuning, canonical context typing, and deterministic dedup behavior while keeping existing interactive save behavior stable.
+<!-- /ANCHOR:summary -->
 
-**Files to modify:**
-- `scripts/lib/validate-memory-quality.ts` — Accept optional `specFolder` parameter in the contamination check
-- `mcp_server/handlers/memory-save.ts` — Already passes context correctly (no change needed)
-- `mcp_server/handlers/memory-index.ts` — Pass extracted spec folder to validator during batch scan
+---
 
-**Key logic change:**
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Root cause isolated for V8 and V12 index-path behavior.
+- [x] Affected files identified across scripts and MCP runtime.
+- [x] Canonical context-type contract defined.
+
+### Definition of Done
+- [ ] Structural validator reports zero errors for Phase 009 docs.
+- [ ] Batch reindex no longer hard-blocks valid same-scope content.
+- [ ] Canonical context type handling is synchronized across migration/schema/runtime.
+- [ ] Follow-up runtime verification captured in checklist evidence.
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Incremental remediation over existing validation and indexing pipeline.
+
+### Key Components
+- **Validation layer (`validate-memory-quality.ts`)**: Rule behavior and context interpretation.
+- **Index handlers (`memory-index.ts`, `memory-save.ts`)**: Batch-mode parameter threading.
+- **Schema/migration layer**: Canonical context type enforcement and upgrade safety.
+
+### Data Flow
+File path and spec-scope signals flow from index orchestration into validation. Validation outcomes drive index writes and logging. Canonical context values are normalized before persistence and enforced at schema boundary.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Identify failing rule paths and reproduction conditions.
+- [x] Capture affected modules and configuration contracts.
+- [x] Define canonical context type mapping boundaries.
+
+### Phase 2: Core Implementation
+- [x] Update V8/V12 behavior for legitimate batch indexing scenarios.
+- [x] Thread file path and scope data through validation bridge/handlers.
+- [x] Align context type normalization and schema enforcement.
+- [x] Apply dedup safeguards for forced reindex mode.
+
+### Phase 3: Verification
+- [ ] Re-run recursive strict validator and capture before/after.
+- [ ] Re-run targeted runtime checks for batch indexing behavior.
+- [ ] Confirm documentation reflects implemented behavior without overstated claims.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | Validation and parser behavior | Vitest |
+| Integration | Batch indexing + migration path | Node scripts + DB inspection |
+| Manual | Recursive strict structural validation | `validate.sh --recursive --strict` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Local scripts build outputs | Internal | Green | Validation/runtime checks cannot execute |
+| SQLite index database state | Internal | Yellow | Runtime confidence delayed if stale/locked |
+| Canonical context type mapping | Internal | Green | Misalignment causes downstream scoring/index issues |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Regression in contamination checks or index integrity after remediation.
+- **Procedure**: Revert affected validation/schema commits, rebuild dist artifacts, and restore prior DB snapshot if needed.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
 ```
-// Before: validateMemoryQualityContent(content)
-// After:  validateMemoryQualityContent(content, { specFolder: extractedFolder })
+Phase 1 (Setup) ──► Phase 2 (Implementation) ──► Phase 3 (Verification)
 ```
 
-The contamination checker already has an allowlist mechanism for child phase folders — it just needs the `specFolder` parameter to activate it.
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Implementation |
+| Implementation | Setup | Verification |
+| Verification | Implementation | Completion |
+<!-- /ANCHOR:phase-deps -->
 
-### Fix 2: Topical Coherence — Soft Threshold Instead of Hard Zero
+---
 
-**Problem:** V12 blocks indexing when zero spec trigger phrases appear in memory content. This is too strict — a memory about "feature flag graduation" won't match a spec whose triggers are "esm migration" and "module compliance".
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
 
-**Solution:** Change the threshold from "any > 0" to "at least 1 match OR file is in a known memory/ directory". Memory files in `specs/**/memory/` directories are already structurally validated by the save pipeline — they don't need a second topical gate at index time.
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Medium | 1-2h |
+| Core Implementation | High | 4-8h |
+| Verification | Medium | 1-3h |
+| **Total** |  | **6-13h** |
+<!-- /ANCHOR:effort -->
 
-**Files to modify:**
-- `scripts/lib/validate-memory-quality.ts` — Adjust V12 check for bulk indexing without relying on a non-existent `scripts/src/` source path
+---
 
-**Alternative:** Lower blockOnIndex to `false` for V12 entirely. The rule still provides diagnostic value via warnings without preventing indexing.
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
 
-### Fix 3: Spec Doc Indexing — Verify Warn-Only Path Inserts
+### Pre-deployment Checklist
+- [x] Baseline validator output captured.
+- [x] Scope-limited files identified.
+- [ ] Runtime validation snapshot refreshed after structural remediation.
 
-**Problem:** Spec docs (spec.md, plan.md, checklist.md) get V8 "warn-only" during reindex but still don't appear in the DB under their per-document-type buckets (`spec`, `plan`, `checklist`, etc.).
+### Rollback Procedure
+1. Restore previous markdown versions for this phase folder.
+2. Re-run recursive strict validation for confirmation.
+3. Reapply remediation incrementally if needed.
 
-**Investigation:** The warn-only code path in `memory-save.ts` may skip the actual DB insert for spec docs. Need to trace the code path when `disposition === 'warn_only'` for spec doc types.
-
-**Files to investigate:**
-- `mcp_server/handlers/memory-save.ts` — Trace the spec doc warn-only path
-- `mcp_server/handlers/memory-index.ts` — Check if spec docs are processed through the same save path
-
-## Execution Order
-
-1. Fix V12 (simplest — one condition change)
-2. Fix V8 context propagation (medium — thread spec folder through validation)
-3. Verify spec doc insertion (investigation — may be a separate code path issue)
-4. Run `reindex-embeddings.js` and verify counts
-5. Update checklist
-
-## Verification
-
-```bash
-# After fixes, run reindex
-cd mcp_server && node ../scripts/dist/memory/reindex-embeddings.js
-
-# Verify memory file count
-node -e "
-const Database = require('better-sqlite3');
-const db = new Database('database/context-index__voyage__voyage-4__1024.sqlite', { readonly: true });
-console.log('Memory files:', db.prepare(\"SELECT COUNT(*) as c FROM memory_index WHERE file_path LIKE '%/memory/%'\").get().c);
-console.log('Spec docs:', db.prepare(\"SELECT COUNT(*) as c FROM memory_index WHERE document_type IN ('spec', 'plan', 'tasks', 'implementation_summary', 'checklist', 'decision_record', 'research', 'handover')\").get().c);
-console.log('Total:', db.prepare('SELECT COUNT(*) as c FROM memory_index').get().c);
-db.close();
-"
-# Target: memory files >= 90, spec docs > 0 across the per-document-type buckets, total > 56
-```
+### Data Reversal
+- **Has data migrations?** Yes
+- **Reversal procedure**: Keep schema rollback scripts in sync when canonical context constraints are modified.
+<!-- /ANCHOR:enhanced-rollback -->

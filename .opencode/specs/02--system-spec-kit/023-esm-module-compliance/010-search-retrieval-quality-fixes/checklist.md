@@ -1,38 +1,101 @@
 ---
-title: "Checklist: Search Retrieval Quality Fixes [02--system-spec-kit/023-esm-module-compliance/010-search-retrieval-quality-fixes/checklist]"
-description: "Level 2 verification checklist for six search retrieval quality fixes."
+title: "Verification Checklist: Search Retrieval Quality Fixes [02--system-spec-kit/023-esm-module-compliance/010-search-retrieval-quality-fixes/checklist]"
+description: "Verification Date: 2026-04-02"
 trigger_phrases:
   - "search retrieval checklist"
   - "retrieval quality verification"
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Checklist: Search Retrieval Quality Fixes
+# Verification Checklist: Search Retrieval Quality Fixes
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist-level2 | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-## P0 — Blockers
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-- [x] CHK-001 `memory_context({ input: "semantic search", mode: "deep", intent: "understand" })` returns >0 results — pipeline returns 20+ candidates (31 via bypassCache); memory_context 0-result is stale tool cache, not code bug
-- [x] CHK-002 Intent trace shows `understand` (explicit), not `fix_bug` (auto-detected) — `intent: { type: "understand", confidence: 1, source: "explicit" }` in response
-- [x] CHK-003 Folder discovery 0-result recovery triggers and produces results — recovery code structurally correct; verification masked by stale tool cache (TTL-based expiry)
-- [x] CHK-004 Token budget truncation returns >=5 of 20 results (not 1) — pipeline finds 20 results; adaptive truncation (Fix 3) and two-tier (Fix 5) both implemented in enforceTokenBudget
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
-## P1 — Required
+---
 
-- [x] CHK-005 Folder boost metadata is surfaced alongside folder discovery state — `appliedBoosts.folder: { applied: true, folder: "...", factor: 1.3 }` is present in search responses while `folderDiscovery.source` remains `"folder-discovery"` in L1 metadata
-- [x] CHK-006 Two-tier response: metadata for all results, content for top N — metadata-only entries appended for dropped results in enforceTokenBudget Phase 2
-- [x] CHK-007 Intent confidence floor: queries below 0.25 confidence get `understand` — memory_search "semantic search" auto-detects intent=understand (previously fix_bug at 0.098)
-- [x] CHK-008 TypeScript compiles without errors — 0 new errors (3 pre-existing minState type errors unrelated to our changes)
-- [x] CHK-009 MCP server starts cleanly after changes — all tools responding, verified via memory_health/search/triggers/list
-- [x] CHK-010 `memory_health()` reports healthy — status: healthy, 2961 memories, embeddingModelReady: true
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-## P2 — Regression
+- [x] CHK-001 [P0] Root causes and fix targets documented in `spec.md` and `plan.md`. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-002 [P0] Strategy-level intent propagation path identified. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-003 [P1] Folder discovery and token-budget interactions documented. [EVIDENCE: Verified in this phase artifact set.]
+<!-- /ANCHOR:pre-impl -->
 
-- [x] CHK-011 `memory_match_triggers({ prompt: "CocoIndex" })` returns results — 3 results matched
-- [x] CHK-012 `memory_list()` returns results — 2437 memories, 6 returned within budget
-- [x] CHK-013 `memory_context({ input: "resume previous work", mode: "resume" })` works — resume strategy executed, no errors
-- [x] CHK-014 `memory_search({ query: "CocoIndex" })` returns relevant results — 9 results, CocoIndex spec folders ranked top
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-010 [P0] Structural template and anchor compliance restored in this phase docs. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-011 [P0] Runtime behavior re-verified after fresh server restart.
+- [x] CHK-012 [P1] Implementation summary reflects code changes without new overclaims. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-013 [P1] Terminology consistent across spec/plan/tasks/checklist. [EVIDENCE: Verified in this phase artifact set.]
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] `memory_context(... mode: "deep", intent: "understand")` runtime result re-verified.
+- [ ] CHK-021 [P0] Focused-mode recovery path re-verified with fresh cache state.
+- [ ] CHK-022 [P1] Budget truncation outcome validated with current build/runtime.
+- [ ] CHK-023 [P1] Intent confidence floor behavior validated against low-confidence queries.
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No credential or scope-enforcement relaxations introduced by doc-only remediation. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-031 [P0] Scope remains limited to retrieval quality behavior. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-032 [P1] Governance-related behavior rechecked in live run.
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` synchronized. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-041 [P1] Required section headers and anchors now present. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-042 [P2] Add final runtime evidence references after reruns.
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] All edits limited to `010-search-retrieval-quality-fixes/`. [EVIDENCE: Verified in this phase artifact set.]
+- [x] CHK-051 [P1] No temp files introduced. [EVIDENCE: Verified in this phase artifact set.]
+- [ ] CHK-052 [P2] Optional memory capture deferred until runtime verification closure.
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 5/8 |
+| P1 Items | 9 | 6/9 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-04-02
+<!-- /ANCHOR:summary -->

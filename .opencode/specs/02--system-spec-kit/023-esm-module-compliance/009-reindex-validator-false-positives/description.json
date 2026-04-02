@@ -1,15 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/023-esm-module-compliance/009-reindex-validator-false-positives",
-  "description": "Phase 009: Reindex Validator False Positives",
+  "description": "Feature Specification: Reindex Validator False Positives",
   "keywords": [
-    "phase",
-    "009",
+    "feature",
+    "specification",
     "reindex",
     "validator",
     "false",
     "positives"
   ],
-  "lastUpdated": "2026-04-01T12:51:27.044Z",
+  "lastUpdated": "2026-04-02T09:56:16.553Z",
   "specId": "009",
   "folderSlug": "reindex-validator-false-positives",
   "parentChain": [

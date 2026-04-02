@@ -7,7 +7,6 @@
 import { performance } from 'node:perf_hooks';
 import * as graphDb from './code-graph-db.js';
 import { resolveSeeds, type CodeGraphSeed, type ArtifactRef } from './seed-resolver.js';
-import type { CodeNode, CodeEdge } from './indexer-types.js';
 
 export type QueryMode = 'neighborhood' | 'outline' | 'impact';
 
@@ -279,7 +278,7 @@ function resolveSubjectToRef(subject: string): ArtifactRef | null {
  * Format sections into compact text brief within token budget.
  * Never-drops guarantee: always includes top seed, root anchor, one boundary edge, one next action.
  */
-function formatTextBrief(sections: GraphContextSection[], budgetTokens: number, anchors?: ArtifactRef[]): string {
+function formatTextBrief(sections: GraphContextSection[], budgetTokens: number, _anchors?: ArtifactRef[]): string {
   const maxChars = budgetTokens * 4;
   const lines: string[] = [];
 

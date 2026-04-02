@@ -755,7 +755,7 @@ Automated context preservation via Claude Code hooks. Hooks are transport reliab
 
 ### Code Graph (Structural Code Analysis)
 
-4 MCP tools for structural code analysis via regex-based indexing and SQLite storage:
+4 MCP tools for structural code analysis via tree-sitter WASM indexing (default, with regex fallback) and SQLite storage:
 
 | Tool | Purpose |
 |------|---------|
@@ -769,6 +769,32 @@ Automated context preservation via Claude Code hooks. Hooks are transport reliab
 **Budget allocator floors:** constitutional 700, codeGraph 1200, cocoIndex 900, triggered 400, overflow pool 800.
 
 **Source:** `mcp_server/lib/code-graph/` | `mcp_server/handlers/code-graph/`
+
+**Parser:** Tree-sitter WASM is the default structural parser for JS/TS/Python/Shell. Set `SPECKIT_PARSER=regex` for regex fallback. Parser adapter pattern allows future language additions.
+
+**Edge types:** CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF.
+
+**Auto-trigger:** `ensureCodeGraphReady()` runs on branch switch, session start, and stale detection. Checks graph freshness and triggers incremental scan if needed.
+
+**Query routing:** Structural queries (callers, imports, deps) -> `code_graph_query`. Semantic/concept queries -> CocoIndex (`mcp__cocoindex_code__search`). Session/memory queries -> `memory_context`.
+
+**CocoIndex seed bridge:** CocoIndex search results (file + line range) are accepted as seeds by `code_graph_context`, which resolves them to graph nodes and expands structurally. This combines "what resembles what" (CocoIndex) with "what connects to what" (Code Graph).
+
+**CCC tools** (CocoIndex lifecycle):
+
+| Tool | Purpose |
+|------|---------|
+| `ccc_status` | Check CocoIndex availability and index status |
+| `ccc_reindex` | Trigger incremental or full CocoIndex re-indexing |
+| `ccc_feedback` | Submit quality feedback on search results |
+
+**Session tools** (lifecycle orchestration):
+
+| Tool | Purpose |
+|------|---------|
+| `session_health` | Check session readiness, graph freshness, context drift |
+| `session_resume` | Combined memory + code graph + CocoIndex resume in one call |
+| `session_bootstrap` | Complete session bootstrap (resume + health) in one call |
 
 ---
 

@@ -197,6 +197,14 @@ function validateSharedCallerIdentity(
     : { subjectType: 'agent', subjectId: normalizedAgentId };
 }
 
+function isTrustedCallerIdentityBindingEnabled(): boolean {
+  const value = process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY;
+  if (typeof value !== 'string') {
+    return false;
+  }
+  return value.trim().toLowerCase() === 'true';
+}
+
 export function validateCallerAuth(
   args: SharedAdminCallerAuthArgs,
   tenantId?: string,
@@ -219,6 +227,19 @@ export function validateCallerAuth(
   const adminResult = resolveAdminActor(args.tool);
   if (!adminResult.ok) {
     throwSharedMemoryAuthError('Shared-memory admin validation failed.', adminResult.response);
+  }
+
+  if (!isTrustedCallerIdentityBindingEnabled()) {
+    throwSharedMemoryAuthError(
+      'Shared-memory admin mutations require trusted identity binding.',
+      createCallerAuthErrorResponse({
+        tool: args.tool,
+        error: 'Shared-memory admin mutations require trusted identity binding.',
+        code: 'E_AUTHORIZATION',
+        reason: 'shared_memory_trusted_binding_required',
+        hint: 'Set SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY=true only for trusted local transports.',
+      }),
+    );
   }
 
   // SECURITY: Actor IDs are caller-supplied and not cryptographically bound to
@@ -371,6 +392,9 @@ function createSharedMemoryInternalError(
 let hasWarnedTrustedAdminIdentity = false;
 
 function warnTrustedAdminIdentityAssumption(): void {
+  if (!isTrustedCallerIdentityBindingEnabled()) {
+    return;
+  }
   if (hasWarnedTrustedAdminIdentity) {
     return;
   }

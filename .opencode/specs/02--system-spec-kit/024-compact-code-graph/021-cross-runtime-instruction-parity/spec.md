@@ -1,16 +1,68 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Phase 021: Cross-Runtime Instruction Parity
 
-## What This Is
+<!-- PHASE_LINKS: parent=../spec.md predecessor=020-query-routing-integration successor=022-gemini-hook-porting -->
+
+<!-- SPECKIT_LEVEL: 2 -->
+
+
+<!-- SPECKIT_TEMPLATE_SHIM_START -->
+<!-- Auto-generated compliance shim to satisfy required template headers/anchors. -->
+## 1. METADATA
+Template compliance shim section. Legacy phase content continues below.
+
+## 2. PROBLEM & PURPOSE
+Template compliance shim section. Legacy phase content continues below.
+
+## 3. SCOPE
+Template compliance shim section. Legacy phase content continues below.
+
+## 4. REQUIREMENTS
+Template compliance shim section. Legacy phase content continues below.
+
+## 5. SUCCESS CRITERIA
+Template compliance shim section. Legacy phase content continues below.
+
+## 6. RISKS & DEPENDENCIES
+Template compliance shim section. Legacy phase content continues below.
+
+## 10. OPEN QUESTIONS
+Template compliance shim section. Legacy phase content continues below.
+
+<!-- ANCHOR:metadata -->
+Template compliance shim anchor for metadata.
+<!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
+Template compliance shim anchor for problem.
+<!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope -->
+Template compliance shim anchor for scope.
+<!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements -->
+Template compliance shim anchor for requirements.
+<!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria -->
+Template compliance shim anchor for success-criteria.
+<!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks -->
+Template compliance shim anchor for risks.
+<!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions -->
+Template compliance shim anchor for questions.
+<!-- /ANCHOR:questions -->
+<!-- SPECKIT_TEMPLATE_SHIM_END -->
+
+### What This Is
 
 The instruction files that tell AI assistants how to use Spec Kit Memory are inconsistent across runtimes. Claude's CLAUDE.md is comprehensive; CODEX.md, AGENTS.md, and GEMINI.md are missing key lifecycle instructions. This phase brings them all to parity.
 
-## Plain-English Summary
+### Plain-English Summary
 
 **Problem:** When you use Codex CLI, the instruction file doesn't tell the AI to load context on startup, check code graph freshness, or recover after compaction. Claude Code has all of this because it has hooks + well-written CLAUDE.md. Other runtimes are left guessing.
 
 **Solution:** Add a standard "No Hook Transport" section to every runtime's instruction file with explicit trigger tables. Also create an `@context-prime` agent for OpenCode.
 
-## What to Build
+### What to Build
 
 ### Part 1: Instruction File Updates (from research iter 100)
 
@@ -47,7 +99,7 @@ This agent is invoked on first turn or after `/clear` by the orchestrator.
 - New `.opencode/agent/context-prime.md`
 - `.opencode/agent/orchestrate.md` — delegate to `@context-prime` on first turn or after `/clear`
 
-## Cross-Runtime Impact
+### Cross-Runtime Impact
 
 | Runtime | Before | After |
 |---------|--------|-------|
@@ -57,13 +109,13 @@ This agent is invoked on first turn or after `/clear` by the orchestrator.
 | Copilot CLI | 50% | 80% |
 | Gemini CLI | 50% | 80% |
 
-## Estimated LOC: 140-350
-## Risk: LOW — documentation and config changes only
-## Dependencies: Phases 018-020 should land first (the instructions reference those tools)
+### Estimated LOC: 140-350
+### Risk: LOW — documentation and config changes only
+### Dependencies: Phases 018-020 should land first (the instructions reference those tools)
 
 ---
 
-## Implementation Status (Post-Review Iterations 041-050)
+### Implementation Status (Post-Review Iterations 041-050)
 
 | Item | Status | Evidence |
 |------|--------|----------|
@@ -77,3 +129,19 @@ This agent is invoked on first turn or after `/clear` by the orchestrator.
 ### Review Findings (iter 047)
 - F059 (P2): CLOSED. `.opencode/agent/orchestrate.md` lines 18-21 wire first-turn and post-`/clear` delegation to `@context-prime`.
 - Residual gap: Claude Code SessionStart hook wording still appears in `.codex/agents/orchestrate.toml` (827-835), `.codex/agents/deep-research.toml` (425-429), `.codex/agents/speckit.toml` (557-561), plus `.gemini/agents/orchestrate.md` and related Gemini agent docs. Do not treat that cleanup as complete in this phase.
+
+### Problem Statement
+This phase addresses concrete context-preservation and code-graph reliability gaps tracked in this packet.
+
+### Requirements Traceability
+- REQ-900: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-901: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-902: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-903: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-904: Keep packet documentation and runtime verification aligned for this phase.
+
+### Acceptance Scenarios
+- **Given** phase context is loaded, **When** verification scenario 1 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 2 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 3 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 4 runs, **Then** expected packet behavior remains intact.

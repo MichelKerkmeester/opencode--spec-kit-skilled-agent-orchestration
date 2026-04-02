@@ -15,7 +15,7 @@ import { readFileSync, statSync } from 'node:fs';
 import {
   hookLog, withTimeout, HOOK_TIMEOUT_MS,
 } from '../claude/shared.js';
-import { ensureStateDir, loadState, updateState, cleanStaleStates } from '../claude/hook-state.js';
+import { ensureStateDir, updateState, cleanStaleStates } from '../claude/hook-state.js';
 import { parseGeminiStdin } from './shared.js';
 
 /** Default max age for stale state cleanup in --finalize mode */

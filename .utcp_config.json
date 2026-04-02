@@ -21,6 +21,7 @@
             "transport": "stdio",
             "command": "npx",
             "args": [
+              "-y",
               "chrome-devtools-mcp@latest",
               "--isolated=true"
             ],
@@ -38,6 +39,7 @@
             "transport": "stdio",
             "command": "npx",
             "args": [
+              "-y",
               "chrome-devtools-mcp@latest",
               "--isolated=true"
             ],

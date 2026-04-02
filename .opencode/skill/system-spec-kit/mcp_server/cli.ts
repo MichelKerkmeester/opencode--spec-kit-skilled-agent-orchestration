@@ -13,11 +13,6 @@
 //   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js schema-downgrade --to 15 --confirm
 import { createRequire } from 'node:module';
 
-import * as causalEdges from './lib/storage/causal-edges.js';
-import { downgradeSchemaV16ToV15 } from './lib/storage/schema-downgrade.js';
-import { recordHistory } from './lib/storage/history.js';
-import { DATABASE_PATH } from './core/index.js';
-
 const require = createRequire(import.meta.url);
 const { version: CLI_VERSION } = require('../package.json') as { version: string };
 
@@ -28,6 +23,9 @@ type MutationLedgerModule = Awaited<typeof import('./lib/storage/mutation-ledger
 type TriggerMatcherModule = Awaited<typeof import('./lib/parsing/trigger-matcher.js')>;
 type CoreIndexModule = Awaited<typeof import('./core/index.js')>;
 type StartupChecksModule = Awaited<typeof import('./startup-checks.js')>;
+type CausalEdgesModule = Awaited<typeof import('./lib/storage/causal-edges.js')>;
+type HistoryModule = Awaited<typeof import('./lib/storage/history.js')>;
+type SchemaDowngradeModule = Awaited<typeof import('./lib/storage/schema-downgrade.js')>;
 
 let _vector_index: VectorIndexModule | null = null;
 let _checkpoints: CheckpointsModule | null = null;
@@ -36,6 +34,9 @@ let _mutation_ledger: MutationLedgerModule | null = null;
 let _trigger_matcher: TriggerMatcherModule | null = null;
 let _core_index: CoreIndexModule | null = null;
 let _startup_checks: StartupChecksModule | null = null;
+let _causal_edges: CausalEdgesModule | null = null;
+let _history: HistoryModule | null = null;
+let _schema_downgrade: SchemaDowngradeModule | null = null;
 
 async function getVectorIndex() {
   return _vector_index ??= await import('./lib/search/vector-index.js');
@@ -63,6 +64,22 @@ async function getCoreIndex() {
 
 async function getStartupChecks() {
   return _startup_checks ??= await import('./startup-checks.js');
+}
+
+async function getCausalEdges() {
+  return _causal_edges ??= await import('./lib/storage/causal-edges.js');
+}
+
+async function getHistory() {
+  return _history ??= await import('./lib/storage/history.js');
+}
+
+async function getSchemaDowngrade() {
+  return _schema_downgrade ??= await import('./lib/storage/schema-downgrade.js');
+}
+
+async function getDatabasePath(): Promise<string> {
+  return (await getCoreIndex()).DATABASE_PATH;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -131,8 +148,9 @@ async function initDatabase(): Promise<void> {
 
   vectorIndex.initializeDb();
   const db = vectorIndex.getDb();
+  const databasePath = await getDatabasePath();
   if (!db) {
-    console.error(`ERROR: Failed to open database at ${DATABASE_PATH}`);
+    console.error(`ERROR: Failed to open database at ${databasePath}`);
     process.exit(1);
   }
   // Keep CLI and MCP handlers aligned: handlers invoked from CLI rely on db-state wiring.
@@ -148,13 +166,14 @@ async function initDatabase(): Promise<void> {
 async function runStats(): Promise<void> {
   await initDatabase();
   const vectorIndex = await getVectorIndex();
+  const databasePath = await getDatabasePath();
   const db = vectorIndex.getDb()!;
 
   // Total count
   const totalRow = db.prepare('SELECT COUNT(*) as count FROM memory_index').get() as { count: number };
   console.log(`\nMemory Database Statistics`);
   console.log(`${'-'.repeat(50)}`);
-  console.log(`  Database:  ${DATABASE_PATH}`);
+  console.log(`  Database:  ${databasePath}`);
   console.log(`  Total:     ${totalRow.count} memories`);
 
   // Tier distribution
@@ -259,11 +278,13 @@ async function runBulkDelete(): Promise<void> {
   }
 
   await initDatabase();
-  const [vectorIndex, checkpointsLib, mutationLedger, triggerMatcher] = await Promise.all([
+  const [vectorIndex, checkpointsLib, mutationLedger, triggerMatcher, causalEdges, history] = await Promise.all([
     getVectorIndex(),
     getCheckpointsLib(),
     getMutationLedger(),
     getTriggerMatcher(),
+    getCausalEdges(),
+    getHistory(),
   ]);
   const db = vectorIndex.getDb()!;
 
@@ -368,7 +389,7 @@ async function runBulkDelete(): Promise<void> {
         deletedIds.push(memory.id);
         // Record DELETE history only after confirmed deletion.
         try {
-          recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete', memory.spec_folder ?? null);
+          history.recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete', memory.spec_folder ?? null);
         } catch (_histErr: unknown) {
           // History recording is best-effort
         }
@@ -516,6 +537,7 @@ async function runSchemaDowngrade(): Promise<void> {
     console.log(`  Scope checkpoint: ${specFolder}`);
   }
 
+  const { downgradeSchemaV16ToV15 } = await getSchemaDowngrade();
   const result = downgradeSchemaV16ToV15(db, { specFolder: specFolder || undefined });
 
   console.log(`\n  Completed`);

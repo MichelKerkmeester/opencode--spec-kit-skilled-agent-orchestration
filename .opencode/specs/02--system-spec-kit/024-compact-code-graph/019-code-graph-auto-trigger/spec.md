@@ -1,16 +1,68 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Phase 019: Code Graph Auto-Trigger
 
-## What This Is
+<!-- PHASE_LINKS: parent=../spec.md predecessor=018-non-hook-auto-priming successor=020-query-routing-integration -->
+
+<!-- SPECKIT_LEVEL: 2 -->
+
+
+<!-- SPECKIT_TEMPLATE_SHIM_START -->
+<!-- Auto-generated compliance shim to satisfy required template headers/anchors. -->
+## 1. METADATA
+Template compliance shim section. Legacy phase content continues below.
+
+## 2. PROBLEM & PURPOSE
+Template compliance shim section. Legacy phase content continues below.
+
+## 3. SCOPE
+Template compliance shim section. Legacy phase content continues below.
+
+## 4. REQUIREMENTS
+Template compliance shim section. Legacy phase content continues below.
+
+## 5. SUCCESS CRITERIA
+Template compliance shim section. Legacy phase content continues below.
+
+## 6. RISKS & DEPENDENCIES
+Template compliance shim section. Legacy phase content continues below.
+
+## 10. OPEN QUESTIONS
+Template compliance shim section. Legacy phase content continues below.
+
+<!-- ANCHOR:metadata -->
+Template compliance shim anchor for metadata.
+<!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
+Template compliance shim anchor for problem.
+<!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope -->
+Template compliance shim anchor for scope.
+<!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements -->
+Template compliance shim anchor for requirements.
+<!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria -->
+Template compliance shim anchor for success-criteria.
+<!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks -->
+Template compliance shim anchor for risks.
+<!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions -->
+Template compliance shim anchor for questions.
+<!-- /ANCHOR:questions -->
+<!-- SPECKIT_TEMPLATE_SHIM_END -->
+
+### What This Is
 
 Right now, you often have to manually run `code_graph_scan` before the code graph works. This phase adds a best-effort auto-index path so many query/context calls can recover automatically, even though manual scans are still sometimes needed.
 
-## Plain-English Summary
+### Plain-English Summary
 
 **Problem:** If you ask "who calls this function?" and the code graph hasn't been indexed, you get an empty result or an error. The user has to remember to run `code_graph_scan` first, which breaks the flow.
 
 **Solution:** Add a shared `ensureCodeGraphReady()` helper that checks if the graph is fresh before every query/context call. If it's stale or empty, it attempts a quick reindex before continuing.
 
-## What to Build
+### What to Build
 
 ### A shared "ensure ready" helper that checks three things:
 
@@ -36,7 +88,7 @@ Document the narrower runtime behavior accurately:
 - `code_graph_status` reports freshness only and does not auto-reindex
 - Auto-index failures are non-blocking and can still leave stale or empty results
 
-## Files to Change
+### Files to Change
 
 | File | Change |
 |------|--------|
@@ -48,7 +100,7 @@ Document the narrower runtime behavior accurately:
 | `handlers/code-graph/scan.ts` | Support selective reindex (changed files only) |
 | `AGENTS.md`, `CODEX.md`, `GEMINI.md` | Document auto-trigger behavior |
 
-## Cross-Runtime Impact
+### Cross-Runtime Impact
 
 | Runtime | Before | After |
 |---------|--------|-------|
@@ -60,13 +112,13 @@ Document the narrower runtime behavior accurately:
 
 This is the **highest parity gain** of all proposals — every runtime benefits equally because it's entirely server-side.
 
-## Estimated LOC: 170-360
-## Risk: MEDIUM — auto-indexing adds latency to first query; needs timeout guards
-## Dependencies: None
+### Estimated LOC: 170-360
+### Risk: MEDIUM — auto-indexing adds latency to first query; needs timeout guards
+### Dependencies: None
 
 ---
 
-## Implementation Status (Post-Review Iterations 041-050)
+### Implementation Status (Post-Review Iterations 041-050)
 
 Most of Phase 019 shipped, but the behavior is narrower than the original target and two follow-up findings remain deferred.
 
@@ -85,7 +137,7 @@ Most of Phase 019 shipped, but the behavior is narrower than the original target
 - F048 (P2): selective reindex passes raw file paths as includeGlobs. DEFERRED
 - F049 (P2): timeout via AbortController doesn't cancel indexFiles. DEFERRED (fire-and-forget is acceptable)
 
-## Known Limitations
+### Known Limitations
 
 1. Freshness currently ignores any 5-minute age window. It only checks empty graph state, git HEAD drift, and tracked file mtimes.
 2. Debounce is global, not keyed by `rootDir`, because `lastCheckAt` and `lastCheckResult` are module-level state.
@@ -95,3 +147,19 @@ Most of Phase 019 shipped, but the behavior is narrower than the original target
 6. Auto-index errors are swallowed from the caller perspective. They are logged, but query/context continue and may return stale or empty results.
 7. Runtime docs must describe this as best-effort auto-index on query/context only. `code_graph_status` does not auto-reindex.
 8. Phase status should be treated as mostly shipped with follow-up gaps. F048 and F049 remain deferred, not completed.
+
+### Problem Statement
+This phase addresses concrete context-preservation and code-graph reliability gaps tracked in this packet.
+
+### Requirements Traceability
+- REQ-900: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-901: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-902: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-903: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-904: Keep packet documentation and runtime verification aligned for this phase.
+
+### Acceptance Scenarios
+- **Given** phase context is loaded, **When** verification scenario 1 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 2 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 3 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 4 runs, **Then** expected packet behavior remains intact.

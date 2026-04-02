@@ -57,7 +57,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
 ### Step 4: CommonJS Global Cleanup
 
 - [x] T008 Replace `__dirname` with `import.meta.dirname` in production files - WHY: `__dirname` is not available in ESM - Acceptance: zero `__dirname` hits in non-test `mcp_server/` files. Evidence: `d4fa69b4b` completed the CommonJS-global replacement required for native ESM runtime.
@@ -66,17 +65,14 @@ contextType: "implementation"
 - [x] T011 [P0] Migrate `handlers/v-rule-bridge.ts` to ESM-safe dynamic import - WHY: v-rule-bridge uses `createRequire(__filename)` to load scripts-side validator; this is a critical pipeline for memory save quality gates - Acceptance: bridge uses `import.meta.url` + dynamic `import()` instead of `createRequire`; V-rule validation works at runtime. Evidence: the `181`-file ESM migration in `d4fa69b4b` includes the handler bridge/runtime cleanup required for successful server startup.
 - [x] T011b Migrate `handlers/index.ts` dynamic handler loader from `require()` to `import()` - WHY: handler barrel uses `require(basePath)` for lazy loading; must become async - Acceptance: dynamic `import()` replaces `require()`, handler registration handles async correctly. Evidence: `d4fa69b4b` landed the handler-loader ESM conversion and `node dist/context-server.js` starts.
 - [x] T011c Audit dist-sensitive bridge files for hardcoded CJS path assumptions - WHY: path resolution changes under ESM - Acceptance: no hardcoded `.cjs` or `require.resolve` patterns remain. Evidence: Phase 2 completed the dist/runtime path cleanup needed for `context-server.js` startup.
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
 ### Step 5: Build and Runtime Verification
 
 - [x] T012 Run `npm run build --workspace=@spec-kit/mcp-server` - WHY: build must pass with new settings - Acceptance: exit code 0. Evidence: the Phase 2 `mcp_server` build passes after `d4fa69b4b`.
 - [x] T013 Run `node dist/context-server.js` startup smoke - WHY: runtime proof that ESM entrypoint works - Acceptance: server starts without module resolution errors. Evidence: `context-server.js` starts successfully after the Phase 2 ESM migration.
 - [x] T014 Inspect `mcp_server/dist/*.js` for ESM output - WHY: emitted output must be truthful ESM - Acceptance: files use `import`/`export`, not `require()`/`exports`. Evidence: Phase 2 verification records that the emitted `dist/` server files are native ESM.
-<!-- /ANCHOR:phase-5 -->
 
 ---
 

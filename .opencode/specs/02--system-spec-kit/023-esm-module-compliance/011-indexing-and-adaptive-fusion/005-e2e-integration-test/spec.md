@@ -18,7 +18,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 5 of 5 |
 | **Predecessor** | 004-fix-access-signal-path |
-| **Successor** | None |
+| **Successor** | 006-default-on-boost-rollout |
 | **Handoff Criteria** | Lifecycle coverage proves the Phase 3 and Phase 4 seams compose correctly under real SQLite state |
 
 <!-- ANCHOR:phase-context -->

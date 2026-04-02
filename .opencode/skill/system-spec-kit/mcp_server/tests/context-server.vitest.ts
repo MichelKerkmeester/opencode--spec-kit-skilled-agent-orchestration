@@ -577,6 +577,7 @@ describe('Context Server', () => {
       }))
 
       vi.doMock('../core', () => ({
+        DATABASE_PATH: '/tmp/context-index.sqlite',
         LIB_DIR: '/tmp',
         DEFAULT_BASE_PATH: '/tmp',
         checkDatabaseUpdated: checkDatabaseUpdatedMock,
@@ -694,7 +695,13 @@ describe('Context Server', () => {
         shutdown: vi.fn(),
       }))
       vi.doMock('../lib/extraction/extraction-adapter', () => ({ initExtractionAdapter: vi.fn() }))
-      vi.doMock('../lib/session/context-metrics', () => ({ recordMetricEvent: vi.fn() }))
+      vi.doMock('../lib/session/context-metrics', () => ({
+        recordMetricEvent: vi.fn(),
+        getSessionMetrics: vi.fn(() => ({
+          sessionId: null,
+          primed: false,
+        })),
+      }))
       vi.doMock('../lib/feedback/shadow-evaluation-runtime', () => ({
         init: vi.fn(),
         isEnabled: vi.fn(() => false),

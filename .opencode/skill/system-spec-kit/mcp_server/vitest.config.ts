@@ -17,7 +17,7 @@ export default defineConfig({
     environment: 'node',
     testTimeout: TEST_TIMEOUT_MS,
     alias: {
-      '@lib': path.resolve(__dirname, 'lib'),
+      '@lib': path.resolve(import.meta.dirname, 'lib'),
     },
   },
 });

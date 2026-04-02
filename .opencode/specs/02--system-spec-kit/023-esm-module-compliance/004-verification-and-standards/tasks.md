@@ -64,13 +64,11 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
 ### Step 4: Packet Closure
 
 - [x] T015 Update parent `implementation-summary.md` with final runtime evidence [EVIDENCE: implementation-summary.md updated with all 6 phases]
 - [x] T016 Mark all parent verification items with evidence [EVIDENCE: parent packet verification items reflect the completed runtime proof]
 - [x] T017 Close the parent packet [EVIDENCE: parent status set to Complete in spec.md]
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

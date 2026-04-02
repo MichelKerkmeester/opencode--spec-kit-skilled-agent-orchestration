@@ -376,7 +376,7 @@ main() {
 
     if [[ ! -f "$checklist_file" ]]; then
         if $JSON_MODE; then
-            echo '{"error": "checklist.md not found", "folder": "'"$FOLDER_PATH"'"}' >&2
+            echo '{"error": "checklist.md not found", "folder": "'"$FOLDER_PATH"'"}'
         else
             echo -e "${YELLOW}⚠${NC} No checklist.md found in $FOLDER_PATH"
             echo "  This may be a Level 1 spec (checklist not required)."

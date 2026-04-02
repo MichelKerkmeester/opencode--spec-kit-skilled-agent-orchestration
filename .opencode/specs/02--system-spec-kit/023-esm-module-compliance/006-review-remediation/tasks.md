@@ -76,17 +76,14 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-d -->
 ### Phase D: Performance (WS-6)
 
 - [x] T020 Hoist dynamic imports in `vector-index-store.ts` to module-level lazy-init — P2-PRF-01 [EVIDENCE: module-level cached lazy loader in vector-index-store.ts]
 - [x] T021 Defer heavy imports in `cli.ts` behind per-command loaders — P2-PRF-02 [EVIDENCE: deferred imports in cli.ts, --help exits early]
 - [x] T022 Verify all CLI subcommands still work after restructure — Gate [EVIDENCE: tests pass]
-<!-- /ANCHOR:phase-d -->
 
 ---
 
-<!-- ANCHOR:phase-e -->
 ### Phase E: Documentation Truth-Sync (WS-3 + WS-4)
 
 - [x] T023 Fix CHK-010 evidence in `../checklist.md` — P1-TRC-01 [EVIDENCE: CHK-010 evidence kept accurate — pre-impl doc sync is correct]
@@ -99,17 +96,14 @@ contextType: "implementation"
 - [x] T030 Update `../implementation-summary.md` to include Phase 6 — P1-TRC-02 [EVIDENCE: Phase 6 section added with all workstream details]
 - [x] T031 Close Phase 4 child packet: update tasks, plan, and write implementation-summary — P1-CMP-01 [EVIDENCE: 004 tasks all [x], plan DoD checked, implementation-summary.md written]
 - [x] T032 Add/update tests proving CHK-005 (whole-tree import hygiene) and CHK-006 (emitted-artifact correctness) — P1-CMP-02 [EVIDENCE: Phase 6 added regression tests (preflight, shared-memory-handlers, handler-memory-save); existing build verification proves ESM artifact correctness]
-<!-- /ANCHOR:phase-e -->
 
 ---
 
-<!-- ANCHOR:phase-f -->
 ### Phase F: Final Verification
 
 - [x] T033 Run full workspace build + test suite — Gate [EVIDENCE: build clean; mcp-server 8978+3 pre-existing, scripts 317+1 pre-existing — 0 regressions]
 - [x] T034 Run runtime smokes — Gate [EVIDENCE: builds verified, runtime smokes pass]
 - [x] T035 Write this phase's `implementation-summary.md` — Completion [EVIDENCE: implementation-summary.md created]
-<!-- /ANCHOR:phase-f -->
 
 ---
 

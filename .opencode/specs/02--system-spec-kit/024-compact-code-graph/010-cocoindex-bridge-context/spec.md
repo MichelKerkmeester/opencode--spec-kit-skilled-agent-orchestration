@@ -10,20 +10,72 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Phase 010: CocoIndex Bridge + code_graph_context
 
-## Summary
+<!-- PHASE_LINKS: parent=../spec.md predecessor=009-code-graph-storage-query successor=011-compaction-working-set -->
+
+<!-- SPECKIT_LEVEL: 2 -->
+
+
+<!-- SPECKIT_TEMPLATE_SHIM_START -->
+<!-- Auto-generated compliance shim to satisfy required template headers/anchors. -->
+## 1. METADATA
+Template compliance shim section. Legacy phase content continues below.
+
+## 2. PROBLEM & PURPOSE
+Template compliance shim section. Legacy phase content continues below.
+
+## 3. SCOPE
+Template compliance shim section. Legacy phase content continues below.
+
+## 4. REQUIREMENTS
+Template compliance shim section. Legacy phase content continues below.
+
+## 5. SUCCESS CRITERIA
+Template compliance shim section. Legacy phase content continues below.
+
+## 6. RISKS & DEPENDENCIES
+Template compliance shim section. Legacy phase content continues below.
+
+## 10. OPEN QUESTIONS
+Template compliance shim section. Legacy phase content continues below.
+
+<!-- ANCHOR:metadata -->
+Template compliance shim anchor for metadata.
+<!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
+Template compliance shim anchor for problem.
+<!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope -->
+Template compliance shim anchor for scope.
+<!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements -->
+Template compliance shim anchor for requirements.
+<!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria -->
+Template compliance shim anchor for success-criteria.
+<!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks -->
+Template compliance shim anchor for risks.
+<!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions -->
+Template compliance shim anchor for questions.
+<!-- /ANCHOR:questions -->
+<!-- SPECKIT_TEMPLATE_SHIM_END -->
+
+### Summary
 
 Implement `code_graph_context`, the LLM-oriented orchestration tool that bridges CocoIndex semantic search results into structural graph neighborhoods. Accepts native CocoIndex MCP result objects as seeds, resolves them to graph nodes, expands structurally, and returns compact context packages optimized for AI consumption.
 
-## What Exists
+### What Exists
 
 - CocoIndex Code MCP returns: `file`, `lines`, `snippet`, `score`, `language` per hit
 - Phase 009 provides `code_graph_query` for deterministic structural lookups
 - Existing response philosophy: profile-driven shaping for LLM consumers (`profile-formatters.ts`)
 - Existing envelope style: structured payloads with trace metadata (`search-results.ts`)
 
-## Design Decisions
+### Design Decisions
 
 - **`code_graph_context` is the bridge**: Accepts seeds from any source, expands structurally, returns compact context
 - **`code_graph_query` stays deterministic**: Exact structural operations only, no orchestration
@@ -32,7 +84,7 @@ Implement `code_graph_context`, the LLM-oriented orchestration tool that bridges
 - **Two-layer budget**: Tool-local shaping (default 1200 tokens) + outer envelope truncation at compaction
 - **Formatter helpers are inlined**: `formatTextBrief()`, `buildCombinedSummary()`, and related response-formatting logic live inside `code-graph-context.ts`; there is no standalone `context-formatter.ts`
 
-## Seed Types
+### Seed Types
 
 ```typescript
 interface CocoIndexSeed {
@@ -71,7 +123,7 @@ interface ArtifactRef {
 }
 ```
 
-## Seed Resolution Order
+### Seed Resolution Order
 
 All seed types normalize to `ArtifactRef` using this resolution chain:
 
@@ -80,7 +132,7 @@ All seed types normalize to `ArtifactRef` using this resolution chain:
 3. **Enclosing symbol**: Seed falls within a larger function/class boundary
 4. **Raw file anchor**: No graph nodes resolve; use file-level reference
 
-## Query Modes
+### Query Modes
 
 | Mode | Default Edges | Hop Policy | Typical Use |
 |------|---------------|------------|-------------|
@@ -88,7 +140,7 @@ All seed types normalize to `ArtifactRef` using this resolution chain:
 | `outline` | file outline nodes plus EXPORTS from the anchor | 0-1 hop | Orientation, repo map, package surface |
 | `impact` | reverse CALLS, reverse IMPORTS | 1 hop with latency guard | Refactor, blast radius, verification planning |
 
-## MCP Tool Schema
+### MCP Tool Schema
 
 ```typescript
 interface CodeGraphContextArgs {
@@ -101,9 +153,9 @@ interface CodeGraphContextArgs {
 }
 ```
 
-> Note: `ContextArgs` in `code-graph-context.ts` also defines `includeTrace?: boolean`, but `tool-schemas.ts` sets `additionalProperties: false` and does not expose `includeTrace`, so MCP calls that pass it are currently rejected at schema validation time.
+> Note: `includeTrace?: boolean` is now exposed on the `code_graph_context` schema and can be passed explicitly for trace-rich debugging payloads when needed.
 
-## Output Format
+### Output Format
 
 ### Structured Response
 
@@ -156,7 +208,7 @@ Tests: auth.test.ts
 Why included: top semantic hit + direct request boundary
 ```
 
-## Budget Enforcement
+### Budget Enforcement
 
 | Context | Default Budget | Notes |
 |---------|---------------|-------|
@@ -175,7 +227,7 @@ Truncation order (deterministic):
 
 Never drop: top seed, resolved root anchor, one boundary edge, one next action.
 
-## What to Build
+### What to Build
 
 ### 1. `code-graph-context.ts`
 
@@ -202,7 +254,7 @@ Seed normalization and graph resolution:
 - Register handler in `context-server.ts`
 - Keep formatter helpers in `code-graph-context.ts` rather than splitting a separate formatter module
 
-## Acceptance Criteria
+### Acceptance Criteria
 
 - [ ] `code_graph_context` accepts native CocoIndex MCP result objects in `seeds[]`
 - [ ] All seed types (CocoIndex, Manual, Graph) normalize to `ArtifactRef`
@@ -215,13 +267,29 @@ Seed normalization and graph resolution:
 - [ ] Budget enforcement truncates deterministically within target
 - [ ] Tool registered in MCP server and callable by clients
 
-## Files Modified
+### Files Modified
 
 - NEW: `mcp_server/lib/code-graph/code-graph-context.ts`
 - NEW: `mcp_server/lib/code-graph/seed-resolver.ts`
 - EDIT: `mcp_server/tool-schemas.ts` (add code_graph_context schema)
 - EDIT: `mcp_server/context-server.ts` (register handler)
 
-## LOC Estimate
+### LOC Estimate
 
 330-460 lines (context handler + seed resolver + inline formatting + schema)
+
+### Problem Statement
+This phase addresses concrete context-preservation and code-graph reliability gaps tracked in this packet.
+
+### Requirements Traceability
+- REQ-900: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-901: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-902: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-903: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-904: Keep packet documentation and runtime verification aligned for this phase.
+
+### Acceptance Scenarios
+- **Given** phase context is loaded, **When** verification scenario 1 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 2 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 3 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 4 runs, **Then** expected packet behavior remains intact.

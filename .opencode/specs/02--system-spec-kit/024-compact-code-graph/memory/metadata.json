@@ -1,19 +1,19 @@
 {
-  "timestamp": "01-04-26 08-14",
-  "messageCount": 0,
-  "decisionCount": 4,
+  "timestamp": "02-04-26 10-29",
+  "messageCount": 3,
+  "decisionCount": 2,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 0,
+    "totalProcessed": 3,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 0,
+    "qualityScore": 43,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-01T07:14:52.053Z",
+        "timestamp": "2026-04-02T09:29:53.733Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:0",
-          "kept_items:0"
+          "input_items:3",
+          "kept_items:3"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-01T07:14:52.020Z",
+      "timestamp": "2026-04-02T09:29:53.700Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:28"
+        "processed_fields:31"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-01T07:14:52.053Z",
+      "timestamp": "2026-04-02T09:29:53.733Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -168,13 +168,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:0",
-        "kept_items:0"
+        "input_items:3",
+        "kept_items:3"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-01T07:14:52.085Z",
+      "timestamp": "2026-04-02T09:29:53.764Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,10 +191,10 @@
       ],
       "passedThrough": [
         "current_spec:024-compact-code-graph",
-        "trigger_phrases:29",
+        "trigger_phrases:33",
         "key_topics:12",
-        "captured_file_count:0",
-        "filesystem_file_count:0"
+        "captured_file_count:5",
+        "filesystem_file_count:5"
       ]
     }
   ],
@@ -207,15 +207,15 @@
       "intent": 0,
       "plan": 0,
       "implementation": 0,
-      "result": 0,
+      "result": 1,
       "decision": 0,
-      "total": 0
+      "total": 3
     }
   },
   "fileCounts": {
-    "fileCount": 0,
-    "capturedFileCount": 0,
-    "filesystemFileCount": 0,
+    "fileCount": 5,
+    "capturedFileCount": 5,
+    "filesystemFileCount": 5,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 66,
-    "updatedAt": "2026-04-01T07:14:52.845Z",
-    "generatedAt": "2026-04-01T07:14:52.845Z",
+    "memoryId": 1830,
+    "updatedAt": "2026-04-02T09:29:54.781Z",
+    "generatedAt": "2026-04-02T09:29:54.781Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

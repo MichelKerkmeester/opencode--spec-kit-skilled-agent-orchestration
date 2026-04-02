@@ -68,6 +68,8 @@ Targeted failing suites -> fixture or assertion repair -> full-suite rerun -> pl
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
+### Phase 1: Delivery
+
 ### Step 1: Fix Actionable Pre-Existing Tests (T001-T006)
 - [x] Fix integration-causal-graph error codes
 - [x] Fix integration-error-recovery error format

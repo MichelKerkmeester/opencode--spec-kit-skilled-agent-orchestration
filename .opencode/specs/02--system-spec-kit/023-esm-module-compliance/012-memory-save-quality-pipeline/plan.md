@@ -1,109 +1,236 @@
 ---
-title: "Plan: Memory Save Quality Pipeline [023/012]"
-description: "Implementation order for 6 recommendations fixing JSON-mode memory save quality. 156-171 LOC, MVP ~97 LOC."
+title: "Implementation Plan: Memory Save Quality Pipeline [02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/plan]"
+description: "Level-3 implementation plan for structured save normalization, synthesis, quality scoring, and contamination-guard tuning."
+trigger_phrases:
+  - "memory save quality plan"
+  - "json mode plan"
+importance_tier: "critical"
+contextType: "planning"
 ---
-# Plan: Phase 012 — Memory Save Quality Pipeline
+# Implementation Plan: Memory Save Quality Pipeline
 
-## Dependency Graph
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript (scripts workspace) |
+| **Framework** | Spec-kit context generation pipeline |
+| **Storage** | Markdown output + memory index ingestion |
+| **Testing** | Script integration checks + validator runs |
+
+### Overview
+This plan stabilizes structured memory saves by ensuring input normalization, extractor synthesis, and quality/validation stages operate coherently for `--json`/`--stdin` payloads. The approach is incremental and preserves transcript-mode semantics.
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Root cause for structured-path quality failures documented.
+- [x] Remediation areas identified (normalization, extraction, scoring, validation).
+- [x] Scope constrained to quality pipeline behavior.
+
+### Definition of Done
+- [ ] Phase 012 documents pass structural validation (no hard errors).
+- [ ] Structured-path runtime verification evidence refreshed.
+- [ ] Checklist and summary updated with final rerun evidence.
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Pipeline hardening through targeted improvements in existing extraction and scoring components.
+
+### Key Components
+- **Normalization layer**: Maps structured fields into canonical internal forms.
+- **Conversation extraction layer**: Produces meaningful synthetic exchanges when prompts are absent.
+- **Quality/validation layer**: Scores output and applies contamination safeguards with structured-mode nuance.
+
+### Data Flow
+Structured payload enters normalization, feeds extraction/synthesis, then passes through decision/key-file shaping and quality scoring. Validation gates determine final save viability.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Confirm structured-path failure signatures and quality symptoms.
+- [x] Identify key files for normalization/extraction/validation/scoring.
+
+### Phase 2: Core Implementation
+- [x] Wire structured input through normalization.
+- [x] Add structured message synthesis path.
+- [x] Improve title/summary and decision/key-file shaping.
+- [x] Add structured-aware contamination and quality-floor logic.
+
+### Phase 3: Verification
+- [ ] Run fresh runtime structured-save scenarios and capture score outcomes.
+- [ ] Confirm transcript-path regression safety in rerun evidence.
+- [ ] Record final validator/runtime closure evidence.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | Extractor and scorer behavior | Vitest |
+| Integration | Structured payload end-to-end save path | `generate-context.js --json` |
+| Manual | Recursive strict structure and consistency checks | `validate.sh --recursive --strict` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Script build/runtime availability | Internal | Green | Cannot verify functional behavior |
+| Representative structured payloads | Internal | Yellow | Score/quality confidence delayed |
+| Validation rule compatibility | Internal | Yellow | Structured saves may still over-block |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Structured saves regress or transcript mode behavior changes unexpectedly.
+- **Procedure**: Revert structured-path changes by module, rebuild scripts dist, and rerun targeted checks.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
 
 ```
-Rec 1: Wire JSON through normalization (types + data-loader + input-normalizer)
- |
- +---> Rec 2: Conversation extractor dual-source (needs normalized data)
- |      |
- |      +---> Rec 3: Title/description from sessionSummary (needs messages)
- |      +---> Rec 6: JSON-mode quality floor (needs messages for scoring)
- |
- +---> Rec 4: Decision rendering + key_files (independent of Rec 2)
- +---> Rec 5: V8 contamination relaxation (independent of Rec 2)
+Normalization ──► Synthesis ──► Quality/Validation ──► Verification
 ```
 
-## Implementation Order
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Implementation |
+| Implementation | Setup | Verification |
+| Verification | Implementation | Closure |
+<!-- /ANCHOR:phase-deps -->
 
-### Wave 1 — Foundation (Rec 1) — ~25 LOC
+---
 
-**Rec 1: Wire JSON data through normalization**
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
 
-1. **session-types.ts**: Add `filesChanged?: string[]` to `RawInputData` type (~3 LOC)
-2. **input-normalizer.ts**: Add `'filesChanged'` to `KNOWN_RAW_INPUT_FIELDS` set. In `normalizeFileFields()`, map `filesChanged` → `filesModified` (~5 LOC)
-3. **data-loader.ts**: Accept `filesChanged` in validation. Pass through to normalizer (~5 LOC)
-4. **workflow.ts:613**: When `collectedData` comes from `--json`/`--stdin` (preloaded path), call `normalizeInputData(collectedData)` before passing to extractors (~12 LOC)
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Medium | 1-2h |
+| Core Implementation | High | 4-10h |
+| Verification | Medium | 2-4h |
+| **Total** |  | **7-16h** |
+<!-- /ANCHOR:effort -->
 
-**Verification**: Run generate-context with `--json '{"sessionSummary":"test"}'` — should no longer warn "No user prompts found"
+---
 
-### Wave 2 — Message Synthesis (Rec 2) — ~40 LOC
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
 
-**Rec 2: Build messages from JSON when transcripts are empty**
+### Pre-deployment Checklist
+- [x] Baseline behavior documented.
+- [x] Scope-limited file set identified.
+- [ ] Final rerun evidence captured.
 
-1. **conversation-extractor.ts**: Insert new branch at line 86-87, before primary loop:
-   ```
-   if (userPrompts.length === 0 && collectedData.sessionSummary) {
-     return extractFromJsonPayload(collectedData);
-   }
-   ```
-2. **New function `extractFromJsonPayload()`** (~35 LOC):
-   - Create User message from spec folder context or first clause of sessionSummary
-   - Create Assistant message from full sessionSummary
-   - For each keyDecision: create User+Assistant exchange pair
-   - For each observation: create exchange with narrative
-   - For nextSteps: create closing Assistant message
-   - Mark all with `_source: 'json'` (NOT `_synthetic: true`)
-   - Must produce at least 1 User-role message
-   - Build phases array and compute duration metadata
-3. **Guard existing fallback** (line 241-267): Add `&& !jsonModeHandled` condition to prevent double synthesis
+### Rollback Procedure
+1. Revert structured-path patches in affected modules.
+2. Rebuild scripts and rerun baseline checks.
+3. Restore previous behavior docs if needed.
 
-**Verification**: JSON save should now produce 5+ messages with real content
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: Not applicable for doc-only structural remediation; runtime path uses code rollback.
+<!-- /ANCHOR:enhanced-rollback -->
 
-### Wave 3 — Output Quality (Recs 3, 4) — ~47 LOC
+---
 
-**Rec 3: Derive title and description from sessionSummary** (~30 LOC)
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
 
-1. **collect-session-data.ts:870-873**: Before the 3-level fallback chain, check if `sessionSummary` is available. If so, use it directly as SUMMARY (truncated to 500 chars) (~8 LOC)
-2. **collect-session-data.ts:1017**: When `inputMode === 'structured'` and sessionSummary exists, derive TITLE from first meaningful clause (up to 80 chars, break at sentence/comma boundary, not mid-word) (~12 LOC)
-3. **workflow.ts:1277-1300**: Inject sessionSummary-derived description into template context metadata (~10 LOC)
+```
+workflow.ts
+   ├── input-normalizer.ts
+   ├── conversation-extractor.ts
+   ├── collect-session-data.ts
+   ├── decision-extractor.ts
+   ├── validate-memory-quality.ts
+   └── quality-scorer.ts
+```
 
-**Rec 4: Fix decision rendering and key_files scoping** (~17 LOC)
+### Dependency Matrix
 
-4. **decision-extractor.ts**: When keyDecision is a plain string (no object fields), set only CHOSEN=text, RATIONALE=text. Leave CONTEXT="" and OPTIONS=[]. Add `IS_COMPACT: true` flag (~12 LOC)
-5. **workflow.ts:1270**: When JSON provides `filesModified`/`filesChanged`, use it directly as key_files. Otherwise cap filesystem enumeration at 20 files, exclude `research/iterations/` and `review/iterations/` (~5 LOC)
+| Component | Depends On | Produces | Blocks |
+|-----------|------------|----------|--------|
+| Normalization | Input payload | Canonical fields | Synthesis |
+| Synthesis | Canonical fields | Message stream | Scoring |
+| Scoring/Validation | Message stream + metadata | Save outcome | Verification |
+<!-- /ANCHOR:dependency-graph -->
 
-**Verification**: Title should reflect session content. Decisions should not repeat. key_files should be < 25 entries.
+---
 
-### Wave 4 — Safety & Scoring (Recs 5, 6) — ~45 LOC
+<!-- ANCHOR:critical-path -->
+## L3: CRITICAL PATH
 
-**Rec 5: Relax V8 for same-parent phase references** (~20 LOC)
+1. Normalization wiring and alias mapping
+2. Structured synthesis path
+3. Validation/scoring guard updates
+4. Runtime verification and evidence capture
 
-1. **validate-memory-quality.ts** (V8 rule): Extract parent spec number from current spec folder path. Build sibling phase list by reading child directories. Add sibling phase names to the existing allowedIds set (~12 LOC)
-2. When `sourceCapabilities.inputMode === 'structured'`: skip tool scaffolding patterns (tool usage narration, tool title with path, API error patterns) in the denylist check (~8 LOC)
+**Total Critical Path**: Medium-high (multi-module)
 
-**Rec 6: Add JSON-mode quality floor** (~25 LOC)
+**Parallel Opportunities**:
+- Decision/key-file shaping can run in parallel with title/summary derivation.
+- Checklist/summary structural cleanup can run in parallel with runtime reruns.
+<!-- /ANCHOR:critical-path -->
 
-3. **quality-scorer.ts**: After V-rule scoring, compute JSON floor from 6 dimensions:
-   - sessionSummary present + length > 100: 25 pts
-   - keyDecisions count >= 2: 20 pts
-   - observations/exchanges present: 20 pts
-   - tool executions documented: 10 pts
-   - trigger phrases >= 8: 15 pts
-   - metadata complete: 10 pts
-4. Apply floor: `Math.max(currentScore, floor * 0.85)`, hard-cap at 70/100
-5. Contamination penalties take precedence over floor
+---
 
-**Verification**: JSON save with sessionSummary + 2 keyDecisions should score >= 50/100. No CONTAMINATION_GATE_ABORT for cross-phase refs.
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
 
-## Testing Strategy
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | Structured normalization wired | Canonical fields populated from JSON | Complete |
+| M2 | Extraction/scoring behavior updated | Non-thin structured outputs generated | Complete |
+| M3 | Verification closure | Validator errors cleared + runtime evidence refreshed | In progress |
+<!-- /ANCHOR:milestones -->
 
-| Test | Type | Covers |
-|------|------|--------|
-| JSON payload with sessionSummary + keyDecisions → quality >= 50/100 | Integration | Recs 1-6 |
-| JSON with only sessionSummary (no keyDecisions) → no abort | Edge case | Rec 2 |
-| JSON with cross-phase references → no V8 abort | Unit | Rec 5 |
-| Transcript-based save → identical results to before | Regression | All |
-| JSON with 100+ filesModified → key_files capped at 20 | Edge case | Rec 4 |
-| JSON with markdown code blocks in observations | Edge case | Rec 5 |
-| Decision from string input → no 4x repetition | Unit | Rec 4 |
+---
 
-## MVP Definition
+## L3: ARCHITECTURE DECISION RECORD
 
-**Recs 1 + 2 + 3 = ~97 LOC** — fixes the critical 0/100 abort and produces usable output with real title, description, and messages. Recs 4-6 are polish that can ship in a follow-up.
+### ADR-001: Reuse Existing Normalization and Add Structured Synthesis Path
 
-## Estimated Total: 156-171 LOC
+**Status**: Accepted
+
+**Context**: Existing pipeline already had partial structured support but not reliable coverage.
+
+**Decision**: Extend existing normalization and extraction layers rather than creating a separate pipeline.
+
+**Consequences**:
+- Lower implementation risk and clearer maintenance path.
+- Requires careful guarding to avoid transcript-path regressions.

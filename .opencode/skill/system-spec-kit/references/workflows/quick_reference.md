@@ -571,7 +571,7 @@ specs/###-parent/
 - **ALWAYS fill ALL placeholders** - No `<PLACEHOLDER>` marker in final docs
 - **ALWAYS respond to workflow prompts** - Ask user for A/B/C/D/E choice
 - **ALWAYS get user approval** - Explicit "yes" before file changes
-- **ONLY @speckit creates spec documentation** — Never route spec.md/plan.md/tasks.md/etc. to @general/@write. Exceptions: @handover (handover.md), @deep-research (research/research.md)
+- **ONLY @speckit creates spec documentation** — Never route spec.md/plan.md/tasks.md/etc. to @general/@write. Exceptions: @handover (handover.md), @deep-research (research/research.md), @debug (debug-delegation.md)
 
 ### Enforcement
 

@@ -490,15 +490,17 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
       return existingValues[index] !== value;
     });
 
-    result.existing_scope = existingScope;
     result.redactedForScope = isDifferentScope;
     result.similarity = similarity ?? result.similarity;
 
     if (isDifferentScope) {
+      result.existing_scope = undefined;
+      result.existingId = null;
       result.existing_path = null;
       return;
     }
 
+    result.existing_scope = existingScope;
     if (typeof duplicate.file_path === 'string') {
       result.existing_path = duplicate.file_path;
     }

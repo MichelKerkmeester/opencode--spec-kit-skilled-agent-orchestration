@@ -145,7 +145,7 @@ function handleSignalShutdown(signal: string): void {
     lockReleaseFailed = true;
   }
 
-  console.log(`\nWarning: Received ${signal} signal, shutting down gracefully...`);
+  console.error(`\nWarning: Received ${signal} signal, shutting down gracefully...`);
   process.exit(lockReleaseFailed ? 1 : 0);
 }
 
@@ -398,12 +398,16 @@ async function parseArguments(
   let sessionId: string | null = null;
   const filteredArgv: string[] = [];
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === '--session-id' && i + 1 < argv.length) {
-      sessionId = argv[i + 1].trim() || null;
+    if (argv[i] === '--session-id') {
+      const candidate = argv[i + 1];
+      if (!candidate || candidate.startsWith('--') || candidate.trim().length === 0) {
+        throw new Error('--session-id requires a non-empty value');
+      }
+      sessionId = candidate.trim();
       i++; // skip the value
-    } else {
-      filteredArgv.push(argv[i]);
+      continue;
     }
+    filteredArgv.push(argv[i]);
   }
 
   const [primaryArg, secondaryArg] = filteredArgv;
@@ -451,7 +455,7 @@ function validateArguments(): void {
     // Try finding it as a child folder inside any parent.
     const resolved = findChildFolderSync(inputBaseName);
     if (resolved) {
-      console.log(`   Resolved child folder "${inputBaseName}" → ${resolved}`);
+      console.error(`   Resolved child folder "${inputBaseName}" → ${resolved}`);
       CONFIG.SPEC_FOLDER_ARG = resolved;
       return;
     }
@@ -547,7 +551,7 @@ async function main(
   argv: string[] = process.argv.slice(2),
   stdinReader: (stdin?: NodeJS.ReadStream) => Promise<string> = readAllStdin,
 ): Promise<void> {
-  console.log('Starting memory skill...\n');
+  console.error('Starting memory skill...\n');
 
   try {
     const parsed = await parseArguments(argv, stdinReader);
@@ -567,7 +571,7 @@ async function main(
     });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
-    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Invalid JSON provided|requires a target spec folder|requires an inline JSON string|required a non-empty JSON object|JSON object payload|no longer supported/.test(errMsg);
+    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Invalid JSON provided|requires a target spec folder|requires an inline JSON string|required a non-empty JSON object|JSON object payload|no longer supported|session-id requires/.test(errMsg);
 
     if (isExpected) {
       console.error(`\nError: ${errMsg}`);

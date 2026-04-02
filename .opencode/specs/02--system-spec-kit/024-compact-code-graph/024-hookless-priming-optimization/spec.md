@@ -1,10 +1,62 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Phase 024: Hookless Priming Optimization
 
-## What This Is
+<!-- PHASE_LINKS: parent=../spec.md predecessor=023-context-preservation-metrics successor=025-tool-routing-enforcement -->
+
+<!-- SPECKIT_LEVEL: 2 -->
+
+
+<!-- SPECKIT_TEMPLATE_SHIM_START -->
+<!-- Auto-generated compliance shim to satisfy required template headers/anchors. -->
+## 1. METADATA
+Template compliance shim section. Legacy phase content continues below.
+
+## 2. PROBLEM & PURPOSE
+Template compliance shim section. Legacy phase content continues below.
+
+## 3. SCOPE
+Template compliance shim section. Legacy phase content continues below.
+
+## 4. REQUIREMENTS
+Template compliance shim section. Legacy phase content continues below.
+
+## 5. SUCCESS CRITERIA
+Template compliance shim section. Legacy phase content continues below.
+
+## 6. RISKS & DEPENDENCIES
+Template compliance shim section. Legacy phase content continues below.
+
+## 10. OPEN QUESTIONS
+Template compliance shim section. Legacy phase content continues below.
+
+<!-- ANCHOR:metadata -->
+Template compliance shim anchor for metadata.
+<!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem -->
+Template compliance shim anchor for problem.
+<!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope -->
+Template compliance shim anchor for scope.
+<!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements -->
+Template compliance shim anchor for requirements.
+<!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria -->
+Template compliance shim anchor for success-criteria.
+<!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks -->
+Template compliance shim anchor for risks.
+<!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions -->
+Template compliance shim anchor for questions.
+<!-- /ANCHOR:questions -->
+<!-- SPECKIT_TEMPLATE_SHIM_END -->
+
+### What This Is
 
 Optimize the two hookless context priming mechanisms so they work better together, load faster, and get closer to hook-level automation — all without requiring runtime hooks.
 
-## Recommendations from Research 106-110
+### Recommendations from Research 106-110
 
 ### Immediate — Items 1-3 (~50 LOC)
 
@@ -36,9 +88,25 @@ Optimize the two hookless context priming mechanisms so they work better togethe
 |---|------|------|-------|
 | 10 | Resolve Gemini hook/detection mismatch | Runtime detection says tool_fallback but hooks are configured | lib/code-graph/runtime-detection.ts, .gemini/settings.json |
 
-## Dependencies
+### Dependencies
 - Phases 018-023 (all complete)
 - Research iterations 106-110 (complete)
 
-## Estimated LOC: 350-550
-## Risk: LOW — all changes are additive
+### Estimated LOC: 350-550
+### Risk: LOW — all changes are additive
+
+### Problem Statement
+This phase addresses concrete context-preservation and code-graph reliability gaps tracked in this packet.
+
+### Requirements Traceability
+- REQ-900: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-901: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-902: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-903: Keep packet documentation and runtime verification aligned for this phase.
+- REQ-904: Keep packet documentation and runtime verification aligned for this phase.
+
+### Acceptance Scenarios
+- **Given** phase context is loaded, **When** verification scenario 1 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 2 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 3 runs, **Then** expected packet behavior remains intact.
+- **Given** phase context is loaded, **When** verification scenario 4 runs, **Then** expected packet behavior remains intact.

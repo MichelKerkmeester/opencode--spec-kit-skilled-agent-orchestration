@@ -875,6 +875,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     // Step 3.5: Enrich captured-session data with spec folder and git context
     if (isCapturedSessionMode) {
+      // Capture pre-enrichment file references so the post-check only judges
+      // paths introduced by enrichment (not caller-provided direct inputs).
+      const preEnrichmentPaths = new Set(
+        ((collectedData.observations || [])
+          .flatMap((obs: { files?: string[] }) => obs.files || [])
+          .concat((collectedData.FILES || []).map((f: { FILE_PATH?: string; path?: string }) => f.FILE_PATH || f.path || '')))
+          .map((fp: string) => fp.trim())
+          .filter((fp: string) => fp.length > 0)
+      );
+
       log('Step 3.5: Enriching captured-session data...');
       collectedData = await enrichCapturedSessionData(collectedData, specFolder, CONFIG.PROJECT_ROOT);
       log('   Enrichment complete');
@@ -889,10 +899,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         const allFilePathsPost = (collectedData.observations || [])
           .flatMap((obs: { files?: string[] }) => obs.files || [])
           .concat((collectedData.FILES || []).map((f: { FILE_PATH?: string; path?: string }) => f.FILE_PATH || f.path || ''));
+        const addedPathsPost = allFilePathsPost
+          .map((fp: string) => fp.trim())
+          .filter((fp: string) => fp.length > 0 && !preEnrichmentPaths.has(fp));
 
-        const totalPathsPost = allFilePathsPost.length;
+        const totalPathsPost = addedPathsPost.length;
         if (totalPathsPost > 0 && (alignmentTargetsPost.keywordTargets.length > 0 || alignmentTargetsPost.fileTargets.length > 0)) {
-          const relevantPathsPost = allFilePathsPost.filter((fp: string) => {
+          const relevantPathsPost = addedPathsPost.filter((fp: string) => {
             return matchesAlignmentTarget(fp, alignmentTargetsPost);
           });
           const overlapRatioPost = relevantPathsPost.length / totalPathsPost;

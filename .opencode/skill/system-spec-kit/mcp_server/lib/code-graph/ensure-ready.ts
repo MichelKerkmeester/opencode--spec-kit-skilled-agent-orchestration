@@ -8,7 +8,7 @@
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { relative } from 'node:path';
-import { getDb, getStats, getLastGitHead, setLastGitHead, ensureFreshFiles, isFileStale } from './code-graph-db.js';
+import { getDb, getLastGitHead, setLastGitHead, ensureFreshFiles } from './code-graph-db.js';
 import { indexFiles } from './structural-indexer.js';
 import { getDefaultConfig } from './indexer-types.js';
 import type { IndexerConfig } from './indexer-types.js';

@@ -89,12 +89,26 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs |
 | **Spec Kit Memory MCP** | 37-tool MCP server providing persistent semantic memory with hybrid search across sessions, models and tools |
 | **Hook System** | Automated context preservation via Claude Code hooks (PreCompact, SessionStart, Stop) with cross-runtime tool fallback |
-| **Code Graph** | Structural code indexer + SQLite storage + 4 MCP query tools for call graphs, imports, and LLM-oriented neighborhoods |
+| **Code Graph** | Structural code analysis: tree-sitter WASM indexer + SQLite storage + 10 MCP tools (4 graph query, 3 CCC, 3 session lifecycle) for call graphs, imports, LLM-oriented neighborhoods, and CocoIndex integration |
 | **Session Continuity** | Context preserved across session boundaries via `generate-context.js` and semantic indexing |
 | **Validation Scripts** | 20-rule validation, completeness checks and placeholder detection for spec folders |
 | **Phase Decomposition** | Parent/child spec folder structure for multi-session, multi-phase work |
 | **Constitutional Memory** | Always-surface rules with a 3.0x boost that never decay -- like pinned notes that show up in every search |
 | **Shared Memory** | Controlled knowledge sharing with deny-by-default access for teams and multi-agent setups |
+
+### Code Graph
+
+Structural code analysis via tree-sitter WASM parsing and SQLite storage. Maps function calls, imports, class hierarchy, and containment across JS/TS/Python/Shell files.
+
+| Tool Category | Tools | Purpose |
+|---------------|-------|---------|
+| **Graph Query** | code_graph_scan, code_graph_query, code_graph_status, code_graph_context | Index, query, and explore structural relationships |
+| **CCC (CocoIndex)** | ccc_status, ccc_reindex, ccc_feedback | CocoIndex lifecycle management |
+| **Session** | session_health, session_resume, session_bootstrap | Session lifecycle orchestration |
+
+CocoIndex (semantic search) finds code by concept. Code Graph (structural) maps what connects to what. The compact-merger combines both with Memory under a 4000-token budget for compaction injection.
+
+For full tool reference with parameters, see [MCP Server README](mcp_server/README.md).
 
 ### Requirements
 
@@ -392,7 +406,7 @@ The memory system includes built-in tools for measuring search quality:
 
 ### 3.3 COMMANDS
 
-Spec Kit exposes 12 commands: 8 spec_kit + 4 memory operations. Each command opens access to a specific set of tools. Think of commands as doors into the system -- each door opens only the tools it needs.
+Spec Kit exposes 12 workflow commands: 8 `spec_kit` + 4 `memory` operations. (Repository-wide command surface is 20 when combined with 7 `create` commands and 1 `agent_router` utility.) Each command opens access to a specific set of tools.
 
 #### Spec Kit Commands (8)
 

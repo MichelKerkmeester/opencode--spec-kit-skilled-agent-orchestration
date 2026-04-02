@@ -61,7 +61,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
 ### Step 4: Memory Save Pipeline Hardening
 
 - [x] T012 [P0] Decouple `scripts/core/workflow.ts` from direct `@spec-kit/mcp-server/*` runtime imports - WHY: workflow.ts top-level imports from mcp-server crash when mcp-server becomes ESM; memory save pipeline breaks mid-migration - Acceptance: workflow.ts uses script-local adapters for PFD and retry; no direct mcp-server runtime imports remain. Evidence: Phase 3 completed the `workflow.ts` decoupling called out in the packet implementation record.
@@ -70,18 +69,15 @@ contextType: "implementation"
 - [x] T015 [P1] Expand `markdown-evidence-builder.ts` to parse primary evidence from manual files - WHY: hand-written files with `## Decisions`, `## Next Steps`, `## Outcomes` sections are not recognized as primary evidence - Acceptance: files with standard anchor sections yield primary > 0. Evidence: the Phase 3 implementation record explicitly includes primary evidence parser expansion alongside the memory-save hardening work.
 - [x] T016 [P1] Add `related_specs` allowlist support for V8 cross-spec research - WHY: research files legitimately reference sibling specs but V8 blocks them - Acceptance: spec.md `related_specs` metadata field feeds into `extractAllowedSpecIds()`. Evidence: the Phase 3 orchestration record tracks `related_specs` allowlist support together with the V8 descendant detection hardening.
 - [x] T017 [P1] Freeze canonical JSON v2 schema for generate-context input - WHY: current JSON shape is alias-heavy with undocumented required fields; agents can't predict what passes sufficiency - Acceptance: documented v2 schema with compatibility shims, contract tests verifying render + sufficiency. Evidence: the Phase 3 orchestration record tracks the canonical JSON v2 schema freeze as part of the memory-save hardening tranche.
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
 ### Step 5: Runtime Verification
 
 - [x] T018 Run `node scripts/dist/memory/generate-context.js --help` - WHY: primary CLI surface must work - Acceptance: help output displayed, exit code 0. Evidence: Phase 3 verification records `generate-context.js --help: PASS`.
 - [x] T019 Run `npm run test --workspace=@spec-kit/scripts` - WHY: full test suite must pass - Acceptance: exit code 0. Evidence: Phase 3 verification records `476/477` scripts tests passing.
 - [x] T020 Run module-sensitive Vitest suites - WHY: ESM-truth assertions must pass - Acceptance: all targeted suites green. Evidence: the module-sensitive ESM-truth suites were closed as part of the finished Phase 3 interop verification.
 - [x] T021 Run memory save end-to-end test (JSON mode → generate-context → MCP index) - WHY: full pipeline must work after ESM migration - Acceptance: save + index succeeds with ESM siblings. Evidence: Phase 3 closed with the hardened memory-save pipeline, including `workflow.ts` decoupling, V8 descendant detection, and `manual-fallback` recovery.
-<!-- /ANCHOR:phase-5 -->
 
 ---
 

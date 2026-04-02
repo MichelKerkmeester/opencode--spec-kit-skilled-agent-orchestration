@@ -1,6 +1,6 @@
 // TEST: INTEGRATION CAUSAL GRAPH
 import Database from 'better-sqlite3';
-import { afterEach, describe, it, expect, vi } from 'vitest';
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
 import * as causalHandler from '../handlers/causal-graph';
 import * as causalEdges from '../lib/storage/causal-edges';
 import * as core from '../core';
@@ -42,6 +42,18 @@ function expectErrorCode(response: unknown, expectedCodes: string[]): MCPEnvelop
 function createCausalGraphDb(): InstanceType<typeof Database> {
   const db = new Database(':memory:');
   db.exec(`
+    CREATE TABLE memory_index (
+      id TEXT PRIMARY KEY,
+      title TEXT,
+      spec_folder TEXT,
+      importance_tier TEXT,
+      importance_weight REAL,
+      context_type TEXT,
+      created_at TEXT,
+      updated_at TEXT,
+      file_path TEXT
+    );
+
     CREATE TABLE causal_edges (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       source_id TEXT NOT NULL,
@@ -60,7 +72,26 @@ function createCausalGraphDb(): InstanceType<typeof Database> {
   return db;
 }
 
+let isolatedDb: InstanceType<typeof Database> | null = null;
+
+beforeEach(() => {
+  isolatedDb = createCausalGraphDb();
+  vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+  vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => undefined);
+  vi.spyOn(vectorIndex, 'getDb').mockReturnValue(
+    isolatedDb as unknown as NonNullable<ReturnType<typeof vectorIndex.getDb>>
+  );
+});
+
 afterEach(() => {
+  if (isolatedDb) {
+    try {
+      isolatedDb.close();
+    } catch {
+      // no-op: test teardown should not fail on best-effort close.
+    }
+    isolatedDb = null;
+  }
   vi.restoreAllMocks();
 });
 

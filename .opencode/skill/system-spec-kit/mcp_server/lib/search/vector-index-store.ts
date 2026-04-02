@@ -22,9 +22,8 @@ import * as sqliteVec from 'sqlite-vec';
 
 import { getStartupEmbeddingDimension } from '@spec-kit/shared/embeddings/factory';
 
-import { DATABASE_DIR, DATABASE_PATH, SERVER_DIR } from '../../core/config.js';
+import { DATABASE_PATH, SERVER_DIR } from '../../core/config.js';
 import { IVectorStore } from '../interfaces/vector-store.js';
-import * as embeddingsProvider from '../providers/embeddings.js';
 import { computeInterferenceScoresBatch } from '../scoring/interference-scoring.js';
 import { validateFilePath } from '../utils/path-security.js';
 import {
@@ -71,9 +70,24 @@ function loadSearchWeights(): SearchWeightsConfig {
   return {};
 }
 
-const _search_weights: SearchWeightsConfig = loadSearchWeights();
-/** Loaded search weight configuration for vector-index ranking. */
-export const search_weights = _search_weights;
+let _search_weights: SearchWeightsConfig | null = null;
+
+function getSearchWeights(): SearchWeightsConfig {
+  if (_search_weights === null) {
+    _search_weights = loadSearchWeights();
+  }
+  return _search_weights;
+}
+
+/** Loaded search weight configuration for vector-index ranking (lazy-loaded). */
+export const search_weights: SearchWeightsConfig = {
+  get maxTriggersPerMemory() {
+    return getSearchWeights().maxTriggersPerMemory;
+  },
+  get smartRanking() {
+    return getSearchWeights().smartRanking;
+  },
+};
 
 type EnhancedSearchOptions = {
   specFolder?: string | null;
@@ -84,9 +98,19 @@ type EnhancedSearchOptions = {
 type JsonObject = Record<string, unknown>;
 
 let _cached_queries: Awaited<typeof import('./vector-index-queries.js')> | null = null;
+let _cached_mutations: Awaited<typeof import('./vector-index-mutations.js')> | null = null;
+let _cached_aliases: Awaited<typeof import('./vector-index-aliases.js')> | null = null;
 
 async function getQueriesModule() {
   return _cached_queries ??= await import('./vector-index-queries.js');
+}
+
+async function getMutationsModule() {
+  return _cached_mutations ??= await import('./vector-index-mutations.js');
+}
+
+async function getAliasesModule() {
+  return _cached_aliases ??= await import('./vector-index-aliases.js');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -101,25 +125,7 @@ export const EMBEDDING_DIM = 768;
  * @returns The embedding dimension.
  */
 export function get_embedding_dim(): number {
-  const startup_dim = getStartupEmbeddingDimension();
-
-  if (process.env.EMBEDDING_DIM) {
-    return startup_dim;
-  }
-
-  try {
-    const embeddings = embeddingsProvider;
-
-    if (embeddings.isProviderInitialized && embeddings.isProviderInitialized()) {
-      const profile = embeddings.getEmbeddingProfile();
-      if (profile && profile.dim) {
-        return profile.dim;
-      }
-    }
-  } catch (e: unknown) {
-    console.warn('[vector-index] Could not get embedding dimension from profile:', get_error_message(e));
-  }
-  return startup_dim;
+  return getStartupEmbeddingDimension();
 }
 
 /**
@@ -266,36 +272,18 @@ export function validate_embedding_dimension(): { valid: boolean; stored: number
    2. DATABASE PATH AND SECURITY
 ----------------------------------------------------------------*/
 
-// F4.04/F8.02 fix: Use centralized DB path from core/config.ts
-// Legacy env vars (MEMORY_DB_DIR, MEMORY_DB_PATH) are still honored as overrides
-// for backward compatibility, but the canonical source is resolveDatabasePaths().
-const DEFAULT_DB_DIR = DATABASE_DIR;
+// F4.04/F8.02 fix: Use centralized DB path from core/config.ts.
+// Legacy env vars MEMORY_DB_DIR and MEMORY_DB_PATH remain supported for backward compatibility.
+const DEFAULT_DB_DIR = process.env.MEMORY_DB_DIR
+  ? path.resolve(process.env.MEMORY_DB_DIR)
+  : path.dirname(DATABASE_PATH);
 /** Default path for the vector-index database file. */
-export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH || DATABASE_PATH;
+export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH
+  || path.join(DEFAULT_DB_DIR, path.basename(DATABASE_PATH));
 const DB_PERMISSIONS = 0o600;
 
 function resolve_database_path() {
-  const resolved_path = process.env.MEMORY_DB_PATH || DEFAULT_DB_PATH;
-  const profile = embeddingsProvider.getEmbeddingProfile();
-
-  if (profile && 'getDatabasePath' in profile && typeof profile.getDatabasePath === 'function') {
-    const provider_specific_path = profile.getDatabasePath(DEFAULT_DB_DIR);
-    const normalized_resolved_path = resolved_path === ':memory:' ? resolved_path : path.resolve(resolved_path);
-    const normalized_provider_path = provider_specific_path === ':memory:' ? provider_specific_path : path.resolve(provider_specific_path);
-
-    if (normalized_provider_path !== normalized_resolved_path) {
-      const provider_name = 'provider' in profile && typeof profile.provider === 'string'
-        ? profile.provider
-        : 'unknown';
-      console.error(
-        '[vector-index] WARNING: Provider-specific DB path differs from resolved path (provider=%s, resolved=%s). Using resolved path to prevent mid-session drift.',
-        provider_name,
-        resolved_path
-      );
-    }
-  }
-
-  return resolved_path;
+  return process.env.MEMORY_DB_PATH || DEFAULT_DB_PATH;
 }
 
 // P1-06 FIX: Unified allowed paths
@@ -1013,7 +1001,7 @@ export class SQLiteVectorStore extends IVectorStore {
       );
     }
 
-    const { index_memory } = await import('./vector-index-mutations.js');
+    const { index_memory } = await getMutationsModule();
     return index_memory(params, database);
   }
 
@@ -1030,7 +1018,7 @@ export class SQLiteVectorStore extends IVectorStore {
   async delete(id: number): Promise<boolean> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { delete_memory } = await import('./vector-index-mutations.js');
+    const { delete_memory } = await getMutationsModule();
     return delete_memory(id, database);
   }
 
@@ -1076,7 +1064,7 @@ export class SQLiteVectorStore extends IVectorStore {
   async deleteByPath(specFolder: string, filePath: string, anchorId: string | null = null): Promise<boolean> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { delete_memory_by_path } = await import('./vector-index-mutations.js');
+    const { delete_memory_by_path } = await getMutationsModule();
     return delete_memory_by_path(specFolder, filePath, anchorId, database);
   }
 
@@ -1100,7 +1088,7 @@ export class SQLiteVectorStore extends IVectorStore {
   async enhancedSearch(embedding: string, options: EnhancedSearchOptions = {}): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
     const database = this._getDatabase();
-    const { enhanced_search } = await import('./vector-index-aliases.js');
+    const { enhanced_search } = await getAliasesModule();
     return enhanced_search(embedding, undefined, options, database);
   }
 

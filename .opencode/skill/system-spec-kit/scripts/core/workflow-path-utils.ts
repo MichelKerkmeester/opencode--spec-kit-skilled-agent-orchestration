@@ -115,9 +115,17 @@ export function buildKeyFiles(effectiveFiles: FileChange[], specFolderPath: stri
 export function buildAlignmentKeywords(specFolderPath: string): string[] {
   const ALIGNMENT_STOPWORDS = new Set(['ops', 'app', 'api', 'cli', 'lib', 'src', 'dev', 'hub', 'log', 'run']);
   const keywords = new Set<string>();
-  const segments = specFolderPath
+  const normalizedSpecPath = specFolderPath
     .replace(/\\/g, '/')
-    .split('/')
+    .trim();
+  const rawSegments = normalizedSpecPath.split('/').filter(Boolean);
+  const specLikeSegments = rawSegments.filter((segment) => /^\d{3}-/.test(segment));
+  // Only use the spec folder lineage (parent/child) for alignment keywords.
+  // Including arbitrary absolute path segments (e.g. temp dirs) creates false positives.
+  const relevantSegments = specLikeSegments.length > 0
+    ? specLikeSegments.slice(-2)
+    : [path.posix.basename(normalizedSpecPath)];
+  const segments = relevantSegments
     .map((segment) => segment.replace(/^\d+--?/, '').trim().toLowerCase())
     .filter(Boolean);
 

@@ -62,7 +62,12 @@ Use Level 3+ if governance and formal approvals are required.
 
 ```bash
 mkdir -p specs/###-feature-name
-cp .opencode/skill/system-spec-kit/templates/level_3/*.md specs/###-feature-name/
+cp .opencode/skill/system-spec-kit/templates/level_3/spec.md specs/###-feature-name/
+cp .opencode/skill/system-spec-kit/templates/level_3/plan.md specs/###-feature-name/
+cp .opencode/skill/system-spec-kit/templates/level_3/tasks.md specs/###-feature-name/
+cp .opencode/skill/system-spec-kit/templates/level_3/checklist.md specs/###-feature-name/
+cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-feature-name/
+cp .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md specs/###-feature-name/
 bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-name/
 ```
 

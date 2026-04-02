@@ -297,7 +297,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
 ### Phase 4: Database Rebuild & Verification
 
 - [x] T203 Run cleanup-orphaned-vectors.js — 2 orphans removed
@@ -310,7 +309,6 @@ contextType: "implementation"
 - [x] T210 Orphaned vectors cleaned (T203) — reindex rebuilt from zero so no orphans possible
 - [x] T211 Final DB state: 1134 memories, 62.9MB, voyage-4 embeddings (1024-dim), 1285 FTS5 entries, constitutional rules indexed
 - [x] T212 Final validation sweep: 175/175 in-scope folders at 0 errors (100%), 13 skipped (024-compact-code-graph)
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

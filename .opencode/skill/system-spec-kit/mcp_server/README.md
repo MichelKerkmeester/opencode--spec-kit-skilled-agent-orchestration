@@ -8,7 +8,7 @@ trigger_phrases:
   - "cognitive memory"
   - "memory_context"
   - "memory_search"
-  - "40 tools"
+  - "43 tools"
   - "FSRS decay"
 ---
 
@@ -52,7 +52,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 | What | Count | Details |
 |------|-------|---------|
-| **MCP tools** | 33 | Organized across 7 layers (L1 through L7) |
+| **MCP tools** | 43 | Organized across 7 layers (L1 through L7) |
 | **Search channels** | 5 | Vector, FTS5, BM25, Causal Graph, Degree |
 | **Pipeline stages** | 4 | Gather, Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
@@ -81,7 +81,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 ### How You Use It
 
-The memory system exposes 40 tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
+The memory system exposes 43 MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
@@ -502,15 +502,35 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 ---
 
+#### 3.1.13 CODE GRAPH
+
+The code graph system provides structural code analysis via tree-sitter AST parsing and SQLite storage. It maps what connects to what in the codebase: function calls, imports, class hierarchy and containment.
+
+**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection.
+
+**Parser:** Tree-sitter WASM is the default parser (JS/TS/Python/Shell). Set `SPECKIT_PARSER=regex` for regex fallback.
+
+**Storage:** `code-graph.sqlite` (separate from `context-index.sqlite`), with tables: `code_files`, `code_nodes`, `code_edges`.
+
+**Edge types:** `CONTAINS`, `CALLS`, `IMPORTS`, `EXPORTS`, `EXTENDS`, `IMPLEMENTS`, `DECORATES`, `OVERRIDES`, `TYPE_OF`.
+
+**Auto-trigger:** `ensureCodeGraphReady()` runs automatically on branch switch, session start and stale detection. It checks graph freshness and triggers an incremental scan if needed.
+
+**Query routing:** Structural queries (callers, imports, dependencies) go to `code_graph_query`. Semantic and concept queries go to CocoIndex (`mcp__cocoindex_code__search`). Session and memory queries go to `memory_context`.
+
+**Budget allocator floors:** constitutional 700, codeGraph 1200, cocoIndex 900, triggered 400, overflow pool 800 = 4000 total.
+
+---
+
 ### 3.2 TOOL REFERENCE
 
-All 40 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
+All 43 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
 
 **Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
 
 ---
 
-#### L1: Orchestration (1 tool)
+#### L1: Orchestration (3 tools)
 
 ##### `memory_context`
 
@@ -545,6 +565,27 @@ The smart entry point. You describe what you need and it figures out the best wa
   }
 }
 ```
+
+---
+
+##### `session_resume`
+
+Resume session with combined memory, code graph and CocoIndex status in a single call. Recommended as the first call on session start or after `/clear`. Returns merged context.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `specFolder` | string | Scope resume to a specific spec folder |
+| `minimal` | boolean | Skip heavy memory context, return only graph + coco + health |
+
+---
+
+##### `session_bootstrap`
+
+Complete session bootstrap in one call. Combines `session_resume` (minimal) plus `session_health` into a single round-trip. Returns context, health and recommended next actions.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `specFolder` | string | Scope bootstrap to a specific spec folder |
 
 ---
 
@@ -661,7 +702,7 @@ This is how you add new knowledge to the system. Point it at a markdown file and
 
 ---
 
-#### L3: Discovery (3 tools)
+#### L3: Discovery (4 tools)
 
 ##### `memory_list`
 
@@ -702,6 +743,16 @@ Run a health check. This is the diagnostic tool for when search quality degrades
 | `specFolder` | string | Scope to a folder |
 | `autoRepair` | boolean | Attempt automatic repairs |
 | `confirmed` | boolean | Confirm destructive repair operations |
+
+---
+
+##### `session_health`
+
+Check session readiness: priming status, code graph freshness and time since last tool call. Returns `ok`, `warning` or `stale` with actionable hints. Call periodically during long sessions to detect context drift.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| _(none required)_ |  | Returns health status with hints |
 
 ---
 
@@ -864,7 +915,7 @@ Turn on the shared-memory subsystem. First-time setup creates the database table
 
 ---
 
-#### L6: Analysis (8 tools)
+#### L6: Analysis (10 tools)
 
 ##### `task_preflight`
 
@@ -978,7 +1029,38 @@ Generate a report showing search performance trends over time. Aggregates metric
 
 ---
 
-#### L7: Maintenance (5 tools)
+##### `code_graph_query`
+
+Query structural code relationships: `outline` (file symbols), `calls_from` and `calls_to` (call graph), `imports_from` and `imports_to` (dependency graph). Use this instead of Grep for structural queries. Supports multi-hop BFS traversal.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `operation` | string | **Required.** `outline`, `calls_from`, `calls_to`, `imports_from`, `imports_to` |
+| `subject` | string | **Required.** File path, symbol name or `symbolId` |
+| `edgeType` | string | Filter by edge type |
+| `limit` | number | Max results (1-200, default 50) |
+| `includeTransitive` | boolean | Enable multi-hop BFS traversal |
+| `maxDepth` | number | Max traversal depth (1-10, default 3) |
+
+---
+
+##### `code_graph_context`
+
+Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds for structural expansion. Modes: `neighborhood` (1-hop calls plus imports), `outline` (file symbols), `impact` (reverse callers).
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `input` | string | Natural language context query |
+| `queryMode` | string | `neighborhood` (default), `outline` or `impact` |
+| `subject` | string | Symbol name, fqName or `symbolId` |
+| `seeds` | array | Seeds from CocoIndex, manual input or graph lookups |
+| `budgetTokens` | number | Token budget for response (100-4000, default 1200) |
+| `profile` | string | Output density: `quick`, `research` or `debug` |
+| `includeTrace` | boolean | Include trace metadata for debugging |
+
+---
+
+#### L7: Maintenance (10 tools)
 
 ##### `memory_index_scan`
 
@@ -1037,6 +1119,62 @@ Cancel a running import job. The current file finishes processing before the job
 |-----------|------|-------|
 | `jobId` | string | **Required.** Job ID to cancel |
 
+---
+
+##### `code_graph_scan`
+
+Scan workspace files and build the structural code graph index (functions, classes, imports, calls). Uses tree-sitter WASM for parsing with regex fallback. Supports incremental re-indexing via content hash.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `rootDir` | string | Root directory to scan (default: workspace root) |
+| `includeGlobs` | string[] | Glob patterns for files to include |
+| `excludeGlobs` | string[] | Additional glob patterns to exclude |
+| `incremental` | boolean | Skip unchanged files (default: true) |
+
+---
+
+##### `code_graph_status`
+
+Report code graph index health: file count, node and edge counts by type, parse health summary, last scan timestamp, DB file size and schema version.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| _(none required)_ |  | Returns health report |
+
+---
+
+##### `ccc_status`
+
+Check CocoIndex availability, binary path and index status.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| _(none required)_ |  | Returns CocoIndex health |
+
+---
+
+##### `ccc_reindex`
+
+Trigger CocoIndex incremental or full re-indexing of the workspace.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `full` | boolean | Full re-index (slower) vs incremental (default: `false`) |
+
+---
+
+##### `ccc_feedback`
+
+Submit quality feedback on CocoIndex search results to improve future searches.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `query` | string | **Required.** The search query that was executed |
+| `rating` | string | **Required.** `helpful`, `not_helpful` or `partial` |
+| `resultFile` | string | File path from the result being rated |
+| `comment` | string | Optional free-form feedback |
+
 <!-- /ANCHOR:features -->
 <!-- /ANCHOR:name -->
 
@@ -1075,7 +1213,7 @@ mcp_server/
 
 | File | What It Does |
 |------|-------------|
-| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 40 tools. |
+| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 43 tools. |
 | `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
@@ -1089,14 +1227,14 @@ Tools are organized into layers based on what they do. Lower layers handle every
 
 | Layer | Name | Tools | Token Budget | Purpose |
 |-------|------|-------|-------------|---------|
-| L1 | Orchestration | 1 | 2,000 | Smart entry point that figures out what you need |
+| L1 | Orchestration | 3 | 2,000 | Smart entry point that figures out what you need |
 | L2 | Core | 4 | 1,500 | The main search and save operations |
-| L3 | Discovery | 3 | 800 | Browse what is stored, check system health |
+| L3 | Discovery | 4 | 800 | Browse what is stored, check system health |
 | L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
 | L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/status/shared-space lifecycle |
-| L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
-| L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
-| | **Total** | **33** | **7,600** | |
+| L6 | Analysis | 10 | 1,200 | Trace decisions, measure learning, run evaluations |
+| L7 | Maintenance | 10 | 1,000 | Re-index files, review history, run bulk imports |
+| | **Total** | **43** | **7,600** | |
 
 Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
 

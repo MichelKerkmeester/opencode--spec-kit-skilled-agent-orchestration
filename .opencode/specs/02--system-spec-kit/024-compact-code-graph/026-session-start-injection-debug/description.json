@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/024-compact-code-graph/026-session-start-injection-debug",
+  "description": "Spec: Startup Context Injection — Cross-Runtime",
+  "keywords": [
+    "spec",
+    "startup",
+    "context",
+    "injection",
+    "cross-runtime"
+  ],
+  "lastUpdated": "2026-04-02T09:56:16.606Z",
+  "specId": "026",
+  "folderSlug": "session-start-injection-debug",
+  "parentChain": [
+    "02--system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -223,3 +223,25 @@ Key files (high-priority subset from 230 total):
 - Agent model: GPT-5.4 via codex exec, reasoning: high
 - Started: 2026-03-30T08:42:00.000Z
 <!-- /ANCHOR:review-boundaries -->
+
+---
+
+<!-- ANCHOR:addendum-2026-04-02 -->
+## 17. ADDENDUM — 2026-04-02 (Iterations 011-020)
+
+A second deep-review batch of 10 iterations was completed and captured in `review/iterations/iteration-011.md` through `iteration-020.md`.
+
+Batch result:
+- Verdict: FAIL
+- Active P0: 5
+- Active P1: 29
+- Active P2: 17
+- Release readiness: blocked
+
+Primary blockers in this batch:
+- Completion-state contradictions across phase checklists/tasks/implementation summaries
+- Failing verification suites (task-enrichment, extractor/loader, naming-migration, mcp-server and scripts test slices)
+- Contract drift between runtime command surfaces and catalog/playbook/adapter docs
+
+See `review/review-report.md` and `review/review-report-2026-04-02-extended.md` for consolidated findings.
+<!-- /ANCHOR:addendum-2026-04-02 -->

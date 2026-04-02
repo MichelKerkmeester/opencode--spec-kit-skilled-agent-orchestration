@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/spec]"
-description: "Decision-complete packet for the pending @spec-kit/shared plus @spec-kit/mcp-server native ESM migration, with @spec-kit/scripts preserved as CommonJS and standards-doc work deferred until runtime proof passes."
+description: "Decision-complete packet for the completed @spec-kit/shared plus @spec-kit/mcp-server native ESM migration, with @spec-kit/scripts preserved as CommonJS and standards-doc follow-through captured after runtime proof."
 trigger_phrases:
   - "esm module compliance"
   - "mcp_server esm refactor"
@@ -32,7 +32,7 @@ The finished 20-iteration research in `research/research.md` confirms that this 
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Active — phase 8 in progress |
+| **Status** | Completed — phase 13 closure recorded |
 | **Created** | 2026-03-23 |
 | **Branch** | `main` |
 | **Parent Spec** | None (top-level spec folder) |
@@ -92,15 +92,15 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `specs/02--system-spec-kit/023-esm-module-compliance/spec.md` | Update | Lock the finished research conclusions into the packet narrative |
-| `specs/02--system-spec-kit/023-esm-module-compliance/plan.md` | Update | Order the pending runtime work exactly as the research recommends |
-| `specs/02--system-spec-kit/023-esm-module-compliance/tasks.md` | Update | Track pending work by subsystem and verification boundary |
-| `specs/02--system-spec-kit/023-esm-module-compliance/checklist.md` | Update | Record strategy locks, pending runtime gates, and defer rules from research |
-| `specs/02--system-spec-kit/023-esm-module-compliance/implementation-summary.md` | Update | Replace the stale spec-refresh-only story with the finished research sync state |
-| `.opencode/skill/system-spec-kit/shared/**` | Pending runtime work | Package metadata, tsconfig, import rewrite, and export-surface alignment |
-| `.opencode/skill/system-spec-kit/mcp_server/**` | Pending runtime work | Package metadata, tsconfig, import rewrite, CommonJS-global cleanup, and boundary repairs |
-| `.opencode/skill/system-spec-kit/scripts/**` | Pending runtime work | CommonJS-to-ESM interoperability helpers and scripts-side runtime call-site refactors |
-| Standards docs outside `023` | Deferred follow-on | Update only after runtime proof passes |
+| `specs/02--system-spec-kit/023-esm-module-compliance/spec.md` | Updated | Finalized packet narrative aligned to completed migration and closure phases |
+| `specs/02--system-spec-kit/023-esm-module-compliance/plan.md` | Updated | Completed implementation plan with closed gates and evidence |
+| `specs/02--system-spec-kit/023-esm-module-compliance/tasks.md` | Updated | Completed subsystem task tracking with evidence references |
+| `specs/02--system-spec-kit/023-esm-module-compliance/checklist.md` | Updated | Verification gates recorded with completion evidence |
+| `specs/02--system-spec-kit/023-esm-module-compliance/implementation-summary.md` | Updated | Final runtime and deep-review remediation summary |
+| `.opencode/skill/system-spec-kit/shared/**` | Completed runtime work | ESM metadata/config/import migration complete |
+| `.opencode/skill/system-spec-kit/mcp_server/**` | Completed runtime work | ESM metadata/config/import migration and boundary hardening complete |
+| `.opencode/skill/system-spec-kit/scripts/**` | Completed runtime work | CommonJS interop boundary refactor and verification complete |
+| Standards docs outside `023` | Completed follow-on | Updated after runtime verification evidence |
 <!-- /ANCHOR:scope -->
 
 ---

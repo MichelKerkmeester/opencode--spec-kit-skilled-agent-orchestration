@@ -111,6 +111,12 @@ This guide addresses the full installation lifecycle and common failures after m
 
 If documentation references `mcp_server/database/...`, treat that as a compatibility view. The canonical runtime storage is `mcp_server/dist/database/`.
 
+The Code Graph system uses a separate database stored alongside the memory index:
+
+- `code-graph.sqlite` (auto-created on first `code_graph_scan`, stored alongside `context-index.sqlite`)
+- Tables: `code_files` (indexed source files), `code_nodes` (symbols), `code_edges` (relationships)
+- Edge types: `CONTAINS`, `CALLS`, `IMPORTS`, `EXPORTS`, `EXTENDS`, `IMPLEMENTS`, `DECORATES`, `OVERRIDES`, `TYPE_OF`
+
 ### Runtime Coverage Note (2026-03-17)
 
 The repo currently contains checked-in `spec_kit_memory` wiring for five CLI runtimes:
@@ -186,6 +192,8 @@ npm install
 This installs:
 - `better-sqlite3` (SQLite with native bindings)
 - `sqlite-vec` (vector extension for semantic search)
+- `web-tree-sitter` (WASM-based tree-sitter bindings, no native compilation)
+- `tree-sitter-wasms` (pre-compiled WASM grammar bundles for JS, TS, Python, Bash)
 - `@huggingface/transformers` (local embedding model)
 - `@modelcontextprotocol/sdk` (MCP protocol implementation)
 - `chokidar` (file watching for auto-indexing)
@@ -433,6 +441,13 @@ You should see `spec_kit_memory` tools listed, including:
 - `memory_save` (index new memories)
 - `memory_index_scan` (bulk indexing)
 - `memory_stats` (system statistics)
+- `code_graph_scan` (structural code indexing)
+- `code_graph_query` (structural relationship queries)
+- `code_graph_status` (graph health check)
+- `code_graph_context` (LLM-oriented graph neighborhoods)
+- `session_health` (session readiness check)
+- `session_bootstrap` (complete session bootstrap)
+- `session_resume` (combined session resume)
 
 ### Step 3: Run a Test Query
 

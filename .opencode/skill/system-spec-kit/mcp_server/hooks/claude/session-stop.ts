@@ -5,7 +5,10 @@
 // Runs on Claude Code Stop event (async). Parses transcript for
 // token usage, stores a snapshot, and updates lightweight session state.
 
+import { spawnSync } from 'node:child_process';
 import { openSync, fstatSync, readSync, closeSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   parseHookStdin, hookLog, withTimeout, HOOK_TIMEOUT_MS,
 } from './shared.js';
@@ -21,6 +24,79 @@ const SPEC_FOLDER_PATH_RE = /(?:\.opencode\/)?specs\/[^\s"'`]+/g;
 const SPEC_FOLDER_PREFIXES = ['.opencode/specs/', 'specs/'] as const;
 const SPEC_FOLDER_CANONICAL_PREFIX = 'specs/';
 const SPEC_FOLDER_SEGMENT_RE = /^\d{2,3}(?:--|-)[\w-]+$/;
+const HOOK_DIR = dirname(fileURLToPath(import.meta.url));
+const AUTOSAVE_TIMEOUT_MS = 4000;
+
+function resolveGenerateContextScriptPath(): string | null {
+  const explicitPath = process.env.SPECKIT_GENERATE_CONTEXT_SCRIPT;
+  const candidates = [
+    explicitPath?.trim(),
+    resolve(HOOK_DIR, '../../../scripts/dist/memory/generate-context.js'),
+    resolve(HOOK_DIR, '../../../../scripts/dist/memory/generate-context.js'),
+    resolve(process.cwd(), '.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js'),
+    resolve(process.cwd(), 'scripts/dist/memory/generate-context.js'),
+  ].filter((candidate): candidate is string => typeof candidate === 'string' && candidate.length > 0);
+
+  for (const candidate of candidates) {
+    try {
+      const fileHandle = openSync(candidate, 'r');
+      closeSync(fileHandle);
+      return candidate;
+    } catch {
+      // Candidate missing or unreadable — continue.
+    }
+  }
+
+  return null;
+}
+
+function runContextAutosave(sessionId: string): void {
+  const state = loadState(sessionId);
+  const specFolder = state?.lastSpecFolder?.trim();
+  const summary = state?.sessionSummary?.text?.trim();
+
+  if (!specFolder || !summary) {
+    return;
+  }
+
+  const scriptPath = resolveGenerateContextScriptPath();
+  if (!scriptPath) {
+    hookLog('warn', 'session-stop', 'Auto-save skipped: generate-context.js not found');
+    return;
+  }
+
+  const payload = {
+    specFolder,
+    sessionSummary: summary,
+    observations: [`Auto-saved from Claude Stop hook for session ${sessionId}.`],
+    recent_context: [summary],
+    user_prompts: [],
+    exchanges: [],
+    toolCalls: [],
+  };
+
+  const result = spawnSync(
+    process.execPath,
+    [scriptPath, '--json', JSON.stringify(payload)],
+    {
+      cwd: process.cwd(),
+      encoding: 'utf-8',
+      timeout: AUTOSAVE_TIMEOUT_MS,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      maxBuffer: 1024 * 1024,
+    },
+  );
+
+  if (typeof result.status === 'number' && result.status === 0) {
+    hookLog('info', 'session-stop', `Context auto-save completed for ${specFolder}`);
+    return;
+  }
+
+  const stderr = (result.stderr ?? '').trim();
+  const stdout = (result.stdout ?? '').trim();
+  const errorText = stderr || stdout || result.error?.message || `exit=${String(result.status)}`;
+  hookLog('warn', 'session-stop', `Context auto-save failed: ${errorText}`);
+}
 
 /**
  * Extract a brief summary from the last assistant message.
@@ -143,6 +219,8 @@ async function main(): Promise<void> {
     });
     hookLog('info', 'session-stop', `Session summary extracted (${text.length} chars)`);
   }
+
+  runContextAutosave(sessionId);
 
   hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
 }

@@ -6,6 +6,7 @@
 // Feature catalog: Migration checkpoint scripts
 import * as fs from 'fs';
 import * as path from 'path';
+import { pathToFileURL } from 'url';
 import Database from 'better-sqlite3';
 
 interface CliArgs {
@@ -209,7 +210,13 @@ function main(argv = process.argv.slice(2)): RestoreCheckpointResult {
   return result;
 }
 
-if (require.main === module) {
+function isMainModule(): boolean {
+  const entryPath = process.argv[1];
+  if (!entryPath) return false;
+  return import.meta.url === pathToFileURL(path.resolve(entryPath)).href;
+}
+
+if (isMainModule()) {
   try {
     main();
   } catch (error: unknown) {

@@ -125,6 +125,21 @@ Make `@spec-kit/shared` a truthful native ESM package so that `mcp_server` (Phas
 ---
 
 <!-- ANCHOR:risks -->
+
+### Acceptance Scenarios
+
+**Given** the phase scope and requirements are loaded, **when** implementation starts, **then** only in-scope files and behaviors are changed.
+
+**Given** the phase deliverables are implemented, **when** verification runs, **then** required checks complete without introducing regressions.
+
+**Given** this phase depends on predecessor outputs, **when** those dependencies are present, **then** this phase behavior composes correctly with adjacent phases.
+
+**Given** this phase modifies documented behavior, **when** packet docs are reviewed, **then** spec/plan/tasks/checklist remain internally consistent.
+
+**Given** this phase is rerun in a clean environment, **when** the same commands are executed, **then** outcomes are reproducible.
+
+**Given** completion is claimed, **when** evidence is inspected, **then** each required acceptance outcome is explicitly supported.
+
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |

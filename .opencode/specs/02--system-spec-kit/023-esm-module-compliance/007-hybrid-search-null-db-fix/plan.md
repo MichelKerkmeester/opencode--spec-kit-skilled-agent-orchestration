@@ -174,7 +174,6 @@ All channels except BM25 depend on `db` or `vectorSearchFn` being non-null.
 
 ---
 
-<!-- ANCHOR:critical-files -->
 ### Critical Files
 
 | File | Role | Edit Type |
@@ -188,7 +187,6 @@ All channels except BM25 depend on `db` or `vectorSearchFn` being non-null.
 | `mcp_server/dist/context-server.js` | Server startup init sequence | Read-only reference |
 
 All paths relative to `.opencode/skill/system-spec-kit/`.
-<!-- /ANCHOR:critical-files -->
 
 ---
 

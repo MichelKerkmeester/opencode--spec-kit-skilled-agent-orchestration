@@ -31,6 +31,15 @@ export function validateFilePath(filePath: string, allowedBasePaths: string[]): 
       return null;
     }
 
+    // Security: Reject explicit traversal segments before normalization.
+    // Even if resolution lands inside an allowed base, a caller supplying ".."
+    // is treated as a traversal attempt and blocked.
+    const normalizedInput = filePath.replace(/\\/g, '/');
+    if (normalizedInput.split('/').some((segment) => segment === '..')) {
+      console.warn(`[utils] Path traversal segment blocked: ${filePath}`);
+      return null;
+    }
+
     const resolved = path.resolve(filePath);
 
     // Compare canonical paths so symlink aliases cannot bypass containment checks.

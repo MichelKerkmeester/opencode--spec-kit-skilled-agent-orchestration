@@ -1,140 +1,230 @@
 ---
-title: "Spec: Memory Save Quality Pipeline [023/012]"
-description: "Fix generate-context.js pipeline so JSON-mode saves produce 55-75/100 quality memories instead of 0/100 boilerplate. 6 items, 156-171 LOC."
+title: "Feature Specification: Memory Save Quality Pipeline [02--system-spec-kit/023-esm-module-compliance/012-memory-save-quality-pipeline/spec]"
+description: "Stabilize JSON-mode memory saves so structured input reliably produces usable, non-boilerplate memory context output."
+trigger_phrases:
+  - "memory save quality"
+  - "json mode save"
+  - "generate-context pipeline"
+  - "context compaction save"
+importance_tier: "critical"
+contextType: "implementation"
 ---
-# Spec: Phase 012 — Memory Save Quality Pipeline
+# Feature Specification: Memory Save Quality Pipeline
 
-## Problem
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
-The `generate-context.js` memory save pipeline produces 0/100 quality output when invoked via `--json` mode after context compaction. This is the primary save path used by AI assistants when the conversation transcript is thin or unavailable (post-compaction, post-clear, cross-session handover). Every save requires manual optimization.
+---
 
-### Root Cause (confirmed by 20 research iterations)
+## EXECUTIVE SUMMARY
 
-Single architectural assumption in `workflow.ts:613`: the pipeline treats `userPrompts[]` as the sole primary data source. When `--json`/`--stdin` provides structured data (sessionSummary, keyDecisions, observations), the normalization step is bypassed entirely, so:
+This phase addresses structured-input (`--json`/`--stdin`) quality regressions in memory save generation where normalization and extraction assumptions caused thin, low-value output. The work standardizes normalization, synthesis, quality scoring, and contamination handling for structured flows while preserving transcript-mode behavior.
 
-- `sessionSummary` never becomes `userPrompts[]`
-- `keyDecisions` never becomes `_manualDecisions[]`
-- All downstream extractors receive empty arrays
+**Key Decisions**: Reuse existing normalization pipeline; add structured-path message synthesis; add bounded quality floor.
 
-```
-Pipeline assumes userPrompts[] is sole primary data source
-|
-+-- extractConversations() primary loop (conv-extractor.ts:93-214)
-|   iterates ONLY over userPrompts[]
-|   |
-|   +-- Observations require userPrompt timestamp proximity (line 112-127)
-|   +-- sessionSummary/keyDecisions used only in narrow fallback (line 241-267)
-|   +-- Fallback creates only Assistant-role messages (no User messages)
-|
-+-- Quality scorer depends on message count and trigger phrases
-|   |
-|   +-- triggerPhrases from thin synthetic messages -> bigram fragments
-|   +-- observationDedup scores 5/15 with zero observations
-|   +-- contentLength low from boilerplate template output
-|
-+-- Template receives empty data from extractors -> boilerplate
-|
-+-- Contamination filter V8 rule flags same-parent cross-phase references
-|
-+-- Key files enumerator has no cap -> 300+ entries
-```
+**Critical Dependencies**: `workflow.ts`, extractor stack, validation rules, and quality scorer consistency.
 
-### 8 Observable Symptoms
+---
 
-| # | Symptom | Root Cause | Severity |
-|---|---------|-----------|----------|
-| 1 | "No user prompts found" + Quality 0/100 | Primary loop requires userPrompts | CRITICAL |
-| 2 | INSUFFICIENT_CONTEXT_ABORT | Empty extractors -> short template -> fails sufficiency | CRITICAL |
-| 3 | CONTAMINATION_GATE_ABORT (V8) | Cross-phase refs flagged as foreign-spec scatter | HIGH |
-| 4 | Empty OBSERVATION sections | JSON observations not fed to template | HIGH |
-| 5 | Generic boilerplate description | sessionSummary not used as description source | MEDIUM |
-| 6 | Poor trigger phrases (bigram fragments) | Extracted from thin synthetic messages | MEDIUM |
-| 7 | 300+ key_files entries | No filesystem enumeration cap | LOW |
-| 8 | Repetitive decision blocks (4x same text) | Same text fills all 4 decision fields | LOW |
+## 1. METADATA
 
-### Existing Infrastructure (reduces scope)
+| Field | Value |
+|-------|-------|
+| **Level** | 3 |
+| **Priority** | P0 |
+| **Status** | Review |
+| **Created** | 2026-04-01 |
+| **Branch** | `system-speckit/024-compact-code-graph` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | 011-indexing-and-adaptive-fusion |
+| **Successor** | 013-fts5-fix-and-search-dashboard |
 
-The pipeline already has partial support for structured input:
+---
 
-- **`source-capabilities.ts`**: `inputMode: 'structured' | 'captured'` via `getSourceCapabilities()`
-- **`workflow.ts:1586`**: Already branches on `captureCapabilities.inputMode === 'captured'`
-- **`workflow.ts:1170-1199`**: `triggerSourceParts` already includes sessionSummary and decision titles
-- **`conversation-extractor.ts:241-267`**: Fallback path for `userPrompts.length <= 1` exists but is too narrow
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-No new "inputSource" mechanism needs to be invented.
+### Problem Statement
+Structured memory saves (`--json`/`--stdin`) could degrade into poor outputs when normalization did not adequately feed downstream extraction/scoring paths. This led to low quality scores, repetitive decision content, noisy key-file payloads, and avoidable contamination aborts for same-parent phase references.
 
-## Solution: 6 Recommendations
+### Purpose
+Ensure structured saves produce coherent, retrieval-usable memory artifacts while preserving transcript-mode behavior and validator safety.
+<!-- /ANCHOR:problem -->
 
-### Rec 1: Wire JSON data through normalization (~25 LOC)
+---
 
-**Files:** `workflow.ts`, `data-loader.ts`, `input-normalizer.ts`, `session-types.ts`
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-In `workflow.ts:613`: call `normalizeInputData()` for `--json`/`--stdin` input. This converts `sessionSummary` → `userPrompts[]` and `keyDecisions` → `_manualDecisions[]`. Also add `filesChanged` as alias for `filesModified` in `input-normalizer.ts` KNOWN_RAW_INPUT_FIELDS.
+### In Scope
+- Normalize structured JSON fields into extractor-ready forms.
+- Synthesize meaningful conversation messages when transcript prompts are absent.
+- Improve title/summary derivation from structured input.
+- Bound key-file enumeration and decision rendering noise.
+- Relax contamination false positives for same-parent sibling phase references in structured mode.
+- Add constrained quality floor logic for rich structured payloads.
 
-**Fixes symptoms 1, 2, 6 in one shot** — biggest bang for the buck.
+### Out of Scope
+- Major template rendering redesign.
+- Non-memory command architecture changes.
+- Broad contamination-rule policy changes outside structured mode.
 
-### Rec 2: Build messages from JSON when transcripts are empty (~40 LOC)
+### Files to Change
 
-**File:** `conversation-extractor.ts`
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `scripts/core/workflow.ts` | Modify | Structured normalization wiring and metadata flow |
+| `scripts/extractors/conversation-extractor.ts` | Modify | Structured-input message synthesis path |
+| `scripts/extractors/collect-session-data.ts` | Modify | Summary/title derivation from structured context |
+| `scripts/core/quality-scorer.ts` | Modify | JSON-aware quality floor logic |
+| `scripts/lib/validate-memory-quality.ts` | Modify | Structured sibling-phase contamination relaxation |
+| `scripts/extractors/decision-extractor.ts` | Modify | Reduced repetition for plain-string decisions |
+<!-- /ANCHOR:scope -->
 
-New `extractFromJsonPayload()` function inserted at line 86-87 (before primary loop). Activates when `userPrompts.length === 0 && sessionSummary exists`. Builds MESSAGES from:
-1. Synthetic User message from spec folder name or sessionSummary first clause
-2. Assistant message from full sessionSummary
-3. For each keyDecision: User question + Assistant exchange
-4. For each observation: exchange with narrative and facts
-5. Closing message from nextSteps
+---
 
-Uses plain User/Assistant roles (not `_synthetic` which gets filtered out). No `_source` flag needed — no downstream code filters by message source. Must create at least one User-role message for downstream scoring.
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-### Rec 3: Derive title and description from sessionSummary (~30 LOC)
+### P0 - Blockers (MUST complete)
 
-**Files:** `workflow.ts`, `collect-session-data.ts`
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Structured input is normalized before extraction | `sessionSummary`, decisions, and file aliases flow into extractor-ready fields |
+| REQ-002 | Structured saves avoid empty/thin synthetic output | Message synthesis provides meaningful user/assistant exchanges when transcript prompts are absent |
+| REQ-003 | Structured contamination false positives are reduced | Same-parent sibling references in structured mode do not hard-abort as foreign scatter |
 
-- Title: first meaningful clause from sessionSummary (up to 80 chars, not truncated mid-word)
-- Description: sessionSummary truncated to 200 chars
-- Eliminates the "Session focused on implementing and testing features" boilerplate (line 873 fallback)
+### P1 - Required (complete OR user-approved deferral)
 
-### Rec 4: Fix decision rendering and key_files scoping (~35 LOC)
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Title/summary reflect structured content | Generic fallback copy is replaced when session summary exists |
+| REQ-005 | Decision and key-file payload quality improves | Plain-string decisions avoid repeated blocks and key-file list is bounded |
+| REQ-006 | Structured quality floor is constrained | Floor is damped/capped and does not bypass contamination penalties |
+| REQ-007 | Structured metadata remains schema-compatible | `memory_save` and index tooling accept generated metadata without schema regressions |
+| REQ-008 | Verification artifacts are reproducible | The same structured scenarios can be rerun with stable output expectations |
+<!-- /ANCHOR:requirements -->
 
-**Files:** `decision-extractor.ts`, `workflow.ts`
+---
 
-- **Decisions**: When sole source is keyDecision string (no observation enrichment), set CHOSEN and RATIONALE only. Leave CONTEXT empty, OPTIONS empty. Prevents 4x text repetition. Optionally add `IS_COMPACT` flag for 3-line decision block format.
-- **Key files**: Honor `filesModified`/`filesChanged` from JSON input. Cap filesystem enumeration at 20 files sorted by mtime desc. Exclude `research/iterations/` and `review/iterations/` from bulk listing.
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-### Rec 5: Relax V8 for same-parent phase references (~20 LOC)
+- **SC-001**: Recursive strict validator reports no structural errors for Phase 012 docs.
+- **SC-002**: Structured save pipeline behavior is documented consistently across spec, plan, tasks, checklist, decision record, and implementation summary.
+- **SC-003**: Documentation avoids new unverified completion claims while preserving implemented-scope truth.
 
-**File:** `validate-memory-quality.ts` (V8 rule)
+### Acceptance Scenarios
 
-V8 already extracts allowed IDs from path ancestors, child phase folders, and related_specs. Extend allowlist to include sibling phase folders under the same parent spec. Only for `inputMode === 'structured'` — transcript contamination checks stay strict.
+**Given** structured JSON input includes `sessionSummary`, `keyDecisions`, and `filesChanged`, **when** normalization executes, **then** extractor-ready fields are populated and stable across reruns.
 
-### Rec 6: Add JSON-mode quality floor (~25 LOC)
+**Given** transcript prompts are sparse or absent in structured mode, **when** synthetic message generation runs, **then** generated user and assistant messages remain meaningful and non-boilerplate.
 
-**File:** `quality-scorer.ts`
+**Given** plain-string decision entries are present in the input payload, **when** decision extraction renders output, **then** repeated blocks are reduced and decision content remains distinct.
 
-When JSON provides valid sessionSummary + keyDecisions, compute floor from 6 JSON dimensions (summary 25pts, decisions 20pts, exchanges 20pts, tools 10pts, triggers 15pts, metadata 10pts). Floor is damped by 0.85x and hard-capped at 0.70. Contamination penalties take precedence over floor.
+**Given** same-parent sibling phase references appear in structured payload metadata, **when** contamination checks execute, **then** allowed sibling references do not hard-fail as foreign scatter.
 
-## Files to Modify
+**Given** quality scoring applies to structured save output, **when** bounded floor behavior is evaluated, **then** score damping/caps apply without bypassing contamination penalties.
 
-| File | Path (relative to scripts/) | Recs | Est. LOC |
-|------|----------------------------|------|----------|
-| workflow.ts | core/ | 1, 3, 4 | 35 |
-| conversation-extractor.ts | extractors/ | 2 | 40 |
-| quality-scorer.ts | core/ | 6 | 25 |
-| decision-extractor.ts | extractors/ | 4 | 12 |
-| validate-memory-quality.ts | lib/ | 5 | 20 |
-| input-normalizer.ts | extractors/ | 1 | 5 |
-| session-types.ts | types/ | 1 | 3 |
-| collect-session-data.ts | extractors/ | 3 | 12 |
+**Given** a large `filesChanged/filesModified` list is supplied, **when** key-file rendering executes, **then** output is bounded and deterministic.
+<!-- /ANCHOR:success-criteria -->
 
-## Dependencies
+---
 
-- None (all changes within the scripts/ directory)
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-## Risk
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Risk | Structured-path overfitting | Could regress uncommon transcript scenarios | Keep structured guards explicit and transcript path unchanged |
+| Risk | Quality floor masking weak content | Could over-score low-signal payloads | Use damping/cap and preserve contamination penalties |
+| Dependency | Runtime test harness availability | Needed for confidence on scored outcomes | Mark runtime checks as pending until rerun evidence exists |
+<!-- /ANCHOR:risks -->
 
-- **LOW**: All changes gated behind `userPrompts.length === 0` and/or `inputMode === 'structured'`
-- **ZERO transcript regression**: Primary extraction loop (lines 93-214) is not modified
-- 6 critical test coverage gaps identified — need new tests for JSON-mode path
+---
 
-## Estimated LOC: 156-171
-## MVP: Recs 1+2+3 = ~97 LOC (fixes 0/100 abort, produces usable output)
+## 7. NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Structured-path synthesis should not materially increase save latency for typical payloads.
+
+### Security
+- **NFR-S01**: Contamination checks remain active outside scoped structured exemptions.
+
+### Reliability
+- **NFR-R01**: Structured saves produce deterministic output shape for equivalent input payloads.
+
+---
+
+## 8. EDGE CASES
+
+### Data Boundaries
+- Missing/short summaries should still fall back safely.
+- Large `filesChanged/filesModified` payloads should be bounded.
+
+### Error Scenarios
+- Invalid structured payload fields should fail with actionable validation feedback.
+- Mixed transcript + structured inputs should remain deterministic.
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 21/25 | Multi-module extractor/validator/scoring changes |
+| Risk | 20/25 | Quality + contamination behavior interactions |
+| Research | 17/20 | Multiple root-cause iterations and remediation tuning |
+| Multi-Agent | 10/15 | Parallel remediation/verification workstreams |
+| Coordination | 10/15 | Cross-file behavior coupling |
+| **Total** | **78/100** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Structured synthesis introduces noisy artifacts | M | M | Keep guard conditions strict and bounded |
+| R-002 | Relaxed contamination scope becomes too permissive | H | L | Scope exemptions to same-parent structured references only |
+| R-003 | Runtime scoring differs from documented expectation | M | M | Record post-rerun evidence before closure |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Structured Save Reliability (Priority: P0)
+
+**As a** workflow operator, **I want** structured JSON saves to produce coherent memory context, **so that** saved memories remain useful after compaction and handover.
+
+**Acceptance Criteria**:
+1. Given structured input with summary/decisions, when save runs, then generated memory includes meaningful content and metadata.
+
+### US-002: Safe Quality Guardrails (Priority: P1)
+
+**As a** maintainer, **I want** quality scoring and contamination checks to stay protective but not over-block legitimate structured content, **so that** indexing quality improves without weakening safeguards.
+
+**Acceptance Criteria**:
+1. Given sibling-phase references in structured mode, when validation runs, then legitimate same-parent references are not falsely blocked.
+2. Given structured JSON input includes session context, when normalization runs, then extractor-ready fields are populated consistently.
+3. Given sparse transcript fields, when synthesis runs, then generated message pairs remain meaningful and non-boilerplate.
+4. Given large filesChanged payloads, when key-file rendering runs, then output remains bounded and deterministic.
+5. Given quality scoring executes on structured input, when floor logic applies, then contamination penalties are still preserved.
+
+---
+
+<!-- ANCHOR:questions -->
+## 12. OPEN QUESTIONS
+
+- Should structured quality floor thresholds become configurable per profile?
+- Should contamination sibling allowlist generation be cached for repeated batch runs?
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`
+- **Decision Records**: See `decision-record.md`
