@@ -67,6 +67,10 @@ Root cause: `resolve_database_path()` in `vector-index-store.ts` drifted to empt
 | `mcp_server/lib/search/vector-index-queries.ts` | Modified | 12+ warning logs on failure paths |
 | `.opencode/command/memory/search.md` | Modified | Design 10 dashboard applied |
 | `.agents/commands/memory/search.toml` | Modified | Design 10 dashboard applied |
+| `mcp_server/handlers/memory-context.ts` | Modified | P0: folder discovery no longer promotes to specFolder filter |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Modified | P0: sessionId removed from governance scope check; P1: activeChannels metric |
+| `mcp_server/lib/search/pipeline/types.ts` | Modified | P1: `activeChannels` optional field in Stage1Output |
+| `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Modified | P2: graph zero-contribution diagnostic warning |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -105,6 +109,10 @@ All fixes applied directly to TypeScript source, compiled with `bun run build` (
 | Startup health check + DB path log | PASS — context-server.ts lines 1368-1374 |
 | Silent failure remediation (31+ warnings) | PASS — hybrid-search, stage1, vector-index-queries |
 | Runtime: memory_search returns results | PASS — 5 results, 812ms, hybrid pipeline |
+| P0: memory_context focused mode returns results | PASS — 5 candidates found (was 0); folder discovery no longer filters |
+| P0: sessionId not in governance scope check | PASS — 8 candidates in deep mode; no scope filtering despite ephemeral sessionId |
+| P1: activeChannels in stage1 metadata | PASS — `activeChannels: 2` in hybrid mode |
+| P2: graph zero-contribution diagnostic | PASS — all graphContribution fields 0 with rolloutState visible |
 <!-- /ANCHOR:verification -->
 
 ---

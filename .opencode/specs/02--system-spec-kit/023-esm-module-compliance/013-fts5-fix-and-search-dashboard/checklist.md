@@ -64,6 +64,10 @@ contextType: "implementation"
 - [x] CHK-026 [P1] `assertInitialized()` guard in `hybrid-search.ts` warns on un-initialized calls [Evidence: lines 429-430 warn and return false; lines 455-456 warn and return empty — defense-in-depth approach]
 - [x] CHK-027 [P1] FTS scope filter matches exact-or-descendant folders (consistent with BM25) [Evidence: sqlite-fts.ts lines 63-65 — `LIKE ? || "/%"` descendant matching]
 - [x] CHK-028 [P1] 52 silent failure points resolved — no silent `return []` on unexpected conditions [Evidence: 8+ warnings in hybrid-search.ts, 11+ in stage1-candidate-gen.ts, 12+ in vector-index-queries.ts — all failure paths log before returning]
+- [x] CHK-029 [P0] `memory_context` focused mode returns >0 results (was 0 due to folder-as-filter + sessionId scope bug) [Evidence: 2026-04-02 verification — `memory_context({ input: "semantic search", mode: "focused" })` returned 5 candidates (originalResultCount: 5), folderDiscovery.discovered: true but NOT promoted to specFolder filter]
+- [x] CHK-030a [P0] sessionId no longer activates scope filtering in stage1 candidate generation [Evidence: 2026-04-02 — `memory_search` deep mode returned 8 candidates, 2 results; no scope filtering despite ephemeral sessionId present]
+- [x] CHK-031a [P1] `activeChannels` field present in stage1 pipeline metadata [Evidence: 2026-04-02 — `stage1.activeChannels: 2` in `memory_search` deep mode response (hybrid = vector + FTS5)]
+- [x] CHK-032a [P2] Graph zero-contribution diagnostic visible in pipeline metadata [Evidence: 2026-04-02 — `graphContribution` shows all zeros (causalBoosted: 0, coActivationBoosted: 0, communityInjected: 0, graphSignalsBoosted: 0) with `rolloutState: "bounded_runtime"`]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -108,13 +112,13 @@ contextType: "implementation"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 11 | 11/11 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 3 | 2/3 |
+| P0 Items | 13 | 13/13 |
+| P1 Items | 11 | 11/11 |
+| P2 Items | 4 | 3/4 |
 
-**Verification Date**: 2026-04-01
+**Verification Date**: 2026-04-02 (Attempt 2 runtime verification)
 
-**Status**: All P0 and P1 items verified with evidence. 1 P2 item remaining (CHK-054: memory save). Runtime verification confirmed: `memory_search("semantic search")` returns 5 results via hybrid pipeline.
+**Status**: All P0 (13/13) and P1 (11/11) items verified with evidence. 1 P2 item remaining (CHK-054: memory save). Channel audit verified: `memory_context` focused mode returns 5 candidates (was 0), `memory_search` deep mode returns 8 candidates with `activeChannels: 2`.
 <!-- /ANCHOR:summary -->
 
 ---
