@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/implementation-summary]"
-description: "Final packet summary for the completed 5-phase ESM migration across shared, mcp_server, and scripts, including runtime proof, deep-review follow-through, and the final zero-failure test sweep."
+description: "Final packet summary for the completed ESM migration across shared, mcp_server, and scripts, including runtime proof, deep-review follow-through, and the post-migration child-phase record through phase 013."
 trigger_phrases:
   - "implementation summary"
   - "esm migration final summary"
@@ -31,7 +31,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet shipped a full 6-phase ESM migration across 3 packages: `@spec-kit/shared`, `@spec-kit/mcp-server`, and `@spec-kit/scripts`. The final result is a truthful native ESM runtime for `shared` and `mcp_server`, a preserved CommonJS contract for `scripts`, hardened memory-save behavior across the module boundary, standards and README alignment after review, a final test sweep that closed every remaining failure, and a 10-iteration GPT-5.4 deep review with all 18 findings remediated.
+This packet shipped the ESM migration across 3 packages: `@spec-kit/shared`, `@spec-kit/mcp-server`, and `@spec-kit/scripts`, then continued through post-migration follow-on child phases up to phase 013. The final result is a truthful native ESM runtime for `shared` and `mcp_server`, a preserved CommonJS contract for `scripts`, hardened memory-save behavior across the module boundary, standards and README alignment after review, a final test sweep that closed every remaining failure, and later retrieval/indexing follow-through tracked in child packets.
 
 ### Phase 1: `@spec-kit/shared` migrated to native ESM
 
@@ -43,7 +43,7 @@ Phase 2 moved the server package itself to truthful native ESM. That pass update
 
 ### Phase 3: `scripts` interop and memory-save hardening
 
-Phase 3 kept `@spec-kit/scripts` on CommonJS while proving the package can consume the migrated ESM siblings without a dual-build fallback. The key decision was to rely on Node 25 native `require(esm)` support instead of building a permanent helper layer, then remove the top-level-await blockers that broke that path. The same phase also hardened the memory-save pipeline by decoupling `scripts/core/workflow.ts` from direct runtime imports, fixing the V8 descendant phase-detection chain, and adding `manual-fallback` save handling so context capture still has a recovery path when the primary save pipeline is blocked.
+Phase 3 kept `@spec-kit/scripts` on CommonJS while proving the package can consume the migrated ESM siblings without a dual-build fallback. The shipped boundary relies on explicit async package-boundary loading and scripts-owned bridge code rather than a Node 25-only runtime contract. The same phase also hardened the memory-save pipeline by decoupling `scripts/core/workflow.ts` from direct runtime imports, fixing the V8 descendant phase-detection chain, and adding `manual-fallback` save handling so context capture still has a recovery path when the primary save pipeline is blocked.
 
 ### Phase 4: review follow-through, standards alignment, and schema cleanup
 
@@ -63,6 +63,10 @@ Phase 6 ran a 10-iteration deep review using GPT-5.4 agents via codex CLI, produ
 - **Performance (P2-PRF-01/02)**: Module-level cached lazy loader for hot-path vector-index imports, deferred heavy imports in `cli.ts` behind per-command handlers
 
 Total changes: 632 insertions, 91 deletions across 20 files.
+
+### Phases 7-13: post-migration follow-through
+
+After the core migration closed, child phases 007-013 tracked follow-on fixes in hybrid search, packet/memory compliance, reindex validation, retrieval quality, indexing and adaptive fusion, memory-save quality, and FTS5/search dashboard work. Those later packets extend the system-spec-kit maintenance story, but they do not reopen or downgrade the closed ESM migration verdict captured by this root packet.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -70,7 +74,7 @@ Total changes: 632 insertions, 91 deletions across 20 files.
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The work shipped as a phase-sequenced migration instead of one large package flip. `shared` moved first, `mcp_server` moved second, the `scripts` boundary was proven under Node 25 third, and only then did the repo absorb the review-driven cleanups and test closure work. Verification stayed grounded in runtime proof: all three package builds were recorded as green, `node dist/context-server.js` started successfully, and `node scripts/dist/memory/generate-context.js --help` passed as the scripts-side smoke.
+The work shipped as a phase-sequenced migration instead of one large package flip. `shared` moved first, `mcp_server` moved second, the `scripts` boundary was proven through explicit async package-boundary loading third, and only then did the repo absorb the review-driven cleanups and test closure work. Verification stayed grounded in runtime proof: all three package builds were recorded as green, `node dist/context-server.js` started successfully, and `node scripts/dist/memory/generate-context.js --help` passed as the scripts-side smoke.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -81,7 +85,7 @@ The work shipped as a phase-sequenced migration instead of one large package fli
 | Decision | Why |
 |----------|-----|
 | Use `import.meta.dirname` instead of `fileURLToPath` wrappers | The runtime already targets Node `>=20.11.0`, so the native API is simpler and keeps ESM path handling readable |
-| Rely on Node 25 native `require(esm)` for the `scripts` boundary | That kept `scripts` on CommonJS without forcing a dual-build or permanent interop abstraction, and the real blocker turned out to be top-level await in 5 server modules |
+| Use explicit async package-boundary loading for the `scripts` boundary | That kept `scripts` on CommonJS without forcing a dual-build or a Node 25-only contract, and the real blocker turned out to be top-level await in 5 server modules |
 | Keep dual-build as fallback-only, not the primary migration path | The bounded interop fix was smaller and kept the package contracts cleaner |
 | Remove `superRefine` from the affected MCP tool schemas | GPT function-calling compatibility was breaking on the generated schema shape, so handler-level validation preserved behavior without the schema incompatibility |
 | Fold memory-save hardening into the migration instead of treating it as follow-up | The workflow and save pipeline were part of the runtime boundary that actually broke during the ESM transition, so closure required fixing them in-flight |
@@ -110,5 +114,5 @@ The work shipped as a phase-sequenced migration instead of one large package fli
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Packet follow-through remains separate from code completion.** This summary reflects the shipped runtime state, but other packet surfaces still need their own truth-sync if they are expected to match the final completion state line-for-line.
+1. **Post-migration child phases remain separate from the core ESM verdict.** This summary captures the closed migration plus the existence of later follow-on child phases, but each child packet remains the source of truth for its own detailed workstream.
 <!-- /ANCHOR:limitations -->

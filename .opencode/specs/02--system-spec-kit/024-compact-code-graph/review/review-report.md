@@ -1,195 +1,138 @@
-# Deep Review Report — Code Graph Session Start Injection Usefulness
+# Review Report — Compact Code Graph (spec-024 rerun)
 
 ## 1. Executive Summary
-
-**Verdict: PASS** | hasAdvisories=true | Updated: 2026-04-02
-
-All 3 P1 findings remediated in Phase 028. The 4 P2 advisories were addressed earlier (P2-001 orientation note, P2-002 diversity CTE, P2-003 configurable count). P2-004 (spec traceability) resolved via DR-017 and spec.md update.
-
-| Severity | Original | Resolved | Active |
-|----------|---------|----------|--------|
-| P0 (Blockers) | 0 | 0 | 0 |
-| P1 (Required) | 3 | 3 | 0 |
-| P2 (Suggestions) | 4 | 4 | 0 |
-
-**Review scope**: 3 files, 6 custom dimensions, 3 iterations, all dimensions covered.
-
----
+- Verdict: `CONDITIONAL`
+- Iterations executed: `20`
+- Active findings: `P0=0 P1=7 P2=3`
+- Rerun posture: fresh 20-iteration root-packet review using current-tree evidence, with archived reviews treated as reference-only.
 
 ## 2. Planning Trigger
-
-`/spec_kit:plan` is recommended to address the 3 P1 findings before shipping further iterations.
-
-```json
-{
-  "triggered": true,
-  "verdict": "CONDITIONAL",
-  "hasAdvisories": true,
-  "activeFindings": { "P0": 0, "P1": 3, "P2": 4 },
-  "remediationWorkstreams": [
-    "WS-1: Fix queryStartupHighlights SQL (P1-001, P1-002, P1-003)",
-    "WS-2: Reassess highlights value proposition (P2-001 through P2-004)"
-  ],
-  "specSeed": "028-startup-highlights-remediation",
-  "planSeed": "Fix SQL GROUP BY, add path exclusion, replace outgoing-call heuristic"
-}
-```
-
----
+- Use `/spec_kit:plan` if you want the active P1/P2 findings converted into remediation tasks.
 
 ## 3. Active Finding Registry
+### P1-024-001: Root packet still points reviewers at non-existent hook/build/API paths
+- Severity: `P1`
+- Dimension: `D3 Traceability`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md:172`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md:180`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:99`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:229`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:230`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/decision-record.md:56`
+- Impact: Operators following the root packet land on stale or missing paths rather than the shipped hook surfaces, so packet-to-runtime traceability is broken.
 
-### P1-001: Duplicate Highlights Due to GROUP BY on symbol_id
-- **Dimension**: deduplication (correctness)
-- **File**: `code-graph-db.ts:363`
-- **Evidence**: SQL `GROUP BY n.symbol_id` produces rows with identical `(name, kind, file_path)` tuples. `formatHighlight()` at `startup-brief.ts:42` renders only those display fields. Live output: `test_specific` appeared 3 times identically, wasting 2 of 5 highlight slots.
-- **Impact**: 60% of highlights wasted on duplicates in observed session.
-- **Fix**: Change to `GROUP BY n.name, n.kind, n.file_path` with `SUM(...)` aggregation.
-- **Disposition**: Active
+### P1-024-002: Root packet records the resume-profile remediation as complete while the canonical wrapper still shows the stale call shape
+- Severity: `P1`
+- Dimension: `D3 Traceability`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md:77`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md:126`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/decision-record.md:97`
+- Evidence: `.opencode/command/spec_kit/resume.md:259`
+- Evidence: `.opencode/command/spec_kit/resume.md:354`
+- Impact: The root packet marks a wrapper-level fix as shipped even though the wrapper doc still presents the older bare `memory_context({ mode: "resume" })` contract.
 
-### P1-002: No Path Exclusion Filters for Vendored/Test Code
-- **Dimension**: node_selection (correctness)
-- **File**: `code-graph-db.ts:362`
-- **Evidence**: WHERE clause filters only by `n.kind`. No filtering of `site-packages/`, `node_modules/`, `.venv/`, `tests/`, `test_` paths. Live output: 4/5 highlights from non-project code (`special/tests/test_legendre.py`, `site-packages/yaml/scanner.py`).
-- **Impact**: Highlights dominated by irrelevant vendored/test code; only 1 of 5 was project code.
-- **Fix**: Add `WHERE n.file_path NOT LIKE '%site-packages%' AND n.file_path NOT LIKE '%node_modules%' AND n.file_path NOT LIKE '%/tests/%'` (or configurable exclusion list).
-- **Disposition**: Active (merges P1-002 + P1-004 from iterations 1-2)
+### P1-024-003: Deferred-item ledger is internally inconsistent about which remediation remains open
+- Severity: `P1`
+- Dimension: `D7 Completeness`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:301`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:334`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/tasks.md:111`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/tasks.md:104`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/015-tree-sitter-migration/checklist.md:82`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md:108`
+- Impact: The root packet cannot consistently tell reviewers which single deferred item still exists, so closure status is unreliable.
 
-### P1-003: Outgoing Call Count Heuristic Surfaces Wrong Nodes
-- **Dimension**: node_selection (correctness)
-- **File**: `code-graph-db.ts:353-364`
-- **Evidence**: `ORDER BY call_count DESC` counts outgoing CALLS edges (source_id = symbol_id). This surfaces "chatty callers" — functions that call many others — not architecturally important nodes. A test method calling 51 functions is noisy, not important. Live evidence: `test_specific` with 51 outgoing calls is a test harness, not an entry point.
-- **Impact**: The heuristic fundamentally misidentifies what makes a node "interesting" for session orientation.
-- **Fix**: Replace with incoming-call-count (most-called = most depended upon), or PageRank centrality, or recency-weighted scoring via `code_files.file_mtime_ms`.
-- **Disposition**: Active (absorbs P2-007 from iteration 3)
+### P1-024-004: Canonical hookless recovery path suppresses the actual resume payload
+- Severity: `P1`
+- Dimension: `D6 Reliability`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md:116`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md:122`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/README.md:584`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:58`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:59`
+- Impact: The packet and public README frame `session_bootstrap` as the first-call recovery surface that returns context, but the implementation always forces minimal mode and skips memory resume content.
 
-### P2-001: Highlights Provide No Value Over On-Demand MCP Tools
-- **Dimension**: on_demand_comparison
-- **File**: `startup-brief.ts:65-73`, `session-prime.ts:118-129`
-- **Evidence**: Every capability of the proactive injection is available on-demand: scale stats via `code_graph_status`, neighborhoods via `code_graph_context`, structural queries via `code_graph_query`. On-demand is *superior* because it is task-targeted. The only advantage (saving one tool call) is marginal — the AI already knows these tools exist from the Session Priming section.
-- **Impact**: ~100 tokens consumed unconditionally with information the AI didn't use and could get on-demand if needed.
-- **Fix**: Consider removing the highlights section entirely, or replace with higher-signal data (recent git activity, active branch, last-session working set).
-- **Disposition**: Active (merges P2-001 + P2-005 from iterations 1 and 3)
+### P1-024-005: `code_graph_query` exposes an `edgeType` filter that the handler never honors
+- Severity: `P1`
+- Dimension: `D1 Correctness`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:645`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/README.md:1040`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:149`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:167`
+- Impact: The structural-query surface advertises an option users cannot actually rely on, which is a direct command/runtime contract break.
 
-### P2-002: No Diversity Controls in Highlight Selection
-- **Dimension**: node_selection (maintainability)
-- **File**: `code-graph-db.ts:363-364`
-- **Evidence**: No per-file limit or directory distribution constraint. A single hot file can monopolize all 5 highlight slots. No configurable exclusion mechanism for `node_modules/`, `dist/`, `build/`.
-- **Fix**: Add per-file limit (max 1-2 per file) and configurable exclusion list.
-- **Disposition**: Active (merges P2-002 + P2-004 from iterations 1 and 2)
+### P2-024-006: Structural read paths can block on synchronous auto-reindex work
+- Severity: `P2`
+- Dimension: `D5 Performance`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:102`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:89`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts:35`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts:203`
+- Impact: Normal read-only graph queries may absorb up to 10 seconds of inline indexing work, coupling query latency to maintenance side effects.
 
-### P2-003: Structural Context Token ROI Is Near Zero
-- **Dimension**: token_roi
-- **File**: `session-prime.ts:118-129`, `shared.ts:10`
-- **Evidence**: ~100 tokens of the 2000-token `SESSION_PRIME_TOKEN_BUDGET` (~5%). While cost is low, information density is near-zero when highlights are test/vendored noise. The aggregate stats line is informational but not actionable.
-- **Fix**: After fixing P1s, reassess ROI. If highlights become project-relevant, the ~100 tokens may be justified. Otherwise, replace with: (a) last 3-5 modified project files from git, (b) active branch name, (c) symbols from user's recent working set.
-- **Disposition**: Active
+### P2-024-007: Recovery guidance is still split between `session_resume` and `session_bootstrap` across active runtime surfaces
+- Severity: `P2`
+- Dimension: `D4 Maintainability`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md:77`
+- Evidence: `.opencode/command/spec_kit/resume.md:259`
+- Evidence: `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml:79`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:662`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:679`
+- Evidence: `.opencode/skill/system-spec-kit/references/config/hook_system.md:50`
+- Impact: The current recovery story still requires maintainers to mentally reconcile multiple “first call” recommendations across wrappers, server hints, and docs.
 
-### P2-004: Structural Context Section Not Traceable to Spec Requirements
-- **Dimension**: architectural_alignment
-- **File**: `spec.md:99-115`, `startup-brief.ts:47-87`
-- **Evidence**: Spec describes SessionStart source=startup as "tool overview + stale-index detection." The highlights section is not mentioned. No DR specifically requires or justifies startup highlights. The tool overview and stale-index detection sections ARE traceable; the highlights are not.
-- **Fix**: Either add a spec requirement/DR justifying highlights, or remove the section.
-- **Disposition**: Active
+### P1-024-008: Root packet overstates shipped compaction behavior as a true three-source merge
+- Severity: `P1`
+- Dimension: `D1 Correctness`
+- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md:82`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:200`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:206`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:236`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:239`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:254`
+- Impact: The implementation summary describes memory, structural, and semantic context as already merged into the compaction payload, but the live Claude path still feeds empty memory sections into the merger and appends surfaced memories only afterward.
 
----
+### P1-024-009: Dispatch-time graph enrichment reflects arbitrary existing local paths back to callers
+- Severity: `P1`
+- Dimension: `D2 Security`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:327`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:332`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:337`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:347`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:357`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:467`
+- Impact: A caller can probe whether guessed local files exist by passing path-like values and observing which ones are echoed back in dispatch metadata, creating a filesystem existence oracle outside the indexed workspace.
+
+### P2-024-010: Compaction recovery sanitizer still allows most instruction-like transcript text to survive reinjection
+- Severity: `P2`
+- Dimension: `D2 Security`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:91`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:97`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:227`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:231`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:67`
+- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:72`
+- Impact: Only a narrow set of system-like prefixes are stripped, so instruction-like transcript content can persist across compaction and be promoted back into model-visible recovery context.
 
 ## 4. Remediation Workstreams
-
-### WS-1: Fix queryStartupHighlights SQL (P1-001, P1-002, P1-003)
-**Priority**: Required before next release
-1. Fix GROUP BY clause: `GROUP BY n.name, n.kind, n.file_path` (P1-001)
-2. Add WHERE path exclusion filters for vendored/test code (P1-002)
-3. Replace outgoing-call heuristic with incoming-call-count or multi-signal ranking (P1-003)
-
-### WS-2: Reassess Highlights Value Proposition (P2-001 through P2-004)
-**Priority**: Advisory — after WS-1, evaluate if highlights are worth keeping
-1. After WS-1 fixes, test whether highlights become useful
-2. If still low-value, consider removing the section entirely
-3. If keeping, add diversity controls (P2-002), document spec rationale (P2-004)
-4. Consider replacing with higher-signal alternatives: recent git activity, branch context, working set
-
----
+- WS-1 Root packet truth-sync: repair stale path maps, wrapper-completion claims, and deferred-item bookkeeping.
+- WS-2 Recovery contract: align `session_bootstrap`, `session_resume`, server hints, and wrapper docs to one explicit first-call story.
+- WS-3 Structural-query contract: either implement `edgeType` or remove it from the public surface, and decouple read paths from inline reindex side effects.
+- WS-4 Compaction/dispatch hardening: narrow path extraction to indexed scope and strengthen transcript reinjection sanitization.
 
 ## 5. Spec Seed
-
-- Add spec requirement for startup highlights (if keeping): "SessionStart source=startup MAY inject top-N architecturally significant project symbols to orient the AI on the codebase structure."
-- Add acceptance criteria: "Highlights must exclude vendored/test code, deduplicate by display fields, and surface nodes that are architecturally central (incoming callers, not outgoing calls)."
-- Add decision record DR-017: "Startup highlights rationale and retention decision."
-
----
+- The rerun confirms the next spec packet should be a remediation/closure packet rather than a new feature packet.
 
 ## 6. Plan Seed
-
-1. **Task 1**: Modify `queryStartupHighlights()` — fix GROUP BY, add path exclusions, switch to incoming-call heuristic
-2. **Task 2**: Add diversity controls — per-file limit, directory distribution
-3. **Task 3**: Integration test — verify highlights produce project-relevant output on the actual codebase
-4. **Task 4**: Spec update — document highlights rationale or remove section
-5. **Task 5**: Token ROI reassessment — compare before/after signal quality
-
----
+- Start with the highest-severity packet/runtime contract drifts, then rerun deep review after each remediation wave.
 
 ## 7. Traceability Status
-
-### Core Protocols
-| Protocol | Status | Evidence |
-|----------|--------|----------|
-| spec_code | PARTIAL | Tool overview and stale-index detection are traceable. Highlights section is NOT traceable to any spec requirement. |
-
-### Overlay Protocols
-Not applicable for this review target.
-
----
+- Root packet and live runtime/doc surfaces still diverge on active claims; traceability remains an open release-readiness concern.
 
 ## 8. Deferred Items
-
-- **Session continuity section** (`buildSessionContinuity()` in startup-brief.ts:89-103): Reviewed and found genuinely useful — provides last spec folder and session summary. Not a finding.
-- **Stale index detection** (session-prime.ts:139-153): Reviewed and found genuinely useful — traceable to spec. Not a finding.
-- **Tool overview section** (session-prime.ts:101-115): Reviewed and found genuinely useful — traceable to spec. Not a finding.
-- **handleCompact path**: Out of scope for this review.
-
----
+- Advisory-only items can remain deferred only after the active P1 findings are truth-synced or fixed.
 
 ## 9. Audit Appendix
-
-### Convergence Summary
-- Iterations: 3 (of 7 max)
-- Stop reason: All 6 dimensions covered with coverage_age >= 1, findings well-evidenced
-- Ratios: 1.00 → 0.71 → 1.00 (high because each iteration covered new dimensions — expected for first-pass coverage)
-
-### Dimension Coverage
-| Dimension | Iteration | Status |
-|-----------|-----------|--------|
-| signal_quality | 1 | Reviewed |
-| deduplication | 1 | Reviewed |
-| node_selection | 2 | Reviewed |
-| token_roi | 2 | Reviewed |
-| on_demand_comparison | 3 | Reviewed |
-| architectural_alignment | 3 | Reviewed |
-
-### Ruled-Out Claims
-- Session-prime.ts calling queryStartupHighlights multiple times (it doesn't)
-- formatHighlight rendering duplicates (it doesn't — maps 1:1)
-- Token budget overflow from highlights (~100 tokens, well within 2000 budget)
-- Security concern with file path exposure (local paths in AI context, not user-facing)
-- Formatting bugs in startup-brief.ts utilities (clean code)
-- Session continuity section being low-value (it's genuinely useful)
-- Stale index detection being low-value (it's genuinely useful and traceable)
-
-### Sources Reviewed
-- `code-graph-db.ts:350-379` — queryStartupHighlights function
-- `code-graph-db.ts:15-20` — StartupHighlight interface  
-- `code-graph-db.ts:0-150` — Schema, table definitions
-- `startup-brief.ts:1-113` — Full startup brief builder
-- `session-prime.ts:1-253` — Full SessionStart hook handler
-- `spec.md:86-167` — Solution architecture, SessionStart description
-- `decision-record.md:39-161` — DR-002 through DR-012
-
-### Cross-Reference Appendix
-
-#### Core Protocols
-- **spec_code**: Tool overview (session-prime.ts:101-115) traces to spec requirement. Stale-index detection (session-prime.ts:139-153) traces to spec requirement. Highlights section (startup-brief.ts:47-87) has NO spec traceability.
-- **DR alignment**: DR-002 (hook transport) — followed. DR-003 (direct import) — followed. DR-010 (CocoIndex separation) — followed. DR-012 (token budget) — followed but budget spent without ROI on highlights.
-
-#### Overlay Protocols
-Not applicable.
+- 20 fresh iterations were recorded in `review/iterations/iteration-001.md` through `iteration-020.md`.
+- JSONL state rebuilt for this rerun under `review/deep-research-state.jsonl`.
+- Verdict rule: no P0, but active P1 findings remain, so the rerun stays CONDITIONAL.

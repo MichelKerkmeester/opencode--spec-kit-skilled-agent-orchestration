@@ -274,7 +274,8 @@ export interface WorkflowOptions {
   /** Custom async function to collect live session data from the environment. */
   collectSessionDataFn?: (
     collectedData: CollectedDataFull | null,
-    specFolderName?: string | null
+    specFolderName?: string | null,
+    explicitSessionId?: string,
   ) => Promise<SessionData>;
   /** When true, suppresses non-error console output during execution. */
   silent?: boolean;
@@ -1013,7 +1014,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const [sessionData, conversations, decisions, diagrams, workflowData] = await Promise.all([
     (async () => {
       log('   Collecting session data...');
-      const result = await sessionDataFn(narrativeCollectedData, specFolderName);
+      const result = await sessionDataFn(narrativeCollectedData, specFolderName, options.sessionId);
       log('   Session data collected');
       return result;
     })(),
@@ -1638,11 +1639,19 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const contentForHash = files[ctxFilename] || '';
       const fingerprint = crypto.createHash('sha1').update(contentForHash).digest('hex');
       // Query last 20 memories for this spec folder to detect overlaps
-      const existingFiles = fsSync.readdirSync(contextDir)
+      const candidateFiles = fsSync.readdirSync(contextDir)
         .filter((f: string) => f.endsWith('.md') && f !== ctxFilename)
         .sort()
-        .slice(-20);
-      for (const existingFile of existingFiles) {
+        .slice(-12);
+      const candidateFilesBySize = candidateFiles.filter((existingFile) => {
+        try {
+          const existingStats = fsSync.statSync(path.join(contextDir, existingFile));
+          return existingStats.size === Buffer.byteLength(contentForHash, 'utf8');
+        } catch {
+          return false;
+        }
+      });
+      for (const existingFile of candidateFilesBySize) {
         try {
           const existingContent = fsSync.readFileSync(path.join(contextDir, existingFile), 'utf8');
           const existingHash = crypto.createHash('sha1').update(existingContent).digest('hex');

@@ -47,11 +47,11 @@ Compiled: `mcp_server/dist/hooks/claude/*.js`
 
 ## Cross-Runtime Fallback
 
-Hook-capable runtimes include Claude Code, Codex CLI, Copilot CLI, and Gemini CLI when their adapters are available. OpenCode is the non-hook runtime and should use `session_bootstrap()` on fresh start or after `/clear`, then `session_resume()` after reconnect when a detailed follow-up recovery payload is needed. If hook context is unavailable in a hook-capable runtime for any reason, fall back to the same tool-based recovery path.
+Hook-capable runtimes include Claude Code, Codex CLI, Copilot CLI, and Gemini CLI when their adapters are available. OpenCode is the non-hook runtime and should use `session_bootstrap()` on fresh start or after `/clear`, then `session_resume()` only when a detailed follow-up recovery payload is needed. If hook context is unavailable in a hook-capable runtime for any reason, fall back to the same tool-based recovery path.
 
 ## Retrieval Primitives
 
 The same retrieval building blocks power both hook delivery and explicit recovery:
 1. `memory_match_triggers(prompt)` — Fast turn-start context
 2. `memory_context({ mode: "resume", profile: "resume" })` — Continuation and compaction recovery core
-3. `session_resume()` / `session_bootstrap()` — Session-oriented wrappers that add code graph and CocoIndex health on top of resume retrieval
+3. `session_bootstrap()` / `session_resume()` — Session-oriented wrappers that layer health and structural context around resume retrieval

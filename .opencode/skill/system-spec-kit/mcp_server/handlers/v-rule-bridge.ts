@@ -88,10 +88,6 @@ function loadModule(): void {
 export function validateMemoryQualityContent(content: string, options?: { filePath?: string }): ValidationResult | VRuleUnavailableResult | null {
   loadModule();
   if (!_validateMemoryQualityContent) {
-    if (process.env.SPECKIT_VRULE_OPTIONAL === 'true') {
-      console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded — V-rule validation bypassed');
-      return { valid: true, failedRules: [], ruleResults: [], _unavailable: true } as ValidationResult & { _unavailable: boolean };
-    }
     console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded — V-rule validation unavailable');
     return {
       passed: false,

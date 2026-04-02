@@ -72,7 +72,7 @@ function handleCompact(sessionId: string): OutputSection[] {
     { title: 'Recovered Context (Post-Compaction)', content: wrappedPayload },
     {
       title: 'Recovery Instructions',
-      content: 'Context was compacted and auto-recovered via 3-source merge (Memory + Code Graph + CocoIndex). For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+      content: 'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
     },
   ];
 

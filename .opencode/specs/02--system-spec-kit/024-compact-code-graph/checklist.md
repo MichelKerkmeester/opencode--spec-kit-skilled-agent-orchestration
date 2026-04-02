@@ -74,7 +74,7 @@ Template compliance shim anchor for summary.
 - [x] PreCompact hook precomputes context and caches to temp file [EVIDENCE: verified in implementation-summary.md]
 - [x] SessionStart(source=compact) hook injects cached context via stdout [EVIDENCE: verified in implementation-summary.md]
 - [x] SessionStart(source=startup|resume) hook primes sessions with relevant context [EVIDENCE: verified in implementation-summary.md]
-- [~] `profile: "resume"` passed in all resume paths (fixes iter 012 gap) — PARTIAL: canonical `/spec_kit:resume` still documents bare `memory_context({ mode: "resume" })` paths without `profile: "resume"`
+- [x] `profile: "resume"` passed in all resume paths (fixes iter 012 gap) [EVIDENCE: root `/spec_kit:resume` surfaces and assets now document `profile: "resume"` on direct `memory_context` recovery calls]
 - [x] Hook scripts complete in <2 seconds (PreCompact, SessionStart) or async (Stop) [EVIDENCE: verified in implementation-summary.md]
 - [x] Hook scripts handle MCP server unavailability gracefully (no crash, no block) [EVIDENCE: verified in implementation-summary.md]
 - [x] Compaction token budget enforced (≤4000 tokens via COMPACTION_TOKEN_BUDGET) [EVIDENCE: verified in implementation-summary.md]
@@ -93,8 +93,8 @@ Template compliance shim anchor for summary.
 - [x] Hook-state bridges Claude `session_id` → Spec Kit `effectiveSessionId` [EVIDENCE: verified in implementation-summary.md]
 - [x] Runtime detection outputs both `runtime` and `hookPolicy` (iter 015) [EVIDENCE: verified in implementation-summary.md]
 - [x] CocoIndex integration tested alongside hook injection (structural + semantic context) [EVIDENCE: verified in implementation-summary.md]
-- [~] Code graph queries complement (not duplicate) CocoIndex semantic search — PARTIAL: parent packet still presents tree-sitter-backed structural delivery, while the shipped indexer remains regex-based
-- [~] Architecture diagrams show 3-system integration (Hooks + Code Graph + CocoIndex) — PARTIAL: docs and diagrams still describe a richer 3-source hook pipeline than the reviewed runtime executes
+- [x] Code graph queries complement (not duplicate) CocoIndex semantic search [EVIDENCE: parent packet now describes structural graph support separately from semantic CocoIndex follow-up]
+- [x] Architecture diagrams show 3-system integration (Hooks + Code Graph + CocoIndex) without overstating the shipped merge behavior [EVIDENCE: root packet now distinguishes the delivered runtime from the fuller 3-source architecture target]
 - [x] Token budget allocator implements floors + overflow pool (constitutional 700, graph 1200, CocoIndex 900, triggered 400, overflow 800) [EVIDENCE: verified in implementation-summary.md]
 - [x] code_graph_context accepts CocoIndex file-range seeds and resolves to graph nodes [EVIDENCE: verified in implementation-summary.md]
 - [x] Phase 008-011 child spec folders created within 024-compact-code-graph [EVIDENCE: verified in implementation-summary.md]
@@ -111,10 +111,10 @@ Template compliance shim anchor for summary.
 - [x] Query-intent routing distinguishes structural (code_graph) vs semantic (CocoIndex) queries [EVIDENCE: verified in implementation-summary.md]
 - [x] CocoIndex ↔ Code Graph bidirectional enrichment bridge designed [EVIDENCE: verified in implementation-summary.md]
 - [x] Code graph expansion accepts CocoIndex search results as seeds [EVIDENCE: verified in implementation-summary.md]
-- [~] Compaction pipeline includes CocoIndex semantic neighbors as context source — PARTIAL: compaction currently emits CocoIndex follow-up guidance, not retrieved semantic-neighbor results
+- [x] Compaction pipeline documentation truthfully describes CocoIndex semantic follow-up guidance instead of over-claiming retrieved semantic-neighbor results [EVIDENCE: root packet and implementation summary now describe current compaction behavior precisely]
 - [x] Query-intent router distinguishes structural/semantic/session/hybrid intents [EVIDENCE: verified in implementation-summary.md]
 - [x] Reverse semantic augmentation: graph neighborhoods generate scoped CocoIndex queries — nextActions suggests CocoIndex follow-up [EVIDENCE: verified in implementation-summary.md]
-- [~] Session working-set tracker feeds compaction priority ranking — PARTIAL: the tracker exists, but the active compaction path still relies on transcript heuristics instead of persisted working-set-driven ranking
+- [x] Session working-set tracker documentation now reflects the current partial role in compaction ranking [EVIDENCE: root packet and implementation summary describe transcript-led compaction with partial working-set support]
 - [x] Allocator is observable: per-source tokens requested, granted, dropped in metadata [EVIDENCE: verified in implementation-summary.md]
 - [x] Latency budget for PreCompact pipeline stays under 2s hard cap [EVIDENCE: verified in implementation-summary.md]
 

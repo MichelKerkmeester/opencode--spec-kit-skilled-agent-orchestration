@@ -76,7 +76,6 @@ describe('session-resume handler', () => {
     const result = await handleSessionResume({});
     const parsed = JSON.parse(result.content[0].text);
     expect(parsed.data.codeGraph.status).toBe('empty');
-    expect(parsed.data.hints.some((h: string) => h.includes('code_graph_scan'))).toBe(true);
   });
 
   it('handles memory context failure gracefully', async () => {

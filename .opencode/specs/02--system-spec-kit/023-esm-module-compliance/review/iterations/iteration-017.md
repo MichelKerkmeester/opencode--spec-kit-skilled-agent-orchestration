@@ -1,39 +1,39 @@
-# Iteration 017
+# Review Iteration 017: Root packet closeout alignment
+
+## Focus
+Root packet closeout alignment
 
 ## Scope
-Commands/agents/readmes cross-runtime parity.
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
 
-## Verdict
-findings
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
+No new active findings in this pass. This iteration served as a stabilization, challenge, or synthesis pass over previously recorded evidence.
 
-### P1
-1. Shared-memory `status` flag contract inconsistent between canonical docs and Gemini wrapper.
-- Evidence:
-  - ../../../../command/memory/manage.md:98
-  - ../../../../command/memory/manage.md:963
-  - ../../../../command/memory/README.txt:111
-  - ../../../../../.agents/commands/memory/manage.toml:2
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-2. Orchestrator bootstrap behavior drifts across runtime adapters.
-- Evidence:
-  - ../../../../agent/orchestrate.md:18
-  - ../../../../agent/orchestrate.md:20
-  - ../../../../../.agents/agents/orchestrate.md:13
-  - ../../../../../.codex/agents/orchestrate.toml:10
-  - ../../../../../GEMINI.md:69
+## Ruled Out
+- The strongest remaining risk is packet truthfulness, not a newly discovered runtime crash.
 
-3. Codex `@context-prime` adapter format/inventory mismatch.
-- Evidence:
-  - ../../../../../.codex/agents/context-prime.md:1
-  - ../../../../../.codex/agents/orchestrate.toml:22
-  - ../../../../../.codex/agents/orchestrate.toml:171
-  - ../../../../../README.md:958
+## Sources Reviewed
+- [SOURCE: review state packet + previously confirmed live-tree evidence from this rerun]
 
-### P2
-1. Gemini runtime path convention inconsistent for `@write`.
-- Evidence:
-  - ../../../../../.agents/agents/write.md:23
-  - ../../../../../.agents/agents/review.md:20
-  - ../../../../../GEMINI.md:290
+## Assessment
+- Confirmed findings: 0
+- New findings ratio: 0.00
+- noveltyJustification: No new defect exceeded the existing registry; this pass challenged or stabilized prior findings.
+- Dimensions addressed: Root packet closeout alignment
+
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

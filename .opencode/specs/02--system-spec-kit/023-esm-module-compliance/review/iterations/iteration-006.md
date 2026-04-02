@@ -1,44 +1,73 @@
-# Iteration 006: D6 Reliability
+# Review Iteration 006: D6 Reliability — context capture path
+
+## Focus
+D6 Reliability — context capture path
+
+## Scope
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
+
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
-
-No P0 issues found.
-
-### [P1] `memory_save` collapses post-commit persistence failures into generic "anchor issues" warnings, obscuring partial-failure recovery
-- **File**: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:957-963`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:991-1005`; `.opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts:370-398`
-- **Issue**: When the quality loop produces corrected content, `processPreparedMemory()` commits the corrected content to the database first and only then best-effort persists that corrected file back to disk. If that post-commit file write fails, the handler records a warning and still returns success. The response builder then rewrites every warning into the same "anchor issues detected" message/hint path, so a real partial-failure warning is surfaced as if it were only a searchability advisory.
-- **Evidence**: `finalizeWarning` is set specifically for "Quality-loop file persistence failed after DB commit" and appended to the `IndexResult`. `buildSaveResponse()` does not preserve warning semantics: any `result.warnings` array changes the user-visible message to `with N warning(s) - anchor issues detected` and adds only `Review anchor warnings for better searchability`. That means an operator can receive a success envelope that hides the fact that the DB accepted corrected content while the source file may still be stale.
-- **Fix**: Preserve warning classes instead of flattening them into the anchor-warning path. At minimum, route persistence/rollback warnings to explicit partial-failure messaging and recovery hints; ideally add structured warning codes so the response can distinguish searchability advisories from post-commit file-consistency failures.
+### P1-023-007: CLI `--session-id` save path is wired through the surface but dropped before workflow capture
+- Dimension: D6 Reliability
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:398]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:562]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:265]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:589]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:791]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:832]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:1431]
+- Impact: The operator-facing flag suggests deterministic session targeting, but the current workflow never consumes it and may save against a different synthesized session id.
+- Final severity: P1
 
 ```json
 {
   "type": "claim-adjudication",
-  "claim": "memory_save currently misreports a post-commit file-persistence failure as a generic anchor/searchability warning, which weakens recovery and can hide DB-vs-file divergence from operators.",
+  "claim": "The explicit session-selection contract for generate-context is currently unreliable.",
   "evidenceRefs": [
-    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:957-963",
-    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:991-1005",
-    ".opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts:370-398"
+    ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:398",
+    ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:562",
+    ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:265",
+    ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:589"
   ],
-  "counterevidenceSought": "The save response may expose the raw warning text elsewhere in the MCP envelope or client UX, making the generic summary text less important than it appears in the handler.",
-  "alternativeExplanation": "The current response-builder warning text may have been written around anchor-quality advisories first, and later warning classes were added without updating the summary/hint copy.",
+  "counterevidenceSought": "Checked whether normalized payload ingestion or workflow options honor the forwarded session id; the cited workflow path ignores it.",
+  "alternativeExplanation": "If session selection is intentionally best-effort, the CLI surface should not present it as a deterministic control.",
   "finalSeverity": "P1",
-  "confidence": 0.91,
-  "downgradeTrigger": "Downgrade if the actual client contract always renders the full warning payload prominently enough that operators reliably see the post-commit persistence failure and its recovery implications."
+  "confidence": 0.88,
+  "downgradeTrigger": "Downgrade if runWorkflow begins honoring the forwarded sessionId or the CLI/help text is reduced to advisory wording."
 }
 ```
 
-## Notes
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-- I did not find a new reliability break in `scripts/core/workflow.ts`'s manual-fallback path itself. The reviewed save workflow records failed embedding/index states in metadata and warns when the retry-manager import is unavailable instead of crashing the save flow.
-- `mcp_server/lib/errors/core.ts` and `index.ts` remain ESM-clean in the reviewed paths: the lazy `retry.js` import degrades to legacy transient/permanent classification, and the barrel re-exports are extension-correct.
-- `mcp_server/startup-checks.ts` is intentionally non-critical in the reviewed code: marker-file parse/write errors and SQLite version probe failures are caught and downgraded to warnings.
-- `mcp_server/handlers/memory-ingest.ts` did not introduce an ESM-specific async-import hazard in this pass; the reviewed handler paths are static-import based and return structured MCP errors for invalid jobs/paths.
-- `mcp_server/lib/storage/transaction-manager.ts` still preserves the important recovery contract after rename failures: pending files are left in place when the DB already committed, and startup recovery helpers can discover them later.
+## Ruled Out
+- Verified that memory-save recovery paths exist even though explicit session targeting is unreliable.
 
-## Summary
+## Sources Reviewed
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:265]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:589]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:791]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:832]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:398]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:562]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:1431]
 
-- P0: 0 findings
-- P1: 1 finding
-- P2: 0 findings
-- newFindingsRatio: 1.0
-- Recommended next focus: D7 Completeness on checklist/task/plan closure drift and any remaining ESM-specific test coverage gaps
+## Assessment
+- Confirmed findings: 1
+- New findings ratio: 1.00
+- noveltyJustification: Introduced fresh evidence-backed findings.
+- Dimensions addressed: D6 Reliability — context capture path
+
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

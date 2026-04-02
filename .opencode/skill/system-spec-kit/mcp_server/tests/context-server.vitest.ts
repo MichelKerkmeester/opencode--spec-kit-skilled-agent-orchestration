@@ -266,6 +266,20 @@ describe('Context Server', () => {
     })
   })
 
+  describe('Graph path hardening', () => {
+    it('rejects graph enrichment paths outside the workspace root', () => {
+      expect(sourceCode).toContain("const workspaceRoot = path.resolve(process.cwd())")
+      expect(sourceCode).toContain("const relativeToWorkspace = path.relative(workspaceRoot, normalized)")
+      expect(sourceCode).toMatch(/relativeToWorkspace\.startsWith\('\.\.'\)/)
+      expect(sourceCode).toMatch(/path\.isAbsolute\(relativeToWorkspace\)/)
+    })
+
+    it('exports graph path helpers for focused tests', () => {
+      expect(sourceCode).toContain('normalizeGraphFilePath,')
+      expect(sourceCode).toContain('extractFilePathsFromToolArgs,')
+    })
+  })
+
   // =================================================================
   // GROUP 3: Tool Dispatch Coverage (T303: dispatchTool replaces switch)
   // =================================================================

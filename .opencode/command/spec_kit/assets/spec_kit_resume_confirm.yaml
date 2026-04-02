@@ -67,12 +67,12 @@ session_detection:
 # CONTEXT LOADING
 # ─────────────────────────────────────────────────────────────────
 context_loading_priority:
-  order: ["Primary: handover.md (<24h old)", "Primary: memory_context(mode: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
+  order: ["Primary: handover.md (<24h old)", "Primary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
   note: "Try the primary recovery chain first, then let the user choose whether extra memory context is needed"
 
 memory_loading:
   mode: interactive
-  behavior: "Check handover.md (<24h) first, then run memory_context() in resume mode and only ask for extra memory when the recovery packet is still missing something important"
+  behavior: "Check handover.md (<24h) first, then run session_bootstrap() or memory_context() in resume mode with profile=resume and only ask for extra memory when the recovery packet is still missing something important"
   options:
     - { id: A, label: "Fast resume", description: "Just enough context to continue safely" }
     - { id: B, label: "Fill missing next step / blockers", description: "Target only the missing recovery gaps" }
@@ -89,7 +89,7 @@ smart_memory_logic:
   sufficiency_rule: "Stop and present the resume brief once next safe action is known plus any two supporting essentials"
   gap_fill_order:
     - "If current phase or task is missing, inspect tasks.md/checklist.md/handover.md"
-    - "If next safe action is missing, use memory_context(mode: resume) then targeted memory_search on next-steps/state"
+    - "If next safe action is missing, use session_bootstrap() or memory_context(mode: resume, profile: resume) then targeted memory_search on next-steps/state"
     - "If blockers are missing, target blockers/summary"
     - "If a concrete starting point is missing, use tasks.md or implementation-summary.md before loading more memory"
     - "If ambiguity remains, show the uncertainty and ask the user which direction to investigate"
@@ -153,12 +153,12 @@ workflow:
     activities:
       - Check for handover.md in spec_folder (<24h old)
       - If recent handover exists, load and display contents
-      - Attempt memory_context() with mode="resume" for the resolved spec folder
+      - Attempt session_bootstrap() or memory_context() with mode="resume" and profile="resume" for the resolved spec folder
       - Extract Resume Essentials (current phase/task, last confirmed action, next safe action, blockers, relevant artifact/file)
       - If essentials are still missing, inspect CONTINUE_SESSION.md when present and recent
       - Present targeted depth options instead of raw file-loading choices
       - Present numbered options to user, wait for selection
-    context_priority: ["handover.md", "memory_context(mode: resume)", "CONTINUE_SESSION.md", "memory/*.md (supplemental)"]
+    context_priority: ["handover.md", "session_bootstrap()", "memory_context(mode: resume, profile: resume)", "CONTINUE_SESSION.md", "memory/*.md (supplemental)"]
     outputs: { handover_loaded: "true|false", primary_recovery_loaded: "true|false", selected_memory: user_choice, load_count: number }
     checkpoint:
       question: "Do you want more context, or is the resume brief already enough?"

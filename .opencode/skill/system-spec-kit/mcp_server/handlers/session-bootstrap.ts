@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Session Bootstrap Handler
 // ───────────────────────────────────────────────────────────────
-// Phase 024 / Item 7: Composite tool that runs session_resume(minimal)
+// Phase 024 / Item 7: Composite tool that runs session_resume
 // + session_health in one call, merging results with hints.
 
 import { handleSessionResume } from './session-resume.js';
@@ -55,12 +55,11 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const startMs = Date.now();
   const allHints: string[] = [];
 
-  // Sub-call 1: session_resume in minimal mode
+  // Sub-call 1: session_resume with full resume payload
   let resumeData: Record<string, unknown> = {};
   try {
     const resumeResponse = await handleSessionResume({
       specFolder: args.specFolder,
-      minimal: true,
     });
     resumeData = extractData(resumeResponse);
     allHints.push(...extractHints(resumeData));
@@ -95,7 +94,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
 
   // Record bootstrap telemetry once for the composite call.
   const durationMs = Date.now() - startMs;
-  const completeness = resumeData.error || healthData.error ? 'partial' : 'minimal';
+  const completeness = resumeData.error || healthData.error ? 'partial' : 'full';
   recordBootstrapEvent('tool', durationMs, completeness);
 
   const result: SessionBootstrapResult = {

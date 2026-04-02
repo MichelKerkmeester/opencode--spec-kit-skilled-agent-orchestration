@@ -88,13 +88,19 @@ export function truncateToTokenBudget(text: string, maxTokens: number): string {
   return text.slice(0, maxChars) + '\n[...truncated to fit token budget]';
 }
 
-const RECOVERED_TRANSCRIPT_SYSTEM_LINE = /^\s*(?:you are\b|system:|important:|<system\b|<\/system>)/i;
+const RECOVERED_TRANSCRIPT_STRIP_PATTERNS = [
+  /^\s*(?:system|developer|assistant|user)\s*:/i,
+  /^\s*\[(?:system|developer|assistant|user)\]\s*:/i,
+  /^\s*(?:you are\b|important:|follow(?: these)? instructions\b|ignore (?:all|previous)|system prompt\b|developer note\b|role:|policy:)/i,
+  /^\s*#{1,6}\s*(?:system|developer|assistant|user|instructions?|prompt)\b/i,
+  /^\s*<(?:\/)?(?:system|developer|assistant|user|instructions?)\b/i,
+];
 
 /** Remove obvious system-instruction lines from recovered transcript text */
 export function sanitizeRecoveredPayload(payload: string): string {
   return payload
     .split(/\r?\n/)
-    .filter(line => !RECOVERED_TRANSCRIPT_SYSTEM_LINE.test(line))
+    .filter((line) => !RECOVERED_TRANSCRIPT_STRIP_PATTERNS.some((pattern) => pattern.test(line)))
     .join('\n')
     .trim();
 }

@@ -751,7 +751,8 @@ function countDistinctFilePaths(
 
 async function collectSessionData(
   collectedData: CollectedDataFull | null,
-  specFolderName: string | null = null
+  specFolderName: string | null = null,
+  explicitSessionId?: string,
 ): Promise<SessionData> {
   const now = new Date();
 
@@ -788,7 +789,11 @@ async function collectSessionData(
   }
 
   const data: CollectedDataFull = { ...collectedData };
-  const sessionId: string = generateSessionId();
+  const sessionId: string = (
+    typeof explicitSessionId === 'string' && explicitSessionId.trim().length > 0
+      ? explicitSessionId.trim()
+      : generateSessionId()
+  );
   const channel: string = getChannel();
   const sessionInfo = data.recentContext?.[0] || {};
   let observations: Observation[] = data.observations || [];

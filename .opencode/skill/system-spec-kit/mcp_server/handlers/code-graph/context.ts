@@ -88,7 +88,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
   try {
     // Auto-trigger: ensure graph is fresh before querying
     try {
-      await ensureCodeGraphReady(process.cwd());
+      await ensureCodeGraphReady(process.cwd(), { allowInlineIndex: false });
     } catch {
       // Non-blocking: continue with potentially stale data
     }

@@ -1,9 +1,17 @@
 {
-  "topic": "Review: ESM Module Compliance — 5-phase native ESM migration of @spec-kit/shared, @spec-kit/mcp-server, and scripts interop",
+  "topic": "Review: ESM Module Compliance root packet rerun",
   "mode": "review",
   "reviewTarget": ".opencode/specs/02--system-spec-kit/023-esm-module-compliance",
   "reviewTargetType": "spec-folder",
-  "reviewDimensions": ["correctness", "security", "traceability", "maintainability", "performance", "reliability", "completeness"],
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability",
+    "performance",
+    "reliability",
+    "completeness"
+  ],
   "reviewScopeFiles": {
     "spec_paths": [
       ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/spec.md",
@@ -19,14 +27,12 @@
       ".opencode/skill/system-spec-kit/mcp_server/package.json",
       ".opencode/skill/system-spec-kit/mcp_server/tsconfig.json",
       ".opencode/skill/system-spec-kit/mcp_server/**/*.ts",
-      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
-      ".opencode/skill/system-spec-kit/scripts/evals/import-policy-rules.ts",
-      ".opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts"
+      ".opencode/skill/system-spec-kit/scripts/**/*.ts"
     ],
     "test_paths": [
       ".opencode/skill/system-spec-kit/mcp_server/tests/**/*.vitest.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/**/*.vitest.ts",
-      ".opencode/skill/system-spec-kit/shared/parsing/*.test.ts"
+      ".opencode/skill/system-spec-kit/shared/**/*.test.ts"
     ]
   },
   "severityThreshold": "P2",
@@ -34,19 +40,19 @@
     "core": ["spec_code", "checklist_evidence"],
     "overlay": ["skill_agent", "agent_cross_runtime", "feature_catalog_code", "playbook_capability"]
   },
-  "maxIterations": 10,
+  "maxIterations": 20,
   "convergenceThreshold": 0.10,
   "stuckThreshold": 2,
-  "maxDurationMinutes": 120,
+  "maxDurationMinutes": 180,
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 10,
   "specFolder": ".opencode/specs/02--system-spec-kit/023-esm-module-compliance",
-  "createdAt": "2026-03-30T08:42:00.000Z",
-  "status": "complete",
+  "createdAt": "2026-04-02T18:12:00+02:00",
+  "status": "initialized",
   "executionMode": "auto",
   "agentModel": "gpt-5.4",
   "agentReasoning": "high",
-  "agentDispatch": "codex",
+  "agentDispatch": "copilot-cli",
   "fileProtection": {
     "deep-research-config.json": "immutable",
     "deep-research-state.jsonl": "append-only",

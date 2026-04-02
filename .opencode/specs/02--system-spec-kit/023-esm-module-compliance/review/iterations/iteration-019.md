@@ -1,52 +1,39 @@
-# Iteration 019
+# Review Iteration 019: Release-readiness pass
+
+## Focus
+Release-readiness pass
 
 ## Scope
-Runtime architecture (shared + mcp_server ESM alignment and boundaries).
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
 
-## Verdict
-findings
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
+No new active findings in this pass. This iteration served as a stabilization, challenge, or synthesis pass over previously recorded evidence.
 
-### P1
-1. DB update marker path mismatch across package boundary.
-- Evidence:
-  - ../../../../skill/system-spec-kit/shared/config.ts:24
-  - ../../../../skill/system-spec-kit/shared/config.ts:38
-  - ../../../../skill/system-spec-kit/scripts/core/memory-indexer.ts:18
-  - ../../../../skill/system-spec-kit/scripts/core/memory-indexer.ts:41
-  - ../../../../skill/system-spec-kit/mcp_server/core/config.ts:82
-  - ../../../../skill/system-spec-kit/mcp_server/core/db-state.ts:185
-  - ../../../../skill/system-spec-kit/mcp_server/context-server.ts:754
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-2. 023 interop contract drift: scripts still use direct CJS `require()` on ESM siblings rather than explicit dynamic boundary.
-- Evidence:
-  - ../spec.md:116
-  - ../spec.md:144
-  - ../../../../skill/system-spec-kit/scripts/package.json:5
-  - ../../../../skill/system-spec-kit/scripts/core/memory-indexer.ts:17
-  - ../../../../skill/system-spec-kit/scripts/spec-folder/generate-description.ts:22
-  - ../../../../skill/system-spec-kit/scripts/dist/core/memory-indexer.js:51
-  - ../../../../skill/system-spec-kit/scripts/dist/core/workflow.js:164
+## Ruled Out
+- With active P1s still open, the rerun remains CONDITIONAL rather than PASS.
 
-3. Startup-path tests are partially broken due stale mock exports.
-- Evidence:
-  - ../../../../skill/system-spec-kit/mcp_server/context-server.ts:1374
-  - ../../../../skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:579
-  - ../../../../skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:1280
-  - ../../../../skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:1294
+## Sources Reviewed
+- [SOURCE: review state packet + previously confirmed live-tree evidence from this rerun]
 
-### P2
-1. Modularization thresholds stale relative to current module size.
-- Evidence:
-  - ../../../../skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts:21
-  - ../../../../skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts:31
-  - ../../../../skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts:137
+## Assessment
+- Confirmed findings: 0
+- New findings ratio: 0.00
+- noveltyJustification: No new defect exceeded the existing registry; this pass challenged or stabilized prior findings.
+- Dimensions addressed: Release-readiness pass
 
-2. Import-policy checker includes test fixtures and reports fixture strings as violations.
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/evals/check-no-mcp-lib-imports.ts:327
-  - ../../../../skill/system-spec-kit/scripts/evals/check-no-mcp-lib-imports.ts:337
-  - ../../../../skill/system-spec-kit/scripts/evals/check-no-mcp-lib-imports.ts:349
-  - ../../../../skill/system-spec-kit/scripts/tests/architecture-boundary-enforcement.vitest.ts:248
-  - ../../../../skill/system-spec-kit/scripts/tests/architecture-boundary-enforcement.vitest.ts:253
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

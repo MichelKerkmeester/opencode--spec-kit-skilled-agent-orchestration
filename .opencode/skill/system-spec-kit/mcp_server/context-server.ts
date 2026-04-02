@@ -332,6 +332,15 @@ function normalizeGraphFilePath(value: string): string | null {
   const normalized = path.isAbsolute(value)
     ? path.normalize(value)
     : path.resolve(process.cwd(), value);
+  const workspaceRoot = path.resolve(process.cwd());
+  const relativeToWorkspace = path.relative(workspaceRoot, normalized);
+
+  if (
+    relativeToWorkspace.startsWith('..') ||
+    path.isAbsolute(relativeToWorkspace)
+  ) {
+    return null;
+  }
 
   try {
     if (!fs.existsSync(normalized) || !fs.statSync(normalized).isFile()) {
@@ -659,7 +668,7 @@ async function buildServerInstructions(): Promise<string> {
     const snap = getSessionSnapshot();
     const hasData = snap.specFolder || snap.graphFreshness !== 'error' || snap.sessionQuality !== 'unknown';
     if (hasData) {
-      const recommended = !snap.primed ? 'call session_resume()' :
+      const recommended = !snap.primed ? 'call session_bootstrap()' :
         snap.graphFreshness === 'empty' ? 'run code_graph_scan' :
         snap.sessionQuality === 'critical' ? 'call memory_context(resume)' : 'ready';
       lines.push('');
@@ -1202,6 +1211,8 @@ export const __testables = {
   runCleanupStep,
   runAsyncCleanupStep,
   main: () => main(),
+  normalizeGraphFilePath,
+  extractFilePathsFromToolArgs,
 };
 
 async function fatalShutdown(reason: string, exitCode: number): Promise<void> {

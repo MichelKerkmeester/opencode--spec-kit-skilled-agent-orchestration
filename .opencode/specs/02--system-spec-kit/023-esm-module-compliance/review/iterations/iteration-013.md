@@ -1,52 +1,39 @@
-# Iteration 013
+# Review Iteration 013: D6 Reliability — recovery messaging pass
+
+## Focus
+D6 Reliability — recovery messaging pass
 
 ## Scope
-Phases 007-010, including review artifacts and evidence quality.
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
 
-## Verdict
-findings
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
+No new active findings in this pass. This iteration served as a stabilization, challenge, or synthesis pass over previously recorded evidence.
 
-### P1
-1. Phase 008 declares completion while P0/P1 checklist gates remain unchecked.
-- Evidence:
-  - ../008-spec-memory-compliance-audit/checklist.md:44
-  - ../008-spec-memory-compliance-audit/checklist.md:45
-  - ../008-spec-memory-compliance-audit/checklist.md:47
-  - ../008-spec-memory-compliance-audit/checklist.md:101
-  - ../008-spec-memory-compliance-audit/tasks.md:320
-  - ../008-spec-memory-compliance-audit/implementation-summary.md:34
-  - ../008-spec-memory-compliance-audit/implementation-summary.md:57
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-2. Phase 008 marks search fix done while verification is simultaneously marked pending.
-- Evidence:
-  - ../008-spec-memory-compliance-audit/checklist.md:59
-  - ../008-spec-memory-compliance-audit/implementation-summary.md:160
-  - ../008-spec-memory-compliance-audit/implementation-summary.md:169
+## Ruled Out
+- Bootstrap/resume messaging drift remains advisory and did not escalate after rereading the active surfaces.
 
-3. Phase 010 P0 checks marked pass despite cache-masked evidence statements.
-- Evidence:
-  - ../010-search-retrieval-quality-fixes/checklist.md:19
-  - ../010-search-retrieval-quality-fixes/checklist.md:21
-  - ../010-search-retrieval-quality-fixes/tasks.md:53
+## Sources Reviewed
+- [SOURCE: review state packet + previously confirmed live-tree evidence from this rerun]
 
-4. Phase 009 claims clean reindex while live regression task remains unchecked.
-- Evidence:
-  - ../009-reindex-validator-false-positives/tasks.md:83
-  - ../009-reindex-validator-false-positives/tasks.md:93
+## Assessment
+- Confirmed findings: 0
+- New findings ratio: 0.00
+- noveltyJustification: No new defect exceeded the existing registry; this pass challenged or stabilized prior findings.
+- Dimensions addressed: D6 Reliability — recovery messaging pass
 
-### P2
-1. Phase 007 reports no limitations while review artifacts still show open fail/unresolved states.
-- Evidence:
-  - ../007-hybrid-search-null-db-fix/implementation-summary.md:108
-  - ../007-hybrid-search-null-db-fix/checklist.md:93
-  - ../007-hybrid-search-null-db-fix/review/ultra-think-review.md:3
-  - ../007-hybrid-search-null-db-fix/review/ultra-think-review.md:5
-
-2. Phase 009 review report not synchronized with remediation status in tasks/checklist.
-- Evidence:
-  - ../009-reindex-validator-false-positives/review/review-report.md:19
-  - ../009-reindex-validator-false-positives/review/review-report.md:25
-  - ../009-reindex-validator-false-positives/tasks.md:63
-  - ../009-reindex-validator-false-positives/checklist.md:50
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

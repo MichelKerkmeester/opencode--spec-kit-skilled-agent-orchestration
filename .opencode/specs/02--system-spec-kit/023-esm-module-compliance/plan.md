@@ -27,7 +27,7 @@ contextType: "planning"
 | **Testing** | Root `npm` gates, workspace builds/tests, targeted Vitest, runtime smokes, spec validation |
 
 ### Overview
-This plan follows the completed 20-iteration research in `research/research.md`. The first pass is a coordinated package-local native ESM migration for `@spec-kit/shared` and `@spec-kit/mcp-server`, while `@spec-kit/scripts` remains a CommonJS package and crosses the new module boundary through explicit dynamic-import interoperability helpers. Dual-build or conditional-exports is not the first-pass approach and is only reconsidered if the bounded scripts interop refactor proves materially too invasive.
+This plan follows the completed 20-iteration research in `research/research.md`. The shipped first pass is a coordinated package-local native ESM migration for `@spec-kit/shared` and `@spec-kit/mcp-server`, while `@spec-kit/scripts` remains a CommonJS package and crosses the new module boundary through explicit async package-boundary loading and scripts-owned bridge code. Dual-build or conditional exports was not needed for the shipped path.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,7 +42,7 @@ This plan follows the completed 20-iteration research in `research/research.md`.
 
 ### Definition of Done
 - [x] `@spec-kit/shared` and `@spec-kit/mcp-server` both emit truthful native ESM [EVIDENCE: Phase 1-2 — both packages have "type":"module", nodenext compiler, clean ESM builds]
-- [x] `@spec-kit/scripts` remains CommonJS and proves interoperability through explicit dynamic imports [EVIDENCE: Phase 3 — scripts keeps "type":"commonjs", Node 25 native require(esm) works]
+- [x] `@spec-kit/scripts` remains CommonJS and proves interoperability through explicit async package-boundary loading [EVIDENCE: Phase 3 — scripts keeps "type":"commonjs"; workflow and save paths use guarded async imports across the ESM boundary]
 - [x] The required verification matrix passes, including runtime smokes and highest-risk retests first [EVIDENCE: Phase 5 — 9480/9480 tests pass, 0 failures, runtime smokes verified]
 - [x] Follow-on standards docs are updated only after runtime proof exists [EVIDENCE: Phase 4 — standards updated from verified ESM state]
 <!-- /ANCHOR:quality-gates -->
@@ -63,7 +63,7 @@ Coordinated sibling-package ESM migration with an explicit CommonJS-to-ESM inter
 - **Deferred standards surfaces**: `sk-code--opencode` and any related standards docs outside this packet
 
 ### Data Flow
-`shared` source plus package metadata -> package-local ESM emit -> `mcp_server` source plus package metadata -> package-local ESM emit -> `scripts` CommonJS loaders call explicit dynamic `import()` boundaries -> runtime smokes and targeted retests -> only then standards-doc sync
+`shared` source plus package metadata -> package-local ESM emit -> `mcp_server` source plus package metadata -> package-local ESM emit -> `scripts` CommonJS loaders call explicit async package-boundary imports -> runtime smokes and targeted retests -> only then standards-doc sync
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -88,7 +88,7 @@ Coordinated sibling-package ESM migration with an explicit CommonJS-to-ESM inter
 
 ### Phase 3: `@spec-kit/scripts` CommonJS-to-ESM Interop Refactor
 - [x] Keep `scripts/package.json` CommonJS
-- [x] Replace scripts-side direct CommonJS consumption of ESM siblings with explicit dynamic-import interoperability helpers
+- [x] Replace scripts-side direct CommonJS consumption of ESM siblings with explicit async package-boundary interoperability code
 - [x] Rework bridge and loader call sites until `scripts -> shared` and `scripts -> mcp_server/api*` paths are proven under runtime smoke
 - [x] Revisit dual-build only if this bounded interop phase proves materially too invasive — not needed, bounded interop worked
 

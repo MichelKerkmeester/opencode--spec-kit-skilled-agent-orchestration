@@ -67,12 +67,12 @@ session_detection:
 # CONTEXT LOADING
 # ─────────────────────────────────────────────────────────────────
 context_loading_priority:
-  order: ["Primary: handover.md (<24h old)", "Primary: memory_context(mode: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
+  order: ["Primary: handover.md (<24h old)", "Primary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
   note: "Use recent structured handoff first, then resume-mode recovery; only use breadcrumb and anchored-search fallbacks when the primary context is missing or thin"
 
 memory_loading:
   mode: automatic
-  behavior: "Auto-load handover.md (<24h) first, else run memory_context() in resume mode without prompting; stop as soon as one safe next action can be named"
+  behavior: "Auto-load handover.md (<24h) first, else run session_bootstrap() or memory_context() in resume mode with profile=resume without prompting; stop as soon as one safe next action can be named"
   selection: most_recent
   max_files: 1
   mcp_integration:
@@ -129,12 +129,12 @@ workflow:
     activities:
       - Check for handover.md in spec_folder (<24h old)
       - If recent handover exists, load as primary context
-      - If handover is absent or insufficient, call memory_context() with mode="resume"
+      - If handover is absent or insufficient, call session_bootstrap() first or memory_context() with mode="resume" and profile="resume"
       - Extract Resume Essentials (current phase/task, last confirmed action, next safe action, blockers, relevant artifact/file)
       - If the recovery packet is still thin, inspect CONTINUE_SESSION.md when present and recent
       - If specific essentials are still missing, run targeted anchored memory_search() for those gaps instead of broad loading
       - If ambiguity remains after targeted gap filling, mark confidence low instead of inventing state
-    context_priority: ["handover.md", "memory_context(mode: resume)", "CONTINUE_SESSION.md", "memory_search() with resume anchors"]
+    context_priority: ["handover.md", "session_bootstrap()", "memory_context(mode: resume, profile: resume)", "CONTINUE_SESSION.md", "memory_search() with resume anchors"]
     mcp_tool:
       name: memory_context
       note: "Call directly - NEVER through Code Mode. Use resume mode first; use anchored memory_search() only as a fallback when more detail is needed."

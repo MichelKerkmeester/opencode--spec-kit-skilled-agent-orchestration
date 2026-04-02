@@ -64,19 +64,19 @@ Template compliance shim anchor for rollback.
 
 ### Implementation Strategy
 
-Phased approach: each phase is independently deployable and testable. Phase 1 (Compaction Context Injection) delivers the highest-value feature immediately.
+This parent plan now serves as the historical implementation map for a shipped multi-phase system. The root packet must describe the delivered recovery surfaces truthfully: `session_bootstrap()` is the canonical first hookless recovery call, `session_resume()` is the detailed follow-up surface, and the active compaction path remains more conservative than the original 3-source target architecture.
 
 **CORRECTED (iteration 011, 014):** PreCompact stdout is NOT injected into model context. The design uses PreCompact for precomputation and SessionStart(source=compact) for injection.
 
 ### Implementation Order
 
-1. **Immediate**: Fix `/spec_kit:resume` `profile: "resume"` (1 hour)
+1. **Immediate**: Fix `/spec_kit:resume` `profile: "resume"` (completed)
 2. **Phase 1+2**: Hook scripts (PreCompact + SessionStart) with hook-state bridge (1 week)
 3. **Phase 4**: `.claude/CLAUDE.md` + CLAUDE.md compaction section (2 days)
-4. **Phase 008**: tree-sitter structural indexer for JS/TS/Python/Shell (3-4 days)
+4. **Phase 008**: structural indexer for JS/TS/Python/Shell (3-4 days)
 5. **Phase 009**: SQLite storage + code_graph_scan/query/status tools (2-3 days)
 6. **Phase 010**: code_graph_context + CocoIndex bridge (3-4 days)
-7. **Phase 011**: Working-set tracking + 3-source compaction merge (2-3 days)
+7. **Phase 011**: Working-set tracking + compaction merge scaffolding (2-3 days)
 8. **Phase 3**: Stop hook + token tracking (1 week)
 9. **Phase 5-7**: Agent/command alignment, documentation, testing (2 weeks)
 
@@ -96,10 +96,10 @@ Phased approach: each phase is independently deployable and testable. Phase 1 (C
 - `context-server.ts` already treats `memory_context(resume)` as compaction lifecycle call (iter 012)
 
 **What to build:**
-- `scripts/hooks/claude/compact-inject.ts` — PreCompact precompute + cache
-- `scripts/hooks/claude/session-prime.ts` — SessionStart injection (handles both compact and startup)
-- `scripts/hooks/claude/shared.ts` — Common utilities (stdin parsing, error handling)
-- `scripts/hooks/claude/hook-state.ts` — Per-session state management
+- `mcp_server/hooks/claude/compact-inject.ts` — PreCompact precompute + cache
+- `mcp_server/hooks/claude/session-prime.ts` — SessionStart injection (handles both compact and startup)
+- `mcp_server/hooks/claude/shared.ts` — Common utilities (stdin parsing, error handling)
+- `mcp_server/hooks/claude/hook-state.ts` — Per-session state management
 - Register hooks in `.claude/settings.local.json`
 
 **Key finding (iteration 012):** `memory_context({ mode: "resume" })` returns search results, not a compact brief. Must ALSO pass `profile: "resume"` for the brief `{ state, nextSteps, blockers }` format.
@@ -111,20 +111,20 @@ Phased approach: each phase is independently deployable and testable. Phase 1 (C
 
 **Shares `session-prime.ts` with Phase 1** — the same script handles both:
 - `source=compact` → reads cached compact payload, injects
-- `source=startup` → calls `memory_context({ mode: "resume", profile: "resume" })`
+- `source=startup` → primes startup context, while hookless runtimes use `session_bootstrap()` as the first recovery call
 - `source=resume` → loads resume context with session continuity
 
 **Design considerations (iteration 013):**
 - Keep one retrieval contract across all runtimes — hooks call same tools as manual flows
-- `/spec_kit:resume` remains the canonical continuation surface
+- `/spec_kit:resume` remains the canonical command surface, while `session_bootstrap()` is the canonical hookless MCP recovery call
 - Token budget: ~2000 tokens (don't overwhelm the initial prompt)
 
 ### Phase 3: Stop Hook + Token Tracking (P2 — 2-3 days)
 **Goal:** Auto-save session context and track token usage on session end.
 
 **What to build:**
-- `scripts/hooks/claude/session-stop.ts` — Async Stop hook
-- `scripts/hooks/claude/claude-transcript.ts` — Transcript JSONL parser
+- `mcp_server/hooks/claude/session-stop.ts` — Async Stop hook
+- `mcp_server/hooks/claude/claude-transcript.ts` — Transcript JSONL parser
 
 **Stop hook input (iteration 011):** `transcript_path`, `stop_hook_active`, `last_assistant_message`
 Token totals are NOT in the payload — must parse transcript JSONL.
@@ -216,7 +216,7 @@ CREATE TABLE session_token_snapshots (
 ### File Locations (iteration 014)
 
 ```
-.opencode/skill/system-spec-kit/scripts/hooks/claude/
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/
   session-prime.ts       ← Phases 1+2 (SessionStart injection)
   compact-inject.ts      ← Phase 1 (PreCompact precompute)
   session-stop.ts        ← Phase 3 (Stop: save + tokens)
@@ -224,7 +224,7 @@ CREATE TABLE session_token_snapshots (
   hook-state.ts          ← Session ID mapping, cache
   claude-transcript.ts   ← Transcript parsing
 
-Compiled → scripts/dist/hooks/claude/*.js
+Compiled → mcp_server/dist/hooks/claude/*.js
 
 .opencode/skill/system-spec-kit/mcp_server/api/
   hooks.ts               ← Hook-safe public API bridge
@@ -237,9 +237,9 @@ CLAUDE.md                ← Phase 4 updates
 
 ---
 
-### v2 Remediation Phases (013-016)
+### v2-v4 Remediation Phases (013-028)
 
-Post-implementation review (30 iterations across Codex CLI + Copilot CLI, GPT-5.4) and research (95 iterations, 3 AI systems) identified 45 issues organized into 4 remediation phases. Follow-up phases 017-025 closed three of the original four deferred items. **Current status:** 44/45 shipped; 1 deferred.
+Post-implementation review (30 iterations across Codex CLI + Copilot CLI, GPT-5.4) and research (95 iterations, 3 AI systems) identified 45 issues organized into remediation phases. Follow-up phases 017-028 extended parser fixes, hookless recovery, structural priming, and startup-highlight remediation. **Current status:** 44/45 shipped; 1 deferred.
 
 ### Phase 013: Correctness & Boundary Repair (P0/P1/P2 — 3-4 days)
 **Goal:** Fix all critical bugs, DB safety issues, and security boundaries before new feature work.

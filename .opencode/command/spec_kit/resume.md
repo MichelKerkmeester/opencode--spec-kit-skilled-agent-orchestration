@@ -256,7 +256,7 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 
 **Context loading priority (after spec_path confirmed):**
 1. handover.md (exists & <24h) → use handover context
-2. `memory_context({ mode: "resume" })` → primary interrupted-session recovery path
+2. `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` → primary interrupted-session recovery path
 3. `CONTINUE_SESSION.md` → crash breadcrumb when present and recent
 4. `memory_search()` with resume anchors → fallback when the summary is thin
 5. checklist.md → progress state fallback
@@ -273,10 +273,10 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 
 | Signal | Why it matters | Primary source | Fallback |
 | ------ | -------------- | -------------- | -------- |
-| Current phase or task | Orient the user immediately | `handover.md`, `tasks.md` | `memory_context({ mode: "resume" })` |
+| Current phase or task | Orient the user immediately | `handover.md`, `tasks.md` | `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` |
 | Last confirmed action | Prevent duplicate work | `handover.md`, recent memory | `memory_search()` with `state` anchor |
-| Next safe action | Make the resume actually useful | `memory_context({ mode: "resume" })` | `memory_search()` with `next-steps` anchor |
-| Blockers or "none" | Avoid unsafe continuation | `memory_context({ mode: "resume" })` | `memory_search()` with `blockers` or `summary` anchor |
+| Next safe action | Make the resume actually useful | `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` | `memory_search()` with `next-steps` anchor |
+| Blockers or "none" | Avoid unsafe continuation | `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` | `memory_search()` with `blockers` or `summary` anchor |
 | Relevant artifact or file | Give the user a concrete place to start | `tasks.md`, `implementation-summary.md`, `handover.md` | recent memory content |
 
 ### Sufficiency Rule
@@ -288,7 +288,7 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 ### Gap-Filling Order
 
 1. Missing current phase/task: check `tasks.md`, `checklist.md`, or `handover.md`.
-2. Missing next safe action: use `memory_context({ mode: "resume" })`, then targeted `memory_search()` on `next-steps` and `state`.
+2. Missing next safe action: use `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })`, then targeted `memory_search()` on `next-steps` and `state`.
 3. Missing blockers: target `blockers` and `summary`.
 4. Missing concrete starting point: look for the most relevant artifact, file, or unfinished task before loading more memory files.
 5. Only use deep memory loading when the focused recovery packet is still insufficient.
@@ -351,12 +351,12 @@ Call MCP tools directly — NEVER through Code Mode.
 | `checkpoint_restore` | Rollback to previous checkpoint      |
 | `checkpoint_delete`  | Clean up old checkpoints             |
 
-**Note:** No `memory_load` tool. Use `memory_context({ mode: "resume" })` as the primary recovery path. In the current handler, resume mode is effectively a focused recovery search over the anchors `state`, `next-steps`, `summary`, and `blockers`; use `memory_search` with `includeContent: true` only when one of those essential signals is still missing.
+**Note:** No `memory_load` tool. Use `session_bootstrap()` as the canonical first recovery call, or `memory_context({ mode: "resume", profile: "resume" })` when you want the direct resume-retrieval primitive. In the current handler, resume mode is effectively a focused recovery search over the anchors `state`, `next-steps`, `summary`, and `blockers`; use `memory_search` with `includeContent: true` only when one of those essential signals is still missing.
 
 ### Session Deduplication
 
 - Prefer deterministic ranked active candidates (archive/test/fixture filtered)
-- handover.md takes priority; if it is absent or thin, use `memory_context({ mode: "resume" })` before checking `CONTINUE_SESSION.md`
+- handover.md takes priority; if it is absent or thin, use `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` before checking `CONTINUE_SESSION.md`
 - Treat `CONTINUE_SESSION.md` as a breadcrumb, not the primary source of truth
 - Older handovers preserved for audit trail
 

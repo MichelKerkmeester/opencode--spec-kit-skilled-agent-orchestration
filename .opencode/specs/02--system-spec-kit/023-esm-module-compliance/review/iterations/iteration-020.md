@@ -1,47 +1,39 @@
-# Iteration 020
+# Review Iteration 020: Final synthesis prep
+
+## Focus
+Final synthesis prep
 
 ## Scope
-Independent verification command matrix.
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
 
-## Verdict
-findings
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
+No new active findings in this pass. This iteration served as a stabilization, challenge, or synthesis pass over previously recorded evidence.
 
-### P0
-1. Task-enrichment guardrail regression in runtime tests.
-- Command:
-  - `TMPDIR="$PWD/.tmp" npm run --workspaces=false test:task-enrichment`
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts:735
-  - ../../../../skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts:1222
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-### P1
-1. Root command surface breaks under current npm workspace behavior (`Missing script` for workspace-level dispatch).
-- Commands:
-  - `npm run typecheck`
-  - `npm run test:task-enrichment`
-- Workaround:
-  - `npm run --workspaces=false typecheck`
+## Ruled Out
+- No new findings added; prepared final registry and workstreams.
 
-2. Legacy extractor/loader suite failures.
-- Command:
-  - `node scripts/tests/test-extractors-loaders.js`
+## Sources Reviewed
+- [SOURCE: review state packet + previously confirmed live-tree evidence from this rerun]
 
-3. Naming-migration regression suite failures.
-- Command:
-  - `node scripts/tests/test-naming-migration.js`
+## Assessment
+- Confirmed findings: 0
+- New findings ratio: 0.00
+- noveltyJustification: No new defect exceeded the existing registry; this pass challenged or stabilized prior findings.
+- Dimensions addressed: Final synthesis prep
 
-4. Tests mutate tracked fixture content.
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/test-fixtures/002-valid-level1/implementation-summary.md
-
-### P2
-1. CocoIndex daemon/client mismatch prevented semantic path checks in this slice.
-- Evidence signature:
-  - `Daemon version mismatch (daemon=0.2.3, client=0.2.10)`
-
-## Passing checks observed
-- `npm run build` passed in `system-spec-kit` workspace.
-- `node scripts/tests/test-scripts-modules.js` passed.
-- `npx vitest run tests/handler-memory-search.vitest.ts tests/mcp-response-envelope.vitest.ts` passed.
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

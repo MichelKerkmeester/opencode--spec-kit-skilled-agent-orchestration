@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Hybrid Context Injection [02--system-spec-kit/024-compact-code-graph/tasks]"
-description: "25-phase task tracker for hook + tool + code graph architecture."
+description: "28-phase task tracker for hook, recovery, code-graph, and follow-on remediation architecture."
 trigger_phrases:
   - "tasks"
   - "hybrid"
@@ -110,7 +110,7 @@ Evidence base: 95 research iterations + 30 review iterations (Codex CLI + Copilo
 | 40 | Intent pre-classifier | 016 | COMPLETED in Phase 017/020: classifyQueryIntent() in query-intent-classifier.ts |
 | 45 | SessionStart scope fix | 016 | COMPLETED: spec updated to match actual single-unscoped design |
 ---
-### v3 Phases (017-025) — Polish, Porting & Observability
+### v3-v4 Phases (017-028) — Polish, Porting, Observability, and Review Follow-Through
 
 - [x] Phase 017: Tree-Sitter & Query-Intent Classifier Fixes — 12/15 bugs fixed, 3 deferred
 - [x] Phase 018: Non-Hook CLI Auto-Priming — MCP first-call auto-prime, session_health tool
@@ -120,15 +120,18 @@ Evidence base: 95 research iterations + 30 review iterations (Codex CLI + Copilo
 - [x] Phase 022: Gemini CLI Hook Porting — Gemini lifecycle mapping, PreCompress/BeforeAgent hooks
 - [x] Phase 023: Context Preservation Metrics — Session metrics collector, quality scoring, dashboard
 - [x] Phase 024: Hookless Priming Optimization — session_bootstrap tool, session_snapshot, bootstrap telemetry
-- [~] Phase 025: Tool Routing Enforcement — enforcement hints shipped, remaining manual runtime verification pending
+- [x] Phase 025: Tool Routing Enforcement — enforcement hints shipped and root packet truth-sync followed through
+- [x] Phase 026: Session Start Injection Debug — debug packet for SessionStart injection issues
+- [x] Phase 027: OpenCode Structural Priming — structural bootstrap contract for hookless runtimes
+- [x] Phase 028: Startup Highlights Remediation — quality-gated startup highlights follow-through
 ---
 
 <!-- ANCHOR:completion -->
 ### Completion Criteria
-- [x] All 25 phases have child spec folders with spec.md + plan.md + checklist.md
+- [x] All 28 phases have child spec folders with spec.md + plan.md + checklist.md
 - [x] All v1 phases (001-012) implemented and verified
 - [x] All v2 remediation items shipped or explicitly deferred with rationale
-- [x] All v3 phases (017-024) implemented
+- [x] All v3-v4 phases (017-028) implemented
 - [x] Hook scripts registered in .claude/settings.local.json
 - [x] Cross-runtime fallback verified (Codex CLI tested)
 - [ ] 1 deferred item tracked (additional SymbolKinds for tree-sitter)

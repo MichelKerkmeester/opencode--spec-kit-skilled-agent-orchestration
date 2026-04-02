@@ -1,88 +1,100 @@
-# Deep Review Strategy — Code Graph Session Start Injection Usefulness
+# Deep Review Strategy — Compact Code Graph (spec-024 rerun)
 
-## Review Target
-Code Graph session start injection (hook output at startup) — evaluating usefulness, signal quality, and ROI.
+## 1. OVERVIEW
 
-## Review Target Type
-files
+Fresh 20-iteration rerun completed for `.opencode/specs/02--system-spec-kit/024-compact-code-graph` using Copilot CLI gpt-5.4/high plus native reviewer cross-checks. Archived packets remained reference-only; this strategy reflects the current-tree rerun.
 
-## Scope Files
-1. `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` — Hook handler
-2. `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts` — Builds structural context
-3. `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts` — `queryStartupHighlights()` query
+## 2. TOPIC
 
-## Dimension Queue (ordered)
-1. **signal_quality** — Are highlights actionable? Do they help the AI?
-2. **deduplication** — `test_specific` appears 3x identically. Bug?
-3. **node_selection** — Is top-by-call-count the right heuristic?
-4. **token_roi** — ~100 tokens injected. Value-per-token justified?
-5. **on_demand_comparison** — What does proactive injection add vs on-demand tools?
-6. **architectural_alignment** — Does injection align with spec 024 goals?
+Release-readiness review of `.opencode/specs/02--system-spec-kit/024-compact-code-graph` with findings-first emphasis on runtime truth, packet truthfulness, and operator-facing contract fidelity.
 
-## Convergence Criteria
-- maxIterations: 7
-- convergenceThreshold: 0.10
-- Quality gates: evidence, scope, coverage
+## 3. REVIEW DIMENSIONS (complete)
+- [x] D1 Correctness
+- [x] D2 Security
+- [x] D3 Traceability
+- [x] D4 Maintainability
+- [x] D5 Performance
+- [x] D6 Reliability
+- [x] D7 Completeness
 
-## Evidence from Live Session
-- User asked "search for code regarding fusion"
-- AI did NOT use the structural context highlights — they were irrelevant
-- AI went to CocoIndex semantic search (correct per decision tree)
-- Highlights provided zero signal for the actual task
-- `test_specific` appeared 3 times (deduplication bug)
-- Highlights were: test files, vendored dependencies — not task-relevant
+## 4. NON-GOALS
+- Reusing archived review conclusions without live verification
+- Editing implementation files under review
+- Saving memory artifacts in this rerun
 
-## Known Context
-This is the actual hook output observed in this session:
-```
-## Structural Context
-15488 files, 382268 nodes, 198135 edges.
-Last scan: 2026-04-02T09:24:57.646Z
-Highlights:
-- test_specific (method) - special/tests/test_legendre.py [calls: 51]
-- test_specific (method) - special/tests/test_legendre.py [calls: 51]
-- test_specific (method) - special/tests/test_legendre.py [calls: 51]
-- executeStage1 (function) - search/pipeline/stage1-candidate-gen.ts [calls: 38]
-- fetch_more_tokens (method) - site-packages/yaml/scanner.py [calls: 31]
-```
+## 5. STOP CONDITIONS
+- 20 requested iterations executed
+- Evidence, scope, and coverage gates satisfied for all active findings
 
-## Dimension Coverage
-| Dimension | Status | Iteration |
-|-----------|--------|-----------|
-| signal_quality | reviewed | 1 |
-| deduplication | reviewed | 1 |
-| node_selection | reviewed | 2 |
-| token_roi | reviewed | 2 |
-| on_demand_comparison | reviewed | 3 |
-| architectural_alignment | reviewed | 3 |
+## 6. COMPLETED DIMENSIONS
 
-## Running Findings
-- P1-001: Duplicate highlights due to GROUP BY on symbol_id instead of display fields (correctness, iteration 1)
-- P1-002: Startup highlights surface vendored/test code instead of project code (correctness, iteration 1)
-- P1-003: queryStartupHighlights selects chatty callers (outgoing call count), not architecturally important nodes (correctness, iteration 2) -- refines P1-002 with root-cause SQL analysis
-- P2-001: Startup highlights provide no actionable signal for task routing (signal_quality, iteration 1)
-- P2-002: No exclude patterns for node_modules or common build artifacts (maintainability, iteration 1)
-- P2-003: Structural context section provides near-zero actionable signal at ~100 tokens of 2000 budget (token_roi, iteration 2)
-- P2-004: Startup highlights lack per-file diversity controls; single hot file can monopolize all slots (maintainability, iteration 2)
-- P2-005: Structural context highlights provide no value over on-demand tools -- all data available via code_graph_status/code_graph_context (on_demand_comparison, iteration 3)
-- P2-006: Startup injection structural section not traceable to any spec requirement or DR (architectural_alignment, iteration 3)
-- P2-007: queryStartupHighlights outgoing-CALLS heuristic confirmed directionally wrong for architectural significance via on-demand comparison (on_demand_comparison, iteration 3) -- reinforces P1-003
-- P2-008: Graph scale stats (file/node/edge counts) duplicate code_graph_status MCP tool output (on_demand_comparison, iteration 3)
-- **Totals: P0=0, P1=3, P2=8**
+| Dimension | Verdict | Iteration | Summary |
+|-----------|---------|-----------|---------|
+| D1 Correctness | findings | 1 | Current runtime contracts still overstate parts of the shipped boundary behavior. |
+| D2 Security | findings | 2 | No P0 surfaced, but current tree still exposes notable trust-boundary and reinjection risks. |
+| D3 Traceability | findings | 3 | Root packet truth-sync drift is the dominant release-readiness problem. |
+| D4 Maintainability | findings | 4 | Contract surfaces are usable but still internally split in operator-facing guidance. |
+| D5 Performance | findings | 5 | Performance issues are advisory; no new blocker-level startup regression was proven. |
+| D6 Reliability | findings | 6 | Recovery and save-path semantics still contain operator-visible reliability gaps. |
+| D7 Completeness | findings | 7 | Completion ledgers remain incomplete or internally inconsistent. |
 
-## What Worked
-- [Iteration 1] Direct SQL analysis cross-referenced with live output evidence. GROUP BY mismatch was immediately visible.
-- [Iteration 1] Comparing the UNIQUE constraint on symbol_id with display fields used in formatHighlight exposed the deduplication gap.
-- [Iteration 2] Reading SQL ORDER BY clause directly identified the heuristic flaw (outgoing vs incoming call count).
-- [Iteration 2] Reading shared.ts token budget constants (SESSION_PRIME_TOKEN_BUDGET=2000) provided exact ROI numbers.
-- [Iteration 3] Comparison matrix (proactive vs on-demand) for each capability made value gaps concrete and evidence-based.
-- [Iteration 3] Tracing startup injection components back to specific spec requirements and DRs revealed the traceability gap: highlights have no spec basis.
+## 7. RUNNING FINDINGS
+- **P0 (Critical):** 0 active
+- **P1 (Major):** 7 active
+- **P2 (Minor):** 3 active
+- **Delta this iteration:** +0 P0, +0 P1, +0 P2
+- **Provisional verdict:** `CONDITIONAL`
 
-## What Failed
-(none yet)
+## 8. WHAT WORKED
+- Current-tree rereads were enough to challenge several archived concerns and keep the rerun evidence-grounded.
+- Splitting packet truthfulness from runtime correctness made the active risks easier to cluster.
 
-## Exhausted Approaches
-(none yet)
+## 9. WHAT FAILED
+- Slow autonomous external review writers were poor at landing packet state on their own.
+- Archived packets could not be treated as current truth without line-by-line verification.
 
-## Next Focus
-All 6 dimensions are now covered. Next iterations should focus on cross-reference synthesis across dimensions, severity reassessment of cumulative findings, and convergence evaluation.
+## 10. EXHAUSTED APPROACHES (do not retry)
+- Blind reuse of archived findings without live-file validation.
+
+## 11. RULED OUT DIRECTIONS
+- No P0-worthy runtime crash or data-loss defect was confirmed in this rerun.
+
+## 12. NEXT FOCUS
+Final synthesis complete. Use `/spec_kit:plan` if you want remediation workstreams turned into an implementation packet.
+
+## 13. KNOWN CONTEXT
+- Earlier review folders were archived before this rerun.
+- External Copilot review batches were used for cross-AI signal but were too slow to write packet files directly.
+
+## 14. CROSS-REFERENCE STATUS
+
+| Protocol | Level | Status | Iteration | Notes |
+|----------|-------|--------|-----------|-------|
+| `spec_code` | core | findings | 20 | Root packet and live runtime/doc surfaces still diverge on active claims. |
+| `checklist_evidence` | core | findings | 20 | Checklist and closeout evidence need truth-sync against shipped behavior. |
+| `skill_agent` | overlay | pending | 20 | Overlay surfaces reviewed when relevant to active findings. |
+| `agent_cross_runtime` | overlay | pending | 20 | Cross-runtime claims reviewed only where packet scope touched them. |
+| `feature_catalog_code` | overlay | pending | 20 | No new overlay blocker exceeded packet/root issues. |
+| `playbook_capability` | overlay | pending | 20 | No new overlay blocker exceeded packet/root issues. |
+
+## 15. FILES UNDER REVIEW
+
+| File | Dimensions Reviewed | Last Iteration | Findings | Status |
+|------|-------------------|----------------|----------|--------|
+| `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md` | mixed | 20 | P1-024-001 | reviewed |
+| `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md` | mixed | 20 | P1-024-002 | reviewed |
+| `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md` | mixed | 20 | P1-024-003 | reviewed |
+| `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md` | mixed | 20 | P1-024-004 | reviewed |
+| `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` | mixed | 20 | P1-024-005 | reviewed |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` | mixed | 20 | P2-024-006 | reviewed |
+
+## 16. REVIEW BOUNDARIES
+- Max iterations: 20
+- Convergence threshold: 0.10
+- Rolling STOP threshold: 0.08
+- No-progress threshold: 0.05
+- Coverage stabilization passes required: 1
+- Per-iteration budget: 12 tool calls, 10 minutes
+- Severity threshold: P2
+- Review target type: spec-folder
+- Started: 2026-04-02T18:12:00+02:00

@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: ESM Module Compliance [02--system-spec-kit/023-esm-module-compliance/spec]"
-description: "Decision-complete packet for the completed @spec-kit/shared plus @spec-kit/mcp-server native ESM migration, with @spec-kit/scripts preserved as CommonJS and standards-doc follow-through captured after runtime proof."
+description: "Root packet for the shipped @spec-kit/shared plus @spec-kit/mcp-server native ESM migration, with @spec-kit/scripts preserved as CommonJS and post-migration follow-on work tracked in child phases."
 trigger_phrases:
   - "esm module compliance"
   - "mcp_server esm refactor"
@@ -17,11 +17,11 @@ contextType: "implementation"
 
 ### Executive Summary
 
-The finished 20-iteration research in `research/research.md` confirms that this packet is not a docs-only cleanup and not a one-package flag flip. The implementation target is a coordinated native ESM migration for `@spec-kit/shared` and `@spec-kit/mcp-server`, while `@spec-kit/scripts` stays a CommonJS package and crosses the boundary through explicit dynamic-import interoperability helpers. Dual-build or conditional-exports is rejected for the first pass and becomes fallback-only if the bounded scripts-side interop refactor proves too invasive.
+The finished 20-iteration research in `research/research.md` locked the migration strategy that this packet now records as shipped. The delivered implementation migrated `@spec-kit/shared` and `@spec-kit/mcp-server` to native ESM, kept `@spec-kit/scripts` as CommonJS, and used explicit package-boundary async loading plus scripts-owned bridge code where CommonJS had to cross into ESM. Dual-build or conditional exports remained a fallback option only and were not needed for the shipped path.
 
 **Key Decisions**: move `shared` and `mcp-server` together to package-local native ESM, keep `scripts` on CommonJS as a package, scope scripts-side interop refactors into this migration, and defer standards-doc updates outside this packet until the runtime verification matrix passes.
 
-**Critical Dependencies**: package-local metadata and compiler changes in `shared` and `mcp_server`, scripts-side interoperability helpers, CommonJS-assumption test rewrites, and the exact verification matrix plus highest-risk recent-surface retests captured in `research/research.md`.
+**Critical Dependencies**: package-local metadata and compiler changes in `shared` and `mcp_server`, scripts-side interoperability boundaries, CommonJS-assumption test rewrites, and the exact verification matrix plus highest-risk recent-surface retests captured in `research/research.md`.
 
 ---
 
@@ -32,7 +32,7 @@ The finished 20-iteration research in `research/research.md` confirms that this 
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Completed — phase 13 closure recorded |
+| **Status** | Completed — phases 001-013 recorded, root packet truth-synced after review remediation |
 | **Created** | 2026-03-23 |
 | **Branch** | `main` |
 | **Parent Spec** | None (top-level spec folder) |
@@ -47,10 +47,10 @@ The finished 20-iteration research in `research/research.md` confirms that this 
 The earlier packet scope was too small. The research run now shows that `@spec-kit/mcp-server` still depends on CommonJS-shaped compiler output, package metadata, emitted artifacts, and sibling-package assumptions, and that `@spec-kit/shared` cannot be left behind as CommonJS if the server becomes truthful native ESM. At the same time, `@spec-kit/scripts` is intentionally pinned to CommonJS and still owns required CLI and workflow surfaces, so the migration has to repair that boundary rather than flatten the whole workspace into one module mode.
 
 ### Purpose
-Lock a decision-complete implementation packet that follows the finished research conclusions without overstating progress. This packet should tell the implementer exactly what the first migration pass is, what is explicitly rejected, what must be proven at runtime, and what documentation work remains blocked until that runtime proof exists.
+Record the shipped migration truthfully and keep the parent packet aligned with the runtime and child-phase record. This root packet now serves as the durable source of truth for what the first ESM migration pass delivered, what remained explicitly out of scope, and how later child phases extended the post-migration work without reopening the core module-boundary decision.
 
 ### Rationale
-Without this truth-sync, the packet would keep mixing documentation conclusions, runtime goals, and rejected fallback options. The research is now complete enough to freeze the strategy, ordered phases, verification matrix, and defer rules clearly before runtime code changes begin.
+Without this truth-sync, the parent packet would keep mixing historical planning language, shipped runtime behavior, and later follow-on work. The root packet now reflects the verified migration result and leaves child phases to track later maintenance or retrieval work separately.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -61,7 +61,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 |---------------|---------------------|------------------------|
 | `@spec-kit/shared` | Must migrate with `@spec-kit/mcp-server`, not later | Shared package metadata, tsconfig, and relative imports are part of the first pass |
 | `@spec-kit/mcp-server` | Must become truthful native ESM from emitted `dist/*.js` | Package metadata, package-local NodeNext settings, import rewrites, and CommonJS-global cleanup are required |
-| `@spec-kit/scripts` | Must remain `"type": "commonjs"` | Scripts package conversion is out of scope, but scripts-side runtime interoperability work is in scope |
+| `@spec-kit/scripts` | Must remain `"type": "commonjs"` | Scripts package conversion stays out of scope, but scripts-side runtime interoperability work and explicit package-boundary async loading are in scope |
 | Dual-build / conditional exports | Rejected as the first pass | Only reconsider if scripts interop becomes materially too invasive after bounded implementation work |
 | Standards docs outside 023 | Not yet eligible to update | Keep `sk-code--opencode` and other standards surfaces deferred until runtime verification passes |
 
@@ -76,7 +76,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 - Update package metadata and package-local TypeScript settings for both packages to Node-aware native ESM
 - Rewrite relative imports and re-exports across `shared/**/*.ts` and `mcp_server/**/*.ts` to runtime-valid ESM specifiers
 - Replace CommonJS-only runtime assumptions inside `mcp_server`, including CommonJS globals, `require(...)` sites, and cross-package relative hops
-- Keep `@spec-kit/scripts` on CommonJS and refactor scripts-side runtime consumers to explicit dynamic-import interoperability boundaries
+- Keep `@spec-kit/scripts` on CommonJS and refactor scripts-side runtime consumers to explicit async ESM package-boundary loading
 - Rewrite tests that currently assert CommonJS emit details or otherwise depend on the old module boundary
 - Re-test the highest-risk recent runtime surfaces first as part of the migration safety sequence
 - Update this packet’s summary and verification state as runtime work progresses
@@ -113,7 +113,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | `@spec-kit/shared` and `@spec-kit/mcp-server` migrate together to package-local native ESM | Both packages declare native ESM package metadata, use package-local NodeNext settings, and emit truthful ESM output |
-| REQ-002 | `@spec-kit/scripts` stays CommonJS as a package | `scripts/package.json` remains CommonJS and runtime scripts consumption of `shared` or `mcp-server/api*` crosses explicit interoperability boundaries rather than direct CommonJS `require()` of ESM |
+| REQ-002 | `@spec-kit/scripts` stays CommonJS as a package | `scripts/package.json` remains CommonJS and runtime scripts consumption of `shared` or `mcp-server/api*` crosses explicit async package-boundary loading rather than direct CommonJS `require()` of ESM |
 | REQ-003 | Runtime verification proves the migration, not just source syntax | The exact verification matrix in `research/research.md` passes, including root commands, targeted tests, and direct runtime smokes |
 | REQ-004 | Highest-risk recent surfaces are re-tested first | The migration sequence re-tests the hot recent surfaces called out by research before standards docs outside 023 are updated |
 
@@ -141,7 +141,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 ### Acceptance Scenarios
 
 1. **Given** `shared` and `mcp_server` are still CommonJS-shaped today, **when** the first implementation pass lands, **then** both packages should move together to truthful native ESM rather than splitting the boundary.
-2. **Given** `scripts` must remain CommonJS, **when** sibling packages flip to ESM, **then** scripts-owned runtime consumers should use explicit dynamic-import interoperability helpers instead of direct `require()` of ESM packages.
+2. **Given** `scripts` must remain CommonJS, **when** sibling packages flip to ESM, **then** scripts-owned runtime consumers should use explicit async package-boundary loading and bridge code instead of direct `require()` of ESM packages.
 3. **Given** dual-build is not the first-pass strategy, **when** interop work begins, **then** the bounded scripts interop refactor should be attempted before any fallback to dual-build is considered.
 4. **Given** recent runtime surfaces are already hot, **when** verification begins, **then** the first re-tests should cover the highest-risk recent surfaces called out by research.
 5. **Given** runtime verification is still pending, **when** standards docs outside 023 are reviewed, **then** they should stay deferred until the runtime matrix passes.
@@ -189,7 +189,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 
 ### Documentation Boundary
 - Standards docs outside 023 should not be updated early just because the research is complete
-- This packet must stay implementation-pending until runtime code changes and verification actually land
+- This packet should describe shipped runtime behavior, not stay frozen in an implementation-pending state after verification lands
 
 ---
 
@@ -198,7 +198,7 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 ## 8. OPEN QUESTIONS
 
 - No strategy question remains open. `research/research.md` locks the first-pass decision.
-- The only explicit fallback trigger is this: if the bounded scripts-side interoperability refactor proves materially too invasive, revisit dual-build then, not before.
+- The only explicit fallback trigger remains historical: if the bounded scripts-side interoperability refactor had proved materially too invasive, dual-build would have been revisited then, not before.
 - Standards-doc updates outside 023 remain intentionally deferred until runtime verification passes.
 <!-- /ANCHOR:questions -->
 
@@ -230,7 +230,12 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 | 6 | 006-review-remediation/ | Fix all 18 findings (14 P1 + 4 P2) from 10-iteration GPT-5.4 deep review | Phase 5 | Complete |
 
 | 7 | 007-hybrid-search-null-db-fix/ | Hybrid search pipeline null DB fix | Phase 6 | Complete |
-| 8 | 008-spec-memory-compliance-audit/ | Spec & memory compliance audit, database rebuild from zero | Phase 7 | Draft |
+| 8 | 008-spec-memory-compliance-audit/ | Spec and memory compliance audit, database rebuild from zero | Phase 7 | Complete |
+| 9 | 009-reindex-validator-false-positives/ | Reindex validator false-positive cleanup | Phase 8 | Complete |
+| 10 | 010-search-retrieval-quality-fixes/ | Search and retrieval quality fixes | Phase 9 | Complete |
+| 11 | 011-indexing-and-adaptive-fusion/ | Indexing, adaptive fusion, and retrieval follow-through | Phase 10 | Complete |
+| 12 | 012-memory-save-quality-pipeline/ | Memory-save quality pipeline hardening | Phase 11 | Complete |
+| 13 | 013-fts5-fix-and-search-dashboard/ | FTS5 repair and search dashboard follow-through | Phase 12 | Complete |
 ### Phase Transition Rules
 
 - Each phase MUST pass `validate.sh` independently before the next phase begins
@@ -249,4 +254,9 @@ Without this truth-sync, the packet would keep mixing documentation conclusions,
 | 005-test-and-scenario-remediation | 006-review-remediation | All tests green, test sweep complete | 9480/9480 passing, 0 failures, 0 skipped |
 | 006-review-remediation | 007-hybrid-search-null-db-fix | All 18 review findings (14 P1 + 4 P2) resolved | Validation passes, review dashboard clean |
 | 007-hybrid-search-null-db-fix | 008-spec-memory-compliance-audit | memory_search returns >0 results for queries matching existing memories | memory_search("ESM migration") returns results |
+| 008-spec-memory-compliance-audit | 009-reindex-validator-false-positives | Recursive validation distinguishes real errors from stale reindex warnings | validate.sh reports the expected clean packet state |
+| 009-reindex-validator-false-positives | 010-search-retrieval-quality-fixes | Retrieval quality fixes land without reopening the ESM migration contract | targeted retrieval checks and packet validation pass |
+| 010-search-retrieval-quality-fixes | 011-indexing-and-adaptive-fusion | Search pipeline stability is restored | indexing and retrieval packet checks pass |
+| 011-indexing-and-adaptive-fusion | 012-memory-save-quality-pipeline | Memory-save pipeline follows current runtime contracts | save pipeline packet checks pass |
+| 012-memory-save-quality-pipeline | 013-fts5-fix-and-search-dashboard | Search-index repair and dashboard work build on the hardened save path | FTS5 repair and dashboard packet checks pass |
 <!-- /ANCHOR:phase-map -->

@@ -1,6 +1,6 @@
 ---
 title: "Spec: Hybrid Context Injection — Hook + Tool Architecture [02--system-spec-kit/024-compact-code-graph/spec]"
-description: "Implement a hybrid context injection system that uses Claude Code hooks (PreCompact, SessionStart, Stop) for automated context preservation at lifecycle boundaries, with tool-ba..."
+description: "Root packet for the shipped hybrid context-preservation system: Claude hooks where available, MCP recovery for hookless runtimes, structural code graph support, and semantic CocoIndex follow-up."
 trigger_phrases:
   - "spec"
   - "hybrid"
@@ -84,11 +84,11 @@ Template compliance shim anchor for questions.
 
 ### Summary
 
-Implement a hybrid context injection system that uses Claude Code hooks (PreCompact, SessionStart, Stop) for automated context preservation at lifecycle boundaries, with tool-based fallback for runtimes without hook support.
+This packet now documents the shipped hybrid context-preservation system: Claude hooks where available, `session_bootstrap()` as the canonical first recovery call for hookless runtimes, `session_resume()` for detailed follow-up context, structural code-graph support, and CocoIndex-assisted semantic follow-up.
 
 ### Problem
 
-Context compaction in long AI coding sessions causes loss of critical knowledge. Currently our system relies on AI-driven recovery (CLAUDE.md instructions telling the AI to call `memory_context({ mode: "resume" })`). Analysis (iteration 012) confirmed five gaps:
+Context compaction in long AI coding sessions caused loss of critical knowledge. Before the hook and bootstrap work landed, the system relied on AI-driven recovery (CLAUDE.md instructions telling the AI to call `memory_context({ mode: "resume" })`). Analysis (iteration 012) confirmed five gaps:
 
 1. **No provider lifecycle hook** — `autoSurfaceAtCompaction()` only runs when the AI actively calls `memory_context(mode: "resume")`, not at the moment compaction happens
 2. **No private Claude recovery layer** — `.claude/CLAUDE.md` doesn't exist; compaction rules are only in the shared root CLAUDE.md
@@ -119,22 +119,25 @@ Based on Claude Code hooks API (25 lifecycle events, 4 handler types — iterati
 ### Layer 2 — Tool-based (all runtimes)
 
 - Gate 1 in CLAUDE.md triggers `memory_match_triggers()` on each user message
-- After compaction, CLAUDE.md instructions direct AI to call `memory_context({ mode: "resume" })`
-- Works on any runtime that reads CLAUDE.md/CODEX.md
+- Hookless runtimes use `session_bootstrap()` as the canonical first recovery call on fresh start or after `/clear`
+- `session_resume()` remains available when a caller wants the detailed merged resume payload directly
+- `/spec_kit:resume` and related recovery docs must pass `profile: "resume"` whenever they call `memory_context`
+- Works on any runtime that reads CLAUDE.md/CODEX.md/GEMINI.md
 
 ### Layer 3 — Code Graph + CocoIndex (structural + semantic)
 
 Based on deep research (iterations 036-045) and existing CocoIndex deployment:
 
 - **CocoIndex** (existing): Semantic code search via vector embeddings — finds code by concept/intent ("what resembles what"). Deployed as MCP server with `search` tool, supports 28+ languages, function-level chunking, incremental index updates.
-- **Code Graph** (planned, phases 008+): Structural relationship index via tree-sitter + SQLite — maps imports, calls, hierarchy, containment ("what connects to what"). Designed in iterations 036-045.
+- **Code Graph** (shipped in incremental form): Structural relationship index via SQLite plus the current parser pipeline — maps imports, calls, hierarchy, containment ("what connects to what"). Child phases extended this over time, but the root packet should describe the delivered structural channel without overstating parser sophistication.
 - **Complementary, not competing**: CocoIndex finds semantic candidates, code graph expands structurally. Neither duplicates the other.
 
 ### Design Principle (iteration 013)
 
-**Hooks are transport reliability, not separate business logic.** Claude hooks call the same tools other runtimes call explicitly. Only two retrieval primitives:
+**Hooks are transport reliability, not separate business logic.** Claude hooks call the same tools other runtimes call explicitly. The recovery surface is intentionally layered:
 - Fast turn-start: `memory_match_triggers(prompt)`
-- Continuation/compaction: `memory_context({ mode: "resume" })`
+- Hookless first-call recovery: `session_bootstrap()`
+- Detailed continuation payload: `session_resume()` and `memory_context({ mode: "resume", profile: "resume" })`
 
 ### Architecture
 
@@ -152,6 +155,8 @@ User/Session Event ------>| Claude: hooks (SessionStart,     |
                           +----------------------------------+
                           | Shared Context Orchestrator      |
                           |   memory_match_triggers(prompt)  |
+                          |   session_bootstrap()/           |
+                          |   session_resume()/              |
                           |   memory_context(mode:"resume")  |
                           +----------------+-----------------+
                                            |
@@ -161,7 +166,7 @@ User/Session Event ------>| Claude: hooks (SessionStart,     |
                   +-------------+  +---------------+  +-----------+
                   | Spec Kit    |  | Code Graph    |  | CocoIndex |
                   | Memory MCP  |  | (structural)  |  | Code MCP  |
-                  | autoSurface |  | tree-sitter   |  | semantic  |
+                  | autoSurface |  | structural    |  | semantic  |
                   | triggers    |  | SQLite edges  |  | search    |
                   +-------------+  +---------------+  +-----------+
 ```
@@ -169,7 +174,7 @@ User/Session Event ------>| Claude: hooks (SessionStart,     |
 ### Hook Script File Layout (iteration 014)
 
 ```
-.opencode/skill/system-spec-kit/scripts/hooks/claude/
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/
   session-prime.ts      → SessionStart injection
   compact-inject.ts     → PreCompact precompute + cache
   session-stop.ts       → Stop: token tracking + save
@@ -177,7 +182,7 @@ User/Session Event ------>| Claude: hooks (SessionStart,     |
   hook-state.ts         → Session ID mapping, cache management
   claude-transcript.ts  → Transcript JSONL parsing
 
-Compiled → scripts/dist/hooks/claude/*.js
+Compiled → mcp_server/dist/hooks/claude/*.js
 ```
 
 ### Hook State (iteration 014)
@@ -194,7 +199,7 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 |--------|------|--------|-------------|
 | **CocoIndex Code MCP** | Semantic code search via embeddings | Deployed | `mcp__cocoindex_code__search` tool, 28+ languages |
 | **Spec Kit Memory MCP** | Memory search, auto-surface, constitutional memories | Deployed | `memory_context`, `memory_match_triggers` |
-| **Code Graph** | Structural relationship index (imports, calls, hierarchy) | Designed (phases 008+) | tree-sitter + SQLite, `code_graph_query` tool |
+| **Code Graph** | Structural relationship index (imports, calls, hierarchy) | Deployed | SQLite-backed structural query tooling, `code_graph_query` tool |
 
 ### Key Findings from Research
 
@@ -232,10 +237,10 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 | 005 | Command & Agent Alignment | 1-2 days | P1 — integration |
 | 006 | Documentation Alignment | 1-2 days | P1 — docs |
 | 007 | Testing & Validation | 2-3 days | P1 — quality assurance |
-| 008 | Structural Indexer (tree-sitter JS/TS/Python/Shell) | 3-4 days | P2 — graph foundation |
+| 008 | Structural Indexer | 3-4 days | P2 — graph foundation |
 | 009 | Code Graph Storage + Query (SQLite + MCP tools) | 2-3 days | P2 — structural query |
 | 010 | CocoIndex Bridge + code_graph_context | 3-4 days | P2 — bridge integration |
-| 011 | Compaction Working-Set Integration | 2-3 days | P2 — 3-source merge |
+| 011 | Compaction Working-Set Integration | 2-3 days | P2 — merge scaffolding and working-set support |
 | 012 | CocoIndex UX, Utilization & Usefulness | 2-3 days | P1 — semantic search integration |
 
 ### v2 Remediation Phases (013-016)
@@ -315,7 +320,7 @@ Deep research (95 iterations, segments 1-7) and deep review (30 iterations acros
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-This parent packet tracks **27 phase folders (001-025, 026, 027)**. Each phase is independently executable and validated.
+This parent packet tracks **28 phase folders (001-028)**. Each phase is independently executable and validated.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
@@ -343,9 +348,10 @@ This parent packet tracks **27 phase folders (001-025, 026, 027)**. Each phase i
 | 022 | `022-gemini-hook-porting/` | Gemini hook lifecycle support | Complete |
 | 023 | `023-context-preservation-metrics/` | Context preservation metrics | Complete |
 | 024 | `024-hookless-priming-optimization/` | Hookless priming optimization | Complete |
-| 025 | `025-tool-routing-enforcement/` | Tool-routing enforcement and guidance sync | Partial |
-| 026 | `026-session-start-injection-debug/` | Startup injection analysis and shared brief design | Draft |
-| 027 | `027-opencode-structural-priming/` | Non-hook structural bootstrap contract for OpenCode-first flows | Draft |
+| 025 | `025-tool-routing-enforcement/` | Tool-routing enforcement and guidance sync | Complete |
+| 026 | `026-session-start-injection-debug/` | Startup injection analysis and shared brief design | Complete |
+| 027 | `027-opencode-structural-priming/` | Non-hook structural bootstrap contract for OpenCode-first flows | Complete |
+| 028 | `028-startup-highlights-remediation/` | Startup highlights quality-gate remediation | Complete |
 
 ### Phase Transition Rules
 
@@ -361,6 +367,7 @@ This parent packet tracks **27 phase folders (001-025, 026, 027)**. Each phase i
 | 024-hookless-priming-optimization | 025-tool-routing-enforcement | Routing guidance enforcement + docs parity synced | Phase 025 checklist + recursive packet validation |
 | 025-tool-routing-enforcement | 026-session-start-injection-debug | Startup injection gaps isolated and remediation path defined | Phase 026 spec/plan/tasks alignment |
 | 026-session-start-injection-debug | 027-opencode-structural-priming | Non-hook structural bootstrap contract narrowed from startup injection work | Phase 027 spec/plan/checklist alignment |
+| 027-opencode-structural-priming | 028-startup-highlights-remediation | Startup highlights retained only if signal quality can be proven | Phase 028 spec/plan/checklist alignment |
 <!-- /ANCHOR:phase-map -->
 
 ### Problem Statement

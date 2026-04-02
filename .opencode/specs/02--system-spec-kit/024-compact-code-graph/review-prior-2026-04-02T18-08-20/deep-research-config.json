@@ -1,0 +1,24 @@
+{
+  "topic": "Review: Code Graph session start injection usefulness — signal quality, ROI, and architectural alignment",
+  "mode": "review",
+  "reviewTarget": "Code Graph session start injection (hook output at startup)",
+  "reviewTargetType": "files",
+  "reviewDimensions": ["signal_quality", "deduplication", "node_selection", "token_roi", "on_demand_comparison", "architectural_alignment"],
+  "reviewScopeFiles": [
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts"
+  ],
+  "maxIterations": 7,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code"],
+    "overlay": []
+  },
+  "specFolder": ".opencode/specs/02--system-spec-kit/024-compact-code-graph",
+  "createdAt": "2026-04-02T10:00:00Z",
+  "status": "complete",
+  "executionMode": "auto"
+}

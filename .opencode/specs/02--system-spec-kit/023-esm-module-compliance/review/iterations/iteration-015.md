@@ -1,41 +1,39 @@
-# Iteration 015
+# Review Iteration 015: Cross-pass adjudication — severity challenge
+
+## Focus
+Cross-pass adjudication — severity challenge
 
 ## Scope
-Scripts/tooling reliability and command output contracts (`scripts/` and spec shell tooling).
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
 
-## Verdict
-findings
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
+No new active findings in this pass. This iteration served as a stabilization, challenge, or synthesis pass over previously recorded evidence.
 
-### P1
-1. `generate-context` mixes human logs with machine-readable JSON on stdout.
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/memory/generate-context.ts:550
-  - ../../../../skill/system-spec-kit/scripts/memory/generate-context.ts:364
-  - ../../../../skill/system-spec-kit/scripts/memory/generate-context.ts:365
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-2. `check-completion.sh --json` emits JSON to stderr with success exit and empty stdout.
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/spec/check-completion.sh:379
-  - ../../../../skill/system-spec-kit/scripts/spec/check-completion.sh:385
+## Ruled Out
+- Challenged whether any traceability issue should be P0; all active findings remain below release-blocker severity.
 
-### P2
-1. CLI contract mismatch between folder-detector help and parser behavior.
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/spec-folder/folder-detector.ts:1249
-  - ../../../../skill/system-spec-kit/scripts/memory/generate-context.ts:419
-  - ../../../../skill/system-spec-kit/scripts/memory/generate-context.ts:424
+## Sources Reviewed
+- [SOURCE: review state packet + previously confirmed live-tree evidence from this rerun]
 
-2. `progressive-validate` suggestion extraction can silently drop findings when stdout/stderr are merged.
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/spec/progressive-validate.sh:501
-  - ../../../../skill/system-spec-kit/scripts/spec/progressive-validate.sh:509
-  - ../../../../skill/system-spec-kit/scripts/spec/progressive-validate.sh:516
-  - ../../../../skill/system-spec-kit/scripts/spec/progressive-validate.sh:540
+## Assessment
+- Confirmed findings: 0
+- New findings ratio: 0.00
+- noveltyJustification: No new defect exceeded the existing registry; this pass challenged or stabilized prior findings.
+- Dimensions addressed: Cross-pass adjudication — severity challenge
 
-3. `create.sh` output can over-report `description.json` presence.
-- Evidence:
-  - ../../../../skill/system-spec-kit/scripts/spec/create.sh:1077
-  - ../../../../skill/system-spec-kit/scripts/spec/create.sh:1083
-  - ../../../../skill/system-spec-kit/scripts/spec/create.sh:1184
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

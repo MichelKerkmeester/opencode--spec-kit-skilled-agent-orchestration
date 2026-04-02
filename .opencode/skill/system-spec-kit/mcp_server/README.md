@@ -581,7 +581,7 @@ Resume session with combined memory, code graph and CocoIndex status in a single
 
 ##### `session_bootstrap`
 
-Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. Combines `session_resume` (minimal) plus `session_health` into a single round-trip and returns context, health, structural readiness and recommended next actions.
+Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|

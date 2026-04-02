@@ -15,6 +15,22 @@ export interface QueryArgs {
   maxDepth?: number;
 }
 
+function resolveRequestedEdgeType(args: QueryArgs): string | undefined {
+  if (typeof args.edgeType === 'string' && args.edgeType.trim().length > 0) {
+    return args.edgeType.trim().toUpperCase();
+  }
+
+  if (args.operation.startsWith('calls')) {
+    return 'CALLS';
+  }
+
+  if (args.operation.startsWith('imports')) {
+    return 'IMPORTS';
+  }
+
+  return undefined;
+}
+
 /** Resolve a subject string to a symbolId */
 function resolveSubject(subject: string): string | null {
   const d = graphDb.getDb();
@@ -101,12 +117,13 @@ function transitiveTraversal(
 export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
   // Auto-trigger: ensure graph is fresh before querying
   try {
-    await ensureCodeGraphReady(process.cwd());
+    await ensureCodeGraphReady(process.cwd(), { allowInlineIndex: false });
   } catch {
     // Non-blocking: continue with potentially stale data
   }
 
   const { operation, subject, limit = 50 } = args;
+  const requestedEdgeType = resolveRequestedEdgeType(args);
 
   if (operation === 'outline') {
     const nodes = graphDb.queryOutline(subject);
@@ -148,15 +165,14 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
 
   // If includeTransitive, use BFS traversal instead of 1-hop
   if (args.includeTransitive) {
-    const edgeType = operation.startsWith('calls') ? 'CALLS' : 'IMPORTS';
     const direction = operation.endsWith('from') ? 'from' : 'to';
-    const transitive = transitiveTraversal(symbolId, edgeType, direction, maxDepth, limit);
+    const transitive = transitiveTraversal(symbolId, requestedEdgeType ?? 'CALLS', direction, maxDepth, limit);
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           status: 'ok',
-          data: { operation, symbolId, transitive: true, maxDepth, nodes: transitive },
+          data: { operation, symbolId, edgeType: requestedEdgeType, transitive: true, maxDepth, nodes: transitive },
         }, null, 2),
       }],
     };
@@ -165,23 +181,23 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   let result;
   switch (operation) {
     case 'calls_from': {
-      const edges = graphDb.queryEdgesFrom(symbolId, 'CALLS').slice(0, limit);
-      result = { operation, symbolId, edges: edges.map(e => ({ target: e.targetNode?.fqName ?? e.edge.targetId, file: e.targetNode?.filePath, line: e.targetNode?.startLine })) };
+      const edges = graphDb.queryEdgesFrom(symbolId, requestedEdgeType).slice(0, limit);
+      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ target: e.targetNode?.fqName ?? e.edge.targetId, file: e.targetNode?.filePath, line: e.targetNode?.startLine })) };
       break;
     }
     case 'calls_to': {
-      const edges = graphDb.queryEdgesTo(symbolId, 'CALLS').slice(0, limit);
-      result = { operation, symbolId, edges: edges.map(e => ({ source: e.sourceNode?.fqName ?? e.edge.sourceId, file: e.sourceNode?.filePath, line: e.sourceNode?.startLine })) };
+      const edges = graphDb.queryEdgesTo(symbolId, requestedEdgeType).slice(0, limit);
+      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ source: e.sourceNode?.fqName ?? e.edge.sourceId, file: e.sourceNode?.filePath, line: e.sourceNode?.startLine })) };
       break;
     }
     case 'imports_from': {
-      const edges = graphDb.queryEdgesFrom(symbolId, 'IMPORTS').slice(0, limit);
-      result = { operation, symbolId, edges: edges.map(e => ({ target: e.targetNode?.fqName ?? e.edge.targetId, file: e.targetNode?.filePath })) };
+      const edges = graphDb.queryEdgesFrom(symbolId, requestedEdgeType).slice(0, limit);
+      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ target: e.targetNode?.fqName ?? e.edge.targetId, file: e.targetNode?.filePath })) };
       break;
     }
     case 'imports_to': {
-      const edges = graphDb.queryEdgesTo(symbolId, 'IMPORTS').slice(0, limit);
-      result = { operation, symbolId, edges: edges.map(e => ({ source: e.sourceNode?.fqName ?? e.edge.sourceId, file: e.sourceNode?.filePath })) };
+      const edges = graphDb.queryEdgesTo(symbolId, requestedEdgeType).slice(0, limit);
+      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ source: e.sourceNode?.fqName ?? e.edge.sourceId, file: e.sourceNode?.filePath })) };
       break;
     }
     default:

@@ -1,31 +1,53 @@
-# Iteration 005: D5 Performance
+# Review Iteration 005: D5 Performance — save and startup overhead
+
+## Focus
+D5 Performance — save and startup overhead
+
+## Scope
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
+
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
+### P2-023-009: Folder-wide duplicate hashing adds avoidable latency to the hot save path
+- Dimension: D5 Performance
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1447]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1663]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1669]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/file-writer.ts:94]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/file-writer.ts:105]
+- Evidence: [SOURCE: .opencode/skill/system-spec-kit/scripts/core/file-writer.ts:129]
+- Impact: Each save still rescans and rehashes the whole target folder after preflight, so save latency grows with folder history even on the normal non-duplicate path.
+- Final severity: P2
 
-No P0 or P1 issues found.
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-### [P2] `vector-index-store.ts` keeps per-call `import()` boundaries on hot retrieval paths even though the heavy store dependencies are already eagerly loaded
-- **File**: `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:20-29`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:942-944`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:1036-1044`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:1082-1099`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:1114-1117`
-- **Issue**: The store eagerly loads `better-sqlite3`, `sqlite-vec`, the embeddings provider, and schema helpers at module load, so the remaining `await import(...)` calls in `search()`, `get()`, `getStats()`, `searchEnriched()`, `enhancedSearch()`, `getConstitutionalMemories()`, and `verifyIntegrity()` no longer buy a meaningful startup reduction. They do, however, leave an avoidable async module-resolution boundary on every hot-path search/read call.
-- **Evidence**: The top of the file already commits to native-module and provider startup cost. Later methods still `await import('./vector-index-queries.js')` or related helpers on each invocation. Node will cache module evaluation, but these call sites still allocate and await the namespace promise on every request, which is unnecessary on the memory-search path.
-- **Fix**: Either statically import the stable query/mutation helpers or cache them behind module-level promises so the hot search/read paths do not repeatedly cross an async import boundary once the store is live.
+## Ruled Out
+- No blocker-level startup regression was proven in the current tree.
 
-### [P2] `mcp_server/cli.ts` pays the heavy DB/native import graph before it knows which command needs that machinery
-- **File**: `.opencode/skill/system-spec-kit/mcp_server/cli.ts:15-24`; `.opencode/skill/system-spec-kit/mcp_server/cli.ts:30-31`; `.opencode/skill/system-spec-kit/mcp_server/cli.ts:364-376`
-- **Issue**: The CLI parses `process.argv` only after loading vector-index, checkpoint, access-tracker, mutation-ledger, trigger-matcher, and startup-check modules at the top level. That means lightweight invocations such as usage/error paths still pay the ESM/native module-graph startup cost before command dispatch. The later dynamic import in `runReindex()` only protects the reindex handler itself, not the earlier startup work.
-- **Evidence**: Command resolution happens at lines 30-31, but the heavy imports are already fixed at lines 15-24. `runReindex()` explicitly tries to defer `./handlers/memory-index.js`, which confirms the file already recognizes startup cost, but the biggest graph is still front-loaded.
-- **Fix**: Move command-specific imports behind per-command loader functions so help/argument-validation and lighter commands can exit before paying for the full database/native stack.
+## Sources Reviewed
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/file-writer.ts:105]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/file-writer.ts:129]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/file-writer.ts:94]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1447]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1663]
+- [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1669]
 
-## Notes
+## Assessment
+- Confirmed findings: 1
+- New findings ratio: 1.00
+- noveltyJustification: Introduced fresh evidence-backed findings.
+- Dimensions addressed: D5 Performance — save and startup overhead
 
-- I did not find a new P1 performance regression in `scripts/core/workflow.ts`. The retry-manager path memoizes its dynamic import, and the other `await import('@spec-kit/mcp-server/api')` sites appear once-per-workflow rather than hot-loop repeated loads.
-- I did not find evidence that top-level-await removal itself introduced a new eager-startup regression in the reviewed `context-server.ts` path. Startup is still heavy, but the visible cost is dominated by explicit API-key validation, DB initialization, integrity checks, BM25 rebuild, and background subsystem setup inside `main()`, not by a newly introduced eager replacement for former TLA behavior.
-- `shared/index.ts` remains a broad barrel, but in this D5 pass I did not find a concrete runtime-cost issue attributable to its re-exports in the reviewed Node entrypoints. The stronger concern there remains API surface size and maintainability rather than observed startup overhead.
-
-## Summary
-
-- P0: 0 findings
-- P1: 0 findings
-- P2: 2 findings
-- newFindingsRatio: 0.20
-- Recommended next focus: D6 Reliability on async-import failure handling, fallback-path correctness, and startup degradation behavior
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

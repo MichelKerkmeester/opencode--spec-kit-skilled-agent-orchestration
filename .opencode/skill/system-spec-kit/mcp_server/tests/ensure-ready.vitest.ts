@@ -117,6 +117,20 @@ describe('ensure-ready', () => {
       expect(mocks.removeFileMock).toHaveBeenCalledWith('/tmp/test-root/deleted.ts');
       expect(mocks.indexFilesMock).not.toHaveBeenCalled();
     });
+
+    it('reports stale work without indexing when read paths disable inline indexing', async () => {
+      mocks.getDbMock.mockReturnValue(createDbWithNodeCount(1));
+      mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/stale.ts']);
+      mocks.ensureFreshFilesMock.mockReturnValue({ fresh: [], stale: ['/tmp/test-root/stale.ts'] });
+
+      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const result = await ensureCodeGraphReady('/tmp/test-root', { allowInlineIndex: false });
+
+      expect(result.action).toBe('selective_reindex');
+      expect(result.files).toEqual(['/tmp/test-root/stale.ts']);
+      expect(result.reason).toContain('inline auto-index skipped for read path');
+      expect(mocks.indexFilesMock).not.toHaveBeenCalled();
+    });
   });
 
   describe('getGraphFreshness', () => {

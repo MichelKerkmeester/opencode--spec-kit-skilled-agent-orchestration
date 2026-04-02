@@ -1,0 +1,58 @@
+{
+  "topic": "Review: ESM Module Compliance — 5-phase native ESM migration of @spec-kit/shared, @spec-kit/mcp-server, and scripts interop",
+  "mode": "review",
+  "reviewTarget": ".opencode/specs/02--system-spec-kit/023-esm-module-compliance",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability", "performance", "reliability", "completeness"],
+  "reviewScopeFiles": {
+    "spec_paths": [
+      ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/spec.md",
+      ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/plan.md",
+      ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/tasks.md",
+      ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/checklist.md",
+      ".opencode/specs/02--system-spec-kit/023-esm-module-compliance/implementation-summary.md"
+    ],
+    "code_paths": [
+      ".opencode/skill/system-spec-kit/shared/package.json",
+      ".opencode/skill/system-spec-kit/shared/tsconfig.json",
+      ".opencode/skill/system-spec-kit/shared/**/*.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json",
+      ".opencode/skill/system-spec-kit/mcp_server/tsconfig.json",
+      ".opencode/skill/system-spec-kit/mcp_server/**/*.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/evals/import-policy-rules.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts"
+    ],
+    "test_paths": [
+      ".opencode/skill/system-spec-kit/mcp_server/tests/**/*.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/**/*.vitest.ts",
+      ".opencode/skill/system-spec-kit/shared/parsing/*.test.ts"
+    ]
+  },
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["skill_agent", "agent_cross_runtime", "feature_catalog_code", "playbook_capability"]
+  },
+  "maxIterations": 10,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "specFolder": ".opencode/specs/02--system-spec-kit/023-esm-module-compliance",
+  "createdAt": "2026-03-30T08:42:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "agentModel": "gpt-5.4",
+  "agentReasoning": "high",
+  "agentDispatch": "codex",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

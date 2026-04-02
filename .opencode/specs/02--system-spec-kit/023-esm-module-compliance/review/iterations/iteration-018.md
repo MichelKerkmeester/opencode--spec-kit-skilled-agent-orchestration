@@ -1,50 +1,39 @@
-# Iteration 018
+# Review Iteration 018: Remediation clustering
+
+## Focus
+Remediation clustering
 
 ## Scope
-Feature catalog and manual testing playbook alignment.
+- Review target: .opencode/specs/02--system-spec-kit/023-esm-module-compliance
+- Dimension lane: see focus title
+- Review mode: fresh rerun on current tree only
 
-## Verdict
-findings
+## Scorecard
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
+| representative scope file set | 2 | 2 | 2 | 2 |
 
 ## Findings
+No new active findings in this pass. This iteration served as a stabilization, challenge, or synthesis pass over previously recorded evidence.
 
-### P1
-1. `/spec_kit:resume` capability contract in catalog/playbook understates runtime tool surface.
-- Evidence:
-  - ../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md:52
-  - ../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md:61
-  - ../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md:291
-  - ../../../../skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md:10
-  - ../../../../skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md:16
-  - ../../../../command/spec_kit/resume.md:4
-  - ../../../../command/spec_kit/resume.md:252
+## Cross-Reference Results
+- Confirmed: Current-tree evidence was preferred over archived review packets.
+- Contradictions: See findings above where packet/docs/runtime disagree.
+- Unknowns: None material to this iteration.
 
-2. Broken cross-links for feature 126 roadmap snapshot.
-- Evidence:
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2509
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:3627
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/09--evaluation-and-measurement/126-memory-roadmap-baseline-snapshot.md:36
-  - ../../../../skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md:1
+## Ruled Out
+- Findings group cleanly into packet truth-sync, runtime contract clarification, and save-path hardening.
 
-3. Manual test scenario 255 uses outdated `code_graph_query` schema.
-- Evidence:
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:42
-  - ../../../../skill/system-spec-kit/mcp_server/tool-schemas.ts:643
-  - ../../../../skill/system-spec-kit/mcp_server/tool-schemas.ts:650
+## Sources Reviewed
+- [SOURCE: review state packet + previously confirmed live-tree evidence from this rerun]
 
-### P2
-1. Root catalog index does not include shipped category 22.
-- Evidence:
-  - ../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md:34
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:36
-  - ../../../../skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/01-category-overview.md:1
+## Assessment
+- Confirmed findings: 0
+- New findings ratio: 0.00
+- noveltyJustification: No new defect exceeded the existing registry; this pass challenged or stabilized prior findings.
+- Dimensions addressed: Remediation clustering
 
-2. Playbook release-readiness text has stale feature count.
-- Evidence:
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:152
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:3750
-
-3. Case-sensitive link drift between catalog/playbook references.
-- Evidence:
-  - ../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md:261
-  - ../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:3658
+## Reflection
+- What worked: Narrowing to one review lane kept the pass evidence-backed and current-tree focused.
+- What did not work: Archived packets could not be trusted without rechecking live file lines.
+- Next adjustment: Continue rotating through remaining lanes before final synthesis.

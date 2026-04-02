@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Hybrid Context Injection [02--system-spec-kit/024-compact-code-graph]"
-description: "25-phase hybrid context injection system: Claude hooks, code graph, CocoIndex bridge, cross-runtime fallback, v2 remediation truth-sync, and tool-routing enforcement."
+description: "28-phase hybrid context-preservation system: Claude hooks, hookless bootstrap/resume recovery, code graph, CocoIndex bridge, and follow-on review remediation."
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -69,9 +69,9 @@ Template compliance shim anchor for limitations.
 |-------|-------|
 | **Spec Folder** | 024-compact-code-graph |
 | **Started** | 2026-03-29 |
-| **Completed** | 2026-04-02 (v1+v2+v3+phase025 truth-sync) |
+| **Completed** | 2026-04-02 (v1+v2+v3+v4 truth-sync through phase 028) |
 | **Level** | 3 |
-| **Phases** | 25 (001-025) |
+| **Phases** | 28 (001-028) |
 | **Total LOC** | ~3,500+ across all phases |
 <!-- /ANCHOR:metadata -->
 
@@ -79,7 +79,7 @@ Template compliance shim anchor for limitations.
 
 <!-- ANCHOR:what-built -->
 ### What Was Built
-Context compaction in long AI coding sessions no longer causes knowledge loss. The system now automatically preserves and restores critical context at every lifecycle boundary -- compaction, session start, resume, and stop -- across Claude Code (via hooks) and all other runtimes (via MCP-level auto-priming). A structural code graph provides "what connects to what" alongside CocoIndex's "what resembles what", and a 3-source budget allocator merges memory, structural, and semantic context within a 4000-token budget.
+Context compaction in long AI coding sessions no longer causes silent knowledge loss. The system now preserves and restores critical context at lifecycle boundaries -- compaction, session start, resume, and stop -- across Claude Code (via hooks) and hookless runtimes (via MCP-level priming). A structural code graph provides "what connects to what" alongside CocoIndex's "what resembles what", and the compaction path uses a bounded allocator plus follow-up guidance without overstating the shipped runtime as a fully retrieved 3-source merge.
 
 ### Layer 1: Claude Code Hooks (Phases 001-003)
 
@@ -87,11 +87,11 @@ Three hook scripts handle the full Claude Code lifecycle. `compact-inject.ts` (P
 
 ### Layer 2: Cross-Runtime Fallback (Phases 004-007)
 
-All runtimes that read CLAUDE.md/CODEX.md/GEMINI.md get context injection via the existing Gate 1 system. `memory_match_triggers()` fires on each user message. After compaction, instruction files direct the AI to call `memory_context({ mode: "resume", profile: "resume" })`. `.claude/CLAUDE.md` was created with Claude-specific recovery instructions. Runtime detection outputs both `runtime` and `hookPolicy` fields.
+All runtimes that read CLAUDE.md/CODEX.md/GEMINI.md get context injection via the existing Gate 1 system. `memory_match_triggers()` fires on each user message. Hookless runtimes use `session_bootstrap()` as the canonical first recovery call and `session_resume()` when the detailed merged payload is needed; direct `memory_context` recovery paths use `profile: "resume"`. `.claude/CLAUDE.md` was created with Claude-specific recovery instructions. Runtime detection outputs both `runtime` and `hookPolicy` fields.
 
 ### Layer 3: Structural Code Graph (Phases 008-011)
 
-A regex-based structural indexer (later upgraded to tree-sitter WASM default in v2/v3) extracts symbols from JS/TS/Python/Shell files. SQLite stores nodes and edges (CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF) in `code-graph.sqlite`. Three MCP tools expose the graph: `code_graph_scan` (build/refresh), `code_graph_query` (outline, calls_from, calls_to, imports), `code_graph_status` (freshness, coverage). `code_graph_context` accepts CocoIndex file-range seeds and resolves them to graph neighborhoods with budget enforcement.
+The structural indexer extracts symbols from JS/TS/Python/Shell files and stores nodes and edges (CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF) in `code-graph.sqlite`. Three MCP tools expose the graph: `code_graph_scan` (build/refresh), `code_graph_query` (outline, calls_from, calls_to, imports), `code_graph_status` (freshness, coverage). `code_graph_context` accepts CocoIndex file-range seeds and resolves them to graph neighborhoods with budget enforcement. The root packet now avoids overstating parser internals when those details are child-phase specific.
 
 ### Layer 4: CocoIndex Integration (Phase 012)
 
@@ -99,7 +99,7 @@ CocoIndex (already deployed as MCP server with `search` tool) provides semantic 
 
 ### Layer 5: 3-Source Compaction Merge (Phase 011)
 
-The working-set tracker and budget allocator modules are implemented, but the active runtime compaction path still leans on transcript heuristics and hint-based CocoIndex follow-up guidance. The architecture target remains a full 3-source retrieval merge; current behavior is documented as partial.
+The working-set tracker and budget allocator modules are implemented, but the active runtime compaction path still leans on transcript heuristics plus graph and CocoIndex follow-up guidance. The architecture target remains a fuller 3-source retrieval merge; current behavior is intentionally documented as partial.
 
 ### v2 Remediation (Phases 013-016)
 
@@ -110,7 +110,7 @@ A 95-iteration deep research and 30-iteration deep review (Codex CLI + Copilot C
 - **Phase 015** (6/8 items): Parser adapter interface, DECORATES/OVERRIDES/TYPE_OF edges, ghost SymbolKinds, dead TESTED_BY branch removal, excludeGlobs wiring, .zsh mapping fix. Deferred: tree-sitter WASM parser, regex removal.
 - **Phase 016** (6/8 items): Near-exact seed resolution, auto-reindex triggers, cross-runtime instruction updates, recovery doc consolidation, seed-resolver DB failure handling. Deferred: intent pre-classifier, SessionStart scope fix.
 
-### v3 Polish (Phases 017-025)
+### v3-v4 Polish and follow-through (Phases 017-028)
 
 - **Phase 017**: Fixed 12/15 tree-sitter parser and classifier bugs (abstract methods, class expressions, multi-import, init poisoning recovery, confidence scaling).
 - **Phase 018**: MCP first-call auto-priming for hookless runtimes. Session_health tool for stale context detection.
@@ -121,13 +121,16 @@ A 95-iteration deep research and 30-iteration deep review (Codex CLI + Copilot C
 - **Phase 023**: Session metrics collector, bootstrap quality scoring, dashboard via eval_reporting_dashboard.
 - **Phase 024**: `session_bootstrap` composite tool, `getSessionSnapshot()`, bootstrap telemetry, urgency-aware skip logic.
 - **Phase 025**: Tool-routing enforcement hints, constitutional gate-routing memory alignment, and cross-runtime instruction sync.
+- **Phase 026**: SessionStart injection debugging and hook-path validation follow-through.
+- **Phase 027**: OpenCode structural priming contract and hookless structural bootstrap guidance.
+- **Phase 028**: Startup highlights remediation with deduplication, path filtering, relevance, and diversity gates.
 <!-- /ANCHOR:what-built -->
 
 ---
 
 <!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
-Implementation proceeded in three waves. v1 phases (001-012) were built sequentially over the initial design period, with each phase tested independently before proceeding. v2 remediation (013-016) was executed by 16 parallel Codex CLI agents (GPT-5.4, high reasoning effort) in 5 simultaneous waves. v3 phases (017-025) addressed parser hardening, hookless priming, routing, observability, and tool-routing enforcement/documentation parity. Each phase has its own child spec folder with spec.md, plan.md, checklist.md, and implementation-summary.md.
+Implementation proceeded in four waves. v1 phases (001-012) were built sequentially over the initial design period, with each phase tested independently before proceeding. v2 remediation (013-016) was executed by 16 parallel Codex CLI agents (GPT-5.4, high reasoning effort) in 5 simultaneous waves. v3 phases (017-025) addressed parser hardening, hookless priming, routing, observability, and tool-routing enforcement/documentation parity. v4 phases (026-028) covered SessionStart debugging, hookless structural priming, and startup-highlight remediation. Each phase has its own child spec folder with spec.md, plan.md, checklist.md, and implementation-summary.md.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -159,12 +162,12 @@ Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-
 | v2 phase 014 checklist | PASS — 14/14 items |
 | v2 phase 015 checklist | PARTIAL — 7/8 items (1 deferred: additional SymbolKinds) |
 | v2 phase 016 checklist | PASS — cross-runtime scope/intent items synced in later phases |
-| phase 025 checklist | PARTIAL — runtime hints and docs synced; manual cross-runtime verification still open |
-| v3 phases 017-024 | All 8 phases implemented with implementation summaries |
+| phase 025 checklist | PASS — runtime hints and docs synced |
+| v3-v4 phases 017-028 | All 12 phases implemented with implementation summaries |
 | vitest suites | PASS — code-graph-indexer (18), crash-recovery (36), budget-allocator (15), compact-merger (15) |
 | ESLint | PASS on all modified TypeScript files (0 errors) |
 | Root checklist (v1 + v2) | All P0 items PASS, all P1 items PASS, P2 items PASS with noted partials |
-| Deep review verdict | CONDITIONAL (0 P0, 16 P1 addressed, 16 P2 addressed) |
+| Deep review verdict at rerun time | CONDITIONAL (0 P0, 16 P1 addressed, 16 P2 addressed); follow-up root/runtime truth-sync landed afterward |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -173,7 +176,7 @@ Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-
 ### Known Limitations
 1. **1 deferred item remains.** Additional SymbolKinds extraction beyond the current tree-sitter set is still tracked in tasks.md.
 2. **Regex parser is still available.** Tree-sitter is the default parser, but the regex fallback remains via `SPECKIT_PARSER=regex` env var. Brace-counting for endLine is approximate -- string literals with `{`/`}` can shift the count.
-3. **Compaction pipeline emits CocoIndex follow-up guidance, not retrieved results.** The 3-source merge includes semantic neighbor suggestions rather than fetched CocoIndex content.
+3. **Compaction pipeline emits CocoIndex follow-up guidance, not retrieved results.** The shipped merge includes semantic neighbor suggestions rather than fetched CocoIndex content.
 4. **~~Startup highlights quality gates pending.~~ Resolved (Phase 028).** The queryStartupHighlights() function now uses: (a) GROUP BY on display fields for deduplication, (b) 10 NOT LIKE path exclusion filters for vendored/test code, (c) incoming-call-count heuristic via target_id JOIN, and (d) per-file diversity controls via ROW_NUMBER(). All 3 P1 findings from deep review 2026-04-02 are fixed. See DR-017 and Phase 028.
 5. **Working-set integration is partial.** Tracker structures exist, but compaction still relies primarily on transcript heuristics instead of fully working-set-driven retrieval.
 6. **MCP-level compaction detection is not implementable** without runtime SDK changes. Deferred indefinitely.

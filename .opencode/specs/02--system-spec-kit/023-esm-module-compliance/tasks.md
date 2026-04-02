@@ -57,8 +57,8 @@ contextType: "implementation"
 
 ### `@spec-kit/scripts` CommonJS Interoperability Work
 
-- [x] T008 Keep `scripts/package.json` CommonJS while introducing explicit dynamic-import interoperability helpers - WHY: `scripts` must remain CommonJS as a package while consuming ESM siblings safely - Acceptance: scripts-owned runtime consumers no longer depend on direct CommonJS `require()` of ESM sibling packages [EVIDENCE: Phase 3 — scripts/package.json keeps "type":"commonjs", Node 25 native require(esm) used]
-- [x] T009 Refactor scripts-side loaders, bridges, and API entrypoints to use the explicit interoperability boundary - WHY: package-level CommonJS retention is only safe if every affected call site crosses the new boundary correctly - Acceptance: `scripts -> shared` and `scripts -> mcp_server/api*` flows resolve through the new loader pattern [EVIDENCE: Phase 3 — workflow.ts uses dynamic import(), top-level await blockers removed]
+- [x] T008 Keep `scripts/package.json` CommonJS while introducing explicit async interoperability boundaries - WHY: `scripts` must remain CommonJS as a package while consuming ESM siblings safely - Acceptance: scripts-owned runtime consumers no longer depend on direct CommonJS `require()` of ESM sibling packages [EVIDENCE: Phase 3 — scripts/package.json keeps "type":"commonjs"; runtime consumers cross into ESM with guarded async imports]
+- [x] T009 Refactor scripts-side loaders, bridges, and API entrypoints to use the explicit interoperability boundary - WHY: package-level CommonJS retention is only safe if every affected call site crosses the new boundary correctly - Acceptance: `scripts -> shared` and `scripts -> mcp_server/api*` flows resolve through the new loader pattern [EVIDENCE: Phase 3 — workflow.ts and related save paths use async package-boundary loading; top-level-await blockers were removed]
 
 ### Test Rewrites for Old CommonJS-Emit Assumptions
 
@@ -83,7 +83,7 @@ contextType: "implementation"
 
 ### Packet Completion Gate
 
-- [x] T016 Close the packet only after runtime verification, scripts interoperability proof, and deferred standards-doc sync all exist - WHY: research made those gates mandatory - Acceptance: no implementation-pending caveat remains once the packet is actually completed [EVIDENCE: Phase 6 — all 18 review findings fixed (14 P1 + 4 P2), full test suite green, packet closure in progress]
+- [x] T016 Close the packet only after runtime verification, scripts interoperability proof, and deferred standards-doc sync all exist - WHY: research made those gates mandatory - Acceptance: no implementation-pending caveat remains once the packet is actually completed [EVIDENCE: Root packet truth-sync now reflects the completed migration and closed child-phase record]
 <!-- /ANCHOR:phase-3 -->
 
 ---

@@ -94,7 +94,7 @@ Template compliance shim section. Legacy phase content continues below.
 ### DR-007: Pass `profile: "resume"` for Compact Brief Format
 **Decision:** All resume paths must pass `profile: "resume"` alongside `mode: "resume"`
 **Date:** 2026-03-29
-**Context:** Iteration 012 discovered `memory_context({ mode: "resume" })` returns search-style results, not a compact brief. The brief `{ state, nextSteps, blockers }` format requires `profile: "resume"`. Current `/spec_kit:resume` command does NOT pass this.
+**Context:** Iteration 012 discovered `memory_context({ mode: "resume" })` returns search-style results, not a compact brief. The brief `{ state, nextSteps, blockers }` format requires `profile: "resume"`. At the time of discovery, `/spec_kit:resume` did not pass this and needed follow-through.
 **Rationale:** Without `profile: "resume"`, hook scripts get verbose search results that don't fit in ≤4000 token budget
 **Impact:** All hook scripts + `/spec_kit:resume` command should pass `profile: "resume"`
 

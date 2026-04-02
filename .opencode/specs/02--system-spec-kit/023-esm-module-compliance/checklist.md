@@ -43,7 +43,7 @@ contextType: "implementation"
 
 - [x] CHK-002 [P0] `shared/package.json` and `mcp_server/package.json` declare truthful native ESM runtime contracts [EVIDENCE: `.opencode/skill/system-spec-kit/shared/package.json` and `.opencode/skill/system-spec-kit/mcp_server/package.json` both set `"type": "module"` with ESM `main` and `exports` entrypoints]
 - [x] CHK-003 [P0] Package-local compiler settings emit native ESM for `shared` and `mcp_server` [EVIDENCE: `.opencode/skill/system-spec-kit/shared/tsconfig.json` and `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json` both set `"module": "nodenext"` and `"moduleResolution": "nodenext"`]
-- [x] CHK-004 [P0] `scripts/package.json` stays CommonJS while scripts-owned runtime callers cross explicit interoperability boundaries instead of direct `require()` of ESM siblings [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/package.json` keeps `"type": "commonjs"` while `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` uses `await import('@spec-kit/mcp-server/api/providers')` and `await import('@spec-kit/mcp-server/api')` for the package boundary]
+- [x] CHK-004 [P0] `scripts/package.json` stays CommonJS while scripts-owned runtime callers cross explicit interoperability boundaries instead of direct `require()` of ESM siblings [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/package.json` keeps `"type": "commonjs"` while `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` and the save pipeline use guarded async imports for the package boundary]
 - [x] CHK-021 [P2] Guardrails exist to prevent new extensionless ESM-breaking imports [EVIDENCE: nodenext compiler enforces .js extensions at build; architecture-boundary-enforcement.vitest.ts covers import hygiene]
 <!-- /ANCHOR:code-quality -->
 
@@ -56,7 +56,7 @@ contextType: "implementation"
 - [x] CHK-006 [P0] Built `dist/context-server.js` and emitted `shared` surfaces no longer depend on CommonJS `require(...)` / `exports` [EVIDENCE: Both packages emit native ESM with "type":"module"; Phase 6 confirmed no __dirname residue in scripts (P1-COR-03 fixed)]
 - [x] CHK-007 [P0] The exact verification matrix from `research/research.md` passes, including `npm run --workspaces=false typecheck`, `npm run --workspaces=false test:cli`, workspace-targeted builds/tests, targeted Vitest runs, and direct runtime smokes [EVIDENCE: Phase 5 — mcp-server 8997/8997, scripts 483/483, 9480 total, 0 failures]
 - [x] CHK-008 [P0] Highest-risk recent surfaces are re-tested first before downstream standards docs are touched [EVIDENCE: Phase 4/5 — memory-save, memory-index, shared-memory, vector-index-store, session-manager, generate-context, workflow all retested and passing]
-- [x] CHK-009 [P0] Scripts interoperability proof exists and is treated as required, not optional, including `node scripts/dist/memory/generate-context.js --help`, scripts interop tests, and scripts-owned API loading paths [EVIDENCE: Phase 3 — generate-context.js --help passes, scripts interop tests green, Phase 6 workflow.ts tryImportMcpApi helper consolidated]
+- [x] CHK-009 [P0] Scripts interoperability proof exists and is treated as required, not optional, including `node scripts/dist/memory/generate-context.js --help`, scripts interop tests, and scripts-owned API loading paths [EVIDENCE: Phase 3 — generate-context.js --help passes, scripts interop tests green, and scripts-owned API loading paths use explicit async boundary handling]
 <!-- /ANCHOR:testing -->
 
 ---

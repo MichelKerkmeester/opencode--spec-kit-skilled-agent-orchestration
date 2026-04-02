@@ -27,6 +27,10 @@ export interface ReadyResult {
   reason: string;
 }
 
+export interface EnsureReadyOptions {
+  allowInlineIndex?: boolean;
+}
+
 // ───────────────────────────────────────────────────────────────
 // Constants
 // ───────────────────────────────────────────────────────────────
@@ -212,19 +216,29 @@ const DEBOUNCE_MS = 5_000;
 let lastCheckAt = 0;
 let lastCheckResult: ReadyResult | null = null;
 
-export async function ensureCodeGraphReady(rootDir: string): Promise<ReadyResult> {
+export async function ensureCodeGraphReady(rootDir: string, options: EnsureReadyOptions = {}): Promise<ReadyResult> {
   // Debounce: skip if checked recently (prevents redundant work on rapid queries)
   const now = Date.now();
   if (lastCheckResult && (now - lastCheckAt) < DEBOUNCE_MS) {
     return lastCheckResult;
   }
   lastCheckAt = now;
+  const allowInlineIndex = options.allowInlineIndex ?? true;
 
   const state = detectState(rootDir);
   const removedDeletedCount = cleanupDeletedTrackedFiles(state.deletedFiles);
 
   if (state.action === 'none') {
     lastCheckResult = { action: 'none', reason: appendCleanupReason(state.reason, removedDeletedCount) };
+    return lastCheckResult;
+  }
+
+  if (!allowInlineIndex) {
+    lastCheckResult = {
+      action: state.action,
+      ...(state.action === 'selective_reindex' ? { files: state.staleFiles } : {}),
+      reason: appendCleanupReason(`${state.reason}; inline auto-index skipped for read path`, removedDeletedCount),
+    };
     return lastCheckResult;
   }
 

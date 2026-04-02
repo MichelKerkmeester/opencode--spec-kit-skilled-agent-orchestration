@@ -94,6 +94,7 @@ describe('generate-context CLI authority', () => {
     expect(workflowCall).toMatchObject({
       dataFile,
       specFolderArg: explicitSpecFolder,
+      sessionId,
       loadDataFn: expect.any(Function),
       collectSessionDataFn: harness.collectSessionData,
       collectedData: undefined,

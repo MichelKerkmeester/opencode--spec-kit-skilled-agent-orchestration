@@ -751,7 +751,7 @@ const sessionResume: ToolDefinition = {
 // Phase 024 / Item 7: Composite session bootstrap tool
 const sessionBootstrap: ToolDefinition = {
   name: 'session_bootstrap',
-  description: '[L1:Orchestration] Complete session bootstrap in one call. Returns session context, system health, and recommended next actions. Combines session_resume (minimal) + session_health into a single round-trip.',
+  description: '[L1:Orchestration] Complete session bootstrap in one call. Returns session context, system health, structural readiness, and recommended next actions. This is the canonical first recovery call on session start or after /clear; it wraps the full session_resume payload plus session_health.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
