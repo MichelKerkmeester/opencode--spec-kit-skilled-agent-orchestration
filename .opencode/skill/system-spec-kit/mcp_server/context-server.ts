@@ -280,6 +280,12 @@ function resolveSessionTrackingId(
   return explicitSessionId ?? transportSessionId ?? codexThreadId ?? undefined;
 }
 
+// REQ-014: Sticky session for follow_on_tool_use correlation.
+// Stores the last resolved session ID so non-search tools (e.g. memory_stats)
+// that lack an explicit sessionId param can still correlate with a prior search.
+// Safe for stdio (single client). TTL in query-flow-tracker bounds staleness.
+let lastKnownSessionId: string | null = null;
+
 function runAfterToolCallbacks(tool: string, callId: string, result: unknown): void {
   if (afterToolCallbacks.length === 0) {
     return;
@@ -764,6 +770,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   const args: Record<string, unknown> = requestParams.arguments ?? {};
   const callId = resolveToolCallId(request as { id?: unknown });
   const sessionTrackingId = resolveSessionTrackingId(args, _extra);
+  if (sessionTrackingId) lastKnownSessionId = sessionTrackingId;
 
   try {
     // SEC-003: Validate input lengths before processing (CWE-400 mitigation)
@@ -858,6 +865,20 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     }
 
     runAfterToolCallbacks(name, callId, structuredClone(result));
+
+    // REQ-014: Log follow_on_tool_use when a non-search tool is called after a recent search
+    // Shadow-only: no ranking side effects. Fail-safe, never throws.
+    if (name !== 'memory_search' && name !== 'memory_context' && name !== 'memory_quick_search' && name !== 'session_health') {
+      try {
+        const { logFollowOnToolUse } = await import('./lib/feedback/query-flow-tracker.js');
+        const { requireDb } = await import('./utils/index.js');
+        const db = (() => { try { return requireDb(); } catch { return null; } })();
+        const followOnSessionId = sessionTrackingId ?? lastKnownSessionId;
+        if (db && followOnSessionId) {
+          logFollowOnToolUse(db, followOnSessionId);
+        }
+      } catch { /* follow_on_tool_use logging must never break dispatch */ }
+    }
 
     // Phase 024: Code-search redirect hint for memory tools
     if ((name === 'memory_search' || name === 'memory_context') && result && !result.isError && result.content?.[0]?.text) {

@@ -46,6 +46,7 @@ import {
   isImplicitFeedbackLogEnabled,
 } from '../lib/feedback/feedback-ledger.js';
 import type { FeedbackEvent } from '../lib/feedback/feedback-ledger.js';
+import { trackQueryAndDetect, logResultCited } from '../lib/feedback/query-flow-tracker.js';
 
 // Core utilities
 import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } from '../core/index.js';
@@ -1176,6 +1177,48 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       }
     }
   } catch (_error: unknown) { /* feedback logging must never break search */ }
+
+  // REQ-014: Query flow tracking + result_cited for includeContent searches
+  // Shadow-only: emits query_reformulated, same_topic_requery, and result_cited events.
+  try {
+    if (isImplicitFeedbackLogEnabled()) {
+      const db = (() => { try { return requireDb(); } catch (_error: unknown) { return null; } })();
+      if (db) {
+        // Extract shown memory IDs from response (reuse parsed data if available)
+        let shownIds: string[] = [];
+        try {
+          if (responseToReturn?.content?.[0]?.text) {
+            const parsed = JSON.parse(responseToReturn.content[0].text) as Record<string, unknown>;
+            const data = parsed?.data as Record<string, unknown> | undefined;
+            const results = Array.isArray(data?.results) ? data.results as Array<Record<string, unknown>> : [];
+            shownIds = results.flatMap((result) => {
+              const candidate = result.id;
+              if (typeof candidate !== 'number' && typeof candidate !== 'string') {
+                return [];
+              }
+              const normalizedId = String(candidate).trim();
+              if (!normalizedId || normalizedId === 'undefined' || normalizedId === 'null') {
+                return [];
+              }
+              return [normalizedId];
+            });
+          }
+        } catch (_error: unknown) { /* ignore parse errors */ }
+
+        const queryId = _evalQueryId ? String(_evalQueryId) : String(_searchStartTime);
+
+        // Track query flow — detects reformulations and same-topic re-queries
+        if (normalizedQuery) {
+          trackQueryAndDetect(db, sessionId ?? null, normalizedQuery, queryId, shownIds);
+        }
+
+        // Log result_cited for includeContent searches (content was embedded = cited)
+        if (includeContent && shownIds.length > 0) {
+          logResultCited(db, sessionId ?? null, queryId, shownIds);
+        }
+      }
+    }
+  } catch (_error: unknown) { /* query flow tracking must never break search */ }
 
   // REQ-D5-003: Apply presentation profile when flag is enabled and profile is specified.
   // Phase C: effectiveProfile includes auto-routed profile from intent detection.
