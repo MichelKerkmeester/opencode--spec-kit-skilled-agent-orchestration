@@ -1,6 +1,6 @@
 ---
 title: "Changelog: Feedback Signal Pipeline"
-description: "Packet-local changelog for the implicit feedback signal pipeline implementation, verification, and documentation."
+description: "Packet-local changelog for the implicit feedback signal pipeline -- records search usage patterns without affecting ranking."
 trigger_phrases:
   - "feedback pipeline changelog"
   - "014 changelog"
@@ -18,42 +18,42 @@ contextType: "implementation"
 
 ### Summary
 
-Implemented and verified the implicit feedback signal pipeline. Five event types -- `search_shown`, `result_cited`, `query_reformulated`, `same_topic_requery`, and `follow_on_tool_use` -- are now collected shadow-only after every search interaction. The critical gap was follow-on tool correlation for sessionless tools, solved by a sticky `lastKnownSessionId` fallback in the dispatcher. All signals log to the feedback ledger without affecting search ranking.
+The memory search system now observes how searches are used and records five types of usage signals: result views, content citations, rephrased queries, repeated queries, and follow-on tool use. These signals are collected in the background without affecting ranking. The key fix was enabling follow-on tracking for tools that have no session identifier, solved by remembering the most recent session and using it as a fallback.
 
 ### Added
 
-- `query-flow-tracker.ts` -- bounded per-session query history with Jaccard similarity detection, 50-entry cap, 10-minute TTL, and 1-second dedup window
-- `result_cited` emission in `memory-search.ts` for `includeContent` searches
-- `follow_on_tool_use` emission in `context-server.ts` via sticky `lastKnownSessionId` fallback for sessionless tools
-- `query-flow-tracker.vitest.ts` -- dedicated test suite covering thresholds, TTL, dedup, and DB-level packet flow
+- Query flow tracker that detects rephrased and repeated searches by comparing word overlap between consecutive queries in the same session
+- Result citation logging when search results are delivered with full content
+- Follow-on tool tracking that links non-search tools back to the preceding search, even when those tools carry no session identifier
+- Dedicated test suite covering detection thresholds, timing rules, expiry, and a full single-session cycle
 
 ### Changed
 
-- `memory-search.ts` now calls `trackQueryAndDetect()` after assembling search results to emit query-flow events
-- `context-server.ts` stores session IDs from tool calls and falls back to the last known ID when non-search tools fire
+- Search handler now records query patterns and citations after assembling results
+- Tool dispatcher now remembers the most recent session so tools without their own session identifier can still be tracked
 
 ### Fixed
 
-- Sessionless tools (e.g. `memory_stats`) could not emit `follow_on_tool_use` because they have no `sessionId` parameter -- the sticky fallback resolves this gap
+- Tools like memory stats could not be linked to a prior search because they have no session identifier -- the system now falls back to the last known session to close this gap
 
 ### Verification
 
-- `npx tsc --noEmit` -- PASS (2026-04-03)
-- `TMPDIR=.../.tmp/vitest-tmp npx vitest run tests/query-flow-tracker.vitest.ts tests/context-server.vitest.ts tests/feedback-ledger.vitest.ts` -- PASS (3 files, 451 tests)
-- Benchmark: 0.03ms average, 0.07ms p95, 0.44ms max (sub-5ms budget)
-- Live MCP verification: all five event types emitted in a single session (2026-04-03)
+- TypeScript compile check -- PASS (2026-04-03)
+- Combined test run (3 files, 451 tests) -- PASS (2026-04-03)
+- Benchmark: 0.03ms average, 0.07ms p95, 0.44ms max per search (well under 5ms budget)
+- Live verification: all five signal types recorded in a single session (2026-04-03)
 
 ### Files Changed
 
 | File | What changed |
 |------|-------------|
-| `mcp_server/lib/feedback/query-flow-tracker.ts` | New: session cache, Jaccard detection, helper emitters |
-| `mcp_server/handlers/memory-search.ts` | Wired trackQueryAndDetect() and logResultCited() |
-| `mcp_server/context-server.ts` | Added lastKnownSessionId sticky fallback |
-| `mcp_server/tests/query-flow-tracker.vitest.ts` | New: dedicated tracker test suite |
-| `mcp_server/tests/context-server.vitest.ts` | Sticky session regression tests |
+| `mcp_server/lib/feedback/query-flow-tracker.ts` | New: session cache, similarity detection, helper functions |
+| `mcp_server/handlers/memory-search.ts` | Wired query tracking and citation logging |
+| `mcp_server/context-server.ts` | Added session fallback for follow-on tool tracking |
+| `mcp_server/tests/query-flow-tracker.vitest.ts` | New: dedicated test suite |
+| `mcp_server/tests/context-server.vitest.ts` | Session fallback regression tests |
 
 ### Follow-Ups
 
-- Graduate feedback signals from shadow-only to bounded ranking influence once the event dataset is validated
-- Revisit sticky-session correlation for multi-client transports (current design assumes single-client stdio)
+- Use collected signals to improve search ranking once the dataset is large enough and validated
+- Revisit the session fallback approach if the system moves to multi-client connections (current design assumes one client at a time)
