@@ -30,6 +30,7 @@ contextType: "general"
 - Parent spec tracks aggregate progress via this map
 - Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
 - Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+- Packet-local changelog files live under `changelog/`; root uses `changelog-<packet>-root.md` and phases use `changelog-<packet>-<phase-folder>.md`
 
 ### Phase Handoff Criteria
 

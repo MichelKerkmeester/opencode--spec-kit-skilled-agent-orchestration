@@ -1,0 +1,18 @@
+{
+  "specFolder": "03--commands-and-skills/001-cli-gemini-creation",
+  "description": "Feature Specification: cli-gemini Skill",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli-gemini",
+    "skill"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.535Z",
+  "specId": "001",
+  "folderSlug": "cli-gemini-creation",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

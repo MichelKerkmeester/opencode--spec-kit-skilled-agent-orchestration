@@ -54,8 +54,8 @@ Every iteration follows this exact sequence:
 2. DETERMINE FOCUS ─> Pick focus from strategy "Next Focus"
 3. EXECUTE RESEARCH ─> 3-5 research actions (WebFetch, Grep, Read, memory_search)
 4. WRITE FINDINGS ──> Create research/iterations/iteration-NNN.md
-5. UPDATE STRATEGY ─> Append What Worked/Failed, update Next Focus
-6. APPEND STATE ────> Add iteration record to JSONL
+5. APPEND STATE ────> Add iteration record to JSONL
+6. REDUCER SYNC ────> Workflow refreshes strategy, registry, dashboard
 7. UPDATE RESEARCH ─> Progressively update research/research.md (if exists)
 ```
 
@@ -65,6 +65,7 @@ Every iteration follows this exact sequence:
 Read these files (paths provided in dispatch context):
 - `research/deep-research-state.jsonl` -- Understand iteration history
 - `research/deep-research-strategy.md` -- Understand what to investigate
+- `research/findings-registry.json` (if exists) -- Understand open/resolved questions and key findings
 - `research/research-ideas.md` (if exists) -- Deferred ideas and promising tangents
 
 Extract from state:
@@ -72,6 +73,7 @@ Extract from state:
 - Remaining key questions
 - Exhausted approaches (DO NOT retry these)
 - Recommended next focus
+- Lifecycle branch from `config.lineage.lineageMode` (`resume`, `restart`, `fork`, or `completed-continue`)
 
 #### Step 2: Determine Focus
 
@@ -154,21 +156,19 @@ Create `research/iterations/iteration-NNN.md` with this structure:
 [What to investigate next, based on gaps discovered]
 ```
 
-#### Step 5: Update Strategy
-Edit `research/deep-research-strategy.md`:
+#### Step 5: Respect Reducer-Owned State
+Do not treat `research/deep-research-strategy.md`, `research/findings-registry.json`, or `research/deep-research-dashboard.md` as your primary write targets. The workflow reducer owns those synchronized packet surfaces.
 
-1. Move answered questions from "Key Questions (remaining)" to "Answered Questions" with `[x]` and a brief answer summary
-2. Add new entries to "What Worked" with iteration number
-3. Add new entries to "What Failed" with iteration number
-4. If an approach is fully exhausted, move it to "Exhausted Approaches"
-5. Add any newly discovered questions to "Key Questions (remaining)"
-6. Update "Next Focus" with recommendation for next iteration
+Instead:
+1. Put worked/failed guidance, answered questions, and next-focus recommendations into the iteration file
+2. Append the structured JSONL record
+3. Let the workflow reducer refresh strategy machine-owned sections, registry, and dashboard
 
 #### Step 6: Append State
 Append ONE line to `research/deep-research-state.jsonl`:
 
 ```json
-{"type":"iteration","run":N,"status":"complete","focus":"[focus area]","findingsCount":N,"newInfoRatio":0.XX,"noveltyJustification":"1-sentence explanation of newInfoRatio","keyQuestions":["q1","q2"],"answeredQuestions":["q1"],"ruledOut":["approach1","approach2"],"focusTrack":"optional-track-label","timestamp":"ISO-8601","durationMs":NNNNN}
+{"type":"iteration","run":N,"status":"complete","focus":"[focus area]","findingsCount":N,"newInfoRatio":0.XX,"noveltyJustification":"1-sentence explanation of newInfoRatio","keyQuestions":["q1","q2"],"answeredQuestions":["q1"],"ruledOut":["approach1","approach2"],"focusTrack":"optional-track-label","toolsUsed":["Read","WebFetch"],"sourcesQueried":["https://example.com/doc","src/file.ts:42"],"timestamp":"ISO-8601","durationMs":NNNNN}
 ```
 
 **Status values**: `complete | timeout | error | stuck | insight | thought`
@@ -186,7 +186,7 @@ Append ONE line to `research/deep-research-state.jsonl`:
 **Optional fields** :
 - `focusTrack`: Label tagging this iteration to a research track (e.g., "architecture", "performance", "security"). Useful for multi-track research where iterations alternate between topics.
 
-> **Note:** The orchestrator enriches each iteration record with optional `segment` (default: 1) and `convergenceSignals` fields after the agent writes it. The agent does not write these fields.
+> **Note:** The orchestrator enriches each iteration record with lineage metadata, optional `segment` (default: 1), `convergenceSignals`, and reducer-driven registry/dashboard updates after the agent writes it.
 
 **newInfoRatio calculation**:
 - Count total findings in this iteration
@@ -210,7 +210,7 @@ Read `research/deep-research-config.json` before touching `research/research.md`
   - Leave `research/research.md` ownership to the synthesis phase.
 
 #### Dashboard Awareness
-The orchestrator generates a research dashboard after each iteration, summarizing progress, coverage, and convergence trends. The agent does not need to produce or update this dashboard -- it is generated automatically from the JSONL state. However, be aware that your iteration data (newInfoRatio, status, focus, ruledOut, focusTrack) feeds directly into the dashboard visualization.
+The orchestrator generates a research dashboard and findings registry after each iteration, summarizing progress, coverage, and convergence trends. The agent does not update those reducer-owned files directly. However, your iteration data (newInfoRatio, status, focus, ruledOut, focusTrack, toolsUsed, sourcesQueried) feeds directly into those synchronized outputs.
 
 ---
 
@@ -289,7 +289,8 @@ All paths are relative to the spec folder provided in dispatch context.
 |------|------|-----------|
 | Config | `research/deep-research-config.json` | Read only |
 | State log | `research/deep-research-state.jsonl` | Read + Append |
-| Strategy | `research/deep-research-strategy.md` | Read + Edit |
+| Strategy | `research/deep-research-strategy.md` | Read only for focus selection |
+| Findings registry | `research/findings-registry.json` | Read only |
 | Iteration findings | `research/iterations/iteration-{NNN}.md` | Write (create new) |
 | Research output | `research/research.md` | Read + Edit only when `progressiveSynthesis` is true |
 
@@ -317,7 +318,7 @@ Pad to 3 digits for filename: iteration-001.md, iteration-002.md
 - Write ALL findings to files (iteration-NNN.md), not just in response
 - Cite sources for every finding
 - Report newInfoRatio honestly in JSONL record
-- Update strategy.md with what worked and what failed
+- Record strategy recommendations in the iteration file so the reducer can sync them
 - Respect "Exhausted Approaches" -- never retry them
 - Stay within tool call budget (target 8-11, max 12)
 - Apply Tier 1-2 error recovery for tool/source failures before reporting errors
@@ -359,7 +360,7 @@ Return this summary to the dispatcher after completing the iteration:
 **Files written**:
 - research/iterations/iteration-[NNN].md
 - research/deep-research-state.jsonl (appended)
-- research/deep-research-strategy.md (updated)
+- workflow reducer refreshes research/deep-research-strategy.md, research/findings-registry.json, and research/deep-research-dashboard.md
 - research/research.md (updated, if applicable)
 
 **Status**: [complete | timeout | error | stuck | insight | thought]
@@ -384,7 +385,7 @@ ITERATION VERIFICATION:
 [x] Research actions executed (3-5 actions minimum)
 [x] research/iterations/iteration-NNN.md created with findings
 [x] All findings have source citations
-[x] deep-research-strategy.md updated (Worked/Failed/Questions/Next Focus)
+[x] Reducer-owned strategy/dashboard/registry will have enough data to sync
 [x] deep-research-state.jsonl appended with iteration record
 [x] newInfoRatio calculated and reported honestly
 [x] Exhausted approaches checked before choosing focus (BLOCKED respected)

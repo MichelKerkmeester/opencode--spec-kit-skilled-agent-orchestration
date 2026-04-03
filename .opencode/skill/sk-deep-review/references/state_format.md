@@ -12,26 +12,28 @@ State file schemas for the autonomous deep review loop.
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The deep review loop uses 7 state files under `{spec_folder}/review/`:
+The deep review loop uses 8 state files under `{spec_folder}/review/`:
 
 | File | Format | Mutability |
 |------|--------|------------|
-| `deep-research-config.json` | JSON | Immutable after init |
-| `deep-research-state.jsonl` | JSON Lines | Append-only |
+| `deep-review-config.json` | JSON | Immutable after init |
+| `deep-review-state.jsonl` | JSON Lines | Append-only |
+| `deep-review-findings-registry.json` | JSON | Auto-generated reducer state |
 | `deep-review-strategy.md` | Markdown | Updated each iteration |
 | `deep-review-dashboard.md` | Markdown | Auto-generated (read-only) |
-| `.deep-research-pause` | Sentinel | Created/deleted by user |
+| `.deep-review-pause` | Sentinel | Created/deleted by user |
 | `review-report.md` | Markdown | Updated at synthesis |
 | `iterations/iteration-NNN.md` | Markdown | Write-once |
 
 ```
 {spec_folder}/
   review/
-    deep-research-config.json
-    deep-research-state.jsonl
+    deep-review-config.json
+    deep-review-state.jsonl
+    deep-review-findings-registry.json
     deep-review-strategy.md
     deep-review-dashboard.md
-    .deep-research-pause
+    .deep-review-pause
     review-report.md
     iterations/
       iteration-001.md
@@ -43,17 +45,22 @@ The deep review loop uses 7 state files under `{spec_folder}/review/`:
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:config-file -->
-## 2. CONFIG FILE (deep-research-config.json)
+## 2. CONFIG FILE (deep-review-config.json)
 
 Created during initialization. Not modified after creation.
 
 ```json
 {
-  "topic": "Review of sk-deep-research skill package",
+  "topic": "Review of sk-deep-review skill package",
   "mode": "review",
-  "reviewTarget": "specs/030-sk-deep-research-review-mode",
+  "reviewTarget": "specs/030-sk-deep-review-review-mode",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "sessionId": "rvw-2026-04-03T12-00-00Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
   "maxIterations": 7,
   "convergenceThreshold": 0.10,
   "stuckThreshold": 2,
@@ -63,18 +70,33 @@ Created during initialization. Not modified after creation.
     "overlay": ["feature_catalog_code", "playbook_capability"]
   },
   "qualityGateThreshold": true,
-  "specFolder": "030-sk-deep-research-review-mode",
+  "releaseReadinessState": "in-progress",
+  "specFolder": "030-sk-deep-review-review-mode",
   "createdAt": "2026-03-24T14:00:00Z",
   "status": "initialized",
   "executionMode": "auto",
   "fileProtection": {
-    "deep-research-config.json": "immutable",
-    "deep-research-state.jsonl": "append-only",
+    "deep-review-config.json": "immutable",
+    "deep-review-state.jsonl": "append-only",
+    "deep-review-findings-registry.json": "auto-generated",
     "deep-review-strategy.md": "mutable",
     "deep-review-dashboard.md": "auto-generated",
-    ".deep-research-pause": "mutable",
+    ".deep-review-pause": "operator-controlled",
     "review-report.md": "mutable",
+    "review-report-v*.md": "write-once",
     "iteration-*.md": "write-once"
+  },
+  "reducer": {
+    "enabled": true,
+    "inputs": ["latestJSONLDelta", "newIterationFile", "priorReducedState"],
+    "outputs": ["findingsRegistry", "dashboardMetrics", "strategyUpdates"],
+    "metrics": [
+      "dimensionsCovered",
+      "findingsBySeverity",
+      "openFindings",
+      "resolvedFindings",
+      "convergenceScore"
+    ]
   }
 }
 ```
@@ -87,6 +109,11 @@ Created during initialization. Not modified after creation.
 | reviewTarget | string | -- | Path or identifier of the review target |
 | reviewTargetType | string | `"spec-folder"` | `spec-folder`, `skill`, `agent`, `track`, `files` |
 | reviewDimensions | string[] | all 4 | Dimensions to evaluate |
+| sessionId | string | -- | Stable identifier for the current review lineage |
+| parentSessionId | string \| null | `null` | Parent lineage reference for restart/fork flows |
+| lineageMode | string | `"new"` | `new`, `resume`, `restart`, `fork`, `completed-continue` |
+| generation | number | 1 | Lineage generation number |
+| continuedFromRun | number \| null | `null` | Prior completed run reopened by completed-continue |
 | maxIterations | number | 7 | Hard cap on loop iterations |
 | convergenceThreshold | number | 0.10 | Stop when severity-weighted new findings ratio below this |
 | stuckThreshold | number | 2 | Consecutive no-progress iterations before recovery |
@@ -95,7 +122,9 @@ Created during initialization. Not modified after creation.
 | qualityGateThreshold | boolean | true | Whether binary quality gates are enforced |
 | specFolder | string | -- | Spec folder path (relative to specs/) |
 | status | string | `"initialized"` | `initialized`, `running`, `converged`, `stuck`, `complete`, `error` |
+| releaseReadinessState | string | `"in-progress"` | `in-progress`, `converged`, `release-blocking` |
 | fileProtection | object | -- | Mutability declarations (see protection levels below) |
+| reducer | object | -- | Canonical reducer inputs, outputs, and metrics names |
 
 ### File Protection Levels
 
@@ -106,6 +135,7 @@ Created during initialization. Not modified after creation.
 | mutable | Can be read, edited, overwritten |
 | write-once | Created once, never modified |
 | auto-generated | System-managed, overwritten each refresh |
+| operator-controlled | Created or deleted only by the human/operator to control loop state |
 
 ### Review Dimensions
 
@@ -113,8 +143,8 @@ Created during initialization. Not modified after creation.
 |-----------|----------|---------------------|
 | correctness | 1 | Yes |
 | security | 2 | Yes |
-| traceability | 3 | No |
-| maintainability | 4 | No |
+| traceability | 3 | Yes |
+| maintainability | 4 | Yes |
 
 ### Severity Weights
 
@@ -128,14 +158,14 @@ Created during initialization. Not modified after creation.
 
 <!-- /ANCHOR:config-file -->
 <!-- ANCHOR:state-log -->
-## 3. STATE LOG (deep-research-state.jsonl)
+## 3. STATE LOG (deep-review-state.jsonl)
 
 Append-only JSON Lines file. One JSON object per line.
 
 ### Line 1: Config Record
 
 ```json
-{"type":"config","mode":"review","topic":"...","reviewTarget":"...","maxIterations":7,"convergenceThreshold":0.10,"createdAt":"2026-03-24T14:00:00Z","specFolder":"..."}
+{"type":"config","mode":"review","topic":"...","reviewTarget":"...","sessionId":"rvw-...","parentSessionId":null,"lineageMode":"new","generation":1,"continuedFromRun":null,"maxIterations":7,"convergenceThreshold":0.10,"createdAt":"2026-03-24T14:00:00Z","specFolder":"..."}
 ```
 
 ### Iteration Records
@@ -146,6 +176,11 @@ Append-only JSON Lines file. One JSON object per line.
   "focus": "D3 Traceability - skill/runtime alignment",
   "dimensions": ["traceability", "maintainability"],
   "filesReviewed": [".opencode/skill/sk-deep-research/README.md"],
+  "sessionId": "rvw-2026-04-03T12-00-00Z",
+  "parentSessionId": null,
+  "lineageMode": "resume",
+  "generation": 1,
+  "continuedFromRun": null,
   "findingsCount": 4,
   "findingsSummary": { "P0": 0, "P1": 1, "P2": 3 },
   "findingsNew": { "P0": 0, "P1": 1, "P2": 1 },
@@ -154,15 +189,18 @@ Append-only JSON Lines file. One JSON object per line.
 }
 ```
 
-**Required fields:** `type`, `mode`, `run`, `status`, `focus`, `dimensions`, `filesReviewed`, `findingsCount`, `findingsSummary`, `findingsNew`, `newFindingsRatio`, `timestamp`, `durationMs`
+**Required fields:** `type`, `mode`, `run`, `status`, `focus`, `dimensions`, `filesReviewed`, `findingsCount`, `findingsSummary`, `findingsNew`, `newFindingsRatio`, `sessionId`, `generation`, `lineageMode`, `timestamp`, `durationMs`
 
-**Optional fields:** `findingsRefined`, `findingRefs`, `traceabilityChecks`, `coverage`, `noveltyJustification`, `ruledOut`, `focusTrack`, `scoreEstimate`, `segment`, `convergenceSignals`
+**Optional fields:** `parentSessionId`, `continuedFromRun`, `findingsRefined`, `findingRefs`, `traceabilityChecks`, `coverage`, `noveltyJustification`, `ruledOut`, `focusTrack`, `scoreEstimate`, `segment`, `convergenceSignals`
 
 | Required Field | Type | Description |
 |---------------|------|-------------|
 | mode | `"review"` | Session mode discriminator |
 | dimensions | string[] | Review dimensions addressed this iteration |
 | filesReviewed | string[] | Files examined |
+| sessionId | string | Current lineage session identifier |
+| generation | number | Lineage generation number |
+| lineageMode | string | Lifecycle mode used for this run |
 | findingsSummary | object | Total active findings: `{ P0, P1, P2 }` |
 | findingsNew | object | Net-new findings this iteration: `{ P0, P1, P2 }` |
 | newFindingsRatio | number | Severity-weighted new findings ratio (0.0-1.0) |
@@ -292,8 +330,43 @@ Sections unchanged from research: topic, what-worked, what-failed, exhausted-app
 ---
 
 <!-- /ANCHOR:strategy-file -->
+<!-- ANCHOR:findings-registry -->
+## 5. FINDINGS REGISTRY (deep-review-findings-registry.json)
+
+Reducer-owned JSON document regenerated after every iteration and lifecycle transition.
+
+```json
+{
+  "sessionId": "rvw-2026-04-03T12-00-00Z",
+  "generation": 1,
+  "lineageMode": "resume",
+  "openFindings": [],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": false,
+    "maintainability": false
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 2
+  },
+  "openFindingsCount": 3,
+  "resolvedFindingsCount": 1,
+  "convergenceScore": 0.44
+}
+```
+
+This file is machine-owned and must stay synchronized with the latest iteration delta, dashboard metrics, and synthesized review report.
+
+---
+
+<!-- /ANCHOR:findings-registry -->
 <!-- ANCHOR:iteration-files -->
-## 5. ITERATION FILES (review/iterations/iteration-NNN.md)
+## 6. ITERATION FILES (review/iterations/iteration-NNN.md)
 
 Write-once files. One per iteration, zero-padded 3-digit naming.
 
@@ -349,7 +422,7 @@ Every finding must include: unique ID (`F001`...), severity (`P0`/`P1`/`P2`), co
 
 <!-- /ANCHOR:iteration-files -->
 <!-- ANCHOR:review-report -->
-## 6. REVIEW REPORT (review/review-report.md)
+## 7. REVIEW REPORT (review/review-report.md)
 
 The review synthesis output contains 9 sections:
 
@@ -385,12 +458,12 @@ The review synthesis output contains 9 sections:
 
 <!-- /ANCHOR:review-report -->
 <!-- ANCHOR:dashboard -->
-## 7. DASHBOARD (review/deep-review-dashboard.md)
+## 8. DASHBOARD (review/deep-review-dashboard.md)
 
 Auto-generated summary. Never manually edited.
 
 - **Path**: `{spec_folder}/review/deep-review-dashboard.md`
-- **Generated from**: JSONL state log + strategy data only
+- **Generated from**: JSONL state log + strategy + findings registry
 - **Refresh**: Regenerated after every iteration
 - **Protection**: `auto-generated` in fileProtection
 
@@ -409,7 +482,7 @@ Auto-generated summary. Never manually edited.
 
 <!-- /ANCHOR:dashboard -->
 <!-- ANCHOR:claim-adjudication -->
-## 8. CLAIM ADJUDICATION
+## 9. CLAIM ADJUDICATION
 
 When a finding's severity is ambiguous, apply structured adjudication before finalizing.
 
@@ -449,7 +522,7 @@ When a finding's severity is ambiguous, apply structured adjudication before fin
 
 <!-- /ANCHOR:claim-adjudication -->
 <!-- ANCHOR:finding-registry -->
-## 9. FINDING REGISTRY
+## 10. FINDING REGISTRY
 
 Each finding is tracked with a unique identifier enabling deduplication, severity transitions, and status lifecycle.
 

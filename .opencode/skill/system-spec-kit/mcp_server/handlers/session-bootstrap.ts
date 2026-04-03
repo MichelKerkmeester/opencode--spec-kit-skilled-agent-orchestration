@@ -24,6 +24,7 @@ interface SessionBootstrapResult {
   health: Record<string, unknown>;
   structuralContext?: StructuralBootstrapContract;
   hints: string[];
+  nextActions: string[];
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -44,6 +45,41 @@ function extractData(response: MCPResponse): Record<string, unknown> {
 function extractHints(data: Record<string, unknown>): string[] {
   if (Array.isArray(data.hints)) return data.hints as string[];
   return [];
+}
+
+function buildNextActions(
+  resumeData: Record<string, unknown>,
+  healthData: Record<string, unknown>,
+  structuralContext: StructuralBootstrapContract,
+): string[] {
+  const nextActions = new Set<string>();
+
+  if (resumeData.error) {
+    nextActions.add('Call `session_resume({ specFolder })` directly to inspect the detailed resume failure.');
+  }
+
+  if (healthData.error) {
+    nextActions.add('Call `session_health()` directly to inspect the current health-check failure.');
+  }
+
+  if (structuralContext.recommendedAction) {
+    nextActions.add(structuralContext.recommendedAction);
+  }
+
+  if (structuralContext.status === 'ready') {
+    nextActions.add('Use `session_resume({ specFolder })` when you need the fuller merged recovery payload.');
+  } else if (structuralContext.status === 'stale') {
+    nextActions.add('Run `code_graph_scan` if you need fresh structural context, then call `session_bootstrap()` again.');
+  } else {
+    nextActions.add('If structural context matters for this task, run `code_graph_scan` and then re-run `session_bootstrap()`.');
+  }
+
+  const healthStatus = typeof healthData.status === 'string' ? healthData.status : null;
+  if (healthStatus === 'warning' || healthStatus === 'stale') {
+    nextActions.add('Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` if you need a deeper state refresh.');
+  }
+
+  return [...nextActions].slice(0, 3);
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -102,6 +138,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
     health: healthData,
     structuralContext,
     hints: uniqueHints,
+    nextActions: buildNextActions(resumeData, healthData, structuralContext),
   };
 
   return {

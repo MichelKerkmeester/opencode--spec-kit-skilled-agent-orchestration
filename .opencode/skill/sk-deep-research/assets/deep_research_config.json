@@ -11,33 +11,46 @@
   "createdAt": "",
   "status": "initialized",
   "executionMode": "auto",
-  "mode": "research",
-  "reviewTarget": null,
-  "reviewTargetType": "spec-folder",
-  "reviewDimensions": [
-    "correctness",
-    "security",
-    "spec-alignment",
-    "completeness",
-    "cross-ref-integrity",
-    "patterns",
-    "documentation-quality"
-  ],
-  "severityThreshold": "P2",
-  "crossReference": {
-    "spec": true,
-    "checklist": true,
-    "agentConsistency": true
+  "lineage": {
+    "sessionId": "",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart",
+      "fork",
+      "completed-continue"
+    ],
+    "generation": 1,
+    "continuedFromRun": null
   },
-  "qualityGateThreshold": 70,
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "what-worked",
+      "what-failed",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research/archive",
+  "migrationWindowDays": 28,
   "fileProtection": {
     "deep-research-config.json": "immutable",
     "deep-research-state.jsonl": "append-only",
     "deep-research-strategy.md": "mutable",
     "deep-research-dashboard.md": "auto-generated",
-    "deep-review-strategy.md": "mutable",
-    "deep-review-dashboard.md": "auto-generated",
-    "review-report.md": "mutable",
+    "findings-registry.json": "auto-generated",
     "iteration-*.md": "write-once",
     "research/research.md": "mutable"
   }

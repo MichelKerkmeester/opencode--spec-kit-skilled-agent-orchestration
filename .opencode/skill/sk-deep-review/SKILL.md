@@ -254,6 +254,36 @@ The four primary review dimensions (configured in `assets/review_mode_contract.y
 | **Spec-Alignment / Traceability** | Spec vs. implementation fidelity | Does code match spec.md? Are all planned items present? |
 | **Completeness / Maintainability** | Coverage, dead code, documentation | Are TODOs resolved? Is the code self-documenting? |
 
+### Lifecycle + Reducer Contract
+
+Review mode is lineage-aware. Every packet uses canonical review-mode artifacts:
+- `deep-review-config.json`
+- `deep-review-state.jsonl`
+- `deep-review-findings-registry.json`
+- `deep-review-strategy.md`
+- `deep-review-dashboard.md`
+- `.deep-review-pause`
+
+Supported lifecycle modes:
+- `new`
+- `resume`
+- `restart`
+- `fork`
+- `completed-continue`
+
+Required lineage fields on config and iteration records:
+- `sessionId`
+- `parentSessionId`
+- `lineageMode`
+- `generation`
+- `continuedFromRun`
+- `releaseReadinessState`
+
+Reducer contract:
+- Inputs: `latestJSONLDelta`, `newIterationFile`, `priorReducedState`
+- Outputs: `findingsRegistry`, `dashboardMetrics`, `strategyUpdates`
+- Metrics: `dimensionsCovered`, `findingsBySeverity`, `openFindings`, `resolvedFindings`, `convergenceScore`
+
 ### Severity Classification
 
 | Severity | Criteria | Blocking |
@@ -399,6 +429,7 @@ Every completed loop produces a convergence report (embedded in `review-report.m
 - Total iterations completed
 - Dimension coverage ratio
 - P0/P1/P2 finding counts at convergence
+- Release-readiness state (`in-progress`, `converged`, `release-blocking`)
 
 ---
 

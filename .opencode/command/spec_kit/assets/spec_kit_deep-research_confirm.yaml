@@ -80,6 +80,11 @@ state_paths:
   config: "{spec_folder}/research/deep-research-config.json"
   state_log: "{spec_folder}/research/deep-research-state.jsonl"
   strategy: "{spec_folder}/research/deep-research-strategy.md"
+  registry: "{spec_folder}/research/findings-registry.json"
+  dashboard: "{spec_folder}/research/deep-research-dashboard.md"
+  pause_sentinel: "{spec_folder}/research/.deep-research-pause"
+  archive_root: "{spec_folder}/research/archive"
+  synthesis_snapshot_pattern: "{spec_folder}/research/synthesis-v{generation}.md"
   iteration_pattern: "{spec_folder}/research/iterations/iteration-{NNN}.md"
   research_output: "{spec_folder}/research/research.md"
 
@@ -106,7 +111,19 @@ workflow:
 
       step_create_directories:
         action: "Create spec folder and research packet directories if they don't exist"
-        command: "mkdir -p {spec_folder}/research/iterations"
+        command: "mkdir -p {spec_folder}/research/iterations {spec_folder}/research/archive"
+
+      step_resolve_canonical_names:
+        action: "Resolve canonical research packet artifact names before classification"
+        inspect_legacy:
+          - "{spec_folder}/research/config.json"
+          - "{spec_folder}/research/state.jsonl"
+          - "{spec_folder}/research/strategy.md"
+          - "{spec_folder}/research/dashboard.md"
+          - "{spec_folder}/research/.pause"
+        migration_policy: "dual-read / single-write for 4 weeks"
+        on_legacy_read:
+          append_jsonl: '{"type":"event","event":"migration","legacyPath":"{legacy_path}","canonicalPath":"{canonical_path}","timestamp":"{ISO_8601_NOW}"}'
 
       step_classify_session:
         action: "Classify the session before writing files"
@@ -123,12 +140,12 @@ workflow:
           - session_state: "fresh | resume | completed-session | invalid-state"
         on_resume:
           show_dashboard: "{spec_folder}/research/deep-research-dashboard.md"
-          ask: "Resume, restart (archive old state), or fork (new angle from current state)?"
-          options: [resume, restart, fork]
-          log: "Interactive resume: existing state is consistent. Review current files before restarting the loop."
+          ask: "Resume, restart (archive old state), fork (new angle from current state), or completed-continue (snapshot prior synthesis and reopen)?"
+          options: [resume, restart, fork, completed-continue]
+          log: "Interactive lifecycle selection: existing state is consistent. Review current files before choosing the next lineage branch."
           skip_to: gate_init_approval
         on_completed_session:
-          log: "Prior session already completed. Present synthesis/save choices rather than recreating state."
+          log: "Prior session already completed. Present completed-continue, restart, or fork choices rather than recreating state."
           skip_to: phase_synthesis
         on_invalid_state:
           halt: true
@@ -149,6 +166,11 @@ workflow:
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
           executionMode: "confirm"
+          lineage.sessionId: "{AUTO_SESSION_ID}"
+          lineage.parentSessionId: null
+          lineage.lineageMode: "new"
+          lineage.generation: 1
+          lineage.continuedFromRun: null
         output: "{spec_folder}/research/deep-research-config.json"
 
       step_create_state_log:
@@ -167,6 +189,11 @@ workflow:
           max_iterations: "{max_iterations}"
           convergence_threshold: "{convergence_threshold}"
         output: "{spec_folder}/research/deep-research-strategy.md"
+
+      step_create_registry:
+        action: "Initialize reducer-owned findings registry"
+        content: '{"openQuestions":[],"resolvedQuestions":[],"keyFindings":[],"ruledOutDirections":[],"metrics":{"iterationsCompleted":0,"openQuestions":0,"resolvedQuestions":0,"keyFindings":0,"convergenceScore":0,"coverageBySources":{}}}'
+        output: "{spec_folder}/research/findings-registry.json"
 
       step_enrich_strategy_context:
         action: "Ensure Known Context is written only after strategy.md exists"
@@ -187,6 +214,7 @@ workflow:
           **Known Context Summary**: {prior_context_summary}
 
           Review `{spec_folder}/research/deep-research-strategy.md` for the initial key questions and next focus.
+          Reducer-owned state will live in `{spec_folder}/research/findings-registry.json` and `{spec_folder}/research/deep-research-dashboard.md`.
           **State files located in**: {spec_folder}/research/
 
           Options:
@@ -331,19 +359,39 @@ workflow:
               Config: {spec_folder}/research/deep-research-config.json
               State Log: {spec_folder}/research/deep-research-state.jsonl
               Strategy: {spec_folder}/research/deep-research-strategy.md
+              Registry: {spec_folder}/research/findings-registry.json
               Write findings to: {spec_folder}/research/iterations/iteration-{NNN}.md
 
             CONSTRAINT: You are a LEAF agent. Do NOT dispatch sub-agents.
             CONSTRAINT: Target 3-5 research actions. Max 12 tool calls total.
             CONSTRAINT: Write ALL findings to files. Do not hold in context.
+            CONSTRAINT: The workflow reducer owns strategy machine-owned sections, registry, and dashboard synchronization.
         wait_for_completion: true
+
+      step_reduce_state:
+        action: "Run the reducer to synchronize registry, dashboard, and strategy"
+        command: "node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs {spec_folder}"
+        inputs:
+          latestJSONLDelta: "Latest JSONL records written since the previous iteration"
+          newIterationFile: "{spec_folder}/research/iterations/iteration-{NNN}.md"
+          priorReducedState: "{spec_folder}/research/findings-registry.json"
+        outputs:
+          - "{spec_folder}/research/findings-registry.json"
+          - "{spec_folder}/research/deep-research-dashboard.md"
+          - "{spec_folder}/research/deep-research-strategy.md"
+        failure_modes:
+          malformed_delta: "skip + warn"
+          missing_iteration_file: "no-op + error"
+          schema_mismatch: "reject + conflict event"
+        guarantee: "Idempotent for identical inputs"
 
       step_evaluate_results:
         action: "Verify iteration outputs and extract metrics"
         verify:
           - file_exists: "{spec_folder}/research/iterations/iteration-{NNN}.md"
           - jsonl_appended: "New iteration record in state.jsonl"
-          - strategy_updated: "Strategy.md has been modified"
+          - strategy_updated: "Reducer refreshed strategy machine-owned sections"
+          - registry_updated: "Reducer refreshed findings-registry.json"
         extract:
           - newInfoRatio: "From latest JSONL iteration record"
           - findings_count: "From latest JSONL iteration record"
@@ -384,10 +432,11 @@ workflow:
         action: "Generate or refresh the human-readable dashboard"
         read:
           - "{spec_folder}/research/deep-research-state.jsonl"
+          - "{spec_folder}/research/findings-registry.json"
           - "{spec_folder}/research/deep-research-strategy.md"
         template: .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md
         output: "{spec_folder}/research/deep-research-dashboard.md"
-        note: "Auto-generated from JSONL + strategy. Never manually edited."
+        note: "Auto-generated from JSONL + reducer registry + strategy. Never manually edited."
 
       step_update_tracking:
         action: "Update loop tracking variables"
@@ -411,10 +460,11 @@ workflow:
     steps:
 
       step_hydrate_summary_metrics:
-        action: "Hydrate summary metrics before synthesis or completed-session review"
+        action: "Hydrate summary metrics before synthesis or completed-continue review"
         read:
           - "{spec_folder}/research/deep-research-config.json"
           - "{spec_folder}/research/deep-research-state.jsonl"
+          - "{spec_folder}/research/findings-registry.json"
           - "{spec_folder}/research/deep-research-strategy.md"
         extract:
           - iteration_count: "Count lines where type === 'iteration'"
@@ -428,7 +478,7 @@ workflow:
           - answered_count: "Count answered questions from strategy.md"
           - total_questions: "Count total questions tracked in strategy.md"
           - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: focus (ratio)'"
-          - reason: "Use the latest synthesis/recovery stop reason if present, else 'completed_session_resume'"
+          - reason: "Use the latest synthesis/recovery stop reason if present, else 'completed-continue'"
 
       # ─── APPROVAL GATE: Pre-Synthesis ───
       gate_pre_synthesis:
@@ -473,6 +523,7 @@ workflow:
             2. Populate sections from iteration files
             3. Add citations from original sources
             4. Note unanswered questions in Open Questions section
+          Preserve machine-owned markers so completed-continue can snapshot and reopen without mutating prior synthesis.
         output: "{spec_folder}/research/research.md"
 
       step_convergence_report:
@@ -546,7 +597,7 @@ workflow:
       Artifacts:
         - research/research.md (compiled from {iteration_count} iterations)
         - {iteration_count} iteration files in research/
-        - State files: config.json, state.jsonl, strategy.md
+        - State files: config.json, state.jsonl, strategy.md, findings-registry.json, dashboard.md
         - Memory context saved
 
       STATUS=OK PATH={spec_folder}

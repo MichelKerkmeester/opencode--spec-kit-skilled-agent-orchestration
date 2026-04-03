@@ -5,7 +5,7 @@
 
 meta:
   ownerSkill: sk-deep-review
-  reviewModeVersion: 1
+  reviewModeVersion: 2
   generatedNotice:
     warning: "Generated from review_mode_contract.yaml. Do not manually edit generated sections."
     beginMarker: "<!-- BEGIN GENERATED: review-mode-contract -->"
@@ -144,6 +144,49 @@ contract:
       noProgressThreshold: 0.05
       compositeStopScore: 0.60
 
+  lifecycleModes:
+    - id: new
+      description: Create a brand-new review lineage with generation 1 and no parent session.
+    - id: resume
+      description: Continue the current review lineage without changing generation.
+    - id: restart
+      description: Start a new generation for the same target and archive the prior review packet state.
+    - id: fork
+      description: Start a new review branch with parent linkage and full ancestry preserved.
+    - id: completed-continue
+      description: Snapshot the completed report, reopen the lineage, and continue with amendment-only deltas.
+
+  lineageFields:
+    - sessionId
+    - parentSessionId
+    - lineageMode
+    - generation
+    - continuedFromRun
+
+  reducer:
+    enabled: true
+    inputs:
+      - latestJSONLDelta
+      - newIterationFile
+      - priorReducedState
+    outputs:
+      - findingsRegistry
+      - dashboardMetrics
+      - strategyUpdates
+    failureModes:
+      malformedDelta: skip-and-warn
+      missingIterationFile: no-op-with-error
+      schemaMismatch: reject-with-conflict-event
+    idempotent: true
+
+  releaseReadinessStates:
+    - id: in-progress
+      description: Review is ongoing or coverage is incomplete.
+    - id: converged
+      description: All dimensions are covered and no new P0/P1 findings appeared in the latest stabilization pass.
+    - id: release-blocking
+      description: At least one unresolved P0 finding is present.
+
   # Cross-reference protocols are typed traceability checks. Core protocols are
   # hard gates; overlay protocols apply only to matching target types.
   crossReferenceProtocols:
@@ -198,6 +241,26 @@ contract:
 
   # Output contracts consumed by synthesis and replay tooling.
   outputs:
+    config:
+      pathPattern: "{spec_folder}/review/deep-review-config.json"
+      machineOwned: false
+      fields:
+        - sessionId
+        - parentSessionId
+        - lineageMode
+        - generation
+        - continuedFromRun
+        - releaseReadinessState
+    findingsRegistry:
+      pathPattern: "{spec_folder}/review/deep-review-findings-registry.json"
+      machineOwned: true
+      sections:
+        - openFindings
+        - resolvedFindings
+        - repeatedFindings
+        - dimensionCoverage
+        - findingsBySeverity
+        - convergenceScore
     reviewReport:
       pathPattern: "{spec_folder}/review/review-report.md"
       sections:
@@ -226,8 +289,21 @@ contract:
         - cross-reference-status
         - files-under-review
         - review-boundaries
+    dashboard:
+      pathPattern: "{spec_folder}/review/deep-review-dashboard.md"
+      machineOwned: true
+      sections:
+        - status
+        - findings-summary
+        - dimension-coverage
+        - progress
+        - next-focus
+    pauseSentinel:
+      pathPattern: "{spec_folder}/review/.deep-review-pause"
+      machineOwned: false
+      description: Operator-controlled sentinel checked between iterations to pause the loop without discarding state.
     jsonl:
-      pathPattern: "{spec_folder}/review/deep-research-state.jsonl"
+      pathPattern: "{spec_folder}/review/deep-review-state.jsonl"
       iterationRecord:
         required:
           - type
@@ -241,9 +317,14 @@ contract:
           - findingsSummary
           - findingsNew
           - newFindingsRatio
+          - sessionId
+          - generation
+          - lineageMode
           - timestamp
           - durationMs
         optional:
+          - parentSessionId
+          - continuedFromRun
           - findingsRefined
           - findingRefs
           - traceabilityChecks
@@ -397,6 +478,10 @@ validation:
       description: Ensure target types, dimensions, severities, verdicts, and quality gates match across rendered artifacts.
     - id: jsonl-parity
       description: Ensure JSONL iteration and synthesis-event fields match the outputs contract.
+    - id: lifecycle-parity
+      description: Ensure lifecycle mode docs and workflow branches agree on new, resume, restart, fork, and completed-continue semantics.
+    - id: reducer-contract
+      description: Ensure reducer inputs, outputs, and findings-registry metrics are documented consistently across assets and runtime mirrors.
     - id: duplicate-literal-lint
       description: Detect duplicated hard-coded review taxonomy literals outside generated sections.
     - id: runtime-coverage

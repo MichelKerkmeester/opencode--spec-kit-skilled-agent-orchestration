@@ -12,7 +12,7 @@ Canonical specification for all state files used by the deep research loop.
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The deep research loop uses 6 state files to maintain continuity across fresh-context iterations:
+The deep research loop uses 6 primary state files plus one reducer-generated registry to maintain continuity across fresh-context iterations:
 
 | File | Format | Purpose | Mutability |
 |------|--------|---------|------------|
@@ -20,12 +20,17 @@ The deep research loop uses 6 state files to maintain continuity across fresh-co
 | `deep-research-state.jsonl` | JSON Lines | Structured iteration log | Append-only |
 | `deep-research-strategy.md` | Markdown | Agent context ("persistent brain") | Updated each iteration |
 | `deep-research-dashboard.md` | Markdown | Auto-generated session summary | Auto-generated (read-only) |
+| `findings-registry.json` | JSON | Reducer-owned open/resolved questions and key findings | Auto-generated (read-only) |
 | `research/iterations/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
 | `research/research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
 
 Research mode stores its runtime packet under `{spec_folder}/research/`, with iteration findings under `{spec_folder}/research/iterations/` and canonical synthesis at `{spec_folder}/research/research.md`. `research/research.md` is workflow-owned canonical synthesis output.
 
-Review mode uses the equivalent packet under `{spec_folder}/review/`, with `deep-research-config.json`, `deep-research-state.jsonl`, `deep-review-strategy.md`, `deep-review-dashboard.md`, `.deep-research-pause`, and `review-report.md` at the review root plus iteration findings under `{spec_folder}/review/iterations/`.
+The canonical pause sentinel is `research/.deep-research-pause`. Legacy names may be consumed during the migration window, but new writes must use the canonical `deep-research-*` names.
+
+Runtime capability matrix references for parity-sensitive surfaces:
+- Human-readable matrix: `.opencode/skill/sk-deep-research/references/capability_matrix.md`
+- Machine-readable matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
 
 ---
 
@@ -46,7 +51,14 @@ Created during initialization. Not modified after creation.
   "specFolder": "04--agent-orchestration/028-auto-deep-research",
   "createdAt": "2026-03-18T10:00:00Z",
   "status": "initialized",
-  "executionMode": "auto"
+  "executionMode": "auto",
+  "lineage": {
+    "sessionId": "dr-2026-03-18T10-00-00Z",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1,
+    "continuedFromRun": null
+  }
 }
 ```
 
@@ -62,6 +74,11 @@ Created during initialization. Not modified after creation.
 | createdAt | ISO 8601 | Yes | -- | Session start timestamp |
 | status | string | Yes | "initialized" | initialized, running, converged, stuck, complete, error |
 | executionMode | string | No | "auto" | auto or confirm |
+| lineage.sessionId | string | Yes | -- | Stable identifier for the current lineage segment |
+| lineage.parentSessionId | string or null | Yes | null | Parent lineage when restarting, forking, or reopening |
+| lineage.lineageMode | string | Yes | "new" | `new`, `resume`, `restart`, `fork`, or `completed-continue` |
+| lineage.generation | number | Yes | 1 | Monotonic generation counter |
+| lineage.continuedFromRun | number or null | No | null | Run number where a resumed or reopened segment continues |
 | fileProtection | object | No | -- | Mutability declarations for state files (see below) |
 
 ### File Protection Map
@@ -124,6 +141,8 @@ Append-only JSON Lines file. One JSON object per line.
 | answeredQuestions | string[] | iteration only | Questions fully answered this iteration |
 | timestamp | ISO 8601 | Yes | Record creation time |
 | durationMs | number | iteration only | Iteration execution time in milliseconds |
+| toolsUsed | string[] | No | iteration only | High-level tool names used during the iteration |
+| sourcesQueried | string[] | No | iteration only | URLs, file paths, or memory anchors consulted during the iteration |
 | segment | number | No | Segment number (default: 1). Groups iterations into logical phases |
 | convergenceSignals | object | No | Composite convergence signal values (see below) |
 | ruledOut | array | No | Approaches eliminated this iteration (see Negative Knowledge below) |
@@ -161,7 +180,7 @@ Iteration records may include a `ruledOut` array documenting approaches that wer
 | reason | string | Yes | Why it was ruled out |
 | evidence | string | No | Source reference supporting the elimination |
 
-Iteration files (`research/iterations/iteration-NNN.md`) MUST include `## Ruled Out` and `## Dead Ends` sections when negative knowledge is captured. These sections feed strategy updates and prevent future iterations from re-exploring eliminated paths.
+Iteration files (`research/iterations/iteration-NNN.md`) MUST include `## Ruled Out` and `## Dead Ends` sections when negative knowledge is captured. These sections feed reducer-owned strategy and registry refreshes and prevent future iterations from re-exploring eliminated paths.
 
 ### Novelty Justification
 
@@ -216,8 +235,12 @@ Events are written by the YAML workflow or diagnostics layer for lifecycle track
 
 | Event | Emitted By | Status | Purpose | Key Fields |
 |-------|------------|--------|---------|------------|
-| resumed | workflow | active | Resume after a prior session | fromIteration, timestamp |
+| resumed | workflow | active | Resume after a prior active session | sessionId, continuedFromRun, timestamp |
+| restarted | workflow | active | Start a new generation from prior state | sessionId, parentSessionId, generation, timestamp |
+| forked | workflow | active | Create a new branch from current packet state | sessionId, parentSessionId, generation, timestamp |
+| completed_continue | workflow | active | Reopen a completed lineage after immutable snapshotting | sessionId, parentSessionId, generation, continuedFromRun, completedAt, reopenedAt, timestamp |
 | paused | workflow | active | Pause sentinel detected | reason, timestamp |
+| migration | workflow | active | Legacy artifact consumed and canonical name written | legacyPath, canonicalPath, timestamp |
 | direct_mode | workflow | reference-only | Orchestrator absorbed iteration work | iteration, reason, timestamp |
 | state_reconstructed | recovery | active | JSONL rebuilt from iteration files | iterationsRecovered, timestamp |
 | wave_complete | wave coordinator | reference-only | Parallel wave finished | wave, iterations, medianRatio, timestamp |
@@ -239,6 +262,42 @@ Guard violation events are emitted when a research guard detects a quality const
 Supported guard values: `source_diversity`, `focus_alignment`, `single_weak_source`. These events are informational and do not halt the loop, but the orchestrator may use them to adjust subsequent iteration focus.
 
 Additional event-specific fields may appear on the JSON line, but the table above is the canonical coverage for emitted events.
+
+### Lineage Schema
+
+Every active packet must be reconstructable from these lineage keys:
+
+| Key | Meaning |
+|-----|---------|
+| `sessionId` | Stable identifier for the active lineage segment |
+| `parentSessionId` | Immediate parent lineage when a new segment or branch is created |
+| `lineageMode` | How the current segment began |
+| `generation` | Monotonic generation number across restarts and reopenings |
+| `continuedFromRun` | Last completed run reused as the continuation boundary |
+
+The workflow may read legacy filenames during migration, but lineage metadata must always be written under canonical names.
+
+### Reducer Contract
+
+The reducer is the synchronization pass that runs after each successful iteration and after each lifecycle transition.
+
+Inputs:
+- `latestJSONLDelta`
+- `newIterationFile`
+- `priorReducedState`
+
+Outputs:
+- `findingsRegistry`
+- `dashboardMetrics`
+- `strategyUpdates`
+
+Failure modes:
+- malformed delta -> skip + warning event
+- missing iteration file -> no-op + error event
+- schema mismatch -> reject + conflict event
+
+Idempotency:
+- identical inputs must produce byte-identical reducer outputs
 
 ### Validation Rules
 
@@ -334,10 +393,11 @@ Updated at the end of each iteration. Template at `assets/deep_research_strategy
 ### Update Protocol
 
 1. Read current strategy.md
-2. Move newly answered questions from "remaining" to "answered" with `[x]` and summary
-3. Add entries to "What Worked" or "What Failed" with iteration number
-4. If an approach is fully exhausted, move to "Exhausted Approaches"
-5. Set "Next Focus" based on remaining questions and successful approaches
+2. Update only the machine-owned sections
+3. Move newly answered questions from "remaining" to "answered" with `[x]` and summary
+4. Add entries to "What Worked" or "What Failed" with iteration number
+5. If an approach is fully exhausted, move to "Exhausted Approaches"
+6. Set "Next Focus" based on remaining questions and successful approaches
 
 ---
 
@@ -400,6 +460,7 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
 - After each subsequent iteration: Append new findings to existing sections
 - After convergence: Final synthesis pass to consolidate and remove redundancy
 - Never overwrite prior findings; add to them
+- Mark machine-owned sections explicitly so `completed-continue` can snapshot prior synthesis before reopening
 
 ---
 
@@ -423,15 +484,15 @@ Review mode writes the equivalent dashboard to `{spec_folder}/review/deep-review
 | Section | Source | Description |
 |---------|--------|-------------|
 | Iteration Table | JSONL iteration records | Run, status, focus, newInfoRatio, findings count, duration |
-| Question Status | Strategy + JSONL | Each key question with answered/open status and coverage % |
-| Convergence Trend | JSONL convergenceSignals | Rolling average, composite stop score, trajectory |
+| Question Status | Strategy + registry | Each key question with answered/open status and coverage % |
+| Convergence Trend | JSONL convergenceSignals + reducer | Rolling average, composite stop score, trajectory |
 | Dead Ends | JSONL ruledOut + strategy | Accumulated ruled-out approaches with reasons |
 | Next Focus | Strategy file | Current recommended direction for next iteration |
-| Source Diversity | JSONL + iteration files | Source count per question, tentative vs primary breakdown |
+| Source Diversity | Registry metrics | Source count per question and `coverageBySources` summary |
 
 ### Generation Rules
 
-1. Read `deep-research-state.jsonl` and `deep-research-strategy.md` as sole inputs
+1. Read `deep-research-state.jsonl`, `findings-registry.json`, and `deep-research-strategy.md` as canonical inputs
 2. Compute all derived values (coverage %, trend direction) from raw data
 3. Overwrite the entire file on each refresh (not append)
 4. If JSONL is missing or empty, write a minimal dashboard noting "No iteration data available"
@@ -444,7 +505,8 @@ Add to the config `fileProtection` map:
 ```json
 {
   "fileProtection": {
-    "deep-research-dashboard.md": "auto-generated"
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated"
   }
 }
 ```
@@ -465,6 +527,7 @@ The `auto-generated` protection level means the file is system-managed and overw
     deep-research-state.jsonl          # Structured iteration log
     deep-research-strategy.md          # Agent context / persistent brain
     deep-research-dashboard.md         # Auto-generated session summary (read-only)
+    findings-registry.json             # Reducer-owned question/finding registry
     iterations/
       iteration-001.md                 # Iteration 1 findings
       iteration-002.md                 # Iteration 2 findings

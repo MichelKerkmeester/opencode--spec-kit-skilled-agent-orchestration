@@ -63,9 +63,9 @@ function handleCompact(sessionId: string): OutputSection[] {
 
   hookLog('info', 'gemini:session-prime', `Injecting cached compact brief (${payload.length} chars, cached at ${cachedAt})`);
 
-  const sanitizedPayload = sanitizeRecoveredPayload(payload);
+  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt);
   const sections: OutputSection[] = [
-    { title: 'Recovered Context (Post-Compression)', content: sanitizedPayload },
+    { title: 'Recovered Context (Post-Compression)', content: wrappedPayload },
     {
       title: 'Recovery Instructions',
       content: 'Context was compressed and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',

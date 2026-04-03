@@ -1,0 +1,30 @@
+{
+  "topic": "Deep audit of sk-deep-research and sk-deep-review historical iteration behavior, with external benchmark synthesis (Auto-Deep-Research-main, AutoAgent-main, autoresearch-master) and compatibility-safe improvement plan for hook and non-hook CLIs",
+  "maxIterations": 30,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 240,
+  "specFolder": ".opencode/specs/03--skilled-agent-orchestration/040-sk-auto-deep-research-review-improvement",
+  "createdAt": "2026-04-03T07:20:00Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "progressiveSynthesis": true,
+  "lineage": {
+    "sessionId": "dr-028-2026-04-03-v1",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "archivedAt": null
+  },
+  "compatibilityConstraints": {
+    "mustSupportHookRuntimes": true,
+    "mustSupportNonHookRuntimes": true,
+    "mustRemainFileBased": true
+  },
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "mutable",
+    "research.md": "mutable"
+  }
+}

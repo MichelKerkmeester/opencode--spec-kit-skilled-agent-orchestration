@@ -15,7 +15,7 @@ This scenario validates JSONL reconstruction from review iteration files for `DR
 
 ### WHY THIS MATTERS
 
-The write-once iteration files serve as a redundant record of each review cycle. If `deep-research-state.jsonl` is lost or corrupted beyond what graceful degradation can handle, the iteration files provide the raw material to reconstruct the state log and resume the review without starting over.
+The write-once iteration files serve as a redundant record of each review cycle. If `deep-review-state.jsonl` is lost or corrupted beyond what graceful degradation can handle, the iteration files provide the raw material to reconstruct the state log and resume the review without starting over.
 
 ---
 
@@ -44,7 +44,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DRV-024 | JSONL reconstruction from review iteration files | Verify JSONL state log can be reconstructed from review/iterations/ write-once files. | Validate the JSONL reconstruction contract for sk-deep-review. Confirm that each `review/iterations/iteration-NNN.md` contains sufficient metadata to reconstruct a valid JSONL state log, that the reconstruction path is documented, and that a reconstructed state log allows the review to resume, then return a concise operator-facing verdict. | 1. `bash: rg -n 'iteration.*file|iteration-NNN|write.once|iterations/|reconstruction|reconstruct|redundant|backup' .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: rg -n 'iteration.*file|write_once|iterations/|iteration-NNN|reconstruct' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'iteration.*file|write-once|iterations/|iteration-NNN|reconstruct|recovery|backup' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` | Iteration files contain JSONL-compatible metadata, reconstruction path documented, reconstructed JSONL allows resume, and iteration files are write-once. | Capture the iteration file schema, the JSONL field mapping, and any documented reconstruction procedure. | PASS if iteration files contain enough data for reconstruction and the path is documented; FAIL if iteration files lack critical metadata or reconstruction is not feasible. | Privilege the state format reference for both JSONL and iteration file schemas; compare field overlap to assess reconstruction feasibility. |
+| DRV-024 | JSONL reconstruction from review iteration files | Verify JSONL state log can be reconstructed from review/iterations/ write-once files. | Validate the JSONL reconstruction contract for sk-deep-review. Confirm that each `review/iterations/iteration-NNN.md` contains sufficient metadata to reconstruct a valid JSONL state log, that the reconstruction path is documented, and that a reconstructed state log allows the review to resume, then return a concise operator-facing verdict. | 1. `bash: rg -n 'iteration.*file|iteration-NNN|write.once|iterations/|reconstruction|reconstruct|redundant|backup' .opencode/skill/sk-deep-review/references/state_format.md .opencode/skill/sk-deep-review/references/loop_protocol.md` -> 2. `bash: rg -n 'iteration.*file|write_once|iterations/|iteration-NNN|reconstruct' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'iteration.*file|write-once|iterations/|iteration-NNN|reconstruct|recovery|backup' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` | Iteration files contain JSONL-compatible metadata, reconstruction path documented, reconstructed JSONL allows resume, and iteration files are write-once. | Capture the iteration file schema, the JSONL field mapping, and any documented reconstruction procedure. | PASS if iteration files contain enough data for reconstruction and the path is documented; FAIL if iteration files lack critical metadata or reconstruction is not feasible. | Privilege the state format reference for both JSONL and iteration file schemas; compare field overlap to assess reconstruction feasibility. |
 
 ---
 
@@ -61,8 +61,8 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | File | Role |
 |---|---|
-| `.opencode/skill/sk-deep-research/references/state_format.md` | JSONL schema and iteration file schema; use `ANCHOR:state-log` and iteration file section |
-| `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Iteration file write-once contract and recovery guidance; use `ANCHOR:phase-iteration-loop` |
+| `.opencode/skill/sk-deep-review/references/state_format.md` | JSONL schema and iteration file schema; use the state log and findings registry sections |
+| `.opencode/skill/sk-deep-review/references/loop_protocol.md` | Iteration file write-once contract and recovery guidance; use the iteration loop section |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | Iteration file creation and state append steps |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | Iteration file creation and state append steps |
 | `.opencode/skill/sk-deep-review/references/quick_reference.md` | State file listing showing iterations/ directory; use `ANCHOR:state-files` |

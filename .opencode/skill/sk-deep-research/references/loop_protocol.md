@@ -12,20 +12,24 @@ Canonical specification for the deep research loop lifecycle.
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The deep research loop has 4 phases: initialization, iteration (repeated), synthesis, and save. The YAML workflow manages the lifecycle; the @deep-research agent executes individual iterations.
+The deep research loop has 4 phases: initialization, iteration (repeated), synthesis, and save. The YAML workflow manages the lifecycle; the @deep-research agent executes individual iterations; the reducer synchronizes packet state after each iteration and lifecycle transition.
+
+Runtime capability matrix references for parity-sensitive loop behavior:
+- Human-readable matrix: `.opencode/skill/sk-deep-research/references/capability_matrix.md`
+- Machine-readable matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
 
 ```
-┌──────────┐     ┌──────────────────────────┐     ┌──────────────┐     ┌──────────┐
-│  INIT    │────>│  LOOP                    │────>│  SYNTHESIS   │────>│  SAVE    │
-│          │     │  ┌────────────────────┐  │     │              │     │          │
-│ Config    │     │  │ Read State         │  │     │ Final        │     │ Memory   │
+┌──────────┐     ┌──────────────────────────┐     ┌───────────────────────┐     ┌──────────┐
+│  INIT    │────>│  LOOP                    │────>│  SYNTHESIS            │────>│  SAVE    │
+│          │     │  ┌────────────────────┐  │     │                       │     │          │
+│ Config    │     │  │ Read State         │  │     │ Final                 │     │ Memory   │
 │ Strategy │     │  │ Check Convergence  │  │     │ research/research.md  │     │ Context  │
-│ State    │     │  │ Dispatch Agent     │  │     │ compilation  │     │ Save     │
-│          │     │  │ Evaluate Results   │  │     │              │     │          │
-│          │     │  │ Loop Decision      │  │     │              │     │          │
-│          │     │  └────────┬───────────┘  │     │              │     │          │
-│          │     │           │ repeat       │     │              │     │          │
-└──────────┘     └──────────────────────────┘     └──────────────┘     └──────────┘
+│ State    │     │  │ Dispatch Agent     │  │     │ compilation           │     │ Save     │
+│          │     │  │ Evaluate Results   │  │     │                       │     │          │
+│          │     │  │ Loop Decision      │  │     │                       │     │          │
+│          │     │  └────────┬───────────┘  │     │                       │     │          │
+│          │     │           │ repeat       │     │                       │     │          │
+└──────────┘     └──────────────────────────┘     └───────────────────────┘     └──────────┘
 ```
 
 ---
@@ -44,21 +48,26 @@ Set up all state files for a new research session.
    - `resume`: config + state + strategy all exist and agree
    - `completed-session`: consistent prior state with `config.status == "complete"`
    - `invalid-state`: partial or contradictory artifacts
-2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/research/iterations`
-3. **Write config**: `research/deep-research-config.json` from template + user parameters
-4. **Initialize state log**: First line of `research/deep-research-state.jsonl` with config record
-5. **Initialize strategy**: `research/deep-research-strategy.md` from template with:
+2. **Resolve canonical artifact names**:
+   - Read legacy aliases during the migration window if needed
+   - Write only canonical `deep-research-*` names
+   - Emit a `migration` event for every legacy alias consumed
+3. **Create spec folder** (if needed): `mkdir -p {spec_folder}/research/iterations`
+4. **Write config**: `research/deep-research-config.json` from template + user parameters
+5. **Initialize state log**: First line of `research/deep-research-state.jsonl` with config record
+6. **Initialize strategy**: `research/deep-research-strategy.md` from template with:
    - Topic from user input
    - Initial key questions (3-5, from topic analysis)
    - Known context from `memory_context()` results (if any), injected only after the strategy file exists
    - Research boundaries from config
-5a. **Validate Research Charter**:
+7. **Initialize findings registry**: `research/findings-registry.json` with empty `openQuestions`, `resolvedQuestions`, `keyFindings`, and `ruledOutDirections`
+7a. **Validate Research Charter**:
    - Verify strategy.md contains a "Non-Goals" section (may be empty but must exist)
    - Verify strategy.md contains a "Stop Conditions" section (may be empty but must exist)
    - If either section is missing, append it as an empty placeholder before proceeding
    - In **confirm mode**: present the charter (topic, key questions, non-goals, stop conditions) for user review before proceeding
    - In **auto mode**: accept the charter automatically and continue
-6. **Resume only if config, JSONL, and strategy agree**; otherwise halt for repair instead of guessing
+8. **Resume only if config, JSONL, and strategy agree**; otherwise halt for repair instead of guessing
 
 ### Outputs
 - `research/deep-research-config.json`
@@ -73,6 +82,13 @@ If state files already exist from a prior session:
 4. Set iteration counter to last completed + 1
 5. Log resume event to JSONL: `{"type":"event","event":"resumed","fromIteration":N}`
 6. Continue loop from step_read_state
+
+### Lifecycle Branch Contract
+
+- `resume`: same `sessionId`, no archive, continue from the active lineage boundary
+- `restart`: new `sessionId`, incremented `generation`, archive prior packet under `research/archive/{oldSessionId}/`
+- `fork`: new `sessionId`, preserve parent linkage, copy current state as branch baseline
+- `completed-continue`: snapshot `research/research.md` to `research/synthesis-v{generation}.md`, record `completedAt` and `reopenedAt`, then reopen as a new segment with parent linkage
 
 ---
 
@@ -175,15 +191,17 @@ After dispatch, the orchestrator monitors the running iteration against budget l
 After agent completes:
 1. Verify `{spec_folder}/research/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with iteration record
-3. Verify strategy.md was updated
-4. Extract `newInfoRatio` from JSONL record
-5. Track stuck count: skip if `status == "thought"` (no change), reset to 0 if `status == "insight"` (breakthrough counts as progress), increment if `newInfoRatio < config.convergenceThreshold`, reset otherwise
+3. Run reducer with `{ latestJSONLDelta, newIterationFile, priorReducedState }`
+4. Verify reducer refreshed `deep-research-strategy.md`, `findings-registry.json`, and `deep-research-dashboard.md`
+5. Verify the refreshed packet surfaces reflect the new iteration evidence
+6. Extract `newInfoRatio` from JSONL record
+7. Track stuck count: skip if `status == "thought"` (no change), reset to 0 if `status == "insight"` (breakthrough counts as progress), increment if `newInfoRatio < config.convergenceThreshold`, reset otherwise
 
 #### Step 4a: Generate Dashboard
 
 After evaluating iteration results, generate a human-readable dashboard:
 
-1. Read JSONL state log (all iteration records) and strategy.md (current state)
+1. Read JSONL state log, findings registry, and strategy.md
 2. Generate or regenerate `research/deep-research-dashboard.md` with the following sections:
    - **Iteration table**: `| run | focus | newInfoRatio | findings count | status |`
    - **Question status**: `X/Y answered` with itemized list (answered vs remaining)
@@ -202,13 +220,15 @@ In **confirm mode**, the dashboard is displayed to the user at each iteration ap
 
 This checkpointing pattern is documented for reference, but current runtimes should not assume it is available.
 
-After each iteration is verified (JSONL appended, iteration file written, strategy updated):
+After each iteration is verified (JSONL appended, iteration file written, reducer outputs refreshed):
 
 1. **Stage targeted files only** (never `git add -A`):
    ```bash
    git add research/iterations/iteration-{NNN}.md
    git add research/deep-research-state.jsonl
    git add research/deep-research-strategy.md
+   git add research/findings-registry.json
+   git add research/deep-research-dashboard.md
    git add research/research.md  # if it exists
    ```
 2. **Sanitize**: Exclude `.env`, credentials, large binaries from staging
@@ -430,8 +450,9 @@ Compile all iteration findings into final research/research.md. The synthesis wo
      - This section documents negative knowledge (what was tried and why it failed)
      - Treat as primary research output — not an appendix or afterthought
      - Place after Section 11 (Recommendations) and before Section 12 (Open Questions)
-4. **Update config status**: Set `status: "complete"` in config.json
-5. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","totalIterations":N,"answeredCount":A,"totalQuestions":Q,"stopReason":"converged"}`
+4. **If reopening a completed packet later**: snapshot this file as `research/synthesis-v{generation}.md` before any `completed-continue` flow
+5. **Update config status**: Set `status: "complete"` in config.json
+6. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","totalIterations":N,"answeredCount":A,"totalQuestions":Q,"stopReason":"converged"}`
 
 ### Progressive vs Final Synthesis
 - If `progressiveSynthesis: true` (default): research/research.md was updated each iteration. Final synthesis is a cleanup pass.
@@ -480,6 +501,8 @@ Preserve research context to memory system.
     |
 [COMPLETE] --> all artifacts created, loop finished
 ```
+
+Hook-capable and non-hook runtimes must follow the same state machine. Hooks may pre-prime context, but they must not change which lifecycle branch the packet selects.
 
 ---
 
@@ -653,7 +676,7 @@ Each protocol produces a structured result in `traceabilityChecks.results[]` wit
 After agent completes:
 1. Verify `{spec_folder}/review/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with review iteration fields: `dimensions`, `filesReviewed`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
-3. Verify strategy.md was updated (dimension progress, findings count, protocol status)
+3. Verify the reducer-owned review strategy surfaces were refreshed (dimension progress, findings count, protocol status)
 4. Extract `newFindingsRatio` from JSONL record
 5. Update stuck tracking using `noProgressThreshold = 0.05`
 

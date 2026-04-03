@@ -71,13 +71,23 @@ Review mode stores its packet under `{spec_folder}/review/`:
 
 | File | Location | Format | Purpose |
 |------|----------|--------|---------|
-| Config | `review/deep-research-config.json` | JSON | Review parameters (immutable) |
-| State | `review/deep-research-state.jsonl` | JSONL | Iteration log (append-only) |
+| Config | `review/deep-review-config.json` | JSON | Review parameters (immutable) |
+| State | `review/deep-review-state.jsonl` | JSONL | Iteration log (append-only) |
+| Registry | `review/deep-review-findings-registry.json` | JSON | Reducer-owned finding registry |
 | Strategy | `review/deep-review-strategy.md` | Markdown | Dimensions, findings, next focus |
 | Dashboard | `review/deep-review-dashboard.md` | Markdown | Auto-generated review dashboard |
 | Iterations | `review/iterations/iteration-NNN.md` | Markdown | Per-iteration findings (write-once) |
 | Report | `review/review-report.md` | Markdown | Final 9-section review report |
-| Pause | `review/.deep-research-pause` | Sentinel | Pause between iterations |
+| Pause | `review/.deep-review-pause` | Sentinel | Pause between iterations |
+
+### Lifecycle Modes
+
+| Mode | Effect |
+|------|--------|
+| `resume` | Continue the current review lineage without resetting generation |
+| `restart` | Archive current review state and start a new generation |
+| `fork` | Start a sibling lineage branch with explicit parent linkage |
+| `completed-continue` | Snapshot the completed review and reopen it for amendment-only review deltas |
 
 ---
 
@@ -103,6 +113,16 @@ Review mode stores its packet under `{spec_folder}/review/`:
 | FAIL | Active P0 findings remain OR any binary gate fails | Does not meet quality standards | `/spec_kit:plan` for remediation |
 | CONDITIONAL | No P0, but active P1 findings remain | Meets threshold but has required fixes | `/spec_kit:plan` for fixes |
 | PASS | No active P0/P1 findings | Shippable; set `hasAdvisories=true` when P2 findings remain | `/create:changelog` |
+
+### Release Readiness
+
+`releaseReadinessState` is the canonical config/report field for review readiness tracking.
+
+| State | Meaning |
+|-------|---------|
+| `in-progress` | Review still running or required coverage incomplete |
+| `converged` | All 4 dimensions covered and the stabilization pass found no new P0/P1 findings |
+| `release-blocking` | At least one unresolved P0 remains active |
 
 ---
 
@@ -139,13 +159,13 @@ Review mode stores its packet under `{spec_folder}/review/`:
 ## 9. AGENT ITERATION CHECKLIST
 
 Each @deep-review iteration:
-1. Read `deep-research-state.jsonl` and `deep-review-strategy.md`
+1. Read `deep-review-state.jsonl`, `deep-review-findings-registry.json`, and `deep-review-strategy.md`
 2. Determine focus dimension from strategy "Next Focus"
 3. Execute 3-5 review actions (Read, Grep, Glob, mcp__cocoindex_code__search)
 4. Write `review/iterations/iteration-NNN.md` with P0/P1/P2 findings
 5. Run adversarial self-check on any P0 findings (Hunter/Skeptic/Referee)
 6. Update `deep-review-strategy.md` (findings, coverage, next focus)
-7. Append iteration record to `deep-research-state.jsonl`
+7. Append iteration record to `deep-review-state.jsonl`
 
 ---
 
@@ -176,7 +196,7 @@ Each @deep-review iteration:
 | Deeper review | Lower convergence (0.05), raise max iterations (10) |
 | Faster completion | Raise convergence (0.15), lower max iterations (5) |
 | Focus on security | Specify `--dimensions security,correctness` |
-| Broad coverage | Use all default dimensions (7 total) |
+| Broad coverage | Use all 4 default dimensions and allow the stabilization pass to run |
 
 ---
 

@@ -157,7 +157,7 @@ Run the 9-step implementation workflow: plan review, task breakdown, quality val
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` -- Spec folder path (REQUIRED) with optional parameters
-**Outputs:** Completed implementation + implementation-summary.md + optional handover.md + `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Completed implementation + implementation-summary.md + nested changelog when applicable + optional handover.md + `STATUS=<OK|FAIL|CANCELLED>`
 
 ### Prerequisites
 
@@ -179,7 +179,7 @@ Missing prerequisites -> guide user to `/spec_kit:plan` first.
 | 5    | Implementation Check   | Verify prerequisites                          | greenlight                |
 | 5.5  | PREFLIGHT Capture      | Epistemic baseline for learning measurement   | preflight_baseline        |
 | 6    | Development            | Execute implementation                        | code changes              |
-| 7    | Completion             | Generate summary (via @speckit)               | implementation-summary.md |
+| 7    | Completion             | Generate summary (via @speckit)               | implementation-summary.md + nested changelog when applicable |
 | 7.5  | POSTFLIGHT Capture     | Learning delta and improvement calculation    | postflight_delta          |
 | 8    | Save Context           | Preserve conversation                         | memory/*.md               |
 | 9    | Session Handover Check | Prompt for handover document                  | handover.md (optional)    |
@@ -222,7 +222,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 ### Success
 ```
 SpecKit Implementation Complete - All 9 steps executed.
-Artifacts: tasks.md, implementation-summary.md, memory/*.md
+Artifacts: tasks.md, implementation-summary.md, nested changelog (when applicable), memory/*.md
 STATUS=OK PATH=[spec-folder-path]
 ```
 

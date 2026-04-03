@@ -23,7 +23,7 @@ Executes ONE review iteration within an autonomous review loop. Reads externaliz
 
 **CRITICAL**: This agent executes a SINGLE review iteration, not the full loop. The loop is managed by the `/spec_kit:deep-review` command's YAML workflow. This agent is dispatched once per iteration with explicit context about what dimension to review.
 
-**IMPORTANT**: This agent is a hybrid of @review (quality rubric, severity classification, adversarial self-check) and @deep-research (state protocol, JSONL, iteration lifecycle). It reviews code but does NOT modify it.
+**IMPORTANT**: This agent is a hybrid of @review (quality rubric, severity classification, adversarial self-check) and the deep-review loop contract (state protocol, JSONL, lifecycle continuity). It reviews code but does NOT modify it.
 
 > **SPEC FOLDER PERMISSION:** @deep-review may write only `review/` artifacts inside the active spec folder (iteration artifacts, strategy, JSONL, dashboard, report). Review target files are strictly READ-ONLY, and writes outside `review/` are not part of this agent contract.
 
@@ -57,9 +57,10 @@ Every iteration follows this exact sequence:
 
 #### Step 1: Read State
 Read these files (paths provided in dispatch context):
-- `review/deep-research-state.jsonl` -- Understand iteration history
+- `review/deep-review-state.jsonl` -- Understand iteration history
+- `review/deep-review-findings-registry.json` -- Read reducer-owned active finding state (read-only for this agent)
 - `review/deep-review-strategy.md` -- Understand what dimensions to review
-- `review/deep-research-config.json` -- Read review configuration (read-only)
+- `review/deep-review-config.json` -- Read review configuration, lineage metadata, and release readiness state (read-only)
 
 Extract from state:
 - Current iteration number (count JSONL iteration records + 1)
@@ -225,7 +226,7 @@ Edit `review/deep-review-strategy.md`:
 6. Set "Next Focus" for next iteration
 
 #### Step 7: Append JSONL
-Append ONE line to `review/deep-research-state.jsonl`:
+Append ONE line to `review/deep-review-state.jsonl`:
 
 ```json
 {"type":"iteration","mode":"review","run":N,"status":"complete","focus":"[dimension - specific area]","dimension":"[dimension name]","dimensions":["[dimension name]"],"findingsCount":N,"newFindingsRatio":0.XX,"noveltyJustification":"...","findingsSummary":{"P0":N,"P1":N,"P2":N},"filesReviewed":["file1","file2"],"dimensionScores":{"correctness":N,"security":N,"traceability":N,"maintainability":N},"findingsNew":{"P0":N,"P1":N,"P2":N},"findingsRefined":{"P0":N,"P1":N,"P2":N},"upgrades":[],"resolved":[],"findingRefs":["P1-001","P2-003"],"traceabilityChecks":{"summary":{"required":N,"executed":N,"pass":N,"partial":N,"fail":N,"blocked":N,"notApplicable":N,"gatingFailures":N},"results":[{"protocolId":"spec_code","status":"pass|partial|fail","gateClass":"hard|advisory","applicable":true,"counts":{"pass":N,"partial":N,"fail":N},"evidence":["path/to/file:line"],"findingRefs":["P1-001"],"summary":"One-line traceability result."}]},"coverage":{"filesReviewed":N,"filesTotal":N,"dimensionsComplete":[]},"ruledOut":["investigated-not-issue"],"focusTrack":"optional","timestamp":"ISO-8601","durationMs":NNNNN}
@@ -325,6 +326,27 @@ This agent loads shared review doctrine from .opencode/skill/sk-code--review/ref
 - `verify`: 11-13 tool calls when re-reading evidence, traceability protocols, or borderline severity.
 - `adjudicate`: 8-10 tool calls for `P0`/`P1` referee work and synthesis-ready confirmation.
 
+### Lifecycle + Reducer Contract
+
+The orchestrator may enter this agent through any of these lifecycle modes:
+- `resume`: Continue the active review session.
+- `restart`: Reset loop state and start a fresh generation for the same target.
+- `fork`: Start a child review session from an earlier lineage point.
+- `completed-continue`: Re-open a previously completed session for additional review coverage.
+
+Always treat these config fields as required read-only lineage metadata:
+- `sessionId`
+- `parentSessionId`
+- `lineageMode`
+- `generation`
+- `continuedFromRun`
+- `releaseReadinessState`
+
+Reducer boundary:
+- `review/deep-review-findings-registry.json` is the canonical reducer-owned finding registry.
+- This leaf agent may READ the registry for continuity and deduplication context.
+- The orchestrator/reducer refreshes the registry after each iteration; do not overwrite it from this agent.
+
 ---
 
 ## 4. STATE MANAGEMENT + WRITE SAFETY
@@ -335,10 +357,12 @@ All paths are relative to the spec folder provided in dispatch context.
 
 | File | Path | Operation |
 |------|------|-----------|
-| Config | `review/deep-research-config.json` | Read only |
-| State log | `review/deep-research-state.jsonl` | Read + Append |
+| Config | `review/deep-review-config.json` | Read only |
+| State log | `review/deep-review-state.jsonl` | Read + Append |
+| Findings registry | `review/deep-review-findings-registry.json` | Read only |
 | Strategy | `review/deep-review-strategy.md` | Read + Edit |
 | Iteration findings | `review/iterations/iteration-{NNN}.md` | Write (create new) |
+| Pause sentinel | `review/.deep-review-pause` | Read only |
 
 ### Iteration Number Derivation
 
@@ -354,7 +378,7 @@ Pad to 3 digits for filename: iteration-001.md, iteration-002.md
 - Strategy: Use Edit tool to modify specific sections (never Write which overwrites).
 - Iteration file: Use Write tool to create new file (should not exist yet).
 - **CRITICAL: Review target files are READ-ONLY. NEVER edit code under review.**
-- Only write to: `review/iterations/iteration-NNN.md`, `review/deep-review-strategy.md`, `review/deep-research-state.jsonl`
+- Only write to: `review/iterations/iteration-NNN.md`, `review/deep-review-strategy.md`, `review/deep-review-state.jsonl`
 
 ---
 
@@ -421,7 +445,7 @@ Adapted from @review Hunter/Skeptic/Referee protocol.
 6. Modify config after init (read-only)
 7. Edit review target files
 8. Fabricate findings or inflate severity (phantom issues)
-9. Overwrite deep-research-state.jsonl (append-only)
+9. Overwrite deep-review-state.jsonl (append-only)
 10. Skip writing the iteration file
 
 ### ESCALATE
@@ -445,7 +469,7 @@ Before returning the completion report, verify:
 
 ```
 REVIEW ITERATION VERIFICATION:
-[x] State files read at start (JSONL + strategy + config)
+[x] State files read at start (JSONL + findings registry + strategy + config)
 [x] Focus determined from strategy or unchecked dimensions
 [x] Review actions executed (3-5 actions minimum)
 [x] All findings cite file:line evidence
@@ -453,7 +477,9 @@ REVIEW ITERATION VERIFICATION:
 [x] New P0/P1 findings include typed claim-adjudication packets
 [x] review/iterations/iteration-NNN.md created with all sections
 [x] review/deep-review-strategy.md updated (dimensions, findings, next focus)
-[x] deep-research-state.jsonl appended with exactly ONE record
+[x] deep-review-state.jsonl appended with exactly ONE record
+[x] Config lineage fields respected as read-only session contract
+[x] Findings registry treated as reducer-owned canonical state
 [x] traceabilityChecks recorded when protocol evidence was reviewed
 [x] newFindingsRatio calculated honestly with justification
 [x] Exhausted approaches checked before choosing focus
@@ -479,7 +505,7 @@ Return this summary to the dispatcher after completing the iteration:
 
 **Files written**:
 - review/iterations/iteration-[NNN].md
-- review/deep-research-state.jsonl (appended)
+- review/deep-review-state.jsonl (appended)
 - review/deep-review-strategy.md (updated)
 
 **Status**: [complete | timeout | error | stuck | insight | thought]

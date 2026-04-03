@@ -83,6 +83,15 @@ All spec folders require an implementation summary that captures what was built:
 
 **Note:** This file is validated as part of the FILE_EXISTS rule. If missing for any spec folder, validation will fail with an ERROR.
 
+### Nested Packet Changelog (Recommended for phased work)
+
+Packet-local changelogs are not part of the required FILE_EXISTS contract, but they are recommended whenever a spec root or phase child needs a durable packet history beside `implementation-summary.md`.
+
+| Artifact | Typical Path | Created When |
+| --- | --- | --- |
+| Root nested changelog | `changelog/changelog-<packet>-root.md` | End of root-packet completion |
+| Phase nested changelog | `../changelog/changelog-<packet>-<phase-folder>.md` | End of phase completion |
+
 ### Examples
 
 ✅ **Pass (Level 1):**

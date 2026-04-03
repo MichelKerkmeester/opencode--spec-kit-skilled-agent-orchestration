@@ -198,7 +198,7 @@ Feature file: [DR-027](02--initialization-and-state-setup/027-research-charter-v
 
 ## 9. ITERATION EXECUTION AND STATE DISCIPLINE
 
-These scenarios validate the single-iteration contract: read state first, execute one focus, update the strategy file, append JSONL, and preserve progressive synthesis behavior.
+These scenarios validate the single-iteration contract: read state first, execute one focus, append JSONL, let the reducer refresh synchronized packet state, and preserve progressive synthesis behavior.
 
 ### DR-007 | Iteration reads state before research
 
@@ -206,9 +206,9 @@ Verify that each dispatched iteration reads JSONL and strategy state before perf
 
 Feature file: [DR-007](03--iteration-execution-and-state-discipline/007-iteration-reads-state-before-research.md)
 
-### DR-008 | Iteration writes iteration-NNN.md, JSONL record, and strategy update
+### DR-008 | Iteration writes iteration-NNN.md, JSONL record, and reducer refresh
 
-Verify that each completed iteration writes the detailed iteration file, appends JSONL, and updates strategy state.
+Verify that each completed iteration writes the detailed iteration file, appends JSONL, and leaves enough evidence for the reducer to refresh strategy, registry, and dashboard state.
 
 Feature file: [DR-008](03--iteration-execution-and-state-discipline/008-iteration-writes-iteration-jsonl-and-strategy-update.md)
 
@@ -364,9 +364,19 @@ Review mode scenarios have been moved to `sk-deep-review/manual_testing_playbook
 
 ## 13. AUTOMATED TEST CROSS-REFERENCE
 
-No dedicated automated test suite was found under `.opencode/skill/sk-deep-research/` during this playbook creation pass. Operators should therefore treat the live docs, command entrypoint, YAML workflows, and runtime agent definition as the current testable contract.
+Focused automated verification was added in the Phase 1 sk-deep-research improvements pass. The test suites live under `system-spec-kit/scripts/tests/` and cover contract parity and reducer behavior.
 
-If a future automated suite is added, this section should map scenario IDs to concrete test files rather than inventing retroactive coverage.
+| Test File | Scenario Coverage | What It Validates |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts` | DR-007, DR-008, DR-024 | Canonical artifact names, reducer ownership markers, runtime mirror alignment, and capability matrix completeness across docs, mirrors, and command assets |
+| `.opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts` | DR-008, DR-024 | Reducer idempotency: double-run produces identical registry, strategy, and dashboard; validates question resolution, finding counts, convergence score, and dashboard content |
+
+Run command (from `.opencode/skill/system-spec-kit/`):
+```
+node mcp_server/node_modules/vitest/vitest.mjs run --root scripts --config ../mcp_server/vitest.config.ts tests/deep-research-contract-parity.vitest.ts tests/deep-research-reducer.vitest.ts
+```
+
+These tests supplement but do not replace the manual scenarios in this playbook. Per-feature validation of operator-facing behavior still requires manual execution.
 
 ---
 

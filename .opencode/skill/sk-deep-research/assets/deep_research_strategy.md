@@ -17,9 +17,9 @@ Serves as the "persistent brain" for a deep research session. Records what to in
 ### Usage
 
 - **Init:** Orchestrator copies this template to `{spec_folder}/research/deep-research-strategy.md` and populates Topic, Key Questions, Known Context, and Research Boundaries from config and memory context.
-- **Per iteration:** Agent reads Next Focus, updates What Worked/Failed, marks questions answered, and sets new Next Focus.
-- **Mutability:** Mutable — updated by both orchestrator and agents throughout the session.
-- **Protection:** None (shared mutable state). Orchestrator validates consistency on resume.
+- **Per iteration:** Agent reads Next Focus, writes iteration evidence, and the reducer refreshes What Worked/Failed, answered questions, ruled-out directions, and Next Focus.
+- **Mutability:** Mutable — analyst-owned sections remain stable, while machine-owned sections are rewritten by the reducer after each iteration.
+- **Protection:** Shared state with explicit ownership boundaries. Orchestrator validates consistency on resume.
 
 ---
 
@@ -61,6 +61,7 @@ Serves as the "persistent brain" for a deep research session. Records what to in
 ---
 
 <!-- /ANCHOR:answered-questions -->
+<!-- MACHINE-OWNED: START -->
 <!-- ANCHOR:what-worked -->
 ## 7. WHAT WORKED
 [First iteration -- populated after iteration 1 completes]
@@ -108,6 +109,7 @@ Serves as the "persistent brain" for a deep research session. Records what to in
 ---
 
 <!-- /ANCHOR:next-focus -->
+<!-- MACHINE-OWNED: END -->
 <!-- ANCHOR:known-context -->
 ## 12. KNOWN CONTEXT
 [Populated during initialization from memory_context() results, if any prior work exists]
@@ -122,7 +124,12 @@ Serves as the "persistent brain" for a deep research session. Records what to in
 - Per-iteration budget: [from config.maxToolCallsPerIteration] tool calls, [from config.maxMinutesPerIteration] minutes
 - Progressive synthesis: true (default)
 - research/research.md ownership: workflow-owned canonical synthesis output
-- Reference-only modes: `:restart`, segment partitioning, wave pruning, checkpoint commits, alternate `claude -p` dispatch
-- Current segment: 1
+- Lifecycle branches: `resume`, `restart`, `fork`, `completed-continue`
+- Machine-owned sections: reducer controls Sections 7-11
+- Canonical pause sentinel: `research/.deep-research-pause`
+- Capability matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
+- Capability matrix doc: `.opencode/skill/sk-deep-research/references/capability_matrix.md`
+- Capability resolver: `.opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs`
+- Current generation: [from config.lineage.generation]
 - Started: [timestamp]
 <!-- /ANCHOR:research-boundaries -->

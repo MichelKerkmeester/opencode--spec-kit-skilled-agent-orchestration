@@ -43,6 +43,7 @@ export interface StructuralBootstrapContract {
 ──────────────────────────────────────────────────────────────── */
 
 const GRAPH_STALE_THRESHOLD_MS = 24 * 60 * 60 * 1000; // 24 hours
+const STRUCTURAL_CONTRACT_MAX_TOKENS = 500;
 
 /* ───────────────────────────────────────────────────────────────
    3. HELPERS
@@ -58,6 +59,72 @@ function resolveGraphFreshness(): SessionSnapshot['graphFreshness'] {
   } catch {
     return 'error';
   }
+}
+
+function estimateTextTokens(text: string): number {
+  return Math.ceil(text.length / 4);
+}
+
+function truncateTextToTokenBudget(text: string, maxTokens: number): string {
+  if (maxTokens <= 0) {
+    return '';
+  }
+
+  if (estimateTextTokens(text) <= maxTokens) {
+    return text;
+  }
+
+  const maxChars = Math.max(0, (maxTokens * 4) - 3);
+  return `${text.slice(0, maxChars).trimEnd()}...`;
+}
+
+function estimateStructuralContractTokens(
+  summary: string,
+  highlights: string[] | undefined,
+  recommendedAction: string,
+): number {
+  return estimateTextTokens([
+    summary,
+    ...(highlights ?? []),
+    recommendedAction,
+  ].join('\n'));
+}
+
+function fitStructuralContractBudget(
+  summary: string,
+  highlights: string[] | undefined,
+  recommendedAction: string,
+): {
+  summary: string;
+  highlights: string[] | undefined;
+  recommendedAction: string;
+} {
+  let fittedSummary = summary;
+  let fittedHighlights = highlights ? [...highlights] : undefined;
+  let fittedRecommendedAction = recommendedAction;
+
+  while (fittedHighlights && fittedHighlights.length > 0
+    && estimateStructuralContractTokens(fittedSummary, fittedHighlights, fittedRecommendedAction) > STRUCTURAL_CONTRACT_MAX_TOKENS) {
+    fittedHighlights = fittedHighlights.slice(0, -1);
+  }
+
+  if (estimateStructuralContractTokens(fittedSummary, fittedHighlights, fittedRecommendedAction) > STRUCTURAL_CONTRACT_MAX_TOKENS) {
+    const reservedTokens = estimateStructuralContractTokens('', fittedHighlights, fittedRecommendedAction);
+    const summaryBudget = Math.max(40, STRUCTURAL_CONTRACT_MAX_TOKENS - reservedTokens);
+    fittedSummary = truncateTextToTokenBudget(fittedSummary, summaryBudget);
+  }
+
+  if (estimateStructuralContractTokens(fittedSummary, fittedHighlights, fittedRecommendedAction) > STRUCTURAL_CONTRACT_MAX_TOKENS) {
+    const reservedTokens = estimateStructuralContractTokens(fittedSummary, fittedHighlights, '');
+    const actionBudget = Math.max(20, STRUCTURAL_CONTRACT_MAX_TOKENS - reservedTokens);
+    fittedRecommendedAction = truncateTextToTokenBudget(fittedRecommendedAction, actionBudget);
+  }
+
+  return {
+    summary: fittedSummary,
+    highlights: fittedHighlights,
+    recommendedAction: fittedRecommendedAction,
+  };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -189,5 +256,13 @@ export function buildStructuralBootstrapContract(
     recommendedAction = 'Call session_bootstrap first. Then run code_graph_scan if structural context is needed.';
   }
 
-  return { status, summary, highlights, recommendedAction, sourceSurface };
+  const fittedContract = fitStructuralContractBudget(summary, highlights, recommendedAction);
+
+  return {
+    status,
+    summary: fittedContract.summary,
+    highlights: fittedContract.highlights,
+    recommendedAction: fittedContract.recommendedAction,
+    sourceSurface,
+  };
 }

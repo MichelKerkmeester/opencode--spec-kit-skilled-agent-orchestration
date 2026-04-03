@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "docPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "resolverScript": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "runtimes": [
+    {
+      "id": "opencode",
+      "label": "OpenCode / Copilot",
+      "mirrorPath": ".opencode/agent/deep-research.md",
+      "toolSurface": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch",
+        "memory"
+      ],
+      "hookBootstrap": false,
+      "schemaAdaptation": "low",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "mirrorPath": ".claude/agents/deep-research.md",
+      "toolSurface": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch",
+        "memory"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "low",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "mirrorPath": ".codex/agents/deep-research.toml",
+      "toolSurface": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch",
+        "memory"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "medium",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "mirrorPath": ".gemini/agents/deep-research.md",
+      "toolSurface": [
+        "read_file",
+        "write_file",
+        "replace",
+        "run_shell_command",
+        "grep_search",
+        "list_directory",
+        "google_web_search"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "high",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "agents",
+      "label": "Legacy .agents wrapper",
+      "mirrorPath": ".agents/agents/deep-research.md",
+      "commandWrapperPath": ".agents/commands/spec_kit/deep-research.toml",
+      "toolSurface": [
+        "read_file",
+        "write_file",
+        "replace",
+        "run_shell_command",
+        "grep_search",
+        "list_directory",
+        "google_web_search"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "high",
+      "fallbackBridgeEligible": true,
+      "compatibilityWrapper": true
+    }
+  ]
+}

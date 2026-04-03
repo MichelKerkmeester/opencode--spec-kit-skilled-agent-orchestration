@@ -4,7 +4,7 @@ description: "Autonomous deep research loop protocol with iterative investigatio
 allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search]
 # Note: Task tool is for the command executor (loop management). The @deep-research agent itself does NOT have Task (LEAF-only).
 argument-hint: "[topic] [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.3.0.0
+version: 1.4.0.0
 ---
 
 <!-- Keywords: autoresearch, deep-research, iterative-research, autonomous-loop, convergence-detection, externalized-state, fresh-context, research-agent, JSONL-state, strategy-file -->
@@ -43,6 +43,14 @@ Use this skill when:
 `autoresearch`, `deep research`, `autonomous research`, `research loop`, `iterative research`, `multi-round research`, `deep investigation`, `comprehensive research`
 
 For iterative code review and quality auditing, see `sk-deep-review`.
+
+### Lifecycle Contract
+
+Live lifecycle branches:
+- `resume` — continue the active lineage
+- `restart` — start a new generation with explicit parent linkage
+- `fork` — branch from the current packet state
+- `completed-continue` — reopen a completed lineage only after immutable synthesis snapshotting
 
 ---
 
@@ -134,7 +142,7 @@ User invokes: /spec_kit:deep-research "topic"
                     v
     ┌─────────────────────────────────┐
     │  /spec_kit:deep-research command│  Layer 1: Command
-    │  (YAML workflow + loop config)  │  Manages loop lifecycle
+    │  (YAML workflow + loop config)    │  Manages loop lifecycle
     └──────────────┬──────────────────┘
                    |
                    v
@@ -161,6 +169,7 @@ User invokes: /spec_kit:deep-research "topic"
     │  deep-research-config.json       │  Persists across iterations
     │  deep-research-state.jsonl      │
     │  deep-research-strategy.md      │
+    │  findings-registry.json          │
     │  research/iterations/iteration-NNN.md │
     │  research/research.md (workflow-owned │
     │  progressive synthesis)         │
@@ -206,8 +215,9 @@ Save --> generate-context.js --> verify memory artifact
 | **Externalized state** | All research continuity via files, not agent memory |
 | **Fresh context** | Each iteration gets a clean agent with no prior context |
 | **Convergence** | Multi-signal detection: newInfoRatio, stuck count, questions answered |
-| **Strategy file** | "Persistent brain" recording what worked, failed, and where to look next |
-| **JSONL log** | Append-only structured log for machine-parseable iteration data |
+| **Strategy file** | Reducer-synchronized research steering with machine-owned sections |
+| **JSONL log** | Append-only structured log for lineage and iteration data |
+| **Findings registry** | Reducer-owned open/resolved questions, key findings, and ruled-out directions |
 | **Progressive synthesis** | `progressiveSynthesis` defaults to `true`; the agent may update `research/research.md` incrementally, and the orchestrator always performs the final consolidation pass |
 
 ---
@@ -230,6 +240,8 @@ Save --> generate-context.js --> verify memory artifact
 10. **Document ruled-out directions per iteration** -- Every iteration must include what was tried and failed
 11. **Report newInfoRatio + 1-sentence novelty justification** -- Every JSONL iteration record must include both
 12. **Quality guards must pass before convergence** -- Source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger
+13. **Respect reducer ownership** -- The workflow reducer, not the agent, is the source of truth for strategy machine-owned sections, dashboard metrics, and findings registry updates
+14. **Use canonical packet names only** -- Write `deep-research-*` artifacts and `research/.deep-research-pause`; legacy names are read-only migration aliases
 
 ### NEVER
 
@@ -253,7 +265,7 @@ Save --> generate-context.js --> verify memory artifact
 These concepts remain documented for future design work, but they are not part of the live executable contract for `/spec_kit:deep-research`:
 1. **Wave orchestration** -- parallel question fan-out, pruning, and breakthrough logic
 2. **Checkpoint commits** -- per-iteration git commits
-3. **Segment transitions / `:restart`** -- multi-segment session partitioning
+3. **Wave orchestration on the same lineage** -- parallel fan-out remains reference-only
 4. **Alternate CLI dispatch** -- process-isolated `claude -p` or similar dispatch modes
 
 ### ESCALATE IF
@@ -304,7 +316,7 @@ These concepts remain documented for future design work, but they are not part o
 | Gate | Criteria | Blocking |
 |------|----------|----------|
 | **Pre-loop** | Config valid, strategy initialized, state log created | Yes |
-| **Per-iteration** | iteration-NNN.md written, JSONL appended, strategy updated | Yes |
+| **Per-iteration** | iteration-NNN.md written, JSONL appended, reducer refreshes strategy/dashboard/registry | Yes |
 | **Post-loop** | research/research.md exists with content, convergence report generated | Yes |
 | **Quality guards** | Source diversity (>=2), focus alignment, no single-weak-source | Yes |
 | **Memory save** | memory/*.md created via generate-context.js | No |
@@ -342,8 +354,9 @@ Before research:
 
 During research (each iteration):
   Agent writes research/iterations/iteration-NNN.md
-  Agent updates research/deep-research-strategy.md
   Agent appends research/deep-research-state.jsonl
+  Workflow reducer updates research/deep-research-strategy.md, research/findings-registry.json, and research/deep-research-dashboard.md
+  Runtime capability lookups resolve through assets/runtime_capabilities.json plus scripts/runtime-capabilities.cjs
 
 After research:
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]

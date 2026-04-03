@@ -1,0 +1,22 @@
+{
+  "specFolder": "03--commands-and-skills/037-cmd-merge-spec-kit-phase",
+  "description": "Feature Specification: Merge spec_kit:phase into plan and complete",
+  "keywords": [
+    "feature",
+    "specification",
+    "merge",
+    "phase",
+    "plan",
+    "complete"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.696Z",
+  "specId": "037",
+  "folderSlug": "cmd-merge-spec-kit-phase",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "29-03-26_10-05__planning-phase-for-merging-spec-kit-phase-into.md"
+  ]
+}

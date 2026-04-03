@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/009-cli-self-invocation-guards",
+  "description": "Feature Specification: CLI Self-Invocation Guards",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli",
+    "self-invocation",
+    "guards"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.575Z",
+  "specId": "009",
+  "folderSlug": "cli-self-invocation-guards",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

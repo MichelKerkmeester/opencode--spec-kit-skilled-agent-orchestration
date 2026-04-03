@@ -1,0 +1,46 @@
+{
+  "topic": "Analyze the system-spec-kit skill and determine the most concise, high-signal way for Codex to discover spec_kit or memory commands when system-spec-kit is selected by skill advisor, without relying on command or prompt surfaces being visible in the runtime UI.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing",
+  "createdAt": "2026-04-03T09:01:36Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "lineage": {
+    "sessionId": "d8b00a07-c9f7-4e80-ae08-93b84aee7e17",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "what-worked",
+      "what-failed",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "archiveRoot": "research/archive",
+  "migrationWindowDays": 28,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  }
+}

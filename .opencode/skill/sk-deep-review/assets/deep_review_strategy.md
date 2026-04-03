@@ -20,6 +20,7 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 - **Per iteration:** Agent reads Next Focus, reviews the assigned dimension/files, updates findings, marks dimensions complete, and sets new Next Focus.
 - **Mutability:** Mutable — updated by both orchestrator and agents throughout the session.
 - **Protection:** None (shared mutable state). Orchestrator validates consistency on resume.
+- **Ownership:** Machine-managed metrics and coverage blocks are wrapped in explicit ownership markers. Human commentary and operator overrides live outside those markers.
 
 ---
 
@@ -33,10 +34,12 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 <!-- /ANCHOR:topic -->
 <!-- ANCHOR:review-dimensions -->
 ## 3. REVIEW DIMENSIONS (remaining)
+<!-- MACHINE-OWNED: START -->
 - [ ] D1 Correctness — Logic errors, off-by-one, wrong return types, broken invariants
 - [ ] D2 Security — Injection, auth bypass, secrets exposure, unsafe deserialization
 - [ ] D3 Traceability — Spec/code alignment, checklist evidence, cross-reference integrity
 - [ ] D4 Maintainability — Patterns, clarity, documentation quality, safe follow-on change cost
+<!-- MACHINE-OWNED: END -->
 
 ---
 
@@ -57,23 +60,27 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 <!-- /ANCHOR:stop-conditions -->
 <!-- ANCHOR:completed-dimensions -->
 ## 6. COMPLETED DIMENSIONS
+<!-- MACHINE-OWNED: START -->
 [None yet -- populated as iterations complete dimension reviews]
 
 | Dimension | Verdict | Iteration | Summary |
 |-----------|---------|-----------|---------|
 | [D1 Correctness] | [PASS/CONDITIONAL/FAIL] | [N] | [1-sentence result] |
+<!-- MACHINE-OWNED: END -->
 
 ---
 
 <!-- /ANCHOR:completed-dimensions -->
 <!-- ANCHOR:running-findings -->
 ## 7. RUNNING FINDINGS
+<!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
 - **P1 (Major):** 0 active
 - **P2 (Minor):** 0 active
 - **Delta this iteration:** +0 P0, +0 P1, +0 P2
 
-[Findings are tracked in the finding registry within JSONL state. This section provides a running count summary updated after each iteration.]
+[Findings are tracked in `deep-review-findings-registry.json`. This section provides a running count summary updated after each iteration.]
+<!-- MACHINE-OWNED: END -->
 
 ---
 
@@ -120,7 +127,9 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 12. NEXT FOCUS
+<!-- MACHINE-OWNED: START -->
 [Recommended focus area for the next iteration -- updated at end of each iteration. Includes target dimension and/or specific files to review.]
+<!-- MACHINE-OWNED: END -->
 
 ---
 
@@ -134,6 +143,7 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 <!-- /ANCHOR:known-context -->
 <!-- ANCHOR:cross-reference-status -->
 ## 14. CROSS-REFERENCE STATUS
+<!-- MACHINE-OWNED: START -->
 [Alignment checks completed across core and overlay protocols]
 
 | Protocol | Level | Status | Iteration | Notes |
@@ -144,31 +154,39 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 | `agent_cross_runtime` | overlay | [pending/pass/partial/fail/blocked/notApplicable] | [N] | [details] |
 | `feature_catalog_code` | overlay | [pending/pass/partial/fail/blocked/notApplicable] | [N] | [details] |
 | `playbook_capability` | overlay | [pending/pass/partial/fail/blocked/notApplicable] | [N] | [details] |
+<!-- MACHINE-OWNED: END -->
 
 ---
 
 <!-- /ANCHOR:cross-reference-status -->
 <!-- ANCHOR:files-under-review -->
 ## 15. FILES UNDER REVIEW
+<!-- MACHINE-OWNED: START -->
 [Per-file coverage state table -- populated during initialization from scope discovery]
 
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|-------------------|----------------|----------|--------|
 | [path/to/file] | [D1, D3] | [N] | [0 P0, 1 P1, 2 P2] | [partial/complete] |
+<!-- MACHINE-OWNED: END -->
 
 ---
 
 <!-- /ANCHOR:files-under-review -->
 <!-- ANCHOR:review-boundaries -->
 ## 16. REVIEW BOUNDARIES
+<!-- MACHINE-OWNED: START -->
 - Max iterations: [from config]
 - Convergence threshold: [from config]
 - Rolling STOP threshold: 0.08
 - No-progress threshold: 0.05
 - Coverage stabilization passes required: 1
+- Session lineage: sessionId=[from config.sessionId], parentSessionId=[from config.parentSessionId], generation=[from config.generation], lineageMode=[from config.lineageMode]
+- Findings registry: `deep-review-findings-registry.json`
+- Release-readiness states: in-progress | converged | release-blocking
 - Per-iteration budget: [from config.maxToolCallsPerIteration] tool calls, [from config.maxMinutesPerIteration] minutes
 - Severity threshold: [from config.severityThreshold]
 - Review target type: [from config.reviewTargetType]
 - Cross-reference checks: core=[from config.crossReference.core], overlay=[from config.crossReference.overlay]
 - Started: [timestamp]
+<!-- MACHINE-OWNED: END -->
 <!-- /ANCHOR:review-boundaries -->

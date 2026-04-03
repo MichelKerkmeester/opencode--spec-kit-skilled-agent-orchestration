@@ -28,8 +28,8 @@ The deep review loop has 4 phases: initialization, iteration (repeated), synthes
 │              │     │  │ Dashboard Generation    │  │     │ Replay        │     │          │
 │              │     │  │ Loop Decision           │  │     │ Validation    │     │          │
 │              │     │  └────────┬────────────────┘  │     │               │     │          │
-│              │     │           │ repeat             │     │ review-report │     │          │
-│              │     │           │                    │     │ (9 sections)  │     │          │
+│              │     │           │ repeat            │     │ review-report │     │          │
+│              │     │           │                   │     │ (9 sections)  │     │          │
 └──────────────┘     └───────────────────────────────┘     └───────────────┘     └──────────┘
 ```
 
@@ -103,11 +103,13 @@ Set up all state files for a new review session. Discover the scope, order dimen
 
    Only schedule overlay protocols that apply to the resolved target type.
 
-6. **Write config**: `{spec_folder}/review/deep-research-config.json` with `mode: "review"` and review-specific fields including target, target type, dimensions, and protocol plan.
+6. **Write config**: `{spec_folder}/review/deep-review-config.json` with `mode: "review"`, lineage metadata (`sessionId`, `parentSessionId`, `lineageMode`, `generation`, `continuedFromRun`, `releaseReadinessState`), and review-specific fields including target, target type, dimensions, protocol plan, and release-readiness state.
 
-7. **Initialize state log**: First line of `{spec_folder}/review/deep-research-state.jsonl` with config record including `mode: "review"`.
+7. **Initialize state log**: First line of `{spec_folder}/review/deep-review-state.jsonl` with config record including `mode: "review"` and the lineage fields.
 
-8. **Initialize strategy**: `{spec_folder}/review/deep-review-strategy.md` from review template with:
+8. **Initialize reducer state**: Create `{spec_folder}/review/deep-review-findings-registry.json` with empty `openFindings`, `resolvedFindings`, `repeatedFindings`, `dimensionCoverage`, `findingsBySeverity`, and `convergenceScore`.
+
+9. **Initialize strategy**: `{spec_folder}/review/deep-review-strategy.md` from review template with:
    - Topic (review target description)
    - Review Dimensions checklist
    - Files Under Review table
@@ -115,19 +117,20 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - Known Context from `memory_context()` results (if any)
    - Review Boundaries from config
 
-9. **Validate review charter**:
+10. **Validate review charter**:
    - Verify strategy.md contains Non-Goals and Stop Conditions sections (may be empty but must exist)
    - In **confirm mode**: present the charter (target, dimensions, scope, non-goals) for user review before proceeding
    - In **auto mode**: accept automatically and continue
 
-10. **Resume only if config, JSONL, and strategy agree**; otherwise halt for repair instead of guessing.
+11. **Resume only if config, JSONL, strategy, and findings registry agree**; otherwise halt for repair instead of guessing.
 
 ### Outputs
 
 | File | Location | Purpose |
 |------|----------|---------|
-| Config | `{spec_folder}/review/deep-research-config.json` | Review parameters (immutable after init) |
-| State | `{spec_folder}/review/deep-research-state.jsonl` | Iteration log (1 initial line) |
+| Config | `{spec_folder}/review/deep-review-config.json` | Review parameters (immutable after init) |
+| State | `{spec_folder}/review/deep-review-state.jsonl` | Iteration log (1 initial line) |
+| Registry | `{spec_folder}/review/deep-review-findings-registry.json` | Reducer-owned findings state |
 | Strategy | `{spec_folder}/review/deep-review-strategy.md` | Dimensions, findings, next focus |
 
 ---
@@ -140,8 +143,17 @@ Set up all state files for a new review session. Discover the scope, order dimen
 
 #### Step 1: Read State
 
-- Read `deep-research-state.jsonl` -- count iterations, extract `newFindingsRatio`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
+- Read `deep-review-state.jsonl` -- count iterations, extract `newFindingsRatio`, `findingsSummary`, `findingsNew`, `traceabilityChecks`, and lineage data
+- Read `deep-review-findings-registry.json` -- extract `dimensionsCovered`, `findingsBySeverity`, `openFindings`, `resolvedFindings`, and `convergenceScore`
 - Read `{spec_folder}/review/deep-review-strategy.md` -- get next focus dimension/files, remaining dimensions, and protocol gaps
+
+Reducer contract for every loop refresh:
+
+| Reducer Part | Canonical Value | Notes |
+|--------------|-----------------|-------|
+| Inputs | `latestJSONLDelta`, `newIterationFile`, `priorReducedState` | The reducer replays only the newest JSONL delta plus the latest iteration artifact against the prior reduced state. |
+| Outputs | `findingsRegistry`, `dashboardMetrics`, `strategyUpdates` | The same refresh pass updates the canonical registry, refreshes dashboard metrics, and applies strategy updates. |
+| Metrics | `dimensionsCovered`, `findingsBySeverity`, `openFindings`, `resolvedFindings`, `convergenceScore` | These metrics drive convergence decisions, dashboard summaries, and synthesis readiness. |
 
 #### Step 2: Check Convergence
 
@@ -222,8 +234,9 @@ Traceability Protocols:
   - Overlay: {overlay_protocols}
 Active Findings: {findingsSummary}
 State Files:
-  - Config: {spec_folder}/review/deep-research-config.json
-  - State: {spec_folder}/review/deep-research-state.jsonl
+  - Config: {spec_folder}/review/deep-review-config.json
+  - State: {spec_folder}/review/deep-review-state.jsonl
+  - Registry: {spec_folder}/review/deep-review-findings-registry.json
   - Strategy: {spec_folder}/review/deep-review-strategy.md
 Output: Write findings to {spec_folder}/review/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
@@ -391,7 +404,7 @@ Use adjudicated `finalSeverity` for any P0/P1 that was downgraded during claim a
 
 Recompute the convergence outcome from JSONL state before finalizing the report:
 
-1. Read `deep-research-state.jsonl` and select review-mode iteration records in run order
+1. Read `deep-review-state.jsonl` and select review-mode iteration records in run order
 2. Recompute `newFindingsRatio`, rolling-average votes, MAD votes, and coverage votes from stored JSONL fields only
 3. Recompute `traceabilityChecks.summary` and confirm required protocol statuses match the recorded coverage vote
 4. Re-run the evidence, scope, and coverage gates against stored findings and scope data
@@ -429,7 +442,7 @@ When `PASS` verdict is issued and active P2 findings remain, set `hasAdvisories 
 
 #### Step 6: Finalize State
 
-1. Update config status: Set `status: "complete"` in `deep-research-config.json`
+1. Update config status: Set `status: "complete"` in `deep-review-config.json`
 2. Write final JSONL entry:
    ```json
    {
@@ -489,15 +502,24 @@ Enable review sessions to resume seamlessly from prior state when interrupted by
 
 If state files already exist from a prior session:
 
-1. **Verify agreement**: Confirm config, JSONL, and strategy all exist and agree on target/spec folder
+1. **Verify agreement**: Confirm config, JSONL, findings registry, and strategy all exist and agree on target/spec folder
 2. **Count progress**: Read JSONL, count iteration records, determine last completed iteration
 3. **Read strategy**: Load current dimension progress, findings, and next focus from `deep-review-strategy.md`
 4. **Set counter**: Set iteration counter to last completed + 1
-5. **Log resume**: Append resume event to JSONL:
+5. **Log resume**: Append resume event to JSONL with lineage metadata:
    ```json
-   {"type":"event","event":"resumed","fromIteration":N}
+   {"type":"event","event":"resumed","lineageMode":"resume","sessionId":"rvw-...","generation":1,"fromIteration":N}
    ```
 6. **Continue**: Enter the iteration loop from step_read_state
+
+### Lifecycle Branches
+
+| Mode | Contract |
+|------|----------|
+| `resume` | Continue the same `sessionId` and generation. |
+| `restart` | Archive current review state, start a new `sessionId`, increment generation, and set `parentSessionId`. |
+| `fork` | Copy current state as baseline, create a new `sessionId`, preserve ancestry, and continue on a new branch. |
+| `completed-continue` | Snapshot `review-report-v{generation}.md`, record `completedAt`/`reopenedAt`, and continue with amendment-only additions. |
 
 ### State Validation on Resume
 

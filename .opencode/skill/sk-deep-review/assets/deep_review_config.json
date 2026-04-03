@@ -1,15 +1,22 @@
 {
   "topic": "",
+  "sessionId": "",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "migrationWindowEndsAt": "",
   "maxIterations": 7,
   "convergenceThreshold": 0.10,
-  "stuckThreshold": 3,
-  "maxDurationMinutes": 90,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 10,
   "progressiveSynthesis": false,
   "specFolder": "",
   "createdAt": "",
   "status": "initialized",
+  "releaseReadinessState": "in-progress",
   "executionMode": "auto",
   "mode": "review",
   "reviewTarget": "",
@@ -17,25 +24,52 @@
   "reviewDimensions": [
     "correctness",
     "security",
-    "spec-alignment",
-    "completeness",
-    "cross-ref-integrity",
-    "patterns",
-    "documentation-quality"
+    "traceability",
+    "maintainability"
   ],
   "severityThreshold": "P2",
   "crossReference": {
-    "spec": true,
-    "checklist": true,
-    "agentConsistency": true
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "skill_agent",
+      "agent_cross_runtime",
+      "feature_catalog_code",
+      "playbook_capability"
+    ]
   },
-  "qualityGateThreshold": 70,
+  "qualityGateThreshold": true,
   "fileProtection": {
-    "deep-research-config.json": "immutable",
-    "deep-research-state.jsonl": "append-only",
+    "deep-review-config.json": "immutable",
+    "deep-review-state.jsonl": "append-only",
+    "deep-review-findings-registry.json": "auto-generated",
     "deep-review-strategy.md": "mutable",
     "deep-review-dashboard.md": "auto-generated",
+    ".deep-review-pause": "operator-controlled",
     "review-report.md": "mutable",
+    "review-report-v*.md": "write-once",
     "iteration-*.md": "write-once"
+  },
+  "reducer": {
+    "enabled": true,
+    "inputs": [
+      "latestJSONLDelta",
+      "newIterationFile",
+      "priorReducedState"
+    ],
+    "outputs": [
+      "findingsRegistry",
+      "dashboardMetrics",
+      "strategyUpdates"
+    ],
+    "metrics": [
+      "dimensionsCovered",
+      "findingsBySeverity",
+      "openFindings",
+      "resolvedFindings",
+      "convergenceScore"
+    ]
   }
 }

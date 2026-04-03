@@ -107,8 +107,8 @@ A 95-iteration deep research and 30-iteration deep review (Codex CLI + Copilot C
 
 - **Phase 013** (15 items): endLine brace-counting fix, DB init guard, schema migration safety, transaction atomicity for replaceNodes/Edges, budget allocator ceiling removal, query maxDepth leak fix, input validation widened to all tool args, exception string sanitization.
 - **Phase 014** (14 items): pendingCompactPrime race fix, saveState error propagation, provenance fencing for injection safety, session_id SHA-256 hashing, 0700/0600 file permissions, dead code removal, duplicated logic consolidation.
-- **Phase 015** (6/8 items): Parser adapter interface, DECORATES/OVERRIDES/TYPE_OF edges, ghost SymbolKinds, dead TESTED_BY branch removal, excludeGlobs wiring, .zsh mapping fix. Deferred: tree-sitter WASM parser, regex removal.
-- **Phase 016** (6/8 items): Near-exact seed resolution, auto-reindex triggers, cross-runtime instruction updates, recovery doc consolidation, seed-resolver DB failure handling. Deferred: intent pre-classifier, SessionStart scope fix.
+- **Phase 015**: Parser adapter foundation, DECORATES/OVERRIDES/TYPE_OF edges, ghost SymbolKinds, dead TESTED_BY branch removal, excludeGlobs wiring, and `.zsh` discovery shipped in the phase itself; the default tree-sitter parser and regex-fallback follow-through landed later in Phase 017.
+- **Phase 016**: Near-exact seed resolution, auto-reindex triggers, recovery doc consolidation, seed-resolver DB failure handling, and the cross-runtime/runtime-truth-sync follow-through now reflected in later phases 021-028 shipped for root-packet closeout.
 
 ### v3-v4 Polish and follow-through (Phases 017-028)
 
@@ -160,13 +160,13 @@ Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-
 | v1 phases 001-012 | All 12 phases implemented, child spec folders verified |
 | v2 phase 013 checklist | PASS — 15/15 items, 20/20 checklist entries |
 | v2 phase 014 checklist | PASS — 14/14 items |
-| v2 phase 015 checklist | PARTIAL — 7/8 items (1 deferred: additional SymbolKinds) |
-| v2 phase 016 checklist | PASS — cross-runtime scope/intent items synced in later phases |
+| v2 phase 015 checklist | PASS for root-packet scope — Phase 015 foundation shipped, with parser follow-through completed in Phase 017 |
+| v2 phase 016 checklist | PASS for root-packet scope — original partials were closed by later runtime/doc truth-sync through phases 021-028 |
 | phase 025 checklist | PASS — runtime hints and docs synced |
 | v3-v4 phases 017-028 | All 12 phases implemented with implementation summaries |
 | vitest suites | PASS — code-graph-indexer (18), crash-recovery (36), budget-allocator (15), compact-merger (15) |
 | ESLint | PASS on all modified TypeScript files (0 errors) |
-| Root checklist (v1 + v2) | All P0 items PASS, all P1 items PASS, P2 items PASS with noted partials |
+| Root checklist (v1 + v2) | All P0 items PASS, all P1 items PASS, and P2 items PASS with later-phase follow-through recorded explicitly |
 | Deep review verdict at rerun time | CONDITIONAL (0 P0, 16 P1 addressed, 16 P2 addressed); follow-up root/runtime truth-sync landed afterward |
 <!-- /ANCHOR:verification -->
 

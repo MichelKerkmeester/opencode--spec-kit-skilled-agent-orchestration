@@ -1,0 +1,23 @@
+{
+  "specFolder": "03--skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing",
+  "description": "Feature Specification: Codex command discoverability routing update",
+  "keywords": [
+    "feature",
+    "specification",
+    "codex",
+    "command",
+    "discoverability",
+    "routing",
+    "update"
+  ],
+  "lastUpdated": "2026-04-03T10:51:48.382Z",
+  "specId": "039",
+  "folderSlug": "cmd-spec-kit-codex-skill-routing",
+  "parentChain": [
+    "03--skilled-agent-orchestration"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "03-04-26_10-20__completed-autonomous-deep-research-on-how-codex.md"
+  ]
+}

@@ -26,6 +26,7 @@ const SPEC_FOLDER_CANONICAL_PREFIX = 'specs/';
 const SPEC_FOLDER_SEGMENT_RE = /^\d{2,3}(?:--|-)[\w-]+$/;
 const HOOK_DIR = dirname(fileURLToPath(import.meta.url));
 const AUTOSAVE_TIMEOUT_MS = 4000;
+const IS_CLI_ENTRY = process.argv[1] ? resolve(process.argv[1]) === fileURLToPath(import.meta.url) : false;
 
 function resolveGenerateContextScriptPath(): string | null {
   const explicitPath = process.env.SPECKIT_GENERATE_CONTEXT_SCRIPT;
@@ -96,6 +97,26 @@ function runContextAutosave(sessionId: string): void {
   const stdout = (result.stdout ?? '').trim();
   const errorText = stderr || stdout || result.error?.message || `exit=${String(result.status)}`;
   hookLog('warn', 'session-stop', `Context auto-save failed: ${errorText}`);
+}
+
+function selectDetectedSpecFolder(
+  normalizedMatches: string[],
+  currentSpecFolder: string | null,
+): string | null {
+  const uniqueMatches = [...new Set(normalizedMatches)];
+  if (uniqueMatches.length === 0) {
+    return null;
+  }
+
+  if (currentSpecFolder && uniqueMatches.includes(currentSpecFolder)) {
+    return currentSpecFolder;
+  }
+
+  if (uniqueMatches.length === 1) {
+    return uniqueMatches[0];
+  }
+
+  return null;
 }
 
 /**
@@ -171,9 +192,9 @@ async function main(): Promise<void> {
   hookLog('info', 'session-stop', `Stop hook fired for session ${sessionId}`);
 
   // Parse transcript for token usage
+  const stateBeforeStop = loadState(sessionId);
   if (input.transcript_path) {
-    const state = loadState(sessionId);
-    const startOffset = state?.metrics?.lastTranscriptOffset ?? 0;
+    const startOffset = stateBeforeStop?.metrics?.lastTranscriptOffset ?? 0;
 
     try {
       const { usage, newOffset } = await parseTranscript(
@@ -204,10 +225,21 @@ async function main(): Promise<void> {
 
   // Auto-detect spec folder from transcript paths
   if (input.transcript_path) {
-    const detectedSpec = detectSpecFolder(input.transcript_path as string);
-    if (detectedSpec) {
+    const detectedSpec = detectSpecFolder(input.transcript_path as string, stateBeforeStop?.lastSpecFolder ?? null);
+    if (!stateBeforeStop?.lastSpecFolder && detectedSpec) {
       updateState(sessionId, { lastSpecFolder: detectedSpec });
       hookLog('info', 'session-stop', `Auto-detected spec folder: ${detectedSpec}`);
+    } else if (stateBeforeStop?.lastSpecFolder && detectedSpec === stateBeforeStop.lastSpecFolder) {
+      hookLog('info', 'session-stop', `Validated active spec folder from transcript: ${detectedSpec}`);
+    } else if (stateBeforeStop?.lastSpecFolder && detectedSpec && detectedSpec !== stateBeforeStop.lastSpecFolder) {
+      updateState(sessionId, { lastSpecFolder: detectedSpec });
+      hookLog(
+        'info',
+        'session-stop',
+        `Retargeted autosave spec folder from ${stateBeforeStop.lastSpecFolder} to ${detectedSpec}`,
+      );
+    } else if (!detectedSpec) {
+      hookLog('warn', 'session-stop', 'Spec folder detection was ambiguous; preserving existing autosave target.');
     }
   }
 
@@ -226,7 +258,7 @@ async function main(): Promise<void> {
 }
 
 /** Detect active spec folder from transcript content */
-function detectSpecFolder(transcriptPath: string): string | null {
+export function detectSpecFolder(transcriptPath: string, currentSpecFolder: string | null = null): string | null {
   let fileDescriptor: number | undefined;
 
   try {
@@ -246,25 +278,16 @@ function detectSpecFolder(transcriptPath: string): string | null {
       return null;
     }
 
-    const counts = new Map<string, number>();
+    const normalizedMatches: string[] = [];
     for (const rawPath of specMatches) {
       const normalizedPath = normalizeSpecFolderPath(rawPath);
       if (!normalizedPath) {
         continue;
       }
-      counts.set(normalizedPath, (counts.get(normalizedPath) ?? 0) + 1);
+      normalizedMatches.push(normalizedPath);
     }
 
-    let bestMatch: string | null = null;
-    let bestCount = 0;
-    for (const [path, count] of counts) {
-      if (count > bestCount) {
-        bestMatch = path;
-        bestCount = count;
-      }
-    }
-
-    return bestMatch;
+    return selectDetectedSpecFolder(normalizedMatches, currentSpecFolder);
   } catch {
     /* transcript not readable */
   } finally {
@@ -303,8 +326,10 @@ function normalizeSpecFolderPath(rawPath: string): string | null {
 }
 
 // Run — exit cleanly even on error (async hook, but still must not crash)
-main().catch((err: unknown) => {
-  hookLog('error', 'session-stop', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
-}).finally(() => {
-  process.exit(0);
-});
+if (IS_CLI_ENTRY) {
+  main().catch((err: unknown) => {
+    hookLog('error', 'session-stop', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
+  }).finally(() => {
+    process.exit(0);
+  });
+}

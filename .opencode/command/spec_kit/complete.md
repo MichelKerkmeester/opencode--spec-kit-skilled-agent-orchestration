@@ -287,7 +287,7 @@ When `:with-phases` flag present:
 | 10 | Development | code changes + tasks marked `[x]` | **ALL tasks in tasks.md marked complete** |
 | 11 | Checklist Verify | All P0/P1 verified | **Level 2+ ONLY - BLOCKING** |
 | 11.5 | **POSTFLIGHT Capture** | postflight_delta | Learning delta calculated |
-| 12 | Completion | `implementation-summary.md` | **Summary file created (MANDATORY Level 1+)** |
+| 12 | Completion | `implementation-summary.md` + nested changelog when applicable | **Summary file created (MANDATORY Level 1+)** |
 | 13 | Save Context | `memory/*.md` | Context preserved |
 | 14 | Handover Check | User prompted | Handover offered before completion |
 
@@ -308,7 +308,7 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 
 **Step 11.5 (POSTFLIGHT):** Execute after Step 11, before Step 12. Skip if: quick fix (<10 LOC) or no PREFLIGHT at Step 9.5. Call `task_postflight()` with: specFolder, taskId, knowledgeScore, uncertaintyScore, contextScore, gapsClosed, newGapsDiscovered. Learning Index = (Knowledge Delta x 0.4) + (Uncertainty Reduction x 0.35) + (Context Improvement x 0.25).
 
-**Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically (exit 0=pass, 1=warnings, 2=errors must fix). Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results.
+**Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically (exit 0=pass, 1=warnings, 2=errors must fix). Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results. When the target is a spec root or phase child, also generate the packet-local changelog with `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [spec-folder-path] --write`.
 
 **Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`. DO NOT use Write/Edit tools to create memory files directly.
 
@@ -343,7 +343,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 **Success:**
 ```
 All 14 steps executed successfully.
-Artifacts: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, memory/*.md
+Artifacts: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, nested changelog (when applicable), memory/*.md
 STATUS=OK PATH=[spec-folder-path]
 ```
 

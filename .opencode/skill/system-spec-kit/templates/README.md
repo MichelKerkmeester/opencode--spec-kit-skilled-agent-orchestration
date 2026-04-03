@@ -53,6 +53,7 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `debug-delegation.md` | Debug delegation template |
 | `examples/` | Filled references only |
 | `memory/` | Memory workflow notes (no manual memory files) |
+| `changelog/` | Packet-local nested changelog templates for root specs and phase children |
 | `scratch/` | Temporary workspace for non-committed artifacts |
 | `sharded/` | Sharded template set |
 | `.hashes` | Pipeline artifact from template composition (`compose.sh`). Auto-generated, do not edit manually. |
@@ -78,6 +79,7 @@ LOC is guidance, not a hard limit. Risk and complexity can move work up a level.
 
 - Gate 3 spec-folder choice applies before implementation work.
 - `implementation-summary.md` is required for all levels and finalized after implementation.
+- Nested packet changelogs can be generated at completion time with `../scripts/dist/spec-folder/nested-changelog.js`.
 - Level 2+ completion uses checklist verification (P0, then P1, then P2).
 - Memory context is saved via `../scripts/dist/memory/generate-context.js`, never manual file creation.
 
@@ -93,6 +95,7 @@ Large specs can be decomposed into ordered phases using the Phase System (Spec 1
 - Phase addendum templates live in `addendum/phase/`:
   - `phase-child-header.md` — prepended to child spec files to link back to the parent.
   - `phase-parent-section.md` — appended to the parent spec to list and track child phases.
+- Phase completion can also publish packet-local changelog files into the parent `changelog/` folder.
 
 Phase children follow the same level system (1-3+) as standalone specs.
 

@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes",
+  "description": "Feature Specification: Search Retrieval Quality Fixes",
+  "keywords": [
+    "feature",
+    "specification",
+    "search",
+    "retrieval",
+    "quality",
+    "fixes"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.780Z",
+  "specId": "010",
+  "folderSlug": "search-retrieval-quality-fixes",
+  "parentChain": [
+    "02--system-spec-kit",
+"023-hybrid-rag-fusion-refinement"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "31-03-26_18-45__completed-all-6-search-retrieval-quality-fixes.md"
+  ]
+}

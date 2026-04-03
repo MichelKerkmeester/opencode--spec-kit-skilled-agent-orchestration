@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate",
+  "description": "Feature Specification: Wire PromotionGate to Action",
+  "keywords": [
+    "feature",
+    "specification",
+    "wire",
+    "promotiongate",
+    "action"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.790Z",
+  "specId": "001",
+  "folderSlug": "wire-promotion-gate",
+  "parentChain": [
+    "02--system-spec-kit",
+"023-hybrid-rag-fusion-refinement",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

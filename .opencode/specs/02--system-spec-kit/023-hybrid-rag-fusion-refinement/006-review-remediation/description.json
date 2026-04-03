@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation",
+  "description": "Feature Specification: Deep Review Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "deep",
+    "review",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.758Z",
+  "specId": "006",
+  "folderSlug": "review-remediation",
+  "parentChain": [
+    "02--system-spec-kit",
+"023-hybrid-rag-fusion-refinement"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "30-03-26_11-47__phase-6-complete-all-18-findings-from-10.md"
+  ]
+}

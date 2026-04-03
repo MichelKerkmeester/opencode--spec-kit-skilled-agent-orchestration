@@ -1,6 +1,6 @@
 ---
-description: Create a changelog entry and optionally publish a GitHub release — detects recent work, resolves component folder, generates formatted changelog, and creates git tag + release notes. Supports :auto and :confirm modes
-argument-hint: "<spec-folder-or-component> [--bump <major|minor|patch|build>] [--release] [:auto|:confirm]"
+description: Create a global component changelog or a nested packet-local changelog entry — detects spec-folder topology, resolves the correct output mode, and optionally publishes a GitHub release for global changelogs. Supports :auto and :confirm modes
+argument-hint: "<spec-folder-or-component> [--nested] [--bump <major|minor|patch|build>] [--release] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, mcp__cocoindex_code__search
 ---
 

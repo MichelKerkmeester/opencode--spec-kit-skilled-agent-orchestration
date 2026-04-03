@@ -35,4 +35,7 @@ This is **Phase [YOUR_VALUE_HERE: PHASE_NUMBER]** of the [YOUR_VALUE_HERE: PAREN
 
 **Deliverables**:
 - [YOUR_VALUE_HERE: phase deliverables]
+
+**Changelog**:
+- When this phase closes, refresh the matching file in `../changelog/` using the parent packet number plus this phase folder name.
 <!-- /ANCHOR:phase-context -->

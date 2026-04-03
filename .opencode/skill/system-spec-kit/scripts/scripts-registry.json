@@ -156,6 +156,23 @@
       "dependencies": ["templates/"]
     },
     {
+      "name": "generate-nested-changelog",
+      "path": "scripts/dist/spec-folder/nested-changelog.js",
+      "type": "node",
+      "description": "Generate packet-local changelog content for a root spec folder or a nested phase child",
+      "trigger": ["nested changelog", "packet changelog", "phase changelog", "spec changelog"],
+      "calledBy": ["AI Assistant", "Completion workflows", "Create changelog command"],
+      "essential": false,
+      "inputs": {
+        "required": "Spec folder path",
+        "options": "--json, --write, --mode <auto|root|phase>, --output <path>"
+      },
+      "outputs": ["Rendered markdown", "Nested changelog payload", "packet-local changelog file (with --write)"],
+      "gate": "Completion workflow",
+      "version": "1.0.0",
+      "dependencies": ["scripts/spec-folder/*.ts", "templates/changelog/"]
+    },
+    {
       "name": "recommend-level",
       "path": "scripts/spec/recommend-level.sh",
       "type": "bash",

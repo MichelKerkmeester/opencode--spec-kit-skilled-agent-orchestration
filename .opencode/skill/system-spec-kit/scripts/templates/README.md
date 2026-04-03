@@ -140,6 +140,7 @@ templates/
 | `core/*.md` | Base templates shared across all levels | `../../templates/core/` |
 | `addendum/level*/*.md` | Level-specific template sections | `../../templates/addendum/` |
 | `level_N/*.md` | Composed output templates ready for use | `../../templates/level_N/` |
+| `changelog/*.md` | Standalone nested changelog templates (not composed) | `../../templates/changelog/` |
 
 <!-- /ANCHOR:structure -->
 
@@ -163,6 +164,7 @@ templates/
 - **Level 2**: Core + level2-verify addendum (adds checklist.md)
 - **Level 3**: Core + level2-verify + level3-arch addendums (adds decision-record.md)
 - **Level 3+**: Core + all addendums (adds AI protocols, governance)
+- `templates/changelog/` remains standalone and is consumed directly by the nested changelog generator.
 
 ### Template Markers
 

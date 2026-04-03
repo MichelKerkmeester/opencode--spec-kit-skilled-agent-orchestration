@@ -22,6 +22,11 @@ Convergence detection determines when the autonomous review loop should stop ite
 
 Convergence is checked **after** each iteration completes and **before** the next iteration is dispatched. The check consumes the full JSONL state history and the current dimension coverage snapshot.
 
+Release-readiness states are derived alongside convergence:
+- `in-progress` while coverage is incomplete or new P0/P1 findings are still appearing
+- `converged` once coverage and stabilization pass without new P0/P1 findings
+- `release-blocking` whenever unresolved P0 findings remain active
+
 ### Key Defaults
 
 | Setting | Value | Purpose |

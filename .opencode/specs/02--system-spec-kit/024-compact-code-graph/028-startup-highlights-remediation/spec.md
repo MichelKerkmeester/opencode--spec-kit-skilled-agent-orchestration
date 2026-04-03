@@ -19,7 +19,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 28 (`028-startup-highlights-remediation`) |
 | **Predecessor** | `027-opencode-structural-priming` |
-| **Successor** | None |
+| **Successor** | `029-review-remediation` |
 | **Handoff Criteria** | Startup highlights are deduplicated, filtered to project-relevant files, and ranked by incoming architectural importance |
 
 # Spec: Startup Highlights Remediation

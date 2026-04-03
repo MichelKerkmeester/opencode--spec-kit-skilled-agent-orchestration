@@ -82,16 +82,21 @@ tmp/
 .cocoindex_code/
 .opencode/skill/mcp-cocoindex-code/mcp_server/.venv/
 .opencode/skill/mcp-coco-index/mcp_server/.venv/
+code-graph.sqlite
 
 # Not part of framework
 # ───────────────────────────────────────────
-.opencode/specs/00--ai-systems-non-dev
-.claude/specs/00--ai-systems-non-dev
-.codex/specs/00--ai-systems-non-dev
-.agents/specs/00--ai-systems-non-dev
+.opencode/specs/00--ai-systems
+.claude/specs/00--ai-systems
+.codex/specs/00--ai-systems
+.agents/specs/00--ai-systems
 
-.opencode/specs/00--barter-dev
-.claude/specs/00--barter-dev
-.codex/specs/00--barter-dev
-.agents/specs/00--barter-dev
-code-graph.sqlite
+.opencode/specs/00--barter
+.claude/specs/00--barter
+.codex/specs/00--barter
+.agents/specs/00--barter
+
+.opencode/specs/01--anobel.com
+.claude/specs/01--anobel.com
+.codex/specs/01--anobel.com
+.agents/specs/01--anobel.com

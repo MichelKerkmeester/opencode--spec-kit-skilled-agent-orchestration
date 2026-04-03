@@ -495,10 +495,10 @@ workflow:
     validation: checkpoint_saved
 
   step_7_completion:
-    purpose: Generate implementation summary
+    purpose: Generate implementation summary and packet-local nested changelog when applicable
     level_requirement: "Level 2+ (MANDATORY - do not skip)"
     enforcement_note: "MANDATORY for Level 2+. implementation-summary.md is a required file. Strongly recommended for Level 1."
-    activities: [Run validation on spec folder, Verify all tasks completed, Validate tests pass, Confirm plan followed, Generate implementation-summary.md, Update all task status]
+    activities: [Run validation on spec folder, Verify all tasks completed, Validate tests pass, Confirm plan followed, Generate implementation-summary.md, Generate packet-local nested changelog when the target is a spec root or phase child, Update all task status]
     pre_completion_validation:
       enforcement: MANDATORY
       outcomes: { pass: "continue", warnings: "continue with caution", errors: "STOP and fix" }
@@ -508,6 +508,13 @@ workflow:
       canonical_template: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
       inline_scaffold_key: implementation_summary_md
       writing_rule: "Embed template_compliance.inline_scaffolds.implementation_summary_md in the prompt before writing implementation-summary.md."
+    nested_changelog:
+      generator:
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [SPEC_FOLDER] --write"
+      evidence_sources: [implementation-summary.md, tasks.md, checklist.md, decision-record.md, spec.md]
+      output_rules:
+        root: "[SPEC_FOLDER]/changelog/changelog-<packet>-root.md"
+        phase: "[PARENT_SPEC_FOLDER]/changelog/changelog-<packet>-<phase-folder>.md"
     verification_summary:
       checklist_verification:
         required: true
@@ -518,7 +525,7 @@ workflow:
     validation: implementation_complete
     completion_checkpoint:
       enforcement: HARD_BLOCK
-      before_marking_complete: "Verify implementation-summary.md exists with all required sections. If missing, CREATE before proceeding."
+      before_marking_complete: "Verify implementation-summary.md exists with all required sections. If packet-local changelog applies, generate it before proceeding."
       required_file: "[SPEC_FOLDER]/implementation-summary.md"
     checkpoint:
       question: "Step 7 Complete: Implementation summary generated. Review?"

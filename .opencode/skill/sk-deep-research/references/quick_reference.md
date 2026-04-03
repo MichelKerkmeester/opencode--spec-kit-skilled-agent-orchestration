@@ -5,12 +5,16 @@ description: One-page cheat sheet for the autonomous deep research loop.
 
 # Deep Research Quick Reference
 
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
 One-page cheat sheet for the autonomous deep research loop.
 
 ---
+<!-- /ANCHOR:overview -->
 
 <!-- ANCHOR:commands -->
-## 1. COMMANDS
+## 2. COMMANDS
 
 | Command | Description |
 |---------|-------------|
@@ -31,7 +35,7 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:commands -->
 <!-- ANCHOR:when-to-use -->
-## 2. WHEN TO USE
+## 3. WHEN TO USE
 
 | Scenario | Use |
 |----------|-----|
@@ -44,7 +48,7 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:when-to-use -->
 <!-- ANCHOR:architecture -->
-## 3. ARCHITECTURE
+## 4. ARCHITECTURE
 
 ```
 /spec_kit:deep-research  -->  YAML workflow  -->  @deep-research agent (LEAF)
@@ -64,23 +68,29 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:architecture -->
 <!-- ANCHOR:state-files -->
-## 4. STATE FILES
+## 5. STATE FILES
 
 | File | Location | Format | Purpose |
 |------|----------|--------|---------|
 | Config | `research/deep-research-config.json` | JSON | Loop parameters |
 | State | `research/deep-research-state.jsonl` | JSONL | Iteration log (append-only) |
 | Strategy | `research/deep-research-strategy.md` | Markdown | What worked/failed, next focus |
+| Registry | `research/findings-registry.json` | JSON | Reducer-owned open/resolved questions and key findings |
+| Dashboard | `research/deep-research-dashboard.md` | Markdown | Reducer-owned lifecycle and convergence summary |
 | Iterations | `research/iterations/iteration-NNN.md` | Markdown | Per-iteration findings |
 | Output | `research/research.md` | Markdown | Workflow-owned progressive synthesis output |
 
-> **Note:** `:restart`, segment partitioning, wave pruning, checkpoint commits, and alternate `claude -p` dispatch are documented for reference, not assumed available at runtime. `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
+> **Live lifecycle branches:** `resume`, `restart`, `fork`, `completed-continue`. `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
+
+> **Canonical pause sentinel:** `research/.deep-research-pause`
+
+> **Runtime capability matrix:** `.opencode/skill/sk-deep-research/references/capability_matrix.md` and `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
 
 ---
 
 <!-- /ANCHOR:state-files -->
 <!-- ANCHOR:iteration-status-legend -->
-## 5. ITERATION STATUS LEGEND
+## 6. ITERATION STATUS LEGEND
 
 | Status | Meaning |
 |--------|---------|
@@ -95,7 +105,7 @@ One-page cheat sheet for the autonomous deep research loop.
 
 <!-- /ANCHOR:iteration-status-legend -->
 <!-- ANCHOR:convergence-decision-tree -->
-## 6. CONVERGENCE DECISION TREE
+## 7. CONVERGENCE DECISION TREE
 
 ```
 Max iterations reached?
@@ -121,22 +131,22 @@ Quality guards (source diversity, focus alignment, no single-weak-source) must p
 
 <!-- /ANCHOR:convergence-decision-tree -->
 <!-- ANCHOR:agent-iteration-checklist -->
-## 7. AGENT ITERATION CHECKLIST
+## 8. AGENT ITERATION CHECKLIST
 
 Each @deep-research iteration:
 1. Read `deep-research-state.jsonl` and `deep-research-strategy.md`
-2. Determine focus from strategy "Next Focus"
+2. Determine focus from reducer-owned strategy "Next Focus"
 3. Execute 3-5 research actions (WebFetch, Grep, Read, memory_search)
 4. Write `research/iterations/iteration-NNN.md` with findings
-5. Update `deep-research-strategy.md` (Worked/Failed/Questions/Next Focus)
-6. Append iteration record to `deep-research-state.jsonl`
-7. Optionally update `research/research.md` with new findings
+5. Append iteration record to `deep-research-state.jsonl`
+6. Let the workflow reducer update `deep-research-strategy.md`, `findings-registry.json`, and `deep-research-dashboard.md`
+7. Optionally update machine-owned sections in `research/research.md` when progressive synthesis is enabled
 
 ---
 
 <!-- /ANCHOR:agent-iteration-checklist -->
 <!-- ANCHOR:tuning-guide -->
-## 8. TUNING GUIDE
+## 9. TUNING GUIDE
 
 | Goal | Adjustment |
 |------|------------|
@@ -149,7 +159,7 @@ Each @deep-research iteration:
 
 <!-- /ANCHOR:tuning-guide -->
 <!-- ANCHOR:troubleshooting -->
-## 9. TROUBLESHOOTING
+## 10. TROUBLESHOOTING
 
 | Problem | Fix |
 |---------|-----|
@@ -163,7 +173,7 @@ Each @deep-research iteration:
 
 <!-- /ANCHOR:troubleshooting -->
 <!-- ANCHOR:progress-visualization -->
-## 10. PROGRESS VISUALIZATION
+## 11. PROGRESS VISUALIZATION
 
 After each iteration, the orchestrator can display a text-based convergence summary:
 
@@ -199,7 +209,7 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 
 <!-- /ANCHOR:progress-visualization -->
 <!-- ANCHOR:related -->
-## 11. RELATED
+## 12. RELATED
 
 | Resource | Purpose |
 |----------|---------|
@@ -213,7 +223,7 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 ---
 
 <!-- ANCHOR:review-mode -->
-## 12. REVIEW MODE
+## 13. REVIEW MODE
 
 Review mode has been split into a separate skill. See `sk-deep-review/references/quick_reference.md`.
 

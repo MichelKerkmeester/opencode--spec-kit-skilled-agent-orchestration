@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration",
+  "description": "Feature Specification: MCP Server ESM Migration",
+  "keywords": [
+    "feature",
+    "specification",
+    "mcp",
+    "server",
+    "esm",
+    "migration"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.738Z",
+  "specId": "002",
+  "folderSlug": "mcp-server-esm-migration",
+  "parentChain": [
+    "02--system-spec-kit",
+"023-hybrid-rag-fusion-refinement"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

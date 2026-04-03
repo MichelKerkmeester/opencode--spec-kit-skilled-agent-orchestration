@@ -12,7 +12,7 @@ Algorithms and protocols for determining when the deep research loop should stop
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Convergence detection prevents infinite loops and stops research when additional iterations yield diminishing returns. The algorithm evaluates multiple signals to make a stop/continue/recovery decision.
+Convergence detection prevents infinite loops and stops research when additional iterations yield diminishing returns. The algorithm evaluates multiple signals to make a stop/continue/recovery decision, while the reducer publishes the resulting `convergenceScore` and `coverageBySources` into the dashboard and findings registry after every iteration.
 
 ---
 
@@ -56,6 +56,11 @@ Three independent signals each cast a stop/continue vote. Stop when weighted sto
 | Rolling Average | 0.30 | 3 | Recent information yield |
 | MAD Noise Floor | 0.35 | 4 | Signal vs noise in newInfoRatio |
 | Question Entropy | 0.35 | 1 | Coverage of research questions |
+
+Reducer-owned metrics derived from these signals:
+
+- `convergenceScore`: normalized stop-score surfaced in `findings-registry.json` and `deep-research-dashboard.md`
+- `coverageBySources`: per-question source coverage summary used by the quality guards
 
 ```
   // Filter: exclude "thought" iterations from convergence signals

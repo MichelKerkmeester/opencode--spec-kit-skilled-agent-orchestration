@@ -104,8 +104,10 @@ The router discovers markdown resources recursively from `references/` and `asse
 - Level definitions and template size guidance: [level_specifications.md](./references/templates/level_specifications.md)
 - Template usage and composition rules: [template_guide.md](./references/templates/template_guide.md)
 - Use `templates/level_N/` for operational templates; `core/` and `addendum/` remain composition inputs.
+- Use `templates/changelog/` for packet-local nested changelog generation at completion time.
 - Script architecture, build outputs, and runtime entrypoints: [scripts/README.md](./scripts/README.md)
 - Memory save JSON schema and workflow contracts: [save_workflow.md](./references/memory/save_workflow.md)
+- Nested packet changelog workflow: [nested_changelog.md](./references/workflows/nested_changelog.md)
 
 Primary operational scripts:
 - `spec/validate.sh`
@@ -122,6 +124,8 @@ Primary operational scripts:
 | ALWAYS      | Every skill invocation     | Shared patterns + SKILL.md   |
 | CONDITIONAL | If intent signals match   | Intent-mapped references     |
 | ON_DEMAND   | Only on explicit request   | Deep-dive quality standards  |
+
+`references/workflows/quick_reference.md` is the primary first-touch command surface. Keep the compact `spec_kit` and `memory` command map there, and use this file only to point readers to it rather than duplicating the full matrix.
 
 ### Smart Router Pseudocode
 
@@ -173,6 +177,7 @@ RESOURCE_MAP = {
     ],
     "COMPLETE": [
         "references/validation/validation_rules.md",
+        "references/workflows/nested_changelog.md",
     ],
     "MEMORY": [
         "references/memory/memory_system.md",

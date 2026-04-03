@@ -66,6 +66,7 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 - Level 2: Core + level2-verify addendum
 - Level 3: Core + level2-verify + level3-arch addendums
 - Level 3+: Core + all addendums (level2-verify + level3-arch + level3plus-govern)
+- Nested packet changelog templates live in `templates/changelog/` and are consumed directly by the generator, not by the composition pipeline.
 
 > **Note:** Maintainers should run `compose.sh` after modifying `core/` or `addendum/` templates to regenerate the composed outputs.
 
@@ -78,6 +79,8 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 ### Level 1: Baseline Documentation (LOC guidance: <100)
 
 **Required Templates:** `spec.md` + `plan.md` + `tasks.md` + `implementation-summary.md`
+
+**Optional completion artifact:** packet-local changelog via `templates/changelog/root.md` when a durable spec-local history is useful
 
 **Copy commands:**
 ```bash
@@ -165,6 +168,8 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name
 ### Level 3: Full Documentation (LOC guidance: >=500)
 
 **Required Templates:** Level 2 + `decision-record.md`
+
+**Recommended completion artifact for phased work:** packet-local changelog files generated from `templates/changelog/root.md` or `templates/changelog/phase.md`
 
 **Copy commands:**
 ```bash

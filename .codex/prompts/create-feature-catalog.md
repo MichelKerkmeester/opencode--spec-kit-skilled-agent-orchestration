@@ -1,1 +1,0 @@
-../../.opencode/command/create/feature-catalog.md

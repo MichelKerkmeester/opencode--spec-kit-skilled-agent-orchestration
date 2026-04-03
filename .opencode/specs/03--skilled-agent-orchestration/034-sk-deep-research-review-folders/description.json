@@ -1,0 +1,24 @@
+{
+  "specFolder": "03--commands-and-skills/034-sk-deep-research-review-folders",
+  "description": "Feature Specification: sk-deep-research Review Folder Contract",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-deep-research",
+    "review",
+    "folder",
+    "contract"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.691Z",
+  "specId": "034",
+  "folderSlug": "sk-deep-research-review-folders",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "27-03-26_10-52__planned-a-dedicated-review-subfolder-contract-for.md",
+    "27-03-26_11-29__implemented-034-sk-deep-research-review-folders.md",
+    "27-03-26_11-52__applied-the-post-review-remediation-for-034-sk.md"
+  ]
+}

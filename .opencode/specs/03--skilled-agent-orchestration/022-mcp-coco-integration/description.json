@@ -1,0 +1,25 @@
+{
+  "specFolder": "03--commands-and-skills/022-mcp-coco-integration",
+  "description": "Feature Specification: CocoIndex Code MCP Integration",
+  "keywords": [
+    "feature",
+    "specification",
+    "cocoindex",
+    "code",
+    "mcp",
+    "integration"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.641Z",
+  "specId": "022",
+  "folderSlug": "mcp-coco-integration",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 4,
+  "memoryNameHistory": [
+    "18-03-26_14-35__next-steps.md",
+    "18-03-26_14-51__cross-cli-auto-usage-test.md",
+    "18-03-26_19-06__portable-cocoindex-mcp-paths-applied.md",
+    "21-03-26_07-41__next-steps.md"
+  ]
+}

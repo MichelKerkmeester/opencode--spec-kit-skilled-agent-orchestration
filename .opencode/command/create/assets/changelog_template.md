@@ -1,6 +1,6 @@
 # Changelog & Release Notes Template
 
-This file defines the two formats used for changelogs and GitHub release notes. The content template determines the structure; the writing style determines the voice.
+This file defines the two formats used for global component changelogs and GitHub release notes. Nested packet-local changelogs use the Spec Kit templates in `.opencode/skill/system-spec-kit/templates/changelog/`.
 
 **Authoritative source for writing style rules:** `PUBLIC_RELEASE.md` Section 7
 
@@ -8,7 +8,7 @@ This file defines the two formats used for changelogs and GitHub release notes. 
 
 ## 1. CHANGELOG FILE FORMAT
 
-Changelog files live at `.opencode/changelog/{NN--component}/v{VERSION}.md`. This is the local file format -- it includes wrapper lines that are stripped for GitHub releases.
+Global component changelog files live at `.opencode/changelog/{NN--component}/v{VERSION}.md`. This is the local file format -- it includes wrapper lines that are stripped for GitHub releases.
 
 ### Compact Format (for releases with fewer than 10 changes)
 
@@ -205,3 +205,17 @@ See: `.opencode/changelog/04--commands/v3.0.1.4.md`
 ### Expanded format reference
 See: `.opencode/changelog/01--system-spec-kit/v3.0.1.3.md` (28 fixes, full Problem/Fix paragraphs)
 See: `.opencode/changelog/01--system-spec-kit/v3.0.1.0.md` (117 fixes, full Problem/Fix paragraphs)
+
+## 6. NESTED PACKET-LOCAL CHANGELOGS
+
+Nested packet-local changelogs are a separate output mode for spec folders and phase children.
+
+- Root spec folders write to `changelog/changelog-<packet>-root.md`
+- Phase child folders write to `../changelog/changelog-<packet>-<phase-folder>.md`
+- Canonical templates:
+  - `.opencode/skill/system-spec-kit/templates/changelog/root.md`
+  - `.opencode/skill/system-spec-kit/templates/changelog/phase.md`
+- Canonical generator:
+  - `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js <spec-folder> --write`
+
+Do not reuse the global component versioning rules for nested packet changelogs.

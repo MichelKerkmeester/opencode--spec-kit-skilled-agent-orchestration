@@ -1,0 +1,23 @@
+{
+  "specFolder": "03--commands-and-skills/032-sk-doc-readme-hvr-improvements",
+  "description": "Feature Specification: sk-doc README and HVR Improvements",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-doc",
+    "readme",
+    "hvr",
+    "improvements"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.681Z",
+  "specId": "032",
+  "folderSlug": "sk-doc-readme-hvr-improvements",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "26-03-26_10-11__completed-planning-for-upgrading-three-sk-doc.md",
+    "26-03-26_10-23__implemented-all-three-deliverables-for-sk-doc.md"
+  ]
+}

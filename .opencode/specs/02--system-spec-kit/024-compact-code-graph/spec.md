@@ -320,7 +320,7 @@ Deep research (95 iterations, segments 1-7) and deep review (30 iterations acros
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-This parent packet tracks **28 phase folders (001-028)**. Each phase is independently executable and validated.
+This parent packet tracks **29 phase folders (001-029)**. Each phase is independently executable and validated.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
@@ -352,6 +352,7 @@ This parent packet tracks **28 phase folders (001-028)**. Each phase is independ
 | 026 | `026-session-start-injection-debug/` | Startup injection analysis and shared brief design | Complete |
 | 027 | `027-opencode-structural-priming/` | Non-hook structural bootstrap contract for OpenCode-first flows | Complete |
 | 028 | `028-startup-highlights-remediation/` | Startup highlights quality-gate remediation | Complete |
+| 029 | `029-review-remediation/` | Review-finding remediation and truth-sync closure | Complete |
 
 ### Phase Transition Rules
 
@@ -368,6 +369,7 @@ This parent packet tracks **28 phase folders (001-028)**. Each phase is independ
 | 025-tool-routing-enforcement | 026-session-start-injection-debug | Startup injection gaps isolated and remediation path defined | Phase 026 spec/plan/tasks alignment |
 | 026-session-start-injection-debug | 027-opencode-structural-priming | Non-hook structural bootstrap contract narrowed from startup injection work | Phase 027 spec/plan/checklist alignment |
 | 027-opencode-structural-priming | 028-startup-highlights-remediation | Startup highlights retained only if signal quality can be proven | Phase 028 spec/plan/checklist alignment |
+| 028-startup-highlights-remediation | 029-review-remediation | Active review findings remediated and packet truth-sync restored without reopening sibling phase work | Phase 029 checklist + focused post-remediation review sweep |
 <!-- /ANCHOR:phase-map -->
 
 ### Problem Statement

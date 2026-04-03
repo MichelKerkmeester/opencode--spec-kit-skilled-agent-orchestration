@@ -89,6 +89,7 @@ specs/###-parent-feature/
 ├── plan.md                    # High-level coordination plan
 ├── tasks.md                   # Cross-phase task tracking
 ├── decision-record.md         # Architectural decisions (if L3+)
+├── changelog/                 # Packet-local root + phase changelog files
 ├── memory/                    # Parent-level context
 ├── 001-foundation/            # Phase 1
 │   ├── spec.md                # Phase-specific spec (back-references parent)
@@ -137,6 +138,7 @@ This back-reference enables:
 - Navigation from child to parent
 - Validation of parent-child link integrity
 - Phase-aware context loading
+- A stable parent-relative location for packet-local phase changelog files
 
 ---
 
@@ -167,6 +169,7 @@ Phase-decomposed specifications follow a structured lifecycle:
    └── Each child phase validated independently
        └── Parent validates all children complete
        └── Cross-phase integration verified
+       └── Parent changelog/ captures root and phase closeout entries as needed
 ```
 
 ### Phase Status Values

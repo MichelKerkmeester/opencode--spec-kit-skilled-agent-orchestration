@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/015-cmd-create-changelog",
+  "description": "Feature Specification: Create Changelog Command",
+  "keywords": [
+    "feature",
+    "specification",
+    "create",
+    "changelog",
+    "command"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.605Z",
+  "specId": "015",
+  "folderSlug": "cmd-create-changelog",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "03--commands-and-skills/014-cmd-memory-output",
+  "description": "Feature Specification: Memory Command Dashboard Visual Design System",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "command",
+    "dashboard",
+    "visual",
+    "design",
+    "system"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.601Z",
+  "specId": "014",
+  "folderSlug": "cmd-memory-output",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

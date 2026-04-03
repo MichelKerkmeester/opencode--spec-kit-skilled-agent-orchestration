@@ -25,8 +25,9 @@ vi.mock('../lib/session/context-metrics.js', () => ({
 vi.mock('../lib/session/session-snapshot.js', () => ({
   buildStructuralBootstrapContract: vi.fn(() => ({
     status: 'ready',
-    graph: { available: true },
-    hints: [],
+    summary: 'Code graph: 42 files, 1200 nodes, 800 edges (fresh)',
+    recommendedAction: 'Structural context available. Use code_graph_query for structural lookups.',
+    sourceSurface: 'session_bootstrap',
   })),
 }));
 
@@ -50,14 +51,19 @@ describe('session-bootstrap handler', () => {
     expect(parsed.data.resume.memory).toEqual({ resumed: true });
     expect(parsed.data.health.state).toBe('ok');
     expect(parsed.data.hints).toEqual(expect.arrayContaining(['resume ok', 'health ok']));
+    expect(parsed.data.nextActions).toEqual(expect.arrayContaining([
+      'Structural context available. Use code_graph_query for structural lookups.',
+      'Use `session_resume({ specFolder })` when you need the fuller merged recovery payload.',
+    ]));
     expect(recordBootstrapEvent).toHaveBeenCalledWith('tool', expect.any(Number), 'full');
   });
 
   it('adds a structural hint when the bootstrap contract is stale', async () => {
     vi.mocked(buildStructuralBootstrapContract).mockReturnValueOnce({
       status: 'stale',
-      graph: { available: true },
-      hints: [],
+      summary: 'Code graph is stale',
+      recommendedAction: 'Call session_bootstrap to refresh structural context, or run code_graph_scan for a full rescan.',
+      sourceSurface: 'session_bootstrap',
     } as never);
 
     const result = await handleSessionBootstrap({});
@@ -65,5 +71,6 @@ describe('session-bootstrap handler', () => {
 
     expect(parsed.data.structuralContext.status).toBe('stale');
     expect(parsed.data.hints.some((hint: string) => hint.includes('Run code_graph_scan'))).toBe(true);
+    expect(parsed.data.nextActions).toContain('Call session_bootstrap to refresh structural context, or run code_graph_scan for a full rescan.');
   });
 });

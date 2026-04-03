@@ -1,0 +1,23 @@
+{
+  "topic": "Verify all Spec Kit Memory features (except shared memory) are enabled by default. Optimize search result quality further. Optimize UX and auto-utilization without hooks. Check for bugs and refinement possibilities across specs 009-reindex-validator-false-positives, 010-search-retrieval-quality-fixes, 011-indexing-and-adaptive-fusion.",
+  "maxIterations": 20,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 240,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/02--system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "createdAt": "2026-04-01T07:15:00Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "mode": "research",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

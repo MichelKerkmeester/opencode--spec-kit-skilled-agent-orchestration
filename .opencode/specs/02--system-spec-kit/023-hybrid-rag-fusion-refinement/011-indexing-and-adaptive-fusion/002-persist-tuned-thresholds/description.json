@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds",
+  "description": "Feature Specification: Phase 2 — Persist Tuned Thresholds",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "persist",
+    "tuned",
+    "thresholds"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.795Z",
+  "specId": "002",
+  "folderSlug": "persist-tuned-thresholds",
+  "parentChain": [
+    "02--system-spec-kit",
+"023-hybrid-rag-fusion-refinement",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

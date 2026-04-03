@@ -73,6 +73,7 @@ Session Event
     │
     ├─► First turn (fresh session, non-urgent)
     │   └─► 2-step bootstrap: session_resume + session_health
+    │       Structural context from session_bootstrap/auto-prime is included automatically when code graph data exists.
     │
     ├─► First turn (urgent message detected)
     │   └─► Skip bootstrap — MCP auto-priming handles context silently
@@ -125,6 +126,11 @@ Session Event
 - **Code Graph:** {fresh/stale/empty} {node count if available}
 - **CocoIndex:** {available/unavailable}
 - **Session Quality:** {ok/warning/stale} (score: {0.0-1.0})
+
+## Structural Context
+- **Status:** {ready/stale/missing}
+- **Summary:** {compact graph digest}
+- **Action:** {recommended next step from structural contract}
 
 ## Recommended Next Steps
 1. {most important action based on findings}

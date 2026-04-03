@@ -355,32 +355,49 @@ workflow:
         Read {spec_folder}/tasks.md (completed tasks)
         Read {spec_folder}/spec.md (title, purpose, requirements)
         Extract: work_summary, files_changed, change_type, spec_level
+        Detect output mode:
+          - IF --nested flag present -> changelog_mode = nested
+          - ELSE IF spec_folder is a phase child OR has direct child phase folders OR already has changelog/ -> changelog_mode = nested
+          - ELSE -> changelog_mode = global
     - |
       IF source_type = component:
         Use component_hint to identify target folder
         Run: git log --oneline --since="7 days ago" -- {component_file_patterns}
         Extract: recent_commits, files_changed
+        changelog_mode = global
     - |
       IF source_type = git_history:
         Run: git log --oneline --since="7 days ago"
         Run: git diff --stat HEAD~10
         Extract: recent_commits, files_changed, commit_messages
+        changelog_mode = global
     - "Compile work_context object with: summary, files_changed[], change_type, source"
     outputs:
     - work_context: "Object containing summary, files, change type"
     - files_changed: "List of changed file paths"
     - change_type_hint: "Feature / fix / refactor / architecture"
+    - changelog_mode: "global or nested"
     validation: context_gathered
 
   step_2_component_resolution:
-    purpose: Discover changelog folders and map detected work to the correct subfolder
+    purpose: Resolve the correct output target for global or nested changelog mode
     activities:
     - |
+      IF changelog_mode = nested:
+        Run: node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js {spec_folder} --json
+        Read canonical templates:
+          - .opencode/skill/system-spec-kit/templates/changelog/root.md
+          - .opencode/skill/system-spec-kit/templates/changelog/phase.md
+        Extract output_path and nested summary payload
+        Skip component-folder mapping and versioned release rules
+    - |
+      IF changelog_mode = global:
       DISCOVER available changelog folders:
         $ ls -d .opencode/changelog/*/ 2>/dev/null | sort
         Parse folder names using NN--component-name pattern
         Build runtime component list from actual directory contents
     - |
+      IF changelog_mode = global:
       FOR EACH file in files_changed:
         Match file path segments against discovered component names
         Record matched component folder
@@ -399,6 +416,10 @@ workflow:
         Direct resolution without file analysis
     - "Verify target folder exists: ls .opencode/changelog/{resolved_folder}/"
     - |
+      IF changelog_mode = nested:
+        Verify nested output path resolves inside the target packet changelog/ folder
+    - |
+      IF changelog_mode = global:
       IF target folder does not exist:
         STOP - Report: "Changelog folder not found: {resolved_folder}"
         Ask user to confirm or choose different target
@@ -406,11 +427,15 @@ workflow:
     - primary_component: "Resolved changelog subfolder name"
     - secondary_components: "Other affected components (if cross-component)"
     - resolution_confidence: "Percentage confidence in mapping"
+    - nested_output_path: "Packet-local output path when changelog_mode = nested"
     validation: component_resolved
 
   step_3_version_determination:
     purpose: Calculate the next version number for the changelog entry
     activities:
+    - |
+      IF changelog_mode = nested:
+        Skip version calculation. Nested packet changelogs use deterministic packet-local filenames.
     - "List existing changelog files in target folder:"
     - "  Run: ls .opencode/changelog/{primary_component}/ | sort -V"
     - "Parse the latest version file: extract MAJOR.MINOR.PATCH.BUILD"
@@ -437,6 +462,7 @@ workflow:
     purpose: Generate changelog content following established format
     activities:
     - "Read the template: .opencode/command/create/assets/changelog_template.md"
+    - "If changelog_mode = nested, read .opencode/skill/system-spec-kit/templates/changelog/root.md or phase.md instead"
     - "Set DATE to today's date in YYYY-MM-DD format"
     - |
       SELECT FORMAT based on change count and release type:
@@ -467,6 +493,7 @@ workflow:
       Pull content from:
         spec_folder: tasks.md completed items, implementation-summary.md sections
         component/git: commit messages grouped by type
+        nested: generator payload from nested-changelog.js
     - |
       Generate FILES_CHANGED:
         COMPACT: Simple table with File | Action | Description
@@ -518,6 +545,10 @@ workflow:
   step_6_write_file:
     purpose: Write the changelog file to the correct location
     activities:
+    - |
+      IF changelog_mode = nested:
+        Run: node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js {spec_folder} --write
+        Verify the written packet-local file matches nested_output_path
     - "Construct output path: .opencode/changelog/{primary_component}/v{next_version}.md"
     - "Write changelog_content to output path using Write tool"
     - "Verify file was created: Read the first 5 lines of the written file"

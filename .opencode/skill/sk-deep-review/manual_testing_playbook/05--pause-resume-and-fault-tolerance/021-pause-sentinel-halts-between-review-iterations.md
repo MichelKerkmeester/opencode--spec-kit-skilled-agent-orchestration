@@ -1,6 +1,6 @@
 ---
 title: "DRV-021 -- Pause sentinel halts between review iterations"
-description: "Verify that the review/.deep-research-pause sentinel halts the review loop between iterations and logs a pause event."
+description: "Verify that the review/.deep-review-pause sentinel halts the review loop between iterations and logs a pause event."
 ---
 
 # DRV-021 -- Pause sentinel halts between review iterations
@@ -11,7 +11,7 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates pause sentinel halts between review iterations for `DRV-021`. The objective is to verify that the `review/.deep-research-pause` sentinel halts the review loop between iterations and logs a pause event.
+This scenario validates pause sentinel halts between review iterations for `DRV-021`. The objective is to verify that the `review/.deep-review-pause` sentinel halts the review loop between iterations and logs a pause event.
 
 ### WHY THIS MATTERS
 
@@ -23,12 +23,12 @@ Autonomous review mode needs one safe, documented intervention mechanism short o
 
 Operators should run this as a real orchestrator-led check rather than a synthetic command-matrix exercise. The scenario is only complete when the operator can explain the behavior back to a user in plain language.
 
-- Objective: Verify that the `review/.deep-research-pause` sentinel halts the loop between iterations and logs a pause event.
+- Objective: Verify that the `review/.deep-review-pause` sentinel halts the loop between iterations and logs a pause event.
 - Real user request: If I need to interrupt an autonomous review safely, tell me how the pause file works.
-- Orchestrator prompt: Validate the pause sentinel contract for sk-deep-review. Confirm that `{spec_folder}/review/.deep-research-pause` is checked between review iterations, that a paused event is emitted to the JSONL state log, and that the loop halts without entering synthesis, then return a concise operator-facing verdict.
+- Orchestrator prompt: Validate the pause sentinel contract for sk-deep-review. Confirm that `{spec_folder}/review/.deep-review-pause` is checked between review iterations, that a paused event is emitted to the JSONL state log, and that the loop halts without entering synthesis, then return a concise operator-facing verdict.
 - Expected execution process: Inspect the loop protocol pause section, then the review YAML pause checks, then the quick reference and SKILL.md for user-facing explanation.
 - Desired user-facing outcome: The user is told exactly how to pause a review run safely and what the loop does when the sentinel is present.
-- Expected signals: The sentinel is checked before dispatch, a paused event is logged to JSONL, the loop halts rather than flowing into synthesis, and the sentinel location is `review/.deep-research-pause`.
+- Expected signals: The sentinel is checked before dispatch, a paused event is logged to JSONL, the loop halts rather than flowing into synthesis, and the sentinel location is `review/.deep-review-pause`.
 - Pass/fail posture: PASS if the sentinel pauses between iterations and does not route to synthesis; FAIL if pause is undocumented or modeled as a hard stop to completion.
 
 ---
@@ -44,7 +44,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DRV-021 | Pause sentinel halts between review iterations | Verify that `review/.deep-research-pause` sentinel halts the review loop between iterations and logs a pause event. | Validate the pause sentinel contract for sk-deep-review. Confirm that `{spec_folder}/review/.deep-research-pause` is checked between review iterations, that a paused event is emitted to the JSONL state log, and that the loop halts without entering synthesis, then return a concise operator-facing verdict. | 1. `bash: rg -n '.deep-research-pause|paused|Delete.*pause|review/.deep-research-pause' .opencode/skill/sk-deep-research/references/loop_protocol.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` -> 2. `bash: rg -n 'step_check_pause_sentinel|paused|halt.*true|review/.deep-research-pause|pause.*sentinel' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'pause|sentinel|review/.deep-research-pause|Pause' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/deep-review.md` | The sentinel is checked before dispatch, a paused event is logged to JSONL, the loop halts rather than flowing into synthesis, and the sentinel location is `review/.deep-research-pause`. | Capture the sentinel location, the paused-event contract, and the halt behavior from both YAML workflows and user-facing docs. | PASS if the pause sentinel halts between iterations and does not route to synthesis; FAIL if pause is undocumented or modeled as a hard stop to completion. | Use the loop protocol pause subsection as the canonical flow and verify both review YAML workflows mirror it. |
+| DRV-021 | Pause sentinel halts between review iterations | Verify that `review/.deep-review-pause` sentinel halts the review loop between iterations and logs a pause event. | Validate the pause sentinel contract for sk-deep-review. Confirm that `{spec_folder}/review/.deep-review-pause` is checked between review iterations, that a paused event is emitted to the JSONL state log, and that the loop halts without entering synthesis, then return a concise operator-facing verdict. | 1. `bash: rg -n '.deep-review-pause|paused|Delete.*pause|review/.deep-review-pause' .opencode/skill/sk-deep-review/references/loop_protocol.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` -> 2. `bash: rg -n 'step_check_pause_sentinel|paused|halt.*true|review/.deep-review-pause|pause.*sentinel' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'pause|sentinel|review/.deep-review-pause|Pause' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/deep-review.md` | The sentinel is checked before dispatch, a paused event is logged to JSONL, the loop halts rather than flowing into synthesis, and the sentinel location is `review/.deep-review-pause`. | Capture the sentinel location, the paused-event contract, and the halt behavior from both YAML workflows and user-facing docs. | PASS if the pause sentinel halts between iterations and does not route to synthesis; FAIL if pause is undocumented or modeled as a hard stop to completion. | Use the loop protocol pause subsection as the canonical flow and verify both review YAML workflows mirror it. |
 
 ---
 
@@ -61,7 +61,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | File | Role |
 |---|---|
-| `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Pause sentinel contract; use `ANCHOR:phase-iteration-loop` |
+| `.opencode/skill/sk-deep-review/references/loop_protocol.md` | Pause sentinel contract; use the pause-handling subsection |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | Pause check step; inspect `step_check_pause_sentinel` |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | Pause check step; inspect `step_check_pause_sentinel` |
 | `.opencode/command/spec_kit/deep-review.md` | Command entrypoint; review-specific pause documentation |

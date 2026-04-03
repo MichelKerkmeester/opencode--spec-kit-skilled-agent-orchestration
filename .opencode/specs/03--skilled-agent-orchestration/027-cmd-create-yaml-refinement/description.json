@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/027-cmd-create-yaml-refinement",
+  "description": "Feature Specification: Create Command YAML Refinement",
+  "keywords": [
+    "feature",
+    "specification",
+    "create",
+    "command",
+    "yaml",
+    "refinement"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.665Z",
+  "specId": "027",
+  "folderSlug": "cmd-create-yaml-refinement",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

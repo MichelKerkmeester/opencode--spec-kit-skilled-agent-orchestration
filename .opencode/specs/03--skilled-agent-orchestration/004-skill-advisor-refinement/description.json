@@ -1,0 +1,17 @@
+{
+  "specFolder": "03--commands-and-skills/004-skill-advisor-refinement",
+  "description": "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->",
+  "keywords": [
+    "spec-core",
+    "level2-verify",
+    "level3-arch"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.551Z",
+  "specId": "004",
+  "folderSlug": "skill-advisor-refinement",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

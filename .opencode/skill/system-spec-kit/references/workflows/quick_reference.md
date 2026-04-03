@@ -109,6 +109,29 @@ mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates
 <!-- ANCHOR:essential-commands -->
 ## 4. ESSENTIAL COMMANDS
 
+### Start Here: Command Map
+
+If the runtime does not surface command menus clearly, use this compact command map first.
+
+**SpecKit workflow commands**
+- `/spec_kit:resume` - continue or recover existing spec-folder work
+- `/spec_kit:plan` - define or refine a scoped spec and plan
+- `/spec_kit:implement` - execute an existing spec and plan packet
+- `/spec_kit:complete` - run the full spec-to-implementation lifecycle
+- `/spec_kit:debug` - delegate a persistent issue to debug workflow
+- `/spec_kit:handover` - write continuation context for the next session
+- `/spec_kit:deep-research` - run iterative research before planning
+- `/spec_kit:deep-review` - run iterative review and finding synthesis
+
+**Memory commands**
+- `/memory:save` - preserve the current session context into spec memory
+- `/memory:search` - retrieve prior context, decisions, and analysis
+- `/memory:manage` - run maintenance, checkpoint, cleanup, and shared-memory operations
+- `/memory:learn` - create or manage constitutional always-surface rules
+
+**Nested changelog generator**
+- `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js <spec-folder> --write` - publish a packet-local changelog for a root spec or phase child
+
 ### Find Next Spec Number
 
 ```bash
@@ -525,6 +548,7 @@ Only load root memory when updating coordination snapshots.
 | `/spec_kit:plan :with-phases` | Trigger phase decomposition as pre-workflow in plan or complete |
 | `create.sh --phase <parent> --topic <name>` | Create a new phase child folder under a parent spec |
 | `validate.sh <parent> --recursive` | Validate parent and all child phase folders |
+| `node .../nested-changelog.js <spec-folder> --write` | Write a packet-local root or phase changelog into the parent packet `changelog/` folder |
 
 ### Phase Quick Reference
 
@@ -542,6 +566,7 @@ Only load root memory when updating coordination snapshots.
 ```
 specs/###-parent/
 ├── spec.md           # Phase Documentation Map
+├── changelog/        # Root + phase changelog artifacts
 ├── 001-phase-one/    # Independent child spec folder
 ├── 002-phase-two/
 └── 003-phase-three/

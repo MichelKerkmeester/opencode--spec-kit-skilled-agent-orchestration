@@ -30,6 +30,7 @@ export interface ToolDefinition {
   name: string;
   description: string;
   inputSchema: Record<string, unknown>;
+  outputSchema?: Record<string, unknown>;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -759,6 +760,17 @@ const sessionBootstrap: ToolDefinition = {
       specFolder: { type: 'string', description: 'Optional spec folder to scope the resume context' },
     },
     required: [],
+  },
+  outputSchema: {
+    type: 'object',
+    properties: {
+      resume: { type: 'object', description: 'Merged session_resume payload (spec folder, task status, memory context)' },
+      health: { type: 'object', description: 'session_health payload (system status, database health, MCP connectivity)' },
+      structuralContext: { type: 'object', description: 'Structural bootstrap contract (status, summary, recommendedAction); omitted when code graph is unavailable', properties: { status: { type: 'string', enum: ['ready', 'stale', 'missing'] }, summary: { type: 'string' }, recommendedAction: { type: 'string' } } },
+      hints: { type: 'array', items: { type: 'string' }, description: 'Aggregated hints from sub-calls' },
+      nextActions: { type: 'array', items: { type: 'string' }, description: 'Up to 3 recommended next actions derived from resume, health, and structural status' },
+    },
+    required: ['resume', 'health', 'hints', 'nextActions'],
   },
 };
 

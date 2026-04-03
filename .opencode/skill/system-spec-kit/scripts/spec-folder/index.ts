@@ -1,10 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Index
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Spec Folder Index
+// ───────────────────────────────────────────────────────────────────
 
-// ───────────────────────────────────────────────────────────────
-// 1. INDEX
-// ───────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────────
+// 1. IMPORTS
+// ───────────────────────────────────────────────────────────────────
 // Barrel export for spec folder detection, validation, and setup modules
 import { detectSpecFolder, filterArchiveFolders } from './folder-detector';
 import {
@@ -19,10 +19,15 @@ import {
   validateFolderAlignment,
 } from './alignment-validator';
 import { setupContextDirectory } from './directory-setup';
+import {
+  buildNestedChangelogData,
+  generateNestedChangelogMarkdown,
+  writeNestedChangelog,
+} from './nested-changelog';
 
-/* ───────────────────────────────────────────────────────────────
-   EXPORTS - Primary (camelCase)
-------------------------------------------------------------------*/
+// ───────────────────────────────────────────────────────────────────
+// 2. EXPORTS
+// ───────────────────────────────────────────────────────────────────
 
 export {
   ALIGNMENT_CONFIG,
@@ -32,10 +37,12 @@ export {
   extractConversationTopics,
   extractObservationKeywords,
   calculateAlignmentScore,
+  buildNestedChangelogData,
   computeTelemetrySchemaDocsFieldDiffs,
   formatTelemetrySchemaDocsDriftDiffs,
+  generateNestedChangelogMarkdown,
   validateTelemetrySchemaDocsDrift,
   validateContentAlignment,
   validateFolderAlignment,
+  writeNestedChangelog,
 };
-

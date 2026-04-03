@@ -1,138 +1,186 @@
-# Review Report — Compact Code Graph (spec-024 rerun)
+# Review Report - 024 Compact Code Graph
 
 ## 1. Executive Summary
 - Verdict: `CONDITIONAL`
-- Iterations executed: `20`
-- Active findings: `P0=0 P1=7 P2=3`
-- Rerun posture: fresh 20-iteration root-packet review using current-tree evidence, with archived reviews treated as reference-only.
+- hasAdvisories: `true`
+- Active findings: `P0=0`, `P1=6`, `P2=1`
+- Iterations executed: `6`
+- Stop reason: `converged`
+- Review scope: root packet artifacts, child phase evidence, current runtime implementation/docs, and runtime agent/skill surfaces tied to context preservation, bootstrap, compact recovery, and structural priming.
 
 ## 2. Planning Trigger
-- Use `/spec_kit:plan` if you want the active P1/P2 findings converted into remediation tasks.
+- `/spec_kit:plan` is required before treating this packet as release-ready because six active P1 findings remain.
+
+```json
+{
+  "triggered": true,
+  "verdict": "CONDITIONAL",
+  "hasAdvisories": true,
+  "activeFindings": {
+    "P0": [],
+    "P1": ["P1-001", "P1-002", "P1-003", "P1-004", "P1-005", "P1-006"],
+    "P2": ["P2-001"]
+  },
+  "remediationWorkstreams": [
+    "WS-1 Recovery API truth-sync",
+    "WS-2 Root packet evidence repair",
+    "WS-3 Hook safety and autosave hardening",
+    "WS-4 Runtime guidance parity",
+    "WS-5 Structural bootstrap budget enforcement",
+    "WS-6 Advisory context-prime alignment"
+  ],
+  "specSeed": [
+    "Update root packet evidence paths so checklist and implementation summary agree on shipped Phase 015/016 status.",
+    "Truth-sync child packet 021 against the current bootstrap-first recovery contract.",
+    "Clarify or implement the documented session_bootstrap response contract and structural token ceiling."
+  ],
+  "planSeed": [
+    "Decide whether to implement missing runtime behavior or downgrade packet/doc claims for each active P1.",
+    "Fix Claude/Gemini recovery surface parity before re-running deep review.",
+    "Re-run this deep review after remediation with emphasis on root packet traceability and bootstrap contracts."
+  ]
+}
+```
 
 ## 3. Active Finding Registry
-### P1-024-001: Root packet still points reviewers at non-existent hook/build/API paths
-- Severity: `P1`
-- Dimension: `D3 Traceability`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md:172`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md:180`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:99`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:229`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:230`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/decision-record.md:56`
-- Impact: Operators following the root packet land on stale or missing paths rather than the shipped hook surfaces, so packet-to-runtime traceability is broken.
 
-### P1-024-002: Root packet records the resume-profile remediation as complete while the canonical wrapper still shows the stale call shape
-- Severity: `P1`
-- Dimension: `D3 Traceability`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md:77`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md:126`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/decision-record.md:97`
-- Evidence: `.opencode/command/spec_kit/resume.md:259`
-- Evidence: `.opencode/command/spec_kit/resume.md:354`
-- Impact: The root packet marks a wrapper-level fix as shipped even though the wrapper doc still presents the older bare `memory_context({ mode: "resume" })` contract.
+### P1-001
+- Title: `session_bootstrap` advertises recommended next actions that the handler never returns
+- Dimension: `traceability`
+- File: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:753`, `.opencode/skill/system-spec-kit/mcp_server/README.md:584`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:100`
+- Evidence: public contract surfaces promise recommended next actions, while the live handler returns `resume`, `health`, `structuralContext`, and `hints` only.
+- Impact: callers can rely on a documented response element that does not exist.
+- Fix recommendation: emit an explicit `nextActions` payload or relax every public contract surface to the actual output shape.
+- Disposition: `active`
 
-### P1-024-003: Deferred-item ledger is internally inconsistent about which remediation remains open
-- Severity: `P1`
-- Dimension: `D7 Completeness`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:301`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/plan.md:334`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/tasks.md:111`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/tasks.md:104`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/015-tree-sitter-migration/checklist.md:82`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md:108`
-- Impact: The root packet cannot consistently tell reviewers which single deferred item still exists, so closure status is unreliable.
+### P1-002
+- Title: Root checklist evidence still relies on a stale implementation summary
+- Dimension: `correctness`
+- File: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md:110-111`, `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md:162-177`
+- Evidence: the root checklist cites `implementation-summary.md` as proof that Phase 015/016 follow-through shipped, while the same summary still marks those items deferred/partial.
+- Impact: root packet verification evidence is internally inconsistent and cannot be trusted during resume/review flows.
+- Fix recommendation: update the root implementation summary to reflect later phase completion or repoint checklist evidence to the child packets that now hold the true shipped status.
+- Disposition: `active`
 
-### P1-024-004: Canonical hookless recovery path suppresses the actual resume payload
-- Severity: `P1`
-- Dimension: `D6 Reliability`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md:116`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md:122`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/README.md:584`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:58`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:59`
-- Impact: The packet and public README frame `session_bootstrap` as the first-call recovery surface that returns context, but the implementation always forces minimal mode and skips memory resume content.
+### P1-003
+- Title: Gemini SessionStart compact recovery still lacks provenance fencing
+- Dimension: `security`
+- File: `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:66-72`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:108-115`
+- Evidence: Gemini SessionStart injects sanitized recovered compact text directly instead of wrapping it with the provenance fence used elsewhere.
+- Impact: instruction-shaped recovered transcript text is reintroduced to the model with a weaker prompt-safety boundary than the packet claims.
+- Fix recommendation: wrap Gemini SessionStart recovered compact payloads with the same provenance fence contract used on other compact recovery paths, or narrow the packet claims.
+- Disposition: `active`
 
-### P1-024-005: `code_graph_query` exposes an `edgeType` filter that the handler never honors
-- Severity: `P1`
-- Dimension: `D1 Correctness`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:645`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/README.md:1040`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:149`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:167`
-- Impact: The structural-query surface advertises an option users cannot actually rely on, which is a direct command/runtime contract break.
+### P1-004
+- Title: Claude stop-hook autosave can choose the wrong spec folder by transcript frequency
+- Dimension: `reliability`
+- File: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:53-80`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:229-302`
+- Evidence: spec-folder autodetection selects the most frequent `specs/...` path in the transcript tail and feeds it into autosave without validating active-session ownership.
+- Impact: cross-packet discussions can contaminate memory saves and future resume context with the wrong packet destination.
+- Fix recommendation: derive autosave target from an explicit active-session state source, or validate the detected packet before persistence.
+- Disposition: `active`
 
-### P2-024-006: Structural read paths can block on synchronous auto-reindex work
-- Severity: `P2`
-- Dimension: `D5 Performance`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:102`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:89`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts:35`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts:203`
-- Impact: Normal read-only graph queries may absorb up to 10 seconds of inline indexing work, coupling query latency to maintenance side effects.
+### P1-005
+- Title: Phase 021 still publishes the superseded `session_resume()`-first recovery contract
+- Dimension: `maintainability`
+- File: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md:71-79`, `.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md:73-90`, `AGENTS.md:75-93`
+- Evidence: Phase 021 still describes `session_resume()` as the first-turn recovery entry point, while root/runtime guidance has moved to `session_bootstrap()` first.
+- Impact: the packet now contains two incompatible startup-recovery source-of-truth contracts.
+- Fix recommendation: truth-sync Phase 021 as historical/superseded or update it to the current bootstrap-first contract.
+- Disposition: `active`
 
-### P2-024-007: Recovery guidance is still split between `session_resume` and `session_bootstrap` across active runtime surfaces
-- Severity: `P2`
-- Dimension: `D4 Maintainability`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/checklist.md:77`
-- Evidence: `.opencode/command/spec_kit/resume.md:259`
-- Evidence: `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml:79`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:662`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:679`
-- Evidence: `.opencode/skill/system-spec-kit/references/config/hook_system.md:50`
-- Impact: The current recovery story still requires maintainers to mentally reconcile multiple “first call” recommendations across wrappers, server hints, and docs.
+### P1-006
+- Title: Phase 027's hard structural bootstrap token ceiling is not enforced in code
+- Dimension: `performance`
+- File: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md:144-147`, `.opencode/specs/02--system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md:88-93`, `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts:159-193`
+- Evidence: Phase 027 documents a 250-400 token target with a 500-token hard ceiling, but the shared structural builder and consuming handlers never measure or truncate to that limit.
+- Impact: bootstrap/recovery surfaces can silently exceed the documented structural budget as payloads grow.
+- Fix recommendation: enforce a real token or length budget on the shared structural contract path, or relax the packet language to best-effort guidance.
+- Disposition: `active`
 
-### P1-024-008: Root packet overstates shipped compaction behavior as a true three-source merge
-- Severity: `P1`
-- Dimension: `D1 Correctness`
-- Evidence: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/implementation-summary.md:82`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:200`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:206`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:236`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:239`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:254`
-- Impact: The implementation summary describes memory, structural, and semantic context as already merged into the compaction payload, but the live Claude path still feeds empty memory sections into the merger and appends surfaced memories only afterward.
-
-### P1-024-009: Dispatch-time graph enrichment reflects arbitrary existing local paths back to callers
-- Severity: `P1`
-- Dimension: `D2 Security`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:327`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:332`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:337`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:347`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:357`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:467`
-- Impact: A caller can probe whether guessed local files exist by passing path-like values and observing which ones are echoed back in dispatch metadata, creating a filesystem existence oracle outside the indexed workspace.
-
-### P2-024-010: Compaction recovery sanitizer still allows most instruction-like transcript text to survive reinjection
-- Severity: `P2`
-- Dimension: `D2 Security`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:91`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:97`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:227`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:231`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:67`
-- Evidence: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:72`
-- Impact: Only a narrow set of system-like prefixes are stripped, so instruction-like transcript content can persist across compaction and be promoted back into model-visible recovery context.
+### P2-001
+- Title: Runtime `context-prime` copies no longer share the structural Prime Package shape
+- Dimension: `completeness`
+- File: `.opencode/agent/context-prime.md:125-145`, `.claude/agents/context-prime.md:124-139`, `.codex/agents/context-prime.md:124-139`
+- Evidence: the OpenCode agent includes an explicit `Structural Context` section while the Claude and Codex copies omit it.
+- Impact: cross-runtime startup guidance is only partially mirrored and easier to drift over time.
+- Fix recommendation: align the Claude/Codex copies with the OpenCode structural Prime Package, or document the intentional runtime divergence explicitly.
+- Disposition: `active-advisory`
 
 ## 4. Remediation Workstreams
-- WS-1 Root packet truth-sync: repair stale path maps, wrapper-completion claims, and deferred-item bookkeeping.
-- WS-2 Recovery contract: align `session_bootstrap`, `session_resume`, server hints, and wrapper docs to one explicit first-call story.
-- WS-3 Structural-query contract: either implement `edgeType` or remove it from the public surface, and decouple read paths from inline reindex side effects.
-- WS-4 Compaction/dispatch hardening: narrow path extraction to indexed scope and strengthen transcript reinjection sanitization.
+- WS-1 Recovery API truth-sync: resolve P1-001 by aligning `session_bootstrap` docs/schema/handler output.
+- WS-2 Root packet evidence repair: resolve P1-002 by repairing checklist-to-summary evidence paths and root shipped-status bookkeeping.
+- WS-3 Hook safety and autosave hardening: resolve P1-003 and P1-004 by fencing Gemini SessionStart compact payloads and validating stop-hook autosave targets.
+- WS-4 Runtime guidance parity: resolve P1-005 by truth-syncing Phase 021 to the bootstrap-first contract.
+- WS-5 Structural bootstrap budget enforcement: resolve P1-006 by implementing or relaxing the Phase 027 hard ceiling.
+- WS-6 Advisory runtime agent alignment: resolve P2-001 if cross-runtime `context-prime` schema parity matters for maintenance burden.
 
 ## 5. Spec Seed
-- The rerun confirms the next spec packet should be a remediation/closure packet rather than a new feature packet.
+- Re-state the canonical recovery contract once: `session_bootstrap()` first on fresh hookless starts, `session_resume()` for detailed follow-up.
+- Move evidence ownership for Phase 015/016 completion to the child packets or refresh the root implementation summary to current truth.
+- Define whether structural bootstrap budgets are hard enforced runtime limits or documentation-only targets.
+- Define how stop-hook autosave selects the authoritative packet when transcripts mention multiple spec folders.
 
 ## 6. Plan Seed
-- Start with the highest-severity packet/runtime contract drifts, then rerun deep review after each remediation wave.
+- Task 1: align `session_bootstrap` public contract surfaces with live output.
+- Task 2: refresh root packet closeout evidence and Phase 021 recovery tables.
+- Task 3: harden Gemini compact recovery provenance fencing and Claude stop-hook autosave destination selection.
+- Task 4: add or relax structural contract token ceilings in Phase 027 and runtime code.
+- Task 5: optionally align `context-prime` runtime copies once the P1 work is complete.
 
 ## 7. Traceability Status
-- Root packet and live runtime/doc surfaces still diverge on active claims; traceability remains an open release-readiness concern.
+
+### Core Protocols
+- `spec_code`: `fail`
+  - Evidence: P1-001, P1-003, P1-004, P1-005, P1-006.
+- `checklist_evidence`: `fail`
+  - Evidence: P1-002.
+
+### Overlay Protocols
+- `skill_agent`: `fail`
+  - Evidence: P1-005, P2-001.
+- `agent_cross_runtime`: `fail`
+  - Evidence: P1-003, P2-001.
+- `feature_catalog_code`: `pass`
+  - Evidence: root feature catalog section 22 plus current leaf docs for auto-priming and session resume.
+- `playbook_capability`: `pass`
+  - Evidence: manual playbook section 22 plus scenarios 261 and 263.
 
 ## 8. Deferred Items
-- Advisory-only items can remain deferred only after the active P1 findings are truth-synced or fixed.
+- P2-001 can remain deferred if the team accepts runtime-specific `context-prime` schema drift as maintenance debt rather than a release blocker.
+- No additional blocker should be deferred until the active P1 set is resolved or intentionally downgraded with evidence.
 
 ## 9. Audit Appendix
-- 20 fresh iterations were recorded in `review/iterations/iteration-001.md` through `iteration-020.md`.
-- JSONL state rebuilt for this rerun under `review/deep-research-state.jsonl`.
-- Verdict rule: no P0, but active P1 findings remain, so the rerun stays CONDITIONAL.
+
+### Convergence Summary
+- Total iterations: `6`
+- Stop reason: `converged`
+- Coverage summary: all seven configured dimensions were covered by iteration 4; iteration 5 challenged the active registry with no downgrades or new findings; iteration 6 closed the remaining overlay protocols with pass evidence and no new findings.
+- Registry outcome: `P0=0`, `P1=6`, `P2=1`
+
+### Ruled-Out Claims
+- `code_graph_query.edgeType` is not dead in the live handler.
+- current wrapper/README/schema do not split bootstrap-first versus resume-follow-up ordering.
+- Claude hook-state permissions and compact read/clear race fixes are live.
+- structural read paths do not currently perform inline reindex work on read.
+- Phase 028 does not over-claim broader startup/bootstrap remediation beyond startup-highlight quality fixes.
+- the older feature-catalog index mismatch and playbook scenario input issue are no longer live in the current tree.
+
+### Sources Reviewed
+- Root packet: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
+- Child phases: `006-documentation-alignment`, `015-tree-sitter-migration`, `016-cross-runtime-ux`, `019-code-graph-auto-trigger`, `021-cross-runtime-instruction-parity`, `027-opencode-structural-priming`, `028-startup-highlights-remediation`
+- Runtime/docs: `.opencode/command/spec_kit/resume.md`, `AGENTS.md`, `.opencode/skill/system-spec-kit/references/config/hook_system.md`, `.opencode/skill/system-spec-kit/mcp_server/README.md`
+- Implementation: `session-bootstrap.ts`, `session-resume.ts`, `session-health.ts`, `code-graph/query.ts`, `code-graph/context.ts`, `ensure-ready.ts`, `session-snapshot.ts`, `startup-brief.ts`, Claude/Gemini compact/session hooks
+- Overlay surfaces: feature catalog section 22, manual playbook section 22, `.opencode/agent/context-prime.md`, `.claude/agents/context-prime.md`, `.codex/agents/context-prime.md`, deep-review runtime docs
+
+### Cross-Reference Appendix
+
+#### Core Protocols
+- `spec_code`: failed on bootstrap contract drift, hook/runtime parity drift, and structural-budget claim drift.
+- `checklist_evidence`: failed on stale root implementation-summary evidence.
+
+#### Overlay Protocols
+- `skill_agent`: failed on stale Phase 021 recovery guidance and runtime `context-prime` schema drift.
+- `agent_cross_runtime`: failed on Claude/Gemini compact recovery parity and runtime `context-prime` schema drift.
+- `feature_catalog_code`: passed on current section-22 catalog coverage.
+- `playbook_capability`: passed on current section-22 manual-playbook coverage.

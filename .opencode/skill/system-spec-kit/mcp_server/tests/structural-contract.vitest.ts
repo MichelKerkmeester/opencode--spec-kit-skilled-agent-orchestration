@@ -124,4 +124,28 @@ describe('buildStructuralBootstrapContract', () => {
       expect(contract.sourceSurface).toBe(surface);
     }
   });
+
+  it('keeps the structural contract within the documented hard ceiling', async () => {
+    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+      getStats: vi.fn(() => freshGraphMock({
+        nodesByKind: Object.fromEntries(
+          Array.from({ length: 12 }, (_, index) => [
+            `very_long_symbol_kind_name_${index}_with_extra_budget_pressure`,
+            1000 - index,
+          ]),
+        ),
+      })),
+    }));
+    setupSharedMocks();
+
+    const { buildStructuralBootstrapContract } = await import('../lib/session/session-snapshot.js');
+    const contract = buildStructuralBootstrapContract('session_bootstrap');
+    const estimatedTokens = Math.ceil(JSON.stringify({
+      summary: contract.summary,
+      highlights: contract.highlights,
+      recommendedAction: contract.recommendedAction,
+    }).length / 4);
+
+    expect(estimatedTokens).toBeLessThanOrEqual(500);
+  });
 });
