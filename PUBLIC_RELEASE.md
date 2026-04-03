@@ -35,9 +35,9 @@ When `.opencode/` is a symlink, Node.js `__dirname` in CommonJS resolves to the 
 
 ## 2. REPOSITORY LOCATIONS
 
-| Location                    | Path/URL                                                         |
-| --------------------------- | ---------------------------------------------------------------- |
-| **Public Release (local)**  | `~/your-project/` |
+| Location                    | Path/URL                                                                            |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| **Public Release (local)**  | `~/your-project/`                                                                   |
 | **Public Release (GitHub)** | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration |
 
 ---
@@ -46,24 +46,24 @@ When `.opencode/` is a symlink, Node.js `__dirname` in CommonJS resolves to the 
 
 ### Shared (via symlink — lives in Public repo)
 
-| Component      | Path                          |
-| -------------- | ----------------------------- |
-| Skills         | `.opencode/skill/`            |
-| Commands       | `.opencode/command/`          |
-| Install Guides | `.opencode/install_guides/`   |
-| Scripts        | `.opencode/scripts/`          |
-| Agents         | `.opencode/agent/`            |
+| Component      | Path                        |
+| -------------- | --------------------------- |
+| Skills         | `.opencode/skill/`          |
+| Commands       | `.opencode/command/`        |
+| Install Guides | `.opencode/install_guides/` |
+| Scripts        | `.opencode/scripts/`        |
+| Agents         | `.opencode/agent/`          |
 
 ### Project-Specific (gitignored per-subfolder in Public)
 
-| Component                   | Location                   | Reason                           |
-| --------------------------- | -------------------------- | -------------------------------- |
-| `.opencode/specs/NNN-*/`    | Through symlink            | Project-specific documentation   |
-| `.opencode-local/database/` | Project root               | Per-project SQLite databases     |
-| `opencode.json`             | Project root               | MCP config with SPEC_KIT_DB_DIR  |
-| `.utcp_config.json`         | Project root               | Code Mode configuration          |
-| `AGENTS.md`               | Project root               | Project-specific AI instructions |
-| `src/`                      | Project root               | Project source code              |
+| Component                   | Location        | Reason                           |
+| --------------------------- | --------------- | -------------------------------- |
+| `.opencode/specs/NNN-*/`    | Through symlink | Project-specific documentation   |
+| `.opencode-local/database/` | Project root    | Per-project SQLite databases     |
+| `opencode.json`             | Project root    | MCP config with SPEC_KIT_DB_DIR  |
+| `.utcp_config.json`         | Project root    | Code Mode configuration          |
+| `AGENTS.md`                 | Project root    | Project-specific AI instructions |
+| `src/`                      | Project root    | Project source code              |
 
 ---
 
@@ -123,12 +123,12 @@ No Release   Full Release
 
 ### Phase 1: CLASSIFY
 
-| Change Type                          | Release Type    | Version Impact |
-| ------------------------------------ | --------------- | -------------- |
-| Typo fixes, minor doc updates        | **No Release**  | None           |
-| Bug fixes within current series      | **Patch**       | `x.x.x.+1`    |
-| New feature or thematic changes      | **Series**      | `x.x.+1.0`    |
-| Breaking changes requiring migration | **Major**       | `x.+1.0.0`    |
+| Change Type                          | Release Type   | Version Impact |
+| ------------------------------------ | -------------- | -------------- |
+| Typo fixes, minor doc updates        | **No Release** | None           |
+| Bug fixes within current series      | **Patch**      | `x.x.x.+1`     |
+| New feature or thematic changes      | **Series**     | `x.x.+1.0`     |
+| Breaking changes requiring migration | **Major**      | `x.+1.0.0`     |
 
 ### Phase 2: DOCUMENT (Full Release Only)
 
@@ -198,10 +198,10 @@ EOF
 
 ## 5. CURRENT RELEASE
 
-| Field              | Value                                                                                  |
-| ------------------ | -------------------------------------------------------------------------------------- |
-| **Version**        | v3.1.2.0                                                                               |
-| **Release Date**   | 2026-03-30                                                                             |
+| Field              | Value                                                                                                     |
+| ------------------ | --------------------------------------------------------------------------------------------------------- |
+| **Version**        | v3.1.2.0                                                                                                  |
+| **Release Date**   | 2026-03-30                                                                                                |
 | **GitHub**         | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration                       |
 | **Latest Release** | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases/latest       |
 | **Release Notes**  | https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases/tag/v3.1.2.0 |
@@ -265,8 +265,8 @@ One or two sentences explaining what this release does and why it matters, in pl
 
 ## Files Changed
 
-| File | What changed |
-|------|-------------|
+| File           | What changed      |
+| -------------- | ----------------- |
 | `path/to/file` | Brief description |
 
 ## Upgrade
@@ -277,6 +277,7 @@ No action required. / Steps if needed.
 ### 7.2 Rules
 
 **Writing style:**
+
 - Write like you are explaining to a smart person who is not a developer
 - Lead with WHY this release matters, not technical stats
 - Every fix explained as: what was broken, what we did, why it matters
@@ -287,15 +288,18 @@ No action required. / Steps if needed.
 - Analogies welcome when they help understanding
 
 **Structure:**
+
 - 1-2 sentence plain-English summary at the top
 - Optional spec folder reference as a blockquote
 - `## What Changed` as main H2 section
 - `### [Category name]` for H3 category headers (plain names -- see vocabulary below)
+- For expanded releases, keep per-item sub-headings short: ideally 2-5 words and easy to scan
 - Bullet points with **bold label** -- description (using em dash or double hyphen)
 - `## Files Changed` table with File and What changed columns
 - `## Upgrade` section (always last)
 
 **GitHub release body hygiene:**
+
 - Never include local changelog wrapper lines in GitHub release notes:
   - `# vX.X.X.X`
   - `> Part of ...`
@@ -303,6 +307,7 @@ No action required. / Steps if needed.
 - GitHub release notes must start with the summary paragraph
 
 **Category vocabulary for H3 headers (use plain names):**
+
 - `Search` -- search behavior, ranking, matching
 - `Saving Memories` -- memory save, context preservation
 - `Security` -- access control, input validation, secrets
@@ -317,6 +322,7 @@ No action required. / Steps if needed.
 ### 7.3 Checklist
 
 Before publishing:
+
 - [ ] Opens with 1-2 plain-English sentences explaining why this release matters
 - [ ] GitHub notes body excludes local changelog wrapper header block
 - [ ] `## What Changed` H2 section present
@@ -327,7 +333,7 @@ Before publishing:
 - [ ] `## Files Changed` table present with File and What changed columns
 - [ ] `## Upgrade` section last
 - [ ] Bullet points are short (1-3 sentences each)
-- [ ] For 10+ changes: expanded format with Problem/Fix paragraphs (see `.opencode/command/create/assets/changelog_template.md`)
+- [ ] For 10+ changes: expanded format with short scan-friendly sub-headings and Problem/Fix paragraphs (see `.opencode/command/create/assets/changelog_template.md`)
 
 ---
 
@@ -344,39 +350,39 @@ Releases use a 4-part versioning scheme: `MAJOR.MINOR.SERIES.PATCH`
 
 ### Series History
 
-| Series    | Range       | Theme                                    |
-| --------- | ----------- | ---------------------------------------- |
-| `1.0.0.x` | 1.0.0.0-8   | Initial release (LEANN-based)            |
-| `1.0.1.x` | 1.0.1.0-7   | Narsil migration (unified code intel)    |
-| `1.0.2.x` | 1.0.2.0-9   | Skill audit + Figma MCP                  |
-| `1.1.0.x` | 1.1.0.0-1   | Cognitive Memory + Agent System          |
-| `1.2.0.x` | 1.2.0.0-3   | Causal Memory & Command Consolidation    |
-| `1.2.1.x` | 1.2.1.0     | workflows-code--opencode + Narsil removal |
-| `1.2.2.x` | 1.2.2.0-2   | Coding Analysis Lenses + MCP bug fixes   |
-| `1.2.3.x` | 1.2.3.0     | Ecosystem remediation + schema unification |
-| `1.2.4.x` | 1.2.4.0-1   | Orchestrate agent Context Window Budget  |
-| `1.2.5.x` | 1.2.5.0     | workflows-code--opencode Phase 17 alignment |
-| `1.3.0.x` | 1.3.0.0     | Agent fleet overhaul + @context            |
-| `1.3.1.x` | 1.3.1.0     | @context prompt compression                |
-| `1.3.2.x` | 1.3.2.0     | @speckit exclusivity + governance rules    |
-| `1.3.3.x` | 1.3.3.0     | Claude Code subagents + orchestrate.md improvements |
-| `2.0.0.x` | 2.0.0.0-7   | JS→TS migration, Spec Kit script automation, architectural refactoring |
-| `2.0.1.x` | 2.0.1.0-5   | Documentation alignment, security fixes & optimization (specs 008, 111-118) |
-| `2.0.2.x` | 2.0.2.0-3   | Agent routing compliance + changelog reorganization (spec 014) |
-| `2.1.0.x` | 2.1.0.0     | Spec-doc indexing highlight promotion                          |
-| `2.1.1.x` | 2.1.1.0     | Aggregate unreleased framework changes                         |
-| `2.1.2.x` | 2.1.2.0     | Gate enforcement + skill reference indexing (Source #6)        |
-| `2.1.3.x` | 2.1.3.0-6   | Agent model upgrade to Sonnet 4.6 + MCP recovery hardening + release-doc clarifications |
-| `2.1.4.x` | 2.1.4.0     | HVR integration across documentation templates                                          |
-| `2.2.0.x` | 2.2.0.0-2   | System Spec Kit verification hardening + release-doc refresh (deferred-suite activation, CHK-336 closure, README/metadata sync) |
-| `2.2.1.x` | 2.2.1.0     | Context overload prevention for orchestrator agents                                     |
-| `2.2.2.x` | 2.2.2.0     | Gemini CLI agent fleet + TOML commands + MCP server config                              |
-| `2.3.0.x` | 2.3.0.0     | Gemini CLI full provider integration (4th runtime: agents, commands, skills, MCP)        |
-| `2.4.0.x` | 2.4.0.0-3   | SpecKit/Review/Agents consolidation + @ultra-think agent + sk-git commit logic           |
-| `3.0.0.x` | 3.0.0.0-4   | Hybrid RAG Fusion platform release: 5-channel retrieval, review mode, 23 README rewrites, 4 CLI skills, 57 component releases |
-| `3.1.0.x` | 3.1.0.0     | Plain-English release notes style, freshness audit, spec folder pass-through rule |
-| `3.1.1.x` | 3.1.1.0-1   | ESM module compliance: 5-phase migration for shared + mcp-server, scripts interop, test sweep |
-| `3.1.2.x` | 3.1.2.0     | Deep review remediation: 18 findings fixed across runtime, security, reliability, performance |
+| Series    | Range     | Theme                                                                                                                           |
+| --------- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `1.0.0.x` | 1.0.0.0-8 | Initial release (LEANN-based)                                                                                                   |
+| `1.0.1.x` | 1.0.1.0-7 | Narsil migration (unified code intel)                                                                                           |
+| `1.0.2.x` | 1.0.2.0-9 | Skill audit + Figma MCP                                                                                                         |
+| `1.1.0.x` | 1.1.0.0-1 | Cognitive Memory + Agent System                                                                                                 |
+| `1.2.0.x` | 1.2.0.0-3 | Causal Memory & Command Consolidation                                                                                           |
+| `1.2.1.x` | 1.2.1.0   | workflows-code--opencode + Narsil removal                                                                                       |
+| `1.2.2.x` | 1.2.2.0-2 | Coding Analysis Lenses + MCP bug fixes                                                                                          |
+| `1.2.3.x` | 1.2.3.0   | Ecosystem remediation + schema unification                                                                                      |
+| `1.2.4.x` | 1.2.4.0-1 | Orchestrate agent Context Window Budget                                                                                         |
+| `1.2.5.x` | 1.2.5.0   | workflows-code--opencode Phase 17 alignment                                                                                     |
+| `1.3.0.x` | 1.3.0.0   | Agent fleet overhaul + @context                                                                                                 |
+| `1.3.1.x` | 1.3.1.0   | @context prompt compression                                                                                                     |
+| `1.3.2.x` | 1.3.2.0   | @speckit exclusivity + governance rules                                                                                         |
+| `1.3.3.x` | 1.3.3.0   | Claude Code subagents + orchestrate.md improvements                                                                             |
+| `2.0.0.x` | 2.0.0.0-7 | JS→TS migration, Spec Kit script automation, architectural refactoring                                                          |
+| `2.0.1.x` | 2.0.1.0-5 | Documentation alignment, security fixes & optimization (specs 008, 111-118)                                                     |
+| `2.0.2.x` | 2.0.2.0-3 | Agent routing compliance + changelog reorganization (spec 014)                                                                  |
+| `2.1.0.x` | 2.1.0.0   | Spec-doc indexing highlight promotion                                                                                           |
+| `2.1.1.x` | 2.1.1.0   | Aggregate unreleased framework changes                                                                                          |
+| `2.1.2.x` | 2.1.2.0   | Gate enforcement + skill reference indexing (Source #6)                                                                         |
+| `2.1.3.x` | 2.1.3.0-6 | Agent model upgrade to Sonnet 4.6 + MCP recovery hardening + release-doc clarifications                                         |
+| `2.1.4.x` | 2.1.4.0   | HVR integration across documentation templates                                                                                  |
+| `2.2.0.x` | 2.2.0.0-2 | System Spec Kit verification hardening + release-doc refresh (deferred-suite activation, CHK-336 closure, README/metadata sync) |
+| `2.2.1.x` | 2.2.1.0   | Context overload prevention for orchestrator agents                                                                             |
+| `2.2.2.x` | 2.2.2.0   | Gemini CLI agent fleet + TOML commands + MCP server config                                                                      |
+| `2.3.0.x` | 2.3.0.0   | Gemini CLI full provider integration (4th runtime: agents, commands, skills, MCP)                                               |
+| `2.4.0.x` | 2.4.0.0-3 | SpecKit/Review/Agents consolidation + @ultra-think agent + sk-git commit logic                                                  |
+| `3.0.0.x` | 3.0.0.0-4 | Hybrid RAG Fusion platform release: 5-channel retrieval, review mode, 23 README rewrites, 4 CLI skills, 57 component releases   |
+| `3.1.0.x` | 3.1.0.0   | Plain-English release notes style, freshness audit, spec folder pass-through rule                                               |
+| `3.1.1.x` | 3.1.1.0-1 | ESM module compliance: 5-phase migration for shared + mcp-server, scripts interop, test sweep                                   |
+| `3.1.2.x` | 3.1.2.0   | Deep review remediation: 18 findings fixed across runtime, security, reliability, performance                                   |
 
 ---
 

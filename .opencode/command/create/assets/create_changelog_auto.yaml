@@ -49,8 +49,10 @@ runtime_agent_path_resolution:
 confidence_framework:
   thresholds:
     high: { range: "80-100%", action: "Proceed with citable source" }
-    medium: { range: "40-79%", action: "Proceed with caution, document assumptions" }
-    low: { range: "0-39%", action: "STOP - Ask clarification with A/B/C options" }
+    medium:
+      { range: "40-79%", action: "Proceed with caution, document assumptions" }
+    low:
+      { range: "0-39%", action: "STOP - Ask clarification with A/B/C options" }
 
   scoring_weights:
     work_context_availability: 0.30
@@ -75,22 +77,22 @@ confidence_framework:
 request_analysis_framework:
   code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:
-  - "Parse input: spec folder path, component name, or auto-detect mode"
-  - "Gather context: Read spec artifacts or git history"
-  - "Resolve component: Map changed files to changelog folder"
-  - "Calculate version: Scan existing files, determine next version"
-  - "Generate content: Format per established template"
-  - "Validate: Check format, version sequencing, completeness"
-  - "Write: Create file in correct location"
+    - "Parse input: spec folder path, component name, or auto-detect mode"
+    - "Gather context: Read spec artifacts or git history"
+    - "Resolve component: Map changed files to changelog folder"
+    - "Calculate version: Scan existing files, determine next version"
+    - "Generate content: Format per established template"
+    - "Validate: Check format, version sequencing, completeness"
+    - "Write: Create file in correct location"
 
   pre_change_validation:
     items:
-    - "Source identified? (spec folder, component, or git history)"
-    - "Component folder resolved?"
-    - "Version number calculated?"
-    - "Content generated with all required sections?"
-    - "Confidence >=80%? (if not: ask)"
-    stop_conditions: [ "Any item unchecked", "Component unresolved" ]
+      - "Source identified? (spec folder, component, or git history)"
+      - "Component folder resolved?"
+      - "Version number calculated?"
+      - "Content generated with all required sections?"
+      - "Confidence >=80%? (if not: ask)"
+    stop_conditions: ["Any item unchecked", "Component unresolved"]
     stop_action: "STOP and address before proceeding"
 
 # ─────────────────────────────────────────────────────────────────
@@ -151,9 +153,9 @@ input_contract:
 documentation_level:
   default: "Level 1 (Baseline)"
   required_files:
-  - spec.md
-  - plan.md
-  - tasks.md
+    - spec.md
+    - plan.md
+    - tasks.md
   note: "Changelog creation is typically Level 1 unless multi-component"
 
 # ─────────────────────────────────────────────────────────────────
@@ -215,7 +217,17 @@ version_bump_rules:
       triggers: ["feat", "add", "new", "feature", "implement", "create"]
       description: "Significant new feature or subsystem addition"
     patch:
-      triggers: ["fix", "bug", "refactor", "chore", "docs", "update", "improve", "cleanup"]
+      triggers:
+        [
+          "fix",
+          "bug",
+          "refactor",
+          "chore",
+          "docs",
+          "update",
+          "improve",
+          "cleanup",
+        ]
       description: "Incremental improvement, bug fix, or refactor"
     build:
       triggers: ["hotfix", "typo", "same-day"]
@@ -247,7 +259,7 @@ changelog_template:
   #   1. COMPACT — for releases with fewer than 10 changes
   #      Uses: ## What Changed → bullet points with bold labels
   #   2. EXPANDED — for releases with 10+ changes or major releases
-  #      Uses: ### Numbered titles → Problem/Fix paragraphs per item
+  #      Uses: ### short headings → Problem/Fix paragraphs per item
   #
   # FORMAT SELECTION:
   #   - Count the changes in work_context
@@ -259,6 +271,7 @@ changelog_template:
   #   - Every fix: what was broken + what we did + why it matters
   #   - No jargon without parenthetical definition
   #   - Technical details in Files Changed table, not in descriptions
+  #   - Expanded-format sub-headings stay short (2-5 words, not full sentences)
   #
   # Read the template file at Step 4 before generating content.
   # ─────────────────────────────────────────────────────────────────
@@ -283,7 +296,7 @@ highlight_categories:
   category_named: "### {name}"
   note: |
     Use plain category names from PUBLIC_RELEASE.md vocabulary.
-    For expanded format: use numbered ### titles with Problem/Fix paragraphs.
+    For expanded format: use short ### headings with Problem/Fix paragraphs.
     Read .opencode/command/create/assets/changelog_template.md for full format reference.
 
 # ─────────────────────────────────────────────────────────────────
@@ -344,234 +357,238 @@ workflow_overview:
       purpose: "Persist spec context and emit completion status"
 
 workflow:
-
   step_1_context_analysis:
     purpose: Detect what was worked on and gather work context
     activities:
-    - "Determine source type from Setup Phase outputs"
-    - |
-      IF source_type = spec_folder:
-        Read {spec_folder}/implementation-summary.md (primary source)
-        Read {spec_folder}/tasks.md (completed tasks)
-        Read {spec_folder}/spec.md (title, purpose, requirements)
-        Extract: work_summary, files_changed, change_type, spec_level
-        Detect output mode:
-          - IF --nested flag present -> changelog_mode = nested
-          - ELSE IF spec_folder is a phase child OR has direct child phase folders OR already has changelog/ -> changelog_mode = nested
-          - ELSE -> changelog_mode = global
-    - |
-      IF source_type = component:
-        Use component_hint to identify target folder
-        Run: git log --oneline --since="7 days ago" -- {component_file_patterns}
-        Extract: recent_commits, files_changed
-        changelog_mode = global
-    - |
-      IF source_type = git_history:
-        Run: git log --oneline --since="7 days ago"
-        Run: git diff --stat HEAD~10
-        Extract: recent_commits, files_changed, commit_messages
-        changelog_mode = global
-    - "Compile work_context object with: summary, files_changed[], change_type, source"
+      - "Determine source type from Setup Phase outputs"
+      - |
+        IF source_type = spec_folder:
+          Read {spec_folder}/implementation-summary.md (primary source)
+          Read {spec_folder}/tasks.md (completed tasks)
+          Read {spec_folder}/spec.md (title, purpose, requirements)
+          Extract: work_summary, files_changed, change_type, spec_level
+          Detect output mode:
+            - IF --nested flag present -> changelog_mode = nested
+            - ELSE IF spec_folder is a phase child OR has direct child phase folders OR already has changelog/ -> changelog_mode = nested
+            - ELSE -> changelog_mode = global
+      - |
+        IF source_type = component:
+          Use component_hint to identify target folder
+          Run: git log --oneline --since="7 days ago" -- {component_file_patterns}
+          Extract: recent_commits, files_changed
+          changelog_mode = global
+      - |
+        IF source_type = git_history:
+          Run: git log --oneline --since="7 days ago"
+          Run: git diff --stat HEAD~10
+          Extract: recent_commits, files_changed, commit_messages
+          changelog_mode = global
+      - "Compile work_context object with: summary, files_changed[], change_type, source"
     outputs:
-    - work_context: "Object containing summary, files, change type"
-    - files_changed: "List of changed file paths"
-    - change_type_hint: "Feature / fix / refactor / architecture"
-    - changelog_mode: "global or nested"
+      - work_context: "Object containing summary, files, change type"
+      - files_changed: "List of changed file paths"
+      - change_type_hint: "Feature / fix / refactor / architecture"
+      - changelog_mode: "global or nested"
     validation: context_gathered
 
   step_2_component_resolution:
     purpose: Resolve the correct output target for global or nested changelog mode
     activities:
-    - |
-      IF changelog_mode = nested:
-        Run: node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js {spec_folder} --json
-        Read canonical templates:
-          - .opencode/skill/system-spec-kit/templates/changelog/root.md
-          - .opencode/skill/system-spec-kit/templates/changelog/phase.md
-        Extract output_path and nested summary payload
-        Skip component-folder mapping and versioned release rules
-    - |
-      IF changelog_mode = global:
-      DISCOVER available changelog folders:
-        $ ls -d .opencode/changelog/*/ 2>/dev/null | sort
-        Parse folder names using NN--component-name pattern
-        Build runtime component list from actual directory contents
-    - |
-      IF changelog_mode = global:
-      FOR EACH file in files_changed:
-        Match file path segments against discovered component names
-        Record matched component folder
-    - |
-      Count matches per component:
-        IF single component dominates (>60% of files) -> primary_component = that component
-        IF multiple components roughly equal -> list all, pick primary by file count
-        IF no matches -> default to first 00-- prefixed folder (umbrella/cross-component)
-    - |
-      IF source_type = spec_folder:
-        Extract spec path segments and match against discovered folder names
-        Use as tiebreaker when file analysis is ambiguous
-    - |
-      IF source_type = component:
-        Match component_hint against discovered folder names (substring match)
-        Direct resolution without file analysis
-    - "Verify target folder exists: ls .opencode/changelog/{resolved_folder}/"
-    - |
-      IF changelog_mode = nested:
-        Verify nested output path resolves inside the target packet changelog/ folder
-    - |
-      IF changelog_mode = global:
-      IF target folder does not exist:
-        STOP - Report: "Changelog folder not found: {resolved_folder}"
-        Ask user to confirm or choose different target
+      - |
+        IF changelog_mode = nested:
+          Run: node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js {spec_folder} --json
+          Read canonical templates:
+            - .opencode/skill/system-spec-kit/templates/changelog/root.md
+            - .opencode/skill/system-spec-kit/templates/changelog/phase.md
+          Extract output_path and nested summary payload
+          Skip component-folder mapping and versioned release rules
+      - |
+        IF changelog_mode = global:
+        DISCOVER available changelog folders:
+          $ ls -d .opencode/changelog/*/ 2>/dev/null | sort
+          Parse folder names using NN--component-name pattern
+          Build runtime component list from actual directory contents
+      - |
+        IF changelog_mode = global:
+        FOR EACH file in files_changed:
+          Match file path segments against discovered component names
+          Record matched component folder
+      - |
+        Count matches per component:
+          IF single component dominates (>60% of files) -> primary_component = that component
+          IF multiple components roughly equal -> list all, pick primary by file count
+          IF no matches -> default to first 00-- prefixed folder (umbrella/cross-component)
+      - |
+        IF source_type = spec_folder:
+          Extract spec path segments and match against discovered folder names
+          Use as tiebreaker when file analysis is ambiguous
+      - |
+        IF source_type = component:
+          Match component_hint against discovered folder names (substring match)
+          Direct resolution without file analysis
+      - "Verify target folder exists: ls .opencode/changelog/{resolved_folder}/"
+      - |
+        IF changelog_mode = nested:
+          Verify nested output path resolves inside the target packet changelog/ folder
+      - |
+        IF changelog_mode = global:
+        IF target folder does not exist:
+          STOP - Report: "Changelog folder not found: {resolved_folder}"
+          Ask user to confirm or choose different target
     outputs:
-    - primary_component: "Resolved changelog subfolder name"
-    - secondary_components: "Other affected components (if cross-component)"
-    - resolution_confidence: "Percentage confidence in mapping"
-    - nested_output_path: "Packet-local output path when changelog_mode = nested"
+      - primary_component: "Resolved changelog subfolder name"
+      - secondary_components: "Other affected components (if cross-component)"
+      - resolution_confidence: "Percentage confidence in mapping"
+      - nested_output_path: "Packet-local output path when changelog_mode = nested"
     validation: component_resolved
 
   step_3_version_determination:
     purpose: Calculate the next version number for the changelog entry
     activities:
-    - |
-      IF changelog_mode = nested:
-        Skip version calculation. Nested packet changelogs use deterministic packet-local filenames.
-    - "List existing changelog files in target folder:"
-    - "  Run: ls .opencode/changelog/{primary_component}/ | sort -V"
-    - "Parse the latest version file: extract MAJOR.MINOR.PATCH.BUILD"
-    - |
-      Determine bump type:
-        IF version_bump != "auto" -> use user-specified bump type
-        IF version_bump == "auto":
-          Check change_type_hint against version_bump_rules.auto_detection
-          Check work_context.summary for trigger keywords
-          Default to "patch" if no clear signal
-    - "Calculate next version using version_bump_rules.calculation"
-    - |
-      Verify no collision:
-        IF file v{next_version}.md already exists:
-          Increment BUILD segment until unique
-    - "Store: next_version, bump_type_used"
+      - |
+        IF changelog_mode = nested:
+          Skip version calculation. Nested packet changelogs use deterministic packet-local filenames.
+      - "List existing changelog files in target folder:"
+      - "  Run: ls .opencode/changelog/{primary_component}/ | sort -V"
+      - "Parse the latest version file: extract MAJOR.MINOR.PATCH.BUILD"
+      - |
+        Determine bump type:
+          IF version_bump != "auto" -> use user-specified bump type
+          IF version_bump == "auto":
+            Check change_type_hint against version_bump_rules.auto_detection
+            Check work_context.summary for trigger keywords
+            Default to "patch" if no clear signal
+      - "Calculate next version using version_bump_rules.calculation"
+      - |
+        Verify no collision:
+          IF file v{next_version}.md already exists:
+            Increment BUILD segment until unique
+      - "Store: next_version, bump_type_used"
     outputs:
-    - next_version: "Calculated version string (e.g., v2.1.0.0)"
-    - bump_type_used: "major/minor/patch/build"
-    - latest_existing_version: "Previous version for reference"
+      - next_version: "Calculated version string (e.g., v2.1.0.0)"
+      - bump_type_used: "major/minor/patch/build"
+      - latest_existing_version: "Previous version for reference"
     validation: version_calculated
 
   step_4_content_generation:
     purpose: Generate changelog content following established format
     activities:
-    - "Read the template: .opencode/command/create/assets/changelog_template.md"
-    - "If changelog_mode = nested, read .opencode/skill/system-spec-kit/templates/changelog/root.md or phase.md instead"
-    - "Set DATE to today's date in YYYY-MM-DD format"
-    - |
-      SELECT FORMAT based on change count and release type:
-        IF change_count < 10 AND change_type != major -> COMPACT format
-        IF change_count >= 10 OR change_type == major -> EXPANDED format
-        See template file Section 4 (Format Selection Guide) for full rules
-    - |
-      Generate SUMMARY (both formats):
-        IF source_type = spec_folder:
-          Use spec.md title + implementation-summary.md first paragraph
-        IF source_type = component or git_history:
-          Synthesize from commit messages and changed files
-        Keep to 1-3 sentences. Lead with WHY, not technical stats.
-    - |
-      Generate BODY using selected format:
+      - "Read the template: .opencode/command/create/assets/changelog_template.md"
+      - "If changelog_mode = nested, read .opencode/skill/system-spec-kit/templates/changelog/root.md or phase.md instead"
+      - "Set DATE to today's date in YYYY-MM-DD format"
+      - |
+        SELECT FORMAT based on change count and release type:
+          IF change_count < 10 AND change_type != major -> COMPACT format
+          IF change_count >= 10 OR change_type == major -> EXPANDED format
+          See template file Section 4 (Format Selection Guide) for full rules
+      - |
+        Generate SUMMARY (both formats):
+          IF source_type = spec_folder:
+            Use spec.md title + implementation-summary.md first paragraph
+          IF source_type = component or git_history:
+            Synthesize from commit messages and changed files
+          Keep to 1-3 sentences. Lead with WHY, not technical stats.
+      - |
+        Generate BODY using selected format:
 
-        COMPACT FORMAT:
-          ## What Changed
-          ### {Category Name}
-          - **{Name}** -- {What was broken}. {What we did}. {Why it matters}.
+          COMPACT FORMAT:
+            ## What Changed
+            ### {Category Name}
+            - **{Name}** -- {What was broken}. {What we did}. {Why it matters}.
 
-        EXPANDED FORMAT:
-          ## {Category Name} ({count})
-          ### 1. {Short descriptive title}
-          **Problem:** {Plain English explanation for a smart non-developer}
-          **Fix:** {Behavior change, not implementation details}
+          EXPANDED FORMAT:
+            ## {Category Name} ({count})
+            ### {Short heading}
+            **Problem:** {Plain English explanation for a smart non-developer}
+            **Fix:** {Behavior change, not implementation details}
 
-      Pull content from:
-        spec_folder: tasks.md completed items, implementation-summary.md sections
-        component/git: commit messages grouped by type
-        nested: generator payload from nested-changelog.js
-    - |
-      Generate FILES_CHANGED:
-        COMPACT: Simple table with File | Action | Description
-        EXPANDED: Collapsible <details> with Source/Tests/Documentation subsections
-    - |
-      Generate UPGRADE section:
-        IF change_type = major -> "Review breaking changes before upgrading."
-        ELSE -> "No migration required."
-        Always list behavioral changes users should be aware of.
-    - "Assemble full content per template format (compact or expanded)"
+        Expanded-format heading rule:
+          - Prefer 2-5 words
+          - Make it easy to scan at a glance
+          - Avoid packet IDs, numbering, and sentence-length headings unless truly required
+
+        Pull content from:
+          spec_folder: tasks.md completed items, implementation-summary.md sections
+          component/git: commit messages grouped by type
+          nested: generator payload from nested-changelog.js
+      - |
+        Generate FILES_CHANGED:
+          COMPACT: Simple table with File | Action | Description
+          EXPANDED: Collapsible <details> with Source/Tests/Documentation subsections
+      - |
+        Generate UPGRADE section:
+          IF change_type = major -> "Review breaking changes before upgrading."
+          ELSE -> "No migration required."
+          Always list behavioral changes users should be aware of.
+      - "Assemble full content per template format (compact or expanded)"
     outputs:
-    - changelog_content: "Complete formatted changelog markdown"
-    - section_count: "Number of highlight sections generated"
+      - changelog_content: "Complete formatted changelog markdown"
+      - section_count: "Number of highlight sections generated"
     validation: content_generated
 
   step_5_quality_validation:
     purpose: Verify the generated changelog meets format and quality standards
     activities:
-    - |
-      FORMAT CHECKS:
-        [ ] H1 starts with "# v{VERSION}"
-        [ ] Project backlink blockquote present
-        [ ] Version + date header in correct format: ## [**{VERSION}**] - {DATE}
-        [ ] Summary paragraph present (non-empty)
-        [ ] At least one Highlights subsection
-        [ ] Files Changed section present
-        [ ] Upgrade section present
-    - |
-      VERSION CHECKS:
-        [ ] Version is strictly greater than latest_existing_version
-        [ ] Version follows 4-segment format (MAJOR.MINOR.PATCH.BUILD)
-        [ ] No file with this version exists in target folder
-    - |
-      CONTENT CHECKS:
-        [ ] Summary is concise (1-3 sentences)
-        [ ] Each highlight item has bold name + description
-        [ ] Files changed entries have valid paths
-    - |
-      IF any check fails:
-        Log failed check(s)
-        Auto-fix if possible (e.g., missing section -> add empty section)
-        Re-validate after fix
+      - |
+        FORMAT CHECKS:
+          [ ] H1 starts with "# v{VERSION}"
+          [ ] Project backlink blockquote present
+          [ ] Version + date header in correct format: ## [**{VERSION}**] - {DATE}
+          [ ] Summary paragraph present (non-empty)
+          [ ] At least one Highlights subsection
+          [ ] Files Changed section present
+          [ ] Upgrade section present
+      - |
+        VERSION CHECKS:
+          [ ] Version is strictly greater than latest_existing_version
+          [ ] Version follows 4-segment format (MAJOR.MINOR.PATCH.BUILD)
+          [ ] No file with this version exists in target folder
+      - |
+        CONTENT CHECKS:
+          [ ] Summary is concise (1-3 sentences)
+          [ ] Each highlight item has bold name + description
+          [ ] Files changed entries have valid paths
+      - |
+        IF any check fails:
+          Log failed check(s)
+          Auto-fix if possible (e.g., missing section -> add empty section)
+          Re-validate after fix
     outputs:
-    - validation_passed: "true/false"
-    - checks_passed: "N/N total"
-    - auto_fixes_applied: "List of automatic corrections"
+      - validation_passed: "true/false"
+      - checks_passed: "N/N total"
+      - auto_fixes_applied: "List of automatic corrections"
     validation: quality_verified
 
   step_6_write_file:
     purpose: Write the changelog file to the correct location
     activities:
-    - |
-      IF changelog_mode = nested:
-        Run: node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js {spec_folder} --write
-        Verify the written packet-local file matches nested_output_path
-    - "Construct output path: .opencode/changelog/{primary_component}/v{next_version}.md"
-    - "Write changelog_content to output path using Write tool"
-    - "Verify file was created: Read the first 5 lines of the written file"
-    - |
-      IF secondary_components exist:
-        Note: "This work also affects: {secondary_components}"
-        Suggest: "Consider creating additional changelogs for: {list}"
+      - |
+        IF changelog_mode = nested:
+          Run: node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js {spec_folder} --write
+          Verify the written packet-local file matches nested_output_path
+      - "Construct output path: .opencode/changelog/{primary_component}/v{next_version}.md"
+      - "Write changelog_content to output path using Write tool"
+      - "Verify file was created: Read the first 5 lines of the written file"
+      - |
+        IF secondary_components exist:
+          Note: "This work also affects: {secondary_components}"
+          Suggest: "Consider creating additional changelogs for: {list}"
     outputs:
-    - output_path: "Full path to created changelog file"
-    - file_verified: "true/false"
+      - output_path: "Full path to created changelog file"
+      - file_verified: "true/false"
     validation: file_written
 
   step_7_save_context:
     purpose: Report completion and preserve context
     activities:
-    - "Display completion report (see completion_report section)"
-    - |
-      IF spec_path exists (from Setup Phase or spec_folder source):
-        Note: "Context should be saved to spec folder"
-        Suggest: "/memory:save {spec_path}"
+      - "Display completion report (see completion_report section)"
+      - |
+        IF spec_path exists (from Setup Phase or spec_folder source):
+          Note: "Context should be saved to spec folder"
+          Suggest: "/memory:save {spec_path}"
     outputs:
-    - status: "OK or FAIL"
-    - changelog_path: "Path to created file"
+      - status: "OK or FAIL"
+      - changelog_path: "Path to created file"
     validation: context_saved
 
 # ─────────────────────────────────────────────────────────────────
@@ -610,10 +627,10 @@ autonomous_execution:
   self_validation: "Verify outputs at each step before proceeding"
   error_handling: "Auto-fix where possible, escalate on hard failures"
   pause_conditions:
-  - "Confidence drops below 40%"
-  - "Component resolution ambiguous (multiple equally likely)"
-  - "Version calculation produces unexpected result"
-  - "Generated content has empty required sections"
+    - "Confidence drops below 40%"
+    - "Component resolution ambiguous (multiple equally likely)"
+    - "Version calculation produces unexpected result"
+    - "Generated content has empty required sections"
 
 # ─────────────────────────────────────────────────────────────────
 # COMPLETION REPORT
@@ -673,27 +690,27 @@ termination:
   after_step: 7
   message: "Changelog creation workflow complete."
   next_steps:
-  - "Review the generated changelog at {output_path}"
-  - "Create additional changelogs for secondary components if needed"
-  - "Consider creating an umbrella release in the 00-- prefixed folder if applicable"
-  - "Run /memory:save to preserve context"
+    - "Review the generated changelog at {output_path}"
+    - "Create additional changelogs for secondary components if needed"
+    - "Consider creating an umbrella release in the 00-- prefixed folder if applicable"
+    - "Run /memory:save to preserve context"
 
 # ─────────────────────────────────────────────────────────────────
 # RULES
 # ─────────────────────────────────────────────────────────────────
 rules:
   ALWAYS:
-  - "Follow the 7-step workflow in sequence"
-  - "Validate version is sequential before writing"
-  - "Match the established changelog format (370+ existing files)"
-  - "Include all required sections: title, backlink, version+date, summary, highlights"
-  - "Use the component mapping table for resolution"
-  - "Report STATUS=OK or STATUS=FAIL at completion"
+    - "Follow the 7-step workflow in sequence"
+    - "Validate version is sequential before writing"
+    - "Match the established changelog format (370+ existing files)"
+    - "Include all required sections: title, backlink, version+date, summary, highlights"
+    - "Use the component mapping table for resolution"
+    - "Report STATUS=OK or STATUS=FAIL at completion"
 
   NEVER:
-  - "Never skip version validation (Step 3)"
-  - "Never write a changelog with empty summary or highlights"
-  - "Never overwrite an existing changelog file"
-  - "Never guess component folder without file path analysis"
-  - "Never use a version number that already exists"
-  - "Never create changelog folders that don't already exist"
+    - "Never skip version validation (Step 3)"
+    - "Never write a changelog with empty summary or highlights"
+    - "Never overwrite an existing changelog file"
+    - "Never guess component folder without file path analysis"
+    - "Never use a version number that already exists"
+    - "Never create changelog folders that don't already exist"

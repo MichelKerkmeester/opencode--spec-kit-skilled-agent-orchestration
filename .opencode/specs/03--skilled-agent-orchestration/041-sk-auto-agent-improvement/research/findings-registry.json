@@ -1,0 +1,205 @@
+{
+  "openQuestions": [],
+  "resolvedQuestions": [
+    {
+      "id": "question-1-how-does-autoagent-main-structure-its-automatic-agent-improvement-loop-and-edita",
+      "text": "How does `autoagent-main` structure its automatic agent-improvement loop and editable boundary?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 1
+    },
+    {
+      "id": "question-2-which-parts-of-that-loop-align-with-our-existing-opencode-agent-sk-deep-research",
+      "text": "Which parts of that loop align with our existing `.opencode/agent`, `sk-deep-research`, and skill infrastructure?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 2
+    },
+    {
+      "id": "question-3-what-capabilities-are-missing-if-we-want-a-reliable-sk-agent-improvement-loop-ra",
+      "text": "What capabilities are missing if we want a reliable `sk-agent-improvement-loop` rather than a one-off research packet?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 3
+    },
+    {
+      "id": "question-4-what-should-the-mvp-scope-boundaries-and-success-metric-be-for-a-new-skill-in-th",
+      "text": "What should the MVP scope, boundaries, and success metric be for a new skill in this repo?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 3
+    }
+  ],
+  "keyFindings": [
+    {
+      "id": "finding-1-1-autoagent-main-is-a-meta-agent-loop-for-agent-engineering-not-a-direct-task-solv",
+      "text": "`autoagent-main` is a meta-agent loop for agent engineering, not a direct task-solving harness: the human edits `program.md`, while the meta-agent repeatedly changes the harness, reruns the benchmark, checks score, and keeps or discards the change. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:5] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:141]",
+      "addedAtIteration": 1,
+      "sources": [
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:5",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:21",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent.py:24",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent-claude.py:22"
+      ]
+    },
+    {
+      "id": "finding-1-3-the-improvement-signal-is-benchmark-first-and-ledgered-the-loop-runs-harbor-task",
+      "text": "The improvement signal is benchmark-first and ledgered. The loop runs Harbor tasks, records `passed` and `avg_score`, logs each experiment in `results.tsv`, and applies strict keep/discard rules: keep only if passed improves or if equal performance becomes simpler. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:26] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:120] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:156]",
+      "addedAtIteration": 1,
+      "sources": [
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:5",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:21",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent.py:24",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent-claude.py:22"
+      ]
+    },
+    {
+      "id": "finding-1-2-the-mutable-surface-is-deliberately-narrow-program-md-says-only-the-pre-boundary",
+      "text": "The mutable surface is deliberately narrow. `program.md` says only the pre-boundary section of `agent.py` is editable, covering prompt/configuration, tool creation, agent construction, and orchestration; the fixed Harbor adapter below the boundary is off-limits. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:13] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:38] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent.py:24]",
+      "addedAtIteration": 1,
+      "sources": [
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:5",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:21",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent.py:24",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent-claude.py:22"
+      ]
+    },
+    {
+      "id": "finding-1-4-the-repo-already-supports-multiple-runtime-harness-styles-the-openai-version-exp",
+      "text": "The repo already supports multiple runtime harness styles. The OpenAI version exposes a single `run_shell` tool and serializes ATIF trajectories, while the Claude variant exposes a richer runtime configuration surface with presets, MCP servers, subagents, hooks, and a local `.agent` working directory. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent.py:33] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent-claude.py:48]",
+      "addedAtIteration": 1,
+      "sources": [
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:5",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:21",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent.py:24",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/agent-claude.py:22"
+      ]
+    },
+    {
+      "id": "finding-2-3-creating-a-new-skill-is-structurally-straightforward-in-this-repo-the-skills-lib",
+      "text": "Creating a new skill is structurally straightforward in this repo. The skills library says a new skill becomes discoverable by adding a folder with a valid `SKILL.md`, and `/create:sk-skill` is already the canonical command for full-create/full-update skill workflows. [SOURCE: .opencode/skill/README.md:42] [SOURCE: .opencode/skill/README.md:68] [SOURCE: .opencode/command/create/sk-skill.md:1] [SOURCE: .opencode/command/create/sk-skill.md:120]",
+      "addedAtIteration": 2,
+      "sources": [
+        ".opencode/skill/sk-deep-research/SKILL.md:12",
+        ".opencode/agent/deep-research.md:22",
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:1"
+      ]
+    },
+    {
+      "id": "finding-2-2-our-runtime-agent-system-is-instruction-oriented-not-harness-oriented-the-openco",
+      "text": "Our runtime agent system is instruction-oriented, not harness-oriented. The `.opencode/agent` layer defines specialist behaviors and permissions for execution-time roles, while `@deep-research` is explicitly a single-iteration LEAF agent that writes research packet artifacts under workflow control. [SOURCE: .opencode/agent/deep-research.md:22] [SOURCE: .opencode/agent/deep-research.md:48] [SOURCE: .opencode/agent/deep-research.md:159]",
+      "addedAtIteration": 2,
+      "sources": [
+        ".opencode/skill/sk-deep-research/SKILL.md:12",
+        ".opencode/agent/deep-research.md:22",
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:1"
+      ]
+    },
+    {
+      "id": "finding-2-1-the-closest-internal-analogue-is-sk-deep-research-which-already-uses-a-three-lay",
+      "text": "The closest internal analogue is `sk-deep-research`, which already uses a three-layer contract: command entrypoint, YAML loop engine, and a LEAF runtime agent. It externalizes state to disk, uses fresh context per iteration, and delegates synthesis/memory save to the workflow. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:12] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:137] [SOURCE: .opencode/agent/deep-research.md:24]",
+      "addedAtIteration": 2,
+      "sources": [
+        ".opencode/skill/sk-deep-research/SKILL.md:12",
+        ".opencode/agent/deep-research.md:22",
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:1"
+      ]
+    },
+    {
+      "id": "finding-2-4-the-main-mismatch-is-objective-function-sk-deep-research-is-optimized-for-eviden",
+      "text": "The main mismatch is objective function. `sk-deep-research` is optimized for evidence collection, convergence, and reducer-managed synthesis, whereas `autoagent-main` is optimized for benchmark score improvement and keep/discard experiment decisions. A future `sk-agent-improvement-loop` would need an explicit evaluation surface that our current agent instructions do not provide today. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:14] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:179] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:156] [INFERENCE: internal agent prompts and skill docs define execution behavior and research-state management, but do not define a benchmark-scored keep/discard loop for `.opencode/agent` files.]",
+      "addedAtIteration": 2,
+      "sources": [
+        ".opencode/skill/sk-deep-research/SKILL.md:12",
+        ".opencode/agent/deep-research.md:22",
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:1"
+      ]
+    },
+    {
+      "id": "finding-3-1-a-new-sk-agent-improvement-loop-skill-is-feasible-from-a-packaging-and-routing-s",
+      "text": "A new `sk-agent-improvement-loop` skill is feasible from a packaging and routing standpoint. The repo already supports on-demand, auto-discovered skills, and it provides a canonical `/create:sk-skill` workflow for full-create or full-update skill lifecycles. [SOURCE: .opencode/skill/README.md:42] [SOURCE: .opencode/skill/README.md:68] [SOURCE: .opencode/command/create/sk-skill.md:9] [SOURCE: .opencode/command/create/sk-skill.md:120]",
+      "addedAtIteration": 3,
+      "sources": [
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:9",
+        ".opencode/skill/sk-deep-research/SKILL.md:16",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:141"
+      ]
+    },
+    {
+      "id": "finding-3-3-the-essential-missing-component-is-an-evaluator-autoagent-main-can-keep-or-disca",
+      "text": "The essential missing component is an evaluator. `autoagent-main` can keep or discard changes because it has Harbor tasks, verifier scores, and a run ledger; our current deep-research loop instead optimizes for evidence convergence and synthesized findings. A real agent-improvement loop here therefore needs scenario-based scoring or contract tests before it should ever mutate agent files automatically. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:26] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:156] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:14] [INFERENCE: without a measurable evaluator, an automatic mutation loop would only rewrite prompts/configs without trustworthy keep/discard decisions.]",
+      "addedAtIteration": 3,
+      "sources": [
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:9",
+        ".opencode/skill/sk-deep-research/SKILL.md:16",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:141"
+      ]
+    },
+    {
+      "id": "finding-3-2-the-mvp-must-keep-a-narrow-mutable-surface-just-like-autoagent-main-does-instead",
+      "text": "The MVP must keep a narrow mutable surface, just like `autoagent-main` does. Instead of \"improve all agents,\" the first version should target one named runtime surface, one bounded editable file set, and one explicit directive file, because our agent paths already vary by runtime (`.opencode`, `.claude`, `.codex`) and the external repo succeeds partly by sharply separating editable vs fixed regions. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:16] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:13] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:40]",
+      "addedAtIteration": 3,
+      "sources": [
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:9",
+        ".opencode/skill/sk-deep-research/SKILL.md:16",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:141"
+      ]
+    },
+    {
+      "id": "finding-3-4-the-safest-mvp-shape-is-a-disk-first-experiment-loop-that-reuses-our-existing-st",
+      "text": "The safest MVP shape is a disk-first experiment loop that reuses our existing state discipline: directive file, target manifest, experiment ledger, reducer-friendly iteration artifacts, and explicit keep/discard criteria. Phase 1 should propose changes and run evaluators; Phase 2 can auto-edit a bounded target; Phase 3 can widen to cross-runtime parity once a mirror-sync contract exists. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:179] [SOURCE: .opencode/agent/deep-research.md:50] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:141]",
+      "addedAtIteration": 3,
+      "sources": [
+        ".opencode/skill/README.md:42",
+        ".opencode/command/create/sk-skill.md:9",
+        ".opencode/skill/sk-deep-research/SKILL.md:16",
+        ".opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:141"
+      ]
+    }
+  ],
+  "ruledOutDirections": [
+    {
+      "id": "ruled-out-1-1-assuming-the-harness-itself-is-the-human-authored-control-plane-the-human-contro",
+      "text": "Assuming the harness itself is the human-authored control plane. The human-controlled directive actually lives in `program.md`, which means the loop depends on a stable \"meta-program\" surface rather than ad hoc prompting. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:7] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:3]",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-2-treating-autoagent-main-as-a-research-loop-equivalent-to-sk-deep-research-is-ina",
+      "text": "Treating `autoagent-main` as a research loop equivalent to `sk-deep-research` is inaccurate; it is an experiment loop with benchmark scoring, not a general evidence-synthesis loop. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:5] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:80]",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-2-1-directly-equating-opencode-agent-md-with-autoagent-main-s-single-file-harness-wo",
+      "text": "Directly equating `.opencode/agent/*.md` with `autoagent-main`'s single-file harness would erase a key architectural difference: our agent layer is only one surface inside a broader command/skill/runtime ecosystem. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:16] [SOURCE: .opencode/agent/deep-research.md:28]",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-2-2-treating-add-a-skill-folder-as-the-hard-part-of-this-idea-is-misleading-skill-di",
+      "text": "Treating \"add a skill folder\" as the hard part of this idea is misleading. Skill discovery and creation are already solved; evaluation contract, mutable target definition, and success metrics are the real blockers. [SOURCE: .opencode/skill/README.md:46] [SOURCE: .opencode/command/create/sk-skill.md:201]",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-3-1-copying-autoagent-main-wholesale-would-import-the-wrong-trust-boundary-its-loop-",
+      "text": "Copying `autoagent-main` wholesale would import the wrong trust boundary. Its loop assumes a benchmark harness under test, while our repo currently organizes behavior across commands, skills, and runtime agent files rather than one isolated harness file. [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/README.md:13] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:137]",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-2-starting-with-a-fully-autonomous-overnight-loop-over-the-entire-opencode-agent-d",
+      "text": "Starting with a fully autonomous overnight loop over the entire `.opencode/agent` directory is too broad for an MVP because the repository lacks a benchmark-grade evaluator and because runtime mirrors would make result attribution ambiguous. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:16] [SOURCE: .opencode/specs/03--skilled-agent-orchestration/041-sk-auto-agent-improvement/external/autoagent-main/program.md:35]",
+      "addedAtIteration": 3
+    }
+  ],
+  "metrics": {
+    "iterationsCompleted": 3,
+    "openQuestions": 0,
+    "resolvedQuestions": 4,
+    "keyFindings": 12,
+    "convergenceScore": 0.8,
+    "coverageBySources": {
+      "code": 14
+    }
+  }
+}

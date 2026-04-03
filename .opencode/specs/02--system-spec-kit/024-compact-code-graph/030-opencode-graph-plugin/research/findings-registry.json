@@ -1,0 +1,38 @@
+{
+  "openQuestions": [
+    "Do we want a packet-024-specific OpenCode plugin that only injects retrieval output, or a broader OpenCode adapter for all Spec Kit startup/recovery guidance?",
+    "Should graph export/import land as a dedicated code-graph tool family, or first as a runtime-only compact-state snapshot surface?"
+  ],
+  "resolvedQuestions": [
+    "The opencode-lcm plugin injects archived context through OpenCode transforms and compaction hooks, not by altering the model directly.",
+    "The plugin maintains its own searchable SQLite archive with summary nodes, resume notes, and artifact blobs.",
+    "Packet 024 should reuse the plugin method, not the plugin's full archive as a new memory source of truth.",
+    "Several storage and repair patterns are valuable to port into Spec Kit Memory.",
+    "The plugin also exposes reusable patterns for our existing code-graph and hook runtime logic: path safety, worktree identity, snapshots, retention, and artifact previews.",
+    "Our current code-graph runtime already has strong compact budgeting and startup/compaction surfaces, so the main opportunity is operational hardening rather than retrieval replacement."
+  ],
+  "keyFindings": [
+    "Best packet-024 fit: build an OpenCode adapter plugin that delegates retrieval to our existing memory/code-graph stack.",
+    "Best general-memory upgrades: doctor-style repair, blob deduplication, privacy pre-index filters, snapshot portability, and optional expandable summary DAGs.",
+    "Best broader graph/runtime upgrades: add doctor/export-import/provenance-preview capabilities around the existing compact graph and hook pipeline.",
+    "Keep the current compact-merger and structural-bootstrap foundations; improve the operational shell around them."
+  ],
+  "ruledOutDirections": [
+    "Fork opencode-lcm as the main memory backend for Spec Kit Memory.",
+    "Treat the plugin as a substitute for packet 024's structural graph store.",
+    "Replace the existing compact-merger and structural-bootstrap flow with a transcript-first archive model."
+  ],
+  "metrics": {
+    "iterationsCompleted": 6,
+    "openQuestions": 2,
+    "resolvedQuestions": 6,
+    "keyFindings": 4,
+    "convergenceScore": 0.95,
+    "coverageBySources": {
+      "external-opencode-lcm-source-files": 10,
+      "external-opencode-lcm-tests": 1,
+      "packet-024-internal-docs": 3,
+      "current-speckit-runtime-files": 10
+    }
+  }
+}

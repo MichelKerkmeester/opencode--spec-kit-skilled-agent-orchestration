@@ -35,8 +35,8 @@ Global component changelog files live at `.opencode/changelog/{NN--component}/v{
 
 ## Files Changed
 
-| File | What changed |
-|------|-------------|
+| File           | What changed      |
+| -------------- | ----------------- |
 | `path/to/file` | Brief description |
 
 ## Upgrade
@@ -67,13 +67,13 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 {Optional 1-2 sentence introduction for the category.}
 
-### {Short descriptive title}
+### {Short heading}
 
 **Problem:** {Explain what was broken or missing in plain English. Write for a smart person who is not a developer. Use analogies if they help. No unexplained jargon -- first use of a technical term includes a parenthetical definition like "BM25 (exact word matching)" or "CTE (a reusable SQL subquery)."}
 
 **Fix:** {Explain what was done to fix it. Focus on the behavior change, not the implementation details. What does the system do differently now? What does the user experience? Technical specifics (file paths, function names, SQL syntax) go in the Files Changed table, not here.}
 
-### {Next title}
+### {Next heading}
 
 **Problem:** {Same pattern...}
 
@@ -83,11 +83,11 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 ## Test Impact
 
-| Metric | Before | After |
-| ------ | ------ | ----- |
-| Tests passing | {N} | {N} |
-| Test files | {N} | {N} |
-| TypeScript errors | 0 | 0 |
+| Metric            | Before | After |
+| ----------------- | ------ | ----- |
+| Tests passing     | {N}    | {N}   |
+| Test files        | {N}    | {N}   |
+| TypeScript errors | 0      | 0     |
 
 {One sentence about new tests added and existing tests updated.}
 
@@ -95,11 +95,11 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 ## Schema Changes (if applicable)
 
-| Change | Details |
-| ------ | ------- |
-| Schema version | {old} to {new} |
-| New indexes | {count} ({list}) |
-| New columns | {name} on {table} for {purpose} |
+| Change         | Details                         |
+| -------------- | ------------------------------- |
+| Schema version | {old} to {new}                  |
+| New indexes    | {count} ({list})                |
+| New columns    | {name} on {table} for {purpose} |
 
 {One sentence confirming backward compatibility.}
 
@@ -110,8 +110,8 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 ### Source ({count} files)
 
-| File | Changes |
-| ---- | ------- |
+| File           | Changes                                                  |
+| -------------- | -------------------------------------------------------- |
 | `path/to/file` | {What changed -- function names, behaviors, SQL queries} |
 
 ### Tests ({count} files)
@@ -146,6 +146,7 @@ GitHub release notes are derived from the changelog file by stripping the local 
 The release body starts directly with the summary paragraph.
 
 At the end, append:
+
 ```
 Full changelog: `.opencode/changelog/{component}/v{VERSION}.md`
 ```
@@ -157,22 +158,28 @@ Full changelog: `.opencode/changelog/{component}/v{VERSION}.md`
 These rules apply to both changelog files and GitHub release notes. See `PUBLIC_RELEASE.md` Section 7 for the authoritative version.
 
 ### Voice
+
 - Write like you are explaining to **a smart person who is not a developer**
 - Lead with **WHY** this release matters, not technical stats
 - Every fix explained as: **what was broken**, **what we did**, **why it matters**
 
 ### Jargon
+
 - No jargon without explanation
 - First use includes parenthetical definition: "BM25 (exact word matching)", "CTE (a reusable SQL subquery)"
 - Technical details (file paths, line numbers, function names) go in Files Changed, not in descriptions
 
 ### Structure
+
 - **Analogies welcome** when they help understanding
 - **Short bullet points** (1-3 sentences each) in compact format
 - **Full Problem/Fix paragraphs** in expanded format
+- **Short sub-headings** in expanded format: 2-5 words, easy to scan, not sentence-length
+- **No numbered item titles** in expanded format unless the content truly depends on sequence
 - **No metrics soup** -- do not pack 10 numbers into one sentence
 
 ### Category vocabulary (use plain names)
+
 - `Search` -- search behavior, ranking, matching
 - `Saving Memories` -- memory save, context preservation
 - `Security` -- access control, input validation
@@ -188,21 +195,23 @@ These rules apply to both changelog files and GitHub release notes. See `PUBLIC_
 
 ## 4. FORMAT SELECTION GUIDE
 
-| Release Type | Format | When to Use |
-|-------------|--------|-------------|
-| Hotfix (1-3 changes) | Compact | Quick bug fix, typo correction |
-| Feature release (4-9 changes) | Compact | New feature, small refactor |
-| Major release (10+ changes) | Expanded | Audit results, major refactor, multi-sprint work |
-| Breaking change | Expanded | Any release requiring migration or behavioral changes |
+| Release Type                  | Format   | When to Use                                           |
+| ----------------------------- | -------- | ----------------------------------------------------- |
+| Hotfix (1-3 changes)          | Compact  | Quick bug fix, typo correction                        |
+| Feature release (4-9 changes) | Compact  | New feature, small refactor                           |
+| Major release (10+ changes)   | Expanded | Audit results, major refactor, multi-sprint work      |
+| Breaking change               | Expanded | Any release requiring migration or behavioral changes |
 
 ---
 
 ## 5. REAL EXAMPLES
 
 ### Compact format reference
+
 See: `.opencode/changelog/04--commands/v3.0.1.4.md`
 
 ### Expanded format reference
+
 See: `.opencode/changelog/01--system-spec-kit/v3.0.1.3.md` (28 fixes, full Problem/Fix paragraphs)
 See: `.opencode/changelog/01--system-spec-kit/v3.0.1.0.md` (117 fixes, full Problem/Fix paragraphs)
 

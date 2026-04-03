@@ -9,6 +9,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, mcp__cocoindex_code__search
 > This command runs a structured YAML workflow. Do NOT dispatch agents from this document.
 >
 > **YOUR FIRST ACTION:**
+>
 > 1. Run Phase 0: @write agent self-verification (below)
 > 2. Run Setup Phase: consolidated prompt to gather inputs
 > 3. Determine execution mode from user input (`:auto` or `:confirm`)
@@ -63,6 +64,7 @@ SELF-CHECK: Are you operating as the @write agent?
 ```
 
 **Phase Output:**
+
 - `write_agent_verified = ________________`
 
 ---
@@ -163,6 +165,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 ```
 
 **Phase Output:**
+
 - `write_agent_verified = ________________`
 - `source_type = ________________`
 - `spec_folder = ________________`
@@ -179,13 +182,13 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 | FIELD                | REQUIRED    | YOUR VALUE | SOURCE            |
 | -------------------- | ----------- | ---------- | ----------------- |
-| write_agent_verified | ✅ Yes       | ______     | Automatic check   |
-| source_type          | ✅ Yes       | ______     | Q0 or $ARGUMENTS  |
-| spec_folder          | Conditional | ______     | Q0 path or null   |
-| component_hint       | Conditional | ______     | Q0 name or null   |
-| version_bump         | ✅ Yes       | ______     | --bump flag or Q1 |
-| execution_mode       | ✅ Yes       | ______     | Suffix or Q2      |
-| publish_release      | ✅ Yes       | ______     | --release or Q3   |
+| write_agent_verified | ✅ Yes      | **\_\_**   | Automatic check   |
+| source_type          | ✅ Yes      | **\_\_**   | Q0 or $ARGUMENTS  |
+| spec_folder          | Conditional | **\_\_**   | Q0 path or null   |
+| component_hint       | Conditional | **\_\_**   | Q0 name or null   |
+| version_bump         | ✅ Yes      | **\_\_**   | --bump flag or Q1 |
+| execution_mode       | ✅ Yes      | **\_\_**   | Suffix or Q2      |
+| publish_release      | ✅ Yes      | **\_\_**   | --release or Q3   |
 
 ```
 VERIFICATION CHECK:
@@ -259,16 +262,16 @@ $ARGUMENTS
 
 The template defines two formats:
 
-| Format | When to Use | Style |
-|--------|-------------|-------|
-| **Compact** | < 10 changes, non-major | `## What Changed` with bullet points |
-| **Expanded** | 10+ changes or major | Numbered titles with **Problem/Fix** paragraphs |
+| Format       | When to Use             | Style                                                |
+| ------------ | ----------------------- | ---------------------------------------------------- |
+| **Compact**  | < 10 changes, non-major | `## What Changed` with bullet points                 |
+| **Expanded** | 10+ changes or major    | Short `###` headings with **Problem/Fix** paragraphs |
 
 ### Format Selection
 
 - Count the changes in the work context
 - Fewer than 10 changes AND not a major release: use **compact** format
-- 10 or more changes OR a major release: use **expanded** format with full Problem/Fix paragraphs per item
+- 10 or more changes OR a major release: use **expanded** format with short scan-friendly sub-headings and full Problem/Fix paragraphs per item
 
 ### Version Format
 
@@ -295,33 +298,43 @@ The YAML workflow (Step 2) scans this directory to build the component mapping. 
 ## 4. EXAMPLES
 
 **Example 1: From spec folder (auto mode)**
+
 ```
 /create:changelog .opencode/specs/01--system-spec-kit/042-memory-upgrade :auto
 ```
+
 → Reads spec artifacts, detects component as `01--system-spec-kit`, calculates next version, generates changelog
 
 **Example 2: From component name**
+
 ```
 /create:changelog sk-doc --bump minor :confirm
 ```
+
 → Targets `11--sk-doc`, uses git history for content, bumps minor version
 
 **Example 3: Auto-detect everything**
+
 ```
 /create:changelog :auto
 ```
+
 → Scans recent git commits, determines component(s), auto-detects version bump
 
 **Example 4: Prompted creation**
+
 ```
 /create:changelog
 ```
+
 → Prompts: consolidated prompt with Q0-Q3, interactive workflow
 
 **Example 5: Create changelog AND publish release**
+
 ```
 /create:changelog .opencode/specs/01.../042... --release :auto
 ```
+
 → Creates changelog, creates annotated tag, pushes tag, creates GitHub release with formatted notes
 
 ---
@@ -346,6 +359,7 @@ The YAML workflow (Step 2) scans this directory to build the component mapping. 
 **YOU ARE IN VIOLATION IF YOU:**
 
 **Phase Violations:**
+
 - Executed command without @write agent verification (Phase 0)
 - Started reading the workflow section before all fields are set
 - Asked questions in MULTIPLE separate prompts instead of ONE consolidated prompt
@@ -353,12 +367,14 @@ The YAML workflow (Step 2) scans this directory to build the component mapping. 
 - Auto-created changelog file without completing all workflow steps
 
 **Workflow Violations (Steps 1-7):**
+
 - Skipped context analysis and jumped to content generation
 - Wrote changelog without verifying version is sequential
 - Generated content that doesn't match established format
 - Claimed "complete" without quality validation
 
 **VIOLATION RECOVERY PROTOCOL:**
+
 ```
 FOR PHASE VIOLATIONS:
 1. STOP immediately - do not continue current action
@@ -413,6 +429,7 @@ git push origin v{VERSION}
 ### R2: Compose GitHub Release Notes
 
 Read the changelog file. Strip the local-only wrapper lines that must NOT appear in GitHub release notes:
+
 - Remove: `# v{VERSION}` (first H1 line)
 - Remove: `> Part of [OpenCode Dev Environment](...)`
 - Remove: `## [**{VERSION}**] - {YYYY-MM-DD}`
@@ -420,6 +437,7 @@ Read the changelog file. Strip the local-only wrapper lines that must NOT appear
 The GitHub release body starts directly with the summary paragraph.
 
 Follow `PUBLIC_RELEASE.md` Section 7 writing style:
+
 - Plain English -- explain like "a smart person who is not a developer"
 - Every fix: what was broken + what we did + why it matters
 - No unexplained jargon
@@ -454,12 +472,12 @@ gh release create v{VERSION} --title "v{VERSION} -- {one-line summary}" --notes 
 
 ## 9. COMMAND CHAIN
 
-| Condition               | Suggested Command                       | Reason                            |
-| ----------------------- | --------------------------------------- | --------------------------------- |
-| After changelog created | Use `--release` flag                    | Publish as GitHub release         |
-| After release published | `/memory:save`                          | Preserve decisions                |
-| Need spec folder first  | `/spec_kit:complete`                    | Create spec with implementation   |
-| Umbrella release        | Manual `00--opencode-environment` entry | Aggregates component changelogs   |
+| Condition               | Suggested Command                       | Reason                          |
+| ----------------------- | --------------------------------------- | ------------------------------- |
+| After changelog created | Use `--release` flag                    | Publish as GitHub release       |
+| After release published | `/memory:save`                          | Preserve decisions              |
+| Need spec folder first  | `/spec_kit:complete`                    | Create spec with implementation |
+| Umbrella release        | Manual `00--opencode-environment` entry | Aggregates component changelogs |
 
 ---
 
