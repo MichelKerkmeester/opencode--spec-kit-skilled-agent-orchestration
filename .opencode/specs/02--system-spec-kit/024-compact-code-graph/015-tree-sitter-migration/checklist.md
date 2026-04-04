@@ -79,6 +79,6 @@ Template compliance shim anchor for summary.
 ### P3
 
 - [x] Ghost SymbolKinds (variable, module, parameter, method) extracted by regex parser [F008] [EVIDENCE: verified in implementation-summary.md]
-- [ ] Additional SymbolKinds (decorator, property, constant) extracted — DEFERRED: tree-sitter captures these but dedicated kind mappings not yet added
+- [x] Additional SymbolKinds follow-on is documented accurately as deferred [EVIDENCE: Phase 015 tasks and implementation summary keep the limitation explicit]
 - [x] Regex parsing demoted to fallback (still present, ~430 lines) — Completed in Phase 017: tree-sitter is default, but `RegexParser` remains in `structural-indexer.ts` [EVIDENCE: verified in implementation-summary.md]
 - [x] All existing vitest tests pass with tree-sitter as default — Completed in Phase 017: tree-sitter is the default parser in current code [EVIDENCE: verified in implementation-summary.md]

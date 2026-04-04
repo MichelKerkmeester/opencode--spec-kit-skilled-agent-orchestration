@@ -1,6 +1,6 @@
 ---
 title: "Create Commands"
-description: "Slash commands for scaffolding OpenCode components, documentation packages, and visual artifacts."
+description: "Slash commands for scaffolding OpenCode components, documentation packages, and changelogs."
 trigger_phrases:
   - "create command"
   - "scaffold component"
@@ -9,14 +9,12 @@ trigger_phrases:
   - "create readme"
   - "create feature catalog"
   - "create testing playbook"
-  - "create prompt"
-  - "create visual html"
   - "create changelog"
 ---
 
 # Create Commands
 
-> Slash commands for scaffolding OpenCode components, documentation packages, prompts, changelog entries, and visual artifacts with proper templates and validation.
+> Slash commands for scaffolding OpenCode components, documentation packages, and changelog entries with proper templates and validation.
 
 ---
 
@@ -41,9 +39,9 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `create` command group scaffolds OpenCode components, documentation packages, prompt artifacts, and changelog entries. Most commands follow a structured YAML workflow and support `:auto` (no approval prompts) and `:confirm` (pause at each step) execution modes.
+The `create` command group scaffolds OpenCode components, documentation packages, and changelog entries. All commands follow a structured YAML workflow and support `:auto` (no approval prompts) and `:confirm` (pause at each step) execution modes.
 
-Most shipped `create` commands run Phase 0 (@write agent self-verification). `/create:prompt` is the notable exception and uses an inline `@general` workflow instead of `@write` plus YAML assets.
+All shipped `create` commands run Phase 0 (@write agent self-verification).
 
 <!-- /ANCHOR:overview -->
 
@@ -70,9 +68,7 @@ This document is a routing and reference surface only. Run the command entrypoin
 | **feature-catalog** | `/create:feature-catalog <skill-name> [create\|update] [--path <dir>] [:auto\|:confirm]` | Create or update a rooted `feature_catalog/` package using the shipped `sk-doc` contract |
 | **testing-playbook** | `/create:testing-playbook <skill-name> [create\|update] [--path <dir>] [:auto\|:confirm]` | Create or update a rooted `manual_testing_playbook/` package using the shipped `sk-doc` contract |
 | **sk-skill** | `/create:sk-skill <name> <operation> [type] [--chained] [:auto\|:confirm]` | Unified skill workflow (full-create, full-update, reference-only, asset-only) |
-| **prompt** | `/create:prompt <prompt-text-or-flags> [:auto\|:confirm]` | Create or improve prompts through the `sk-prompt-improver` workflow |
 | **changelog** | `/create:changelog <spec-folder-or-component> [--bump <major\|minor\|patch\|build>] [:auto\|:confirm]` | Create a changelog entry by detecting recent work, resolving the target component folder, and generating a formatted changelog file |
-| **phase (via spec_kit)** | `/spec_kit:plan <feature> :with-phases [--phases N] [--phase-names list] [:auto\|:confirm]` | Phase-aware parent/child spec decomposition integrated into plan/complete workflows |
 
 ### README Types
 
@@ -98,7 +94,6 @@ create/
 ├── changelog.md          # /create:changelog command
 ├── feature-catalog.md    # /create:feature-catalog command
 ├── folder_readme.md      # /create:folder_readme — unified README + install guide command
-├── prompt.md             # /create:prompt command
 ├── sk-skill.md           # /create:sk-skill command
 ├── testing-playbook.md   # /create:testing-playbook command
 └── assets/               # YAML workflow definitions
@@ -145,8 +140,6 @@ Each mode loads a separate YAML workflow from `assets/` when that command ships 
 - Auto: `create_<command>_auto.yaml`
 - Confirm: `create_<command>_confirm.yaml`
 
-`/create:prompt` is an inline command document and does not currently have companion YAML workflow files in `assets/`.
-
 The `--chained` flag on `/create:sk-skill` doc-only operations indicates parent workflow handoff.
 
 The documentation-package commands preserve the live `sk-doc` contracts:
@@ -176,9 +169,6 @@ The documentation-package commands preserve the live `sk-doc` contracts:
 # Update an existing testing playbook package
 /create:testing-playbook system-spec-kit update :auto
 
-# Improve a prompt artifact
-/create:prompt $improve "Write a release note prompt for a changelog generator" :confirm
-
 # Add a reference doc to an existing skill
 /create:sk-skill my-skill reference-only debugging :confirm
 
@@ -202,10 +192,6 @@ The documentation-package commands preserve the live `sk-doc` contracts:
 **Q: When should I use `create` vs `update` for feature-catalog and testing-playbook commands?**
 
 A: Use `create` when the package folder does not yet exist under the skill root. Use `update` when the package already exists and you want to add or revise content within it. Running `create` on an existing package will produce a conflict error.
-
-**Q: Does `/create:prompt` support YAML workflow assets like the other commands?**
-
-A: No. `/create:prompt` is an inline command that runs entirely within the document itself using an `@general` workflow. It does not load a YAML asset file from `assets/`. All other `create` commands that modify files ship paired YAML assets for `:auto` and `:confirm` modes.
 
 **Q: What does the `--chained` flag do on `/create:sk-skill`?**
 
@@ -249,6 +235,5 @@ A: The command reads the most recent changelog entry in the target component fol
 | [agent_template.md](../../skill/sk-doc/assets/agents/agent_template.md) | Agent creation template |
 | [command_template.md](../../skill/sk-doc/assets/agents/command_template.md) | Command creation template |
 | [skill_creation.md](../../skill/sk-doc/references/specific/skill_creation.md) | Skill creation workflow reference |
-| [spec_kit:plan :with-phases](../spec_kit/plan.md) | Phase decomposition integrated into plan workflow |
 
 <!-- /ANCHOR:related-documents -->

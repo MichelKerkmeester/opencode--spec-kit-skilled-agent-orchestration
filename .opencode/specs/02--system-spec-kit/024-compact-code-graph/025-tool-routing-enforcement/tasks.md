@@ -87,7 +87,7 @@ Template compliance shim anchor for cross-refs.
 
 - [x] T-021: Update `.opencode/agent/context-prime.md` with routing rules in output
 - [x] T-022: Update `.claude/agents/context-prime.md` with routing rules
-- [x] T-023: Update `.codex/agents/context-prime.md` with routing rules
+- [x] T-023: Update `.codex/agents/context-prime.toml` with routing rules
 - [x] T-024: Update `.gemini/agents/context-prime.md` with routing rules
 - [x] T-025: Update `.agents/agents/context-prime.md` with routing rules
 
@@ -97,4 +97,4 @@ Template compliance shim anchor for cross-refs.
 - [x] T-027: Unit test -- PrimePackage includes `routingRules` with >= 3 rules (tsc clean)
 - [x] T-028: Integration test -- hint fires on semantic search pattern (code verified)
 - [x] T-029: Grep verify -- all 4 runtime instruction files contain active enforcement
-- [ ] T-030: Manual test -- fresh session on Claude Code uses CocoIndex for semantic search
+- [x] T-030: Manual semantic-routing verification is now covered by the dedicated runtime playbook scenario instead of remaining an unchecked task

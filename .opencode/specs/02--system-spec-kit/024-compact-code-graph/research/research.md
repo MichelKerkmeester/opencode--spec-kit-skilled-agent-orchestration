@@ -1,7 +1,7 @@
 ---
 title: "Deep Research Report: Compact Code Graph — Complete Findings [02--system-spec-kit/024-compact-code-graph/research]"
 description: "This research addresses two interconnected problems"
-iterations: 105
+iterations: 120
 trigger_phrases:
   - "deep"
   - "research"
@@ -14,7 +14,7 @@ contextType: "research"
 ---
 # Deep Research Report: Compact Code Graph — Complete Findings
 
-> **105 iterations across 8 segments** | final synthesis updated through Segment 8: cross-runtime UX, automation, and integration research via Copilot CLI (GPT-5.4)
+> **120 iterations across 9 segments** | final synthesis updated through Segment 9: OpenCode prompt-schema regression research
 
 ---
 
@@ -1203,3 +1203,73 @@ Key finding: the existing MCP server already contains most of the primitives nee
 | 091 | 109 | Review P1-10 plus key P2 verification |
 | 092-094 | -- | Expected verification scorecard, updated roadmap, and parity-matrix artifacts not present locally; reconstructed in Part XI from the available Segment 7 evidence |
 | 095 | -- | FINAL SYNTHESIS: Segment 7 verification summary, updated roadmap, parity matrix, and revised P1 tally |
+| 106-110 | ~250 | Hookless priming optimization, startup digest strategy, and cross-runtime priming reliability |
+| 111 | 31 | OpenCode invalid-prompt fault isolation -- `messages.transform` is the primary suspect |
+| 112 | 28 | External `opencode-lcm` comparison -- schema-aware mutation vs local ad hoc synthetic part creation |
+| 113 | 29 | Test-gap analysis -- current Vitest coverage does not validate the live message schema boundary |
+| 114 | 27 | Startup-digest visibility likely shares one cause with the invalid prompt |
+| 115 | 28 | Cache/event invalidation amplifies the UX confusion but is likely secondary |
+| 116 | 25 | Bridge/native-module boundary is no longer the main problem |
+| 117 | 23 | Archived working-memory plugin shows a safer `messages.transform` pattern |
+| 118 | 39 | Fix options matrix -- disable `messages.transform` first, then reintroduce carefully if needed |
+| 119 | 24 | Missing verification layer identified: runtime-schema validation for transformed messages |
+| 120 | 34 | FINAL SYNTHESIS: OpenCode prompt-schema regression and the recommended packet-030 rollback path |
+
+---
+
+## Addendum: Segment 9 -- OpenCode Prompt-Schema Regression
+
+### Problem Statement
+
+After the packet-030 OpenCode plugin began surfacing the startup digest correctly, OpenCode still started showing:
+
+- `Invalid prompt: The messages do not match the ModelMessage[] schema.`
+
+At the same time, the visible startup digest became inconsistent or disappeared in later sessions. The key research question was whether these were two separate regressions or one shared prompt-assembly fault.
+
+### Segment 9 Conclusion
+
+The highest-confidence diagnosis is that packet 030's current `experimental.chat.messages.transform` hook is inserting a synthetic part shape that the live OpenCode runtime rejects during final prompt assembly.
+
+This is more likely than:
+
+- a bridge/bootstrap failure
+- a `system.transform` failure
+- a `session.compacting` failure
+
+because the plugin only mutates `ModelMessage[]` in the `messages.transform` hook, while the other two surfaces only append plain strings. [SOURCE: `.opencode/plugins/spec-kit-compact-code-graph.js:303-374`]
+
+### Why the External Reference Matters
+
+`opencode-lcm` does use `experimental.chat.messages.transform`, but it does so through a centralized mutation path that is typed against SDK `Part[]`. Our local plugin does not. It receives a transport plan from the bridge and then fabricates a synthetic part inline inside the host plugin file. [SOURCE: `030-opencode-graph-plugin/external/opencode-lcm-master/src/index.ts:311-313`] [SOURCE: `030-opencode-graph-plugin/external/opencode-lcm-master/src/store.ts:2901-2922`] [SOURCE: `.opencode/plugins/spec-kit-compact-code-graph.js:196-210`]
+
+That means the external reference should be read as:
+
+- proof that message mutation can work when schema-aware
+
+not as:
+
+- proof that our current synthetic part object is already valid
+
+### Why the Startup Hook Can Look Broken
+
+The startup digest is injected through `experimental.chat.system.transform`, which is a string-only path. But if `messages.transform` later poisons the final prompt assembly, the host can still reject the whole prompt. That makes the startup surface appear flaky even if the system hook itself ran. [INFERENCE: based on `.opencode/plugins/spec-kit-compact-code-graph.js:303-350` and the live OpenCode error]
+
+### Most Practical Next Step
+
+The best implementation move is intentionally narrow:
+
+1. disable or gate `experimental.chat.messages.transform`
+2. keep `experimental.chat.system.transform`
+3. keep `experimental.session.compacting`
+4. restart OpenCode and verify:
+   - the invalid prompt error disappears
+   - the startup digest becomes stable again
+
+Only after that should packet 030 revisit richer message-time injection.
+
+### Follow-On Recommendations
+
+- add a runtime-contract test for transformed messages
+- if current-turn enrichment returns, prefer mutation of existing host-owned parts or an SDK-aligned builder over the current inline object literal
+- add hook-specific diagnostics to the plugin status tool so "hook did not run" and "hook ran but prompt assembly failed" can be distinguished cleanly

@@ -43,9 +43,9 @@ export function createRuntimeFixture(runtime: RuntimeFixture['runtime']): Runtim
     case 'copilot-cli':
       return {
         runtime: 'copilot-cli',
-        hookPolicy: 'disabled_by_scope',
+        hookPolicy: 'enabled',
         supports: {
-          sessionStartHook: false,
+          sessionStartHook: true,
           preCompactHook: false,
           stopHook: false,
           toolFallback: true,

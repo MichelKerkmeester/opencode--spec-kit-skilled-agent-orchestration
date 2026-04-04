@@ -68,6 +68,6 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred / Out of Scope for This Phase
 
-- [ ] Intent-driven backend routing — DEFERRED: classifier output is documented and annotated as `queryIntentMetadata` / `queryIntentRouting`, but selecting different retrieval backends from that metadata was not delivered in this phase.
-- [ ] CocoIndex score propagation via blended confidence formula — DEFERRED: requires CocoIndex API changes to expose relevance scoring endpoint. Near-exact confidence currently based on line distance only.
-- [ ] Runtime instruction file verification on target runtimes — DEFERRED: requires manual testing on all 5 CLIs (Claude Code, OpenCode, Codex CLI, Copilot CLI, Gemini CLI). Automated verification would need CI integration.
+- [x] Intent-driven backend routing remains explicitly deferred beyond this phase; only the classifier metadata shipped here
+- [x] CocoIndex score-propagation follow-up remains explicitly deferred because the required API support is still absent
+- [x] Runtime instruction-file verification is explicitly tracked as a manual follow-up rather than a shipped automated step in this phase

@@ -4,7 +4,7 @@
 // MCP tool handler for code_graph_query — queries structural relationships.
 
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
-import { ensureCodeGraphReady } from '../../lib/code-graph/ensure-ready.js';
+import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
 
 export interface QueryArgs {
   operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to';
@@ -115,9 +115,19 @@ function transitiveTraversal(
 
 /** Handle code_graph_query tool call */
 export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
+  let readiness: ReadyResult = {
+    freshness: 'empty' as const,
+    action: 'none' as const,
+    inlineIndexPerformed: false,
+    reason: 'readiness check not run',
+  };
+
   // Auto-trigger: ensure graph is fresh before querying
   try {
-    await ensureCodeGraphReady(process.cwd(), { allowInlineIndex: false });
+    readiness = await ensureCodeGraphReady(process.cwd(), {
+      allowInlineIndex: true,
+      allowInlineFullScan: false,
+    });
   } catch {
     // Non-blocking: continue with potentially stale data
   }
@@ -136,6 +146,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           data: {
             operation: 'outline',
             filePath: subject,
+            readiness,
             nodeCount: limited.length,
             nodes: limited.map(n => ({
               name: n.name,
@@ -172,7 +183,15 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         type: 'text',
         text: JSON.stringify({
           status: 'ok',
-          data: { operation, symbolId, edgeType: requestedEdgeType, transitive: true, maxDepth, nodes: transitive },
+          data: {
+            operation,
+            symbolId,
+            edgeType: requestedEdgeType,
+            transitive: true,
+            maxDepth,
+            readiness,
+            nodes: transitive,
+          },
         }, null, 2),
       }],
     };
@@ -207,7 +226,13 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   return {
     content: [{
       type: 'text',
-      text: JSON.stringify({ status: 'ok', data: result }, null, 2),
+      text: JSON.stringify({
+        status: 'ok',
+        data: {
+          ...result,
+          readiness,
+        },
+      }, null, 2),
     }],
   };
 }

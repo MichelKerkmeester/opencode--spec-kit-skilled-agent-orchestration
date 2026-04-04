@@ -22,13 +22,16 @@ export type ReadyAction = 'none' | 'full_scan' | 'selective_reindex';
 export type GraphFreshness = 'fresh' | 'stale' | 'empty';
 
 export interface ReadyResult {
+  freshness: GraphFreshness;
   action: ReadyAction;
   files?: string[];
+  inlineIndexPerformed: boolean;
   reason: string;
 }
 
 export interface EnsureReadyOptions {
   allowInlineIndex?: boolean;
+  allowInlineFullScan?: boolean;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -109,15 +112,10 @@ function detectState(rootDir: string): {
   // Condition (b): Git HEAD changed
   const currentHead = getCurrentGitHead(rootDir);
   const storedHead = getLastGitHead();
-  if (currentHead && storedHead && currentHead !== storedHead) {
-      return {
-        freshness: 'stale',
-        action: 'full_scan',
-        staleFiles: [],
-        deletedFiles: [],
-        reason: `git HEAD changed: ${storedHead.slice(0, 8)} -> ${currentHead.slice(0, 8)}`,
-      };
-  }
+  const headChanged = Boolean(currentHead && storedHead && currentHead !== storedHead);
+  const headChangedReason = headChanged
+    ? `git HEAD changed: ${storedHead!.slice(0, 8)} -> ${currentHead!.slice(0, 8)}`
+    : null;
 
   // Condition (c): Check file mtime drift on tracked files
   const trackedFiles = graphDb.getTrackedFiles();
@@ -128,6 +126,18 @@ function detectState(rootDir: string): {
   const { existingFiles, deletedFiles } = partitionTrackedFiles(trackedFiles);
   const { stale } = ensureFreshFiles(existingFiles);
   if (stale.length === 0) {
+    if (headChanged) {
+      return {
+        freshness: 'stale',
+        action: 'full_scan',
+        staleFiles: [],
+        deletedFiles,
+        reason: deletedFiles.length > 0
+          ? `${headChangedReason}; tracked files appear up-to-date on disk; ${deletedFiles.length} tracked file(s) no longer exist on disk`
+          : `${headChangedReason}; tracked files appear up-to-date on disk`,
+      };
+    }
+
     if (deletedFiles.length > 0) {
       return {
         freshness: 'stale',
@@ -148,9 +158,11 @@ function detectState(rootDir: string): {
       action: 'full_scan',
       staleFiles: stale,
       deletedFiles,
-      reason: deletedFiles.length > 0
-        ? `${stale.length} stale files exceed selective threshold (${SELECTIVE_REINDEX_THRESHOLD}); ${deletedFiles.length} tracked file(s) no longer exist on disk`
-        : `${stale.length} stale files exceed selective threshold (${SELECTIVE_REINDEX_THRESHOLD})`,
+      reason: [
+        headChangedReason,
+        `${stale.length} stale files exceed selective threshold (${SELECTIVE_REINDEX_THRESHOLD})`,
+        deletedFiles.length > 0 ? `${deletedFiles.length} tracked file(s) no longer exist on disk` : null,
+      ].filter(Boolean).join('; '),
     };
   }
 
@@ -159,9 +171,11 @@ function detectState(rootDir: string): {
     action: 'selective_reindex',
     staleFiles: stale,
     deletedFiles,
-    reason: deletedFiles.length > 0
-      ? `${stale.length} file(s) have newer mtime than indexed_at; ${deletedFiles.length} tracked file(s) no longer exist on disk`
-      : `${stale.length} file(s) have newer mtime than indexed_at`,
+    reason: [
+      headChangedReason,
+      `${stale.length} file(s) have newer mtime than indexed_at`,
+      deletedFiles.length > 0 ? `${deletedFiles.length} tracked file(s) no longer exist on disk` : null,
+    ].filter(Boolean).join('; '),
   };
 }
 
@@ -224,20 +238,38 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
   }
   lastCheckAt = now;
   const allowInlineIndex = options.allowInlineIndex ?? true;
+  const allowInlineFullScan = options.allowInlineFullScan ?? allowInlineIndex;
 
   const state = detectState(rootDir);
   const removedDeletedCount = cleanupDeletedTrackedFiles(state.deletedFiles);
 
   if (state.action === 'none') {
-    lastCheckResult = { action: 'none', reason: appendCleanupReason(state.reason, removedDeletedCount) };
+    lastCheckResult = {
+      freshness: state.freshness,
+      action: 'none',
+      inlineIndexPerformed: false,
+      reason: appendCleanupReason(state.reason, removedDeletedCount),
+    };
     return lastCheckResult;
   }
 
-  if (!allowInlineIndex) {
+  if (state.action === 'selective_reindex' && !allowInlineIndex) {
     lastCheckResult = {
+      freshness: state.freshness,
       action: state.action,
       ...(state.action === 'selective_reindex' ? { files: state.staleFiles } : {}),
+      inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason}; inline auto-index skipped for read path`, removedDeletedCount),
+    };
+    return lastCheckResult;
+  }
+
+  if (state.action === 'full_scan' && !allowInlineFullScan) {
+    lastCheckResult = {
+      freshness: state.freshness,
+      action: state.action,
+      inlineIndexPerformed: false,
+      reason: appendCleanupReason(`${state.reason}; inline full scan skipped for read path`, removedDeletedCount),
     };
     return lastCheckResult;
   }
@@ -251,7 +283,12 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);
 
-      lastCheckResult = { action: 'full_scan', reason: appendCleanupReason(state.reason, removedDeletedCount) };
+      lastCheckResult = {
+        freshness: state.freshness,
+        action: 'full_scan',
+        inlineIndexPerformed: true,
+        reason: appendCleanupReason(state.reason, removedDeletedCount),
+      };
       return lastCheckResult;
     }
 
@@ -262,9 +299,14 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       config.includeGlobs = state.staleFiles.map(f => relative(rootDir, f));
       await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS);
 
+      const head = getCurrentGitHead(rootDir);
+      if (head) setLastGitHead(head);
+
       lastCheckResult = {
+        freshness: state.freshness,
         action: 'selective_reindex',
         files: state.staleFiles,
+        inlineIndexPerformed: true,
         reason: appendCleanupReason(state.reason, removedDeletedCount),
       };
       return lastCheckResult;
@@ -273,14 +315,21 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[ensure-ready] Auto-index failed: ${msg}`);
     lastCheckResult = {
+      freshness: state.freshness,
       action: state.action,
       files: state.staleFiles,
+      inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason} (auto-index failed: ${msg})`, removedDeletedCount),
     };
     return lastCheckResult;
   }
 
-  lastCheckResult = { action: 'none', reason: appendCleanupReason(state.reason, removedDeletedCount) };
+  lastCheckResult = {
+    freshness: state.freshness,
+    action: 'none',
+    inlineIndexPerformed: false,
+    reason: appendCleanupReason(state.reason, removedDeletedCount),
+  };
   return lastCheckResult;
 }
 

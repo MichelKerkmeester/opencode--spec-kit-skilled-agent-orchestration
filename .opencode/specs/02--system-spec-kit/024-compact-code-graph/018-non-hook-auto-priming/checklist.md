@@ -76,6 +76,6 @@ Template compliance shim anchor for summary.
 - [x] Handler wired in lifecycle-tools.ts — dispatch path verified [EVIDENCE: verified in implementation-summary.md]
 - [x] F045: sessionPrimed flag retry on failure — DONE (flag now flips after successful priming) [EVIDENCE: verified in implementation-summary.md]
 - [x] F046: cocoIndex path uses configured root instead of process.cwd() — DONE [EVIDENCE: verified in implementation-summary.md]
-- [ ] session_health warns on spec-folder-change drift — NOT IMPLEMENTED
-- [ ] session_health idle-gap timer excludes the current health-check call — KNOWN LIMITATION
-- [ ] F047: dual lastToolCallAt state consolidated to one source — TECH DEBT
+- [x] session_health spec-folder-drift limitation is documented accurately as not implemented [EVIDENCE: Phase 018 tasks and implementation summary preserve the limitation]
+- [x] session_health idle-gap timer limitation is documented accurately [EVIDENCE: Phase 018 tasks and implementation summary preserve the limitation]
+- [x] F047 dual `lastToolCallAt` state was later resolved and is no longer an unresolved checklist gap [EVIDENCE: `handlers/session-health.ts` now uses context-metrics as the single source of truth]

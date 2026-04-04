@@ -6,7 +6,7 @@
 
 ## 019-code-graph-auto-trigger — 2026-03-31
 
-The code graph required a manual `code_graph_scan` command before any query would return results. If you asked "who calls this function?" without remembering to scan first, you got an empty answer or an error -- a frustrating interruption that broke the workflow on every runtime. This phase eliminates that manual step entirely by adding a shared `ensureCodeGraphReady()` helper that runs transparently before every code graph query. It checks three conditions (is the graph empty? did the git branch change? have files been modified?) and triggers the right kind of reindex automatically. The user just asks their question and gets an answer. Because this logic lives entirely on the server side, it delivers the highest cross-runtime parity gain of all Phase 024 proposals: OpenCode, Codex CLI, Copilot CLI, and Gemini CLI all jump from ~50-60% code graph coverage to ~95%, matching Claude Code's existing 100%.
+The code graph originally required a manual `code_graph_scan` command before queries were trustworthy. This phase introduced the shared `ensureCodeGraphReady()` helper so read paths could detect empty, stale, and fresh graph states before answering. Later packet work refined that behavior: small stale sets can repair inline through bounded `selective_reindex`, while empty or broadly stale states now stay explicit and report `full_scan` readiness instead of pretending every query can auto-heal itself.
 
 > Spec folder: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/019-code-graph-auto-trigger/`
 
@@ -18,7 +18,7 @@ The code graph required a manual `code_graph_scan` command before any query woul
 
 **Problem:** Before every code graph query, you had to remember to run the `code_graph_scan` command yourself. If you forgot -- and most people did -- the query returned empty results or an outright error. There was no warning, no fallback, and no hint that the graph was out of date. This was especially painful on runtimes other than Claude Code (OpenCode, Codex CLI, Copilot CLI, Gemini CLI), where nothing prompted you to scan first. The code graph was powerful but unreliable because it depended on a manual step that was easy to skip.
 
-**Fix:** A new `detectState()` function now runs automatically before every code graph query and checks three freshness conditions. First, it checks whether the graph is completely empty -- meaning this is the very first time the code graph is being used and a full scan is needed. Second, it compares the stored git HEAD hash against the current one to detect branch switches, which also require a full rescan. Third, it compares stored per-file modification timestamps against the actual files on disk to catch individual edits since the last index. If any condition fails, the system knows exactly what kind of reindex is needed and triggers it before the query runs. You never see this happening -- you just ask your question and get an accurate answer.
+**Fix:** A new `detectState()` function now runs before code graph read paths and checks whether the graph is empty, whether git HEAD changed, and whether tracked files drifted on disk. In the current packet state this no longer means "always reindex before every query": the helper reports the right readiness action (`none`, `selective_reindex`, or `full_scan`), and later bounded-refresh work decides whether that action is safe to execute inline.
 
 ---
 
@@ -26,7 +26,7 @@ The code graph required a manual `code_graph_scan` command before any query woul
 
 **Problem:** Even users who remembered to scan before querying faced a second problem: choosing the right type of scan. A full scan reindexes the entire repository, which is thorough but slow. A selective scan reindexes only changed files, which is fast but only appropriate when a few files changed. Picking wrong meant either waiting too long or missing changes. This decision should never have been the user's responsibility in the first place.
 
-**Fix:** The new `ensureCodeGraphReady()` helper makes this decision automatically based on what `detectState()` found. An empty graph or a branch switch triggers a full scan -- there is no shortcut when the entire index is missing or invalidated. A handful of changed files triggers a selective reindex that touches only those specific files, keeping things fast. But if more than 50 files have changed (controlled by the `SELECTIVE_REINDEX_THRESHOLD` constant), the system falls back to a full rescan rather than selectively processing too many files one by one. All of this happens invisibly before the query runs. The user asks a question; the system figures out the fastest path to an accurate answer.
+**Fix:** The new `ensureCodeGraphReady()` helper makes this decision automatically based on what `detectState()` found. A handful of changed files can use selective reindexing, while larger stale sets fall back to `full_scan`. In the current packet state, structural read handlers intentionally keep `allowInlineFullScan: false`, so broad stale states stay bounded and tell the caller to run `code_graph_scan` instead of launching an unbounded inline rebuild.
 
 ---
 
@@ -44,7 +44,7 @@ The code graph required a manual `code_graph_scan` command before any query woul
 
 **Problem:** Automatically reindexing before every query introduced a new risk: on large repositories with thousands of files, a full scan could take a long time. If the auto-reindex ran unchecked, it could block the query for 30 seconds or more, making the cure worse than the disease. A user who just wanted a quick answer would be stuck waiting for an index operation they did not ask for and could not cancel.
 
-**Fix:** A 10-second timeout (the `AUTO_INDEX_TIMEOUT_MS` constant) now caps how long the auto-reindex can run before a query. If the indexing finishes within 10 seconds, the query gets perfectly fresh data. If it does not finish in time, the query proceeds immediately with whatever data is already available rather than hanging indefinitely. The indexing operation continues in the background so the next query will benefit from it, but the current query is never held hostage. This means the worst case is a slightly stale answer delivered quickly, not a perfect answer delivered too late.
+**Fix:** A 10-second timeout (the `AUTO_INDEX_TIMEOUT_MS` constant) caps inline indexing work so queries do not hang indefinitely. In the current packet state, bounded inline work applies only where read paths explicitly allow it; broad `full_scan` states on structural reads are surfaced as readiness instead of continuing in the background invisibly.
 
 ---
 

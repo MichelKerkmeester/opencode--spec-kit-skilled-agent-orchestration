@@ -72,9 +72,9 @@ Commands and agent definitions across all four runtimes (Claude, OpenCode/Copilo
 
 The resume workflow YAML assets at `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml` and `.opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml` previously called `memory_context({ mode: "resume" })` without the `profile` parameter, causing raw search results to be returned instead of a compact recovery brief. Adding `profile: "resume"` to those workflow definitions activates the condensed brief format identified as a gap in research iteration 012.
 
-### Memory Save Double-Save Prevention
+### Memory Save Double-Save Reality
 
-The `/memory:save` command now checks for recent Stop hook auto-saves before performing a manual save. When `session-stop.ts` has already saved session context (detected via `pendingStopSave.cachedAt` in hook state), the command prompts the user to merge or skip rather than creating duplicate entries. Existing save behavior is preserved when no hooks are active.
+The Phase 005 documentation previously overstated `/memory:save` by claiming a shipped `pendingStopSave.cachedAt` hook-state marker. The current truth is narrower: hook-aware recovery guidance exists, but there is no dedicated `pendingStopSave` field in `HookState`, so this phase now documents the limitation instead of claiming shipped double-save merge logic.
 
 ### Agent Definitions — Hook-Aware Compaction Recovery
 
@@ -90,7 +90,7 @@ All spec_kit commands (resume, handover, complete, implement) and memory command
 |------|--------|---------|
 | `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml` | Modified | Add `profile: "resume"` to `memory_context()` parameters for autonomous resume |
 | `.opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml` | Modified | Add `profile: "resume"` to `memory_context()` parameters for interactive resume |
-| `.opencode/command/memory/save.md` | Modified | Stop hook double-save detection and merge/skip logic |
+| `.opencode/command/memory/save.md` | Modified | Stop-hook save guidance corrected to avoid claiming a shipped `pendingStopSave` field |
 | `.claude/agents/*.md` | Modified | Hook-aware compaction recovery with tool fallback |
 | `.opencode/agent/*.md` | Modified | Hook-aware compaction recovery with tool fallback |
 | `.codex/agents/*.toml` | Modified | Hook-aware compaction recovery with tool fallback |
@@ -102,14 +102,14 @@ All spec_kit commands (resume, handover, complete, implement) and memory command
 
 <!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
-Commands were updated sequentially: resume profile fix first (single-line change with immediate verification), then memory save hook detection (conditional logic around existing save path). Agent definitions were batch-updated across all four runtime directories to ensure consistency. Each runtime directory was audited for compaction-related references and updated with the hook-injected context conditional. Cross-runtime testing confirmed commands work correctly both with hooks active (Claude Code) and without (Codex, Copilot, Gemini).
+Commands were updated sequentially: resume profile fix first (single-line change with immediate verification), then memory-save guidance truth-sync to avoid stale `pendingStopSave` claims. Agent definitions were batch-updated across all four runtime directories to ensure consistency. Each runtime directory was audited for compaction-related references and updated with the hook-injected context conditional. Cross-runtime testing confirmed commands work correctly both with hooks active (Claude Code) and without (Codex, Copilot, Gemini).
 <!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
 | Decision | Why |
 |----------|-----|
-| Check `pendingStopSave.cachedAt` for double-save detection | Matches the actual hook-state field used by `session-stop.ts`, avoiding stale documentation and extra filesystem polling. |
+| Remove stale `pendingStopSave` claims from `/memory:save` guidance | Keeps Phase 005 aligned with the later hook-state truth that no dedicated stop-save field shipped. |
 | Conditional block pattern for agents (hook first, tool fallback) | Keeps agent definitions backward-compatible across all runtimes without branching into separate files per runtime. |
 | No changes to `/memory:search` or `/memory:manage` | Audit confirmed these commands use MCP APIs that are already hook-agnostic; changes would add complexity without benefit. |
 | SKILL.md as canonical command help reference | Centralizes hook integration documentation rather than scattering across individual command files. |

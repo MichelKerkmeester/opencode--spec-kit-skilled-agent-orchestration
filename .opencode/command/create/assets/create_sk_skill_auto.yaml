@@ -1,14 +1,27 @@
-# -----------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────
 # OPENCODE CREATE: SK-SKILL UNIFIED WORKFLOW (AUTO MODE)
-# -----------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────
 # Mode: autonomous execution (no approval checkpoints)
 # Entrypoint: /create:sk-skill
 # Operations: full-create | full-update | reference-only | asset-only
-# -----------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────
 
 role: Unified Skill Creator using sk-doc
 purpose: Execute a canonical autonomous workflow for skill creation and skill document updates
 action: Route one operation branch with shared gates, validation, and context persistence
+
+# ─────────────────────────────────────────────────────────────────
+# PREREQUISITE: @write AGENT VERIFICATION
+# ─────────────────────────────────────────────────────────────────
+# This workflow REQUIRES the @write agent for:
+#   - Template-first generation
+#   - sk-doc standards enforcement
+#   - Root document validation
+#
+# PHASE 0 in the command markdown verifies @write agent BEFORE
+# this YAML workflow loads. If you are executing this workflow,
+# @write verification has already passed.
+# ─────────────────────────────────────────────────────────────────
 
 operating_mode:
   workflow: unified_7_step
@@ -16,11 +29,15 @@ operating_mode:
   workflow_execution: autonomous
   approvals: none
   tracking: progressive_status_logging
+  validation: continuous_self_validation
   supports_operations:
-    - full-create
-    - full-update
-    - reference-only
-    - asset-only
+  - full-create
+  - full-update
+  - reference-only
+  - asset-only
+  description: |
+    Executes the 7-step skill creation workflow without step-by-step approval.
+    Pauses only if confidence drops below threshold or operation routing conflicts.
 
 development_philosophy:
   principle: "One entrypoint, one router, one quality contract"
@@ -33,6 +50,9 @@ runtime_agent_path_resolution:
   claude: .claude/agents
   gemini: .gemini/agents
 
+# ─────────────────────────────────────────────────────────────────
+# CONFIDENCE & CLARIFICATION FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
 confidence_framework:
   thresholds:
     high: { range: "80-100%", action: "Proceed with deterministic defaults" }
@@ -46,48 +66,51 @@ confidence_framework:
   low_confidence_behavior:
     action: "Return to setup gate with explicit missing fields"
 
+# ─────────────────────────────────────────────────────────────────
+# REQUEST ANALYSIS FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
 request_analysis_framework:
   code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:
-    - "Parse request shape and normalize fields"
-    - "Enforce operation/type compatibility"
-    - "Resolve target path and existence semantics"
-    - "Execute operation branch with template-first behavior"
-    - "Run validation and DQI checks"
-    - "Integrate routing updates into SKILL.md"
-    - "Persist memory context when spec tracking is active"
+  - "Parse request shape and normalize fields"
+  - "Enforce operation/type compatibility"
+  - "Resolve target path and existence semantics"
+  - "Execute operation branch with template-first behavior"
+  - "Run validation and DQI checks"
+  - "Integrate routing updates into SKILL.md"
+  - "Persist memory context when spec tracking is active"
   pre_change_validation:
     items:
-      - "write_agent_verified present"
-      - "skill_name present and valid"
-      - "operation present and supported"
-      - "type present if operation requires type"
-      - "execution_mode is :auto"
+    - "write_agent_verified present"
+    - "skill_name present and valid"
+    - "operation present and supported"
+    - "type present if operation requires type"
+    - "execution_mode is :auto"
     stop_conditions:
-      - "Missing required item"
-      - "Operation/type mismatch"
+    - "Missing required item"
+    - "Operation/type mismatch"
     stop_action: "STOP and return to setup"
 
 input_contract:
   required:
-    - write_agent_verified
-    - skill_name
-    - operation
-    - execution_mode
+  - write_agent_verified
+  - skill_name
+  - operation
+  - execution_mode
   conditional:
     type_required_for:
-      - reference-only
-      - asset-only
+    - reference-only
+    - asset-only
     spec_choice_required_for:
-      - full-create
-      - full-update
+    - full-create
+    - full-update
   optional:
-    - skill_path
-    - spec_choice
-    - spec_path
-    - memory_choice
-    - chained
-    - parent_write_verified
+  - skill_path
+  - spec_choice
+  - spec_path
+  - memory_choice
+  - chained
+  - parent_write_verified
 
 defaults:
   skill_path: .opencode/skill/
@@ -105,65 +128,65 @@ operation_router:
     requires_existing_skill: false
     forbidden_if_skill_exists: true
     output_scope:
-      - SKILL.md
-      - references/
-      - assets/
-      - scripts/
+    - SKILL.md
+    - references/
+    - assets/
+    - scripts/
   full-update:
     requires_type: false
     requires_existing_skill: true
     forbidden_if_skill_exists: false
     output_scope:
-      - SKILL.md
-      - references/
-      - assets/
-      - scripts/
+    - SKILL.md
+    - references/
+    - assets/
+    - scripts/
   reference-only:
     requires_type: true
     allowed_types:
-      - workflow
-      - patterns
-      - debugging
-      - tools
-      - quick_ref
+    - workflow
+    - patterns
+    - debugging
+    - tools
+    - quick_ref
     requires_existing_skill: true
     output_scope:
-      - references/
-      - SKILL.md (routing updates)
+    - references/
+    - SKILL.md (routing updates)
   asset-only:
     requires_type: true
     allowed_types:
-      - template
-      - lookup
-      - example
-      - guide
+    - template
+    - lookup
+    - example
+    - guide
     requires_existing_skill: true
     output_scope:
-      - assets/
-      - SKILL.md (routing updates)
+    - assets/
+    - SKILL.md (routing updates)
 
 operation_profiles:
   full-create:
     objective: "Create a new skill with complete baseline artifacts"
     required_outcomes:
-      - "Skill scaffold created"
-      - "SKILL.md populated"
-      - "Initial resources added"
+    - "Skill scaffold created"
+    - "SKILL.md populated"
+    - "Initial resources added"
   full-update:
     objective: "Update an existing skill without destabilizing unrelated sections"
     required_outcomes:
-      - "Target sections updated"
-      - "Legacy/stale references removed"
+    - "Target sections updated"
+    - "Legacy/stale references removed"
   reference-only:
     objective: "Create or revise a single reference document"
     required_outcomes:
-      - "Reference file written"
-      - "SKILL.md routing updated"
+    - "Reference file written"
+    - "SKILL.md routing updated"
   asset-only:
     objective: "Create or revise a single asset document"
     required_outcomes:
-      - "Asset file written"
-      - "SKILL.md routing updated"
+    - "Asset file written"
+    - "SKILL.md routing updated"
 
 template_sources:
   skill_md: .opencode/skill/sk-doc/assets/skill/skill_md_template.md
@@ -184,12 +207,12 @@ quality_standards:
     smart_routing: "resource and file loading guidance only"
   validation_pipeline:
     full_flows:
-      - "python3 .opencode/skill/sk-doc/scripts/quick_validate.py [skill_path]/[skill_name] --json"
-      - "python3 .opencode/skill/sk-doc/scripts/package_skill.py [skill_path]/[skill_name] --check"
-      - "python3 .opencode/skill/sk-doc/scripts/extract_structure.py [skill_path]/[skill_name]/SKILL.md"
+    - "python3 .opencode/skill/sk-doc/scripts/quick_validate.py [skill_path]/[skill_name] --json"
+    - "python3 .opencode/skill/sk-doc/scripts/package_skill.py [skill_path]/[skill_name] --check"
+    - "python3 .opencode/skill/sk-doc/scripts/extract_structure.py [skill_path]/[skill_name]/SKILL.md"
     doc_only_flows:
-      - "python3 .opencode/skill/sk-doc/scripts/validate_document.py [target_file]"
-      - "python3 .opencode/skill/sk-doc/scripts/extract_structure.py [target_file]"
+    - "python3 .opencode/skill/sk-doc/scripts/validate_document.py [target_file]"
+    - "python3 .opencode/skill/sk-doc/scripts/extract_structure.py [target_file]"
   dqi_policy:
     hard_minimum: 75
     target_by_operation:
@@ -225,80 +248,80 @@ gate_logic:
 
 workflow_overview:
   steps:
-    - id: step_1_preflight
-      purpose: "Normalize inputs and enforce H0-H2"
-    - id: step_2_target_resolution
-      purpose: "Resolve target path and enforce H3"
-    - id: step_3_operation_execution
-      purpose: "Run one operation branch"
-    - id: step_4_validation_and_quality
-      purpose: "Enforce H4 and DQI policy"
-    - id: step_5_skill_integration
-      purpose: "Sync SKILL.md routing references"
-    - id: step_6_context_save_and_index
-      purpose: "Save and index context when spec path exists"
-    - id: step_7_completion
-      purpose: "Emit deterministic completion report"
+  - id: step_1_preflight
+    purpose: "Normalize inputs and enforce H0-H2"
+  - id: step_2_target_resolution
+    purpose: "Resolve target path and enforce H3"
+  - id: step_3_operation_execution
+    purpose: "Run one operation branch"
+  - id: step_4_validation_and_quality
+    purpose: "Enforce H4 and DQI policy"
+  - id: step_5_skill_integration
+    purpose: "Sync SKILL.md routing references"
+  - id: step_6_context_save_and_index
+    purpose: "Save and index context when spec path exists"
+  - id: step_7_completion
+    purpose: "Emit deterministic completion report"
 
 workflow:
   step_1_preflight:
     purpose: Normalize and verify required fields
     activities:
-      - Normalize skill_path to default when omitted
-      - Normalize operation token to supported value
-      - Validate type for reference-only/asset-only
-      - Validate execution_mode is :auto
-      - Validate chained handoff completeness if chained=true
+    - Normalize skill_path to default when omitted
+    - Normalize operation token to supported value
+    - Validate type for reference-only/asset-only
+    - Validate execution_mode is :auto
+    - Validate chained handoff completeness if chained=true
     outputs:
-      - normalized_inputs
-      - preflight_passed
+    - normalized_inputs
+    - preflight_passed
 
   step_2_target_resolution:
     purpose: Resolve target paths and enforce create/update semantics
     activities:
-      - Resolve skill_root as "[skill_path]/[skill_name]"
-      - Check target existence
-      - Block full-create when skill already exists
-      - Block full-update/reference-only/asset-only when skill is missing
-      - For full-create, run similarity discovery and log result
+    - Resolve skill_root as "[skill_path]/[skill_name]"
+    - Check target existence
+    - Block full-create when skill already exists
+    - Block full-update/reference-only/asset-only when skill is missing
+    - For full-create, run similarity discovery and log result
     checks:
       exists_command: "ls -d [skill_path]/[skill_name] 2>/dev/null"
     outputs:
-      - skill_root
-      - existence_verified
-      - similarity_findings
+    - skill_root
+    - existence_verified
+    - similarity_findings
 
   step_3_operation_execution:
     purpose: Execute selected operation branch
     branches:
       full-create:
         activities:
-          - Run init script: "python3 .opencode/skill/sk-doc/scripts/init_skill.py [skill_name] --path [skill_path]"
-          - Load SKILL.md template and populate required sections
-          - Apply section boundary rules
-          - Create baseline references/assets/scripts from requested scope
-          - Remove placeholders and sample-only content
+        - Run init script: "python3 .opencode/skill/sk-doc/scripts/init_skill.py [skill_name] --path [skill_path]"
+        - Load SKILL.md template and populate required sections
+        - Apply section boundary rules
+        - Create baseline references/assets/scripts from requested scope
+        - Remove placeholders and sample-only content
         outputs:
-          - skill_scaffolded
-          - skill_content_written
-          - resources_written
+        - skill_scaffolded
+        - skill_content_written
+        - resources_written
 
       full-update:
         activities:
-          - Read existing SKILL.md and targeted resource files
-          - Update requested sections only
-          - Preserve existing folder and naming conventions
-          - Remove stale references in updated sections
+        - Read existing SKILL.md and targeted resource files
+        - Update requested sections only
+        - Preserve existing folder and naming conventions
+        - Remove stale references in updated sections
         outputs:
-          - skill_updates_applied
-          - resource_updates_applied
+        - skill_updates_applied
+        - resource_updates_applied
 
       reference-only:
         activities:
-          - Ensure references/ exists
-          - Determine reference filename from type and topic
-          - Create or update reference doc using reference template
-          - Ensure content depth matches type profile
+        - Ensure references/ exists
+        - Determine reference filename from type and topic
+        - Create or update reference doc using reference template
+        - Ensure content depth matches type profile
         type_templates:
           workflow: { filename_pattern: "[topic]_workflow.md" }
           patterns: { filename_pattern: "[topic]_patterns.md" }
@@ -306,30 +329,30 @@ workflow:
           tools: { filename_pattern: "[tool]_guide.md" }
           quick_ref: { filename_pattern: "quick_reference.md" }
         outputs:
-          - reference_file_written
+        - reference_file_written
 
       asset-only:
         activities:
-          - Ensure assets/ exists
-          - Determine asset filename from type and topic
-          - Create or update asset doc using asset template
-          - Ensure examples are practical and immediately reusable
+        - Ensure assets/ exists
+        - Determine asset filename from type and topic
+        - Create or update asset doc using asset template
+        - Ensure examples are practical and immediately reusable
         type_templates:
           template: { filename_pattern: "[topic]_templates.md" }
           lookup: { filename_pattern: "[topic]_lookup.md" }
           example: { filename_pattern: "[topic]_examples.md" }
           guide: { filename_pattern: "[topic]_guide.md" }
         outputs:
-          - asset_file_written
+        - asset_file_written
 
   step_4_validation_and_quality:
     purpose: Enforce operation-specific validation and DQI targets
     activities:
-      - Run operation-appropriate validation scripts
-      - Capture DQI score and quality band
-      - Enforce hard minimum threshold (75)
-      - Compare against operation target score
-      - Run fix-and-revalidate loop if needed
+    - Run operation-appropriate validation scripts
+    - Capture DQI score and quality band
+    - Enforce hard minimum threshold (75)
+    - Compare against operation target score
+    - Run fix-and-revalidate loop if needed
     thresholds:
       hard_minimum: 75
       operation_targets:
@@ -341,28 +364,28 @@ workflow:
       max_retries: 3
       action: "Apply fixes, rerun validation, stop on pass or hard failure"
     outputs:
-      - validation_passed
-      - dqi_score
-      - dqi_band
+    - validation_passed
+    - dqi_score
+    - dqi_band
 
   step_5_skill_integration:
     purpose: Keep routing and references synchronized in SKILL.md
     activities:
-      - Update SMART ROUTING references for new/changed docs
-      - Keep WHEN TO USE free of file-path navigation content
-      - Remove stale links and outdated references
-      - Verify referenced files exist after update
+    - Update SMART ROUTING references for new/changed docs
+    - Keep WHEN TO USE free of file-path navigation content
+    - Remove stale links and outdated references
+    - Verify referenced files exist after update
     outputs:
-      - skill_md_synced
-      - routing_links_valid
+    - skill_md_synced
+    - routing_links_valid
 
   step_6_context_save_and_index:
     purpose: Persist context with system-spec-kit compatibility
     condition: "spec_path exists and spec_choice is not D"
     activities:
-      - Save context using generate-context.js
-      - Index memory for immediate retrieval
-      - Log save path and indexing method used
+    - Save context using generate-context.js
+    - Index memory for immediate retrieval
+    - Log save path and indexing method used
     memory_save:
       command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec_path]"
       hard_rule: "Do not create memory files manually"
@@ -370,8 +393,8 @@ workflow:
       preferred: "memory_index_scan({ specFolder: [spec_path] })"
       alternate: "memory_save({ filePath: [generated_memory_file] })"
     outputs:
-      - context_saved
-      - context_indexed
+    - context_saved
+    - context_indexed
 
   step_7_completion:
     purpose: Emit deterministic completion summary
@@ -400,21 +423,21 @@ violation_recovery:
   setup_violation:
     trigger: "Missing required normalized fields"
     action:
-      - "Stop"
-      - "State missing field(s)"
-      - "Return to setup"
+    - "Stop"
+    - "State missing field(s)"
+    - "Return to setup"
   routing_violation:
     trigger: "Operation/type mismatch or wrong existence routing"
     action:
-      - "Stop"
-      - "State routing correction"
-      - "Re-run operation router"
+    - "Stop"
+    - "State routing correction"
+    - "Re-run operation router"
   validation_violation:
     trigger: "DQI below threshold or structural errors"
     action:
-      - "Stop completion"
-      - "Run fix loop"
-      - "Revalidate"
+    - "Stop completion"
+    - "Run fix loop"
+    - "Revalidate"
 
 error_recovery:
   invalid_skill_name:
@@ -449,24 +472,24 @@ termination:
   after_step: step_7_completion
   message: "Unified sk-skill auto workflow complete."
   next_steps:
-    - condition: "Need iterative updates"
-      action: "/create:sk-skill [skill-name] full-update :confirm"
-    - condition: "Need another reference"
-      action: "/create:sk-skill [skill-name] reference-only [type] :confirm"
-    - condition: "Need another asset"
-      action: "/create:sk-skill [skill-name] asset-only [type] :confirm"
+  - condition: "Need iterative updates"
+    action: "/create:sk-skill [skill-name] full-update :confirm"
+  - condition: "Need another reference"
+    action: "/create:sk-skill [skill-name] reference-only [type] :confirm"
+  - condition: "Need another asset"
+    action: "/create:sk-skill [skill-name] asset-only [type] :confirm"
 
 rules:
   ALWAYS:
-    - "Enforce @write or valid chained handoff"
-    - "Use canonical operation router"
-    - "Load templates before writing"
-    - "Run validation before completion"
-    - "Preserve WHEN TO USE vs SMART ROUTING boundaries"
-    - "Save memory context only through system-spec-kit workflow"
+  - "Enforce @write or valid chained handoff"
+  - "Use canonical operation router"
+  - "Load templates before writing"
+  - "Run validation before completion"
+  - "Preserve WHEN TO USE vs SMART ROUTING boundaries"
+  - "Save memory context only through system-spec-kit workflow"
   NEVER:
-    - "Split setup prompts across turns"
-    - "Infer missing operation/type values"
-    - "Bypass hard gates"
-    - "Create memory files manually"
-    - "Leave stale routing links in SKILL.md"
+  - "Split setup prompts across turns"
+  - "Infer missing operation/type values"
+  - "Bypass hard gates"
+  - "Create memory files manually"
+  - "Leave stale routing links in SKILL.md"

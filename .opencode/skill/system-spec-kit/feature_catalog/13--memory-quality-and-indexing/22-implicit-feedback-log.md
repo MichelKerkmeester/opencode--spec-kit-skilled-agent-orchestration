@@ -7,7 +7,7 @@ description: "Implicit feedback log records implicit feedback signals from searc
 
 ## 1. OVERVIEW
 
-Implicit feedback log records implicit feedback signals from search and save interactions into a shadow-only SQLite table with tiered confidence scoring, enabling offline analysis of search quality without ranking side effects, gated by the `SPECKIT_IMPLICIT_FEEDBACK_LOG` flag.
+Implicit feedback log records implicit feedback signals from search, content-loading, query reformulation, and follow-on tool interactions into a shadow-only SQLite table with tiered confidence scoring, enabling offline analysis of search quality without ranking side effects, gated by the `SPECKIT_IMPLICIT_FEEDBACK_LOG` flag.
 
 Every time a user searches and then takes an action (cites a result, reformulates the query, or uses a follow-on tool), that action says something about whether the results were useful. This feature captures those signals as feedback events in a dedicated SQLite table. The events are shadow-only, meaning they do not influence live rankings. Instead, they provide a dataset for offline analysis of search quality, enabling future features like learned ranking and A/B evaluation.
 
@@ -23,7 +23,7 @@ The `isImplicitFeedbackLogEnabled()` function in both `search-flags.ts` and `fee
 - **Medium**: `query_reformulated` (implicit relevance dissatisfaction)
 - **Weak**: `search_shown`, `same_topic_requery` (passive exposure)
 
-Each event is stored with `type`, `memory_id`, `query_id`, `confidence`, `timestamp`, and optional `session_id`. The `resolveConfidence()` function infers the confidence tier from the event type when not explicitly provided.
+`memory-search.ts` emits `search_shown` for returned hits, emits `result_cited` when `includeContent: true` embeds result content, and delegates query reformulation / same-topic requery detection to `query-flow-tracker.ts`. `context-server.ts` emits `follow_on_tool_use` after successful non-search tool dispatches that occur inside the follow-on window. Each event is stored with `type`, `memory_id`, `query_id`, `confidence`, `timestamp`, and optional `session_id`. The `resolveConfidence()` function infers the confidence tier from the event type when not explicitly provided.
 
 ---
 
@@ -34,6 +34,9 @@ Each event is stored with `type`, `memory_id`, `query_id`, `confidence`, `timest
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/feedback/feedback-ledger.ts` | Lib | Feedback event recording, schema creation, confidence resolution, query API |
+| `mcp_server/lib/feedback/query-flow-tracker.ts` | Lib | Session-scoped query flow tracking plus `result_cited` / `follow_on_tool_use` helpers |
+| `mcp_server/handlers/memory-search.ts` | Handler | Emits `search_shown`, `result_cited`, `query_reformulated`, and `same_topic_requery` signals |
+| `mcp_server/context-server.ts` | Server | Emits `follow_on_tool_use` after non-search tool dispatch |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isImplicitFeedbackLogEnabled()` flag accessor |
 
 ### Tests

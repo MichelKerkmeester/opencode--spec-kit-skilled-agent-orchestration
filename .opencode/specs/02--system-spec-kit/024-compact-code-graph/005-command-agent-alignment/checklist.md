@@ -86,5 +86,5 @@ Template compliance shim anchor for summary.
 ### P2
 - [x] Memory commands fully audited (search, manage, learn) — search uses memory_context/memory_search, manage uses memory_stats/memory_health, learn uses constitutional APIs — all hook-compatible [EVIDENCE: verified in implementation-summary.md]
 - [x] Agent definitions consistent across all 4 runtime directories [EVIDENCE: verified in implementation-summary.md]
-- [x] Auto-save merge logic when both hook and manual save fire — session-stop.ts checks pendingStopSave.cachedAt before saving [EVIDENCE: verified in implementation-summary.md]
+- [x] Auto-save merge logic is documented truthfully without claiming a shipped `pendingStopSave` field [EVIDENCE: implementation summary now records the limitation explicitly]
 - [x] Command help text updated to mention hook integration — SKILL.md has Hook System + Code Graph sections [EVIDENCE: verified in implementation-summary.md]

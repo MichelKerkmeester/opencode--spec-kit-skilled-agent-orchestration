@@ -53,13 +53,13 @@ Together, these systems enable context-aware development with traceability, hard
 |---|---:|---|
 | MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
 | MCP Tools | 40 | 33 memory + 7 code mode tools |
-| Agents | 10 | Base agent definitions in `.opencode/agent/*.md` |
-| Skills | 19 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
-| Commands | 22 | Markdown command entry points in `.opencode/command/` |
+| Agents | 12 | Base agent definitions in `.opencode/agent/*.md` |
+| Skills | 20 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
+| Commands | 21 | Markdown command entry points in `.opencode/command/` (8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility) |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
-| YAML assets | 27 | Command execution YAML files |
+| YAML assets | 29 | Command execution YAML files |
 | Validation rules | 13 | Spec folder validation scripts |
-| Last Verified | 2026-03-27 | Counts refreshed against live repository state |
+| Last Verified | 2026-04-04 | Counts refreshed against live repository state |
 
 <!-- /ANCHOR:overview -->
 
@@ -70,11 +70,11 @@ Together, these systems enable context-aware development with traceability, hard
 
 ```
 .opencode/
-├── agent/           — 10 specialized AI agent definitions for task delegation
-├── command/         — 20 slash command entry points for workflow automation (spec_kit, memory, create, agent_router)
+├── agent/           — 12 specialized AI agent definitions for task delegation
+├── command/         — 21 slash command entry points for workflow automation (spec_kit, memory, create, improve, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
-├── skill/           — 19 domain expertise skill modules with bundled resources
+├── skill/           — 20 domain expertise skill modules with bundled resources
 └── specs/           — Spec folder storage for documentation and memory files
 ```
 
@@ -94,7 +94,7 @@ Together, these systems enable context-aware development with traceability, hard
 ## 3. AGENTS OVERVIEW
 <!-- ANCHOR:agents-overview -->
 
-The framework includes 10 specialized agents plus 2 built-in agents:
+The framework includes 12 specialized agents defined in `.opencode/agent/`:
 
 This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with aligned role definitions.
 
@@ -102,6 +102,7 @@ This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with alig
 |-------|-------------|-------------|
 | `@orchestrate` | Task decomposition and multi-agent coordination | Complex requests needing delegation across multiple agents |
 | `@context` | Codebase exploration and context retrieval (read-only) | ALL file search, pattern discovery and context loading tasks |
+| `@context-prime` | Lightweight session bootstrap agent | Session start, after `/clear`, or after context compaction |
 | `@debug` | Fresh-perspective debugging (4-phase methodology) | After 3+ failed debug attempts, stuck issues |
 | `@deep-research` | Autonomous iterative research loop with externalized state | Deep multi-round investigation, evidence-based analysis |
 | `@deep-review` | Autonomous iterative review loop with findings convergence | Multi-round release and quality audits |
@@ -110,8 +111,7 @@ This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with alig
 | `@write` | Documentation generation (READMEs, guides, skills) | Project-level docs outside spec folders |
 | `@handover` | Session continuation and context preservation | Ending sessions, branching work, team handoffs |
 | `@ultra-think` | Multi-strategy planning architect | Complex planning that benefits from comparing multiple solution strategies |
-| `@general` | General implementation and complex tasks | Default agent for code implementation (built-in) |
-| `@explore` | Fast codebase search and discovery | Quick file/pattern search (built-in) |
+| `@agent-improver` | Proposal-only mutator for bounded agent improvement | Agent evaluation via `/improve:agent` command loop |
 
 **Agent Routing:** Automatic via Gate 2 (`skill_advisor.py`) or manual via `@agent_name` syntax. Current agent state includes model-agnostic `@review`, Haiku-tier `@handover` and Codex profile-based agent frontmatter.
 
@@ -142,6 +142,7 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 | `cli-codex` | Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel code generation, and multi-agent task dispatch (v1.2.0) |
 | `cli-claude-code` | Claude Code CLI orchestration enabling external AIs to invoke Claude Code for deep reasoning, extended thinking, code editing, and structured output (v1.0) |
 | `cli-copilot` | Copilot CLI orchestration for multi-model tasks, cloud delegation, plan mode, autopilot, and repository memory (v1.2.0) |
+| `sk-agent-improver` | Evaluator-first agent improvement with 5-dimension integration-aware scoring, dynamic profiling, deterministic benchmarks, and guarded promotion (v1.0.0) |
 | `sk-deep-research` | Autonomous deep-research loop protocol with iterative investigation and convergence handling (v1.0) |
 | `sk-deep-review` | Autonomous iterative code review with severity-weighted findings, dimension coverage, convergence detection, and release readiness verdicts (v1.0) |
 | `sk-prompt-improver` | Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring (v1.0) |
@@ -157,9 +158,9 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 
 Commands are invoked with `/command_name` syntax in the chat interface.
 
-### Spec Kit Commands (`/spec_kit:*`)
+### Spec Kit Commands (`/spec_kit:*`) — 8 commands
 
-- `/spec_kit:plan`: 7-step planning workflow from research to task breakdown
+- `/spec_kit:plan`: 7-step planning workflow from research to task breakdown (supports `:with-phases` mode)
 - `/spec_kit:implement`: Implementation workflow with quality gates
 - `/spec_kit:complete`: Full 14+ step workflow from research to completion
 - `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking
@@ -167,7 +168,6 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/spec_kit:debug`: Debug delegation with model selection and task dispatch
 - `/spec_kit:handover`: Session continuation with context preservation
 - `/spec_kit:resume`: Resume existing spec folder work with context loading
-- `/spec_kit:plan :with-phases`: Phase decomposition pre-workflow (integrated into plan and complete commands)
 
 ### Memory Commands (`/memory:*`)
 
@@ -176,7 +176,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/memory:learn`: Constitutional memory manager for durable always-surface rules
 - `/memory:search`: Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, evaluation
 
-### Create Commands (`/create:*`)
+### Create Commands (`/create:*`) — 6 commands
 
 - `/create:agent`: Generate new agent definition file
 - `/create:changelog`: Generate a changelog entry from recent work
@@ -184,9 +184,13 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/create:folder_readme`: Unified documentation command (`readme` and `install` operations)
 - `/create:feature-catalog`: Rooted feature catalog package creation/update
 - `/create:testing-playbook`: Rooted manual testing playbook package creation/update
-- `/create:prompt`: Create or improve prompts with framework-based guidance
 
-### Utility Commands
+### Improve Commands (`/improve:*`) — 2 commands
+
+- `/improve:agent`: Evaluate and improve any agent across 5 dimensions with deterministic scoring and bounded loop
+- `/improve:prompt`: Create or improve prompts with 7 frameworks, DEPTH thinking and CLEAR scoring
+
+### Utility Commands — 1 command
 
 - `/agent_router`: Interactive agent selection for complex tasks
 

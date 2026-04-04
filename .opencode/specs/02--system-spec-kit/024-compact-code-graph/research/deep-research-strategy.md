@@ -108,6 +108,17 @@ Evaluate Codex-CLI-Compact (Dual-Graph) for upgrading our Spec Kit Memory MCP sy
 - Outcome: Segment 6 design claims were truth-synced against live code; the final roadmap now puts hardening ahead of transparent auto-enrichment, the cross-runtime startup surfaces were clarified per runtime, and the locally available P1 verification set ended with 6 confirmed active items and 1 false positive.
 - Stop reason: Final synthesis completed at iteration 095. The local workspace contained direct Segment 7 artifacts for 076-089 and 091 plus the canonical state log; expected standalone 090/092/093/094 markdown files were absent and were reconstructed from the available evidence.
 
+### Segment 9 (iterations 111-120): OpenCode Prompt-Schema Regression
+- Status: COMPLETE
+- Method: direct source analysis of the live packet-030 plugin, external `opencode-lcm` comparison, and in-repo OpenCode plugin pattern comparison
+- Focus:
+  1. isolate the current invalid-prompt failure boundary
+  2. determine whether startup-hook flakiness is a separate bug or a downstream symptom
+  3. compare our `messages.transform` implementation with `opencode-lcm`
+  4. define the safest rollback/reintroduction path for packet 030
+- Outcome: the current highest-confidence root cause is the local `experimental.chat.messages.transform` synthetic-part mutation, not the subprocess bridge or the string-only startup/compaction surfaces. The best next action is to disable `messages.transform`, keep startup + compaction injection, and only reintroduce current-turn message enrichment after stronger schema validation exists.
+- Stop reason: 10 targeted iterations completed with a stable fix recommendation and a clear runtime-contract test gap.
+
 ---
 
 ## 7. WHAT WORKED
@@ -224,3 +235,16 @@ RESEARCH COMPLETE (iteration 095). All 16 questions remain answered across 7 seg
 ## 10p. NEXT FOCUS (iteration 093)
 - Use this revised phase ordering as the basis for the final synthesis: stabilization path (Phases 1-3) first, deferred feature path (Phase 4) second.
 - Keep the final parity matrix aligned to verified runtime surfaces: shared docs/config first, server-side priming only as an explicitly deferred enhancement.
+
+## 10q. WHAT WORKED (iteration 120)
+- Comparing the live packet-030 plugin directly against `opencode-lcm` exposed the real difference: the external plugin centralizes `Part[]` mutation in a schema-aware store path, while our local plugin fabricates synthetic parts inline.
+- Cross-checking the archived working-memory plugin gave a second in-repo OpenCode pattern that uses `messages.transform` conservatively by mutating existing host-owned parts instead of appending new ones.
+- Re-reading the current Vitest file alongside the live runtime symptom made the verification gap obvious: the tests only assert that "something got pushed," not that the resulting `messages` payload remains host-valid.
+
+## 10r. WHAT FAILED (iteration 120)
+- The local workspace still does not expose the live OpenCode SDK schema directly, so the research could not prove the exact offending field inside the synthetic part object from source alone.
+- The existing state log was already stale relative to iterations 106-110, so Segment 9 had to continue from the visible iteration files and synthesis rather than a fully current JSONL history.
+
+## 10s. NEXT FOCUS (iteration 120)
+- Implementation should now proceed narrowly inside packet 030: disable or gate `experimental.chat.messages.transform`, verify OpenCode stability, then add a stronger runtime-contract test before any message-time enrichment returns.
+- If current-turn enrichment is still required after stabilization, evaluate mutation of existing host-owned parts before revisiting synthetic-part insertion.

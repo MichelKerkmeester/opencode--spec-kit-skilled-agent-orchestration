@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Detects the active AI runtime and its hook policy.
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /** Supported runtime identifiers */
@@ -40,7 +40,8 @@ export function detectRuntime(): RuntimeInfo {
 
   // Copilot CLI: sets specific env patterns
   if (env.COPILOT_CLI === '1' || env.GITHUB_COPILOT_TOKEN) {
-    return { runtime: 'copilot-cli', hookPolicy: 'disabled_by_scope' };
+    const hookPolicy = detectCopilotHookPolicy();
+    return { runtime: 'copilot-cli', hookPolicy };
   }
 
   // Gemini CLI: sets specific env patterns
@@ -70,6 +71,37 @@ function detectGeminiHookPolicy(): HookPolicy {
     if (hasHooksBlock) {
       return 'enabled';
     }
+    return 'disabled_by_scope';
+  } catch {
+    return 'unavailable';
+  }
+}
+
+/**
+ * Detect whether Copilot CLI has a repo-local sessionStart hook configured.
+ * Checks .github/hooks/*.json for a sessionStart hook entry.
+ */
+function detectCopilotHookPolicy(): HookPolicy {
+  try {
+    const hooksDir = resolve(process.cwd(), '.github', 'hooks');
+    if (!existsSync(hooksDir)) return 'disabled_by_scope';
+
+    const hookFiles = readdirSync(hooksDir).filter((name) => name.endsWith('.json'));
+    if (hookFiles.length === 0) return 'disabled_by_scope';
+
+    for (const fileName of hookFiles) {
+      try {
+        const raw = readFileSync(resolve(hooksDir, fileName), 'utf-8');
+        const parsed = JSON.parse(raw);
+        const sessionStartHooks = parsed?.hooks?.sessionStart;
+        if (Array.isArray(sessionStartHooks) && sessionStartHooks.length > 0) {
+          return 'enabled';
+        }
+      } catch {
+        // Ignore malformed or unrelated hook files and keep scanning.
+      }
+    }
+
     return 'disabled_by_scope';
   } catch {
     return 'unavailable';

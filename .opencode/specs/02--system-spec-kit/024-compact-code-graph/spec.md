@@ -306,21 +306,21 @@ Deep research (95 iterations, segments 1-7) and deep review (30 iterations acros
 | 44 | Fix seed-resolver silent DB failure → placeholder anchor | P2 | 016 | seed-resolver.ts | F014 |
 | 45 | Fix spec/settings SessionStart scope mismatch | P2 | 016 | spec.md, settings.local.json | F030 |
 
-**Evidence base:** Research iterations 056-095, review iterations 001-030. Cross-validated by 3 AI systems (Claude Opus, GPT-5.4 via Codex CLI, GPT-5.4 via Copilot CLI). Review verdict: CONDITIONAL (0 P0, 16 P1, 16 P2 active findings).
+**Evidence base:** Research iterations 056-095, review iterations 001-030. Cross-validated by 3 AI systems (Claude Opus, GPT-5.4 via Codex CLI, GPT-5.4 via Copilot CLI). Review verdict during remediation intake was CONDITIONAL (0 P0, 16 P1, 16 P2 active findings), and later closure phases 029-030 resolved the active packet-level review drift.
 
 <!-- ANCHOR:scope -->
 ### Out of Scope
 
 - Dual-Graph installation or graperoot integration — rejected per research (DR-001)
 - Token tracking dashboard UI — future work
-- Copilot/Gemini native hook adapters — deferred until runtime SDK changes
+- Additional runtime-specific adapter expansion beyond delivered Gemini work and later Copilot startup/runtime parity follow-through
 <!-- /ANCHOR:scope -->
 
 ---
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-This parent packet tracks **29 phase folders (001-029)**. Each phase is independently executable and validated.
+This parent packet tracks **30 direct phase folders (001-030)**. Each phase is independently executable and validated.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
@@ -353,6 +353,7 @@ This parent packet tracks **29 phase folders (001-029)**. Each phase is independ
 | 027 | `027-opencode-structural-priming/` | Non-hook structural bootstrap contract for OpenCode-first flows | Complete |
 | 028 | `028-startup-highlights-remediation/` | Startup highlights quality-gate remediation | Complete |
 | 029 | `029-review-remediation/` | Review-finding remediation and truth-sync closure | Complete |
+| 030 | `030-opencode-graph-plugin/` | Startup-surface, transport, and code-graph parity follow-on packet | Complete |
 
 ### Phase Transition Rules
 
@@ -370,6 +371,7 @@ This parent packet tracks **29 phase folders (001-029)**. Each phase is independ
 | 026-session-start-injection-debug | 027-opencode-structural-priming | Non-hook structural bootstrap contract narrowed from startup injection work | Phase 027 spec/plan/checklist alignment |
 | 027-opencode-structural-priming | 028-startup-highlights-remediation | Startup highlights retained only if signal quality can be proven | Phase 028 spec/plan/checklist alignment |
 | 028-startup-highlights-remediation | 029-review-remediation | Active review findings remediated and packet truth-sync restored without reopening sibling phase work | Phase 029 checklist + focused post-remediation review sweep |
+| 029-review-remediation | 030-opencode-graph-plugin | Startup-surface and code-graph parity work split into a dedicated follow-on packet with its own child phases | Phase 030 packet implementation summary + recursive validation |
 <!-- /ANCHOR:phase-map -->
 
 ### Problem Statement

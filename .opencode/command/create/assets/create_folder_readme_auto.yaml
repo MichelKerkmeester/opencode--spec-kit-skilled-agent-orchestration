@@ -8,7 +8,7 @@
 #
 # Note: Documentation files should include clear section anchors and concise metadata.
 # Use YAML frontmatter (title, description, trigger_phrases) for consistency.
-# ───────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────
 role: Expert Documentation Creator using sk-doc skill
 purpose: Create comprehensive README files and AI-first installation guides with proper structure and AI-optimization
 action: Generate scannable, well-organized documentation (README or Install Guide) with table of contents
@@ -48,6 +48,7 @@ action: Generate scannable, well-organized documentation (README or Install Guid
 # apply to BOTH operations and are defined once above the
 # operation-specific sections.
 # ─────────────────────────────────────────────────────────────────
+
 operation_routing:
   readme:
     trigger: "/create:folder_readme [path]"
@@ -65,6 +66,9 @@ operating_mode:
   approvals: none
   tracking: progressive_task_checklists
   validation: continuous_self_validation
+  description: |
+    Executes the 6-step documentation workflow without step-by-step approval.
+    Pauses only if confidence drops below threshold or target path is ambiguous.
 
 development_philosophy:
   principle: "Question-answering format maximizes AI usefulness"
@@ -113,46 +117,46 @@ confidence_framework:
 request_analysis_framework:
   code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:
-    - "Parse carefully: What is ACTUALLY requested?"
-    - "Gather Context: Scan directory structure"
-    - "Identify Approach: SIMPLEST solution that works"
-    - "Validate Choice: Follow patterns, maintainable"
-    - "Clarify If Needed: If <80% confidence, ask"
-    - "Scope Check: Solving ONLY what was asked?"
-    - "Execute: Implement with minimal complexity"
+  - "Parse carefully: What is ACTUALLY requested?"
+  - "Gather Context: Scan directory structure"
+  - "Identify Approach: SIMPLEST solution that works"
+  - "Validate Choice: Follow patterns, maintainable"
+  - "Clarify If Needed: If <80% confidence, ask"
+  - "Scope Check: Solving ONLY what was asked?"
+  - "Execute: Implement with minimal complexity"
 
   pre_change_validation:
     readme:
       items:
-        - "Target path confirmed?"
-        - "README type determined? (project/component/feature/skill)"
-        - "Key features identified?"
-        - "Structure template selected?"
-        - "Confidence >=80%? (if not: ask)"
-      stop_conditions: ["Any item unchecked", "Path not found"]
+      - "Target path confirmed?"
+      - "README type determined? (project/component/feature/skill)"
+      - "Key features identified?"
+      - "Structure template selected?"
+      - "Confidence >=80%? (if not: ask)"
+      stop_conditions: [ "Any item unchecked", "Path not found" ]
       stop_action: "STOP and address before proceeding"
     install_guide:
       items:
-        - "Project name confirmed?"
-        - "Type prefix determined? (MCP/CLI/PLUGIN/SDK/SERVICE)"
-        - "Platforms identified?"
-        - "Prerequisites discovered?"
-        - "Confidence >=80%? (if not: ask)"
+      - "Project name confirmed?"
+      - "Type prefix determined? (MCP/CLI/PLUGIN/SDK/SERVICE)"
+      - "Platforms identified?"
+      - "Prerequisites discovered?"
+      - "Confidence >=80%? (if not: ask)"
       stop_conditions: [ "Any item unchecked", "Unknown project type" ]
       stop_action: "STOP and address before proceeding"
 
 input_contract:
   required:
-    - write_agent_verified
-    - operation
-    - execution_mode
+  - write_agent_verified
+  - operation
+  - execution_mode
   optional:
-    - target_path
-    - project_name
-    - readme_type
-    - install_guide_type_prefix
-    - platforms
-    - spec_path
+  - target_path
+  - project_name
+  - readme_type
+  - install_guide_type_prefix
+  - platforms
+  - spec_path
 
 # ─────────────────────────────────────────────────────────────────
 # CHECKPOINT OPTIONS
@@ -283,19 +287,18 @@ quality_standards:
 
 workflow_overview:
   steps:
-    - id: step_1_request_analysis
-      purpose: "Normalize inputs and resolve the target operation"
-    - id: step_2_content_discovery
-      purpose: "Gather README or install-guide source context"
-    - id: step_3_structure_selection
-      purpose: "Choose the correct template and section contract"
-    - id: step_4_content_generation
-      purpose: "Generate the document content for the selected operation"
-    - id: step_5_validation
-      purpose: "Run structure and quality validation"
-    - id: step_6_save_context
-      purpose: "Persist spec context and emit completion status"
-
+  - id: step_1_request_analysis
+    purpose: "Normalize inputs and resolve the target operation"
+  - id: step_2_content_discovery
+    purpose: "Gather README or install-guide source context"
+  - id: step_3_structure_selection
+    purpose: "Choose the correct template and section contract"
+  - id: step_4_content_generation
+    purpose: "Generate the document content for the selected operation"
+  - id: step_5_validation
+    purpose: "Run structure and quality validation"
+  - id: step_6_save_context
+    purpose: "Persist spec context and emit completion status"
 
 # ════════════════════════════════════════════════════════════════
 # OPERATION: README
@@ -667,29 +670,29 @@ readme_workflow:
       format: "<!-- ANCHOR:ID --> content <!-- /ANCHOR:ID -->"
       case: "UPPERCASE recommended for visibility"
       required_sections:
-        - context_type: "general"
-          section: "Session summary with README creation outcomes"
-          example_id: "GENERAL-SESSION-SUMMARY-{spec#}"
-          example: |
-            <!-- ANCHOR:GENERAL-SESSION-SUMMARY-{spec#} -->
-            ## Session Summary
-            Created [type] README at [path]...
-            <!-- /ANCHOR:GENERAL-SESSION-SUMMARY-{spec#} -->
-        - context_type: "decision"
-          section: "Key decisions made during README creation"
-          example_id: "DECISION-README-STRUCTURE-{spec#}"
-          example: |
-            <!-- ANCHOR:DECISION-README-STRUCTURE-{spec#} -->
-            ## Key Decisions
-            - Chose structure X because...
-            <!-- /ANCHOR:DECISION-README-STRUCTURE-{spec#} -->
+      - context_type: "general"
+        section: "Session summary with README creation outcomes"
+        example_id: "GENERAL-SESSION-SUMMARY-{spec#}"
+        example: |
+          <!-- ANCHOR:GENERAL-SESSION-SUMMARY-{spec#} -->
+          ## Session Summary
+          Created [type] README at [path]...
+          <!-- /ANCHOR:GENERAL-SESSION-SUMMARY-{spec#} -->
+      - context_type: "decision"
+        section: "Key decisions made during README creation"
+        example_id: "DECISION-README-STRUCTURE-{spec#}"
+        example: |
+          <!-- ANCHOR:DECISION-README-STRUCTURE-{spec#} -->
+          ## Key Decisions
+          - Chose structure X because...
+          <!-- /ANCHOR:DECISION-README-STRUCTURE-{spec#} -->
       optional_sections:
-        - context_type: "implementation"
-          section: "Structure and sections chosen"
-          example_id: "IMPLEMENTATION-STRUCTURE-{spec#}"
-        - context_type: "research"
-          section: "Content sources and references"
-          example_id: "RESEARCH-SOURCES-{spec#}"
+      - context_type: "implementation"
+        section: "Structure and sections chosen"
+        example_id: "IMPLEMENTATION-STRUCTURE-{spec#}"
+      - context_type: "research"
+        section: "Content sources and references"
+        example_id: "RESEARCH-SOURCES-{spec#}"
       benefit: "93% token savings on anchor-based retrieval"
       reference: "See /memory:save Step 3 for full anchor documentation"
 
@@ -758,7 +761,6 @@ readme_completion_report:
     - Test all code examples
 
     STATUS=OK PATH=[readme-path]
-
 
 # ════════════════════════════════════════════════════════════════
 # OPERATION: INSTALL GUIDE
@@ -1513,7 +1515,6 @@ install_guide_completion_report:
 
     STATUS=OK PATH=[output_path]
 
-
 # ════════════════════════════════════════════════════════════════
 # SHARED: ERROR RECOVERY
 # ════════════════════════════════════════════════════════════════
@@ -1530,15 +1531,15 @@ error_recovery:
   path_not_exist:
     operation: readme
     action: "Create directory or choose different path"
-    options: ["Create directory", "Choose different path", "Cancel"]
+    options: [ "Create directory", "Choose different path", "Cancel" ]
   readme_exists:
     operation: readme
     action: "Offer update, backup, or new location"
-    options: ["Overwrite", "Backup and overwrite", "Merge", "Cancel"]
+    options: [ "Overwrite", "Backup and overwrite", "Merge", "Cancel" ]
   no_project_info:
     operation: readme
     action: "Prompt for manual input"
-    questions: ["Project name?", "Key features?", "Target audience?"]
+    questions: [ "Project name?", "Key features?", "Target audience?" ]
   user_rejects_approach:
     operation: readme
     action: "Return to planning, gather alternative requirements"
@@ -1585,27 +1586,27 @@ termination:
     readme: "README creation workflow complete."
     install_guide: "Installation guide creation workflow complete."
   next_steps:
-    - condition: "README needs screenshots"
-      action: "Add visual assets to enhance documentation"
-      operation: readme
-    - condition: "Need install guide"
-      action: "Run /create:folder_readme install [project-name]"
-      operation: readme
-    - condition: "Want to save context"
-      action: "Run /memory:save"
-      operation: both
-    - condition: "Create another README"
-      action: "Run /create:folder_readme [path]"
-      operation: readme
-    - condition: "Guide needs testing"
-      action: "Test AI-First prompt with real installation"
-      operation: install_guide
-    - condition: "Need related documentation"
-      action: "Run /create:folder_readme for project README"
-      operation: install_guide
-    - condition: "Context should be saved"
-      action: "Run /memory:save (if spec folder exists)"
-      operation: install_guide
+  - condition: "README needs screenshots"
+    action: "Add visual assets to enhance documentation"
+    operation: readme
+  - condition: "Need install guide"
+    action: "Run /create:folder_readme install [project-name]"
+    operation: readme
+  - condition: "Want to save context"
+    action: "Run /memory:save"
+    operation: both
+  - condition: "Create another README"
+    action: "Run /create:folder_readme [path]"
+    operation: readme
+  - condition: "Guide needs testing"
+    action: "Test AI-First prompt with real installation"
+    operation: install_guide
+  - condition: "Need related documentation"
+    action: "Run /create:folder_readme for project README"
+    operation: install_guide
+  - condition: "Context should be saved"
+    action: "Run /memory:save (if spec folder exists)"
+    operation: install_guide
 
 # ─────────────────────────────────────────────────────────────────
 # RULES (Combined — README + Install Guide)
@@ -1626,7 +1627,6 @@ rules:
   - "Create documents without loading templates first"
   - "Leave placeholder text in final output"
   - "Create documentation without user-confirmed path/output"
-
   # ── README-specific rules ────────────────────────────────────
   readme_ALWAYS:
   - "Load readme_template.md before creating content"
@@ -1636,7 +1636,6 @@ rules:
   readme_NEVER:
   - "Omit troubleshooting section"
   - "Create README without user-confirmed path"
-
   # ── Install-guide-specific rules ─────────────────────────────
   install_guide_ALWAYS:
   - include_ai_first_section

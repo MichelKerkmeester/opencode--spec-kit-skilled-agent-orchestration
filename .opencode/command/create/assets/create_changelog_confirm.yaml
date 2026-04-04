@@ -31,6 +31,9 @@ operating_mode:
   approvals: step_by_step
   tracking: progressive_task_checklists
   validation: checkpoint_based
+  description: |
+    Executes the 7-step changelog creation workflow with approval gates at each checkpoint.
+    User confirms, reviews, or modifies at each step before the workflow advances.
 
 development_philosophy:
   principle: "Detect accurately, format consistently"

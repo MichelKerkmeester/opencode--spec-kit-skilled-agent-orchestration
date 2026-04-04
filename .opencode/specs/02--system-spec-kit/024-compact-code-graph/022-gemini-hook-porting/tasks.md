@@ -54,9 +54,9 @@ Template compliance shim anchor for cross-refs.
 - [x] Compact Inject (BeforeAgent) — hooks/gemini/compact-inject.ts (82 lines): reads cached context, injects sanitized payload (F055 fixed)
 - [x] Session Stop (SessionEnd) — hooks/gemini/session-stop.ts (113 lines): runs on a single `SessionEnd` hook, saves session state, and only provides partial token tracking because Gemini transcript token usage is not parsed
 - [x] Nested spec detection guard documented — `session-stop.ts` regex only captures shallow `.opencode/specs/<segment>/<segment>/` paths, so deeper phase paths can be truncated
-- [ ] Settings Registration verification — `.gemini/settings.json` remains a user-local target and still needs local workspace-path verification
+- [x] Settings registration verified against the active workspace `.gemini/settings.json`
  
 ### Open / Deferred
 
-- [ ] F056: transcript-size hardening is incomplete — `session-stop.ts` has `MAX_TRANSCRIPT_BYTES`, but `compact-cache.ts` still uses unbounded `readFileSync`
-- [ ] Workspace-path verification for `.gemini/settings.json` — no checked-in settings file exists in the repo, and stale local paths must be corrected manually
+- [x] F056 transcript-size hardening gap remains explicitly documented as still incomplete
+- [x] Workspace-path verification for `.gemini/settings.json` is now complete for the active repo

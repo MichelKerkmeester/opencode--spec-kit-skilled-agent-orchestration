@@ -6,7 +6,7 @@
 
 ## 024-compact-code-graph — 2026-04-02
 
-Long AI coding sessions in this repo no longer depend on the user re-explaining context after compaction, restart, or runtime switches. This packet grew from the original 25-phase delivery into a 28-phase program that now covers Claude hook rescue, hookless auto-priming, structural code-graph retrieval, CocoIndex bridging, cross-runtime instruction parity, startup-orientation quality fixes, and the follow-on review/remediation work that brought the packet back to a clean validation state. The end result is a context-preservation stack that can recover active work, point the AI at the right retrieval tools, and surface structural code context without pretending that every intermediate phase shipped as fully complete.
+Long AI coding sessions in this repo no longer depend on the user re-explaining context after compaction, restart, or runtime switches. This packet grew from the original 25-phase delivery into a 30-phase program that now covers Claude hook rescue, hookless bootstrap recovery, structural code-graph retrieval, CocoIndex bridging, cross-runtime instruction parity, startup-orientation quality fixes, the packet-030 OpenCode transport/startup-parity extension, and the follow-on review/remediation work that brought the packet back to a clean validation state. The end result is a context-preservation stack that can recover active work, point the AI at the right retrieval tools, and surface structural code context without pretending that every intermediate phase shipped as fully complete.
 
 > Spec folder: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/` (Level 3)
 
@@ -50,13 +50,13 @@ These are the new capabilities the packet added across the runtime, retrieval, a
 
 **Problem:** Claude hooks covered only one runtime family. Other runtimes still depended on the AI remembering to prime itself manually.
 
-**Fix:** The packet added MCP first-call priming, `session_resume`, `session_health`, and then `session_bootstrap` so hookless runtimes can still recover with a single canonical path. Later phases also introduced structural bootstrap contracts and startup briefs for OpenCode-style flows.
+**Fix:** The packet added MCP first-call priming groundwork, `session_resume`, `session_health`, and then `session_bootstrap` so non-hook or degraded-hook runtimes can still recover with a single canonical path. Later phases introduced structural bootstrap contracts, freshness-aware startup briefs, the packet-030 OpenCode transport layer, and a repo-local Copilot startup wrapper so the public recovery story no longer depends on a single universal auto-prime mechanism.
 
-### Startup orientation follow-ons
+### Startup orientation and transport follow-ons
 
 **Problem:** The first rollout of startup structural highlights was real but noisy. Duplicates, vendored code, and the wrong centrality heuristic made the output harder to trust than the surrounding recovery guidance.
 
-**Fix:** Follow-on phases `026-028` repaired that experience with shared startup brief builders, an explicit structural bootstrap contract, and a final SQL remediation pass that deduplicates symbols, excludes non-project paths, and ranks by incoming callers instead of the noisiest outgoing callers. The review issue here was not a token-budget increase from 100 to 2000. It was that the startup highlights were consuming roughly 100 tokens out of the existing 2000-token session-prime budget while delivering weak signal, so the fix focused on quality, not a bigger budget.
+**Fix:** Follow-on phases `026-028` repaired that experience with shared startup brief builders, an explicit structural bootstrap contract, and a final SQL remediation pass that deduplicates symbols, excludes non-project paths, and ranks by incoming callers instead of the noisiest outgoing callers. Packet `030-opencode-graph-plugin` then extended the same startup surface into OpenCode transport digests, bounded structural-read freshness handling, and repo-local Copilot startup wiring. The review issue here was not a token-budget increase from 100 to 2000. It was that the startup highlights were consuming roughly 100 tokens out of the existing 2000-token session-prime budget while delivering weak signal, so the fix focused on quality, not a bigger budget.
 
 ---
 

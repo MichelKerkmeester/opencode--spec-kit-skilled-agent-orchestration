@@ -1,0 +1,17 @@
+{
+  "profileId": "context-prime",
+  "runsCompared": [
+    "run-001",
+    "run-002"
+  ],
+  "aggregateScores": [
+    100,
+    100
+  ],
+  "recommendationPairs": [
+    "benchmark-pass",
+    "benchmark-pass"
+  ],
+  "passed": true,
+  "tolerance": 0
+}

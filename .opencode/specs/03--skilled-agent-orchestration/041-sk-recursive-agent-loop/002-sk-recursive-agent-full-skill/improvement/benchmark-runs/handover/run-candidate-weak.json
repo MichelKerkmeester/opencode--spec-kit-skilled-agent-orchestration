@@ -1,0 +1,86 @@
+{
+  "status": "benchmark-complete",
+  "profileId": "handover",
+  "family": "session-handover",
+  "target": ".opencode/agent/handover.md",
+  "label": "handover-candidate-weak",
+  "aggregateScore": 69,
+  "maxScore": 100,
+  "recommendation": "benchmark-fail",
+  "thresholds": {
+    "requiredAggregateScore": 85,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0
+  },
+  "fixtures": [
+    {
+      "id": "completion-ready",
+      "outputPath": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/candidate-weak/completion-ready.md",
+      "score": 67,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "## 5. Session Notes"
+      ],
+      "missingPatterns": [
+        "\\[x\\] Memory file saved with current context",
+        "\\[x\\] This handover document is complete"
+      ],
+      "forbiddenMatches": [
+        "\\[actual extracted value\\]"
+      ],
+      "failureModes": [
+        "missing-headings",
+        "missing-required-patterns",
+        "forbidden-patterns"
+      ]
+    },
+    {
+      "id": "implementation-progress",
+      "outputPath": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/candidate-weak/implementation-progress.md",
+      "score": 58,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "## 3. For Next Session",
+        "## 4. Validation Checklist"
+      ],
+      "missingPatterns": [
+        "\\*\\*Phase Completed:\\*\\* Implementation",
+        "spec\\.md"
+      ],
+      "forbiddenMatches": [
+        "\\[YOUR_VALUE_HERE",
+        "TBD"
+      ],
+      "failureModes": [
+        "missing-headings",
+        "missing-required-patterns",
+        "forbidden-patterns"
+      ]
+    },
+    {
+      "id": "verification-blocker",
+      "outputPath": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/candidate-weak/verification-blocker.md",
+      "score": 82,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "## 3. For Next Session"
+      ],
+      "missingPatterns": [],
+      "forbiddenMatches": [
+        "placeholder"
+      ],
+      "failureModes": [
+        "missing-headings",
+        "forbidden-patterns"
+      ]
+    }
+  ],
+  "failureModes": [
+    "forbidden-patterns",
+    "missing-headings",
+    "missing-required-patterns"
+  ]
+}

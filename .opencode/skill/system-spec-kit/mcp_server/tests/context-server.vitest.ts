@@ -445,6 +445,7 @@ describe('Context Server', () => {
       toolCacheClearMock: ReturnType<typeof vi.fn>
       toolCacheShutdownMock: ReturnType<typeof vi.fn>
       triggerMatcherClearMock: ReturnType<typeof vi.fn>
+      logFollowOnToolUseMock: ReturnType<typeof vi.fn>
       transportCloseMock: ReturnType<typeof vi.fn>
       fileWatcherCloseMock: ReturnType<typeof vi.fn>
       callToolHandler: (request: unknown, extra: unknown) => Promise<unknown>
@@ -519,6 +520,7 @@ describe('Context Server', () => {
         }
       })
       const triggerMatcherClearMock = vi.fn()
+      const logFollowOnToolUseMock = vi.fn()
       const statsData = options?.memoryStatsData ?? {}
       const byStatus = statsData.byStatus ?? {}
       const handleMemoryStatsMock = vi.fn(async () => ({
@@ -621,6 +623,7 @@ describe('Context Server', () => {
       vi.doMock('../utils', () => ({
         validateInputLengths: vi.fn(),
         validateToolInputSchema: vi.fn(),
+        requireDb: vi.fn(() => databaseMock),
       }))
 
       vi.doMock('../hooks', () => ({
@@ -729,6 +732,9 @@ describe('Context Server', () => {
         shutdown: vi.fn(),
       }))
       vi.doMock('../lib/feedback/batch-learning', () => ({ runBatchLearning: vi.fn(async () => ({ processed: 0 })) }))
+      vi.doMock('../lib/feedback/query-flow-tracker', () => ({
+        logFollowOnToolUse: logFollowOnToolUseMock,
+      }))
       vi.doMock('../lib/utils/canonical-path', () => ({ getCanonicalPathKey: vi.fn((p: string) => p) }))
       vi.doMock('../lib/utils/cleanup-helpers', () => ({
         runCleanupStep: vi.fn((label: string, fn: () => void) => {
@@ -853,6 +859,7 @@ describe('Context Server', () => {
         toolCacheClearMock,
         toolCacheShutdownMock,
         triggerMatcherClearMock,
+        logFollowOnToolUseMock,
         transportCloseMock,
         fileWatcherCloseMock,
         callToolHandler: callToolHandler as (request: unknown, extra: unknown) => Promise<unknown>,
@@ -1026,6 +1033,43 @@ describe('Context Server', () => {
       expect(autoSurfaceMemoriesMock).not.toHaveBeenCalled()
       expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
       expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
+    })
+
+    it('REQ-014: follow_on_tool_use uses the sticky session fallback for sessionless tools', async () => {
+      const previousThreadId = process.env.CODEX_THREAD_ID
+      delete process.env.CODEX_THREAD_ID
+
+      try {
+        const { dispatchToolMock, callToolHandler, logFollowOnToolUseMock } = await loadRuntimeHarness()
+        dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
+
+        await callToolHandler(
+          {
+            id: 'call-follow-1',
+            params: {
+              name: 'memory_search',
+              arguments: { query: 'recent issues', sessionId: 'sess-sticky-1' },
+            },
+          },
+          {},
+        )
+
+        expect(logFollowOnToolUseMock).not.toHaveBeenCalled()
+
+        await callToolHandler(
+          { id: 'call-follow-2', params: { name: 'memory_stats', arguments: {} } },
+          {},
+        )
+
+        expect(logFollowOnToolUseMock).toHaveBeenCalledTimes(1)
+        expect(logFollowOnToolUseMock).toHaveBeenCalledWith(expect.any(Object), 'sess-sticky-1')
+      } finally {
+        if (previousThreadId === undefined) {
+          delete process.env.CODEX_THREAD_ID
+        } else {
+          process.env.CODEX_THREAD_ID = previousThreadId
+        }
+      }
     })
 
     it('clears in-process caches when the DB is reinitialized externally before dispatch', async () => {

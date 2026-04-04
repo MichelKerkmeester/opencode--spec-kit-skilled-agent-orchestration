@@ -55,7 +55,7 @@ These checklist items preserve the original Phase 006 hook-documentation deliver
 - [x] Update `.opencode/skill/system-spec-kit/SKILL.md` with Hook System section — lifecycle, registration (`.claude/settings.local.json`), script locations, design principle (hooks = transport)
 - [x] Update `.opencode/skill/system-spec-kit/SKILL.md` with Code Graph section — CocoIndex (semantic) + Code Graph (structural) + Memory (session) complementary architecture
 - [x] Update `.opencode/skill/system-spec-kit/ARCHITECTURE.md` with hook architecture diagram — Mermaid diagram section added covering PreCompact -> cache -> SessionStart -> inject lifecycle
-- [x] Update `.opencode/skill/system-spec-kit/ARCHITECTURE.md` with token tracking data flow — current wording should use `session-stop.ts`, `pendingStopSave`, and JSON hook-state files; dedicated runtime adapter docs remain a future gap
+- [x] Update token-tracking data flow docs with the current hook-state reality — avoid stale `pendingStopSave` claims and keep JSON hook-state behavior accurate
 - [x] Capture root `README.md` context preservation status accurately — not delivered in Phase 006 and tracked as a future gap
 - [x] Update `.opencode/skill/system-spec-kit/README.md` with hook features in feature list
 - [x] Update `.opencode/skill/README.md` with revised system-spec-kit description

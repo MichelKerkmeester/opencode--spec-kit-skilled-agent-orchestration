@@ -6,7 +6,7 @@
 
 ## 016-cross-runtime-ux — 2026-03-31
 
-The code graph and memory system worked well on Claude Code (which has full hook support), but the other four runtimes -- OpenCode, Codex CLI, Copilot CLI, and Gemini CLI -- had no automatic way to trigger code graph loading or memory context recovery on session start. This meant that roughly half the AI assistants supported by the project started every session blind, without access to the code graph or prior conversation context. This phase closes that gap by adding Session Start Protocol instructions to all five runtimes' instruction files, making seed resolution smarter (tolerating small line shifts instead of failing), auto-refreshing the code graph index when you switch git branches, fixing a silent failure in the seed resolver that masked real errors, consolidating duplicated recovery documentation into a single source of truth, and correcting checklist items that overstated what earlier phases had actually shipped.
+At the time this phase landed, the code graph and memory system worked well on Claude Code, but the other runtime surfaces still depended mostly on instruction-layer recovery rather than shared startup banners, transport digests, or runtime hooks. This phase advanced that instruction-layer parity by adding Session Start Protocol guidance, making seed resolution smarter (tolerating small line shifts instead of failing), tightening branch-switch freshness behavior, fixing a silent failure in the seed resolver, consolidating duplicated recovery documentation, and correcting checklist items that overstated what earlier phases had actually shipped. Later phases superseded the startup story with Gemini hook wiring, Codex bootstrap parity, OpenCode transport digests, and repo-local Copilot startup wiring.
 
 > Spec folder: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/016-cross-runtime-ux/`
 
@@ -68,9 +68,9 @@ The code graph and memory system worked well on Claude Code (which has full hook
 
 ### Cross-runtime Session Start Protocol
 
-**Problem:** Only Claude Code had automatic hooks that triggered code graph loading and memory context recovery when a session started. The other four runtimes -- OpenCode, Codex CLI, Copilot CLI, and Gemini CLI -- relied entirely on users remembering to manually invoke these tools at the beginning of every conversation. In practice, users rarely did, which meant these runtimes started each session without access to the code graph or any prior conversation context. Context preservation parity across the five runtimes sat at roughly 50-60%.
+**Problem:** At this point in the packet, only Claude had a true automatic startup path. The other runtimes still relied on instruction-layer guidance or manual recovery, which meant they frequently started sessions without code graph or prior-session context.
 
-**Fix:** Added a Session Start Protocol section to every runtime's instruction file. Codex CLI (`CODEX.md`) now calls `memory_context()` with a resume profile plus `code_graph_status()` on its first turn. Copilot CLI and Gemini CLI (`AGENTS.md`) received code graph auto-trigger instructions. OpenCode's `context.md` integrates graph health checks into its exploration workflow with a tool reference table. Gemini CLI's `GEMINI.md` shares the protocol via a symlink to `AGENTS.md`. The result: all five runtimes now auto-trigger context loading on session start, bringing cross-runtime parity from roughly 50-60% up to an estimated 80-90%.
+**Fix:** Added a Session Start Protocol section to every runtime's instruction layer. Codex CLI (`CODEX.md`) gained a bootstrap-oriented first-turn flow, Copilot and Gemini inherited fallback recovery guidance through `AGENTS.md`/`GEMINI.md`, and OpenCode's context guidance integrated graph-health checks into the exploration workflow. This should now be read as the instruction-layer step, not the final startup-delivery model: later phases replaced the over-broad "all five runtimes auto-trigger" story with runtime-specific hooks, transport digests, and explicit bootstrap surfaces.
 
 ---
 

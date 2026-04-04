@@ -1,0 +1,276 @@
+{
+  "globalMetrics": {
+    "totalRecords": 3,
+    "targetProfiles": 1,
+    "promptRuns": 3,
+    "benchmarkRuns": 0,
+    "acceptedCount": 3,
+    "rejectedCount": 0,
+    "tieCount": 0,
+    "keepBaselineCount": 0,
+    "infraFailureCount": 0,
+    "benchmarkPassCount": 0,
+    "benchmarkFailCount": 0
+  },
+  "profiles": {
+    "agent-improver": {
+      "profileId": "agent-improver",
+      "family": "agent-improver",
+      "latestRecord": {
+        "iteration": 3,
+        "candidateFile": "candidates/candidate-003.md",
+        "score": 100,
+        "recommendation": "candidate-acceptable",
+        "profileId": "agent-improver",
+        "evaluationMode": "dynamic-5d",
+        "dimensions": [
+          {
+            "name": "structural",
+            "score": 100,
+            "weight": 0.2
+          },
+          {
+            "name": "ruleCoherence",
+            "score": 100,
+            "weight": 0.25
+          },
+          {
+            "name": "integration",
+            "score": 100,
+            "weight": 0.25
+          },
+          {
+            "name": "outputQuality",
+            "score": 100,
+            "weight": 0.15
+          },
+          {
+            "name": "systemFitness",
+            "score": 100,
+            "weight": 0.15
+          }
+        ],
+        "timestamp": "2026-04-04T11:35:00Z"
+      },
+      "bestPromptRecord": {
+        "iteration": 2,
+        "candidateFile": "candidates/candidate-002.md",
+        "score": 100,
+        "recommendation": "candidate-acceptable",
+        "profileId": "agent-improver",
+        "evaluationMode": "dynamic-5d",
+        "dimensions": [
+          {
+            "name": "structural",
+            "score": 100,
+            "weight": 0.2
+          },
+          {
+            "name": "ruleCoherence",
+            "score": 100,
+            "weight": 0.25
+          },
+          {
+            "name": "integration",
+            "score": 100,
+            "weight": 0.25
+          },
+          {
+            "name": "outputQuality",
+            "score": 100,
+            "weight": 0.15
+          },
+          {
+            "name": "systemFitness",
+            "score": 100,
+            "weight": 0.15
+          }
+        ],
+        "timestamp": "2026-04-04T11:30:00Z"
+      },
+      "bestBenchmarkRecord": null,
+      "acceptedCandidates": [
+        {
+          "iteration": 1,
+          "candidateFile": "candidates/candidate-001.md",
+          "score": 99,
+          "recommendation": "candidate-acceptable",
+          "profileId": "agent-improver",
+          "evaluationMode": "dynamic-5d",
+          "dimensions": [
+            {
+              "name": "structural",
+              "score": 100,
+              "weight": 0.2
+            },
+            {
+              "name": "ruleCoherence",
+              "score": 100,
+              "weight": 0.25
+            },
+            {
+              "name": "integration",
+              "score": 100,
+              "weight": 0.25
+            },
+            {
+              "name": "outputQuality",
+              "score": 100,
+              "weight": 0.15
+            },
+            {
+              "name": "systemFitness",
+              "score": 93,
+              "weight": 0.15
+            }
+          ],
+          "timestamp": "2026-04-04T11:25:00Z"
+        },
+        {
+          "iteration": 2,
+          "candidateFile": "candidates/candidate-002.md",
+          "score": 100,
+          "recommendation": "candidate-acceptable",
+          "profileId": "agent-improver",
+          "evaluationMode": "dynamic-5d",
+          "dimensions": [
+            {
+              "name": "structural",
+              "score": 100,
+              "weight": 0.2
+            },
+            {
+              "name": "ruleCoherence",
+              "score": 100,
+              "weight": 0.25
+            },
+            {
+              "name": "integration",
+              "score": 100,
+              "weight": 0.25
+            },
+            {
+              "name": "outputQuality",
+              "score": 100,
+              "weight": 0.15
+            },
+            {
+              "name": "systemFitness",
+              "score": 100,
+              "weight": 0.15
+            }
+          ],
+          "timestamp": "2026-04-04T11:30:00Z"
+        },
+        {
+          "iteration": 3,
+          "candidateFile": "candidates/candidate-003.md",
+          "score": 100,
+          "recommendation": "candidate-acceptable",
+          "profileId": "agent-improver",
+          "evaluationMode": "dynamic-5d",
+          "dimensions": [
+            {
+              "name": "structural",
+              "score": 100,
+              "weight": 0.2
+            },
+            {
+              "name": "ruleCoherence",
+              "score": 100,
+              "weight": 0.25
+            },
+            {
+              "name": "integration",
+              "score": 100,
+              "weight": 0.25
+            },
+            {
+              "name": "outputQuality",
+              "score": 100,
+              "weight": 0.15
+            },
+            {
+              "name": "systemFitness",
+              "score": 100,
+              "weight": 0.15
+            }
+          ],
+          "timestamp": "2026-04-04T11:35:00Z"
+        }
+      ],
+      "rejectedCandidates": [],
+      "benchmarkRuns": [],
+      "infraFailures": [],
+      "promptRecommendations": [
+        "candidate-acceptable",
+        "candidate-acceptable",
+        "candidate-acceptable"
+      ],
+      "benchmarkRecommendations": [],
+      "failureModes": {},
+      "metrics": {
+        "totalRecords": 3,
+        "promptRuns": 3,
+        "benchmarkRuns": 0,
+        "acceptedCount": 3,
+        "rejectedCount": 0,
+        "tieCount": 0,
+        "keepBaselineCount": 0,
+        "infraFailureCount": 0,
+        "benchmarkPassCount": 0,
+        "benchmarkFailCount": 0
+      },
+      "dimensionScores": {
+        "structural": [
+          100,
+          100,
+          100
+        ],
+        "ruleCoherence": [
+          100,
+          100,
+          100
+        ],
+        "integration": [
+          100,
+          100,
+          100
+        ],
+        "outputQuality": [
+          100,
+          100,
+          100
+        ],
+        "systemFitness": [
+          93,
+          100,
+          100
+        ]
+      },
+      "dimensionTrends": {
+        "structural": "→",
+        "ruleCoherence": "→",
+        "integration": "→",
+        "outputQuality": "→",
+        "systemFitness": "→"
+      }
+    }
+  },
+  "stopStatus": {
+    "shouldStop": false,
+    "reasons": [],
+    "driftAmbiguity": false,
+    "profileStates": {
+      "agent-improver": {
+        "shouldStop": false,
+        "reasons": [],
+        "counters": {
+          "trailingTies": 0,
+          "infraFailures": 0,
+          "weakBenchmarkRuns": 0
+        }
+      }
+    }
+  }
+}

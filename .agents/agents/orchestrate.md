@@ -799,7 +799,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 
 ### Context Recovery Priority
 
-If hook-injected context is present at the start of a session (injected by Claude Code SessionStart hook), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
+If hook-injected context is present at the start of a session (injected by the runtime startup/bootstrap surface), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
 
 If hook context is NOT present (hooks disabled, different runtime, or unavailable), fall back to standard tool-based recovery:
 1. `memory_context({ mode: "resume", profile: "resume" })` for session recovery

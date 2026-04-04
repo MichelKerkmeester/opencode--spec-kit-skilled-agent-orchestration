@@ -130,14 +130,11 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
   - WARN: "Filename collision detected"
   - ASK: `[A]uto-increment | [R]ename | [O]verwrite`
 
-#### Check 6: Stop Hook Double-Save Detection
+#### Check 6: Stop Hook Awareness
 
-- Check if a Claude Code Stop hook recently saved session context (within last 5 minutes)
-- Detection method: look for hook state file at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sha256(session-id)[0:16]>.json` and check if `pendingStopSave.cachedAt` is within the last 5 minutes
-- If recent auto-save detected:
-  - WARN: "Stop hook already saved session context at [timestamp]"
-  - ASK: `[M]erge (combine contexts) | [O]verwrite | [S]kip (trust hook save) | [C]ontinue as new`
-- If no hook state found or state is stale (>5 min): PASSED (proceed normally)
+- Confirm whether recent hook-driven context preservation evidence exists for this session
+- Current limitation: no dedicated `pendingStopSave` field is shipped in the hook state, so `/memory:save` must not claim a guaranteed auto-save merge marker
+- If no recent hook-save evidence can be established: PASSED (proceed normally)
 
 **Phase 0 Output:**
 ```text

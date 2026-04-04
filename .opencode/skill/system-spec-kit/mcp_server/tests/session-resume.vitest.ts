@@ -22,6 +22,10 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   })),
 }));
 
+vi.mock('../lib/code-graph/ensure-ready.js', () => ({
+  getGraphFreshness: vi.fn(() => 'fresh'),
+}));
+
 vi.mock('../lib/session/context-metrics.js', () => ({
   computeQualityScore: vi.fn(() => ({
     level: 'degraded',
@@ -35,6 +39,7 @@ vi.mock('../lib/session/context-metrics.js', () => ({
 import { handleSessionResume } from '../handlers/session-resume.js';
 import { handleMemoryContext } from '../handlers/memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
+import { getGraphFreshness } from '../lib/code-graph/ensure-ready.js';
 import { computeQualityScore, recordBootstrapEvent } from '../lib/session/context-metrics.js';
 
 describe('session-resume handler', () => {
@@ -57,6 +62,10 @@ describe('session-resume handler', () => {
     expect(parsed.data.memory).toBeDefined();
     expect(parsed.data.codeGraph).toBeDefined();
     expect(parsed.data.cocoIndex).toBeDefined();
+    expect(parsed.data.payloadContract.kind).toBe('resume');
+    expect(parsed.data.payloadContract.provenance.producer).toBe('session_resume');
+    expect(parsed.data.opencodeTransport.transportOnly).toBe(true);
+    expect(parsed.data.graphOps.doctor.surface).toBe('memory_health');
     expect(parsed.data.hints).toBeDefined();
   });
 
@@ -73,9 +82,22 @@ describe('session-resume handler', () => {
       lastScanTimestamp: null, dbFileSize: 0, schemaVersion: 1,
       nodesByKind: {}, edgesByType: {}, parseHealthSummary: {},
     });
+    vi.mocked(getGraphFreshness).mockReturnValueOnce('empty');
     const result = await handleSessionResume({});
     const parsed = JSON.parse(result.content[0].text);
     expect(parsed.data.codeGraph.status).toBe('empty');
+  });
+
+  it('reports stale graph status in the startup payload when freshness detection says stale', async () => {
+    vi.mocked(getGraphFreshness).mockReturnValueOnce('stale');
+
+    const result = await handleSessionResume({ minimal: true });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.codeGraph.status).toBe('stale');
+    expect(parsed.data.payloadContract.summary).toContain('graph=stale');
+    expect(parsed.data.payloadContract.sections.find((section: { key: string }) => section.key === 'code-graph-status')?.content)
+      .toContain('status=stale');
   });
 
   it('handles memory context failure gracefully', async () => {

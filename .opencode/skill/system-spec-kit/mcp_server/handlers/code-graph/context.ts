@@ -5,7 +5,7 @@
 
 import { buildContext, type ContextArgs, type QueryMode } from '../../lib/code-graph/code-graph-context.js';
 import type { CodeGraphSeed } from '../../lib/code-graph/seed-resolver.js';
-import { ensureCodeGraphReady } from '../../lib/code-graph/ensure-ready.js';
+import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
 
 export interface ContextHandlerArgs {
   input?: string;
@@ -85,10 +85,20 @@ function resolveSeedSource(args: ContextHandlerArgs, anchor: {
 
 /** Handle code_graph_context tool call */
 export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
+  let readiness: ReadyResult = {
+    freshness: 'empty' as const,
+    action: 'none' as const,
+    inlineIndexPerformed: false,
+    reason: 'readiness check not run',
+  };
+
   try {
     // Auto-trigger: ensure graph is fresh before querying
     try {
-      await ensureCodeGraphReady(process.cwd(), { allowInlineIndex: false });
+      readiness = await ensureCodeGraphReady(process.cwd(), {
+        allowInlineIndex: true,
+        allowInlineFullScan: false,
+      });
     } catch {
       // Non-blocking: continue with potentially stale data
     }
@@ -164,6 +174,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
             queryMode: result.queryMode,
             combinedSummary: result.combinedSummary,
             nextActions: result.nextActions,
+            readiness,
             anchors: result.resolvedAnchors.map(a => ({
               file: a.filePath,
               line: a.startLine,

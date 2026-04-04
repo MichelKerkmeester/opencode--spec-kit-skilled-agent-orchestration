@@ -1,14 +1,27 @@
-# -----------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────
 # OPENCODE CREATE: SK-SKILL UNIFIED WORKFLOW (CONFIRM MODE)
-# -----------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────
 # Mode: interactive execution with explicit checkpoints
 # Entrypoint: /create:sk-skill
 # Operations: full-create | full-update | reference-only | asset-only
-# -----------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────
 
 role: Unified Skill Creator using sk-doc
 purpose: Execute a canonical checkpointed workflow for skill creation and skill document updates
 action: Route one operation branch with user checkpoints, hard gates, and validation loops
+
+# ─────────────────────────────────────────────────────────────────
+# PREREQUISITE: @write AGENT VERIFICATION
+# ─────────────────────────────────────────────────────────────────
+# This workflow REQUIRES the @write agent for:
+#   - Template-first generation
+#   - sk-doc standards enforcement
+#   - Root document validation
+#
+# PHASE 0 in the command markdown verifies @write agent BEFORE
+# this YAML workflow loads. If you are executing this workflow,
+# @write verification has already passed.
+# ─────────────────────────────────────────────────────────────────
 
 operating_mode:
   workflow: unified_7_step
@@ -16,11 +29,15 @@ operating_mode:
   workflow_execution: interactive
   approvals: step_by_step
   tracking: checkpoint_decision_log
+  validation: checkpoint_based
   supports_operations:
     - full-create
     - full-update
     - reference-only
     - asset-only
+  description: |
+    Executes the 7-step skill creation workflow with approval gates at each checkpoint.
+    User confirms, reviews, or modifies at each step before the workflow advances.
 
 development_philosophy:
   principle: "Interactive confidence comes from explicit checkpoints and clear branch contracts"
@@ -33,6 +50,9 @@ runtime_agent_path_resolution:
   claude: .claude/agents
   gemini: .gemini/agents
 
+# ─────────────────────────────────────────────────────────────────
+# CONFIDENCE & CLARIFICATION FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
 confidence_framework:
   thresholds:
     high: { range: "80-100%", action: "Proceed with standard checkpointing" }
@@ -46,6 +66,9 @@ confidence_framework:
   low_confidence_behavior:
     action: "Return to setup gate or current step with explicit correction options"
 
+# ─────────────────────────────────────────────────────────────────
+# REQUEST ANALYSIS FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
 request_analysis_framework:
   code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:

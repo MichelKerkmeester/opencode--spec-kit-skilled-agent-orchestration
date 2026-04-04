@@ -50,6 +50,16 @@ describe('session-bootstrap handler', () => {
     expect(handleSessionHealth).toHaveBeenCalledTimes(1);
     expect(parsed.data.resume.memory).toEqual({ resumed: true });
     expect(parsed.data.health.state).toBe('ok');
+    expect(parsed.data.payloadContract.kind).toBe('bootstrap');
+    expect(parsed.data.payloadContract.provenance.producer).toBe('session_bootstrap');
+    expect(parsed.data.opencodeTransport.systemTransform.title).toContain('Startup Digest');
+    expect(parsed.data.graphOps.previewPolicy.mode).toBe('metadata-only');
+    expect(result.structuredContent).toMatchObject({
+      resume: expect.any(Object),
+      health: expect.any(Object),
+      hints: expect.any(Array),
+      nextActions: expect.any(Array),
+    });
     expect(parsed.data.hints).toEqual(expect.arrayContaining(['resume ok', 'health ok']));
     expect(parsed.data.nextActions).toEqual(expect.arrayContaining([
       'Structural context available. Use code_graph_query for structural lookups.',
@@ -70,6 +80,11 @@ describe('session-bootstrap handler', () => {
     const parsed = JSON.parse(result.content[0].text);
 
     expect(parsed.data.structuralContext.status).toBe('stale');
+    expect(result.structuredContent).toMatchObject({
+      structuralContext: expect.objectContaining({ status: 'stale' }),
+    });
+    expect(parsed.data.payloadContract.provenance.trustState).toBe('stale');
+    expect(parsed.data.graphOps.readiness.canonical).toBe('stale');
     expect(parsed.data.hints.some((hint: string) => hint.includes('Run code_graph_scan'))).toBe(true);
     expect(parsed.data.nextActions).toContain('Call session_bootstrap to refresh structural context, or run code_graph_scan for a full rescan.');
   });

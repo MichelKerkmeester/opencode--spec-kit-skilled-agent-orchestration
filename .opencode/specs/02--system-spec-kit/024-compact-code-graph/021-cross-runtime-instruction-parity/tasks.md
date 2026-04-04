@@ -58,4 +58,4 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred
 
-- [ ] Residual Claude-hook wording cleanup in non-Claude agent files — known gap remains in `.codex/agents/*.toml` and `.gemini/agents/*.md` follow-up work (P2)
+- [x] Residual Claude-hook wording cleanup in non-Claude agent files is now complete in `.codex/agents/*.toml` and `.gemini/agents/*.md`

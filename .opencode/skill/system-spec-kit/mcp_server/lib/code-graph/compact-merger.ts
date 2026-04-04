@@ -5,6 +5,11 @@
 // into a unified compact brief for compaction injection.
 
 import { allocateBudget, createDefaultSources, type AllocationResult } from './budget-allocator.js';
+import {
+  createSharedPayloadEnvelope,
+  type PreMergeSelectionMetadata,
+  type SharedPayloadEnvelope,
+} from '../context/shared-payload.js';
 
 /** Input from each context source */
 export interface MergeInput {
@@ -32,6 +37,7 @@ export interface MergedBrief {
     source: string;
   }[];
   allocation: AllocationResult;
+  payloadContract: SharedPayloadEnvelope;
   metadata: {
     totalTokenEstimate: number;
     sourceCount: number;
@@ -39,6 +45,7 @@ export interface MergedBrief {
     mergeDurationMs: number;
     deduplicatedFiles: number;
     freshness: SourceFreshness[];
+    selection?: PreMergeSelectionMetadata;
   };
 }
 
@@ -116,6 +123,7 @@ export function mergeCompactBrief(
   input: MergeInput,
   totalBudget: number = 4000,
   freshness?: SourceFreshness[],
+  selection?: PreMergeSelectionMetadata,
 ): MergedBrief {
   const startTime = performance.now();
 
@@ -180,6 +188,31 @@ export function mergeCompactBrief(
     text,
     sections,
     allocation,
+    payloadContract: createSharedPayloadEnvelope({
+      kind: 'compaction',
+      sections: sections.map((section) => ({
+        key: section.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        title: section.name,
+        content: section.content,
+        source: section.source === 'code-graph'
+          ? 'code-graph'
+          : section.source === 'cocoindex'
+            ? 'semantic'
+            : section.source === 'session'
+              ? 'session'
+              : 'memory',
+      })),
+      summary: `Compaction payload merged ${sections.length} sections within ${totalBudget} tokens`,
+      provenance: {
+        producer: 'compact_merger',
+        sourceSurface: 'compaction',
+        trustState: 'live',
+        generatedAt: new Date().toISOString(),
+        lastUpdated: null,
+        sourceRefs: ['budget-allocator', 'compact-merger'],
+      },
+      ...(selection ? { selection } : {}),
+    }),
     metadata: {
       totalTokenEstimate,
       sourceCount: sections.length,
@@ -192,6 +225,7 @@ export function mergeCompactBrief(
         { source: 'cocoIndex', lastUpdated: null, staleness: 'unknown' },
         { source: 'triggered', lastUpdated: null, staleness: 'unknown' },
       ],
+      ...(selection ? { selection } : {}),
     },
   };
 }

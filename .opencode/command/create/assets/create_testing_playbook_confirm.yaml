@@ -32,6 +32,9 @@ operating_mode:
   supports_operations:
     - create
     - update
+  description: |
+    Executes the 6-step testing playbook workflow with approval gates at each checkpoint.
+    User confirms, reviews, or modifies at each step before the workflow advances.
 
 development_philosophy:
   principle: "Confirm category shape and scenario inventory before writing the playbook"
@@ -44,6 +47,9 @@ runtime_agent_path_resolution:
   codex: .codex/agents
   gemini: .gemini/agents
 
+# ─────────────────────────────────────────────────────────────────
+# CONFIDENCE & CLARIFICATION FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
 confidence_framework:
   thresholds:
     high: { range: "80-100%", action: "Proceed with checkpoint proposal" }
@@ -57,6 +63,9 @@ confidence_framework:
   low_confidence_behavior:
     action: "Pause before the next checkpoint and request clarification"
 
+# ─────────────────────────────────────────────────────────────────
+# REQUEST ANALYSIS FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
 request_analysis_framework:
   code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:

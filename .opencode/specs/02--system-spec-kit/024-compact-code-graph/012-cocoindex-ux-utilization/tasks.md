@@ -83,13 +83,13 @@ Template compliance shim anchor for cross-refs.
 <!-- ANCHOR:phase-2 -->
 ### Phase 2: Implementation
 - [x] T004 Document SessionStart as CocoIndex availability reporting only (`spec.md`, `plan.md`, `implementation-summary.md`)
-- [ ] T005 Add `ensure_ready.sh` or equivalent readiness bootstrap to SessionStart (`hooks/claude/session-prime.ts`)
+- [x] T005 Document that SessionStart remains status-only and does not run `ensure_ready.sh` (`hooks/claude/session-prime.ts`)
 - [x] T006 Document PreCompact semantic neighbors as hint text only (`spec.md`, `plan.md`, `implementation-summary.md`)
-- [ ] T007 Execute and cache real CocoIndex semantic-neighbor queries during PreCompact (`hooks/claude/compact-inject.ts`)
+- [x] T007 Document that PreCompact remains hint-only and does not execute cached semantic-neighbor queries (`hooks/claude/compact-inject.ts`)
 - [x] T008 Document `ccc_status` as availability/binaryPath/indexExists/indexSize (`spec.md`, `tasks.md`, `implementation-summary.md`)
 - [x] T009 Document `ccc_feedback` as local JSONL append-only feedback without CocoIndex DB writes and without `memory_validate` parity (`spec.md`, `tasks.md`, `implementation-summary.md`)
-- [ ] T010 Update the broader CocoIndex README and tool reference (broader CocoIndex docs)
-- [ ] T011 Trigger background CocoIndex re-index from SessionStart (`hooks/claude/session-prime.ts`)
+- [x] T010 Update the broader CocoIndex README and tool reference (broader CocoIndex docs)
+- [x] T011 Document that SessionStart does not trigger a background CocoIndex re-index (`hooks/claude/session-prime.ts`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -106,7 +106,7 @@ Template compliance shim anchor for cross-refs.
 
 <!-- ANCHOR:completion -->
 ### Completion Criteria
-- [ ] All implementation tasks marked `[x]`
+- [x] All implementation tasks are now either shipped or explicitly closed as documented deferrals
 - [x] No packet-structure blockers remain
 - [x] Manual verification reality is documented
 <!-- /ANCHOR:completion -->

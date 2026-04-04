@@ -738,11 +738,11 @@ Automated validation of spec folder contents via `validate.sh`.
 
 ---
 
-### Hook System (Claude Code Lifecycle)
+### Startup Injection and Recovery Surfaces
 
-Automated context preservation via Claude Code hooks. Hooks are transport reliability — they call the same retrieval primitives that other runtimes call explicitly via CLAUDE.md instructions.
+Automated context preservation starts with runtime-specific startup surfaces. Claude still has the richest hook lifecycle, but packet 024 now also ships Gemini startup hooks, OpenCode transport formatting, Codex bootstrap parity, and optional Copilot startup helpers.
 
-**Hooks registered in `.claude/settings.local.json`:**
+**Claude hooks registered in `.claude/settings.local.json`:**
 
 | Hook | Script | Behavior |
 |------|--------|----------|
@@ -750,9 +750,9 @@ Automated context preservation via Claude Code hooks. Hooks are transport reliab
 | SessionStart | `dist/hooks/claude/session-prime.js` | Injects context via stdout (routes by source: compact/startup/resume/clear) |
 | Stop | `dist/hooks/claude/session-stop.js` | Parses transcript for token usage, stores snapshots (async) |
 
-**Lifecycle flow:** PreCompact → cache → SessionStart(compact) → inject cached context. On startup: primes with tool overview + CocoIndex status. On resume: loads prior session state.
+**Claude lifecycle flow:** PreCompact → cache → SessionStart(compact) → inject cached context. On startup, the shared startup snapshot covers memory continuity, code-graph state, CocoIndex availability, and an explicit note that later structural reads may differ if the repo state changed. On resume, the runtime loads prior session state.
 
-**Cross-runtime handling:** Hook-capable runtimes use runtime-specific adapters where available. OpenCode remains the primary non-hook runtime and should recover with `session_bootstrap()` on fresh start or after `/clear`, then `session_resume()` after reconnect when needed.
+**Cross-runtime handling:** Claude and Gemini use SessionStart hook scripts. OpenCode has a transport/plugin implementation, but operationally should still be treated as bootstrap-first when startup surfacing is unavailable. Codex remains bootstrap-based through `context-prime`, not a native SessionStart hook. Copilot startup context depends on local hook configuration or wrapper wiring when present. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
 
 **Token budgets:** Compaction injection: 4000 tokens. Session priming: 2000 tokens. Hook timeout: 1800ms (<2s hard cap).
 
@@ -779,7 +779,7 @@ Automated context preservation via Claude Code hooks. Hooks are transport reliab
 
 **Edge types:** CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF.
 
-**Auto-trigger:** `ensureCodeGraphReady()` runs on branch switch, session start, and stale detection. Checks graph freshness and triggers incremental scan if needed.
+**Read-path freshness:** Startup and bootstrap surfaces report graph freshness without mutating the index. Bounded inline refresh happens on structural read paths when stale sets are small; otherwise callers receive `readiness` guidance to run `code_graph_scan`.
 
 **Query routing:** Structural queries (callers, imports, deps) -> `code_graph_query`. Semantic/concept queries -> CocoIndex (`mcp__cocoindex_code__search`). Session/memory queries -> `memory_context`.
 
@@ -968,7 +968,7 @@ Automated context preservation via Claude Code hooks. Hooks are transport reliab
 | Gates             | `AGENTS.md` Section 2                                                      | Gate definitions                  |
 | Memory gen        | `scripts/memory/generate-context.ts` → `scripts/dist/`                     | Memory file creation              |
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
-| Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
+| Database          | `mcp_server/database/context-index.sqlite`                                 | Default repo-local memory index path used by checked-in configs |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
 | Feature Catalog   | `feature_catalog/` (22 categories, 291 documented features)                | Per-feature current-reality docs  |
 | Testing Playbook  | `manual_testing_playbook/` (22 categories, 311 scenario files)             | Manual validation matrix          |

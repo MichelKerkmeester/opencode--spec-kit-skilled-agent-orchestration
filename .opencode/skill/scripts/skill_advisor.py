@@ -157,6 +157,11 @@ SYNONYM_MAP = {
 
     # Autoresearch
     "autoresearch": ["research", "loop", "iterative", "deep", "autonomous", "convergence"],
+    "improvement": ["optimize", "refine", "candidate", "score", "loop"],
+    "candidate": ["proposal", "variant", "experiment", "score"],
+    "proposal": ["candidate", "experiment", "loop", "score"],
+    "evaluator": ["score", "judge", "contract", "rubric"],
+    "handover": ["continuation", "resume", "session", "document"],
 
     # Search & discovery
     "find": ["search", "locate", "explore", "lookup"],
@@ -257,6 +262,21 @@ INTENT_BOOSTERS = {
     "iterative research": ("sk-deep-research", 1.2),
     "convergence": ("sk-deep-research", 0.8),
     "autonomous research": ("sk-deep-research", 1.5),
+    "agent improvement": ("sk-agent-improver", 1.8),
+    "recursive agent": ("sk-agent-improver", 1.8),
+    "improvement loop": ("sk-agent-improver", 1.8),
+    "proposal-only": ("sk-agent-improver", 1.4),
+    "proposal only": ("sk-agent-improver", 1.4),
+    "evaluator-first": ("sk-agent-improver", 1.5),
+    "candidate scoring": ("sk-agent-improver", 1.6),
+    "promotion gate": ("sk-agent-improver", 1.4),
+    "5-dimension": ("sk-agent-improver", 1.8),
+    "5d scoring": ("sk-agent-improver", 1.8),
+    "integration scan": ("sk-agent-improver", 1.6),
+    "dynamic profile": ("sk-agent-improver", 1.6),
+    "evaluate agent": ("sk-agent-improver", 1.6),
+    "score agent": ("sk-agent-improver", 1.6),
+    "agent evaluation": ("sk-agent-improver", 1.6),
     "deep review": ("sk-deep-review", 1.5),
     "review mode": ("sk-deep-review", 1.2),
     "iterative review": ("sk-deep-review", 1.2),
@@ -525,6 +545,35 @@ PHRASE_INTENT_BOOSTERS = {
     "iterative research": [("sk-deep-research", 2.5)],
     "multi-round research": [("sk-deep-research", 2.0)],
     "overnight research": [("sk-deep-research", 2.0)],
+    # --- Agent improvement loop ---
+    "agent improvement": [("sk-agent-improver", 2.8)],
+    "recursive agent": [("sk-agent-improver", 2.8)],
+    "improvement loop": [("sk-agent-improver", 2.8)],
+    "agent improvement loop": [("sk-agent-improver", 3.2)],
+    "proposal-only improvement": [("sk-agent-improver", 2.6)],
+    "proposal only improvement": [("sk-agent-improver", 2.6)],
+    "evaluator-first": [("sk-agent-improver", 2.4)],
+    "bounded mutator": [("sk-agent-improver", 2.2)],
+    "candidate scoring": [("sk-agent-improver", 2.3)],
+    "promotion gate": [("sk-agent-improver", 2.0)],
+    "handover target": [("sk-agent-improver", 2.0)],
+    "sk-agent-improver": [("sk-agent-improver", 3.2)],
+    "/sk-agent-improver": [("sk-agent-improver", 3.2)],
+    "sk-agent-improvement-loop": [("sk-agent-improver", 3.0)],
+    "/sk-agent-improvement-loop": [("sk-agent-improver", 3.0)],
+    "5-dimension evaluation": [("sk-agent-improver", 2.8)],
+    "5d agent scoring": [("sk-agent-improver", 2.8)],
+    "integration scanning": [("sk-agent-improver", 2.6)],
+    "dynamic profiling": [("sk-agent-improver", 2.6)],
+    "evaluate agent quality": [("sk-agent-improver", 2.8)],
+    "score agent dimensions": [("sk-agent-improver", 2.8)],
+    "agent integration surface": [("sk-agent-improver", 2.6)],
+    "/improve:agent": [("sk-agent-improver", 3.2)],
+    "/improve:prompt": [("sk-prompt-improver", 3.2)],
+    "improve agent": [("sk-agent-improver", 2.8)],
+    "score agent": [("sk-agent-improver", 2.6)],
+    "evaluate agent": [("sk-agent-improver", 2.6)],
+    "agent evaluation": [("sk-agent-improver", 2.6)],
     # --- CocoIndex semantic code search ---
     "semantic search": [("mcp-coco-index", 2.5)],
     "code search": [("mcp-coco-index", 2.0)],
@@ -641,6 +690,38 @@ COMMAND_BRIDGES = {
     "command-memory-save": {
         "description": "Save conversation context to memory using /memory:save.",
         "slash_markers": ["/memory:save", "memory:save"],
+    },
+    "command-improve-agent": {
+        "description": "Evaluate and improve any agent across 5 dimensions using /improve:agent.",
+        "slash_markers": ["/improve:agent", "improve:agent"],
+    },
+    "command-improve-prompt": {
+        "description": "Create or improve AI prompts using /improve:prompt.",
+        "slash_markers": ["/improve:prompt", "improve:prompt"],
+    },
+    "command-create-agent": {
+        "description": "Create a new OpenCode agent using /create:agent.",
+        "slash_markers": ["/create:agent", "create:agent"],
+    },
+    "command-create-changelog": {
+        "description": "Create a changelog entry using /create:changelog.",
+        "slash_markers": ["/create:changelog", "create:changelog"],
+    },
+    "command-create-sk-skill": {
+        "description": "Create or update an OpenCode skill using /create:sk-skill.",
+        "slash_markers": ["/create:sk-skill", "create:sk-skill"],
+    },
+    "command-create-feature-catalog": {
+        "description": "Create or update a feature catalog using /create:feature-catalog.",
+        "slash_markers": ["/create:feature-catalog", "create:feature-catalog"],
+    },
+    "command-create-testing-playbook": {
+        "description": "Create or update a testing playbook using /create:testing-playbook.",
+        "slash_markers": ["/create:testing-playbook", "create:testing-playbook"],
+    },
+    "command-create-folder-readme": {
+        "description": "Create folder README documentation using /create:folder_readme.",
+        "slash_markers": ["/create:folder_readme", "create:folder_readme"],
     },
 }
 

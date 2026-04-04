@@ -106,10 +106,18 @@ export function sanitizeRecoveredPayload(payload: string): string {
 }
 
 /** Add explicit provenance markers around recovered compact context */
-export function wrapRecoveredCompactPayload(payload: string, cachedAt: string): string {
+export function wrapRecoveredCompactPayload(
+  payload: string,
+  cachedAt: string,
+  metadata?: { producer?: string; trustState?: string; sourceSurface?: string },
+): string {
   const sanitizedPayload = sanitizeRecoveredPayload(payload);
+  const provenanceLine = metadata
+    ? `[PROVENANCE: producer=${metadata.producer ?? 'hook-cache'}; trustState=${metadata.trustState ?? 'cached'}; sourceSurface=${metadata.sourceSurface ?? 'compact'}]`
+    : null;
   return [
     `[SOURCE: hook-cache, cachedAt: ${cachedAt}]`,
+    ...(provenanceLine ? [provenanceLine] : []),
     sanitizedPayload,
     '[/SOURCE]',
   ].join('\n');

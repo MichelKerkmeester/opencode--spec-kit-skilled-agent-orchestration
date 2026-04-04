@@ -439,7 +439,7 @@ A: No. `dist/` contains generated build output. Edit the source `.ts` files in p
 
 ### Overview
 
-Three subsystems collaborate to provide intelligent context across session boundaries: **Hooks** manage session lifecycle events, **Code Graph** provides structural code intelligence, and **CocoIndex** enables semantic discovery. A **Compact Merger** unifies their outputs under a token budget during compaction.
+Three subsystems collaborate to provide intelligent context across session boundaries: **startup/recovery surfaces** deliver runtime-specific startup context, **Code Graph** provides structural code intelligence, and **CocoIndex** enables semantic discovery. A **Compact Merger** still unifies structural, semantic, and memory-oriented signals for bounded payload construction, but startup delivery is now runtime-specific rather than Claude-only.
 
 ### Integration Flowchart
 
@@ -450,16 +450,20 @@ flowchart TB
         startup["startup"] --> work["work"] --> compact["compact"] --> resume["resume"]
     end
 
-    subgraph HOOKS["Hook Layer"]
+    subgraph SURFACES["Startup / Recovery Surfaces"]
         direction TB
-        precompact["PreCompact<br/>compact-inject.ts"]
-        sessionstart["SessionStart<br/>session-prime.ts"]
-        stop["Stop<br/>session-stop.ts"]
-        hookstate["hook-state.ts<br/>Per-session state"]
+        claude["Claude SessionStart<br/>hooks/claude/session-prime.ts"]
+        gemini["Gemini SessionStart<br/>hooks/gemini/session-prime.ts"]
+        opencode["OpenCode transport plan<br/>lib/context/opencode-transport.ts"]
+        codex["Codex bootstrap parity<br/>.codex/agents/context-prime.toml"]
+        copilot["Copilot local hook config / wrappers<br/>.github/hooks/*"]
+        surfacedetect["Runtime detection<br/>runtime-detection.ts"]
 
-        precompact -->|"cache context"| hookstate
-        sessionstart -->|"inject primed context"| hookstate
-        stop -->|"track tokens"| hookstate
+        surfacedetect --> claude
+        surfacedetect --> gemini
+        surfacedetect --> opencode
+        surfacedetect --> codex
+        surfacedetect --> copilot
     end
 
     subgraph CODEGRAPH["Code Graph Layer"]
@@ -488,37 +492,41 @@ flowchart TB
         direction TB
         merger["compact-merger.ts<br/>3-source merge"]
         budget["Budget Allocator<br/>budget-allocator.ts"]
-        runtime["Runtime Detection<br/>runtime-detection.ts"]
+        mergerruntime["Runtime Detection<br/>runtime-detection.ts"]
         brief["Merged Brief"]
 
-        runtime -->|"hook policy"| merger
+        mergerruntime -->|"hook policy"| merger
         merger --> budget
         budget --> brief
     end
 
-    SESSION -->|"triggers"| HOOKS
-    precompact -->|"constitutional + triggered"| merger
+    SESSION -->|"triggers"| SURFACES
+    claude -->|"startup snapshot"| merger
+    gemini -->|"startup snapshot"| merger
+    opencode -->|"transport digest"| merger
+    codex -->|"bootstrap digest"| merger
+    copilot -->|"startup banner when configured"| merger
     cgtools -->|"structural neighborhoods"| merger
     ctxbuilder -->|"semantic context"| merger
-    brief -->|"injected on resume"| sessionstart
+    brief -->|"rendered for runtime surface"| SURFACES
 ```
 
 ### Component Reference
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| `compact-inject.ts` | `hooks/claude/` | PreCompact: cache context before compaction |
-| `session-prime.ts` | `hooks/claude/` | SessionStart: inject context on startup/resume/compact |
-| `session-stop.ts` | `hooks/claude/` | Stop: track tokens, auto-save session |
-| `hook-state.ts` | `hooks/claude/` | Per-session state management |
-| `structural-indexer.ts` | `lib/code-graph/` | Regex-based code parser (JS/TS/Python/Bash) |
+| `session-prime.ts` | `hooks/claude/`, `hooks/gemini/`, `hooks/copilot/` | Runtime-specific startup surface emitters where hook/config support exists |
+| `session-stop.ts` | `hooks/claude/`, `hooks/gemini/` | Stop: track tokens, auto-save session |
+| `hook-state.ts` | `hooks/claude/` | Claude-oriented per-session state management used by the shared startup brief |
+| `opencode-transport.ts` | `lib/context/` | Transport-only OpenCode startup/message/compaction block builder |
+| `runtime-detection.ts` | `lib/code-graph/` | Runtime ID + startup-surface hook policy detection |
+| `structural-indexer.ts` | `lib/code-graph/` | Dual-backend parser: tree-sitter WASM default, regex fallback (JS/TS/Python/Bash) |
 | `code-graph-db.ts` | `lib/code-graph/` | SQLite storage + CRUD operations |
 | `seed-resolver.ts` | `lib/code-graph/` | CocoIndex results to graph node resolution |
 | `code-graph-context.ts` | `lib/code-graph/` | LLM-oriented compact neighborhoods |
 | `budget-allocator.ts` | `lib/code-graph/` | Token distribution (floor + overflow) |
 | `compact-merger.ts` | `lib/code-graph/` | 3-source merge for compaction |
 | `working-set-tracker.ts` | `lib/code-graph/` | Recency-weighted file tracking |
-| `runtime-detection.ts` | `lib/code-graph/` | Runtime ID + hook policy |
 
 ### Budget Allocation
 
@@ -550,6 +558,7 @@ Different query intents route to different subsystems. The routing ensures each 
 |-------------|----------|------|
 | Semantic discovery (find by meaning/concept) | CocoIndex | `mcp__cocoindex_code__search` |
 | Structural navigation (call graph, dependencies) | Code Graph | `code_graph_query` / `code_graph_context` |
+| Startup or recovery state | Session surfaces | `session_bootstrap` / `session_resume` / startup surface |
 | Session continuity (prior work, decisions) | Memory | `memory_search` / `memory_context` |
 
 <!-- /ANCHOR:hook-code-graph-cocoindex -->

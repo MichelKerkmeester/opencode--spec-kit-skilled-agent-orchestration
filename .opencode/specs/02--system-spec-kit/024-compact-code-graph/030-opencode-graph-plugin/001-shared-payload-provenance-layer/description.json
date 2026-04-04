@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/001-shared-payload-provenance-layer",
+  "description": "Feature Specification: Shared Payload and Provenance Layer",
+  "keywords": [
+    "feature",
+    "specification",
+    "shared",
+    "payload",
+    "provenance",
+    "layer"
+  ],
+  "lastUpdated": "2026-04-04T07:59:09.663Z",
+  "specId": "001",
+  "folderSlug": "shared-payload-provenance-layer",
+  "parentChain": [
+    "02--system-spec-kit",
+    "024-compact-code-graph",
+    "030-opencode-graph-plugin"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

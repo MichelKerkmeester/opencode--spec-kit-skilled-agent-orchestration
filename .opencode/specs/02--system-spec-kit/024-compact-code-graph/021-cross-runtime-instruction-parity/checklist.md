@@ -72,4 +72,4 @@ Template compliance shim anchor for summary.
 - [x] @context-prime listed in CLAUDE.md Agent Definitions — entry added to routing table [EVIDENCE: verified in implementation-summary.md]
 - [x] AGENTS.md defines `@context-prime` and documents No Hook Transport session lifecycle guidance [EVIDENCE: verified in implementation-summary.md]
 - [x] F059: orchestrate.md wires delegation to @context-prime on first turn — VERIFIED in `.opencode/agent/orchestrate.md` lines 18-21 [EVIDENCE: verified in implementation-summary.md]
-- [ ] Residual Claude-hook wording cleanup in non-Claude agent files — KNOWN GAP in `.codex/agents/*.toml` and `.gemini/agents/*.md`
+- [x] Residual Claude-hook wording cleanup in non-Claude agent files is complete [EVIDENCE: `.codex/agents/*.toml` and `.gemini/agents/*.md` now reference the runtime startup/bootstrap surface instead of Claude-only SessionStart wording]

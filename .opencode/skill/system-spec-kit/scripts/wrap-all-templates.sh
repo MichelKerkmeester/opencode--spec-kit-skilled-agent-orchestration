@@ -30,25 +30,7 @@ for level in level_1 level_2 level_3 "level_3+"; do
     fi
     
     # Create a temporary Node.js script to wrap this file
-    node -e "
-      const fs = require('fs');
-      const { wrapSectionsWithAnchors } = require('${SCRIPT_DIR}/dist/lib/anchor-generator.js');
-      
-      try {
-        const content = fs.readFileSync('${filepath}', 'utf-8');
-        const result = wrapSectionsWithAnchors(content);
-        
-        if (result.anchorsAdded > 0) {
-          fs.writeFileSync('${filepath}', result.content, 'utf-8');
-          console.log('SUCCESS|' + result.anchorsAdded + '|' + result.anchorsPreserved);
-        } else {
-          console.log('NOCHANGE|0|' + result.anchorsPreserved);
-        }
-      } catch (error) {
-        console.error('ERROR|' + error.message);
-        process.exit(1);
-      }
-    " 2>&1 | while IFS='|' read -r status added preserved; do
+    while IFS='|' read -r status added preserved; do
       case "${status}" in
         SUCCESS)
           echo "  ✓ ${template}: +${added} anchors (${preserved} preserved)"
@@ -64,7 +46,27 @@ for level in level_1 level_2 level_3 "level_3+"; do
           total_errors=$((total_errors + 1))
           ;;
       esac
-    done
+    done < <(
+      node -e "
+        const fs = require('fs');
+        const { wrapSectionsWithAnchors } = require('${SCRIPT_DIR}/dist/lib/anchor-generator.js');
+
+        try {
+          const content = fs.readFileSync('${filepath}', 'utf-8');
+          const result = wrapSectionsWithAnchors(content);
+
+          if (result.anchorsAdded > 0) {
+            fs.writeFileSync('${filepath}', result.content, 'utf-8');
+            console.log('SUCCESS|' + result.anchorsAdded + '|' + result.anchorsPreserved);
+          } else {
+            console.log('NOCHANGE|0|' + result.anchorsPreserved);
+          }
+        } catch (error) {
+          console.error('ERROR|' + error.message);
+          process.exit(1);
+        }
+      " 2>&1
+    )
   done
   echo ""
 done

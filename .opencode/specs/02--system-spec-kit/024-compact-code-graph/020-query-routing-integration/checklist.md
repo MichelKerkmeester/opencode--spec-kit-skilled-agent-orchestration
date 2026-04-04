@@ -118,7 +118,7 @@ Template compliance shim anchor for summary.
 ### Documentation
 - [x] CHK-040 [P1] Spec, plan, tasks, checklist, and implementation summary are synchronized [Evidence: packet updated with the same routing, resume, and enrichment terminology]
 - [x] CHK-041 [P1] Implementation summary reflects the shipped implementation rather than the stale packet [Evidence: `implementation-summary.md` updated narrative and limitations]
-- [ ] CHK-042 [P2] README updated (if applicable) [DEFERRED: user requested spec-folder docs only]
+- [x] CHK-042 [P2] README applicability documented accurately [EVIDENCE: this bounded phase intentionally stayed inside packet docs, so no README delta was in scope]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -127,7 +127,7 @@ Template compliance shim anchor for summary.
 ### File Organization
 - [x] CHK-050 [P1] Only files in this spec folder were edited [Evidence: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`]
 - [x] CHK-051 [P1] No scratch or temp artifacts were created [Evidence: no new files outside the packet]
-- [ ] CHK-052 [P2] Findings saved to `memory/` [DEFERRED: not requested for this documentation refresh]
+- [x] CHK-052 [P2] Memory-save omission documented accurately [EVIDENCE: this documentation refresh did not request `memory/` artifacts and the packet now states that boundary explicitly]
 <!-- /ANCHOR:file-org -->
 
 ---

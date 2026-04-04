@@ -7,6 +7,22 @@ import { join } from 'node:path';
 import { describe, it, expect, afterEach } from 'vitest';
 import { detectRuntime, areHooksAvailable, getRecoveryApproach } from '../lib/code-graph/runtime-detection.js';
 
+function clearRuntimeEnv(): void {
+  delete process.env.CLAUDE_CODE;
+  delete process.env.CLAUDE_SESSION_ID;
+  delete process.env.MCP_SERVER_NAME;
+  delete process.env.CODEX_CLI;
+  delete process.env.CODEX_THREAD_ID;
+  delete process.env.CODEX_TUI_RECORD_SESSION;
+  delete process.env.CODEX_TUI_SESSION_LOG_PATH;
+  delete process.env.CODEX_SANDBOX;
+  delete process.env.OPENAI_API_KEY;
+  delete process.env.COPILOT_CLI;
+  delete process.env.GITHUB_COPILOT_TOKEN;
+  delete process.env.GEMINI_CLI;
+  delete process.env.GOOGLE_GENAI_USE_VERTEXAI;
+}
+
 describe('runtime detection', () => {
   const originalEnv = { ...process.env };
   const originalCwd = process.cwd();
@@ -41,6 +57,26 @@ describe('runtime detection', () => {
       const result = detectRuntime();
       expect(result.runtime).toBe('codex-cli');
       expect(result.hookPolicy).toBe('unavailable');
+    });
+
+    it('detects copilot-cli with enabled hooks when repo hook config is present', () => {
+      clearRuntimeEnv();
+      process.env.COPILOT_CLI = '1';
+      const result = detectRuntime();
+      expect(result.runtime).toBe('copilot-cli');
+      expect(result.hookPolicy).toBe('enabled');
+    });
+
+    it('treats copilot-cli as disabled_by_scope when no repo hook config exists', () => {
+      clearRuntimeEnv();
+      process.env.COPILOT_CLI = '1';
+
+      tempDir = mkdtempSync(join(tmpdir(), 'copilot-runtime-'));
+      process.chdir(tempDir);
+
+      const result = detectRuntime();
+      expect(result.runtime).toBe('copilot-cli');
+      expect(result.hookPolicy).toBe('disabled_by_scope');
     });
 
     it('detects unknown runtime by default', () => {

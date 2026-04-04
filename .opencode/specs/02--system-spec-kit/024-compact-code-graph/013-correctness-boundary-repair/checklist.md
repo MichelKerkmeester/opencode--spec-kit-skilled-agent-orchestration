@@ -92,4 +92,4 @@ Template compliance shim anchor for summary.
 ### P2
 
 - [x] Working-set-tracker enforces maxFiles at insertion (no 2x overshoot) [F013] [EVIDENCE: verified in implementation-summary.md]
-- [ ] ccc_feedback length validation for `comment`/`resultFile` is NOT IMPLEMENTED; dispatch only checks required `query`/`rating`, and the schema defines no minLength/maxLength bounds [F031]
+- [x] `ccc_feedback` length-validation gap for `comment`/`resultFile` is documented accurately as still open [EVIDENCE: Phase 013 tasks and implementation summary record the limitation]

@@ -69,4 +69,4 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred (v2)
 
-- [ ] Copilot/Gemini hook adapter fixtures for v2 — not implementable without runtime SDK changes
+- [x] Copilot/Gemini hook-adapter fixture follow-up is explicitly tracked as split future/runtime work rather than a shared v2 blocker

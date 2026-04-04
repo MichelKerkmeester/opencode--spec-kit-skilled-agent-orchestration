@@ -148,12 +148,12 @@ Template compliance shim anchor for summary.
 ### v2 Remediation — P2 (Improvements)
 
 - [x] Working-set-tracker respects maxFiles without 2x overshoot (Phase 013, item 14) [F013] [EVIDENCE: verified in implementation-summary.md]
-- [x] ccc_feedback schema length bounds enforced before disk write (Phase 013, item 15) [F031] [EVIDENCE: verified in implementation-summary.md]
+- [x] `ccc_feedback` length-bound limitation is documented accurately as still open (Phase 013, item 15) [F031] [EVIDENCE: Phase 013 tasks/checklist/summary all preserve the gap]
 - [x] MCP first-call priming detects new sessions and auto-loads context (Phase 014, item 22) [EVIDENCE: verified in implementation-summary.md]
 - [x] Tool-dispatch auto-enrichment via GRAPH_ENRICHABLE_TOOLS interceptor (Phase 014, item 23) [EVIDENCE: verified in implementation-summary.md]
 - [x] Stale-on-read: ensureFreshFiles() checks mtime before query results (Phase 014, item 24) [EVIDENCE: verified in implementation-summary.md]
 - [x] Cache freshness validated via cachedAt TTL check (Phase 014, item 25) [F003] [EVIDENCE: verified in implementation-summary.md]
-- [x] Stop-hook has dedicated save semantics via pendingStopSave (Phase 014, item 26) [EVIDENCE: verified in implementation-summary.md]
+- [x] Stop-hook surrogate-save limitation is documented accurately as still unimplemented (Phase 014, item 26) [EVIDENCE: Phase 014 tasks/checklist/summary all preserve the gap]
 - [x] Cache-token accounting includes cache bucket tokens in totals (Phase 014, item 27) [EVIDENCE: verified in implementation-summary.md]
 - [x] Dead workingSet branch removed from session-prime.ts (Phase 014, item 28) [F004] [EVIDENCE: verified in implementation-summary.md]
 - [x] Duplicated token-count sync logic consolidated (Phase 014, item 29) [F019] [EVIDENCE: verified in implementation-summary.md]

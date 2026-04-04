@@ -16,6 +16,19 @@ import {
 } from '../claude/shared.js';
 import { ensureStateDir, updateState } from '../claude/hook-state.js';
 import { parseGeminiStdin } from './shared.js';
+import {
+  createPreMergeSelectionMetadata,
+  createSharedPayloadEnvelope,
+} from '../../lib/context/shared-payload.js';
+
+const COMPACT_FEEDBACK_GUARDS = [
+  /^\s*\[SOURCE:\s*hook-cache/i,
+  /^\s*\[PROVENANCE:/i,
+  /^\s*\[\/SOURCE\]/i,
+  /^\s*##\s+Recovered Context/i,
+  /^\s*##\s+Recovery Instructions/i,
+  /\bauto-recovered\b/i,
+];
 
 /** Extract the last N lines from a file */
 function tailFile(filePath: string, lines: number): string[] {
@@ -70,13 +83,18 @@ function detectSpecFolder(lines: string[]): string | null {
   return [...freq.entries()].sort((a, b) => b[1] - a[1])[0][0];
 }
 
+function stripRecoveredCompactLines(lines: string[]): string[] {
+  return lines.filter((line) => !COMPACT_FEEDBACK_GUARDS.some((guard) => guard.test(line)));
+}
+
 /** Build compact context from transcript analysis */
 function buildCompactContext(transcriptLines: string[]): string {
-  const filePaths = extractFilePaths(transcriptLines);
-  const topics = extractTopics(transcriptLines);
+  const sanitizedLines = stripRecoveredCompactLines(transcriptLines);
+  const filePaths = extractFilePaths(sanitizedLines);
+  const topics = extractTopics(sanitizedLines);
   const sections: string[] = [];
 
-  const specFolder = detectSpecFolder(transcriptLines);
+  const specFolder = detectSpecFolder(sanitizedLines);
   if (specFolder) {
     sections.push(`## Active Spec Folder\n${specFolder}`);
   }
@@ -88,7 +106,7 @@ function buildCompactContext(transcriptLines: string[]): string {
     sections.push('## Recent Topics\n' + topics.map(t => `- ${t}`).join('\n'));
   }
 
-  const meaningfulLines = transcriptLines
+  const meaningfulLines = sanitizedLines
     .filter(l => l.trim().length > 10 && !l.startsWith('{'))
     .slice(-5);
   if (meaningfulLines.length > 0) {
@@ -118,11 +136,48 @@ async function main(): Promise<void> {
 
   const rawContext = buildCompactContext(transcriptLines);
   const payload = truncateToTokenBudget(rawContext, COMPACTION_TOKEN_BUDGET);
+  const sanitizedLines = stripRecoveredCompactLines(transcriptLines);
+  const filePaths = extractFilePaths(sanitizedLines);
+  const topics = extractTopics(sanitizedLines);
+  const selection = createPreMergeSelectionMetadata({
+    selectedFrom: ['transcript-tail', 'active-files', 'recent-topics'],
+    fileCount: filePaths.length,
+    topicCount: topics.length,
+    attentionSignalCount: 0,
+    notes: [
+      sanitizedLines.length !== transcriptLines.length
+        ? 'Recovered compact transcript lines were removed before fallback compaction cache assembly.'
+        : 'No recovered compact transcript lines detected in fallback compaction cache assembly.',
+    ],
+    antiFeedbackGuards: [
+      'Strip recovered hook-cache source markers before transcript summarization.',
+      'Do not reuse recovery wrapper text as session-state evidence.',
+    ],
+  });
 
   updateState(sessionId, {
     pendingCompactPrime: {
       payload,
       cachedAt: new Date().toISOString(),
+      payloadContract: createSharedPayloadEnvelope({
+        kind: 'compaction',
+        sections: [{
+          key: 'fallback-compact-context',
+          title: 'Fallback Compact Context',
+          content: payload,
+          source: 'session',
+        }],
+        summary: 'Fallback compaction cache assembled from sanitized transcript tail',
+        provenance: {
+          producer: 'hook_cache',
+          sourceSurface: 'gemini-compact-cache',
+          trustState: 'cached',
+          generatedAt: new Date().toISOString(),
+          lastUpdated: null,
+          sourceRefs: ['gemini-compact-cache', 'hook-state'],
+        },
+        selection,
+      }),
     },
   });
 

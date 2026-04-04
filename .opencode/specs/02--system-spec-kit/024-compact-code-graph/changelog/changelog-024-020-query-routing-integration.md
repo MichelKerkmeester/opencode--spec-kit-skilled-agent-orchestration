@@ -44,7 +44,7 @@ When a user asked a question about their codebase, they had to know which tool t
 
 #### session_resume composite tool
 
-**Problem:** Resuming a previous work session required 3-4 separate tool calls: load the memory context, check the code graph's freshness, check the constitutional cache status, and sometimes additional calls. Each call consumed tokens (the currency of AI context windows) and a network round trip. This overhead was especially painful on non-hook runtimes like Codex CLI, Copilot CLI, and Gemini CLI, where every tool call must be made manually rather than being triggered automatically by hooks.
+**Problem:** Resuming a previous work session required 3-4 separate tool calls: load the memory context, check the code graph's freshness, check the constitutional cache status, and sometimes additional calls. Each call consumed tokens (the currency of AI context windows) and a network round trip. This overhead was especially painful on runtimes that still depended on manual recovery at the time, such as Codex CLI, Copilot CLI, OpenCode, and Gemini before the later hook/startup-surface follow-ons landed.
 
 **Fix:** A new `session_resume` tool was created as a single composite call that performs all of these steps internally. It calls `memory_context` in resume mode, checks the code graph status, and checks the constitutional cache status, then merges everything into one consolidated response. This saves approximately 400-900 tokens and 2-3 network round trips per session resume.
 

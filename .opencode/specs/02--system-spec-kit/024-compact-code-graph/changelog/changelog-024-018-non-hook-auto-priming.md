@@ -6,7 +6,7 @@
 
 ## 018-non-hook-auto-priming — 2026-03-31
 
-Claude Code sessions start with full context automatically -- your last spec folder, code graph status, and recommended next steps are all injected via hooks before you even type. Every other CLI (Codex, Copilot, Gemini, OpenCode) started cold: no memory, no graph status, no prior work. You had to manually call `memory_context` every single time. This phase makes the MCP server itself detect "first call of a new session" and inject that same context automatically, closing the biggest usability gap between Claude Code and the other runtimes. It also adds a health monitor so any runtime can check whether its session context has gone stale.
+Claude Code sessions already had a stronger startup path than the other runtimes when this phase landed. The remaining runtimes still needed an MCP-level fallback so they did not start completely cold whenever hooks or startup transport were unavailable. This phase introduced that fallback priming layer and added a health monitor; later packet phases then refined the public story toward `session_bootstrap()`, runtime-specific startup surfaces, and freshness-aware startup summaries.
 
 > Spec folder: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming/`
 
@@ -14,11 +14,11 @@ Claude Code sessions start with full context automatically -- your last spec fol
 
 ## New Features (3 items)
 
-### First-call auto-priming for non-hook CLIs
+### First-call auto-priming for non-hook and degraded-hook flows
 
-**Problem:** Claude Code has hooks that automatically load your previous work context the moment a session starts. Every other CLI -- Codex, Copilot, Gemini, and OpenCode -- had no equivalent mechanism. When you opened a session in any of those tools, you got nothing: no memory of what you were working on, no knowledge of whether your code graph was up to date, no idea which spec folder was active. The only workaround was to manually call `memory_context` at the start of every single session, which was easy to forget and tedious to repeat.
+**Problem:** Claude Code had hooks that automatically loaded previous work context, but the repo still needed an MCP-level fallback for runtimes or situations where startup surfacing was unavailable. Without that fallback, sessions could start with no memory of what was active, no graph status, and no idea which spec folder was in play.
 
-**Fix:** The MCP server (the background process that all CLIs talk to for memory and context tools) now detects when it receives the very first tool call in a new session. When that happens, it automatically assembles and injects a "Prime Package" -- a structured bundle containing the last active spec folder, current task status, code graph freshness, whether the CocoIndex semantic search engine is available, and a list of recommended next calls. This context is added directly to the tool response so the AI assistant sees it immediately. No manual step required. The function responsible is `primeSessionIfNeeded()` in the main server file.
+**Fix:** The MCP server now detects the first tool call in a session and can attach a Prime Package containing last active spec folder, current task status, graph freshness, CocoIndex availability, and recommended next calls. In the current packet state, this mechanism remains part of the fallback layer; public recovery guidance now centers on `session_bootstrap()` and runtime-specific startup surfaces rather than claiming one universal silent auto-prime path for every CLI.
 
 ### Session health monitor
 

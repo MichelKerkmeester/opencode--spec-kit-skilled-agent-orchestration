@@ -1,0 +1,155 @@
+{
+  "status": "scored",
+  "target": ".opencode/agent/handover.md",
+  "candidate": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-002.md",
+  "baseline": ".opencode/agent/handover.md",
+  "totals": {
+    "candidate": 0,
+    "baseline": 100
+  },
+  "delta": -100,
+  "recommendation": "reject-candidate",
+  "checks": {
+    "candidate": [
+      {
+        "key": "mentions-spec-files",
+        "pass": false,
+        "weight": 15
+      },
+      {
+        "key": "mentions-checklist-and-memory",
+        "pass": false,
+        "weight": 15
+      },
+      {
+        "key": "references-template",
+        "pass": false,
+        "weight": 15
+      },
+      {
+        "key": "leaf-only",
+        "pass": false,
+        "weight": 10
+      },
+      {
+        "key": "no-fabrication-rule",
+        "pass": false,
+        "weight": 10
+      },
+      {
+        "key": "path-convention",
+        "pass": false,
+        "weight": 10
+      },
+      {
+        "key": "structured-output",
+        "pass": false,
+        "weight": 10
+      },
+      {
+        "key": "actual-source-reading",
+        "pass": false,
+        "weight": 10
+      },
+      {
+        "key": "simplicity",
+        "pass": true,
+        "weight": 5
+      },
+      {
+        "key": "placeholder-heavy",
+        "pass": true,
+        "weight": 0
+      },
+      {
+        "key": "no-permissive-skip-context-language",
+        "pass": false,
+        "weight": 0
+      },
+      {
+        "key": "nested-delegation",
+        "pass": true,
+        "weight": 0
+      }
+    ],
+    "baseline": [
+      {
+        "key": "mentions-spec-files",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "mentions-checklist-and-memory",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "references-template",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "leaf-only",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "no-fabrication-rule",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "path-convention",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "structured-output",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "actual-source-reading",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "simplicity",
+        "pass": true,
+        "weight": 5
+      },
+      {
+        "key": "placeholder-heavy",
+        "pass": true,
+        "weight": 0
+      },
+      {
+        "key": "no-permissive-skip-context-language",
+        "pass": true,
+        "weight": 0
+      },
+      {
+        "key": "nested-delegation",
+        "pass": true,
+        "weight": 0
+      }
+    ]
+  },
+  "reasons": {
+    "candidate": [
+      "Missing or weak: mentions-spec-files",
+      "Missing or weak: mentions-checklist-and-memory",
+      "Missing or weak: references-template",
+      "Missing or weak: leaf-only",
+      "Missing or weak: no-fabrication-rule",
+      "Missing or weak: path-convention",
+      "Missing or weak: structured-output",
+      "Missing or weak: actual-source-reading",
+      "Warning: no-permissive-skip-context-language",
+      "Hard reject: mentions-spec-files",
+      "Hard reject: mentions-checklist-and-memory",
+      "Hard reject: references-template"
+    ],
+    "baseline": []
+  }
+}

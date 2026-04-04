@@ -462,7 +462,7 @@ Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic 
 │  |-- 4. Write iteration-NNN.md with cited findings                       │
 │  |-- 5. Update strategy (Worked/Failed/Questions/Next Focus)            │
 │  |-- 6. Append iteration record to JSONL                                │
-│  +-- 7. Progressively update research/research.md                                │
+│  +-- 7. Progressively update research/research.md                       │
 │                                                                         │
 │  LIMITS                                                                 │
 │  |-- LEAF-only: no sub-agent dispatch                                   │

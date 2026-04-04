@@ -15,6 +15,15 @@ import { computeQualityScore, getLastToolCallAt } from '../lib/session/context-m
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { QualityScore } from '../lib/session/context-metrics.js';
+import {
+  createSharedPayloadEnvelope,
+  trustStateFromStructuralStatus,
+  type SharedPayloadEnvelope,
+} from '../lib/context/shared-payload.js';
+import {
+  buildCodeGraphOpsContract,
+  type CodeGraphOpsContract,
+} from '../lib/code-graph/ops-hardening.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -36,6 +45,8 @@ interface SessionHealthResult {
   details: SessionHealthDetails;
   qualityScore: QualityScore;
   structuralContext?: StructuralBootstrapContract;
+  payloadContract?: SharedPayloadEnvelope;
+  graphOps?: CodeGraphOpsContract;
   hints: string[];
 }
 
@@ -122,6 +133,43 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
   // Phase 023: Compute quality score from context metrics
   const qualityScore = computeQualityScore();
 
+  const payloadContract = createSharedPayloadEnvelope({
+    kind: 'health',
+    sections: [
+      {
+        key: 'session-health',
+        title: 'Session Health',
+        content: `status=${status}; priming=${primed ? 'primed' : 'not_primed'}; graph=${graphFreshness}; specFolder=${specFolder ?? 'none'}`,
+        source: 'session',
+      },
+      {
+        key: 'quality-score',
+        title: 'Quality Score',
+        content: `level=${qualityScore.level}; score=${qualityScore.score}`,
+        source: 'operational',
+      },
+      {
+        key: 'structural-context',
+        title: 'Structural Context',
+        content: structuralContext.summary,
+        source: 'code-graph',
+      },
+    ],
+    summary: `Session health is ${status}; graph freshness is ${graphFreshness}; structural status is ${structuralContext.status}`,
+    provenance: {
+      producer: 'session_health',
+      sourceSurface: 'session_health',
+      trustState: trustStateFromStructuralStatus(structuralContext.status),
+      generatedAt: new Date().toISOString(),
+      lastUpdated: structuralContext.provenance?.lastUpdated ?? null,
+      sourceRefs: ['memory-surface', 'context-metrics', 'session-snapshot'],
+    },
+  });
+  const graphOps = buildCodeGraphOpsContract({
+    graphFreshness,
+    sourceSurface: 'session_health',
+  });
+
   const result: SessionHealthResult = {
     status,
     details: {
@@ -133,6 +181,8 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
     },
     qualityScore,
     structuralContext,
+    payloadContract,
+    graphOps,
     hints,
   };
 

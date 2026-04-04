@@ -66,4 +66,4 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred
 
-- [ ] Tech debt: `ParserAdapter` remains duplicated in tree-sitter-parser.ts:20-23 and structural-indexer.ts:17-19; consolidate when parser contracts are refactored
+- [x] ParserAdapter duplication remains explicitly tracked as later refactor tech debt

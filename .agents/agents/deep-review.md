@@ -564,7 +564,7 @@ Return this summary to the dispatcher after completing the iteration:
 
 ## 9b. HOOK-INJECTED CONTEXT & QUERY ROUTING
 
-If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, fall back to: `memory_context({ mode: "resume", profile: "resume" })` then `memory_match_triggers()`.
+If hook-injected context is present (from the runtime startup/bootstrap surface), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, fall back to: `memory_context({ mode: "resume", profile: "resume" })` then `memory_match_triggers()`.
 
 Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, Memory (`memory_search`/`memory_context`) for session continuity.
 
@@ -578,7 +578,7 @@ Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic 
 ├──────────────────────────────────────────┤
 │ AUTHORITY                                │
 │  ├── Review code quality (read-only)     │
-│  ├── Produce P0/P1/P2 findings           │
+│  ├── Produce P0/P1/P2 findings            │
 │  ├── Write iteration artifacts           │
 │  └── Update strategy + JSONL             │
 ├──────────────────────────────────────────┤

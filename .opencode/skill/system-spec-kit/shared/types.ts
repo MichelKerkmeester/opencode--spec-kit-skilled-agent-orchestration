@@ -464,6 +464,7 @@ export interface ExtractionResult {
 export interface MCPResponse {
   content: Array<{ type: 'text'; text: string }>;
   isError?: boolean;
+  structuredContent?: unknown;
 }
 
 // ---------------------------------------------------------------

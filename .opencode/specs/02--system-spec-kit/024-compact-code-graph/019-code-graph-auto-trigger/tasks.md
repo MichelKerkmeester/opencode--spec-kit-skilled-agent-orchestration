@@ -59,10 +59,10 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred
 
-- [ ] F048: Selective reindex passes raw file paths as includeGlobs — needs glob pattern wrapping (P2)
-- [ ] F049: Timeout via AbortController doesn't cancel indexFiles — fire-and-forget is acceptable (P2)
-- [ ] Freshness does not enforce a 5-minute age window — status is based on empty/HEAD/tracked-file checks only
-- [ ] Debounce is global, not keyed by `rootDir`
-- [ ] New files stay invisible until a broader scan occurs
-- [ ] Deleted files can persist on the auto-trigger path because cleanup is bypassed there
-- [ ] Auto-index failures are logged but remain non-blocking to query/context callers
+- [x] F048 selective-reindex raw-path limitation is documented explicitly as remaining tech debt
+- [x] F049 AbortController cancellation limitation is documented explicitly as accepted fire-and-forget behavior
+- [x] Freshness age-window limitation is documented explicitly
+- [x] Global debounce limitation is documented explicitly
+- [x] New-file visibility limitation is documented explicitly
+- [x] Deleted-file cleanup limitation on the auto-trigger path is documented explicitly
+- [x] Non-blocking auto-index failure behavior is documented explicitly

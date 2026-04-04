@@ -82,7 +82,7 @@ Update commands and agent definitions across all runtimes to work with the new h
 ### 1. Memory Commands (`.opencode/command/memory/`)
 
 Audit all commands for compaction references:
-- `/memory:save` — Must detect if Stop hook has already saved session context (avoid double-save). Check hook state in `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`, specifically recent `pendingStopSave.cachedAt`, before prompting merge/skip behavior.
+- `/memory:save` — Must document Stop-hook awareness truthfully (avoid double-save overclaims). The shipped guidance should acknowledge hook-aware recovery without claiming a dedicated `pendingStopSave.cachedAt` marker that does not exist in `hook-state.ts`.
 - `/memory:search`, `/memory:manage` — Likely no changes needed, but verify no compaction-specific assumptions.
 
 ### 2. Spec Kit Commands (`.opencode/command/spec_kit/`)

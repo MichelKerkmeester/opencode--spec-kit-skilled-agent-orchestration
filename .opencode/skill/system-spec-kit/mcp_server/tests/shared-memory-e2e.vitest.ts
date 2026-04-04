@@ -15,6 +15,15 @@ import {
   upsertSharedSpace,
 } from '../lib/collab/shared-spaces';
 
+const SHARED_MEMORY_ENV_KEYS = [
+  'SPECKIT_MEMORY_SHARED_MEMORY',
+  'SPECKIT_HYDRA_SHARED_MEMORY',
+  'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
+  'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
+] as const;
+
+type SharedMemoryEnvKey = typeof SHARED_MEMORY_ENV_KEYS[number];
+
 function createSharedMemoryDb(): Database.Database {
   const database = new Database(':memory:');
   database.exec(`
@@ -36,16 +45,24 @@ function createSharedMemoryDb(): Database.Database {
 
 describe('shared memory E2E', () => {
   let db: Database.Database;
+  let originalEnv: Record<SharedMemoryEnvKey, string | undefined>;
 
   beforeEach(() => {
     db = createSharedMemoryDb();
+    originalEnv = Object.fromEntries(
+      SHARED_MEMORY_ENV_KEYS.map((key) => [key, process.env[key]]),
+    ) as Record<SharedMemoryEnvKey, string | undefined>;
   });
 
   afterEach(() => {
-    delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
-    delete process.env.SPECKIT_HYDRA_SHARED_MEMORY;
-    delete process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS;
-    delete process.env.SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS;
+    for (const key of SHARED_MEMORY_ENV_KEYS) {
+      const value = originalEnv[key];
+      if (typeof value === 'string') {
+        process.env[key] = value;
+      } else {
+        delete process.env[key];
+      }
+    }
     db.close();
   });
 

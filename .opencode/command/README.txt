@@ -37,13 +37,14 @@ trigger_phrases:
 
 Commands are invoked as slash commands (e.g., `/create:feature-catalog`, `/memory:save`, `/spec_kit:plan`). Each command is a markdown file with YAML frontmatter that defines its description, argument hints, and allowed tools.
 
-Commands are organized into three groups:
+Commands are organized into four groups:
 
 | Group | Path | Commands | Purpose |
 |-------|------|----------|---------|
-| **create** | `command/create/` | 7 | Scaffold OpenCode components, documentation packages, prompt artifacts, and changelogs |
+| **create** | `command/create/` | 6 | Scaffold OpenCode components, documentation packages, and changelogs |
+| **improve** | `command/improve/` | 2 | Evaluate and improve AI agents and prompts with structured scoring |
 | **memory** | `command/memory/` | 4 | Memory system operations (search, save, learn, manage with shared lifecycle) |
-| **spec_kit** | `command/spec_kit/` | 9 | Spec folder workflows (plan, implement, deep-research, deep-review, debug, handover, resume, complete, phase) |
+| **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, deep-research, deep-review, debug, handover, resume, complete) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
 
@@ -73,12 +74,15 @@ command/
 │   ├── changelog.md          # Create changelog entry
 │   ├── feature-catalog.md    # Create or update feature catalog package
 │   ├── folder_readme.md      # Create folder README
-│   ├── prompt.md             # Create or improve prompts
 │   ├── sk-skill.md           # Create or update skill package/files
 │   ├── testing-playbook.md   # Create or update manual testing playbook package
-│   └── assets/               # YAML workflow definitions
+│   └── assets/               # YAML workflow definitions (12 files)
+├── improve/                  # Agent and prompt improvement commands
+│   ├── agent.md              # Evaluate and improve agents
+│   ├── prompt.md             # Create or improve prompts
+│   └── assets/               # YAML workflow definitions (2 files)
 ├── memory/                   # Memory system commands
-│   ├── search.md            # Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
+│   ├── search.md             # Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 │   ├── learn.md              # Constitutional memory manager
 │   ├── manage.md             # Database management, ingest, and shared lifecycle
 │   ├── save.md               # Save conversation context
@@ -86,11 +90,10 @@ command/
 └── spec_kit/                 # Spec folder workflow commands
     ├── complete.md           # Full end-to-end workflow
     ├── debug.md              # Debug delegation
-    ├── handover.md           # Session handover
-    ├── implement.md          # Execute pre-planned work
     ├── deep-research.md      # Iterative deep research workflow
     ├── deep-review.md        # Iterative code review workflow
-    ├── phase.md              # Parent/child phase decomposition
+    ├── handover.md           # Session handover
+    ├── implement.md          # Execute pre-planned work
     ├── plan.md               # Spec through plan only
     ├── resume.md             # Resume existing spec work
     └── assets/               # YAML workflow definitions (15 files)
@@ -110,12 +113,20 @@ Scaffold OpenCode components using the `sk-doc` skill. Each command supports `:a
 | Command | Invocation | Purpose |
 |---------|------------|---------|
 | Agent | `/create:agent <name>` | Create agent with frontmatter, tool permissions, behavioral rules |
-| Folder README | `/create:folder_readme [readme\|install] <target>` | Unified README and install guide workflow |
-| Feature Catalog | `/create:feature-catalog <skill> [create\|update]` | Create or update a rooted `feature_catalog/` package |
-| Testing Playbook | `/create:testing-playbook <skill> [create\|update]` | Create or update a rooted `manual_testing_playbook/` package |
-| Skill | `/create:sk-skill <name> <operation> [type]` | Unified skill create/update/reference/asset workflow |
-| Prompt | `/create:prompt <prompt-text-or-flags>` | Create or improve prompts through `sk-prompt-improver` |
 | Changelog | `/create:changelog <spec-folder-or-component>` | Create a changelog entry from recent work |
+| Feature Catalog | `/create:feature-catalog <skill> [create\|update]` | Create or update a rooted `feature_catalog/` package |
+| Folder README | `/create:folder_readme [readme\|install] <target>` | Unified README and install guide workflow |
+| Skill | `/create:sk-skill <name> <operation> [type]` | Unified skill create/update/reference/asset workflow |
+| Testing Playbook | `/create:testing-playbook <skill> [create\|update]` | Create or update a rooted `manual_testing_playbook/` package |
+
+### Improve Commands
+
+Evaluate and improve AI agents and prompts with structured workflows and deterministic scoring.
+
+| Command | Invocation | Purpose |
+|---------|------------|---------|
+| Agent | `/improve:agent <agent_path> [:auto\|:confirm]` | Evaluate and improve agents across 5 integration-aware dimensions |
+| Prompt | `/improve:prompt <prompt_or_topic> [:auto\|:confirm]` | Create or improve prompts using frameworks, DEPTH thinking, and CLEAR scoring |
 
 ### Memory Commands
 
@@ -136,12 +147,11 @@ Structured workflows for the spec folder development lifecycle.
 |---------|------------|---------|
 | Complete | `/spec_kit:complete <description>` | Full end-to-end workflow (14+ steps) |
 | Debug | `/spec_kit:debug [spec-folder]` | Delegate debugging to specialized sub-agent |
-| Handover | `/spec_kit:handover [spec-folder]` | Create session handover for continuation |
-| Implement | `/spec_kit:implement <spec-folder>` | Execute pre-planned work (requires plan.md) |
-| Plan | `/spec_kit:plan <description>` | Planning workflow (spec through plan only) |
 | Deep Research | `/spec_kit:deep-research <topic> [:auto\|:confirm]` | Iterative technical investigation with convergence |
 | Deep Review | `/spec_kit:deep-review <target> [:auto\|:confirm]` | Iterative code review with severity-weighted findings |
-| Plan (with phases) | `/spec_kit:plan <description> :with-phases [--phases N]` | Phase decomposition integrated into plan workflow |
+| Handover | `/spec_kit:handover [spec-folder]` | Create session handover for continuation |
+| Implement | `/spec_kit:implement <spec-folder>` | Execute pre-planned work (requires plan.md) |
+| Plan | `/spec_kit:plan <description> [:with-phases]` | Planning workflow (spec through plan only; `:with-phases` adds phase decomposition) |
 | Resume | `/spec_kit:resume [spec-folder]` | Resume work on existing spec folder |
 
 <!-- /ANCHOR:command-groups -->
@@ -151,7 +161,7 @@ Structured workflows for the spec folder development lifecycle.
 <!-- ANCHOR:instructions -->
 ## 5. INSTRUCTIONS
 
-1. Choose the command group that matches your intent: `create`, `memory`, or `spec_kit`.
+1. Choose the command group that matches your intent: `create`, `improve`, `memory`, or `spec_kit`.
 2. Use the canonical slash-command form `/<group>:<command>` unless the command is a top-level utility such as `/agent_router`.
 3. Prefer the unified commands over historical split commands.
 4. When a command supports `:auto` and `:confirm`, pick the mode that matches how much checkpointing you want.
@@ -205,7 +215,7 @@ Structured workflows for the spec folder development lifecycle.
 <!-- ANCHOR:execution-modes -->
 ## 7. EXECUTION MODES
 
-Most commands in `create/` and `spec_kit/` support two execution modes controlled by a suffix argument.
+Most commands in `create/`, `improve/`, and `spec_kit/` support two execution modes controlled by a suffix argument.
 
 | Mode | Suffix | Behavior |
 |------|--------|----------|
@@ -270,10 +280,11 @@ A: Run `/spec_kit:resume`. This loads the most relevant continuation context for
 | Document | Purpose |
 |----------|---------|
 | [AGENTS.md](../../AGENTS.md) | Framework defining gates, protocols, agent routing |
-| [Create Commands](create/README.md) | Detailed index for all `/create:*` commands |
+| [Create Commands](create/README.txt) | Detailed index for all `/create:*` commands |
+| [Improve Commands](improve/README.txt) | Agent and prompt improvement commands |
 | [sk-doc SKILL.md](../skill/sk-doc/SKILL.md) | Documentation standards and component creation |
 | [system-spec-kit SKILL.md](../skill/system-spec-kit/SKILL.md) | Spec folder workflow and memory system |
-| [Memory Commands](memory/README.md) | Memory save, analyze, learn, manage, and shared commands |
-| [Spec Kit Commands](spec_kit/README.md) | SpecKit plan, implement, complete, and phase workflows |
+| [Memory Commands](memory/README.txt) | Memory save, analyze, learn, manage, and shared commands |
+| [Spec Kit Commands](spec_kit/README.txt) | SpecKit plan, implement, complete, and workflow commands |
 
 <!-- /ANCHOR:related-documents -->

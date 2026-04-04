@@ -35,7 +35,7 @@ describe('cross-runtime fallback', () => {
     });
   });
 
-  describe('hook-based recovery only for claude-code', () => {
+  describe('hook-based recovery for configured runtimes', () => {
     it('claude-code uses hooks', () => {
       setRuntimeEnv('claude-code');
       expect(getRecoveryApproach()).toBe('hooks');
@@ -44,9 +44,9 @@ describe('cross-runtime fallback', () => {
       setRuntimeEnv('codex-cli');
       expect(getRecoveryApproach()).toBe('tool_fallback');
     });
-    it('copilot-cli uses tool_fallback', () => {
+    it('copilot-cli uses hooks when repo hook config is present', () => {
       setRuntimeEnv('copilot-cli');
-      expect(getRecoveryApproach()).toBe('tool_fallback');
+      expect(getRecoveryApproach()).toBe('hooks');
     });
     it('gemini-cli uses tool_fallback', () => {
       setRuntimeEnv('gemini-cli');
@@ -81,12 +81,12 @@ describe('cross-runtime fallback', () => {
     });
 
     // Scenario 4: Copilot CLI
-    it('copilot-cli: runtime is copilot-cli, hookPolicy is disabled_by_scope, recovery is tool_fallback', () => {
+    it('copilot-cli: runtime is copilot-cli, hookPolicy is enabled, recovery is hooks when repo hook config exists', () => {
       setRuntimeEnv('copilot-cli');
       const detected = detectRuntime();
       expect(detected.runtime).toBe('copilot-cli');
-      expect(detected.hookPolicy).toBe('disabled_by_scope');
-      expect(getRecoveryApproach()).toBe('tool_fallback');
+      expect(detected.hookPolicy).toBe('enabled');
+      expect(getRecoveryApproach()).toBe('hooks');
     });
 
     // Scenario 5: Gemini CLI (Phase 024: hookPolicy is dynamic, 'unavailable' without .gemini/settings.json)

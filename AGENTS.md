@@ -70,27 +70,13 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ### Session Start & Recovery
 
-**Hook-capable runtimes** (Claude Code, Codex CLI, Copilot CLI, Gemini CLI) auto-inject startup context via `session-prime.ts` hooks — no manual action needed. Structural context from the code graph is included automatically when available (Phase 027).
-
-**OpenCode** is the only runtime without hook support. On every first turn, treat it as a recovery:
+**Hook-capable runtimes** auto-inject startup context — no manual action needed. 
+**Fallback** — when hooks fail or are unavailable in any runtime:
 
 1. Call `session_bootstrap()` — one composite call that runs `session_resume` + `session_health` and returns structural context
 2. If structural context shows `stale` or `missing`, run `code_graph_scan` to rebuild
 3. If the graph remains unavailable, fall back to CocoIndex + direct file reads
 4. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
-
-**Session lifecycle calls** (OpenCode, or any runtime after hooks fail):
-
-| When | What to Call |
-|------|-------------|
-| **Fresh session start** | `session_bootstrap()` — returns resume + health + structural context in one call |
-| **After resume/reconnect** | `session_resume()` |
-| **Suspected context loss** | `session_health()` → if structural context is stale/missing, call `session_bootstrap()` |
-| **After `/clear`** | Same as fresh session start |
-| **Before structural search** | `code_graph_context({ subject: "..." })` — auto-indexes if stale |
-| **Before saving context** | Use `generate-context.js` via Spec Kit Memory |
-
-The MCP server auto-primes on the first tool call per session. All bootstrap and recovery surfaces share the same structural contract (`ready`/`stale`/`missing`) and recommend `session_bootstrap` as the canonical recovery step.
 
 ---
 

@@ -66,7 +66,7 @@ Template compliance shim anchor for rollback.
     - Create entries for: PreCompact hook, SessionStart priming, Stop token tracking, cross-runtime fallback, runtime detection
     - Follow existing feature catalog format and conventions
     - Include usage examples, configuration, and integration points
-    - Use current implementation names: `session-stop.ts`, `pendingStopSave`, JSON hook-state files, and Gemini capability detection from `.gemini/settings.json`
+    - Use current implementation names: `session-stop.ts`, JSON hook-state files, and Gemini capability detection from `.gemini/settings.json` while avoiding stale `pendingStopSave` claims
 2. **Create manual testing playbook scenarios:**
    - Write test scenarios for each hook (PreCompact, SessionStart, Stop)
    - Write cross-runtime fallback test scenarios
@@ -78,7 +78,7 @@ Template compliance shim anchor for rollback.
    - Explain design principle: hooks = transport, not business logic
 4. **Update ARCHITECTURE.md with hook architecture:**
     - Add hook lifecycle diagram (ASCII flowchart)
-    - Document hook state management (JSON hook-state files, session mapping, `pendingStopSave`)
+    - Document hook state management (JSON hook-state files and session mapping) without claiming a shipped `pendingStopSave` field
     - Document runtime adapter pattern if delivered; otherwise record it as a follow-up documentation gap
     - Document token tracking data flow from `session-stop.ts`
 5. **Update README files:**

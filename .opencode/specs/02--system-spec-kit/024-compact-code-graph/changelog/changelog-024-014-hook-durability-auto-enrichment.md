@@ -52,7 +52,7 @@ Added a 30-minute time-to-live (TTL) check on cached compact payloads. Before us
 The stop hook (which fires when the AI finishes a response) needed to save its own data, but instead of using a dedicated storage field, it reused the `pendingCompactPrime` field -- the same slot used by the compaction hook. This created confusion about what the field actually contained at any given moment. Was it compaction recovery data or stop-hook save data? The ambiguity made the code harder to reason about and opened the door to one hook accidentally overwriting the other's data.
 
 **Fix:**
-Introduced a dedicated `pendingStopSave` field in the hook state, with clear naming that reflects its purpose. Each hook now stores its data in its own slot, eliminating the ambiguity and preventing cross-hook interference.
+The original phase intent was to separate compaction and stop-hook storage responsibilities. The current packet truth is narrower: the overclaim about a shipped dedicated `pendingStopSave` field was removed during later truth-sync work, and the changelog now records the boundary problem without claiming that a lasting `pendingStopSave` field survived into the final packet state.
 
 ---
 
@@ -93,10 +93,10 @@ State directories are now created with permission mode `0700` (only the owner ca
 ### MCP first-call priming -- automatic context loading on any runtime
 
 **Problem:**
-AI sessions running on runtimes without hook support -- OpenCode, Codex CLI, Copilot CLI, and Gemini CLI -- had no way to automatically load context when a session started. Only Claude Code had hooks that could inject context at startup. On all other runtimes, the AI started each session with a blank slate unless the user manually triggered a context-loading tool. This meant critical information like constitutional memories (always-on rules) and code graph status was missing from early interactions.
+At the time this phase landed, the non-Claude runtime story was still effectively hookless in the checked-in repo. OpenCode, Codex CLI, Copilot CLI, and Gemini CLI all needed a fallback path for startup context, which meant critical information like constitutional memories and code graph status could be missing from early interactions.
 
 **Fix:**
-A module-level `sessionPrimed` flag now tracks whether the current session has been primed. On the very first MCP tool call in any session, the system automatically detects that priming has not occurred and loads constitutional memories and code graph status. This context is injected into the response via a `meta.sessionPriming` field in the response envelope (the structured wrapper around tool results). The flag resets when the server restarts. This works identically across all five supported runtimes -- Claude Code, OpenCode, Codex CLI, Copilot CLI, and Gemini CLI -- without requiring any configuration or hook support.
+This phase introduced first-call priming groundwork through the MCP response envelope and the `meta.sessionPriming` path. Later packet phases refined the public recovery story into runtime-specific startup surfaces plus `session_bootstrap()` as the canonical non-hook recovery entry, so this changelog entry should be read as groundwork rather than the final universal startup model.
 
 ---
 
@@ -185,9 +185,9 @@ All existing vitest tests continue to pass (226 out of 226). New tests added in 
 
 | File | What changed |
 |------|-------------|
-| `mcp_server/hooks/claude/hook-state.ts` | readAndClearCompactPrime pattern, saveState boolean return, SHA-256 session hashing, 0700/0600 permissions, pendingStopSave field |
+| `mcp_server/hooks/claude/hook-state.ts` | readAndClearCompactPrime pattern, saveState boolean return, SHA-256 session hashing, 0700/0600 permissions |
 | `mcp_server/hooks/claude/session-prime.ts` | Provenance markers, 30-min TTL check, dead workingSet removal, shared pressure-budget import |
-| `mcp_server/hooks/claude/session-stop.ts` | Uses dedicated pendingStopSave field |
+| `mcp_server/hooks/claude/session-stop.ts` | Stop-hook durability and truth-synced save-path behavior |
 | `mcp_server/hooks/claude/compact-inject.ts` | autoSurfaceAtCompaction wiring for constitutional memory survival |
 | `mcp_server/hooks/claude/shared.ts` | wrapRecoveredCompactPayload and sanitizeRecoveredContent helpers |
 | `mcp_server/hooks/memory-surface.ts` | primeSessionIfNeeded with sessionPrimed flag, code graph status loading |

@@ -70,4 +70,4 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred
 
-- [ ] Additional SymbolKinds (decorator, property, constant) extraction — DEFERRED: requires tree-sitter AST for reliable detection
+- [x] Additional SymbolKinds (decorator, property, constant) extraction remains explicitly deferred for later parser follow-up work

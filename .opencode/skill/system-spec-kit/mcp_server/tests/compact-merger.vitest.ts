@@ -42,6 +42,8 @@ describe('compact merger', () => {
       expect(result.allocation).toBeDefined();
       expect(result.allocation.totalBudget).toBe(4000);
       expect(result.allocation.allocations.length).toBe(5);
+      expect(result.payloadContract.kind).toBe('compaction');
+      expect(result.payloadContract.provenance.producer).toBe('compact_merger');
     });
 
     it('includes merge timestamp', () => {
@@ -77,6 +79,23 @@ describe('compact merger', () => {
       expect(result.text).toContain('Active Files & Structural Context');
       expect(result.text).not.toContain('Semantic Neighbors');
       expect(result.sections.every(section => section.tokenEstimate > 0)).toBe(true);
+    });
+
+    it('records pre-merge selection metadata when provided', () => {
+      const result = mergeCompactBrief(createInput(), 4000, undefined, {
+        strategy: 'pre-merge',
+        selectedFrom: ['transcript-tail', 'active-files'],
+        fileCount: 2,
+        topicCount: 1,
+        attentionSignalCount: 1,
+        notes: ['Recovered compact transcript lines were removed before pre-merge selection.'],
+        antiFeedbackGuards: ['Strip recovered hook-cache source markers before transcript summarization.'],
+      });
+
+      expect(result.metadata.selection?.strategy).toBe('pre-merge');
+      expect(result.payloadContract.selection?.antiFeedbackGuards).toContain(
+        'Strip recovered hook-cache source markers before transcript summarization.',
+      );
     });
   });
 });

@@ -66,6 +66,6 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred
 
-- [ ] MCP-level compaction detection (time gap analysis) — Deferred to v2: not implementable without runtime SDK changes
-- [ ] `SPECKIT_AUTO_COMPACT_DETECT` feature flag — Deferred to v2: requires runtime SDK changes
-- [ ] Copilot/Gemini hook adapters — Deferred to v2: current `disabled_by_scope` policy sufficient for v1
+- [x] MCP-level compaction detection (time gap analysis) remains explicitly deferred to later runtime-SDK work
+- [x] `SPECKIT_AUTO_COMPACT_DETECT` remains explicitly deferred because runtime SDK changes are still required
+- [x] Copilot/Gemini adapter follow-up was split and tracked explicitly — Gemini later shipped in Phase 022, while Copilot parity moved into later startup/runtime phases

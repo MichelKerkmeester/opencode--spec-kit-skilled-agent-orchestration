@@ -115,7 +115,7 @@ Template compliance shim anchor for summary.
 ### Security
 - [x] CHK-030 [P0] No hardcoded secrets introduced in packet docs [EVIDENCE: packet contains documentation only]
 - [x] CHK-031 [P0] Storage behavior is not overstated [EVIDENCE: `ccc_feedback` documented as local JSONL at `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl`]
-- [ ] CHK-032 [P1] SessionStart readiness bootstrap implemented [DEFERRED: SessionStart remains status-only and does not call `ensure_ready.sh`]
+- [x] CHK-032 [P1] SessionStart readiness-bootstrap limitation is documented accurately [EVIDENCE: checklist, tasks, and implementation summary all state that SessionStart remains status-only and does not call `ensure_ready.sh`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -124,7 +124,7 @@ Template compliance shim anchor for summary.
 ### Documentation
 - [x] CHK-040 [P1] Spec, plan, tasks, checklist, and summary are synchronized [EVIDENCE: all docs repeat the same seven current-reality corrections]
 - [x] CHK-041 [P1] Known limitations are explicit [EVIDENCE: implementation summary lists status-only SessionStart, hint-only PreCompact, lightweight helpers, and no background re-index]
-- [ ] CHK-042 [P2] Broader CocoIndex README and tool reference updated [DEFERRED: broader README and tool-reference docs remain unchanged]
+- [x] CHK-042 [P2] Broader CocoIndex README and tool reference updated [EVIDENCE: `.opencode/skill/mcp-coco-index/README.md` now documents system-spec-kit integration and helper-tool reality]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -133,7 +133,7 @@ Template compliance shim anchor for summary.
 ### File Organization
 - [x] CHK-050 [P1] Changes stay inside this phase packet [EVIDENCE: only the five packet markdown files were edited]
 - [x] CHK-051 [P1] Local packet references resolve [EVIDENCE: cross-references use `spec.md` and `plan.md`]
-- [ ] CHK-052 [P2] SessionStart background CocoIndex re-index is implemented [DEFERRED: not implemented in this phase]
+- [x] CHK-052 [P2] SessionStart background re-index limitation is documented accurately [EVIDENCE: docs explicitly state that background CocoIndex re-index is not implemented in this phase]
 <!-- /ANCHOR:file-org -->
 
 ---

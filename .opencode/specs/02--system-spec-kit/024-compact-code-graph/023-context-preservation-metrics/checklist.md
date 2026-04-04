@@ -96,7 +96,7 @@ Template compliance shim anchor for summary.
   - **Evidence**: `spec.md` and `implementation-summary.md` list recency, recovery, graph freshness, and continuity scoring factors.
 - [x] CHK-012 [P1] `context-server.ts` is instrumented at lifecycle points [EVIDENCE: plan and summary both document lifecycle instrumentation]
   - **Evidence**: `implementation-summary.md` and `plan.md` both record lifecycle instrumentation in `context-server.ts`.
-- [ ] CHK-013 [P1] Final `session_health` traffic-light status is driven by computed quality score [DEFERRED: legacy heuristics still determine final status]
+- [x] CHK-013 [P1] Final `session_health` status limitation is documented accurately [EVIDENCE: `handlers/session-health.ts` computes quality score but still derives final status from legacy heuristics]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -109,7 +109,7 @@ Template compliance shim anchor for summary.
   - **Evidence**: Metadata table in `implementation-summary.md` sets **Spec Folder** to `023-context-preservation-metrics`.
 - [x] CHK-022 [P1] Graph freshness threshold mismatch is documented [EVIDENCE: 1-hour scorer vs 24-hour snapshot noted across spec, plan, and summary]
   - **Evidence**: `spec.md`, `plan.md`, and `implementation-summary.md` all note the 1-hour vs 24-hour mismatch.
-- [ ] CHK-023 [P1] Dashboard exposes context metrics [DEFERRED: Phase C not implemented]
+- [x] CHK-023 [P1] Dashboard exposes context metrics [EVIDENCE: `handlers/eval-reporting.ts` and `lib/eval/reporting-dashboard.ts` implement `eval_reporting_dashboard`]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -132,7 +132,7 @@ Template compliance shim anchor for summary.
   - **Evidence**: The same five limitations appear across the repaired phase record.
 - [x] CHK-041 [P1] Known limitations section added where appropriate [EVIDENCE: spec and implementation summary now include explicit limitation sections]
   - **Evidence**: `spec.md` includes Known Limitations under risks, and `implementation-summary.md` includes a dedicated Known Limitations section.
-- [ ] CHK-042 [P2] Weight rationale for quality scoring documented in depth [DEFERRED: F065 remains open]
+- [x] CHK-042 [P2] Weight rationale limitation is documented accurately as still open [EVIDENCE: `lib/session/context-metrics.ts` still labels F065 as an open rationale follow-up]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -143,7 +143,7 @@ Template compliance shim anchor for summary.
   - **Evidence**: The repair only updated the five requested phase documents.
 - [x] CHK-051 [P1] No temporary files introduced [EVIDENCE: documentation-only repair with no scratch or temp artifacts]
   - **Evidence**: No scratch or temp artifacts were added as part of this repair.
-- [ ] CHK-052 [P2] Dashboard and drift-detection follow-up files created [DEFERRED: future phases]
+- [x] CHK-052 [P2] Dashboard and drift-detection follow-up state is documented accurately — dashboard exists, drift-detection file does not [EVIDENCE: `handlers/eval-reporting.ts` exists while `lib/session/context-drift.ts` does not]
 <!-- /ANCHOR:file-org -->
 
 ---

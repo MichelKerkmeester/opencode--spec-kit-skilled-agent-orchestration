@@ -176,6 +176,7 @@ interface AutoSurfaceResult {
 interface ToolCallResponse {
   content: Array<{ type: string; text: string }>;
   isError?: boolean;
+  structuredContent?: unknown;
   [key: string]: unknown;
 }
 

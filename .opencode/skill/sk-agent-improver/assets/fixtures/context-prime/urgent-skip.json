@@ -1,0 +1,19 @@
+{
+  "id": "urgent-skip",
+  "description": "Prime Package for urgent first-turn handling while preserving the read-only contract.",
+  "requiredHeadings": [
+    "## Session Context",
+    "## System Health",
+    "## Recommended Next Steps"
+  ],
+  "requiredPatterns": [
+    "urgent",
+    "read-only|READ-ONLY",
+    "session_bootstrap|session_health"
+  ],
+  "forbiddenPatterns": [
+    "\\[YOUR_VALUE_HERE",
+    "modify files",
+    "run code_graph_scan"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  // Full-skill surface classification for sk-agent-improver.
+  "version": 2,
+  "defaultMode": "proposal-first",
+  "profileCatalog": ".opencode/skill/sk-agent-improver/assets/target-profiles",
+  "targets": [
+    {
+      "id": "handover-canonical",
+      "profileId": "handover",
+      "family": "session-handover",
+      "path": ".opencode/agent/handover.md",
+      "classification": "canonical",
+      "mutableInPhase1": false,
+      "candidateOnly": false,
+      "promotionEligible": true,
+      "evaluationMode": "prompt-surface+benchmark",
+      "requiredReferences": [
+        "spec.md",
+        "plan.md",
+        "tasks.md",
+        "checklist.md",
+        "memory/",
+        ".opencode/skill/system-spec-kit/templates/handover.md"
+      ]
+    },
+    {
+      "id": "handover-claude",
+      "profileId": "handover",
+      "family": "session-handover",
+      "path": ".claude/agents/handover.md",
+      "classification": "derived",
+      "mutableInPhase1": false
+    },
+    {
+      "id": "handover-codex",
+      "profileId": "handover",
+      "family": "session-handover",
+      "path": ".codex/agents/handover.toml",
+      "classification": "derived",
+      "mutableInPhase1": false
+    },
+    {
+      "id": "handover-gemini",
+      "profileId": "handover",
+      "family": "session-handover",
+      "path": ".gemini/agents/handover.md",
+      "classification": "derived",
+      "mutableInPhase1": false
+    },
+    {
+      "id": "handover-agents-runtime",
+      "profileId": "handover",
+      "family": "session-handover",
+      "path": ".agents/agents/handover.md",
+      "classification": "derived",
+      "mutableInPhase1": false
+    },
+    {
+      "id": "context-prime-candidate-only",
+      "profileId": "context-prime",
+      "family": "session-bootstrap",
+      "path": ".opencode/agent/context-prime.md",
+      "classification": "candidate-only",
+      "mutableInPhase1": false,
+      "candidateOnly": true,
+      "promotionEligible": false,
+      "evaluationMode": "prompt-surface+benchmark",
+      "requiredReferences": [
+        "session_bootstrap",
+        "session_health",
+        "fallback",
+        "Prime Package",
+        "read-only",
+        "under 15 seconds"
+      ]
+    }
+  ],
+  "fixed": [
+    ".opencode/command/spec_kit/handover.md",
+    ".agents/commands/spec_kit/handover.toml",
+    ".gemini/commands/spec_kit/handover.toml",
+    ".opencode/skill/system-spec-kit/templates/handover.md"
+  ],
+  "forbidden": [
+    ".opencode/command/spec_kit/handover.md",
+    ".agents/commands/spec_kit/handover.toml",
+    ".gemini/commands/spec_kit/handover.toml",
+    ".opencode/skill/system-spec-kit/templates/handover.md"
+  ],
+  "packaging": {
+    "mirrorSyncMode": "downstream-only",
+    "forbidMirrorEvidenceAsBenchmarkTruth": true
+  }
+}

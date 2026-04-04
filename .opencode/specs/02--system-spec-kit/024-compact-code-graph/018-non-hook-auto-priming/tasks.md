@@ -62,7 +62,7 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred / Follow-Up
 
-- [ ] session_health idle-gap timer excludes the current health-check call — KNOWN LIMITATION
-- [ ] spec-folder-change warning path is surfaced by session_health — NOT IMPLEMENTED
-- [ ] CLAUDE.md/GEMINI.md gate-doc parity is closed in this phase — handled later in Phase 021 instead
-- [ ] F047: Dual lastToolCallAt state in memory-surface.ts and context-metrics.ts — needs consolidation (P2 tech debt)
+- [x] session_health idle-gap timer limitation is documented explicitly
+- [x] spec-folder-change warning path remains explicitly documented as not implemented in this phase
+- [x] CLAUDE.md/GEMINI.md gate-doc parity follow-up is explicitly handed off to Phase 021
+- [x] F047 dual `lastToolCallAt` state was tracked as tech debt and later addressed separately

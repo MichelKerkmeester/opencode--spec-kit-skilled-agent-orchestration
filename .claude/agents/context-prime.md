@@ -33,8 +33,8 @@ Lightweight bootstrap agent that loads session context on first turn or after `/
 
 ### 2-Step Session Bootstrap
 
-1. **RECOVER + ASSESS** → Call `session_resume()` to load last session state, code graph status, and CocoIndex availability in one call
-2. **SCORE** (optional, skip if urgent) → Call `session_health()` for session quality (ok/warning/stale)
+1. **RECOVER + ASSESS** → Call `session_bootstrap()` to load last session state, system health, and structural context in one call
+2. **REFINE** (optional, skip if urgent) → Call `session_health()` only when you need a fresh post-bootstrap quality check or suspect context drift
 
 **Key Principle**: Complete in under 15 seconds. If any tool call fails, skip it and note "unavailable" — never block session start.
 
@@ -58,11 +58,11 @@ Just acknowledge and start working immediately.
 
 | Tool | Purpose | When to Use |
 | ---- | ------- | ----------- |
-| `session_resume` | Combined resume (memory + graph + coco) | Always — step 1 |
-| `session_health` | Get session quality score | Optional — step 2 (skip if urgent) |
-| `session_bootstrap` | One-call alternative to steps 1+2 | When available as single-call composite |
-| `memory_context` | Load session memory (fallback) | Only if session_resume unavailable |
-| `code_graph_status` | Check structural index (fallback) | Only if session_resume unavailable |
+| `session_bootstrap` | Combined resume + health + structural context | Always — step 1 |
+| `session_health` | Get a fresh quality score | Optional — step 2 (skip if urgent) |
+| `session_resume` | Resume-only fallback | Only if `session_bootstrap` is unavailable |
+| `memory_context` | Load session memory (fallback) | Only if `session_bootstrap` is unavailable |
+| `code_graph_status` | Check structural index (fallback) | Only if `session_bootstrap` is unavailable |
 
 ---
 
@@ -72,14 +72,13 @@ Just acknowledge and start working immediately.
 Session Event
     │
     ├─► First turn (fresh session, non-urgent)
-    │   └─► 2-step bootstrap: session_resume + session_health
-    │       Structural context from session_bootstrap/auto-prime is included automatically when code graph data exists.
+    │   └─► 2-step bootstrap: session_bootstrap + optional session_health
     │
     ├─► First turn (urgent message detected)
     │   └─► Skip bootstrap — MCP auto-priming handles context silently
     │
     ├─► After /clear
-    │   └─► 2-step bootstrap: session_resume + session_health
+    │   └─► 2-step bootstrap: session_bootstrap + optional session_health
     │
     ├─► After compaction (context loss)
     │   └─► 2-step bootstrap + warn about possible stale context
@@ -103,7 +102,7 @@ Session Event
 ### NEVER
 - Modify any files (write/edit permissions are denied)
 - Run long-running operations (no code_graph_scan, no memory_save)
-- Recurse into deep memory searches (single resume call only)
+- Recurse into deep memory searches (single bootstrap call only)
 - Block session start for any reason
 
 ### ESCALATE IF
@@ -155,13 +154,13 @@ Session Event
 
 ```
 BOOTSTRAP VERIFICATION (MANDATORY):
-[] session_resume called and response received (or noted as unavailable)
-[] session_health called and quality scored (or skipped for urgency)
+[] session_bootstrap called and response received (or noted as unavailable)
+[] session_health called and quality scored (or explicitly skipped for urgency)
 [] All "unavailable" items explicitly noted
 
 EVIDENCE VALIDATION (MANDATORY):
-[] Spec folder path verified against resume response
-[] Code graph freshness matches status response
+[] Spec folder path verified against bootstrap response
+[] Code graph freshness matches bootstrap/status response
 [] No placeholder content in output
 ```
 
@@ -232,8 +231,8 @@ If ANY answer is NO → Fix before delivering
 │  └─► Structured Prime Package delivery                                  │
 │                                                                         │
 │  WORKFLOW (2 Steps)                                                     │
-│  ├─► 1. RECOVER + ASSESS → session_resume()                            │
-│  └─► 2. SCORE (optional)  → session_health()                           │
+│  ├─► 1. RECOVER + ASSESS → session_bootstrap()                         │
+│  └─► 2. REFINE (optional) → session_health()                           │
 │                                                                         │
 │  URGENCY                                                                │
 │  └─► Skip bootstrap for urgent keywords; MCP auto-priming handles it   │

@@ -90,8 +90,8 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | **Spec Folder Workflow**      | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk, with packet-local changelog closeout for packet roots and child phases                      |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs                                                                                                            |
 | **Spec Kit Memory MCP**       | 43-tool MCP server providing persistent semantic memory, graph intelligence, and session orchestration across sessions, models and tools                                                                       |
-| **Hook System**               | Automated context preservation via runtime hooks where available, with `session_bootstrap()` fallback when hooks are unavailable                                                                               |
-| **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage + 10 MCP tools (4 graph query, 3 CCC, 3 session lifecycle) for call graphs, imports, LLM-oriented neighborhoods, and CocoIndex integration |
+| **Startup / Recovery Surfaces** | Runtime-specific startup context delivery where available, with `session_bootstrap()` as the canonical non-hook recovery entry and `session_resume()` as the detailed follow-up surface                    |
+| **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
 | **Session Continuity**        | Context preserved across session boundaries via `generate-context.js` and semantic indexing                                                                                                                    |
 | **Validation Scripts**        | 20-rule validation, completeness checks and placeholder detection for spec folders                                                                                                                             |
 | **Phase Decomposition**       | Parent/child spec folder structure for multi-session, multi-phase work                                                                                                                                         |
@@ -102,13 +102,13 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 
 Structural code analysis via tree-sitter WASM parsing and SQLite storage. Maps function calls, imports, class hierarchy, and containment across JS/TS/Python/Shell files.
 
-| Tool Category       | Tools                                                                    | Purpose                                            |
-| ------------------- | ------------------------------------------------------------------------ | -------------------------------------------------- |
-| **Graph Query**     | code_graph_scan, code_graph_query, code_graph_status, code_graph_context | Index, query, and explore structural relationships |
-| **CCC (CocoIndex)** | ccc_status, ccc_reindex, ccc_feedback                                    | CocoIndex lifecycle management                     |
-| **Session**         | session_health, session_resume, session_bootstrap                        | Session lifecycle orchestration                    |
+| Tool Category       | Tools                                                                    | Purpose                                                            |
+| ------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| **Graph Query**     | code_graph_scan, code_graph_query, code_graph_status, code_graph_context | Index, query, and explore structural relationships                 |
+| **CCC (CocoIndex)** | ccc_status, ccc_reindex, ccc_feedback                                    | Semantic-search lifecycle management and operator feedback         |
+| **Session**         | session_health, session_resume, session_bootstrap                        | Structural recovery, readiness checks, and startup/bootstrap state |
 
-CocoIndex (semantic search) finds code by concept. Code Graph (structural) maps what connects to what. The compact-merger combines both with Memory under a 4000-token budget for compaction injection.
+CocoIndex (semantic search) finds code by concept. Code Graph (structural) maps what connects to what. Startup and recovery surfaces now report freshness-aware graph state, structural read paths return a `readiness` block, and lightly stale graphs may repair inline with bounded `selective_reindex` while empty or broadly stale graphs stay on the explicit `code_graph_scan` path.
 
 For full tool reference with parameters, see [MCP Server README](mcp_server/README.md).
 
@@ -142,7 +142,7 @@ When an AI assistant asks "Which spec folder?" at Gate 3, choose Option B (New) 
 # Create a Level 1 spec folder
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh 042-my-feature
 
-# Creates: .opencode/[project]/042-my-feature/
+# Creates: specs/042-my-feature/
 # Files: spec.md, plan.md, tasks.md (Level 1 starters)
 ```
 
@@ -156,7 +156,7 @@ When your work session ends, save what happened so the next session can continue
 # Generate a memory file from structured JSON
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   --json '{"specFolder":"042-my-feature","sessionSummary":"Implemented login form validation"}' \
-  .opencode/specs/[project]/042-my-feature/
+  specs/042-my-feature/
 
 # Output: memory/YY-MM-DD_HH-MM__topic.md (auto-indexed in MCP)
 ```
@@ -414,30 +414,30 @@ The memory system includes built-in tools for measuring search quality:
 
 ### 3.3 COMMANDS
 
-Spec Kit exposes 12 workflow commands: 8 `spec_kit` + 4 `memory` operations. (Repository-wide command surface is 20 when combined with 7 `create` commands and 1 `agent_router` utility.) Each command opens access to a specific set of tools.
+Spec Kit exposes 12 top-level workflow commands: 8 `spec_kit` + 4 `memory` operations. Repository-wide command entry points total 21 when combined with 6 `create` commands, 2 `improve` commands, and 1 `agent_router` utility. Each command opens access to a specific set of tools.
 
 #### Spec Kit Commands (8)
 
-| Command                       | Steps | Purpose                                                                                                                          |
-| ----------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `/spec_kit:complete`          | 14    | Full end-to-end workflow: spec through implementation, verification, and packet-local changelog closeout where applicable        |
-| `/spec_kit:plan`              | 7     | Planning only -- spec through plan, no implementation                                                                            |
-| `/spec_kit:implement`         | 9     | Execute pre-planned work. Requires existing `plan.md`; packet-aware targets also generate local changelog output during closeout |
-| `/spec_kit:resume`            | 4     | Resume a previous session on an existing spec folder                                                                             |
-| `/spec_kit:handover`          | 4     | Create a session handover document for the next AI                                                                               |
-| `/spec_kit:debug`             | 5     | Delegate debugging to a specialized sub-agent with fresh perspective                                                             |
-| `/spec_kit:plan :with-phases` | N/A   | Phase decomposition integrated into plan and complete commands                                                                   |
-| `/spec_kit:deep-research`     | N/A   | Autonomous research loop with convergence detection                                                                              |
-| `/spec_kit:deep-review`       | N/A   | Autonomous code review loop with convergence detection                                                                           |
+| Command                 | Steps | Purpose                                                                                                                          |
+| ----------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `/spec_kit:complete`    | 14    | Full end-to-end workflow: spec through implementation, verification, and packet-local changelog closeout where applicable        |
+| `/spec_kit:plan`        | 7     | Planning only -- spec through plan, no implementation                                                                            |
+| `/spec_kit:implement`   | 9     | Execute pre-planned work. Requires existing `plan.md`; packet-aware targets also generate local changelog output during closeout |
+| `/spec_kit:resume`      | 4     | Resume a previous session on an existing spec folder                                                                             |
+| `/spec_kit:handover`    | 4     | Create a session handover document for the next AI                                                                               |
+| `/spec_kit:debug`       | 5     | Delegate debugging to a specialized sub-agent with fresh perspective                                                             |
+| `/spec_kit:deep-research` | N/A | Autonomous research loop with convergence detection                                                                              |
+| `/spec_kit:deep-review` | N/A   | Autonomous code review loop with convergence detection                                                                           |
 
 **Mode Suffixes** change how commands run:
 
-| Suffix           | Behavior                                                               |
-| ---------------- | ---------------------------------------------------------------------- |
-| `:auto`          | Execute without approval gates                                         |
-| `:confirm`       | Pause at each step for approval                                        |
-| `:with-research` | Dispatch deep research before verification (`/spec_kit:complete` only) |
-| `:auto-debug`    | Auto-dispatch debug agent on 3+ failures (`/spec_kit:complete` only)   |
+| Suffix           | Behavior                                                                                              |
+| ---------------- | ----------------------------------------------------------------------------------------------------- |
+| `:auto`          | Execute without approval gates                                                                        |
+| `:confirm`       | Pause at each step for approval                                                                       |
+| `:with-phases`   | Phase decomposition mode on planning / completion flows, not a standalone command                     |
+| `:with-research` | Dispatch deep research before verification (`/spec_kit:complete` only)                               |
+| `:auto-debug`    | Auto-dispatch debug agent on 3+ failures (`/spec_kit:complete` only)                                 |
 
 **Command source files**: `.opencode/command/spec_kit/`
 
@@ -636,7 +636,7 @@ Think of Spec Kit as a filing system with a librarian attached.
 
 The **spec folder workflow** is the filing system. Every time you modify files, it creates a numbered folder with the right paperwork (specification, plan, tasks). Templates make sure every folder follows the same structure. Validation checks that nothing is missing.
 
-The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, hook-capable runtimes auto-prime that context. Hookless runtimes should start with `session_bootstrap`, which bundles resume context, health, and structural readiness into one recovery call before deeper `memory_context` work begins.
+The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, runtime-specific startup integrations may auto-surface that context. If startup context is unavailable or the runtime is operating without hooks, begin with `session_bootstrap()`, which bundles resume context, health, and structural readiness into one recovery call before deeper `memory_context` work begins.
 
 The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation and packet-local changelog closeout when applicable. `/memory:save` saves context. `/spec_kit:resume` recovers or continues a previous session.
 
@@ -657,7 +657,7 @@ Session starts
             │
             ▼
   Next session starts
-  └─► Hooks auto-prime OR session_bootstrap() runs once
+  └─► Startup surface auto-primes OR session_bootstrap() runs once
        └─► AI resumes with context + health + structural readiness
 ```
 
@@ -692,7 +692,7 @@ For the full list of environment variables (including evaluation, telemetry and 
 
 ### MCP Server Configuration
 
-Add the Spec Kit Memory server to your MCP client configuration (for example `opencode.json` or Claude Desktop config):
+For generic MCP clients that use `mcpServers` syntax (for example Claude Desktop), add the Spec Kit Memory server like this:
 
 ```json
 {
@@ -710,7 +710,7 @@ Add the Spec Kit Memory server to your MCP client configuration (for example `op
 }
 ```
 
-For the full installation walkthrough including database migration and embedding provider setup, see [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md).
+OpenCode, Claude Code, Codex, Gemini, and VS Code / Copilot use checked-in repo-specific config shapes, so use [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md) for the runtime-specific examples instead of pasting the generic block above into every client.
 
 ### Feature Flags
 
@@ -1002,7 +1002,7 @@ A: Level 3 adds a `decision-record.md` for architecture decision records. Use it
 
 **Q: How do spec folders and memory work together?**
 
-A: Spec folders capture what happened in structured documentation. The memory system makes that documentation searchable across sessions. When a session ends, `generate-context.js` writes a summary to the spec folder's `memory/` directory. The MCP server indexes it. When the next session starts, hook-capable runtimes auto-prime that context, while hookless runtimes should call `session_bootstrap` first and then drop into `memory_context` or `memory_match_triggers` for deeper retrieval. One side captures, the recovery surfaces retrieve.
+A: Spec folders capture what happened in structured documentation. The memory system makes that documentation searchable across sessions. When a session ends, `generate-context.js` writes a summary to the spec folder's `memory/` directory. The MCP server indexes it. When the next session starts, runtime-specific startup integrations may auto-surface that context; otherwise the canonical recovery sequence is `session_bootstrap()` first, then `memory_context` or `memory_match_triggers` for deeper retrieval. One side captures, the recovery surfaces retrieve.
 
 ---
 

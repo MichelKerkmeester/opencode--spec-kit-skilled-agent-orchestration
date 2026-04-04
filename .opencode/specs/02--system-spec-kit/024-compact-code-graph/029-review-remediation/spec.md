@@ -19,7 +19,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 29 (`029-review-remediation`) |
 | **Predecessor** | `028-startup-highlights-remediation` |
-| **Successor** | None |
+| **Successor** | `030-opencode-graph-plugin` |
 | **Handoff Criteria** | All six active P1 findings are remediated with verification evidence, and the advisory P2 parity follow-up is either completed or truthfully deferred |
 
 # Spec: Review Remediation
@@ -71,7 +71,7 @@ Define and execute one focused remediation packet that closes the active review 
 | WS-3 Hook safety and autosave hardening | P1-003, P1-004 | Blocker | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` |
 | WS-4 Runtime guidance parity | P1-005 | Blocker | `.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md`, `.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md`, `AGENTS.md` |
 | WS-5 Structural bootstrap budget enforcement | P1-006 | Blocker | `.opencode/specs/02--system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md`, `.opencode/specs/02--system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md`, `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts` |
-| WS-6 Advisory context-prime alignment | P2-001 | Advisory | `.opencode/agent/context-prime.md`, `.claude/agents/context-prime.md`, `.codex/agents/context-prime.toml`, `.codex/agents/context-prime.md` |
+| WS-6 Advisory context-prime alignment | P2-001 | Advisory | `.opencode/agent/context-prime.md`, `.claude/agents/context-prime.md`, `.codex/agents/context-prime.toml` |
 <!-- /ANCHOR:scope -->
 
 <!-- ANCHOR:requirements -->

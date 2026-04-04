@@ -56,7 +56,7 @@ Template compliance shim anchor for cross-refs.
 - [x] Register Stop hook with `async: true` — Added to `.claude/settings.local.json` pointing to `dist/hooks/claude/session-stop.js`
 - [x] Implement `stop_hook_active` recursion guard — Early return when `input.stop_hook_active === false`
 - [x] Auto-save context when >1000 output tokens — `AUTO_SAVE_TOKEN_THRESHOLD` constant; triggers lightweight context save via `generate-context.js` when exceeded
-- [x] Duplicate save prevention — `RECENT_SAVE_WINDOW_MS` (5 min) window check against `pendingStopSave.cachedAt` prevents double-saves
+- [x] Duplicate-save prevention remains explicitly documented as a follow-up concern rather than a shipped dedicated hook-state field
 - [x] Spec folder auto-detection from transcript — `detectSpecFolder()` called on transcript path, result stored in hook state `lastSpecFolder`
 - [x] Session summary extraction from last assistant message — `extractSessionSummary()` truncates to ~200 chars at nearest sentence boundary, stored in hook state `sessionSummary`
 - [x] `--finalize` mode for stale state cleanup — `cleanStaleStates()` removes state files older than 24 hours when invoked with `--finalize` argv flag

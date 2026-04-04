@@ -9,6 +9,7 @@ trigger_phrases:
   - "spec kit debug"
   - "spec kit handover"
   - "spec kit resume"
+  - "spec kit deep-review"
   - "spec kit phase"
   - "spec kit complete"
 ---
@@ -55,6 +56,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | **plan** | `/spec_kit:plan <description> [:auto\|:confirm] [:with-phases]` | 7 | Create spec folder and plan without implementation. `:with-phases` adds phase decomposition pre-workflow |
 | **implement** | `/spec_kit:implement <spec-folder> [:auto\|:confirm]` | 9 | Execute pre-planned work (requires existing plan.md) |
 | **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm\|:review\|:review:auto\|:review:confirm]` | iterative | Autonomous deep research loop with convergence detection |
+| **deep-review** | `/spec_kit:deep-review <target> [:auto\|:confirm]` | iterative | Autonomous code review loop with severity-weighted findings |
 | **debug** | `/spec_kit:debug [spec-folder]` | varies | Delegate debugging to a specialized sub-agent |
 | **handover** | `/spec_kit:handover [spec-folder]` | varies | Create session handover document for continuation |
 | **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume or recover work on an existing spec folder |
@@ -67,6 +69,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | `plan` | Nothing (creates new spec folder) |
 | `implement` | Existing `plan.md` in spec folder |
 | `deep-research` | Nothing (iterative research with convergence detection) |
+| `deep-review` | Target files or spec folder to review |
 | `debug` | Existing spec folder with failing task |
 | `handover` | Existing spec folder with work history |
 | `resume` | Existing spec folder with saved state or recoverable session context |
@@ -81,28 +84,29 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 
 ```text
 spec_kit/
-├── README.md         # This file, 8-command index and workflow guide
+├── README.txt        # This file, 8-command index and workflow guide
 ├── complete.md       # /spec_kit:complete - Full end-to-end workflow
 ├── debug.md          # /spec_kit:debug - Debug delegation
+├── deep-research.md  # /spec_kit:deep-research - Autonomous deep research loop
+├── deep-review.md    # /spec_kit:deep-review - Autonomous code review loop
 ├── handover.md       # /spec_kit:handover - Session handover
 ├── implement.md      # /spec_kit:implement - Execute planned work
 ├── plan.md           # /spec_kit:plan - Planning only
-├── deep-research.md  # /spec_kit:deep-research - Autonomous deep research loop
 ├── resume.md         # /spec_kit:resume - Resume existing work
 └── assets/           # YAML workflow definitions
     ├── spec_kit_complete_auto.yaml
     ├── spec_kit_complete_confirm.yaml
     ├── spec_kit_debug_auto.yaml
     ├── spec_kit_debug_confirm.yaml
+    ├── spec_kit_deep-research_auto.yaml
+    ├── spec_kit_deep-research_confirm.yaml
+    ├── spec_kit_deep-review_auto.yaml
+    ├── spec_kit_deep-review_confirm.yaml
     ├── spec_kit_handover_full.yaml
     ├── spec_kit_implement_auto.yaml
     ├── spec_kit_implement_confirm.yaml
     ├── spec_kit_plan_auto.yaml
     ├── spec_kit_plan_confirm.yaml
-    ├── spec_kit_deep-research_auto.yaml
-    ├── spec_kit_deep-research_confirm.yaml
-    ├── spec_kit_deep-research_review_auto.yaml
-    ├── spec_kit_deep-research_review_confirm.yaml
     ├── spec_kit_resume_auto.yaml
     └── spec_kit_resume_confirm.yaml
 ```
@@ -147,6 +151,7 @@ The `complete` command combines deep-research, plan, and implement into a single
 | plan | @speckit (spec folder creation), @deep-research (optional) |
 | implement | @general (code changes), @speckit (documentation) |
 | deep-research | @deep-research (iterative investigation) |
+| deep-review | @deep-review (iterative code audit) |
 | debug | @debug (fresh perspective analysis) |
 | handover | @handover (context preservation) |
 | resume | Loads memory context, continues from last state |

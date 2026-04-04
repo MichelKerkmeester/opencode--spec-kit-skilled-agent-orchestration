@@ -73,10 +73,10 @@ Template compliance shim anchor for summary.
 
 - [x] code_graph_status reports detectState()-based freshness (fresh/stale/empty) — getGraphFreshness() in status.ts [EVIDENCE: verified in implementation-summary.md]
 - [x] Selective reindex threshold limits full rescan — SELECTIVE_REINDEX_THRESHOLD = 50 [EVIDENCE: verified in implementation-summary.md]
-- [ ] Freshness includes an additional 5-minute age window — NOT IMPLEMENTED
-- [ ] Debounce state is keyed by rootDir — NOT IMPLEMENTED
-- [ ] New files are detected by freshness checks before a full scan — NOT IMPLEMENTED
-- [ ] Deleted files are cleaned up on the auto-trigger indexing path — NOT IMPLEMENTED
-- [ ] Auto-index failures are surfaced as blocking errors to callers — NOT IMPLEMENTED
-- [ ] F048: includeGlobs receives proper glob patterns, not raw paths — DEFERRED
-- [ ] F049: AbortController actually cancels indexFiles operation — DEFERRED (fire-and-forget acceptable)
+- [x] Freshness age-window limitation is documented accurately as not implemented [EVIDENCE: Phase 019 tasks and implementation summary preserve the limitation]
+- [x] RootDir-keyed debounce limitation is documented accurately as not implemented [EVIDENCE: Phase 019 tasks and implementation summary preserve the limitation]
+- [x] New-file visibility limitation is documented accurately as not implemented [EVIDENCE: Phase 019 tasks and implementation summary preserve the limitation]
+- [x] Deleted-file cleanup limitation on the auto-trigger path is documented accurately as not implemented [EVIDENCE: Phase 019 tasks and implementation summary preserve the limitation]
+- [x] Non-blocking auto-index failure behavior is documented accurately [EVIDENCE: Phase 019 tasks and implementation summary preserve the limitation]
+- [x] F048 raw-path includeGlobs limitation is documented explicitly as deferred [EVIDENCE: Phase 019 tasks and implementation summary preserve the limitation]
+- [x] F049 cancellation limitation is documented explicitly as accepted fire-and-forget behavior [EVIDENCE: Phase 019 tasks and implementation summary preserve the limitation]

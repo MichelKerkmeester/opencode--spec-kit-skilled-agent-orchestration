@@ -1,0 +1,40 @@
+{
+  "status": "benchmark-complete",
+  "profileId": "context-prime",
+  "family": "session-bootstrap",
+  "target": ".opencode/agent/context-prime.md",
+  "label": "context-prime-run-002",
+  "aggregateScore": 100,
+  "maxScore": 100,
+  "recommendation": "benchmark-pass",
+  "thresholds": {
+    "requiredAggregateScore": 85,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0
+  },
+  "fixtures": [
+    {
+      "id": "clean-bootstrap",
+      "outputPath": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/benchmark-runs/context-prime/baseline/clean-bootstrap.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    },
+    {
+      "id": "urgent-skip",
+      "outputPath": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/benchmark-runs/context-prime/baseline/urgent-skip.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    }
+  ],
+  "failureModes": []
+}

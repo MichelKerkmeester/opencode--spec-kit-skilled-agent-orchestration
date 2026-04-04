@@ -4,7 +4,7 @@
 # Mode: autonomous (no user approval gates)
 # Note: This workflow executes all steps sequentially with
 #       continuous self-validation. Pauses only if confidence < 40%.
-# ───────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────
 role: Expert Agent Creator using sk-doc skill
 purpose: Create production-ready OpenCode agents with 6-step workflow
 action: Guide agent creation from understanding through validation with YAML frontmatter verification and permission configuration
@@ -32,6 +32,9 @@ operating_mode:
   tracking: progressive_task_checklists
   validation: continuous_self_validation
   permission_configuration: explicit_approval_required
+  description: |
+    Executes the 6-step agent creation workflow without step-by-step approval.
+    Pauses only if confidence drops below threshold or YAML validation fails.
 
 development_philosophy:
   principle: "Understand purpose before defining configuration"

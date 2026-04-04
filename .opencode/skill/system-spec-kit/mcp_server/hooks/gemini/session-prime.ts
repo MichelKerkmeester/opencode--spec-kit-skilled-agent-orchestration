@@ -15,7 +15,7 @@
 
 import {
   hookLog, formatHookOutput, truncateToTokenBudget,
-  sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
+  wrapRecoveredCompactPayload,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
   type OutputSection,
 } from '../claude/shared.js';
@@ -27,7 +27,9 @@ type StartupBrief = {
   graphOutline: string | null;
   sessionContinuity: string | null;
   graphSummary: { files: number; nodes: number; edges: number; lastScan: string | null } | null;
-  graphState: 'ready' | 'empty' | 'missing';
+  graphState: 'ready' | 'stale' | 'empty' | 'missing';
+  cocoIndexAvailable: boolean;
+  startupSurface: string;
 };
 
 let buildStartupBrief: (() => StartupBrief) | null = null;
@@ -84,22 +86,30 @@ function handleCompact(sessionId: string): OutputSection[] {
 
 /** Handle source=startup: prime new session with tool overview */
 function handleStartup(): OutputSection[] {
+  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
   const sections: OutputSection[] = [
     {
-      title: 'Session Priming',
+      title: 'Session Context',
+      content: startupBrief?.startupSurface ?? [
+        'Session context received. Current state:',
+        '',
+        '- Memory: startup summary unavailable',
+        '- Code Graph: unavailable',
+        '- CocoIndex: unknown',
+        '',
+        'What would you like to work on?',
+      ].join('\n'),
+    },
+    {
+      title: 'Recovery Tools',
       content: [
-        'Spec Kit Memory is active. Key tools available:',
         '- `memory_context({ input, mode })` - unified context retrieval',
         '- `memory_match_triggers({ prompt })` - fast trigger matching',
         '- `memory_search({ query })` - semantic search',
-        '- Code Graph: `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`',
-        '',
-        'To resume prior work: `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })`',
+        '- `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`',
       ].join('\n'),
     },
   ];
-
-  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
   if (startupBrief?.graphOutline) {
     sections.push({
       title: 'Structural Context',
@@ -119,11 +129,10 @@ function handleStartup(): OutputSection[] {
     });
   }
 
-  const lastScan = startupBrief?.graphSummary?.lastScan ?? null;
-  if (startupBrief?.graphState === 'ready' && (!lastScan || (Date.now() - new Date(lastScan).getTime() > 24 * 60 * 60 * 1000))) {
+  if (startupBrief?.graphState === 'stale') {
     sections.push({
       title: 'Stale Code Graph Warning',
-      content: 'Code graph index is >24h old. Run `code_graph_scan` for fresh structural context.',
+      content: 'Code graph freshness is stale. The first structural read may refresh inline when safe; run `code_graph_scan` for broader stale states.',
     });
   }
 

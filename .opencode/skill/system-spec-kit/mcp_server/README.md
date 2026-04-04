@@ -130,7 +130,29 @@ node dist/context-server.js --help
 
 ### Add to Your MCP Configuration
 
-Add this block to your MCP client configuration (for example `opencode.json` or Claude Desktop config):
+Use the configuration shape that matches your client.
+
+**OpenCode (`opencode.json`)**
+
+```json
+{
+  "mcp": {
+    "spec_kit_memory": {
+      "type": "local",
+      "command": [
+        "node",
+        ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
+      ],
+      "environment": {
+        "EMBEDDINGS_PROVIDER": "auto",
+        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite"
+      }
+    }
+  }
+}
+```
+
+**Generic `mcpServers` clients (for example Claude Desktop)**
 
 ```json
 {
@@ -510,11 +532,13 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 **Parser:** Tree-sitter WASM is the default parser (JS/TS/Python/Shell). Set `SPECKIT_PARSER=regex` for regex fallback.
 
-**Storage:** `code-graph.sqlite` (separate from `context-index.sqlite`), with tables: `code_files`, `code_nodes`, `code_edges`.
+**Storage:** `database/code-graph.sqlite` (separate from `database/context-index.sqlite`), with tables: `code_files`, `code_nodes`, `code_edges`, and `code_graph_metadata`.
 
 **Edge types:** `CONTAINS`, `CALLS`, `IMPORTS`, `EXPORTS`, `EXTENDS`, `IMPLEMENTS`, `DECORATES`, `OVERRIDES`, `TYPE_OF`.
 
-**Auto-trigger:** `ensureCodeGraphReady()` runs automatically on branch switch, session start and stale detection. It checks graph freshness and triggers an incremental scan if needed.
+**Read-path readiness:** `ensureCodeGraphReady()` runs automatically inside `code_graph_query` and `code_graph_context`. It checks graph freshness, returns a `readiness` block, and performs bounded inline selective reindex only when the stale set is small enough to repair safely on the read path. Empty graphs, large stale sets, and other full-scan cases remain explicit `code_graph_scan` work.
+
+**Startup/recovery surfaces:** `session_resume`, `session_bootstrap`, and the startup brief now report freshness-aware graph status instead of count-only health. Startup surfaces are intentionally non-mutating snapshots, so later structural reads may still differ if repo state changes.
 
 **Query routing:** Structural queries (callers, imports, dependencies) go to `code_graph_query`. Semantic and concept queries go to CocoIndex (`mcp__cocoindex_code__search`). Session and memory queries go to `memory_context`.
 
@@ -570,7 +594,7 @@ The smart entry point. You describe what you need and it figures out the best wa
 
 ##### `session_resume`
 
-Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`.
+Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -581,7 +605,7 @@ Resume session with combined memory, code graph and CocoIndex status in a single
 
 ##### `session_bootstrap`
 
-Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions.
+Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions. Startup/bootstrap surfaces are freshness-aware but non-mutating; use `code_graph_scan` when readiness shows an empty or broad full-scan state.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1031,7 +1055,7 @@ Generate a report showing search performance trends over time. Aggregates metric
 
 ##### `code_graph_query`
 
-Query structural code relationships: `outline` (file symbols), `calls_from` and `calls_to` (call graph), `imports_from` and `imports_to` (dependency graph). Use this instead of Grep for structural queries. Supports multi-hop BFS traversal.
+Query structural code relationships: `outline` (file symbols), `calls_from` and `calls_to` (call graph), `imports_from` and `imports_to` (dependency graph). Use this instead of Grep for structural queries. Supports multi-hop BFS traversal. Responses include a `readiness` block, and the handler may perform bounded inline selective reindex before answering when the graph is only lightly stale.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1046,7 +1070,7 @@ Query structural code relationships: `outline` (file symbols), `calls_from` and 
 
 ##### `code_graph_context`
 
-Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds for structural expansion. Modes: `neighborhood` (1-hop calls plus imports), `outline` (file symbols), `impact` (reverse callers).
+Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds for structural expansion. Modes: `neighborhood` (1-hop calls plus imports), `outline` (file symbols), `impact` (reverse callers). Responses include a `readiness` block, and the handler may perform bounded inline selective reindex before answering when the graph is only lightly stale.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1123,7 +1147,7 @@ Cancel a running import job. The current file finishes processing before the job
 
 ##### `code_graph_scan`
 
-Scan workspace files and build the structural code graph index (functions, classes, imports, calls). Uses tree-sitter WASM for parsing with regex fallback. Supports incremental re-indexing via content hash.
+Scan workspace files and build the structural code graph index (functions, classes, imports, calls). Uses tree-sitter WASM for parsing with regex fallback. Supports incremental re-indexing via content hash. Use this explicitly when the graph is empty, when a read path reports `full_scan`, or when you want to rebuild more than the bounded inline refresh path will repair.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1196,7 +1220,7 @@ mcp_server/
 ├── database/                  # Runtime SQLite artifacts and profile-specific DBs
 ├── formatters/                # Search-result and token-metric formatting
 ├── handlers/                  # MCP tool handlers plus save/index helper modules
-├── hooks/                     # Auto-surface hints, mutation feedback, token-count sync
+├── hooks/                     # Session-start/compaction surfacing, mutation feedback, token-count sync
 ├── lib/                       # Retrieval, storage, eval, governance, scoring, and parsing internals
 ├── schemas/                   # Zod tool-input schemas
 ├── shared-spaces/             # Documentation-only shared-memory surface
@@ -1247,7 +1271,7 @@ Token budgets control how much content each tool can return per call. The budget
 
 For the complete list of all environment variables with defaults and examples, see `../references/config/environment_variables.md`.
 
-Codex note: set `MEMORY_DB_PATH` to a writable location (for example under your home directory or `/tmp`) so the MCP server does not fail when it needs to create or update the SQLite database.
+Codex note: if the active Codex runtime cannot write inside the repository, set `MEMORY_DB_PATH` to a writable location (for example under your home directory or `/tmp`) so the MCP server can create and update the SQLite database safely.
 
 ### Embedding Providers
 
@@ -1265,7 +1289,7 @@ The full source of truth lives in `../references/config/environment_variables.md
 
 | Variable | Default | What It Controls |
 |------|---------|-----------------|
-| `MEMORY_DB_PATH` | `mcp_server/dist/database/context-index.sqlite` | Override the active memory database location |
+| `MEMORY_DB_PATH` | `mcp_server/database/context-index.sqlite` | Override the active memory database location |
 | `ENABLE_RERANKER` | `false` | Enable the experimental reranker path |
 | `ENABLE_TOOL_CACHE` | `true` | Enable tool-level result caching |
 | `SPECKIT_STRICT_SCHEMAS` | `true` | Strict Zod validation for MCP tool inputs |
@@ -1506,6 +1530,7 @@ For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](../SHARED_MEMO
 |---------------------|------|-----|
 | Resume a session from scratch | `session_bootstrap` | Use as the first recovery call on session start or after `/clear` |
 | Inspect the detailed merged resume payload | `session_resume` | Use when you want direct resume details without the full bootstrap wrapper |
+| Repair an empty or broadly stale code graph | `code_graph_scan` | Use when readiness reports `full_scan` or the graph is missing |
 | Find a past decision | `memory_context` | Set `intent: "find_decision"` |
 | Search for specific terms | `memory_search` | Use `concepts: ["term1", "term2"]` for AND search |
 | Check triggers on every prompt | `memory_match_triggers` | Pass the user's prompt text |

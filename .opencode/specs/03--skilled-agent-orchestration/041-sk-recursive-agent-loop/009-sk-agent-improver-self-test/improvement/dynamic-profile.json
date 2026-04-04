@@ -1,0 +1,194 @@
+{
+  "id": "agent-improver",
+  "family": "derived",
+  "targetPath": ".opencode/agent/agent-improver.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-04-04T11:21:24.191Z",
+  "agentMeta": {
+    "name": "agent-improver",
+    "mode": "subagent",
+    "temperature": 0.2,
+    "permissionSummary": {
+      "allowed": [
+        "read",
+        "write",
+        "edit",
+        "bash",
+        "grep",
+        "glob",
+        "list",
+        "external_directory"
+      ],
+      "denied": [
+        "webfetch",
+        "memory",
+        "chrome_devtools",
+        "task",
+        "patch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-capability-scan",
+        "description": "Agent has CAPABILITY SCAN section",
+        "weight": 10
+      },
+      {
+        "id": "has-rules",
+        "description": "Agent has RULES section",
+        "weight": 10
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [
+      {
+        "id": "always-rule-0",
+        "rule": "Read the charter first",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-1",
+        "rule": "Read the manifest first",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-2",
+        "rule": "Read the canonical target before proposing changes",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-3",
+        "rule": "Stay proposal-only",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-4",
+        "rule": "Keep scope narrow and explicit",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-5",
+        "rule": "Return structured metadata about what changed and why",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-0",
+        "rule": "Edit the canonical target",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-1",
+        "rule": "Edit runtime mirrors",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-2",
+        "rule": "Expand scope beyond the manifest",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-3",
+        "rule": "Score the candidate yourself",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-4",
+        "rule": "Hide uncertainty or fabricate evidence",
+        "type": "never",
+        "weight": 8
+      }
+    ],
+    "outputChecks": [
+      {
+        "id": "checklist-0",
+        "check": "Read the charter and manifest before writing the candidate",
+        "weight": 5
+      },
+      {
+        "id": "checklist-1",
+        "check": "Candidate path points to the packet-local runtime area, not the canonical target",
+        "weight": 5
+      },
+      {
+        "id": "checklist-2",
+        "check": "Returned target matches the manifest-approved target for this run",
+        "weight": 5
+      },
+      {
+        "id": "checklist-3",
+        "check": "JSON output includes status, candidate_path, target, change_summary, and notes",
+        "weight": 5
+      },
+      {
+        "id": "checklist-4",
+        "check": "No claim implies canonical mutation",
+        "weight": 5
+      },
+      {
+        "id": "checklist-5",
+        "check": "No placeholder output remains in the JSON response",
+        "weight": 5
+      },
+      {
+        "id": "checklist-6",
+        "check": "Any uncertainty is stated explicitly",
+        "weight": 5
+      }
+    ],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [
+        "/improve:agent-improver"
+      ],
+      "skills": [
+        "sk-agent-improver",
+        "sk-doc",
+        "system-spec-kit"
+      ],
+      "agents": [
+        "agent-improver",
+        "review"
+      ]
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

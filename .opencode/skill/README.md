@@ -41,7 +41,7 @@ trigger_phrases:
 
 `.opencode/skill/` holds 20 skill folders plus one shared `scripts/` directory. Skills are not passive references. Each skill contains executable guidance that an AI agent loads on demand through Gate 2 routing or explicit invocation. Skills carry their own references, assets, and scripts so all domain knowledge stays close to the code that uses it.
 
-Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and prompt engineering utilities, and the system-spec-kit foundation that governs every file modification. The routing engine at `scripts/skill_advisor.py` scores each incoming request against all skill descriptions and returns confidence-ranked recommendations.
+Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and improvement-loop utilities, and the system-spec-kit foundation that governs every file modification. The routing engine at `scripts/skill_advisor.py` scores each incoming request against all skill descriptions and returns confidence-ranked recommendations.
 
 Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffolding workflow, gets a SKILL.md with proper frontmatter, and is immediately discoverable by `skill_advisor.py` without any manual registration.
 
@@ -53,9 +53,9 @@ Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffoldi
 | CLI orchestrator skills | 4 | cli-claude-code, cli-codex, cli-copilot, cli-gemini |
 | MCP integration skills | 5 | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma |
 | Code quality overlays | 4 | sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web |
-| Documentation, research, and review skills | 4 | sk-deep-research, sk-deep-review, sk-doc, sk-prompt-improver |
+| Documentation, research, review, and improvement skills | 5 | sk-agent-improver, sk-deep-research, sk-deep-review, sk-doc, sk-prompt-improver |
 | Git and system skills | 2 | sk-git, system-spec-kit |
-| Skills with local scripts/ | 5 | mcp-code-mode, sk-code--, sk-doc, system-spec-kit |
+| Skills with local scripts/ | 6 | mcp-code-mode, sk-agent-improver, sk-code--, sk-doc, system-spec-kit |
 | Shared routing scripts | 4 | skill_advisor.py plus bench, regression, runtime helpers |
 
 ### Key Features
@@ -158,10 +158,11 @@ The skill system covers four distinct workflow domains.
 | `sk-code--review` | 1.2.0.0 | Findings-first code review baseline with security and correctness minimums |
 | `sk-code--web` | 1.1.0.0 | Web implementation, debugging, and verification across specialized quality skills |
 
-**Documentation, Research, and Prompt Skills**
+**Documentation, Research, Prompt, and Improvement Skills**
 
 | Skill | Version | Description |
 | --- | --- | --- |
+| `sk-agent-improver` | 1.0.0.0 | Evaluator-first agent improvement with 5-dimension integration-aware scoring, dynamic profiling, deterministic benchmarks, and guarded promotion |
 | `sk-deep-research` | 1.2.0 | Autonomous research loop with iterative investigation, externalized state, and convergence detection |
 | `sk-deep-review` | 1.0.0 | Autonomous iterative code review with severity-weighted findings, dimension coverage, convergence detection, and release readiness verdicts |
 | `sk-doc` | 1.3.0.0 | Markdown quality enforcement, component templates, validation scripts, and DQI scoring |
@@ -193,6 +194,7 @@ The skill system covers four distinct workflow domains.
 ├── mcp-code-mode/          # MCP orchestration hub (TypeScript)
 ├── mcp-figma/              # Figma design file access via MCP
 ├── scripts/                # Shared skill routing scripts
+├── sk-agent-improver/ # Evaluator-first agent improvement loop
 ├── sk-code--full-stack/    # Stack-agnostic implementation orchestrator
 ├── sk-code--opencode/      # OpenCode system code standards
 ├── sk-code--review/        # Findings-first code review baseline

@@ -124,13 +124,15 @@ A 95-iteration deep research and 30-iteration deep review (Codex CLI + Copilot C
 - **Phase 026**: SessionStart injection debugging and hook-path validation follow-through.
 - **Phase 027**: OpenCode structural priming contract and hookless structural bootstrap guidance.
 - **Phase 028**: Startup highlights remediation with deduplication, path filtering, relevance, and diversity gates.
+- **Phase 029**: Review-remediation truth-sync that closed the active review drift without reopening sibling phase work.
+- **Phase 030**: Startup-surface, transport, and code-graph parity follow-on packet, including OpenCode transport surfacing and later runtime parity work.
 <!-- /ANCHOR:what-built -->
 
 ---
 
 <!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
-Implementation proceeded in four waves. v1 phases (001-012) were built sequentially over the initial design period, with each phase tested independently before proceeding. v2 remediation (013-016) was executed by 16 parallel Codex CLI agents (GPT-5.4, high reasoning effort) in 5 simultaneous waves. v3 phases (017-025) addressed parser hardening, hookless priming, routing, observability, and tool-routing enforcement/documentation parity. v4 phases (026-028) covered SessionStart debugging, hookless structural priming, and startup-highlight remediation. Each phase has its own child spec folder with spec.md, plan.md, checklist.md, and implementation-summary.md.
+Implementation proceeded in five waves. v1 phases (001-012) were built sequentially over the initial design period, with each phase tested independently before proceeding. v2 remediation (013-016) was executed by 16 parallel Codex CLI agents (GPT-5.4, high reasoning effort) in 5 simultaneous waves. v3 phases (017-025) addressed parser hardening, hookless priming, routing, observability, and tool-routing enforcement/documentation parity. v4 phases (026-029) covered SessionStart debugging, hookless structural priming, startup-highlight remediation, and review-remediation truth-sync. v5 phase 030 split the startup-surface and code-graph parity follow-on into a dedicated child packet with its own internal phases. Each phase has its own child spec folder with spec.md, plan.md, checklist.md, and implementation-summary.md.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -174,7 +176,7 @@ Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-
 
 <!-- ANCHOR:limitations -->
 ### Known Limitations
-1. **1 deferred item remains.** Additional SymbolKinds extraction beyond the current tree-sitter set is still tracked in tasks.md.
+1. **Documented parser follow-on remains non-blocking.** Additional SymbolKinds extraction beyond the current tree-sitter set is still recorded in the packet, but it no longer blocks packet task/checklist completion.
 2. **Regex parser is still available.** Tree-sitter is the default parser, but the regex fallback remains via `SPECKIT_PARSER=regex` env var. Brace-counting for endLine is approximate -- string literals with `{`/`}` can shift the count.
 3. **Compaction pipeline emits CocoIndex follow-up guidance, not retrieved results.** The shipped merge includes semantic neighbor suggestions rather than fetched CocoIndex content.
 4. **~~Startup highlights quality gates pending.~~ Resolved (Phase 028).** The queryStartupHighlights() function now uses: (a) GROUP BY on display fields for deduplication, (b) 10 NOT LIKE path exclusion filters for vendored/test code, (c) incoming-call-count heuristic via target_id JOIN, and (d) per-file diversity controls via ROW_NUMBER(). All 3 P1 findings from deep review 2026-04-02 are fixed. See DR-017 and Phase 028.

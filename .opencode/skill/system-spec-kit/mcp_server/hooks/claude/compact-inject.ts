@@ -17,6 +17,19 @@ import { ensureStateDir, updateState } from './hook-state.js';
 import { mergeCompactBrief } from '../../lib/code-graph/compact-merger.js';
 import type { MergeInput } from '../../lib/code-graph/compact-merger.js';
 import { autoSurfaceAtCompaction } from '../../hooks/memory-surface.js';
+import {
+  createPreMergeSelectionMetadata,
+  type SharedPayloadEnvelope,
+} from '../../lib/context/shared-payload.js';
+
+const COMPACT_FEEDBACK_GUARDS = [
+  /^\s*\[SOURCE:\s*hook-cache/i,
+  /^\s*\[PROVENANCE:/i,
+  /^\s*\[\/SOURCE\]/i,
+  /^\s*##\s+Recovered Context/i,
+  /^\s*##\s+Recovery Instructions/i,
+  /\bauto-recovered\b/i,
+];
 
 /** Extract the last N lines from a file */
 function tailFile(filePath: string, lines: number): string[] {
@@ -52,6 +65,10 @@ function extractTopics(lines: string[]): string[] {
     if (toolMatch) toolMatch.forEach(m => topics.add(m));
   }
   return [...topics].slice(0, 10);
+}
+
+function stripRecoveredCompactLines(lines: string[]): string[] {
+  return lines.filter((line) => !COMPACT_FEEDBACK_GUARDS.some((guard) => guard.test(line)));
 }
 
 /** Extract most-referenced identifiers from transcript lines (top 10 by frequency) */
@@ -191,8 +208,9 @@ function renderTriggeredMemories(
  * and section rendering to mergeCompactBrief.
  */
 async function buildMergedContext(transcriptLines: string[]): Promise<string> {
-  const filePaths = extractFilePaths(transcriptLines);
-  const topics = extractTopics(transcriptLines);
+  const sanitizedLines = stripRecoveredCompactLines(transcriptLines);
+  const filePaths = extractFilePaths(sanitizedLines);
+  const topics = extractTopics(sanitizedLines);
 
   // Build codeGraph input: active files + structural hints
   const codeGraphParts: string[] = [];
@@ -210,13 +228,13 @@ async function buildMergedContext(transcriptLines: string[]): Promise<string> {
   const sessionParts: string[] = [];
 
   // Spec folder detection
-  const specFolder = detectSpecFolder(transcriptLines);
+  const specFolder = detectSpecFolder(sanitizedLines);
   if (specFolder) {
     sessionParts.push(`Active spec folder: ${specFolder}`);
   }
 
   // Working memory attention signals
-  const attentionSignals = extractAttentionSignals(transcriptLines);
+  const attentionSignals = extractAttentionSignals(sanitizedLines);
   if (attentionSignals.length > 0) {
     sessionParts.push('Working memory attention:\n' + attentionSignals.join('\n'));
   }
@@ -224,13 +242,31 @@ async function buildMergedContext(transcriptLines: string[]): Promise<string> {
   if (topics.length > 0) {
     sessionParts.push('Recent topics:\n' + topics.map(t => `- ${t}`).join('\n'));
   }
-  const meaningfulLines = transcriptLines
+  const meaningfulLines = sanitizedLines
     .filter(l => l.trim().length > 10 && !l.startsWith('{'))
     .slice(-5);
   if (meaningfulLines.length > 0) {
     sessionParts.push('Recent context:\n' + meaningfulLines.join('\n'));
   }
   const sessionState = sessionParts.join('\n\n');
+
+  const selection = createPreMergeSelectionMetadata({
+    selectedFrom: ['transcript-tail', 'active-files', 'recent-topics', 'attention-signals'],
+    fileCount: filePaths.length,
+    topicCount: topics.length,
+    attentionSignalCount: attentionSignals.length,
+    notes: [
+      sanitizedLines.length !== transcriptLines.length
+        ? 'Recovered compact transcript lines were removed before pre-merge selection.'
+        : 'No recovered compact transcript lines detected in the current tail.',
+      specFolder ? `Spec folder anchored: ${specFolder}` : 'No active spec folder detected in transcript tail.',
+    ],
+    antiFeedbackGuards: [
+      'Strip recovered hook-cache source markers before transcript summarization.',
+      'Do not reuse Recovery Instructions text as session-state evidence.',
+      'Build pre-merge candidates before section assembly.',
+    ],
+  });
 
   const mergeInput: MergeInput = {
     constitutional: '',   // Constitutional rules come from Memory MCP, not available in hooks
@@ -242,7 +278,7 @@ async function buildMergedContext(transcriptLines: string[]): Promise<string> {
 
   // Merge with timing
   const t0 = performance.now();
-  const merged = mergeCompactBrief(mergeInput, COMPACTION_TOKEN_BUDGET);
+  const merged = mergeCompactBrief(mergeInput, COMPACTION_TOKEN_BUDGET, undefined, selection);
   const elapsed = performance.now() - t0;
 
   if (elapsed > 1500) {
@@ -278,6 +314,58 @@ async function buildMergedContext(transcriptLines: string[]): Promise<string> {
     : surfacedContext;
 }
 
+async function buildMergedPayloadContract(transcriptLines: string[]): Promise<SharedPayloadEnvelope> {
+  const sanitizedLines = stripRecoveredCompactLines(transcriptLines);
+  const filePaths = extractFilePaths(sanitizedLines);
+  const topics = extractTopics(sanitizedLines);
+  const attentionSignals = extractAttentionSignals(sanitizedLines);
+  const sessionParts: string[] = [];
+  const specFolder = detectSpecFolder(sanitizedLines);
+  if (specFolder) {
+    sessionParts.push(`Active spec folder: ${specFolder}`);
+  }
+  if (attentionSignals.length > 0) {
+    sessionParts.push('Working memory attention:\n' + attentionSignals.join('\n'));
+  }
+  if (topics.length > 0) {
+    sessionParts.push('Recent topics:\n' + topics.map((topic) => `- ${topic}`).join('\n'));
+  }
+  const meaningfulLines = sanitizedLines.filter((line) => line.trim().length > 10 && !line.startsWith('{')).slice(-5);
+  if (meaningfulLines.length > 0) {
+    sessionParts.push('Recent context:\n' + meaningfulLines.join('\n'));
+  }
+
+  const selection = createPreMergeSelectionMetadata({
+    selectedFrom: ['transcript-tail', 'active-files', 'recent-topics', 'attention-signals'],
+    fileCount: filePaths.length,
+    topicCount: topics.length,
+    attentionSignalCount: attentionSignals.length,
+    notes: [
+      sanitizedLines.length !== transcriptLines.length
+        ? 'Recovered compact transcript lines were removed before pre-merge selection.'
+        : 'No recovered compact transcript lines detected in the current tail.',
+      specFolder ? `Spec folder anchored: ${specFolder}` : 'No active spec folder detected in transcript tail.',
+    ],
+    antiFeedbackGuards: [
+      'Strip recovered hook-cache source markers before transcript summarization.',
+      'Do not reuse Recovery Instructions text as session-state evidence.',
+      'Build pre-merge candidates before section assembly.',
+    ],
+  });
+
+  const mergeInput: MergeInput = {
+    constitutional: '',
+    codeGraph: filePaths.length > 0 ? 'Active files:\n' + filePaths.map((filePath) => `- ${filePath}`).join('\n') : '',
+    cocoIndex: filePaths.length > 0
+      ? 'Use `mcp__cocoindex_code__search` to find semantic neighbors of active files listed above.'
+      : '',
+    triggered: '',
+    sessionState: sessionParts.join('\n\n'),
+  };
+
+  return mergeCompactBrief(mergeInput, COMPACTION_TOKEN_BUDGET, undefined, selection).payloadContract;
+}
+
 async function main(): Promise<void> {
   ensureStateDir();
 
@@ -301,6 +389,24 @@ async function main(): Promise<void> {
   try {
     const mergedContext = await buildMergedContext(transcriptLines);
     payload = truncateToTokenBudget(mergedContext, COMPACTION_TOKEN_BUDGET);
+    const payloadContract = await buildMergedPayloadContract(transcriptLines);
+    updateState(sessionId, {
+      pendingCompactPrime: {
+        payload,
+        cachedAt: new Date().toISOString(),
+        payloadContract: {
+          ...payloadContract,
+          provenance: {
+            ...payloadContract.provenance,
+            producer: 'hook_cache',
+            sourceSurface: 'compact-cache',
+            trustState: 'cached',
+          },
+        },
+      },
+    });
+    hookLog('info', 'compact-inject', `Cached compact context (${payload.length} chars) for session ${sessionId}`);
+    return;
   } catch (err: unknown) {
     hookLog('warn', 'compact-inject', `Merge pipeline failed, falling back to legacy: ${err instanceof Error ? err.message : String(err)}`);
     const rawContext = buildCompactContext(transcriptLines);
@@ -311,6 +417,7 @@ async function main(): Promise<void> {
     pendingCompactPrime: {
       payload,
       cachedAt: new Date().toISOString(),
+      payloadContract: null,
     },
   });
 

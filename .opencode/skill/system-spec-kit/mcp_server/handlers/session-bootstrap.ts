@@ -9,6 +9,21 @@ import { handleSessionHealth } from './session-health.js';
 import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
+import {
+  createSharedPayloadEnvelope,
+  summarizeUnknown,
+  trustStateFromStructuralStatus,
+  type SharedPayloadEnvelope,
+} from '../lib/context/shared-payload.js';
+import {
+  buildOpenCodeTransportPlan,
+  coerceSharedPayloadEnvelope,
+  type OpenCodeTransportPlan,
+} from '../lib/context/opencode-transport.js';
+import {
+  buildCodeGraphOpsContract,
+  type CodeGraphOpsContract,
+} from '../lib/code-graph/ops-hardening.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -23,6 +38,9 @@ interface SessionBootstrapResult {
   resume: Record<string, unknown>;
   health: Record<string, unknown>;
   structuralContext?: StructuralBootstrapContract;
+  payloadContract?: SharedPayloadEnvelope;
+  opencodeTransport?: OpenCodeTransportPlan;
+  graphOps?: CodeGraphOpsContract;
   hints: string[];
   nextActions: string[];
 }
@@ -133,10 +151,67 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const completeness = resumeData.error || healthData.error ? 'partial' : 'full';
   recordBootstrapEvent('tool', durationMs, completeness);
 
+  const payloadContract = createSharedPayloadEnvelope({
+    kind: 'bootstrap',
+    sections: [
+      {
+        key: 'resume-surface',
+        title: 'Resume Surface',
+        content: summarizeUnknown(resumeData),
+        source: 'memory',
+      },
+      {
+        key: 'health-surface',
+        title: 'Health Surface',
+        content: summarizeUnknown(healthData),
+        source: 'operational',
+      },
+      {
+        key: 'structural-context',
+        title: 'Structural Context',
+        content: structuralContext.summary,
+        source: 'code-graph',
+      },
+      {
+        key: 'next-actions',
+        title: 'Next Actions',
+        content: buildNextActions(resumeData, healthData, structuralContext).join(' | '),
+        source: 'session',
+      },
+    ],
+    summary: `Bootstrap payload: structural=${structuralContext.status}, resume=${resumeData.error ? 'error' : 'ok'}, health=${healthData.error ? 'error' : 'ok'}`,
+    provenance: {
+      producer: 'session_bootstrap',
+      sourceSurface: 'session_bootstrap',
+      trustState: trustStateFromStructuralStatus(structuralContext.status),
+      generatedAt: new Date().toISOString(),
+      lastUpdated: structuralContext.provenance?.lastUpdated ?? null,
+      sourceRefs: ['session-resume', 'session-health', 'session-snapshot'],
+    },
+  });
+  const resumePayload = coerceSharedPayloadEnvelope(resumeData.payloadContract);
+  const healthPayload = coerceSharedPayloadEnvelope(healthData.payloadContract);
+  const graphOps = buildCodeGraphOpsContract({
+    graphFreshness: structuralContext.status === 'ready'
+      ? 'fresh'
+      : structuralContext.status === 'stale'
+        ? 'stale'
+        : 'empty',
+    sourceSurface: 'session_bootstrap',
+  });
+
   const result: SessionBootstrapResult = {
     resume: resumeData,
     health: healthData,
     structuralContext,
+    payloadContract,
+    opencodeTransport: buildOpenCodeTransportPlan({
+      bootstrapPayload: payloadContract,
+      resumePayload,
+      healthPayload,
+      specFolder: args.specFolder ?? null,
+    }),
+    graphOps,
     hints: uniqueHints,
     nextActions: buildNextActions(resumeData, healthData, structuralContext),
   };
@@ -146,5 +221,6 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
       type: 'text',
       text: JSON.stringify({ status: 'ok', data: result }, null, 2),
     }],
+    structuredContent: result,
   };
 }

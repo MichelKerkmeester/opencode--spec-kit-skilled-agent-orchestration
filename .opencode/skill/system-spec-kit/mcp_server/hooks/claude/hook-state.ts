@@ -10,6 +10,7 @@ import {
   readdirSync, statSync, unlinkSync,
 } from 'node:fs';
 import { hookLog } from './shared.js';
+import type { SharedPayloadEnvelope } from '../../lib/context/shared-payload.js';
 
 /** Per-session hook state persisted to temp directory */
 export interface HookState {
@@ -17,7 +18,11 @@ export interface HookState {
   speckitSessionId: string;
   lastSpecFolder: string | null;
   sessionSummary: { text: string; extractedAt: string } | null;
-  pendingCompactPrime: { payload: string; cachedAt: string } | null;
+  pendingCompactPrime: {
+    payload: string;
+    cachedAt: string;
+    payloadContract?: SharedPayloadEnvelope | null;
+  } | null;
   metrics: {
     estimatedPromptTokens: number;
     estimatedCompletionTokens: number;

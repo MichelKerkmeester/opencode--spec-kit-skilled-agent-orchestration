@@ -1,7 +1,9 @@
 {
   "openQuestions": [
     "Do we want a packet-024-specific OpenCode plugin that only injects retrieval output, or a broader OpenCode adapter for all Spec Kit startup/recovery guidance?",
-    "Should graph export/import land as a dedicated code-graph tool family, or first as a runtime-only compact-state snapshot surface?"
+    "Should graph export/import land as a dedicated code-graph tool family, or first as a runtime-only compact-state snapshot surface?",
+    "Do we want the shared payload/provenance layer to live under session/lifecycle code, code-graph code, or a new cross-runtime composition module?",
+    "When both a local file plugin and a package-style config entry collapse to the same plugin name, which config source should intentionally win after deduplication?"
   ],
   "resolvedQuestions": [
     "The opencode-lcm plugin injects archived context through OpenCode transforms and compaction hooks, not by altering the model directly.",
@@ -9,30 +11,53 @@
     "Packet 024 should reuse the plugin method, not the plugin's full archive as a new memory source of truth.",
     "Several storage and repair patterns are valuable to port into Spec Kit Memory.",
     "The plugin also exposes reusable patterns for our existing code-graph and hook runtime logic: path safety, worktree identity, snapshots, retention, and artifact previews.",
-    "Our current code-graph runtime already has strong compact budgeting and startup/compaction surfaces, so the main opportunity is operational hardening rather than retrieval replacement."
+    "Our current code-graph runtime already has strong compact budgeting and startup/compaction surfaces, so the main opportunity is operational hardening rather than retrieval replacement.",
+    "Startup and resume need both surface provenance and data provenance, including an imported-unverified to rebuilt to ready lifecycle.",
+    "The current graph portability blocker is path-derived identity, so export/import cannot be a raw DB dump.",
+    "The current compaction path should use WorkingSetTracker and a pre-merge selector before mergeCompactBrief, not transcript heuristics alone.",
+    "Graph retrieval surfaces can be improved directly with query-aware seed disambiguation, anchor reranking, overfetch-then-trim, and low-signal suppression.",
+    "Graph health surfaces currently disagree on stale semantics and hide readiness diagnostics on read paths.",
+    "The OpenCode adapter boundary should be transport-only, with retrieval policy and ops owned by the runtime.",
+    "The expanded research now supports a 3-packet decomposition: OpenCode transport under 024, graph ops under 024, memory archive durability outside 024.",
+    "The live OpenCode loader auto-discovers local `{plugin,plugins}/*.{ts,js}` files and converts them to file:// plugin specifiers.",
+    "Configured plugin entries that do not start with file:// are treated as package installs, not local repo file references.",
+    "The live loader calls every unique module export as a plugin function, so non-function exports are unsafe in the current runtime.",
+    "The packed OpenCode binary behavior must outrank local @opencode-ai/plugin type declarations when the installed versions diverge.",
+    "The surviving plugin.auth startup crash is best explained by plugin materialization/resolution issues, not by prompt payload shape."
   ],
   "keyFindings": [
     "Best packet-024 fit: build an OpenCode adapter plugin that delegates retrieval to our existing memory/code-graph stack.",
     "Best general-memory upgrades: doctor-style repair, blob deduplication, privacy pre-index filters, snapshot portability, and optional expandable summary DAGs.",
     "Best broader graph/runtime upgrades: add doctor/export-import/provenance-preview capabilities around the existing compact graph and hook pipeline.",
-    "Keep the current compact-merger and structural-bootstrap foundations; improve the operational shell around them."
+    "Keep the current compact-merger and structural-bootstrap foundations; improve the operational shell around them.",
+    "Shared payload/provenance composition is the real prerequisite for the OpenCode adapter; build it before the adapter shell.",
+    "The next packet structure should split transport delivery, graph operations, and memory archive durability into separate ownership tracks.",
+    "For the live OpenCode runtime, the safest plugin module shape is a single callable export only.",
+    "For packet 030, local file loading or explicit file:// plugin registration is safer than the current bare package-style plugin specifier."
   ],
   "ruledOutDirections": [
     "Fork opencode-lcm as the main memory backend for Spec Kit Memory.",
     "Treat the plugin as a substitute for packet 024's structural graph store.",
-    "Replace the existing compact-merger and structural-bootstrap flow with a transcript-first archive model."
+    "Replace the existing compact-merger and structural-bootstrap flow with a transcript-first archive model.",
+    "Introduce a second snapshot/recovery authority beside the existing hook cache plus session_resume/session_bootstrap planes.",
+    "Port archive-style path redaction into the shared structural graph/runtime core.",
+    "Assume that adding a server export alone solves the live startup crash without validating the bundled loader behavior.",
+    "Assume that the bare spec-kit-compact-code-graph plugin entry in opencode.json points at the local repo plugin file."
   ],
   "metrics": {
-    "iterationsCompleted": 6,
-    "openQuestions": 2,
-    "resolvedQuestions": 6,
-    "keyFindings": 4,
-    "convergenceScore": 0.95,
+    "iterationsCompleted": 26,
+    "openQuestions": 4,
+    "resolvedQuestions": 18,
+    "keyFindings": 8,
+    "convergenceScore": 0.98,
     "coverageBySources": {
       "external-opencode-lcm-source-files": 10,
       "external-opencode-lcm-tests": 1,
       "packet-024-internal-docs": 3,
-      "current-speckit-runtime-files": 10
+      "current-speckit-runtime-files": 20,
+      "copilot-gpt-5.4-high-iterations": 10,
+      "packed-opencode-runtime-extractions": 6,
+      "wrapper-config-and-plugin-inspections": 5
     }
   }
 }

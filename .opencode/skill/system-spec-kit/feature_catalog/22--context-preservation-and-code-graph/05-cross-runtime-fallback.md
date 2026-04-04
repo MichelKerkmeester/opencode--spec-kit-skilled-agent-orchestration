@@ -1,15 +1,15 @@
 ---
 title: "Cross-runtime tool fallback"
-description: "Cross-runtime tool fallback ensures context injection works on runtimes without hook support via tool-based approach."
+description: "Cross-runtime tool fallback ensures context injection remains available when runtime hooks are missing or unavailable."
 ---
 
 # Cross-runtime tool fallback
 
 ## 1. OVERVIEW
 
-Cross-runtime fallback ensures context injection remains available when runtime hooks are missing or unavailable.
+Cross-runtime fallback ensures context injection remains available when runtime hooks are missing, disabled by scope, or intentionally unavailable.
 
-Hook-capable runtimes can auto-prime through their runtime-specific adapters when available. OpenCode is the non-hook runtime and should recover through the tool-based path, starting with `session_bootstrap()` on fresh start or after `/clear`. If hook context is unavailable in another runtime, fall back to the same tool-based recovery sequence. Runtime detection identifies the active runtime and its hook policy.
+All runtimes now have hook or bootstrap-based startup injection. Claude Code, Codex CLI, Copilot CLI, and Gemini CLI use shell-script `session-prime.ts` hooks. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). When hooks fail or are unavailable in any runtime, recover through the tool-based path starting with `session_bootstrap()` on fresh start or after `/clear`. Runtime detection identifies the active runtime and its current hook policy.
 
 ---
 

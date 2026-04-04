@@ -5,8 +5,6 @@
 // Runs on Claude Code SessionStart event. Injects context via stdout
 // based on the session source (compact, startup, resume, clear).
 
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import {
   parseHookStdin, hookLog, formatHookOutput, truncateToTokenBudget,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
@@ -20,17 +18,10 @@ type StartupBrief = {
   graphOutline: string | null;
   sessionContinuity: string | null;
   graphSummary: { files: number; nodes: number; edges: number; lastScan: string | null } | null;
-  graphState: 'ready' | 'empty' | 'missing';
+  graphState: 'ready' | 'stale' | 'empty' | 'missing';
+  cocoIndexAvailable: boolean;
+  startupSurface: string;
 };
-
-// Dynamic import for code-graph-db — may not be available
-let getStats: (() => { lastScanTimestamp: string | null; [key: string]: unknown }) | null = null;
-try {
-  const mod = await import('../../lib/code-graph/code-graph-db.js');
-  getStats = mod.getStats;
-} catch {
-  // Code graph module not available — skip stale index detection
-}
 
 // Dynamic import for startup brief builder — may not be available
 let buildStartupBrief: (() => StartupBrief) | null = null;
@@ -65,7 +56,11 @@ function handleCompact(sessionId: string): OutputSection[] {
   }
 
   const sanitizedPayload = sanitizeRecoveredPayload(payload);
-  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt);
+  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
+    producer: pendingCompactPrime.payloadContract?.provenance.producer,
+    trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
+    sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+  });
   hookLog('info', 'session-prime', `Injecting cached compact brief (${sanitizedPayload.length} chars after sanitization, cached at ${cachedAt})`);
 
   const sections: OutputSection[] = [
@@ -87,35 +82,32 @@ function handleCompact(sessionId: string): OutputSection[] {
   return sections;
 }
 
-/** Check if CocoIndex Code binary is available */
-function checkCocoIndexAvailable(): string {
-  const cccPath = resolve(process.cwd(), '.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc');
-  if (existsSync(cccPath)) {
-    return '- CocoIndex Code: available (semantic code search via `mcp__cocoindex_code__search`)';
-  }
-  return '- CocoIndex Code: not installed (run `bash .opencode/skill/mcp-coco-index/scripts/install.sh`)';
-}
-
 /** Handle source=startup: prime new session with constitutional memories + overview */
 function handleStartup(): OutputSection[] {
-  const cocoStatus = checkCocoIndexAvailable();
+  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
   const sections: OutputSection[] = [
     {
-      title: 'Session Priming',
+      title: 'Session Context',
+      content: startupBrief?.startupSurface ?? [
+        'Session context received. Current state:',
+        '',
+        '- Memory: startup summary unavailable',
+        '- Code Graph: unavailable',
+        '- CocoIndex: unknown',
+        '',
+        'What would you like to work on?',
+      ].join('\n'),
+    },
+    {
+      title: 'Recovery Tools',
       content: [
-        'Spec Kit Memory is active. Key tools available:',
         '- `memory_context({ input, mode })` — unified context retrieval',
         '- `memory_match_triggers({ prompt })` — fast trigger matching',
         '- `memory_search({ query })` — semantic search',
-        cocoStatus,
-        '- Code Graph: `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`',
-        '',
-        'To resume prior work: `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })`',
+        '- `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`',
       ].join('\n'),
     },
   ];
-
-  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
   if (startupBrief?.graphOutline) {
     sections.push({
       title: 'Structural Context',
@@ -135,21 +127,11 @@ function handleStartup(): OutputSection[] {
     });
   }
 
-  // Stale code graph index detection
-  try {
-    if (getStats && startupBrief?.graphState !== 'empty') {
-      const stats = getStats();
-      const ts = stats.lastScanTimestamp;
-      const isStale = !ts || (Date.now() - new Date(ts).getTime() > 24 * 60 * 60 * 1000);
-      if (isStale) {
-        sections.push({
-          title: 'Stale Code Graph Warning',
-          content: 'Code graph index is >24h old. Run `code_graph_scan` for fresh structural context.',
-        });
-      }
-    }
-  } catch {
-    // DB not initialized or not available — skip silently
+  if (startupBrief?.graphState === 'stale') {
+    sections.push({
+      title: 'Stale Code Graph Warning',
+      content: 'Code graph freshness is stale. The first structural read may refresh inline when safe; run `code_graph_scan` for broader stale states.',
+    });
   }
 
   return sections;

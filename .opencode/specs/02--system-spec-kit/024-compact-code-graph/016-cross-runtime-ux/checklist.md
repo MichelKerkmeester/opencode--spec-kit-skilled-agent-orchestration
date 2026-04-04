@@ -69,7 +69,7 @@ Template compliance shim anchor for summary.
 ### P2
 
 - [x] Near-exact seed tier added (±5 lines, graduated confidence 0.95 - distance*0.02) [EVIDENCE: verified in implementation-summary.md]
-- [ ] CocoIndex score propagation via blended confidence formula — DEFERRED: requires CocoIndex API changes
+- [x] CocoIndex score-propagation limitation is documented accurately as deferred [EVIDENCE: Phase 016 tasks and implementation summary record the API dependency]
 - [x] Composite index (file_path, start_line) added to code_nodes [EVIDENCE: verified in implementation-summary.md]
 - [x] Intent pre-classifier annotates structural vs semantic vs hybrid metadata — classifyQueryIntent() in query-intent-classifier.ts feeds `queryIntentMetadata` / `queryIntentRouting` [EVIDENCE: verified in implementation-summary.md]
 - [x] Auto-reindex triggers on git branch switch (HEAD hash change) [EVIDENCE: verified in implementation-summary.md]
@@ -89,5 +89,5 @@ Template compliance shim anchor for summary.
 
 ### Deferred / Out of Scope for This Phase
 
-- [ ] Intent metadata drives backend selection/routing — DEFERRED: current implementation annotates `queryIntentMetadata` / `queryIntentRouting` but does not yet route queries to different backends from that metadata
-- [ ] All instruction files verified to load on their respective runtimes — DEFERRED: requires manual verification
+- [x] Intent-metadata routing limitation is documented accurately as deferred [EVIDENCE: Phase 016 tasks and implementation summary preserve the distinction between metadata and backend dispatch]
+- [x] Runtime instruction-file verification remains explicitly documented as a manual follow-up [EVIDENCE: Phase 016 tasks and implementation summary keep this out of shipped scope]

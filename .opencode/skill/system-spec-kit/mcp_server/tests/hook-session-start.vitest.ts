@@ -75,8 +75,13 @@ describe('session-prime hook', () => {
     });
 
     it('wraps recovered compact content with provenance markers', () => {
-      const wrapped = wrapRecoveredCompactPayload('## Active Files\n- /test.ts', '2026-03-31T12:34:56.000Z');
+      const wrapped = wrapRecoveredCompactPayload('## Active Files\n- /test.ts', '2026-03-31T12:34:56.000Z', {
+        producer: 'hook_cache',
+        trustState: 'cached',
+        sourceSurface: 'compact-cache',
+      });
       expect(wrapped).toContain('[SOURCE: hook-cache, cachedAt: 2026-03-31T12:34:56.000Z]');
+      expect(wrapped).toContain('[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=compact-cache]');
       expect(wrapped).toContain('## Active Files');
       expect(wrapped).toContain('[/SOURCE]');
     });

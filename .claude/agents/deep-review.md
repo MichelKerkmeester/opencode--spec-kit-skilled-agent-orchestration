@@ -576,7 +576,7 @@ Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic 
 ├──────────────────────────────────────────┤
 │ AUTHORITY                                │
 │  ├── Review code quality (read-only)     │
-│  ├── Produce P0/P1/P2 findings           │
+│  ├── Produce P0/P1/P2 findings            │
 │  ├── Write iteration artifacts           │
 │  └── Update strategy + JSONL             │
 ├──────────────────────────────────────────┤

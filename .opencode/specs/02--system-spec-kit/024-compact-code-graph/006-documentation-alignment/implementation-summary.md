@@ -76,7 +76,7 @@ The original Phase 006 delivery created six new feature catalog entries in `.ope
 |-------|----------|-------------|
 | PreCompact Hook | Context Preservation | Precomputes critical context before compaction, caches to temp file |
 | SessionStart Priming | Context Preservation | Injects relevant prior work at session startup, resume, and compaction recovery |
-| Stop Token Tracking | Observability | Tracks token usage via `session-stop.ts`, stores state with `pendingStopSave`, and persists JSON hook-state files |
+| Stop Token Tracking | Observability | Tracks token usage via `session-stop.ts`, persists JSON hook-state files, and documents the stop-hook flow without claiming a shipped `pendingStopSave` field |
 | Cross-Runtime Fallback | Compatibility | Tool-based context injection for runtimes without native hook support |
 | Runtime Detection | Infrastructure | Capability-based runtime identification, including Gemini support detected dynamically from `.gemini/settings.json` |
 | CocoIndex Integration | Context Enrichment | Semantic code search complementing structural code graph and memory context |

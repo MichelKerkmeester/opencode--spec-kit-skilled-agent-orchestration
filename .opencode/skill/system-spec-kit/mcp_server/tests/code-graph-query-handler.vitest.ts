@@ -5,7 +5,12 @@ const mocks = vi.hoisted(() => ({
   queryEdgesFrom: vi.fn(),
   queryEdgesTo: vi.fn(),
   queryOutline: vi.fn(),
-  ensureCodeGraphReady: vi.fn(async () => ({ action: 'none', reason: 'ok' })),
+  ensureCodeGraphReady: vi.fn(async () => ({
+    freshness: 'fresh',
+    action: 'none',
+    inlineIndexPerformed: false,
+    reason: 'ok',
+  })),
 }));
 
 vi.mock('../lib/code-graph/code-graph-db.js', () => ({
@@ -47,14 +52,24 @@ describe('code-graph-query handler', () => {
   });
 
   it('honors explicit edgeType for one-hop queries', async () => {
-    await handleCodeGraphQuery({
+    const result = await handleCodeGraphQuery({
       operation: 'imports_from',
       subject: 'SomeSymbol',
       edgeType: 'imports',
     });
+    const parsed = JSON.parse(result.content[0].text);
 
-    expect(mocks.ensureCodeGraphReady).toHaveBeenCalledWith(process.cwd(), { allowInlineIndex: false });
+    expect(mocks.ensureCodeGraphReady).toHaveBeenCalledWith(process.cwd(), {
+      allowInlineIndex: true,
+      allowInlineFullScan: false,
+    });
     expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('symbol-1', 'IMPORTS');
+    expect(parsed.data.readiness).toEqual({
+      freshness: 'fresh',
+      action: 'none',
+      inlineIndexPerformed: false,
+      reason: 'ok',
+    });
   });
 
   it('includes the normalized edgeType in transitive responses', async () => {

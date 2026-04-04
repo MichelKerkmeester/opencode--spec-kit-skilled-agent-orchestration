@@ -7,9 +7,24 @@
 import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import { handleMemoryContext } from './memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
+import { getGraphFreshness, type GraphFreshness } from '../lib/code-graph/ensure-ready.js';
 import { computeQualityScore, recordMetricEvent, recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
+import {
+  createSharedPayloadEnvelope,
+  summarizeUnknown,
+  trustStateFromStructuralStatus,
+  type SharedPayloadEnvelope,
+} from '../lib/context/shared-payload.js';
+import {
+  buildOpenCodeTransportPlan,
+  type OpenCodeTransportPlan,
+} from '../lib/context/opencode-transport.js';
+import {
+  buildCodeGraphOpsContract,
+  type CodeGraphOpsContract,
+} from '../lib/code-graph/ops-hardening.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -22,7 +37,7 @@ interface SessionResumeArgs {
 }
 
 interface CodeGraphStatus {
-  status: 'ok' | 'empty' | 'error';
+  status: 'fresh' | 'stale' | 'empty' | 'error';
   lastScan: string | null;
   nodeCount: number;
   edgeCount: number;
@@ -40,6 +55,9 @@ interface SessionResumeResult {
   cocoIndex: CocoIndexStatus;
   structuralContext?: StructuralBootstrapContract;
   sessionQuality?: 'healthy' | 'degraded' | 'critical' | 'unknown';
+  payloadContract?: SharedPayloadEnvelope;
+  opencodeTransport?: OpenCodeTransportPlan;
+  graphOps?: CodeGraphOpsContract;
   hints: string[];
 }
 
@@ -94,8 +112,9 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
   };
   try {
     const stats = graphDb.getStats();
+    const freshness = getGraphFreshness(process.cwd());
     codeGraph = {
-      status: stats.totalNodes > 0 ? 'ok' : 'empty',
+      status: freshness,
       lastScan: stats.lastScanTimestamp,
       nodeCount: stats.totalNodes,
       edgeCount: stats.totalEdges,
@@ -133,11 +152,62 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
   }
 
   // ── Build composite result ──────────────────────────────────
+  const payloadContract = createSharedPayloadEnvelope({
+    kind: 'resume',
+    sections: [
+      {
+        key: 'memory-resume',
+        title: 'Memory Resume',
+        content: summarizeUnknown(memoryResult),
+        source: 'memory',
+      },
+      {
+        key: 'code-graph-status',
+        title: 'Code Graph Status',
+        content: `status=${codeGraph.status}; files=${codeGraph.fileCount}; nodes=${codeGraph.nodeCount}; edges=${codeGraph.edgeCount}; lastScan=${codeGraph.lastScan ?? 'unknown'}`,
+        source: 'code-graph',
+      },
+      {
+        key: 'cocoindex-status',
+        title: 'CocoIndex Status',
+        content: cocoIndex.available
+          ? `available at ${cocoIndex.binaryPath}`
+          : `unavailable; expected at ${cocoIndex.binaryPath}`,
+        source: 'semantic',
+      },
+      {
+        key: 'structural-context',
+        title: 'Structural Context',
+        content: structuralContext.summary,
+        source: 'code-graph',
+      },
+    ],
+    summary: `Resume payload: memory=${memoryResult.error ? 'degraded' : args.minimal ? 'minimal' : 'available'}, graph=${codeGraph.status}, cocoindex=${cocoIndex.available ? 'available' : 'missing'}`,
+    provenance: {
+      producer: 'session_resume',
+      sourceSurface: 'session_resume',
+      trustState: trustStateFromStructuralStatus(structuralContext.status),
+      generatedAt: new Date().toISOString(),
+      lastUpdated: structuralContext.provenance?.lastUpdated ?? codeGraph.lastScan,
+      sourceRefs: ['memory-context', 'code-graph-db', 'cocoindex-path', 'session-snapshot'],
+    },
+  });
+  const graphOps = buildCodeGraphOpsContract({
+    graphFreshness: codeGraph.status as GraphFreshness,
+    sourceSurface: 'session_resume',
+  });
+
   const result: SessionResumeResult = {
     memory: memoryResult,
     codeGraph,
     cocoIndex,
     structuralContext,
+    payloadContract,
+    opencodeTransport: buildOpenCodeTransportPlan({
+      resumePayload: payloadContract,
+      specFolder: args.specFolder ?? null,
+    }),
+    graphOps,
     ...(sessionQuality ? { sessionQuality } : {}),
     hints,
   };

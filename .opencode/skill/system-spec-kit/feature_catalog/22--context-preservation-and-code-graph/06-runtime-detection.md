@@ -1,15 +1,15 @@
 ---
 title: "Runtime detection and hook policy"
-description: "Runtime detection identifies the active AI runtime and classifies its hook policy as enabled, disabled_by_scope, or unavailable."
+description: "Runtime detection identifies the active AI runtime and classifies its hook policy as enabled, disabled_by_scope, unavailable, or unknown based on repo/config reality."
 ---
 
 # Runtime detection and hook policy
 
 ## 1. OVERVIEW
 
-Runtime detection identifies the active AI runtime and classifies its hook policy as enabled, disabled_by_scope, or unavailable.
+Runtime detection identifies the active AI runtime and classifies its hook policy as enabled, disabled_by_scope, unavailable, or unknown.
 
-Capability-based detection reads environment variables to identify claude-code, codex-cli, copilot-cli, or gemini-cli. Returns both runtime ID and hookPolicy. areHooksAvailable() and getRecoveryApproach() helpers simplify usage.
+Capability-based detection reads environment variables to identify claude-code, codex-cli, copilot-cli, or gemini-cli. It then inspects the current repo/config where needed: Copilot checks `.github/hooks/*.json` for `sessionStart`, and Gemini checks `.gemini/settings.json` for hooks. Returns both runtime ID and hookPolicy. `areHooksAvailable()` and `getRecoveryApproach()` helpers simplify usage.
 
 ---
 

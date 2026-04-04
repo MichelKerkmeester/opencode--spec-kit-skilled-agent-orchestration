@@ -1,0 +1,180 @@
+{
+  "status": "scored",
+  "profileId": "handover",
+  "family": "session-handover",
+  "evaluationMode": "prompt-surface",
+  "target": ".opencode/agent/handover.md",
+  "candidate": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/candidates/handover-candidate-002.md",
+  "baseline": ".opencode/agent/handover.md",
+  "score": 109,
+  "totals": {
+    "candidate": 109,
+    "baseline": 103
+  },
+  "delta": 6,
+  "recommendation": "candidate-better",
+  "checks": {
+    "candidate": [
+      {
+        "key": "mentions-spec-files",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "mentions-checklist-and-memory",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "references-template",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "leaf-only",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "no-fabrication-rule",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "path-convention",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "structured-output",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "actual-source-reading",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "capability-scan",
+        "pass": true,
+        "weight": 3
+      },
+      {
+        "key": "output-verification",
+        "pass": true,
+        "weight": 3
+      },
+      {
+        "key": "related-resources",
+        "pass": true,
+        "weight": 3
+      },
+      {
+        "key": "simplicity",
+        "pass": true,
+        "weight": 5
+      },
+      {
+        "key": "placeholder-heavy",
+        "pass": true,
+        "weight": 0
+      },
+      {
+        "key": "no-permissive-skip-context-language",
+        "pass": true,
+        "weight": 0
+      },
+      {
+        "key": "nested-delegation",
+        "pass": true,
+        "weight": 0
+      }
+    ],
+    "baseline": [
+      {
+        "key": "mentions-spec-files",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "mentions-checklist-and-memory",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "references-template",
+        "pass": true,
+        "weight": 15
+      },
+      {
+        "key": "leaf-only",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "no-fabrication-rule",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "path-convention",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "structured-output",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "actual-source-reading",
+        "pass": true,
+        "weight": 10
+      },
+      {
+        "key": "capability-scan",
+        "pass": false,
+        "weight": 3
+      },
+      {
+        "key": "output-verification",
+        "pass": true,
+        "weight": 3
+      },
+      {
+        "key": "related-resources",
+        "pass": false,
+        "weight": 3
+      },
+      {
+        "key": "simplicity",
+        "pass": true,
+        "weight": 5
+      },
+      {
+        "key": "placeholder-heavy",
+        "pass": true,
+        "weight": 0
+      },
+      {
+        "key": "no-permissive-skip-context-language",
+        "pass": true,
+        "weight": 0
+      },
+      {
+        "key": "nested-delegation",
+        "pass": true,
+        "weight": 0
+      }
+    ]
+  },
+  "reasons": {
+    "candidate": [],
+    "baseline": [
+      "Missing or weak: capability-scan",
+      "Missing or weak: related-resources"
+    ]
+  },
+  "failureModes": []
+}

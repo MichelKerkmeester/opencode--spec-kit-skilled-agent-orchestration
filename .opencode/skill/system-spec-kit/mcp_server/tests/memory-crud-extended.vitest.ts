@@ -139,18 +139,17 @@ function parseResponse(result: any): any {
 beforeAll(async () => {
   handler = await import('../handlers/memory-crud');
   vectorIndex = await import('../lib/search/vector-index');
-
-  try { checkpointsMod = await import('../lib/storage/checkpoints'); } catch (_error: unknown) { /* optional */ }
-  try { embeddingsMod = await import('../lib/providers/embeddings'); } catch (_error: unknown) { /* optional */ }
-  try { embeddingsSourceMod = await import('../lib/providers/embeddings'); } catch (_error: unknown) { /* optional */ }
-  try { triggerMatcherMod = await import('../lib/parsing/trigger-matcher'); } catch (_error: unknown) { /* optional */ }
-  try { toolCacheMod = await import('../lib/cache/tool-cache'); } catch (_error: unknown) { /* optional */ }
-  try { causalEdgesMod = await import('../lib/storage/causal-edges'); } catch (_error: unknown) { /* optional */ }
-  try { memorySurfaceMod = await import('../hooks/memory-surface'); } catch (_error: unknown) { /* optional */ }
-  try { folderScoringMod = await import('../lib/scoring/folder-scoring'); } catch (_error: unknown) { /* optional */ }
-  try { folderScoringSourceMod = await import('../lib/scoring/folder-scoring'); } catch (_error: unknown) { /* optional */ }
-  try { dbStateMod = await import('../core/db-state'); } catch (_error: unknown) { /* optional */ }
-  try { mutationLedgerMod = await import('../lib/storage/mutation-ledger'); } catch (_error: unknown) { /* optional */ }
+  checkpointsMod = await import('../lib/storage/checkpoints');
+  embeddingsMod = await import('../lib/providers/embeddings');
+  embeddingsSourceMod = await import('../lib/providers/embeddings');
+  triggerMatcherMod = await import('../lib/parsing/trigger-matcher');
+  toolCacheMod = await import('../lib/cache/tool-cache');
+  causalEdgesMod = await import('../lib/storage/causal-edges');
+  memorySurfaceMod = await import('../hooks/memory-surface');
+  folderScoringMod = await import('../lib/scoring/folder-scoring');
+  folderScoringSourceMod = await import('../lib/scoring/folder-scoring');
+  dbStateMod = await import('../core/db-state');
+  mutationLedgerMod = await import('../lib/storage/mutation-ledger');
 });
 
 afterEach(() => {

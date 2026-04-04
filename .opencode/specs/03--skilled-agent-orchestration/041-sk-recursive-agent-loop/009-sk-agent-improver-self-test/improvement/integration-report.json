@@ -1,0 +1,91 @@
+{
+  "status": "complete",
+  "agent": "agent-improver",
+  "timestamp": "2026-04-04T11:21:24.151Z",
+  "surfaces": {
+    "canonical": {
+      "path": ".opencode/agent/agent-improver.md",
+      "exists": true,
+      "frontmatter": {
+        "name": "agent-improver",
+        "description": "Proposal-only mutator for bounded agent-improver candidate generation with evaluator-first rules",
+        "mode": "subagent",
+        "temperature": "0.2",
+        "permission": "",
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "webfetch": "deny",
+        "memory": "deny",
+        "chrome_devtools": "deny",
+        "task": "deny",
+        "list": "allow",
+        "patch": "deny",
+        "external_directory": "allow"
+      }
+    },
+    "mirrors": [
+      {
+        "path": ".claude/agents/agent-improver.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".codex/agents/agent-improver.toml",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".agents/agents/agent-improver.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      }
+    ],
+    "commands": [
+      {
+        "path": ".opencode/command/improve/agent.md",
+        "references": [
+          "@agent-improver"
+        ]
+      }
+    ],
+    "yamlWorkflows": [
+      {
+        "path": ".opencode/command/improve/assets/improve_agent-improver_auto.yaml",
+        "references": [
+          "agent-improver",
+          "@agent-improver"
+        ]
+      },
+      {
+        "path": ".opencode/command/improve/assets/improve_agent-improver_confirm.yaml",
+        "references": [
+          "agent-improver",
+          "@agent-improver"
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "path": ".opencode/skill/sk-agent-improver/SKILL.md",
+        "referenceCount": 6
+      }
+    ],
+    "globalDocs": [],
+    "skillAdvisor": {
+      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "matched": true
+    }
+  },
+  "summary": {
+    "totalSurfaces": 9,
+    "existingCount": 9,
+    "missingCount": 0,
+    "mirrorSyncStatus": "all-aligned",
+    "commandCount": 1,
+    "skillCount": 1
+  }
+}

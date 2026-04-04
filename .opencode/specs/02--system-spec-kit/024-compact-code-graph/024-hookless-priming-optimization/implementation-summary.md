@@ -74,7 +74,7 @@ Template compliance shim anchor for limitations.
 |------|--------|
 | `.opencode/agent/context-prime.md` | **Items 1-3** — Rewritten: 4-step -> 2-step workflow, urgency detection, updated tool table and summary diagram |
 | `.claude/agents/context-prime.md` | Copy of above |
-| `.codex/agents/context-prime.md` | Copy of above |
+| `.codex/agents/context-prime.toml` | Codex runtime copy of the context-prime startup/bootstrap guidance |
 | `.agents/agents/context-prime.md` | Copy of above |
 | `.opencode/agent/orchestrate.md` | **Item 1** — Session Bootstrap delegation now "(best-effort -- skip if user message is urgent or time-sensitive)" |
 

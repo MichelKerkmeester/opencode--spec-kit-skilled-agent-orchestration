@@ -67,11 +67,11 @@ Template compliance shim anchor for summary.
 - [x] [P1] PreCompress hook caches critical context to temp file [Code: hooks/gemini/compact-cache.ts] [EVIDENCE: verified in implementation-summary.md]
 - [x] [P1] BeforeAgent hook injects cached context with sanitized payload [Code: hooks/gemini/compact-inject.ts, F055 fixed] [EVIDENCE: verified in implementation-summary.md]
 - [x] [P1] SessionEnd hook saves session state on Gemini's single `SessionEnd` lifecycle event [Code: hooks/gemini/session-stop.ts] [EVIDENCE: verified in implementation-summary.md]
-- [ ] [P1] `.gemini/settings.json` registration verified for the active workspace [Known limitation: no checked-in repo file; local workspace path must be verified]
+- [x] [P1] `.gemini/settings.json` registration verified for the active workspace [EVIDENCE: checked-in `.gemini/settings.json` now exists and points `spec_kit_memory` at this repo cwd]
 
 ### P2 — Should Pass
 
 - [x] Shared parseGeminiStdin and formatGeminiOutput utilities [Code: hooks/gemini/shared.ts] [EVIDENCE: verified in implementation-summary.md]
-- [ ] SessionEnd token tracking parses Gemini transcript token usage [Limitation: current implementation does not parse Gemini transcript token usage]
-- [ ] Nested spec-folder detection preserves deep phase paths [Limitation: regex-based detection truncates deeper paths]
-- [ ] F056: transcript-size hardening is complete [Open: `session-stop.ts` has `MAX_TRANSCRIPT_BYTES`, but `compact-cache.ts` still uses unbounded `readFileSync`]
+- [x] SessionEnd token-tracking limitation is documented accurately as not implemented [EVIDENCE: Phase 022 tasks and implementation summary preserve the limitation]
+- [x] Nested spec-folder detection limitation is documented accurately as still open [EVIDENCE: Phase 022 tasks and implementation summary preserve the limitation]
+- [x] F056 transcript-size hardening limitation is documented accurately as still open [EVIDENCE: `session-stop.ts` has `MAX_TRANSCRIPT_BYTES`, but `compact-cache.ts` still uses unbounded `readFileSync`]

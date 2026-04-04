@@ -70,4 +70,4 @@ Template compliance shim anchor for cross-refs.
 
 ### Deferred
 
-- [ ] `CONFIGURES` edge type — low confidence, deferred to v2
+- [x] `CONFIGURES` edge type remains explicitly deferred to v2 because automated detection confidence is still too low

@@ -31,6 +31,9 @@ operating_mode:
   approvals: none
   tracking: progressive_task_checklists
   validation: continuous_self_validation
+  description: |
+    Executes the 7-step changelog creation workflow without step-by-step approval.
+    Pauses only if confidence drops below threshold or component resolution is ambiguous.
 
 development_philosophy:
   principle: "Detect accurately, format consistently"

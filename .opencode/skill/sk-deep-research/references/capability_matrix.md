@@ -36,7 +36,7 @@ If any mirror drifts on those invariants, treat it as a contract failure rather 
 
 | Runtime | Mirror Path | Tool Surface | Hook Bootstrap | Schema Adaptation | Fallback Bridge Eligible | Notes |
 |---------|-------------|--------------|----------------|-------------------|--------------------------|-------|
-| OpenCode / Copilot | `.opencode/agent/deep-research.md` | `Read`, `Write`, `Edit`, `Bash`, `Grep`, `Glob`, `WebFetch`, memory | No | Low | Yes | Non-hook runtime must derive the same lifecycle branch from packet files alone. |
+| OpenCode / Copilot | `.opencode/agent/deep-research.md` | `Read`, `Write`, `Edit`, `Bash`, `Grep`, `Glob`, `WebFetch`, memory | Yes (plugin) | Low | Yes | OpenCode uses plugin-based hooks (`@opencode-ai/plugin`); Copilot uses repo-local session-start banner hook. |
 | Claude | `.claude/agents/deep-research.md` | `Read`, `Write`, `Edit`, `Bash`, `Grep`, `Glob`, `WebFetch`, MCP memory | Yes | Low | Yes | Default command YAML example path points here, but behavior is runtime-agnostic. |
 | Codex | `.codex/agents/deep-research.toml` | `Read`, `Write`, `Edit`, `Bash`, `Grep`, `Glob`, `WebFetch`, memory MCP | Yes | Medium | Yes | TOML mirror must keep the same lifecycle/reducer contract as the Markdown mirrors. |
 | Gemini | `.gemini/agents/deep-research.md` | `read_file`, `write_file`, `replace`, `run_shell_command`, `grep_search`, `list_directory`, `google_web_search` | Yes | High | Yes | Tool names differ, but packet contract and lifecycle semantics must not. |

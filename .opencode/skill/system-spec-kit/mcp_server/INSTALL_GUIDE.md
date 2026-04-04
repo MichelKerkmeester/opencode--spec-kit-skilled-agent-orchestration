@@ -2,7 +2,7 @@
 
 > MCP Server v1.7.2 | 2026-03-15
 
-Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 33 tools covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, shared memory spaces, session learning, evaluation, validation, and auto-indexing.
+Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 43 tools covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, shared memory spaces, session learning, evaluation, validation, and bounded structural code-graph indexing.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](../README.md) for complete setup.
 
@@ -78,7 +78,7 @@ Spec Kit Memory is an MCP (Model Context Protocol) server that gives AI assistan
 │  Causal lineage      Adaptive fusion    Extended telemetry      │
 │                                                                 │
 │  SQLite + sqlite-vec for vector storage                         │
-│  Canonical DB: mcp_server/dist/database/context-index.sqlite    │
+│  Canonical DB: mcp_server/database/context-index.sqlite         │
 └────────────────────┬────────────────────────────────────────────┘
                      │
           ┌──────────┴──────────┐
@@ -106,10 +106,10 @@ This guide addresses the full installation lifecycle and common failures after m
 | Path | Purpose |
 |---|---|
 | `.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` | MCP entry script |
-| `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite` | Canonical database |
-| `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` | Compatibility symlink to dist/database/ |
+| `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` | Default repo-local memory database used by the checked-in configs |
+| `.opencode/skill/system-spec-kit/mcp_server/database/code-graph.sqlite` | Default repo-local structural code-graph database used by the checked-in configs |
 
-If documentation references `mcp_server/database/...`, treat that as a compatibility view. The canonical runtime storage is `mcp_server/dist/database/`.
+The checked-in repo configs currently default to `mcp_server/database/`. Override `MEMORY_DB_PATH` or `SPEC_KIT_DB_DIR` only when you intentionally want the server to use a different writable database location.
 
 The Code Graph system uses a separate database stored alongside the memory index:
 
@@ -117,20 +117,24 @@ The Code Graph system uses a separate database stored alongside the memory index
 - Tables: `code_files` (indexed source files), `code_nodes` (symbols), `code_edges` (relationships)
 - Edge types: `CONTAINS`, `CALLS`, `IMPORTS`, `EXPORTS`, `EXTENDS`, `IMPLEMENTS`, `DECORATES`, `OVERRIDES`, `TYPE_OF`
 
-### Runtime Coverage Note (2026-03-17)
+Current code-graph behavior is intentionally bounded:
+- startup and resume surfaces report freshness-aware graph status (`fresh`, `stale`, `empty`, `error`)
+- `code_graph_query` and `code_graph_context` may repair small stale deltas inline
+- empty or broadly stale graphs still require explicit `code_graph_scan`
 
-The repo currently contains checked-in `spec_kit_memory` wiring for five CLI runtimes:
+### Runtime Coverage Note (2026-04-04)
 
-| Runtime | Repo-backed setup evidence | Current proof boundary |
+The repo contains checked-in MCP wiring for OpenCode, Claude Code, Codex, Gemini, and VS Code / Copilot, but startup-context surfacing is not identical across those runtimes:
+
+| Runtime | Checked-in MCP config | Startup / recovery surface currently visible in repo |
 |---|---|---|
-| OpenCode | `opencode.json` | Shared MCP backend wiring plus operator-facing setup and verification steps in this guide |
-| Claude Code | `.claude/mcp.json` | Shared MCP backend wiring plus operator-facing setup and verification steps in this guide |
-| Codex | `.codex/config.toml` | Shared MCP backend wiring plus native capture/save-path coverage in scripts/playbook docs; not a full Hydra end-to-end CLI proof set |
-| Gemini | `.gemini/settings.json` | Shared MCP backend wiring plus native capture/save-path coverage in scripts/playbook docs; not a full Hydra end-to-end CLI proof set |
-| Copilot | `.vscode/mcp.json` | Shared MCP backend wiring plus native capture/save-path coverage in scripts/playbook docs; not a full Hydra end-to-end CLI proof set |
+| OpenCode | `opencode.json` | MCP wiring is checked in. A plugin-based startup digest implementation exists under `.opencode/plugins/`, but repo registration of that plugin is runtime-dependent and not shown in `opencode.json`. |
+| Claude Code | `.claude/mcp.json` | Checked-in SessionStart / PreCompact / Stop hooks in `.claude/settings.local.json`. |
+| Codex | `.codex/config.toml` | Checked-in MCP config plus bootstrap parity through `.codex/agents/context-prime.toml`, not a native SessionStart hook. |
+| Gemini | `.gemini/settings.json` | Checked-in MCP config plus SessionStart / PreCompress / BeforeAgent / SessionEnd hook wiring. |
+| Copilot | `.vscode/mcp.json` | Checked-in MCP wrapper config. Startup banner code and wrapper scripts exist, but tracked `.github/hooks/superset-notify.json` still points at the Superset hook path, so local startup-hook behavior must be verified per environment. |
 
-`Claude Desktop` remains documented here as a generic MCP configuration example, but it is outside the current five-CLI repo-proof set above.
-Treat this table as configuration and automation coverage evidence from the repository, not as fresh live-authenticated end-to-end proof for every listed CLI.
+`Claude Desktop` remains documented here as a generic MCP configuration example, but it is outside the repo-checked runtime set above. Treat this table as repository configuration evidence, not as a blanket claim of live startup parity in every client.
 
 ---
 
@@ -287,7 +291,7 @@ Add the following to `opencode.json` in your project root:
       ],
       "environment": {
         "EMBEDDINGS_PROVIDER": "hf-local",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
+        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite"
       },
       "enabled": true
     }
@@ -302,32 +306,12 @@ Paths are relative to the project root. Use absolute paths if your client requir
 
 ### Option B: Claude Code CLI
 
-Add the following to `.mcp.json` in your project root:
+This repo already ships the checked-in Claude configuration files:
 
-```json
-{
-  "mcpServers": {
-    "spec_kit_memory": {
-      "command": "node",
-      "args": [
-        "${workspaceFolder}/.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
-      ],
-      "env": {
-        "EMBEDDINGS_PROVIDER": "hf-local"
-      },
-      "disabled": false
-    }
-  }
-}
-```
+- `.claude/mcp.json` for MCP server registration
+- `.claude/settings.local.json` for SessionStart / PreCompact / Stop hook wiring
 
-Also add the following to `settings.local.json`:
-
-```json
-{
-  "enabledMcpjsonServers": ["spec_kit_memory"]
-}
-```
+Use those files as the source of truth instead of creating a separate root `.mcp.json` or generic `settings.local.json`.
 
 ### Option C: Claude Desktop
 
@@ -379,7 +363,7 @@ Add these flags to the `environment` (or `env`) block of any configuration optio
       ],
       "environment": {
         "EMBEDDINGS_PROVIDER": "hf-local",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite",
+        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite",
         "SPECKIT_ADAPTIVE_FUSION": "true",
         "SPECKIT_EXTENDED_TELEMETRY": "true",
         "SPECKIT_MEMORY_ROADMAP_PHASE": "graph",
@@ -397,7 +381,7 @@ Add these flags to the `environment` (or `env`) block of any configuration optio
 # Verify JSON syntax is valid
 python3 -m json.tool < opencode.json > /dev/null
 # Or for Claude Code:
-python3 -m json.tool < .mcp.json > /dev/null
+python3 -m json.tool < .claude/mcp.json > /dev/null
 
 # Verify the binary path exists
 ls -la .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js
@@ -448,6 +432,17 @@ You should see `spec_kit_memory` tools listed, including:
 - `session_health` (session readiness check)
 - `session_bootstrap` (complete session bootstrap)
 - `session_resume` (combined session resume)
+
+Then verify the structural side too. Ask your AI assistant:
+
+```
+Run session bootstrap, then query the code graph for symbols in .opencode/skill/system-spec-kit/mcp_server/lib/context/opencode-transport.ts
+```
+
+Expected result:
+- the startup or bootstrap response reports freshness-aware graph status
+- the structural query returns a `readiness` block
+- if the graph is only lightly stale, the read path may refresh inline before returning results
 
 ### Step 3: Run a Test Query
 
@@ -732,7 +727,7 @@ Search memory for why we chose SQLite over PostgreSQL
 # Symptom: Search returns no results
 
 # Check the database:
-sqlite3 .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite \
+sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite \
   "SELECT COUNT(*) FROM memory_index"
 # Shows the memory count
 
@@ -789,6 +784,8 @@ bash .opencode/skill/system-spec-kit/scripts/validate.sh \
 | `NODE_MODULE_VERSION mismatch` | Node.js was updated after native modules were compiled | Run `bash scripts/setup/rebuild-native-modules.sh` |
 | `sqlite-vec unavailable` | Platform-specific native package failed to load | Run `npm install && npm rebuild` in both `mcp_server/` and `scripts/` |
 | Server starts but returns no memories | No indexed memories yet, or embeddings are pending | Run `memory_index_scan({ force: true })` via your AI |
+| `code_graph_query` reports `full_scan` or `inline full scan skipped for read path` | The graph is empty or too stale for bounded read-path repair | Run `code_graph_scan`, then retry the structural read |
+| Startup or resume shows graph `stale` | Freshness-aware startup detected drift before a structural read ran | Run a structural read to allow bounded inline repair, or run `code_graph_scan` for broader stale states |
 | Database appears stale after restore | Client still uses old MCP process with in-memory state | Fully restart OpenCode or Claude Code |
 | MCP server not in tools list | Configuration file error or path is wrong | Validate JSON syntax and verify binary path (see below) |
 | Wikilink validation fails | Broken `[[node-name]]` reference in a skill node file | Run `check-links.sh` and fix the reported broken links |
@@ -852,10 +849,10 @@ ls scripts/node_modules/sqlite-vec-darwin-arm64/vec0.dylib
 Check the database:
 
 ```bash
-sqlite3 .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite \
+sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite \
   "SELECT COUNT(*) FROM memory_index"
 
-sqlite3 .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite \
+sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite \
   "SELECT embedding_status, COUNT(*) FROM memory_index GROUP BY embedding_status"
 ```
 
@@ -904,7 +901,7 @@ The four most common failure modes after a major update:
 1. **Install or build run from wrong directory.** Partial installs leave workspace links unresolved, particularly `@spec-kit/shared`.
 2. **Native module ABI mismatch after a Node.js update.** `better-sqlite3` and `sqlite-vec` were compiled for an older `MODULE_VERSION`.
 3. **Stale build output after dependency changes.** The `dist/` folder was not rebuilt, or was rebuilt without the required workspace state.
-4. **Database path confusion.** Users inspect `mcp_server/database/...` while the runtime writes to `dist/database/...`. These point to the same data via a symlink, but direct file system tools may see different apparent paths.
+4. **Database path confusion.** The current default runtime writes to `mcp_server/database/...`, not `dist/database/...`. If your client overrides `MEMORY_DB_PATH` or `SPEC_KIT_DB_DIR`, verify the override before inspecting files manually.
 
 ---
 
@@ -915,8 +912,8 @@ Use this procedure when an update leaves the server broken and you need to resto
 **Step 1: Back up the current database (if it has data you want to keep)**
 
 ```bash
-cp .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite \
-   .opencode/skill/system-spec-kit/mcp_server/dist/database/rollback-$(date +%Y%m%d-%H%M%S).sqlite
+cp .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite \
+   .opencode/skill/system-spec-kit/mcp_server/database/rollback-$(date +%Y%m%d-%H%M%S).sqlite
 ```
 
 **Step 2: Remove built output and reinstalled modules**
@@ -954,8 +951,8 @@ bash scripts/setup/check-native-modules.sh
 **Step 6: Restore the database backup if the fresh database is empty**
 
 ```bash
-cp .opencode/skill/system-spec-kit/mcp_server/dist/database/rollback-YYYYMMDD-HHMMSS.sqlite \
-   .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite
+cp .opencode/skill/system-spec-kit/mcp_server/database/rollback-YYYYMMDD-HHMMSS.sqlite \
+   .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite
 ```
 
 **Step 7: Restart your AI client and re-index**
@@ -977,8 +974,8 @@ This calls `memory_index_scan({ force: true })` to repopulate the search index f
 | Path | Purpose |
 |---|---|
 | `.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` | MCP server entry point |
-| `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite` | Canonical database (runtime) |
-| `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` | Compatibility symlink |
+| `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` | Canonical database (runtime) |
+| `.opencode/skill/system-spec-kit/mcp_server/database/code-graph.sqlite` | Structural code-graph database |
 | `.opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh` | Verify Node.js version and prerequisites |
 | `.opencode/skill/system-spec-kit/scripts/setup/check-native-modules.sh` | Native module diagnostics |
 | `.opencode/skill/system-spec-kit/scripts/setup/rebuild-native-modules.sh` | Native module rebuild |
@@ -1009,15 +1006,15 @@ node mcp_server/dist/context-server.js
 python3 -m json.tool < opencode.json > /dev/null
 
 # Database inspection
-sqlite3 mcp_server/dist/database/context-index.sqlite \
+sqlite3 mcp_server/database/context-index.sqlite \
   "SELECT COUNT(*) FROM memory_index"
 
-sqlite3 mcp_server/dist/database/context-index.sqlite \
+sqlite3 mcp_server/database/context-index.sqlite \
   "SELECT embedding_status, COUNT(*) FROM memory_index GROUP BY embedding_status"
 
 # Backup database
-cp mcp_server/dist/database/context-index.sqlite \
-  mcp_server/dist/database/backup-$(date +%Y%m%d-%H%M%S).sqlite
+cp mcp_server/database/context-index.sqlite \
+  mcp_server/database/backup-$(date +%Y%m%d-%H%M%S).sqlite
 
 # Validate documentation wikilinks
 bash .opencode/skill/system-spec-kit/scripts/check-links.sh
@@ -1034,7 +1031,7 @@ PREREQS:      bash scripts/setup/check-prerequisites.sh
 NATIVE CHECK: bash scripts/setup/check-native-modules.sh
 NATIVE FIX:   bash scripts/setup/rebuild-native-modules.sh
 SMOKE TEST:   node mcp_server/dist/context-server.js
-DB PATH:      mcp_server/dist/database/context-index.sqlite
+DB PATH:      mcp_server/database/context-index.sqlite
 GRAPH LINKS:  bash scripts/check-links.sh
 PHASE VALID:  bash scripts/validate.sh specs/NNN-name --recursive
 

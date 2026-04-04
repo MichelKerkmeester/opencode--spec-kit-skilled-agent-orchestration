@@ -1,0 +1,22 @@
+{
+  "id": "completion-ready",
+  "description": "Near-complete handover with validation checklist fully grounded and next-session priorities.",
+  "requiredHeadings": [
+    "# Session Handover Document",
+    "## 1. Handover Summary",
+    "## 3. For Next Session",
+    "## 4. Validation Checklist",
+    "## 5. Session Notes"
+  ],
+  "requiredPatterns": [
+    "\\[x\\] Memory file saved with current context",
+    "\\[x\\] This handover document is complete",
+    "Priority Tasks Remaining",
+    "memory/[^`]+\\.md",
+    "plan\\.md"
+  ],
+  "forbiddenPatterns": [
+    "\\[YOUR_VALUE_HERE",
+    "\\[actual extracted value\\]"
+  ]
+}

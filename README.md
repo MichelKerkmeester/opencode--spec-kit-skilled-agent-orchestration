@@ -4,11 +4,11 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 19 skills, 19 commands, 46 MCP tools - built for OpenCode, Codex CLI, Claude Code and Gemini CLI.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 20 skills, 21 command entry points, 52 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
-**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 10 Specialized Agents** • **⚡ 4 Runtimes**
+**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 12 Specialized Agents** • **⚡ 4 Mirrored Runtimes + Copilot Support**
 
 <!-- ANCHOR:table-of-contents -->
 
@@ -58,16 +58,16 @@ The framework adds three layers on top of the base platform:
 
 | | |
 |---|---|
-| **🤖 10 Agents** | 10 custom specialists, multi-runtime |
-| **🎯 19 Skills** | Code, docs, git, prompts, MCP, research, review, cross-AI |
-| **⌨️ 20 Commands** | 8 spec_kit + 4 memory + 7 create + 1 utility |
-| **🔧 46 MCP Tools** | 37 memory & code graph + 7 code mode + 1 semantic search + 1 sequential thinking |
+| **🤖 12 Agents** | 12 custom specialists, multi-runtime |
+| **🎯 20 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
+| **⌨️ 21 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility |
+| **🔧 52 MCP Tools** | 43 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings — natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite — call graphs, imports, hierarchy, LLM-oriented neighborhoods |
 | **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
-| **⚡ 4 Runtimes** | OpenCode, Codex CLI, Claude Code, Gemini CLI |
+| **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
 | **📄 81 Templates** | CORE + ADDENDUM v2.2 |
-| **📦 266 Features** | Across 22 categories |
+| **📦 291 Features** | Across 22 categories |
 
 
 ### How It All Connects
@@ -91,14 +91,14 @@ The framework adds three layers on top of the base platform:
                  ▼                             ▼
          ┌───────────────┐          ┌──────────────────┐
          │ AGENT NETWORK │          │  SKILLS LIBRARY  │
-         │ 12 specialized│          │ 19 domain skills │
+         │ 12 specialized│          │ 20 domain skills │
          │ agents with   │◄────────►│ auto-loaded by   │
          │ routing logic │          │ task keywords    │
          └───────┬───────┘          └────────┬─────────┘
                  │                           │
                  ▼                           ▼
          ┌──────────────────────────────────────────┐
-         │       MEMORY ENGINE (46 MCP tools)       │
+         │       MEMORY ENGINE (52 MCP tools)       │
          │  5-channel hybrid: Vector, BM25, FTS5,   │
          │  Causal Graph, Degree                    │
          │  FSRS decay ─ RRF fusion ─ query intel   │
@@ -344,23 +344,23 @@ For the full spec folder workflow, template architecture (81 templates), gate de
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
 
-The memory engine uses a 222-feature pipeline. The full 33-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
+The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. The full 43-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
 
-#### 33 Tools Across 7 Layers
+#### 43 Tools Across 7 Layers
 
 The MCP tools are organized into a layered architecture. Each layer has a token budget that controls how much context it consumes:
 
 | Layer | Name | Tools | Token Budget | Purpose |
 |-------|------|-------|-------------|---------|
-| **L1** | Orchestration | 1 | 2,000 | `memory_context` - unified entry point for all retrieval |
+| **L1** | Orchestration | 3 | 2,000 | Unified context, resume, and bootstrap entry points |
 | **L2** | Core | 4 | 1,500 | Search, quick search, trigger matching, save |
-| **L3** | Discovery | 3 | 800 | List, stats, health checks |
-| **L4** | Mutation | 4 | 500 | Delete, update, validate, bulk delete |
-| **L5** | Lifecycle | 8 | 600 | Checkpoints, shared spaces, enable/status |
-| **L6** | Analysis | 8 | 1,200 | Causal graph, epistemic baselines, ablation, dashboard |
-| **L7** | Maintenance | 5 | 1,000 | Index scan, learning history, async ingestion (start/status/cancel) |
-| | **Total** | **33** | **7,600** | |
+| **L3** | Discovery | 4 | 800 | List, stats, health checks, and session readiness |
+| **L4** | Mutation | 4 | 500 | Delete, update, validate, bulk cleanup |
+| **L5** | Lifecycle | 8 | 600 | Checkpoints, shared spaces, and lifecycle state |
+| **L6** | Analysis | 10 | 1,200 | Causal graph, epistemic baselines, evaluations, and dashboards |
+| **L7** | Maintenance | 10 | 1,000 | Index scans, async ingest, learning history, and graph/CocoIndex maintenance |
+| | **Total** | **43** | **7,600** | |
 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
@@ -527,7 +527,7 @@ Together they form the code-context layer described in [`024-compact-code-graph`
 
 - Use **CocoIndex** for semantic and intent-based questions: "find code that validates memory quality", "show similar routing patterns", "where is the logic for X?"
 - Use the **Compact Code Graph** for structural questions: callers, callees, imports, hierarchy, file outlines, and reverse impact.
-- Use **session tools** when recovering or checking environment readiness: bootstrap on startup, resume after context loss, health-check stale graph state.
+- Use **session tools** when recovering or checking environment readiness: `session_bootstrap()` on fresh start or after `/clear`, `session_resume()` for reconnect-style follow-up, and `session_health()` to re-check stale or missing structural context.
 - Use **Memory** when the question is about prior decisions, spec history, handovers, or task continuity.
 
 #### Why It Matters
@@ -540,7 +540,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🤖 Agent Network
 
-10 custom specialist agents. Defined in `.opencode/agent/` (source of truth), adapted per runtime: Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), Gemini CLI (`.gemini/agents/`).
+12 custom specialist agents. Defined in `.opencode/agent/` (source of truth), adapted per runtime for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`). Copilot currently relies on the shared MCP/startup surfaces rather than a dedicated agent mirror directory.
 
 **Orchestrate**
 - Senior task commander with full authority over decomposition, delegation and quality evaluation
@@ -553,6 +553,12 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Search order: `match_triggers` → `memory_context` → `memory_search` → grep/glob
 - Returns structured Context Packages combining memory findings with codebase evidence
 - Uses both CocoIndex semantic search and the 5-channel memory system. Read-only.
+
+**Context-Prime**
+- Lightweight session bootstrap agent for fast startup or recovery after `/clear`
+- Loads memory context, checks code graph and CocoIndex health
+- Returns a compact Prime Package with spec folder, task status, system health and recommended next steps
+- Use at session start or after compaction instead of the heavier `@context` agent
 
 **Speckit**
 - The ONLY agent permitted to write `*.md` files inside spec folders
@@ -603,12 +609,18 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Scores results via a 5-dimension rubric - each strategy uses a different lens and temperature
 - Plans only - never modifies files directly
 
+**Agent-Improver**
+- Proposal-only mutator for bounded agent improvement experiments
+- Reads the target agent's charter, manifest and integration surface, then writes ONE candidate to a packet-local runtime area
+- Never scores, promotes, benchmarks or edits canonical targets - leaves that to the `/improve:agent` command loop
+- Loop orchestration: scan integration surfaces → generate dynamic profile → dispatch this agent → score candidate across 5 dimensions (structural, ruleCoherence, integration, outputQuality, systemFitness) → reduce state → check stop conditions
+
 ---
 
 ### ⌨️ Command Architecture
 
 
-20 commands across 4 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
+21 command entry points across 5 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
 #### SPEC KIT
 
@@ -704,12 +716,25 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 **Feature Catalog**
 - Creates or updates feature catalog packages with category routing
 - Generates both technical reference entries and simple-terms companion entries
-- Validates against the 255-entry catalog structure across 21 categories
+- Validates against the 291-entry catalog structure across 22 categories
 
 **Testing Playbook**
 - Creates or updates manual testing playbook packages
 - Generates scenario files with test steps, expected results and verification evidence fields
 - Validates against established playbook format
+
+#### IMPROVE
+
+**Improve Agent**
+- Evaluates and improves any agent across 5 integration-aware dimensions with deterministic scoring
+- Runs a bounded loop: scan integration surfaces → generate dynamic profile → dispatch `@agent-improver` → score candidate → reduce state → check stop conditions
+- All scoring is regex/string/file-existence based (no LLM-as-judge) for promotion gate reliability
+- Modes: `:auto`, `:confirm`. Supports any agent in `.opencode/agent/` as target
+
+**Improve Prompt**
+- Refines prompts and prompt packages using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
+- Applies DEPTH thinking methodology with CLEAR quality scoring
+- Used when the target already exists and needs structured improvement rather than new scaffolding
 
 #### UTILITY
 
@@ -723,15 +748,15 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🎯 Skills Library
 
-19 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
+20 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
 #### DOCUMENTATION
 
 **system-spec-kit**
 - Mandatory orchestrator for all file modifications - activates automatically for any code file change
 - Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 levels (1-3+)
-- Integrates the 33-tool memory system with constitutional-tier support, FSRS decay and hybrid 5-channel retrieval
-- Manages 81 templates, 20 validation rules, 22 scripts, and 255 feature catalog entries across 21 categories
+- Integrates the 43-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
+- Manages 81 templates, 20 validation rules, 22 scripts, and the feature-catalog / testing-playbook documentation surfaces
 
 **sk-doc**
 - Unified markdown specialist with DQI quality scoring (Structure 40%, Content 35%, Style 25%)
@@ -745,11 +770,6 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Detects 7 stacks: Go, Swift, React Native/Expo, Next.js, React, Node.js, and default
 - 3 mandatory phases: implementation → testing/debugging → verification
 
-**sk-code--opencode**
-- Multi-language standards for OpenCode system code across 5 languages
-- JavaScript (CommonJS), TypeScript (strict), Python (snake_case), Shell (set -euo pipefail), JSON/JSONC
-- Evidence-based patterns extracted from the actual codebase with `file:line` citations
-
 **sk-code--web**
 - Frontend development orchestrator with 5-phase lifecycle
 - Enforces mandatory browser testing before any completion claims with DevTools integration
@@ -759,6 +779,27 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Stack-agnostic code review baseline implementing the baseline + overlay model
 - Baseline always runs first: security checklist, correctness checklist, SOLID checklist, threat model
 - Security and correctness minimums are mandatory and NEVER relaxed by the overlay. P0/P1/P2 findings.
+
+**sk-code--opencode**
+- Multi-language standards for OpenCode system code across 5 languages
+- JavaScript (CommonJS), TypeScript (strict), Python (snake_case), Shell (set -euo pipefail), JSON/JSONC
+- Evidence-based patterns extracted from the actual codebase with `file:line` citations
+
+**sk-git**
+- Git workflow orchestrator coordinating 3 sub-skills
+- **git-worktree**: workspace isolation, branch creation, parallel development
+- **git-commit**: conventional commit format, staged change analysis, scope detection
+- **git-finish**: PR creation via `gh pr create`, branch cleanup, integration workflows
+
+**sk-deep-research**
+- Autonomous research investigation system with iterative LEAF cycles
+- Fresh context per iteration, externalized JSONL state, convergence detection
+- Dispatched by `/spec_kit:deep-research` command
+
+**sk-deep-review**
+- Autonomous code quality auditing system with iterative LEAF cycles
+- Dispatches deep-review agents with P0/P1/P2 severity-weighted findings across 7 review dimensions
+- Dispatched by `/spec_kit:deep-review` command
 
 #### MCP INTEGRATION
 
@@ -811,27 +852,16 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 #### OTHER
 
-**sk-deep-research**
-- Autonomous research investigation system with iterative LEAF cycles
-- Fresh context per iteration, externalized JSONL state, convergence detection
-- Dispatched by `/spec_kit:deep-research` command
-
-**sk-deep-review**
-- Autonomous code quality auditing system with iterative LEAF cycles
-- Dispatches deep-review agents with P0/P1/P2 severity-weighted findings across 7 review dimensions
-- Dispatched by `/spec_kit:deep-review` command
-
-**sk-git**
-- Git workflow orchestrator coordinating 3 sub-skills
-- **git-worktree**: workspace isolation, branch creation, parallel development
-- **git-commit**: conventional commit format, staged change analysis, scope detection
-- **git-finish**: PR creation via `gh pr create`, branch cleanup, integration workflows
-
 **sk-prompt-improver**
 - Prompt engineering specialist auto-selecting from 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
 - DEPTH thinking methodology with 3-10 iteration rounds of progressive refinement
 - CLEAR quality scoring: Clarity, Logic, Expression, Reliability (40+/50 pass threshold)
 
+**sk-agent-improver**
+- Evaluator-first agent improvement with 5-dimension integration-aware scoring (structural, ruleCoherence, integration, outputQuality, systemFitness)
+- Integration scanner discovers all surfaces an agent touches (canonical, mirrors, commands, YAML, skills)
+- Dynamic profile generator derives scoring rubric from any agent's own rules — no hardcoded profiles needed
+- All scoring is deterministic (regex/string/file-existence) — no LLM-as-judge, safe for promotion gates
 
 ---
 
@@ -901,7 +931,9 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 - **`opencode.json`** - MCP server bindings (4 servers), model configuration. Used by OpenCode platform.
 - **`.utcp_config.json`** - Code Mode external tool registrations. Used by `mcp-code-mode` skill.
 - **`.claude/mcp.json`** - Claude Code MCP configuration. Claude Code only.
+- **`.codex/config.toml`** - Codex CLI MCP configuration and profile definitions.
 - **`.gemini/settings.json`** - Gemini CLI configuration. Gemini CLI only.
+- **`.vscode/mcp.json`** - VS Code / Copilot MCP configuration wrapper.
 
 ### Memory Engine Configuration
 
@@ -911,7 +943,7 @@ The memory server reads configuration from environment variables:
 - **`OPENAI_API_KEY`** (optional) - OpenAI embeddings (alternative)
 - **`MEMORY_DB_PATH`** (optional) - Override default database path
 
-Default database path: `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite`
+Default repo-local database path: `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite`
 
 > [!TIP]
 > If no API key is set, the memory engine auto-detects **HuggingFace Local** embeddings - free, no setup required.
@@ -936,7 +968,7 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 - **Search companions** - FTS5 and vector tables support lexical and embedding retrieval alongside BM25 rebuild/index data.
 - **Graph/lifecycle** - Causal edges, lineage projection, checkpoints, working memory, and access tracking support decision tracing and session continuity.
 - **Evaluation** - Separate eval tables persist ablation/reporting metrics, with guards for missing query IDs and synthetic token-usage markers.
-- **Paths** - Canonical runtime DB path is `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite`; `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` is the compatibility symlink.
+- **Paths** - The checked-in configs default to `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite`. If a runtime cannot write inside the repo, override `MEMORY_DB_PATH` (and, when relevant, `SPEC_KIT_DB_DIR`) to a writable location.
 
 ### opencode.json Structure
 
@@ -978,7 +1010,7 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 
 ## ❓ FAQ
 
-**Q: Do I need all 19 skills installed to use the framework?**
+**Q: Do I need all 20 skills installed to use the framework?**
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills -`system-spec-kit` and `sk-doc` - cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
 
@@ -986,7 +1018,7 @@ A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to
 
 **Q: Is this only for OpenCode, or does it work with other runtimes?**
 
-A: It works with OpenCode, Codex CLI, Claude Code and Gemini CLI. Agent definitions are mirrored across all four runtime directories. Each runtime has its own adapter files that translate the source-of-truth definitions into the format that runtime expects.
+A: It works with OpenCode, Codex CLI, Claude Code, and Gemini CLI, and the repo also includes Copilot-oriented MCP/startup integration surfaces. Agent definitions are mirrored in the checked-in Claude, Codex, and Gemini runtime directories; OpenCode and Copilot use runtime-specific MCP/startup integration rather than a dedicated agent mirror.
 
 ---
 
@@ -1028,13 +1060,13 @@ A: Define the agent in `.opencode/agent/` (the source of truth), then copy the a
 
 **Q: How many MCP tools are there and where are they defined?**
 
-A: 46 total across 4 native MCP servers: 37 memory + code graph tools (spec_kit_memory), 7 code mode tools, 1 semantic code search tool (cocoindex_code) and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 37 memory and code graph tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`. The 4 code graph tools (code_graph_scan, code_graph_query, code_graph_status, code_graph_context) provide structural code analysis via tree-sitter indexing and SQLite storage.
+A: 52 total across 4 native MCP servers: 43 `spec_kit_memory` tools, 7 code mode tools, 1 semantic code search tool (`cocoindex_code`), and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 43 `spec_kit_memory` tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`. The structural graph surface centers on `code_graph_scan`, `code_graph_query`, `code_graph_status`, and `code_graph_context`, with adjacent `session_*` and `ccc_*` tools handling recovery and semantic follow-up.
 
 ---
 
 **Q: What is the feature catalog?**
 
-A: The feature catalog is a 255-entry reference across 21 categories documenting every capability of the memory system. It comes in two versions: a technical reference and a simple-terms companion with plain-language explanations. Both are in `.opencode/skill/system-spec-kit/feature_catalog/`.
+A: The feature catalog is a 291-entry reference across 22 categories documenting every capability of the memory system. It comes in two versions: a technical reference and a simple-terms companion with plain-language explanations. Both are in `.opencode/skill/system-spec-kit/feature_catalog/`.
 
 <!-- /ANCHOR:faq -->
 
@@ -1049,13 +1081,13 @@ A: The feature catalog is a 255-entry reference across 21 categories documenting
 
 - **[→ AGENTS.md](AGENTS.md)** - Agent routing, gate definitions, behavior rules
 - **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, 81 templates, validation rules
-- **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory API reference (33 tools, 7 layers)
+- **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (43 tools, 7 layers)
 - **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** - MCP server setup, embedding providers
 - **[→ Shared Memory Guide](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** - Spaces, roles, membership, kill switch
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
 - **[→ Skills Index](.opencode/skill/README.md)** - All 19 skills with invocation patterns
-- **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 255-entry technical reference
+- **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 291-entry technical reference
 - **[→ Feature Catalog (Simple Terms)](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** - Plain-language companion
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
 
@@ -1068,4 +1100,4 @@ A: The feature catalog is a 255-entry reference across 21 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.1 | Last updated: 2026-03-31 | Framework: 12 agents, 19 skills, 20 commands, 46 MCP tools (37 memory & code graph + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.2 | Last updated: 2026-04-04 | Framework: 12 agents, 20 skills, 21 commands, 52 MCP tools (43 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

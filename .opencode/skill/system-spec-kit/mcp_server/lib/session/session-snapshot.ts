@@ -8,7 +8,12 @@
 import { getSessionMetrics, computeQualityScore, getLastToolCallAt } from './context-metrics.js';
 import { isSessionPrimed, getLastActiveSessionId } from '../../hooks/memory-surface.js';
 import { getStats as getGraphStats } from '../code-graph/code-graph-db.js';
+import { getGraphFreshness } from '../code-graph/ensure-ready.js';
 import { isCocoIndexAvailable } from '../utils/cocoindex-path.js';
+import {
+  trustStateFromStructuralStatus,
+  type SharedPayloadProvenance,
+} from '../context/shared-payload.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -36,13 +41,13 @@ export interface StructuralBootstrapContract {
   highlights?: string[];
   recommendedAction: string;
   sourceSurface: 'auto-prime' | 'session_bootstrap' | 'session_resume' | 'session_health';
+  provenance?: SharedPayloadProvenance;
 }
 
 /* ───────────────────────────────────────────────────────────────
    2. CONSTANTS
 ──────────────────────────────────────────────────────────────── */
 
-const GRAPH_STALE_THRESHOLD_MS = 24 * 60 * 60 * 1000; // 24 hours
 const STRUCTURAL_CONTRACT_MAX_TOKENS = 500;
 
 /* ───────────────────────────────────────────────────────────────
@@ -51,11 +56,7 @@ const STRUCTURAL_CONTRACT_MAX_TOKENS = 500;
 
 function resolveGraphFreshness(): SessionSnapshot['graphFreshness'] {
   try {
-    const stats = getGraphStats();
-    if (stats.totalFiles === 0) return 'empty';
-    if (!stats.lastScanTimestamp) return 'stale';
-    const age = Date.now() - new Date(stats.lastScanTimestamp).getTime();
-    return age <= GRAPH_STALE_THRESHOLD_MS ? 'fresh' : 'stale';
+    return getGraphFreshness(process.cwd());
   } catch {
     return 'error';
   }
@@ -239,7 +240,7 @@ export function buildStructuralBootstrapContract(
   } else if (status === 'stale') {
     try {
       const stats = getGraphStats();
-      summary = `Code graph: ${stats.totalFiles} files, ${stats.totalNodes} nodes (stale — >24h since last scan)`;
+      summary = `Code graph: ${stats.totalFiles} files, ${stats.totalNodes} nodes (stale — structural reads may refresh inline or recommend code_graph_scan)`;
     } catch {
       summary = 'Code graph data is stale — structural context may be outdated';
     }
@@ -251,7 +252,7 @@ export function buildStructuralBootstrapContract(
   if (status === 'ready') {
     recommendedAction = 'Structural context available. Use code_graph_query for structural lookups.';
   } else if (status === 'stale') {
-    recommendedAction = 'Call session_bootstrap to refresh structural context, or run code_graph_scan for a full rescan.';
+    recommendedAction = 'Use a structural read to trigger bounded inline refresh when safe, or run code_graph_scan for broader stale states.';
   } else {
     recommendedAction = 'Call session_bootstrap first. Then run code_graph_scan if structural context is needed.';
   }
@@ -264,5 +265,22 @@ export function buildStructuralBootstrapContract(
     highlights: fittedContract.highlights,
     recommendedAction: fittedContract.recommendedAction,
     sourceSurface,
+    provenance: {
+      producer: 'session_snapshot',
+      sourceSurface,
+      trustState: trustStateFromStructuralStatus(status),
+      generatedAt: new Date().toISOString(),
+      lastUpdated: status === 'ready' || status === 'stale'
+        ? (() => {
+          try {
+            const stats = getGraphStats();
+            return stats.lastScanTimestamp ?? null;
+          } catch {
+            return null;
+          }
+        })()
+        : null,
+      sourceRefs: ['code-graph-db', 'session-snapshot'],
+    },
   };
 }

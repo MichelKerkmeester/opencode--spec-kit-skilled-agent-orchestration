@@ -6,7 +6,7 @@
 
 ## 021-cross-runtime-instruction-parity -- 2026-03-31
 
-When you use Claude Code, a set of automated hooks handle session startup, context recovery after compaction, and code graph freshness checks behind the scenes. But those hooks only work in Claude Code. If you use Codex CLI, Gemini CLI, or Copilot CLI, the instruction files that guide those AIs were missing these lifecycle behaviors entirely -- the AI simply did not know it should load prior context or check graph freshness. This phase closes that gap by adding standardized "No Hook Transport" trigger tables to every non-Claude instruction file, giving each runtime explicit step-by-step guidance on when to call which recovery tools. It also introduces a new `@context-prime` agent for OpenCode that bundles session priming into a single lightweight call.
+When this phase landed, Claude still had the strongest startup/recovery story and the non-Claude instruction files were missing a consistent lifecycle fallback. This phase closed the instruction-layer gap by adding standardized "No Hook Transport" trigger tables to the non-Claude guidance and by introducing `@context-prime` for OpenCode-style bootstrap delegation. Later phases refined the public recovery contract around `session_bootstrap()`, Gemini hooks, Codex bootstrap parity, OpenCode startup digests, and repo-local Copilot startup wiring.
 
 > Spec folder: `.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/`
 
@@ -30,7 +30,7 @@ When you use Claude Code, a set of automated hooks handle session startup, conte
 
 **Problem:** The `AGENTS.md` file serves as the instruction file for both OpenCode (Copilot) and Copilot CLI. Like Codex CLI, these runtimes have no automated hook system, so the AI had no guidance on lifecycle behaviors -- it did not know to load memory on startup, check graph freshness, or recover context after a long gap. OpenCode coverage was estimated at 60%, and Copilot CLI at just 50%, compared to Claude Code's 100%.
 
-**Fix:** Added the same standardized No Hook Transport trigger table to `AGENTS.md`, plus a reference to the new `@context-prime` agent (see below) for Session Bootstrap delegation. OpenCode and Copilot CLI users now get the same context recovery behavior as Claude Code: the AI knows exactly when and what to call at each lifecycle transition.
+**Fix:** Added the same standardized No Hook Transport trigger table to `AGENTS.md`, plus a reference to the new `@context-prime` agent (see below) for Session Bootstrap delegation. This gave OpenCode and Copilot-style flows an explicit fallback recovery script at the instruction level. The current packet state goes further than this changelog alone: OpenCode now has a transport digest path, and repo-local Copilot startup wiring is tracked in packet 030/031.
 
 ---
 
@@ -38,7 +38,7 @@ When you use Claude Code, a set of automated hooks handle session startup, conte
 
 **Problem:** Gemini CLI's instruction file (`GEMINI.md`) had no recovery or priming flows. Gemini was estimated at just 50% lifecycle coverage. While Phase 022 had introduced Gemini-native hooks, there was no fallback guidance for situations where hooks are unavailable or disabled, and the instruction file did not reference any lifecycle triggers.
 
-**Fix:** Added a No Hook Transport trigger table adapted for Gemini's specific lifecycle, including references to the Gemini-native hooks introduced in Phase 022 and a fallback path for non-hook usage. Gemini CLI now participates in the same session lifecycle as every other runtime, with coverage rising from 50% to approximately 80%.
+**Fix:** Added a No Hook Transport trigger table adapted for Gemini's specific lifecycle, including references to the Gemini-native hooks introduced in Phase 022 and a fallback path for non-hook usage. In the current packet state, Gemini now has checked-in startup-hook support plus this fallback guidance, so this changelog entry should be read as the fallback-instruction step rather than the complete Gemini startup story.
 
 ---
 
@@ -78,7 +78,7 @@ When you use Claude Code, a set of automated hooks handle session startup, conte
 
 **Problem:** Before this phase, Claude Code operated at 100% lifecycle coverage -- every session event (startup, resume, compaction, clear) triggered the right recovery calls automatically via hooks. All other runtimes were far behind: OpenCode at 60%, Codex CLI at 55%, Copilot CLI and Gemini CLI at 50%. This meant that more than half the time, non-Claude AIs started sessions without context, did not recover after compaction, and skipped graph freshness checks.
 
-**Fix:** With the No Hook Transport trigger tables added to every non-Claude instruction file and the `@context-prime` agent available for single-call priming, all runtimes now reach 80-85% lifecycle coverage. The remaining 15-20% gap represents behaviors that are inherently hook-only (such as firing a script automatically before context compaction happens) and cannot be replicated through instructions alone. This is a structural ceiling, not a gap to be closed.
+**Fix:** With the No Hook Transport trigger tables added to the non-Claude instruction files and the `@context-prime` agent available for single-call priming, lifecycle coverage improved materially at the instruction layer. Later phases then replaced the implied ceiling here with concrete runtime work: Gemini hooks, freshness-aware startup banners, OpenCode transport digests, and repo-local Copilot startup wiring.
 
 ---
 

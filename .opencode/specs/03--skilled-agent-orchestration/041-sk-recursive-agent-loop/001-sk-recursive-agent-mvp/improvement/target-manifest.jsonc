@@ -1,0 +1,59 @@
+{
+  // MVP surface classification for sk-agent-improver.
+  "version": 1,
+  "defaultMode": "proposal-only",
+  "targets": [
+    {
+      "id": "handover-canonical",
+      "path": ".opencode/agent/handover.md",
+      "classification": "canonical",
+      "mutableInPhase1": false,
+      "candidateOnly": true,
+      "evaluationMode": "prompt-surface",
+      "requiredReferences": [
+        "spec.md",
+        "plan.md",
+        "tasks.md",
+        "checklist.md",
+        "memory/",
+        ".opencode/skill/system-spec-kit/templates/handover.md"
+      ]
+    },
+    {
+      "id": "handover-claude",
+      "path": ".claude/agents/handover.md",
+      "classification": "derived",
+      "mutableInPhase1": false
+    },
+    {
+      "id": "handover-codex",
+      "path": ".codex/agents/handover.toml",
+      "classification": "derived",
+      "mutableInPhase1": false
+    },
+    {
+      "id": "handover-gemini",
+      "path": ".gemini/agents/handover.md",
+      "classification": "derived",
+      "mutableInPhase1": false
+    },
+    {
+      "id": "handover-agents-runtime",
+      "path": ".agents/agents/handover.md",
+      "classification": "derived",
+      "mutableInPhase1": false
+    }
+  ],
+  "fixed": [
+    ".opencode/command/spec_kit/handover.md",
+    ".agents/commands/spec_kit/handover.toml",
+    ".gemini/commands/spec_kit/handover.toml",
+    ".opencode/skill/system-spec-kit/templates/handover.md"
+  ],
+  "forbidden": [
+    ".opencode/command/spec_kit/handover.md",
+    ".agents/commands/spec_kit/handover.toml",
+    ".gemini/commands/spec_kit/handover.toml",
+    ".opencode/skill/system-spec-kit/templates/handover.md"
+  ]
+}

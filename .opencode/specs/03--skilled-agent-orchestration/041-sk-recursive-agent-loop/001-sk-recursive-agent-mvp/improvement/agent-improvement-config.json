@@ -1,0 +1,51 @@
+{
+  "target": ".opencode/agent/handover.md",
+  "targetKind": "canonical-agent",
+  "maxIterations": 5,
+  "maxCandidatesPerIteration": 1,
+  "executionMode": "confirm",
+  "proposalOnly": false,
+  "promotionEnabled": true,
+  "baselineRequired": true,
+  "specFolder": "",
+  "createdAt": "2026-04-03T13:50:00.000Z",
+  "status": "promotion-approved",
+  "lineage": {
+    "sessionId": "",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart",
+      "fork"
+    ],
+    "generation": 1
+  },
+  "paths": {
+    "runtimeRoot": "improvement",
+    "stateLog": "improvement/agent-improvement-state.jsonl",
+    "strategy": "improvement/agent-improvement-strategy.md",
+    "dashboard": "improvement/agent-improvement-dashboard.md",
+    "registry": "improvement/experiment-registry.json",
+    "charter": "improvement/agent-improvement-charter.md",
+    "manifest": "improvement/target-manifest.jsonc",
+    "candidates": "improvement/candidates"
+  },
+  "scoring": {
+    "thresholdDelta": 2,
+    "hardRejectOnMissingTemplate": true,
+    "hardRejectOnNestedDelegation": true,
+    "simplicityTieBreak": true
+  },
+  "fileProtection": {
+    "agent-improvement-config.json": "immutable",
+    "agent-improvement-state.jsonl": "append-only",
+    "agent-improvement-strategy.md": "mutable",
+    "agent-improvement-dashboard.md": "auto-generated",
+    "experiment-registry.json": "auto-generated",
+    "candidates/*": "write-once",
+    "agent-improvement-charter.md": "immutable",
+    "target-manifest.jsonc": "immutable"
+  }
+}

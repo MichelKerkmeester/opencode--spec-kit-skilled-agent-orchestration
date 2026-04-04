@@ -21,6 +21,10 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   ])),
 }));
 
+vi.mock('../lib/code-graph/ensure-ready.js', () => ({
+  getGraphFreshness: vi.fn(() => 'fresh'),
+}));
+
 vi.mock('../hooks/claude/hook-state.js', () => ({
   loadMostRecentState: vi.fn(() => ({
     claudeSessionId: 'recent-session',
@@ -37,9 +41,15 @@ vi.mock('../hooks/claude/hook-state.js', () => ({
   })),
 }));
 
+vi.mock('../lib/utils/cocoindex-path.js', () => ({
+  isCocoIndexAvailable: vi.fn(() => false),
+}));
+
 import { buildStartupBrief } from '../lib/code-graph/startup-brief.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
+import { getGraphFreshness } from '../lib/code-graph/ensure-ready.js';
 import * as hookState from '../hooks/claude/hook-state.js';
+import * as cocoIndexPath from '../lib/utils/cocoindex-path.js';
 
 describe('startup-brief', () => {
   beforeEach(() => {
@@ -55,6 +65,15 @@ describe('startup-brief', () => {
     expect(brief.graphOutline).toContain('handleSessionBootstrap (function)');
     expect(brief.sessionContinuity).toContain('Last session worked on');
     expect(brief.sessionContinuity).toContain('Summary:');
+    expect(brief.cocoIndexAvailable).toBe(false);
+    expect(brief.startupSurface).toContain('Session context received. Current state:');
+    expect(brief.startupSurface).toContain('- Memory: session continuity available');
+    expect(brief.startupSurface).toContain('- Code Graph: healthy');
+    expect(brief.startupSurface).toContain('- CocoIndex: missing');
+    expect(brief.startupSurface).toContain('- Note: this is a startup snapshot; later structural reads may differ if the repo state changed.');
+    expect(brief.sharedPayload?.kind).toBe('startup');
+    expect(brief.sharedPayload?.provenance.producer).toBe('startup_brief');
+    expect(brief.sharedPayload?.sections.length).toBeGreaterThan(0);
   });
 
   it('returns empty graph state with summary but no outline for empty indexes', () => {
@@ -75,6 +94,28 @@ describe('startup-brief', () => {
     expect(brief.graphState).toBe('empty');
     expect(brief.graphSummary).toMatchObject({ files: 0, nodes: 0, edges: 0, lastScan: null });
     expect(brief.graphOutline).toBeNull();
+    expect(brief.startupSurface).toContain('- Code Graph: empty -- run `code_graph_scan`');
+    expect(brief.sharedPayload?.provenance.trustState).toBe('stale');
+  });
+
+  it('reports stale graph state when freshness detection says stale even with graph counts present', () => {
+    vi.mocked(getGraphFreshness).mockReturnValueOnce('stale');
+
+    const brief = buildStartupBrief();
+
+    expect(brief.graphState).toBe('stale');
+    expect(brief.graphOutline).toContain('Freshness: stale');
+    expect(brief.startupSurface).toContain('- Code Graph: stale');
+    expect(brief.startupSurface).toContain('first structural read may refresh inline');
+    expect(brief.startupSurface).toContain('startup snapshot');
+    expect(brief.sharedPayload?.provenance.trustState).toBe('stale');
+  });
+
+  it('reports cocoindex as available when the binary exists', () => {
+    vi.mocked(cocoIndexPath.isCocoIndexAvailable).mockReturnValueOnce(true);
+    const brief = buildStartupBrief();
+    expect(brief.cocoIndexAvailable).toBe(true);
+    expect(brief.startupSurface).toContain('- CocoIndex: available');
   });
 
   it('includes orientation note when highlights are present', () => {
@@ -107,5 +148,8 @@ describe('startup-brief', () => {
     expect(brief.graphSummary).toBeNull();
     expect(brief.graphOutline).toBeNull();
     expect(brief.sessionContinuity).toBeNull();
+    expect(brief.startupSurface).toContain('- Memory: startup summary only (resume on demand)');
+    expect(brief.startupSurface).toContain('- Code Graph: unavailable');
+    expect(brief.sharedPayload).toBeNull();
   });
 });

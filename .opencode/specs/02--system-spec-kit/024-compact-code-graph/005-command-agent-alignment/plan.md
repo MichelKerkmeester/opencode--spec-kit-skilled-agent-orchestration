@@ -72,9 +72,9 @@ Template compliance shim anchor for rollback.
    - Add `profile: "resume"` parameter (fixes gap from research iter 012)
    - Verify the resume brief format is returned instead of raw search results
 3. **Update `/memory:save` for Stop hook awareness:**
-   - Add check for recent Stop hook auto-save by inspecting hook state and `pendingStopSave.cachedAt`
-   - If auto-save occurred within last 60 seconds: prompt user about merge/skip
-   - Preserve existing save behavior as default when no hooks active
+   - Remove stale guidance that tells users to inspect a non-existent `pendingStopSave.cachedAt` marker
+   - Document the shipped reality: hook-aware recovery exists, but no dedicated stop-save field landed in `hook-state.ts`
+   - Preserve existing save behavior as default when no hooks are active
 4. **Audit agent definitions for compaction recovery instructions:**
    - Search all 4 agent directories for compaction-related content:
      `.claude/agents/`, `.opencode/agent/`, `.codex/agents/`, `.gemini/agents/`

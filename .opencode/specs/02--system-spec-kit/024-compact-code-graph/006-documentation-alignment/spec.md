@@ -77,7 +77,7 @@ New feature entries needed:
 |---------|----------|-------------|
 | PreCompact Hook | Context Preservation | Precomputes critical context before compaction and caches to temp file |
 | SessionStart Priming | Context Preservation | Injects relevant prior work at session startup/resume/compaction |
-| Stop Token Tracking | Observability | Tracks token usage via `session-stop.ts`, uses the `pendingStopSave` state flag, and persists JSON hook-state files |
+| Stop Token Tracking | Observability | Tracks token usage via `session-stop.ts`, persists JSON hook-state files, and records the stop-hook flow without claiming a dedicated `pendingStopSave` state flag |
 | Cross-Runtime Fallback | Compatibility | Tool-based context injection for runtimes without native hook support while keeping runtime-specific capability notes accurate |
 | Runtime Detection | Infrastructure | Capability-based runtime identification, including Gemini support detected dynamically from `.gemini/settings.json` |
 | CocoIndex Integration | Context Enrichment | CocoIndex provides semantic code search complementing structural code graph and memory context |
@@ -111,7 +111,7 @@ Add section covering:
 
 Add hook architecture:
 - Hook lifecycle diagram (PreCompact -> cache -> SessionStart -> inject)
-- Hook state management (JSON hook-state files, session ID mapping, `pendingStopSave`)
+- Hook state management (JSON hook-state files, session ID mapping, and truthful stop-hook state limitations without claiming `pendingStopSave`)
 - Runtime adapter pattern (hooks vs tool fallback) if delivered in this phase; otherwise note as follow-up gap
 - Token tracking data flow (`session-stop.ts` -> parse -> JSON hook-state files)
 - Three-system integration diagram showing CocoIndex, Code Graph, and Memory as parallel context sources

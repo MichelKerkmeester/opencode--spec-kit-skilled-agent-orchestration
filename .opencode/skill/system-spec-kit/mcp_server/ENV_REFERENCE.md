@@ -210,7 +210,7 @@ Total unique variables documented: 134 (including 7 legacy HYDRA aliases).
 
 | Variable | Default | Type | Description | Source |
 |----------|---------|------|-------------|--------|
-| `SPECKIT_IMPLICIT_FEEDBACK_LOG` | `true` | boolean | Implicit feedback event ledger: shadow-only, no ranking side effects (REQ-D4-001). Graduated ON. | `lib/feedback/feedback-ledger.ts` |
+| `SPECKIT_IMPLICIT_FEEDBACK_LOG` | `true` | boolean | Implicit feedback event ledger for `search_shown`, `result_cited`, `query_reformulated`, `same_topic_requery`, and `follow_on_tool_use`. Shadow-only, no ranking side effects (REQ-D4-001). Graduated ON. | `lib/feedback/feedback-ledger.ts` |
 | `SPECKIT_SHADOW_FEEDBACK` | `true` | boolean | Shadow scoring with holdout evaluation: compares would-have-changed vs live rankings (REQ-D4-006). Graduated ON. | `lib/feedback/shadow-scoring.ts` |
 | `SPECKIT_SHADOW_LEARNING` | `false` | boolean | Shadow learned model loading for Stage 2 weight combiner. Opt-in: set `true` to enable. | `lib/search/pipeline/stage2-fusion.ts` |
 | `SPECKIT_LEARNED_STAGE2_COMBINER` | `true` | boolean | Learned Stage 2 weight combiner in shadow mode (REQ-D1-006). Graduated ON. | `lib/search/search-flags.ts` |
