@@ -1,15 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022",
-  "description": "Feature Specification: Post-022 Skill Review and Remediation",
+  "description": "002 — Post-022 Skill Documentation Review and Remediation",
   "keywords": [
-    "feature",
-    "specification",
+    "002",
     "post-022",
     "skill",
+    "documentation",
     "review",
     "remediation"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.542Z",
+  "lastUpdated": "2026-03-30T11:56:26.818Z",
   "specId": "002",
   "folderSlug": "skill-review-post-022",
   "parentChain": [

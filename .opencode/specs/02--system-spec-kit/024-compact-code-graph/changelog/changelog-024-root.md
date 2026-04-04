@@ -118,11 +118,11 @@ These are the major repair lanes that changed behavior, not just documentation.
 
 **Fix:** Phase 017 repaired abstract methods, class-expression detection, multi-import capture, nested Python class names, and intent-classifier confidence behavior so the parser and routing layers matched the newer contract more closely.
 
-### Freshness and auto-reindex fixes
+### Freshness and bounded auto-index fixes
 
-**Problem:** A stale graph is worse than no graph because it looks authoritative while pointing at the wrong branch state.
+**Problem:** A stale graph is worse than no graph because it looks authoritative while pointing at the wrong branch state, but silent full rescans on every read would make structural tools unpredictable and too expensive.
 
-**Fix:** Phases 019 and later follow-ons added `ensureCodeGraphReady()` logic, HEAD-change detection, tracked-file mtime checks, and true fresh/stale/empty reporting so the system can reindex before structural answers drift too far from the repo state.
+**Fix:** Phases 019 and later follow-ons added `ensureCodeGraphReady()` logic, HEAD-change detection, tracked-file mtime checks, and true fresh/stale/empty reporting. In the current packet state, structural read paths can auto-index lightly stale graphs inline through bounded `selective_reindex`, while empty or broadly stale states surface explicit `full_scan` readiness and keep `code_graph_scan` as the operator-controlled rebuild step.
 
 ### Tool-routing enforcement
 
