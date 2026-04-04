@@ -1,0 +1,1 @@
+{"version":3,"file":"topic-extractor.d.ts","sourceRoot":"","sources":["../../core/topic-extractor.ts"],"names":[],"mappings":"AAWA,sCAAsC;AACtC,MAAM,WAAW,iBAAiB;IAChC,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,SAAS,CAAC,EAAE,MAAM,CAAC;CACpB;AASD,0BAA0B;AAC1B,wBAAgB,gBAAgB,CAC9B,OAAO,EAAE,MAAM,EACf,SAAS,GAAE,iBAAiB,EAAO,EACnC,eAAe,CAAC,EAAE,MAAM,GACvB,MAAM,EAAE,CA4BV"}

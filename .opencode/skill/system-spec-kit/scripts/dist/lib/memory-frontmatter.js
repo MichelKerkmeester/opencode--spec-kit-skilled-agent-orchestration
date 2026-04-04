@@ -1,0 +1,134 @@
+"use strict";
+// ---------------------------------------------------------------
+// MODULE: Memory Frontmatter
+// ---------------------------------------------------------------
+// Shared helpers for memory-specific frontmatter quality.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES = exports.GENERIC_MEMORY_DESCRIPTION = void 0;
+exports.hasLegacyGenericTriggerPhrases = hasLegacyGenericTriggerPhrases;
+exports.containsLegacyGenericTriggerPhrase = containsLegacyGenericTriggerPhrase;
+exports.hasGenericMemoryDescription = hasGenericMemoryDescription;
+exports.sanitizeMemoryFrontmatterTitle = sanitizeMemoryFrontmatterTitle;
+exports.deriveMemoryDescription = deriveMemoryDescription;
+exports.deriveMemoryTriggerPhrases = deriveMemoryTriggerPhrases;
+const trigger_extractor_1 = require("./trigger-extractor");
+exports.GENERIC_MEMORY_DESCRIPTION = 'Session context memory template for Spec Kit indexing.';
+exports.LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES = [
+    'memory dashboard',
+    'session summary',
+    'context template',
+];
+const GENERIC_MEMORY_DESCRIPTION_NORMALIZED = exports.GENERIC_MEMORY_DESCRIPTION.toLowerCase();
+const TITLE_CLEANUP_RE = /\s+/g;
+function stripMarkdownNoise(value) {
+    return value
+        .replace(/<!--[\s\S]*?-->/g, ' ')
+        .replace(/\{\{[^}]+\}\}/g, ' ')
+        .replace(/`+/g, ' ')
+        .replace(/\*+/g, ' ')
+        .replace(/_/g, ' ')
+        .replace(/\[(.*?)\]\([^)]+\)/g, '$1')
+        .replace(/\[[^\]]+\]$/g, ' ')
+        .replace(TITLE_CLEANUP_RE, ' ')
+        .trim();
+}
+function normalizeForComparison(value) {
+    return stripMarkdownNoise(value).toLowerCase();
+}
+function truncate(value, maxLength) {
+    const normalized = value.trim();
+    if (normalized.length <= maxLength) {
+        return normalized;
+    }
+    const hardCut = normalized.slice(0, maxLength - 3).trim();
+    const lastSpace = hardCut.lastIndexOf(' ');
+    if (lastSpace >= Math.floor(hardCut.length * 0.6)) {
+        return `${hardCut.slice(0, lastSpace).trim()}...`;
+    }
+    return `${hardCut}...`;
+}
+function buildSpecTokens(specFolder) {
+    return specFolder
+        .replace(/\\/g, '/')
+        .split('/')
+        .flatMap((segment) => segment.replace(/^\d+--?/, '').split(/[-_]/))
+        .map((token) => token.trim().toLowerCase())
+        .filter((token) => token.length >= 3);
+}
+function hasLegacyGenericTriggerPhrases(triggerPhrases) {
+    if (triggerPhrases.length !== exports.LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES.length) {
+        return false;
+    }
+    const normalized = triggerPhrases
+        .map((phrase) => normalizeForComparison(phrase))
+        .sort();
+    const generic = [...exports.LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES].sort();
+    return generic.every((phrase, index) => normalized[index] === phrase);
+}
+function containsLegacyGenericTriggerPhrase(triggerPhrases) {
+    const normalized = triggerPhrases
+        .map((phrase) => normalizeForComparison(phrase))
+        .filter((phrase) => phrase.length > 0);
+    return normalized.some((phrase) => exports.LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES.includes(phrase));
+}
+function hasGenericMemoryDescription(description) {
+    if (!description) {
+        return false;
+    }
+    return normalizeForComparison(description) === GENERIC_MEMORY_DESCRIPTION_NORMALIZED;
+}
+function sanitizeMemoryFrontmatterTitle(title) {
+    if (!title) {
+        return '';
+    }
+    return stripMarkdownNoise(title)
+        .replace(/[\s\-:;,]+$/g, '')
+        .trim();
+}
+function deriveMemoryDescription(options) {
+    const candidates = [
+        options.summary,
+        options.heading,
+        options.title,
+    ];
+    for (const candidate of candidates) {
+        const cleaned = sanitizeMemoryFrontmatterTitle(candidate);
+        if (!cleaned) {
+            continue;
+        }
+        if (normalizeForComparison(cleaned) === GENERIC_MEMORY_DESCRIPTION_NORMALIZED) {
+            continue;
+        }
+        return truncate(cleaned, 180);
+    }
+    return 'Session context preserved for future continuation.';
+}
+function deriveMemoryTriggerPhrases(options) {
+    const existing = Array.isArray(options.existing) ? options.existing : [];
+    const cleanedExisting = existing
+        .map((entry) => normalizeForComparison(entry))
+        .filter((entry) => entry.length >= 3);
+    if (cleanedExisting.length > 0 && !containsLegacyGenericTriggerPhrase(cleanedExisting)) {
+        return Array.from(new Set(cleanedExisting)).slice(0, 12);
+    }
+    const source = [
+        sanitizeMemoryFrontmatterTitle(options.title),
+        sanitizeMemoryFrontmatterTitle(options.description),
+        sanitizeMemoryFrontmatterTitle(options.summary),
+        buildSpecTokens(options.specFolder).join(' '),
+    ].filter(Boolean).join('\n');
+    const extracted = (0, trigger_extractor_1.extractTriggerPhrases)(source)
+        .map((phrase) => normalizeForComparison(phrase))
+        .filter((phrase) => phrase.length >= 3);
+    const combined = [
+        ...extracted,
+        ...buildSpecTokens(options.specFolder),
+    ];
+    const unique = Array.from(new Set(combined))
+        .filter((entry) => !exports.LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES.includes(entry));
+    if (unique.length === 0) {
+        return [];
+    }
+    return unique.slice(0, 12);
+}
+//# sourceMappingURL=memory-frontmatter.js.map

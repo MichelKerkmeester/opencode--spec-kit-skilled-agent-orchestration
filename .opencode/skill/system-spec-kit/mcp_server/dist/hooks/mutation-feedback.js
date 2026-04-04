@@ -1,0 +1,34 @@
+function buildMutationHookFeedback(operation, hookResult) {
+    const hints = [];
+    hints.push('Post-mutation cache clear: ' +
+        `trigger=${hookResult.triggerCacheCleared ? 'ok' : 'failed'}, ` +
+        `constitutional=${hookResult.constitutionalCacheCleared ? 'ok' : 'failed'}, ` +
+        `graphSignals=${hookResult.graphSignalsCacheCleared ? 'ok' : 'failed'}, ` +
+        `coactivation=${hookResult.coactivationCacheCleared ? 'ok' : 'failed'}`);
+    hints.push(`Tool cache invalidation: invalidated ${hookResult.toolCacheInvalidated} entries for operation "${operation}"`);
+    const anyCacheClearFailed = !hookResult.triggerCacheCleared ||
+        !hookResult.constitutionalCacheCleared ||
+        !hookResult.graphSignalsCacheCleared ||
+        !hookResult.coactivationCacheCleared;
+    if (anyCacheClearFailed) {
+        hints.push('Warning (non-fatal): one or more post-mutation cache clear operations failed');
+    }
+    if (hookResult.errors.length > 0) {
+        hints.push('Post-mutation hook errors: ' + hookResult.errors.join('; '));
+    }
+    return {
+        data: {
+            operation,
+            latencyMs: hookResult.latencyMs,
+            triggerCacheCleared: hookResult.triggerCacheCleared,
+            constitutionalCacheCleared: hookResult.constitutionalCacheCleared,
+            graphSignalsCacheCleared: hookResult.graphSignalsCacheCleared,
+            coactivationCacheCleared: hookResult.coactivationCacheCleared,
+            toolCacheInvalidated: hookResult.toolCacheInvalidated,
+            errors: hookResult.errors,
+        },
+        hints,
+    };
+}
+export { buildMutationHookFeedback };
+//# sourceMappingURL=mutation-feedback.js.map

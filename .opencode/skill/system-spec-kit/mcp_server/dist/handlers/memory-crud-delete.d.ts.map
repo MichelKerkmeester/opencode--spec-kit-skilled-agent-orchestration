@@ -1,0 +1,1 @@
+{"version":3,"file":"memory-crud-delete.d.ts","sourceRoot":"","sources":["../../handlers/memory-crud-delete.ts"],"names":[],"mappings":"AAsBA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,YAAY,CAAC;AAC9C,OAAO,KAAK,EAAE,UAAU,EAAsB,MAAM,wBAAwB,CAAC;AA2C7E,iGAAiG;AACjG,iBAAe,kBAAkB,CAAC,IAAI,EAAE,UAAU,GAAG,OAAO,CAAC,WAAW,CAAC,CAmOxE;AAMD,OAAO,EAAE,kBAAkB,EAAE,CAAC"}

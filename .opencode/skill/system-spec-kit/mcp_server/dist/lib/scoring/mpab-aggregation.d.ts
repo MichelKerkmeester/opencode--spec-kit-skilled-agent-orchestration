@@ -1,0 +1,96 @@
+/**
+ * Result of MPAB aggregation for a single parent memory.
+ * Contains the aggregated score and metadata about the chunks
+ * that contributed to it.
+ */
+export interface MpabResult {
+    /** Unique identifier of the parent memory document. */
+    parentMemoryId: number | string;
+    /** MPAB-aggregated score: sMax + 0.3 * sum(remaining) / sqrt(N). */
+    mpabScore: number;
+    /** Number of chunk hits that contributed to this score. */
+    _chunkHits: number;
+}
+/**
+ * A single chunk result from the retrieval pipeline.
+ * Each chunk belongs to a parent memory and has a position index
+ * within the original document.
+ */
+export interface ChunkResult {
+    /** Unique chunk identifier. */
+    id: number | string;
+    /** Parent memory document identifier. */
+    parentMemoryId: number | string;
+    /** Zero-based position of this chunk within the original document. */
+    chunkIndex: number;
+    /** Retrieval score for this chunk (e.g., RRF score, similarity). */
+    score: number;
+    /** Arbitrary additional fields from the retrieval pipeline. */
+    [key: string]: unknown;
+}
+/**
+ * Collapsed result for a parent memory after MPAB aggregation.
+ * Contains the aggregated score and chunks reassembled in
+ * original document position order (by chunkIndex).
+ */
+export interface CollapsedResult extends MpabResult {
+    /** Chunks reassembled in document position order (ascending chunkIndex). */
+    chunks: ChunkResult[];
+}
+/**
+ * Bonus coefficient for MPAB aggregation.
+ * Provisional value; may be tuned based on retrieval evaluation results.
+ */
+export declare const MPAB_BONUS_COEFFICIENT = 0.3;
+/**
+ * Check if MPAB chunk-to-memory aggregation is enabled.
+ * Local helper behavior: disabled only when SPECKIT_DOCSCORE_AGGREGATION is
+ * explicitly set to "false". Runtime pipeline gating uses search-flags
+ * isDocscoreAggregationEnabled() (which also treats "0" as disabled).
+ *
+ * @returns True if MPAB aggregation is enabled for this local helper
+ */
+export declare function isMpabEnabled(): boolean;
+/**
+ * Compute the Multi-Parent Aggregated Bonus (MPAB) score from an array
+ * of per-chunk retrieval scores.
+ *
+ * Algorithm:
+ * 1. Sort scores descending
+ * 2. sMax = sorted[0] (highest score)
+ * 3. remaining = sorted.slice(1)
+ * 4. bonus = 0.3 * sum(remaining) / sqrt(N)  where N = scores.length
+ * 5. return sMax + bonus
+ *
+ * Guards:
+ * - N=0: return 0 (no chunks = no signal)
+ * - N=1: return scores[0] as-is (single chunk = raw score, no bonus)
+ *
+ * Uses index-based max removal (not value-based) to handle tied scores
+ * correctly: sorting descending and taking index 0 always removes exactly
+ * one element, even when multiple elements share the maximum value.
+ *
+ * @param scores - Array of per-chunk retrieval scores
+ * @returns MPAB aggregated score (may exceed 1.0 for multi-chunk documents)
+ */
+export declare function computeMPAB(scores: number[]): number;
+/**
+ * Collapse chunk-level retrieval results into parent-memory-level results
+ * using MPAB aggregation, then reassemble chunks in original document
+ * position order.
+ *
+ * When MPAB is disabled via feature flag, returns an empty array (passthrough
+ * to the existing non-aggregated pipeline).
+ *
+ * Steps:
+ * 1. Group chunks by parentMemoryId
+ * 2. For each group, compute MPAB score from chunk scores
+ * 3. Sort groups by MPAB score (descending)
+ * 4. Within each group, sort chunks by chunkIndex (ascending) to restore
+ *    original document position order
+ *
+ * @param chunkResults - Array of chunk-level retrieval results
+ * @returns Collapsed results sorted by MPAB score, chunks in document order
+ */
+export declare function collapseAndReassembleChunkResults(chunkResults: ChunkResult[]): CollapsedResult[];
+//# sourceMappingURL=mpab-aggregation.d.ts.map

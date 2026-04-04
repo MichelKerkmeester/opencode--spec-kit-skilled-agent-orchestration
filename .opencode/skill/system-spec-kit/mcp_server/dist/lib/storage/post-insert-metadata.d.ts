@@ -1,0 +1,52 @@
+import type Database from 'better-sqlite3';
+/**
+ * Field map accepted by the post-insert metadata update helper.
+ * Keys align to the guarded `memory_index` columns below.
+ */
+export interface PostInsertMetadataFields {
+    content_hash?: string;
+    context_type?: string;
+    importance_tier?: string;
+    memory_type?: string;
+    type_inference_source?: string;
+    stability?: number;
+    difficulty?: number;
+    review_count?: number;
+    file_mtime_ms?: number | null;
+    embedding_status?: string;
+    encoding_intent?: string | null;
+    document_type?: string;
+    spec_level?: number | null;
+    quality_score?: number;
+    quality_flags?: string;
+    parent_id?: number;
+    chunk_index?: number;
+    chunk_label?: string;
+    tenant_id?: string;
+    user_id?: string;
+    agent_id?: string;
+    session_id?: string;
+    shared_space_id?: string;
+    provenance_source?: string;
+    provenance_actor?: string;
+    governed_at?: string;
+    retention_policy?: string;
+    delete_after?: string | null;
+    governance_metadata?: string;
+}
+/** Allowed column names for the dynamic UPDATE builder (injection guard). */
+export declare const ALLOWED_POST_INSERT_COLUMNS: Set<string>;
+/**
+ * Build and execute a dynamic `UPDATE memory_index SET ... WHERE id = ?`
+ * from the supplied field map.
+ *
+ * Special handling:
+ * - `encoding_intent` uses `COALESCE(?, encoding_intent)`
+ * - `last_review` is always refreshed to `datetime('now')`
+ *
+ * @param db - Database connection that stores memory rows.
+ * @param memoryId - Inserted memory identifier to enrich.
+ * @param fields - Column/value map for the metadata update.
+ */
+export declare function applyPostInsertMetadata(db: Database.Database, memoryId: number, fields: PostInsertMetadataFields): void;
+//# sourceMappingURL=post-insert-metadata.d.ts.map

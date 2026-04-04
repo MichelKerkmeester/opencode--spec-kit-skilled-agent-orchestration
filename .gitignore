@@ -23,6 +23,8 @@
 # Build output
 # ───────────────────────────────────────────
 dist/
+!.opencode/skill/system-spec-kit/mcp_server/dist/
+!.opencode/skill/system-spec-kit/scripts/dist/
 .opencode/output/
 
 # Certificates
