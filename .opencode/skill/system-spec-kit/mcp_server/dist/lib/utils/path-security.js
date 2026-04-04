@@ -1,8 +1,0 @@
-// ───────────────────────────────────────────────────────────────
-// MODULE: Path Security
-// ───────────────────────────────────────────────────────────────
-// ───────────────────────────────────────────────────────────────
-// 1. PATH SECURITY BARREL
-// ───────────────────────────────────────────────────────────────
-export { validateFilePath, escapeRegex, } from '@spec-kit/shared/utils/path-security';
-//# sourceMappingURL=path-security.js.map

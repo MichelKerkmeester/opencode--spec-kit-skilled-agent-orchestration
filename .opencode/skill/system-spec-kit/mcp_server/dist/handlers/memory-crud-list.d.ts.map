@@ -1,1 +1,0 @@
-{"version":3,"file":"memory-crud-list.d.ts","sourceRoot":"","sources":["../../handlers/memory-crud-list.ts"],"names":[],"mappings":"AAiBA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,YAAY,CAAC;AAC9C,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,wBAAwB,CAAC;AAUvD,mEAAmE;AACnE,iBAAe,gBAAgB,CAAC,IAAI,EAAE,QAAQ,GAAG,OAAO,CAAC,WAAW,CAAC,CAuJpE;AAMD,OAAO,EAAE,gBAAgB,EAAE,CAAC"}

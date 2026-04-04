@@ -1,1 +1,0 @@
-{"version":3,"file":"ccc-reindex.d.ts","sourceRoot":"","sources":["../../../handlers/code-graph/ccc-reindex.ts"],"names":[],"mappings":"AASA,MAAM,WAAW,WAAW;IAC1B,IAAI,CAAC,EAAE,OAAO,CAAC;CAChB;AAED,mCAAmC;AACnC,wBAAsB,gBAAgB,CAAC,IAAI,EAAE,WAAW,GAAG,OAAO,CAAC;IAAE,OAAO,EAAE,KAAK,CAAC;QAAE,IAAI,EAAE,MAAM,CAAC;QAAC,IAAI,EAAE,MAAM,CAAA;KAAE,CAAC,CAAA;CAAE,CAAC,CAiErH"}
