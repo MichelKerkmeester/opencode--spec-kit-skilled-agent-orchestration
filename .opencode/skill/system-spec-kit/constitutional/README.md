@@ -120,6 +120,7 @@ ls .opencode/skill/system-spec-kit/constitutional/
 
 # Expected output:
 # gate-enforcement.md
+# gate-tool-routing.md
 # README.md
 ```
 
@@ -144,6 +145,7 @@ After creating a constitutional memory:
 constitutional/
 ├── README.md              # This documentation file
 ├── gate-enforcement.md    # Edge cases (compaction, continuation) + gate cross-reference
+├── gate-tool-routing.md   # Search and retrieval routing rules for memory, graph, and CocoIndex
 └── [your-rules].md        # Custom constitutional memories
 ```
 
@@ -160,6 +162,7 @@ constitutional/
 | File | Required | Purpose |
 |------|----------|---------|
 | `gate-enforcement.md` | Recommended | Edge cases (compaction, continuation) + gate cross-reference |
+| `gate-tool-routing.md` | Recommended | Search and retrieval routing rules for memory, graph, and CocoIndex |
 | `README.md` | Recommended | This documentation |
 | Custom files | Optional | Your domain-specific rules |
 

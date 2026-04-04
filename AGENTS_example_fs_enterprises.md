@@ -234,6 +234,7 @@ Trigger: Claiming "done", "complete", "finished", "works"
 
 #### VIOLATION RECOVERY [SELF-CORRECTION]
 Trigger: About to skip gates, or realized gates were skipped → STOP → STATE: "Before I proceed, I need to ask about documentation:" → ASK Gate 3 (A/B/C/D/E) → WAIT
+- **Exception:** If the user already answered Gate 3 earlier in this conversation for the same task, do NOT re-ask. Reuse the existing answer and proceed.
 
 #### Self-Check (before ANY tool-using response):
 - [ ] File modification? Asked spec folder question?
