@@ -541,6 +541,7 @@ workflow:
           [ ] At least one Highlights subsection
           [ ] Files Changed section present
           [ ] Upgrade section present
+          [ ] Horizontal rule (---) before every ## and ### heading (except first heading)
       - |
         VERSION CHECKS:
           [ ] Version is strictly greater than latest_existing_version

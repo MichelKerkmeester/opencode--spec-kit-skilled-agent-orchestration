@@ -502,7 +502,7 @@ workflow:
   step_5_quality_validation:
     purpose: Verify the generated changelog meets format and quality standards
     activities:
-      - "Run FORMAT CHECKS (H1, backlink, version+date, summary, highlights, files, upgrade)"
+      - "Run FORMAT CHECKS (H1, backlink, version+date, summary, highlights, files, upgrade, --- dividers before every ## and ### heading)"
       - "Run VERSION CHECKS (sequential, 4-segment, no duplicates)"
       - "Run CONTENT CHECKS (concise summary, formatted highlights, valid paths)"
       - "Auto-fix minor issues if possible"

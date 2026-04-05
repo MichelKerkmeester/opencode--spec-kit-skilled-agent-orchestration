@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-04-05T07:17:51.026783Z",
+  "generated": "2026-04-05T09:32:10Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -106,460 +106,6 @@
         "optimization"
       ],
       "lastUpdated": "2026-03-31T17:03:22.628Z"
-    },
-    {
-      "specFolder": "00--anobel.com/030-label-product-content-attr",
-      "description": "Feature Specification: Label Product Content Attribute",
-      "keywords": [
-        "feature",
-        "specification",
-        "label",
-        "product",
-        "content",
-        "attribute"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.916Z"
-    },
-    {
-      "specFolder": "00--anobel.com/031-fix-download-btn-transition-glitch",
-      "description": "Feature Specification: Fix Download Button Transition Glitch",
-      "keywords": [
-        "feature",
-        "specification",
-        "fix",
-        "download",
-        "button",
-        "transition",
-        "glitch"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.921Z"
-    },
-    {
-      "specFolder": "00--anobel.com/032-cloudflare-r2-migration",
-      "description": "Feature Specification: Cloudflare R2 + Worker Migration",
-      "keywords": [
-        "feature",
-        "specification",
-        "cloudflare",
-        "worker",
-        "migration"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.926Z"
-    },
-    {
-      "specFolder": "00--anobel.com/033-form-upload-issues",
-      "description": "Feature Specification: CV Upload Form File Type Validation Fix",
-      "keywords": [
-        "feature",
-        "specification",
-        "upload",
-        "form",
-        "file",
-        "type",
-        "validation",
-        "fix"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.932Z"
-    },
-    {
-      "specFolder": "00--anobel.com/034-form-bot-problem",
-      "description": "Feature Specification: Contact Form Bot Submission Investigation",
-      "keywords": [
-        "feature",
-        "specification",
-        "contact",
-        "form",
-        "bot",
-        "submission",
-        "investigation"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.936Z"
-    },
-    {
-      "specFolder": "00--anobel.com/035-hero-contact-success",
-      "description": "Feature Specification: Hero Webshop Selector Scoping",
-      "keywords": [
-        "feature",
-        "specification",
-        "hero",
-        "webshop",
-        "selector",
-        "scoping"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.941Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/001-finsweet-performance",
-      "description": "Feature Specification: Finsweet Performance Optimization",
-      "keywords": [
-        "feature",
-        "specification",
-        "finsweet",
-        "performance",
-        "optimization"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.946Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/002-tab-menu-border-fix",
-      "description": "Feature Specification: Tab Menu Border Color Fix",
-      "keywords": [
-        "feature",
-        "specification",
-        "tab",
-        "menu",
-        "border",
-        "color",
-        "fix"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.951Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/003-btn-download-alignment",
-      "description": "Feature Specification: Download Button Code Standards Alignment",
-      "keywords": [
-        "feature",
-        "specification",
-        "download",
-        "button",
-        "code",
-        "standards",
-        "alignment"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.965Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
-      "description": "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories",
-      "keywords": [
-        "feature",
-        "specification",
-        "custom",
-        "toc",
-        "scrollspy",
-        "requirements",
-        "user",
-        "stories"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.972Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/004-table-of-content/002-tab-main-component",
-      "description": "Feature Specification: Tab Main Component",
-      "keywords": [
-        "feature",
-        "specification",
-        "tab",
-        "main",
-        "component"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.976Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation",
-      "description": "Feature Specification: Icon Animation Isolation for Download Button",
-      "keywords": [
-        "feature",
-        "specification",
-        "icon",
-        "animation",
-        "isolation",
-        "download",
-        "button"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.981Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/005-minify-javascript",
-      "description": "Feature Specification: minify-javascript - Requirements & User Stories",
-      "keywords": [
-        "feature",
-        "specification",
-        "minify-javascript",
-        "requirements",
-        "user",
-        "stories"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.986Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/006-video-play-pause-hover",
-      "description": "Feature Specification: Video Play/Pause Button Hover Effect",
-      "keywords": [
-        "feature",
-        "specification",
-        "video",
-        "play",
-        "pause",
-        "button",
-        "hover",
-        "effect"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.993Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/007-notification-system",
-      "description": "Feature Specification: Notification System - Requirements & User Stories",
-      "keywords": [
-        "feature",
-        "specification",
-        "notification",
-        "system",
-        "requirements",
-        "user",
-        "stories"
-      ],
-      "lastUpdated": "2026-04-02T17:21:38.998Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/008-social-share-cms",
-      "description": "Feature Specification: Social Share CMS Integration",
-      "keywords": [
-        "feature",
-        "specification",
-        "social",
-        "share",
-        "cms",
-        "integration"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.004Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/009-security-remediation",
-      "description": "Feature Specification: Security Vulnerability Remediation",
-      "keywords": [
-        "feature",
-        "specification",
-        "security",
-        "vulnerability",
-        "remediation"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.008Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/010-css-performance-cv",
-      "description": "Feature Specification: Specification: CSS Performance Upgrade (Content Visibility)",
-      "keywords": [
-        "feature",
-        "specification",
-        "css",
-        "performance",
-        "upgrade",
-        "content",
-        "visibility"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.013Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/011-form-input-upload-select",
-      "description": "Feature Specification: Form Input Components Enhancement",
-      "keywords": [
-        "feature",
-        "specification",
-        "form",
-        "input",
-        "components",
-        "enhancement"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.018Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/012-notification-time-scheduling",
-      "description": "Feature Specification: Notification Time-Based Scheduling",
-      "keywords": [
-        "feature",
-        "specification",
-        "notification",
-        "time-based",
-        "scheduling"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.023Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/013-font-performance",
-      "description": "Feature Specification: Specification: Font Performance Optimization",
-      "keywords": [
-        "feature",
-        "specification",
-        "font",
-        "performance",
-        "optimization"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.028Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/014-notification-hero-spacing",
-      "description": "Feature Specification: Notification Hero Spacing",
-      "keywords": [
-        "feature",
-        "specification",
-        "notification",
-        "hero",
-        "spacing"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.033Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/015-performance-hacks",
-      "description": "Feature Specification: Specification: Additional Performance Hacks",
-      "keywords": [
-        "feature",
-        "specification",
-        "additional",
-        "performance",
-        "hacks"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.038Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/016-form-persistence",
-      "description": "Feature Specification: Form Data Persistence",
-      "keywords": [
-        "feature",
-        "specification",
-        "form",
-        "data",
-        "persistence"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.043Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/017-link-card-product-adv",
-      "description": "Feature Specification: Link Card Product/Adv - CTA Button Hover Animation",
-      "keywords": [
-        "feature",
-        "specification",
-        "link",
-        "card",
-        "product",
-        "adv",
-        "cta",
-        "button",
-        "hover",
-        "animation"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.048Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/019-form-attribute-audit",
-      "description": "Feature Specification: Form Attribute Audit",
-      "keywords": [
-        "feature",
-        "specification",
-        "form",
-        "attribute",
-        "audit"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.058Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/020-attribute-cleanup",
-      "description": "Feature Specification: Attribute Cleanup Deepdive",
-      "keywords": [
-        "feature",
-        "specification",
-        "attribute",
-        "cleanup",
-        "deepdive"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.063Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/021-decoding-async-analysis",
-      "description": "Feature Specification: Image Decoding Async Analysis",
-      "keywords": [
-        "feature",
-        "specification",
-        "image",
-        "decoding",
-        "async",
-        "analysis"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.068Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/023-performance-review",
-      "description": "Feature Specification: Performance Optimization Review - Spec 025",
-      "keywords": [
-        "feature",
-        "specification",
-        "performance",
-        "optimization",
-        "review",
-        "spec",
-        "025"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.078Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/024-language-selector-hover",
-      "description": "Feature Specification: Language Selector - Desktop Hover to Open",
-      "keywords": [
-        "feature",
-        "specification",
-        "language",
-        "selector",
-        "desktop",
-        "hover",
-        "open"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.082Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/025-load-toggle",
-      "description": "Feature Specification: Load Toggle Component - anobel.com",
-      "keywords": [
-        "feature",
-        "specification",
-        "load",
-        "toggle",
-        "component",
-        "anobel",
-        "com"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.087Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/026-mobile-btn-link-feedback",
-      "description": "Feature Specification: Mobile Button/Link Tap Feedback",
-      "keywords": [
-        "feature",
-        "specification",
-        "mobile",
-        "button",
-        "link",
-        "tap",
-        "feedback"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.093Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/027-download-btn-on-mobile",
-      "description": "Feature Specification: Download Button Mobile Fix",
-      "keywords": [
-        "feature",
-        "specification",
-        "download",
-        "button",
-        "mobile",
-        "fix"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.097Z"
-    },
-    {
-      "specFolder": "00--anobel.com/z_archive/028-hero-flicker-debug",
-      "description": "Feature Specification: Hero Video Card Image Flickering Fix",
-      "keywords": [
-        "feature",
-        "specification",
-        "hero",
-        "video",
-        "card",
-        "image",
-        "flickering",
-        "fix"
-      ],
-      "lastUpdated": "2026-04-02T17:21:39.103Z"
     },
     {
       "specFolder": "009-perfect-session-capturing/021-runtime-contract-and-indexability",
@@ -1031,24 +577,6 @@
       "lastUpdated": "2026-03-30T11:56:27.115Z"
     },
     {
-      "specFolder": "036-notification-toast-button",
-      "description": "notification-toast-button --path /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/00--anobel.com",
-      "keywords": [
-        "notification-toast-button",
-        "path",
-        "users",
-        "michelkerkmeester",
-        "mega",
-        "development",
-        "public",
-        "opencode",
-        "specs",
-        "01-anobel",
-        "com"
-      ],
-      "lastUpdated": "2026-04-04T14:02:00.557Z"
-    },
-    {
       "specFolder": "skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing",
       "description": "Feature Specification: Codex command discoverability routing update",
       "keywords": [
@@ -1098,7 +626,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
-      "description": "Feature Specification: Sprint 0 \u2014 Measurement Foundation",
+      "description": "Feature Specification: Sprint 0 — Measurement Foundation",
       "keywords": [
         "feature",
         "specification",
@@ -1110,7 +638,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation",
-      "description": "Feature Specification: Sprint 1 \u2014 Graph Signal Activation",
+      "description": "Feature Specification: Sprint 1 — Graph Signal Activation",
       "keywords": [
         "feature",
         "specification",
@@ -1123,7 +651,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration",
-      "description": "Feature Specification: Sprint 2 \u2014 Scoring Calibration",
+      "description": "Feature Specification: Sprint 2 — Scoring Calibration",
       "keywords": [
         "feature",
         "specification",
@@ -1135,7 +663,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence",
-      "description": "Feature Specification: Sprint 3 \u2014 Query Intelligence",
+      "description": "Feature Specification: Sprint 3 — Query Intelligence",
       "keywords": [
         "feature",
         "specification",
@@ -1147,7 +675,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality",
-      "description": "Feature Specification: Sprint 4 \u2014 Feedback and Quality",
+      "description": "Feature Specification: Sprint 4 — Feedback and Quality",
       "keywords": [
         "feature",
         "specification",
@@ -1159,7 +687,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor",
-      "description": "Feature Specification: Sprint 5 \u2014 Pipeline Refactor",
+      "description": "Feature Specification: Sprint 5 — Pipeline Refactor",
       "keywords": [
         "feature",
         "specification",
@@ -1171,7 +699,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph",
-      "description": "Feature Specification: Sprint 6 \u2014 Indexing and Graph",
+      "description": "Feature Specification: Sprint 6 — Indexing and Graph",
       "keywords": [
         "feature",
         "specification",
@@ -1183,7 +711,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon",
-      "description": "Feature Specification: Sprint 7 \u2014 Long Horizon",
+      "description": "Feature Specification: Sprint 7 — Long Horizon",
       "keywords": [
         "feature",
         "specification",
@@ -1207,7 +735,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
-      "description": "Feature Specification: Sprint 9 \u2014 Extra Features (Productization & Operational Tooling)",
+      "description": "Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)",
       "keywords": [
         "feature",
         "specification",
@@ -1244,7 +772,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor",
-      "description": "Feature Specification: Refactor /memory:learn \u2192 Constitutional Memory Manager",
+      "description": "Feature Specification: Refactor /memory:learn → Constitutional Memory Manager",
       "keywords": [
         "feature",
         "specification",
@@ -1317,7 +845,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval",
-      "description": "Feature Specification: Code Audit \u2014 Retrieval",
+      "description": "Feature Specification: Code Audit — Retrieval",
       "keywords": [
         "feature",
         "specification",
@@ -1329,7 +857,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation",
-      "description": "Feature Specification: Code Audit \u2014 Mutation",
+      "description": "Feature Specification: Code Audit — Mutation",
       "keywords": [
         "feature",
         "specification",
@@ -1341,7 +869,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery",
-      "description": "Feature Specification: Code Audit \u2014 Discovery",
+      "description": "Feature Specification: Code Audit — Discovery",
       "keywords": [
         "feature",
         "specification",
@@ -1353,7 +881,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance",
-      "description": "Feature Specification: Code Audit \u2014 Maintenance",
+      "description": "Feature Specification: Code Audit — Maintenance",
       "keywords": [
         "feature",
         "specification",
@@ -1365,7 +893,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle",
-      "description": "Feature Specification: Code Audit \u2014 Lifecycle",
+      "description": "Feature Specification: Code Audit — Lifecycle",
       "keywords": [
         "feature",
         "specification",
@@ -1377,7 +905,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis",
-      "description": "Feature Specification: Code Audit \u2014 Analysis",
+      "description": "Feature Specification: Code Audit — Analysis",
       "keywords": [
         "feature",
         "specification",
@@ -1389,7 +917,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/007-evaluation",
-      "description": "Feature Specification: Code Audit \u2014 Evaluation",
+      "description": "Feature Specification: Code Audit — Evaluation",
       "keywords": [
         "feature",
         "specification",
@@ -1401,7 +929,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
-      "description": "Feature Specification: Code Audit \u2014 Bug Fixes and Data Integrity",
+      "description": "Feature Specification: Code Audit — Bug Fixes and Data Integrity",
       "keywords": [
         "feature",
         "specification",
@@ -1416,7 +944,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement",
-      "description": "Feature Specification: Code Audit \u2014 Evaluation and Measurement",
+      "description": "Feature Specification: Code Audit — Evaluation and Measurement",
       "keywords": [
         "feature",
         "specification",
@@ -1429,7 +957,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation",
-      "description": "Feature Specification: Code Audit \u2014 Graph Signal Activation",
+      "description": "Feature Specification: Code Audit — Graph Signal Activation",
       "keywords": [
         "feature",
         "specification",
@@ -1443,7 +971,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration",
-      "description": "Feature Specification: Code Audit \u2014 Scoring and Calibration",
+      "description": "Feature Specification: Code Audit — Scoring and Calibration",
       "keywords": [
         "feature",
         "specification",
@@ -1456,7 +984,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence",
-      "description": "Feature Specification: Code Audit \u2014 Query Intelligence",
+      "description": "Feature Specification: Code Audit — Query Intelligence",
       "keywords": [
         "feature",
         "specification",
@@ -1469,7 +997,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing",
-      "description": "Feature Specification: Code Audit \u2014 Memory Quality and Indexing",
+      "description": "Feature Specification: Code Audit — Memory Quality and Indexing",
       "keywords": [
         "feature",
         "specification",
@@ -1483,7 +1011,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture",
-      "description": "Feature Specification: Code Audit \u2014 Pipeline Architecture",
+      "description": "Feature Specification: Code Audit — Pipeline Architecture",
       "keywords": [
         "feature",
         "specification",
@@ -1496,7 +1024,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements",
-      "description": "Feature Specification: Code Audit \u2014 Retrieval Enhancements",
+      "description": "Feature Specification: Code Audit — Retrieval Enhancements",
       "keywords": [
         "feature",
         "specification",
@@ -1509,7 +1037,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
-      "description": "Feature Specification: Code Audit \u2014 Tooling and Scripts",
+      "description": "Feature Specification: Code Audit — Tooling and Scripts",
       "keywords": [
         "feature",
         "specification",
@@ -1522,7 +1050,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance",
-      "description": "Feature Specification: Code Audit \u2014 Governance",
+      "description": "Feature Specification: Code Audit — Governance",
       "keywords": [
         "feature",
         "specification",
@@ -1534,7 +1062,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks",
-      "description": "Feature Specification: Code Audit \u2014 UX Hooks",
+      "description": "Feature Specification: Code Audit — UX Hooks",
       "keywords": [
         "feature",
         "specification",
@@ -1546,7 +1074,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals",
-      "description": "Feature Specification: Code Audit \u2014 Decisions and Deferrals",
+      "description": "Feature Specification: Code Audit — Decisions and Deferrals",
       "keywords": [
         "feature",
         "specification",
@@ -1559,7 +1087,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference",
-      "description": "Feature Specification: Code Audit \u2014 Feature Flag Reference",
+      "description": "Feature Specification: Code Audit — Feature Flag Reference",
       "keywords": [
         "feature",
         "specification",
@@ -1572,7 +1100,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation",
-      "description": "Feature Specification: Code Audit \u2014 Remediation and Revalidation",
+      "description": "Feature Specification: Code Audit — Remediation and Revalidation",
       "keywords": [
         "feature",
         "specification",
@@ -1937,7 +1465,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter",
-      "description": "Feature Specification: Scoring and Filter \u2014 Quality Scorer Recalibration and Contamination Filter Expansion",
+      "description": "Feature Specification: Scoring and Filter — Quality Scorer Recalibration and Contamination Filter Expansion",
       "keywords": [
         "feature",
         "specification",
@@ -2028,7 +1556,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
-      "description": "Feature Specification: Skill Alignment \u2014 system-spec-kit",
+      "description": "Feature Specification: Skill Alignment — system-spec-kit",
       "keywords": [
         "feature",
         "specification",
@@ -2050,7 +1578,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022",
-      "description": "002 \u2014 Post-022 Skill Documentation Review and Remediation",
+      "description": "002 — Post-022 Skill Documentation Review and Remediation",
       "keywords": [
         "002",
         "post-022",
@@ -2072,7 +1600,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
-      "description": "013 \u2014 Agent Alignment: Runtime Lineage Truth Reconciliation",
+      "description": "013 — Agent Alignment: Runtime Lineage Truth Reconciliation",
       "keywords": [
         "013",
         "agent",
@@ -2189,7 +1717,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity",
-      "description": "Feature Specification: Manual Testing \u2014 Bug Fixes and Data Integrity",
+      "description": "Feature Specification: Manual Testing — Bug Fixes and Data Integrity",
       "keywords": [
         "feature",
         "specification",
@@ -2204,7 +1732,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement",
-      "description": "Feature Specification: Manual Testing \u2014 Evaluation and Measurement",
+      "description": "Feature Specification: Manual Testing — Evaluation and Measurement",
       "keywords": [
         "feature",
         "specification",
@@ -2265,7 +1793,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture",
-      "description": "Feature Specification: Manual Testing \u2014 Pipeline Architecture (Phase 014)",
+      "description": "Feature Specification: Manual Testing — Pipeline Architecture (Phase 014)",
       "keywords": [
         "feature",
         "specification",
@@ -2280,7 +1808,7 @@
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements",
-      "description": "Feature Specification: Manual Testing \u2014 Retrieval Enhancements (Phase 015)",
+      "description": "Feature Specification: Manual Testing — Retrieval Enhancements (Phase 015)",
       "keywords": [
         "feature",
         "specification",
@@ -2640,7 +2168,7 @@
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds",
-      "description": "Feature Specification: Phase 2 \u2014 Persist Tuned Thresholds",
+      "description": "Feature Specification: Phase 2 — Persist Tuned Thresholds",
       "keywords": [
         "feature",
         "specification",
@@ -2679,7 +2207,7 @@
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test",
-      "description": "Feature Specification: Phase 5 \u2014 End-to-End Integration Test",
+      "description": "Feature Specification: Phase 5 — End-to-End Integration Test",
       "keywords": [
         "feature",
         "specification",
@@ -2692,7 +2220,7 @@
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout",
-      "description": "Feature Specification: Default-ON Boost Rollout \u2014 Session, Causal & Deep Expansion",
+      "description": "Feature Specification: Default-ON Boost Rollout — Session, Causal & Deep Expansion",
       "keywords": [
         "feature",
         "specification",
@@ -2775,7 +2303,7 @@
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph",
-      "description": "Spec: Hybrid Context Injection \u2014 Hook + Tool Architecture",
+      "description": "Spec: Hybrid Context Injection — Hook + Tool Architecture",
       "keywords": [
         "spec",
         "hybrid",
@@ -2801,7 +2329,7 @@
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug",
-      "description": "Spec: Startup Context Injection Debug \u2014 Hook Runtime Brief + Sibling Handoff",
+      "description": "Spec: Startup Context Injection Debug — Hook Runtime Brief + Sibling Handoff",
       "keywords": [
         "spec",
         "startup",
@@ -3002,7 +2530,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename",
-      "description": "Skill Rename: workflows-spec-kit \u2192 system-spec-kit",
+      "description": "Skill Rename: workflows-spec-kit → system-spec-kit",
       "keywords": [
         "skill",
         "rename",
@@ -3257,7 +2785,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename",
-      "description": "Spec: Rename workflows-memory \u2192 system-memory",
+      "description": "Spec: Rename workflows-memory → system-memory",
       "keywords": [
         "spec",
         "rename",
@@ -3445,7 +2973,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename",
-      "description": "MCP Server Rename: semantic_memory \u2192 spec_kit_memory",
+      "description": "MCP Server Rename: semantic_memory → spec_kit_memory",
       "keywords": [
         "mcp",
         "server",
@@ -4283,7 +3811,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment",
-      "description": "Task 01 \u2014 README Audit & Alignment",
+      "description": "Task 01 — README Audit & Alignment",
       "keywords": [
         "task",
         "readme",
@@ -4294,7 +3822,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-02-skill-speckit-alignment",
-      "description": "Task 02 \u2014 SKILL.md & References Audit",
+      "description": "Task 02 — SKILL.md & References Audit",
       "keywords": [
         "task",
         "skill",
@@ -4305,7 +3833,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-03-command-alignment",
-      "description": "Task 03 \u2014 Command Configs Audit",
+      "description": "Task 03 — Command Configs Audit",
       "keywords": [
         "task",
         "command",
@@ -4316,7 +3844,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment",
-      "description": "Task 04 \u2014 Agent Configs Audit",
+      "description": "Task 04 — Agent Configs Audit",
       "keywords": [
         "task",
         "agent",
@@ -4327,7 +3855,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-05-changelog-updates",
-      "description": "Task 05 \u2014 Changelog Creation",
+      "description": "Task 05 — Changelog Creation",
       "keywords": [
         "task",
         "changelog",
@@ -4337,7 +3865,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update",
-      "description": "Task 06 \u2014 Root README Update",
+      "description": "Task 06 — Root README Update",
       "keywords": [
         "task",
         "root",
@@ -4348,7 +3876,7 @@
     },
     {
       "specFolder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release",
-      "description": "Task 07 \u2014 Tagged Release",
+      "description": "Task 07 — Tagged Release",
       "keywords": [
         "task",
         "tagged",

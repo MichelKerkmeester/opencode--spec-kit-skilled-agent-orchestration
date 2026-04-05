@@ -67,11 +67,15 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 {Optional 1-2 sentence introduction for the category.}
 
+---
+
 ### {Short heading}
 
 **Problem:** {Explain what was broken or missing in plain English. Write for a smart person who is not a developer. Use analogies if they help. No unexplained jargon -- first use of a technical term includes a parenthetical definition like "BM25 (exact word matching)" or "CTE (a reusable SQL subquery)."}
 
 **Fix:** {Explain what was done to fix it. Focus on the behavior change, not the implementation details. What does the system do differently now? What does the user experience? Technical specifics (file paths, function names, SQL syntax) go in the Files Changed table, not here.}
+
+---
 
 ### {Next heading}
 
@@ -177,6 +181,7 @@ These rules apply to both changelog files and GitHub release notes. See `PUBLIC_
 - **Short sub-headings** in expanded format: 2-5 words, easy to scan, not sentence-length
 - **No numbered item titles** in expanded format unless the content truly depends on sequence
 - **No metrics soup** -- do not pack 10 numbers into one sentence
+- **Horizontal rule (`---`) between every section** -- place a `---` divider before each `##` and `###` heading (except the first heading in the document). This creates visual separation in GitHub release notes
 
 ### Category vocabulary (use plain names)
 
