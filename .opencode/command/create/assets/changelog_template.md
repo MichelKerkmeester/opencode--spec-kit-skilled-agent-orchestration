@@ -63,7 +63,7 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 ---
 
-## {Category Name} ({count})
+## {Category Name}
 
 {Optional 1-2 sentence introduction for the category.}
 
