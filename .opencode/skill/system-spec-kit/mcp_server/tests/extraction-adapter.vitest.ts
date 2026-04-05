@@ -44,8 +44,8 @@ describe('T029-T037 extraction adapter', () => {
     db.prepare(`
       INSERT INTO memory_index (id, spec_folder, file_path, title, importance_tier, trigger_phrases, created_at)
       VALUES
-      (101, '02--system-spec-kit/020-mcp-working-memory-hybrid-rag', '/tmp/spec.md', 'Spec', 'important', '[]', CURRENT_TIMESTAMP),
-      (102, '02--system-spec-kit/020-mcp-working-memory-hybrid-rag', '/tmp/error.log', 'Errors', 'normal', '[]', CURRENT_TIMESTAMP)
+      (101, 'system-spec-kit/020-mcp-working-memory-hybrid-rag', '/tmp/spec.md', 'Spec', 'important', '[]', CURRENT_TIMESTAMP),
+      (102, 'system-spec-kit/020-mcp-working-memory-hybrid-rag', '/tmp/error.log', 'Errors', 'normal', '[]', CURRENT_TIMESTAMP)
     `).run();
   });
 

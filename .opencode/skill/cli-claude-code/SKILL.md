@@ -423,7 +423,7 @@ claude -p "Now refactor the auth module based on the review" --continue --output
    - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
    - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
    - This prevents the delegated agent from halting at the Gate 3 spec folder question in non-interactive mode
-   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
+   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
 
 ### NEVER
 
@@ -559,8 +559,8 @@ Key integrations:
 |-------|-------------|
 | **cli-gemini** | Parallel cross-AI validation — Gemini for Google Search grounding, Claude Code for deep reasoning |
 | **cli-codex** | Parallel cross-AI validation — Codex for sandbox execution, Claude Code for extended thinking |
-| **sk-code--web** | Use Claude Code for code review during web development |
-| **sk-code--full-stack** | Delegate architecture analysis or test generation to Claude Code |
+| **sk-code-web** | Use Claude Code for code review during web development |
+| **sk-code-full-stack** | Delegate architecture analysis or test generation to Claude Code |
 | **mcp-code-mode** | Claude Code CLI is independent; does not require Code Mode |
 
 ### External Tools
@@ -590,8 +590,8 @@ Key integrations:
 - `cli-gemini` - Google Gemini CLI for Google Search grounding and cross-AI validation
 - `cli-codex` - OpenAI Codex CLI for sandbox execution and cross-AI validation
 - `sk-doc` - Documentation generation that Claude Code can supplement
-- `sk-code--web` - Web development where Claude Code provides second opinions
-- `sk-code--full-stack` - Full-stack tasks with Claude Code architecture analysis
+- `sk-code-web` - Web development where Claude Code provides second opinions
+- `sk-code-full-stack` - Full-stack tasks with Claude Code architecture analysis
 
 ### External
 - [Claude Code GitHub](https://github.com/anthropics/claude-code) - Official repository

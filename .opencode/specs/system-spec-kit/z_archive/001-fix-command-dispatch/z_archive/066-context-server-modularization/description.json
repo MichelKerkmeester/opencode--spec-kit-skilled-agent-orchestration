@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization",
+  "description": "Feature Specification: Context-Server Modularization - Requirements & User Stories",
+  "keywords": [
+    "feature",
+    "specification",
+    "context-server",
+    "modularization",
+    "requirements",
+    "user",
+    "stories"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.217Z",
+  "specId": "066",
+  "folderSlug": "context-server-modularization",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

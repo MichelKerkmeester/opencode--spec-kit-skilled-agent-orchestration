@@ -9,7 +9,7 @@ const HYDRA_SPEC_ROOT = path.join(
   WORKSPACE_ROOT,
   '.opencode',
   'specs',
-  '02--system-spec-kit',
+  'system-spec-kit',
   '022-hybrid-rag-fusion',
   '008-hydra-db-based-features',
 );

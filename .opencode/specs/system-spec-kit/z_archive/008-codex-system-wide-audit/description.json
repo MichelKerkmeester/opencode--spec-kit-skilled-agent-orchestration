@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/008-codex-system-wide-audit",
+  "description": "Feature Specification: System-Wide Remediation of Audit Findings",
+  "keywords": [
+    "feature",
+    "specification",
+    "system-wide",
+    "remediation",
+    "audit",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.388Z",
+  "specId": "008",
+  "folderSlug": "codex-system-wide-audit",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

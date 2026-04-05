@@ -1,0 +1,22 @@
+{
+  "specFolder": "00--anobel.com/z_archive/024-language-selector-hover",
+  "description": "Feature Specification: Language Selector - Desktop Hover to Open",
+  "keywords": [
+    "feature",
+    "specification",
+    "language",
+    "selector",
+    "desktop",
+    "hover",
+    "open"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.082Z",
+  "specId": "024",
+  "folderSlug": "language-selector-hover",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

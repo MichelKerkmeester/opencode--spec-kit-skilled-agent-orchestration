@@ -1,0 +1,15 @@
+{
+  "reviewTarget": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test",
+  "reviewTargetType": "spec-folder",
+  "executionMode": "AUTONOMOUS",
+  "maxIterations": 4,
+  "convergenceThreshold": 0.1,
+  "dimensions": [
+    "correctness",
+    "traceability",
+    "completeness",
+    "synthesis"
+  ],
+  "createdBy": "Four-Iteration Deep Review Sweep",
+  "createdAt": "2026-04-02"
+}

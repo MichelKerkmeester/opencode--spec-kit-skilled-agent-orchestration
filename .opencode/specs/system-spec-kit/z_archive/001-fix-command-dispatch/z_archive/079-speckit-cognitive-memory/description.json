@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory",
+  "description": "Feature Specification: Cognitive Memory Upgrade",
+  "keywords": [
+    "feature",
+    "specification",
+    "cognitive",
+    "memory",
+    "upgrade"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.282Z",
+  "specId": "079",
+  "folderSlug": "speckit-cognitive-memory",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

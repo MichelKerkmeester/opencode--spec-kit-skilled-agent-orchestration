@@ -261,7 +261,7 @@ while [[ $i -le $# ]]; do
             echo "  $0 --phase --phases 3 'OAuth2 implementation'"
             echo "  $0 --phase --phases 3 --phase-names 'foundation,implementation,integration' 'OAuth2 flow'"
             echo "  $0 --phase --parent specs/042-oauth2-flow --phases 2 --phase-names 'stabilization,rollout' 'OAuth2 flow'"
-            echo '  $0 --phase --phase-parent .opencode/specs/02--system-spec-kit/023-esm/011-fusion --phase-names "research,implementation" "Graph improvements"'
+            echo '  $0 --phase --phase-parent .opencode/specs/system-spec-kit/023-esm/011-fusion --phase-names "research,implementation" "Graph improvements"'
             echo ""
             echo "  Creates: specs/042-oauth2-flow/"
             echo "           specs/042-oauth2-flow/001-foundation/"

@@ -38,7 +38,7 @@ contextType: "general"
      Write "You can now inspect the trace" not "Trace inspection was implemented."
      NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
      For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
 
 [Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
 

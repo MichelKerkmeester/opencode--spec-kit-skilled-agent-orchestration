@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation",
+  "description": "Feature Specification: manual-testing-per-playbook mutation phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
+    "mutation",
+    "phase"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.842Z",
+  "specId": "002",
+  "folderSlug": "mutation",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "015-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -47,7 +47,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <sp
 
 ```bash
 # Routine JSON mode
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/02--system-spec-kit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/system-spec-kit
 
 # Recovery subfolder / phase mode (parent/child)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 003-parent/001-child

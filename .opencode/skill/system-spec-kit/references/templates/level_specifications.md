@@ -853,7 +853,7 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 - `scratch/` - Temporary workspace (create ad-hoc files as needed)
 
 ### Related Skills
-- `sk-code--web` - Implementation, debugging, and verification lifecycle
+- `sk-code-web` - Implementation, debugging, and verification lifecycle
 - `system-spec-kit` - Context preservation with semantic memory
 - `sk-git` - Git workspace setup and clean commits
 <!-- /ANCHOR:related-resources -->

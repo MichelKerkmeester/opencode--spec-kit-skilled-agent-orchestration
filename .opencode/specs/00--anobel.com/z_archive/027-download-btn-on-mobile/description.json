@@ -1,0 +1,21 @@
+{
+  "specFolder": "00--anobel.com/z_archive/027-download-btn-on-mobile",
+  "description": "Feature Specification: Download Button Mobile Fix",
+  "keywords": [
+    "feature",
+    "specification",
+    "download",
+    "button",
+    "mobile",
+    "fix"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.097Z",
+  "specId": "027",
+  "folderSlug": "download-btn-on-mobile",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

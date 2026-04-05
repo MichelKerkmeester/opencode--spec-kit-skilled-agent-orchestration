@@ -1,0 +1,44 @@
+{
+  "specFolder": ".opencode/specs/005-anobel.com/035-form-upload-issues",
+  "sessionSummary": "Investigated and fixed form upload issues on the careers pages by combining Chrome DevTools debugging, frontend code changes, and Cloudflare Worker deployment. Root cause was twofold: CORS mismatch on the upload Worker for Webflow preview origins, and frontend logic marking upload COMPLETE even on process errors, which let Formspark submissions proceed with empty cv_url. Implemented robust error handling and submission guards in input_upload/form_submission, deployed a Worker allowlist CORS fix, re-minified and uploaded CDN assets, and verified successful txt/docx uploads with populated URLs. Added additional DOCX compatibility hardening for zip/octet MIME variants by appending extension fallbacks and syncing native accept attributes.",
+  "keyDecisions": [
+    "Decision: Treat this as two independent failures (CORS + UI/state bug) because each can produce empty cv_url and false-positive UX independently.",
+    "Decision: Deploy Worker CORS allowlist with dynamic Access-Control-Allow-Origin and Vary: Origin to support both production and Webflow preview origins safely.",
+    "Decision: In FilePond processfile handler, branch on _error and set ERROR state instead of forcing COMPLETE to prevent false success messaging.",
+    "Decision: Add submit-time guards in both input_upload and form_submission to block submission whenever upload state is non-idle and hidden upload URL is empty.",
+    "Decision: Add extension fallbacks (.doc/.docx/etc.) to accepted types and mirror them into native input accept to handle browser MIME inconsistencies for DOCX."
+  ],
+  "filesModified": [
+    "src/2_javascript/form/input_upload.js",
+    "src/2_javascript/form/form_submission.js",
+    "src/2_javascript/z_minified/form/input_upload.min.js",
+    "src/2_javascript/z_minified/form/form_submission.min.js",
+    "src/0_html/werken_bij.html",
+    "src/0_html/cms/vacature.html",
+    "src/0_html/contact.html",
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/specs/005-anobel.com/035-form-upload-issues/spec.md",
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/specs/005-anobel.com/035-form-upload-issues/plan.md",
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/specs/005-anobel.com/035-form-upload-issues/tasks.md",
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/specs/005-anobel.com/035-form-upload-issues/checklist.md",
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/specs/005-anobel.com/035-form-upload-issues/decision-record.md",
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/specs/005-anobel.com/035-form-upload-issues/implementation-summary.md",
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/specs/005-anobel.com/035-form-upload-issues/handover.md"
+  ],
+  "triggerPhrases": [
+    "form upload issue",
+    "docx invalid type",
+    "empty cv_url",
+    "FilePond processfile error",
+    "Cloudflare Worker CORS",
+    "Webflow preview origin",
+    "R2 upload endpoint",
+    "Formspark submission guard",
+    "input accept fallback",
+    "anobel careers form"
+  ],
+  "technicalContext": {
+    "rootCause": "Upload Worker preflight allowed only https://anobel.com while active origin included Webflow preview domains; frontend processfile handler ignored _error and set COMPLETE unconditionally.",
+    "solution": "Deployed Worker CORS allowlist + dynamic ACAO for production and preview origins, updated frontend upload state transitions and submit guards, and hardened DOCX acceptance via MIME+extension fallbacks.",
+    "patterns": "Defensive state machine checks, dual-layer submission validation, origin allowlist CORS policy, cache-busted CDN rollouts, and browser-driven verification with controlled MIME variant tests."
+  }
+}

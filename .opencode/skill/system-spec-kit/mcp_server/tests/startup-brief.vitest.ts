@@ -29,7 +29,7 @@ vi.mock('../hooks/claude/hook-state.js', () => ({
   loadMostRecentState: vi.fn(() => ({
     claudeSessionId: 'recent-session',
     speckitSessionId: 'speckit-session',
-    lastSpecFolder: '02--system-spec-kit/024-compact-code-graph/027-opencode-structural-priming',
+    lastSpecFolder: 'system-spec-kit/024-compact-code-graph/027-opencode-structural-priming',
     sessionSummary: {
       text: 'Aligned structural bootstrap contract across auto-prime and session_* handlers.',
       extractedAt: '2026-04-02T10:01:00.000Z',

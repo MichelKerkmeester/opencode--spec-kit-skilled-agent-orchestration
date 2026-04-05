@@ -42,7 +42,7 @@ Operators verify the JSON-only save contract: structured JSON succeeds and direc
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md)
-- Source spec: [017-json-primary-deprecation/spec.md](../../../../../specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/spec.md)
+- Source spec: [017-json-primary-deprecation/spec.md](../../../../../specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/spec.md)
 
 ---
 

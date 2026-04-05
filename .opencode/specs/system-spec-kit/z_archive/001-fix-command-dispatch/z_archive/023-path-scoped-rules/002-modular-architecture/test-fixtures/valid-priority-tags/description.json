@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-priority-tags",
+  "description": "Spec: Valid Priority Tags Fixture",
+  "keywords": [
+    "spec",
+    "valid",
+    "priority",
+    "tags",
+    "fixture"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.019Z",
+  "specId": "",
+  "folderSlug": "valid-priority-tags",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive",
+    "023-path-scoped-rules",
+    "002-modular-architecture",
+    "test-fixtures"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

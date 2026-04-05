@@ -1,0 +1,21 @@
+{
+  "specFolder": "00--anobel.com/z_archive/021-decoding-async-analysis",
+  "description": "Feature Specification: Image Decoding Async Analysis",
+  "keywords": [
+    "feature",
+    "specification",
+    "image",
+    "decoding",
+    "async",
+    "analysis"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.068Z",
+  "specId": "021",
+  "folderSlug": "decoding-async-analysis",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -110,7 +110,7 @@ async function testSpecFolderPatternInvalid() {
       { input: '003-foo bar', reason: 'space in name' },
       { input: '003-foo/bar', reason: 'slash in name' },
       { input: '12-short', reason: 'two digit prefix' },
-      { input: '02--system-spec-kit', reason: 'category folder (2 digits + double hyphen)' },
+      { input: 'system-spec-kit', reason: 'category folder (2 digits + double hyphen)' },
       { input: 'z_archive', reason: 'no digit prefix at all' },
       { input: '003-foo.bar', reason: 'dot in name' },
     ];
@@ -720,7 +720,7 @@ async function testCategoryFolderPatternValid() {
     const { CATEGORY_FOLDER_PATTERN } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
 
     const validCases = [
-      '02--system-spec-kit',
+      'system-spec-kit',
       '01--anobel',
       '00--opencode-environment',
       '99--test-category',

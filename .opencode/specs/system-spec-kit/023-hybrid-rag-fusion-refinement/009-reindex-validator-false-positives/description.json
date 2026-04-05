@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives",
+  "description": "Feature Specification: Reindex Validator False Positives",
+  "keywords": [
+    "feature",
+    "specification",
+    "reindex",
+    "validator",
+    "false",
+    "positives"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.775Z",
+  "specId": "009",
+  "folderSlug": "reindex-validator-false-positives",
+  "parentChain": [
+    "system-spec-kit",
+"023-hybrid-rag-fusion-refinement"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "31-03-26_15-13__created-phase-009-and-implemented-16-fixes-for.md",
+    "01-04-26_11-03__completed-phase-3-deep-review-remediation-6-of-8.md"
+  ]
+}

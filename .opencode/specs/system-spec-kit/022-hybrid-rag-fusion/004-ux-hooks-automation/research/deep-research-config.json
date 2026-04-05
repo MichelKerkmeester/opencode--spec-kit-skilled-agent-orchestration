@@ -1,0 +1,19 @@
+{
+  "topic": "UX Hooks Automation: assess need for refinement, upgrade, or bug fixes in implemented features",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation",
+  "createdAt": "2026-03-19T07:10:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

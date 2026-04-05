@@ -1,0 +1,51 @@
+$ git status --short
+exit_code: 0
+stdout:
+ M ../../agent/chatgpt/context.md
+ M ../../agent/chatgpt/debug.md
+ M ../../agent/chatgpt/handover.md
+ M ../../agent/chatgpt/orchestrate.md
+ M ../../agent/chatgpt/research/research/research.md
+ M ../../agent/chatgpt/review.md
+ M ../../agent/chatgpt/speckit.md
+ M ../../agent/chatgpt/write.md
+ M mcp_server/context-server.ts
+ M mcp_server/core/config.ts
+ M mcp_server/handlers/memory-context.ts
+ M mcp_server/handlers/memory-save.ts
+ M mcp_server/handlers/memory-search.ts
+ M mcp_server/lib/cognitive/working-memory.ts
+ M mcp_server/lib/parsing/memory-parser.ts
+ M mcp_server/lib/search/vector-index-impl.ts
+ M mcp_server/lib/search/vector-index.ts
+ M mcp_server/lib/storage/checkpoints.ts
+ M mcp_server/tests/context-server.vitest.ts
+ M mcp_server/tests/handler-memory-context.vitest.ts
+ M mcp_server/tests/t214-decay-delete-race.vitest.ts
+ M mcp_server/tests/t302-session-cleanup.vitest.ts
+ M mcp_server/tool-schemas.ts
+ M scripts/core/workflow.ts
+ M scripts/extractors/collect-session-data.ts
+ M scripts/extractors/decision-extractor.ts
+ M scripts/extractors/index.ts
+ M templates/context_template.md
+ M ../../specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/checklist.md
+ M ../../specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/tasks.md
+?? mcp_server/configs/cognitive.ts
+?? mcp_server/lib/cognitive/pressure-monitor.ts
+?? mcp_server/lib/extraction/
+?? mcp_server/lib/search/session-boost.ts
+?? mcp_server/tests/config-cognitive.vitest.ts
+?? mcp_server/tests/pressure-monitor.vitest.ts
+?? mcp_server/tests/redaction-gate.vitest.ts
+?? mcp_server/tests/session-boost.vitest.ts
+?? mcp_server/tests/session-lifecycle.vitest.ts
+?? mcp_server/tests/working-memory-event-decay.vitest.ts
+?? scripts/evals/
+?? scripts/extractors/contamination-filter.ts
+?? scripts/extractors/quality-scorer.ts
+?? scripts/kpi/
+?? scripts/memory/validate-memory-quality.ts
+?? scripts/tests/test-memory-quality-lane.js
+?? ../../specs/05--agent-orchestration/021-codex-orchestrate/
+stderr: <empty>

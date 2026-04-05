@@ -1590,7 +1590,7 @@ describe('workflow seam guardrail', () => {
     try {
       const result = await runWorkflow({
         collectedData,
-        specFolderArg: 'specs/02--system-spec-kit/022-hybrid-rag-fusion',
+        specFolderArg: 'specs/system-spec-kit/022-hybrid-rag-fusion',
         silent: true,
       });
 
@@ -1644,7 +1644,7 @@ Decision: adopt error handling.
   it('V11 passes on clean memory content', () => {
     const cleanContent = `\
 \`\`\`yaml
-spec_folder: "02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+spec_folder: "system-spec-kit/020-mcp-working-memory-hybrid-rag"
 tool_count: 9
 trigger_phrases:
   - "memory"

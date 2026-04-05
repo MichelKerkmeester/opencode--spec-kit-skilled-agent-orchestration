@@ -1,0 +1,77 @@
+{
+  "specFolder": "007-anobel.com/007-notification-system",
+  "sessionSummary": "Implemented a CMS-driven alert/notification system for A. Nobel & Zn. Webflow website (anobel.com). The system supports one-alert-at-a-time display with queue behavior, office hours integration, date range filtering, and three dismiss modes (session, day, until-end-date). Container auto-hides when empty. Created comprehensive test suite (12 tests) and integrated with Webflow CMS collection 'C | Notifications'.",
+  "keyDecisions": [
+    {
+      "decision": "One alert at a time with queue behavior",
+      "rationale": "Prevents notification overload while ensuring all eligible alerts are shown sequentially",
+      "alternatives": ["Show all alerts stacked", "Random rotation"],
+      "chosenOption": "First eligible in CMS order wins, dismissing shows next"
+    },
+    {
+      "decision": "Three dismiss behavior modes",
+      "rationale": "Different use cases need different persistence - temporary notices vs recurring announcements vs time-bound alerts",
+      "alternatives": ["Single dismiss mode", "Never dismiss option"],
+      "chosenOption": "session (sessionStorage), day (localStorage with midnight expiry), until-end-date (localStorage with end-date expiry)"
+    },
+    {
+      "decision": "Office hours integration via show-when attribute",
+      "rationale": "Business-specific alerts (e.g., 'We are closed') should only show during relevant hours",
+      "alternatives": ["Always show all alerts", "Separate open/closed collections"],
+      "chosenOption": "data-alert-show-when='open'|'closed'|'always' with real-time office status detection"
+    },
+    {
+      "decision": "Container auto-hide when empty",
+      "rationale": "Clean UI without empty notification bars taking up space",
+      "alternatives": ["Always show container", "CSS-only hide"],
+      "chosenOption": "JavaScript removes 'w-dyn-list' parent when no visible alerts"
+    }
+  ],
+  "filesModified": [
+    "src/2_javascript/contact_notifications.js",
+    "src/2_javascript/z_minified/contact_notifications.js",
+    "src/0_html/global.html",
+    "src/2_javascript/contact/CMS Alert System (Notifications).md"
+  ],
+  "triggerPhrases": [
+    "notification system",
+    "alert system",
+    "CMS notifications",
+    "contact_notifications.js",
+    "dismiss behavior",
+    "office hours alert",
+    "anobel alerts",
+    "webflow notifications",
+    "one alert at a time",
+    "notification queue"
+  ],
+  "technicalContext": {
+    "webflowSiteId": "6723d26a4aa4a278cad8f59c",
+    "cmsCollectionId": "6946fcdfc4ba3d0d8abebe4c",
+    "cmsCollectionName": "C | Notifications",
+    "cmsFields": {
+      "active": "data-alert-active (Switch)",
+      "closable": "data-alert-closable (Switch)",
+      "dismissBehavior": "data-alert-dismiss (Option: session|day|until-end-date)",
+      "startDate": "data-alert-start (DateTime)",
+      "endDate": "data-alert-end (DateTime)",
+      "officeHours": "data-alert-office-hours (Switch)",
+      "showWhen": "data-alert-show-when (Option: open|closed|always)"
+    },
+    "publicApi": {
+      "refresh": "Re-evaluate visibility",
+      "getAll": "Get all parsed alerts",
+      "getVisible": "Get currently visible alert",
+      "getOfficeStatus": "Get office hours status",
+      "clearDismissals": "Clear all dismiss storage",
+      "debug": "Enable/disable console logging"
+    },
+    "cdnUrlPattern": "https://pub-85443b585f1e4411ab5cc976c4fb08ca.r2.dev/contact_notifications.js?v=1.1.30",
+    "testResults": {
+      "passed": 8,
+      "partial": 4,
+      "total": 12,
+      "note": "Partial tests verified CMS integration but require live browser for full validation"
+    }
+  }
+}

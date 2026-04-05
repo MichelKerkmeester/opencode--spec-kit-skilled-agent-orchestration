@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/050-security-doc-remediation",
+  "description": "Security & Documentation Remediation",
+  "keywords": [
+    "security",
+    "documentation",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.161Z",
+  "specId": "050",
+  "folderSlug": "security-doc-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,39 @@
+{
+  "timestamp": "03-01-26 10-39",
+  "messageCount": 4,
+  "decisionCount": 0,
+  "diagramCount": 0,
+  "skillVersion": "12.5.0",
+  "autoTriggered": false,
+  "filtering": {
+    "total_processed": 0,
+    "noise_filtered": 0,
+    "duplicates_removed": 0,
+    "quality_score": 100,
+    "filtered": {
+      "noise": 0,
+      "empty": 0,
+      "duplicate": 0,
+      "low_quality": 0
+    }
+  },
+  "semanticSummary": {
+    "task": "Development session",
+    "filesCreated": 0,
+    "filesModified": 0,
+    "decisions": 0,
+    "messageStats": {
+      "intent": 0,
+      "plan": 0,
+      "implementation": 0,
+      "result": 0,
+      "decision": 0,
+      "total": 4
+    }
+  },
+  "embedding": {
+    "status": "pending",
+    "model": "nomic-ai/nomic-embed-text-v1.5",
+    "dimensions": 768
+  }
+}

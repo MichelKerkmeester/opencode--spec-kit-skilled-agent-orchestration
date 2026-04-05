@@ -1,0 +1,21 @@
+{
+  "specFolder": "00--anobel.com/z_archive/008-social-share-cms",
+  "description": "Feature Specification: Social Share CMS Integration",
+  "keywords": [
+    "feature",
+    "specification",
+    "social",
+    "share",
+    "cms",
+    "integration"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.004Z",
+  "specId": "008",
+  "folderSlug": "social-share-cms",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

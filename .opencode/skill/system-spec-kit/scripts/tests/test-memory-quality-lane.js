@@ -19,7 +19,7 @@ function assert(condition, message) {
 function runValidatorRuleTests() {
   const validContent = `\
 \`\`\`yaml
-spec_folder: "02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+spec_folder: "system-spec-kit/020-mcp-working-memory-hybrid-rag"
 tool_count: 9
 trigger_phrases:
   - "memory"
@@ -40,7 +40,7 @@ Decision: adopt deterministic scoring.
   const v2 = validator.validateMemoryQualityContent(validContent.replace('tool_count: 9', 'tool_count: 9\nblockers: [N/A]'));
   assert(v2.failedRules.includes('V2'), 'V2 should fail when [N/A] leaks with tools');
 
-  const v3 = validator.validateMemoryQualityContent(validContent.replace('spec_folder: "02--system-spec-kit/020-mcp-working-memory-hybrid-rag"', 'spec_folder: "**bad**"'));
+  const v3 = validator.validateMemoryQualityContent(validContent.replace('spec_folder: "system-spec-kit/020-mcp-working-memory-hybrid-rag"', 'spec_folder: "**bad**"'));
   assert(v3.failedRules.includes('V3'), 'V3 should fail malformed spec_folder');
 
   const v4 = validator.validateMemoryQualityContent(validContent + '\nNo specific decisions were made during this session.\n');
@@ -77,7 +77,7 @@ function runContaminationTests() {
 
 async function runDecisionCueTests() {
   const result = await decisionExtractor.extractDecisions({
-    SPEC_FOLDER: '02--system-spec-kit/020-mcp-working-memory-hybrid-rag',
+    SPEC_FOLDER: 'system-spec-kit/020-mcp-working-memory-hybrid-rag',
     observations: [
       { narrative: 'We decided to keep strict validation in post-render stage.' },
       { narrative: 'Selected a fallback strategy for sparse trigger phrases.' },
@@ -92,7 +92,7 @@ async function runDecisionCueTests() {
   assert(result.DECISION_COUNT >= 4, 'decision lexical cues should produce concrete decisions');
 
   const noDecision = await decisionExtractor.extractDecisions({
-    SPEC_FOLDER: '02--system-spec-kit/020-mcp-working-memory-hybrid-rag',
+    SPEC_FOLDER: 'system-spec-kit/020-mcp-working-memory-hybrid-rag',
     observations: [{ narrative: 'Updated tests and cleaned output format.' }],
     userPrompts: [{ prompt: 'Run validation and collect logs.' }],
   });
@@ -290,7 +290,7 @@ Decision: proceed with implementation.
   // V11 should pass on clean content
   const cleanContent = `\
 \`\`\`yaml
-spec_folder: "02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+spec_folder: "system-spec-kit/020-mcp-working-memory-hybrid-rag"
 tool_count: 9
 trigger_phrases:
   - "memory"
@@ -325,7 +325,7 @@ function runBenchmarkFixtureTest() {
     path.join(
       __dirname,
       '..', '..', '..', '..', 'specs',
-      '02--system-spec-kit',
+      'system-spec-kit',
       '136-mcp-working-memory-hybrid-rag',
       'scratch',
       'quality-benchmarks'
@@ -333,7 +333,7 @@ function runBenchmarkFixtureTest() {
     path.join(
       __dirname,
       '..', '..', '..', '..', '..', 'specs',
-      '02--system-spec-kit',
+      'system-spec-kit',
       '136-mcp-working-memory-hybrid-rag',
       'scratch',
       'quality-benchmarks'
@@ -365,7 +365,7 @@ function runBenchmarkFixtureTest() {
   if (badFixtures.length === 0 || goodFixtures.length === 0) {
     const inlineGoodFixture = `\
 \`\`\`yaml
-spec_folder: "02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+spec_folder: "system-spec-kit/020-mcp-working-memory-hybrid-rag"
 tool_count: 9
 trigger_phrases:
   - "memory"

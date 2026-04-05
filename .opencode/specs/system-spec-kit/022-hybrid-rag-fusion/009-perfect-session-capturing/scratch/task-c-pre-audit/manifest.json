@@ -1,0 +1,2255 @@
+{
+  "generatedAt": "2026-03-15T12:14:43.545Z",
+  "root": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch",
+  "summary": {
+    "total": 160,
+    "clean": 0,
+    "repair_in_place": 20,
+    "regenerate_from_authoritative_evidence": 0,
+    "quarantine": 140
+  },
+  "bySpecFolder": {
+    "z_archive/001-scratch-enforcement": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 2
+    },
+    "z_archive/005-speckit-consolidation": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/006-auto-indexing": {
+      "total": 6,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 6
+    },
+    "z_archive/007-system-spec-kit-rename": {
+      "total": 2,
+      "repair_in_place": 2,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "z_archive/008-rename-memory-check": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/009-speckit-testing": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/011-docs-alignment": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/012-handover-triggers": {
+      "total": 1,
+      "repair_in_place": 1,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "z_archive/014-anchor-enforcement": {
+      "total": 6,
+      "repair_in_place": 4,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 2
+    },
+    "z_archive/016-speckit-yaml-integration": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/017-stateless-spec-passing": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/018-generate-context-fix": {
+      "total": 5,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 5
+    },
+    "z_archive/019-speckit-refinement": {
+      "total": 6,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 6
+    },
+    "z_archive/020-comprehensive-bug-fix": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/021-memory-choice-enforcement": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/022-database-disambiguation": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/023-path-scoped-rules/001-mvp-monolithic": {
+      "total": 4,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 4
+    },
+    "z_archive/023-path-scoped-rules/002-modular-architecture": {
+      "total": 4,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 4
+    },
+    "z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-anchors": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/024-comprehensive-alignment-fix": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/025-system-memory-rename": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    },
+    "z_archive/026-docs-alignment": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis": {
+      "total": 6,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 6
+    },
+    "z_archive/027-memory-plugin-and-refinement/002-memory-plugin": {
+      "total": 5,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 5
+    },
+    "z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 2
+    },
+    "z_archive/028-memory-alignment-fix": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/029-comprehensive-bug-fix": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/030-gate3-enforcement": {
+      "total": 5,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 5
+    },
+    "z_archive/031-comprehensive-bug-fix": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/032-system-health-audit": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/033-ux-deep-analysis": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    },
+    "z_archive/035-memory-speckit-merger": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    },
+    "z_archive/037-post-merge-refinement-2": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    },
+    "z_archive/039-node-modules-consolidation": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/043-post-merge-refinement-final": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/044-speckit-test-suite": {
+      "total": 7,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 7
+    },
+    "z_archive/044-speckit-test-suite/scratch/001-test-agent-08": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/044-speckit-test-suite/scratch/test-agent-04-crud": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/044-speckit-test-suite/scratch/test-agent-06-delete": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-a": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-b": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/047-constitutional-readme": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/048-system-analysis": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 2
+    },
+    "z_archive/052-codebase-fixes": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 2
+    },
+    "z_archive/053-script-analysis-testing": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/054-remaining-bugs-remediation": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 2
+    },
+    "z_archive/055-cognitive-memory-upgrade": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/056-spec-kit-references-reorganization": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/058-generate-context-modularization": {
+      "total": 6,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 6
+    },
+    "z_archive/064-bug-analysis-and-fix": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/065-anchor-system-implementation": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    },
+    "z_archive/066-context-server-modularization": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/067-voyage-4-upgrade": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/068-constitutional-readme-fix": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/069-speckit-template-complexity": {
+      "total": 2,
+      "repair_in_place": 2,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "z_archive/070-memory-ranking": {
+      "total": 3,
+      "repair_in_place": 2,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/071-speckit-level-alignment": {
+      "total": 1,
+      "repair_in_place": 1,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "z_archive/074-speckit-template-optimization-refinement": {
+      "total": 2,
+      "repair_in_place": 2,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "z_archive/075-post-speckit-template-upgrade-testing": {
+      "total": 2,
+      "repair_in_place": 2,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "z_archive/077-speckit-upgrade-from-research": {
+      "total": 3,
+      "repair_in_place": 1,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 2
+    },
+    "z_archive/080-speckit-bug-remediation": {
+      "total": 2,
+      "repair_in_place": 1,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/082-speckit-reimagined": {
+      "total": 11,
+      "repair_in_place": 2,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 9
+    },
+    "z_archive/083-memory-command-consolidation": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/083-speckit-reimagined-bug-fixes": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    },
+    "z_archive/084-generate-context-template-warnings": {
+      "total": 5,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 5
+    },
+    "z_archive/088-speckit-known-limitations-remediation": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    },
+    "z_archive/089-speckit-reimagined-refinement": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    },
+    "z_archive/090-opencode-naming-conventions": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 1
+    }
+  },
+  "files": [
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/memory/13-12-25_00-00__scratch-enforcement-complete.md",
+      "specFolder": "z_archive/001-scratch-enforcement",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/scratch/legacy-memory-quarantine/13-12-25_00-00__scratch-enforcement-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/memory/13-12-25_00-00__verification-and-fixes.md",
+      "specFolder": "z_archive/001-scratch-enforcement",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement/scratch/legacy-memory-quarantine/13-12-25_00-00__verification-and-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/memory/17-12-25_00-00__speckit-consolidation-complete.md",
+      "specFolder": "z_archive/005-speckit-consolidation",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation/scratch/legacy-memory-quarantine/17-12-25_00-00__speckit-consolidation-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/memory/16-12-24_00-00__memory-docs-cleanup.md",
+      "specFolder": "z_archive/006-auto-indexing",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/scratch/legacy-memory-quarantine/16-12-24_00-00__memory-docs-cleanup.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/memory/16-12-25_00-00__v12-references-removed.md",
+      "specFolder": "z_archive/006-auto-indexing",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/scratch/legacy-memory-quarantine/16-12-25_00-00__v12-references-removed.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/memory/16-12-25_11-39__docs-alignment-v12.md",
+      "specFolder": "z_archive/006-auto-indexing",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/scratch/legacy-memory-quarantine/16-12-25_11-39__docs-alignment-v12.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/memory/16-12-25_11-45__docs-alignment-complete.md",
+      "specFolder": "z_archive/006-auto-indexing",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/scratch/legacy-memory-quarantine/16-12-25_11-45__docs-alignment-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/memory/16-12-25_12-45__session-complete.md",
+      "specFolder": "z_archive/006-auto-indexing",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/scratch/legacy-memory-quarantine/16-12-25_12-45__session-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/memory/16-12-25_13-30__command-alignment.md",
+      "specFolder": "z_archive/006-auto-indexing",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/006-auto-indexing/scratch/legacy-memory-quarantine/16-12-25_13-30__command-alignment.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename/memory/17-12-25_08-41__system-spec-kit-rename.md",
+      "specFolder": "z_archive/007-system-spec-kit-rename",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename/memory/17-12-25_08-52__system-spec-kit-rename.md",
+      "specFolder": "z_archive/007-system-spec-kit-rename",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check/memory/16-12-25_15-19__skill-alignment-fixes.md",
+      "specFolder": "z_archive/008-rename-memory-check",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check/scratch/legacy-memory-quarantine/16-12-25_15-19__skill-alignment-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing/memory/17-12-25_00-00__speckit-testing-complete.md",
+      "specFolder": "z_archive/009-speckit-testing",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing/scratch/legacy-memory-quarantine/17-12-25_00-00__speckit-testing-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/memory/17-12-25_00-00__speckit-docs-alignment-complete.md",
+      "specFolder": "z_archive/011-docs-alignment",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment/scratch/legacy-memory-quarantine/17-12-25_00-00__speckit-docs-alignment-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/memory/17-12-25_16-19__handover-triggers.md",
+      "specFolder": "z_archive/012-handover-triggers",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/memory/16-12-25_00-00__anchor-enforcement-complete.md",
+      "specFolder": "z_archive/014-anchor-enforcement",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/scratch/legacy-memory-quarantine/16-12-25_00-00__anchor-enforcement-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/memory/16-12-25_00-00__anchor-id-validation-warning.md",
+      "specFolder": "z_archive/014-anchor-enforcement",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/scratch/legacy-memory-quarantine/16-12-25_00-00__anchor-id-validation-warning.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/memory/16-12-25_20-12__anchor-enforcement.md",
+      "specFolder": "z_archive/014-anchor-enforcement",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/memory/16-12-25_20-14__anchor-enforcement.md",
+      "specFolder": "z_archive/014-anchor-enforcement",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/memory/16-12-25_20-27__anchor-enforcement.md",
+      "specFolder": "z_archive/014-anchor-enforcement",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement/memory/16-12-25_20-48__anchor-enforcement.md",
+      "specFolder": "z_archive/014-anchor-enforcement",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/016-speckit-yaml-integration/memory/16-12-24_21-45__speckit-yaml-semantic-memory.md",
+      "specFolder": "z_archive/016-speckit-yaml-integration",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/016-speckit-yaml-integration/scratch/legacy-memory-quarantine/16-12-24_21-45__speckit-yaml-semantic-memory.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing/memory/22-12-25_09-51__stateless-spec-passing.md",
+      "specFolder": "z_archive/017-stateless-spec-passing",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing/scratch/legacy-memory-quarantine/22-12-25_09-51__stateless-spec-passing.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/memory/16-02-26_14-50__implementation-summary.md",
+      "specFolder": "z_archive/018-generate-context-fix",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/scratch/legacy-memory-quarantine/16-02-26_14-50__implementation-summary.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/memory/17-12-25_07-34__generate-context-fix.md",
+      "specFolder": "z_archive/018-generate-context-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/scratch/legacy-memory-quarantine/17-12-25_07-34__generate-context-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/memory/17-12-25_07-37__generate-context-fix.md",
+      "specFolder": "z_archive/018-generate-context-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/scratch/legacy-memory-quarantine/17-12-25_07-37__generate-context-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/memory/17-12-25_07-43__generate-context-fix.md",
+      "specFolder": "z_archive/018-generate-context-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/scratch/legacy-memory-quarantine/17-12-25_07-43__generate-context-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/memory/17-12-25_08-21__generate-context-fix.md",
+      "specFolder": "z_archive/018-generate-context-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/018-generate-context-fix/scratch/legacy-memory-quarantine/17-12-25_08-21__generate-context-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/memory/23-12-25_12-03__speckit-refinement.md",
+      "specFolder": "z_archive/019-speckit-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/scratch/legacy-memory-quarantine/23-12-25_12-03__speckit-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/memory/23-12-25_12-52__speckit-refinement.md",
+      "specFolder": "z_archive/019-speckit-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/scratch/legacy-memory-quarantine/23-12-25_12-52__speckit-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/memory/23-12-25_13-56__speckit-refinement.md",
+      "specFolder": "z_archive/019-speckit-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/scratch/legacy-memory-quarantine/23-12-25_13-56__speckit-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/memory/23-12-25_15-13__speckit-refinement.md",
+      "specFolder": "z_archive/019-speckit-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/scratch/legacy-memory-quarantine/23-12-25_15-13__speckit-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/memory/23-12-25_15-36__speckit-refinement.md",
+      "specFolder": "z_archive/019-speckit-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/scratch/legacy-memory-quarantine/23-12-25_15-36__speckit-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/memory/23-12-25_15-48__speckit-refinement.md",
+      "specFolder": "z_archive/019-speckit-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/scratch/legacy-memory-quarantine/23-12-25_15-48__speckit-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/020-comprehensive-bug-fix/memory/24-12-25_12-06__comprehensive-bug-fix.md",
+      "specFolder": "z_archive/020-comprehensive-bug-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/020-comprehensive-bug-fix/scratch/legacy-memory-quarantine/24-12-25_12-06__comprehensive-bug-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/021-memory-choice-enforcement/memory/17-12-25_08-08__memory-choice-enforcement.md",
+      "specFolder": "z_archive/021-memory-choice-enforcement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/021-memory-choice-enforcement/scratch/legacy-memory-quarantine/17-12-25_08-08__memory-choice-enforcement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/022-database-disambiguation/memory/17-12-25_08-38__database-disambiguation.md",
+      "specFolder": "z_archive/022-database-disambiguation",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/022-database-disambiguation/scratch/legacy-memory-quarantine/17-12-25_08-38__database-disambiguation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/memory/24-12-25_12-33__path-scoped-rules.md",
+      "specFolder": "z_archive/023-path-scoped-rules/001-mvp-monolithic",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/scratch/legacy-memory-quarantine/24-12-25_12-33__path-scoped-rules.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/memory/24-12-25_12-41__path-scoped-rules.md",
+      "specFolder": "z_archive/023-path-scoped-rules/001-mvp-monolithic",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/scratch/legacy-memory-quarantine/24-12-25_12-41__path-scoped-rules.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/memory/24-12-25_13-25__path-scoped-rules.md",
+      "specFolder": "z_archive/023-path-scoped-rules/001-mvp-monolithic",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/scratch/legacy-memory-quarantine/24-12-25_13-25__path-scoped-rules.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/memory/24-12-25_14-04__path-scoped-rules.md",
+      "specFolder": "z_archive/023-path-scoped-rules/001-mvp-monolithic",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic/scratch/legacy-memory-quarantine/24-12-25_14-04__path-scoped-rules.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/memory/24-12-25_14-51__modular-architecture.md",
+      "specFolder": "z_archive/023-path-scoped-rules/002-modular-architecture",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/scratch/legacy-memory-quarantine/24-12-25_14-51__modular-architecture.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/memory/24-12-25_15-27__modular-architecture.md",
+      "specFolder": "z_archive/023-path-scoped-rules/002-modular-architecture",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/scratch/legacy-memory-quarantine/24-12-25_15-27__modular-architecture.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/memory/24-12-25_15-36__modular-architecture.md",
+      "specFolder": "z_archive/023-path-scoped-rules/002-modular-architecture",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/scratch/legacy-memory-quarantine/24-12-25_15-36__modular-architecture.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/memory/24-12-25_15-45__modular-architecture.md",
+      "specFolder": "z_archive/023-path-scoped-rules/002-modular-architecture",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/scratch/legacy-memory-quarantine/24-12-25_15-45__modular-architecture.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors/memory/context.md",
+      "specFolder": "z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors/scratch/legacy-memory-quarantine/context.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-anchors/memory/context.md",
+      "specFolder": "z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-anchors",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-anchors/scratch/legacy-memory-quarantine/context.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/024-comprehensive-alignment-fix/memory/24-12-25_19-48__comprehensive-alignment-fix.md",
+      "specFolder": "z_archive/024-comprehensive-alignment-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/024-comprehensive-alignment-fix/scratch/legacy-memory-quarantine/24-12-25_19-48__comprehensive-alignment-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/memory/17-12-24_00-00__rename-complete.md",
+      "specFolder": "z_archive/025-system-memory-rename",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/scratch/legacy-memory-quarantine/17-12-24_00-00__rename-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/memory/17-12-25_00-00__testing-continuation.md",
+      "specFolder": "z_archive/025-system-memory-rename",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/scratch/legacy-memory-quarantine/17-12-25_00-00__testing-continuation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/memory/17-12-25_00-00__verification-complete.md",
+      "specFolder": "z_archive/025-system-memory-rename",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/scratch/legacy-memory-quarantine/17-12-25_00-00__verification-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/026-docs-alignment/memory/16-02-26_14-50__docs-alignment-complete.md",
+      "specFolder": "z_archive/026-docs-alignment",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/026-docs-alignment/scratch/legacy-memory-quarantine/16-02-26_14-50__docs-alignment-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/memory/17-12-25_14-00__roampal-analysis.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/scratch/legacy-memory-quarantine/17-12-25_14-00__roampal-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/memory/17-12-25_14-08__roampal-analysis.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/scratch/legacy-memory-quarantine/17-12-25_14-08__roampal-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/memory/17-12-25_14-09__roampal-analysis.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/scratch/legacy-memory-quarantine/17-12-25_14-09__roampal-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/memory/17-12-25_14-10__roampal-analysis.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/scratch/legacy-memory-quarantine/17-12-25_14-10__roampal-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/memory/17-12-25_14-37__roampal-analysis.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/scratch/legacy-memory-quarantine/17-12-25_14-37__roampal-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/memory/17-12-25_14-49__roampal-analysis.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis/scratch/legacy-memory-quarantine/17-12-25_14-49__roampal-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/memory/16-02-26_14-50__comprehensive-analysis.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/002-memory-plugin",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/scratch/legacy-memory-quarantine/16-02-26_14-50__comprehensive-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/memory/16-02-26_14-50__documentation-updates.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/002-memory-plugin",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/scratch/legacy-memory-quarantine/16-02-26_14-50__documentation-updates.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/memory/16-02-26_14-50__final-verification.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/002-memory-plugin",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/scratch/legacy-memory-quarantine/16-02-26_14-50__final-verification.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/memory/16-02-26_14-50__implementation-complete.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/002-memory-plugin",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/scratch/legacy-memory-quarantine/16-02-26_14-50__implementation-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/memory/16-02-26_14-50__mcp-server-fixes.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/002-memory-plugin",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/scratch/legacy-memory-quarantine/16-02-26_14-50__mcp-server-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/memory/16-02-26_14-50__implementation-summary-v2.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/scratch/legacy-memory-quarantine/16-02-26_14-50__implementation-summary-v2.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/memory/16-02-26_14-50__session-context.md",
+      "specFolder": "z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging/scratch/legacy-memory-quarantine/16-02-26_14-50__session-context.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix/memory/22-12-25_14-51__memory-alignment-fix.md",
+      "specFolder": "z_archive/028-memory-alignment-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix/scratch/legacy-memory-quarantine/22-12-25_14-51__memory-alignment-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix/memory/24-12-25_12-07__comprehensive-bug-fix-029.md",
+      "specFolder": "z_archive/029-comprehensive-bug-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix/scratch/legacy-memory-quarantine/24-12-25_12-07__comprehensive-bug-fix-029.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/memory/16-02-26_14-50__constitutional-gate-rules.md",
+      "specFolder": "z_archive/030-gate3-enforcement",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/scratch/legacy-memory-quarantine/16-02-26_14-50__constitutional-gate-rules.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/memory/16-02-26_14-50__handover.md",
+      "specFolder": "z_archive/030-gate3-enforcement",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/scratch/legacy-memory-quarantine/16-02-26_14-50__handover.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/memory/16-02-26_14-50__implementation-summary-v3.md",
+      "specFolder": "z_archive/030-gate3-enforcement",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/scratch/legacy-memory-quarantine/16-02-26_14-50__implementation-summary-v3.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/memory/24-12-25_12-44__gate3-enforcement.md",
+      "specFolder": "z_archive/030-gate3-enforcement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/scratch/legacy-memory-quarantine/24-12-25_12-44__gate3-enforcement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/memory/24-12-25_13-22__gate3-enforcement.md",
+      "specFolder": "z_archive/030-gate3-enforcement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement/scratch/legacy-memory-quarantine/24-12-25_13-22__gate3-enforcement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/031-comprehensive-bug-fix/memory/24-12-25_19-52__comprehensive-bug-fix.md",
+      "specFolder": "z_archive/031-comprehensive-bug-fix",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/031-comprehensive-bug-fix/scratch/legacy-memory-quarantine/24-12-25_19-52__comprehensive-bug-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/memory/25-12-25_10-02__system-health-audit.md",
+      "specFolder": "z_archive/032-system-health-audit",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit/scratch/legacy-memory-quarantine/25-12-25_10-02__system-health-audit.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/memory/25-12-25_11-07__ux-deep-analysis.md",
+      "specFolder": "z_archive/033-ux-deep-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/scratch/legacy-memory-quarantine/25-12-25_11-07__ux-deep-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/memory/25-12-25_11-36__ux-deep-analysis.md",
+      "specFolder": "z_archive/033-ux-deep-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/scratch/legacy-memory-quarantine/25-12-25_11-36__ux-deep-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/memory/25-12-25_15-28__ux-deep-analysis.md",
+      "specFolder": "z_archive/033-ux-deep-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis/scratch/legacy-memory-quarantine/25-12-25_15-28__ux-deep-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/memory/25-12-24_00-00__memory-system-merger.md",
+      "specFolder": "z_archive/035-memory-speckit-merger",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/scratch/legacy-memory-quarantine/25-12-24_00-00__memory-system-merger.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/memory/25-12-25_17-47__memory-speckit-merger.md",
+      "specFolder": "z_archive/035-memory-speckit-merger",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/scratch/legacy-memory-quarantine/25-12-25_17-47__memory-speckit-merger.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/memory/25-12-25_18-17__memory-speckit-merger.md",
+      "specFolder": "z_archive/035-memory-speckit-merger",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger/scratch/legacy-memory-quarantine/25-12-25_18-17__memory-speckit-merger.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/memory/16-02-26_14-50__session-summary.md",
+      "specFolder": "z_archive/037-post-merge-refinement-2",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/scratch/legacy-memory-quarantine/16-02-26_14-50__session-summary.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/memory/25-12-25_18-59__post-merge-refinement-2.md",
+      "specFolder": "z_archive/037-post-merge-refinement-2",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/scratch/legacy-memory-quarantine/25-12-25_18-59__post-merge-refinement-2.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/memory/25-12-25_19-06__post-merge-refinement-2.md",
+      "specFolder": "z_archive/037-post-merge-refinement-2",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2/scratch/legacy-memory-quarantine/25-12-25_19-06__post-merge-refinement-2.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/memory/25-12-25_18-55__node-modules-consolidation.md",
+      "specFolder": "z_archive/039-node-modules-consolidation",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/scratch/legacy-memory-quarantine/25-12-25_18-55__node-modules-consolidation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/memory/26-12-25_08-12__post-merge-refinement-final.md",
+      "specFolder": "z_archive/043-post-merge-refinement-final",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final/scratch/legacy-memory-quarantine/26-12-25_08-12__post-merge-refinement-final.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/26-12-25_08-58__speckit-test-suite.md",
+      "specFolder": "z_archive/044-speckit-test-suite",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/legacy-memory-quarantine/26-12-25_08-58__speckit-test-suite.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/26-12-25_09-02__speckit-test-suite.md",
+      "specFolder": "z_archive/044-speckit-test-suite",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/legacy-memory-quarantine/26-12-25_09-02__speckit-test-suite.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/26-12-25_09-04__speckit-test-suite.md",
+      "specFolder": "z_archive/044-speckit-test-suite",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/legacy-memory-quarantine/26-12-25_09-04__speckit-test-suite.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/26-12-25_09-11__speckit-test-suite.md",
+      "specFolder": "z_archive/044-speckit-test-suite",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/legacy-memory-quarantine/26-12-25_09-11__speckit-test-suite.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/26-12-25_10-09__speckit-test-suite.md",
+      "specFolder": "z_archive/044-speckit-test-suite",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/legacy-memory-quarantine/26-12-25_10-09__speckit-test-suite.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/e2e-test-memory.md",
+      "specFolder": "z_archive/044-speckit-test-suite",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/legacy-memory-quarantine/e2e-test-memory.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/test-agent3/test-memory.md",
+      "specFolder": "z_archive/044-speckit-test-suite",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/memory/scratch/legacy-memory-quarantine/test-memory.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/001-test-agent-08/memory/26-12-25_09-04__test-agent-08.md",
+      "specFolder": "z_archive/044-speckit-test-suite/scratch/001-test-agent-08",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/001-test-agent-08/scratch/legacy-memory-quarantine/26-12-25_09-04__test-agent-08.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-04-crud/memory/test-crud-memory.md",
+      "specFolder": "z_archive/044-speckit-test-suite/scratch/test-agent-04-crud",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-04-crud/scratch/legacy-memory-quarantine/test-crud-memory.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-06-delete/memory/test-delete-memory.md",
+      "specFolder": "z_archive/044-speckit-test-suite/scratch/test-agent-06-delete",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-06-delete/scratch/legacy-memory-quarantine/test-delete-memory.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-a/memory/test-memory-a.md",
+      "specFolder": "z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-a",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-a/scratch/legacy-memory-quarantine/test-memory-a.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-b/memory/test-memory-b.md",
+      "specFolder": "z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-b",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-folder-b/scratch/legacy-memory-quarantine/test-memory-b.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme/memory/27-12-25_11-55__constitutional-readme.md",
+      "specFolder": "z_archive/047-constitutional-readme",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme/scratch/legacy-memory-quarantine/27-12-25_11-55__constitutional-readme.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/memory/30-12-25_14-00__system-analysis.md",
+      "specFolder": "z_archive/048-system-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/scratch/legacy-memory-quarantine/30-12-25_14-00__system-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/memory/30-12-25_14-45__system-analysis.md",
+      "specFolder": "z_archive/048-system-analysis",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/scratch/legacy-memory-quarantine/30-12-25_14-45__system-analysis.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/memory/31-12-25_19-44__codebase-fixes.md",
+      "specFolder": "z_archive/052-codebase-fixes",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/scratch/legacy-memory-quarantine/31-12-25_19-44__codebase-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/memory/31-12-25_19-45__codebase-fixes.md",
+      "specFolder": "z_archive/052-codebase-fixes",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes/scratch/legacy-memory-quarantine/31-12-25_19-45__codebase-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/053-script-analysis-testing/memory/31-12-25_19-46__script-analysis-testing.md",
+      "specFolder": "z_archive/053-script-analysis-testing",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/053-script-analysis-testing/scratch/legacy-memory-quarantine/31-12-25_19-46__script-analysis-testing.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/memory/01-01-26_14-13__remaining-bugs-remediation.md",
+      "specFolder": "z_archive/054-remaining-bugs-remediation",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/scratch/legacy-memory-quarantine/01-01-26_14-13__remaining-bugs-remediation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/memory/01-01-26_15-02__remaining-bugs-remediation.md",
+      "specFolder": "z_archive/054-remaining-bugs-remediation",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation/scratch/legacy-memory-quarantine/01-01-26_15-02__remaining-bugs-remediation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/055-cognitive-memory-upgrade/memory/01-01-26_15-57__cognitive-memory-upgrade.md",
+      "specFolder": "z_archive/055-cognitive-memory-upgrade",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/055-cognitive-memory-upgrade/scratch/legacy-memory-quarantine/01-01-26_15-57__cognitive-memory-upgrade.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/memory/01-01-26_16-46__spec-kit-references-reorganization.md",
+      "specFolder": "z_archive/056-spec-kit-references-reorganization",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/scratch/legacy-memory-quarantine/01-01-26_16-46__spec-kit-references-reorganization.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/memory/01-01-26_17-45__generate-context-modularization-spec.md",
+      "specFolder": "z_archive/058-generate-context-modularization",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/scratch/legacy-memory-quarantine/01-01-26_17-45__generate-context-modularization-spec.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/memory/01-01-26_18-04__generate-context-modularization.md",
+      "specFolder": "z_archive/058-generate-context-modularization",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/scratch/legacy-memory-quarantine/01-01-26_18-04__generate-context-modularization.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/memory/02-01-26_08-20__generate-context-modularization.md",
+      "specFolder": "z_archive/058-generate-context-modularization",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/scratch/legacy-memory-quarantine/02-01-26_08-20__generate-context-modularization.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/memory/02-01-26_10-38__generate-context-modularization.md",
+      "specFolder": "z_archive/058-generate-context-modularization",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/scratch/legacy-memory-quarantine/02-01-26_10-38__generate-context-modularization.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/memory/02-01-26_12-50__generate-context-modularization.md",
+      "specFolder": "z_archive/058-generate-context-modularization",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/scratch/legacy-memory-quarantine/02-01-26_12-50__generate-context-modularization.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/memory/02-01-26_14-09__generate-context-modularization.md",
+      "specFolder": "z_archive/058-generate-context-modularization",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/scratch/legacy-memory-quarantine/02-01-26_14-09__generate-context-modularization.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/memory/15-01-26_11-52__bug-analysis-and-fix.md",
+      "specFolder": "z_archive/064-bug-analysis-and-fix",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/scratch/legacy-memory-quarantine/15-01-26_11-52__bug-analysis-and-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/memory/15-01-26_13-31__anchor-system-implementation.md",
+      "specFolder": "z_archive/065-anchor-system-implementation",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/scratch/legacy-memory-quarantine/15-01-26_13-31__anchor-system-implementation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/memory/15-01-26_13-32__anchor-system-implementation.md",
+      "specFolder": "z_archive/065-anchor-system-implementation",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/scratch/legacy-memory-quarantine/15-01-26_13-32__anchor-system-implementation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/memory/15-01-26_13-59__anchor-system-implementation.md",
+      "specFolder": "z_archive/065-anchor-system-implementation",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation/scratch/legacy-memory-quarantine/15-01-26_13-59__anchor-system-implementation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/memory/15-01-26_16-58__context-server-modularization.md",
+      "specFolder": "z_archive/066-context-server-modularization",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/scratch/legacy-memory-quarantine/15-01-26_16-58__context-server-modularization.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/067-voyage-4-upgrade/memory/15-01-26_19-02__voyage-4-upgrade.md",
+      "specFolder": "z_archive/067-voyage-4-upgrade",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/067-voyage-4-upgrade/scratch/legacy-memory-quarantine/15-01-26_19-02__voyage-4-upgrade.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-constitutional-readme-fix/memory/16-01-26_09-05__constitutional-readme-fix.md",
+      "specFolder": "z_archive/068-constitutional-readme-fix",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-constitutional-readme-fix/scratch/legacy-memory-quarantine/16-01-26_09-05__constitutional-readme-fix.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/memory/16-01-26_11-31__speckit-template-complexity.md",
+      "specFolder": "z_archive/069-speckit-template-complexity",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/memory/16-01-26_13-00__speckit-template-complexity.md",
+      "specFolder": "z_archive/069-speckit-template-complexity",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/memory/16-01-26_12-27__memory-ranking.md",
+      "specFolder": "z_archive/070-memory-ranking",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/memory/16-01-26_14-02__memory-ranking.md",
+      "specFolder": "z_archive/070-memory-ranking",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/scratch/legacy-memory-quarantine/16-01-26_14-02__memory-ranking.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/memory/16-01-26_16-09__memory-ranking.md",
+      "specFolder": "z_archive/070-memory-ranking",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment/memory/16-01-26_17-44__speckit-level-alignment.md",
+      "specFolder": "z_archive/071-speckit-level-alignment",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/memory/20-01-26_09-10__speckit-template-optimization-refinement.md",
+      "specFolder": "z_archive/074-speckit-template-optimization-refinement",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement/memory/20-01-26_12-26__speckit-template-optimization-refinement.md",
+      "specFolder": "z_archive/074-speckit-template-optimization-refinement",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/memory/20-01-26_09-11__speckit-template-optimization-refinement-075.md",
+      "specFolder": "z_archive/075-post-speckit-template-upgrade-testing",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing/memory/20-01-26_12-27__speckit-template-optimization-refinement-075.md",
+      "specFolder": "z_archive/075-post-speckit-template-upgrade-testing",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/memory/23-01-26_14-17__speckit-upgrade-from-research.md",
+      "specFolder": "z_archive/077-speckit-upgrade-from-research",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/memory/23-01-26_20-17__speckit-upgrade-from-research.md",
+      "specFolder": "z_archive/077-speckit-upgrade-from-research",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/scratch/legacy-memory-quarantine/23-01-26_20-17__speckit-upgrade-from-research.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/memory/23-01-26_20-35__speckit-upgrade-from-research.md",
+      "specFolder": "z_archive/077-speckit-upgrade-from-research",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/scratch/legacy-memory-quarantine/23-01-26_20-35__speckit-upgrade-from-research.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/memory/28-01-26_18-36__speckit-bug-remediation.md",
+      "specFolder": "z_archive/080-speckit-bug-remediation",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/scratch/legacy-memory-quarantine/28-01-26_18-36__speckit-bug-remediation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/memory/28-01-26_22-04__speckit-bug-remediation.md",
+      "specFolder": "z_archive/080-speckit-bug-remediation",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_10-17__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_10-53__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/01-02-26_10-53__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_10-59__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "corrupted_title"
+      ],
+      "classification": "repair_in_place",
+      "repairStrategy": "frontmatter_normalization",
+      "indexAction": "reindex",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_11-16__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "corrupted_title",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/01-02-26_11-16__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_11-22__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/01-02-26_11-22__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_11-53__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/01-02-26_11-53__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_11-55__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/01-02-26_11-55__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_12-19__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/01-02-26_12-19__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_14-15__speckit-reimagined-complete.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/01-02-26_14-15__speckit-reimagined-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/02-02-26_17-45__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/02-02-26_17-45__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/02-02-26_17-53__speckit-reimagined.md",
+      "specFolder": "z_archive/082-speckit-reimagined",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/scratch/legacy-memory-quarantine/02-02-26_17-53__speckit-reimagined.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/memory/03-02-25_00-00__verification-complete.md",
+      "specFolder": "z_archive/083-memory-command-consolidation",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation/scratch/legacy-memory-quarantine/03-02-25_00-00__verification-complete.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/memory/03-02-26_17-28__speckit-reimagined-bug-fixes.md",
+      "specFolder": "z_archive/083-speckit-reimagined-bug-fixes",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/scratch/legacy-memory-quarantine/03-02-26_17-28__speckit-reimagined-bug-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/memory/03-02-26_17-56__audit-fixes.md",
+      "specFolder": "z_archive/083-speckit-reimagined-bug-fixes",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/scratch/legacy-memory-quarantine/03-02-26_17-56__audit-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/memory/03-02-26_19-50__speckit-reimagined-bug-fixes.md",
+      "specFolder": "z_archive/083-speckit-reimagined-bug-fixes",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes/scratch/legacy-memory-quarantine/03-02-26_19-50__speckit-reimagined-bug-fixes.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/memory/03-02-26_19-39__generate-context-template-warnings.md",
+      "specFolder": "z_archive/084-generate-context-template-warnings",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/scratch/legacy-memory-quarantine/03-02-26_19-39__generate-context-template-warnings.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/memory/03-02-26_19-40__generate-context-template-warnings.md",
+      "specFolder": "z_archive/084-generate-context-template-warnings",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/scratch/legacy-memory-quarantine/03-02-26_19-40__generate-context-template-warnings.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/memory/03-02-26_19-44__from-anobel.md",
+      "specFolder": "z_archive/084-generate-context-template-warnings",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/scratch/legacy-memory-quarantine/03-02-26_19-44__from-anobel.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/memory/03-02-26_19-44__generate-context-template-warnings.md",
+      "specFolder": "z_archive/084-generate-context-template-warnings",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/scratch/legacy-memory-quarantine/03-02-26_19-44__generate-context-template-warnings.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/memory/03-02-26_19-50__generate-context-template-warnings.md",
+      "specFolder": "z_archive/084-generate-context-template-warnings",
+      "issues": [
+        "malformed_frontmatter",
+        "low_signal_content"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings/scratch/legacy-memory-quarantine/03-02-26_19-50__generate-context-template-warnings.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation/memory/05-02-26_15-58__speckit-known-limitations-remediation.md",
+      "specFolder": "z_archive/088-speckit-known-limitations-remediation",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation/scratch/legacy-memory-quarantine/05-02-26_15-58__speckit-known-limitations-remediation.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/memory/06-02-26_11-57__speckit-reimagined-refinement.md",
+      "specFolder": "z_archive/089-speckit-reimagined-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/scratch/legacy-memory-quarantine/06-02-26_11-57__speckit-reimagined-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/memory/06-02-26_12-47__speckit-reimagined-refinement.md",
+      "specFolder": "z_archive/089-speckit-reimagined-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/scratch/legacy-memory-quarantine/06-02-26_12-47__speckit-reimagined-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/memory/06-02-26_16-32__speckit-reimagined-refinement.md",
+      "specFolder": "z_archive/089-speckit-reimagined-refinement",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/scratch/legacy-memory-quarantine/06-02-26_16-32__speckit-reimagined-refinement.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions/memory/06-02-26_18-46__opencode-naming-conventions.md",
+      "specFolder": "z_archive/090-opencode-naming-conventions",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions/scratch/legacy-memory-quarantine/06-02-26_18-46__opencode-naming-conventions.md"
+    }
+  ]
+}

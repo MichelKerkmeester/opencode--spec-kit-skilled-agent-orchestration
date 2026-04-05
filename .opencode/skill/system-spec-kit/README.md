@@ -1075,7 +1075,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | Skill                                                | Purpose                                                      |
 | ---------------------------------------------------- | ------------------------------------------------------------ |
 | [`sk-doc`](../sk-doc/SKILL.md)                       | Documentation quality standard (DQI scoring, HVR compliance) |
-| [`sk-code--opencode`](../sk-code--opencode/SKILL.md) | Code quality standard for OpenCode system code               |
+| [`sk-code-opencode`](../sk-code-opencode/SKILL.md) | Code quality standard for OpenCode system code               |
 | [`sk-git`](../sk-git/SKILL.md)                       | Git workflow orchestration (worktrees, commits, PRs)         |
 
 ### Project-Level References

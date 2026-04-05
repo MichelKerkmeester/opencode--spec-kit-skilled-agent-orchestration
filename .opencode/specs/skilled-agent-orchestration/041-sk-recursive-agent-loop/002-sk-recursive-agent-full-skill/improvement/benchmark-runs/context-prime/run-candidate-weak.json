@@ -1,0 +1,69 @@
+{
+  "status": "benchmark-complete",
+  "profileId": "context-prime",
+  "family": "session-bootstrap",
+  "target": ".opencode/agent/context-prime.md",
+  "label": "context-prime-candidate-weak",
+  "aggregateScore": 56,
+  "maxScore": 100,
+  "recommendation": "benchmark-fail",
+  "thresholds": {
+    "requiredAggregateScore": 85,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0
+  },
+  "fixtures": [
+    {
+      "id": "clean-bootstrap",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/context-prime/candidate-weak/clean-bootstrap.md",
+      "score": 52,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "## Structural Context",
+        "## Tool Routing"
+      ],
+      "missingPatterns": [
+        "Session Quality:",
+        "session_bootstrap",
+        "mcp__cocoindex_code__search",
+        "code_graph_query"
+      ],
+      "forbiddenMatches": [
+        "edit file"
+      ],
+      "failureModes": [
+        "missing-headings",
+        "missing-required-patterns",
+        "forbidden-patterns"
+      ]
+    },
+    {
+      "id": "urgent-skip",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/context-prime/candidate-weak/urgent-skip.md",
+      "score": 60,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "## System Health"
+      ],
+      "missingPatterns": [
+        "urgent"
+      ],
+      "forbiddenMatches": [
+        "modify files",
+        "run code_graph_scan"
+      ],
+      "failureModes": [
+        "missing-headings",
+        "missing-required-patterns",
+        "forbidden-patterns"
+      ]
+    }
+  ],
+  "failureModes": [
+    "forbidden-patterns",
+    "missing-headings",
+    "missing-required-patterns"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/005-code-graph-auto-reindex-parity",
+  "description": "Feature Specification: Code Graph Auto-Reindex Parity",
+  "keywords": [
+    "feature",
+    "specification",
+    "code-graph",
+    "auto-reindex",
+    "parity",
+    "cocoindex"
+  ],
+  "lastUpdated": "2026-04-04T08:15:00.000Z",
+  "specId": "005",
+  "folderSlug": "code-graph-auto-reindex-parity",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph",
+    "030-opencode-graph-plugin"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

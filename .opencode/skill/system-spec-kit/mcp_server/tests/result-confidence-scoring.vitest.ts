@@ -48,7 +48,7 @@ function parseEnvelope(response: Awaited<ReturnType<typeof formatSearchResults>>
 function makeResult(id: number, overrides: Partial<RawSearchResult> = {}): RawSearchResult {
   return {
     id,
-    spec_folder: 'specs/02--system-spec-kit/022-hybrid-rag-fusion',
+    spec_folder: 'specs/system-spec-kit/022-hybrid-rag-fusion',
     file_path: `/tmp/confidence-${id}.md`,
     title: `Confidence Result ${id}`,
     similarity: 70,

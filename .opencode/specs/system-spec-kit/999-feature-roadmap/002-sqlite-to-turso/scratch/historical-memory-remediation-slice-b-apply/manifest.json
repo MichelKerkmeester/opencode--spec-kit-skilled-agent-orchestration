@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-03-15T12:16:16.691Z",
+  "root": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/024-sqlite-to-turso",
+  "summary": {
+    "total": 3,
+    "clean": 0,
+    "repair_in_place": 0,
+    "regenerate_from_authoritative_evidence": 0,
+    "quarantine": 3
+  },
+  "bySpecFolder": {
+    "memory": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 3
+    }
+  },
+  "files": [
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/024-sqlite-to-turso/memory/05-03-26_07-47__sqlite-to-turso.md",
+      "specFolder": "memory",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/024-sqlite-to-turso/scratch/legacy-memory-quarantine/05-03-26_07-47__sqlite-to-turso.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/024-sqlite-to-turso/memory/05-03-26_07-56__sqlite-to-turso.md",
+      "specFolder": "memory",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/024-sqlite-to-turso/scratch/legacy-memory-quarantine/05-03-26_07-56__sqlite-to-turso.md"
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/024-sqlite-to-turso/memory/05-03-26_09-18__sqlite-to-turso.md",
+      "specFolder": "memory",
+      "issues": [
+        "malformed_frontmatter"
+      ],
+      "classification": "quarantine",
+      "repairStrategy": "quarantine_move",
+      "indexAction": "deindex",
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/024-sqlite-to-turso/scratch/legacy-memory-quarantine/05-03-26_09-18__sqlite-to-turso.md"
+    }
+  ]
+}

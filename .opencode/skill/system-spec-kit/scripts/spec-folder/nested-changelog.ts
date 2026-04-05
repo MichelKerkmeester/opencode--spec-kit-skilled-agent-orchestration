@@ -84,8 +84,8 @@ Options:
   --output <path>     Override the default output file path
 
 Examples:
-  node nested-changelog.js .opencode/specs/02--system-spec-kit/025-nested-changelog-per-spec
-  node nested-changelog.js .opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation --write
+  node nested-changelog.js .opencode/specs/system-spec-kit/025-nested-changelog-per-spec
+  node nested-changelog.js .opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation --write
   node nested-changelog.js 024-compact-code-graph --mode root --json
 `;
 

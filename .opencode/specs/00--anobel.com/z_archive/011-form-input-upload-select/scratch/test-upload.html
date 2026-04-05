@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload Component Test</title>
+
+  <!-- Design System Variables (normally from Webflow) -->
+  <style>
+    :root {
+      /* Color Tokens */
+      --_color-tokens---bg-neutral--white: #ffffff;
+      --_color-tokens---bg-neutral--light: #f5f5f5;
+      --_color-tokens---bg-neutral--base: #e5e7eb;
+      --_color-tokens---border-neutral--base: #e8e8e8;
+      --_color-tokens---border-neutral--dark: #d1d5db;
+      --_color-tokens---border-neutral--darkest: #9ca3af;
+      --_color-tokens---border-brand--base: #06458C;
+      --_color-tokens---input-border--enabled: #d1d5db;
+      --_color-tokens---input-border--negative: #dc2626;
+      --_color-tokens---input-bg--negative: #fef2f2;
+      --_color-tokens---input-content--placeholder: #9ca3af;
+      --_color-tokens---input-content--placeholder_hover: #6b7280;
+      --_color-tokens---input-content--negative: #dc2626;
+      --_color-tokens---content-neutral--dark: #6b7280;
+      --_color-tokens---content-neutral--darkest: #1f2937;
+      --_color-tokens---content-brand--base: #06458C;
+      --_color-tokens---content-brand--dark: #053670;
+      --_color-tokens---state--warning: #dc2626;
+      --_color-tokens---state--success: #16a34a;
+      --_color-tokens---state--focused: rgba(6, 69, 140, 0.2);
+
+      /* Typography */
+      --_typography---size--small: 0.875rem;
+      --_typography---size--base: 1rem;
+      --_typography---size--large: 1.125rem;
+      --_typography---line-height--body: 1.5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f0f0;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #1f2937;
+    }
+
+    .test-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form field wrapper (Webflow structure) */
+    .form-field {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-label .optional {
+      font-weight: 400;
+      color: #6b7280;
+    }
+
+    button[type="submit"] {
+      background: #06458C;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background: #053670;
+    }
+  </style>
+
+  <!-- FilePond CSS -->
+  <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet">
+
+  <!-- Custom Upload Styles -->
+  <link href="input_upload.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>File Upload Component Test</h1>
+
+    <form class="test-form" id="application-form">
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILE UPLOAD COMPONENT - HTML STRUCTURE FOR WEBFLOW
+
+           Required data attributes:
+           - data-file-upload="wrapper"  → Main container
+           - data-file-upload="input"    → File input (FilePond target)
+           - data-file-upload="url"      → Hidden input for uploaded file URL
+           - data-file-upload="config"   → Optional: CMS-connected labels
+
+           Optional configuration attributes (on wrapper):
+           - data-upload-endpoint        → Custom upload endpoint URL
+           - data-max-size               → Max file size (e.g., "10MB")
+           - data-accepted-types         → Accepted MIME types/extensions
+           - data-error-accept           → Custom error for invalid type
+           - data-error-size             → Custom error for size exceeded
+      ═══════════════════════════════════════════════════════════════ -->
+
+      <div class="form-field">
+        <label class="form-label">
+          CV / Resume <span class="optional">(optional)</span>
+        </label>
+
+        <!-- File Upload Wrapper -->
+        <div
+          data-file-upload="wrapper"
+          data-max-size="5MB"
+          data-accepted-types="application/pdf,.doc,.docx"
+          class="input--file-upload"
+        >
+          <!-- Config element for CMS-connected labels -->
+          <div
+            data-file-upload="config"
+            data-label-helper="Maximaal 5MB: PDF, DOC, DOCX"
+            data-label-click-to-undo="Click to undo"
+            data-label-click-to-delete="Click to delete"
+            style="display: none;"
+          ></div>
+
+          <!-- File Input (FilePond will enhance this) -->
+          <input
+            type="file"
+            data-file-upload="input"
+            accept=".pdf,.doc,.docx"
+          >
+
+          <!-- Hidden URL Input (stores uploaded file URL for form submission) -->
+          <input
+            type="hidden"
+            name="cv_url"
+            data-file-upload="url"
+          >
+        </div>
+      </div>
+
+      <!-- Second upload for testing multiple instances -->
+      <div class="form-field">
+        <label class="form-label">
+          Cover Letter <span class="optional">(optional)</span>
+        </label>
+
+        <div
+          data-file-upload="wrapper"
+          data-max-size="10MB"
+          data-accepted-types="application/pdf"
+          class="input--file-upload"
+        >
+          <div
+            data-file-upload="config"
+            data-label-helper="Maximaal 10MB: alleen PDF"
+            style="display: none;"
+          ></div>
+
+          <input
+            type="file"
+            data-file-upload="input"
+            accept=".pdf"
+          >
+
+          <input
+            type="hidden"
+            name="cover_letter_url"
+            data-file-upload="url"
+          >
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           CUSTOM UI FILE UPLOAD - TEST COMPONENT
+           This tests the new custom UI mode where FilePond is hidden
+           and Webflow-designed elements provide the visual interface.
+      ═══════════════════════════════════════════════════════════════ -->
+      <div class="form-field">
+        <label class="form-label">
+          Portfolio <span class="optional">(optional)</span> - <strong>Custom UI Mode</strong>
+        </label>
+
+        <!-- File Upload Wrapper with Custom UI -->
+        <div
+          data-file-upload="wrapper"
+          data-max-size="5MB"
+          data-accepted-types="application/pdf,.doc,.docx"
+          class="input--file-upload"
+          style="background: #fff; border: 1.5px solid #d1d5db; border-radius: 0.5rem; padding: 1.5rem; min-height: 7.5rem;"
+        >
+          <!-- Config element for CMS-connected labels -->
+          <div
+            data-file-upload="config"
+            data-label-helper="Maximaal 5MB: PDF, DOC, DOCX"
+            data-label-click-to-undo="Klik om te annuleren"
+            data-label-click-to-delete="Klik om te verwijderen"
+            data-label-of="van"
+            style="display: none;"
+          ></div>
+
+          <!-- VIEW: IDLE (Drop Zone) -->
+          <div data-upload-view="idle" class="upload__dropzone">
+            <div class="upload__dropzone-icon">
+              <!-- Upload icon (Lucide file-up) -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                <path d="M12 12v6"/>
+                <path d="m15 15-3-3-3 3"/>
+              </svg>
+            </div>
+            <div class="upload__dropzone-text">
+              Drag & drop your file or <span data-upload-action="browse" class="upload__browse">Browse</span>
+            </div>
+            <div class="upload__dropzone-helper" data-upload-label="helper">
+              Maximaal 5MB: PDF, DOC, DOCX
+            </div>
+          </div>
+
+          <!-- VIEW: UPLOADING (Vertical centered layout) -->
+          <div data-upload-view="uploading" class="upload__progress">
+            <div class="upload__file-icon" data-upload-el="icon">
+              <!-- File upload icon (Lucide file-up) -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                <path d="M12 12v6"/>
+                <path d="m15 15-3-3-3 3"/>
+              </svg>
+            </div>
+            <div class="upload__file-info">
+              <div class="upload__filename" data-upload-el="filename">Uploading...</div>
+              <div class="upload__bar">
+                <div class="upload__bar-fill" data-upload-el="bar-fill" style="width: 0%;"></div>
+              </div>
+              <div class="upload__meta">
+                <div class="upload__meta-left">
+                  <span class="upload__percentage" data-upload-el="percentage">0%</span>
+                  <span class="upload__divider"></span>
+                  <span class="upload__size" data-upload-el="size">0MB of 5MB</span>
+                </div>
+                <span class="upload__action" data-upload-action="undo">Click to undo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: COMPLETE (Vertical centered layout) -->
+          <div data-upload-view="complete" class="upload__complete">
+            <div class="upload__file-icon">
+              <!-- File check icon (Lucide file-check) -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                <path d="m9 15 2 2 4-4"/>
+              </svg>
+            </div>
+            <div class="upload__file-info">
+              <div class="upload__filename" data-upload-el="filename-complete">document.pdf</div>
+              <div class="upload__bar">
+                <div class="upload__bar-fill" style="width: 100%;"></div>
+              </div>
+              <div class="upload__meta">
+                <div class="upload__meta-left">
+                  <span class="upload__percentage">100%</span>
+                  <span class="upload__divider"></span>
+                  <span class="upload__size" data-upload-el="size-complete">5MB</span>
+                </div>
+                <span class="upload__action" data-upload-action="delete">Click to delete</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: ERROR (Vertical centered layout) -->
+          <div data-upload-view="error" class="upload__error">
+            <div class="upload__error-icon">
+              <!-- Alert icon (Lucide alert-circle) -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" x2="12" y1="8" y2="12"/>
+                <line x1="12" x2="12.01" y1="16" y2="16"/>
+              </svg>
+            </div>
+            <div class="upload__error-text" data-upload-el="error-message">File is too large</div>
+            <span class="upload__action" data-upload-action="retry">Try again</span>
+          </div>
+
+          <!-- HIDDEN: FilePond elements (invisible, handles upload logic) -->
+          <div style="position: absolute; opacity: 0; pointer-events: none; height: 0; overflow: hidden;">
+            <input
+              type="file"
+              data-file-upload="input"
+              accept=".pdf,.doc,.docx"
+            >
+          </div>
+
+          <!-- Hidden URL Input (stores uploaded file URL for form submission) -->
+          <input
+            type="hidden"
+            name="portfolio_url"
+            data-file-upload="url"
+          >
+        </div>
+      </div>
+
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+
+  <!-- FilePond JS + Plugins -->
+  <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+  <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+  <!-- Custom Upload Script -->
+  <script src="input_upload.js"></script>
+
+  <!-- Form submission handler for testing -->
+  <script>
+    document.getElementById('application-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      console.log('Form submitted with data:', data);
+      alert('Form submitted!\n\nCheck console for details.\n\nCV URL: ' + (data.cv_url || 'Not uploaded') + '\nCover Letter URL: ' + (data.cover_letter_url || 'Not uploaded') + '\nPortfolio URL: ' + (data.portfolio_url || 'Not uploaded'));
+    });
+  </script>
+</body>
+</html>

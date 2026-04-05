@@ -47,7 +47,7 @@ Stale references to "Sprint N", "Phase NNN", or "spec NNN" in non-test comments 
 
 | File | Focus |
 |------|-------|
-| `.opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py` | Enforces `MODULE:` header in first 40 lines of all non-test `.ts` files |
+| `.opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py` | Enforces `MODULE:` header in first 40 lines of all non-test `.ts` files |
 
 ---
 

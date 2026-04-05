@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/042-post-merge-refinement-5",
+  "description": "Feature Specification: Spec Kit & Memory System Post-Merge Refinement (Phase 5)",
+  "keywords": [
+    "feature",
+    "specification",
+    "spec",
+    "kit",
+    "memory",
+    "system",
+    "post-merge",
+    "refinement",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.120Z",
+  "specId": "042",
+  "folderSlug": "post-merge-refinement-5",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

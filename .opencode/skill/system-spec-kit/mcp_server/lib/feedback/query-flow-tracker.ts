@@ -5,7 +5,7 @@
 // same-topic re-queries. Emits feedback events via the existing
 // feedback ledger. Bounded in-memory session cache — no DB reads on hot path.
 //
-// Spec: 02--system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline
+// Spec: system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline
 import type Database from 'better-sqlite3';
 import {
   logFeedbackEvent,

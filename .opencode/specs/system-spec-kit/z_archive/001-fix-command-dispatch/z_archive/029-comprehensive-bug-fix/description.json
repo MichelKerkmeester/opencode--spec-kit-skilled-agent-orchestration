@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix",
+  "description": "Comprehensive Skills & MCP Server Bug Fix",
+  "keywords": [
+    "comprehensive",
+    "skills",
+    "mcp",
+    "server",
+    "bug",
+    "fix"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.059Z",
+  "specId": "029",
+  "folderSlug": "comprehensive-bug-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

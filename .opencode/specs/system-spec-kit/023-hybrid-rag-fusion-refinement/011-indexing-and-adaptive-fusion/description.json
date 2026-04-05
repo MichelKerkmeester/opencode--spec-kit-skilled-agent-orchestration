@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "description": "Feature Specification: Indexing and Adaptive Fusion Enablement",
+  "keywords": [
+    "feature",
+    "specification",
+    "indexing",
+    "adaptive",
+    "fusion",
+    "enablement"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.785Z",
+  "specId": "011",
+  "folderSlug": "indexing-and-adaptive-fusion",
+  "parentChain": [
+    "system-spec-kit",
+"023-hybrid-rag-fusion-refinement"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-04-26_11-37__autonomous-multi-agent-implementation-of-all.md"
+  ]
+}

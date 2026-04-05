@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/010-documentation-alignment",
+  "description": "Feature Specification: Documentation Alignment for Spec 126",
+  "keywords": [
+    "feature",
+    "specification",
+    "documentation",
+    "alignment",
+    "spec",
+    "126"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.398Z",
+  "specId": "010",
+  "folderSlug": "documentation-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

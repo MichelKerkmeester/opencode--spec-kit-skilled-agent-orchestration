@@ -1,0 +1,46 @@
+V8 | .opencode/specs/00--anobel.com/029-anobel-performance-analysis/memory/02-02-26_07-14__anobel-performance-analysis.md
+V8 | .opencode/specs/00--anobel.com/z_archive/007-notification-system/memory/quarantine/21-12-25_11-16__notification-system.md
+V8 | .opencode/specs/00--anobel.com/z_archive/011-form-input-upload-select/memory/quarantine/27-12-25_13-44__form-input-components.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence/memory/27-02-26_09-07__sprint-3-query-intel-review.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon/memory/27-02-26_09-06__sprint-7-effort-split-fixes.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/02-03-26_16-36__cross-ai-review-phase-018-launch.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/02-03-26_19-40__gemini-codex-review-14-findings.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_07-32__rag-comparative-analysis-part1.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_07-32__rag-comparative-analysis-part2.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_09-32__multi-agent-rag-architecture-research.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_11-54__rag-research-extended-session.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/memory/06-03-26_20-30__review-13-fixes-applied.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/memory/06-03-26_13-00__phase-9-memory-naming-closure.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/memory/19-03-26_18-44__architecture-audit.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/memory/20-03-26_15-26__architecture-audit.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/memory/26-03-26_13-46__phase-h9-playbook-scenario-creation-16-manual.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/memory/16-03-26_22-22__next-steps.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback/memory/16-03-26_22-31__completed-phase-015-by-aligning-the-outsourced.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity/memory/18-03-26_18-24__next-steps.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification/memory/16-03-26_18-04__quality-scorer-unification.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection/memory/16-03-26_18-23__contamination-detection.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration/memory/16-03-26_19-21__confidence-calibration.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification/memory/16-03-26_20-16__phase-classification.md
+V8 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/memory/16-03-26_19-54__signal-extraction.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/memory/22-03-26_09-47__comprehensive-5-agent-parallel-review-of-phase.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/memory/16-03-16_12-15__phase5-implementation-83-fixes-applied.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/memory/26-03-26_18-27__implemented-spec-012-pre-release-remediation.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/memory/26-03-26_18-47__completed-full-012-pre-release-remediation.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/memory/27-03-26_15-38__manual-context-save.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/memory/27-03-26_16-22__implemented-segment-2-runtime-hunt-continuation.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes/memory/27-03-26_17-07__implemented-segment-3-of-the-canonical-012-review.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/memory/28-03-26_13-00__planned-a-20-iteration-deep-research-review-audit.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/memory/28-03-26_14-25__completed-30-iteration-deep-research-review-audit.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/memory/28-03-26_17-20__phase-9-p2-triage-complete-5-parallel-gpt-5-4.md
+V12 | .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/memory/29-03-26_09-35__phase-12-meta-review-remediation-fixed-all-29.md
+V12 | .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation/memory/30-03-26_11-47__phase-6-complete-all-18-findings-from-10.md
+V12 | .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/memory/30-03-26_17-26__fixed-two-critical-bugs-causing-the-spec-kit.md
+V2, V8 | .opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/memory/16-01-26_12-27__memory-ranking.md
+V6, V8 | .opencode/specs/03--commands-and-skills/015-cmd-create-changelog/memory/01-03-26_14-30__create-changelog-command.md
+V12 | .opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/memory/26-03-26_11-02__created-spec-folder-033-for-rewriting-23-readmes.md
+V8, V12 | .opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/memory/26-03-26_12-47__implemented-spec-033-rewrote-all-23-skill-and.md
+V12 | .opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/memory/26-03-26_13-24__reviewed-all-23-spec-033-readmes-using-5-parallel.md
+V12 | .opencode/specs/03--commands-and-skills/034-sk-deep-research-review-folders/memory/27-03-26_11-52__applied-the-post-review-remediation-for-034-sk.md
+V8 | .opencode/specs/04--agent-orchestration/z_archive/005-agent-system-improvements/memory/27-01-26_11-24__agent-system-improvements.md

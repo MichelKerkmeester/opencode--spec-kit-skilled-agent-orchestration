@@ -36,7 +36,7 @@ One-page cheat sheet for the autonomous deep review loop.
 | Scenario | Use |
 |----------|-----|
 | Multi-pass code quality audit | `/spec_kit:deep-review` |
-| Simple single-pass code review | `sk-code--review` |
+| Simple single-pass code review | `sk-code-review` |
 | Pre-release readiness check | `/spec_kit:deep-review:auto "spec folder"` |
 | Spec/implementation alignment check | `/spec_kit:deep-review:auto "skill sk-name"` |
 | Deep technical investigation | `/spec_kit:deep-research` (different skill) |
@@ -221,7 +221,7 @@ Each @deep-review iteration:
 | Resource | Purpose |
 |----------|---------|
 | `sk-deep-research` | Investigation/research (not review) |
-| `sk-code--review` | Single-pass code review |
+| `sk-code-review` | Single-pass code review |
 | `@deep-review` | Single review iteration agent (LEAF) |
 | `@context` | Single-pass codebase search |
 | `generate-context.js` | Memory save script |

@@ -126,8 +126,8 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
 | **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate → DQI score → Verify                                                     |
-| **Web code**              | sk-code--web skill → Webflow/CDN standards, minification, browser testing                                                           |
-| **OpenCode system code**  | sk-code--opencode skill → JS/TS/Python/Shell standards, language detection, quality checklists                                       |
+| **Web code**              | sk-code-web skill → Webflow/CDN standards, minification, browser testing                                                           |
+| **OpenCode system code**  | sk-code-opencode skill → JS/TS/Python/Shell standards, language detection, quality checklists                                       |
 | **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                                |
 | **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → Populate → Plan first child                        |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
@@ -353,9 +353,9 @@ Task Received → Gate 2: Run skill_advisor.py
 4. Follow skill instructions to completion
 5. Do NOT re-invoke a skill already in context
 
-### Primary Skill: sk-code--opencode
+### Primary Skill: sk-code-opencode
 
-For ALL OpenCode system code (`.opencode/`, MCP servers, scripts), `sk-code--opencode` provides multi-language standards. Includes the `system-spec-kit` skill for spec folder workflows and the Spec Kit Memory system for context preservation across sessions.
+For ALL OpenCode system code (`.opencode/`, MCP servers, scripts), `sk-code-opencode` provides multi-language standards. Includes the `system-spec-kit` skill for spec folder workflows and the Spec Kit Memory system for context preservation across sessions.
 
 **Supported Languages:**
 

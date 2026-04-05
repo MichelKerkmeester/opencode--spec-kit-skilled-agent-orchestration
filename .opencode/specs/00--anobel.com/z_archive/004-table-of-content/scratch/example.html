@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOC ScrollSpy Example</title>
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* Layout */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+    }
+
+    /* TOC Sidebar */
+    .toc-sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+      background: #f8f9fa;
+      border-right: 1px solid #e9ecef;
+    }
+
+    .toc-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6c757d;
+      margin-bottom: 1rem;
+    }
+
+    /* TOC Links - Base */
+    [data-toc-link] {
+      display: block;
+      padding: 0.5rem 0;
+      color: #495057;
+      text-decoration: none;
+      font-size: 0.9375rem;
+      transition: color 0.2s ease, font-weight 0.2s ease, border-color 0.2s ease;
+      border-left: 3px solid transparent;
+      padding-left: 0.75rem;
+      margin-left: -0.75rem;
+    }
+
+    [data-toc-link]:hover {
+      color: #0066cc;
+    }
+
+    /* Active State - Using data attribute (recommended) */
+    [data-toc-link][data-toc-active="true"] {
+      font-weight: 600;
+      color: #0066cc;
+      border-left-color: #0066cc;
+    }
+
+    /* Alternative: Using class */
+    /* [data-toc-link].is--current { ... } */
+
+    /* Alternative: Using aria-current */
+    /* [data-toc-link][aria-current="true"] { ... } */
+
+    /* Focus indicator for keyboard navigation */
+    [data-toc-link]:focus-visible {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Nested levels */
+    [data-toc-link][data-toc-level="3"] {
+      padding-left: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    [data-toc-link][data-toc-level="4"] {
+      padding-left: 2.5rem;
+      font-size: 0.8125rem;
+    }
+
+    /* Main Content */
+    .content {
+      padding: 2rem 4rem;
+      max-width: 800px;
+    }
+
+    /* Sections */
+    section[data-toc-section] {
+      margin-bottom: 4rem;
+      scroll-margin-top: 2rem; /* Account for any fixed elements */
+    }
+
+    section[data-toc-section] h2,
+    section[data-toc-section] h3 {
+      margin-bottom: 1rem;
+    }
+
+    section[data-toc-section] p {
+      margin-bottom: 1rem;
+    }
+
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      [data-toc-link] {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-layout">
+    <!-- TOC Sidebar -->
+    <aside class="toc-sidebar">
+      <nav 
+        data-toc-container
+        data-toc-offset-top="10%"
+        data-toc-offset-bottom="70%"
+        data-toc-active-class="is--current"
+        aria-label="Table of contents"
+      >
+        <h2 class="toc-title">On This Page</h2>
+        
+        <!-- H2 Level Links -->
+        <a href="#introduction" data-toc-link data-toc-level="2">Introduction</a>
+        <a href="#getting-started" data-toc-link data-toc-level="2">Getting Started</a>
+        
+        <!-- H3 Level Links (nested) -->
+        <a href="#installation" data-toc-link data-toc-level="3">Installation</a>
+        <a href="#configuration" data-toc-link data-toc-level="3">Configuration</a>
+        
+        <a href="#usage" data-toc-link data-toc-level="2">Usage</a>
+        
+        <!-- H3 Level Links -->
+        <a href="#basic-example" data-toc-link data-toc-level="3">Basic Example</a>
+        <a href="#advanced-options" data-toc-link data-toc-level="3">Advanced Options</a>
+        
+        <a href="#api-reference" data-toc-link data-toc-level="2">API Reference</a>
+        <a href="#troubleshooting" data-toc-link data-toc-level="2">Troubleshooting</a>
+        <a href="#conclusion" data-toc-link data-toc-level="2">Conclusion</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <section id="introduction" data-toc-section>
+        <h2>Introduction</h2>
+        <p>Welcome to the TOC ScrollSpy documentation. This custom implementation provides flexible styling options for your Table of Contents, using IntersectionObserver for accurate scroll detection.</p>
+        <p>Unlike Finsweet's approach which relies on Webflow's native <code>w--current</code> class, this solution gives you complete control over styling through data attributes, CSS classes, and ARIA attributes.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+      </section>
+
+      <section id="getting-started" data-toc-section>
+        <h2>Getting Started</h2>
+        <p>To get started with TOC ScrollSpy, you'll need to add the JavaScript and CSS files to your project, then set up the HTML structure with the appropriate data attributes.</p>
+        <p>The setup process is straightforward and doesn't require any build tools or dependencies.</p>
+      </section>
+
+      <section id="installation" data-toc-section>
+        <h3>Installation</h3>
+        <p>Add the script to your page, either via CDN or by including the file directly:</p>
+        <pre><code>&lt;script src="path/to/toc_scrollspy.js"&gt;&lt;/script&gt;</code></pre>
+        <p>Don't forget to include the CSS file for styling:</p>
+        <pre><code>&lt;link rel="stylesheet" href="path/to/toc_scrollspy.css"&gt;</code></pre>
+      </section>
+
+      <section id="configuration" data-toc-section>
+        <h3>Configuration</h3>
+        <p>Configure the TOC using data attributes on the container element:</p>
+        <ul>
+          <li><code>data-toc-offset-top</code> - Offset from top of viewport (default: 10%)</li>
+          <li><code>data-toc-offset-bottom</code> - Offset from bottom of viewport (default: 70%)</li>
+          <li><code>data-toc-active-class</code> - Custom class name for active state (default: is--current)</li>
+        </ul>
+        <p>All configuration is optional - sensible defaults are provided.</p>
+      </section>
+
+      <section id="usage" data-toc-section>
+        <h2>Usage</h2>
+        <p>Using TOC ScrollSpy is simple. Add the required data attributes to your HTML elements and the script handles everything else.</p>
+        <p>The key attributes are:</p>
+        <ul>
+          <li><code>data-toc-container</code> - On the TOC navigation element</li>
+          <li><code>data-toc-link</code> - On each TOC link</li>
+          <li><code>data-toc-section</code> - On each content section</li>
+        </ul>
+      </section>
+
+      <section id="basic-example" data-toc-section>
+        <h3>Basic Example</h3>
+        <p>Here's a minimal example of the HTML structure:</p>
+        <pre><code>&lt;nav data-toc-container aria-label="Table of contents"&gt;
+  &lt;a href="#section-1" data-toc-link&gt;Section 1&lt;/a&gt;
+  &lt;a href="#section-2" data-toc-link&gt;Section 2&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;section id="section-1" data-toc-section&gt;
+  &lt;h2&gt;Section 1&lt;/h2&gt;
+  &lt;p&gt;Content...&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+        <p>That's all you need for a working TOC with scroll tracking!</p>
+      </section>
+
+      <section id="advanced-options" data-toc-section>
+        <h3>Advanced Options</h3>
+        <p>For more control, you can customize the detection zone and styling:</p>
+        <pre><code>&lt;nav data-toc-container
+     data-toc-offset-top="80px"
+     data-toc-offset-bottom="60%"
+     data-toc-active-class="my-custom-active"&gt;
+  ...
+&lt;/nav&gt;</code></pre>
+        <p>The offset values accept any valid CSS length (px, %, em, rem, vh, vw).</p>
+      </section>
+
+      <section id="api-reference" data-toc-section>
+        <h2>API Reference</h2>
+        <p>The script applies the following attributes/classes to the active TOC link:</p>
+        <table>
+          <tr>
+            <th>Selector</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>[data-toc-active="true"]</code></td>
+            <td>Data attribute (recommended for custom styling)</td>
+          </tr>
+          <tr>
+            <td><code>.is--current</code></td>
+            <td>Custom class (configurable)</td>
+          </tr>
+          <tr>
+            <td><code>[aria-current="true"]</code></td>
+            <td>ARIA attribute (for accessibility)</td>
+          </tr>
+          <tr>
+            <td><code>.w--current</code></td>
+            <td>Webflow native class (for designer compatibility)</td>
+          </tr>
+        </table>
+        <p>All four are applied simultaneously, so you can use whichever selector works best for your CSS.</p>
+      </section>
+
+      <section id="troubleshooting" data-toc-section>
+        <h2>Troubleshooting</h2>
+        <p>Common issues and solutions:</p>
+        <ul>
+          <li><strong>Links not highlighting:</strong> Ensure sections have both <code>id</code> and <code>data-toc-section</code> attributes.</li>
+          <li><strong>Wrong section highlighted:</strong> Adjust <code>data-toc-offset-top</code> to account for fixed headers.</li>
+          <li><strong>Jumpy behavior:</strong> This is normal during fast scrolling - the script uses RAF batching to minimize flicker.</li>
+        </ul>
+        <p>Check the browser console for any initialization errors or warnings.</p>
+      </section>
+
+      <section id="conclusion" data-toc-section>
+        <h2>Conclusion</h2>
+        <p>TOC ScrollSpy provides a flexible, accessible, and customizable solution for Table of Contents navigation. Unlike Webflow's built-in current state, you have full control over styling through multiple CSS selectors.</p>
+        <p>The IntersectionObserver-based detection is efficient and accurate, with fallbacks for edge cases like very short sections or fast scrolling.</p>
+        <p>Happy scrolling!</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Include the TOC ScrollSpy script -->
+  <script src="../../../src/2_javascript/menu/toc_scrollspy.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research",
+  "description": "Feature Specification: External Graph Memory Research",
+  "keywords": [
+    "feature",
+    "specification",
+    "external",
+    "graph",
+    "memory",
+    "research"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.820Z",
+  "specId": "007",
+  "folderSlug": "external-graph-memory-research",
+  "parentChain": [
+    "system-spec-kit",
+"023-hybrid-rag-fusion-refinement",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "01-04-26_07-21__prepared-the-external-graph-memory-research-phase.md",
+    "01-04-26_11-16__phase-007-external-graph-memory-research-is.md"
+  ]
+}

@@ -3646,7 +3646,7 @@ This was a cleanup pass that made the code follow a consistent style across the 
 
 #### Current Reality
 
-All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
+All modified files were reviewed against sk-code-opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
 
 #### Source Files
 

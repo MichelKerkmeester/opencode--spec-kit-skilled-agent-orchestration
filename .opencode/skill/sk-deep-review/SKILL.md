@@ -35,9 +35,9 @@ Use this skill when:
 
 ### When NOT to Use
 
-- Simple single-pass code review (use `sk-code--review` instead)
+- Simple single-pass code review (use `sk-code-review` instead)
 - Known issues that just need fixing (go directly to implementation)
-- Implementation tasks (use `sk-code--opencode` or `/spec_kit:implement`)
+- Implementation tasks (use `sk-code-opencode` or `/spec_kit:implement`)
 - Quick one-file checks (use direct Grep/Read)
 - Fewer than 2 review dimensions needed (single-pass suffices)
 
@@ -525,7 +525,7 @@ After review:
 | Skill | When to Use Instead |
 |-------|---------------------|
 | `sk-deep-research` | For investigation and topic research, not code review |
-| `sk-code--review` | For simple single-pass code review without iteration |
+| `sk-code-review` | For simple single-pass code review without iteration |
 
 **For one-page cheat sheet**: See [quick_reference.md](references/quick_reference.md)
 <!-- /ANCHOR:related-resources -->

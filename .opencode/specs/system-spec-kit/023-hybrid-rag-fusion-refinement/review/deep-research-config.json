@@ -1,0 +1,64 @@
+{
+  "topic": "Review: ESM Module Compliance root packet rerun",
+  "mode": "review",
+  "reviewTarget": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability",
+    "performance",
+    "reliability",
+    "completeness"
+  ],
+  "reviewScopeFiles": {
+    "spec_paths": [
+      ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/spec.md",
+      ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/plan.md",
+      ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/tasks.md",
+      ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/checklist.md",
+      ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/implementation-summary.md"
+    ],
+    "code_paths": [
+      ".opencode/skill/system-spec-kit/shared/package.json",
+      ".opencode/skill/system-spec-kit/shared/tsconfig.json",
+      ".opencode/skill/system-spec-kit/shared/**/*.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json",
+      ".opencode/skill/system-spec-kit/mcp_server/tsconfig.json",
+      ".opencode/skill/system-spec-kit/mcp_server/**/*.ts",
+      ".opencode/skill/system-spec-kit/scripts/**/*.ts"
+    ],
+    "test_paths": [
+      ".opencode/skill/system-spec-kit/mcp_server/tests/**/*.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/**/*.vitest.ts",
+      ".opencode/skill/system-spec-kit/shared/**/*.test.ts"
+    ]
+  },
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["skill_agent", "agent_cross_runtime", "feature_catalog_code", "playbook_capability"]
+  },
+  "maxIterations": 20,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 180,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "specFolder": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "createdAt": "2026-04-02T18:12:00+02:00",
+  "status": "initialized",
+  "executionMode": "auto",
+  "agentModel": "gpt-5.4",
+  "agentReasoning": "high",
+  "agentDispatch": "copilot-cli",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

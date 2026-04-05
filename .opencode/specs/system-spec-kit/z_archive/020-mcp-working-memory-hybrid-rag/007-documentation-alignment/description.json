@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment",
+  "description": "Feature Specification: Documentation Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "documentation",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.531Z",
+  "specId": "007",
+  "folderSlug": "documentation-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "020-mcp-working-memory-hybrid-rag"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

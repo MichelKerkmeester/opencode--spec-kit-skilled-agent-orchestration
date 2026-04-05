@@ -1,0 +1,33 @@
+{
+  "topic": "Comprehensive hybrid-rag-fusion system analysis: pipeline architecture, scoring calibration, automation opportunities, dead code/bugs, and alignment with sk-code-opencode and sk-doc standards",
+  "maxIterations": 20,
+  "convergenceThreshold": 0.02,
+  "stuckThreshold": 5,
+  "maxDurationMinutes": 900,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+  "createdAt": "2026-03-20T09:49:38Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "agentConfig": {
+    "agentsPerIteration": 3,
+    "slots": ["A1-codex", "A2-copilot", "A3-native"],
+    "codexModel": "gpt-5.4",
+    "copilotModel": "gpt-5.4",
+    "nativeModel": "opus"
+  },
+  "antiConvergence": {
+    "threshold": 0.02,
+    "phasedQuestionInjection": [5, 10],
+    "domainRotation": true,
+    "convergenceExemptIterations": [18, 19, 20]
+  },
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "agent-output-iter-*": "write-once",
+    "research.md": "mutable"
+  }
+}

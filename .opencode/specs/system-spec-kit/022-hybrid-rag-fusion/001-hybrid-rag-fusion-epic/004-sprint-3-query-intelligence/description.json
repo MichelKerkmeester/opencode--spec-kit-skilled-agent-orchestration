@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence",
+  "description": "Feature Specification: Sprint 3 — Query Intelligence",
+  "keywords": [
+    "feature",
+    "specification",
+    "sprint",
+    "query",
+    "intelligence"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.506Z",
+  "specId": "004",
+  "folderSlug": "sprint-3-query-intelligence",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "001-hybrid-rag-fusion-epic"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

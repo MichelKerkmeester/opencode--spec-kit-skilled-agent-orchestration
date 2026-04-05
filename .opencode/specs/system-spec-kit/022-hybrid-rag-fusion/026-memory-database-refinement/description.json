@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement",
+  "description": "Feature Specification: Memory Database Refinement",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "database",
+    "refinement"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.958Z",
+  "specId": "026",
+  "folderSlug": "memory-database-refinement",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 7,
+  "memoryNameHistory": [
+    "28-03-26_13-00__planned-a-20-iteration-deep-research-review-audit.md",
+    "28-03-26_14-25__completed-30-iteration-deep-research-review-audit.md",
+    "28-03-26_16-18__fixed-two-root-cause-bugs-in-the-mcp-memory.md",
+    "28-03-26_17-20__phase-9-p2-triage-complete-5-parallel-gpt-5-4.md",
+    "28-03-26_23-59__10-iteration-meta-review-of-spec-folder-026.md",
+    "29-03-26_09-35__phase-12-meta-review-remediation-fixed-all-29.md",
+    "29-03-26_11-24__phase-13-deep-research-refinement-implementation.md"
+  ]
+}

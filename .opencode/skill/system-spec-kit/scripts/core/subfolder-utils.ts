@@ -18,7 +18,7 @@ export const SPEC_FOLDER_PATTERN: RegExp = /^\d{3}-[a-z][a-z0-9-]*$/;
 /** Basic pattern for initial spec folder detection (less strict). */
 export const SPEC_FOLDER_BASIC_PATTERN: RegExp = /^\d{3}-[a-zA-Z]/;
 
-/** Pattern for category/organizational folders: 2 digits + double-hyphen + kebab-case (e.g., "02--system-spec-kit"). */
+/** Pattern for category/organizational folders: 2 digits + double-hyphen + kebab-case (e.g., "system-spec-kit"). */
 export const CATEGORY_FOLDER_PATTERN: RegExp = /^\d{2}--[a-z][a-z0-9-]*$/;
 
 /** Maximum recursive search depth for child folder resolution. */

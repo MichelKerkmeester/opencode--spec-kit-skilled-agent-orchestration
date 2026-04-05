@@ -54,7 +54,7 @@ describe('generate-context CLI authority', () => {
 
   it('passes JSON-mode data and explicit CLI spec-folder override through main()', async () => {
     const dataFile = '/tmp/save-context-data.json';
-    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), dataFile, explicitSpecFolder];
 
     const { main } = await import('../memory/generate-context');
@@ -75,7 +75,7 @@ describe('generate-context CLI authority', () => {
 
   it('forwards explicit --session-id to workflow', async () => {
     const dataFile = '/tmp/save-context-data.json';
-    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     const sessionId = 'test-session-123';
     process.argv = [
       'node',
@@ -104,10 +104,10 @@ describe('generate-context CLI authority', () => {
   });
 
   it('passes stdin JSON as preloaded collectedData and preserves an explicit CLI spec-folder override', async () => {
-    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     const resolvedSpecFolder = path.resolve(REPO_ROOT, explicitSpecFolder);
     const payload = JSON.stringify({
-      specFolder: '.opencode/specs/01--anobel.com/036-hero-contact-success',
+      specFolder: '.opencode/specs/00--anobel.com/036-hero-contact-success',
       sessionSummary: 'Structured stdin payload should not override an explicit CLI target.',
     });
 
@@ -119,7 +119,7 @@ describe('generate-context CLI authority', () => {
       dataFile: undefined,
       specFolderArg: resolvedSpecFolder,
       collectedData: expect.objectContaining({
-        specFolder: '.opencode/specs/01--anobel.com/036-hero-contact-success',
+        specFolder: '.opencode/specs/00--anobel.com/036-hero-contact-success',
         sessionSummary: 'Structured stdin payload should not override an explicit CLI target.',
         _source: 'file',
       }),
@@ -130,7 +130,7 @@ describe('generate-context CLI authority', () => {
   });
 
   it('passes inline JSON as preloaded collectedData using the payload spec folder when no explicit override is present', async () => {
-    const payloadSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const payloadSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     const resolvedSpecFolder = path.resolve(REPO_ROOT, payloadSpecFolder);
     const payload = JSON.stringify({
       specFolder: payloadSpecFolder,
@@ -156,7 +156,7 @@ describe('generate-context CLI authority', () => {
   });
 
   it('keeps target resolution and collectedData shape identical between --stdin and --json for the same payload', async () => {
-    const payloadSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const payloadSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     const resolvedSpecFolder = path.resolve(REPO_ROOT, payloadSpecFolder);
     const payload = JSON.stringify({
       specFolder: payloadSpecFolder,
@@ -197,7 +197,7 @@ describe('generate-context CLI authority', () => {
   });
 
   it('allows an empty JSON object through to workflow when an explicit CLI target is present', async () => {
-    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     const resolvedSpecFolder = path.resolve(REPO_ROOT, explicitSpecFolder);
 
     const { main } = await import('../memory/generate-context');

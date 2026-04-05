@@ -458,7 +458,7 @@ workflow:
             REVIEW TARGET: {review_target}
             REVIEW SCOPE FILES: {review_scope_files}
             PRIOR FINDINGS: P0={p0_count} P1={p1_count} P2={p2_count}
-            SHARED DOCTRINE: Load .agents/skills/sk-code--review/references/review_core.md before final severity calls.
+            SHARED DOCTRINE: Load .agents/skills/sk-code-review/references/review_core.md before final severity calls.
             REVIEW DIMENSIONS: correctness, security, traceability, maintainability
             TRACEABILITY PROTOCOLS:
             - Core: spec_code, checklist_evidence

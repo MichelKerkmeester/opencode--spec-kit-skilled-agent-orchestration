@@ -118,8 +118,8 @@ performance-baselines/
 - Performance monitoring over time
 
 **Workflow integration:**
-- See: `.opencode/skill/sk-code--web/references/debugging/debugging_workflows.md` (Section 7)
-- See: `.opencode/skill/sk-code--web/references/implementation/performance_patterns.md` (Section 3)
+- See: `.opencode/skill/sk-code-web/references/debugging/debugging_workflows.md` (Section 7)
+- See: `.opencode/skill/sk-code-web/references/implementation/performance_patterns.md` (Section 3)
 
 ---
 
@@ -157,7 +157,7 @@ performance-baselines/
 - CI/CD animation checks
 
 **Workflow integration:**
-- See: `.opencode/skill/sk-code--web/references/implementation/animation_workflows.md` (Section 6)
+- See: `.opencode/skill/sk-code-web/references/implementation/animation_workflows.md` (Section 6)
 
 ---
 
@@ -215,8 +215,8 @@ viewport-tests/20241127-143022/
 - Visual regression across viewports
 
 **Workflow integration:**
-- See: `.opencode/skill/sk-code--web/references/verification/verification_workflows.md` (Section 2)
-- See: `.opencode/skill/sk-code--web/references/implementation/animation_workflows.md` (Multi-Viewport Testing)
+- See: `.opencode/skill/sk-code-web/references/verification/verification_workflows.md` (Section 2)
+- See: `.opencode/skill/sk-code-web/references/implementation/animation_workflows.md` (Multi-Viewport Testing)
 
 <!-- /ANCHOR:available-scripts -->
 
@@ -384,7 +384,7 @@ bdg stop 2>&1
 
 ### Workflow Integration
 
-**sk-code--web References**:
+**sk-code-web References**:
 - `debugging_workflows.md` - Systematic debugging patterns
 - `animation_workflows.md` - Animation performance validation
 - `performance_patterns.md` - Performance optimization strategies
@@ -393,7 +393,7 @@ bdg stop 2>&1
 
 ### Related Skills
 
-- **sk-code--web** - Development workflow orchestration
+- **sk-code-web** - Development workflow orchestration
 - **sk-doc** - Documentation creation and validation
 
 <!-- /ANCHOR:related -->

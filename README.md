@@ -512,7 +512,7 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Compact Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
 
-Together they form the code-context layer described in [`024-compact-code-graph`](.opencode/specs/02--system-spec-kit/024-compact-code-graph/spec.md), with the README-facing wording for this area tracked in [`006-documentation-alignment`](.opencode/specs/02--system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md). The intended split is simple: CocoIndex finds semantic candidates, the code graph expands structural neighbors, and Memory preserves session decisions and active-task context.
+Together they form the code-context layer described in [`024-compact-code-graph`](.opencode/specs/system-spec-kit/024-compact-code-graph/spec.md), with the README-facing wording for this area tracked in [`006-documentation-alignment`](.opencode/specs/system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md). The intended split is simple: CocoIndex finds semantic candidates, the code graph expands structural neighbors, and Memory preserves session decisions and active-task context.
 
 #### What Each System Does
 
@@ -587,7 +587,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 **Review**
 - Code quality guardian with strict read-only permissions (cannot write or edit any file)
-- Loads `sk-code--review` baseline first, then one `sk-code--*` overlay matching the detected stack
+- Loads `sk-code-review` baseline first, then one `sk-code-*` overlay matching the detected stack
 - Security and correctness minimums are mandatory and never relaxed by the overlay
 - Produces findings-first severity analysis with quality scoring and pattern validation
 
@@ -765,22 +765,22 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 #### CODE WORKFLOW
 
-**sk-code--full-stack**
+**sk-code-full-stack**
 - Stack-agnostic development orchestrator with automatic stack detection via marker files
 - Detects 7 stacks: Go, Swift, React Native/Expo, Next.js, React, Node.js, and default
 - 3 mandatory phases: implementation → testing/debugging → verification
 
-**sk-code--web**
+**sk-code-web**
 - Frontend development orchestrator with 5-phase lifecycle
 - Enforces mandatory browser testing before any completion claims with DevTools integration
 - Targets PageSpeed, Lighthouse, TBT and INP metrics. Includes Webflow integration.
 
-**sk-code--review**
+**sk-code-review**
 - Stack-agnostic code review baseline implementing the baseline + overlay model
 - Baseline always runs first: security checklist, correctness checklist, SOLID checklist, threat model
 - Security and correctness minimums are mandatory and NEVER relaxed by the overlay. P0/P1/P2 findings.
 
-**sk-code--opencode**
+**sk-code-opencode**
 - Multi-language standards for OpenCode system code across 5 languages
 - JavaScript (CommonJS), TypeScript (strict), Python (snake_case), Shell (set -euo pipefail), JSON/JSONC
 - Evidence-based patterns extracted from the actual codebase with `file:line` citations

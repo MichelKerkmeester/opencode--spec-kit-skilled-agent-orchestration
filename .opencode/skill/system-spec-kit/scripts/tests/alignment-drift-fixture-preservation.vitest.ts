@@ -12,7 +12,7 @@ const VERIFIER_PATH = path.join(
   WORKSPACE_ROOT,
   '.opencode',
   'skill',
-  'sk-code--opencode',
+  'sk-code-opencode',
   'scripts',
   'verify_alignment_drift.py',
 );
@@ -20,7 +20,7 @@ const FIXTURE_DIR = path.join(
   WORKSPACE_ROOT,
   '.opencode',
   'specs',
-  '02--system-spec-kit',
+  'system-spec-kit',
   'z_archive',
   '001-fix-command-dispatch',
   'z_archive',

@@ -1,0 +1,19 @@
+{
+  "specFolder": "system-spec-kit/999-sqlite-to-turso",
+  "description": "Feature Specification: SQLite-to-Turso Migration Research",
+  "keywords": [
+    "feature",
+    "specification",
+    "sqlite-to-turso",
+    "migration",
+    "research"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.878Z",
+  "specId": "999",
+  "folderSlug": "sqlite-to-turso",
+  "parentChain": [
+    "system-spec-kit"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

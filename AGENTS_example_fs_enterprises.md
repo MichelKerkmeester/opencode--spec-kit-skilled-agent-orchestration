@@ -149,7 +149,7 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
 | **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate → DQI score → Verify                                                     |
-| **Code implementation**   | sk-code--full-stack skill → Detect stack → Phase 1-3 (Implement → Test → Verify)                                                   |
+| **Code implementation**   | sk-code-full-stack skill → Detect stack → Phase 1-3 (Implement → Test → Verify)                                                   |
 | **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                                |
 | **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → Populate → Plan first child                        |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
@@ -385,9 +385,9 @@ Task Received → Gate 2: Run skill_advisor.py
 4. Follow skill instructions to completion
 5. Do NOT re-invoke a skill already in context
 
-### Primary Skill: sk-code--full-stack
+### Primary Skill: sk-code-full-stack
 
-For ALL code implementation, `sk-code--full-stack` is the stack-agnostic development orchestrator.
+For ALL code implementation, `sk-code-full-stack` is the stack-agnostic development orchestrator.
 
 **3-Phase Lifecycle (MANDATORY):**
 1. **Phase 1 - Implementation**: Write code following stack-specific patterns from `references/{category}/{stack}/`

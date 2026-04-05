@@ -89,9 +89,9 @@ flowchart TD
 | 2        | Evidence / iterative investigation                                        | `@deep-research`       | LEAF | `system-spec-kit`, `sk-deep-research`                                             | `"general"`   |
 | 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
 | 4        | Spec folder docs                                                          | `@speckit` ⛔ EXCLUSIVE | LEAF | `system-spec-kit`                                                                 | `"general"`   |
-| 5        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code--*` overlay (auto-detected)      | `"general"`   |
+| 5        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code-*` overlay (auto-detected)      | `"general"`   |
 | 6        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                         | `"general"`   |
-| 7        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code--*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
+| 7        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code-*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
 | 8        | Debugging (stuck, 3+ fails)                                               | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
 | 9        | Session handover                                                          | `@handover`            | LEAF | `system-spec-kit`                                                                 | `"general"`   |
 
@@ -306,7 +306,7 @@ TASK #1: Explore Toast Patterns
 TASK #2: Implement Notification System
 ├─ Scope: Build new system using patterns from Task #1
 ├─ Agent: @general
-├─ Skills: sk-code baseline + one overlay (selected from available sk-code--* overlays)
+├─ Skills: sk-code baseline + one overlay (selected from available sk-code-* overlays)
 ├─ Output: Functional notification system
 ├─ Success: Works in browser, tests pass
 └─ Depends: Task #1
@@ -765,7 +765,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | --------------------------- | --------------- | ---------------------------------------------------------------- | -------------------------- |
 | `system-spec-kit`           | Documentation   | Spec folders, memory, validation, context preservation           | `/spec_kit:*`, `/memory:*` |
 | `sk-code`         | Review baseline | Findings-first review floor, mandatory security/correctness minimums | -                       |
-| `sk-code--*`         | Implementation/overlay | Code changes, debugging, stack-specific standards and verification | -                    |
+| `sk-code-*`         | Implementation/overlay | Code changes, debugging, stack-specific standards and verification | -                    |
 | `sk-git`             | Version Control | See skill for details                                            | -                          |
 | `sk-doc`   | Markdown        | Doc quality, DQI scoring, skill creation, flowcharts             | `/create:*`                |
 | `mcp-chrome-devtools` | Browser         | DevTools automation, screenshots, console, CDP                   | `bdg` CLI                  |
@@ -786,8 +786,8 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `/memory:learn`             | Constitutional memory manager                   | `.opencode/command/memory/learn.md`          |
 | `/memory:manage shared`            | Shared-memory lifecycle                         | `.opencode/command/memory/manage.md`         |
 | `system-spec-kit`           | Spec folders, memory, validation                | `.opencode/skill/system-spec-kit/`           |
-| `sk-code`         | Review baseline lifecycle | `.opencode/skill/sk-code--review/` |
-| `sk-code--*`         | Stack overlay lifecycle (auto-detects variant) | `.opencode/skill/sk-code--*/` |
+| `sk-code`         | Review baseline lifecycle | `.opencode/skill/sk-code-review/` |
+| `sk-code-*`         | Stack overlay lifecycle (auto-detects variant) | `.opencode/skill/sk-code-*/` |
 | `sk-git`             | Version control workflows                       | `.opencode/skill/sk-git/`             |
 | `sk-doc`   | Doc quality, DQI scoring, skill creation        | `.opencode/skill/sk-doc/`   |
 | `mcp-chrome-devtools` | Browser debugging, screenshots, CDP             | `.opencode/skill/mcp-chrome-devtools/` |

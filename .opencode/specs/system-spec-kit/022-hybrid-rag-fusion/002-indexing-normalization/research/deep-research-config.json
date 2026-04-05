@@ -1,0 +1,22 @@
+{
+  "researchTopic": "Indexing-normalization improvement audit: logic, architecture, automation, UX, bugs, and cross-skill alignment with system-spec-kit, sk-code-opencode, and sk-doc",
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
+  "executionMode": "AUTONOMOUS",
+  "maxIterations": 20,
+  "convergenceThreshold": 0.05,
+  "convergenceSignals": {
+    "rollingAvg": { "window": 3, "threshold": 0.05, "weight": 0.30 },
+    "madNoiseFloor": { "weight": 0.35 },
+    "questionCoverage": { "target": 0.85, "weight": 0.35 }
+  },
+  "agentsPerIteration": 6,
+  "agentConfig": [
+    { "id": "A1", "runtime": "codex", "model": "gpt-5.4", "reasoning": "high", "role": "Code analysis (bugs, edge cases, error handling)" },
+    { "id": "A2", "runtime": "codex", "model": "gpt-5.4", "reasoning": "high", "role": "Architecture review (structure, modularity, patterns)" },
+    { "id": "A3", "runtime": "codex", "model": "gpt-5.4", "reasoning": "high", "role": "Cross-skill alignment (spec-kit, sk-code, sk-doc)" },
+    { "id": "C1", "runtime": "copilot", "model": "gpt-5.4", "reasoning": "high", "role": "Improvement proposals (power, automation, UX)" },
+    { "id": "C2", "runtime": "copilot", "model": "gpt-5.4", "reasoning": "high", "role": "Standards compliance (naming, headers, validation)" },
+    { "id": "C3", "runtime": "copilot", "model": "gpt-5.4", "reasoning": "high", "role": "Test coverage and quality gaps" }
+  ],
+  "createdAt": "2026-03-20T00:00:00Z"
+}

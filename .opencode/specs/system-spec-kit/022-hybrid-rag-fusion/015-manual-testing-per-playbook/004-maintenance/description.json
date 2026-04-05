@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance",
+  "description": "Feature Specification: manual-testing-per-playbook maintenance phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
+    "maintenance",
+    "phase"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.850Z",
+  "specId": "004",
+  "folderSlug": "maintenance",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "015-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

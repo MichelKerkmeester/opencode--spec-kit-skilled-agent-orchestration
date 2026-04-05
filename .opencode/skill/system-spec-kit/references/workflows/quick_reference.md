@@ -761,7 +761,7 @@ When in doubt:
 - [implementation-summary.md](../../templates/level_3+/implementation-summary.md) - Required completion summary (Level 3+)
 
 ### Related Skills
-- `sk-code--web` - Implementation, debugging, and verification lifecycle
+- `sk-code-web` - Implementation, debugging, and verification lifecycle
 - `system-spec-kit` - Context preservation with semantic memory
 - `sk-git` - Git workspace setup and clean commits
 <!-- /ANCHOR:related-resources -->

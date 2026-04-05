@@ -1146,7 +1146,7 @@ Quality:
 | **Total Lines**       | 400-800                   | 800-2000                         | 2000-5000                           |
 | **SKILL.md Lines**    | 400-800                   | 800-1000                         | <3000                               |
 | **Sections**          | 5 required core           | 5 required + recommended sections | 5 required per mode + overview       |
-| **Example Skills**    | mcp-chrome-devtools | system-spec-kit, sk-code--web | sk-doc, sk-git |
+| **Example Skills**    | mcp-chrome-devtools | system-spec-kit, sk-code-web | sk-doc, sk-git |
 
 ### Validation Command Reference
 

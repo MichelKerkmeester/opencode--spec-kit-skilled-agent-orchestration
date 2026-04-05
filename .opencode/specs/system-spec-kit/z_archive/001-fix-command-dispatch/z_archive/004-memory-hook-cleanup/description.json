@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup",
+  "description": "Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "hook",
+    "cleanup",
+    "remove",
+    "claude",
+    "code",
+    "references"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.904Z",
+  "specId": "004",
+  "folderSlug": "memory-hook-cleanup",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

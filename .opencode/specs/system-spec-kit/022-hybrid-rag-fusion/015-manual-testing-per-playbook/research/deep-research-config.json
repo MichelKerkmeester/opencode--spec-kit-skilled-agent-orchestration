@@ -1,0 +1,31 @@
+{
+  "topic": "Review: Feature catalog ↔ Manual testing playbook ↔ Spec phase traceability for system-spec-kit",
+  "mode": "review",
+  "reviewTarget": ".opencode/skill/system-spec-kit/manual_testing_playbook AND specs/system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "reviewScopeFiles": "feature_catalog (222 entries, 21 categories), manual_testing_playbook (230 scenarios, 19 categories), spec phases (22 phase folders)",
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["feature_catalog_code", "playbook_capability"]
+  },
+  "maxIterations": 7,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "specFolder": "specs/system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "createdAt": "2026-03-26T09:10:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

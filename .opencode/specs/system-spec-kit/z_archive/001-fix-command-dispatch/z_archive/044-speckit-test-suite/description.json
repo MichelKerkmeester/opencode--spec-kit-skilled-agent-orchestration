@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite",
+  "description": "Spec Kit Test Suite",
+  "keywords": [
+    "spec",
+    "kit",
+    "test",
+    "suite"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.131Z",
+  "specId": "044",
+  "folderSlug": "speckit-test-suite",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -42,7 +42,7 @@ describe('Contextual tree injection', () => {
       id: 2,
       score: 1,
       source: 'hybrid',
-      file_path: '/workspace/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/019-sprint-9-extra-features/memory/context.md',
+      file_path: '/workspace/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-sprint-9-extra-features/memory/context.md',
       content: undefined,
     };
 

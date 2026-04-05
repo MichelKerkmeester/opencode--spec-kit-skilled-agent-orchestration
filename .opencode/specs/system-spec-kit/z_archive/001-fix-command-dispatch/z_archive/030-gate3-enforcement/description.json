@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement",
+  "description": "Gate 3 Enforcement - Preventing Spec Folder Bypass",
+  "keywords": [
+    "gate",
+    "enforcement",
+    "preventing",
+    "spec",
+    "folder",
+    "bypass"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.064Z",
+  "specId": "030",
+  "folderSlug": "gate3-enforcement",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

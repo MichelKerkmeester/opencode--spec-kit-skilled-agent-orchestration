@@ -1,0 +1,22 @@
+{
+  "specFolder": "00--anobel.com/z_archive/010-css-performance-cv",
+  "description": "Feature Specification: Specification: CSS Performance Upgrade (Content Visibility)",
+  "keywords": [
+    "feature",
+    "specification",
+    "css",
+    "performance",
+    "upgrade",
+    "content",
+    "visibility"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.013Z",
+  "specId": "010",
+  "folderSlug": "css-performance-cv",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

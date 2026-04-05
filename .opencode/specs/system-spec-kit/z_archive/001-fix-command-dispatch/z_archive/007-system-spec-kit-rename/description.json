@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename",
+  "description": "Skill Rename: workflows-spec-kit → system-spec-kit",
+  "keywords": [
+    "skill",
+    "rename",
+    "workflows-spec-kit",
+    "system-spec-kit"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.914Z",
+  "specId": "007",
+  "folderSlug": "system-spec-kit-rename",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

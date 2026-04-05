@@ -124,7 +124,7 @@ describe('Memory Context Session State Persistence', () => {
     }));
     vi.doMock('../lib/search/folder-discovery', () => ({
       getSpecsBasePaths: vi.fn(() => ['/tmp/specs']),
-      discoverSpecFolder: vi.fn(() => '02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement'),
+      discoverSpecFolder: vi.fn(() => 'system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement'),
     }));
     vi.doMock('../lib/search/search-flags', async (importOriginal) => {
       const actual = await importOriginal() as Record<string, unknown>;
@@ -149,13 +149,13 @@ describe('Memory Context Session State Persistence', () => {
     expect(saveSessionState).toHaveBeenCalledWith(
       'session-123',
       expect.objectContaining({
-        specFolder: '02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement',
+        specFolder: 'system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement',
       }),
     );
     expect(handleMemorySearch).toHaveBeenCalledWith(
       expect.objectContaining({
         folderBoost: expect.objectContaining({
-          folder: '02--system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement',
+          folder: 'system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement',
         }),
       }),
     );

@@ -253,10 +253,10 @@ describe('Mutation Ledger', () => {
   });
 
   it('records deterministic bounded retry attempts for divergence reconciliation', () => {
-    const normalizedPath = '/workspace/specs/02--system-spec-kit/700-test/memory/a.md';
+    const normalizedPath = '/workspace/specs/system-spec-kit/700-test/memory/a.md';
     const variants = [
-      '/workspace/specs/02--system-spec-kit/700-test/memory/a.md',
-      '/workspace/.opencode/specs/02--system-spec-kit/700-test/memory/a.md',
+      '/workspace/specs/system-spec-kit/700-test/memory/a.md',
+      '/workspace/.opencode/specs/system-spec-kit/700-test/memory/a.md',
     ];
 
     const first = recordDivergenceReconcileHook(db, { normalizedPath, variants });
@@ -283,10 +283,10 @@ describe('Mutation Ledger', () => {
   });
 
   it('escalates with payload when divergence retries are exhausted', () => {
-    const normalizedPath = '/workspace/specs/02--system-spec-kit/701-test/memory/b.md';
+    const normalizedPath = '/workspace/specs/system-spec-kit/701-test/memory/b.md';
     const variants = [
-      '/workspace/specs/02--system-spec-kit/701-test/memory/b.md',
-      '/workspace/.opencode/specs/02--system-spec-kit/701-test/memory/b.md',
+      '/workspace/specs/system-spec-kit/701-test/memory/b.md',
+      '/workspace/.opencode/specs/system-spec-kit/701-test/memory/b.md',
     ];
 
     recordDivergenceReconcileHook(db, { normalizedPath, variants, maxRetries: 2 });

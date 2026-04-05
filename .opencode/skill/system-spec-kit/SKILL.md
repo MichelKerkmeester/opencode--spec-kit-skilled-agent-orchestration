@@ -527,19 +527,19 @@ The generate-context script supports nested spec folder paths (parent/child form
 
 ```bash
 # Full nested path (parent/child)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"02--system-spec-kit/121-script-audit","sessionSummary":"..."}' 02--system-spec-kit/121-script-audit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"system-spec-kit/121-script-audit","sessionSummary":"..."}' system-spec-kit/121-script-audit
 
 # Bare child name (auto-searches all parents for unique match)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"121-script-audit","sessionSummary":"..."}' 121-script-audit
 
 # With specs/ prefix
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"specs/02--system-spec-kit/121-script-audit","sessionSummary":"..."}' specs/02--system-spec-kit/121-script-audit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"specs/system-spec-kit/121-script-audit","sessionSummary":"..."}' specs/system-spec-kit/121-script-audit
 
 # Flat folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"02--system-spec-kit","sessionSummary":"..."}' 02--system-spec-kit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"system-spec-kit","sessionSummary":"..."}' system-spec-kit
 ```
 
-Memory files are always saved to the child folder's `memory/` directory (e.g., `specs/02--system-spec-kit/121-script-audit/memory/`). If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
+Memory files are always saved to the child folder's `memory/` directory (e.g., `specs/system-spec-kit/121-script-audit/memory/`). If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
 
 **Memory File Structure:**
 ```markdown
@@ -731,7 +731,7 @@ Automated validation of spec folder contents via `validate.sh`.
 1. Run validation: `./scripts/spec/validate.sh <spec-folder>`
 2. Exit 2 → FIX errors
 3. Exit 1 → ADDRESS warnings or document reason
-4. For code changes, run alignment verifier: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
+4. For code changes, run alignment verifier: `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
 5. Exit 0 from both checks → Proceed with completion claim
 
 **Full documentation:** See [validation_rules.md](./references/validation/validation_rules.md) for all rules, configuration, and troubleshooting.
@@ -825,7 +825,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 14. **Suggest /spec_kit:handover when session-end keywords detected OR after extended work (15+ tool calls)** - Proactive context preservation
 15. **Suggest /spec_kit:debug after 3+ failed fix attempts on same error** - Do not continue without offering debug delegation
 16. **Suggest /spec_kit:plan :with-phases when task requires multi-phase decomposition** - Complex specs spanning multiple sessions or workstreams
-17. **Route all code creation/updates through `sk-code--opencode`** - Full alignment is mandatory before claiming completion
+17. **Route all code creation/updates through `sk-code-opencode`** - Full alignment is mandatory before claiming completion
 18. **Route all documentation creation/updates through `sk-doc`** - Full alignment is mandatory before claiming completion
 19. **Enforce ToC policy from validation rules** - Only `research/research.md` may include a Table of Contents section; remove ToC headings from standard spec artifacts
 
@@ -927,7 +927,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 
 | Workflow | Flow |
 | --- | --- |
-| **Spec → Implementation** | system-spec-kit → sk-code--opencode (mandatory for code changes) → sk-git → Spec Kit Memory |
+| **Spec → Implementation** | system-spec-kit → sk-code-opencode (mandatory for code changes) → sk-git → Spec Kit Memory |
 | **Documentation Quality** | system-spec-kit → sk-doc (mandatory for documentation changes; validate, score) → Iterate if <90 |
 | **Validation** | Implementation complete → validate.sh → Fix errors → Address warnings → Claim completion |
 
@@ -937,7 +937,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 | --- | --- |
 | Create spec folder | `./scripts/spec/create.sh "Description" --short-name name --level 2` |
 | Validate | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/007-feature/` |
-| Verify code alignment drift | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` |
+| Verify code alignment drift | `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` |
 | Save context | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature/` |
 | Next spec number | `ls -d specs/[0-9]*/ \| sed 's/.*\/\([0-9]*\)-.*/\1/' \| sort -n \| tail -1` |
 | Upgrade level | `bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh specs/007-feature/ --to 2` |
@@ -954,7 +954,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 | Direction      | Skill                   | Integration                                           |
 | -------------- | ----------------------- | ----------------------------------------------------- |
 | **Upstream**   | None                    | This is the foundational workflow                     |
-| **Downstream** | sk-code--opencode | Mandatory alignment for all code changes              |
+| **Downstream** | sk-code-opencode | Mandatory alignment for all code changes              |
 | **Downstream** | sk-git           | References spec folders in commit messages and PRs    |
 | **Downstream** | sk-doc | Mandatory alignment for all documentation changes     |
 | **Integrated** | Spec Kit Memory         | Context preservation via MCP (merged into this skill) |

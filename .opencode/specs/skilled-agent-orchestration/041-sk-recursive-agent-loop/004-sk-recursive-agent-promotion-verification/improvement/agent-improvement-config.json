@@ -1,0 +1,81 @@
+{
+  "target": ".opencode/agent/handover.md",
+  "targetProfile": "handover",
+  "targetKind": "canonical-agent",
+  "maxIterations": 5,
+  "maxCandidatesPerIteration": 1,
+  "executionMode": "confirm",
+  "proposalOnly": false,
+  "promotionEnabled": true,
+  "baselineRequired": true,
+  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification",
+  "createdAt": "2026-04-03T16:10:00Z",
+  "status": "promotion-verification",
+  "lineage": {
+    "sessionId": "",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart",
+      "fork"
+    ],
+    "generation": 1
+  },
+  "paths": {
+    "runtimeRoot": "improvement",
+    "stateLog": "improvement/agent-improvement-state.jsonl",
+    "strategy": "improvement/agent-improvement-strategy.md",
+    "dashboard": "improvement/agent-improvement-dashboard.md",
+    "registry": "improvement/experiment-registry.json",
+    "charter": "improvement/agent-improvement-charter.md",
+    "manifest": "improvement/target-manifest.jsonc",
+    "candidates": "improvement/candidates",
+    "benchmarkRoot": "improvement/benchmark-runs",
+    "targetProfiles": ".opencode/skill/sk-agent-improver/assets/target-profiles",
+    "fixtureCatalog": ".opencode/skill/sk-agent-improver/assets/fixtures"
+  },
+  "targets": {
+    "activeProfile": "handover",
+    "supportedProfiles": [
+      "handover",
+      "context-prime"
+    ],
+    "promotionEligibleProfiles": [
+      "handover"
+    ]
+  },
+  "scoring": {
+    "thresholdDelta": 2,
+    "hardRejectOnMissingTemplate": true,
+    "hardRejectOnNestedDelegation": true,
+    "simplicityTieBreak": true
+  },
+  "benchmarks": {
+    "requiredForProfiles": [
+      "handover",
+      "context-prime"
+    ],
+    "minimumAggregateScore": 85,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0
+  },
+  "stopRules": {
+    "maxConsecutiveTies": 2,
+    "maxInfraFailuresPerProfile": 2,
+    "maxWeakBenchmarkRunsPerProfile": 2,
+    "stopOnDriftAmbiguity": true
+  },
+  "fileProtection": {
+    "agent-improvement-config.json": "immutable",
+    "agent-improvement-state.jsonl": "append-only",
+    "agent-improvement-strategy.md": "mutable",
+    "agent-improvement-dashboard.md": "auto-generated",
+    "experiment-registry.json": "auto-generated",
+    "candidates/*": "write-once",
+    "benchmark-runs/*": "write-many-evidence",
+    "agent-improvement-charter.md": "immutable",
+    "target-manifest.jsonc": "immutable"
+  }
+}

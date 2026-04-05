@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix",
+  "description": "Spec: Fix SQLite Transaction Nesting Issue",
+  "keywords": [
+    "spec",
+    "fix",
+    "sqlite",
+    "transaction",
+    "nesting",
+    "issue"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.197Z",
+  "specId": "057",
+  "folderSlug": "transaction-nesting-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

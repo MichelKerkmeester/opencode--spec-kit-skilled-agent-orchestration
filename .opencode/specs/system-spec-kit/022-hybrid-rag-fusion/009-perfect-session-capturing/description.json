@@ -1,0 +1,41 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "description": "Feature Specification: Perfect Session Capturing",
+  "keywords": [
+    "feature",
+    "specification",
+    "perfect",
+    "session",
+    "capturing"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.677Z",
+  "specId": "009",
+  "folderSlug": "perfect-session-capturing",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 40,
+  "memoryNameHistory": [
+    "15-03-26_12-05__perfect-session-capturing.md",
+    "15-03-26_12-22__verified-trigger-phrase-yaml-rendering.md",
+    "15-03-26_12-22__pass-automated-validation-is-strong-all-listed.md",
+    "15-03-26_12-22__pass-automated-checks-100-pass-rate-across-lint.md",
+    "15-03-26_12-24__i-m-starting-with-the-repo-s-own-runbook-and.md",
+    "15-03-26_12-25__how-is-used-later-in-the-template-to-match-th.md",
+    "15-03-26_12-25__i-m-starting-with-the-repo-s-own-runbook-and.md",
+    "15-03-26_12-27__i-m-starting-with-the-repo-s-own-runbook-and.md",
+    "15-03-26_16-03__remapped-stale-regression-checks-to-live-compiled.md",
+    "15-03-26_16-05__remapped-stale-regression-checks-to-live-compiled.md",
+    "15-03-26_16-08__validated-010-perfect-session-capturing-package.md",
+    "15-03-26_16-08__i-reviewed-the-thin-capture-path-for-010-perfect.md",
+    "15-03-26_16-08__i-checked-the-save-path-for-010-perfect-session.md",
+    "16-03-26_11-34__shared-sufficiency-gate-blocks-thin-saves.md",
+    "16-03-26_11-34__shared-sufficiency-gate-blocks-thin-saves-1.md",
+    "17-03-26_14-47__the-march-17-2026-re-analysis-disposition-for.md",
+    "17-03-26_16-16__post-re-analysis-documentation-maintenance-for.md",
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md",
+    "17-03-26_19-49__bimodal-quality-distribution-in-historical-memory.md",
+    "18-03-26_11-46__test-nextsteps-persistence.md"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "status": "promoted",
+  "target": ".opencode/agent/handover.md",
+  "candidate": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/candidates/handover-candidate-002.md",
+  "backupPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/archive/handover.md.2026-04-03T17-04-31.982Z.bak",
+  "benchmarkReport": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/benchmark-runs/handover/run-001.json",
+  "repeatabilityReport": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/benchmark-runs/handover/repeatability.json",
+  "delta": 6,
+  "threshold": 2,
+  "timestamp": "2026-04-03T17:04:31.983Z"
+}

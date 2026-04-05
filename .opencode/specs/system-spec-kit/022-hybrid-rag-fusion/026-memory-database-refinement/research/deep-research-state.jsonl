@@ -1,0 +1,7 @@
+{"type":"config","topic":"Further refinement opportunities in the Spec Kit Memory MCP server codebase","maxIterations":5,"convergenceThreshold":0.05,"createdAt":"2026-03-29T09:00:00.000Z","specFolder":".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement"}
+{"type":"iteration","run":4,"status":"insight","focus":"error recovery gaps","findingsCount":4,"newInfoRatio":0.6,"timestamp":"2026-03-29T09:04:00Z"}
+{"type":"iteration","run":2,"status":"insight","focus":"search performance bottlenecks","findingsCount":7,"newInfoRatio":0.7,"timestamp":"2026-03-29T09:02:00Z"}
+{"type":"iteration","run":3,"status":"insight","focus":"SQLite query optimization","findingsCount":6,"newInfoRatio":0.8,"timestamp":"2026-03-29T09:03:00Z"}
+{"type":"iteration","run":1,"status":"insight","focus":"concurrency hazards","findingsCount":4,"newInfoRatio":0.8,"timestamp":"2026-03-29T09:01:00Z"}
+{"type":"iteration","run":5,"status":"insight","focus":"dead code and architectural debt","findingsCount":7,"newInfoRatio":0.32,"timestamp":"2026-03-29T09:05:00Z"}
+{"type":"event","event":"synthesis_complete","totalIterations":5,"answeredCount":5,"totalQuestions":5,"stopReason":"max_iterations_reached","timestamp":"2026-03-29T09:30:00Z"}

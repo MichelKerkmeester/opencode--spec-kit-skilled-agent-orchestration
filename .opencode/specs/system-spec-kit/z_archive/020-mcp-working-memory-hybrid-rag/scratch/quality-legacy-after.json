@@ -1,0 +1,227 @@
+{
+  "generatedAt": "2026-02-18T21:34:27.381Z",
+  "scope": "active-memory-files",
+  "entries": [
+    {
+      "query": "memory quality validator",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/010-documentation-alignment/memory/16-02-26_11-43__spec126-documentation-alignment.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "legacy path remediation",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_17-25__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "session lifecycle contract",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/009-full-spec-doc-indexing/memory/16-02-26_08-38__full-spec-doc-indexing.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "pressure policy override",
+      "top5": [
+        ".opencode/specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/memory/18-02-26_17-25__mcp-working-memory-hybrid-rag.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "causal boost traversal",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_17-25__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "redaction calibration",
+      "top5": [
+        ".opencode/specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/memory/18-02-26_17-25__mcp-working-memory-hybrid-rag.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "token usage estimator",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_17-25__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "working memory event counter",
+      "top5": [
+        ".opencode/specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/memory/18-02-26_08-44__mcp-working-memory-hybrid-rag.md",
+        ".opencode/specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/memory/18-02-26_17-25__mcp-working-memory-hybrid-rag.md",
+        ".opencode/specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/memory/18-02-26_17-38__mcp-working-memory-hybrid-rag.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "quality score flags",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/007-upgrade-level-script/memory/15-02-26_15-53__upgrade-level-script.md",
+        ".opencode/specs/system-spec-kit/z_archive/010-documentation-alignment/memory/16-02-26_11-43__spec126-documentation-alignment.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "fallback decision suppression",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/008-codex-system-wide-audit/memory/15-02-26_17-31__codex-system-wide-audit.md",
+        ".opencode/specs/system-spec-kit/z_archive/009-full-spec-doc-indexing/memory/16-02-26_08-38__full-spec-doc-indexing.md",
+        ".opencode/specs/system-spec-kit/z_archive/010-documentation-alignment/memory/16-02-26_11-43__spec126-documentation-alignment.md",
+        ".opencode/specs/system-spec-kit/z_archive/012-spec-doc-anchor-tags/memory/16-02-26_14-12__spec-doc-anchor-tags.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "contamination filter denylist",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/015-anchor-enforcement-automation/memory/17-02-26_09-11__anchor-enforcement-automation.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "memory index scan",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_17-25__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "phase 2 extraction adapter",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/010-documentation-alignment/memory/16-02-26_11-43__spec126-documentation-alignment.md",
+        ".opencode/specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/memory/18-02-26_17-25__mcp-working-memory-hybrid-rag.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "phase 3 rollout telemetry",
+      "top5": [
+        ".opencode/specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/memory/18-02-26_17-25__mcp-working-memory-hybrid-rag.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "rollback runbook",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/008-codex-system-wide-audit/memory/15-02-26_17-31__codex-system-wide-audit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "spec checklist verification",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/008-codex-system-wide-audit/memory/15-02-26_17-31__codex-system-wide-audit.md",
+        ".opencode/specs/system-spec-kit/z_archive/009-full-spec-doc-indexing/memory/16-02-26_08-38__full-spec-doc-indexing.md",
+        ".opencode/specs/system-spec-kit/z_archive/009-full-spec-doc-indexing/memory/16-02-26_10-53__full-spec-doc-indexing.md",
+        ".opencode/specs/system-spec-kit/z_archive/010-documentation-alignment/memory/16-02-26_11-43__spec126-documentation-alignment.md",
+        ".opencode/specs/system-spec-kit/z_archive/006-generate-context-subfolder/memory/15-02-26_13-40__generate-context-subfolder.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "trigger phrases backfill",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_17-25__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "post render quality gate",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/010-documentation-alignment/memory/16-02-26_11-43__spec126-documentation-alignment.md",
+        ".opencode/specs/system-spec-kit/z_archive/017-command-adherence/memory/17-02-26_18-19__command-adherence.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "manual save reduction",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/006-generate-context-subfolder/memory/15-02-26_13-40__generate-context-subfolder.md",
+        ".opencode/specs/system-spec-kit/z_archive/007-upgrade-level-script/memory/15-02-26_15-53__upgrade-level-script.md",
+        ".opencode/specs/system-spec-kit/z_archive/009-full-spec-doc-indexing/memory/16-02-26_08-38__full-spec-doc-indexing.md",
+        ".opencode/specs/system-spec-kit/z_archive/009-full-spec-doc-indexing/memory/16-02-26_10-53__full-spec-doc-indexing.md",
+        ".opencode/specs/system-spec-kit/z_archive/010-documentation-alignment/memory/16-02-26_11-43__spec126-documentation-alignment.md"
+      ],
+      "reciprocalRank": 1
+    },
+    {
+      "query": "mrr shadow comparison",
+      "top5": [
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-06__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-11__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_11-25__system-spec-kit.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_13-19__script-audit-comprehensive.md",
+        ".opencode/specs/system-spec-kit/z_archive/004-script-audit-comprehensive/memory/15-02-26_17-25__script-audit-comprehensive.md"
+      ],
+      "reciprocalRank": 1
+    }
+  ],
+  "averageReciprocalRank": 1
+}

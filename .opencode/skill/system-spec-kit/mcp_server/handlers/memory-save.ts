@@ -292,7 +292,7 @@ function prepareParsedMemoryForIndexing(
   const templateContract = validateMemoryTemplateContract(parsed.content);
 
   // Non-blocking spec doc health annotation
-  // parsed.specFolder is a relative key (e.g., "02--system-spec-kit/100-feature"),
+  // parsed.specFolder is a relative key (e.g., "system-spec-kit/100-feature"),
   // so resolve the absolute spec folder by walking up from the memory file path.
   let specDocHealth: SpecDocHealthResult | null = null;
   if (parsed.specFolder && parsed.filePath) {

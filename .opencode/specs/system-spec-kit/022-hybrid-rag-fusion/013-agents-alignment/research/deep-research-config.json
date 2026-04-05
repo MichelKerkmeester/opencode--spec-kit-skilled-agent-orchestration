@@ -1,0 +1,37 @@
+{
+  "functional_mode": "REVIEW",
+  "execution_mode": "AUTONOMOUS",
+  "mode": "review",
+  "review_target": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
+  "review_target_type": "spec-folder",
+  "review_dimensions": ["correctness", "security", "traceability", "maintainability"],
+  "review_focus": "Perfect alignment with current reality and with 021-spec-kit-phase-system",
+  "cross_reference": ".opencode/specs/system-spec-kit/021-spec-kit-phase-system",
+  "spec_folder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "agent_strategy": "cli-copilot",
+  "agent_model": "gpt-5.4",
+  "agent_effort": "high",
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["agent_cross_runtime"]
+  },
+  "reviewScopeFiles": [
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/spec.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/plan.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/tasks.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/checklist.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/implementation-summary.md",
+    ".opencode/specs/system-spec-kit/021-spec-kit-phase-system/spec.md",
+    ".opencode/agent/*.md",
+    ".opencode/agent/chatgpt/*.md",
+    ".claude/agents/*.md",
+    ".codex/agents/*.toml",
+    ".gemini/agents/*.md"
+  ],
+  "createdAt": "2026-03-25T15:10:00Z",
+  "status": "complete"
+}

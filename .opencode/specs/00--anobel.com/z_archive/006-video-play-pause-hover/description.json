@@ -1,0 +1,23 @@
+{
+  "specFolder": "00--anobel.com/z_archive/006-video-play-pause-hover",
+  "description": "Feature Specification: Video Play/Pause Button Hover Effect",
+  "keywords": [
+    "feature",
+    "specification",
+    "video",
+    "play",
+    "pause",
+    "button",
+    "hover",
+    "effect"
+  ],
+  "lastUpdated": "2026-04-02T17:21:38.993Z",
+  "specId": "006",
+  "folderSlug": "video-play-pause-hover",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

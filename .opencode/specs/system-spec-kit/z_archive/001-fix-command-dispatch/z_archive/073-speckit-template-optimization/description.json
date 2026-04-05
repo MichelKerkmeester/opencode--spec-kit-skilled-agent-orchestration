@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization",
+  "description": "Feature Specification: SpecKit Template Optimization",
+  "keywords": [
+    "feature",
+    "specification",
+    "speckit",
+    "template",
+    "optimization"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.248Z",
+  "specId": "073",
+  "folderSlug": "speckit-template-optimization",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

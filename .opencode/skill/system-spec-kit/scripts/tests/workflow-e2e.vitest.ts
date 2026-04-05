@@ -29,7 +29,7 @@ vi.mock('../core/memory-indexer', async (importOriginal) => {
    2. CONSTANTS
 ──────────────────────────────────────────────────────────────── */
 
-const SPEC_RELATIVE_PATH = '02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing';
+const SPEC_RELATIVE_PATH = 'system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing';
 const TEST_TEMPLATES_DIR = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   '..',

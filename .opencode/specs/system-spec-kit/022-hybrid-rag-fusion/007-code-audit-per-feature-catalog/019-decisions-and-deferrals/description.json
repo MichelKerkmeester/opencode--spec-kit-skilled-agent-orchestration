@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals",
+  "description": "Feature Specification: Code Audit — Decisions and Deferrals",
+  "keywords": [
+    "feature",
+    "specification",
+    "code",
+    "audit",
+    "decisions",
+    "deferrals"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.635Z",
+  "specId": "019",
+  "folderSlug": "decisions-and-deferrals",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "007-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

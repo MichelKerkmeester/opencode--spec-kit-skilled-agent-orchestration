@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation",
+  "description": "Feature Specification: Session Source Validation",
+  "keywords": [
+    "feature",
+    "specification",
+    "session",
+    "source",
+    "validation"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.685Z",
+  "specId": "001",
+  "folderSlug": "session-source-validation",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing",
+    "000-dynamic-capture-deprecation"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "17-03-26_14-47__focused-phase-011-proof-rerun.md",
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
+  ]
+}

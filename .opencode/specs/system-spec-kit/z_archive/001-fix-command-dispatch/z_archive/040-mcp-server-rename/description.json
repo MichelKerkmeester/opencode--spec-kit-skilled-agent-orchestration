@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename",
+  "description": "MCP Server Rename: semantic_memory → spec_kit_memory",
+  "keywords": [
+    "mcp",
+    "server",
+    "rename"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.109Z",
+  "specId": "040",
+  "folderSlug": "mcp-server-rename",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

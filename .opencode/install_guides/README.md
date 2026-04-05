@@ -824,10 +824,10 @@ Skills are automatically discovered from:
 | cli-copilot          | v1.2.0     | GitHub Copilot CLI orchestration                     |
 | cli-claude-code      | v1.0.0     | Claude Code CLI orchestration                        |
 | cli-gemini           | v1.1.0     | Gemini CLI orchestration for code and web research   |
-| sk-code--full-stack  | v1.1.0.0   | Full-stack implementation orchestrator               |
-| sk-code--opencode    | v1.1.0.0   | OpenCode system code standards                       |
-| sk-code--review      | v1.2.0.0   | Findings-first baseline code review standards        |
-| sk-code--web         | v1.1.0.0   | Web development implementation orchestrator          |
+| sk-code-full-stack  | v1.1.0.0   | Full-stack implementation orchestrator               |
+| sk-code-opencode    | v1.1.0.0   | OpenCode system code standards                       |
+| sk-code-review      | v1.2.0.0   | Findings-first baseline code review standards        |
+| sk-code-web         | v1.1.0.0   | Web development implementation orchestrator          |
 | sk-doc               | v1.1.2.0   | Unified markdown and skill management                |
 | sk-git               | v1.1.0.0   | Git workflow orchestrator                            |
 | sk-prompt-improver   | v1.2.0.0   | Prompt engineering frameworks and scoring            |
@@ -1139,8 +1139,8 @@ The `AGENTS (Universal).md` file is a template for AI agent behavior. Customize 
 
 | Project Type | Primary Tools                   | Primary Skills                           | Remove/De-emphasize           |
 | ------------ | ------------------------------- | ---------------------------------------- | ----------------------------- |
-| Front-end    | Chrome DevTools, Webflow, Figma | mcp-chrome-devtools, sk-code--web | Database tools, API patterns  |
-| Back-end     | API testing, Database tools     | sk-code--full-stack               | Browser tools, Webflow, Figma |
+| Front-end    | Chrome DevTools, Webflow, Figma | mcp-chrome-devtools, sk-code-web | Database tools, API patterns  |
+| Back-end     | API testing, Database tools     | sk-code-full-stack               | Browser tools, Webflow, Figma |
 | Full-stack   | All tools                       | All skills                               | Nothing                       |
 
 **Detailed Guide**: [SET-UP - AGENTS.md](./SET-UP%20-%20AGENTS.md)
@@ -1233,7 +1233,7 @@ You have completed the installation. Here is your roadmap for getting started.
 | **Browser Debugging**    | Chrome DevTools CLI           | `bdg screenshot --url https://example.com`                |
 | **Documentation**        | sk-doc skill | Invoke skill for doc structure                            |
 | **Git Operations**       | sk-git skill           | Commit, PR creation workflows                             |
-| **Implementation**       | sk-code--web or sk-code--full-stack | 3-phase implementation lifecycle                          |
+| **Implementation**       | sk-code-web or sk-code-full-stack | 3-phase implementation lifecycle                          |
 
 ### 16.3 Available Commands (20 total)
 
@@ -1250,8 +1250,8 @@ You have completed the installation. Here is your roadmap for getting started.
 | ------------- | ------------------------------------------ | ----------------------------- |
 | OpenCode Docs | https://opencode.ai/docs                   | Official documentation        |
 | Memory Skill  | `.opencode/skill/system-spec-kit/SKILL.md` | Context preservation          |
-| Code Skill    | `.opencode/skill/sk-code--web/SKILL.md` | Frontend implementation patterns |
-| Code Skill    | `.opencode/skill/sk-code--full-stack/SKILL.md` | Multi-stack implementation patterns |
+| Code Skill    | `.opencode/skill/sk-code-web/SKILL.md` | Frontend implementation patterns |
+| Code Skill    | `.opencode/skill/sk-code-full-stack/SKILL.md` | Multi-stack implementation patterns |
 | Git Skill     | `.opencode/skill/sk-git/SKILL.md`   | Git workflows                 |
 | AGENTS.md     | `AGENTS.md`                                | AI agent behavior reference   |
 | Agent System  | `.opencode/install_guides/SET-UP - Opencode Agents.md` | Agent creation & usage |
@@ -1431,7 +1431,7 @@ sudo chown -R $(whoami) /usr/local/lib/node_modules
 | Category           | Count | Items                                                                                                                    |
 | ------------------ | ----- | ------------------------------------------------------------------------------------------------------------------------ |
 | Native MCP Servers | 3     | code_mode, spec_kit_memory, sequential_thinking                                                                          |
-| Skills             | 18    | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web, sk-deep-research, sk-doc, sk-git, sk-prompt-improver |
+| Skills             | 18    | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, sk-deep-research, sk-doc, sk-git, sk-prompt-improver |
 | Commands           | 22    | /create:* (7), /memory:* (6), /spec_kit:* (8), agent_router (1)                                                         |
 | CLI Tools          | 1     | Chrome DevTools (bdg)                                                                                                    |
 | Plugins            | 2     | Antigravity Auth, OpenAI Codex Auth                                                                                      |

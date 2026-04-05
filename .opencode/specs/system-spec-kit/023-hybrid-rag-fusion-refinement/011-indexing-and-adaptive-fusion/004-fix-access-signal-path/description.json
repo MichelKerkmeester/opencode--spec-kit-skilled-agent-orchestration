@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path",
+  "description": "Feature Specification: Fix Access Signal Path",
+  "keywords": [
+    "feature",
+    "specification",
+    "fix",
+    "access",
+    "signal",
+    "path"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.804Z",
+  "specId": "004",
+  "folderSlug": "fix-access-signal-path",
+  "parentChain": [
+    "system-spec-kit",
+"023-hybrid-rag-fusion-refinement",
+    "011-indexing-and-adaptive-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

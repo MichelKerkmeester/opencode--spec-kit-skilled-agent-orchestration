@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research",
+  "description": "Specification: System-Spec-Kit Upgrade from Research Synthesis",
+  "keywords": [
+    "specification",
+    "system-spec-kit",
+    "upgrade",
+    "research",
+    "synthesis"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.273Z",
+  "specId": "077",
+  "folderSlug": "speckit-upgrade-from-research",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

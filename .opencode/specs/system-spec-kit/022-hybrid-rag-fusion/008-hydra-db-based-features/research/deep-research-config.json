@@ -1,0 +1,24 @@
+{
+  "topic": "Hydra DB features assessment — determine if features delivered during 008-hydra-db-based-features need refinement, upgrade, or bugfix. Covers 6 phases: baseline/safety rails, versioned memory state, unified graph retrieval, adaptive retrieval loops, hierarchical scope governance, shared memory rollout.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "createdAt": "2026-03-19T07:04:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "delegation": {
+    "model_mix": ["opus", "gpt-5.4-high", "codex-5.3-high"],
+    "agents_per_iteration": 3,
+    "pattern": "parallel-wave"
+  },
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

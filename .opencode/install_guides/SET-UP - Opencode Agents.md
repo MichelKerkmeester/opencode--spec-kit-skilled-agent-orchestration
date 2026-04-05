@@ -84,7 +84,7 @@ If you are NOT the @write agent: STOP immediately and instruct the user to resta
    (e.g., "ALWAYS run tests before approving", "NEVER modify production files")
 
 5. **Skills Integration**: What skills should this agent invoke?
-   (e.g., "sk-code--web for code standards", "system-spec-kit for documentation")
+   (e.g., "sk-code-web for code standards", "system-spec-kit for documentation")
 
 6. **Agent Name**: What should we name this agent?
    (Format: lowercase, single word or hyphenated, e.g., "review", "security-audit")
@@ -887,7 +887,7 @@ User: "Create a new skill for API testing"
 | Need behavioral constraints     | Yes               | Yes                         |
 | Creating documentation          | Yes `@write`      | Yes `sk-doc`                |
 | Complex multi-step task         | Yes `@orchestrate`| No                          |
-| Code quality standards          | No                | Yes `sk-code--web`          |
+| Code quality standards          | No                | Yes `sk-code-web`          |
 | Git workflows                   | No                | Yes `sk-git`                |
 
 **Decision rule:** If you need **authority + tools**, create an agent. If you need **knowledge + workflows**, create a skill.
@@ -1143,7 +1143,7 @@ done
 | Skill            | Location                      | Purpose                 |
 | ---------------- | ----------------------------- | ----------------------- |
 | sk-doc           | `../skill/sk-doc/`            | Documentation standards |
-| sk-code--web     | `../skill/sk-code--web/`      | Code quality standards  |
+| sk-code-web     | `../skill/sk-code-web/`      | Code quality standards  |
 | system-spec-kit  | `../skill/system-spec-kit/`   | Spec folder management  |
 | sk-git           | `../skill/sk-git/`            | Git workflows           |
 

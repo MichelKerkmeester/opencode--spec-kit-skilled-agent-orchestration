@@ -1,6 +1,6 @@
 ---
 title: 'Testing Playbook: Graph Retrieval Improvements (Phase 009)'
-spec: 02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements
+spec: system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements
 ---
 
 # Testing Playbook: Graph Retrieval Improvements

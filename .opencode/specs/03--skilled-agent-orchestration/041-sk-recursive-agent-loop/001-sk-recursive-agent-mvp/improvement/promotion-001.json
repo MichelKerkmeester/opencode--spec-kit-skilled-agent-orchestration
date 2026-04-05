@@ -1,9 +1,0 @@
-{
-  "status": "promoted",
-  "target": ".opencode/agent/handover.md",
-  "candidate": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-003.md",
-  "backupPath": ".opencode/specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/archive/handover.md.2026-04-03T13-41-06.898Z.bak",
-  "delta": 5,
-  "threshold": 2,
-  "timestamp": "2026-04-03T13:41:06.899Z"
-}

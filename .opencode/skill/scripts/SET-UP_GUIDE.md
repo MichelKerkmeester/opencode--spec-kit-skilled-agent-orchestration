@@ -193,7 +193,7 @@ Reports:
 ### Script-Level Alignment
 
 ```bash
-python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/scripts
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/scripts
 ```
 
 Expected: zero `ERROR` findings before claiming completion.
@@ -276,5 +276,5 @@ python3 .opencode/skill/scripts/skill_advisor_bench.py \
   --out .opencode/skill/scripts/out/benchmark-report.json
 
 # Alignment verification
-python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/scripts
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/scripts
 ```

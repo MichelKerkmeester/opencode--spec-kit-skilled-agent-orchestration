@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/002-debugger",
+  "description": "Debug Delegation Integration",
+  "keywords": [
+    "debug",
+    "delegation",
+    "integration"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.965Z",
+  "specId": "002",
+  "folderSlug": "debugger",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive",
+    "019-speckit-refinement"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -11,7 +11,7 @@ Validates the complete `/improve:agent-improver` loop end-to-end using the hando
 ## Prompt / Command
 
 ```text
-/improve:agent-improver ".opencode/agent/handover.md" :confirm --spec-folder=specs/03--skilled-agent-orchestration/041-sk-agent-improver-loop/008-sk-agent-improver-holistic-evaluation --iterations=1
+/improve:agent-improver ".opencode/agent/handover.md" :confirm --spec-folder=specs/skilled-agent-orchestration/041-sk-agent-improver-loop/008-sk-agent-improver-holistic-evaluation --iterations=1
 ```
 
 ## Expected Signals

@@ -367,7 +367,7 @@ gemini "[prompt]" -m gemini-3.1-pro-preview -o text
    - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
    - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
    - This prevents the delegated agent from halting at the Gate 3 spec folder question in non-interactive mode
-   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
+   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
 
 ### ❌ NEVER
 
@@ -503,8 +503,8 @@ Key integrations:
 
 | Skill | Integration |
 |-------|-------------|
-| **sk-code--web** | Use Gemini for code review during web development |
-| **sk-code--full-stack** | Delegate test generation or architecture analysis to Gemini |
+| **sk-code-web** | Use Gemini for code review during web development |
+| **sk-code-full-stack** | Delegate test generation or architecture analysis to Gemini |
 | **mcp-code-mode** | Gemini CLI is independent; does not require Code Mode |
 
 ### External Tools
@@ -531,8 +531,8 @@ Key integrations:
 
 ### Related Skills
 - `sk-doc` - Documentation generation that Gemini can supplement
-- `sk-code--web` - Web development where Gemini provides second opinions
-- `sk-code--full-stack` - Full-stack tasks with Gemini architecture analysis
+- `sk-code-web` - Web development where Gemini provides second opinions
+- `sk-code-full-stack` - Full-stack tasks with Gemini architecture analysis
 
 ### External
 - [Gemini CLI GitHub](https://github.com/google-gemini/gemini-cli) - Official repository

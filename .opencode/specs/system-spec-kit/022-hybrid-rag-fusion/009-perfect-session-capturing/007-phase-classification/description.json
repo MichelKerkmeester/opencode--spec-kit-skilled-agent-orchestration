@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification",
+  "description": "Feature Specification: Phase Classification",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "classification"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.733Z",
+  "specId": "007",
+  "folderSlug": "phase-classification",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "16-03-26_20-16__phase-classification.md",
+    "16-03-26_20-17__phase-classification.md",
+    "16-03-26_20-18__phase-classification.md"
+  ]
+}

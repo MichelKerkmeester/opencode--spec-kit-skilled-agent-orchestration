@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration",
+  "description": "Feature Specification: scoring-and-calibration manual testing",
+  "keywords": [
+    "feature",
+    "specification",
+    "scoring-and-calibration",
+    "manual",
+    "testing"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.878Z",
+  "specId": "011",
+  "folderSlug": "scoring-and-calibration",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "015-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

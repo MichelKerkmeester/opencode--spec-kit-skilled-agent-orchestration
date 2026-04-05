@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment",
+  "description": "Feature Specification: [YOUR_VALUE_HERE: Feature-Name] - Requirements & User Stories",
+  "keywords": [
+    "feature",
+    "specification",
+    "feature-name",
+    "requirements",
+    "user",
+    "stories"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.929Z",
+  "specId": "011",
+  "folderSlug": "docs-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

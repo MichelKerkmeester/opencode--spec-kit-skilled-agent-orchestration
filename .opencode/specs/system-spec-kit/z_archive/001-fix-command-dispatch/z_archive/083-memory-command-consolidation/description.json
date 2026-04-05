@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation",
+  "description": "Memory Command Consolidation",
+  "keywords": [
+    "memory",
+    "command",
+    "consolidation"
+  ],
+  "lastUpdated": "2026-03-30T11:56:27.033Z",
+  "specId": "083",
+  "folderSlug": "memory-command-consolidation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

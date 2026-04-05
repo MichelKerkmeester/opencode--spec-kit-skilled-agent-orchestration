@@ -1,0 +1,41 @@
+{
+  "mode": "review",
+  "topic": "Review: 012-command-alignment alignment with current reality and 021-spec-kit-phase-system",
+  "reviewTarget": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "reviewScopeFiles": [
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/plan.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/tasks.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/checklist.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/implementation-summary.md",
+    ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+    ".opencode/command/memory/analyze.md",
+    ".opencode/command/memory/continue.md",
+    ".opencode/command/memory/learn.md",
+    ".opencode/command/memory/manage.md",
+    ".opencode/command/memory/save.md",
+    ".opencode/command/memory/shared.md",
+    ".opencode/command/memory/README.txt"
+  ],
+  "crossReference": {
+    "specFolder": ".opencode/specs/system-spec-kit/021-spec-kit-phase-system",
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["skill_agent", "agent_cross_runtime", "feature_catalog_code", "playbook_capability"]
+  },
+  "severityThreshold": "P2",
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment",
+  "createdAt": "2026-03-25T15:10:00Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "verdict": "PASS",
+  "hasAdvisories": true,
+  "completedAt": "2026-03-25T15:45:00Z",
+  "findings": { "P0": 0, "P1": 0, "P2": 6 }
+}

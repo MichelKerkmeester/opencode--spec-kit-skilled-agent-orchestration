@@ -1,0 +1,66 @@
+{
+  "target": ".opencode/agent/agent-improver.md",
+  "targetProfile": "agent-improver",
+  "targetKind": "canonical-agent",
+  "maxIterations": 3,
+  "maxCandidatesPerIteration": 1,
+  "executionMode": "confirm",
+  "proposalOnly": true,
+  "promotionEnabled": false,
+  "baselineRequired": true,
+  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test",
+  "createdAt": "2026-04-04T11:20:00Z",
+  "status": "initialized",
+  "lineage": {
+    "sessionId": "009-self-test",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart", "fork"],
+    "generation": 1
+  },
+  "paths": {
+    "runtimeRoot": "improvement",
+    "stateLog": "improvement/agent-improvement-state.jsonl",
+    "strategy": "improvement/agent-improvement-strategy.md",
+    "dashboard": "improvement/agent-improvement-dashboard.md",
+    "registry": "improvement/experiment-registry.json",
+    "charter": "improvement/agent-improvement-charter.md",
+    "manifest": "improvement/target-manifest.jsonc",
+    "candidates": "improvement/candidates",
+    "benchmarkRoot": "improvement/benchmark-runs",
+    "targetProfiles": ".opencode/skill/sk-agent-improver/assets/target-profiles",
+    "fixtureCatalog": ".opencode/skill/sk-agent-improver/assets/fixtures"
+  },
+  "targets": {
+    "activeProfile": "agent-improver",
+    "supportedProfiles": ["agent-improver"],
+    "promotionEligibleProfiles": []
+  },
+  "scoring": {
+    "thresholdDelta": 2,
+    "hardRejectOnMissingTemplate": true,
+    "hardRejectOnNestedDelegation": true,
+    "simplicityTieBreak": true,
+    "dynamicProfileEnabled": true,
+    "dimensionWeights": {
+      "structural": 0.20,
+      "ruleCoherence": 0.25,
+      "integration": 0.25,
+      "outputQuality": 0.15,
+      "systemFitness": 0.15
+    }
+  },
+  "benchmarks": {
+    "requiredForProfiles": [],
+    "minimumAggregateScore": 85,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0
+  },
+  "stopRules": {
+    "maxConsecutiveTies": 2,
+    "maxInfraFailuresPerProfile": 2,
+    "maxWeakBenchmarkRunsPerProfile": 2,
+    "stopOnDriftAmbiguity": true,
+    "stopOnDimensionPlateau": true
+  }
+}

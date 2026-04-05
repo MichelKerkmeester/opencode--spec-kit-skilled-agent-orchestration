@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-07-validation/test-invalid",
+  "description": "Test Spec Invalid",
+  "keywords": [
+    "test",
+    "spec",
+    "invalid"
+  ],
+  "lastUpdated": "2026-03-08T11:08:55.546Z",
+  "specId": "",
+  "folderSlug": "test-invalid",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive",
+    "044-speckit-test-suite",
+    "scratch",
+    "test-agent-07-validation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

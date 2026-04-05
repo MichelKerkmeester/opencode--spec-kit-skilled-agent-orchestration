@@ -347,7 +347,7 @@ For direct memory saves, prefer an explicit CLI target:
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   /tmp/save-context-data.json \
-  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion
+  .opencode/specs/system-spec-kit/022-hybrid-rag-fusion
 ```
 
 That explicit target is authoritative. Session-learning hints and auto-detect logging do not reroute the save.

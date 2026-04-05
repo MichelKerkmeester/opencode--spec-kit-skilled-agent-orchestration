@@ -306,7 +306,7 @@ STATUS=OK RESULTS=<count>
 **Folder display rules:**
 - Results grouped by spec folder
 - **Leaf folder name only** as group header (last path segment, e.g., `010-search-retrieval-quality-fixes/`)
-- Drop all parent path prefixes (`02--system-spec-kit/023-esm-module-compliance/` etc.)
+- Drop all parent path prefixes (`system-spec-kit/023-esm-module-compliance/` etc.)
 - Top-level folders (like `system-spec-kit/`) shown as-is
 - If two leaf names collide, prefix with parent number: `023/010-search-quality/`
 - Results indented under their folder group

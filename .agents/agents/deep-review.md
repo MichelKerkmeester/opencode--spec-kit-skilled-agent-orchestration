@@ -114,7 +114,7 @@ Perform 3-5 analysis actions using available tools:
 - `[INFERENCE: based on X and Y]` when deriving from multiple sources
 
 #### Step 4: Classify Findings
-Before assigning severity, load `.opencode/skill/sk-code--review/references/review_core.md`.
+Before assigning severity, load `.opencode/skill/sk-code-review/references/review_core.md`.
 
 Use the shared `P0` / `P1` / `P2` definitions and evidence requirements from `review_core.md`, then tag each finding with one primary review dimension: `correctness`, `security`, `traceability`, or `maintainability`.
 
@@ -286,14 +286,14 @@ newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal
 
 | Skill | Purpose |
 |-------|---------|
-| `sk-code--review` | Shared review doctrine via `references/review_core.md` |
-| `sk-code--opencode` / `sk-code--web` / `sk-code--full-stack` | Stack-specific overlay |
+| `sk-code-review` | Shared review doctrine via `references/review_core.md` |
+| `sk-code-opencode` / `sk-code-web` / `sk-code-full-stack` | Stack-specific overlay |
 
 ---
 
 ## 3. REVIEW CONTRACT
 
-This agent loads shared review doctrine from .opencode/skill/sk-code--review/references/review_core.md for severity definitions, evidence requirements, and baseline check families.
+This agent loads shared review doctrine from .opencode/skill/sk-code-review/references/review_core.md for severity definitions, evidence requirements, and baseline check families.
 
 ### Review Dimensions
 
@@ -542,7 +542,7 @@ Return this summary to the dispatcher after completing the iteration:
 | Skill | Purpose |
 |-------|---------|
 | `sk-deep-review` | Deep review loop orchestration |
-| `sk-code--review` | Shared review doctrine via `references/review_core.md` |
+| `sk-code-review` | Shared review doctrine via `references/review_core.md` |
 | `system-spec-kit` | Spec folders, memory, docs |
 
 ### Agents

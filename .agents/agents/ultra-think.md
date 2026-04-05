@@ -58,7 +58,7 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 | Skill             | Domain         | Use When                                | Key Features                         |
 | ----------------- | -------------- | --------------------------------------- | ------------------------------------ |
 | `system-spec-kit` | Documentation  | Preserving context and decisions        | Spec folders, memory, context saves  |
-| `sk-code--*`      | Code standards | Strategy subagents need coding guidance | Language-specific quality checklists |
+| `sk-code-*`      | Code standards | Strategy subagents need coding guidance | Language-specific quality checklists |
 
 ### Tools
 
@@ -467,7 +467,7 @@ Fix verification gaps first
 | Skill             | Purpose                                           |
 | ----------------- | ------------------------------------------------- |
 | `system-spec-kit` | Spec folders, memory system, context preservation |
-| `sk-code--*`      | Language-specific code quality standards          |
+| `sk-code-*`      | Language-specific code quality standards          |
 
 ### Agents
 

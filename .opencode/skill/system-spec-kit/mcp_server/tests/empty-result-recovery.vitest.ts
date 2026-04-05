@@ -47,7 +47,7 @@ function parseEnvelope(response: Awaited<ReturnType<typeof formatSearchResults>>
 function makeResult(id: number, overrides: Partial<RawSearchResult> = {}): RawSearchResult {
   return {
     id,
-    spec_folder: 'specs/02--system-spec-kit/022-hybrid-rag-fusion',
+    spec_folder: 'specs/system-spec-kit/022-hybrid-rag-fusion',
     file_path: `/tmp/recovery-${id}.md`,
     title: `Recovery Result ${id}`,
     similarity: 72,
@@ -112,7 +112,7 @@ describe('D5 Phase A: empty result recovery', () => {
     const envelope = await formatEnvelope([], {
       query: 'graph weighting decision records',
       normalizedQuery: 'graph weighting decision records',
-      specFolder: 'specs/02--system-spec-kit/022-hybrid-rag-fusion/filters/fusion-only',
+      specFolder: 'specs/system-spec-kit/022-hybrid-rag-fusion/filters/fusion-only',
     });
 
     expect(envelope.data.count).toBe(0);
@@ -193,7 +193,7 @@ describe('D5 Phase A: empty result recovery', () => {
     const envelope = await formatEnvelope([], {
       query: originalQuery,
       normalizedQuery: originalQuery,
-      specFolder: 'specs/02--system-spec-kit/022-hybrid-rag-fusion/filters/fusion-only',
+      specFolder: 'specs/system-spec-kit/022-hybrid-rag-fusion/filters/fusion-only',
     });
 
     const suggestedQueries = envelope.data.recovery?.suggestedQueries ?? [];
@@ -212,7 +212,7 @@ describe('D5 Phase A: empty result recovery', () => {
     const envelope = await formatEnvelope([], {
       query: 'graph weighting decision records',
       normalizedQuery: 'graph weighting decision records',
-      specFolder: 'specs/02--system-spec-kit/022-hybrid-rag-fusion/filters/fusion-only',
+      specFolder: 'specs/system-spec-kit/022-hybrid-rag-fusion/filters/fusion-only',
     });
 
     expect(envelope.data.count).toBe(0);

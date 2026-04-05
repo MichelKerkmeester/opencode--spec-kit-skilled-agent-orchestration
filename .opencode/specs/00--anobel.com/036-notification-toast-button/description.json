@@ -1,0 +1,25 @@
+{
+  "specFolder": "036-notification-toast-button",
+  "description": "notification-toast-button --path /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/00--anobel.com",
+  "keywords": [
+    "notification-toast-button",
+    "path",
+    "users",
+    "michelkerkmeester",
+    "mega",
+    "development",
+    "public",
+    "opencode",
+    "specs",
+    "01-anobel",
+    "com"
+  ],
+  "lastUpdated": "2026-04-04T14:02:00.557Z",
+  "specId": "036",
+  "folderSlug": "notification-toast-button",
+  "parentChain": [],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "04-04-26_15-09__planning-session-for-cms-driven-button-in.md"
+  ]
+}

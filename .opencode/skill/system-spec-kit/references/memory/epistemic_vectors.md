@@ -424,5 +424,5 @@ Three MCP tools measure knowledge gains across implementation tasks:
 
 ### Related Skills
 - `system-spec-kit` - Parent skill using uncertainty tracking in gates
-- `sk-code--web` - Implementation skill with verification gates
+- `sk-code-web` - Implementation skill with verification gates
 <!-- /ANCHOR:related-resources -->

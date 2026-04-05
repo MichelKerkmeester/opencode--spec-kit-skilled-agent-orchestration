@@ -52,10 +52,10 @@ Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffoldi
 | Total skill folders | 20 | Each has a SKILL.md entry point |
 | CLI orchestrator skills | 4 | cli-claude-code, cli-codex, cli-copilot, cli-gemini |
 | MCP integration skills | 5 | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma |
-| Code quality overlays | 4 | sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web |
+| Code quality overlays | 4 | sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web |
 | Documentation, research, review, and improvement skills | 5 | sk-agent-improver, sk-deep-research, sk-deep-review, sk-doc, sk-prompt-improver |
 | Git and system skills | 2 | sk-git, system-spec-kit |
-| Skills with local scripts/ | 6 | mcp-code-mode, sk-agent-improver, sk-code--, sk-doc, system-spec-kit |
+| Skills with local scripts/ | 6 | mcp-code-mode, sk-agent-improver, sk-code-, sk-doc, system-spec-kit |
 | Shared routing scripts | 4 | skill_advisor.py plus bench, regression, runtime helpers |
 
 ### Key Features
@@ -124,7 +124,7 @@ The skill system covers four distinct workflow domains.
 
 **MCP Tool Wrapping.** The five MCP skills route tool calls through Code Mode for token-efficient execution. mcp-code-mode is the hub: it handles ClickUp, Figma, Webflow, Notion, and Chrome DevTools through a single TypeScript execution layer. mcp-coco-index adds semantic code search via vector embeddings for finding relevant implementations by concept rather than exact keyword.
 
-**Code Quality Overlays.** The four sk-code-- skills form a layered review contract. sk-code--review provides a findings-first baseline. The three implementation overlays (opencode, web, full-stack) add stack-specific standards on top. They share terminology so switching overlays during a task requires no mental context switch.
+**Code Quality Overlays.** The four sk-code- skills form a layered review contract. sk-code-review provides a findings-first baseline. The three implementation overlays (opencode, web, full-stack) add stack-specific standards on top. They share terminology so switching overlays during a task requires no mental context switch.
 
 **System Foundation.** system-spec-kit governs all file modifications through spec folder workflows (Levels 1-3+), template validation, and Spec Kit Memory for context preservation across sessions. It includes a hook system for automated context preservation at Claude Code lifecycle boundaries (PreCompact, SessionStart, Stop), a structural code graph with 4 MCP tools (code_graph_scan/query/status/context), and a CocoIndex bridge for semantic-to-structural expansion. It is the only skill that is mandatory for every task involving file changes.
 
@@ -153,10 +153,10 @@ The skill system covers four distinct workflow domains.
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `sk-code--full-stack` | 1.1.0.0 | Stack-agnostic orchestrator with automatic stack detection via marker files |
-| `sk-code--opencode` | 1.2.0.0 | Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON) |
-| `sk-code--review` | 1.2.0.0 | Findings-first code review baseline with security and correctness minimums |
-| `sk-code--web` | 1.1.0.0 | Web implementation, debugging, and verification across specialized quality skills |
+| `sk-code-full-stack` | 1.1.0.0 | Stack-agnostic orchestrator with automatic stack detection via marker files |
+| `sk-code-opencode` | 1.2.0.0 | Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON) |
+| `sk-code-review` | 1.2.0.0 | Findings-first code review baseline with security and correctness minimums |
+| `sk-code-web` | 1.1.0.0 | Web implementation, debugging, and verification across specialized quality skills |
 
 **Documentation, Research, Prompt, and Improvement Skills**
 
@@ -195,10 +195,10 @@ The skill system covers four distinct workflow domains.
 ├── mcp-figma/              # Figma design file access via MCP
 ├── scripts/                # Shared skill routing scripts
 ├── sk-agent-improver/ # Evaluator-first agent improvement loop
-├── sk-code--full-stack/    # Stack-agnostic implementation orchestrator
-├── sk-code--opencode/      # OpenCode system code standards
-├── sk-code--review/        # Findings-first code review baseline
-├── sk-code--web/           # Web implementation and verification
+├── sk-code-full-stack/    # Stack-agnostic implementation orchestrator
+├── sk-code-opencode/      # OpenCode system code standards
+├── sk-code-review/        # Findings-first code review baseline
+├── sk-code-web/           # Web implementation and verification
 ├── sk-deep-research/       # Autonomous deep research loop
 ├── sk-deep-review/         # Autonomous iterative code review
 ├── sk-doc/                 # Documentation quality and templates
@@ -242,10 +242,10 @@ For the full system-spec-kit script inventory, see `system-spec-kit/scripts/scri
 | `mcp-coco-index` | Yes | No | No |
 | `mcp-code-mode` | Yes | Yes | Yes |
 | `mcp-figma` | Yes | Yes | No |
-| `sk-code--full-stack` | Varies | Varies | Varies |
-| `sk-code--opencode` | Varies | Varies | Varies |
-| `sk-code--review` | Varies | Varies | Varies |
-| `sk-code--web` | Varies | Varies | Varies |
+| `sk-code-full-stack` | Varies | Varies | Varies |
+| `sk-code-opencode` | Varies | Varies | Varies |
+| `sk-code-review` | Varies | Varies | Varies |
+| `sk-code-web` | Varies | Varies | Varies |
 | `sk-deep-research` | Yes | No | Yes |
 | `sk-deep-review` | Yes | No | Yes |
 | `sk-doc` | Yes | Yes | Yes |
@@ -439,7 +439,7 @@ No. `skill_advisor.py` discovers skills by scanning for SKILL.md files in `.open
 
 **Q: Can I use multiple skills in the same task?**
 
-Yes. The advisor returns a ranked list. A task may load a primary skill (for example sk-code--review) and a secondary overlay (for example sk-code--opencode) at the same time. The calling agent manages which sections of each SKILL.md apply to the current step.
+Yes. The advisor returns a ranked list. A task may load a primary skill (for example sk-code-review) and a secondary overlay (for example sk-code-opencode) at the same time. The calling agent manages which sections of each SKILL.md apply to the current step.
 
 **Q: What is the difference between skill-local scripts and the shared scripts/ folder?**
 
@@ -464,7 +464,7 @@ The cap preserves a margin of uncertainty so the calling AI retains judgment on 
 | [system-spec-kit SKILL.md](system-spec-kit/SKILL.md) | Spec folder workflow and memory foundation |
 | [sk-doc SKILL.md](sk-doc/SKILL.md) | Documentation quality standards and templates |
 | [sk-git SKILL.md](sk-git/SKILL.md) | Git workflow orchestration |
-| [sk-code--review SKILL.md](sk-code--review/SKILL.md) | Code review baseline |
-| [sk-code--opencode SKILL.md](sk-code--opencode/SKILL.md) | OpenCode system code standards |
+| [sk-code-review SKILL.md](sk-code-review/SKILL.md) | Code review baseline |
+| [sk-code-opencode SKILL.md](sk-code-opencode/SKILL.md) | OpenCode system code standards |
 
 <!-- /ANCHOR:related-documents -->

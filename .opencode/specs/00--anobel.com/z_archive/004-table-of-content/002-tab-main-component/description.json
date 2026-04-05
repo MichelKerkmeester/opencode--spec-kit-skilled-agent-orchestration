@@ -1,0 +1,21 @@
+{
+  "specFolder": "00--anobel.com/z_archive/004-table-of-content/002-tab-main-component",
+  "description": "Feature Specification: Tab Main Component",
+  "keywords": [
+    "feature",
+    "specification",
+    "tab",
+    "main",
+    "component"
+  ],
+  "lastUpdated": "2026-04-02T17:21:38.976Z",
+  "specId": "002",
+  "folderSlug": "tab-main-component",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive",
+    "004-table-of-content"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

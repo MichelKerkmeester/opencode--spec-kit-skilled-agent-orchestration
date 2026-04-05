@@ -169,7 +169,7 @@ ls -la .opencode/skill/
 # mcp-figma/
 # system-spec-kit/
 # mcp-chrome-devtools/
-# sk-code--web/
+# sk-code-web/
 # sk-git/
 ```
 
@@ -326,7 +326,7 @@ Backend projects emphasize data integrity, security, and API design.
 
 | Skill          | Purpose                                               |
 | -------------- | ----------------------------------------------------- |
-| `sk-code--web` | Implementation, debugging, verification lifecycle     |
+| `sk-code-web` | Implementation, debugging, verification lifecycle     |
 
 **Confidence Weight Adjustments**
 
@@ -529,9 +529,9 @@ Discovery: search_tools(), list_tools(), or read .utcp_config.json
 | `mcp-code-mode`        | v1.2.0  | "ClickUp", "Figma", "Webflow", "external tool"            | MCP orchestration for external tools             |
 | `system-spec-kit`      | v2.2.0  | "save context", "/memory:save", "spec folder", "plan"     | Context preservation and spec workflow           |
 | `mcp-chrome-devtools`  | v2.1.0  | "screenshot", "bdg", "browser debug", "DOM"               | Chrome DevTools Protocol debugging               |
-| `sk-code--full-stack`  | v1.0.0  | "implement", "debug", "verify", "refactor" (full-stack)   | Full-stack implementation lifecycle orchestrator |
-| `sk-code--opencode`    | v1.3.2  | "opencode code", "system code", "TypeScript", "Python"    | OpenCode system code standards                   |
-| `sk-code--web`         | v1.0.9  | "implement", "debug", "verify", "refactor" (frontend)     | Web development implementation lifecycle         |
+| `sk-code-full-stack`  | v1.0.0  | "implement", "debug", "verify", "refactor" (full-stack)   | Full-stack implementation lifecycle orchestrator |
+| `sk-code-opencode`    | v1.3.2  | "opencode code", "system code", "TypeScript", "Python"    | OpenCode system code standards                   |
+| `sk-code-web`         | v1.0.9  | "implement", "debug", "verify", "refactor" (frontend)     | Web development implementation lifecycle         |
 | `sk-doc`               | v5.2.0  | "skill", "markdown", "flowchart", "documentation"         | Unified markdown and skill management            |
 | `sk-git`               | v1.5.0  | "commit", "branch", "PR", "push", "git"                   | Git workflow orchestration                       |
 
@@ -547,9 +547,9 @@ When Gate 2 runs `skill_advisor.py`, it maps user intent to skills:
 | "take a screenshot"               | mcp-chrome-devtools   | 0.95       |
 | "debug in browser"                | mcp-chrome-devtools   | 0.88       |
 | "check the DOM"                   | mcp-chrome-devtools   | 0.82       |
-| "implement the login feature"     | sk-code--web          | 0.90       |
-| "help me debug this error"        | sk-code--web          | 0.85       |
-| "verify the changes work"         | sk-code--web          | 0.82       |
+| "implement the login feature"     | sk-code-web          | 0.90       |
+| "help me debug this error"        | sk-code-web          | 0.85       |
+| "verify the changes work"         | sk-code-web          | 0.82       |
 | "create a commit"                 | sk-git                | 0.95       |
 | "open a PR"                       | sk-git                | 0.92       |
 | "push to remote"                  | sk-git                | 0.90       |
@@ -968,7 +968,7 @@ User Message
 | --------------------- | ------ | --------------------- | --------------------------- |
 | **Skills - Keep**     | Yes    | system-spec-kit       | Context preservation needed |
 |                       | Yes    | mcp-chrome-devtools   | Browser debugging essential |
-|                       | Yes    | sk-code--web          | Implementation workflow     |
+|                       | Yes    | sk-code-web          | Implementation workflow     |
 |                       | Yes    | mcp-code-mode         | Webflow/Figma integration   |
 | **Skills - Remove**   | No     | sk-git                | Optional for solo projects  |
 | **MCP - Keep**        | Yes    | spec_kit_memory       | Required for spec-kit skill |
@@ -991,7 +991,7 @@ User Message
 | Component           | Status | Items               | Reason                           |
 | ------------------- | ------ | ------------------- | -------------------------------- |
 | **Skills - Keep**   | Yes    | system-spec-kit     | Research context preservation    |
-|                     | Yes    | sk-code--web        | Implementation lifecycle         |
+|                     | Yes    | sk-code-web        | Implementation lifecycle         |
 |                     | Yes    | sk-git              | PR/commit workflows              |
 | **Skills - Remove** | No     | mcp-chrome-devtools | No browser UI                    |
 |                     | No     | mcp-code-mode       | No Webflow/Figma needed          |
@@ -1187,7 +1187,7 @@ Update AGENTS.md to reference only the commands that exist in your `.opencode/co
 
 | Category          | Count  | Items                                                                                                                       |
 | ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------- |
-| **Skills**        | 18     | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web, sk-deep-research, sk-doc, sk-git, sk-prompt-improver |
+| **Skills**        | 18     | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, sk-deep-research, sk-doc, sk-git, sk-prompt-improver |
 | **MCP Servers**   | 3      | sequential-thinking, spec-kit-memory, code-mode                                                                             |
 | **Commands**      | 22     | /create:* (7), /memory:* (6), /spec_kit:* (8), agent_router (1)                                                             |
 | **Gates + Rules** | 3 + 3  | Gate 1-3 (Understanding, Skill Routing, Spec Folder) + Behavioral Rules (Memory Context Loading, Memory Save Rule, Completion Verification) |

@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation",
+  "description": "Feature Specification: SpecKit Skill Consolidation - Requirements & Migration Strategy",
+  "keywords": [
+    "feature",
+    "specification",
+    "speckit",
+    "skill",
+    "consolidation",
+    "requirements",
+    "migration",
+    "strategy"
+  ],
+  "lastUpdated": "2026-03-30T11:56:27.003Z",
+  "specId": "005",
+  "folderSlug": "speckit-consolidation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

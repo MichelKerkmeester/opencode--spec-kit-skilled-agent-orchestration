@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation",
+  "description": "Node Modules Consolidation",
+  "keywords": [
+    "node",
+    "modules",
+    "consolidation"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.105Z",
+  "specId": "039",
+  "folderSlug": "node-modules-consolidation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation",
+  "description": "Spec: Remaining Bugs Remediation",
+  "keywords": [
+    "spec",
+    "remaining",
+    "bugs",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.183Z",
+  "specId": "054",
+  "folderSlug": "remaining-bugs-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

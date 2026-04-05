@@ -1,0 +1,19 @@
+{
+  "topic": "Identify concrete, implementable improvements to the generate-context.js pipeline that eliminate silent field drops and data mutations, prevent hallucinated content in output, maximize trigger phrase quality for MCP search discoverability, ensure YAML frontmatter validity and semantic accuracy, and strengthen error resilience and validation coverage. 6 domains: (A) Pipeline Data Integrity, (B) Schema & Validation Completeness, (C) Quality Scoring Accuracy, (D) Indexing & Crawlability, (E) Hallucination & Error Prevention, (F) Semantic Quality & Cross-Session Coherence. Full CRAFT prompt at: prompts/flawless-json-memory-pipeline-research.md",
+  "maxIterations": 6,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+  "createdAt": "2026-03-21T17:12:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

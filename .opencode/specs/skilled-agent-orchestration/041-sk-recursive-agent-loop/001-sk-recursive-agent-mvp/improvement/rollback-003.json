@@ -1,0 +1,5 @@
+{
+  "status": "rolled_back",
+  "target": ".opencode/agent/handover.md",
+  "backup": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/archive/handover.md.2026-04-03T14-09-06.119Z.bak"
+}

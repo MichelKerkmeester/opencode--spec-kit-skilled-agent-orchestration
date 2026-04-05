@@ -1,0 +1,20 @@
+{
+  "specFolder": "00--anobel.com/z_archive/009-security-remediation",
+  "description": "Feature Specification: Security Vulnerability Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "security",
+    "vulnerability",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.008Z",
+  "specId": "009",
+  "folderSlug": "security-remediation",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

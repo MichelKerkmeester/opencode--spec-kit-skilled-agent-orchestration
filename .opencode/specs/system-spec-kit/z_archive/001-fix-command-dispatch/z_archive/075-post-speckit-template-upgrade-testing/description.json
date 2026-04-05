@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing",
+  "description": "Feature Specification: Post-SpecKit Template Upgrade Testing",
+  "keywords": [
+    "feature",
+    "specification",
+    "post-speckit",
+    "template",
+    "upgrade",
+    "testing"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.262Z",
+  "specId": "075",
+  "folderSlug": "post-speckit-template-upgrade-testing",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -121,10 +121,10 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
 
     it('P07: prefix match with real-world composite ID', () => {
       const extracted = {
-        'next-steps-session-1770903150838-02--system-spec-kit-111': 'do stuff',
+        'next-steps-session-1770903150838-system-spec-kit-111': 'do stuff',
       };
       expect(resolveAnchorKey('next-steps', extracted)).toBe(
-        'next-steps-session-1770903150838-02--system-spec-kit-111'
+        'next-steps-session-1770903150838-system-spec-kit-111'
       );
     });
 
@@ -144,7 +144,7 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
   describe('Shortest match selection', () => {
     it('P09: picks shortest key among multiple prefix matches', () => {
       const extracted = {
-        'summary-session-1770903150838-02--system-spec-kit-111': 'long',
+        'summary-session-1770903150838-system-spec-kit-111': 'long',
         'summary-session-1770903150838-003': 'short',
         'summary-session-1770903150838-003-extra-suffix': 'medium',
       };
@@ -262,7 +262,7 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
   // ───────────────────────────────────────────────────────────────
   describe('Real-world composite IDs', () => {
     it('P21: all 12 anchor types resolve from composite IDs', () => {
-      const sessionSuffix = '-session-1770903150838-02--system-spec-kit-111';
+      const sessionSuffix = '-session-1770903150838-system-spec-kit-111';
       const anchorTypes = [
         'summary',
         'state',

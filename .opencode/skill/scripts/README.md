@@ -130,7 +130,7 @@ fi
 
 **CocoIndex aliases and discovery routing.** `--semantic` and `--cocoindex` are equivalent aliases for built-in CocoIndex search. `--semantic-hits` and `--cocoindex-hits` are equivalent aliases for pre-computed JSON hits. Discovery prompts such as "find code that", "semantic code search", "code search", "where is the logic", and "how does X work" are optimized to favor `mcp-coco-index`.
 
-**Autonomous review boundary.** Explicit autonomous workflows such as `autoresearch`, `/autoresearch`, `deep review`, `review loop`, `:review:auto`, and `auto review release readiness` route to `sk-deep-research`. Ordinary review requests such as `code review`, `review this PR`, and `auto review this PR` stay on `sk-code--review`.
+**Autonomous review boundary.** Explicit autonomous workflows such as `autoresearch`, `/autoresearch`, `deep review`, `review loop`, `:review:auto`, and `auto review release readiness` route to `sk-deep-research`. Ordinary review requests such as `code review`, `review this PR`, and `auto review this PR` stay on `sk-code-review`.
 
 ### 3.2 FEATURE REFERENCE
 
@@ -414,7 +414,7 @@ python3 .opencode/skill/scripts/skill_advisor_bench.py \
 | Git operations | sk-git | commit, push, branch, merge, worktree, pr |
 | Browser debugging | mcp-chrome-devtools | devtools, chrome, browser, debug, console |
 | Documentation | sk-doc | markdown, flowchart, diagram, readme |
-| Code implementation | sk-code--opencode | implement, fix, bug, refactor |
+| Code implementation | sk-code-opencode | implement, fix, bug, refactor |
 | Memory and context | system-spec-kit | remember, save, context, checkpoint |
 | External MCP tools | mcp-code-mode | webflow, figma, clickup, notion |
 

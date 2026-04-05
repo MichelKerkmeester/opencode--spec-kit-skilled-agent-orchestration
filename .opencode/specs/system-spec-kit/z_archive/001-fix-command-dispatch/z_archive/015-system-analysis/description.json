@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis",
+  "description": "Feature Specification: SpecKit System Architecture Analysis",
+  "keywords": [
+    "feature",
+    "specification",
+    "speckit",
+    "system",
+    "architecture",
+    "analysis"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.944Z",
+  "specId": "015",
+  "folderSlug": "system-analysis",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

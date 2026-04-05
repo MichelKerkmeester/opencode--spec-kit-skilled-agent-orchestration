@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webflow File Upload - Test</title>
+
+  <!-- Design System Variables -->
+  <style>
+    :root {
+      --_color-tokens---bg-neutral--white: #ffffff;
+      --_color-tokens---bg-neutral--light: #f5f5f5;
+      --_color-tokens---border-neutral--base: #CFCFCF;
+      --_color-tokens---border-brand--base: #06458C;
+      --_color-tokens---content-neutral--dark: #6b7280;
+      --_color-tokens---content-neutral--darkest: #1f2937;
+      --_color-tokens---content-brand--base: #06458C;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f0f0;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #1f2937;
+    }
+
+    p.subtitle {
+      color: #6b7280;
+      margin-bottom: 2rem;
+    }
+
+    .test-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Field */
+    .input--container {
+      margin-bottom: 1.5rem;
+    }
+
+    .input--header {
+      margin-bottom: 0.5rem;
+    }
+
+    .input--label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    /* Upload Component - Webflow Structure */
+    .input--file-upload {
+      position: relative;
+      background: var(--_color-tokens---bg-neutral--white, #fff);
+      border: 1.5px solid var(--_color-tokens---border-neutral--base, #CFCFCF);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      min-height: 9rem;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .input--file-upload:hover {
+      border-color: var(--_color-tokens---border-brand--base, #06458C);
+    }
+
+    /* Hidden file input */
+    .input.is--upload {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* IDLE VIEW: Content */
+    .upload--content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 5rem;
+    }
+
+    .label--decorative {
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid var(--_color-tokens---border-neutral--base, #CFCFCF);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .label--decorative .icon {
+      width: 20px;
+      height: 20px;
+      color: var(--_color-tokens---content-brand--base, #06458C);
+    }
+
+    .description {
+      text-align: center;
+    }
+
+    .sub-heading.is--upload {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--_color-tokens---content-neutral--darkest, #374151);
+      margin-bottom: 0.25rem;
+    }
+
+    .u--text-link-neutral-black {
+      color: var(--_color-tokens---content-brand--base, #06458C);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
+
+    .input--description {
+      font-size: 0.875rem;
+      color: var(--_color-tokens---content-neutral--dark, #979797);
+      margin-top: 0.25rem;
+    }
+
+    /* UPLOADING VIEW: Loader */
+    .upload--loader {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 5rem;
+    }
+
+    .upload--loader .sub-heading {
+      margin-bottom: 0.75rem;
+    }
+
+    .u--text-weight-semi-bold {
+      font-weight: 600;
+      color: var(--_color-tokens---content-neutral--darkest, #1f2937);
+    }
+
+    /* Progress bar */
+    .upload--progress-w {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background-color: #e5e7eb;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+
+    .upload--progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background-color: var(--_color-tokens---content-brand--base, #06458C);
+      border-radius: 999px;
+      transition: width 0.3s ease-out;
+    }
+
+    .upload--progress-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Details row */
+    .upload--details {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 0.875rem;
+    }
+
+    .upload--size {
+      color: var(--_color-tokens---content-neutral--dark, #979797);
+      margin-left: 0.5rem;
+    }
+
+    .upload--notice {
+      color: var(--_color-tokens---content-neutral--dark, #979797);
+      cursor: pointer;
+      margin-left: auto;
+    }
+
+    .upload--notice:hover {
+      color: var(--_color-tokens---content-neutral--darkest, #374151);
+    }
+
+    /* Divider between percentage and size */
+    .upload--details .u--text-weight-semi-bold::after {
+      content: " | ";
+      font-weight: 400;
+      color: #CFCFCF;
+    }
+
+    /* Submit button */
+    button[type="submit"] {
+      background: #06458C;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background: #053670;
+    }
+
+    /* Debug info */
+    .debug-info {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #f5f5f5;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.875rem;
+    }
+  </style>
+
+  <!-- State visibility CSS (from input_upload_webflow.css) -->
+  <link href="input_upload_webflow.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Webflow File Upload - Test</h1>
+    <p class="subtitle">Testing the new FilePond connector with Webflow-designed UI</p>
+
+    <form class="test-form" id="application-form">
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           FILE UPLOAD COMPONENT - WEBFLOW STRUCTURE
+           Matches the exact structure from Webflow Designer
+      ═══════════════════════════════════════════════════════════════ -->
+
+      <div data-form-field=""
+           data-file-upload="wrapper"
+           data-upload-endpoint="https://r2-upload-proxy.cloudflare-decorated911.workers.dev"
+           data-max-size="5MB"
+           data-accepted-types="application/pdf,.doc,.docx"
+           data-label-uploading="Bezig met uploaden..."
+           data-label-cancel="Klik om te annuleren"
+           data-label-delete="Klik om te verwijderen"
+           data-label-size-separator=" van "
+           class="input--container">
+
+        <!-- Header with Label -->
+        <div class="input--header">
+          <label class="input--label">CV</label>
+        </div>
+
+        <!-- File Upload Container -->
+        <div class="input--file-upload">
+
+          <!-- Hidden file input -->
+          <input type="file"
+                 data-file-upload="input"
+                 accept="application/pdf,.doc,.docx"
+                 class="input is--upload">
+
+          <!-- IDLE VIEW: Idle Section -->
+          <div data-file-upload="idle" class="upload--input-w">
+            <div class="label--decorative">
+              <div class="icon">
+                <!-- Upload icon (Lucide file-up) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                  <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                  <path d="M12 12v6"/>
+                  <path d="m15 15-3-3-3 3"/>
+                </svg>
+              </div>
+            </div>
+            <div class="description u--align-center-x">
+              <div class="sub-heading is--upload">
+                <span data-file-upload="text">Drag & drop your file or </span>
+                <a data-file-upload="browse" href="#" class="u--text-link-neutral-black u--text-weight-semi-bold">Browse</a>
+              </div>
+              <div data-file-upload="description" class="input--description">Max 5 MB: PDF, DOC, DOCX</div>
+            </div>
+          </div>
+
+          <!-- UPLOADING VIEW: Loader Section -->
+          <div data-file-upload="loader" class="upload--loader">
+            <div class="label--decorative">
+              <!-- Upload icon (visible during upload) -->
+              <div data-file-upload="icon-upload" class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                  <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                  <path d="M12 12v6"/>
+                  <path d="m15 15-3-3-3 3"/>
+                </svg>
+              </div>
+              <!-- Success icon (visible on complete) -->
+              <div data-file-upload="icon-success" class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                  <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                  <path d="m9 15 2 2 4-4"/>
+                </svg>
+              </div>
+            </div>
+            <div class="sub-heading is--upload">
+              <div data-file-upload="uploading" class="u--text-weight-semi-bold">Uploading...</div>
+            </div>
+            <div data-file-upload="progress" class="upload--progress-w">
+              <div data-file-upload="progress-bar" class="upload--progress-bar"></div>
+              <div data-file-upload="progress-track" class="upload--progress-track"></div>
+            </div>
+            <div class="upload--details">
+              <div data-file-upload="percentage" class="u--text-weight-semi-bold">0%</div>
+              <div class="upload--size">
+                <span data-file-upload="size">0B of 0B</span>
+              </div>
+              <div class="upload--notice">
+                <span data-file-upload="notice">Click to undo</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Hidden URL Input -->
+        <input type="hidden" data-file-upload="url" name="cv_url" class="input">
+      </div>
+
+      <button type="submit">Submit Application</button>
+    </form>
+
+    <div class="debug-info" id="debug">
+      <strong>Debug:</strong> Upload state will appear here
+    </div>
+  </div>
+
+  <!-- FilePond JS + Plugins -->
+  <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+  <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+  <!-- FilePond Connector -->
+  <script src="filepond_connector.js"></script>
+
+  <!-- Debug observer -->
+  <script>
+    // Watch for state changes and display in debug panel
+    const debugEl = document.getElementById('debug');
+    const wrapper = document.querySelector('[data-file-upload="wrapper"]');
+
+    if (wrapper) {
+      const observer = new MutationObserver(function(mutations) {
+        const state = wrapper.dataset.uploadState || 'idle';
+        const classes = wrapper.className;
+        const urlInput = wrapper.querySelector('[data-file-upload="url"]');
+        const url = urlInput ? urlInput.value : '';
+
+        debugEl.innerHTML = `
+          <strong>Debug:</strong><br>
+          State: ${state}<br>
+          Classes: ${classes}<br>
+          URL: ${url || '(empty)'}
+        `;
+      });
+
+      observer.observe(wrapper, {
+        attributes: true,
+        attributeFilter: ['class', 'data-upload-state']
+      });
+    }
+
+    // Form submission handler
+    document.getElementById('application-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      alert('Form submitted!\n\nCV URL: ' + (data.cv_url || 'Not uploaded'));
+      console.log('Form data:', data);
+    });
+  </script>
+</body>
+</html>

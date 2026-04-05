@@ -1,0 +1,45 @@
+{
+  "topic": "Review: 014-agents-md-alignment — alignment with current reality and 021-spec-kit-phase-system",
+  "mode": "review",
+  "reviewTarget": "system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "reviewScopeFiles": [
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/spec.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/plan.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/tasks.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/checklist.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/implementation-summary.md",
+    "AGENTS.md",
+    "AGENTS_example_fs_enterprises.md",
+    "../Barter/coder/AGENTS.md",
+    "CLAUDE.md"
+  ],
+  "referenceFiles": [
+    ".opencode/specs/system-spec-kit/021-spec-kit-phase-system/spec.md"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["skill_agent", "agent_cross_runtime", "feature_catalog_code", "playbook_capability"]
+  },
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
+  "createdAt": "2026-03-25T15:08:00Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "qualityGateThreshold": 70,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

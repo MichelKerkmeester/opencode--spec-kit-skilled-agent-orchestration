@@ -58,7 +58,7 @@ The script uses an embedded Node.js inline program to perform file scanning, reg
 ### Scan a Specific Spec Folder
 
 ```bash
-.opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh "02--system-spec-kit/022-hybrid-rag-fusion"
+.opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh "system-spec-kit/022-hybrid-rag-fusion"
 ```
 
 The argument is a relative path under `.opencode/specs/`.

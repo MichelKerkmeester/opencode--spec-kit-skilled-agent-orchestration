@@ -1,0 +1,24 @@
+{
+  "specFolder": "00--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
+  "description": "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories",
+  "keywords": [
+    "feature",
+    "specification",
+    "custom",
+    "toc",
+    "scrollspy",
+    "requirements",
+    "user",
+    "stories"
+  ],
+  "lastUpdated": "2026-04-02T17:21:38.972Z",
+  "specId": "001",
+  "folderSlug": "toc-scrollspy",
+  "parentChain": [
+    "00--anobel.com",
+    "z_archive",
+    "004-table-of-content"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

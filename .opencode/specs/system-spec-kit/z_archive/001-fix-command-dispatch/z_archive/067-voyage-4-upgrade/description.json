@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/067-voyage-4-upgrade",
+  "description": "Voyage 4 Model Upgrade Analysis",
+  "keywords": [
+    "voyage",
+    "model",
+    "upgrade",
+    "analysis"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.223Z",
+  "specId": "067",
+  "folderSlug": "voyage-4-upgrade",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

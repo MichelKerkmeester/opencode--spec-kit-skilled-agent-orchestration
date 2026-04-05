@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/z_archive/015-anchor-enforcement-automation",
+  "description": "Feature Specification: Anchor Enforcement Automation",
+  "keywords": [
+    "feature",
+    "specification",
+    "anchor",
+    "enforcement",
+    "automation"
+  ],
+  "lastUpdated": "2026-03-30T11:56:27.058Z",
+  "specId": "015",
+  "folderSlug": "anchor-enforcement-automation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

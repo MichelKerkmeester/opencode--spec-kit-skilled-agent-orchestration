@@ -1,0 +1,20 @@
+{
+  "reviewTarget": ".opencode/specs/system-spec-kit/024-compact-code-graph/026-session-start-injection-debug",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability",
+    "performance",
+    "reliability",
+    "completeness"
+  ],
+  "executionMode": "AUTONOMOUS",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "startedAt": "2026-04-02T13:40:00Z",
+  "completedAt": "2026-04-02T15:20:00Z",
+  "status": "complete",
+  "verdict": "PASS"
+}

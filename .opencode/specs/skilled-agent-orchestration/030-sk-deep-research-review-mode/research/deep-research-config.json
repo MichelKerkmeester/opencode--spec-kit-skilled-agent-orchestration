@@ -1,0 +1,23 @@
+{
+  "topic": "How to further improve the review logic in sk-deep-research and related commands/agents. Focus areas: (1) canonical source-of-truth problem for review mode definitions, (2) reducing conceptual complexity while maintaining rigor, (3) empirical validation of convergence thresholds, (4) cross-reference protocol improvements, (5) review report quality and actionability, (6) agent architecture improvements for @deep-review, (7) integration with existing @review agent and sk-code-review skill.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": false,
+  "specFolder": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode",
+  "createdAt": "2026-03-24T16:37:00Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "mode": "research",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

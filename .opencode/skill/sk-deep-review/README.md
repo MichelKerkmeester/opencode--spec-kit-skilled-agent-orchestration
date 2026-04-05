@@ -65,7 +65,7 @@ Do not use `sk-deep-review` when:
 
 ### How This Compares
 
-| sk-code--review (single-pass)           | sk-deep-review (iterative multi-pass)                |
+| sk-code-review (single-pass)           | sk-deep-review (iterative multi-pass)                |
 | --------------------------------------- | ---------------------------------------------------- |
 | One review cycle                        | Multiple iterations until convergence                |
 | Context window shared across all checks | Fresh context per iteration, state on disk           |
@@ -330,8 +330,8 @@ Expected progression:
 
 ## 8. FAQ
 
-**Q: How is this different from sk-code--review?**
-A: `sk-code--review` is a single-pass review. `sk-deep-review` is iterative: it runs multiple review cycles until convergence, tracks dimension coverage, runs adversarial self-checks on P0 findings, and produces a structured `review-report.md` with a three-way verdict. Use `sk-code--review` for quick feedback; use `sk-deep-review` for release gates.
+**Q: How is this different from sk-code-review?**
+A: `sk-code-review` is a single-pass review. `sk-deep-review` is iterative: it runs multiple review cycles until convergence, tracks dimension coverage, runs adversarial self-checks on P0 findings, and produces a structured `review-report.md` with a three-way verdict. Use `sk-code-review` for quick feedback; use `sk-deep-review` for release gates.
 
 **Q: Can I review individual files?**
 A: Yes. Specify target type as `files` and pass the explicit file list at invocation. The review loop scopes all findings and cross-reference checks to the declared file set plus their immediate cross-references.
@@ -395,7 +395,7 @@ A: Raise `--max-iterations` above the number of completed iterations and re-invo
 | Skill              | Relationship                                                                                              |
 | ------------------ | --------------------------------------------------------------------------------------------------------- |
 | `sk-deep-research` | Shares loop architecture, state format, and convergence algorithm. Use for investigation, not code audit. |
-| `sk-code--review`  | Single-pass review baseline. Use for quick checks; use `sk-deep-review` for release gates.                |
+| `sk-code-review`  | Single-pass review baseline. Use for quick checks; use `sk-deep-review` for release gates.                |
 
 ### Workflow YAMLs
 

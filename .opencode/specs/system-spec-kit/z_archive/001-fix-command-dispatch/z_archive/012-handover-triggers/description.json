@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers",
+  "description": "Feature Specification: Utility Template Trigger Keywords - Requirements & User Stories",
+  "keywords": [
+    "feature",
+    "specification",
+    "utility",
+    "template",
+    "trigger",
+    "keywords",
+    "requirements",
+    "user",
+    "stories"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.934Z",
+  "specId": "012",
+  "folderSlug": "handover-triggers",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

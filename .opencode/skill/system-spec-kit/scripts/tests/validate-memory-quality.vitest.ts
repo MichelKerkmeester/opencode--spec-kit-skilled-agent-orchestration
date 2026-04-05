@@ -61,7 +61,7 @@ The spec folder field is intentionally empty to test the filePath fallback mecha
 
   it('V8 filePath fallback: extracts spec folder from multi-level path', () => {
     const result = validateMemoryQualityContent(validMemoryContent, {
-      filePath: '/project/specs/02--system-spec-kit/009-reindex-validator/memory/session.md',
+      filePath: '/project/specs/system-spec-kit/009-reindex-validator/memory/session.md',
     });
     const v8 = result.ruleResults.find((rule) => rule.ruleId === 'V8');
     expect(v8).toBeDefined();
@@ -80,7 +80,7 @@ The spec folder field is intentionally empty to test the filePath fallback mecha
   it('V12 skip: memory directory files bypass topical coherence', () => {
     const memoryContent = `---
 title: "Feature flag graduation notes"
-spec_folder: "02--system-spec-kit/023-esm-module-compliance"
+spec_folder: "system-spec-kit/023-esm-module-compliance"
 trigger_phrases:
   - "feature flag graduation"
   - "rollout strategy"
@@ -93,7 +93,7 @@ Detailed notes about graduating feature flags with different terminology than pa
 The topical coherence check should be skipped for memory directory files.
 `;
     const result = validateMemoryQualityContent(memoryContent, {
-      filePath: '/project/specs/02--system-spec-kit/023-esm-module-compliance/memory/flag-graduation.md',
+      filePath: '/project/specs/system-spec-kit/023-esm-module-compliance/memory/flag-graduation.md',
     });
     const v12 = result.ruleResults.find((rule) => rule.ruleId === 'V12');
     expect(v12).toBeDefined();
@@ -103,7 +103,7 @@ The topical coherence check should be skipped for memory directory files.
   it('V12 skip: spec doc files bypass topical coherence', () => {
     const specDocContent = `---
 title: "Plan for ESM module compliance"
-spec_folder: "02--system-spec-kit/023-esm-module-compliance"
+spec_folder: "system-spec-kit/023-esm-module-compliance"
 trigger_phrases:
   - "esm migration"
   - "module compliance"
@@ -116,7 +116,7 @@ This plan document defines the approach for ensuring ESM module compliance acros
 It should bypass V12 because spec docs define the spec itself.
 `;
     const result = validateMemoryQualityContent(specDocContent, {
-      filePath: '/project/specs/02--system-spec-kit/023-esm-module-compliance/plan.md',
+      filePath: '/project/specs/system-spec-kit/023-esm-module-compliance/plan.md',
     });
     const v12 = result.ruleResults.find((rule) => rule.ruleId === 'V12');
     expect(v12).toBeDefined();

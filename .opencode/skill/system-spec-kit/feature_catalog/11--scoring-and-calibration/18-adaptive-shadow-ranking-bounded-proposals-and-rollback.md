@@ -70,7 +70,7 @@ Rollback remains a flag flip, not a schema rollback. Disabling `SPECKIT_MEMORY_A
 
 - Group: Scoring and calibration
 - Source feature title: Adaptive shadow ranking, bounded proposals, and rollback
-- Current reality source: `mcp_server/lib/cognitive/adaptive-ranking.ts` plus approved spec packet `specs/02--system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/`
+- Current reality source: `mcp_server/lib/cognitive/adaptive-ranking.ts` plus approved spec packet `specs/system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/`
 
 ---
 

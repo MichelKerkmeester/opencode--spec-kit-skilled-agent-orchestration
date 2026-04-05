@@ -427,7 +427,7 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
    - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
    - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
    - This prevents the delegated agent from halting at the Gate 3 spec folder question in `--full-auto` or non-interactive mode
-   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
+   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
 
 ### ❌ NEVER
 
@@ -565,8 +565,8 @@ Key integrations:
 | Skill | Integration |
 |-------|-------------|
 | **cli-gemini** | Parallel cross-AI validation — Gemini for Google Search grounding, Codex for OpenAI perspective |
-| **sk-code--web** | Use Codex for code review during web development |
-| **sk-code--full-stack** | Delegate test generation or architecture analysis to Codex |
+| **sk-code-web** | Use Codex for code review during web development |
+| **sk-code-full-stack** | Delegate test generation or architecture analysis to Codex |
 | **mcp-code-mode** | Codex CLI is independent; does not require Code Mode |
 
 ### External Tools
@@ -595,8 +595,8 @@ Key integrations:
 ### Related Skills
 - `cli-gemini` - Google Gemini CLI for parallel AI validation and Google Search grounding
 - `sk-doc` - Documentation generation that Codex can supplement
-- `sk-code--web` - Web development where Codex provides second opinions
-- `sk-code--full-stack` - Full-stack tasks with Codex architecture analysis
+- `sk-code-web` - Web development where Codex provides second opinions
+- `sk-code-full-stack` - Full-stack tasks with Codex architecture analysis
 
 ### External
 - [Codex CLI GitHub](https://github.com/openai/codex) - Official repository

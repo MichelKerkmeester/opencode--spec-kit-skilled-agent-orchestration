@@ -1188,7 +1188,7 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 - `memory/` - Context preservation folder (files auto-generated via `generate-context.ts`)
 
 ### Related Skills
-- `sk-code--web` - Implementation, debugging, and verification lifecycle
+- `sk-code-web` - Implementation, debugging, and verification lifecycle
 - `system-spec-kit` - Context preservation with semantic memory
 - `sk-git` - Git workspace setup and clean commits
 <!-- /ANCHOR:related-resources -->

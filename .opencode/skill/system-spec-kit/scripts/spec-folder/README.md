@@ -108,7 +108,7 @@ await setupContextDirectory('specs/<###-feature-name>');
 // Creates: specs/<###-feature-name>/memory/
 
 const nestedChangelog = buildNestedChangelogData(
-  '.opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation',
+  '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation',
   { mode: 'auto', outputPath: null }
 );
 // nestedChangelog.outputPath -> ".opencode/specs/.../024-compact-code-graph/changelog/changelog-024-029-review-remediation.md"
@@ -216,7 +216,7 @@ node scripts/dist/memory/generate-context.js /tmp/context.json specs/<###-featur
 node scripts/dist/memory/generate-context.js 003-parent/001-child
 
 # Phase-folder paths stay authoritative and save into that selected phase folder
-node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation
+node scripts/dist/memory/generate-context.js .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation
 ```
 
 #### Multiple specs directories warning
@@ -255,7 +255,7 @@ ls -la scripts/dist/spec-folder/
 npx tsc -b .opencode/skill/system-spec-kit/scripts/tsconfig.json
 
 # Generate a nested changelog preview
-node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js .opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation
+node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js .opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation
 
 # Test with actual generate-context script (which uses these utilities)
 node scripts/dist/memory/generate-context.js --help

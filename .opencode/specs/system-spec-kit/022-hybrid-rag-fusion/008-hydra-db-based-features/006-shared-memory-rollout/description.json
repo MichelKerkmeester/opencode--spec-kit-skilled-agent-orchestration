@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout",
+  "description": "Feature Specification: 006-shared-memory-rollout",
+  "keywords": [
+    "feature",
+    "specification",
+    "006-shared-memory-rollout"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.673Z",
+  "specId": "006",
+  "folderSlug": "shared-memory-rollout",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "008-hydra-db-based-features"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-6.md"
+  ]
+}

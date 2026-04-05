@@ -190,5 +190,5 @@ When debugging becomes prolonged or repetitive:
 ### Skills
 
 - Code quality standards for patterns and conventions
-- sk-code--web skill for implementation lifecycle
+- sk-code-web skill for implementation lifecycle
 <!-- /ANCHOR:related-resources -->

@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+  "description": "Feature Specification: Working Memory + Hybrid RAG Automation",
+  "keywords": [
+    "feature",
+    "specification",
+    "working",
+    "memory",
+    "hybrid",
+    "rag",
+    "automation"
+  ],
+  "lastUpdated": "2026-03-30T11:56:27.062Z",
+  "specId": "020",
+  "folderSlug": "mcp-working-memory-hybrid-rag",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

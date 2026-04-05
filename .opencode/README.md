@@ -129,10 +129,10 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 | `system-spec-kit` | Spec folders, memory system, context preservation with CORE + ADDENDUM v2.2 architecture |
 | `sk-doc` | Markdown quality enforcement, DQI scoring, templates, validation (v5.2) |
 | `sk-git` | Git workflow orchestrator for worktrees, commits, PRs with read-only enforcement (v1.5) |
-| `sk-code--web` | Frontend development lifecycle: implementation, debugging, verification (v1.0.9) |
-| `sk-code--full-stack` | Multi-stack development with auto-detection (Go, Node.js, React, React Native, Swift) (v1.0) |
-| `sk-code--review` | Stack-agnostic findings-first review baseline that layers with stack-specific code standards (v1.2.0.0) |
-| `sk-code--opencode` | OpenCode system code standards for JS, TS, Python, Shell with language routing (v1.1.0.0) |
+| `sk-code-web` | Frontend development lifecycle: implementation, debugging, verification (v1.0.9) |
+| `sk-code-full-stack` | Multi-stack development with auto-detection (Go, Node.js, React, React Native, Swift) (v1.0) |
+| `sk-code-review` | Stack-agnostic findings-first review baseline that layers with stack-specific code standards (v1.2.0.0) |
+| `sk-code-opencode` | OpenCode system code standards for JS, TS, Python, Shell with language routing (v1.1.0.0) |
 | `mcp-chrome-devtools` | Chrome DevTools orchestrator with CLI (bdg) and MCP (Code Mode) routing (v2.1) |
 | `mcp-clickup` | ClickUp project-management orchestrator with CLI and Code Mode routing (v1.0) |
 | `mcp-code-mode` | MCP orchestration via TypeScript execution for external tools (ClickUp, Figma, etc.) (v1.1) |

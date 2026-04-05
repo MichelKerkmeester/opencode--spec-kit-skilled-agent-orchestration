@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4",
+  "description": "Feature Specification: Post-Merge Refinement 4 - Comprehensive System Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "post-merge",
+    "refinement",
+    "comprehensive",
+    "system",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.115Z",
+  "specId": "041",
+  "folderSlug": "post-merge-refinement-4",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

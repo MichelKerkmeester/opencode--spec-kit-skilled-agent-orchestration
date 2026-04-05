@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
+  "description": "Feature Specification: JSON Mode Hybrid Enrichment (Phase 1B)",
+  "keywords": [
+    "feature",
+    "specification",
+    "json",
+    "mode",
+    "hybrid",
+    "enrichment",
+    "phase"
+  ],
+  "lastUpdated": "2026-03-30T11:56:26.774Z",
+  "specId": "001",
+  "folderSlug": "initial-enrichment",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing",
+    "016-json-mode-hybrid-enrichment"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "20-03-26_09-34__deep-research-completed-21-findings-across-v8.md",
+    "20-03-26_11-38__implemented-4-json-mode-memory-save-quality-gap.md",
+    "21-03-26_18-29__deep-research-round-2-completed-10-agent.md"
+  ]
+}

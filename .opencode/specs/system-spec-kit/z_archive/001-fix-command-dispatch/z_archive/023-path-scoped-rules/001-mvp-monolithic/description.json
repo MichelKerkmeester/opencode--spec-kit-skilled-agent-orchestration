@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic",
+  "description": "Path-Scoped Validation Rules",
+  "keywords": [
+    "path-scoped",
+    "validation",
+    "rules"
+  ],
+  "lastUpdated": "2026-04-02T17:21:39.979Z",
+  "specId": "001",
+  "folderSlug": "mvp-monolithic",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive",
+    "023-path-scoped-rules"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

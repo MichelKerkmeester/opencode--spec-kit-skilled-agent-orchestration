@@ -58,7 +58,7 @@ function createDetectorRepo(): {
   const specsDir = path.join(root, '.opencode', 'specs');
   const parentPath = path.join(
     specsDir,
-    '02--system-spec-kit',
+    'system-spec-kit',
     '022-hybrid-rag-fusion',
     '010-perfect-session-capturing',
   );
@@ -88,7 +88,7 @@ function createWorkflowHarness(): {
   dataFile: string;
 } {
   const root = createTempRoot('speckit-phase-013-workflow-');
-  const specRelativePath = '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes';
+  const specRelativePath = 'system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes';
   const specFolderPath = path.join(root, '.opencode', 'specs', specRelativePath);
   const contextDir = path.join(specFolderPath, 'memory');
   const dataDir = path.join(root, '.tmp-data');
@@ -131,7 +131,7 @@ function createWorkflowHarness(): {
     keywords: ['auto detection', 'key files'],
     specId: '013',
     folderSlug: 'auto-detection-fixes',
-    parentChain: ['02--system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing'],
+    parentChain: ['system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing'],
     memorySequence: 0,
     memoryNameHistory: [],
   });
@@ -152,7 +152,7 @@ function createWorkflowHarness(): {
         title: 'Phase 013 workflow coverage',
         narrative: 'Validated the rendered memory metadata and key file selection for the auto-detection fixes phase.',
         facts: [
-          'Tool: Read File: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/spec.md',
+          'Tool: Read File: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/spec.md',
         ],
         files: ['spec.md', 'plan.md'],
         timestamp: '2026-03-16T12:05:00.000Z',
@@ -241,24 +241,24 @@ describe.sequential('phase 013 auto-detection fixes', () => {
             title: 'Read phase spec',
             narrative: 'Inspected the 013 auto detection fixes scope before coding.',
             facts: [
-              'Tool: Read File: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/spec.md',
+              'Tool: Read File: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/spec.md',
             ],
           },
           {
             title: 'Patch phase tasks',
             narrative: 'Updated the phase tasks after reviewing the detector.',
             facts: [
-              'Tool: Edit File: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/tasks.md',
+              'Tool: Edit File: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/tasks.md',
             ],
           },
         ],
         filesModified: [
           {
-            path: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/checklist.md',
+            path: '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes/checklist.md',
           },
         ],
       },
-      '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes',
+      'system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes',
     );
 
     expect(signal.toolCallPaths).toHaveLength(2);
@@ -454,7 +454,7 @@ describe.sequential('phase 013 auto-detection fixes', () => {
     await configureProjectRoot(root);
 
     const targetChild = childPaths[2]; // 003-data-fidelity
-    const fullRelativePath = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/003-data-fidelity';
+    const fullRelativePath = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/003-data-fidelity';
 
     const { detectSpecFolder } = await import('../spec-folder/folder-detector');
     const detected = await detectSpecFolder(null, { specFolderArg: fullRelativePath });

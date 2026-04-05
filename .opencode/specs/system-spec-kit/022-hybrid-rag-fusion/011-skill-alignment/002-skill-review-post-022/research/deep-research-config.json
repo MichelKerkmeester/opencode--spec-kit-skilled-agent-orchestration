@@ -1,0 +1,57 @@
+{
+  "topic": "Review: 011-skill-alignment spec folder alignment with current reality and 021-spec-kit-phase-system",
+  "mode": "review",
+  "version": "v1",
+  "reviewTarget": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "reviewScopeFiles": [
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/plan.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/tasks.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/checklist.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/implementation-summary.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/spec.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/plan.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/tasks.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/checklist.md",
+    ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/implementation-summary.md",
+    ".opencode/skill/system-spec-kit/SKILL.md",
+    ".opencode/skill/system-spec-kit/references/memory/save_workflow.md",
+    ".opencode/skill/system-spec-kit/references/memory/embedding_resilience.md",
+    ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+    ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+    ".opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md",
+    ".opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md",
+    ".opencode/skill/system-spec-kit/assets/level_decision_matrix.md",
+    ".opencode/skill/system-spec-kit/assets/template_mapping.md",
+    ".opencode/specs/system-spec-kit/021-spec-kit-phase-system/spec.md",
+    ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+    ".opencode/command/memory/"
+  ],
+  "crossReference": {
+    "primary": ".opencode/specs/system-spec-kit/021-spec-kit-phase-system",
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["skill_agent"]
+  },
+  "severityThreshold": "P2",
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "specFolder": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022",
+  "createdAt": "2026-03-25T15:10:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "agentPool": {
+    "copilot_gpt54": { "count": 5, "cli": "copilot", "model": "gpt-5.4", "reasoning": "high" }
+  },
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

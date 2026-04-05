@@ -20,9 +20,9 @@ describe('Claude session-stop spec folder detection', () => {
     writeFileSync(
       transcriptPath,
       [
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation/tasks.md',
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md',
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation/checklist.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation/tasks.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation/checklist.md',
       ].join('\n'),
       'utf-8',
     );
@@ -30,9 +30,9 @@ describe('Claude session-stop spec folder detection', () => {
     expect(
       detectSpecFolder(
         transcriptPath,
-        'specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation',
+        'specs/system-spec-kit/024-compact-code-graph/029-review-remediation',
       ),
-    ).toBe('specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation');
+    ).toBe('specs/system-spec-kit/024-compact-code-graph/029-review-remediation');
   });
 
   it('rejects ambiguous transcript-only detection when multiple spec folders are present', () => {
@@ -41,8 +41,8 @@ describe('Claude session-stop spec folder detection', () => {
     writeFileSync(
       transcriptPath,
       [
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation/tasks.md',
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation/tasks.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md',
       ].join('\n'),
       'utf-8',
     );
@@ -56,14 +56,14 @@ describe('Claude session-stop spec folder detection', () => {
     writeFileSync(
       transcriptPath,
       [
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation/tasks.md',
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation/checklist.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation/tasks.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation/checklist.md',
       ].join('\n'),
       'utf-8',
     );
 
     expect(detectSpecFolder(transcriptPath)).toBe(
-      'specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation',
+      'specs/system-spec-kit/024-compact-code-graph/029-review-remediation',
     );
   });
 
@@ -73,8 +73,8 @@ describe('Claude session-stop spec folder detection', () => {
     writeFileSync(
       transcriptPath,
       [
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md',
-        '.opencode/specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md',
+        '.opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md',
       ].join('\n'),
       'utf-8',
     );
@@ -82,8 +82,8 @@ describe('Claude session-stop spec folder detection', () => {
     expect(
       detectSpecFolder(
         transcriptPath,
-        'specs/02--system-spec-kit/024-compact-code-graph/029-review-remediation',
+        'specs/system-spec-kit/024-compact-code-graph/029-review-remediation',
       ),
-    ).toBe('specs/02--system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity');
+    ).toBe('specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity');
   });
 });

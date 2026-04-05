@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation",
+  "description": "Feature Specification: Anchor System Implementation - Targeted Memory Retrieval",
+  "keywords": [
+    "feature",
+    "specification",
+    "anchor",
+    "system",
+    "implementation",
+    "targeted",
+    "memory",
+    "retrieval"
+  ],
+  "lastUpdated": "2026-04-02T17:21:40.213Z",
+  "specId": "065",
+  "folderSlug": "anchor-system-implementation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
