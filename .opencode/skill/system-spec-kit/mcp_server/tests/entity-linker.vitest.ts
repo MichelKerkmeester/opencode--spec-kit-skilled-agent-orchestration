@@ -11,6 +11,7 @@ import {
   getEntityLinkStats,
   hasEntityInfrastructure,
   runEntityLinking,
+  runEntityLinkingForMemory,
   __testables,
 } from '../lib/search/entity-linker';
 
@@ -280,6 +281,48 @@ describe('S8 Entity Linker', () => {
       const matches = findCrossDocumentMatches(db);
       expect(matches).toHaveLength(1);
       expect(matches[0].canonicalName).toBe('tf idf score');
+    });
+  });
+
+  describe('findCrossDocumentMatchesForMemory', () => {
+    it('limits incremental matching to entities attached to the target memory', () => {
+      insertMemory(db, 1, 'specs/001-alpha');
+      insertMemory(db, 2, 'specs/002-beta');
+      insertMemory(db, 3, 'specs/003-gamma');
+
+      insertEntity(db, 1, 'Shared Entity');
+      insertEntity(db, 1, 'Alpha Only');
+      insertEntity(db, 2, 'shared entity');
+      insertEntity(db, 3, 'Gamma Only');
+
+      insertCatalogEntry(db, 'shared entity');
+      insertCatalogEntry(db, 'alpha only');
+      insertCatalogEntry(db, 'gamma only');
+
+      const matches = __testables.findCrossDocumentMatchesForMemory(db, 1);
+      expect(matches).toHaveLength(1);
+      expect(matches[0]).toMatchObject({
+        canonicalName: 'shared entity',
+        memoryIds: expect.arrayContaining([1, 2]),
+      });
+    });
+
+    it('uses entity_catalog aliases to match normalized variants incrementally', () => {
+      insertMemory(db, 1, 'specs/001-alpha');
+      insertMemory(db, 2, 'specs/002-beta');
+
+      insertEntity(db, 1, 'TF-IDF');
+      insertEntity(db, 2, 'tf idf');
+
+      db.prepare(`
+        INSERT INTO entity_catalog (canonical_name, aliases, entity_type, memory_count)
+        VALUES ('tf idf', '["TF-IDF","tf idf"]', 'noun_phrase', 2)
+      `).run();
+
+      const matches = __testables.findCrossDocumentMatchesForMemory(db, 1);
+      expect(matches).toHaveLength(1);
+      expect(matches[0].canonicalName).toBe('tf idf');
+      expect(matches[0].memoryIds).toEqual(expect.arrayContaining([1, 2]));
     });
   });
 
@@ -744,6 +787,45 @@ describe('S8 Entity Linker', () => {
       const edge = db.prepare(`SELECT source_id, target_id FROM causal_edges WHERE created_by = 'entity_linker'`).get() as { source_id: string; target_id: string };
       expect(typeof edge.source_id).toBe('string');
       expect(typeof edge.target_id).toBe('string');
+    });
+  });
+
+  describe('runEntityLinkingForMemory', () => {
+    it('creates links only for the saved memory scope', () => {
+      insertMemory(db, 1, 'specs/001-alpha');
+      insertMemory(db, 2, 'specs/002-beta');
+      insertMemory(db, 3, 'specs/003-gamma');
+      insertMemory(db, 4, 'specs/004-delta');
+
+      insertEntity(db, 1, 'Shared Entity');
+      insertEntity(db, 2, 'shared entity');
+      insertEntity(db, 3, 'Other Entity');
+      insertEntity(db, 4, 'other entity');
+
+      db.prepare(`
+        INSERT INTO entity_catalog (canonical_name, aliases, entity_type, memory_count)
+        VALUES ('shared entity', '["Shared Entity","shared entity"]', 'noun_phrase', 2),
+               ('other entity', '["Other Entity","other entity"]', 'noun_phrase', 2)
+      `).run();
+
+      const result = runEntityLinkingForMemory(db, 1);
+      expect(result.linksCreated).toBe(1);
+      expect(result.crossDocMatches).toBe(1);
+
+      const edges = db.prepare(`
+        SELECT source_id, target_id, evidence
+        FROM causal_edges
+        WHERE created_by = 'entity_linker'
+        ORDER BY id
+      `).all() as Array<{ source_id: string; target_id: string; evidence: string }>;
+
+      expect(edges).toEqual([
+        {
+          source_id: '1',
+          target_id: '2',
+          evidence: 'Cross-doc entity: shared entity',
+        },
+      ]);
     });
   });
 

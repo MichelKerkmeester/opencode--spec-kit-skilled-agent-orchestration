@@ -512,7 +512,20 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Compact Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
 
-Together they form the code-context layer described in [`024-compact-code-graph`](.opencode/specs/system-spec-kit/024-compact-code-graph/spec.md), with the README-facing wording for this area tracked in [`006-documentation-alignment`](.opencode/specs/system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md). The intended split is simple: CocoIndex finds semantic candidates, the code graph expands structural neighbors, and Memory preserves session decisions and active-task context.
+The intended split is simple: CocoIndex finds semantic candidates, the code graph expands structural neighbors, and Memory preserves session decisions and active-task context.
+
+#### How the Code Graph Works
+
+The Compact Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** — Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot — because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
+
+**Startup injection.** When the MCP server starts, it initializes the `code-graph.sqlite` database, runs a non-blocking startup scan, and activates a file watcher. A hook (`session-prime.ts`) injects a startup brief into the conversation's first turn with a one-line health summary (e.g., "Code Graph: healthy — 42 files, 8.3K nodes, 15.2K edges"). No manual setup required.
+
+**Auto-indexing.** The graph stays current through three mechanisms:
+1. **Startup scan** — indexes on server boot (async, non-blocking)
+2. **File watcher** — Chokidar monitors spec and source folders with a 2-second debounce, reindexing changed files in real time
+3. **Lazy refresh** — `code_graph_query` calls `ensureCodeGraphReady()` which detects staleness and triggers a bounded inline refresh before returning results
+
+The indexer uses tree-sitter to parse source files and extract functions, classes, imports, and call relationships. It tracks per-file content hashes to skip unchanged files, making incremental scans fast.
 
 #### What Each System Does
 

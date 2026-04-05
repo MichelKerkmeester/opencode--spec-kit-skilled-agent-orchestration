@@ -51,6 +51,21 @@ interface EntityLinkingOptions {
   maxEdgeDensity?: number;
 }
 
+interface MemoryEntityRow {
+  entity_text: string;
+}
+
+interface RelatedMemoryEntityRow {
+  memory_id: number;
+  entity_text: string;
+  spec_folder: string;
+}
+
+interface CatalogAliasRow {
+  canonical_name: string;
+  aliases: string;
+}
+
 export interface EntityLinkStats {
   totalEntityLinks: number;
   crossDocLinks: number;
@@ -509,6 +524,173 @@ export function findCrossDocumentMatches(db: Database.Database): EntityMatch[] {
   return matches;
 }
 
+function getMemoryEntities(
+  db: Database.Database,
+  memoryId: number,
+): Array<{ canonicalName: string; rawText: string }> {
+  try {
+    const rows = (db.prepare(
+      `SELECT entity_text FROM memory_entities WHERE memory_id = ?`,
+    ) as Database.Statement).all(memoryId) as MemoryEntityRow[];
+
+    const seenCanonicals = new Set<string>();
+    const entities: Array<{ canonicalName: string; rawText: string }> = [];
+
+    for (const row of rows) {
+      const rawText = typeof row.entity_text === 'string' ? row.entity_text.trim() : '';
+      if (rawText.length === 0) continue;
+
+      const canonicalName = normalizeEntityName(rawText);
+      if (canonicalName.length === 0 || seenCanonicals.has(canonicalName)) continue;
+
+      seenCanonicals.add(canonicalName);
+      entities.push({ canonicalName, rawText });
+    }
+
+    return entities;
+  } catch (error: unknown) {
+    logger.warn('Failed to load memory entities', {
+      memoryId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+}
+
+function loadAliasTermsForCanonicals(
+  db: Database.Database,
+  canonicalNames: string[],
+): Map<string, Set<string>> {
+  const aliasMap = new Map<string, Set<string>>();
+  if (canonicalNames.length === 0) return aliasMap;
+
+  const placeholders = canonicalNames.map(() => '?').join(', ');
+
+  try {
+    const rows = (db.prepare(`
+      SELECT canonical_name, aliases
+      FROM entity_catalog
+      WHERE canonical_name IN (${placeholders})
+    `) as Database.Statement).all(...canonicalNames) as CatalogAliasRow[];
+
+    for (const row of rows) {
+      const canonicalName = typeof row.canonical_name === 'string'
+        ? row.canonical_name.trim()
+        : '';
+      if (canonicalName.length === 0) continue;
+
+      const aliases = new Set<string>([canonicalName]);
+      try {
+        const parsed = JSON.parse(row.aliases);
+        if (Array.isArray(parsed)) {
+          for (const alias of parsed) {
+            if (typeof alias === 'string' && alias.trim().length > 0) {
+              aliases.add(alias.trim());
+            }
+          }
+        }
+      } catch (_error: unknown) {
+        // Keep canonical fallback even when aliases are malformed.
+      }
+
+      aliasMap.set(canonicalName, aliases);
+    }
+  } catch (error: unknown) {
+    logger.warn('Failed to load alias terms for canonical entities', {
+      error: error instanceof Error ? error.message : String(error),
+      canonicalCount: canonicalNames.length,
+    });
+  }
+
+  return aliasMap;
+}
+
+export function findCrossDocumentMatchesForMemory(
+  db: Database.Database,
+  memoryId: number,
+): EntityMatch[] {
+  const currentSpecFolder = getSpecFolder(db, memoryId);
+  if (!currentSpecFolder) return [];
+
+  const currentEntities = getMemoryEntities(db, memoryId);
+  if (currentEntities.length === 0) return [];
+
+  const canonicalNames = Array.from(new Set(currentEntities.map((entity) => entity.canonicalName)));
+  const aliasTermsByCanonical = loadAliasTermsForCanonicals(db, canonicalNames);
+  const matchMap = new Map<string, { memoryIds: Set<number>; specFolders: Set<string> }>();
+  const aliasTerms = new Set<string>();
+
+  for (const entity of currentEntities) {
+    const entry = matchMap.get(entity.canonicalName) ?? {
+      memoryIds: new Set<number>(),
+      specFolders: new Set<string>(),
+    };
+    entry.memoryIds.add(memoryId);
+    entry.specFolders.add(currentSpecFolder);
+    matchMap.set(entity.canonicalName, entry);
+
+    aliasTerms.add(entity.rawText);
+    aliasTerms.add(entity.canonicalName);
+    const catalogAliases = aliasTermsByCanonical.get(entity.canonicalName);
+    if (catalogAliases) {
+      for (const alias of catalogAliases) {
+        aliasTerms.add(alias);
+      }
+    }
+  }
+
+  if (aliasTerms.size === 0) return [];
+
+  const orderedAliasTerms = Array.from(aliasTerms);
+  const placeholders = orderedAliasTerms.map(() => '?').join(', ');
+
+  try {
+    const rows = (db.prepare(`
+      SELECT me.memory_id, me.entity_text, mi.spec_folder
+      FROM memory_entities me
+      JOIN memory_index mi ON me.memory_id = mi.id
+      WHERE me.memory_id != ?
+        AND mi.importance_tier != 'deprecated'
+        AND mi.spec_folder != ?
+        AND me.entity_text IN (${placeholders})
+    `) as Database.Statement).all(
+      memoryId,
+      currentSpecFolder,
+      ...orderedAliasTerms,
+    ) as RelatedMemoryEntityRow[];
+
+    for (const row of rows) {
+      const canonicalName = normalizeEntityName(row.entity_text);
+      if (!matchMap.has(canonicalName)) continue;
+
+      const entry = matchMap.get(canonicalName);
+      if (!entry) continue;
+      entry.memoryIds.add(row.memory_id);
+      if (row.spec_folder) {
+        entry.specFolders.add(row.spec_folder);
+      }
+    }
+  } catch (error: unknown) {
+    logger.warn('Failed to find related memories for incremental entity linking', {
+      memoryId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+
+  const matches: EntityMatch[] = [];
+  for (const [canonicalName, entry] of matchMap) {
+    if (entry.memoryIds.size < 2 || entry.specFolders.size < 2) continue;
+    matches.push({
+      canonicalName,
+      memoryIds: Array.from(entry.memoryIds),
+      specFolders: Array.from(entry.specFolders),
+    });
+  }
+
+  return matches;
+}
+
 /**
  * Count current edges for a node (both source and target).
  */
@@ -911,6 +1093,46 @@ export function runEntityLinking(db: Database.Database): EntityLinkResult {
   }
 }
 
+export function runEntityLinkingForMemory(
+  db: Database.Database,
+  memoryId: number,
+): EntityLinkResult {
+  const emptyResult: EntityLinkResult = { linksCreated: 0, entitiesProcessed: 0, crossDocMatches: 0 };
+
+  if (!isEntityLinkingEnabled()) {
+    return emptyResult;
+  }
+
+  if (!hasEntityInfrastructure(db)) {
+    return emptyResult;
+  }
+
+  try {
+    const matches = findCrossDocumentMatchesForMemory(db, memoryId);
+    if (matches.length === 0) {
+      return emptyResult;
+    }
+
+    const maxEdgeDensity = getEntityLinkingDensityThreshold();
+    const { density } = getGlobalEdgeDensityStats(db);
+    if (density > maxEdgeDensity) {
+      return {
+        ...emptyResult,
+        skippedByDensityGuard: true,
+        edgeDensity: density,
+        densityThreshold: maxEdgeDensity,
+        blockedByDensityGuard: 0,
+      };
+    }
+
+    return createEntityLinks(db, matches, { maxEdgeDensity });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[entity-linker] Incremental pipeline failed for memory #${memoryId}: ${message}`);
+    return runEntityLinking(db);
+  }
+}
+
 // ───────────────────────────────────────────────────────────────
 // 6. TEST EXPORTS
 
@@ -934,4 +1156,5 @@ export const __testables = {
   BUILTIN_CONCEPT_ALIASES,
   MIN_NOUN_PHRASE_TOKEN_LENGTH,
   MAX_CONCEPTS_PER_QUERY,
+  findCrossDocumentMatchesForMemory,
 };

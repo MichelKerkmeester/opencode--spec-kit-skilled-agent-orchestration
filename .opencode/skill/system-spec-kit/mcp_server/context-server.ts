@@ -88,6 +88,12 @@ import * as bm25Index from './lib/search/bm25-index.js';
 import * as memoryParser from './lib/parsing/memory-parser.js';
 import { getSpecsBasePaths } from './lib/search/folder-discovery.js';
 import {
+  registerGlobalRefreshFn,
+  getDirtyNodes,
+  clearDirtyNodes,
+  recomputeLocal,
+} from './lib/search/graph-lifecycle.js';
+import {
   isDegreeBoostEnabled,
   isDynamicInitEnabled,
   isFileWatcherEnabled,
@@ -1555,6 +1561,25 @@ async function main(): Promise<void> {
     initDbState({ graphSearchFn });
     sessionBoost.init(database);
     causalBoost.init(database);
+    registerGlobalRefreshFn(() => {
+      const dirtyNodeIds = Array.from(getDirtyNodes().nodeIds);
+      if (dirtyNodeIds.length === 0) {
+        return;
+      }
+
+      try {
+        const updatedEdges = recomputeLocal(database, dirtyNodeIds);
+        clearDirtyNodes();
+        console.error(
+          '[context-server] Scheduled graph refresh applied: dirty_nodes=%d, updated_edges=%d',
+          dirtyNodeIds.length,
+          updatedEdges,
+        );
+      } catch (graphRefreshErr: unknown) {
+        const message = graphRefreshErr instanceof Error ? graphRefreshErr.message : String(graphRefreshErr);
+        console.warn('[context-server] Scheduled graph refresh failed:', message);
+      }
+    });
     console.error('[context-server] Checkpoints, access tracker, hybrid search, session boost, and causal boost initialized');
 
     // P3-04: Rebuild BM25 index from database on startup

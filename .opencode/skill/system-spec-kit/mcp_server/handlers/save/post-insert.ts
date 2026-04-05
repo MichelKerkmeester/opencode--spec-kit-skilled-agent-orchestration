@@ -17,7 +17,7 @@ import {
   refreshAutoEntitiesForMemory,
 } from '../../lib/extraction/entity-extractor.js';
 import { generateAndStoreSummary } from '../../lib/search/memory-summaries.js';
-import { runEntityLinking } from '../../lib/search/entity-linker.js';
+import { runEntityLinkingForMemory } from '../../lib/search/entity-linker.js';
 import { onIndex, isGraphRefreshEnabled } from '../../lib/search/graph-lifecycle.js';
 import { toErrorMessage } from '../../utils/index.js';
 
@@ -141,7 +141,7 @@ export async function runPostInsertEnrichment(
   // Runs after R10 entity storage; links entities across spec folders.
   if (isEntityLinkingEnabled() && isAutoEntitiesEnabled()) {
     try {
-      const linkResult = runEntityLinking(database);
+      const linkResult = runEntityLinkingForMemory(database, id);
       if (linkResult.linksCreated > 0) {
         console.error(`[entity-linking] Created ${linkResult.linksCreated} cross-doc links from ${linkResult.crossDocMatches} entity matches`);
       } else if (linkResult.skippedByDensityGuard) {
