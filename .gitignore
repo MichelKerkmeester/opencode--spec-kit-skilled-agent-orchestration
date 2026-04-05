@@ -96,7 +96,7 @@ code-graph.sqlite
 .codex/specs/00--barter
 .agents/specs/00--barter
 
-.opencode/specs/01--anobel.com
-.claude/specs/01--anobel.com
-.codex/specs/01--anobel.com
-.agents/specs/01--anobel.com
+.opencode/specs/00--anobel.com
+.claude/specs/00--anobel.com
+.codex/specs/00--anobel.com
+.agents/specs/00--anobel.com
