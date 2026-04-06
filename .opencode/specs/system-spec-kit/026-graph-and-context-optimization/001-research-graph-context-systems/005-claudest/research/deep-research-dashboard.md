@@ -17,8 +17,8 @@ Reducer-generated observability surface for the active research packet.
 ## 2. STATUS
 - Topic: Research the external repository at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external and identify concrete improvements for Code_Environment/Public, especially around Claude Code plugin marketplace structure, conversation memory with FTS5/BM25 ranking, automatic context injection on session start, learning extraction with batch-processing agents, and token-usage observability dashboards.
 - Started: 2026-04-06T14:35:44Z
-- Status: RUNNING
-- Iteration: 10 of 12
+- Status: COMPLETE
+- Iteration: 12 of 12
 - Session ID: 2026-04-06T14-35-44Z-005-claudest-codex
 - Parent Session: none
 - Lifecycle Mode: new
@@ -40,9 +40,11 @@ Reducer-generated observability surface for the active research packet.
 | 8 | Q10 synthesis matrix | synthesis | 0.38 | 9 | insight |
 | 9 | Q10 sequencing + prerequisites | sequencing | 0.27 | 6 | insight |
 | 10 | Smallest safe v1 per adopt-now lane | implementation-slicing | 0.24 | 8 | insight |
+| 11 | Packet-ready briefs: FTS cascade + normalized analytics tables | implementation-brief | 0.31 | 9 | insight |
+| 12 | Resolve FTS probe + 024/003 payload uncertainties; closeout | closeout | 0.36 | 7 | insight |
 
-- iterationsCompleted: 10
-- keyFindings: 74
+- iterationsCompleted: 12
+- keyFindings: 103
 - openQuestions: 1
 - resolvedQuestions: 9
 
@@ -64,11 +66,11 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.38 -> 0.27 -> 0.24
+- Last 3 ratios: 0.24 -> 0.31 -> 0.36
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
-- convergenceScore: 0.24
-- coverageBySources: {"other":95}
+- convergenceScore: 0.36
+- coverageBySources: {"other":120}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
@@ -101,11 +103,19 @@ Reducer-generated observability surface for the active research packet.
 - Rewriting `024/003` to close the analytics gap. The smallest safe move is a follow-on normalized read model, not a producer rewrite. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] (iteration 10)
 - Starting with the dashboard contract before ingestion lands. The stress test shows that this would lock in unstable fields too early. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] (iteration 10)
 - Treating the SessionStart fast path as a replacement for Public recovery. The safe v1 remains augmentation only. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] (iteration 10)
+- Advancing the dashboard contract ahead of normalized ingestion. Iteration 10's sequencing still holds: the durable next packet is the read model first, not presentation fields. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:577-580] (iteration 11)
+- No new path dead ends occurred after the earlier path correction; the only meaningful correction this iteration was narrowing the Claudest comparison from "fallback by error class" to "fallback by capability probe plus query branch." [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:22-106] (iteration 11)
+- Rewriting the `024/003` producer to close the analytics gap. The packet-ready boundary remains additive normalized tables plus a replay reader, not a producer migration. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138] (iteration 11)
+- Treating the Claudest FTS lane as exception-driven tier hopping. The source is probe-first and query-branch-based today, so Public's exception-triggered degrade behavior should be treated as new hardening rather than back-attributed to Claudest. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:22-106] (iteration 11)
+- Claiming that turn-level replay can be keyed from `lastTranscriptOffset` alone. The current parser emits only session-level `newOffset=fileSize`, not per-turn offsets. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123] (iteration 12)
+- No new dead-end path was pursued in this final pass. The main correction was replacing the abstract "payload should be enough" assumption with a field-level check of what the Stop hook actually persists and what remains ephemeral. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:191-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] (iteration 12)
+- Reusing the older brief's `fts4_match` lane as a default first-packet promise. Public does not currently create an FTS4-capable alternate table, so that would overstate what the first implementation can safely deliver. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412] (iteration 12)
+- Treating `speckitSessionId` as the primary analytics join key. The Stop hook does not populate it today, so the reliable current key remains `claudeSessionId`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:162-180] (iteration 12)
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-Iteration 11 should take the FTS capability cascade recommendation and turn it into a packet-ready implementation brief: exact fallback contract, candidate file surface, forced-degrade verification matrix, and rollback plan. In parallel, keep the ingestion lane framed as the second packet by drafting the minimal normalized-table spec that closes `024/003`'s cross-session analytics gap without touching the existing Stop-hook producer. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md] [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]
+No further research iteration is recommended. The next action is packet creation for the narrowed FTS capability probe packet, followed by the normalized analytics packet once transcript identity persistence and cache token carry-forward are explicitly in scope. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:584-605] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-257]
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

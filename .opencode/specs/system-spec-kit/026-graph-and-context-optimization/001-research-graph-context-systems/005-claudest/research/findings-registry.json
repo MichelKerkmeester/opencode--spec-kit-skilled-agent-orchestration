@@ -1129,6 +1129,564 @@
         "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
         "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
       ]
+    },
+    {
+      "id": "finding-11-7-candidate-public-file-surface-lib-search-sqlite-fts-ts-is-the-closest-lexical-ca",
+      "text": "**Candidate Public file surface:** `lib/search/sqlite-fts.ts` is the closest lexical capability hook because it already owns weighted FTS5 BM25 execution and a `memory_fts` existence probe; `lib/search/hybrid-search.ts` is the routing seam because `ftsSearch()` already delegates to the SQLite FTS module and `searchWithFallback()` already runs an explicit fallback chain; `handlers/memory-search.ts` is the metadata exposure seam because it owns the `memory_search` response contract; `tests/sqlite-fts.vitest.ts` is the lowest-friction place to add forced-degrade coverage. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:48-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:450-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1731-1784] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:94-97] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:60-145]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-3-claudest-capability-detection-contract-as-implemented-today-detect-fts-support-p",
+      "text": "**Claudest capability detection contract, as implemented today:** `detect_fts_support()` probes `PRAGMA compile_options`, returns `\"fts5\"` when `ENABLE_FTS5` is present, falls back to `\"fts4\"` when either `ENABLE_FTS4` or `ENABLE_FTS3` is present, and returns `None` otherwise. This is capability-probe driven, not retry-through-exception driven. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-4-claudest-fallback-ordering-and-query-rewriting-as-implemented-today-search-sessi",
+      "text": "**Claudest fallback ordering and query rewriting, as implemented today:** `search_sessions()` splits the raw query on whitespace, sanitizes each token with `sanitize_fts_term()`, drops empties, wraps surviving terms in quotes, and joins them with `OR` for `MATCH`. The `\"fts5\"` branch runs `ORDER BY bm25(branches_fts)`, the `\"fts4\"` branch reuses `MATCH` but orders by `b.ended_at DESC`, and the no-FTS path rewrites to `b.aggregated_content LIKE ?` clauses joined with `AND`, each parameterized as `%term%`, also ordered by `b.ended_at DESC`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:22-106]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-5-error-class-observation-from-the-source-claudest-does-not-currently-hop-tiers-on",
+      "text": "**Error-class observation from the source:** Claudest does not currently hop tiers on `sqlite3.OperationalError` inside `search_sessions()`. The only probe failure it explicitly swallows is the generic `Exception` around `PRAGMA compile_options`; after that, the selected query path executes directly. That means Public's packet should treat exception-driven degrade as an extra hardening layer, not as something already proven by the Claudest source. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:22-106]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-8-forced-degrade-verification-matrix-source-opencode-specs-system-spec-kit-026-gra",
+      "text": "**Forced-degrade verification matrix:** [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:40-106] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:60-145]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-15-forced-replay-verification-contract-the-packet-should-prove-that-historical-json",
+      "text": "**Forced-replay verification contract:** The packet should prove that historical JSONL plus hook-state can be re-ingested idempotently into the new tables and that repeated replays keep session-level totals stable. Minimum checks: replay the same session twice and confirm one logical session row plus deterministic turn counts; replay two or more completed sessions and confirm cross-session cost totals no longer require direct hook-state reads; compare replayed totals against the existing hook-state lower-bound numbers so metric drift is explicit rather than silent. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:73-80] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:118-127] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-11-goal-statement-024-003-already-ships-the-producer-side-of-session-end-analytics-",
+      "text": "**Goal statement:** `024/003` already ships the producer side of session-end analytics collection: an async Stop hook, incremental JSONL transcript parsing, hook-state token snapshots, summary extraction, and token-pressure feedback. What is still missing is an analytics-grade cross-session read model, because those facts live in hook-state JSON and current cost estimates exclude cache read and cache write pricing. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:69-85] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:577-580]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-1-goal-statement-ship-a-narrow-backend-capability-contract-inside-public-s-existin",
+      "text": "**Goal statement:** Ship a narrow backend-capability contract inside Public's existing memory-search path so lexical search can degrade predictably across SQLite builds while preserving one logical search API and explicit diagnostics. This remains the first recommended follow-on packet because iteration 10 already narrowed the safe v1 to backend selection plus observability, not a new recall subsystem. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:574-582] [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-2-non-goals-do-not-import-claudest-s-branch-session-recall-schema-transcript-hydra",
+      "text": "**Non-goals:** Do not import Claudest's branch/session recall schema, transcript hydration model, or browse-vs-search UX wholesale. Do not change Public's semantic/vector routing contract; this packet only tightens the lexical backend path. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:540-541] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:574-575]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-12-non-goals-do-not-rewrite-hooks-claude-session-stop-ts-do-not-move-the-existing-p",
+      "text": "**Non-goals:** Do not rewrite `hooks/claude/session-stop.ts`, do not move the existing producer from hook-state JSON into a new live-write SQLite table, and do not freeze dashboard contracts before normalized ingestion lands. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:577-580]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-18-open-uncertainty-for-the-next-iteration-confirm-whether-public-already-exposes-a",
+      "text": "**Open uncertainty for the next iteration:** confirm whether Public already exposes a compile-option or capability-probe surface deeper than `memory_fts` table detection, because that decides how much of Claudest's `detect_fts_support()` can be mirrored directly; confirm whether the current hook-state payload always carries stable enough session ids, transcript paths, and offsets to build the normalized `turns` table without heuristic reconciliation; confirm whether pricing data for cache-read and cache-write should live in the analytics packet itself or in a shared pricing registry. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:108-145] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:75-80] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-6-packet-ready-public-contract-keep-public-s-current-lexical-surface-but-add-a-thr",
+      "text": "**Packet-ready Public contract:** Keep Public's current lexical surface but add a three-tier backend selector: `fts5_bm25` when `memory_fts` exists and the FTS5 path succeeds, `fts4_match` when an FTS virtual table exists but FTS5/BM25 is unavailable, and `like_scan` as the last-resort SQL fallback. Recommended probe sequence: first inspect compile capability if Public exposes it; otherwise table-probe `memory_fts`; then treat runtime query failures such as `no such module: fts5`, `unable to use function bm25`, or missing virtual-table errors as forced-degrade signals into the next tier. This extends Claudest's probe-first model with Public-specific safety against stale or partially migrated databases. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:48-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:450-478]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-14-producer-consumer-separation-keep-024-003-as-the-unchanged-writer-of-raw-session",
+      "text": "**Producer/consumer separation:** Keep `024/003` as the unchanged writer of raw session facts into hook-state JSON plus transcript offsets; add a new analytics roll-up reader that replays hook-state plus the referenced JSONL transcripts into the normalized tables offline or on demand. This preserves the exact simplification decision `024/003` documented while still closing the cross-session query gap. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:75-80] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:577-580]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-10-risk-register-false-degrade-risk-if-probe-logic-mistakes-a-transient-schema-prob",
+      "text": "**Risk register:** false-degrade risk if probe logic mistakes a transient schema problem for a permanent capability limit; ranking-quality risk because `fts4_match` and especially `like_scan` will not preserve FTS5 BM25 ordering; compatibility risk because older or partially migrated SQLite files may expose `memory_fts` inconsistently across environments. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:47-104] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-17-risk-register-pricing-drift-risk-because-024-003-explicitly-omits-cache-tier-pri",
+      "text": "**Risk register:** pricing drift risk because `024/003` explicitly omits cache-tier pricing today; session-id reconciliation risk because hook-state JSON is session-local and replay needs one durable join key across state files and transcript artifacts; replay drift risk because transcript parsing is still a lower-bound estimate and some message types may lack usage data. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:73-80] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-9-rollback-plan-and-feature-flag-roll-out-behind-one-narrow-search-flag-for-exampl",
+      "text": "**Rollback plan and feature flag:** Roll out behind one narrow search flag, for example `SPECKIT_FTS_CAPABILITY_CASCADE`, default-off for the first packet and default-on only after forced-degrade tests pass. Rollback is then limited to disabling the selector and returning to today's FTS5-or-empty lexical behavior, which is already safe because Public's broader search flow still has non-lexical channels and an existing search fallback framework. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1731-1784] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:94-97]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-16-rollback-plan-and-migration-policy-make-the-tables-additive-backfillable-and-dis",
+      "text": "**Rollback plan and migration policy:** Make the tables additive, backfillable, and disposable. Migration v1 should create empty normalized tables and a replay ledger without touching producer paths; rollback is then dropping or ignoring the reader-owned tables and leaving the existing Stop hook untouched. Pricing policy should be versioned, not in-place edited, so historical records stay reproducible even if pricing changes later. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-13-schema-sketch-for-the-follow-on-packet-add-four-additive-tables-and-keep-the-pro",
+      "text": "**Schema sketch for the follow-on packet:** Add four additive tables and keep the producer unchanged. `sessions` should hold one row per replayed session with stable session id, transcript path, project/spec affinity, first/last seen offsets, token totals, lower-bound cost totals, parser version, and replay source hash. `turns` should hold replayed per-message or per-turn facts keyed by session id plus ordinal, including role, timestamp, model, token counts, cache-read/cache-write counts when derivable, and transcript offsets for idempotent replays. `model_pricing_versioned` should hold model name, effective window, input/output/cache-read/cache-write unit prices, and pricing source version so historical sessions can be re-valued without mutating old facts. `cache_tier_normalized` should hold the normalized cache-cost breakout keyed to a session and optional turn, so rollups can separate uncached input, cache write, and cache read instead of collapsing them into one estimate. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:73-80] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:544-545] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:577-580]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-010.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-9-actionable-status-iterations-8-12-now-form-a-usable-handoff-package-the-recommen",
+      "text": "**Actionable status:** iterations 8-12 now form a usable handoff package: the recommendation matrix and sequencing already existed, the smallest-safe-v1 slices and packet-ready briefs were written, and this pass closed the only remaining implementation ambiguities. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:390-417] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:584-605]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-3-exact-code-spec-changes-needed-in-the-upcoming-packet-introduce-one-shared-lexic",
+      "text": "**Exact code/spec changes needed in the upcoming packet:** introduce one shared lexical-capability helper in `lib/search/sqlite-fts.ts` that reports engine support, table presence, and typed runtime failures; route `hybrid-search.ts` and `graph-search-fn.ts` through it; and narrow packet v1 to `fts5_bm25 -> like_scan` unless the same packet also adds alternate FTS4 schema creation. This converts the old brief's open ambiguity into an explicit packet boundary instead of a vague follow-up note. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts:63-109] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-7-exact-code-spec-changes-needed-in-the-upcoming-packet-preserve-the-existing-stop",
+      "text": "**Exact code/spec changes needed in the upcoming packet:** preserve the existing Stop-hook producer behavior, but add a bounded metadata patch so hook state also stores `transcriptPath` plus a replay fingerprint or transcript size high-water mark, and expand metrics to keep cache-read/cache-write tokens. Then let the analytics packet own turn normalization by parsing transcript JSONL into `turns` rows keyed by `(claude_session_id, transcript_path, byte_start)` or `(claude_session_id, transcript_path, line_no)`, while `sessions` stays keyed on `claude_session_id` and treats `speckit_session_id` as nullable until a separate producer populates it. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-11-exact-entry-conditions-start-packet-1-only-if-it-owns-a-single-capability-helper",
+      "text": "**Exact entry conditions:** start packet 1 only if it owns a single capability helper, migrates `hybrid-search.ts` and `graph-search-fn.ts` onto it, surfaces backend metadata to callers, and ships forced-degrade tests for compile-probe miss, missing table, and BM25 runtime failure. Start packet 2 only after transcript identity and cache token fields are persisted into hook state so normalized replay has a stable join contract. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts:63-109] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-10-packet-that-should-land-first-the-fts-capability-packet-should-land-before-norma",
+      "text": "**Packet that should land first:** the FTS capability packet should land before normalized analytics, but with the first packet explicitly scoped to `fts5_bm25 -> like_scan` plus backend diagnostics. `fts4_match` should be deferred unless the same packet also expands schema creation beyond `memory_fts USING fts5`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-4-verification-test-that-proves-the-gap-is-closed-add-forced-degrade-tests-for-com",
+      "text": "**Verification test that proves the gap is closed:** add forced-degrade tests for compile-probe miss, missing `memory_fts`, `no such module: fts5`, and `unable to use function bm25`, and assert explicit backend metadata plus deterministic LIKE fallback. Only add `fts4_match` assertions if alternate schema creation ships in the same packet. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:450-478] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md:13-24]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-8-verification-test-that-proves-the-gap-is-closed-replay-a-transcript-twice-for-th",
+      "text": "**Verification test that proves the gap is closed:** replay a transcript twice for the same `claudeSessionId` and assert one `sessions` row, idempotent `turns` rows keyed by persisted transcript identity plus offset, monotonic replay checkpoints across repeated Stop fires, and preserved cache token fields in the normalized reader inputs. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:71-123] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md:28-35]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-1-what-currently-exists-fts5bm25search-owns-the-weighted-bm25-memory-fts-query-and",
+      "text": "**What currently exists:** `fts5Bm25Search()` owns the weighted `bm25(memory_fts, ...)` query and `isFts5Available()` checks only whether `memory_fts` exists in `sqlite_master`. `hybrid-search.ts` repeats the same table-existence probe in `isFtsAvailable()`, and `graph-search-fn.ts` repeats it again in `isFtsTableAvailable()`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:48-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts:63-109]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-5-what-currently-exists-the-stop-hook-parses-stdin-fields-session-id-transcript-pa",
+      "text": "**What currently exists:** the Stop hook parses stdin fields `session_id`, `transcript_path`, `stop_hook_active`, and `last_assistant_message`; it replays transcripts from `metrics.lastTranscriptOffset`, updates prompt/completion totals, and stores hook state with `claudeSessionId`, `speckitSessionId`, `lastSpecFolder`, `sessionSummary`, timestamps, and `metrics.{estimatedPromptTokens, estimatedCompletionTokens, lastTranscriptOffset}`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:12-39] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:191-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:75-80]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-6-what-is-still-missing-transcript-path-is-not-persisted-speckitsessionid-remains-",
+      "text": "**What is still missing:** `transcript_path` is not persisted, `speckitSessionId` remains empty by default, cache token fields are parsed but dropped, and `parseTranscript()` returns only aggregate usage plus `newOffset=fileSize`. The only reliable join key today is `claudeSessionId`, and the only persisted replay cursor is a session-level high-water mark rather than a turn-level key. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:162-180] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-2-what-is-still-missing-no-file-in-public-s-current-lib-search-surface-probes-prag",
+      "text": "**What is still missing:** no file in Public's current `lib/search/` surface probes `PRAGMA compile_options` or another lower-level capability signal, so the system cannot tell apart missing engine support, stale schema, and runtime BM25 failures. Public also still creates only `memory_fts USING fts5`, so an `fts4_match` tier is not a real implementation surface yet. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
+      ]
     }
   ],
   "ruledOutDirections": [
@@ -1271,16 +1829,56 @@
       "id": "ruled-out-10-2-treating-the-sessionstart-fast-path-as-a-replacement-for-public-recovery-the-saf",
       "text": "Treating the SessionStart fast path as a replacement for Public recovery. The safe v1 remains augmentation only. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
       "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-11-4-advancing-the-dashboard-contract-ahead-of-normalized-ingestion-iteration-10-s-se",
+      "text": "Advancing the dashboard contract ahead of normalized ingestion. Iteration 10's sequencing still holds: the durable next packet is the read model first, not presentation fields. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:577-580]",
+      "addedAtIteration": 11
+    },
+    {
+      "id": "ruled-out-11-1-no-new-path-dead-ends-occurred-after-the-earlier-path-correction-the-only-meanin",
+      "text": "No new path dead ends occurred after the earlier path correction; the only meaningful correction this iteration was narrowing the Claudest comparison from \"fallback by error class\" to \"fallback by capability probe plus query branch.\" [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:22-106]",
+      "addedAtIteration": 11
+    },
+    {
+      "id": "ruled-out-11-3-rewriting-the-024-003-producer-to-close-the-analytics-gap-the-packet-ready-bound",
+      "text": "Rewriting the `024/003` producer to close the analytics gap. The packet-ready boundary remains additive normalized tables plus a replay reader, not a producer migration. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 11
+    },
+    {
+      "id": "ruled-out-11-2-treating-the-claudest-fts-lane-as-exception-driven-tier-hopping-the-source-is-pr",
+      "text": "Treating the Claudest FTS lane as exception-driven tier hopping. The source is probe-first and query-branch-based today, so Public's exception-triggered degrade behavior should be treated as new hardening rather than back-attributed to Claudest. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py:195-205] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py:22-106]",
+      "addedAtIteration": 11
+    },
+    {
+      "id": "ruled-out-12-4-claiming-that-turn-level-replay-can-be-keyed-from-lasttranscriptoffset-alone-the",
+      "text": "Claiming that turn-level replay can be keyed from `lastTranscriptOffset` alone. The current parser emits only session-level `newOffset=fileSize`, not per-turn offsets. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123]",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-12-1-no-new-dead-end-path-was-pursued-in-this-final-pass-the-main-correction-was-repl",
+      "text": "No new dead-end path was pursued in this final pass. The main correction was replacing the abstract \"payload should be enough\" assumption with a field-level check of what the Stop hook actually persists and what remains ephemeral. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:191-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33]",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-12-2-reusing-the-older-brief-s-fts4-match-lane-as-a-default-first-packet-promise-publ",
+      "text": "Reusing the older brief's `fts4_match` lane as a default first-packet promise. Public does not currently create an FTS4-capable alternate table, so that would overstate what the first implementation can safely deliver. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-12-3-treating-speckitsessionid-as-the-primary-analytics-join-key-the-stop-hook-does-n",
+      "text": "Treating `speckitSessionId` as the primary analytics join key. The Stop hook does not populate it today, so the reliable current key remains `claudeSessionId`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:162-180]",
+      "addedAtIteration": 12
     }
   ],
   "metrics": {
-    "iterationsCompleted": 10,
+    "iterationsCompleted": 12,
     "openQuestions": 1,
     "resolvedQuestions": 9,
-    "keyFindings": 74,
-    "convergenceScore": 0.24,
+    "keyFindings": 103,
+    "convergenceScore": 0.36,
     "coverageBySources": {
-      "other": 95
+      "other": 120
     }
   }
 }

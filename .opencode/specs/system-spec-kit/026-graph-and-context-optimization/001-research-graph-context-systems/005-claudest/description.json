@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
+  "description": "Feature Specification: 005-claudest Research Phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "005-claudest",
+    "research",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-06T18:41:11.601Z",
+  "specId": "005",
+  "folderSlug": "claudest",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-graph-context-systems"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "06-04-26_19-41__12-iteration-deep-research-audit-of-the-claudest.md"
+  ]
+}

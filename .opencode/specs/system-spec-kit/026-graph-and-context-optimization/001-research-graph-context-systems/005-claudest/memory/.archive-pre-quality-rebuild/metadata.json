@@ -1,19 +1,19 @@
 {
-  "timestamp": "06-04-26 17-13",
-  "messageCount": 0,
-  "decisionCount": 5,
+  "timestamp": "06-04-26 19-41",
+  "messageCount": 1,
+  "decisionCount": 8,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 0,
+    "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 0,
+    "qualityScore": 50,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-06T16:13:17.131Z",
+        "timestamp": "2026-04-06T18:41:11.530Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:0",
-          "kept_items:0"
+          "input_items:1",
+          "kept_items:1"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-06T16:13:17.085Z",
+      "timestamp": "2026-04-06T18:41:11.490Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:35"
+        "processed_fields:84"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-06T16:13:17.131Z",
+      "timestamp": "2026-04-06T18:41:11.530Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -168,13 +168,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:0",
-        "kept_items:0"
+        "input_items:1",
+        "kept_items:1"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-06T16:13:17.176Z",
+      "timestamp": "2026-04-06T18:41:11.571Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,7 +191,7 @@
       ],
       "passedThrough": [
         "current_spec:005-claudest",
-        "trigger_phrases:40",
+        "trigger_phrases:52",
         "key_topics:12",
         "captured_file_count:10",
         "filesystem_file_count:10"
@@ -200,16 +200,16 @@
   ],
   "semanticSummary": {
     "task": "Development session",
-    "filesCreated": 0,
+    "filesCreated": 2,
     "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
-      "implementation": 0,
+      "implementation": 1,
       "result": 0,
       "decision": 0,
-      "total": 0
+      "total": 1
     }
   },
   "fileCounts": {
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 1832,
-    "updatedAt": "2026-04-06T16:13:18.250Z",
-    "generatedAt": "2026-04-06T16:13:18.250Z",
+    "memoryId": 1844,
+    "updatedAt": "2026-04-06T18:41:12.562Z",
+    "generatedAt": "2026-04-06T18:41:12.562Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }
