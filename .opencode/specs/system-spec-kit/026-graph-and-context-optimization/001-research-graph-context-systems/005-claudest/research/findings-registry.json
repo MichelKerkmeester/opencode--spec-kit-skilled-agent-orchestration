@@ -399,6 +399,736 @@
         "`CLAUDE.md`",
         "`.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`"
       ]
+    },
+    {
+      "id": "finding-8-2-contradictions-resolved",
+      "text": "**Contradictions resolved**",
+      "addedAtIteration": 8,
+      "sources": [
+        "`external/.claude-plugin/marketplace.json`",
+        "`external/plugins/claude-memory/.claude-plugin/plugin.json`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/recent_chats.py`",
+        "`external/plugins/claude-memory/hooks/memory-context.py`",
+        "`external/plugins/claude-memory/hooks/sync_current.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py`",
+        "`external/plugins/claude-memory/skills/extract-learnings/SKILL.md`",
+        "`external/plugins/claude-memory/agents/memory-auditor.md`",
+        "`external/plugins/claude-memory/agents/signal-discoverer.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/SKILL.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py`",
+        "`external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html`",
+        "`external/plugins/claude-memory/README.md`",
+        "`external/README.md`"
+      ]
+    },
+    {
+      "id": "finding-8-1-recommendation-matrix",
+      "text": "**Recommendation matrix**",
+      "addedAtIteration": 8,
+      "sources": [
+        "`external/.claude-plugin/marketplace.json`",
+        "`external/plugins/claude-memory/.claude-plugin/plugin.json`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/recent_chats.py`",
+        "`external/plugins/claude-memory/hooks/memory-context.py`",
+        "`external/plugins/claude-memory/hooks/sync_current.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py`",
+        "`external/plugins/claude-memory/skills/extract-learnings/SKILL.md`",
+        "`external/plugins/claude-memory/agents/memory-auditor.md`",
+        "`external/plugins/claude-memory/agents/signal-discoverer.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/SKILL.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py`",
+        "`external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html`",
+        "`external/plugins/claude-memory/README.md`",
+        "`external/README.md`"
+      ]
+    },
+    {
+      "id": "finding-8-5-the-memory-hierarchy-comparison-no-longer-competes-with-extract-learnings-reject",
+      "text": "The memory-hierarchy comparison no longer competes with extract-learnings: reject the extra hierarchy as a new system, but adopt the placement rubric through the consolidation workflow instead. [SOURCE: external/plugins/claude-memory/README.md] [SOURCE: external/plugins/claude-memory/skills/extract-learnings/SKILL.md]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`external/.claude-plugin/marketplace.json`",
+        "`external/plugins/claude-memory/.claude-plugin/plugin.json`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/recent_chats.py`",
+        "`external/plugins/claude-memory/hooks/memory-context.py`",
+        "`external/plugins/claude-memory/hooks/sync_current.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py`",
+        "`external/plugins/claude-memory/skills/extract-learnings/SKILL.md`",
+        "`external/plugins/claude-memory/agents/memory-auditor.md`",
+        "`external/plugins/claude-memory/agents/signal-discoverer.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/SKILL.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py`",
+        "`external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html`",
+        "`external/plugins/claude-memory/README.md`",
+        "`external/README.md`"
+      ]
+    },
+    {
+      "id": "finding-8-3-the-recall-work-no-longer-conflicts-with-the-schema-recommendation-adopt-the-fts",
+      "text": "The recall work no longer conflicts with the schema recommendation: adopt the FTS capability cascade now, but leave branch-ranked recall and its schema dependencies in the prototype lane.",
+      "addedAtIteration": 8,
+      "sources": [
+        "`external/.claude-plugin/marketplace.json`",
+        "`external/plugins/claude-memory/.claude-plugin/plugin.json`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/recent_chats.py`",
+        "`external/plugins/claude-memory/hooks/memory-context.py`",
+        "`external/plugins/claude-memory/hooks/sync_current.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py`",
+        "`external/plugins/claude-memory/skills/extract-learnings/SKILL.md`",
+        "`external/plugins/claude-memory/agents/memory-auditor.md`",
+        "`external/plugins/claude-memory/agents/signal-discoverer.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/SKILL.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py`",
+        "`external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html`",
+        "`external/plugins/claude-memory/README.md`",
+        "`external/README.md`"
+      ]
+    },
+    {
+      "id": "finding-8-4-the-sessionstart-work-no-longer-conflicts-with-public-s-existing-recovery-design",
+      "text": "The SessionStart work no longer conflicts with Public's existing recovery design: adopt precomputed-summary injection, but not the full Claude hook-push selection model as a replacement for `session_bootstrap()` / `session_resume()`. [SOURCE: external/plugins/claude-memory/hooks/memory-context.py] [SOURCE: external/plugins/claude-memory/hooks/sync_current.py]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`external/.claude-plugin/marketplace.json`",
+        "`external/plugins/claude-memory/.claude-plugin/plugin.json`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/recent_chats.py`",
+        "`external/plugins/claude-memory/hooks/memory-context.py`",
+        "`external/plugins/claude-memory/hooks/sync_current.py`",
+        "`external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py`",
+        "`external/plugins/claude-memory/skills/extract-learnings/SKILL.md`",
+        "`external/plugins/claude-memory/agents/memory-auditor.md`",
+        "`external/plugins/claude-memory/agents/signal-discoverer.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/SKILL.md`",
+        "`external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py`",
+        "`external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html`",
+        "`external/plugins/claude-memory/README.md`",
+        "`external/README.md`"
+      ]
+    },
+    {
+      "id": "finding-9-1-sequencing-tension-resolved-fts-before-hook-backed-injection-the-fts-cascade-sho",
+      "text": "**Sequencing tension resolved: FTS before hook-backed injection.** The FTS cascade should move first because `023/013` already hardened retrieval correctness and observability, while SessionStart injection is only valuable if it can point into a stable recall surface. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-9-3-sequencing-tension-resolved-ingestion-before-dashboard-contract-the-kpi-recommen",
+      "text": "**Sequencing tension resolved: ingestion before dashboard contract.** The KPI/recommendation schema should follow the normalized metrics producer. Otherwise Public would be designing presentation fields before deciding which token, cache, and usage facts are actually durable in its own pipeline. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-9-2-sequencing-tension-resolved-summary-producer-before-summary-consumer-024-003-alr",
+      "text": "**Sequencing tension resolved: summary producer before summary consumer.** `024/003` already extracts session summaries on Stop and `024/002` already owns startup/resume routing, so the safe Public order is to stabilize the summary payload first and only then inject it through SessionStart. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-37-blast-radius-highest-practical-unblock-value-iteration-9-already-concluded-that-",
+      "text": "**Blast radius:** Highest practical unblock value. Iteration 9 already concluded that recall should move before SessionStart injection, because startup augmentation is only meaningfully improved if it can point into a stable retrieval surface. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-11-dependencies-024-002-routing-plus-024-003-summary-extraction-source-opencode-spe",
+      "text": "**Dependencies:** `024/002` routing plus `024/003` summary extraction. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-25-dependencies-024-003-as-producer-no-dependency-on-dashboard-rendering-source-ope",
+      "text": "**Dependencies:** `024/003` as producer. No dependency on dashboard rendering. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-32-dependencies-ingestion-must-land-first-source-opencode-specs-system-spec-kit-026",
+      "text": "**Dependencies:** Ingestion must land first. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-18-dependencies-only-022-008-as-the-stable-extraction-substrate-source-opencode-spe",
+      "text": "**Dependencies:** Only `022/008` as the stable extraction substrate. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-4-dependencies-only-023-013-as-the-existing-correctness-and-observability-substrat",
+      "text": "**Dependencies:** Only `023/013` as the existing correctness and observability substrate. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-7-exit-test-a-representative-multi-word-search-returns-usable-results-in-all-three",
+      "text": "**Exit test:** A representative multi-word search returns usable results in all three forced modes, descendant scoping still works, and diagnostics show which backend executed. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-14-exit-test-after-a-qualifying-stop-event-a-new-resume-or-compact-session-shows-th",
+      "text": "**Exit test:** After a qualifying Stop event, a new `resume` or `compact` session shows the cached summary in under the current budget, and stale or missing summary data falls back cleanly to today's flow. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-35-exit-test-every-exported-field-maps-to-a-normalized-source-column-or-determinist",
+      "text": "**Exit test:** Every exported field maps to a normalized source column or deterministic derived metric, and no field requires direct hook-state parsing at read time. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-21-exit-test-the-same-source-material-yields-a-ranked-discoverer-list-and-a-separat",
+      "text": "**Exit test:** The same source material yields a ranked discoverer list and a separate auditor report, and neither path emits raw recalled text directly into memory storage. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] [SOURCE: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-28-exit-test-two-or-more-completed-sessions-can-be-ingested-into-normalized-tables-",
+      "text": "**Exit test:** Two or more completed sessions can be ingested into normalized tables, queried without scanning hook-state files directly, and show consistent session cost plus cache metrics across runs. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-16-inputs-canonical-script-side-extracted-signals-existing-trigger-parity-baselines",
+      "text": "**Inputs:** Canonical script-side extracted signals, existing trigger-parity baselines, current memory candidates, and any proposed update text. [SOURCE: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-9-inputs-existing-lastspecfolder-the-stop-hook-summary-extracted-from-the-last-ass",
+      "text": "**Inputs:** Existing `lastSpecFolder`, the Stop-hook summary extracted from the last assistant message, token-pressure metadata, and a freshness timestamp. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-2-inputs-existing-search-query-text-current-spec-folder-scope-filters-sqlite-compi",
+      "text": "**Inputs:** Existing search query text, current spec-folder scope filters, SQLite compile capability detection, and the current search pipeline metadata surface. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-23-inputs-hook-state-json-produced-by-024-003-transcript-paths-already-captured-the",
+      "text": "**Inputs:** Hook-state JSON produced by `024/003`, transcript paths already captured there, session metadata, and pricing rules extended to include cache-read and cache-write tiers. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-30-inputs-only-the-normalized-analytics-tables-from-the-ingestion-lane-no-direct-re",
+      "text": "**Inputs:** Only the normalized analytics tables from the ingestion lane. No direct reads from hook-state JSON. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-17-outputs-discoverercandidates-ranked-3-7-items-and-auditorverdicts-constrained-to",
+      "text": "**Outputs:** `discovererCandidates` ranked 3-7 items and `auditorVerdicts` constrained to verification labels. No direct memory writes in v1. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-10-outputs-a-compact-summary-block-injected-into-resume-and-compact-paths-when-fres",
+      "text": "**Outputs:** A compact summary block injected into `resume` and `compact` paths when fresh; otherwise an explicit fallback to the current routing behavior. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-24-outputs-a-minimum-normalized-schema-with-one-session-level-table-and-one-hook-le",
+      "text": "**Outputs:** A minimum normalized schema with one session-level table and one hook-level or turn-summary table, sufficient to query cost, cache ratio, model mix, and hook overhead across sessions. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-31-outputs-a-versioned-json-contract-document-or-api-payload-definition-for-downstr",
+      "text": "**Outputs:** A versioned JSON contract document or API payload definition for downstream renderers. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-3-outputs-the-same-logical-keyword-search-result-contract-at-every-backend-tier-pl",
+      "text": "**Outputs:** The same logical keyword-search result contract at every backend tier, plus explicit backend metadata such as `keywordBackend: \"fts5\" | \"fts4\" | \"like\"` so degraded operation is observable instead of silent. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-36-prerequisites-already-satisfied-highest-score-023-013-already-shipped-the-releva",
+      "text": "**Prerequisites already satisfied:** Highest score. `023/013` already shipped the relevant correctness and observability hardening, so the remaining work is a narrow compatibility layer. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-38-reversibility-best-rollback-profile-backend-detection-and-fallback-metadata-can-",
+      "text": "**Reversibility:** Best rollback profile. Backend detection and fallback metadata can be feature-flagged or removed without touching hook-state schemas, startup flows, or analytics storage. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-6-risk-like-fallback-will-be-noisier-and-less-rank-stable-than-fts-backed-paths-so",
+      "text": "**Risk:** `LIKE` fallback will be noisier and less rank-stable than FTS-backed paths, so degradation must be explicit. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-34-risk-if-shipped-before-ingestion-the-contract-will-encode-unstable-calculations-",
+      "text": "**Risk:** If shipped before ingestion, the contract will encode unstable calculations and force later compatibility debt. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-20-risk-if-the-two-roles-are-allowed-to-collapse-back-into-one-tool-call-the-verifi",
+      "text": "**Risk:** If the two roles are allowed to collapse back into one tool call, the verifier will start inventing new content again. Keep the contracts asymmetric. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-27-risk-re-parsing-transcripts-for-analytics-introduces-duplicate-ingest-and-format",
+      "text": "**Risk:** Re-parsing transcripts for analytics introduces duplicate-ingest and format-drift risk, so the ingestor needs idempotent session keys and a parser-version column from day one. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-13-risk-stale-or-over-compressed-summaries-can-mislead-the-first-turn-freshness-gat",
+      "text": "**Risk:** Stale or over-compressed summaries can mislead the first turn. Freshness gates and graceful fallback are mandatory. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-1-scope-add-a-runtime-backend-selection-contract-to-the-existing-search-lane-only-",
+      "text": "**Scope:** Add a runtime backend-selection contract to the existing search lane only: `FTS5 + BM25` when available, `FTS4` when `FTS5` is unavailable, and `LIKE` as the final fallback. Do not import branch-ranked recall, transcript hydration, or schema changes. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-15-scope-add-two-explicit-roles-to-the-existing-consolidation-flow-a-discoverer-tha",
+      "text": "**Scope:** Add two explicit roles to the existing consolidation flow: a discoverer that emits ranked candidate learnings and an auditor that only validates proposed changes for `STALE`, `CONTRADICT`, `MERGE`, or `DATE_FIX`. Keep execution manual or separately approved. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] [SOURCE: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-29-scope-expose-only-derived-metrics-that-are-directly-backed-by-the-normalized-ing",
+      "text": "**Scope:** Expose only derived metrics that are directly backed by the normalized ingestion tables: `kpis`, `cost_by_project`, `project_spend`, `model_split`, `skill_usage`, `agent_delegation`, `hook_performance`, `findings`, and `recommendations`. Exclude HTML, charts, and speculative diagnostics. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-22-scope-introduce-a-read-only-batch-ingestor-that-converts-existing-session-artifa",
+      "text": "**Scope:** Introduce a read-only batch ingestor that converts existing session artifacts into normalized analytics tables for cross-session queries. Keep the Stop hook as the producer of raw session facts; do not rewrite `024/003`. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-8-scope-persist-one-bounded-precomputedsummary-object-in-hook-state-at-stop-time-a",
+      "text": "**Scope:** Persist one bounded `precomputedSummary` object in hook state at Stop time and let `resume` plus `compact` flows read it before falling back to the normal prime flow. Leave `startup` and `clear` behavior unchanged. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-12-smallest-deliverable-a-narrow-hook-state-schema-addition-plus-one-sessionstart-r",
+      "text": "**Smallest deliverable:** A narrow hook-state schema addition plus one SessionStart read path. No transcript replay, no retrieval heuristics, no recovery-surface replacement. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-26-smallest-deliverable-a-narrowly-scoped-follow-on-packet-under-the-024-compact-co",
+      "text": "**Smallest deliverable:** A narrowly scoped follow-on packet under the `024-compact-code-graph` family that adds an offline ingestor plus normalized analytics tables and leaves the Stop hook intact. The memory registry still treats `024-compact-code-graph` as an active packet family with prior closure work, which supports keeping this as a packet-local extension instead of a new subsystem family. [SOURCE: /Users/michelkerkmeester/.codex/memories/MEMORY.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-33-smallest-deliverable-one-contract-focused-follow-on-after-ingestion-not-before-s",
+      "text": "**Smallest deliverable:** One contract-focused follow-on after ingestion, not before. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-5-smallest-deliverable-one-packet-that-adds-capability-detection-backend-selection",
+      "text": "**Smallest deliverable:** One packet that adds capability detection, backend selection, forced-degrade test coverage, and user-visible diagnostics without changing the public query surface. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
+    },
+    {
+      "id": "finding-10-19-smallest-deliverable-one-structured-discover-pass-plus-one-structured-audit-pass",
+      "text": "**Smallest deliverable:** One structured discover pass plus one structured audit pass wired into an existing review flow, without changing storage semantics. [SOURCE: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md`",
+        "`.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`",
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`/Users/michelkerkmeester/.codex/memories/MEMORY.md`"
+      ]
     }
   ],
   "ruledOutDirections": [
@@ -486,16 +1216,71 @@
       "id": "ruled-out-7-3-treating-claudest-s-hierarchy-as-a-drop-in-replacement-for-public-s-memory-stack",
       "text": "Treating Claudest's hierarchy as a drop-in replacement for Public's memory stack. Public already has stronger retrieval, richer scoping, and explicit spec-folder context preservation.",
       "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-8-1-no-new-dead-ends-in-this-iteration-this-was-a-synthesis-only-pass-over-iteration",
+      "text": "No new dead ends in this iteration. This was a synthesis-only pass over iterations 1-7 plus the progressive synthesis document and findings registry.",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-8-3-reopening-the-prior-dead-end-around-repo-owned-auto-update-metadata-iteration-1-",
+      "text": "Reopening the prior dead-end around repo-owned auto-update metadata. Iteration 1 already showed the manifests do not encode update policy, so the synthesis keeps that conclusion closed. [SOURCE: external/README.md] [SOURCE: external/.claude-plugin/marketplace.json]",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-8-2-treating-the-nine-track-matrix-as-nine-independent-imports-the-evidence-keeps-sp",
+      "text": "Treating the nine-track matrix as nine independent imports. The evidence keeps splitting cleanly into \"portable pattern\" versus \"requires missing infrastructure,\" so several tracks only make sense when scoped that way. [SOURCE: external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py] [SOURCE: external/plugins/claude-memory/skills/extract-learnings/SKILL.md]",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-9-3-designing-the-token-dashboard-contract-before-the-ingestion-shape-exists-public-",
+      "text": "Designing the token dashboard contract before the ingestion shape exists. Public already has enough evidence to prototype ingestion first, so reversing that order would recreate the \"copy the shell before the data contract\" mistake iteration 8 explicitly rejected. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-9-1-no-new-technical-dead-ends-this-pass-was-a-sequencing-synthesis-over-iteration-8",
+      "text": "No new technical dead ends. This pass was a sequencing synthesis over iteration 8 plus existing Public packet summaries, not a fresh source-discovery round.",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-9-2-starting-the-next-public-adoption-pass-with-marketplace-versioning-or-the-branch",
+      "text": "Starting the next Public adoption pass with marketplace/versioning or the branch-ranked SQLite schema. Iteration 8 already classified those lanes as `prototype later`, and the consulted Public packets still do not provide the missing packaging or branch-graph prerequisites. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-9-4-treating-sessionstart-context-injection-as-a-recovery-system-replacement-the-saf",
+      "text": "Treating SessionStart context injection as a recovery-system replacement. The safe lane is still augmentation of `session_bootstrap()` / `session_resume()` style flows, not importing Claude's hook-recency heuristic wholesale. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-10-1-no-new-dead-ends-the-main-correction-was-narrowing-the-ingestion-lane-from-alrea",
+      "text": "No new dead ends. The main correction was narrowing the ingestion lane from \"already unblocked\" to \"collection is unblocked, analytics-grade normalization still needs one follow-on spec.\" [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-10-4-rewriting-024-003-to-close-the-analytics-gap-the-smallest-safe-move-is-a-follow-",
+      "text": "Rewriting `024/003` to close the analytics gap. The smallest safe move is a follow-on normalized read model, not a producer rewrite. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-10-3-starting-with-the-dashboard-contract-before-ingestion-lands-the-stress-test-show",
+      "text": "Starting with the dashboard contract before ingestion lands. The stress test shows that this would lock in unstable fields too early. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-10-2-treating-the-sessionstart-fast-path-as-a-replacement-for-public-recovery-the-saf",
+      "text": "Treating the SessionStart fast path as a replacement for Public recovery. The safe v1 remains augmentation only. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md]",
+      "addedAtIteration": 10
     }
   ],
   "metrics": {
-    "iterationsCompleted": 7,
+    "iterationsCompleted": 10,
     "openQuestions": 1,
     "resolvedQuestions": 9,
-    "keyFindings": 28,
-    "convergenceScore": 0.84,
+    "keyFindings": 74,
+    "convergenceScore": 0.24,
     "coverageBySources": {
-      "other": 56
+      "other": 95
     }
   }
 }

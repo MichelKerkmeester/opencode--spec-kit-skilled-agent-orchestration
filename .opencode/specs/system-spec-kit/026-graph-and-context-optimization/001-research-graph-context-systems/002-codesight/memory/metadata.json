@@ -1,7 +1,7 @@
 {
-  "timestamp": "06-04-26 16-34",
+  "timestamp": "06-04-26 17-58",
   "messageCount": 0,
-  "decisionCount": 5,
+  "decisionCount": 6,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -13,7 +13,7 @@
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-06T15:34:04.107Z",
+        "timestamp": "2026-04-06T16:58:08.408Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-06T15:34:04.068Z",
+      "timestamp": "2026-04-06T16:58:08.371Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:36"
+        "processed_fields:42"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-06T15:34:04.107Z",
+      "timestamp": "2026-04-06T16:58:08.408Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-06T15:34:04.141Z",
+      "timestamp": "2026-04-06T16:58:08.435Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,10 +191,10 @@
       ],
       "passedThrough": [
         "current_spec:002-codesight",
-        "trigger_phrases:43",
+        "trigger_phrases:41",
         "key_topics:12",
-        "captured_file_count:9",
-        "filesystem_file_count:9"
+        "captured_file_count:8",
+        "filesystem_file_count:8"
       ]
     }
   ],
@@ -213,9 +213,9 @@
     }
   },
   "fileCounts": {
-    "fileCount": 9,
-    "capturedFileCount": 9,
-    "filesystemFileCount": 9,
+    "fileCount": 8,
+    "capturedFileCount": 8,
+    "filesystemFileCount": 8,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 1820,
-    "updatedAt": "2026-04-06T15:34:04.887Z",
-    "generatedAt": "2026-04-06T15:34:04.887Z",
+    "memoryId": 1835,
+    "updatedAt": "2026-04-06T16:58:12.151Z",
+    "generatedAt": "2026-04-06T16:58:12.151Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

@@ -1,78 +1,5 @@
 {
-  "openQuestions": [
-    {
-      "id": "question-1-q1-how-does-the-ast-extraction-pipeline-really-work-in-external-src-index-ts-det",
-      "text": "Q1. How does the AST extraction pipeline really work in `external/src/index.ts` -> detectors -> `src/ast/loader.ts`, and how often do detectors fall back to regex or structured parsing?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-2-q2-which-frameworks-listed-in-src-types-ts-actually-receive-ast-backed-route-ext",
-      "text": "Q2. Which frameworks listed in `src/types.ts` actually receive AST-backed route extraction in `src/detectors/routes.ts` + `src/ast/extract-routes.ts`, versus regex-only or shallow detection?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-3-q3-how-does-one-full-detector-pipeline-hono-or-nestjs-work-end-to-end-dependency",
-      "text": "Q3. How does one full detector pipeline (Hono or NestJS) work end to end: dependency heuristic, file filtering, AST walk, prefix tracking, param + middleware extraction, contract enrichment?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-4-q4-how-are-orm-schemas-parsed-across-drizzle-prisma-typeorm-sqlalchemy-and-gorm-",
-      "text": "Q4. How are ORM schemas parsed across Drizzle, Prisma, TypeORM, SQLAlchemy, and GORM in `src/detectors/schema.ts` + `src/ast/extract-schema.ts`, and where is each path AST-backed vs regex vs structured-file parsing?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-5-q5-what-does-the-zero-dependency-claim-really-mean-in-practice-how-does-src-ast-",
-      "text": "Q5. What does the zero-dependency claim really mean in practice: how does `src/ast/loader.ts` borrow project-local TypeScript, what fallbacks fire when it is missing, and what are the operational tradeoffs?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-6-q6-what-exact-8-mcp-tools-does-src-mcp-server-ts-expose-how-does-it-manage-sessi",
-      "text": "Q6. What exact 8 MCP tools does `src/mcp-server.ts` expose, how does it manage session-cached scan state, and how does that compare with `Code_Environment/Public`'s existing MCP and search surfaces (Spec Kit Memory, Code Graph, CocoIndex)?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-7-q7-how-does-src-detectors-blast-radius-ts-work-internally-how-is-the-import-grap",
-      "text": "Q7. How does `src/detectors/blast-radius.ts` work internally: how is the import graph built in `src/detectors/graph.ts`, how does reverse BFS traverse it, and where are model-impact and middleware overlays heuristic rather than exact?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-8-q8-how-does-src-generators-ai-config-ts-differentiate-per-tool-profiles-for-clau",
-      "text": "Q8. How does `src/generators/ai-config.ts` differentiate per-tool profiles for Claude Code, Cursor, Codex, Copilot, and Windsurf, and which patterns are transferable to Public's AI-assistant guidance files?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-9-q9-what-is-the-role-of-dependency-graph-hot-file-ranking-as-a-change-carefully-s",
-      "text": "Q9. What is the role of dependency-graph hot-file ranking as a \"change carefully\" surface, and could a similar capability complement Code Graph MCP and CocoIndex in Public?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-10-q10-how-well-do-src-eval-ts-eval-readme-md-eval-fixtures-and-tests-detectors-tes",
-      "text": "Q10. How well do `src/eval.ts`, `eval/README.md`, `eval/fixtures/`, and `tests/detectors.test.ts` actually validate the README's headline claims (token savings, detector coverage, blast radius), and where does the README overreach the fixture set?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-11-q11-what-architectural-value-comes-from-separating-static-codesight-artifacts-fr",
-      "text": "Q11. What architectural value comes from separating static `.codesight/` artifacts from query-time MCP tools, and how should that boundary inform Public's own context-system design?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-12-q12-which-codesight-ideas-overlap-dangerously-with-phases-003-contextador-and-00",
-      "text": "Q12. Which Codesight ideas overlap dangerously with phases 003 (contextador) and 004 (graphify), and which are uniquely scoped to phase 002 because they center on AST detector design and per-tool context generation?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    }
-  ],
+  "openQuestions": [],
   "resolvedQuestions": [],
   "keyFindings": [
     {
@@ -1202,15 +1129,1107 @@
       "text": "Why it matters: For `Code_Environment/Public`, this proves the right primitive is one analysis result projected into multiple surfaces, not two parallel pipelines. The duplication of pipeline code between `scan()` in `index.ts` and `getScanResult()` in `mcp-server.ts` is also a cautionary tale: lifting either one without sharing a common scan function would inherit the same drift risk.",
       "addedAtIteration": 5,
       "sources": []
+    },
+    {
+      "id": "finding-6-34-affected-area-enrichment-reliability-and-verification",
+      "text": "Affected area: enrichment reliability and verification",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-20-affected-area-multi-framework-contract-enrichment",
+      "text": "Affected area: multi-framework contract enrichment",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-6-affected-area-route-contract-synthesis",
+      "text": "Affected area: route-contract synthesis",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-27-affected-area-rpc-contract-modeling",
+      "text": "Affected area: RPC contract modeling",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-13-affected-area-typescript-contract-extraction",
+      "text": "Affected area: TypeScript contract extraction",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-25-evidence-type-mixed",
+      "text": "Evidence type: mixed",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-32-evidence-type-mixed",
+      "text": "Evidence type: mixed",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-5-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-12-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-26-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-33-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-35-risk-cost-high-failure-modes-degrade-silently-into-missing-metadata-which-is-eas",
+      "text": "Risk/cost: high — failure modes degrade silently into missing metadata, which is easy to misread as \"no contract found.\"",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-28-risk-cost-high-the-framework-with-the-richest-inline-contract-vocabulary-gets-no",
+      "text": "Risk/cost: high — the framework with the richest inline contract vocabulary gets no enrichment at all.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-21-risk-cost-low-the-heuristics-are-simple-but-their-output-is-necessarily-shallow",
+      "text": "Risk/cost: low — the heuristics are simple, but their output is necessarily shallow.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-14-risk-cost-medium-broad-framework-labels-suggest-richer-support-than-the-regexes-",
+      "text": "Risk/cost: medium — broad framework labels suggest richer support than the regexes actually provide.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-7-risk-cost-medium-cheap-to-run-but-easy-to-over-trust-because-it-mutates-already-",
+      "text": "Risk/cost: medium — cheap to run, but easy to over-trust because it mutates already-detected routes without marking enrichment quality separately.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-22-source-external-src-ast-extract-routes-ts-25-50-external-src-ast-extract-routes-",
+      "text": "Source: `external/src/ast/extract-routes.ts:25-50`; `external/src/ast/extract-routes.ts:287-337`; `external/src/detectors/contracts.ts:40-64`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-29-source-external-src-detectors-contracts-ts-17-21-external-src-detectors-contract",
+      "text": "Source: `external/src/detectors/contracts.ts:17-21`; `external/src/detectors/contracts.ts:40-64`; `external/src/detectors/contracts.ts:70-152`; `external/src/scanner.ts:89-94`; `external/tests/detectors.test.ts:19-29`; `external/tests/detectors.test.ts:37-234`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-8-source-external-src-detectors-contracts-ts-40-50-external-src-detectors-contract",
+      "text": "Source: `external/src/detectors/contracts.ts:40-50`; `external/src/detectors/contracts.ts:70-96`; `external/src/types.ts:56-65`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-15-source-external-src-detectors-contracts-ts-52-63-external-src-detectors-contract",
+      "text": "Source: `external/src/detectors/contracts.ts:52-63`; `external/src/detectors/contracts.ts:98-152`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-1-source-external-src-index-ts-104-133-external-src-detectors-contracts-ts-9-67",
+      "text": "Source: `external/src/index.ts:104-133`; `external/src/detectors/contracts.ts:9-67`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-16-what-it-does-next-app-sveltekit-remix-and-nuxt-all-use-enrichnextroute-which-ins",
+      "text": "What it does: `next-app`, `sveltekit`, `remix`, and `nuxt` all use `enrichNextRoute(...)`, which inspects `NextResponse.json({...})` or `Response.json({...})`, extracts up to eight object-literal keys, and writes a synthetic response shape like `{ key1, key2 }`. `fastapi` uses `response_model=SchemaName` to set `responseType`, then looks for the first non-dependency typed handler parameter and copies only its type name into `requestType`; `flask` only extracts key names from `jsonify({...})` and never expands actual Python/Pydantic types.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-2-what-it-does-scan-first-collects-rawroutes-from-detectroutes-then-immediately-pa",
+      "text": "What it does: `scan()` first collects `rawRoutes` from `detectRoutes(...)`, then immediately passes that array into `enrichRouteContracts(rawRoutes, project)`. Inside `enrichRouteContracts`, the function caches file contents per `route.file`, rereads each source file once via `readFileSafe`, extracts path params from `:id`, `[id]`, `{id}`, and `<id>` patterns, dispatches on `route.framework`, and returns the same `routes` array after mutating its objects in place.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-9-what-it-does-for-hono-express-fastify-koa-nestjs-elysia-adonis-and-raw-http-the-",
+      "text": "What it does: For `hono`, `express`, `fastify`, `koa`, `nestjs`, `elysia`, `adonis`, and `raw-http`, the code calls one shared helper, `enrichTSRoute(...)`. That helper only scans the whole file for three patterns: `c.json<T>(...)` to set `responseType`, `zValidator('json'|'form', Identifier)` to set `requestType`, and `Promise<Response<T>>` return annotations to set `responseType`. It does not use AST nodes, does not scope the match to the specific handler for the current route, and does not populate any new metadata besides `requestType` or `responseType`.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-30-what-it-does-if-a-route-file-cannot-be-read-readfilesafe-returns-an-empty-string",
+      "text": "What it does: If a route file cannot be read, `readFileSafe(...)` returns an empty string rather than surfacing an error, so every subsequent regex quietly fails and the route is returned unchanged. Even on readable files, unmatched patterns simply leave `requestType`, `responseType`, and `params` absent, frameworks outside the switch receive no enrichment, and the test file imports `detectRoutes`, `detectSchemas`, `detectComponents`, `detectDependencyGraph`, `detectMiddleware`, `detectConfig`, and `detectLibs` but not the contract detector. The route tests call `detectRoutes(...)` directly, and no contract-specific assertions appear in the inspected test file.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-23-what-it-does-the-ast-extractor-explicitly-supports-trpc-and-emits-routeinfo-entr",
+      "text": "What it does: The AST extractor explicitly supports `trpc` and emits `RouteInfo` entries for `query`, `mutation`, and `subscription` procedures with `confidence: \"ast\"`. The contract enrichment switch never handles `trpc`, though, so procedure chains such as `.input(z.object(...)).mutation(...)` contribute route discovery only; no `requestType`, `responseType`, or other contract fields are added afterward.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-24-why-it-matters-for-code-environment-public-for-a-graph-context-system-this-is-th",
+      "text": "Why it matters for Code_Environment/Public: For a graph/context system, this is the sharpest contract blind spot in the inspected path: one of the most contract-heavy frameworks is recognized for topology but ignored for payload semantics. If we care about RPC contract graphs, this approach is not enough on its own.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-17-why-it-matters-for-code-environment-public-these-helpers-are-not-consuming-opena",
+      "text": "Why it matters for Code_Environment/Public: These helpers are not consuming OpenAPI, not expanding schema definitions, and not reconstructing full request/response structures. For research and context generation, they are closer to \"shape sketches\" than contracts, especially when real APIs depend on typed models, decorators, or generated specs.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-10-why-it-matters-for-code-environment-public-this-is-useful-as-a-low-cost-hinting-",
+      "text": "Why it matters for Code_Environment/Public: This is useful as a low-cost hinting pass, but it is not TypeScript type inference. It will miss common Express/NestJS/Fastify patterns such as `res.json(...)`, DTO decorators, schema objects, or typed request bodies, and it can cross-contaminate multiple routes that share one file because the regexes search the whole file globally.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-31-why-it-matters-for-code-environment-public-this-makes-enrichment-easy-to-ship-bu",
+      "text": "Why it matters for Code_Environment/Public: This makes enrichment easy to ship, but hard to trust operationally because misses are silent and there is no line of evidence in the inspected tests that contract behavior is guarded. If we adapt the idea, we should add explicit \"enriched vs not-enriched\" telemetry or test fixtures before relying on it in context pipelines.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-3-why-it-matters-for-code-environment-public-this-pattern-is-lightweight-and-cheap",
+      "text": "Why it matters for Code_Environment/Public: This pattern is lightweight and cheap enough for a scan pipeline, but it means the \"contract\" layer is downstream decoration on top of route detection, not a source-of-truth contract extractor. If we borrowed this shape for graph/context work, we should treat the added fields as nullable annotations, not stable evidence.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-7-6-affected-area-ast-extraction-architecture-confidence-labeling-discipline",
+      "text": "Affected area: AST extraction architecture, confidence labeling discipline",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-34-affected-area-confidence-labeling-downstream-consumer-trust",
+      "text": "Affected area: confidence labeling, downstream consumer trust",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-27-affected-area-orm-schema-detector-architecture",
+      "text": "Affected area: ORM/schema detector architecture",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-41-affected-area-regression-testing-discipline",
+      "text": "Affected area: regression testing discipline",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-13-affected-area-regression-testing-discipline-fastapi-extraction",
+      "text": "Affected area: regression testing discipline, FastAPI extraction",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-20-affected-area-route-extraction-structured-regex-pattern-reuse",
+      "text": "Affected area: route extraction, structured-regex pattern reuse",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-11-evidence-type-source-confirmed-fixture-confirmed",
+      "text": "Evidence type: source-confirmed + fixture-confirmed",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-18-evidence-type-source-confirmed-fixture-confirmed",
+      "text": "Evidence type: source-confirmed + fixture-confirmed",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-39-evidence-type-test-confirmed-negative",
+      "text": "Evidence type: test-confirmed (negative)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-40-recommendation-adopt-the-fixture-discipline-rule-assertions-must-distinguish-ast",
+      "text": "Recommendation: adopt the fixture-discipline rule (assertions must distinguish AST from fallback)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-33-recommendation-adopt-the-labeling-fix-reject-the-binary-ast-regex-enum",
+      "text": "Recommendation: adopt the labeling fix; reject the binary `ast|regex` enum",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-12-recommendation-adopt-the-lesson-write-fixtures-against-runtime-not-against-the-p",
+      "text": "Recommendation: adopt the lesson (write fixtures against runtime, not against the parser)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-19-recommendation-adopt-the-prefix-composition-pattern-document-the-middleware-gap",
+      "text": "Recommendation: adopt the prefix composition pattern; document the middleware gap",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-5-recommendation-adopt-the-python-pattern-reject-the-go-labeling",
+      "text": "Recommendation: adopt the Python pattern; reject the Go labeling",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-26-recommendation-adopt-the-sqlalchemy-pattern-reject-the-gorm-over-admission-and-f",
+      "text": "Recommendation: adopt the SQLAlchemy pattern; reject the GORM over-admission and false `\"ast\"` labeling",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-21-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-35-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-42-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-14-risk-cost-low-discipline-only",
+      "text": "Risk/cost: low — discipline-only",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-7-risk-cost-low-labeling-is-free-real-go-ast-is-medium-effort",
+      "text": "Risk/cost: low — labeling is free, real Go AST is medium effort",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-28-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-36-source-external-eval-fixtures-fastapi-sqlalchemy-repo-json-8-14-external-eval-fi",
+      "text": "Source: `external/eval/fixtures/fastapi-sqlalchemy/repo.json:8-14`; `external/eval/fixtures/fastapi-sqlalchemy/ground-truth.json:2-29`; `external/eval/fixtures/gin-gorm/repo.json:7-14`; `external/eval/fixtures/gin-gorm/ground-truth.json:2-25`; `external/tests/detectors.test.ts:202-234`",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-15-source-external-src-ast-extract-go-ts-36-57-86-158-168-246-18-22-173-181-188-196",
+      "text": "Source: `external/src/ast/extract-go.ts:36-57, 86-158, 168-246, 18-22, 173-181, 188-196, 216-224, 233-241`; `external/eval/fixtures/gin-gorm/repo.json:7-14`; `external/eval/fixtures/gin-gorm/ground-truth.json:23-25`",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-22-source-external-src-ast-extract-python-ts-131-195-197-250-261-289-external-src-d",
+      "text": "Source: `external/src/ast/extract-python.ts:131-195, 197-250, 261-289`; `external/src/detectors/schema.ts:298-340`; `external/src/ast/extract-go.ts:260-277, 282-345`",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-1-source-external-src-ast-extract-python-ts-20-126-128-290-295-348-354-395-externa",
+      "text": "Source: `external/src/ast/extract-python.ts:20-126, 128-290, 295-348, 354-395`; `external/src/detectors/routes.ts:729-748, 769-795, 816-834`; `external/src/detectors/schema.ts:312-360`; `external/src/ast/extract-go.ts:1-12, 86-158, 160-246, 254-349`",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-8-source-external-src-ast-extract-python-ts-49-86-354-371-40-47-88-113-external-sr",
+      "text": "Source: `external/src/ast/extract-python.ts:49-86, 354-371, 40-47, 88-113`; `external/src/detectors/routes.ts:722-749`; `external/eval/fixtures/fastapi-sqlalchemy/repo.json:8-13`; `external/eval/fixtures/fastapi-sqlalchemy/ground-truth.json:2-12`",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-29-source-external-src-types-ts-54-75-external-src-detectors-routes-ts-741-747-786-",
+      "text": "Source: `external/src/types.ts:54-75`; `external/src/detectors/routes.ts:741-747, 786-793, 827-833, 865-885`; `external/src/detectors/schema.ts:359-360`; `external/src/ast/extract-go.ts:1-12, 180-195, 223-240, 343-344`",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-9-what-it-does-fastapi-flask-parsing-only-reads-the-first-positional-path-argument",
+      "text": "What it does: FastAPI/Flask parsing only reads the first positional path argument and, for `route`/`api_route`, the `methods` keyword. There is no handling for `status_code`, `response_model`, `dependencies`, `tags`, or other decorator kwargs; returned route objects only contain method, path, params, file, tags, framework, and confidence. Django support is even thinner: it looks for `urlpatterns` assignments that are either a list or list-plus-list, recognizes `path` / `re_path` / `url`, and assigns every match `method: \"ALL\"`. The biggest FastAPI gap is **prefix composition**: `detectFastAPIRoutes()` extracts decorators file-by-file and never combines them with `app.include_router(..., prefix=\"/api/...\")` from the application entrypoint. The fixture proves this mismatch: `repo.json` mounts routers under `/api/users`, `/api/items`, and `/api/auth`, but `ground-truth.json` expects unprefixed `/`, `/{user_id}`, `/login`, and `/register` paths instead — the fixture has been normalized to the extractor's current limitation.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-2-what-it-does-python-route-and-schema-extraction-really-does-invoke-a-parser-pyth",
+      "text": "What it does: Python route and schema extraction really does invoke a parser: `PYTHON_ROUTE_SCRIPT` and `PYTHON_SCHEMA_SCRIPT` call `ast.parse(...)`, and the Node wrapper spawns `python3`/`python` with `-c`, streams file contents on stdin, and returns parsed JSON on success. If Python is unavailable or parsing fails, the detectors fall back to regex. **Go does not do that.** The file explicitly says it uses \"brace-tracking + regex\" and \"without needing the Go compiler,\" then implements group parsing, route matching, and struct parsing with regexes and brace extraction rather than `go/parser` or a subprocess.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-23-what-it-does-sqlalchemy-extraction-is-the-strongest-non-ts-path-in-this-pass-it-",
+      "text": "What it does: SQLAlchemy extraction is the strongest non-TS path in this pass. It uses Python AST to find model base classes, parses `Column(...)`, `mapped_column(...)`, `relationship(...)`, promotes `Mapped[...]` annotations into types, and records flags like `pk`, `unique`, `nullable`, `default`, `index`, and `fk`. The schema detector prefers this AST output and only falls back to regex if AST returns nothing. GORM is materially looser: a struct counts as a model if its body contains `gorm.Model`, `gorm.DeletedAt`, a ``gorm:`` tag, or even a plain ``json:`` tag, which can over-admit ordinary DTO structs. Field parsing is line-based regex, relations are inferred from `foreignKey` / `many2many` tags or pointer/slice type heuristics, and the result is still labeled `confidence: \"ast\"`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-37-what-it-does-the-fastapi-sqlalchemy-fixture-does-exercise-decorator-routes-path-",
+      "text": "What it does: The `fastapi-sqlalchemy` fixture does exercise decorator routes, path parameters, and SQLAlchemy relationships, but it does not test `status_code`, `response_model`, or router-prefix synthesis. In fact, its `ground-truth.json` is normalized to the extractor's current limitation by expecting router-local paths instead of runtime-prefixed paths. The `gin-gorm` fixture is better for path-prefix resolution because it includes nested route groups and GORM models with tags and relations. But the requested tests do not backstop most of this surface: `detectors.test.ts` only contains FastAPI and Django route smoke tests, with no Flask, Gin, Echo, Fiber, Chi, SQLAlchemy, or GORM cases in the requested test file.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-16-what-it-does-the-go-extractor-does-more-path-composition-than-python-routes-do-i",
+      "text": "What it does: The Go extractor does more path composition than Python routes do. It resolves chained `Group(\"/prefix\")` calls for Gin/Echo/Fiber, handles `chi.Route(\"/prefix\", func(...) { ... })`, and then rewrites group-local route hits into full paths. It also supports uppercase Gin/Echo methods, PascalCase Fiber/Chi methods, `chi.Method(...)`, and `net/http` `HandleFunc`/`Handle` patterns including Go 1.22 `\"GET /path\"` strings. What it does **not** do is capture middleware or handler semantics. The route objects built in `extractRoutesFromBlock()` never set `middleware`, and group parsing only tracks `prefix`, `body`, and `varName`. The `gin-gorm` fixture includes `api.Use(middleware.Auth())` and even advertises `\"middleware\": [\"auth\"]` in ground truth, but this extractor alone cannot produce that field — meaning the middleware comes from a different detector path or the ground truth is unmet.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-30-what-it-does-the-shared-type-system-only-defines-two-confidence-states-ast-and-r",
+      "text": "What it does: The shared type system only defines two confidence states, `\"ast\"` and `\"regex\"`. There is no richer label like `\"structured\"`, `\"heuristic\"`, `\"partial\"`, or framework-specific confidence score. In practice, Python AST results are accurately labeled `\"ast\"` and regex fallbacks are possible, but the non-TS fallbacks shown here often **omit `confidence` entirely** instead of marking `\"regex\"`. Go is the most misleading case: its structured regex parser emits `\"ast\"` despite not using a Go AST at all.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-17-why-it-matters-for-code-environment-public-group-prefix-resolution-is-genuinely-",
+      "text": "Why it matters for Code_Environment/Public: Group-prefix resolution is genuinely useful and worth borrowing for any \"compose path segments across nested constructs\" feature. The middleware blind spot is a known limitation worth documenting if we port the structured-regex pattern.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-38-why-it-matters-for-code-environment-public-iteration-4-finding-5-already-establi",
+      "text": "Why it matters for Code_Environment/Public: Iteration 4 finding 5 already established that ~14 frameworks have live route tests but only Drizzle/Prisma have schema tests. This iteration adds: even where fixtures *exist*, they can be authored to match the parser's current behavior rather than runtime truth. The fix is to require that every fixture includes at least one assertion that fails against a regex-only fallback — making the test sensitive to AST regression.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-24-why-it-matters-for-code-environment-public-note-the-asymmetry-the-python-orm-get",
+      "text": "Why it matters for Code_Environment/Public: Note the asymmetry — the Python ORM gets `index` extraction (something Drizzle does NOT get per iter 5 finding 3), while the Go ORM gets a wide net that produces false positives. If we lift schema extraction logic, prefer the SQLAlchemy pattern, and explicitly label GORM-style heuristic extraction with low confidence.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-3-why-it-matters-for-code-environment-public-the-python-pattern-is-genuinely-trans",
+      "text": "Why it matters for Code_Environment/Public: The Python pattern is genuinely transferable: real AST when the host has Python, regex fallback when it doesn't. The Go pattern is the wrong lesson — its \"AST\" label is dishonest. If we ever add Go support, either (a) actually shell out to `go run` with a `golang.org/x/tools/go/parser` helper, or (b) label it `\"heuristic\"` and never `\"ast\"`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-31-why-it-matters-for-code-environment-public-this-is-a-labeling-discipline-failure",
+      "text": "Why it matters for Code_Environment/Public: This is a labeling discipline failure that we should explicitly fix on adoption. Add at least three confidence states (`ast`, `structured`, `regex`), default unmarked to `\"regex\"`, and never let a non-AST path emit `\"ast\"`. The cost is one type union and ~5 line-per-detector edits.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-10-why-it-matters-for-code-environment-public-this-is-a-load-bearing-example-of-how",
+      "text": "Why it matters for Code_Environment/Public: This is a load-bearing example of how a fixture can hide a real bug by being authored against the extractor instead of the runtime behavior. If we adopt the F1 fixture pattern (iter 4), we have to write fixtures against actual runtime URLs, not against the extractor's current output. Otherwise the harness becomes a tautology.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-8-27-affected-area-ai-assistant-context-generation-presentation-discipline",
+      "text": "Affected area: AI-assistant context generation, presentation discipline",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-34-affected-area-orchestration-pipeline-io-discipline",
+      "text": "Affected area: orchestration pipeline, IO discipline",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-20-affected-area-regression-testing-observability",
+      "text": "Affected area: regression testing, observability",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-6-affected-area-token-accounting-marketing-claims-discipline",
+      "text": "Affected area: token accounting, marketing claims discipline",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-13-affected-area-token-accounting-marketing-claims-discipline-regression-testing",
+      "text": "Affected area: token accounting, marketing claims discipline, regression testing",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-18-evidence-type-test-confirmed-negative",
+      "text": "Evidence type: test-confirmed (negative)",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-26-recommendation-adopt-now-the-rounding-rule-applied-uniformly",
+      "text": "Recommendation: adopt now (the rounding rule, applied uniformly)",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-33-recommendation-adopt-the-simpler-compute-then-write-once-variant",
+      "text": "Recommendation: adopt the simpler \"compute then write once\" variant",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-5-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-12-recommendation-reject-the-formula-as-is-prototype-later-a-real-measurement-repla",
+      "text": "Recommendation: reject (the formula as-is); prototype later (a real-measurement replacement)",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-19-recommendation-reject-the-un-tested-formula-prototype-later-with-a-pinned-fixtur",
+      "text": "Recommendation: reject the un-tested formula; prototype later with a pinned-fixture test",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-35-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-28-risk-cost-low-small-format-change",
+      "text": "Risk/cost: low — small format change",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-7-risk-cost-low-the-approximation-is-harmless-if-disclosed-harmful-if-quoted-as-a-",
+      "text": "Risk/cost: low — the approximation is harmless if disclosed; harmful if quoted as a real tokenizer",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-21-risk-cost-low-to-add-the-missing-test-pattern",
+      "text": "Risk/cost: low to add the missing test pattern",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-14-risk-cost-medium-adopting-the-formula-naively-would-import-its-credibility-risk-",
+      "text": "Risk/cost: medium — adopting the formula naively would import its credibility risk; replacing it requires designing an honest baseline",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-8-source-external-src-detectors-tokens-ts-16-57-function-body-external-src-detecto",
+      "text": "Source: `external/src/detectors/tokens.ts:16-57` (function body), `external/src/detectors/tokens.ts:45` (`Math.round(... * 1.3)` outer expression), `external/src/detectors/tokens.ts:57` (`saved: Math.max(0, estimatedExplorationTokens - outputTokens)`)",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-1-source-external-src-detectors-tokens-ts-4-9",
+      "text": "Source: `external/src/detectors/tokens.ts:4-9`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-22-source-external-src-generators-ai-config-ts-213-raw-result-tokenstats-saved-tolo",
+      "text": "Source: `external/src/generators/ai-config.ts:213` (raw `result.tokenStats.saved.toLocaleString()` in CLAUDE.md profile body), `external/src/formatter.ts:290` (`roundTo100(ts.saved).toLocaleString()` in `CODESIGHT.md` \"Token savings\" line), `external/src/index.ts:188-190` (CLI status uses raw `tokenStats.saved.toLocaleString()`), `external/src/index.ts:479-480` (CLI ASCII-art status block also uses raw)",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-29-source-external-src-index-ts-159-placeholder-tokenstats-outputtokens-0-estimated",
+      "text": "Source: `external/src/index.ts:159` (placeholder `tokenStats: { outputTokens: 0, estimatedExplorationTokens: 0, saved: 0, fileCount: files.length }`), `external/src/index.ts:165` (`const tokenStats = calculateTokenStats(tempResult, outputContent, files.length)` — the `outputContent` is the markdown string just written), `external/src/index.ts:166` (result reconstructed with the populated stats), then a second `writeOutput()` call later in the function rewrites `.codesight/` with the accurate token block",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-15-source-external-tests-detectors-test-ts-418-the-only-token-match-is-an-unrelated",
+      "text": "Source: `external/tests/detectors.test.ts:418` (the only `token` match is an unrelated auth variable in a test fixture), `external/src/detectors/tokens.ts:1-65` (no test imports), repo-wide grep for `calculateTokenStats|estimateTokens|TokenStats|tokenStats\\.saved|estimatedExplorationTokens` returns zero hits in `external/tests/`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-23-what-it-does-formatter-ts-290-writes-this-file-is-x-tokens-without-it-ai-explora",
+      "text": "What it does: `formatter.ts:290` writes \"this file is ~X tokens. Without it, AI exploration would cost ~Y tokens. **Saves ~Z tokens per conversation.**\" in `CODESIGHT.md`, with all three values passed through `roundTo100()` so the displayed numbers always end in `00` to signal estimation. But `ai-config.ts:213` writes \"This saves ~${result.tokenStats.saved.toLocaleString()} tokens per conversation.\" into the Claude profile file using the raw, unrounded number — which can show values like `12,847` and read like a real measurement.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-2-what-it-does-function-estimatetokens-text-string-number-return-math-ceil-text-le",
+      "text": "What it does: `function estimateTokens(text: string): number { return Math.ceil(text.length / 4); }` with an inline comment at line 6 stating the function exists \"to avoid requiring tiktoken as a dependency.\" This is the only token math primitive in the codebase. Repo-wide grep finds zero references to `tiktoken`, `gpt-tokenizer`, or any other tokenizer library in either source or `external/package.json:44`.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-9-what-it-does-the-manual-exploration-baseline-is-a-fixed-linear-sum-of-detected-a",
+      "text": "What it does: The \"manual exploration\" baseline is a fixed linear sum of detected artifacts: `routes * 400 + schemas * 300 + components * 250 + libs * 200 + envVars * 100 + middleware * 200 + hotFiles * 150 + Math.min(fileCount, 50) * 80`, multiplied by `1.3`. There is no per-project measurement, no calibration against a control codebase, no statistical baseline. The constants are picked by the author to represent \"what an AI assistant would burn while exploring the project from cold.\" `saved` is then the max of zero and the difference between this fabricated baseline and the actual `outputTokens`.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-30-what-it-does-the-pipeline-scans-calls-writeoutput-tempresult-codesight-once-with",
+      "text": "What it does: The pipeline scans, calls `writeOutput(tempResult, .codesight/)` once with zero stats to materialize a `CODESIGHT.md` string, then calls `calculateTokenStats(tempResult, outputContent, fileCount)` where `outputContent` is the just-generated markdown. The token math then says \"outputTokens = ceil(thisMarkdown.length / 4)\" and the final pass rewrites the same files with the populated numbers in the \"Token savings\" line. This is the self-referential measurement loop iteration 5 finding 1 alluded to.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-16-what-it-does-the-token-math-module-is-not-exercised-by-any-test-in-this-checkout",
+      "text": "What it does: The token-math module is not exercised by any test in this checkout. There is no assertion that `estimateTokens` returns the expected number of \"tokens\" for a given text, no assertion that the linear formula constants produce a specific saved number for a known input, no regression guard if a future commit changes the constants. The only `token` match in the test file is at line 418 in an auth fixture, completely unrelated to this module.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-17-why-it-matters-for-code-environment-public-iteration-4-already-showed-the-f1-fix",
+      "text": "Why it matters for Code_Environment/Public: Iteration 4 already showed the F1 fixture harness is the strongest piece of \"evidence\" Codesight ships. This iteration adds a corollary: token math is the *weakest* surface — it has no test, no fixture, no harness. If we lift any savings-style metric, the first thing to add is a test that pins the formula to a known input. Otherwise the constants will silently drift across versions.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-31-why-it-matters-for-code-environment-public-the-pattern-is-honest-in-one-sense-th",
+      "text": "Why it matters for Code_Environment/Public: The pattern is honest in one sense (the \"output size\" is literally the size of the generated markdown), but it's a strange shape for a one-shot CLI: writing twice doubles the disk I/O for no functional benefit beyond getting the token block to display the right number. A cleaner alternative is to compute output size on the in-memory string and write once. If we lift the orchestration shape (iter 5 finding 1), drop the double-write.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-3-why-it-matters-for-code-environment-public-this-is-a-deliberate-engineering-trad",
+      "text": "Why it matters for Code_Environment/Public: This is a deliberate engineering tradeoff: zero-dependency portability is preserved by accepting that the \"token\" count is a 4-chars-per-token approximation. For TypeScript / English-heavy markdown the approximation is reasonable (within ~10-20% of `cl100k_base` BPE), but for code-heavy output it can drift further. If we adopt anything similar, document the approximation prominently and never claim \"tokens\" without scare quotes; or accept a one-time `tiktoken-node` dep when the zero-dep constraint is not load-bearing.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-24-why-it-matters-for-code-environment-public-this-is-a-small-but-meaningful-ux-inc",
+      "text": "Why it matters for Code_Environment/Public: This is a small but meaningful UX inconsistency: the same upstream value is rounded for presentation in one surface and quoted unrounded in another, despite both being downstream consumers of the same heuristic formula. If we adopt the per-tool profile pattern (iter 4 finding 2), we should normalize the rounding rule across all surfaces — either always round-to-100 (signaling estimate) or always show raw (only honest if the formula is honest, which it is not). Pick rounding.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-10-why-it-matters-for-code-environment-public-this-is-the-explicit-code-level-proof",
+      "text": "Why it matters for Code_Environment/Public: This is the explicit code-level proof that Codesight's \"tokens saved\" number is a formula, not a measurement. Iteration 4 already established that the README's \"11.2x average\" headline comes from 3 private SaaS codebases NOT in fixtures; this iteration shows that even the per-run number that ships into `CLAUDE.md` is a hand-tuned heuristic with no test-asserted math. Any port to `Code_Environment/Public` should either (a) treat this as a UX device labeled \"estimated savings\" and never quote it as truth, or (b) replace it with a real measurement against a recorded baseline (e.g., compare against `find -name '*.ts' | xargs cat | wc -c / 4` for a \"blind exploration\" lower bound).",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-9-13-affected-area-configuration-discipline",
+      "text": "Affected area: configuration discipline",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-6-affected-area-configuration-surface",
+      "text": "Affected area: configuration surface",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-41-affected-area-extensibility-story",
+      "text": "Affected area: extensibility story",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-20-affected-area-monorepo-aggregation",
+      "text": "Affected area: monorepo aggregation",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-27-affected-area-monorepo-data-model",
+      "text": "Affected area: monorepo data model",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-34-affected-area-orchestration-pipeline",
+      "text": "Affected area: orchestration pipeline",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-39-evidence-type-mixed-source-confirmed-for-the-typed-contract-test-confirmed-negat",
+      "text": "Evidence type: mixed (source-confirmed for the typed contract; test-confirmed negative for usage)",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-25-evidence-type-test-confirmed",
+      "text": "Evidence type: test-confirmed",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-33-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-12-recommendation-adopt-now-the-rule-not-the-asymmetry",
+      "text": "Recommendation: adopt now (the rule, not the asymmetry)",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-5-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-40-recommendation-prototype-later-with-mandatory-test-fixture",
+      "text": "Recommendation: prototype later (with mandatory test fixture)",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-19-recommendation-prototype-later-with-the-missing-manager-branches-added",
+      "text": "Recommendation: prototype later (with the missing manager branches added)",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-26-recommendation-reject-the-rollup-model-prefer-per-workspace-records",
+      "text": "Recommendation: reject the rollup model (prefer per-workspace records)",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-14-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-35-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-28-risk-cost-low-the-rejection-is-conceptual-not-code-cost",
+      "text": "Risk/cost: low — the rejection is conceptual, not code-cost",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-21-risk-cost-medium-adding-turbo-nx-rush-discovery-is-straightforward-but-requires-",
+      "text": "Risk/cost: medium — adding turbo/nx/rush discovery is straightforward but requires authoring fixtures",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-42-risk-cost-medium-the-typed-contract-is-small-but-the-fixture-authoring-disciplin",
+      "text": "Risk/cost: medium — the typed contract is small but the fixture authoring discipline is the real cost",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-1-source-external-src-config-ts-10-15-29-38-54-60-40-49-68-92",
+      "text": "Source: `external/src/config.ts:10-15, 29-38, 54-60, 40-49, 68-92`",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-8-source-external-src-index-ts-29-47-300-363-382-392-external-src-config-ts-98-107",
+      "text": "Source: `external/src/index.ts:29-47, 300-363, 382-392`; `external/src/config.ts:98-107`",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-29-source-external-src-index-ts-99-113-104-112-115-130",
+      "text": "Source: `external/src/index.ts:99-113, 104-112, 115-130`",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-15-source-external-src-scanner-ts-107-111-380-399-26-29",
+      "text": "Source: `external/src/scanner.ts:107-111, 380-399, 26-29`",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-22-source-external-src-scanner-ts-131-141-143-155-157-165-external-tests-detectors-",
+      "text": "Source: `external/src/scanner.ts:131-141, 143-155, 157-165`; `external/tests/detectors.test.ts:487-498`",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-36-source-external-src-types-ts-141-170-173-181-external-src-index-ts-115-133-399-4",
+      "text": "Source: `external/src/types.ts:141-170, 173-181`; `external/src/index.ts:115-133, 399-410`",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-37-what-it-does-codesightconfig-exposes-plugins-codesightplugin-each-plugin-has-a-r",
+      "text": "What it does: `CodesightConfig` exposes `plugins?: CodesightPlugin[]`; each plugin has a required `name`, optional async `detector(files, project)`, and optional async `postProcessor(result)`. Plugin detectors run after all built-ins, and can only merge additional `routes`, `schemas`, `components`, and `middleware` into the in-memory result set before contract enrichment/output. Post-processors run after `scan()` returns and can replace the final `ScanResult`. Within the files read, there are **no in-tree plugin implementations or plugin/disableDetectors tests** (`rg` over `external/tests` returned no matches), so third-party extensibility is inferred from the typed config-module surface rather than demonstrated by fixtures/tests.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-16-what-it-does-detectproject-marks-a-repo-as-monorepo-only-when-pkg-workspaces-is-",
+      "text": "What it does: `detectProject()` marks a repo as monorepo only when `pkg.workspaces` is present or `pnpm-workspace.yaml` exists. Workspace discovery comes exclusively from `getWorkspacePatterns()`, which parses YAML list items from `pnpm-workspace.yaml` or returns `pkg.workspaces` / `pkg.workspaces.packages`. There are **no dedicated branches for `turbo.json`, `nx.json`, `lerna.json`, or Rush manifests**. The enumerator converts each pattern by stripping `/*`, lists direct child directories under that root, reads each child `package.json`, and records workspace `name`, relative `path`, `frameworks`, and `orms`. `turbo` appears only as an ignored directory name (`.turbo`), not a discovery source.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-30-what-it-does-scan-creates-const-disabled-new-set-userconfig-disabledetectors-and",
+      "text": "What it does: `scan()` creates `const disabled = new Set(userConfig.disableDetectors || [])` and uses conditional expressions that return resolved empty placeholders instead of calling the detector. Disabled routes/schema/components/libs/middleware return `[]`; disabled config returns an empty config object; disabled graph returns `{ edges: [], hotFiles: [] }`. There is no run-then-discard path for built-ins. Plugin detectors still run afterward if present.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-23-what-it-does-after-discovering-workspaces-codesight-merges-each-workspace-s-depe",
+      "text": "What it does: After discovering workspaces, Codesight merges each workspace's `dependencies` and `devDependencies` into `allDeps` before language and component-framework detection. It separately de-duplicates workspace `frameworks` and `orms` back into the top-level project arrays. The monorepo unit test asserts `project.isMonorepo === true`, `project.workspaces.length >= 2`, and that a workspace framework (`hono`) plus component framework (`react`) surface at the project level.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-9-what-it-does-the-cli-parser-accepts-o-output-d-depth-init-watch-hook-html-open-m",
+      "text": "What it does: The CLI parser accepts `-o/--output`, `-d/--depth`, `--init`, `--watch`, `--hook`, `--html`, `--open`, `--mcp`, `--json`, `--benchmark`, `--profile <tool>`, `--blast <file>`, `--telemetry`, `--eval`, `-v/--version`, `-h/--help`, plus a positional directory argument. After parsing, `loadConfig(root)` is merged with CLI overrides only for `maxDepth`, `outputDir`, and `profile`; the rest stay as runtime booleans/strings outside the config object.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-2-what-it-does-the-loader-only-checks-codesight-config-ts-codesight-config-js-code",
+      "text": "What it does: The loader only checks `codesight.config.ts`, `codesight.config.js`, `codesight.config.mjs`, and `codesight.config.json`, then falls back to `package.json` `codesight`. No `.codesightrc*` filename is referenced anywhere. TS config loading is best-effort via dynamic import, then a fallback regex that only handles a simple `export default { ... }` shape; failure returns `{}` with a warning (\"Warning: cannot load codesight.config.ts (install tsx for TS config support)\").",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-17-why-it-matters-for-code-environment-public-codesight-aggregates-classic-pnpm-yar",
+      "text": "Why it matters for Code_Environment/Public: Codesight aggregates classic pnpm/yarn/npm workspaces, but not tool-specific monorepo graphs. If we ever need first-class monorepo introspection (which Public's specs structure increasingly resembles), the Codesight pattern is a starting point but is missing turbo/nx/rush awareness — a real gap to fix on adoption.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-24-why-it-matters-for-code-environment-public-the-monorepo-model-is-aggregation-ori",
+      "text": "Why it matters for Code_Environment/Public: The monorepo model is **aggregation-oriented, not graph-oriented**: workspace packages enrich one top-level `ProjectInfo` rather than remaining isolated sub-project analyses. This is a deliberate simplification — easier to consume, but loses per-workspace fidelity. For Public, the right move is probably the inverse: per-workspace `ProjectInfo` records joined by a parent index, since Public's workflows are spec-folder-scoped.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-10-why-it-matters-for-code-environment-public-the-source-of-truth-config-surface-is",
+      "text": "Why it matters for Code_Environment/Public: The source-of-truth config surface is narrower than the full CLI surface. Flags like `--json`, `--watch`, `--hook`, `--telemetry`, and `--eval` are not persisted through `CodesightConfig` merging. This is a small but real divergence between \"what the CLI accepts\" and \"what the config file can express.\" Avoid importing this asymmetry; pick a rule (every flag is also config, or none of them are) and stick to it.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-38-why-it-matters-for-code-environment-public-third-party-detectors-are-possible-if",
+      "text": "Why it matters for Code_Environment/Public: Third-party detectors are possible if a user's config module imports or constructs plugin objects, but this is not a discovered package/plugin registry. Post-processors are a real extension point in code, not obviously vestigial, though they are currently unexercised in the visible test surface. For Public, the lesson is: plugin contracts that aren't tested aren't real. If we add plugin hooks, ship at least one in-tree fixture exercising them.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-3-why-it-matters-for-code-environment-public-third-party-or-user-customization-is-",
+      "text": "Why it matters for Code_Environment/Public: Third-party or user customization is config-module based, not dotfile based. If we adopt anything similar, we should pick one of {dotfile, config-module, package.json embed} and document it; mixing all three (as Codesight effectively does, missing only the dotfile) creates user confusion.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-31-why-it-matters-for-code-environment-public-this-is-a-clean-skip-work-don-t-filte",
+      "text": "Why it matters for Code_Environment/Public: This is a clean \"skip work, don't filter results\" pattern that's worth borrowing wholesale. It pairs naturally with the future possibility of replacing a built-in detector with a plugin (disable the built-in, enable the plugin), and avoids paying the runtime cost of detection just to throw it away.",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-10-27-affected-area-adoption-strategy",
+      "text": "Affected area: adoption strategy",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-6-affected-area-component-detection-assistant-context-surface",
+      "text": "Affected area: component detection, assistant context surface",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-20-affected-area-governance-measurement-tooling",
+      "text": "Affected area: governance, measurement tooling",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-13-affected-area-static-artifact-usefulness",
+      "text": "Affected area: static artifact usefulness",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-25-evidence-type-source-confirmed-plus-phase-synthesis",
+      "text": "Evidence type: source-confirmed plus phase synthesis",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-26-recommendation-adopt-low-risk-patterns-now-gate-medium-risk-items-behind-namespa",
+      "text": "Recommendation: adopt low-risk patterns now; gate medium-risk items behind namespacing, honesty labels, and bug fixes; reject unverified claims outright",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-12-recommendation-keep-low-authority-if-adopted-pair-with-richer-ast-or-symbol-extr",
+      "text": "Recommendation: keep low-authority if adopted; pair with richer AST or symbol extraction before treating it as a first-class context source",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-19-recommendation-low-risk-to-borrow-only-as-a-local-explicitly-invoked-measurement",
+      "text": "Recommendation: low-risk to borrow only as a local, explicitly-invoked measurement mode; if Public ports anything like this, keep it opt-in and ban external sinks by policy",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-5-recommendation-prototype-later-only-if-code-environment-public-wants-a-shallow-a",
+      "text": "Recommendation: prototype later only if Code_Environment/Public wants a shallow assistant index; do not present this as deep component understanding",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-21-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-14-risk-cost-low-medium",
+      "text": "Risk/cost: low-medium",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-7-risk-cost-medium-cheap-to-port-easy-to-oversell",
+      "text": "Risk/cost: medium — cheap to port, easy to oversell",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-28-risk-cost-mixed",
+      "text": "Risk/cost: mixed",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-1-source-external-src-detectors-components-ts-72-85-88-209-211-309-external-src-as",
+      "text": "Source: `external/src/detectors/components.ts:72-85, 88-209, 211-309`; `external/src/ast/extract-components.ts:1-216`; `external/src/scanner.ts:332-338`; `external/src/types.ts:34-45, 83-89`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-8-source-external-src-formatter-ts-25-29-126-143-external-src-types-ts-83-89-exter",
+      "text": "Source: `external/src/formatter.ts:25-29, 126-143`; `external/src/types.ts:83-89`; `external/tests/detectors.test.ts:328-343`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-15-source-external-src-telemetry-ts-14-16-44-54-62-127-135-185-193-245-248-339-exte",
+      "text": "Source: `external/src/telemetry.ts:14-16, 44-54, 62-127, 135-185, 193-245, 248-339`; `external/src/index.ts:357-358, 415-421`; `external/package.json:10-15`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-22-source-research-research-md-191-198-232-257-292-321-338-345-463-511-external-src",
+      "text": "Source: `research/research.md:191-198, 232-257, 292-321, 338-345, 463-511`; `external/src/telemetry.ts:248-339`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-16-what-it-does-telemetry-imports-runtelemetry-reads-the-local-project-files-and-ge",
+      "text": "What it does: `--telemetry` imports `runTelemetry`, reads the local project files and generated `CODESIGHT.md`, estimates tokens via `Math.ceil(text.length / 4)`, and writes a local `telemetry.md` report. The module imports only `node:fs/promises` and `node:path`, and the package scripts contain only `build`, `dev`, `test`, and `prepublishOnly`.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-9-what-it-does-components-md-is-a-flat-bullet-list-component-name-optional-client-",
+      "text": "What it does: `components.md` is a flat bullet list: component name, optional `[client/server]` marker, comma-joined prop names, and file path. The only component-specific test in `detectors.test.ts` is a React spot-check that ensures at least two components are found and one prop name (`name`) is present.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-2-what-it-does-codesight-only-recognizes-three-component-frameworks-at-all-react-v",
+      "text": "What it does: Codesight only recognizes three component frameworks at all: `react`, `vue`, and `svelte`. React tries AST first, but the 216-line AST helper is entirely React-specific and only recognizes exported uppercase function declarations or exported const/function expressions, plus `forwardRef`/`memo` wrappers; it emits just `name`, `file`, `props`, `isClient`, `isServer`, and optional `confidence`. Vue and Svelte do not use AST here; they derive the component name from the filename and scrape prop names from `defineProps` / `props: {}` / `export let` / `$props()`.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-23-what-it-does-prior-iterations-already-established-that-codesight-s-strongest-por",
+      "text": "What it does: Prior iterations already established that Codesight's strongest portable patterns are orchestration shape, AST-first confidence-label discipline, conditional static artifact emission, honest hot-file ranking, and the F1 fixture harness. The recurring failure modes are different: misleading token-savings claims (iter 4 + iter 8), unsafe root-level assistant file emission (iter 4 finding 1), heuristic graph overlays (iter 3 blast-radius), and over-trusting starter graph math (iter 3 hot-file ranking).",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-17-why-it-matters-for-code-environment-public-as-shipped-in-this-checkout-there-is-",
+      "text": "Why it matters for Code_Environment/Public: As shipped in this checkout, **there is no HTTP client, no `fetch`, no `net` usage, no identity or machine reads, no env-based telemetry init path, and no `postinstall`/`preinstall` hook**. The control surface is opt-in CLI usage, not opt-out analytics. That means telemetry is not a hard blocker for adoption in its current source form. This is the most reassuring finding of the entire 10-iteration session: Codesight has not buried surveillance in a \"telemetry\" name.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-24-why-it-matters-for-code-environment-public-for-public-the-right-move-is-not-to-p",
+      "text": "Why it matters for Code_Environment/Public: For Public, the right move is **not to port Codesight wholesale**. It is to lift the low-risk architectural patterns, put guardrails around medium-risk features, and reject any user-facing claim or integration behavior that exceeds what the source can actually prove.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-3-why-it-matters-for-code-environment-public-this-is-much-shallower-than-the-route",
+      "text": "Why it matters for Code_Environment/Public: This is **much shallower** than the route extractor from earlier iterations, which captures prefixes, params, middleware, decorators, and confidence-backed structural detail. There is no React class-component handling, no Solid/Qwik branch, no render-tree/composition extraction, and no framework-specific semantic model.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-10-why-it-matters-for-code-environment-public-this-is-useful-as-a-lightweight-map-t",
+      "text": "Why it matters for Code_Environment/Public: This is useful as a lightweight map that tells an assistant which UI file to open next, but it is surface-level compared with `routes.md`, which carries method/path/params/request/response/tag detail. It does not preserve prop types, default values, emitted events, slot/children behavior, framework composition, or hierarchy.",
+      "addedAtIteration": 10,
+      "sources": []
     }
   ],
   "ruledOutDirections": [],
   "metrics": {
-    "iterationsCompleted": 5,
-    "openQuestions": 12,
+    "iterationsCompleted": 10,
+    "openQuestions": 0,
     "resolvedQuestions": 0,
-    "keyFindings": 188,
-    "convergenceScore": 0.42,
+    "keyFindings": 370,
+    "convergenceScore": 0.44,
     "coverageBySources": {}
   }
 }

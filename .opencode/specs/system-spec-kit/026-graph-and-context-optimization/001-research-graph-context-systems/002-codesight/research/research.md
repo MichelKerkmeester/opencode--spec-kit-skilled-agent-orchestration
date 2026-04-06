@@ -645,3 +645,104 @@ research/
 Segment transitions, wave scores, and checkpoint metrics are intentionally omitted (experimental signals not used by this session).
 
 <!-- /ANCHOR:convergence-report -->
+
+<!-- ANCHOR:continuation-iter-6-10 -->
+## 18. Continuation — Iterations 6-10 (Depth Probe of Unexplored Modules)
+
+> User-requested continuation: "5 more iterations of /spec_kit:deep-research with gpt-5.4 high agents in fast mode through cli-codex." Started 2026-04-06T18:35:00Z. All 5 iterations dispatched in parallel via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --sandbox read-only -o /tmp/codex-iter-NNN-output.md`. The read-only sandbox blocked the agents' direct file writes to `/tmp` (`zsh:1: operation not permitted` and `can't create temp file for here document`), but in 4 of 5 cases the fully assembled report was preserved in the codex stdout reasoning trace before the failed write; the orchestrator (Claude Opus 4.6) extracted those reports verbatim into the iteration files. In the 5th case (iter 8) the captured `-o` last-message file already contained the agent's key findings with exact line citations, which the orchestrator reconstructed into a complete iteration file. No file modifications were made by codex agents themselves.
+
+### 18.1 Continuation Charter
+
+The original 12 questions were already answered after iteration 5 (coverage 12/12, stop reason `all_questions_answered`). Iterations 6-10 target **5 unexplored modules** that the original charter did not enumerate, picked by the orchestrator after re-reading `phase-research-prompt.md` and the iter 1-5 source coverage:
+
+- **Q13 (iter 6)** — `enrichRouteContracts` + `external/src/detectors/contracts.ts` end-to-end trace
+- **Q14 (iter 7)** — Python and Go AST extraction depth (`extract-python.ts`, `extract-go.ts`) and TS-parity quantification
+- **Q15 (iter 8)** — Token stats provenance (`detectors/tokens.ts`, `calculateTokenStats`, the actual algorithm and honesty)
+- **Q16 (iter 9)** — Monorepo workspace aggregation, configuration surface, plugin/post-processor contract (`scanner.ts`, `config.ts`)
+- **Q17 (iter 10)** — Component extraction depth (`detectors/components.ts`, `extract-components.ts`), telemetry posture (`telemetry.ts`), and a cumulative risk inventory across all 10 iterations
+
+### 18.2 New Findings (Iterations 6-10)
+
+**Iteration 6 — Contract enrichment pipeline** (5 findings, newInfoRatio 0.82)
+
+1. `enrichRouteContracts` is a post-detection regex-only mutator that rereads each route file once via `readFileSafe`, extracts path params from `:id`/`[id]`/`{id}`/`<id>`, and dispatches on `route.framework`. It does **not** invoke the TypeScript checker, parse OpenAPI, or reuse Zod/Valibot schemas structurally. (`external/src/detectors/contracts.ts:9-67`)
+2. The shared `enrichTSRoute(...)` helper is **strongly Hono-biased**: it scans the whole file for three patterns only — `c.json<T>(...)`, `zValidator('json'|'form', Identifier)`, and `Promise<Response<T>>`. Express/NestJS/Fastify/Koa/Elysia/AdonisJS all share this helper, so common patterns like `res.json(...)` and DTO decorators are missed. Multi-route files leak across handlers because regexes are not handler-scoped. (`external/src/detectors/contracts.ts:40-50, 70-96`)
+3. Next.js/SvelteKit/Remix/Nuxt go through `enrichNextRoute(...)` which extracts up to 8 object-literal keys from `NextResponse.json({...})` or `Response.json({...})` into a synthetic `{ key1, key2 }` shape. FastAPI parses `response_model=SchemaName` and the first non-dependency typed handler param. Flask only extracts keys from `jsonify({...})`. (`external/src/detectors/contracts.ts:52-63, 98-152`)
+4. **tRPC has AST route extraction but ZERO contract enrichment.** The contract switch never handles `trpc`, even though `extract-routes.ts:287-337` produces routes with `confidence: "ast"` for query/mutation/subscription procedures. The framework with the richest inline contract vocabulary gets no enrichment. (`external/src/ast/extract-routes.ts:25-50, 287-337`; `external/src/detectors/contracts.ts:40-64`)
+5. Silent no-ops are common: `readFileSafe` returns `""` on failure, leaving `requestType`/`responseType`/`params` absent. The enrichment pass appears **untested** — `detectors.test.ts` imports `detectRoutes` and the other detectors but never `enrichRouteContracts`. (`external/src/detectors/contracts.ts:17-21`; `external/tests/detectors.test.ts:19-29, 37-234`)
+
+**Iteration 7 — Python and Go AST parity** (6 findings, newInfoRatio 0.88)
+
+1. **Python is genuinely AST-backed**, Go is not. Python spawns `python3 -c "ast.parse(...)"` via subprocess and streams file contents on stdin (`extract-python.ts:20-126, 128-290`). Go's `extract-go.ts:1-12` explicitly uses "brace-tracking + regex" with no `go/parser` and no subprocess, yet labels output as `confidence: "ast"`.
+2. FastAPI/Flask extraction is route-shape only (method/path/params). The biggest gap is **prefix composition**: `detectFastAPIRoutes()` never combines decorators with `app.include_router(..., prefix="/api/...")`. The `fastapi-sqlalchemy` fixture's `ground-truth.json` is normalized to expect router-local paths instead of runtime-prefixed paths, hiding the bug. (`external/src/detectors/routes.ts:722-749`; `external/eval/fixtures/fastapi-sqlalchemy/repo.json:8-13` vs `ground-truth.json:2-12`)
+3. Go does decent prefix composition for Gin/Echo/Fiber `Group("/prefix")` chains and chi.Route nesting, but **never captures middleware**. The `gin-gorm` fixture advertises `"middleware": ["auth"]` in ground truth, but the Go extractor alone cannot produce that field. (`external/src/ast/extract-go.ts:36-57, 86-158, 168-246`)
+4. **SQLAlchemy AST extraction is the strongest non-TS path** — and is RICHER than Drizzle: it parses `Column(...)`, `mapped_column(...)`, `relationship(...)`, `Mapped[...]` annotations, and records `index` and `fk` flags. Iter 5 finding 3 documented that Drizzle is missing `index()`/`uniqueIndex()` extraction; iter 7 confirms Python's SQLAlchemy path does not have that gap. (`external/src/ast/extract-python.ts:131-195, 197-250, 261-289`)
+5. GORM is materially looser: a struct counts as a model if its body contains `gorm.Model`, `gorm.DeletedAt`, a ``gorm:`` tag, or **even a plain ``json:`` tag**, which over-admits ordinary DTO structs. Mislabels as `"ast"`. (`external/src/ast/extract-go.ts:260-277, 282-345`)
+6. The confidence label enum is binary (`"ast"` | `"regex"`) and non-TS fallbacks often **omit `confidence` entirely** instead of marking `"regex"`. Go's structured-regex parser is the most misleading mislabel. (`external/src/types.ts:54-75`; `external/src/detectors/routes.ts:741-747, 786-793, 827-833`)
+
+**Iteration 8 — Token stats and tokensSaved provenance** (5 findings, newInfoRatio 0.78)
+
+1. `estimateTokens(text)` is `Math.ceil(text.length / 4)` with an inline comment explicitly stating it exists "to avoid requiring tiktoken as a dependency." Repo-wide grep finds zero references to any tokenizer library. (`external/src/detectors/tokens.ts:4-9`; `external/package.json:44`)
+2. **`estimatedExplorationTokens` is a hand-tuned linear formula**, not a measurement: `(routes * 400 + schemas * 300 + components * 250 + libs * 200 + envVars * 100 + middleware * 200 + hotFiles * 150 + min(fileCount, 50) * 80) * 1.3`. `saved = max(0, this - outputTokens)`. Constants are not test-asserted. (`external/src/detectors/tokens.ts:16-57`)
+3. **Zero token-math tests exist.** Repo-wide grep for `calculateTokenStats|estimateTokens|TokenStats` against `external/tests/` returns zero hits. The only `token` match in `detectors.test.ts:418` is an unrelated auth fixture variable. The formula constants will silently drift across versions.
+4. Presentation inconsistency: `formatter.ts:290` writes `roundTo100(ts.saved)` into `CODESIGHT.md` (signaling estimate), but `ai-config.ts:213` writes the **unrounded** `result.tokenStats.saved.toLocaleString()` into `CLAUDE.md` (reads as more precise than it is).
+5. The production data flow is "scan → write placeholder CODESIGHT.md → measure that markdown → rewrite with populated stats" — a self-referential measurement loop that doubles disk I/O for no functional benefit. The `outputTokens` is literally `chars/4` of the just-generated markdown. (`external/src/index.ts:159, 165, 166`)
+
+**Iteration 9 — Monorepo, config, plugins** (6 findings, newInfoRatio 0.79)
+
+1. Config inputs are `codesight.config.{ts,js,mjs,json}` plus a `package.json` `codesight` field fallback. **There is NO `.codesightrc*` support** anywhere in source. TS config loading is best-effort dynamic import with a fallback regex for `export default { ... }`. (`external/src/config.ts:10-15, 29-38, 40-49, 54-60, 68-92`)
+2. CLI flags are broad (`--init`, `--watch`, `--hook`, `--html`, `--mcp`, `--json`, `--benchmark`, `--profile`, `--blast`, `--telemetry`, `--eval`, plus output/depth/help/version), but **only `maxDepth`, `outputDir`, and `profile` flow into merged `CodesightConfig`**. The other flags stay as runtime booleans outside the persistent config object. (`external/src/index.ts:29-47, 300-363, 382-392`; `external/src/config.ts:98-107`)
+3. **Monorepo aggregation only understands `pnpm-workspace.yaml` and `package.json` `workspaces`**. There are no dedicated branches for `turbo.json`, `nx.json`, `lerna.json`, or Rush manifests. `.turbo` appears only as an ignored directory. (`external/src/scanner.ts:107-111, 380-399, 26-29`)
+4. Workspace aggregation is **rollup-oriented, not graph-oriented**: child `dependencies`/`devDependencies` are merged into root `allDeps` and workspace `frameworks`/`orms` are de-duplicated back into top-level project arrays. The unit test asserts `project.isMonorepo === true`, `workspaces.length >= 2`, and that workspace frameworks surface at the root. (`external/src/scanner.ts:131-141, 143-155, 157-165`; `external/tests/detectors.test.ts:487-498`)
+5. `disableDetectors` is a **true short-circuit** before invocation, not a post-filter. Disabled built-ins return resolved empty placeholders; plugin detectors still run. (`external/src/index.ts:99-130`)
+6. `CodesightPlugin` is a real typed contract (`name`, optional async `detector`, optional async `postProcessor`). Plugin detectors merge `routes`/`schemas`/`components`/`middleware` into the in-memory result; post-processors run after `scan()` returns and can replace the full `ScanResult`. **There are zero in-tree plugin examples or tests.** (`external/src/types.ts:141-170, 173-181`; `external/src/index.ts:115-133, 399-410`)
+
+**Iteration 10 — Components, telemetry, cumulative risk** (4 findings, newInfoRatio 0.44)
+
+1. Component extraction is shallow and React-biased. Only React, Vue, and Svelte are recognized. React tries AST first via a 216-line helper that handles exported uppercase function/const components plus `forwardRef`/`memo` wrappers; Vue/Svelte are filename + regex prop scraping. **No Solid, no Qwik, no React class components.** (`external/src/detectors/components.ts:72-85, 88-309`; `external/src/ast/extract-components.ts:1-216`)
+2. `.codesight/components.md` is a flat bullet list (name, optional `[client/server]`, comma-joined prop names, file path) — much shallower than `routes.md`. The only component-specific test asserts at least 2 components and one prop name (`name`). (`external/src/formatter.ts:25-29, 126-143`)
+3. **Telemetry is local-only and opt-in.** `--telemetry` imports `runTelemetry`, reads project files + the generated `CODESIGHT.md`, computes the same `Math.ceil(text.length / 4)` token estimate, and writes a local `telemetry.md` report. The module imports only `node:fs/promises` and `node:path`. There is **no HTTP, no fetch, no net, no identity reads, no env-based init, no postinstall hook**. Telemetry is **not** an adoption blocker. (`external/src/telemetry.ts:14-16, 248-339`; `external/src/index.ts:357-358, 415-421`; `external/package.json:10-15`)
+4. The cumulative adoption risk is concentrated in **honesty and integration boundaries**, not in surveillance: token-savings claims, root-level assistant file emission, blast-radius depth-cap bug, GORM mislabeling. Final risk inventory in iteration-010.md table.
+
+### 18.3 Updated Adoption Decision Matrix
+
+Combining iter 1-5 and iter 6-10 findings:
+
+| Adoption candidate | Iter source | Risk tier | Recommendation |
+|--------------------|------------|-----------|----------------|
+| Orchestration shape (one canonical scan, late-bound projections) | iter 5 | low | adopt now |
+| Static `.codesight/`-style artifact emission with conditional rule | iter 5 | low | adopt now |
+| AST-first / regex-fallback pattern with explicit confidence labels | iter 1-2 | low | adopt now (with iter 7 fix: 3+ confidence states, no `"ast"` for non-AST) |
+| Per-tool profile overlay (CLAUDE/Cursor/Codex/Copilot/Windsurf) | iter 4 | medium | adopt now (with namespacing + no root-file clobbering) |
+| F1 fixture harness | iter 4 | low | adopt now (with iter 7 fix: assertions must distinguish AST from fallback) |
+| Hot-file ranking (degree counting) | iter 3 | low | adopt now (label as "depended-on count," never "centrality") |
+| Python AST + subprocess pattern | iter 7 | low | adopt now (template for any cross-language AST) |
+| SQLAlchemy AST schema extraction | iter 7 | low | adopt now (richer than Drizzle path) |
+| Telemetry surface (local opt-in markdown) | iter 10 | low | adopt now if needed (with policy: ban external sinks) |
+| `disableDetectors` short-circuit | iter 9 | low | adopt now (clean pattern) |
+| Blast-radius reverse BFS | iter 3 | medium | prototype later (fix depth-cap off-by-one first) |
+| Contract enrichment (regex post-mutation) | iter 6 | medium | prototype later (only as best-effort, must add tRPC, must add handler scoping) |
+| Go structured-regex pattern | iter 7 | medium | prototype later (with honest `"structured"` confidence label, never `"ast"`) |
+| Monorepo aggregation | iter 9 | medium | prototype later (after adding turbo/nx/lerna detection, prefer per-workspace records over rollup) |
+| Component detection | iter 10 | medium | prototype later (treat as breadcrumb only, not deep context) |
+| Plugin contract | iter 9 | medium | prototype later (add at least one in-tree fixture) |
+| Token stats math (heuristic linear formula) | iter 8 | high | reject (un-tested, hand-tuned constants; replace with honest measurement if needed) |
+| GORM heuristic schema extraction | iter 7 | high | reject (over-admits structs, mislabels as `"ast"`) |
+| Drizzle index extraction | iter 2 + iter 5 | known gap | reject (not implemented; document as a hole in any port) |
+| `.codesightrc` dotfile | iter 9 | n/a | n/a (does not exist; pick one config-input shape if porting) |
+| HTML report styling | (out of scope) | n/a | reject (per phase charter) |
+| README "11.2x token reduction" headline | iter 4 + iter 8 | n/a | reject (3 private SaaS codebases not in fixtures; eval.ts measures only F1; per-run number is hand-tuned formula) |
+
+### 18.4 Continuation Convergence
+
+- **Stop reason:** `all_continuation_questions_answered` — Q13-Q17 fully answered with source-cited findings
+- **Iterations completed:** 5 of 5 requested (runs 6-10)
+- **Total session iterations:** 10 of 10 max
+- **Total findings (continuation):** 26 source-confirmed findings across iters 6-10
+- **Total findings (full session):** 52 (26 from iter 1-5 + 26 from iter 6-10)
+- **Engine lineage:** 5 of 5 continuation iterations dispatched via `cli-codex --model gpt-5.4 -c model_reasoning_effort="high"`. Sandbox=read-only blocked agent file writes; orchestrator reconstructed all 5 iteration files from `-o` last-message capture (iter 8) or stdout reasoning trace (iters 6, 7, 9, 10).
+- **newInfoRatio sequence (iter 6-10):** 0.82 → 0.88 → 0.78 → 0.79 → 0.44 (rolling avg of last 3 = 0.67; the dip on iter 10 reflects half the iteration being a roll-up of prior findings)
+- **Stuck count:** 0
+- **Sandbox lessons:** read-only sandbox is too tight for agents that need to write external workspace files. For future deep-research dispatches via cli-codex, either (a) use `--sandbox workspace-write` with `--full-auto` and explicit user approval, or (b) keep the orchestrator pattern of extracting from stdout reasoning traces — both worked here.
+
+<!-- /ANCHOR:continuation-iter-6-10 -->

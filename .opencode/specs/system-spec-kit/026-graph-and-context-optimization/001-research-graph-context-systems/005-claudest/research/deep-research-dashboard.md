@@ -17,8 +17,8 @@ Reducer-generated observability surface for the active research packet.
 ## 2. STATUS
 - Topic: Research the external repository at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external and identify concrete improvements for Code_Environment/Public, especially around Claude Code plugin marketplace structure, conversation memory with FTS5/BM25 ranking, automatic context injection on session start, learning extraction with batch-processing agents, and token-usage observability dashboards.
 - Started: 2026-04-06T14:35:44Z
-- Status: INITIALIZED
-- Iteration: 7 of 10
+- Status: RUNNING
+- Iteration: 10 of 12
 - Session ID: 2026-04-06T14-35-44Z-005-claudest-codex
 - Parent Session: none
 - Lifecycle Mode: new
@@ -37,9 +37,12 @@ Reducer-generated observability surface for the active research packet.
 | 5 | get-token-insights ingestion + dashboard contract | observability | 0.82 | 4 | insight |
 | 6 | dashboard contract + borrowable sections | observability | 0.71 | 4 | insight |
 | 7 | memory hierarchy comparison | comparison | 0.68 | 4 | insight |
+| 8 | Q10 synthesis matrix | synthesis | 0.38 | 9 | insight |
+| 9 | Q10 sequencing + prerequisites | sequencing | 0.27 | 6 | insight |
+| 10 | Smallest safe v1 per adopt-now lane | implementation-slicing | 0.24 | 8 | insight |
 
-- iterationsCompleted: 7
-- keyFindings: 28
+- iterationsCompleted: 10
+- keyFindings: 74
 - openQuestions: 1
 - resolvedQuestions: 9
 
@@ -61,11 +64,11 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.82 -> 0.71 -> 0.68
+- Last 3 ratios: 0.38 -> 0.27 -> 0.24
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
-- convergenceScore: 0.84
-- coverageBySources: {"other":56}
+- convergenceScore: 0.24
+- coverageBySources: {"other":95}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
@@ -87,11 +90,22 @@ Reducer-generated observability surface for the active research packet.
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/MEMORY.md` does not exist, so the Public-side comparison used `CLAUDE.md`, the `system-spec-kit` skill, and `generate-context.js` rather than a top-level repo memory file. (iteration 7)
 - Treating a repo-root `MEMORY.md` as necessary for Public. The current model works without one because retrieval is MCP-backed and spec-folder-scoped rather than file-rooted. (iteration 7)
 - Treating Claudest's hierarchy as a drop-in replacement for Public's memory stack. Public already has stronger retrieval, richer scoping, and explicit spec-folder context preservation. (iteration 7)
+- No new dead ends in this iteration. This was a synthesis-only pass over iterations 1-7 plus the progressive synthesis document and findings registry. (iteration 8)
+- Reopening the prior dead-end around repo-owned auto-update metadata. Iteration 1 already showed the manifests do not encode update policy, so the synthesis keeps that conclusion closed. [SOURCE: external/README.md] [SOURCE: external/.claude-plugin/marketplace.json] (iteration 8)
+- Treating the nine-track matrix as nine independent imports. The evidence keeps splitting cleanly into "portable pattern" versus "requires missing infrastructure," so several tracks only make sense when scoped that way. [SOURCE: external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py] [SOURCE: external/plugins/claude-memory/skills/extract-learnings/SKILL.md] (iteration 8)
+- Designing the token dashboard contract before the ingestion shape exists. Public already has enough evidence to prototype ingestion first, so reversing that order would recreate the "copy the shell before the data contract" mistake iteration 8 explicitly rejected. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] (iteration 9)
+- No new technical dead ends. This pass was a sequencing synthesis over iteration 8 plus existing Public packet summaries, not a fresh source-discovery round. (iteration 9)
+- Starting the next Public adoption pass with marketplace/versioning or the branch-ranked SQLite schema. Iteration 8 already classified those lanes as `prototype later`, and the consulted Public packets still do not provide the missing packaging or branch-graph prerequisites. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] (iteration 9)
+- Treating SessionStart context injection as a recovery-system replacement. The safe lane is still augmentation of `session_bootstrap()` / `session_resume()` style flows, not importing Claude's hook-recency heuristic wholesale. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] (iteration 9)
+- No new dead ends. The main correction was narrowing the ingestion lane from "already unblocked" to "collection is unblocked, analytics-grade normalization still needs one follow-on spec." [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] (iteration 10)
+- Rewriting `024/003` to close the analytics gap. The smallest safe move is a follow-on normalized read model, not a producer rewrite. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] (iteration 10)
+- Starting with the dashboard contract before ingestion lands. The stress test shows that this would lock in unstable fields too early. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md] (iteration 10)
+- Treating the SessionStart fast path as a replacement for Public recovery. The safe v1 remains augmentation only. [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-008.md] (iteration 10)
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-Iteration 8 should focus on Q10 synthesis: roll up all prior findings into the adopt now / prototype later / reject matrix. This is the meta-question and works best as a synthesis pass rather than another fresh iteration.
+Iteration 11 should take the FTS capability cascade recommendation and turn it into a packet-ready implementation brief: exact fallback contract, candidate file surface, forced-degrade verification matrix, and rollback plan. In parallel, keep the ingestion lane framed as the second packet by drafting the minimal normalized-table spec that closes `024/003`'s cross-session analytics gap without touching the existing Stop-hook producer. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-009.md] [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md]
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

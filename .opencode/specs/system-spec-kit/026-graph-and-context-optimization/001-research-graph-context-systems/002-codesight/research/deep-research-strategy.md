@@ -28,19 +28,28 @@ Research the external repository at /Users/michelkerkmeester/MEGA/Development/Co
 
 <!-- /ANCHOR:topic -->
 <!-- ANCHOR:key-questions -->
-## 3. KEY QUESTIONS (remaining)
-- [ ] Q1. How does the AST extraction pipeline really work in `external/src/index.ts` -> detectors -> `src/ast/loader.ts`, and how often do detectors fall back to regex or structured parsing?
-- [ ] Q2. Which frameworks listed in `src/types.ts` actually receive AST-backed route extraction in `src/detectors/routes.ts` + `src/ast/extract-routes.ts`, versus regex-only or shallow detection?
-- [ ] Q3. How does one full detector pipeline (Hono or NestJS) work end to end: dependency heuristic, file filtering, AST walk, prefix tracking, param + middleware extraction, contract enrichment?
-- [ ] Q4. How are ORM schemas parsed across Drizzle, Prisma, TypeORM, SQLAlchemy, and GORM in `src/detectors/schema.ts` + `src/ast/extract-schema.ts`, and where is each path AST-backed vs regex vs structured-file parsing?
-- [ ] Q5. What does the zero-dependency claim really mean in practice: how does `src/ast/loader.ts` borrow project-local TypeScript, what fallbacks fire when it is missing, and what are the operational tradeoffs?
-- [ ] Q6. What exact 8 MCP tools does `src/mcp-server.ts` expose, how does it manage session-cached scan state, and how does that compare with `Code_Environment/Public`'s existing MCP and search surfaces (Spec Kit Memory, Code Graph, CocoIndex)?
-- [ ] Q7. How does `src/detectors/blast-radius.ts` work internally: how is the import graph built in `src/detectors/graph.ts`, how does reverse BFS traverse it, and where are model-impact and middleware overlays heuristic rather than exact?
-- [ ] Q8. How does `src/generators/ai-config.ts` differentiate per-tool profiles for Claude Code, Cursor, Codex, Copilot, and Windsurf, and which patterns are transferable to Public's AI-assistant guidance files?
-- [ ] Q9. What is the role of dependency-graph hot-file ranking as a "change carefully" surface, and could a similar capability complement Code Graph MCP and CocoIndex in Public?
-- [ ] Q10. How well do `src/eval.ts`, `eval/README.md`, `eval/fixtures/`, and `tests/detectors.test.ts` actually validate the README's headline claims (token savings, detector coverage, blast radius), and where does the README overreach the fixture set?
-- [ ] Q11. What architectural value comes from separating static `.codesight/` artifacts from query-time MCP tools, and how should that boundary inform Public's own context-system design?
-- [ ] Q12. Which Codesight ideas overlap dangerously with phases 003 (contextador) and 004 (graphify), and which are uniquely scoped to phase 002 because they center on AST detector design and per-tool context generation?
+## 3. KEY QUESTIONS — ALL 17 ANSWERED (10/10 iterations complete)
+
+### Original Charter (Iterations 1-5)
+- [x] Q1. AST extraction pipeline + ast/loader.ts fallback frequency — answered iter 1
+- [x] Q2. Which frameworks get true AST route extraction vs regex — answered iter 2
+- [x] Q3. End-to-end Hono/NestJS detector pipeline — answered iter 2
+- [x] Q4. ORM schemas across Drizzle/Prisma/TypeORM/SQLAlchemy/GORM — answered iter 2 + reconfirmed iter 5 (Drizzle index extraction absent)
+- [x] Q5. Zero-dependency claim operational reality — answered iter 1
+- [x] Q6. Exact 8 MCP tools + session-cached scan state — answered iter 3
+- [x] Q7. blast-radius.ts internals + reverse BFS + model overlay heuristics — answered iter 3 (off-by-one in depth cap discovered)
+- [x] Q8. Per-tool profile differentiation in ai-config.ts — answered iter 4
+- [x] Q9. Hot-file ranking as "change carefully" surface — answered iter 3
+- [x] Q10. eval.ts and tests vs README headline claims — answered iter 4 (11.2x is README-only)
+- [x] Q11. Static `.codesight/` artifacts vs query-time MCP boundary — answered iter 5
+- [x] Q12. Cross-phase overlap with 003-contextador and 004-graphify — answered iter 5
+
+### Continuation Charter (Iterations 6-10)
+- [x] Q13 (iter 6). enrichRouteContracts + contracts.ts: regex-only post-detection mutator, Hono-biased, tRPC has zero enrichment despite AST routes, silent no-ops, untested
+- [x] Q14 (iter 7). Python uses real subprocess `python3 -c "ast.parse(...)"` but FastAPI misses prefix composition + decorator metadata. Go uses brace-tracking + regex with NO `go/parser` but mislabels output as `"ast"`. SQLAlchemy is richer than Drizzle (has index extraction). GORM over-admits.
+- [x] Q15 (iter 8). tokens.ts uses `Math.ceil(text.length/4)` + hand-tuned linear formula `(routes*400 + schemas*300 + components*250 + libs*200 + envVars*100 + middleware*200 + hotFiles*150 + min(fileCount,50)*80) * 1.3`. Zero token-math tests. Unrounded number ships into CLAUDE.md while CODESIGHT.md uses roundTo100.
+- [x] Q16 (iter 9). Config: `codesight.config.{ts,js,mjs,json}` + `package.json codesight` field; NO `.codesightrc` support. Only maxDepth/outputDir/profile merge from CLI to config. Monorepo: pnpm-workspace.yaml + pkg.workspaces only; NO turbo/nx/lerna detection. Plugin contract real but untested in-tree.
+- [x] Q17 (iter 10). Components: shallow, React-biased; only React/Vue/Svelte; no Solid/Qwik. Telemetry: local opt-in via `--telemetry`, NO HTTP, NO identity, NO postinstall, NOT an adoption blocker. 17-row cumulative risk inventory produced.
 
 <!-- /ANCHOR:key-questions -->
 <!-- ANCHOR:non-goals -->
@@ -68,7 +77,18 @@ Research the external repository at /Users/michelkerkmeester/MEGA/Development/Co
 <!-- /ANCHOR:stop-conditions -->
 <!-- ANCHOR:answered-questions -->
 ## 6. ANSWERED QUESTIONS
-[None yet]
+- Q1, Q5 (iter 1): index.ts pipeline + zero-dep loader confirmed; AST loads project-local typescript, regex fallback explicit.
+- Q2, Q3, Q4 (iter 2): Hono + NestJS routes traced AST-first with prefix tracking; Drizzle parseFieldChain confirmed; partial ORM coverage mapped.
+- Q6, Q7, Q9 (iter 3): 8 MCP tools enumerated; reverse-import BFS internals + depth-cap off-by-one bug + heuristic schema overlay; hot-file ranking is degree-counting only.
+- Q8, Q10 (iter 4): per-tool profile overlays meaningful per Claude/Cursor/Codex/Copilot/Windsurf; eval.ts is real F1 harness but 11.2x token claim is README-only and not in fixtures.
+- Q11, Q12, Q4-confirmed (iter 5): static `.codesight/` and MCP both project the same `ScanResult`; cross-phase boundaries explicit (002 owns AST detectors + profile gen + static artifacts; 003 owns query MCP; 004 owns graph math).
+- Q13 (iter 6): enrichRouteContracts is regex-only post-detection mutator; Hono-biased; tRPC ignored; silent no-ops; untested.
+- Q14 (iter 7): Python uses real subprocess AST; Go uses brace+regex but mislabels as "ast"; SQLAlchemy richer than Drizzle.
+- Q15 (iter 8): tokens.ts is `chars/4` + hand-tuned linear formula × 1.3; zero tests; presentation inconsistency.
+- Q16 (iter 9): Config = `codesight.config.{ts,js,mjs,json}` + pkg.codesight; NO dotfile; monorepo = pnpm/pkg.workspaces only; plugins typed but untested.
+- Q17 (iter 10): Components shallow + React-biased; telemetry is local opt-in NOT phone-home (low risk); 17-row cumulative risk inventory.
+
+**Total session:** 10/10 iterations complete, 17/17 questions answered, 52 source-confirmed findings, stop reason `all_continuation_questions_answered`.
 
 <!-- /ANCHOR:answered-questions -->
 <!-- MACHINE-OWNED: START -->
@@ -94,7 +114,7 @@ Research the external repository at /Users/michelkerkmeester/MEGA/Development/Co
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Q1. How does the AST extraction pipeline really work in `external/src/index.ts` -> detectors -> `src/ast/loader.ts`, and how often do detectors fall back to regex or structured parsing?
+[All tracked questions are resolved]
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->

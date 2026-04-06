@@ -1186,6 +1186,126 @@
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
         "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
       ]
+    },
+    {
+      "id": "finding-8-7-serve-py-makes-graph-json-the-serving-boundary-by-reconstructing-communities-fro",
+      "text": "**`serve.py` makes `graph.json` the serving boundary by reconstructing communities from node properties instead of depending on clustering-side state.** [SOURCE: external/graphify/serve.py:11-31; external/graphify/serve.py:103-115]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-1-to-json-is-graphify-s-canonical-machine-readable-interchange-and-it-explicitly-p",
+      "text": "**`to_json()` is graphify's canonical machine-readable interchange, and it explicitly preserves both community IDs and edge-confidence numerics.** [SOURCE: external/graphify/export.py:264-275]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-5-graphify-supports-neo4j-in-two-modes-offline-cypher-script-generation-and-direct",
+      "text": "**graphify supports Neo4j in two modes: offline Cypher script generation and direct live upserts via the Python driver.** [SOURCE: external/graphify/export.py:278-293; external/graphify/export.py:809-867]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-4-the-canvas-export-is-intentionally-lossy-and-presentation-first-it-spatializes-c",
+      "text": "**The Canvas export is intentionally lossy and presentation-first: it spatializes communities, rewrites nodes as Obsidian file cards, and caps visible edges at 200.** [SOURCE: external/graphify/export.py:652-806]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-2-the-html-export-is-a-bounded-human-review-surface-not-a-universal-downstream-api",
+      "text": "**The HTML export is a bounded human-review surface, not a universal downstream API.** [SOURCE: external/graphify/export.py:296-403]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-8-the-main-query-tool-is-lexical-seeding-plus-bfs-dfs-text-rendering-not-semantic-",
+      "text": "**The main query tool is lexical seeding plus BFS/DFS text rendering, not semantic retrieval and not structured graph return.** [SOURCE: external/graphify/serve.py:34-43; external/graphify/serve.py:45-93; external/graphify/serve.py:190-203]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-9-the-mcp-surface-is-intentionally-narrow-and-text-only-seven-read-only-tools-all-",
+      "text": "**The MCP surface is intentionally narrow and text-only: seven read-only tools, all wrapped as `TextContent`.** [SOURCE: external/graphify/serve.py:117-188; external/graphify/serve.py:304-309]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-3-the-obsidian-export-is-opinionated-knowledge-packaging-not-just-markdown-dumping",
+      "text": "**The Obsidian export is opinionated knowledge packaging, not just markdown dumping.** [SOURCE: external/graphify/export.py:410-649]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-10-the-serve-layer-is-deliberately-thin-and-mostly-static-no-cache-invalidation-no-",
+      "text": "**The serve layer is deliberately thin and mostly static: no cache invalidation, no refresh tool, no watch loop, and no write-back capabilities.** [SOURCE: external/graphify/serve.py:103-115; external/graphify/serve.py:117-188; external/graphify/serve.py:311-322]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-6-the-standalone-wiki-export-republishes-graph-structure-as-agent-crawlable-articl",
+      "text": "**The standalone wiki export republishes graph structure as agent-crawlable articles centered on communities and god nodes, with audit summaries baked into the prose.** [SOURCE: external/graphify/wiki.py:25-214]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-9-6-build-py-is-intentionally-tiny-and-should-be-read-as-a-graph-assembler-not-a-bui",
+      "text": "**`build.py` is intentionally tiny and should be read as a graph assembler, not a build orchestrator.** [SOURCE: external/graphify/build.py:8-31]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-1-manifest-py-is-only-a-backwards-compatibility-facade-not-an-orchestration-module",
+      "text": "**`manifest.py` is only a backwards-compatibility facade, not an orchestration module.** [SOURCE: external/graphify/manifest.py:1-4; external/graphify/detect.py:216-244]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-10-cross-corpus-graphify-s-multimodal-claim-holds-on-karpathy-repos-but-not-on-the-",
+      "text": "**Cross-corpus, graphify's multimodal claim holds on `karpathy-repos` but not on the published `mixed-corpus` artifact, so the orchestration pattern is credible while the smaller worked example is packaging-incomplete.** [SOURCE: external/worked/karpathy-repos/README.md:56-62; external/worked/karpathy-repos/GRAPH_REPORT.md:7-10; external/worked/karpathy-repos/review.md:49-52; external/worked/karpathy-repos/review.md:88-94; external/worked/karpathy-repos/review.md:112-116; external/worked/mixed-corpus/GRAPH_REPORT.md:3-10]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-2-graphify-s-incremental-rebuild-key-is-a-flat-mtime-manifest-across-all-detected-",
+      "text": "**Graphify's incremental rebuild key is a flat mtime manifest across all detected files, not a content hash or graph diff.** [SOURCE: external/graphify/detect.py:224-274]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-7-graphify-s-update-flow-is-modality-aware-it-explicitly-short-circuits-semantic-e",
+      "text": "**Graphify's update flow is modality-aware: it explicitly short-circuits semantic extraction when all changed files are code.** [SOURCE: external/skills/graphify/skill.md:666-705]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-8-the-checked-in-mixed-corpus-artifact-does-not-validate-graphify-s-multimodal-cla",
+      "text": "**The checked-in `mixed-corpus` artifact does not validate graphify's multimodal claim as shipped; it captures a 4-file, zero-token, code-only result even though the README and live review describe a 5-file mixed-input run.** [SOURCE: external/worked/mixed-corpus/README.md:3-5; external/worked/mixed-corpus/README.md:19-21; external/worked/mixed-corpus/GRAPH_REPORT.md:3-10; external/worked/mixed-corpus/review.md:3-6; external/worked/mixed-corpus/review.md:96-122]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-5-the-final-ast-plus-semantic-merge-follows-the-same-pattern-node-dedupe-edge-conc",
+      "text": "**The final AST-plus-semantic merge follows the same pattern: node dedupe, edge concatenation, and semantic-only token accounting.** [SOURCE: external/skills/graphify/skill.md:289-317; external/graphify/build.py:34-42]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-3-the-manifest-is-only-written-after-the-full-run-finishes-so-update-anchors-to-su",
+      "text": "**The manifest is only written after the full run finishes, so `--update` anchors to successful end-to-end completion rather than intermediate extraction state.** [SOURCE: external/skills/graphify/skill.md:588-626]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-4-the-semantic-merge-path-deduplicates-nodes-by-id-but-appends-edges-blindly-so-in",
+      "text": "**The semantic merge path deduplicates nodes by `id` but appends edges blindly, so incremental reuse is node-stable but edge-unstable.** [SOURCE: external/skills/graphify/skill.md:257-285]",
+      "addedAtIteration": 9,
+      "sources": []
+    },
+    {
+      "id": "finding-9-9-the-shipped-mixed-corpus-graph-still-proves-graphify-can-cluster-a-small-code-co",
+      "text": "**The shipped `mixed-corpus` graph still proves graphify can cluster a small code corpus cleanly, but its question-generation surface shifts toward \"verify inferred edges\" rather than multimodal synthesis.** [SOURCE: external/worked/mixed-corpus/GRAPH_REPORT.md:7-10; external/worked/mixed-corpus/GRAPH_REPORT.md:24-29; external/worked/mixed-corpus/GRAPH_REPORT.md:52-68; external/worked/mixed-corpus/review.md:128-138]",
+      "addedAtIteration": 9,
+      "sources": []
     }
   ],
   "ruledOutDirections": [
@@ -1321,13 +1441,13 @@
     }
   ],
   "metrics": {
-    "iterationsCompleted": 7,
+    "iterationsCompleted": 10,
     "openQuestions": 12,
     "resolvedQuestions": 0,
-    "keyFindings": 83,
-    "convergenceScore": 0.92,
+    "keyFindings": 103,
+    "convergenceScore": 0.9,
     "coverageBySources": {
-      "code": 54,
+      "code": 70,
       "other": 25
     }
   }

@@ -29,14 +29,14 @@ Comprehensive analysis of graphify (external Python skill) identifying concrete 
 - **Date Started**: 2026-04-06
 - **Date Completed**: 2026-04-06
 - **Phase**: 004-graphify (Phase 4 of `001-research-graph-context-systems`)
-- **Researcher**: Claude Code (opus, 1M context) — direct reads after codex iter 2 starved on parallel-job API contention
-- **Iterations**: 7 (1× codex gpt-5.4 high, 6× claude-opus-direct)
-- **Convergence**: composite_converged at 91.7% question coverage (11 of 12 research questions answered)
+- **Researcher**: Claude Code (opus, 1M context) — direct reads after codex iter 2 starved on parallel-job API contention. Iterations 8-10 dispatched via cli-codex gpt-5.4 high in fast (`exec`) mode per explicit user directive after composite_converged was reached at iter 7.
+- **Iterations**: 10 (4× codex gpt-5.4 high — runs 1, 8, 9, 10; 6× claude-opus-direct — runs 2-7)
+- **Convergence**: composite_converged at iter 7 (coverage 91.7%); user override added 3 forced cli-codex iterations (8-10) → final coverage 100% (12 of 12 questions answered) at max_iterations=10
 
 **Related documents**:
 - Phase prompt: `phase-research-prompt.md`
 - Strategy: `research/deep-research-strategy.md`
-- Iteration files: `research/iterations/iteration-001.md` through `iteration-007.md`
+- Iteration files: `research/iterations/iteration-001.md` through `iteration-010.md`
 - Findings registry: `research/findings-registry.json`
 - Dashboard: `research/deep-research-dashboard.md`
 - Cross-phase: phases 002 (codesight), 003 (contextador), 005 (claudest) under same parent
@@ -646,6 +646,97 @@ Per the prompt's Cross-Phase Awareness table at `phase-research-prompt.md:33-39`
 
 ---
 
+## 13.A Iterations 8-10 Findings (cli-codex gpt-5.4 high additions)
+
+These findings extend the K1-K12 baseline with the export/serve surface (iter 8), build orchestration + cross-corpus validation (iter 9), and per-language extractor inventory + final Q12 grounding (iter 10). They were produced after the iter 7 composite_converged stop, by 3 forced iterations dispatched via `cli-codex gpt-5.4 high` in fast `exec` mode per explicit user directive. Each finding is net-new beyond K1-K12 and cites file:line evidence.
+
+### 13.A.1 Export & Serve Surface (Iteration 8)
+
+**K13.** **`to_json()` is the canonical interchange artifact, and it actively preserves community IDs and edge confidence numerics rather than treating them as analysis-side state.** It serializes the NetworkX graph as node-link JSON, injects `community` onto every node, backfills numeric `confidence_score` for edges that only have categorical `confidence`, and carries `hyperedges` from `G.graph["hyperedges"]` into the output. The `graph.json` artifact is therefore the build/serve boundary, not just a debug dump. [SOURCE: external/graphify/export.py:264-275]
+
+**K14.** **The HTML export is a bounded human-review surface, not a downstream API.** `to_html()` hard-fails above `MAX_NODES_FOR_VIZ = 5000` and emits a single self-contained vis.js page with degree-scaled nodes, confidence-styled edges, search, click inspection, community legend filtering, and hyperedge overlays. Public's graph (442.9K nodes) is two orders of magnitude past the cap, confirming R3 (reject HTML viewer) as the right call. [SOURCE: external/graphify/export.py:296-403]
+
+**K15.** **The Obsidian export is opinionated knowledge packaging, not raw markdown dumping.** `to_obsidian()` writes one note per node with YAML frontmatter, tags by file type / dominant confidence / community, adds `[[wikilink]]` connections, generates per-community overview notes, embeds a Dataview live query block, and writes `.obsidian/graph.json` so Obsidian colors graph nodes by community in its native graph view. This is a real translation layer worth ADAPTING for spec/research evidence bundles, but Obsidian must not become a runtime dependency. [SOURCE: external/graphify/export.py:410-649]
+
+**K16.** **The Canvas export is intentionally lossy: it spatializes communities, rewrites nodes as Obsidian file cards, and caps visible edges at 200.** `to_canvas()` computes a community grid layout, writes group boxes plus per-node file cards, hardcodes note paths under `graphify/obsidian/`, and keeps only the top 200 weighted edges for readability. Canvas is a presentation artifact only — REJECT as a primary export contract, but the lesson "review-oriented visual exports can safely be lossy if explicitly branded as presentation" generalizes. [SOURCE: external/graphify/export.py:652-806]
+
+**K17.** **Neo4j is supported in two modes: offline Cypher script generation and live driver upserts. Both treat Neo4j as a secondary projection from `graph.json`, not as the source of truth.** `to_cypher()` emits MERGE-based Cypher with node labels derived from `file_type` and relationships from sanitized relation names, while `push_to_neo4j()` performs the same mapping directly against a running Neo4j instance. Public can ADAPT this projection model if it wants external graph-DB interop, but should REJECT making Neo4j a required serving dependency for Code Graph MCP. [SOURCE: external/graphify/export.py:278-293; external/graphify/export.py:809-867]
+
+**K18.** **The standalone wiki export bakes provenance audit summaries directly into prose articles.** `to_wiki()` writes `index.md`, one article per community, and one article per supplied god node; each community article lists key concepts, cross-community relationships, source files, and an "Audit Trail" section showing EXTRACTED/INFERRED/AMBIGUOUS percentages. This is a different surface from Obsidian: optimized for sequential reading and agent crawling, not backlink-native vault navigation. ADOPT the report-grade narrative export pattern with provenance summaries for research packets and external evidence handoff. [SOURCE: external/graphify/wiki.py:25-214]
+
+**K19.** **`serve.py` makes `graph.json` the serving boundary by reconstructing communities from node properties instead of depending on clustering-side state.** The MCP server loads a validated graph path, parses node-link JSON back into NetworkX, and rebuilds the community map purely from each node's serialized `community` attribute. Any consumer that can read the JSON artifact can serve the graph without access to the build pipeline. ADOPT this boundary discipline: export enough structural metadata into durable artifacts that serving layers can be stateless projections. [SOURCE: external/graphify/serve.py:11-31; external/graphify/serve.py:103-115]
+
+**K20.** **The MCP serve interface is intentionally narrow: 7 read-only tools, all wrapped as `TextContent`.** The server exposes `query_graph`, `get_node`, `get_neighbors`, `get_community`, `god_nodes`, `graph_stats`, and `shortest_path`, and every call returns a single `types.TextContent` payload rather than structured JSON or typed objects. The query strategy is lexical seed (substring score on labels + paths) → BFS/DFS → token-budgeted text rendering — materially weaker than Public's existing CocoIndex semantic search and typed code-graph context handlers. REJECT as the main MCP contract; ADOPT the "brief text answer" mode as an optional layer atop richer structured handlers. [SOURCE: external/graphify/serve.py:34-93; external/graphify/serve.py:117-188; external/graphify/serve.py:304-309]
+
+**K21.** **The serve layer is deliberately thin and mostly static: no cache invalidation, no refresh tool, no watch loop, and no write-back.** The graph is loaded once before tool registration, then the process simply runs the MCP stdio server. Freshness is delegated to the caller rebuilding `graph.json` out-of-band. REJECT this operational model for Public's primary MCP (which needs live freshness), but ADOPT the separation of concerns: serve layer can stay read-only if rebuild and invalidation are explicit elsewhere. [SOURCE: external/graphify/serve.py:103-115; external/graphify/serve.py:117-188; external/graphify/serve.py:311-322]
+
+### 13.A.2 Build Orchestration & Cross-Corpus Validation (Iteration 9)
+
+**K22.** **`manifest.py` is a 4-line re-export shim around `detect.py` helpers — there is no standalone manifest implementation layer.** Whatever "manifest" semantics graphify has are implemented as mtime tracking inside `detect.py:237-274`. There is no checksum-based, version-stamped, or schema-versioned manifest contract. This means the "manifest" layer is just "the saved file list with mtimes", which Public should be aware of when planning incremental rebuild semantics. [SOURCE: external/graphify/manifest.py:1-4; external/graphify/detect.py:237-274]
+
+**K23.** **`build.py` is a 42-line module that ONLY validates extraction input and assembles the graph object — no orchestration, no caching, no manifest writes.** All build orchestration lives in `skill.md` as inline shell-invoked Python. This confirms K7 (merge logic in skill.md, not Python) and extends it: even the build entrypoint is a thin assembler. Public should ADAPT this only as "thin Python core + thicker orchestration layer", but refactor the thicker layer into testable modules rather than skill.md fragments. [SOURCE: external/graphify/build.py:1-42; external/skills/graphify/skill.md:236-400]
+
+**K24.** **The incremental detection path is mtime-only and has no deletion tombstones.** `detect_incremental()` compares current `Path.stat().st_mtime` against the saved manifest and partitions files into `new_files` vs `unchanged_files`. There is no `deleted_files` partition: a file removed since the last build silently disappears from the next graph because nothing tracks "this file existed last time but doesn't now". Public's incremental indexers should add deletion-aware invalidation when adopting this pattern. [SOURCE: external/graphify/detect.py:237-274]
+
+**K25.** **The orchestration layer in `skill.md` branches the rebuild plan by modality so code-only changes avoid semantic re-extraction cost.** The `code_only` branch in `skill.md:236-400` runs a fast AST-only re-extract path without invoking the semantic subagent, while changes to documents, papers, or images trigger the full multimodal pipeline. This is the most reusable orchestration idea for Public: a modality-aware policy layer over Code Graph MCP + CocoIndex would let structural reindexing stay cheap while only invoking semantic passes when non-code assets actually change. ADOPT as a policy layer pattern. [SOURCE: external/skills/graphify/skill.md:236-400; external/skills/graphify/skill.md:588-705]
+
+**K26.** **Cross-corpus check: `mixed-corpus` worked example does NOT show the multimodal evidence its README claims.** `karpathy-repos` shows non-zero token spend (6,000 input / 3,500 output), 49 files, ~92,616 words, explicit paper and image extraction, and an 81% EXTRACTED / 19% INFERRED mix. The checked-in `mixed-corpus/GRAPH_REPORT.md` shows 4 files, ~2,500 words, 0 input / 0 output tokens, and 5 compact code-only communities centered on `analyze.py`, `cluster.py`, and `build.py` — no multimodal nodes despite the README description. The orchestration pattern is credible (the karpathy proof exists) but worked-corpus packaging is inconsistent. Public's release discipline must publish executed corpus manifests, modality counts, and token ledgers alongside graph outputs. [SOURCE: external/worked/karpathy-repos/GRAPH_REPORT.md:3-10; external/worked/karpathy-repos/review.md:88-94; external/worked/mixed-corpus/GRAPH_REPORT.md:3-50; external/worked/mixed-corpus/review.md:96-122]
+
+**K27.** **Smaller graphs need stronger inferred-edge skepticism: mixed-corpus shows 50% EXTRACTED / 50% INFERRED versus karpathy-repos' 81/19 split.** This is structural: small graphs have fewer high-confidence structural facts, so the relative weight of inferred edges grows. Public's confidence-tier ranking (A1 in §12.1) should account for graph-size-conditional skepticism — INFERRED edges in a small subgraph deserve more verification scrutiny than INFERRED edges in a large subgraph. [SOURCE: external/worked/karpathy-repos/GRAPH_REPORT.md:7-10; external/worked/mixed-corpus/GRAPH_REPORT.md:7-10]
+
+### 13.A.3 Per-Language Extractor Inventory & Final Q12 Grounding (Iteration 10)
+
+**K28.** **Per-language extractor matrix (line-grounded):** 12 extractors covering 16 file extensions (TypeScript routed through `extract_js`, Lua absent). Coverage by language entry function:
+
+| Language | Entry Function | Lines | Cross-File Inference? | Rationale? | AMBIGUOUS Used? |
+|---|---|---|---|---|---|
+| Python | `extract_python` | extract.py:152-298 | YES (`_resolve_cross_file_imports`) | YES | NO (only EXTRACTED + INFERRED) |
+| JS/TS | `extract_js` | extract.py:352-467 | NO | NO | NO |
+| Go | `extract_go` | extract.py:534-653 | NO | NO | NO |
+| Rust | `extract_rust` | extract.py:720-820 | NO | NO | NO |
+| Java | `extract_java` | extract.py:887-990 | NO | NO | NO |
+| C | `extract_c` | extract.py:1057-1141 | NO | NO | NO |
+| C++ | `extract_cpp` | extract.py:1208-1314 | NO | NO | NO |
+| Ruby | `extract_ruby` | extract.py:1381-1476 | NO | NO | NO |
+| C# | `extract_csharp` | extract.py:1543-1653 | NO (has namespace nodes) | NO | NO |
+| Kotlin | `extract_kotlin` | extract.py:1720-1830 | NO | NO | NO |
+| Scala | `extract_scala` | extract.py:1897-2007 | NO | NO | NO |
+| PHP | `extract_php` | extract.py:2078-2188 | NO | NO | NO |
+
+**Swift detected but not extracted** (K4 reaffirmed). **Python is the only "rich" extractor**; all 11 others emit a recognizable "file node + declarations + file-level imports + inferred calls" recipe with occasional richer local structure (Rust declaration nodes, Go type nodes, C# namespaces). [SOURCE: external/graphify/extract.py:2367-2505 (dispatch + collect_files); per-language entry-function lines as cited above]
+
+**K29.** **Relation naming drifts across language extractors: `imports_from` vs `imports`.** JS/Go/Rust use `imports_from` for file-level import edges (extract.py:366, 606-613, 776), while Java/C/C++/C#/Kotlin/Scala/PHP use `imports` (extract.py:920, 1085, 1238, 1558, 1732, 1911, 2092). Public must normalize these into a consistent contract before borrowing any per-language extractor pattern, otherwise downstream graph queries will need to UNION over both names. [SOURCE: extract.py lines as cited above]
+
+**K30.** **Confidence is a one-tier-deep field for non-Python extractors: only `EXTRACTED` defaults plus `INFERRED` call edges.** The validator enforces `VALID_CONFIDENCES = {EXTRACTED, INFERRED, AMBIGUOUS}` (validate.py:4-7, 50-57), but non-Python extractor bodies only emit `EXTRACTED` defaults plus an explicit `INFERRED` flag for unresolved call sites (extract.py:340-345, 466-467, 522-527, 652-653, 708-713, 819-820, 875-880, 989-990, 1045-1050, 1140-1141, 1196-1201, 1313-1314, 1369-1374, 1475-1476, 1531-1536, 1652-1653, 1708-1713, 1829-1830, 1885-1890, 2006-2007, 2066-2071, 2187-2188). `AMBIGUOUS` is reserved for the semantic subagent pass. **REJECT confidence-based prioritization as a major differentiator of graphify's non-Python extractors** — the schema supports it, but the emitters don't. Public's A1 (confidence-tier adoption) should source AMBIGUOUS labels from its own ranking logic, not from graphify's per-language code. [SOURCE: external/graphify/validate.py:4-7, 45-61; extract.py per-language confidence sites cited above]
+
+**K31.** **The only second-pass enrichment in graphify is `_resolve_cross_file_imports`, which is Python-specific and only invoked for `.py` files** (extract.py:2209-2339, 2485-2489). This confirms K5 with line-level evidence and rules out the hypothesis that any non-Python language gets cross-file `uses` edges. Public should ADOPT the post-pass pattern (file-level imports → class-level `uses` edges) as an optional enrichment layer over Code Graph MCP, but build it as a language-agnostic adapter rather than copying the Python-specific implementation. [SOURCE: external/graphify/extract.py:2209-2339; external/graphify/extract.py:2485-2489]
+
+**K32.** **Graphify's validation layer (`validate.py`) is the most directly portable artifact in the entire repo.** It enforces required `id`, `label`, `type` on nodes; required `source`, `target`, `relation`, `confidence` on edges; bounded `confidence ∈ {EXTRACTED, INFERRED, AMBIGUOUS}`; and validates hyperedges only structurally. The whole validator is 71 lines, has no external dependencies beyond NetworkX, and is orthogonal to Public's existing graph engine — it would harden ingestion boundaries without competing with Code Graph MCP. ADOPT directly as a small composable hardening layer for any graph/export interchange. [SOURCE: external/graphify/validate.py:1-71]
+
+### 13.A.4 Extension Notes for §12 (Adopt/Adapt/Reject)
+
+The §12 table was finalized at iter 7 and remains structurally accurate. Iter 8-10 evidence extends specific rows:
+
+- **A1 (evidence tagging)** is now reinforced by K30: Public should NOT source AMBIGUOUS from graphify's per-language extractor code, only from semantic-pass output or Public's own ranking.
+- **A2 (PreToolUse hook) + A4 (CLAUDE.md companion)** unchanged.
+- **A3 (two-layer cache invalidation)** is extended by K22-K25: graphify only has one effective layer in code (mtime via detect.py); the SHA256 layer lives in `cache.py` and is per-file content addressing for extraction results, not a manifest hash. Public should still adopt both layers but be precise about what each does.
+- **D1 (semantic subagent prompt-as-data)** is reinforced by K20-K21: graphify's serve.py confirms the prompt is NOT exposed via MCP, and the serve layer is text-only — Public should version the prompt as code AND expose it via a typed structured handler.
+- **D5 (Leiden clustering)** unchanged.
+- **R1 (12-language AST extractor)** is reinforced by K28-K31: the unevenness across languages and the lack of cross-file inference outside Python make graphify a poor primary code parser.
+- **R2 (graphify MCP server)** is reinforced by K20-K21: the seven-tool text-only surface is materially weaker than Public's typed handlers.
+- **R3 (HTML viewer)** is reinforced by K14: the hardcoded 5,000-node cap is two orders of magnitude below Public's graph.
+- **R4 (wholesale replacement)** unchanged.
+
+**New ADOPT row to add (A5):** **`validate.py` schema-boundary validator** as a small composable hardening layer for graph/export interchange. Effort: S. Evidence: K32. Why: 71 lines, no dependencies, orthogonal to Code Graph MCP, hardens ingestion boundaries without competing.
+
+**New ADOPT row to add (A6):** **Wiki-style narrative export with EXTRACTED/INFERRED/AMBIGUOUS audit summaries baked into prose.** Effort: S-M. Evidence: K18. Why: distinct from live MCP query surfaces; useful for research-packet handoff and human evidence review.
+
+**New ADAPT row to add (D6):** **Modality-aware rebuild policy layer** (code-only fast path vs full multimodal slow path). Effort: M. Evidence: K25. Why: lets Code Graph MCP stay cheap on code-only changes while only invoking CocoIndex/semantic passes when non-code assets actually change.
+
+**New ADAPT row to add (D7):** **Stable JSON interchange artifact preserving community + provenance numerics** (the `to_json()` discipline). Effort: S-M. Evidence: K13, K19. Why: enables stateless serving layers as projections from a durable artifact rather than tightly coupled to the build pipeline.
+
+---
+
 ## 14. References & Source Files Read
 
 Per-iteration source coverage (cumulative):
@@ -694,9 +785,33 @@ Per-iteration source coverage (cumulative):
 - `external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section)
 - `external/worked/karpathy-repos/review.md:1-116` (full)
 
-**Total source coverage**: ~5,500 lines of Python (estimated full repo Python LOC) + 650 lines of skill.md + 4 worked-example artifact files.
+### Iteration 8 (cli-codex gpt-5.4 high — export + wiki + MCP serve surface)
+- `external/graphify/export.py:1-954` (full — closes the gap from iter 3 which only read 240-275)
+- `external/graphify/wiki.py:1-214` (full — first read)
+- `external/graphify/serve.py:1-322` (full — first read)
+- `external/worked/mixed-corpus/GRAPH_REPORT.md:1-68` (concrete output contract)
 
-**Files NOT read**: `external/graphify/wiki.py`, `external/graphify/manifest.py` (re-export), `external/graphify/serve.py` body, `external/graphify/export.py:1-249` (HTML viewer scaffolding — out of scope per Don'ts), `external/CHANGELOG.md`, `external/SECURITY.md`, `external/pyproject.toml`, `external/tests/*`, `external/worked/example/*`, `external/worked/httpx/*`, `external/worked/mixed-corpus/raw/*`. None of these would change the recommendations.
+### Iteration 9 (cli-codex gpt-5.4 high — build orchestration + mixed-corpus cross-validation)
+- `external/graphify/manifest.py:1-4` (full — confirms it is a 4-line re-export shim)
+- `external/graphify/build.py:1-42` (full — confirms it is a 42-line assembler with no orchestration)
+- `external/graphify/detect.py:216-274` (incremental detection path, mtime-only, no deletion tombstones)
+- `external/skills/graphify/skill.md:236-400` (orchestration / merge logic surrounding the previously cited 259-317 fragment)
+- `external/skills/graphify/skill.md:588-705` (modality-aware update branch — code_only fast path)
+- `external/worked/mixed-corpus/README.md:1-45`
+- `external/worked/mixed-corpus/GRAPH_REPORT.md:1-68`
+- `external/worked/mixed-corpus/review.md:1-176`
+- Cross-corpus reread: `external/worked/karpathy-repos/{README,GRAPH_REPORT,review}.md`
+
+### Iteration 10 (cli-codex gpt-5.4 high — per-language extractor inventory + final Q12 grounding)
+- `external/graphify/extract.py:152-236` (Python rationale builder)
+- `external/graphify/extract.py:301-2206` (per-language extractor bodies — JS/TS, Go, Rust, Java, C/C++, Ruby, C#, Kotlin, Scala, PHP)
+- `external/graphify/extract.py:2209-2513` (cross-file `_resolve_cross_file_imports` + dispatch + collect_files)
+- `external/graphify/extract.py:2367-2505` (dispatch table + extension list)
+- `external/graphify/validate.py:1-71` (full schema validator — confirmed as the most directly portable artifact in the repo)
+
+**Total source coverage**: ~5,500 lines of Python (estimated full repo Python LOC) + 650+ lines of skill.md (cumulative across iterations) + 8 worked-example artifact files across `karpathy-repos` and `mixed-corpus`.
+
+**Files NOT read** (after iter 8-10 closure): `external/graphify/export.py:1-249` (HTML viewer scaffolding boilerplate — covered by iter 8 read of full file but not deeply analyzed since K14 closed the question), `external/CHANGELOG.md`, `external/SECURITY.md`, `external/pyproject.toml`, `external/tests/*`, `external/worked/example/*`, `external/worked/httpx/*`, `external/worked/mixed-corpus/raw/*`. None of these would change the recommendations.
 
 ---
 
@@ -712,18 +827,19 @@ Per-iteration source coverage (cumulative):
 
 ## 16. Convergence Report
 
-- **Stop reason**: composite_converged (coverage 91.7% ≥ 85% threshold)
-- **Total iterations**: 7
-- **Questions answered**: 11 of 12 (Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11; Q12 is the synthesis output itself)
-- **Remaining questions**: Q12 (Adopt/Adapt/Reject) — answered in §12 of this document
+- **Initial stop reason (iter 7)**: composite_converged (coverage 91.7% ≥ 85% threshold)
+- **Final stop reason (iter 10)**: max_iterations_reached AND all_questions_answered (coverage 100%, 12 of 12)
+- **Total iterations**: 10
+- **Questions answered**: 12 of 12. Iter 7 closed Q1-Q11; iter 10 closed Q12 with line-grounded Adopt/Adapt/Reject grounding.
 - **Last 3 iteration summaries**:
-  - Run 5: hooks-cache (newInfoRatio 0.92)
-  - Run 6: multimodal (newInfoRatio 0.92)
-  - Run 7: benchmark-credibility (newInfoRatio 0.92)
+  - Run 8: export-serve (newInfoRatio 0.95) — `to_json`/wiki/serve surface, 10 findings
+  - Run 9: build-orchestration (newInfoRatio 0.92) — manifest, build, modality-aware update, mixed-corpus packaging mismatch, 10 findings
+  - Run 10: per-language-final-synthesis (newInfoRatio 0.90) — 12-language extractor matrix + final Q12 table, 12 findings
 - **Convergence threshold**: 0.05 (rolling average newInfoRatio)
-- **Coverage trigger**: 0.85 (questions answered / total questions)
+- **Coverage trigger**: 0.85 (questions answered / total questions) — exceeded at iter 7, then user override pushed to 100%
 - **Quality guards**: passed — every finding has ≥1 file:line citation, sources are diverse across iterations, no single-weak-source answers
-- **Engine breakdown**: 1 iteration via codex gpt-5.4 high (iter 1), 6 iterations via claude-opus-direct (iter 2-7) after iter 2 codex starvation
+- **Engine breakdown**: 4 iterations via cli-codex gpt-5.4 high (runs 1, 8, 9, 10 — iter 1 baseline + iters 8-10 user-forced extension), 6 iterations via claude-opus-direct (runs 2-7) after iter 2 codex starvation
+- **User override note**: Iterations 8-10 were dispatched by explicit user directive after the iter 7 composite_converged stop, using `cli-codex gpt-5.4` with `model_reasoning_effort=high` in fast `exec` mode. All three iterations stayed within the 12-tool-call budget and produced 32 net-new findings (10 + 10 + 12) beyond the K1-K12 baseline.
 
 ---
 
@@ -740,3 +856,4 @@ Per-iteration source coverage (cumulative):
 | Date | Author | Change |
 |---|---|---|
 | 2026-04-06 | Claude (opus 1M, direct) | Initial synthesis from 7 iterations. Adopted research template structure with adaptations for repo-survey audit (vs feature-implementation research). 12 key findings consolidated with file:line citations. Adopt/Adapt/Reject recommendations finalized in §12. |
+| 2026-04-06 | Claude (opus 1M) + cli-codex (gpt-5.4 high, fast `exec` mode) | User-directed extension: 3 additional iterations (8, 9, 10) dispatched via cli-codex gpt-5.4 high after the iter 7 composite_converged stop. Added §13.A with 20 new findings (K13-K32), expanded §14 with iter 8-10 source coverage, updated §16 convergence report, proposed 4 new §12 rows (A5, A6, D6, D7). Final coverage 100% (12 of 12 questions), final stop reason `max_iterations_reached AND all_questions_answered`. |

@@ -5,54 +5,27 @@ trigger_phrases:
   - "claude code optimization"
   - "ENABLE_TOOL_SEARCH"
   - "cache expiry"
-  - "reddit audit"
-  - "token waste"
+  - "reddit audit token waste"
   - "cli-copilot deep-research"
   - "claude optimization settings"
   - "cache warning hooks"
   - "claude code field report"
-  - "tool schema bloat"
-  - "skill bloat detection"
-  - "jsonl audit fragility"
   - "phase 005-claudest boundary"
-  - "enable tool search"
-  - "deep research"
-  - "cli copilot"
-  - "prototype later"
-  - "decision record"
-  - "implementation summary"
-  - "sections deduplicated"
-  - "deduplicated f1-f17"
-  - "f1-f17 findings"
-  - "findings adopt-now"
-  - "adopt-now prototype-later"
-  - "prototype-later reject"
-  - "reject across"
-  - "across prioritization"
-  - "prioritization tiers"
-  - "tiers full"
-  - "full level"
-  - "level spec"
-  - "spec set"
-  - "context optimization"
-  - "context systems"
-  - "chosen approach system"
-  - "decision sections"
-  - "claude code token waste"
-  - "claude code rate limit"
-  - "claude code audit"
-  - "claude code 858 sessions"
-  - "claude code 926 sessions"
-  - "deep research iteration loop"
-  - "iteration 008 synthesis blueprint"
-  - "f1 enable_tool_search baseline"
-  - "f4 idle timestamp session-stop"
-  - "f6 cache rebuild session-prime"
-  - "f8 compact-inject reject"
-  - "f14 transcript auditor prototype"
+  - "F1 ENABLE_TOOL_SEARCH baseline"
+  - "F4 idle timestamp session-stop"
+  - "F6 cache rebuild session-prime"
+  - "F8 compact-inject reject"
+  - "F14 transcript auditor prototype"
+  - "858 sessions 926 audit"
+  - "18903 turns 11357 denominator"
+  - "232 cache cliffs 54% idle gap"
+  - "8 iteration synthesis blueprint"
+  - "17 deduplicated F1-F17 findings"
+  - "8 adopt-now 7 prototype-later 2 reject"
   - "research.md 12 sections"
-importance_tier: "high"
-contextType: "general"
+  - "convergence 0.93 to 0.12"
+importance_tier: "important"
+contextType: "research"
 _sourceTranscriptPath: ""
 _sourceSessionId: ""
 _sourceSessionCreated: 0
@@ -198,10 +171,21 @@ Next: Continue implementation
 
 ## 1. OVERVIEW
 
-Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on Claude Code token waste against Code_Environment/Public state. Produced research/research.md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md). Key facts: ENABLE_TOOL_SEARCH=true is ALREADY enabled in .claude/se
+Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on Claude Code token waste against Code_Environment/Public state. Produced research/research.md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md).
+
+**Key facts:**
+- ENABLE_TOOL_SEARCH=true is ALREADY enabled in `.claude/settings.local.json` — the post's headline config recommendation is already in repo
+- Cache expiry (54% idle-gap turns; 232 cache cliffs across 858 sessions) is the dominant remaining external waste signal
+- Source discrepancies (926 vs 858 sessions; 18,903 vs 11,357 turns) preserved explicitly, NOT smoothed
+- Auditor implementation belongs to phase 005-claudest, not this phase
+- Convergence trajectory: 0.93 → 0.68 → 0.57 → 0.48 → 0.41 → 0.38 → 0.24 → 0.12 (last marked thought, synthesis-ready)
+- Validator: ALL NEW files pass; only outstanding error is 6 SPEC_DOC_INTEGRITY references to reddit_post.md inside the user-provided phase-research-prompt.md (scope-locked, pre-existing)
 
 **Key Outcomes**:
-- Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on...
+- 17 findings F1-F17 across 4 prioritization tiers, all with source anchors and recommendation labels
+- 8 adopt-now wins are mostly documentation and rule clarity rather than new code
+- 7 prototype-later items defer to cache-warning hooks and observability layer
+- 2 reject items: compact-inject as warning owner (F8), Claude JSONL as core infra (F16)
 
 <!-- /ANCHOR:summary -->
 
@@ -229,14 +213,14 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 
 ## 3. DECISIONS
 
-<!-- ANCHOR:decision-observation-decision-a26e929d -->
-### Decision 1: observation decision 1
+<!-- ANCHOR:decision-treat-reddit-post-as-field-report -->
+### Decision 1: Treat Reddit post as primary-source field report, NOT implementation spec
 
-**Context**: md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.
+**Context**: The post has sufficient analytical rigor (large session counts, explicit waste categories) to extract findings from, but lacks the controlled-study design needed to treat it as a production contract. Source discrepancies (926 vs 858 sessions; 18,903 vs 11,357 turns) are preserved explicitly so downstream synthesis cannot inherit artificial precision.
 
 **Timestamp**: 2026-04-06T11:05:13.240Z
 
-**Importance**: medium
+**Importance**: high
 
 #### Visual Decision Tree
 
@@ -280,31 +264,30 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 
 #### Options Considered
 
-1. **Chosen Approach**
-   md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.
+1. **Treat as primary-source field report** (chosen) — preserves discrepancies, allows finding extraction
+2. **Treat as implementation spec** — rejected: not a production contract, lacks controlled-study design
+3. **Treat as anecdote only** — rejected: numbers and waste categories warrant structured extraction
 
 #### Chosen Approach
 
-**Selected**: Chosen Approach
+**Selected**: Primary-source field report
 
-**Rationale**: md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.
+**Rationale**: The post has the analytical rigor to extract 17 findings from but lacks controlled measurement to treat as ledger-grade. Preserving 926 vs 858 sessions and 18,903 vs 11,357 turns prevents downstream docs from inheriting fake precision.
 
-#### Trade-offs
+**Confidence**: 90%
 
-**Confidence**: 70%
-
-<!-- /ANCHOR:decision-observation-decision-a26e929d -->
+<!-- /ANCHOR:decision-treat-reddit-post-as-field-report -->
 
 ---
 
-<!-- ANCHOR:decision-user-decision-c00d174b -->
-### Decision 2: user decision 1
+<!-- ANCHOR:decision-stop-at-iteration-8 -->
+### Decision 2: Stop loop at iteration 8 (synthesis-ready signal) instead of running full 10-iteration cap
 
-**Context**: md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.
+**Context**: Iteration 8 was a consolidation pass that produced the final F1-F17 ledger and section blueprint for research.md. newInfoRatio dropped to 0.12 and findingsCount=0, confirming remaining gaps are measurement gaps not source-discovery gaps. Another wide research pass would not improve research.md.
 
 **Timestamp**: 2026-04-06T11:05:13.240Z
 
-**Importance**: medium
+**Importance**: high
 
 #### Visual Decision Tree
 
@@ -348,20 +331,19 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 
 #### Options Considered
 
-1. **Chosen Approach**
-   md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.
+1. **Stop at iteration 8 (synthesis-ready)** (chosen) — convergence signals confirm source discovery exhausted
+2. **Run full 10-iteration cap** — rejected: would add iteration cost without improving findings quality
+3. **Stop at iteration 7** — rejected: iteration 8 consolidation pass was needed for the final F1-F17 ledger
 
 #### Chosen Approach
 
-**Selected**: Chosen Approach
+**Selected**: Stop at iteration 8
 
-**Rationale**: md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.
+**Rationale**: newInfoRatio=0.12 and findingsCount=0 in iteration 008 confirmed remaining gaps are measurement gaps not source-discovery gaps. Another wide research pass would not improve research.md.
 
-#### Trade-offs
+**Confidence**: 85%
 
-**Confidence**: 70%
-
-<!-- /ANCHOR:decision-user-decision-c00d174b -->
+<!-- /ANCHOR:decision-stop-at-iteration-8 -->
 
 ---
 
@@ -471,8 +453,8 @@ repository_state: "unavailable"
 is_detached_head: No
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
+context_type: "research"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -538,70 +520,43 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 
 # Content Indexing
 key_topics:
-  - "adopt-now prototype-later"
-  - "prototype-later reject"
-  - "sections deduplicated"
-  - "across prioritization"
-  - "prioritization tiers"
-  - "deduplicated f1-f17"
-  - "findings adopt-now"
-  - "f1-f17 findings"
-  - "reject across"
-  - "tiers full"
-  - "full level"
-  - "level spec"
+  - "claude code optimization"
+  - "ENABLE_TOOL_SEARCH baseline"
+  - "cache expiry waste signal"
+  - "858 sessions 232 cache cliffs"
+  - "F1-F17 deduplicated findings"
+  - "8 adopt-now 7 prototype-later 2 reject"
+  - "phase 005-claudest boundary"
+  - "cli-copilot gpt-5.4 high"
+  - "convergence trajectory"
+  - "source discrepancies preserved"
+  - "reddit field report audit"
+  - "12 section research synthesis"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
   - "claude code optimization"
   - "ENABLE_TOOL_SEARCH"
   - "cache expiry"
-  - "reddit audit"
-  - "token waste"
+  - "reddit audit token waste"
   - "cli-copilot deep-research"
   - "claude optimization settings"
   - "cache warning hooks"
   - "claude code field report"
-  - "tool schema bloat"
-  - "skill bloat detection"
-  - "jsonl audit fragility"
   - "phase 005-claudest boundary"
-  - "enable tool search"
-  - "deep research"
-  - "cli copilot"
-  - "prototype later"
-  - "decision record"
-  - "implementation summary"
-  - "sections deduplicated"
-  - "deduplicated f1-f17"
-  - "f1-f17 findings"
-  - "findings adopt-now"
-  - "adopt-now prototype-later"
-  - "prototype-later reject"
-  - "reject across"
-  - "across prioritization"
-  - "prioritization tiers"
-  - "tiers full"
-  - "full level"
-  - "level spec"
-  - "spec set"
-  - "context optimization"
-  - "context systems"
-  - "chosen approach system"
-  - "decision sections"
-  - "claude code token waste"
-  - "claude code rate limit"
-  - "claude code audit"
-  - "claude code 858 sessions"
-  - "claude code 926 sessions"
-  - "deep research iteration loop"
-  - "iteration 008 synthesis blueprint"
-  - "f1 enable_tool_search baseline"
-  - "f4 idle timestamp session-stop"
-  - "f6 cache rebuild session-prime"
-  - "f8 compact-inject reject"
-  - "f14 transcript auditor prototype"
+  - "F1 ENABLE_TOOL_SEARCH baseline"
+  - "F4 idle timestamp session-stop"
+  - "F6 cache rebuild session-prime"
+  - "F8 compact-inject reject"
+  - "F14 transcript auditor prototype"
+  - "858 sessions 926 audit"
+  - "18903 turns 11357 denominator"
+  - "232 cache cliffs 54% idle gap"
+  - "8 iteration synthesis blueprint"
+  - "17 deduplicated F1-F17 findings"
+  - "8 adopt-now 7 prototype-later 2 reject"
   - "research.md 12 sections"
+  - "convergence 0.93 to 0.12"
 
 key_files:
   - "checklist.md"

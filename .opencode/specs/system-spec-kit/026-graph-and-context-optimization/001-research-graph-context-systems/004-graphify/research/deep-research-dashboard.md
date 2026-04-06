@@ -17,8 +17,8 @@ Reducer-generated observability surface for the active research packet.
 ## 2. STATUS
 - Topic: Research the external repository at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/external and identify concrete improvements for Code_Environment/Public, especially around two-pass codebase knowledge extraction (AST + LLM), Leiden community detection, EXTRACTED/INFERRED/AMBIGUOUS evidence tagging, multimodal artifact processing, and PreToolUse hook patterns for steering Claude toward graph-based context.
 - Started: 2026-04-06T10:00:00Z
-- Status: INITIALIZED
-- Iteration: 7 of 10
+- Status: COMPLETE
+- Iteration: 10 of 10
 - Session ID: ds-2026-04-06-graphify-001
 - Parent Session: none
 - Lifecycle Mode: new
@@ -37,9 +37,12 @@ Reducer-generated observability surface for the active research packet.
 | 5 | PreToolUse hook + cache invalidation 2-layer stack + rebuild orchestration — read __main__.py, watch.py, hooks.py end-to-end | hooks-cache | 0.92 | 12 | complete |
 | 6 | Multimodal pipeline (PDFs, images, tweets, arxiv) and security layer — read ingest.py, security.py, re-cite detect.py PDF logic and skill.md image instructions | multimodal | 0.92 | 11 | complete |
 | 7 | 71.5x token reduction claim credibility — read benchmark.py + worked karpathy-repos README/GRAPH_REPORT/review.md, validate math, identify load-bearing assumptions | benchmark-credibility | 0.92 | 12 | complete |
+| 8 | Export + Wiki + MCP Serve Surface — read export.py full (954 lines), wiki.py full (214 lines), serve.py full (322 lines), cross-check mixed-corpus GRAPH_REPORT.md | export-serve | 0.95 | 10 | complete |
+| 9 | Build orchestration + manifest + mixed-corpus cross-validation — manifest.py (4 lines, re-exports detect.py), build.py full (42 lines), skill.md merge logic 236-400 + 588-705, detect.py incremental 216-274, mixed-corpus + karpathy-repos worked corpora | build-orchestration | 0.92 | 10 | complete |
+| 10 | Per-language extractor inventory + final Q12 Adopt/Adapt/Reject grounding — extract.py per-language bodies (JS/TS, Go, Rust, Java, C/C++, C#, Kotlin, Scala, PHP, Ruby), validate.py schema constraints, dispatch table 2367-2505 | per-language-final-synthesis | 0.90 | 12 | complete |
 
-- iterationsCompleted: 7
-- keyFindings: 83
+- iterationsCompleted: 10
+- keyFindings: 103
 - openQuestions: 12
 - resolvedQuestions: 0
 
@@ -63,11 +66,11 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.92 -> 0.92 -> 0.92
+- Last 3 ratios: 0.95 -> 0.92 -> 0.90
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
-- convergenceScore: 0.92
-- coverageBySources: {"code":54,"other":25}
+- convergenceScore: 0.90
+- coverageBySources: {"code":70,"other":25}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
