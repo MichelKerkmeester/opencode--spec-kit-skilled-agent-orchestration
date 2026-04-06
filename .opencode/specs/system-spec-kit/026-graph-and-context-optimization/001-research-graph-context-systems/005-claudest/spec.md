@@ -271,7 +271,7 @@ None — all 10 questions (Q1-Q10) answered. See `research/research.md` §13 for
 - `plan.md` — implementation plan
 - `tasks.md` — task tracking
 - `implementation-summary.md` — outcome summary
-- `memory/06-04-26_17-13__deep-research-synthesis-on-the-claudest-external.md` — saved memory artifact
+- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — saved memory artifact (12-iteration session, importance_tier=critical, indexed via Voyage 768-dim embeddings as memory #1845)
 
 
 <!-- /ANCHOR:questions -->

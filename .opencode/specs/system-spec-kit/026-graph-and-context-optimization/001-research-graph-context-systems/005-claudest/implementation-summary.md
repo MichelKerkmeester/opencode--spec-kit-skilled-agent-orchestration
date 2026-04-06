@@ -109,7 +109,7 @@ The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) 
 
 ### Memory Artifact
 
-- `memory/06-04-26_17-13__deep-research-synthesis-on-the-claudest-external.md` — saved via `generate-context.js`, `importance_tier=critical`, semantic trigger phrases (Claudest research, claude-memory plugin, FTS5 BM25 conversation recall, SessionStart context injection cached summary, extract-learnings consolidation auditor discoverer, get-token-insights cache cliff dashboard contract, deep research codex gpt-5.4)
+- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — saved via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores), `importance_tier=critical`, 34 clean semantic trigger phrases, indexed as memory #1845. Prior thin saves (06-04-26_17-13 and 06-04-26_19-41) archived under `memory/.archive-pre-quality-rebuild/`.
 - `memory/metadata.json` — Voyage 768-dim embedding
 
 ---
@@ -156,7 +156,7 @@ The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) 
 - **Continuation iterations cannot be parallelized**: Unlike phase 002-codesight where the 5 continuation iterations covered independent modules and were dispatched in parallel, this phase's continuation iterations (8-12) form a synthesis dependency chain (matrix → sequencing → slicing → briefs → closeout) and must run sequentially. Parallelism would have wasted the inter-iteration synthesis dependencies.
 - **`fts4_match` lane is gated on schema work**: The Brief A v1 was narrowed to `fts5_bm25 → like_scan` because Public still provisions only `memory_fts USING fts5` (`mcp_server/lib/search/vector-index-schema.ts:2382-2412`). Restoring an `fts4_match` lane requires alternate FTS4 schema creation in the same packet.
 - **Brief B entry conditions are not yet met**: `024/003` does not persist `transcript_path` into `HookState`, leaves `speckitSessionId` empty, drops parsed cache token fields, and emits only session-level `lastTranscriptOffset` (not turn-level offsets). The normalized analytics packet must add a bounded producer metadata patch first.
-- **Memory file timestamp predates iter 8-12**: The saved memory artifact `memory/06-04-26_17-13__deep-research-synthesis-on-the-claudest-external.md` was created at 17:13 (after iter 7 synthesis_complete) and was not refreshed after iters 8-12 completed at 17:47. The on-disk artifact captures iters 1-7 synthesis but does not include the §18.1-§18.5 continuation refinement. Refreshing it would require a second `generate-context.js` run.
+- **Memory file rebuilt after thin saves archived**: Two prior memory saves (06-04-26_17-13 and 06-04-26_19-41) were created with thin input data and were auto-classified as IN_PROGRESS / 25-95% / Phase PLANNING because the script's session-status logic interpreted unprefixed nextSteps as pending work. Both files were moved to `memory/.archive-pre-quality-rebuild/` and a new memory was saved via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores). The new file `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` captures the complete 12-iteration session with COMPLETED status / 100% completion and is indexed as memory #1845. Manual patches were applied to the title, trigger_phrases (removed auto-extracted path fragments), Session Status, and OVERVIEW section per post-save quality review HIGH-severity guidance.
 
 
 <!-- /ANCHOR:limitations -->

@@ -117,7 +117,7 @@ contextType: tasks
 - **implementation-summary.md** — Outcome summary with the 12-row iteration log and matrix highlights
 - **research/research.md** — Canonical synthesis (18 sections including continuation §18.1-§18.5)
 - **research/iterations/iteration-001.md** through **research/iterations/iteration-012.md** — Per-iteration findings
-- **memory/06-04-26_17-13__deep-research-synthesis-on-the-claudest-external.md** — Saved memory artifact
+- **memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md** — Saved memory artifact (12-iteration session, importance_tier=critical, indexed as memory #1845; prior thin saves archived under memory/.archive-pre-quality-rebuild/)
 
 
 <!-- /ANCHOR:cross-refs -->
