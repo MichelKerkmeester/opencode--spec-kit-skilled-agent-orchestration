@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/002-sk-git-github-mcp-integration",
+  "specFolder": "skilled-agent-orchestration/z_archive/002-sk-git-github-mcp-integration",
   "description": "Feature Specification: GitHub MCP Integration for sk-git Skill",
   "keywords": [
     "feature",
@@ -10,11 +10,12 @@
     "sk-git",
     "skill"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.541Z",
+  "lastUpdated": "2026-04-06T09:57:54.495Z",
   "specId": "002",
   "folderSlug": "sk-git-github-mcp-integration",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

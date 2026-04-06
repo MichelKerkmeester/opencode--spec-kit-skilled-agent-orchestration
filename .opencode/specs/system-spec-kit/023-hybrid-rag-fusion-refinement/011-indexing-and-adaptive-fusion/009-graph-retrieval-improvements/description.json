@@ -8,12 +8,12 @@
     "retrieval",
     "improvements"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.832Z",
+  "lastUpdated": "2026-04-06T09:57:55.125Z",
   "specId": "009",
   "folderSlug": "graph-retrieval-improvements",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement",
+    "023-hybrid-rag-fusion-refinement",
     "011-indexing-and-adaptive-fusion"
   ],
   "memorySequence": 2,

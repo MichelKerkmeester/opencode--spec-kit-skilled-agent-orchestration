@@ -4,12 +4,12 @@
   "keywords": [
     "feature",
     "specification",
-    "code-graph",
+    "code",
+    "graph",
     "auto-reindex",
-    "parity",
-    "cocoindex"
+    "parity"
   ],
-  "lastUpdated": "2026-04-04T08:15:00.000Z",
+  "lastUpdated": "2026-04-06T09:57:55.166Z",
   "specId": "005",
   "folderSlug": "code-graph-auto-reindex-parity",
   "parentChain": [

@@ -8,12 +8,12 @@
     "standards",
     "sync"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.748Z",
+  "lastUpdated": "2026-04-06T09:57:55.081Z",
   "specId": "004",
   "folderSlug": "verification-and-standards",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement"
+    "023-hybrid-rag-fusion-refinement"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

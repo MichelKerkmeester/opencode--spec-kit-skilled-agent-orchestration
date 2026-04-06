@@ -1,16 +1,17 @@
 {
-  "specFolder": "03--commands-and-skills/003-sk-prompt-initial-creation",
+  "specFolder": "skilled-agent-orchestration/z_archive/003-sk-prompt-initial-creation",
   "description": "Feature Specification: sk-prompt-improver",
   "keywords": [
     "feature",
     "specification",
     "sk-prompt-improver"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.546Z",
+  "lastUpdated": "2026-04-06T09:57:54.499Z",
   "specId": "003",
   "folderSlug": "sk-prompt-initial-creation",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

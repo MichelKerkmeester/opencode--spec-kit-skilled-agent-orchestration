@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/005-cli-codex-creation",
+  "specFolder": "skilled-agent-orchestration/z_archive/005-cli-codex-creation",
   "description": "Feature Specification: cli-gemini Model Consolidation + cli-codex Skill",
   "keywords": [
     "feature",
@@ -10,11 +10,12 @@
     "cli-codex",
     "skill"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.556Z",
+  "lastUpdated": "2026-04-06T09:57:54.507Z",
   "specId": "005",
   "folderSlug": "cli-codex-creation",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -1,6 +1,7 @@
 {
   "env": {
-    "SPECKIT_ABLATION": "true"
+    "SPECKIT_ABLATION": "true",
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "hooks": {
     "PreCompact": [

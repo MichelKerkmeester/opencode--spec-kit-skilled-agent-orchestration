@@ -8,12 +8,12 @@
     "esm",
     "migration"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.733Z",
+  "lastUpdated": "2026-04-06T09:57:55.069Z",
   "specId": "001",
   "folderSlug": "shared-esm-migration",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement"
+    "023-hybrid-rag-fusion-refinement"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

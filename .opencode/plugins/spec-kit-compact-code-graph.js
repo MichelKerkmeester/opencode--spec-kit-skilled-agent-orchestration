@@ -1,5 +1,5 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║ Spec Kit Compact Code Graph OpenCode Plugin                             ║
+// ║ Spec Kit Compact Code Graph OpenCode Plugin                              ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 'use strict';
 

@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/027-cmd-create-yaml-refinement",
+  "specFolder": "skilled-agent-orchestration/027-cmd-create-yaml-refinement",
   "description": "Feature Specification: Create Command YAML Refinement",
   "keywords": [
     "feature",
@@ -9,11 +9,11 @@
     "yaml",
     "refinement"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.665Z",
+  "lastUpdated": "2026-04-06T09:57:54.468Z",
   "specId": "027",
   "folderSlug": "cmd-create-yaml-refinement",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -9,12 +9,12 @@
     "fusion",
     "enablement"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.785Z",
+  "lastUpdated": "2026-04-06T09:57:55.110Z",
   "specId": "011",
   "folderSlug": "indexing-and-adaptive-fusion",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement"
+    "023-hybrid-rag-fusion-refinement"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

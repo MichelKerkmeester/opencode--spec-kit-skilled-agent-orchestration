@@ -9,12 +9,12 @@
     "esm",
     "migration"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.738Z",
+  "lastUpdated": "2026-04-06T09:57:55.073Z",
   "specId": "002",
   "folderSlug": "mcp-server-esm-migration",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement"
+    "023-hybrid-rag-fusion-refinement"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

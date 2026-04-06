@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/011-sk-doc-template-folders",
+  "specFolder": "skilled-agent-orchestration/z_archive/011-sk-doc-template-folders",
   "description": "Feature Specification: sk-doc Template Folder Reorganization",
   "keywords": [
     "feature",
@@ -9,11 +9,12 @@
     "folder",
     "reorganization"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.585Z",
+  "lastUpdated": "2026-04-06T09:57:54.531Z",
   "specId": "011",
   "folderSlug": "sk-doc-template-folders",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

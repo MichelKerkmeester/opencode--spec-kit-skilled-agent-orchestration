@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/020-cmd-create-readme-install-merger",
+  "specFolder": "skilled-agent-orchestration/z_archive/020-cmd-create-readme-install-merger",
   "description": "Feature Specification: Merge create README and install guide commands",
   "keywords": [
     "feature",
@@ -11,11 +11,12 @@
     "guide",
     "commands"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.631Z",
+  "lastUpdated": "2026-04-06T09:57:54.568Z",
   "specId": "020",
   "folderSlug": "cmd-create-readme-install-merger",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -8,12 +8,12 @@
     "interop",
     "refactor"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.742Z",
+  "lastUpdated": "2026-04-06T09:57:55.077Z",
   "specId": "003",
   "folderSlug": "scripts-interop-refactor",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement"
+    "023-hybrid-rag-fusion-refinement"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

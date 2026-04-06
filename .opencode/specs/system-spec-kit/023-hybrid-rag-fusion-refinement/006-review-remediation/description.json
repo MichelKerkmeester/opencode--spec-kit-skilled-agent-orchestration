@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/023-esm-module-compliance/006-review-remediation",
+  "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation",
   "description": "Feature Specification: Deep Review Remediation",
   "keywords": [
     "feature",
@@ -8,12 +8,12 @@
     "review",
     "remediation"
   ],
-  "lastUpdated": "2026-03-30T11:56:26.987Z",
+  "lastUpdated": "2026-04-06T09:57:55.089Z",
   "specId": "006",
   "folderSlug": "review-remediation",
   "parentChain": [
     "system-spec-kit",
-    "023-esm-module-compliance"
+    "023-hybrid-rag-fusion-refinement"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

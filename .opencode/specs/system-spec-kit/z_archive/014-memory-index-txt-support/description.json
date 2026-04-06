@@ -1,16 +1,15 @@
 {
   "specFolder": "system-spec-kit/z_archive/014-memory-index-txt-support",
-  "description": "Feature Specification: Memory Index TXT File Support",
+  "description": "Feature Specification: Memory Index Txt Support",
   "keywords": [
     "feature",
     "specification",
     "memory",
     "index",
     "txt",
-    "file",
     "support"
   ],
-  "lastUpdated": "2026-03-30T11:56:27.054Z",
+  "lastUpdated": "2026-04-06T09:57:55.647Z",
   "specId": "014",
   "folderSlug": "memory-index-txt-support",
   "parentChain": [

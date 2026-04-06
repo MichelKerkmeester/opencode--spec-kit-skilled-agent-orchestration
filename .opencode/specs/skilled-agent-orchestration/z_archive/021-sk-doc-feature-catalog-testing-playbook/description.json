@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/021-sk-doc-feature-catalog-testing-playbook",
+  "specFolder": "skilled-agent-orchestration/z_archive/021-sk-doc-feature-catalog-testing-playbook",
   "description": "Feature Specification: sk-doc Feature Catalog + Testing Playbook Alignment",
   "keywords": [
     "feature",
@@ -10,11 +10,12 @@
     "playbook",
     "alignment"
   ],
-  "lastUpdated": "2026-03-30T11:56:27.075Z",
+  "lastUpdated": "2026-04-06T09:57:54.572Z",
   "specId": "021",
   "folderSlug": "sk-doc-feature-catalog-testing-playbook",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

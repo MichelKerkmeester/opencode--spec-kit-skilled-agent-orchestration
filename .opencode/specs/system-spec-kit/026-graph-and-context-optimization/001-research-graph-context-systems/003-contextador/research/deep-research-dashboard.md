@@ -1,0 +1,93 @@
+---
+title: Deep Research Dashboard
+description: Auto-generated reducer view over the research packet.
+---
+
+# Deep Research Dashboard - Session Overview
+
+Auto-generated from JSONL state log, iteration files, findings registry, and strategy state. Never manually edited.
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+Reducer-generated observability surface for the active research packet.
+
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:status -->
+## 2. STATUS
+- Topic: Research the external repository at /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/external and identify concrete improvements for Code_Environment/Public, especially around MCP-based query interfaces, self-healing context, shared agent caches (Mainframe), and token-efficient codebase navigation patterns.
+- Started: 2026-04-06T10:14:10.000Z
+- Status: INITIALIZED
+- Iteration: 13 of 13
+- Session ID: dr_session_1775470451519_esyvim
+- Parent Session: none
+- Lifecycle Mode: new
+- Generation: 1
+
+<!-- /ANCHOR:status -->
+<!-- ANCHOR:progress -->
+## 3. PROGRESS
+
+| # | Focus | Track | Ratio | Findings | Status |
+|---|-------|-------|-------|----------|--------|
+| 1 | external/src/mcp.ts MCP tool surface and bootstrap | - | 0.82 | 6 | insight |
+| 2 | routing path: headmaster.ts routeQuery, pointers.ts, hierarchy.ts | - | 0.74 | 7 | insight |
+| 3 | self-healing loop: feedback.ts, janitor.ts, generator.ts, enrichFromFeedback | - | 0.68 | 8 | insight |
+| 4 | Mainframe shared cache: bridge.ts, client.ts, rooms.ts, dedup.ts, summarizer.ts | - | 0.73 | 8 | insight |
+| 5 | README + stats + licensing reality check | - | 0.62 | 7 | insight |
+| 6 | cross-comparison vs CocoIndex, Code Graph MCP, Spec Kit Memory | - | 0.71 | 5 | insight |
+| 7 | cross-phase ownership boundaries vs 002-codesight and 004-graphify | - | 0.39 | 4 | insight |
+| 8 | pointer payload lossiness: pointers.ts, response.ts, briefing.ts | - | 0.24 | 5 | insight |
+| 9 | test coverage audit for core modules (feedback, janitor, headmaster, generator, freshness, stats, pointers tests) | - | 0.41 | 5 | insight |
+| 10 | Mainframe tests + budget.ts source trace | - | 0.46 | 4 | insight |
+| 11 | setup wizard + framework presets + UI helpers (.mcp.json auto-detection reality check) | - | 0.34 | 5 | insight |
+| 12 | github integration: webhook + triage + types as a real automation example | - | 0.31 | 5 | insight |
+| 13 | closing module sweep: agents, validation, writer, sizecheck, docsync, depscan, demolish | - | 0.23 | 6 | insight |
+
+- iterationsCompleted: 13
+- keyFindings: 439
+- openQuestions: 12
+- resolvedQuestions: 0
+
+<!-- /ANCHOR:progress -->
+<!-- ANCHOR:questions -->
+## 4. QUESTIONS
+- Answered: 0/12
+- [ ] Q1. What exact MCP tools does Contextador expose, and how does the tool surface change agent workflow compared with direct file reading?
+- [ ] Q2. What data shape is returned by `context` queries, and how much of the structured-context schema comes from CONTEXT.md pointers versus live file reads?
+- [ ] Q3. How does routeQuery decide between AI routing, keyword fallback, and fan-out across multiple scopes?
+- [ ] Q4. How does the self-healing loop work end to end from context_feedback through repair queue processing, regeneration, Key Files patching, and enrichment?
+- [ ] Q5. What parts of the "self-improving" claim are backed by code today, and what parts remain product language?
+- [ ] Q6. How does Mainframe synchronize broadcasts and requests across agents, what metadata is shared in Matrix room messages, and where is conflict resolution shallow or missing?
+- [ ] Q7. What privacy and operational tradeoffs come from Mainframe (persistent local agent IDs, room-level message history, budget state, optional Docker-hosted Operator setup)?
+- [ ] Q8. How is the 93% token-reduction claim measured or approximated, and does the current stats implementation provide strong evidence or only coarse estimates?
+- [ ] Q9. How does the provider abstraction layer support Anthropic, OpenAI, Google, GitHub Copilot, OpenRouter, custom servers, and Claude Code?
+- [ ] Q10. How does .mcp.json auto-detection and framework-specific setup shape adoption compared with this repo's current MCP configuration patterns?
+- [ ] Q11. What is the actual AGPL plus commercial licensing model, and how does that constrain adoption or direct reuse for Code_Environment/Public?
+- [ ] Q12. Compared with CocoIndex, Code Graph MCP, and Spec Kit Memory, what is genuinely new in Contextador's query model, and what would only duplicate behavior this repo already has?
+
+<!-- /ANCHOR:questions -->
+<!-- ANCHOR:trend -->
+## 5. TREND
+- Last 3 ratios: 0.34 -> 0.31 -> 0.23
+- Stuck count: 0
+- Guard violations: none recorded by the reducer pass
+- convergenceScore: 0.23
+- coverageBySources: {}
+
+<!-- /ANCHOR:trend -->
+<!-- ANCHOR:dead-ends -->
+## 6. DEAD ENDS
+- None yet
+
+<!-- /ANCHOR:dead-ends -->
+<!-- ANCHOR:next-focus -->
+## 7. NEXT FOCUS
+- FINAL ITERATION -- proceed to synthesis.
+
+<!-- /ANCHOR:next-focus -->
+<!-- ANCHOR:active-risks -->
+## 8. ACTIVE RISKS
+- None active beyond normal research uncertainty.
+
+<!-- /ANCHOR:active-risks -->

@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/017-cmd-create-prompt",
+  "specFolder": "skilled-agent-orchestration/z_archive/017-cmd-create-prompt",
   "description": "Feature Specification: create:prompt Command",
   "keywords": [
     "feature",
@@ -8,11 +8,12 @@
     "prompt",
     "command"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.615Z",
+  "lastUpdated": "2026-04-06T09:57:54.556Z",
   "specId": "017",
   "folderSlug": "cmd-create-prompt",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+  "description": "Feature Specification: Contextador Research Phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "contextador",
+    "research",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-06T11:25:53.166Z",
+  "specId": "003",
+  "folderSlug": "contextador",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-graph-context-systems"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "06-04-26_12-25__completed-deep-research-phase-003-contextador-via.md",
+    "06-04-26_13-49__extended-deep-research-phase-003-contextador-from.md"
+  ]
+}

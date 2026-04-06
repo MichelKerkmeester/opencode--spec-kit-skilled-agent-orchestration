@@ -1,0 +1,2092 @@
+{
+  "openQuestions": [
+    {
+      "id": "question-1-q1-enable-tool-search-credibility-and-current-state-diff-how-should-the-post-s-c",
+      "text": "Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's claimed 45k -> 20k base-context drop and 20k -> 6k tool-schema drop be interpreted given that this repo already has `ENABLE_TOOL_SEARCH=true` in `.claude/settings.local.json`? What follow-up validation, latency tradeoffs, and discoverability risks remain even after the flag is set?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-cache-expiry-mitigation-taxonomy-how-should-the-post-s-claim-that-54-of-turns",
+      "text": "Q2. Cache-expiry mitigation taxonomy: how should the post's claim that 54% of turns followed >5-minute idle gaps and that 232 cache cliffs occurred across 858 sessions be modeled? Which mitigations are pure config (e.g., compaction defaults), which are hook implementations (Stop/UserPromptSubmit/SessionStart cache warnings), and which are behavioral (clear-and-restart vs compact vs resume)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-skill-schema-bloat-detection-how-should-this-repo-detect-low-usage-skills-the",
+      "text": "Q3. Skill schema bloat detection: how should this repo detect low-usage skills (the post reports 19 of 42 had <=2 invocations across 858 sessions) and schema bloat? What counts as evidence strong enough to disable, gate, or lazy-load a skill given that this repo's skill_advisor.py already gates Gate 2 routing?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-cache-warning-hook-designs-how-should-the-three-proposed-hooks-stop-idle-time",
+      "text": "Q4. Cache-warning hook designs: how should the three proposed hooks (Stop = idle-timestamp, UserPromptSubmit = idle-gap warning, SessionStart = cache-rebuild estimator) be evaluated against this repo's existing PreCompact/SessionStart/Stop hook architecture without conflicting with session-prime, session-stop, and compact-inject behavior?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-bash-vs-native-redundant-read-edit-retry-reinforcement-how-should-the-post-s-",
+      "text": "Q5. Bash-vs-native + redundant-read + edit-retry reinforcement: how should the post's findings of 662 bash `cat`/`grep`/`find` calls, 1,122 redundant file reads, and 31 edit-retry chains be translated into prompt rules, hooks, or telemetry for this repo (which already has a Code Search Decision Tree mandate in CLAUDE.md)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [
+    {
+      "id": "finding-1-8-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/settings.local.json`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-18-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/settings.local.json` hook surface plus the Claude hook scripts under `.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-28-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/settings.local.json`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/CLAUDE.md`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-68-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-78-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-58-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md` Gate 2 skill routing and future Claude transcript telemetry",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-38-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/CLAUDE.md`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-48-affected-area-in-this-repo-component-gap-no-existing-transcript-audit-pipeline-i",
+      "text": "Affected area in this repo: component gap - no existing transcript-audit pipeline in `Code_Environment/Public`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-20-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-50-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-30-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-40-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-60-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-70-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-80-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-10-already-implemented-in-this-repo-yes",
+      "text": "Already implemented in this repo? yes",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-37-category-behavioral-change",
+      "text": "Category: behavioral change",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-67-category-behavioral-change",
+      "text": "Category: behavioral change",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-7-category-config-change",
+      "text": "Category: config change",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-27-category-hook-implementation",
+      "text": "Category: hook implementation",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-17-category-hybrid",
+      "text": "Category: hybrid",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-47-category-hybrid",
+      "text": "Category: hybrid",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-57-category-hybrid",
+      "text": "Category: hybrid",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-77-category-hybrid",
+      "text": "Category: hybrid",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-64-quantitative-anchor-1-122-extra-rereads-3-read-threshold-33x-and-28x-worst-cases",
+      "text": "Quantitative anchor: 1,122 extra rereads; 3+ read threshold; 33x and 28x worst cases",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-24-quantitative-anchor-3-hooks",
+      "text": "Quantitative anchor: 3 hooks",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-54-quantitative-anchor-42-skills-loaded-19-with-2-invocations-across-858-sessions",
+      "text": "Quantitative anchor: 42 skills loaded; 19 with <=2 invocations across 858 sessions",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-4-quantitative-anchor-45k-20k-starting-context-20k-6k-tool-overhead-14-000-tokens-",
+      "text": "Quantitative anchor: 45k -> 20k starting context; 20k -> 6k tool overhead; 14,000 tokens/turn",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-14-quantitative-anchor-54-6-152-of-11-357-turns-5-minutes",
+      "text": "Quantitative anchor: 54%; 6,152 of 11,357 turns; >5 minutes",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-74-quantitative-anchor-662-bash-antipattern-calls-31-edit-retry-chains",
+      "text": "Quantitative anchor: 662 bash antipattern calls; 31 edit-retry chains",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-34-quantitative-anchor-full-cache-rebuild-after-stale-resume-tied-to-the-post-s-5-m",
+      "text": "Quantitative anchor: full cache rebuild after stale resume; tied to the post's 5-minute expiry model",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-44-quantitative-anchor-jsonl-parsing-of-every-session-sqlite-load-19-chart-dashboar",
+      "text": "Quantitative anchor: JSONL parsing of every session; SQLite load; 19-chart dashboard",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-6-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-66-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-76-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-16-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-26-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-36-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-46-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-56-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-79-risk-ambiguity-validation-cost-the-behavioral-recommendation-is-already-safe-bec",
+      "text": "Risk / ambiguity / validation cost: The behavioral recommendation is already safe because it reinforces current repo policy. Adding automated detection is costlier and should follow only after the transcript-audit methodology in F5 is scoped.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-69-risk-ambiguity-validation-cost-the-policy-change-itself-is-already-low-risk-beca",
+      "text": "Risk / ambiguity / validation cost: The policy change itself is already low risk because it matches existing repo guidance. The ambiguous part is measurement: without telemetry, Public cannot tell whether reread waste is common or only hypothetical here.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-29-risk-ambiguity-validation-cost-the-post-explicitly-says-these-hooks-are-not-ship",
+      "text": "Risk / ambiguity / validation cost: The post explicitly says these hooks are \"not shipped yet,\" so the UX has not been battle-tested. Blocking `UserPromptSubmit` once per stale turn could be useful, but it also risks frustration if it fires during legitimate long-running workflows.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-49-risk-ambiguity-validation-cost-the-post-later-notes-that-the-jsonl-format-is-und",
+      "text": "Risk / ambiguity / validation cost: The post later notes that the JSONL format is undocumented, so any parser here would be format-fragile. The methodology is still valuable, but its storage schema and maintenance cost need scoping before adoption.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-19-risk-ambiguity-validation-cost-the-post-mixes-denominators-926-sessions-in-the-h",
+      "text": "Risk / ambiguity / validation cost: The post mixes denominators (926 sessions in the header, 858 sessions and 11,357-turn subset in the body), so Public should treat the pattern as directionally strong but not numerically portable without its own telemetry. Detecting real cache cliffs here requires transcript or hook data that this phase does not yet collect.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-59-risk-ambiguity-validation-cost-the-post-s-2-threshold-is-heuristic-not-universal",
+      "text": "Risk / ambiguity / validation cost: The post's <=2 threshold is heuristic, not universal. Public should not disable a rarely used but mission-critical skill until it has both usage counts and a severity/impact review.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-9-risk-ambiguity-validation-cost-the-reduction-numbers-come-from-one-user-s-setup-",
+      "text": "Risk / ambiguity / validation cost: The reduction numbers come from one user's setup, so the absolute token delta may differ in this repo. There is also no repo-local measurement yet of first-use latency or tool discoverability after lazy-loading.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-39-risk-ambiguity-validation-cost-the-repo-should-not-hard-code-clear-over-compact-",
+      "text": "Risk / ambiguity / validation cost: The repo should not hard-code \"/clear over /compact\" without testing continuity loss on real tasks. The right action may differ for short sessions, long sessions, or workflows that depend on exact recent transcript wording.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-61-source-passage-anchor-paragraph-beginning-1-122-extra-file-reads-across-all-sess",
+      "text": "Source passage (anchor): \"paragraph beginning '1,122 extra file reads across all sessions where the same file was read 3 or more times.'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-11-source-passage-anchor-paragraph-beginning-54-of-my-turns-6-152-out-of-11-357-fol",
+      "text": "Source passage (anchor): \"paragraph beginning '54% of my turns (6,152 out of 11,357) followed an idle gap longer than 5 minutes.'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-21-source-passage-anchor-paragraph-beginning-after-seeing-the-cache-expiry-data-i-b",
+      "text": "Source passage (anchor): \"paragraph beginning 'After seeing the cache expiry data, I built three hooks to make it visible before it costs anything:'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-51-source-passage-anchor-paragraph-beginning-covered-above-but-the-dashboard-makes-",
+      "text": "Source passage (anchor): \"paragraph beginning 'Covered above, but the dashboard makes it starker.'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-31-source-passage-anchor-paragraph-beginning-i-don-t-prefer-compact-which-loses-con",
+      "text": "Source passage (anchor): \"paragraph beginning 'I don't prefer /compact (which loses context) or resuming stale sessions (which pays for a full cache rebuild) for continuity.'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-41-source-passage-anchor-paragraph-beginning-so-i-built-a-token-usage-auditor",
+      "text": "Source passage (anchor): \"paragraph beginning 'So I built a token usage auditor.'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-71-source-passage-anchor-paragraph-beginning-the-auditor-also-flags-bash-antipatter",
+      "text": "Source passage (anchor): \"paragraph beginning 'The auditor also flags bash antipatterns'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-1-source-passage-anchor-paragraph-beginning-this-setting-only-loads-6-primary-tool",
+      "text": "Source passage (anchor): \"paragraph beginning 'This setting only loads 6 primary tools and lazy-loads the rest on demand instead of dumping them all upfront.'\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-62-source-quote-1-122-extra-file-reads-across-all-sessions-where-the-same-file-was-",
+      "text": "Source quote: \"1,122 extra file reads across all sessions where the same file was read 3 or more times. Worst case: one session read the same file 33 times. Another hit 28 reads on a single file.\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-52-source-quote-42-skills-loaded-in-my-setup-19-of-them-had-2-or-fewer-invocations-",
+      "text": "Source quote: \"42 skills loaded in my setup. 19 of them had 2 or fewer invocations across the entire 858-session dataset.\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-12-source-quote-54-of-my-turns-6-152-out-of-11-357-followed-an-idle-gap-longer-than",
+      "text": "Source quote: \"54% of my turns (6,152 out of 11,357) followed an idle gap longer than 5 minutes. Every one of those turns paid full input price instead of the cached rate.\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-22-source-quote-after-seeing-the-cache-expiry-data-i-built-three-hooks-to-make-it-v",
+      "text": "Source quote: \"After seeing the cache expiry data, I built three hooks to make it visible before it costs anything:\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-32-source-quote-i-don-t-prefer-compact-which-loses-context-or-resuming-stale-sessio",
+      "text": "Source quote: \"I don't prefer /compact (which loses context) or resuming stale sessions (which pays for a full cache rebuild) for continuity. Instead I just /clear and start a new session.\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-42-source-quote-it-walks-every-jsonl-file-parses-every-turn-loads-everything-into-a",
+      "text": "Source quote: \"It walks every JSONL file, parses every turn, loads everything into a SQLite database (token counts, cache hit ratios, tool calls, idle gaps, edit failures, skill invocations), and an insights engine ranks waste categories by estimated dollar amount. It also generates an interactive dashboard with 19 charts: cache trajectories per session, cost breakdowns by project and model, tool efficiency metrics, behavioral patterns, skill usage analysis.\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-72-source-quote-the-auditor-also-flags-bash-antipatterns-662-calls-where-claude-use",
+      "text": "Source quote: \"The auditor also flags bash antipatterns (662 calls where Claude used cat, grep, find via bash instead of native Read/Grep/Glob tools) and edit retry chains (31 failed-edit-then-retry sequences).\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-2-source-quote-this-setting-only-loads-6-primary-tools-and-lazy-loads-the-rest-on-",
+      "text": "Source quote: \"This setting only loads 6 primary tools and lazy-loads the rest on demand instead of dumping them all upfront. Starting context dropped from 45k to 20k and the system tool overhead went from 20k to 6k.\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-13-what-it-documents-the-post-argues-the-biggest-waste-is-not-output-verbosity-or-p",
+      "text": "What it documents: The post argues the biggest waste is not output verbosity or prompt size but idle-time cache expiry. The important point is the invisibility of the cliff: the user does not change anything, but the next turn replays the full prompt at full price.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-43-what-it-documents-the-post-does-not-just-give-anecdotes-it-sketches-an-end-to-en",
+      "text": "What it documents: The post does not just give anecdotes; it sketches an end-to-end observability pipeline that converts raw Claude transcripts into ranked waste categories. That matters because several recommendations in the post depend on aggregate evidence, not isolated bad turns.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-53-what-it-documents-the-post-frames-skill-bloat-as-a-measurable-problem-rather-tha",
+      "text": "What it documents: The post frames skill bloat as a measurable problem rather than a stylistic preference. It also gives a simple triage heuristic: count skill invocations across sessions and flag never-used, rarely-used, or always-erroring entries.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-73-what-it-documents-the-post-identifies-two-waste-signatures-that-are-easy-to-miss",
+      "text": "What it documents: The post identifies two waste signatures that are easy to miss in one session but expensive in aggregate: shell-based file inspection instead of native tools, and repeated failed edits that replay extra context. These are detectable patterns, not just subjective complaints.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-23-what-it-documents-the-post-proposes-a-specific-three-hook-design-rather-than-a-v",
+      "text": "What it documents: The post proposes a specific three-hook design rather than a vague \"warn users more\" idea. The design splits responsibilities cleanly across turn-end timestamp capture, pre-send idle-gap detection, and session-resume estimation.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-3-what-it-documents-the-post-treats-deferred-tool-loading-as-a-one-line-configurat",
+      "text": "What it documents: The post treats deferred tool loading as a one-line configuration flip with outsized per-turn savings. The claimed gain is not marginal; it halves starting context and removes 14k tokens of tool-schema overhead from every turn.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-63-what-it-documents-the-post-treats-rereads-as-multiplicative-waste-not-because-on",
+      "text": "What it documents: The post treats rereads as multiplicative waste, not because one read is expensive, but because every repeated file dump remains in conversation state and gets replayed on later turns. It turns a local inefficiency into a session-wide cost problem.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-33-what-it-documents-the-post-s-mitigation-taxonomy-is-not-purely-hook-based-it-rec",
+      "text": "What it documents: The post's mitigation taxonomy is not purely hook-based; it recommends a user behavior change once the warning exists. The key tradeoff is continuity versus cost: avoid dragging a long, stale transcript forward when a summarized restart will do.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-35-why-it-matters-for-code-environment-public-public-already-frames-recovery-as-con",
+      "text": "Why it matters for Code_Environment/Public: Public already frames recovery as context rehydration through memory/search rather than carrying raw history forever, and Claude-specific notes already describe bootstrap guidance on `source=startup`, `source=resume`, and `source=clear`. That means the repo is philosophically aligned with the post's \"clear and restart with curated context\" approach, but it does not yet turn that philosophy into an idle-gap recommendation. [SOURCE: `CLAUDE.md:52-55,72-81`; `.claude/CLAUDE.md:11-14`]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-15-why-it-matters-for-code-environment-public-public-already-has-stop-and-sessionst",
+      "text": "Why it matters for Code_Environment/Public: Public already has `Stop` and `SessionStart` hooks, which means the repo has the right event surface to detect stale sessions. What it lacks is cache-expiry-specific logic or messaging, so the same invisible waste category could still exist even with stronger search/tooling rules. [SOURCE: `.claude/settings.local.json:6-40`]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-75-why-it-matters-for-code-environment-public-public-already-mandates-a-code-search",
+      "text": "Why it matters for Code_Environment/Public: Public already mandates a Code Search Decision Tree and explicitly prefers CocoIndex/code graph/rg/glob/view over bash for code and file search. The gap is not policy language; it is the lack of a feedback loop that can prove whether Claude sessions still fall back to `cat`, `grep`, `find`, or retry loops often enough to matter. [SOURCE: `CLAUDE.md:34-40,51-53`]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-55-why-it-matters-for-code-environment-public-public-already-uses-skill-advisor-py-",
+      "text": "Why it matters for Code_Environment/Public: Public already uses `skill_advisor.py` in Gate 2 to route skill usage more selectively, which is a partial hedge against spurious skill invocation. What Public does not have is a usage ledger proving which skills are dead weight in Claude context or which ones should be disabled, gated harder, or lazy-loaded. [SOURCE: `CLAUDE.md:122-127,293-317`]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-25-why-it-matters-for-code-environment-public-public-already-wires-stop-and-session",
+      "text": "Why it matters for Code_Environment/Public: Public already wires `Stop` and `SessionStart` hooks, and `.claude/CLAUDE.md` already gives Claude-specific `SessionStart` recovery behavior, so two of the three event surfaces exist today. The missing piece is `UserPromptSubmit`, plus cache-warning logic that coexists with `session-prime.js`, `session-stop.js`, and `compact-inject.js` without double-warning or conflicting with recovery flows. [SOURCE: `.claude/settings.local.json:6-40`; `.claude/CLAUDE.md:11-14`]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-45-why-it-matters-for-code-environment-public-public-currently-has-strong-policy-do",
+      "text": "Why it matters for Code_Environment/Public: Public currently has strong policy documents and hook wiring, but no equivalent local telemetry pipeline for Claude transcript waste analysis. If Public wants evidence strong enough to justify disabling skills, adding warnings, or changing behavior, this methodology is the clearest missing capability. [SOURCE: `CLAUDE.md:34-40,47-69,122-127`; `.claude/settings.local.json:6-40`]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-65-why-it-matters-for-code-environment-public-public-s-root-claude-guidance-already",
+      "text": "Why it matters for Code_Environment/Public: Public's root CLAUDE guidance already tells agents to batch reads, plan all needed reads first, and avoid sequential re-reading unless unavoidable. That means the repo already encodes the right behavior, but it has no detector showing where actual Claude sessions still violate it. [SOURCE: `CLAUDE.md:51-53`; root instructions in current session mirrored by repository policy]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-5-why-it-matters-for-code-environment-public-this-repo-has-already-adopted-the-exa",
+      "text": "Why it matters for Code_Environment/Public: This repo has already adopted the exact setting in `.claude/settings.local.json`, so the post does not justify a new config flip here; it validates an existing choice. The remaining work is regression prevention and observability, not rediscovery of the flag. [SOURCE: `.claude/settings.local.json:2-5`]",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-2-18-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/settings.local.json`; new dedicated script under `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/hook-state.js`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-38-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/compact-inject.js`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-48-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/hook-state.js`; all Claude hook scripts that read or write hook state",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-28-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-stop.js`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/hook-state.js`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-8-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-stop.js`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/hook-state.js`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-20-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-10-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-30-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-40-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-50-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-7-category-hook-implementation",
+      "text": "Category: hook implementation",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-27-category-hook-implementation",
+      "text": "Category: hook implementation",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-37-category-hook-implementation",
+      "text": "Category: hook implementation",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-17-category-hybrid",
+      "text": "Category: hybrid",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-47-category-hybrid",
+      "text": "Category: hybrid",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-14-quantitative-anchor-5-minutes-idle-gap-blocks-once",
+      "text": "Quantitative anchor: >5 minutes idle gap; blocks once",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-4-quantitative-anchor-one-timestamp-written-after-every-turn",
+      "text": "Quantitative anchor: one timestamp written after every turn",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-44-quantitative-anchor-three-hook-handoff-across-turn-end-prompt-submit-and-session",
+      "text": "Quantitative anchor: three-hook handoff across turn end, prompt submit, and session start",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-24-quantitative-anchor-warning-occurs-before-the-first-prompt-of-a-resumed-session",
+      "text": "Quantitative anchor: warning occurs before the first prompt of a resumed session",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-34-quantitative-anchor-warning-offers-compact-as-one-optional-response",
+      "text": "Quantitative anchor: warning offers `/compact` as one optional response",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-6-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-26-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-46-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-16-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-36-recommendation-label-reject",
+      "text": "Recommendation label: reject",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-19-risk-ambiguity-validation-cost-highest-ux-risk-of-the-three-proposals-the-runtim",
+      "text": "Risk / ambiguity / validation cost: Highest UX risk of the three proposals. The runtime contract for \"block once, then allow resend\" is still unverified here, and repeated warnings could become more annoying than useful if acknowledgement state is not persisted correctly.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-39-risk-ambiguity-validation-cost-mixing-warning-copy-into-precompact-would-blur-re",
+      "text": "Risk / ambiguity / validation cost: Mixing warning copy into `PreCompact` would blur responsibilities and make debugging harder when either compaction caching or idle warnings misfire. It also would not solve the \"warn before first resumed prompt\" requirement from the post.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-49-risk-ambiguity-validation-cost-schema-growth-must-stay-disciplined-if-warning-ac",
+      "text": "Risk / ambiguity / validation cost: Schema growth must stay disciplined. If warning acknowledgement, stale-age, and resume-estimate fields are added informally, the single-state-file benefit becomes accidental coupling instead of a clear contract.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-29-risk-ambiguity-validation-cost-the-estimate-will-be-approximate-unless-public-ca",
+      "text": "Risk / ambiguity / validation cost: The estimate will be approximate unless Public captures more explicit cache-read telemetry. Startup copy can also become noisy if it fires on every resume, so it needs stale-threshold gating and suppression for `source=compact` / `source=clear`.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-9-risk-ambiguity-validation-cost-very-low-ux-risk-but-still-needs-schema-disciplin",
+      "text": "Risk / ambiguity / validation cost: Very low UX risk, but still needs schema discipline so new fields do not collide with existing `metrics`, `sessionSummary`, or autosave state. If the timestamp is recorded too early in the Stop flow, it could describe hook execution time rather than Claude-response completion time.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-41-source-passage-anchor-paragraph-beginning-before-these-hooks-cache-expiry-was-in",
+      "text": "Source passage (anchor): \"paragraph beginning 'Before these hooks, cache expiry was invisible. Now I see it before the expensive turn fires.'\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-21-source-passage-anchor-paragraph-beginning-sessionstart-hook-for-resumed-sessions",
+      "text": "Source passage (anchor): \"paragraph beginning 'SessionStart hook -- for resumed sessions, reads your last transcript, estimates how many cached tokens will need re-creation, and warns you before your first prompt'\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-1-source-passage-anchor-paragraph-beginning-stop-hook-records-the-exact-timestamp-",
+      "text": "Source passage (anchor): \"paragraph beginning 'Stop hook -- records the exact timestamp after every Claude turn, so the system knows when you went idle'\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-11-source-passage-anchor-paragraph-beginning-userpromptsubmit-hook-checks-how-long-",
+      "text": "Source passage (anchor): \"paragraph beginning 'UserPromptSubmit hook -- checks how long you've been idle since Claude's last response.'\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-31-source-passage-anchor-paragraph-beginning-userpromptsubmit-hook-checks-how-long-",
+      "text": "Source passage (anchor): \"paragraph beginning 'UserPromptSubmit hook -- checks how long you've been idle since Claude's last response.'\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-42-source-quote-before-these-hooks-cache-expiry-was-invisible-now-i-see-it-before-t",
+      "text": "Source quote: \"Before these hooks, cache expiry was invisible. Now I see it before the expensive turn fires.\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-32-source-quote-run-compact-first-to-reduce-cost-or-re-send-to-proceed",
+      "text": "Source quote: \"run /compact first to reduce cost, or re-send to proceed.\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-22-source-quote-sessionstart-hook-for-resumed-sessions-reads-your-last-transcript-e",
+      "text": "Source quote: \"SessionStart hook -- for resumed sessions, reads your last transcript, estimates how many cached tokens will need re-creation, and warns you before your first prompt\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-2-source-quote-stop-hook-records-the-exact-timestamp-after-every-claude-turn-so-th",
+      "text": "Source quote: \"Stop hook -- records the exact timestamp after every Claude turn, so the system knows when you went idle\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-12-source-quote-userpromptsubmit-hook-checks-how-long-you-ve-been-idle-since-claude",
+      "text": "Source quote: \"UserPromptSubmit hook -- checks how long you've been idle since Claude's last response. If it's been more than 5 minutes, blocks your message once and warns you: 'cache expired, this turn will re-process full context from scratch. run /compact first to reduce cost, or re-send to proceed.'\"",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-33-what-it-documents-in-the-post-s-design-compact-is-the-action-suggested-after-the",
+      "text": "What it documents: In the post's design, `/compact` is the action suggested **after** the warning fires. It is not itself the hook that decides whether the session is stale.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-43-what-it-documents-the-core-requirement-is-visibility-at-the-right-moment-which-d",
+      "text": "What it documents: The core requirement is visibility at the right moment, which depends on durable state handoff between end-of-turn capture, pre-send warning, and resumed-session warning.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-3-what-it-documents-the-post-treats-stop-as-pure-state-capture-no-warning-copy-no-",
+      "text": "What it documents: The post treats Stop as pure state capture: no warning copy, no user interaction, just a reliable \"last Claude response\" marker for later hooks.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-23-what-it-documents-the-post-wants-a-startup-time-visibility-layer-for-stale-resum",
+      "text": "What it documents: The post wants a startup-time visibility layer for stale resumed sessions, but the actual goal is the warning, not necessarily transcript rereading as the only implementation path.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-13-what-it-documents-this-hook-is-the-only-one-in-the-three-hook-design-that-change",
+      "text": "What it documents: This hook is the only one in the three-hook design that changes immediate user flow. It does not just observe state; it actively gates a prompt and requires resend/acknowledgement behavior.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-25-why-it-matters-for-code-environment-public-public-already-has-a-single-sessionst",
+      "text": "Why it matters for Code_Environment/Public: Public already has a single `SessionStart` owner (`session-prime.js`) that injects startup/resume/clear/compact guidance to stdout, and it already adjusts its budget under token pressure. Separately, `session-stop.js` already stores estimated prompt/completion tokens in hook state. That means this repo can produce an approximate cache-rebuild estimate during `handleResume()` without adding another stdout-producing handler or paying transcript-parse cost on the critical startup path. [SOURCE: `.claude/settings.local.json:18-28`; `session-prime.js:19-61,115-131,175-188`; `session-stop.js:153-166`; `hook-state.js:124-143`]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-5-why-it-matters-for-code-environment-public-public-already-has-exactly-one-config",
+      "text": "Why it matters for Code_Environment/Public: Public already has exactly one configured Stop hook, and that hook already owns async post-turn bookkeeping plus all per-session state writes. The shared state store is a single JSON file under `${tmpdir}/speckit-claude-hooks/...`, so a second Stop hook would either duplicate writes or require brittle ordering assumptions. The cleaner fit is to extend `session-stop.js` and reuse `updateState(...)`. [SOURCE: `.claude/settings.local.json:29-40`; `session-stop.js:146-199`; `hook-state.js:4,15-23,77-90,124-143`]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-35-why-it-matters-for-code-environment-public-public-s-precompact-hook-explicitly-s",
+      "text": "Why it matters for Code_Environment/Public: Public's `PreCompact` hook explicitly says \"stdout is NOT injected on PreCompact -- we only cache here,\" then writes `pendingCompactPrime` into hook state for later recovery. Repurposing `compact-inject.js` to also warn about stale idle gaps would mix a silent cache-builder with user-facing stale-session policy and would still miss the ordinary resumed-session path where no `/compact` was invoked. The right boundary is: warning hooks may recommend compaction, but compaction remains a separate hook surface. [SOURCE: `compact-inject.js:5-8,312-348,355-362`; `.claude/settings.local.json:7-16`]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-45-why-it-matters-for-code-environment-public-the-repo-already-has-one-atomic-per-s",
+      "text": "Why it matters for Code_Environment/Public: The repo already has one atomic per-session state store with `saveState()` -> temp-file write -> rename semantics, and both `compact-inject.js` and `session-stop.js` already use it. `session-prime.js` also clears compact cache from the same store only after stdout write succeeds. That existing path is already the repo's conflict-resolution mechanism. Cache-warning fields should extend this JSON contract instead of creating a parallel cache-warning file that would drift from `pendingCompactPrime`, `metrics`, and `sessionSummary`. [SOURCE: `hook-state.js:4,20-23,77-90,92-110,124-143`; `compact-inject.js:332-346`; `session-prime.js:181-188`; `session-stop.js:193-198`]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-15-why-it-matters-for-code-environment-public-there-is-no-userpromptsubmit-hook-con",
+      "text": "Why it matters for Code_Environment/Public: There is no `UserPromptSubmit` hook configured today, so there is no same-event collision. The real risk is cross-event behavior: it must consume the timestamp written by Stop, avoid fighting with `SessionStart` warnings, and store its one-time acknowledgement in the same shared hook-state JSON. Because the post itself says the UX is not shipped and \"needs more thought,\" this repo should not bury this behavior inside `session-prime.js` or `session-stop.js`; it needs a dedicated pre-send script and a measured rollout. [SOURCE: `.claude/settings.local.json:6-40`; `hook-state.js:4,20-23,124-143`; `external/reddit_post.md:68-72,89-91`]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-3-50-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts`; any future local Claude JSONL audit workflow under this spec area",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-76-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/CLAUDE.md`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-11-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/CLAUDE.md`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-24-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-37-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`; `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-63-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`; any future shell-wrapper layer outside the current spec",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-26-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-39-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-65-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-13-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-52-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-78-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-10-category-prompt-telemetry",
+      "text": "Category: prompt + telemetry",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-75-category-prompt-routing",
+      "text": "Category: prompt routing",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-23-category-telemetry",
+      "text": "Category: telemetry",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-36-category-telemetry",
+      "text": "Category: telemetry",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-49-category-telemetry-architecture",
+      "text": "Category: telemetry architecture",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-62-category-tooling-change",
+      "text": "Category: tooling change",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-70-current-defenses-in-this-repo-gate-2-is-required-for-non-trivial-tasks-and-the-c",
+      "text": "Current defenses in this repo: Gate 2 is required for non-trivial tasks, and the Claude runtime is told to treat the root `CLAUDE.md` as authoritative. [SOURCE: `CLAUDE.md:122-125,300-317`; `.claude/CLAUDE.md:9`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-44-current-defenses-in-this-repo-public-already-has-a-telemetry-pattern-in-context-",
+      "text": "Current defenses in this repo: Public already has a telemetry pattern in `context-server.ts` through `recordMetricEvent(...)`, but only for coarse categories. [SOURCE: `context-server.ts:788-803`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-5-current-defenses-in-this-repo-public-already-mandates-a-code-search-decision-tre",
+      "text": "Current defenses in this repo: Public already mandates a Code Search Decision Tree: semantic search via CocoIndex, structural queries via `code_graph_query`, exact text via `Grep`, then file-path lookup via `Glob`, then file contents via `Read`. Claude-runtime guidance also says the root `CLAUDE.md` is the source of truth for tool routing. [SOURCE: `CLAUDE.md:37-40,53`; `.claude/CLAUDE.md:9`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-31-current-defenses-in-this-repo-public-already-says-to-halt-when-the-edit-tool-rep",
+      "text": "Current defenses in this repo: Public already says to halt when the edit tool reports \"string not found,\" to read first, and to keep the simplest scoped change. [SOURCE: `CLAUDE.md:31,221,236`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-18-current-defenses-in-this-repo-public-requires-read-files-first-and-includes-read",
+      "text": "Current defenses in this repo: Public requires \"Read files first\" and includes `Read` as the final stage of the Code Search Decision Tree after narrower search tools. [SOURCE: `CLAUDE.md:53,221,236`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-57-current-defenses-in-this-repo-public-s-main-defense-is-to-avoid-unnecessary-shel",
+      "text": "Current defenses in this repo: Public's main defense is to avoid unnecessary shell use in the first place through the Code Search Decision Tree and native-tool preference. There is no repo rule today about proxy-filtering command output. [SOURCE: `CLAUDE.md:37-40,53`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-46-detection-options-postflight-check-strongest-fit-for-all-three-antipatterns-tele",
+      "text": "Detection options: `postflight check` (strongest fit for all three antipatterns) | `telemetry` (use current metric-event pattern as a future feeder) | `prompt-rule reinforcement` (prevention only) | `hook` (real-time warning only for the subset with a strong immediate signal, such as shell command text).",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-7-detection-options-prompt-rule-reinforcement-explicitly-name-bash-cat-grep-find-a",
+      "text": "Detection options: `prompt-rule reinforcement` (explicitly name `bash cat/grep/find` as the discouraged fallback when native equivalents exist) | `telemetry` (classify shell commands into native-equivalent vs unavoidable shell use) | `postflight check` (reduce local Claude JSONL into a bash-antipattern table) | `hook` (possible only if command text is inspectable before execution) | `tooling change` (extend metric taxonomy beyond generic `tool_call`).",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-72-detection-options-prompt-rule-reinforcement-teach-skills-to-restate-native-tool-",
+      "text": "Detection options: `prompt-rule reinforcement` (teach skills to restate native-tool preference and failure-escalation rules) | `tooling change` (future advisor hints could mention likely antipattern risk areas) | **not** a sufficient `telemetry` substitute.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-20-detection-options-telemetry-count-normalized-file-path-reads-across-native-tools",
+      "text": "Detection options: `telemetry` (count normalized file-path reads across native tools and bash fallback) | `postflight check` (local Claude JSONL reducer with 3+ reread threshold and exceptions for changed files / new ranges) | `prompt-rule reinforcement` (name \"reread only after change/error/new question\" explicitly) | `hook` (possible, but only if the runtime can keep per-session path state) | `tooling change` (emit `file_read` metric events with normalized paths instead of only generic `tool_call`).",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-33-detection-options-telemetry-emit-edit-failure-and-edit-retry-events-with-target-",
+      "text": "Detection options: `telemetry` (emit `edit_failure` and `edit_retry` events with target path) | `postflight check` (group failed-edit-then-retry sequences from local Claude JSONL) | `prompt-rule reinforcement` (after first edit miss, require reread/replan rather than blind retry) | `tooling change` (retry taxonomy in reducer or audit dashboard) | `hook` (least attractive, because the signal is sequential rather than single-command).",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-59-detection-options-tooling-change-only-this-is-not-really-a-prompt-rule-or-a-reli",
+      "text": "Detection options: `tooling change` only; this is not really a prompt rule or a reliable hook pattern. `telemetry` should come first so the repo knows whether verbose shell output is a material waste source before evaluating a proxy.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-71-gap-analysis-gate-2-cannot-observe-whether-the-agent-later-rereads-the-same-file",
+      "text": "Gap analysis: Gate 2 cannot observe whether the agent later rereads the same file 33 times, falls back to `bash cat`, or enters an edit retry chain. It is front-loaded classification, not per-tool or per-sequence telemetry.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-58-gap-analysis-rtk-addresses-the-symptom-after-bash-is-already-in-play-that-means-",
+      "text": "Gap analysis: RTK addresses the symptom after bash is already in play. That means it overlaps most with build/test/log-tail workflows, not with the repo's search-tree rules. It also introduces an observability tradeoff: filtered output can reduce tokens, but may hide the exact raw diagnostic detail needed for debugging.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-6-gap-analysis-the-defense-is-directional-not-measurable-it-tells-the-agent-what-t",
+      "text": "Gap analysis: The defense is directional, not measurable. It tells the agent what to prefer, but it does not classify `bash cat`, `bash grep`, or `bash find` as a reportable violation, and the current metric layer only records generic `tool_call` plus a few special cases (`memory_recovery`, `code_graph_query`, `spec_folder_change`). [SOURCE: `CLAUDE.md:37-40`; `context-server.ts:788-803`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-32-gap-analysis-the-repo-has-a-correctness-rule-for-one-failed-edit-but-it-has-no-d",
+      "text": "Gap analysis: The repo has a correctness rule for one failed edit, but it has no detection for *chains* of failures and no per-session metric that says \"this file had repeated failed edits before success.\" The current metric scaffold also does not emit any edit-specific events. [SOURCE: `context-server.ts:788-803`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-45-gap-analysis-there-is-no-current-repo-component-that-answers-how-often-did-claud",
+      "text": "Gap analysis: There is no current repo component that answers \"how often did Claude bypass native tools?\", \"which files were reread 3+ times?\", or \"how many failed-edit-then-retry chains happened this week?\" The repo has rule text and a generic metric hook, but not a waste-audit reducer.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-19-gap-analysis-those-rules-promote-correct-sequencing-but-they-do-not-define-an-ex",
+      "text": "Gap analysis: Those rules promote correct sequencing, but they do not define an \"excessive reread\" threshold, a same-file/session counter, or any postflight audit. Unlike bash-vs-native, there is not even a strongly worded negative rule in `CLAUDE.md` that says \"do not reread the same file unless it changed or the prior read was insufficient.\" [SOURCE: `CLAUDE.md:53,221,236`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-4-implied-root-cause-agents-fall-back-to-the-universal-shell-because-it-is-flexibl",
+      "text": "Implied root cause: Agents fall back to the universal shell because it is flexible, but that bypasses the repo's lower-token native-tool path and often returns noisier output than the purpose-built tool would.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-69-implied-root-cause-better-routing-can-indirectly-reduce-bash-misuse-and-some-bli",
+      "text": "Implied root cause: Better routing can indirectly reduce bash misuse and some blind retries by loading the right workflow-specific instructions earlier.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-56-implied-root-cause-even-justified-shell-usage-can-flood-context-with-verbose-log",
+      "text": "Implied root cause: Even justified shell usage can flood context with verbose logs, so there is a separate output-shaping problem beyond initial tool choice.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-17-implied-root-cause-the-agent-does-not-maintain-a-strong-enough-per-turn-read-led",
+      "text": "Implied root cause: The agent does not maintain a strong enough per-turn read ledger, so it re-requests files it already saw instead of reusing context or rereading only when a change/error justifies it.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-30-implied-root-cause-the-agent-lacks-a-strong-escalation-boundary-between-recovera",
+      "text": "Implied root cause: The agent lacks a strong escalation boundary between \"recoverable edit miss\" and \"I need to reread / re-anchor before trying again,\" so retries can turn into mini-loops.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-43-implied-root-cause-waste-categories-like-rereads-and-retry-chains-are-mostly-seq",
+      "text": "Implied root cause: Waste categories like rereads and retry chains are mostly sequence problems, so single-turn rules are necessary but insufficient.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-9-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-48-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-74-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-22-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-35-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-61-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-12-risk-ambiguity-validation-cost-low-risk-for-prompt-rule-reinforcement-medium-val",
+      "text": "Risk / ambiguity / validation cost: Low risk for prompt-rule reinforcement; medium validation cost for telemetry because \"shell command was avoidable\" is partly contextual and will need false-positive review.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-77-risk-ambiguity-validation-cost-low-the-conceptual-boundary-is-clear-gate-2-can-r",
+      "text": "Risk / ambiguity / validation cost: Low. The conceptual boundary is clear: Gate 2 can reduce risk upstream, but it cannot answer waste-frequency questions downstream.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-25-risk-ambiguity-validation-cost-medium-validation-cost-because-legitimate-rereads",
+      "text": "Risk / ambiguity / validation cost: Medium validation cost because legitimate rereads exist (file changed, different line range, or context was compacted away), so a detector must normalize paths and allow justified exceptions.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-38-risk-ambiguity-validation-cost-medium-high-validation-cost-because-healthy-corre",
+      "text": "Risk / ambiguity / validation cost: Medium-high validation cost because healthy correction loops and wasteful retry chains can look similar without path matching, timing windows, and error parsing.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-64-risk-ambiguity-validation-cost-medium-high-it-could-meaningfully-reduce-output-t",
+      "text": "Risk / ambiguity / validation cost: Medium-high. It could meaningfully reduce output tokens for unavoidable shell commands, but it adds another transformation layer between the agent and the raw command result.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-51-risk-ambiguity-validation-cost-medium-the-measurement-model-is-useful-even-if-th",
+      "text": "Risk / ambiguity / validation cost: Medium. The measurement model is useful even if the absolute cost numbers are approximate, but the undocumented JSONL format creates maintenance risk. [SOURCE: `external/reddit_post.md:95-99`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-66-source-passage-anchor-gate-2-skill-routing",
+      "text": "Source passage (anchor): \"Gate 2: Skill routing\"",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-14-source-passage-anchor-paragraph-beginning-1-122-extra-file-reads-across-all-sess",
+      "text": "Source passage (anchor): \"paragraph beginning '1,122 extra file reads across all sessions where the same file was read 3 or more times.'\"",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-40-source-passage-anchor-paragraph-beginning-so-i-built-a-token-usage-auditor",
+      "text": "Source passage (anchor): \"paragraph beginning 'So I built a token usage auditor.'\"",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-1-source-passage-anchor-paragraph-beginning-the-auditor-also-flags-bash-antipatter",
+      "text": "Source passage (anchor): \"paragraph beginning 'The auditor also flags bash antipatterns'\"",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-27-source-passage-anchor-paragraph-beginning-the-auditor-also-flags-bash-antipatter",
+      "text": "Source passage (anchor): \"paragraph beginning 'The auditor also flags bash antipatterns'\"",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-53-source-passage-anchor-paragraph-beginning-the-auditor-also-flags-bash-antipatter",
+      "text": "Source passage (anchor): \"paragraph beginning 'The auditor also flags bash antipatterns'\"",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-28-source-quote-and-edit-retry-chains-31-failed-edit-then-retry-sequences-source-ex",
+      "text": "Source quote: \"...and edit retry chains (31 failed-edit-then-retry sequences).\" [SOURCE: `external/reddit_post.md:62`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-15-source-quote-1-122-extra-file-reads-across-all-sessions-where-the-same-file-was-",
+      "text": "Source quote: \"1,122 extra file reads across all sessions where the same file was read 3 or more times. Worst case: one session read the same file 33 times. Another hit 28 reads on a single file.\" [SOURCE: `external/reddit_post.md:58`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-54-source-quote-i-also-installed-rtk-a-cli-proxy-that-filters-and-summarizes-comman",
+      "text": "Source quote: \"I also installed RTK (a CLI proxy that filters and summarizes command outputs before they reach your LLM context) to cut down output token bloat from verbose shell commands.\" [SOURCE: `external/reddit_post.md:62`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-41-source-quote-it-walks-every-jsonl-file-parses-every-turn-loads-everything-into-a",
+      "text": "Source quote: \"It walks every JSONL file, parses every turn, loads everything into a SQLite database (token counts, cache hit ratios, tool calls, idle gaps, edit failures, skill invocations), and an insights engine ranks waste categories by estimated dollar amount.\" [SOURCE: `external/reddit_post.md:28`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-67-source-quote-run-python3-opencode-skill-scripts-skill-advisor-py-request-thresho",
+      "text": "Source quote: \"Run: `python3 .opencode/skill/scripts/skill_advisor.py \\\"[request]\\\" --threshold 0.8`\" and \"Confidence > 0.8 -> MUST invoke recommended skill.\" [SOURCE: `CLAUDE.md:123-125,300-315`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-2-source-quote-the-auditor-also-flags-bash-antipatterns-662-calls-where-claude-use",
+      "text": "Source quote: \"The auditor also flags bash antipatterns (662 calls where Claude used cat, grep, find via bash instead of native Read/Grep/Glob tools)...\" [SOURCE: `external/reddit_post.md:62`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-68-what-it-documents-gate-2-exists-to-steer-the-agent-into-the-right-skill-and-bund",
+      "text": "What it documents: Gate 2 exists to steer the agent into the right skill and bundled instructions before work starts.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-55-what-it-documents-rtk-targets-output-bloat-after-the-agent-has-already-chosen-a-",
+      "text": "What it documents: RTK targets output bloat after the agent has already chosen a shell-heavy workflow.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-16-what-it-documents-the-post-frames-rereads-as-a-compounding-problem-repeated-file",
+      "text": "What it documents: The post frames rereads as a compounding problem: repeated file dumps are cheap individually, but expensive after they stay in context across later turns and cache rebuilds.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-29-what-it-documents-the-post-isolates-a-sequential-waste-pattern-an-edit-fails-the",
+      "text": "What it documents: The post isolates a sequential waste pattern: an edit fails, the agent tries again, and the retry sequence itself adds extra transcript bulk and often extra rereads.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-3-what-it-documents-the-post-s-bash-waste-signal-is-not-bash-is-bad-it-is-bash-was",
+      "text": "What it documents: The post's bash waste signal is not \"bash is bad\"; it is \"bash was used where a semantically narrower native tool already existed.\"",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-42-what-it-documents-the-post-s-detection-stack-is-offline-first-it-does-not-rely-o",
+      "text": "What it documents: The post's detection stack is offline-first. It does not rely on hooks for everything; it uses local JSONL plus reduction to discover repeated waste patterns across many sessions.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-21-why-it-matters-for-code-environment-public-iteration-001-already-noted-rereads-a",
+      "text": "Why it matters for Code_Environment/Public: Iteration 001 already noted rereads as a hazard, but Q5 clarifies the enforcement gap: the repo has prevention hints, not evidence-producing machinery. [SOURCE: `research/iterations/iteration-001.md:107-129`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-8-why-it-matters-for-code-environment-public-q5-does-not-require-replacing-the-rep",
+      "text": "Why it matters for Code_Environment/Public: Q5 does not require replacing the repo's decision tree; it requires making the existing policy auditable so the team can tell whether Claude sessions are still bypassing it in practice.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-73-why-it-matters-for-code-environment-public-q5-should-treat-gate-2-as-an-amplifie",
+      "text": "Why it matters for Code_Environment/Public: Q5 should treat Gate 2 as an amplifier for prevention language, not as evidence that the repo already has enforcement. The overlap is real but partial.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-60-why-it-matters-for-code-environment-public-the-concept-is-worth-keeping-on-the-t",
+      "text": "Why it matters for Code_Environment/Public: The concept is worth keeping on the table for shell-heavy validation workflows, but it should not be framed as the answer to the 662 bash-antipattern calls because those are primarily routing failures, not log-filtering failures.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-47-why-it-matters-for-code-environment-public-this-answers-q10-directly-raw-local-c",
+      "text": "Why it matters for Code_Environment/Public: This answers Q10 directly: raw local Claude JSONL can directly expose tool usage and failures, but waste ranking depends on heuristics and inferred token/cost models; therefore the repo should separate \"signal capture\" from \"waste estimation.\" [SOURCE: `external/reddit_post.md:95-99`]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-34-why-it-matters-for-code-environment-public-this-is-the-antipattern-least-well-se",
+      "text": "Why it matters for Code_Environment/Public: This is the antipattern least well served by the current Code Search Decision Tree. Search routing helps *before* editing, but retry chains happen after an edit failure and therefore need a separate observability layer.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-4-25-affected-area-in-this-repo-research-research-md-synthesis-and-any-downstream-dec",
+      "text": "Affected area in this repo: `research/research.md` synthesis and any downstream decision record that cites the Reddit post quantitatively",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-16-affected-area-in-this-repo-any-future-local-transcript-auditor-under-this-spec-o",
+      "text": "Affected area in this repo: any future local-transcript auditor under this spec or sibling CLI-observability work",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-43-affected-area-in-this-repo-future-cross-cli-observability-planning-around-cli-co",
+      "text": "Affected area in this repo: future cross-CLI observability planning around `cli-codex`, `cli-gemini`, and `cli-copilot`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-7-affected-area-in-this-repo-future-research-conclusions-and-any-later-audit-imple",
+      "text": "Affected area in this repo: future research conclusions and any later audit implementation spanning `cli-claude-code`, `cli-codex`, `cli-gemini`, and `cli-copilot`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-34-affected-area-in-this-repo-future-waste-audit-ranking-logic-and-any-prompt-langu",
+      "text": "Affected area in this repo: future waste-audit ranking logic and any prompt language added to `CLAUDE.md`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-9-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-18-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-36-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-45-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-27-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-6-category-methodology-portability",
+      "text": "Category: methodology portability",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-15-category-parser-fragility",
+      "text": "Category: parser fragility",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-33-category-reporting-methodology",
+      "text": "Category: reporting methodology",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-42-category-rollout-prioritization",
+      "text": "Category: rollout prioritization",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-24-category-source-discrepancy",
+      "text": "Category: source discrepancy",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-5-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-23-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-32-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-41-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-14-recommendation-label-reject",
+      "text": "Recommendation label: reject",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-17-risk-ambiguity-validation-cost-high-if-ignored-a-format-drift-could-leave-the-da",
+      "text": "Risk / ambiguity / validation cost: High if ignored. A format drift could leave the dashboard looking healthy while its waste categories are wrong.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-26-risk-ambiguity-validation-cost-low-cost-to-preserve-high-credibility-cost-if-fut",
+      "text": "Risk / ambiguity / validation cost: Low cost to preserve; high credibility cost if future summaries smooth the mismatch away.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-35-risk-ambiguity-validation-cost-medium-the-weighting-model-is-heuristic-but-it-is",
+      "text": "Risk / ambiguity / validation cost: Medium. The weighting model is heuristic, but it is closer to the post's causal story than a flat reread counter.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-44-risk-ambiguity-validation-cost-moderate-high-the-shared-architecture-is-real-but",
+      "text": "Risk / ambiguity / validation cost: Moderate-high. The shared architecture is real, but the raw-session prerequisite may fail differently on each runtime.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-8-risk-ambiguity-validation-cost-moderate-the-abstraction-is-strong-but-only-if-th",
+      "text": "Risk / ambiguity / validation cost: Moderate. The abstraction is strong, but only if the repo resists smuggling Claude-specific assumptions upward into the shared schema.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-28-source-passage-anchor-paragraph-beginning-1-122-extra-file-reads-across-all-sess",
+      "text": "Source passage (anchor): \"paragraph beginning '1,122 extra file reads across all sessions where the same file was read 3 or more times.'\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-19-source-passage-anchor-paragraph-beginning-anthropic-isn-t-the-only-reason-you-re",
+      "text": "Source passage (anchor): \"paragraph beginning 'anthropic isn't the only reason you're hitting claude code limits.'\" and \"paragraph beginning 'My stats: 858 sessions. 18,903 turns. $1,619 estimated spend across 33 days.'\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-10-source-passage-anchor-paragraph-beginning-limitations-worth-noting",
+      "text": "Source passage (anchor): \"paragraph beginning 'limitations worth noting:'\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-37-source-passage-anchor-paragraph-beginning-one-more-thing-this-auditor-isn-t-only",
+      "text": "Source passage (anchor): \"paragraph beginning 'One more thing. This auditor isn't only useful if you're a Claude Code user.'\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-1-source-passage-anchor-paragraph-beginning-so-i-built-a-token-usage-auditor-and-p",
+      "text": "Source passage (anchor): \"paragraph beginning 'So I built a token usage auditor.'\" and \"paragraph beginning 'One more thing. This auditor isn't only useful if you're a Claude Code user.'\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-38-source-quote-as-long-as-the-agent-writes-a-raw-session-file-you-can-observe-the-",
+      "text": "Source quote: \"As long as the agent writes a raw session file, you can observe the same waste patterns... the architecture ports.\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-29-source-quote-each-re-read-isn-t-expensive-on-its-own-but-the-output-from-every-r",
+      "text": "Source quote: \"Each re-read isn't expensive on its own. But the output from every read sits in your conversation context for every subsequent turn. In a long session that's already cache-stressed, redundant reads pad the context that gets re-processed at full price every time the cache expires.\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-20-source-quote-i-did-audit-of-926-sessions-and-my-stats-858-sessions-18-903-turns",
+      "text": "Source quote: \"i did audit of 926 sessions\" and \"My stats: 858 sessions. 18,903 turns.\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-2-source-quote-it-walks-every-jsonl-file-parses-every-turn-loads-everything-into-a",
+      "text": "Source quote: \"It walks every JSONL file, parses every turn, loads everything into a SQLite database...\" and \"the underlying approach (parse the JSONL transcript, load into SQLite, surface patterns) generalizes to most CLI coding agents.\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-11-source-quote-the-jsonl-parsing-depends-on-claude-code-s-local-file-format-which-",
+      "text": "Source quote: \"the JSONL parsing depends on Claude Code's local file format, which isn't officially documented. works on the current format but could break if Anthropic changes it.\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-39-what-it-documents-the-portability-claim-is-conditional-not-universal-it-depends-",
+      "text": "What it documents: The portability claim is conditional, not universal. It depends on each agent exposing a usable raw session artifact.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-21-what-it-documents-the-post-contains-a-headline-body-dataset-mismatch-and-the-bod",
+      "text": "What it documents: The post contains a headline/body dataset mismatch, and the body then consistently reuses 858 as the working dataset size.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-12-what-it-documents-the-post-explicitly-disclaims-parser-stability-that-means-the-",
+      "text": "What it documents: The post explicitly disclaims parser stability. That means the riskiest part of the architecture is not SQLite or dashboarding; it is the reverse-engineered ingest contract.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-3-what-it-documents-the-post-s-portability-claim-is-credible-only-after-the-archit",
+      "text": "What it documents: The post's portability claim is credible only after the architecture is decomposed. Transcript discovery and parsing are runtime adapters; normalization, ranking, and dashboarding are the reusable core.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-30-what-it-documents-the-post-s-real-point-is-not-merely-33-reads-is-bad-it-is-that",
+      "text": "What it documents: The post's real point is not merely \"33 reads is bad.\" It is that rereads become more expensive when they enlarge the prefix that later gets rebuilt after cache expiry.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-13-why-it-matters-for-code-environment-public-any-auditor-in-this-repo-should-rejec",
+      "text": "Why it matters for Code_Environment/Public: Any auditor in this repo should reject direct, unguarded dependence on Claude JSONL as a canonical substrate. The defensive contract should be: versioned adapter boundary, fail-closed parsing, explicit coverage counters, raw-to-derived separation, and an `unknown/unclassified` bucket instead of silent best-effort guesses.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-4-why-it-matters-for-code-environment-public-because-this-repo-already-supports-cl",
+      "text": "Why it matters for Code_Environment/Public: Because this repo already supports Claude, Codex, Gemini, and Copilot CLI surfaces, the right portability move is not \"port the Claude parser everywhere.\" It is \"share the middle and end of the pipeline, keep the ingest edge per-runtime.\"",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-40-why-it-matters-for-code-environment-public-the-repo-s-existing-multi-cli-skill-s",
+      "text": "Why it matters for Code_Environment/Public: The repo's existing multi-CLI skill surface makes a cross-agent auditor tempting, but this iteration did not verify transcript availability for Codex CLI, Gemini CLI, or Copilot CLI. So adoption priority should be: share schema/dashboard design now, prototype per-agent discovery/parsing later, and do not promise a single immediate auditor across all four runtimes.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-31-why-it-matters-for-code-environment-public-this-deepens-q6-in-a-way-the-earlier-",
+      "text": "Why it matters for Code_Environment/Public: This deepens Q6 in a way the earlier iterations did not exhaust. Prompt rules should still say \"do not reread unchanged files without a reason,\" but hooks are the wrong main enforcement surface because one reread is not reliably bad in isolation. The better reporting model is severity-weighted: reread count x remaining-turn exposure x cache-cliff exposure. A single reread before a stale resume can cost more than several rereads inside one still-cached burst.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-22-why-it-matters-for-code-environment-public-this-discrepancy-should-stay-visible-",
+      "text": "Why it matters for Code_Environment/Public: This discrepancy should stay visible in any canonical synthesis. It does not undercut the existence of cache cliffs, redundant reads, or bash antipatterns, but it does mean the repo should not repeat the post's totals as if the sampling frame were settled. The unexplained \"6,152 out of 11,357\" denominator makes this especially important for any future cost or prevalence extrapolation.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-5-50-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/settings.local.json` planning only; no runtime changes in this iteration",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-11-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/settings.local.json`; any future local `/context` validation workflow",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-37-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
+      "text": "Affected area in this repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/CLAUDE.md`; any future local transcript or metrics audit",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-24-affected-area-in-this-repo-synthesis-language-in-research-research-md-and-any-la",
+      "text": "Affected area in this repo: synthesis language in `research/research.md` and any later implementation notes derived from this spec",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-26-already-implemented-in-this-repo-no",
+      "text": "Already implemented in this repo? no",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-13-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-39-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-52-already-implemented-in-this-repo-partial",
+      "text": "Already implemented in this repo? partial",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-49-category-config-scoping",
+      "text": "Category: config scoping",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-10-category-config-validation",
+      "text": "Category: config validation",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-36-category-guardrail-messaging",
+      "text": "Category: guardrail messaging",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-23-category-risk-inventory",
+      "text": "Category: risk inventory",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-18-current-defenses-in-this-repo-none-specific-to-this-question-beyond-the-flag-its",
+      "text": "Current defenses in this repo: None specific to this question beyond the flag itself. Existing hook/config state shows that Public is operating a richer startup environment than the Reddit post describes, which makes \"same savings, same ergonomics\" an unsafe assumption. [SOURCE: `.claude/settings.local.json:2-40`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-44-current-defenses-in-this-repo-public-already-has-enable-tool-search-true-and-alr",
+      "text": "Current defenses in this repo: Public already has `ENABLE_TOOL_SEARCH=true` and already wires `PreCompact`, `SessionStart`, and `Stop` hooks. [SOURCE: `.claude/settings.local.json:2-40`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-31-current-defenses-in-this-repo-public-already-tells-the-agent-to-read-first-and-l",
+      "text": "Current defenses in this repo: Public already tells the agent to read first and lists `\"string not found\"` as a HALT CONDITION. [SOURCE: `CLAUDE.md:27-31`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-5-current-defenses-in-this-repo-the-exact-flag-is-already-present-in-claude-settin",
+      "text": "Current defenses in this repo: The exact flag is already present in `.claude/settings.local.json`, so Public already took the one-line config step the post recommends. [SOURCE: `.claude/settings.local.json:2-5`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-7-detection-options-a-b-context-runs-local-transcript-token-comparison-first-non-p",
+      "text": "Detection options: `A/B /context runs` | `local transcript token comparison` | `first-non-primary-tool latency timing` | `tool-search event count` | `shell fallback comparison`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-46-detection-options-config-checklist-draft-feature-flagged-hook-rollout-separate-m",
+      "text": "Detection options: `config checklist draft` | `feature-flagged hook rollout` | `separate measurement from policy`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-20-detection-options-matched-context-a-b-runs-first-use-timing-tool-search-discover",
+      "text": "Detection options: `matched /context A/B runs` | `first-use timing` | `tool-search/discovery-step counts` | `extra-turn completion cost`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-33-detection-options-postflight-retry-chain-audit-edit-failure-edit-retry-metrics-g",
+      "text": "Detection options: `postflight retry-chain audit` | `edit_failure + edit_retry metrics` | `guardrail wording that requires reread/replan before retry`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-45-gap-analysis-any-additional-knobs-for-idle-thresholds-resume-estimate-toggles-or",
+      "text": "Gap analysis: Any additional knobs for idle thresholds, resume-estimate toggles, or soft-block behavior are repo-local design choices implied by the hook ideas, not directly specified post settings.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-19-gap-analysis-the-post-proves-a-token-delta-in-one-environment-not-a-complete-ux-",
+      "text": "Gap analysis: The post proves a token delta in one environment, not a complete UX result. Public should preserve that distinction in final synthesis.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-6-gap-analysis-the-repo-has-no-local-measurement-in-this-iteration-for-first-non-p",
+      "text": "Gap analysis: The repo has no local measurement in this iteration for first non-primary tool latency, tool-search friction, or workflow completion impact under `/context`, so it cannot honestly reuse the Reddit headline as a calibrated repo-local result.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-32-gap-analysis-there-is-no-repo-wording-here-that-explicitly-says-after-the-first-",
+      "text": "Gap analysis: There is no repo wording here that explicitly says \"after the first edit miss, reread or re-anchor before any second edit attempt,\" and there is no telemetry concept for an edit-failure chain. That leaves a policy gap between a single failure rule and the chained behavior the post observed.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-4-implied-root-cause-deferred-loading-changes-the-shape-of-when-tool-cost-is-paid-",
+      "text": "Implied root cause: Deferred loading changes the shape of when tool cost is paid, so the unresolved question is whether some of that cost reappears later as first-use latency or search friction for non-primary tools.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-43-implied-root-cause-most-of-the-remaining-work-is-behavior-and-validation-logic-n",
+      "text": "Implied root cause: Most of the remaining work is behavior and validation logic, not another single-line setting.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-30-implied-root-cause-prompt-quality-issues-file-drift-issues-and-workflow-design-i",
+      "text": "Implied root cause: Prompt-quality issues, file-drift issues, and workflow-design issues all likely contribute, but the post does **not** separate them. What it does show is that \"one failed edit happened\" is not the same thing as \"the session successfully halted and re-anchored.\"",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-17-implied-root-cause-tool-discoverability-and-first-use-responsiveness-are-second-",
+      "text": "Implied root cause: Tool discoverability and first-use responsiveness are second-order effects that do not follow automatically from smaller upfront schema size.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-9-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-22-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-48-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-35-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-12-risk-ambiguity-validation-cost-low-config-risk-medium-validation-cost-the-flag-i",
+      "text": "Risk / ambiguity / validation cost: Low config risk, medium validation cost. The flag is already on, but proving or falsifying the headline requires controlled local runs rather than another doc change.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-25-risk-ambiguity-validation-cost-low-cost-to-phrase-honestly-high-credibility-cost",
+      "text": "Risk / ambiguity / validation cost: Low cost to phrase honestly; high credibility cost if future writeups silently overclaim.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-51-risk-ambiguity-validation-cost-low-the-main-risk-is-false-precision-if-later-wri",
+      "text": "Risk / ambiguity / validation cost: Low. The main risk is false precision if later writeups present implied repo-local flags as if they were copied from the post.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-38-risk-ambiguity-validation-cost-medium-the-repo-should-not-overfit-to-one-statist",
+      "text": "Risk / ambiguity / validation cost: Medium. The repo should not overfit to one statistic, but the current wording does not yet operationalize \"chain breaking\" after the first failure.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-27-source-passage-anchor-paragraph-beginning-the-auditor-also-flags-bash-antipatter",
+      "text": "Source passage (anchor): \"paragraph beginning 'The auditor also flags bash antipatterns'\" plus the CLAUDE.md HALT CONDITIONS block",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-1-source-passage-anchor-paragraph-beginning-the-setting-is-called-enable-tool-sear",
+      "text": "Source passage (anchor): \"paragraph beginning 'The setting is called enable_tool_search.'\" and \"paragraph beginning 'This setting only loads 6 primary tools...'\"",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-40-source-passage-anchor-enable-tool-search-paragraph-plus-the-hook-design-section-",
+      "text": "Source passage (anchor): ENABLE_TOOL_SEARCH paragraph plus the hook-design section introduced immediately after the retry paragraph",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-14-source-passage-anchor-same-quoted-enable-tool-search-paragraph",
+      "text": "Source passage (anchor): same quoted ENABLE_TOOL_SEARCH paragraph",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-28-source-quote-edit-retry-chains-31-failed-edit-then-retry-sequences-and-edit-tool",
+      "text": "Source quote: \"edit retry chains (31 failed-edit-then-retry sequences)\" and `- [ ] Edit tool reports \"string not found\".` [SOURCE: `external/reddit_post.md:62-62`; `CLAUDE.md:27-31`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-15-source-quote-lazy-loads-the-rest-on-demand-source-external-reddit-post-md-22-22",
+      "text": "Source quote: \"lazy-loads the rest on demand\" [SOURCE: `external/reddit_post.md:22-22`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-41-source-quote-the-setting-is-called-enable-tool-search-and-after-seeing-the-cache",
+      "text": "Source quote: \"The setting is called enable_tool_search...\" and \"After seeing the cache expiry data, I built three hooks...\" [SOURCE: `external/reddit_post.md:17-22`; `external/reddit_post.md:62-64`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-2-source-quote-the-setting-is-called-enable-tool-search-and-this-setting-only-load",
+      "text": "Source quote: \"The setting is called enable_tool_search...\" and \"This setting only loads 6 primary tools and lazy-loads the rest on demand...\" [SOURCE: `external/reddit_post.md:17-22`]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-16-what-it-documents-the-post-describes-the-mechanism-but-it-does-not-provide-a-sta",
+      "text": "What it documents: The post describes the mechanism, but it does not provide a startup-time benchmark, a first-tool benchmark, or any statement about whether rare tools became easier or harder to find.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-3-what-it-documents-the-post-gives-a-strong-field-report-for-reduced-upfront-tool-",
+      "text": "What it documents: The post gives a strong field report for reduced upfront tool payload, but its evidence surface stops at token savings.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-42-what-it-documents-the-post-gives-one-explicit-env-config-example-and-then-moves-",
+      "text": "What it documents: The post gives one explicit env/config example and then moves into hook behavior. It does not publish a wider env-variable catalogue for cache-warning rollout.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-29-what-it-documents-the-post-s-signal-is-sequential-a-failed-edit-followed-by-anot",
+      "text": "What it documents: The post's signal is sequential: a failed edit followed by another attempt. The repo's current guardrail is singular: stop when one edit misses.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-47-why-it-matters-for-code-environment-public-it-keeps-the-deliverable-honest-the-r",
+      "text": "Why it matters for Code_Environment/Public: It keeps the deliverable honest. The repo can draft a settings checklist now without pretending the Reddit post gave a complete production config.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-34-why-it-matters-for-code-environment-public-q8-is-less-about-blaming-prompt-quali",
+      "text": "Why it matters for Code_Environment/Public: Q8 is less about blaming prompt quality than about recognizing that the current HALT list is a one-event guardrail. The post suggests Public should eventually guard against *repeated* misses, not just describe the first miss.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-21-why-it-matters-for-code-environment-public-this-is-the-honest-answer-to-the-user",
+      "text": "Why it matters for Code_Environment/Public: This is the honest answer to the user's Q7 prompt. The repo can say deferred loading is plausible and already enabled, but it cannot yet say whether it improves or harms first-tool-use ergonomics here.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-8-why-it-matters-for-code-environment-public-this-narrows-q7-to-a-concrete-next-st",
+      "text": "Why it matters for Code_Environment/Public: This narrows Q7 to a concrete next step. The repo should treat \"14k saved per turn\" as a directional external claim until it measures its own startup and first-tool-use path.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-6-10-affected-area-config-checklist-and-final-recommendation-ordering",
+      "text": "Affected area: config checklist and final recommendation ordering.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-5-affected-area-cross-phase-boundary-language-in-research-research-md",
+      "text": "Affected area: cross-phase boundary language in `research/research.md`.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-15-affected-area-final-prioritized-recommendation-set",
+      "text": "Affected area: final prioritized recommendation set.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-20-affected-area-iteration-7-scope-selection-and-later-implementation-planning",
+      "text": "Affected area: iteration-7 scope selection and later implementation planning.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-14-recommendation-label-adopt-now-for-documentation-prototype-later-for-hooks",
+      "text": "Recommendation label: adopt now for documentation; prototype later for hooks.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-4-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-9-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-19-recommendation-label-prototype-later",
+      "text": "Recommendation label: prototype later.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-7-source-quote-high-impact-low-effort-config-changes-such-as-enable-tool-search-ad",
+      "text": "Source quote: \"high-impact / low-effort config changes such as `ENABLE_TOOL_SEARCH` -> adopt now after light validation\" [SOURCE: `phase-research-prompt.md:167-168`]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-12-source-quote-high-impact-medium-effort-hooks-prototype-later-and-behavioral-chan",
+      "text": "Source quote: \"high-impact / medium-effort hooks ... -> prototype later\" and \"behavioral changes ... -> adopt now via documentation and workflow rules\" [SOURCE: `phase-research-prompt.md:168-169`]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-17-source-quote-instrumentation-heavy-or-format-fragile-ideas-prototype-later-unles",
+      "text": "Source quote: \"instrumentation-heavy or format-fragile ideas ... -> prototype later unless the observability gap is severe\" [SOURCE: `phase-research-prompt.md:170-170`]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-2-source-quote-treat-claudest-as-the-implementation-packet-behind-the-audit-narrat",
+      "text": "Source quote: \"Treat Claudest as the implementation packet behind the audit narrative surfaced earlier in phase `001`...\" and \"Phase 001 extracts patterns from the Reddit post; 005 examines the implementation.\" [SOURCE: `../005-claudest/phase-research-prompt.md:34-35,40-45`]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-6-supporting-prior-refs-i1-f1-i5-f1-i5-f2-i5-f4",
+      "text": "Supporting prior refs: I1-F1, I5-F1, I5-F2, I5-F4.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-11-supporting-prior-refs-i1-f4-i1-f7-i1-f8-i2-f1-i2-f2-i2-f3-i2-f5-i3-f1-i3-f6-i5-f",
+      "text": "Supporting prior refs: I1-F4, I1-F7, I1-F8, I2-F1, I2-F2, I2-F3, I2-F5, I3-F1, I3-F6, I5-F3.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-1-supporting-prior-refs-i1-f5-i2-f1-i2-f3-i4-f1-i5-f4",
+      "text": "Supporting prior refs: I1-F5, I2-F1, I2-F3, I4-F1, I5-F4.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-16-supporting-prior-refs-i1-f6-i3-f2-i3-f3-i3-f4-i4-f1-i4-f2-i4-f5",
+      "text": "Supporting prior refs: I1-F6, I3-F2, I3-F3, I3-F4, I4-F1, I4-F2, I4-F5.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-3-what-it-changes-in-synthesis-future-research-md-prose-should-cite-phase-005-only",
+      "text": "What it changes in synthesis: future `research.md` prose should cite phase `005` only when naming where `get-token-insights` lives or when deferring implementation detail, not when restating Public-facing adoption decisions.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-8-what-it-means-iteration-6-collapses-the-config-lane-to-baseline-validation-hones",
+      "text": "What it means: iteration 6 collapses the \"config\" lane to baseline validation, honest claim-scoping, and refusal to invent additional post-backed settings that the source never actually specified.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-13-what-it-means-stale-session-guidance-bash-discipline-reread-discipline-discrepan",
+      "text": "What it means: stale-session guidance, bash discipline, reread discipline, discrepancy preservation, and edit-miss re-anchoring belong in the \"adopt now\" lane, while Stop/UserPromptSubmit/SessionStart cache-warning mechanics stay in prototype planning.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-18-what-it-means-the-unresolved-work-is-mostly-empirical-and-systems-heavy-local-de",
+      "text": "What it means: the unresolved work is mostly empirical and systems-heavy: local deferred-loading A/Bs, low-usage skill thresholds, cache-safe cost modeling, reread/edit-retry reducers, and guarded JSONL adapters.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-7-7-affected-area-in-this-repo-research-research-md-q3-answer-and-final-prioritizati",
+      "text": "Affected area in this repo: `research/research.md` Q3 answer and final prioritization narrative",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-15-affected-area-in-this-repo-q5-answer-later-telemetry-rubric-and-any-future-skill",
+      "text": "Affected area in this repo: Q5 answer, later telemetry rubric, and any future \"skills to consider disabling\" table",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-6-category-synthesis-methodology",
+      "text": "Category: synthesis methodology",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-14-category-telemetry-policy",
+      "text": "Category: telemetry policy",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-5-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-13-recommendation-label-adopt-now",
+      "text": "Recommendation label: adopt now",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-16-residual-limit-the-post-supplies-the-review-buckets-not-public-s-local-counts-re",
+      "text": "Residual limit: The post supplies the review buckets, not Public's local counts. Repo-local application still depends on transcript or equivalent usage telemetry.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-8-residual-limit-this-closes-the-research-model-gap-not-the-repo-local-calibration",
+      "text": "Residual limit: This closes the **research-model** gap, not the **repo-local calibration** gap. Public still needs local telemetry before claiming local prevalence or local dollar impact.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-1-source-passage-anchor-paragraph-beginning-54-of-my-turns-6-152-out-of-11-357-fol",
+      "text": "Source passage (anchor): paragraph beginning \"54% of my turns (6,152 out of 11,357) followed an idle gap longer than 5 minutes.\"; paragraph beginning \"The auditor flags \"cache cliffs\" specifically:\"; paragraph beginning \"Estimated waste: 12.3 million tokens that counted against my usage for zero value.\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-9-source-passage-anchor-paragraph-beginning-covered-above-but-the-dashboard-makes-",
+      "text": "Source passage (anchor): paragraph beginning \"Covered above, but the dashboard makes it starker.\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-10-source-quote-42-skills-loaded-in-my-setup-19-of-them-had-2-or-fewer-invocations-",
+      "text": "Source quote: \"42 skills loaded in my setup. 19 of them had 2 or fewer invocations across the entire 858-session dataset.\" and \"The dashboard has a \"skills to consider disabling\" table that flags low-usage skills automatically with a reason column (never used, low frequency, errors on every run).\" [SOURCE: `external/reddit_post.md:50-54`]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-2-source-quote-54-of-my-turns-6-152-out-of-11-357-followed-an-idle-gap-longer-than",
+      "text": "Source quote: \"54% of my turns (6,152 out of 11,357) followed an idle gap longer than 5 minutes.\"; \"232 of those across 858 sessions...\"; \"Estimated waste: 12.3 million tokens... roughly 7.5% of my total input budget...\" [SOURCE: `external/reddit_post.md:40-46`]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-3-what-it-documents-the-post-does-not-rely-on-one-noisy-denominator-it-gives-three",
+      "text": "What it documents: The post does not rely on one noisy denominator. It gives three distinct signals for cache-expiry dominance: **behavioral prevalence** (54% of measured turns), **event severity** (232 cliff events), and **budget exposure** (12.3M tokens, ~7.5% of total input budget).",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-11-what-it-documents-the-post-s-actual-disable-signal-is-not-just-2-invocations-it-",
+      "text": "What it documents: The post's actual disable signal is not just `<=2 invocations`. It uses a **reasoned review queue**: never used, low frequency, or errors on every run.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-4-why-it-closes-the-gap-this-is-enough-evidence-to-stop-looking-for-a-better-sourc",
+      "text": "Why it closes the gap: This is enough evidence to stop looking for a better source-side framing. Final synthesis should model cache expiry with those three layers together, while keeping the 926-vs-858 and 11,357-vs-18,903 denominator mismatches explicit instead of collapsing them into one \"true\" rate.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-12-why-it-closes-the-gap-this-is-the-missing-threshold-refinement-in-synthesis-publ",
+      "text": "Why it closes the gap: This is the missing threshold refinement. In synthesis, Public can say the strongest post-backed evidence for disable review is **never used** or **errors on every run**; **low frequency alone** should enter human impact review rather than trigger automatic disablement. That is a stronger and more faithful rule than \"usage plus impact review\" without explicit source-backed buckets.",
+      "addedAtIteration": 7,
+      "sources": []
+    }
+  ],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 11,
+    "openQuestions": 5,
+    "resolvedQuestions": 0,
+    "keyFindings": 341,
+    "convergenceScore": 0.18,
+    "coverageBySources": {}
+  }
+}

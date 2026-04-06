@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/019-cmd-create-skill-merger",
+  "specFolder": "skilled-agent-orchestration/z_archive/019-cmd-create-skill-merger",
   "description": "Feature Specification: Create Skill Merger",
   "keywords": [
     "feature",
@@ -8,11 +8,12 @@
     "skill",
     "merger"
   ],
-  "lastUpdated": "2026-04-02T17:21:40.626Z",
+  "lastUpdated": "2026-04-06T09:57:54.564Z",
   "specId": "019",
   "folderSlug": "cmd-create-skill-merger",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -1,0 +1,1216 @@
+{
+  "openQuestions": [
+    {
+      "id": "question-1-q1-how-does-the-ast-extraction-pipeline-really-work-in-external-src-index-ts-det",
+      "text": "Q1. How does the AST extraction pipeline really work in `external/src/index.ts` -> detectors -> `src/ast/loader.ts`, and how often do detectors fall back to regex or structured parsing?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-which-frameworks-listed-in-src-types-ts-actually-receive-ast-backed-route-ext",
+      "text": "Q2. Which frameworks listed in `src/types.ts` actually receive AST-backed route extraction in `src/detectors/routes.ts` + `src/ast/extract-routes.ts`, versus regex-only or shallow detection?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-how-does-one-full-detector-pipeline-hono-or-nestjs-work-end-to-end-dependency",
+      "text": "Q3. How does one full detector pipeline (Hono or NestJS) work end to end: dependency heuristic, file filtering, AST walk, prefix tracking, param + middleware extraction, contract enrichment?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-how-are-orm-schemas-parsed-across-drizzle-prisma-typeorm-sqlalchemy-and-gorm-",
+      "text": "Q4. How are ORM schemas parsed across Drizzle, Prisma, TypeORM, SQLAlchemy, and GORM in `src/detectors/schema.ts` + `src/ast/extract-schema.ts`, and where is each path AST-backed vs regex vs structured-file parsing?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-what-does-the-zero-dependency-claim-really-mean-in-practice-how-does-src-ast-",
+      "text": "Q5. What does the zero-dependency claim really mean in practice: how does `src/ast/loader.ts` borrow project-local TypeScript, what fallbacks fire when it is missing, and what are the operational tradeoffs?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-6-q6-what-exact-8-mcp-tools-does-src-mcp-server-ts-expose-how-does-it-manage-sessi",
+      "text": "Q6. What exact 8 MCP tools does `src/mcp-server.ts` expose, how does it manage session-cached scan state, and how does that compare with `Code_Environment/Public`'s existing MCP and search surfaces (Spec Kit Memory, Code Graph, CocoIndex)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-7-q7-how-does-src-detectors-blast-radius-ts-work-internally-how-is-the-import-grap",
+      "text": "Q7. How does `src/detectors/blast-radius.ts` work internally: how is the import graph built in `src/detectors/graph.ts`, how does reverse BFS traverse it, and where are model-impact and middleware overlays heuristic rather than exact?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-8-q8-how-does-src-generators-ai-config-ts-differentiate-per-tool-profiles-for-clau",
+      "text": "Q8. How does `src/generators/ai-config.ts` differentiate per-tool profiles for Claude Code, Cursor, Codex, Copilot, and Windsurf, and which patterns are transferable to Public's AI-assistant guidance files?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-9-q9-what-is-the-role-of-dependency-graph-hot-file-ranking-as-a-change-carefully-s",
+      "text": "Q9. What is the role of dependency-graph hot-file ranking as a \"change carefully\" surface, and could a similar capability complement Code Graph MCP and CocoIndex in Public?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-10-q10-how-well-do-src-eval-ts-eval-readme-md-eval-fixtures-and-tests-detectors-tes",
+      "text": "Q10. How well do `src/eval.ts`, `eval/README.md`, `eval/fixtures/`, and `tests/detectors.test.ts` actually validate the README's headline claims (token savings, detector coverage, blast radius), and where does the README overreach the fixture set?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-11-q11-what-architectural-value-comes-from-separating-static-codesight-artifacts-fr",
+      "text": "Q11. What architectural value comes from separating static `.codesight/` artifacts from query-time MCP tools, and how should that boundary inform Public's own context-system design?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-12-q12-which-codesight-ideas-overlap-dangerously-with-phases-003-contextador-and-00",
+      "text": "Q12. Which Codesight ideas overlap dangerously with phases 003 (contextador) and 004 (graphify), and which are uniquely scoped to phase 002 because they center on AST detector design and per-tool context generation?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [
+    {
+      "id": "finding-1-27-affected-area-ai-assistant-context-generation-per-tool-config-profiles",
+      "text": "Affected area: AI-assistant context generation, per-tool config profiles",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-13-affected-area-ast-analysis-pipeline",
+      "text": "Affected area: AST analysis pipeline",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-20-affected-area-framework-orm-detector-architecture",
+      "text": "Affected area: framework/ORM detector architecture",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-34-affected-area-mcp-tool-design-blast-radius",
+      "text": "Affected area: MCP tool design, blast radius",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-6-affected-area-orchestration-pipeline",
+      "text": "Affected area: orchestration pipeline",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-19-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-26-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-33-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-21-risk-cost-low-the-main-work-is-defining-a-stable-project-fingerprint-contract-th",
+      "text": "Risk/cost: low - the main work is defining a stable project fingerprint contract that existing analyzers can consume.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-14-risk-cost-medium-capability-depends-on-target-repo-layout-and-package-manager-be",
+      "text": "Risk/cost: medium - capability depends on target repo layout and package manager behavior, so observability and fallback reporting are necessary.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-28-risk-cost-medium-direct-file-emission-into-assistant-instruction-files-can-confl",
+      "text": "Risk/cost: medium - direct file emission into assistant instruction files can conflict with repo-owned guidance unless carefully namespaced.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-35-risk-cost-medium-freshness-and-invalidation-rules-must-be-explicit-or-assistants",
+      "text": "Risk/cost: medium - freshness and invalidation rules must be explicit or assistants will over-trust stale cached analysis.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-7-risk-cost-medium-it-requires-consolidating-existing-context-producing-paths-arou",
+      "text": "Risk/cost: medium - it requires consolidating existing context-producing paths around a shared result model before adding new projections.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-8-source-external-package-json-10-15-external-package-json-44-50-external-src-ast-",
+      "text": "Source: `external/package.json:10-15`, `external/package.json:44-50`, `external/src/ast/loader.ts:14-49`, `external/src/detectors/routes.ts:221-230`, `external/src/detectors/routes.ts:411-420`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-22-source-external-src-generators-ai-config-ts-14-68-external-src-generators-ai-con",
+      "text": "Source: `external/src/generators/ai-config.ts:14-68`, `external/src/generators/ai-config.ts:71-157`, `external/src/generators/ai-config.ts:164-264`, `external/src/index.ts:435-444`, `external/src/index.ts:530-536`, `external/src/types.ts:141-152`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-29-source-external-src-index-ts-366-370-external-src-mcp-server-ts-16-19-external-s",
+      "text": "Source: `external/src/index.ts:366-370`, `external/src/mcp-server.ts:16-19`, `external/src/mcp-server.ts:41-85`, `external/src/mcp-server.ts:89-288`, `external/src/mcp-server.ts:292-398`, `external/src/mcp-server.ts:402-534`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-1-source-external-src-index-ts-75-195-external-src-index-ts-382-400-external-src-i",
+      "text": "Source: `external/src/index.ts:75-195`, `external/src/index.ts:382-400`, `external/src/index.ts:402-444`, `external/src/index.ts:493-541`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-15-source-external-src-scanner-ts-97-167-external-src-scanner-ts-169-330-external-s",
+      "text": "Source: `external/src/scanner.ts:97-167`, `external/src/scanner.ts:169-330`, `external/src/types.ts:1-45`, `external/src/detectors/routes.ts:32-120`, `external/src/detectors/schema.ts:18-40`",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-30-what-it-does-mcp-exits-the-normal-cli-path-and-starts-a-raw-json-rpc-over-stdio-",
+      "text": "What it does: `--mcp` exits the normal CLI path and starts a raw JSON-RPC-over-stdio server with a per-directory cached scan result. The tool surface is intentionally narrow: full scan, summary, routes, schema, blast radius, env vars, hot files, and refresh, all backed by the same cached scan pipeline.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-16-what-it-does-detectproject-builds-a-projectinfo-fingerprint-first-including-fram",
+      "text": "What it does: `detectProject()` builds a `ProjectInfo` fingerprint first, including frameworks, ORMs, component framework, language, and monorepo workspaces; for monorepos it aggregates workspace dependencies back into top-level detection. Route and schema scanning then switch over `project.frameworks` and `project.orms` rather than rediscovering stack information inside each detector.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-23-what-it-does-generateaiconfigs-builds-one-generic-narrative-summary-and-writes-o",
+      "text": "What it does: `generateAIConfigs()` builds one generic narrative summary and writes or appends it into assistant-specific files such as `CLAUDE.md`, `.cursorrules`, `.github/copilot-instructions.md`, `codex.md`, and `AGENTS.md`. `generateProfileConfig()` then creates tighter tool-specific variants, with the Claude profile explicitly instructing the assistant to read `.codesight/CODESIGHT.md` first and use narrow MCP tools for routes, schema, and blast radius.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-9-what-it-does-package-json-defines-only-devdependencies-and-no-runtime-dependenci",
+      "text": "What it does: `package.json` defines only `devDependencies` and no runtime `dependencies`, while `loadTypeScript(projectRoot)` tries three strategies to borrow the target repo’s compiler: `createRequire(projectRoot/package.json)`, direct `node_modules/typescript`, then pnpm `.pnpm/typescript@*`. If all three fail, it caches `null` and route detectors like Hono and NestJS drop to regex parsing instead of AST extraction.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-2-what-it-does-scan-performs-the-core-pipeline-once-detectproject-collectfiles-par",
+      "text": "What it does: `scan()` performs the core pipeline once: `detectProject()`, `collectFiles()`, parallel detector fan-out, plugin detector merge, `enrichRouteContracts()`, `writeOutput()`, token-stat calculation, then a second `writeOutput()` with accurate token counts. `main()` loads config, runs that scan once, then layers optional modes on top of the same `result` object for telemetry, JSON, AI config generation, HTML, benchmark output, blast radius, profile generation, and watch mode.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-3-why-it-matters-code-environment-public-can-borrow-this-shape-to-keep-code-graph-",
+      "text": "Why it matters: Code_Environment/Public can borrow this shape to keep code-graph/context generation, assistant-facing output, and MCP responses aligned to one analysis artifact instead of maintaining parallel pipelines that drift.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-24-why-it-matters-code-environment-public-should-likely-borrow-the-split-between-a-",
+      "text": "Why it matters: Code_Environment/Public should likely borrow the split between a canonical summary generator and per-tool overlays, but not the direct “write root instruction files” behavior; the better fit is to emit into existing `.codex`, spec-packet, or prompt-wrapper surfaces.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-31-why-it-matters-for-code-environment-public-this-suggests-an-mcp-pattern-where-as",
+      "text": "Why it matters: For Code_Environment/Public, this suggests an MCP pattern where assistants ask focused questions against a cached structural snapshot instead of repeatedly materializing whole-repo context, which could complement existing memory/code-graph tools well.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-17-why-it-matters-this-architecture-is-a-good-fit-for-code-environment-public-becau",
+      "text": "Why it matters: This architecture is a good fit for Code_Environment/Public because it makes detector extension cheap, keeps stack heuristics in one place, and supports mixed-stack repos without forcing every detector to understand workspace layout.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-10-why-it-matters-this-is-a-strong-low-footprint-pattern-for-analyzing-arbitrary-re",
+      "text": "Why it matters: This is a strong low-footprint pattern for analyzing arbitrary repos, but Code_Environment/Public should expose AST capability as an explicit mode or status flag so downstream tools know when they are running with degraded precision.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-2-6-affected-area-ast-analysis-pipeline",
+      "text": "Affected area: AST analysis pipeline",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-13-affected-area-contract-enrichment-pipeline",
+      "text": "Affected area: contract enrichment pipeline",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-20-affected-area-framework-specific-route-detector-architecture",
+      "text": "Affected area: framework-specific route detector architecture",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-27-affected-area-orm-schema-detector-architecture",
+      "text": "Affected area: ORM/schema detector architecture",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-19-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-26-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-14-risk-cost-low-the-behavior-is-predictable-but-consumers-must-treat-regex-routes-",
+      "text": "Risk/cost: low - the behavior is predictable, but consumers must treat `regex` routes as lower-fidelity inputs.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-28-risk-cost-medium-missing-indexes-and-approximate-relations-model-matching-limit-",
+      "text": "Risk/cost: medium - missing indexes and approximate `relations()` model matching limit completeness for downstream graph or contract features.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-7-risk-cost-medium-the-ast-path-depends-on-being-able-to-load-the-analyzed-repo-s-",
+      "text": "Risk/cost: medium - the AST path depends on being able to load the analyzed repo's `typescript`, and it only handles literal path strings.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-21-risk-cost-medium-the-decorator-parser-is-intentionally-shallow-and-will-miss-non",
+      "text": "Risk/cost: medium - the decorator parser is intentionally shallow and will miss non-string decorator arguments or richer metadata objects.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-1-source-external-src-detectors-routes-ts-206-248-external-src-ast-extract-routes-",
+      "text": "Source: `external/src/detectors/routes.ts:206-248`, `external/src/ast/extract-routes.ts:25-50,55-142`, `external/src/ast/loader.ts:14-61`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-8-source-external-src-detectors-routes-ts-230-245-external-src-detectors-contracts",
+      "text": "Source: `external/src/detectors/routes.ts:230-245`, `external/src/detectors/contracts.ts:9-68,70-96`, `external/src/types.ts:56-67`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-15-source-external-src-detectors-routes-ts-396-442-external-src-ast-extract-routes-",
+      "text": "Source: `external/src/detectors/routes.ts:396-442`, `external/src/ast/extract-routes.ts:157-248`, `external/src/ast/loader.ts:64-105`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-22-source-external-src-detectors-schema-ts-48-147-external-src-ast-extract-schema-t",
+      "text": "Source: `external/src/detectors/schema.ts:48-147`, `external/src/ast/extract-schema.ts:18-29,49-129,132-194,196-260`, `external/src/types.ts:69-80`",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-23-what-it-does-detectdrizzleschemas-narrows-to-likely-schema-db-files-checks-for-p",
+      "text": "What it does: `detectDrizzleSchemas()` narrows to likely schema/db files, checks for `pgTable/mysqlTable/sqliteTable`, and then prefers `extractDrizzleSchemaAST(...)`. The AST path walks `CallExpression`s for those table constructors, accepts either an object literal or an arrow/function returning one for the field map, parses chained calls like `serial(\"id\").primaryKey().notNull()` into `type` plus flags, extracts `.references(() => users.id)` targets, auto-adds `fk` by `*Id` naming, and separately walks `relations(table, () => ({ ... }))` for `one(...)` and `many(...)`; the regex fallback only handles exported `const x = pgTable(\"name\", { ... })`-style literals plus simple field and relations regexes. No inspected AST or regex path handles Drizzle indexes.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-2-what-it-does-detecthonoroutes-filters-ts-js-like-files-checks-for-hono-markers-b",
+      "text": "What it does: `detectHonoRoutes()` filters TS/JS-like files, checks for `hono` markers, borrows the target repo's TypeScript compiler with `loadTypeScript(project.root)`, and calls `extractRoutesAST(...)` before any regex. The AST walker parses a `SourceFile`, visits every `CallExpression`, records `.use('/prefix', routerVar)` into a prefix map, detects `.get/.post/.put/...` calls with literal path arguments, joins the registered prefix to the receiver's route path, extracts path params from the final path, and records identifier middleware from later call arguments.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-16-what-it-does-nestjs-is-not-regex-only-in-practice-extractnestjsroutes-visits-cla",
+      "text": "What it does: NestJS is not regex-only in practice: `extractNestJSRoutes()` visits `ClassDeclaration` nodes, uses `getDecorators()` to support both TS 4.x `node.decorators` and TS 5.x modifier-based decorators, parses `@Controller(...)` to get the controller prefix, then walks method decorators for `@Get/@Post/@Put/...`, joins controller and method paths, extracts `@Param(...)` names from method parameters, and collects `@UseGuards(...)` from class and method decorators into `middleware`. The fallback regex path only grabs one file-level `@Controller(...)` prefix and scans every HTTP decorator in the file, so it loses class-to-method association and only understands the first string decorator argument.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-9-what-it-does-when-typescript-is-unavailable-or-ast-extraction-yields-no-routes-h",
+      "text": "What it does: When TypeScript is unavailable or AST extraction yields no routes, Hono falls back to `/\\\\.(get|post|put|patch|delete|options|all)\\\\( ['\\\"\\`]path/` matching and only emits routes whose literal path starts with `/` or `:`. That fallback sets `confidence: \"regex\"` but does not populate `params` or `middleware`; `enrichRouteContracts()` later re-reads each route file once, backfills params from `route.path`, and uses file-level regexes like `c.json<Type>(...)` and `zValidator(...)` to infer types, but it does not reconstruct `.use()` prefix chains or middleware that were missed upstream.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-10-why-it-matters-code-environment-public-can-safely-consume-degraded-route-results",
+      "text": "Why it matters: Code_Environment/Public can safely consume degraded route results if confidence is surfaced clearly, but it should not assume later enrichment fixes structural omissions introduced by regex-only detection.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-24-why-it-matters-this-is-a-promising-schema-summarizer-for-code-environment-public",
+      "text": "Why it matters: This is a promising schema summarizer for Code_Environment/Public, but it should be treated as a table/column/relation detector rather than a full schema model until index coverage exists.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-3-why-it-matters-this-is-a-reusable-pattern-for-code-environment-public-when-route",
+      "text": "Why it matters: This is a reusable pattern for Code_Environment/Public when route precision matters but shipping a bundled compiler is undesirable; it shows an AST path that adds structurally useful data beyond simple method/path pairs.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-17-why-it-matters-this-is-the-strongest-source-backed-example-in-codesight-of-ast-m",
+      "text": "Why it matters: This is the strongest source-backed example in Codesight of AST materially outperforming regex; if Code_Environment/Public wants framework-specific AST work, decorator-heavy frameworks are where the payoff is clearest.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-3-20-affected-area-blast-radius",
+      "text": "Affected area: blast radius",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-34-affected-area-blast-radius-multi-file-reporting",
+      "text": "Affected area: blast radius, multi-file reporting",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-27-affected-area-blast-radius-schema-impact",
+      "text": "Affected area: blast radius, schema impact",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-6-affected-area-dependency-graph",
+      "text": "Affected area: dependency graph",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-13-affected-area-dependency-graph-hot-file-ranking",
+      "text": "Affected area: dependency graph, hot file ranking",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-41-affected-area-mcp-tool-design-cache-lifecycle",
+      "text": "Affected area: MCP tool design, cache lifecycle",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-39-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-33-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-5-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-26-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-40-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-19-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-35-risk-cost-low-the-approach-is-easy-to-understand-and-cheap-to-compute",
+      "text": "Risk/cost: low. The approach is easy to understand and cheap to compute.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-14-risk-cost-low-the-heuristic-is-understandable-but-the-naming-should-stay-honest",
+      "text": "Risk/cost: low. The heuristic is understandable, but the naming should stay honest.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-7-risk-cost-medium-it-is-simple-to-port-but-easy-to-over-trust-in-real-monorepos-o",
+      "text": "Risk/cost: medium. It is simple to port, but easy to over-trust in real monorepos or custom alias setups.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-21-risk-cost-medium-the-algorithm-is-small-but-incorrect-depth-reporting-can-mislea",
+      "text": "Risk/cost: medium. The algorithm is small, but incorrect depth reporting can mislead impact estimates.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-28-risk-cost-medium-the-mixed-confidence-output-can-create-false-confidence-unless-",
+      "text": "Risk/cost: medium. The mixed-confidence output can create false confidence unless surfaced explicitly.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-42-risk-cost-medium-the-ux-is-strong-but-manual-protocol-and-manual-refresh-increas",
+      "text": "Risk/cost: medium. The UX is strong, but manual protocol and manual refresh increase maintenance risk.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-22-source-external-src-detectors-blast-radius-ts-54-75-external-src-detectors-blast",
+      "text": "Source: `external/src/detectors/blast-radius.ts:54-75`, `external/src/detectors/blast-radius.ts:91-127`, `external/src/index.ts:493-527`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-15-source-external-src-detectors-blast-radius-ts-7-18-external-src-detectors-blast-",
+      "text": "Source: `external/src/detectors/blast-radius.ts:7-18`, `external/src/detectors/blast-radius.ts:19-49`, `external/src/detectors/blast-radius.ts:77-84`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-29-source-external-src-detectors-blast-radius-ts-91-127",
+      "text": "Source: `external/src/detectors/blast-radius.ts:91-127`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-8-source-external-src-detectors-graph-ts-49-55-external-src-types-ts-127-139-exter",
+      "text": "Source: `external/src/detectors/graph.ts:49-55`, `external/src/types.ts:127-139`, `external/src/types.ts:156-159`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-1-source-external-src-detectors-graph-ts-5-55-external-src-detectors-graph-ts-58-9",
+      "text": "Source: `external/src/detectors/graph.ts:5-55`, `external/src/detectors/graph.ts:58-99`, `external/src/detectors/graph.ts:219-237`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-36-source-external-src-mcp-server-ts-35-49-external-src-mcp-server-ts-51-85-externa",
+      "text": "Source: `external/src/mcp-server.ts:35-49`, `external/src/mcp-server.ts:51-85`, `external/src/mcp-server.ts:89-288`, `external/src/mcp-server.ts:292-398`, `external/src/mcp-server.ts:402-534`, `external/src/index.ts:366-370`",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-23-what-it-does-affected-routes-are-any-routes-whose-file-is-in-the-affected-set-an",
+      "text": "What it does: Affected routes are any routes whose `file` is in the affected set, and affected middleware is any middleware entry whose `file` is affected. Affected models are inferred much more loosely: for each schema, the code checks whether any affected file owns a route tagged `db`, and if so it adds the schema name, regardless of whether that schema is referenced from that route or file.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-37-what-it-does-all-tools-call-getscanresult-which-caches-one-scanresult-per-resolv",
+      "text": "What it does: All tools call `getScanResult()`, which caches one `ScanResult` per resolved root and reuses it until either the root changes or `codesight_refresh` clears the cache. The server exposes tools via `tools/list`, wraps every tool result as `content: [{ type: \"text\", text: ... }]`, hand-parses `Content-Length` framed JSON-RPC messages from stdin, and never checks mtimes or file hashes for automatic staleness detection.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-9-what-it-does-codesight-increments-importcount-only-when-a-file-is-imported-then-",
+      "text": "What it does: Codesight increments `importCount` only when a file is imported, then sorts descending by that count and returns the top 20 as `hotFiles`. There is no degree centrality, no outgoing-edge weighting, and no use of the `hotFileThreshold` config type declared in `types.ts`.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-2-what-it-does-for-ts-js-codesight-scans-each-code-file-with-regexes-for-import-ex",
+      "text": "What it does: For TS/JS, Codesight scans each code file with regexes for `import/export ... from`, dynamic `import()`, and `require()`. It only keeps imports starting with `.` or the hard-coded aliases `@/` and `~/`, resolves relative imports against the current file, rewrites `@/` and `~/` to `src/`, strips emitted `.js/.mjs/.cjs`, then tries exact file, extension, and `index.*` matches against the project file set.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-30-what-it-does-multi-file-mode-normalizes-each-input-path-runs-analyzeblastradius-",
+      "text": "What it does: Multi-file mode normalizes each input path, runs `analyzeBlastRadius()` once per file, unions affected files, dedupes routes by `path + method`, and dedupes models and middleware with sets. It removes the original input files from `affectedFiles` and reports the combined source list as a comma-joined `file` string.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-16-what-it-does-the-detector-builds-importedby-and-imports-maps-from-the-graph-then",
+      "text": "What it does: The detector builds `importedBy` and `imports` maps from the graph, then runs BFS over `importedBy` so a changed file fans out to files that import it directly or transitively. Cycles are contained by the `affected` set, but dependents are added to `affected` before the queued node’s depth is checked, so nodes one hop beyond `maxDepth` can still appear in the final result.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-10-why-it-matters-the-implementation-is-closer-to-most-depended-on-files-than-graph",
+      "text": "Why it matters: The implementation is closer to “most depended-on files” than “graph centrality.” If we reuse this idea in `Code_Environment/Public`, we should name it accordingly and avoid implying richer graph math than the code actually performs.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-24-why-it-matters-the-route-and-middleware-overlays-are-plausible-projections-from-",
+      "text": "Why it matters: The route and middleware overlays are plausible projections from the graph, but the model layer is not provenance-backed. For `Code_Environment/Public`, this is a useful UX pattern only if schema impact is clearly labeled as heuristic or upgraded to a real usage graph.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-17-why-it-matters-the-traversal-direction-is-right-for-change-impact-but-the-curren",
+      "text": "Why it matters: The traversal direction is right for change impact, but the current depth semantics are looser than advertised. If `Code_Environment/Public` adopts a similar BFS, depth enforcement should happen before adding descendants to the result set.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-38-why-it-matters-this-is-a-useful-assistant-facing-pattern-because-it-serves-curat",
+      "text": "Why it matters: This is a useful assistant-facing pattern because it serves curated summaries rather than raw detector objects, but freshness is entirely caller-driven. In `Code_Environment/Public`, the interface design is worth borrowing; the cache invalidation and protocol handling probably need hardening.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-3-why-it-matters-this-is-lightweight-and-cheap-but-it-is-not-a-build-accurate-reso",
+      "text": "Why it matters: This is lightweight and cheap, but it is not a build-accurate resolver for tsconfig path aliases, package exports, or node_modules. In `Code_Environment/Public`, this pattern is a good seed graph, but not enough if we want trustworthy cross-package or alias-heavy dependency analysis.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-31-why-it-matters-this-is-operationally-simple-and-predictable-but-it-does-not-dete",
+      "text": "Why it matters: This is operationally simple and predictable, but it does not detect interactions between changed files beyond set union. In `Code_Environment/Public`, that may be enough for review-time change summaries, but not for deeper impact modeling.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-4-10-claude-code-claude-md-instructs-the-assistant-to-read-codesight-codesight-md-fir",
+      "text": "`claude-code` → `CLAUDE.md`: instructs the assistant to read `.codesight/CODESIGHT.md` first and lists 4 specific MCP tool calls (`codesight_get_summary`, `codesight_get_routes --prefix /api/users`, `codesight_get_blast_radius --file src/lib/db.ts`, `codesight_get_schema --model users`), and reports `tokenStats.saved` to motivate the workflow. It also has a regex-based replace path that overwrites a prior `# AI Context...` block in-place.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-12-codex-codex-md-minimal-single-line-pointer-to-codesight-codesight-md-plus-a-rout",
+      "text": "`codex` → `codex.md`: minimal single-line pointer to `.codesight/CODESIGHT.md` plus a \"Routes/Schema/Dependencies\" file map, written as a self-contained file (no append).",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-13-copilot-github-copilot-instructions-md-similar-minimal-pointer-creates-github-if",
+      "text": "`copilot` → `.github/copilot-instructions.md`: similar minimal pointer; creates `.github/` if missing.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-11-cursor-cursorrules-gives-a-4-step-file-reading-order-codesight-md-routes-md-sche",
+      "text": "`cursor` → `.cursorrules`: gives a 4-step file-reading order (`CODESIGHT.md`, `routes.md`, `schema.md`, `graph.md`) and an explicit \"Do not crawl the file tree\" directive.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-15-default-no-profile-falls-back-to-generateaiconfigs-and-writes-everything",
+      "text": "`default` (no profile) falls back to `generateAIConfigs()` and writes everything.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-14-windsurf-windsurfrules-same-minimal-pointer-using-windsurf-s-expected-filename",
+      "text": "`windsurf` → `.windsurfrules`: same minimal pointer using Windsurf's expected filename.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-6-affected-area-ai-assistant-context-generation",
+      "text": "Affected area: AI-assistant context generation",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-19-affected-area-ai-assistant-context-generation-per-tool-config-profiles",
+      "text": "Affected area: AI-assistant context generation, per-tool config profiles",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-33-affected-area-benchmark-methodology-marketing-vs-engineering-boundary",
+      "text": "Affected area: benchmark methodology, marketing-vs-engineering boundary",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-26-affected-area-benchmark-methodology-regression-testing",
+      "text": "Affected area: benchmark methodology, regression testing",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-47-affected-area-benchmark-methodology-regression-testing",
+      "text": "Affected area: benchmark methodology, regression testing",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-40-affected-area-detector-regression-testing",
+      "text": "Affected area: detector regression testing",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-31-evidence-type-readme-level-claim-source-confirmed-gap",
+      "text": "Evidence type: README-level (claim) + source-confirmed (gap)",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-17-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-24-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-45-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-38-evidence-type-test-confirmed",
+      "text": "Evidence type: test-confirmed",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-18-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-25-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-39-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-46-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-5-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-32-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-48-risk-cost-low-the-format-is-trivially-easy-to-author-and-to-consume",
+      "text": "Risk/cost: low - the format is trivially easy to author and to consume.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-34-risk-cost-low-the-gap-is-purely-a-documentation-credibility-risk-easy-to-side-st",
+      "text": "Risk/cost: low - the gap is purely a documentation/credibility risk, easy to side-step if we resist quoting the number.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-27-risk-cost-low-the-harness-is-245-lines-has-no-external-dependencies-and-its-limi",
+      "text": "Risk/cost: low - the harness is ~245 lines, has no external dependencies, and its limitations (no variance, no token-savings) are explicit in source.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-20-risk-cost-low-the-layout-is-small-and-easy-to-lift-the-work-is-in-choosing-which",
+      "text": "Risk/cost: low - the layout is small and easy to lift; the work is in choosing which instructions are accurate for each runtime.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-41-risk-cost-low-the-pattern-is-about-500-loc-for-full-detector-coverage-and-would-",
+      "text": "Risk/cost: low - the pattern is about 500 LOC for full detector coverage and would be a small lift.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-7-risk-cost-medium-direct-emission-to-top-level-instruction-files-conflicts-with-r",
+      "text": "Risk/cost: medium - direct emission to top-level instruction files conflicts with repos that already own `CLAUDE.md`/`AGENTS.md`/etc. unless namespacing or marker comments are added.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-42-source-external-eval-fixtures-hono-monorepo-ground-truth-json-1-33",
+      "text": "Source: `external/eval/fixtures/hono-monorepo/ground-truth.json:1-33`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-28-source-external-readme-md-52-64-external-eval-readme-md-1-37-external-eval-fixtu",
+      "text": "Source: `external/README.md:52-64`, `external/eval/README.md:1-37`, `external/eval/fixtures/` (5 directories: `express-prisma`, `fastapi-sqlalchemy`, `gin-gorm`, `hono-monorepo`, `nextjs-drizzle`), `external/src/eval.ts:43-244`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-21-source-external-src-eval-ts-43-68-external-src-eval-ts-85-149-external-src-eval-",
+      "text": "Source: `external/src/eval.ts:43-68`, `external/src/eval.ts:85-149`, `external/src/eval.ts:161-244`, `external/eval/README.md:1-37`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-1-source-external-src-generators-ai-config-ts-14-69-external-src-generators-ai-con",
+      "text": "Source: `external/src/generators/ai-config.ts:14-69`, `external/src/generators/ai-config.ts:71-158`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-8-source-external-src-generators-ai-config-ts-164-264",
+      "text": "Source: `external/src/generators/ai-config.ts:164-264`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-35-source-external-tests-detectors-test-ts-34-269-route-detection-block-14-tests-co",
+      "text": "Source: `external/tests/detectors.test.ts:34-269` (Route Detection block: 14 tests covering Hono, Express, Fastify, NestJS, tRPC, SvelteKit, Remix, Nuxt, Next.js App Router, FastAPI, Django, Elysia, plus a raw HTTP catch-all), `external/tests/detectors.test.ts:271-321` (Schema Detection: Drizzle and Prisma), `external/tests/detectors.test.ts:325-498` (Components, Dependency Graph, Config, Middleware, Framework Detection blocks)",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-2-what-it-does-generatecontext-result-builds-one-narrative-paragraph-from-project-",
+      "text": "What it does: `generateContext(result)` builds one narrative paragraph from `project`, `routes`, `schemas`, `components`, `middleware`, `config.envVars`, and `graph.hotFiles`, ending with a \"Read .codesight/CODESIGHT.md\" pointer. `generateAIConfigs(result, root)` then writes that same summary into `CLAUDE.md`, `.cursorrules`, `.github/copilot-instructions.md` (only if `.github` already exists), `codex.md`, and `AGENTS.md`. The CLAUDE.md path is the only one with append-aware behavior: if `CLAUDE.md` exists and does not already mention \"codesight\"/\"CODESIGHT\", it appends an `# AI Context (auto-generated by codesight)` block instead of overwriting. The other four paths only write when the file does not exist, so they will silently no-op on repos that already have those files.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-9-what-it-does-generateprofileconfig-result-root-profile-first-builds-a-compact-1-",
+      "text": "What it does: `generateProfileConfig(result, root, profile)` first builds a compact ~1-2k token summary (stack, monorepo workspaces, route/model/env counts, top API areas, top 5 hot files, required env vars), then `switch (profile)` writes meaningfully different content per target:",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-22-what-it-does-runeval-reads-each-fixture-s-repo-json-file-content-map-materialize",
+      "text": "What it does: `runEval()` reads each fixture's `repo.json` (file content map), materializes a temp directory, runs `detectProject` + `collectFiles` + the 5 detectors (`detectRoutes`, `detectSchemas`, `detectComponents`, `detectConfig`, `detectMiddleware`) in parallel, then compares detected sets to the fixture's `ground-truth.json` for routes (`method:path`), models (lowercased name), env vars, and optionally components and middleware. `calcMetrics()` computes precision = TP/(TP+FP), recall = TP/(TP+FN), F1 = harmonic mean with the same `(empty,empty) → 1.0` convention as scikit-learn. Output is per-fixture metric tables plus an unweighted average across all fixture/category pairs. There is no token-savings measurement, no statistical test, no confidence interval, no run-to-run variance, and `runtime` is wall-clock for one detector pass per fixture.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-43-what-it-does-hand-curated-json-with-11-expected-routes-some-duplicated-paths-acr",
+      "text": "What it does: Hand-curated JSON with 11 expected routes (some duplicated paths across HTTP methods), 2 expected models with ordered field arrays and named relations, 2 expected components with named props, 3 expected env vars, and 1 expected middleware (\"auth\"). Notably, `routes` has multiple identical `/` and `/:id` entries because the harness compares `method:path` strings; the duplication is real, not a typo.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-29-what-it-does-the-readme-presents-one-benchmarks-table-with-three-projects-saas-a",
+      "text": "What it does: The README presents one Benchmarks table with three projects (\"SaaS A: Hono + Drizzle 4 workspaces, 12.9x\", \"SaaS B: raw HTTP + Drizzle, 11.7x\", \"SaaS C: Hono + Drizzle 3 workspaces, 9.1x\") averaged to 11.2x. None of these three SaaS codebases are present under `external/eval/fixtures/`; the fixture set covers different stacks (Express/Prisma, FastAPI/SQLAlchemy, Gin/GORM, Hono monorepo, Next.js/Drizzle). The reproducible `eval.ts` harness measures precision/recall/F1 only, never token counts, so there is no path inside this checkout to reproduce or falsify the 11.2x headline.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-36-what-it-does-the-test-file-uses-node-s-built-in-node-test-runner-builds-inline-f",
+      "text": "What it does: The test file uses Node's built-in `node:test` runner, builds inline fixtures with `writeFixture(...)`, and dynamically imports compiled detector modules from `dist/`. Route Detection runs 14 named cases for HTTP frameworks and asserts both count and at least one specific path/method. Schema Detection covers Drizzle (with chained `.notNull().unique()` field flag assertions) and Prisma (file-existence + count check). The Framework Detection block adds 7 more frameworks asserted from package.json alone (NestJS, tRPC, SvelteKit, Remix, Nuxt, Elysia, monorepo).",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-23-why-it-matters-for-code-environment-public-the-right-takeaway-is-an-f1-harness-a",
+      "text": "Why it matters: For `Code_Environment/Public`, the right takeaway is: an F1 harness against ground-truth fixtures is the strongest piece of \"evidence\" Codesight ships, and it could be lifted as a pattern for detector or context-generator regression. But it does NOT validate the headline \"11.2x token reduction\" claim; the reproducible eval is about detector correctness only.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-44-why-it-matters-for-code-environment-public-this-is-a-tiny-but-instructive-ground",
+      "text": "Why it matters: For `Code_Environment/Public`, this is a tiny but instructive ground-truth schema: it costs almost nothing to write, produces verifiable F1 numbers, and is the kind of artifact a context-generation regression test could share with `system-spec-kit`'s validation infrastructure. The risk to flag: ground-truth quality directly determines the meaning of every metric, and Codesight has only 5 such fixtures.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-3-why-it-matters-for-code-environment-public-this-proves-a-useful-mid-cost-adoptio",
+      "text": "Why it matters: For `Code_Environment/Public`, this proves a useful mid-cost adoption path: re-use one canonical project summary, but treat each assistant target as a write boundary that can either no-op, append a marker section, or refuse to clobber. The Codesight code is also a good cautionary example: only CLAUDE.md gets a real upsert path; the others are first-write-wins, which would be unsafe in repos that already maintain assistant-specific guidance.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-30-why-it-matters-for-code-environment-public-treat-token-savings-claims-as-promoti",
+      "text": "Why it matters: For `Code_Environment/Public`, treat token-savings claims as promotional unless we own the measurement. Adopt the F1 fixture pattern, but if we want to make our own savings claim we must (a) instrument a token counter against the same fixture set and (b) define an explicit \"manual exploration\" baseline rather than borrow Codesight's number.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-16-why-it-matters-this-is-the-most-directly-transferable-pattern-in-codesight-code-",
+      "text": "Why it matters: This is the most directly transferable pattern in Codesight. `Code_Environment/Public` could borrow the \"shared summary + per-tool instruction overlay\" split for its `CLAUDE.md` / `.codex` / `.cursor` / `.gemini` directories, but the cargo-cult risk is real: Codesight's current implementation hardcodes example MCP tool names like `codesight_get_blast_radius` into the Claude profile, which would only make sense after a similar MCP surface is built locally.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-37-why-it-matters-this-is-the-strongest-test-confirmed-evidence-that-25-frameworks-",
+      "text": "Why it matters: This is the strongest test-confirmed evidence that \"25+ frameworks\" is more than marketing: at least ~14 unique frameworks have live integration assertions, plus another 7 are package.json-only. For `Code_Environment/Public`, the lift is the test pattern itself: in-process fixtures, minimal setup, count + spot-check assertions, parallel detectors. The skepticism for our own port is also useful: only Drizzle and Prisma have schema tests; the README's \"8 ORM parsers\" claim is NOT covered by tests in this checkout.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-5-34-affected-area-ai-assistant-context-generation-mcp-tool-design-system-architectur",
+      "text": "Affected area: AI-assistant context generation, MCP tool design, system architecture",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-13-affected-area-ai-assistant-context-generation-static-artifact-emission",
+      "text": "Affected area: AI-assistant context generation, static artifact emission",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-6-affected-area-orchestration-pipeline-mcp-tool-design",
+      "text": "Affected area: orchestration pipeline, MCP tool design",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-27-affected-area-orchestration-pipeline-technical-debt-avoidance",
+      "text": "Affected area: orchestration pipeline, technical debt avoidance",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-20-affected-area-orm-schema-detector-architecture",
+      "text": "Affected area: ORM/schema detector architecture",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-26-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-33-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-28-risk-cost-low-it-is-the-kind-of-refactor-that-costs-nothing-if-done-at-the-start",
+      "text": "Risk/cost: low - it is the kind of refactor that costs nothing if done at the start.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-35-risk-cost-low-the-architectural-rule-is-cheap-to-adopt-the-implementation-cost-l",
+      "text": "Risk/cost: low - the architectural rule is cheap to adopt; the implementation cost lives in the detectors, not the orchestration.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-14-risk-cost-low-the-formatter-is-straightforward-and-easy-to-namespace-under-our-o",
+      "text": "Risk/cost: low - the formatter is straightforward and easy to namespace under our own output directory.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-7-risk-cost-low-the-pattern-is-small-the-lift-is-mostly-about-hosting-one-canonica",
+      "text": "Risk/cost: low - the pattern is small; the lift is mostly about hosting one canonical `scan()` so static and MCP consumers share it.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-21-risk-cost-medium-adding-index-extraction-is-feasible-but-requires-extending-both",
+      "text": "Risk/cost: medium - adding index extraction is feasible but requires extending both the AST walk and the field-chain switch.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-15-source-external-src-ast-extract-schema-ts-132-194-parsefieldchain-full-file-grep",
+      "text": "Source: `external/src/ast/extract-schema.ts:132-194` (parseFieldChain), full-file grep for `index|Index|uniqueIndex` (zero matches), `external/src/detectors/schema.ts` full-file grep for `index` (zero matches)",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-8-source-external-src-formatter-ts-5-59",
+      "text": "Source: `external/src/formatter.ts:5-59`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-29-source-external-src-index-ts-435-444-profile-generation-external-src-index-ts-49",
+      "text": "Source: `external/src/index.ts:435-444` (profile generation), `external/src/index.ts:493-541` (blast-radius mode), `external/src/mcp-server.ts:89-130` (toolScan), `external/src/generators/ai-config.ts:71-158` (assistant file writers)",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-1-source-external-src-index-ts-75-175-external-src-formatter-ts-5-59-external-src-",
+      "text": "Source: `external/src/index.ts:75-175`, `external/src/formatter.ts:5-59`, `external/src/mcp-server.ts:45-96`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-22-source-external-src-index-ts-75-175-external-src-mcp-server-ts-45-85",
+      "text": "Source: `external/src/index.ts:75-175`, `external/src/mcp-server.ts:45-85`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-16-what-it-does-parsefieldchain-walks-chained-call-expressions-and-only-switches-on",
+      "text": "What it does: `parseFieldChain()` walks chained call expressions and only switches on these methods: `primaryKey` → `pk` flag, `notNull` → `required` flag, `unique` → `unique` flag, `default`/`defaultNow`/`$default`/`$defaultFn` → `default` flag, `references` → `fk` flag plus a `refTarget` extracted from arrow-function bodies. `extractDrizzleRelations()` walks `relations(table, () => ({ ... }))` for `one(...)` and `many(...)` only. Neither file mentions `index()`, `uniqueIndex()`, composite indexes, or any second-positional-argument table constructor metadata where Drizzle stores indexes.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-2-what-it-does-scan-root-runs-detectproject-collectfiles-7-parallel-detectors-enri",
+      "text": "What it does: `scan(root, ...)` runs `detectProject` + `collectFiles` + 7 parallel detectors + `enrichRouteContracts`, builds a `ScanResult`, calls `writeOutput(result, outputDir)` twice (once with placeholder token stats, once with real token stats from `calculateTokenStats`). `writeOutput()` in `formatter.ts` emits up to 8 markdown files: `routes.md`, `schema.md`, `components.md`, `libs.md`, `config.md`, `middleware.md`, `graph.md`, and the combined `CODESIGHT.md`. The MCP server's `getScanResult()` (mcp-server.ts:45-85) runs an almost identical pipeline manually inside the server process, then explicitly calls `writeOutput(tempResult, resolve(root, \".codesight\"))` so that even MCP-only clients leave the same static files behind on disk. The cache (`cachedResult`/`cachedRoot`) reuses the result for subsequent tool calls until directory changes or `codesight_refresh` clears it.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-9-what-it-does-writeoutput-only-emits-a-per-section-markdown-file-when-the-matchin",
+      "text": "What it does: `writeOutput()` only emits a per-section markdown file when the matching detector has results: `routes.md` if `routes.length > 0`, `schema.md` if `schemas.length > 0`, `components.md`, `libs.md`, `config.md` (only if `formatConfig` returns a non-empty string), `middleware.md`, `graph.md` (only if `hotFiles.length > 0`). `CODESIGHT.md` is always written as a combined index that links into whichever per-section files exist. Files are simple markdown without frontmatter or machine-owned anchors.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-23-what-it-does-both-scan-and-getscanresult-run-detectproject-collectfiles-the-7-pa",
+      "text": "What it does: Both `scan()` and `getScanResult()` run `detectProject` + `collectFiles` + the 7 parallel detectors + `enrichRouteContracts`. The differences are: `scan()` respects `userConfig.disableDetectors`, runs plugin detectors and post-processors, prints CLI progress, calls `writeOutput` twice (placeholder then accurate token stats); `getScanResult()` skips the plugin path, uses fixed maxDepth=10, calls `writeOutput` once, caches the result. There is no shared helper.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-30-what-it-does-the-static-layer-codesight-markdown-files-claude-md-cursorrules-cod",
+      "text": "What it does: The static layer (`.codesight/` markdown files + `CLAUDE.md`/`.cursorrules`/`codex.md`/`AGENTS.md`/`.github/copilot-instructions.md` from `generateAIConfigs()`) is the always-available, git-committable, no-MCP path that any assistant can read. The MCP layer (8 tools) is the on-demand, filtered, query-time path with a session cache. Both consume the same `ScanResult`, and `toolScan` even regenerates the static `.codesight/` content from the cached scan when called.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-24-why-it-matters-for-code-environment-public-the-lesson-is-to-factor-any-analogous",
+      "text": "Why it matters: For `Code_Environment/Public`, the lesson is to factor any analogous \"scan + project\" pipeline into a single library function that both the CLI and any future MCP/server entry points call, so that toggles like disabled detectors, plugin hooks, and progress reporting are not silently divergent.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-31-why-it-matters-for-code-environment-public-this-confirms-a-useful-design-rule-a-",
+      "text": "Why it matters: For `Code_Environment/Public`, this confirms a useful design rule: a context-generation system should default to producing static artifacts (so the value is real even without a server running) and treat MCP query tools as a precision overlay on top, not a replacement for the artifacts. This complements Spec Kit Memory (long-term semantic store) and Code Graph MCP (structural queries) by adding a third axis: \"always-on stack/route/schema fingerprint.\"",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-10-why-it-matters-for-code-environment-public-this-is-a-small-surface-to-mirror-if-",
+      "text": "Why it matters: For `Code_Environment/Public`, this is a small surface to mirror if we want a \"scan once, drop assistant-readable artifacts\" mode alongside existing Spec Kit Memory and Code Graph MCP. The conditional emission pattern is also worth borrowing: empty sections become absent files, not empty files, so assistants can rely on file existence as a positive signal.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-17-why-it-matters-for-code-environment-public-this-means-codesight-s-schema-output-",
+      "text": "Why it matters: For `Code_Environment/Public`, this means Codesight's schema output should be treated as a table/column/relation summarizer rather than a full index-aware schema model. If we ever need index/foreign-key constraint awareness for blast-radius or migration planning, that work has to be added on top of Codesight's pattern, not assumed.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-3-why-it-matters-for-code-environment-public-this-proves-the-right-primitive-is-on",
+      "text": "Why it matters: For `Code_Environment/Public`, this proves the right primitive is one analysis result projected into multiple surfaces, not two parallel pipelines. The duplication of pipeline code between `scan()` in `index.ts` and `getScanResult()` in `mcp-server.ts` is also a cautionary tale: lifting either one without sharing a common scan function would inherit the same drift risk.",
+      "addedAtIteration": 5,
+      "sources": []
+    }
+  ],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 5,
+    "openQuestions": 12,
+    "resolvedQuestions": 0,
+    "keyFindings": 188,
+    "convergenceScore": 0.42,
+    "coverageBySources": {}
+  }
+}

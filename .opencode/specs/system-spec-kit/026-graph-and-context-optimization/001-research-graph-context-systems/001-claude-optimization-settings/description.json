@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
+  "description": "Spec: Phase 001 - Claude Optimization Settings (Reddit field-report audit)",
+  "keywords": [
+    "spec",
+    "phase",
+    "001",
+    "claude",
+    "optimization",
+    "settings",
+    "reddit",
+    "field-report",
+    "audit"
+  ],
+  "lastUpdated": "2026-04-06T11:05:13.309Z",
+  "specId": "001",
+  "folderSlug": "claude-optimization-settings",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-graph-context-systems"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot.md",
+    "06-04-26_13-47__extended-deep-research-run-13-iterations-total-8.md"
+  ]
+}
