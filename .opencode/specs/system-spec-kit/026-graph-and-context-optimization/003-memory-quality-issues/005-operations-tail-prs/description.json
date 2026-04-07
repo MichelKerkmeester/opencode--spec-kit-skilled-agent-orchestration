@@ -1,0 +1,16 @@
+{
+  "specFolder": "003-memory-quality-issues/005-operations-tail-prs",
+  "description": "Phase 5: operations-tail-prs",
+  "keywords": [
+    "phase",
+    "operations-tail-prs"
+  ],
+  "lastUpdated": "2026-04-07T11:14:04.913Z",
+  "specId": "005",
+  "folderSlug": "operations-tail-prs",
+  "parentChain": [
+    "003-memory-quality-issues"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

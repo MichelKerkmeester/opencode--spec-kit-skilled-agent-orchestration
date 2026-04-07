@@ -83,3 +83,111 @@ Q1: Where in the generate-context.js pipeline is the OVERVIEW text truncated, an
 - None active beyond normal research uncertainty.
 
 <!-- /ANCHOR:active-risks -->
+
+<!-- ANCHOR:generation-2 -->
+## 9. GENERATION 2 (Iterations 11-20)
+
+Reopened 2026-04-07 via `completed-continue` lifecycle. Delegation: `cli-copilot gpt-5.4 reasoning_effort=high`, waves of 2 parallel iterations. Gen-1 synthesis snapshotted at `research/archive/research-v1-iter010-snapshot.md`.
+
+### 9.1 Progress
+
+| # | Wave | Focus | Track | Ratio | Findings | Status |
+|---|------|-------|-------|-------|----------|--------|
+| 11 | W1 | Q8 citation drift verification | verification | 0.21 | 6 | insight |
+| 12 | W1 | Q9 repo-wide JSON-mode survey | survey | 0.68 | 5 | insight |
+| 13 | W2 | Q10 D2 call-graph precedence gate | D2-design | 0.36 | 8 | insight |
+| 14 | W2 | Q11 D5 continuation-signal corpus | D5-design | 0.43 | 7 | insight |
+| 15 | W3 | Q12 D3 empirical filter-list | D3-design | 0.42 | 7 | insight |
+| 16 | W3 | Q13 AC-1..AC-8 fixture design | testing | 0.37 | 5 | insight |
+| 17 | W4 | Q14 refactor dependency map | refactor-map | 0.39 | 7 | insight |
+| 18 | W4 | Q15 D7 provenance-only patch | D7-design | 0.31 | 6 | insight |
+| 19 | W5 | Q16 post-save reviewer contract upgrade | guardrails | 0.34 | 6 | insight |
+| 20 | W5 | Q17 PR breakdown + rollout sequence | rollout | 0.18 | 10 | converged |
+
+- gen2IterationsCompleted: 10
+- gen2KeyFindings: 67
+- gen2ResolvedQuestions: 10/10 (Q8-Q17)
+- gen2ConvergenceScore: 0.18
+
+### 9.2 Questions (Gen-2)
+- Answered: 10/10
+- [x] Q8: Re-verify D1-D8 file:line citations → zero drift (iter 11)
+- [x] Q9: Repo-wide JSON-mode survey → 82/135 files, D4/D8 corpus-wide (iter 12)
+- [x] Q10: D2 precedence call-graph → gate at `extractDecisions()` predicate (iter 13)
+- [x] Q11: D5 continuation-signal corpus → only `extended`/`continuation` clean (iter 14)
+- [x] Q12: D3 empirical blocklist → ~10% removal, zero FPs (iter 15)
+- [x] Q13: AC-1..AC-8 fixtures → 8 JSON payloads ready (iter 16)
+- [x] Q14: Refactor dependency map → 8/2/7 callsite counts (iter 17)
+- [x] Q15: D7 ≤10-line patch → workflow-only Step 3.5 insertion (iter 18)
+- [x] Q16: Post-save reviewer contract → CHECK-D1..D8 upgrade (iter 19)
+- [x] Q17: PR breakdown + rollout → 9-PR train (iter 20)
+
+### 9.3 Trend (Gen-2)
+- Gen-2 ratios: 0.21, 0.68, 0.36, 0.43, 0.42, 0.37, 0.39, 0.31, 0.34, 0.18
+- Mean: 0.37
+- Last 3: 0.31 → 0.34 → 0.18 (diminishing returns at synthesis iter 20, as designed)
+- Stuck count: 0
+- Guard violations: none
+
+### 9.4 Convergence (Gen-2)
+- Stop reason: max_iterations + all_questions_answered (Q8-Q17)
+- PR train: 9 PRs in strict dependency order
+- Deferred: D6 (no production PR, test-only instrumentation)
+- Next step outside loop: `/spec_kit:plan :with-phases` → phase-structured implementation
+
+<!-- /ANCHOR:generation-2 -->
+
+<!-- ANCHOR:generation-3 -->
+## 10. GENERATION 3 (Iterations 21-25)
+
+Reopened 2026-04-07 via second `completed-continue` lifecycle. Delegation: `cli-copilot gpt-5.4 reasoning_effort=high`, waves **2 + 2 + 1**. Gen-2 synthesis snapshotted at `research/archive/research-v2-iter020-snapshot.md`.
+
+### 10.1 Progress
+
+| # | Wave | Focus | Track | Ratio | Findings | Status |
+|---|------|-------|-------|-------|----------|--------|
+| 21 | W6 | Q18 latent failure mode audit | latent-bugs | 0.14 | 7 | insight |
+| 22 | W6 | Q19 PR-7 performance impact | performance | 0.36 | 7 | insight |
+| 23 | W7 | Q20 migration strategy (82 files) | migration | 0.38 | 7 | insight |
+| 24 | W7 | Q21 observability telemetry | observability | 0.27 | 6 | insight |
+| 25 | W8 | Q22 capture-mode parity audit | parity | 0.24 | 7 | converged |
+
+- gen3IterationsCompleted: 5
+- gen3KeyFindings: 34
+- gen3ResolvedQuestions: 5/5 (Q18-Q22)
+- gen3ConvergenceScore: 0.24
+- gen3MeanRatio: 0.28 (lower than Gen-2's 0.37, confirming diminishing returns)
+
+### 10.2 Questions (Gen-3)
+- Answered: 5/5
+- [x] Q18: Latent failure modes → **1 new D9 candidate** (cross-process save-lock bypass), D1-D8 coverage complete (iter 21)
+- [x] Q19: PR-7 performance → **ACCEPTABLE** at 50/100/500 memory folders if implementation sticks to narrowed contract (iter 22)
+- [x] Q20: Migration strategy → **Option C safe-subset batch** (D3/D4/D6/D8 auto; D1/D2/D5/D7 no-auto) (iter 23)
+- [x] Q21: Observability → **11 HIGH-priority metrics**, alerts M4>0, M6>5/hr, M9 p95>500ms (iter 24)
+- [x] Q22: Capture-mode parity → **BUGS ARE SHARED** (D2/D3/D4/D5/D8); capture mode gets free fix from PR train (iter 25)
+
+### 10.3 Trend (Gen-3)
+- Gen-3 ratios: 0.14, 0.36, 0.38, 0.27, 0.24
+- Mean: 0.28
+- Last 3: 0.38 → 0.27 → 0.24 (clean diminishing return)
+- Stuck count: 0
+- Guard violations: none
+
+### 10.4 Headline Decisions (Gen-3)
+1. Proceed with the 9-PR train from APPENDIX B unchanged
+2. Add optional PR-10 (safe-subset batch migration, post-PR-9)
+3. Add optional PR-11 (cross-process save lock, standalone low priority)
+4. Fold 9 observability metrics into PR-9 (no separate PR)
+5. Update release notes — capture mode also benefits from D2/D3/D4/D5/D8 fixes
+6. Spec scope line stays correct — no spec amendment needed
+
+### 10.5 Cumulative Research Lineage
+- **Gen 1** (iter 1-10): D1-D8 root causes, remediation matrix
+- **Gen 2** (iter 11-20): drift verification, population survey, call graphs, fixtures, 9-PR train
+- **Gen 3** (iter 21-25): latent audit, performance, migration, observability, parity
+- **Total:** 25 iterations, 176 findings, 3 convergence points
+
+### 10.6 Next Step
+Unchanged: `/spec_kit:plan :with-phases`. Gen-3 is additive evidence; PR-10/PR-11 can be added as P4 tail-PRs if stakeholders want them.
+
+<!-- /ANCHOR:generation-3 -->

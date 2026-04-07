@@ -1,0 +1,16 @@
+{
+  "specFolder": "003-memory-quality-issues/004-heuristics-refactor-guardrails",
+  "description": "Phase 4: heuristics-refactor-guardrails",
+  "keywords": [
+    "phase",
+    "heuristics-refactor-guardrails"
+  ],
+  "lastUpdated": "2026-04-07T11:14:04.774Z",
+  "specId": "004",
+  "folderSlug": "heuristics-refactor-guardrails",
+  "parentChain": [
+    "003-memory-quality-issues"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

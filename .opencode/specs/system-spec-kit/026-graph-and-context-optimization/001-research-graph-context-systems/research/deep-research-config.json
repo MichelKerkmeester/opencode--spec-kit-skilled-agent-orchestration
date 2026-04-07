@@ -1,0 +1,49 @@
+{
+  "topic": "Master consolidation of 5-system external research (graph + context optimization)",
+  "spec_folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "execution_mode": "AUTONOMOUS",
+  "orchestrator": "claude-opus-4-6 (Claude Code session)",
+  "worker_runtime": "codex exec --model gpt-5.4 -c model_reasoning_effort=\"high\" --full-auto -C <PARENT> --skip-git-repo-check",
+  "fast_mode": true,
+  "max_iterations": 18,
+  "iteration_target": "8-18 (extended after iter-8 convergence; 9-18 are rigor + amendment lane)",
+  "convergence": {
+    "composite_threshold": 0.85,
+    "new_info_ratio_threshold": 0.15,
+    "sliding_window": 2,
+    "alternative_paths": [
+      "all_six_cross_phase_questions_answered_with_evidence",
+      "all_section_2_3_gaps_marked_closed_or_partial_or_unknown",
+      "hard_ceiling_12_iterations"
+    ]
+  },
+  "charter_path": "scratch/deep-research-prompt-master-consolidation.md",
+  "deliverables": {
+    "primary": [
+      "research/research.md",
+      "research/findings-registry.json",
+      "research/recommendations.md",
+      "research/cross-phase-matrix.md"
+    ],
+    "intermediate": [
+      "research/phase-1-inventory.json"
+    ],
+    "state": [
+      "research/deep-research-config.json",
+      "research/deep-research-strategy.md",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-dashboard.md"
+    ],
+    "memory": [
+      "memory/master-consolidation-research.md"
+    ]
+  },
+  "phases_under_consolidation": [
+    {"id": 1, "folder": "001-claude-optimization-settings", "system": "Claude Optimization Settings"},
+    {"id": 2, "folder": "002-codesight", "system": "CodeSight"},
+    {"id": 3, "folder": "003-contextador", "system": "Contextador"},
+    {"id": 4, "folder": "004-graphify", "system": "Graphify"},
+    {"id": 5, "folder": "005-claudest", "system": "Claudest"}
+  ],
+  "started_at": "2026-04-07T08:56:00Z"
+}

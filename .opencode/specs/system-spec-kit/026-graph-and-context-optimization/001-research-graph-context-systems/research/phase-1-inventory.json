@@ -1,0 +1,4457 @@
+{
+  "iteration": 1,
+  "generated_at": "2026-04-07T09:41:01Z",
+  "files_inventoried": 15,
+  "phases": {
+    "1": {
+      "folder": "001-claude-optimization-settings",
+      "system": "Claude Optimization Settings",
+      "items": [
+        {
+          "id": "ADR-001",
+          "title": "Treat the Reddit post as a primary-source field report, not an implementation spec",
+          "category": "adr",
+          "source_file": "001-claude-optimization-settings/decision-record.md",
+          "source_lines": "21-123",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Treat the Reddit post as a primary-source field report, not an implementation spec",
+          "phase_1_keywords": [
+            "treat",
+            "reddit",
+            "post",
+            "primary-source"
+          ]
+        },
+        {
+          "id": "ADR-002",
+          "title": "Preserve the 926-vs-858 sessions and 18,903-vs-11,357 turns denominator discrepancies explicitly",
+          "category": "adr",
+          "source_file": "001-claude-optimization-settings/decision-record.md",
+          "source_lines": "124-231",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Preserve the 926-vs-858 sessions and 18,903-vs-11,357 turns denominator discrepancies explicitly",
+          "phase_1_keywords": [
+            "preserve",
+            "926-vs-858",
+            "sessions",
+            "903-vs-11"
+          ]
+        },
+        {
+          "id": "ADR-003",
+          "title": "Apply the four-tier prioritization framework from phase-research-prompt \u00a710.3",
+          "category": "adr",
+          "source_file": "001-claude-optimization-settings/decision-record.md",
+          "source_lines": "232-333",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Apply the four-tier prioritization framework from phase-research-prompt \u00a710.3",
+          "phase_1_keywords": [
+            "apply",
+            "four-tier",
+            "prioritization",
+            "framework"
+          ]
+        },
+        {
+          "id": "ADR-004",
+          "title": "Defer the auditor implementation to phase 005-claudest; this phase owns only the recommendation set",
+          "category": "adr",
+          "source_file": "001-claude-optimization-settings/decision-record.md",
+          "source_lines": "334-434",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Defer the auditor implementation to phase 005-claudest; this phase owns only the recommendation set",
+          "phase_1_keywords": [
+            "defer",
+            "auditor",
+            "implementation",
+            "005-claudest"
+          ]
+        },
+        {
+          "id": "F1",
+          "title": "ENABLE_TOOL_SEARCH is already the baseline win in Public",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "36-48",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning This setting only loads 6 primary tools and lazy-loads the rest on demand instead of dumping them all upfront.\"",
+          "phase_1_keywords": [
+            "enable_tool_search",
+            "already",
+            "baseline",
+            "win"
+          ]
+        },
+        {
+          "id": "F2",
+          "title": "Do not overclaim deferred-loading latency or discoverability gains",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "49-61",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning This setting only loads 6 primary tools and lazy-loads the rest on demand instead of dumping them all upfront.\"",
+          "phase_1_keywords": [
+            "overclaim",
+            "deferred-loading",
+            "latency",
+            "discoverability"
+          ]
+        },
+        {
+          "id": "F13",
+          "title": "Preserve the post's denominator mismatches explicitly",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "62-74",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning anthropic isn't the only reason you're hitting claude code limits.\"; \"paragraph beginning My stats: 858 sessions. 18,903 turns. $1,619 estimated spend across 33 days.\"; \"paragr",
+          "phase_1_keywords": [
+            "preserve",
+            "post",
+            "denominator",
+            "mismatches"
+          ]
+        },
+        {
+          "id": "F19",
+          "title": "Idle-timestamp contract is a prerequisite",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "75-87",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"iteration-009 Finding F19 repo-state derivative\"",
+          "phase_1_keywords": [
+            "idle-timestamp",
+            "contract",
+            "prerequisite",
+            "source"
+          ]
+        },
+        {
+          "id": "F20",
+          "title": "Shared hook replay harness is the missing scaffold",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "88-100",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"iteration-009 Finding F20 repo-state derivative\"",
+          "phase_1_keywords": [
+            "shared",
+            "hook",
+            "replay",
+            "harness"
+          ]
+        },
+        {
+          "id": "F21",
+          "title": "Headline arithmetic is too inconsistent for ledger-grade totals",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "101-113",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning Starting context dropped from 45k to 20k and the system tool overhead went from 20k to 6k.\"; \"paragraph beginning Across 858 sessions, that's 264 million tokens...\"; \"paragraph",
+          "phase_1_keywords": [
+            "headline",
+            "arithmetic",
+            "too",
+            "inconsistent"
+          ]
+        },
+        {
+          "id": "F24",
+          "title": "Hook replay must isolate side effects",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "114-126",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"iteration-011 Finding F24 prototype-design derivative\"",
+          "phase_1_keywords": [
+            "hook",
+            "replay",
+            "must",
+            "isolate"
+          ]
+        },
+        {
+          "id": "F4",
+          "title": "Merge idle-timestamp capture into existing session-stop.js",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "127-139",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning Stop hook -- records the exact timestamp after every Claude turn, so the system knows when you went idle\"",
+          "phase_1_keywords": [
+            "merge",
+            "idle-timestamp",
+            "capture",
+            "existing"
+          ]
+        },
+        {
+          "id": "F6",
+          "title": "Put stale-resume cost estimation inside session-prime.js",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "140-152",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning SessionStart hook -- for resumed sessions, reads your last transcript, estimates how many cached tokens will need re-creation, and warns you before your first prompt\"",
+          "phase_1_keywords": [
+            "put",
+            "stale-resume",
+            "cost",
+            "estimation"
+          ]
+        },
+        {
+          "id": "F7",
+          "title": "Reuse the shared hook-state JSON as the cache-warning seam",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "153-165",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning Before these hooks, cache expiry was invisible. Now I see it before the expensive turn fires.\"",
+          "phase_1_keywords": [
+            "reuse",
+            "shared",
+            "hook-state",
+            "json"
+          ]
+        },
+        {
+          "id": "F10",
+          "title": "Reinforce native-tool routing before adding more automation",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "166-178",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning The auditor also flags bash antipatterns\"",
+          "phase_1_keywords": [
+            "reinforce",
+            "native-tool",
+            "routing",
+            "before"
+          ]
+        },
+        {
+          "id": "F14",
+          "title": "The missing observability layer is an offline-first transcript auditor",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "179-191",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning So I built a token usage auditor.\"",
+          "phase_1_keywords": [
+            "missing",
+            "observability",
+            "layer",
+            "offline-first"
+          ]
+        },
+        {
+          "id": "F16",
+          "title": "Reverse-engineered Claude JSONL must stay a guarded adapter, not core infra",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "192-204",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning limitations worth noting:\"",
+          "phase_1_keywords": [
+            "reverse-engineered",
+            "claude",
+            "jsonl",
+            "must"
+          ]
+        },
+        {
+          "id": "F18",
+          "title": "Current hook telemetry cannot validate most of the ledger",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "205-217",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"iteration-009 Finding F18 repo-state derivative\"",
+          "phase_1_keywords": [
+            "current",
+            "hook",
+            "telemetry",
+            "cannot"
+          ]
+        },
+        {
+          "id": "F22",
+          "title": "Remedy bundle is not net-costed",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "218-230",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning the answer was 45,000 tokens\"; \"paragraph beginning Starting context dropped from 45k to 20k\"; \"paragraph beginning Instead I just /clear and start a new session.\"",
+          "phase_1_keywords": [
+            "remedy",
+            "bundle",
+            "net-costed",
+            "source"
+          ]
+        },
+        {
+          "id": "F3",
+          "title": "Cache expiry should be modeled with prevalence, cliff count, and budget exposure",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "231-243",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning 54% of my turns (6,152 out of 11,357) followed an idle gap longer than 5 minutes.\"; \"paragraph beginning The auditor flags \"cache cliffs\" specifically:\"; \"paragraph beginning E",
+          "phase_1_keywords": [
+            "cache",
+            "expiry",
+            "should",
+            "modeled"
+          ]
+        },
+        {
+          "id": "F8",
+          "title": "Keep compact-inject.js as mitigation target, not warning owner",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "244-256",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Source passage anchor: \"paragraph beginning UserPromptSubmit hook -- checks how long you've been idle since Claude's last response.\"",
+          "phase_1_keywords": [
+            "keep",
+            "compact-inject",
+            "mitigation",
+            "target"
+          ]
+        },
+        {
+          "id": "F11",
+          "title": "Treat redundant rereads as cache-amplified waste",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "257-269",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning 1,122 extra file reads across all sessions where the same file was read 3 or more times.\"",
+          "phase_1_keywords": [
+            "treat",
+            "redundant",
+            "rereads",
+            "cache-amplified"
+          ]
+        },
+        {
+          "id": "F12",
+          "title": "Break edit-retry chains by reread/replan after the first miss",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "270-282",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"paragraph beginning The auditor also flags bash antipatterns\"",
+          "phase_1_keywords": [
+            "break",
+            "edit-retry",
+            "chains",
+            "reread/replan"
+          ]
+        },
+        {
+          "id": "F23",
+          "title": "Skill-disable review needs a baseline-window contract",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "283-295",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Source passage anchor: \"iteration-011 Finding F23 prototype-design derivative\"",
+          "phase_1_keywords": [
+            "skill-disable",
+            "review",
+            "needs",
+            "baseline-window"
+          ]
+        },
+        {
+          "id": "F5",
+          "title": "Add a dedicated UserPromptSubmit warning hook and keep it prototype-only",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "296-308",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning UserPromptSubmit hook -- checks how long you've been idle since Claude's last response.\"",
+          "phase_1_keywords": [
+            "add",
+            "dedicated",
+            "userpromptsubmit",
+            "warning"
+          ]
+        },
+        {
+          "id": "F9",
+          "title": "Prefer clear-and-rehydrate guidance over blind stale resume",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "309-321",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning I don't prefer /compact (which loses context) or resuming stale sessions (which pays for a full cache rebuild) for continuity.\"",
+          "phase_1_keywords": [
+            "prefer",
+            "clear-and-rehydrate",
+            "guidance",
+            "blind"
+          ]
+        },
+        {
+          "id": "F15",
+          "title": "Skill gating needs a reasoned disable-review queue, not raw low-usage auto-disable",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "322-334",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning Covered above, but the dashboard makes it starker.\"",
+          "phase_1_keywords": [
+            "skill",
+            "gating",
+            "needs",
+            "reasoned"
+          ]
+        },
+        {
+          "id": "F17",
+          "title": "Cross-agent rollout should share schema and dashboard layers, not a single parser",
+          "category": "finding",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "335-347",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Source passage anchor: \"paragraph beginning One more thing. This auditor isn't only useful if you're a Claude Code user.\"",
+          "phase_1_keywords": [
+            "cross-agent",
+            "rollout",
+            "should",
+            "share"
+          ]
+        },
+        {
+          "id": "gap-Q2",
+          "title": "Deferred-loading ergonomics",
+          "category": "gap",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "559-559",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The packet does not contain enough source evidence to close first-tool latency, discoverability, fallback rate, or task-completion ergonomics. The source only says tools are \"lazy-load[ed] ... on demand\" and reports toke",
+          "phase_1_keywords": [
+            "deferred-loading",
+            "ergonomics",
+            "packet",
+            "contain"
+          ]
+        },
+        {
+          "id": "gap-Q8",
+          "title": "Edit-retry root causes",
+          "category": "gap",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "560-560",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The packet reports \"31 failed-edit-then-retry sequences\" but does not separate prompt quality, workflow design, or messaging causes. The repo can improve guardrails now, but root-cause attribution remains open.",
+          "phase_1_keywords": [
+            "edit-retry",
+            "root",
+            "causes",
+            "packet"
+          ]
+        },
+        {
+          "id": "gap-Q9",
+          "title": "Plugin-overhead net costing",
+          "category": "gap",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "561-561",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "What is the actual gross-savings-minus-remedy-overhead result for /clear plus plugin-memory recovery once injected context, hook writes, and skill surfaces are counted?",
+          "phase_1_keywords": [
+            "plugin-overhead",
+            "net",
+            "costing",
+            "actual"
+          ]
+        },
+        {
+          "id": "gap-Q10",
+          "title": "Baseline-window definition for skill review",
+          "category": "gap",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "562-562",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "What minimum observation window, routing denominator, and error bucket are required before a skill can honestly be labeled never_used or low_frequency?",
+          "phase_1_keywords": [
+            "baseline-window",
+            "definition",
+            "skill",
+            "review"
+          ]
+        },
+        {
+          "id": "gap-Q11",
+          "title": "Replay-harness isolation boundary",
+          "category": "gap",
+          "source_file": "001-claude-optimization-settings/research/research.md",
+          "source_lines": "563-563",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Which artifacts must the hook replay harness isolate or stub so that Stop-hook autosave and temp-state writes do not contaminate validation results?",
+          "phase_1_keywords": [
+            "replay-harness",
+            "isolation",
+            "boundary",
+            "which"
+          ]
+        }
+      ]
+    },
+    "2": {
+      "folder": "002-codesight",
+      "system": "CodeSight",
+      "items": [
+        {
+          "id": "ADR-001",
+          "title": "Use cli-codex gpt-5.4 high reasoning effort as the primary research engine",
+          "category": "adr",
+          "source_file": "002-codesight/decision-record.md",
+          "source_lines": "21-130",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Use cli-codex gpt-5.4 high reasoning effort as the primary research engine",
+          "phase_1_keywords": [
+            "use",
+            "cli-codex",
+            "gpt-5",
+            "reasoning"
+          ]
+        },
+        {
+          "id": "ADR-002",
+          "title": "Switch to native Read/Grep fallback after codex stalled in iters 4-5",
+          "category": "adr",
+          "source_file": "002-codesight/decision-record.md",
+          "source_lines": "131-221",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Switch to native Read/Grep fallback after codex stalled in iters 4-5",
+          "phase_1_keywords": [
+            "switch",
+            "native",
+            "read/grep",
+            "fallback"
+          ]
+        },
+        {
+          "id": "ADR-003",
+          "title": "Dispatch the continuation charter (iters 6-10) in parallel as background processes",
+          "category": "adr",
+          "source_file": "002-codesight/decision-record.md",
+          "source_lines": "222-313",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Dispatch the continuation charter (iters 6-10) in parallel as background processes",
+          "phase_1_keywords": [
+            "dispatch",
+            "continuation",
+            "charter",
+            "iters"
+          ]
+        },
+        {
+          "id": "ADR-004",
+          "title": "Sandbox-extract workaround when cli-codex --sandbox read-only blocks /tmp writes",
+          "category": "adr",
+          "source_file": "002-codesight/decision-record.md",
+          "source_lines": "314-406",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Sandbox-extract workaround when cli-codex --sandbox read-only blocks /tmp writes",
+          "phase_1_keywords": [
+            "sandbox-extract",
+            "workaround",
+            "cli-codex",
+            "sandbox"
+          ]
+        },
+        {
+          "id": "F-ORCH-1",
+          "title": "index.ts keeps one canonical scan result and branches late",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "142-150",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/index.ts:75-175, external/src/index.ts:300-547",
+          "phase_1_keywords": [
+            "index",
+            "keeps",
+            "one",
+            "canonical"
+          ]
+        },
+        {
+          "id": "F-ORCH-2",
+          "title": "The pipeline is duplicated between scan() and getScanResult() in the MCP server",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "151-159",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/index.ts:75-175, external/src/mcp-server.ts:45-85",
+          "phase_1_keywords": [
+            "pipeline",
+            "duplicated",
+            "between",
+            "scan"
+          ]
+        },
+        {
+          "id": "F-AST-1",
+          "title": "Zero-dependency claim is true at package level but AST fidelity is borrowed from the scanned repo",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "162-170",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/package.json:10-15,44-50, external/src/ast/loader.ts:14-49, external/src/detectors/routes.ts:221-230,411-420",
+          "phase_1_keywords": [
+            "zero-dependency",
+            "claim",
+            "package",
+            "level"
+          ]
+        },
+        {
+          "id": "F-AST-2",
+          "title": "Stack detection is deliberately separated from detector dispatch",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "171-179",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/scanner.ts:97-330, external/src/types.ts:1-45, external/src/detectors/routes.ts:32-120, external/src/detectors/schema.ts:18-40",
+          "phase_1_keywords": [
+            "stack",
+            "detection",
+            "deliberately",
+            "separated"
+          ]
+        },
+        {
+          "id": "F-ROUTE-1",
+          "title": "Hono is AST-first with prefix, params, and middleware capture",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "182-190",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/detectors/routes.ts:206-248, external/src/ast/extract-routes.ts:25-50,55-142, external/src/ast/loader.ts:14-61",
+          "phase_1_keywords": [
+            "hono",
+            "ast-first",
+            "prefix",
+            "params"
+          ]
+        },
+        {
+          "id": "F-ROUTE-2",
+          "title": "Hono regex fallback is intentionally narrow; downstream contract enrichment cannot recover lost structure",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "191-199",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/detectors/routes.ts:230-245, external/src/detectors/contracts.ts:9-96, external/src/types.ts:56-67",
+          "phase_1_keywords": [
+            "hono",
+            "regex",
+            "fallback",
+            "intentionally"
+          ]
+        },
+        {
+          "id": "F-ROUTE-3",
+          "title": "NestJS detection truly walks decorators and the regex fallback is materially less precise",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "200-208",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/detectors/routes.ts:396-442, external/src/ast/extract-routes.ts:157-248, external/src/ast/loader.ts:64-105",
+          "phase_1_keywords": [
+            "nestjs",
+            "detection",
+            "truly",
+            "walks"
+          ]
+        },
+        {
+          "id": "F-SCHEMA-1",
+          "title": "Drizzle is AST-backed for tables, field chains, and relations(), but indexes are not implemented",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "211-220",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source: external/src/detectors/schema.ts:48-147, external/src/ast/extract-schema.ts:18-260, external/src/types.ts:69-80",
+          "phase_1_keywords": [
+            "drizzle",
+            "ast-backed",
+            "tables",
+            "field"
+          ]
+        },
+        {
+          "id": "F-GRAPH-1",
+          "title": "Import graph is regex-based and local-only with minimal alias normalization",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "223-231",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source: external/src/detectors/graph.ts:5-99,219-237",
+          "phase_1_keywords": [
+            "import",
+            "graph",
+            "regex-based",
+            "local-only"
+          ]
+        },
+        {
+          "id": "F-GRAPH-2",
+          "title": "\"Hot files\" are ranked only by incoming import count (not real centrality)",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "232-240",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/detectors/graph.ts:49-55, external/src/types.ts:127-139,156-159",
+          "phase_1_keywords": [
+            "hot",
+            "files",
+            "ranked",
+            "incoming"
+          ]
+        },
+        {
+          "id": "F-BLAST-1",
+          "title": "Reverse-dependency BFS dedupes cycles, but the depth cap is off by one",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "243-251",
+          "confidence": "high",
+          "recommendation_status": "reject",
+          "summary": "Source: external/src/detectors/blast-radius.ts:7-49,77-84",
+          "phase_1_keywords": [
+            "reverse-dependency",
+            "bfs",
+            "dedupes",
+            "cycles"
+          ]
+        },
+        {
+          "id": "F-BLAST-2",
+          "title": "Route and middleware overlays are direct file membership; model impact is heuristic",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "252-260",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source: external/src/detectors/blast-radius.ts:54-75,91-127, external/src/index.ts:493-527",
+          "phase_1_keywords": [
+            "route",
+            "middleware",
+            "overlays",
+            "direct"
+          ]
+        },
+        {
+          "id": "F-BLAST-3",
+          "title": "Multi-file blast radius is a unioned report, not a second traversal mode",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "261-269",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/detectors/blast-radius.ts:91-127",
+          "phase_1_keywords": [
+            "multi-file",
+            "blast",
+            "radius",
+            "unioned"
+          ]
+        },
+        {
+          "id": "F-MCP-1",
+          "title": "The MCP server is cached, text-first, and manually speaks JSON-RPC over stdio",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "272-280",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source: external/src/mcp-server.ts:35-49,51-85,89-534",
+          "phase_1_keywords": [
+            "mcp",
+            "server",
+            "cached",
+            "text-first"
+          ]
+        },
+        {
+          "id": "F-PROFILE-1",
+          "title": "generateAIConfigs ships one shared summary into 5 distinct assistant files with safe append semantics",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "283-291",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source: external/src/generators/ai-config.ts:14-69,71-158",
+          "phase_1_keywords": [
+            "generateaiconfigs",
+            "ships",
+            "one",
+            "shared"
+          ]
+        },
+        {
+          "id": "F-PROFILE-2",
+          "title": "generateProfileConfig is the real per-tool overlay layer (not just file renames)",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "292-306",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/generators/ai-config.ts:164-264",
+          "phase_1_keywords": [
+            "generateprofileconfig",
+            "per-tool",
+            "overlay",
+            "layer"
+          ]
+        },
+        {
+          "id": "F-STATIC-1",
+          "title": "Static .codesight/ artifacts and the MCP server are projections of the same ScanResult",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "309-317",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/index.ts:75-175, external/src/formatter.ts:5-59, external/src/mcp-server.ts:45-96",
+          "phase_1_keywords": [
+            "static",
+            "codesight",
+            "artifacts",
+            "mcp"
+          ]
+        },
+        {
+          "id": "F-STATIC-2",
+          "title": "The static artifact set is exactly 8 files, all conditional, with CODESIGHT.md as the unconditional combined index",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "318-326",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/formatter.ts:5-59",
+          "phase_1_keywords": [
+            "static",
+            "artifact",
+            "set",
+            "exactly"
+          ]
+        },
+        {
+          "id": "F-EVAL-1",
+          "title": "eval.ts is a real precision/recall/F1 harness, but its scope is detector accuracy NOT token savings",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "329-337",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/src/eval.ts:43-244",
+          "phase_1_keywords": [
+            "eval",
+            "precision/recall/f1",
+            "harness",
+            "but"
+          ]
+        },
+        {
+          "id": "F-EVAL-2",
+          "title": "The \"11.2x average token reduction\" claim is README-only and not reproducible from this checkout",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "338-346",
+          "confidence": "high",
+          "recommendation_status": "reject",
+          "summary": "Source: external/README.md:52-64, external/eval/README.md:1-37, external/eval/fixtures/ (5 directories), external/src/eval.ts:43-244",
+          "phase_1_keywords": [
+            "average",
+            "token",
+            "reduction",
+            "claim"
+          ]
+        },
+        {
+          "id": "F-EVAL-3",
+          "title": "tests/detectors.test.ts is broader than the eval fixtures and is the strongest validation of \"25+ frameworks\"",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "347-358",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source: external/tests/detectors.test.ts:34-498",
+          "phase_1_keywords": [
+            "tests/detectors",
+            "test",
+            "broader",
+            "eval"
+          ]
+        },
+        {
+          "id": "11.1-1",
+          "title": "Single-canonical-ScanResult orchestration shape",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "469-469",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Project one analysis result into multiple consumer surfaces (static markdown, MCP, profile files, blast-radius), branching late inside main() rather than running parallel pipelines. Anchor: external/src/index.ts:75-175.",
+          "phase_1_keywords": [
+            "single-canonical",
+            "scanresult",
+            "orchestration",
+            "shape"
+          ]
+        },
+        {
+          "id": "11.1-2",
+          "title": "AST-first / regex-fallback / confidence label discipline",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "471-471",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Always try the AST path first when the borrowed compiler is available, fall back to regex when not, and surface a confidence: \"ast\" | \"regex\" field through to consumers. Anchors: external/src/detectors/routes.ts:206-248,",
+          "phase_1_keywords": [
+            "ast-first",
+            "regex-fallback",
+            "confidence",
+            "label"
+          ]
+        },
+        {
+          "id": "11.1-3",
+          "title": "Per-tool profile overlay split",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "473-473",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "One shared canonical summary plus a switch (profile) of tool-specific instruction blocks. Anchor: external/src/generators/ai-config.ts:164-264. Public lift: build a generateAssistantConfig(repoFingerprint, profile) that",
+          "phase_1_keywords": [
+            "per-tool",
+            "profile",
+            "overlay",
+            "split"
+          ]
+        },
+        {
+          "id": "11.1-4",
+          "title": "Static-artifacts-as-default + MCP-as-overlay rule",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "475-475",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "A context-generation system should always produce git-committable static markdown so the value is real even without a server running, and treat MCP query tools as a precision overlay on top. Anchors: external/src/index.t",
+          "phase_1_keywords": [
+            "static-artifacts-as-default",
+            "mcp-as-overlay",
+            "rule",
+            "context-generation"
+          ]
+        },
+        {
+          "id": "11.1-5",
+          "title": "Conditional artifact emission",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "477-477",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Empty detector \u2192 absent file, not empty file. Assistants can rely on file existence as a positive signal. Anchor: external/src/formatter.ts:13-58. Public lift: trivial. F-STATIC-2.",
+          "phase_1_keywords": [
+            "conditional",
+            "artifact",
+            "emission",
+            "empty"
+          ]
+        },
+        {
+          "id": "11.1-6",
+          "title": "Stack detection separated from detector dispatch",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "479-479",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "detectProject() builds a ProjectInfo fingerprint once; detectors switch on framework/ORM enum values rather than rediscovering stack. Anchor: external/src/scanner.ts:97-330. Public lift: cheap, makes detector extension t",
+          "phase_1_keywords": [
+            "stack",
+            "detection",
+            "separated",
+            "detector"
+          ]
+        },
+        {
+          "id": "11.1-7",
+          "title": "F1 fixture harness for detector regression testing",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "481-481",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "~245 LOC of zero-dependency precision/recall/F1 logic plus hand-curated repo.json/ground-truth.json pairs. Anchors: external/src/eval.ts:43-244, external/eval/fixtures/hono-monorepo/ground-truth.json:1-33. Public lift: d",
+          "phase_1_keywords": [
+            "fixture",
+            "harness",
+            "detector",
+            "regression"
+          ]
+        },
+        {
+          "id": "11.1-8",
+          "title": "detectors.test.ts integration pattern",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "483-483",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "In-process fixtures via writeFixture(), parallel detector calls, count + spot-check assertions, dynamic imports from compiled dist/. Anchor: external/tests/detectors.test.ts:1-499. Public lift: ~500 LOC for full detector",
+          "phase_1_keywords": [
+            "detectors",
+            "test",
+            "integration",
+            "pattern"
+          ]
+        },
+        {
+          "id": "11.1-9",
+          "title": "Hot-file ranking by incoming import count, named honestly",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "485-485",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Borrow the metric (top-N most depended-on files) but call it \"depended-on count,\" not \"centrality.\" Anchor: external/src/detectors/graph.ts:49-55. F-GRAPH-2.",
+          "phase_1_keywords": [
+            "hot-file",
+            "ranking",
+            "incoming",
+            "import"
+          ]
+        },
+        {
+          "id": "11.1-10",
+          "title": "Multi-file blast radius as union over per-file traversals",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "487-487",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Operationally simple, predictable, dedupes routes by path+method. Anchor: external/src/detectors/blast-radius.ts:91-127. F-BLAST-3.",
+          "phase_1_keywords": [
+            "multi-file",
+            "blast",
+            "radius",
+            "union"
+          ]
+        },
+        {
+          "id": "11.2-1",
+          "title": "Zero-runtime-dep AST loader pattern",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "491-491",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Borrow the target repo's typescript package via createRequire / node_modules / .pnpm glob, with explicit fallback to non-AST behavior. Anchor: external/src/ast/loader.ts:14-49. Public should expose AST capability as a st",
+          "phase_1_keywords": [
+            "zero-runtime-dep",
+            "ast",
+            "loader",
+            "pattern"
+          ]
+        },
+        {
+          "id": "11.2-2",
+          "title": "Per-tool profile generation in assistant directories",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "493-493",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The generateAIConfigs shared-summary writer is portable, but only CLAUDE.md has true upsert semantics in Codesight; the others would clobber existing files. Public must add marker comments / namespaced sections / Code_En",
+          "phase_1_keywords": [
+            "per-tool",
+            "profile",
+            "generation",
+            "assistant"
+          ]
+        },
+        {
+          "id": "11.2-3",
+          "title": "Drizzle schema AST extraction",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "495-495",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Useful for tables/fields/relations but missing index extraction entirely. Anchor: external/src/detectors/schema.ts:48-147, external/src/ast/extract-schema.ts:18-260. Public should add index handling before relying on it",
+          "phase_1_keywords": [
+            "drizzle",
+            "schema",
+            "ast",
+            "extraction"
+          ]
+        },
+        {
+          "id": "11.2-4",
+          "title": "Local-only regex import graph with @//~/ alias normalization",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "497-497",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Lightweight starter graph for code-impact analysis. Anchor: external/src/detectors/graph.ts:5-237. Public should not over-trust it in monorepos with custom path aliases. F-GRAPH-1.",
+          "phase_1_keywords": [
+            "local-only",
+            "regex",
+            "import",
+            "graph"
+          ]
+        },
+        {
+          "id": "11.2-5",
+          "title": "Cached MCP tool surface with narrow text-first responses",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "499-499",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The interface design is worth borrowing \u2014 but the cache invalidation, hand-rolled JSON-RPC, and tight coupling to ScanResult need hardening. Anchor: external/src/mcp-server.ts:35-534. Note: the MCP query interface is off",
+          "phase_1_keywords": [
+            "cached",
+            "mcp",
+            "tool",
+            "surface"
+          ]
+        },
+        {
+          "id": "11.2-6",
+          "title": "Heuristic blast-radius schema overlay (with explicit labeling)",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "501-501",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The route+middleware overlay is graph-backed; the schema overlay is heuristic. Anchor: external/src/detectors/blast-radius.ts:54-127. Public can adopt only if schema impact is explicitly labeled \"heuristic\" or upgraded t",
+          "phase_1_keywords": [
+            "heuristic",
+            "blast-radius",
+            "schema",
+            "overlay"
+          ]
+        },
+        {
+          "id": "11.3-1",
+          "title": "The 11.2x token savings headline as published",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "505-505",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Not reproducible from the public eval suite; the SaaS A/B/C numbers are from private codebases. Public should not quote this number. F-EVAL-2.",
+          "phase_1_keywords": [
+            "token",
+            "savings",
+            "headline",
+            "published"
+          ]
+        },
+        {
+          "id": "11.3-2",
+          "title": "Reverse-dependency BFS in current form",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "507-507",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "The depth-cap off-by-one can leak nodes one hop beyond maxDepth into results. The BFS pattern itself is fine if the depth check happens BEFORE adding descendants to the result set. Anchor: external/src/detectors/blast-ra",
+          "phase_1_keywords": [
+            "reverse-dependency",
+            "bfs",
+            "current",
+            "form"
+          ]
+        },
+        {
+          "id": "11.3-3",
+          "title": "HTML report styling and presentational dashboard polish",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "509-509",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Out of scope per phase-research-prompt.md \u00a710.2.",
+          "phase_1_keywords": [
+            "html",
+            "report",
+            "styling",
+            "presentational"
+          ]
+        },
+        {
+          "id": "11.3-4",
+          "title": "Direct emission into root-level CLAUDE.md / AGENTS.md / codex.md without namespacing",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "511-515",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Codesight's first-write-wins behavior is unsafe in repos that already maintain assistant-specific guidance. Public must namespace under .claude/ / .codex/ / .gemini/ directories or use marker comments before adopting gen",
+          "phase_1_keywords": [
+            "direct",
+            "emission",
+            "root-level",
+            "claude"
+          ]
+        },
+        {
+          "id": "gap-002-1",
+          "title": "Deep TypeORM schema coverage",
+          "category": "gap",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "542-542",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Iteration 2 confirmed AST-backed paths exist for Hono/NestJS routes and Drizzle schema, but TypeORM's decorator surface was not traced end-to-end. If Public ever needs ORM coverage parity with Codesight's claims, a follo",
+          "phase_1_keywords": [
+            "deep",
+            "typeorm",
+            "schema",
+            "coverage"
+          ]
+        },
+        {
+          "id": "gap-002-2",
+          "title": "SQLAlchemy / GORM / Mongoose / Sequelize coverage",
+          "category": "gap",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "543-543",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "All listed in types.ts ORM enum but neither tested nor traced in this session. Treat as partial until proven.",
+          "phase_1_keywords": [
+            "sqlalchemy",
+            "gorm",
+            "mongoose",
+            "sequelize"
+          ]
+        },
+        {
+          "id": "gap-002-3",
+          "title": "Plugin API surface and contract",
+          "category": "gap",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "544-544",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Iteration 1 noted that scan() runs userConfig.plugins post-processors but the plugin contract was not explored. If Public adopts a plugin pattern, this is a small follow-up read of external/src/index.ts:402-413 and the p",
+          "phase_1_keywords": [
+            "plugin",
+            "api",
+            "surface",
+            "contract"
+          ]
+        },
+        {
+          "id": "gap-002-4",
+          "title": "Token-stat methodology",
+          "category": "gap",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "545-545",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "calculateTokenStats(...) produces the tokenStats.saved value used in the Claude profile motivation message but was not traced. Worth a single-file read of external/src/index.ts (or wherever the helper lives) before quoti",
+          "phase_1_keywords": [
+            "token-stat",
+            "methodology",
+            "calculatetokenstats",
+            "produces"
+          ]
+        },
+        {
+          "id": "gap-002-5",
+          "title": "Watch mode debouncing and incremental scan",
+          "category": "gap",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "546-546",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "watchMode() exists in external/src/index.ts:235-298 but a real incremental detector pipeline was not investigated. If Public wants live-updating context, this is a separate research thread.",
+          "phase_1_keywords": [
+            "watch",
+            "mode",
+            "debouncing",
+            "incremental"
+          ]
+        },
+        {
+          "id": "gap-002-6",
+          "title": "HTML report and benchmark output formats",
+          "category": "gap",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "547-553",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Explicitly out of scope per phase-research-prompt.md \u00a710.2; included here only for completeness. None of these is blocking for the current synthesis or recommendations. <!-- /ANCHOR:open-questions --> <!-- ANCHOR:cross-p",
+          "phase_1_keywords": [
+            "html",
+            "report",
+            "benchmark",
+            "output"
+          ]
+        },
+        {
+          "id": "iter-6-1",
+          "title": "enrichRouteContracts is a post-detection regex-only mutator that rereads each route file once via readFileSafe, extracts",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "668-668",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "enrichRouteContracts is a post-detection regex-only mutator that rereads each route file once via readFileSafe, extracts path params from :id/[id]/{id}/<id>, and dispatches on route.framework. It does not invoke the Type",
+          "phase_1_keywords": [
+            "enrichroutecontracts",
+            "post-detection",
+            "regex-only",
+            "mutator"
+          ]
+        },
+        {
+          "id": "iter-6-2",
+          "title": "The shared enrichTSRoute(...) helper is strongly Hono-biased: it scans the whole file for three patterns only \u2014 c.json<T",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "669-669",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The shared enrichTSRoute(...) helper is strongly Hono-biased: it scans the whole file for three patterns only \u2014 c.json<T>(...), zValidator('json'|'form', Identifier), and Promise<Response<T>>. Express/NestJS/Fastify/Koa/",
+          "phase_1_keywords": [
+            "shared",
+            "enrichtsroute",
+            "helper",
+            "strongly"
+          ]
+        },
+        {
+          "id": "iter-6-3",
+          "title": "Next.js/SvelteKit/Remix/Nuxt go through enrichNextRoute(...) which extracts up to 8 object-literal keys from NextRespons",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "670-670",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Next.js/SvelteKit/Remix/Nuxt go through enrichNextRoute(...) which extracts up to 8 object-literal keys from NextResponse.json({...}) or Response.json({...}) into a synthetic { key1, key2 } shape. FastAPI parses response",
+          "phase_1_keywords": [
+            "next",
+            "js/sveltekit/remix/nuxt",
+            "through",
+            "enrichnextroute"
+          ]
+        },
+        {
+          "id": "iter-6-4",
+          "title": "tRPC has AST route extraction but ZERO contract enrichment",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "671-671",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "tRPC has AST route extraction but ZERO contract enrichment. The contract switch never handles trpc, even though extract-routes.ts:287-337 produces routes with confidence: \"ast\" for query/mutation/subscription procedures.",
+          "phase_1_keywords": [
+            "trpc",
+            "has",
+            "ast",
+            "route"
+          ]
+        },
+        {
+          "id": "iter-6-5",
+          "title": "Silent no-ops are common: readFileSafe returns \"\" on failure, leaving requestType/responseType/params absent",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "672-672",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Silent no-ops are common: readFileSafe returns \"\" on failure, leaving requestType/responseType/params absent. The enrichment pass appears untested \u2014 detectors.test.ts imports detectRoutes and the other detectors but neve",
+          "phase_1_keywords": [
+            "silent",
+            "no-ops",
+            "common",
+            "readfilesafe"
+          ]
+        },
+        {
+          "id": "iter-7-1",
+          "title": "Python is genuinely AST-backed, Go is not",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "676-676",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Python is genuinely AST-backed, Go is not. Python spawns python3 -c \"ast.parse(...)\" via subprocess and streams file contents on stdin (extract-python.ts:20-126, 128-290). Go's extract-go.ts:1-12 explicitly uses \"brace-t",
+          "phase_1_keywords": [
+            "python",
+            "genuinely",
+            "ast-backed",
+            "spawns"
+          ]
+        },
+        {
+          "id": "iter-7-2",
+          "title": "FastAPI/Flask extraction is route-shape only (method/path/params)",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "677-677",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "FastAPI/Flask extraction is route-shape only (method/path/params). The biggest gap is prefix composition: detectFastAPIRoutes() never combines decorators with app.include_router(..., prefix=\"/api/...\"). The fastapi-sqlal",
+          "phase_1_keywords": [
+            "fastapi/flask",
+            "extraction",
+            "route-shape",
+            "method/path/params"
+          ]
+        },
+        {
+          "id": "iter-7-3",
+          "title": "Go does decent prefix composition for Gin/Echo/Fiber Group(\"/prefix\") chains and chi.Route nesting, but never captures m",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "678-678",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Go does decent prefix composition for Gin/Echo/Fiber Group(\"/prefix\") chains and chi.Route nesting, but never captures middleware. The gin-gorm fixture advertises \"middleware\": [\"auth\"] in ground truth, but the Go extrac",
+          "phase_1_keywords": [
+            "decent",
+            "prefix",
+            "composition",
+            "gin/echo/fiber"
+          ]
+        },
+        {
+          "id": "iter-7-4",
+          "title": "SQLAlchemy AST extraction is the strongest non-TS path \u2014 and is RICHER than Drizzle: it parses Column(...), mapped_colum",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "679-679",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "SQLAlchemy AST extraction is the strongest non-TS path \u2014 and is RICHER than Drizzle: it parses Column(...), mapped_column(...), relationship(...), Mapped[...] annotations, and records index and fk flags. Iter 5 finding 3",
+          "phase_1_keywords": [
+            "sqlalchemy",
+            "ast",
+            "extraction",
+            "strongest"
+          ]
+        },
+        {
+          "id": "iter-7-5",
+          "title": "GORM is materially looser: a struct counts as a model if its body contains gorm.Model, gorm.DeletedAt, a gorm: tag, or e",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "680-680",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "GORM is materially looser: a struct counts as a model if its body contains gorm.Model, gorm.DeletedAt, a gorm: tag, or even a plain json: tag, which over-admits ordinary DTO structs. Mislabels as \"ast\". (external/src/ast",
+          "phase_1_keywords": [
+            "gorm",
+            "materially",
+            "looser",
+            "struct"
+          ]
+        },
+        {
+          "id": "iter-7-6",
+          "title": "The confidence label enum is binary (\"ast\" | \"regex\") and non-TS fallbacks often omit confidence entirely instead of mar",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "681-681",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The confidence label enum is binary (\"ast\" | \"regex\") and non-TS fallbacks often omit confidence entirely instead of marking \"regex\". Go's structured-regex parser is the most misleading mislabel. (external/src/types.ts:5",
+          "phase_1_keywords": [
+            "confidence",
+            "label",
+            "enum",
+            "binary"
+          ]
+        },
+        {
+          "id": "iter-8-1",
+          "title": "estimateTokens(text) is Math.ceil(text.length / 4) with an inline comment explicitly stating it exists \"to avoid requiri",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "685-685",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "estimateTokens(text) is Math.ceil(text.length / 4) with an inline comment explicitly stating it exists \"to avoid requiring tiktoken as a dependency.\" Repo-wide grep finds zero references to any tokenizer library. (extern",
+          "phase_1_keywords": [
+            "estimatetokens",
+            "text",
+            "math",
+            "ceil"
+          ]
+        },
+        {
+          "id": "iter-8-2",
+          "title": "estimatedExplorationTokens is a hand-tuned linear formula, not a measurement: (routes 400 + schemas 300 + components 250",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "686-686",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "estimatedExplorationTokens is a hand-tuned linear formula, not a measurement: (routes 400 + schemas 300 + components 250 + libs 200 + envVars 100 + middleware 200 + hotFiles 150 + min(fileCount, 50) 80) * 1.3. saved = ma",
+          "phase_1_keywords": [
+            "estimatedexplorationtokens",
+            "hand-tuned",
+            "linear",
+            "formula"
+          ]
+        },
+        {
+          "id": "iter-8-3",
+          "title": "Zero token-math tests exist",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "687-687",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Zero token-math tests exist. Repo-wide grep for calculateTokenStats|estimateTokens|TokenStats against external/tests/ returns zero hits. The only token match in detectors.test.ts:418 is an unrelated auth fixture variable",
+          "phase_1_keywords": [
+            "zero",
+            "token-math",
+            "tests",
+            "exist"
+          ]
+        },
+        {
+          "id": "iter-8-4",
+          "title": "Presentation inconsistency: formatter.ts:290 writes roundTo100(ts.saved) into CODESIGHT.md (signaling estimate), but ai-",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "688-688",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Presentation inconsistency: formatter.ts:290 writes roundTo100(ts.saved) into CODESIGHT.md (signaling estimate), but ai-config.ts:213 writes the unrounded result.tokenStats.saved.toLocaleString() into CLAUDE.md (reads as",
+          "phase_1_keywords": [
+            "presentation",
+            "inconsistency",
+            "formatter",
+            "290"
+          ]
+        },
+        {
+          "id": "iter-8-5",
+          "title": "The production data flow is \"scan \u2192 write placeholder CODESIGHT.md \u2192 measure that markdown \u2192 rewrite with populated stat",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "689-689",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The production data flow is \"scan \u2192 write placeholder CODESIGHT.md \u2192 measure that markdown \u2192 rewrite with populated stats\" \u2014 a self-referential measurement loop that doubles disk I/O for no functional benefit. The output",
+          "phase_1_keywords": [
+            "production",
+            "data",
+            "flow",
+            "scan"
+          ]
+        },
+        {
+          "id": "iter-9-1",
+          "title": "Config inputs are codesight.config.{ts,js,mjs,json} plus a package.json codesight field fallback",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "693-693",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Config inputs are codesight.config.{ts,js,mjs,json} plus a package.json codesight field fallback. *There is NO .codesightrc support** anywhere in source. TS config loading is best-effort dynamic import with a fallback re",
+          "phase_1_keywords": [
+            "config",
+            "inputs",
+            "codesight",
+            "mjs"
+          ]
+        },
+        {
+          "id": "iter-9-2",
+          "title": "CLI flags are broad (--init, --watch, --hook, --html, --mcp, --json, --benchmark, --profile, --blast, --telemetry, --eva",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "694-694",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "CLI flags are broad (--init, --watch, --hook, --html, --mcp, --json, --benchmark, --profile, --blast, --telemetry, --eval, plus output/depth/help/version), but only maxDepth, outputDir, and profile flow into merged Codes",
+          "phase_1_keywords": [
+            "cli",
+            "flags",
+            "broad",
+            "init"
+          ]
+        },
+        {
+          "id": "iter-9-3",
+          "title": "Monorepo aggregation only understands pnpm-workspace.yaml and package.json workspaces",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "695-695",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Monorepo aggregation only understands pnpm-workspace.yaml and package.json workspaces. There are no dedicated branches for turbo.json, nx.json, lerna.json, or Rush manifests. .turbo appears only as an ignored directory.",
+          "phase_1_keywords": [
+            "monorepo",
+            "aggregation",
+            "understands",
+            "pnpm-workspace"
+          ]
+        },
+        {
+          "id": "iter-9-4",
+          "title": "Workspace aggregation is rollup-oriented, not graph-oriented: child dependencies/devDependencies are merged into root al",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "696-696",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Workspace aggregation is rollup-oriented, not graph-oriented: child dependencies/devDependencies are merged into root allDeps and workspace frameworks/orms are de-duplicated back into top-level project arrays. The unit t",
+          "phase_1_keywords": [
+            "workspace",
+            "aggregation",
+            "rollup-oriented",
+            "graph-oriented"
+          ]
+        },
+        {
+          "id": "iter-9-5",
+          "title": "disableDetectors is a true short-circuit before invocation, not a post-filter",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "697-697",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "disableDetectors is a true short-circuit before invocation, not a post-filter. Disabled built-ins return resolved empty placeholders; plugin detectors still run. (external/src/index.ts:99-130)",
+          "phase_1_keywords": [
+            "disabledetectors",
+            "short-circuit",
+            "before",
+            "invocation"
+          ]
+        },
+        {
+          "id": "iter-9-6",
+          "title": "CodesightPlugin is a real typed contract (name, optional async detector, optional async postProcessor)",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "698-698",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "CodesightPlugin is a real typed contract (name, optional async detector, optional async postProcessor). Plugin detectors merge routes/schemas/components/middleware into the in-memory result; post-processors run after sca",
+          "phase_1_keywords": [
+            "codesightplugin",
+            "typed",
+            "contract",
+            "name"
+          ]
+        },
+        {
+          "id": "iter-10-1",
+          "title": "Component extraction is shallow and React-biased",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "702-702",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Component extraction is shallow and React-biased. Only React, Vue, and Svelte are recognized. React tries AST first via a 216-line helper that handles exported uppercase function/const components plus forwardRef/memo wra",
+          "phase_1_keywords": [
+            "component",
+            "extraction",
+            "shallow",
+            "react-biased"
+          ]
+        },
+        {
+          "id": "iter-10-2",
+          "title": ".codesight/components.md is a flat bullet list (name, optional [client/server], comma-joined prop names, file path) \u2014 mu",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "703-703",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": ".codesight/components.md is a flat bullet list (name, optional [client/server], comma-joined prop names, file path) \u2014 much shallower than routes.md. The only component-specific test asserts at least 2 components and one",
+          "phase_1_keywords": [
+            "codesight/components",
+            "flat",
+            "bullet",
+            "list"
+          ]
+        },
+        {
+          "id": "iter-10-3",
+          "title": "Telemetry is local-only and opt-in",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "704-704",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Telemetry is local-only and opt-in. --telemetry imports runTelemetry, reads project files + the generated CODESIGHT.md, computes the same Math.ceil(text.length / 4) token estimate, and writes a local telemetry.md report.",
+          "phase_1_keywords": [
+            "telemetry",
+            "local-only",
+            "opt-in",
+            "imports"
+          ]
+        },
+        {
+          "id": "iter-10-4",
+          "title": "The cumulative adoption risk is concentrated in honesty and integration boundaries, not in surveillance: token-savings c",
+          "category": "finding",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "705-705",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The cumulative adoption risk is concentrated in honesty and integration boundaries, not in surveillance: token-savings claims, root-level assistant file emission, blast-radius depth-cap bug, GORM mislabeling. Final risk",
+          "phase_1_keywords": [
+            "cumulative",
+            "adoption",
+            "risk",
+            "concentrated"
+          ]
+        },
+        {
+          "id": "matrix-18.3-01",
+          "title": "Orchestration shape (one canonical scan, late-bound projections)",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "713-713",
+          "confidence": "unknown",
+          "tag_hint": "iter 5",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now.",
+          "phase_1_keywords": [
+            "orchestration",
+            "shape",
+            "one",
+            "canonical"
+          ]
+        },
+        {
+          "id": "matrix-18.3-02",
+          "title": "Static .codesight/-style artifact emission with conditional rule",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "714-714",
+          "confidence": "unknown",
+          "tag_hint": "iter 5",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now.",
+          "phase_1_keywords": [
+            "static",
+            "codesight/-style",
+            "artifact",
+            "emission"
+          ]
+        },
+        {
+          "id": "matrix-18.3-03",
+          "title": "AST-first / regex-fallback pattern with explicit confidence labels",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "715-715",
+          "confidence": "unknown",
+          "tag_hint": "iter 1-2",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now (with iter 7 fix: 3+ confidence states, no \"ast\" for non-AST).",
+          "phase_1_keywords": [
+            "ast-first",
+            "regex-fallback",
+            "pattern",
+            "explicit"
+          ]
+        },
+        {
+          "id": "matrix-18.3-04",
+          "title": "Per-tool profile overlay (CLAUDE/Cursor/Codex/Copilot/Windsurf)",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "716-716",
+          "confidence": "unknown",
+          "tag_hint": "iter 4",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier medium; recommendation adopt now (with namespacing + no root-file clobbering).",
+          "phase_1_keywords": [
+            "per-tool",
+            "profile",
+            "overlay",
+            "claude/cursor/codex/copilot/windsurf"
+          ]
+        },
+        {
+          "id": "matrix-18.3-05",
+          "title": "F1 fixture harness",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "717-717",
+          "confidence": "unknown",
+          "tag_hint": "iter 4",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now (with iter 7 fix: assertions must distinguish AST from fallback).",
+          "phase_1_keywords": [
+            "fixture",
+            "harness",
+            "risk",
+            "tier"
+          ]
+        },
+        {
+          "id": "matrix-18.3-06",
+          "title": "Hot-file ranking (degree counting)",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "718-718",
+          "confidence": "unknown",
+          "tag_hint": "iter 3",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now (label as \"depended-on count,\" never \"centrality\").",
+          "phase_1_keywords": [
+            "hot-file",
+            "ranking",
+            "degree",
+            "counting"
+          ]
+        },
+        {
+          "id": "matrix-18.3-07",
+          "title": "Python AST + subprocess pattern",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "719-719",
+          "confidence": "unknown",
+          "tag_hint": "iter 7",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now (template for any cross-language AST).",
+          "phase_1_keywords": [
+            "python",
+            "ast",
+            "subprocess",
+            "pattern"
+          ]
+        },
+        {
+          "id": "matrix-18.3-08",
+          "title": "SQLAlchemy AST schema extraction",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "720-720",
+          "confidence": "unknown",
+          "tag_hint": "iter 7",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now (richer than Drizzle path).",
+          "phase_1_keywords": [
+            "sqlalchemy",
+            "ast",
+            "schema",
+            "extraction"
+          ]
+        },
+        {
+          "id": "matrix-18.3-09",
+          "title": "Telemetry surface (local opt-in markdown)",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "721-721",
+          "confidence": "unknown",
+          "tag_hint": "iter 10",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now if needed (with policy: ban external sinks).",
+          "phase_1_keywords": [
+            "telemetry",
+            "surface",
+            "local",
+            "opt-in"
+          ]
+        },
+        {
+          "id": "matrix-18.3-10",
+          "title": "disableDetectors short-circuit",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "722-722",
+          "confidence": "unknown",
+          "tag_hint": "iter 9",
+          "recommendation_status": "adopt",
+          "summary": "Risk tier low; recommendation adopt now (clean pattern).",
+          "phase_1_keywords": [
+            "disabledetectors",
+            "short-circuit",
+            "risk",
+            "tier"
+          ]
+        },
+        {
+          "id": "matrix-18.3-11",
+          "title": "Blast-radius reverse BFS",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "723-723",
+          "confidence": "unknown",
+          "tag_hint": "iter 3",
+          "recommendation_status": "defer",
+          "summary": "Risk tier medium; recommendation prototype later (fix depth-cap off-by-one first).",
+          "phase_1_keywords": [
+            "blast-radius",
+            "reverse",
+            "bfs",
+            "risk"
+          ]
+        },
+        {
+          "id": "matrix-18.3-12",
+          "title": "Contract enrichment (regex post-mutation)",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "724-724",
+          "confidence": "unknown",
+          "tag_hint": "iter 6",
+          "recommendation_status": "defer",
+          "summary": "Risk tier medium; recommendation prototype later (only as best-effort, must add tRPC, must add handler scoping).",
+          "phase_1_keywords": [
+            "contract",
+            "enrichment",
+            "regex",
+            "post-mutation"
+          ]
+        },
+        {
+          "id": "matrix-18.3-13",
+          "title": "Go structured-regex pattern",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "725-725",
+          "confidence": "unknown",
+          "tag_hint": "iter 7",
+          "recommendation_status": "defer",
+          "summary": "Risk tier medium; recommendation prototype later (with honest \"structured\" confidence label, never \"ast\").",
+          "phase_1_keywords": [
+            "structured-regex",
+            "pattern",
+            "risk",
+            "tier"
+          ]
+        },
+        {
+          "id": "matrix-18.3-14",
+          "title": "Monorepo aggregation",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "726-726",
+          "confidence": "unknown",
+          "tag_hint": "iter 9",
+          "recommendation_status": "defer",
+          "summary": "Risk tier medium; recommendation prototype later (after adding turbo/nx/lerna detection, prefer per-workspace records over rollup).",
+          "phase_1_keywords": [
+            "monorepo",
+            "aggregation",
+            "risk",
+            "tier"
+          ]
+        },
+        {
+          "id": "matrix-18.3-15",
+          "title": "Component detection",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "727-727",
+          "confidence": "unknown",
+          "tag_hint": "iter 10",
+          "recommendation_status": "defer",
+          "summary": "Risk tier medium; recommendation prototype later (treat as breadcrumb only, not deep context).",
+          "phase_1_keywords": [
+            "component",
+            "detection",
+            "risk",
+            "tier"
+          ]
+        },
+        {
+          "id": "matrix-18.3-16",
+          "title": "Plugin contract",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "728-728",
+          "confidence": "unknown",
+          "tag_hint": "iter 9",
+          "recommendation_status": "defer",
+          "summary": "Risk tier medium; recommendation prototype later (add at least one in-tree fixture).",
+          "phase_1_keywords": [
+            "plugin",
+            "contract",
+            "risk",
+            "tier"
+          ]
+        },
+        {
+          "id": "matrix-18.3-17",
+          "title": "Token stats math (heuristic linear formula)",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "729-729",
+          "confidence": "unknown",
+          "tag_hint": "iter 8",
+          "recommendation_status": "reject",
+          "summary": "Risk tier high; recommendation reject (un-tested, hand-tuned constants; replace with honest measurement if needed).",
+          "phase_1_keywords": [
+            "token",
+            "stats",
+            "math",
+            "heuristic"
+          ]
+        },
+        {
+          "id": "matrix-18.3-18",
+          "title": "GORM heuristic schema extraction",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "730-730",
+          "confidence": "unknown",
+          "tag_hint": "iter 7",
+          "recommendation_status": "reject",
+          "summary": "Risk tier high; recommendation reject (over-admits structs, mislabels as \"ast\").",
+          "phase_1_keywords": [
+            "gorm",
+            "heuristic",
+            "schema",
+            "extraction"
+          ]
+        },
+        {
+          "id": "matrix-18.3-19",
+          "title": "Drizzle index extraction",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "731-731",
+          "confidence": "unknown",
+          "tag_hint": "iter 2 + iter 5",
+          "recommendation_status": "reject",
+          "summary": "Risk tier known gap; recommendation reject (not implemented; document as a hole in any port).",
+          "phase_1_keywords": [
+            "drizzle",
+            "index",
+            "extraction",
+            "risk"
+          ]
+        },
+        {
+          "id": "matrix-18.3-20",
+          "title": ".codesightrc dotfile",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "732-732",
+          "confidence": "unknown",
+          "tag_hint": "iter 9",
+          "recommendation_status": "n/a",
+          "summary": "Risk tier n/a; recommendation n/a (does not exist; pick one config-input shape if porting).",
+          "phase_1_keywords": [
+            "codesightrc",
+            "dotfile",
+            "risk",
+            "tier"
+          ]
+        },
+        {
+          "id": "matrix-18.3-21",
+          "title": "HTML report styling",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "733-733",
+          "confidence": "unknown",
+          "tag_hint": "(out of scope)",
+          "recommendation_status": "reject",
+          "summary": "Risk tier n/a; recommendation reject (per phase charter).",
+          "phase_1_keywords": [
+            "html",
+            "report",
+            "styling",
+            "risk"
+          ]
+        },
+        {
+          "id": "matrix-18.3-22",
+          "title": "README \"11.2x token reduction\" headline",
+          "category": "recommendation",
+          "source_file": "002-codesight/research/research.md",
+          "source_lines": "734-734",
+          "confidence": "unknown",
+          "tag_hint": "iter 4 + iter 8",
+          "recommendation_status": "reject",
+          "summary": "Risk tier n/a; recommendation reject (3 private SaaS codebases not in fixtures; eval.ts measures only F1; per-run number is hand-tuned formula).",
+          "phase_1_keywords": [
+            "readme",
+            "token",
+            "reduction",
+            "headline"
+          ]
+        }
+      ]
+    },
+    "3": {
+      "folder": "003-contextador",
+      "system": "Contextador",
+      "items": [
+        {
+          "id": "ADR-001",
+          "title": "Keep this phase research-only and confine writes to the phase folder",
+          "category": "adr",
+          "source_file": "003-contextador/decision-record.md",
+          "source_lines": "20-127",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Keep this phase research-only and confine writes to the phase folder",
+          "phase_1_keywords": [
+            "keep",
+            "research-only",
+            "confine",
+            "writes"
+          ]
+        },
+        {
+          "id": "Finding 1",
+          "title": "Bootstrap is root-scoped, config-driven, and keeps Mainframe optional",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "55-64",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source evidence: external/src/mcp.ts:34-91, external/src/lib/core/projectconfig.ts:19-65",
+          "phase_1_keywords": [
+            "bootstrap",
+            "root-scoped",
+            "config-driven",
+            "keeps"
+          ]
+        },
+        {
+          "id": "Finding 2",
+          "title": "The MCP surface is 11 explicit tools, but the flagship context contract is text-first and pointer-oriented",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "65-74",
+          "confidence": "high",
+          "recommendation_status": "reject",
+          "summary": "Source evidence: external/src/mcp.ts:180-183, external/src/mcp.ts:186-671, external/src/mcp.ts:677-686, external/src/mcp.ts:97-99, external/src/lib/core/types.ts:49-62, external/src/lib/core/types.ts:91-97",
+          "phase_1_keywords": [
+            "mcp",
+            "surface",
+            "explicit",
+            "tools"
+          ]
+        },
+        {
+          "id": "Finding 3",
+          "title": "routeQuery() is model-first, then hard-falls back to deterministic keyword routing with validation and fan-out",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "75-84",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/core/headmaster.ts:61-126, external/src/lib/core/headmaster.ts:128-157, external/src/lib/core/headmaster.ts:159-197, external/src/lib/core/headmaster.ts:199-242, external/src/mcp.ts:212-",
+          "phase_1_keywords": [
+            "routequery",
+            "model-first",
+            "hard-falls",
+            "back"
+          ]
+        },
+        {
+          "id": "Finding 4",
+          "title": "The routing corpus and served payload depend on authored CONTEXT.md plus optional briefing.md, not on a true semantic or",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "85-94",
+          "confidence": "high",
+          "recommendation_status": "reject",
+          "summary": "Source evidence: external/src/lib/core/headmaster.ts:16-36, external/src/lib/core/headmaster.ts:199-203, external/src/lib/core/pointers.ts:23-138, external/src/lib/core/briefing.ts:21-27, external/src/lib/core/briefing.t",
+          "phase_1_keywords": [
+            "routing",
+            "corpus",
+            "served",
+            "payload"
+          ]
+        },
+        {
+          "id": "Finding 5",
+          "title": "The self-healing loop is real, but the explicit feedback path is narrower than the return message suggests",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "95-104",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/core/feedback.ts:24-47, external/src/lib/core/feedback.ts:53-97, external/src/lib/core/feedback.ts:106-143, external/src/mcp.ts:104-115, external/src/mcp.ts:296-340, external/src/lib/cor",
+          "phase_1_keywords": [
+            "self-healing",
+            "loop",
+            "but",
+            "explicit"
+          ]
+        },
+        {
+          "id": "Finding 6",
+          "title": "Repair queue processing and enrichment mix deterministic file IO with model-driven regeneration, and the loop is only lo",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "105-114",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/core/janitor.ts:65-81, external/src/lib/core/janitor.ts:89-147, external/src/lib/core/generator.ts:7-18, external/src/lib/core/generator.ts:21-47, external/src/lib/core/generator.ts:49-6",
+          "phase_1_keywords": [
+            "repair",
+            "queue",
+            "processing",
+            "enrichment"
+          ]
+        },
+        {
+          "id": "Finding 7",
+          "title": "Janitor combines deterministic freshness heuristics with six maintenance stages, but only part of that story is test-bac",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "115-124",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/core/freshness.ts:4-6, external/src/lib/core/freshness.ts:95-153, external/src/lib/core/freshness.ts:155-170, external/src/lib/core/janitor.ts:149-157, external/src/lib/core/janitor.ts:1",
+          "phase_1_keywords": [
+            "janitor",
+            "combines",
+            "deterministic",
+            "freshness"
+          ]
+        },
+        {
+          "id": "Finding 8",
+          "title": "Mainframe is a Matrix-backed shared answer cache whose protocol mechanics are partly test-confirmed, but lifecycle robus",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "125-134",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/mainframe/rooms.ts:6-69, external/src/lib/mainframe/bridge.ts:119-123, external/src/lib/mainframe/bridge.ts:128-166, external/src/lib/mainframe/bridge.ts:157-175, external/src/lib/mainfr",
+          "phase_1_keywords": [
+            "mainframe",
+            "matrix-backed",
+            "shared",
+            "answer"
+          ]
+        },
+        {
+          "id": "Finding 9",
+          "title": "Mainframe's privacy and distributed-consistency model is still materially weaker than its collaboration pitch",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "135-144",
+          "confidence": "high",
+          "recommendation_status": "reject",
+          "summary": "Source evidence: external/src/mcp.ts:66-90, external/src/lib/mainframe/bridge.ts:26-57, external/src/lib/mainframe/bridge.ts:80-83, external/src/lib/mainframe/bridge.ts:169-175, external/src/lib/mainframe/bridge.ts:216-2",
+          "phase_1_keywords": [
+            "mainframe",
+            "privacy",
+            "distributed-consistency",
+            "model"
+          ]
+        },
+        {
+          "id": "Finding 10",
+          "title": "stats.ts reports estimated token savings, so the README's 93% claim is estimated, not measured",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "145-154",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source evidence: external/src/lib/core/stats.ts:26-28, external/src/lib/core/stats.ts:43-50, external/src/lib/core/stats.ts:60-65, external/src/lib/core/stats.ts:75-107, external/src/cli.ts:557-577, external/README.md:13",
+          "phase_1_keywords": [
+            "stats",
+            "reports",
+            "estimated",
+            "token"
+          ]
+        },
+        {
+          "id": "Finding 11",
+          "title": "Provider abstraction is real, but it is finite and implemented as explicit adapters plus one OpenAI-compatible escape ha",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "155-164",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/providers/config.ts:6-13, external/src/lib/providers/config.ts:15-44, external/src/lib/providers/config.ts:46-63, external/src/lib/providers/config.ts:76-112, external/src/lib/providers/",
+          "phase_1_keywords": [
+            "provider",
+            "abstraction",
+            "but",
+            "finite"
+          ]
+        },
+        {
+          "id": "Finding 12",
+          "title": ".mcp.json auto-detection is really project-file generation plus editor discovery, and the adopt-now value is narrower th",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "165-174",
+          "confidence": "high",
+          "recommendation_status": "adopt",
+          "summary": "Source evidence: external/src/lib/setup/wizard.ts:299-325, external/src/lib/setup/wizard.ts:328-335, external/src/lib/setup/wizard.ts:116-149, external/src/cli.ts:141-145, external/src/cli.ts:769-776, external/src/lib/fr",
+          "phase_1_keywords": [
+            "mcp",
+            "json",
+            "auto-detection",
+            "really"
+          ]
+        },
+        {
+          "id": "Finding 13",
+          "title": "Bun is a hard runtime boundary for Contextador's CLI and setup flows",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "175-184",
+          "confidence": "high",
+          "recommendation_status": "reject",
+          "summary": "Source evidence: external/src/cli.ts:1, external/package.json:27-33, external/package.json:44-53, external/src/lib/setup/wizard.ts:218-255, external/src/cli.ts:807-808, external/TROUBLESHOOTING.md:9-24",
+          "phase_1_keywords": [
+            "bun",
+            "hard",
+            "runtime",
+            "boundary"
+          ]
+        },
+        {
+          "id": "Finding 14",
+          "title": "The licensing model is AGPL-3.0-or-later by default with a separate commercial track, so adoption means study plus reimp",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "185-194",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Source evidence: external/package.json:2-7, external/package.json:6, external/README.md:113-117, external/LICENSE:1, external/LICENSE-COMMERCIAL.md:1-20",
+          "phase_1_keywords": [
+            "licensing",
+            "model",
+            "agpl-3",
+            "0-or-later"
+          ]
+        },
+        {
+          "id": "Finding 15",
+          "title": "Public already wins on retrieval substrate; Contextador's surviving value is runtime retrieval ergonomics",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "195-204",
+          "confidence": "high",
+          "recommendation_status": "reject",
+          "summary": "Source evidence: external/src/mcp.ts:185-277, external/src/lib/core/pointers.ts:14-20, external/src/lib/core/pointers.ts:151-190, .opencode/skill/mcp-coco-index/README.md:42-47, .opencode/skill/mcp-coco-index/README.md:1",
+          "phase_1_keywords": [
+            "already",
+            "wins",
+            "retrieval",
+            "substrate"
+          ]
+        },
+        {
+          "id": "Finding 16",
+          "title": "budget.ts is a real local cost-control subsystem, but it is not a durable shared quota service",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "205-214",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/mainframe/budget.ts:16-22, external/src/lib/mainframe/budget.ts:24-27, external/src/lib/mainframe/budget.ts:29-46, external/src/lib/mainframe/budget.ts:57-73, external/src/lib/mainframe/",
+          "phase_1_keywords": [
+            "budget",
+            "local",
+            "cost-control",
+            "subsystem"
+          ]
+        },
+        {
+          "id": "Finding 17",
+          "title": "The GitHub integration is a real bounded automation pipeline, but it is a CLI-local workflow with light proof rather tha",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "215-224",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/github/index.ts:1-3, external/src/lib/github/types.ts:1-53, external/src/lib/github/triage.ts:39-113, external/src/lib/github/triage.ts:168-232, external/src/lib/github/triage.ts:238-296",
+          "phase_1_keywords": [
+            "github",
+            "integration",
+            "bounded",
+            "automation"
+          ]
+        },
+        {
+          "id": "Finding 18",
+          "title": "The closing helper sweep narrows several over-broad assumptions and fully closes the Janitor support-story coverage gap",
+          "category": "finding",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "225-234",
+          "confidence": "high",
+          "recommendation_status": "defer",
+          "summary": "Source evidence: external/src/lib/core/agents.ts:18-45, external/src/lib/core/agents.ts:47-103, external/src/lib/core/validation.ts:12-20, external/src/lib/core/validation.ts:27-60, external/src/lib/core/writer.ts:15-66,",
+          "phase_1_keywords": [
+            "closing",
+            "helper",
+            "sweep",
+            "narrows"
+          ]
+        },
+        {
+          "id": "6.1-1",
+          "title": "Config-gated bootstrap layering",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "273-275",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Contextador's bootstrap split is still one of the cleanest ideas in the repo: local operation first, shared-cache/provider behavior only when configured. Public can adopt that layering around existing retrieval substrate",
+          "phase_1_keywords": [
+            "config-gated",
+            "bootstrap",
+            "layering",
+            "contextador"
+          ]
+        },
+        {
+          "id": "6.1-2",
+          "title": "Generated .mcp.json project scaffold plus setup hints",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "277-279",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "The actual behavior here is modest but useful: the wizard captures setup intent, init creates the project MCP file, and doctor tells the user when that file is missing. Public already has richer runtime recovery after in",
+          "phase_1_keywords": [
+            "generated",
+            "mcp",
+            "json",
+            "project"
+          ]
+        },
+        {
+          "id": "6.1-3",
+          "title": "Benchmark-honest token reporting",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "281-283",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Contextador's failure mode is instructive: the implementation says est. while the README markets a stronger percentage than the code proves. Public should keep the implementation honesty and extend it into docs and repor",
+          "phase_1_keywords": [
+            "benchmark-honest",
+            "token",
+            "reporting",
+            "contextador"
+          ]
+        },
+        {
+          "id": "6.2-1",
+          "title": "Model-first routing facade over existing Public tools",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "287-289",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Contextador's routing split is useful because it cleanly separates model-first scope selection from deterministic fallback. Public could expose a similar facade that decides when to consult semantic search, memory, or gr",
+          "phase_1_keywords": [
+            "model-first",
+            "routing",
+            "facade",
+            "existing"
+          ]
+        },
+        {
+          "id": "6.2-2",
+          "title": "Query-triggered repair and deterministic enrichment",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "291-293",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The feedback-to-repair loop remains the strongest additive behavior in Contextador. Public could experiment with a narrow version that patches stale research or context artifacts only after verified misses, with full aud",
+          "phase_1_keywords": [
+            "query-triggered",
+            "repair",
+            "deterministic",
+            "enrichment"
+          ]
+        },
+        {
+          "id": "6.2-3",
+          "title": "Janitor-style staged freshness pass",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "295-297",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The staged Janitor plus freshness heuristics still suggest a good maintenance shape for artifact systems. Public already has readiness and freshness checks, but not a comparable staged repair sweep for context artifacts.",
+          "phase_1_keywords": [
+            "janitor-style",
+            "staged",
+            "freshness",
+            "pass"
+          ]
+        },
+        {
+          "id": "6.2-4",
+          "title": "Mainframe-style shared answer cache with local budget gating",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "299-301",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The interesting part of Mainframe is not generic collaboration; it is replayable answer reuse keyed by recent query history, plus local guardrails around expensive shared behavior. Public does not currently expose that a",
+          "phase_1_keywords": [
+            "mainframe-style",
+            "shared",
+            "answer",
+            "cache"
+          ]
+        },
+        {
+          "id": "6.2-5",
+          "title": "Bounded event-driven automation pipeline",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "303-305",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The GitHub layer shows a reusable pattern: intake, deterministic narrowing, optional model adjudication, targeted remediation, and append-only event logging. Public could reuse that pattern for selected automation flows",
+          "phase_1_keywords": [
+            "bounded",
+            "event-driven",
+            "automation",
+            "pipeline"
+          ]
+        },
+        {
+          "id": "6.2-6",
+          "title": "Unified provider and setup abstraction",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "307-309",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Contextador's provider surface and setup wizard are not retrieval breakthroughs, but they do reduce cognitive load. Public could benefit from a single place that explains and validates which providers or host modes are a",
+          "phase_1_keywords": [
+            "unified",
+            "provider",
+            "setup",
+            "abstraction"
+          ]
+        },
+        {
+          "id": "6.3-1",
+          "title": "Pointer-only context delivery as the primary response model",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "313-315",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Contextador's served payload is deliberately small, but it drops too much structure and narrative detail. Public already has richer content-plus-structure surfaces, so replacing them with a pointer-only markdown outline",
+          "phase_1_keywords": [
+            "pointer-only",
+            "context",
+            "delivery",
+            "primary"
+          ]
+        },
+        {
+          "id": "6.3-2",
+          "title": "Contextador as a semantic or structural retrieval replacement",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "317-319",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "The traced source shows no vector index on the live path and no symbol-level structural traversal. Public already covers those domains with CocoIndex and Code Graph MCP, so adopting Contextador's retrieval substrate woul",
+          "phase_1_keywords": [
+            "contextador",
+            "semantic",
+            "structural",
+            "retrieval"
+          ]
+        },
+        {
+          "id": "6.3-3",
+          "title": "Mainframe privacy and conflict model as-is",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "321-323",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Persistent local identities, plaintext local secrets, broad room-history metadata, blind shared-state writes, and shallow conflict handling are too weak for direct adoption. The collaboration concept is interesting, but",
+          "phase_1_keywords": [
+            "mainframe",
+            "privacy",
+            "conflict",
+            "model"
+          ]
+        },
+        {
+          "id": "6.3-4",
+          "title": "Bun runtime coupling",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "325-327",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Contextador's CLI and setup flows are Bun-native. Public should treat that as an implementation detail of the external repo, not as a reason to reshape its own runtime stack. Existing Public surface is sufficient because",
+          "phase_1_keywords": [
+            "bun",
+            "runtime",
+            "coupling",
+            "contextador"
+          ]
+        },
+        {
+          "id": "6.3-5",
+          "title": "Direct source adoption under AGPL/commercial licensing",
+          "category": "recommendation",
+          "source_file": "003-contextador/research/research.md",
+          "source_lines": "329-331",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "The licensing model alone makes direct source reuse the wrong default. Even where the ideas are attractive, the safe path is to reimplement the pattern rather than import the code. Existing Public surface is sufficient a",
+          "phase_1_keywords": [
+            "direct",
+            "source",
+            "adoption",
+            "under"
+          ]
+        }
+      ]
+    },
+    "4": {
+      "folder": "004-graphify",
+      "system": "Graphify",
+      "items": [
+        {
+          "id": "ADR-001",
+          "title": "Use cli-codex gpt-5.4 high reasoning effort as the primary research engine",
+          "category": "adr",
+          "source_file": "004-graphify/decision-record.md",
+          "source_lines": "21-124",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Use cli-codex gpt-5.4 high reasoning effort as the primary research engine",
+          "phase_1_keywords": [
+            "use",
+            "cli-codex",
+            "gpt-5",
+            "reasoning"
+          ]
+        },
+        {
+          "id": "ADR-002",
+          "title": "Switch engine to claude-opus-direct after iter 2 codex starvation",
+          "category": "adr",
+          "source_file": "004-graphify/decision-record.md",
+          "source_lines": "125-211",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Switch engine to claude-opus-direct after iter 2 codex starvation",
+          "phase_1_keywords": [
+            "switch",
+            "engine",
+            "claude-opus-direct",
+            "after"
+          ]
+        },
+        {
+          "id": "ADR-003",
+          "title": "Override iter 7 composite_converged stop with 3 forced cli-codex iterations",
+          "category": "adr",
+          "source_file": "004-graphify/decision-record.md",
+          "source_lines": "212-308",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Override iter 7 composite_converged stop with 3 forced cli-codex iterations",
+          "phase_1_keywords": [
+            "override",
+            "iter",
+            "composite_converged",
+            "stop"
+          ]
+        },
+        {
+          "id": "ADR-004",
+          "title": "Append cli-codex findings as section 13.A rather than rewriting K1 to K12",
+          "category": "adr",
+          "source_file": "004-graphify/decision-record.md",
+          "source_lines": "309-404",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Append cli-codex findings as section 13.A rather than rewriting K1 to K12",
+          "phase_1_keywords": [
+            "append",
+            "cli-codex",
+            "findings",
+            "section"
+          ]
+        },
+        {
+          "id": "A1",
+          "title": "Evidence-tagging contract (EXTRACTED / INFERRED / AMBIGUOUS) + numeric confidence_score backfill at the consumer boundar",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "560-560",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Evidence-tagging contract (EXTRACTED / INFERRED / AMBIGUOUS) + numeric confidence_score backfill at the consumer boundary",
+          "phase_1_keywords": [
+            "evidence-tagging",
+            "contract",
+            "extracted",
+            "inferred"
+          ]
+        },
+        {
+          "id": "A2",
+          "title": "Graph-first PreToolUse hook with matcher \"Glob|Grep\" and conditional payload",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "561-561",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Graph-first PreToolUse hook with matcher \"Glob|Grep\" and conditional payload",
+          "phase_1_keywords": [
+            "graph-first",
+            "pretooluse",
+            "hook",
+            "matcher"
+          ]
+        },
+        {
+          "id": "A3",
+          "title": "Two-layer cache invalidation (manifest mtime + SHA256 content hash)",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "562-562",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Two-layer cache invalidation (manifest mtime + SHA256 content hash)",
+          "phase_1_keywords": [
+            "two-layer",
+            "cache",
+            "invalidation",
+            "manifest"
+          ]
+        },
+        {
+          "id": "A4",
+          "title": "CLAUDE.md companion section pattern (declarative guidance + procedural hook = two-pronged Claude steering)",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "563-563",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "CLAUDE.md companion section pattern (declarative guidance + procedural hook = two-pronged Claude steering)",
+          "phase_1_keywords": [
+            "claude",
+            "companion",
+            "section",
+            "pattern"
+          ]
+        },
+        {
+          "id": "D1",
+          "title": "Semantic subagent prompt-as-data pattern with per-file-type extraction strategies",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "569-569",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "Semantic subagent prompt-as-data pattern with per-file-type extraction strategies",
+          "phase_1_keywords": [
+            "semantic",
+            "subagent",
+            "prompt-as-data",
+            "pattern"
+          ]
+        },
+        {
+          "id": "D2",
+          "title": "Per-image-type extraction strategies (UI / chart / tweet / diagram / research figure / handwritten)",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "570-570",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "Per-image-type extraction strategies (UI / chart / tweet / diagram / research figure / handwritten)",
+          "phase_1_keywords": [
+            "per-image-type",
+            "extraction",
+            "strategies",
+            "chart"
+          ]
+        },
+        {
+          "id": "D3",
+          "title": "Auto-rebuild on git commit / branch switch via post-commit + post-checkout hooks",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "571-571",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "Auto-rebuild on git commit / branch switch via post-commit + post-checkout hooks",
+          "phase_1_keywords": [
+            "auto-rebuild",
+            "git",
+            "commit",
+            "branch"
+          ]
+        },
+        {
+          "id": "D4",
+          "title": "Suggested questions generator (5 categories: ambiguous edges, bridge nodes, verify-inferred, isolated nodes, low-cohesio",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "572-572",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "Suggested questions generator (5 categories: ambiguous edges, bridge nodes, verify-inferred, isolated nodes, low-cohesion communities)",
+          "phase_1_keywords": [
+            "suggested",
+            "questions",
+            "generator",
+            "categories"
+          ]
+        },
+        {
+          "id": "D5",
+          "title": "Leiden clustering via graspologic with single-pass split for oversized communities",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "573-573",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "Leiden clustering via graspologic with single-pass split for oversized communities",
+          "phase_1_keywords": [
+            "leiden",
+            "clustering",
+            "via",
+            "graspologic"
+          ]
+        },
+        {
+          "id": "R1",
+          "title": "graphify's 12-language AST extractor as a primary code parser",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "579-579",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "graphify's 12-language AST extractor as a primary code parser",
+          "phase_1_keywords": [
+            "graphify",
+            "12-language",
+            "ast",
+            "extractor"
+          ]
+        },
+        {
+          "id": "R2",
+          "title": "graphify's MCP server (serve.py)",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "580-580",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "graphify's MCP server (serve.py)",
+          "phase_1_keywords": [
+            "graphify",
+            "mcp",
+            "server",
+            "serve"
+          ]
+        },
+        {
+          "id": "R3",
+          "title": "HTML viewer + vis.js + pyvis",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "581-581",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "HTML viewer + vis.js + pyvis",
+          "phase_1_keywords": [
+            "html",
+            "viewer",
+            "vis",
+            "pyvis"
+          ]
+        },
+        {
+          "id": "R4",
+          "title": "Wholesale replacement of Code Graph MCP or CocoIndex with graphify",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "582-582",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Wholesale replacement of Code Graph MCP or CocoIndex with graphify",
+          "phase_1_keywords": [
+            "wholesale",
+            "replacement",
+            "code",
+            "graph"
+          ]
+        },
+        {
+          "id": "K1",
+          "title": "The 71.5x token-reduction claim is mathematically reproducible",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "613-614",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "(123,488 / 1,726 = 71.55x) but rests on three load-bearing assumptions: (a) naive baseline = full-corpus stuffing, (b) 4-chars-per-token heuristic, (c) BFS subgraph approximates real query cost. The 8.8x code-only number",
+          "phase_1_keywords": [
+            "token-reduction",
+            "claim",
+            "mathematically",
+            "reproducible"
+          ]
+        },
+        {
+          "id": "K2",
+          "title": "The pipeline is a 7-stage chain detect \u2192 extract \u2192 build \u2192 cluster \u2192 analyze \u2192 report \u2192 export",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "615-616",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "with extract internally split into parallel structural (AST tree-sitter) and semantic (Claude subagent) branches. The split is implemented as inline shell-invoked Python in skill.md, not as a unified Python function. AST",
+          "phase_1_keywords": [
+            "pipeline",
+            "7-stage",
+            "chain",
+            "detect"
+          ]
+        },
+        {
+          "id": "K3",
+          "title": "Cache invalidation is a TWO-LAYER stack",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "617-620",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "(manifest mtime + SHA256 content hash), not a single mechanism. Layer 1 filters which files to consider, Layer 2 decides whether to actually re-extract. The two layers protect different failure modes (file edited vs file",
+          "phase_1_keywords": [
+            "cache",
+            "invalidation",
+            "two-layer",
+            "stack"
+          ]
+        },
+        {
+          "id": "K4",
+          "title": "The AST pass dispatches 12 extractors covering 18 extensions",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "621-622",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "(.py, .js/.ts/.tsx via single extractor, .go, .rs, .java, .c/.h, .cpp/.cc/.cxx/.hpp, .rb, .cs, .kt/.kts, .scala, .php). Swift is divergent: detected by detect.py but never extracted because collect_files() glob list AND",
+          "phase_1_keywords": [
+            "ast",
+            "pass",
+            "dispatches",
+            "extractors"
+          ]
+        },
+        {
+          "id": "K5",
+          "title": "Python is uniquely powerful",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "623-626",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": ": it gets the call graph, cross-file uses edges, AND rationale/docstring nodes. The other 11 extractors only emit file/class/function/method/imports/contains. Cross-file uses inference is a two-pass algorithm that fans o",
+          "phase_1_keywords": [
+            "python",
+            "uniquely",
+            "powerful",
+            "gets"
+          ]
+        },
+        {
+          "id": "K6",
+          "title": "The semantic subagent prompt is verbatim in skill.md, not in Python.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "627-628",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "This makes it hot-editable but also non-versioned, non-testable, and not exposed via the MCP server. The prompt defines a 4th knowledge primitive (semantically_similar_to edges + hyperedges) and 6 per-image-type extracti",
+          "phase_1_keywords": [
+            "semantic",
+            "subagent",
+            "prompt",
+            "verbatim"
+          ]
+        },
+        {
+          "id": "K7",
+          "title": "The merge logic is also in skill.md, NOT in graphify Python.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "629-632",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The graphify package does NOT export a merge_extraction(ast, semantic) function. The \"AST nodes win on collision\" behavior is implemented in inline Python at skill.md:287-317, NOT in build.py. This is a coupling between",
+          "phase_1_keywords": [
+            "merge",
+            "logic",
+            "also",
+            "skill"
+          ]
+        },
+        {
+          "id": "K8",
+          "title": "Evidence labeling is a transport-level guarantee, not a UI convention.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "633-634",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Every edge in graph.json carries both confidence (categorical) and confidence_score (numeric, backfilled from _CONFIDENCE_SCORE_DEFAULTS = {EXTRACTED:1.0, INFERRED:0.5, AMBIGUOUS:0.2}). The validator enforces the categor",
+          "phase_1_keywords": [
+            "evidence",
+            "labeling",
+            "transport-level",
+            "guarantee"
+          ]
+        },
+        {
+          "id": "K9",
+          "title": "Confidence score has TWO sources of truth that produce a subtle inconsistency for INFERRED edges.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "635-638",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "AST edges never set confidence_score and get the flat default 0.5 from _CONFIDENCE_SCORE_DEFAULTS. Semantic edges emit per-edge scores 0.4\u20130.9 per the LLM prompt rules. An AST calls edge and a semantic calls edge with th",
+          "phase_1_keywords": [
+            "confidence",
+            "score",
+            "has",
+            "two"
+          ]
+        },
+        {
+          "id": "K10",
+          "title": "Leiden clustering is single-pass second-Leiden split with NO tunable parameters.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "639-640",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Hard-coded _MAX_COMMUNITY_FRACTION = 0.25 and _MIN_SPLIT_SIZE = 10. Communities exceeding max(10, int(N * 0.25)) get one re-split attempt; if the second pass returns \u2264 1 community, the original is kept as-is. There is no",
+          "phase_1_keywords": [
+            "leiden",
+            "clustering",
+            "single-pass",
+            "second-leiden"
+          ]
+        },
+        {
+          "id": "K11",
+          "title": "Surprising connections use a 6-factor composite score",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "641-644",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": ": confidence weight (AMBIGUOUS=3, INFERRED=2, EXTRACTED=1) + cross file-type bonus (+2 for code\u2194paper) + cross-repo bonus (+2) + cross-community bonus (+1) + peripheral\u2192hub bonus (+1) + semantic_similarity multiplier (\u00d71",
+          "phase_1_keywords": [
+            "surprising",
+            "connections",
+            "use",
+            "6-factor"
+          ]
+        },
+        {
+          "id": "K12",
+          "title": "The PreToolUse hook is a one-line conditional nudge against the exact tools Public uses for raw-file search.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "645-654",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Matcher \"Glob|Grep\", payload [ -f graphify-out/graph.json ] && echo '...' || true. Conditional firing (silent when no graph), never blocking (always exits 0), surgical matcher (exactly the raw-search tools). Combined wit",
+          "phase_1_keywords": [
+            "pretooluse",
+            "hook",
+            "one-line",
+            "conditional"
+          ]
+        },
+        {
+          "id": "K13",
+          "title": "to_json() is the canonical interchange artifact, and it actively preserves community IDs and edge confidence numerics ra",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "655-656",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "It serializes the NetworkX graph as node-link JSON, injects community onto every node, backfills numeric confidence_score for edges that only have categorical confidence, and carries hyperedges from G.graph[\"hyperedges\"]",
+          "phase_1_keywords": [
+            "to_json",
+            "canonical",
+            "interchange",
+            "artifact"
+          ]
+        },
+        {
+          "id": "K14",
+          "title": "The HTML export is a bounded human-review surface, not a downstream API.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "657-658",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "to_html() hard-fails above MAX_NODES_FOR_VIZ = 5000 and emits a single self-contained vis.js page with degree-scaled nodes, confidence-styled edges, search, click inspection, community legend filtering, and hyperedge ove",
+          "phase_1_keywords": [
+            "html",
+            "export",
+            "bounded",
+            "human-review"
+          ]
+        },
+        {
+          "id": "K15",
+          "title": "The Obsidian export is opinionated knowledge packaging, not raw markdown dumping.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "659-660",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "to_obsidian() writes one note per node with YAML frontmatter, tags by file type / dominant confidence / community, adds [[wikilink]] connections, generates per-community overview notes, embeds a Dataview live query block",
+          "phase_1_keywords": [
+            "obsidian",
+            "export",
+            "opinionated",
+            "knowledge"
+          ]
+        },
+        {
+          "id": "K16",
+          "title": "The Canvas export is intentionally lossy: it spatializes communities, rewrites nodes as Obsidian file cards, and caps vi",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "661-662",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "to_canvas() computes a community grid layout, writes group boxes plus per-node file cards, hardcodes note paths under graphify/obsidian/, and keeps only the top 200 weighted edges for readability. Canvas is a presentatio",
+          "phase_1_keywords": [
+            "canvas",
+            "export",
+            "intentionally",
+            "lossy"
+          ]
+        },
+        {
+          "id": "K17",
+          "title": "Neo4j is supported in two modes: offline Cypher script generation and live driver upserts. Both treat Neo4j as a seconda",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "663-664",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "to_cypher() emits MERGE-based Cypher with node labels derived from file_type and relationships from sanitized relation names, while push_to_neo4j() performs the same mapping directly against a running Neo4j instance. Pub",
+          "phase_1_keywords": [
+            "neo4j",
+            "supported",
+            "two",
+            "modes"
+          ]
+        },
+        {
+          "id": "K18",
+          "title": "The standalone wiki export bakes provenance audit summaries directly into prose articles.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "665-666",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "to_wiki() writes index.md, one article per community, and one article per supplied god node; each community article lists key concepts, cross-community relationships, source files, and an \"Audit Trail\" section showing EX",
+          "phase_1_keywords": [
+            "standalone",
+            "wiki",
+            "export",
+            "bakes"
+          ]
+        },
+        {
+          "id": "K19",
+          "title": "serve.py makes graph.json the serving boundary by reconstructing communities from node properties instead of depending o",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "667-668",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "The MCP server loads a validated graph path, parses node-link JSON back into NetworkX, and rebuilds the community map purely from each node's serialized community attribute. Any consumer that can read the JSON artifact c",
+          "phase_1_keywords": [
+            "serve",
+            "makes",
+            "graph",
+            "json"
+          ]
+        },
+        {
+          "id": "K20",
+          "title": "The MCP serve interface is intentionally narrow: 7 read-only tools, all wrapped as TextContent.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "669-670",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "The server exposes query_graph, get_node, get_neighbors, get_community, god_nodes, graph_stats, and shortest_path, and every call returns a single types.TextContent payload rather than structured JSON or typed objects. T",
+          "phase_1_keywords": [
+            "mcp",
+            "serve",
+            "interface",
+            "intentionally"
+          ]
+        },
+        {
+          "id": "K21",
+          "title": "The serve layer is deliberately thin and mostly static: no cache invalidation, no refresh tool, no watch loop, and no wr",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "671-674",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "The graph is loaded once before tool registration, then the process simply runs the MCP stdio server. Freshness is delegated to the caller rebuilding graph.json out-of-band. REJECT this operational model for Public's pri",
+          "phase_1_keywords": [
+            "serve",
+            "layer",
+            "deliberately",
+            "thin"
+          ]
+        },
+        {
+          "id": "K22",
+          "title": "manifest.py is a 4-line re-export shim around detect.py helpers \u2014 there is no standalone manifest implementation layer.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "675-676",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Whatever \"manifest\" semantics graphify has are implemented as mtime tracking inside detect.py:237-274. There is no checksum-based, version-stamped, or schema-versioned manifest contract. This means the \"manifest\" layer i",
+          "phase_1_keywords": [
+            "manifest",
+            "4-line",
+            "re-export",
+            "shim"
+          ]
+        },
+        {
+          "id": "K23",
+          "title": "build.py is a 42-line module that ONLY validates extraction input and assembles the graph object \u2014 no orchestration, no",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "677-678",
+          "confidence": "unknown",
+          "recommendation_status": "adapt",
+          "summary": "All build orchestration lives in skill.md as inline shell-invoked Python. This confirms K7 (merge logic in skill.md, not Python) and extends it: even the build entrypoint is a thin assembler. Public should ADAPT this onl",
+          "phase_1_keywords": [
+            "build",
+            "42-line",
+            "module",
+            "validates"
+          ]
+        },
+        {
+          "id": "K24",
+          "title": "The incremental detection path is mtime-only and has no deletion tombstones.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "679-680",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "detect_incremental() compares current Path.stat().st_mtime against the saved manifest and partitions files into new_files vs unchanged_files. There is no deleted_files partition: a file removed since the last build silen",
+          "phase_1_keywords": [
+            "incremental",
+            "detection",
+            "path",
+            "mtime-only"
+          ]
+        },
+        {
+          "id": "K25",
+          "title": "The orchestration layer in skill.md branches the rebuild plan by modality so code-only changes avoid semantic re-extract",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "681-682",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "The code_only branch in skill.md:236-400 runs a fast AST-only re-extract path without invoking the semantic subagent, while changes to documents, papers, or images trigger the full multimodal pipeline. This is the most r",
+          "phase_1_keywords": [
+            "orchestration",
+            "layer",
+            "skill",
+            "branches"
+          ]
+        },
+        {
+          "id": "K26",
+          "title": "Cross-corpus check: mixed-corpus worked example does NOT show the multimodal evidence its README claims.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "683-684",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "karpathy-repos shows non-zero token spend (6,000 input / 3,500 output), 49 files, ~92,616 words, explicit paper and image extraction, and an 81% EXTRACTED / 19% INFERRED mix. The checked-in mixed-corpus/GRAPH_REPORT.md s",
+          "phase_1_keywords": [
+            "cross-corpus",
+            "check",
+            "mixed-corpus",
+            "worked"
+          ]
+        },
+        {
+          "id": "K27",
+          "title": "Smaller graphs need stronger inferred-edge skepticism: mixed-corpus shows 50% EXTRACTED / 50% INFERRED versus karpathy-r",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "685-688",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "This is structural: small graphs have fewer high-confidence structural facts, so the relative weight of inferred edges grows. Public's confidence-tier ranking (A1 in \u00a712.1) should account for graph-size-conditional skept",
+          "phase_1_keywords": [
+            "smaller",
+            "graphs",
+            "need",
+            "stronger"
+          ]
+        },
+        {
+          "id": "K28",
+          "title": "Per-language extractor matrix (line-grounded):",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "689-707",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "12 extractors covering 16 file extensions (TypeScript routed through extract_js, Lua absent). Coverage by language entry function: | Language | Entry Function | Lines | Cross-File Inference? | Rationale? | AMBIGUOUS Used",
+          "phase_1_keywords": [
+            "per-language",
+            "extractor",
+            "matrix",
+            "line-grounded"
+          ]
+        },
+        {
+          "id": "K29",
+          "title": "Relation naming drifts across language extractors: imports_from vs imports.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "708-709",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "JS/Go/Rust use imports_from for file-level import edges (extract.py:366, 606-613, 776), while Java/C/C++/C#/Kotlin/Scala/PHP use imports (extract.py:920, 1085, 1238, 1558, 1732, 1911, 2092). Public must normalize these i",
+          "phase_1_keywords": [
+            "relation",
+            "naming",
+            "drifts",
+            "across"
+          ]
+        },
+        {
+          "id": "K30",
+          "title": "Confidence is a one-tier-deep field for non-Python extractors: only EXTRACTED defaults plus INFERRED call edges.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "710-711",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "The validator enforces VALID_CONFIDENCES = {EXTRACTED, INFERRED, AMBIGUOUS} (validate.py:4-7, 50-57), but non-Python extractor bodies only emit EXTRACTED defaults plus an explicit INFERRED flag for unresolved call sites",
+          "phase_1_keywords": [
+            "confidence",
+            "one-tier-deep",
+            "field",
+            "non-python"
+          ]
+        },
+        {
+          "id": "K31",
+          "title": "The only second-pass enrichment in graphify is _resolve_cross_file_imports, which is Python-specific and only invoked fo",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "712-713",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "(extract.py:2209-2339, 2485-2489). This confirms K5 with line-level evidence and rules out the hypothesis that any non-Python language gets cross-file uses edges. Public should ADOPT the post-pass pattern (file-level imp",
+          "phase_1_keywords": [
+            "second-pass",
+            "enrichment",
+            "graphify",
+            "resolve_cross_file_imports"
+          ]
+        },
+        {
+          "id": "K32",
+          "title": "Graphify's validation layer (validate.py) is the most directly portable artifact in the entire repo.",
+          "category": "finding",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "714-859",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "It enforces required id, label, type on nodes; required source, target, relation, confidence on edges; bounded confidence \u2208 {EXTRACTED, INFERRED, AMBIGUOUS}; and validates hyperedges only structurally. The whole validato",
+          "phase_1_keywords": [
+            "graphify",
+            "validation",
+            "layer",
+            "validate"
+          ]
+        },
+        {
+          "id": "A5",
+          "title": "validate.py schema-boundary validator",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "730-730",
+          "confidence": "unknown",
+          "tag_hint": "extension-note",
+          "recommendation_status": "adopt",
+          "summary": "as a small composable hardening layer for graph/export interchange. Effort: S. Evidence: K32. Why: 71 lines, no dependencies, orthogonal to Code Graph MCP, hardens ingestion boundaries without competing.",
+          "phase_1_keywords": [
+            "validate",
+            "schema-boundary",
+            "validator",
+            "small"
+          ]
+        },
+        {
+          "id": "A6",
+          "title": "Wiki-style narrative export with EXTRACTED/INFERRED/AMBIGUOUS audit summaries baked into prose.",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "732-732",
+          "confidence": "unknown",
+          "tag_hint": "extension-note",
+          "recommendation_status": "adopt",
+          "summary": "Effort: S-M. Evidence: K18. Why: distinct from live MCP query surfaces; useful for research-packet handoff and human evidence review.",
+          "phase_1_keywords": [
+            "wiki-style",
+            "narrative",
+            "export",
+            "extracted/inferred/ambiguous"
+          ]
+        },
+        {
+          "id": "D6",
+          "title": "Modality-aware rebuild policy layer",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "734-734",
+          "confidence": "unknown",
+          "tag_hint": "extension-note",
+          "recommendation_status": "adapt",
+          "summary": "(code-only fast path vs full multimodal slow path). Effort: M. Evidence: K25. Why: lets Code Graph MCP stay cheap on code-only changes while only invoking CocoIndex/semantic passes when non-code assets actually change.",
+          "phase_1_keywords": [
+            "modality-aware",
+            "rebuild",
+            "policy",
+            "layer"
+          ]
+        },
+        {
+          "id": "D7",
+          "title": "Stable JSON interchange artifact preserving community + provenance numerics",
+          "category": "recommendation",
+          "source_file": "004-graphify/research/research.md",
+          "source_lines": "736-736",
+          "confidence": "unknown",
+          "tag_hint": "extension-note",
+          "recommendation_status": "adapt",
+          "summary": "(the to_json() discipline). Effort: S-M. Evidence: K13, K19. Why: enables stateless serving layers as projections from a durable artifact rather than tightly coupled to the build pipeline.",
+          "phase_1_keywords": [
+            "stable",
+            "json",
+            "interchange",
+            "artifact"
+          ]
+        }
+      ]
+    },
+    "5": {
+      "folder": "005-claudest",
+      "system": "Claudest",
+      "items": [
+        {
+          "id": "ADR-001",
+          "title": "Use cli-codex gpt-5.4 high reasoning effort with --full-auto --sandbox workspace-write as the primary research engine",
+          "category": "adr",
+          "source_file": "005-claudest/decision-record.md",
+          "source_lines": "21-133",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Use cli-codex gpt-5.4 high reasoning effort with --full-auto --sandbox workspace-write as the primary research engine",
+          "phase_1_keywords": [
+            "use",
+            "cli-codex",
+            "gpt-5",
+            "reasoning"
+          ]
+        },
+        {
+          "id": "ADR-002",
+          "title": "Run continuation charter iterations 8-12 sequentially because each builds on the prior synthesis output",
+          "category": "adr",
+          "source_file": "005-claudest/decision-record.md",
+          "source_lines": "134-229",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Run continuation charter iterations 8-12 sequentially because each builds on the prior synthesis output",
+          "phase_1_keywords": [
+            "run",
+            "continuation",
+            "charter",
+            "iterations"
+          ]
+        },
+        {
+          "id": "ADR-003",
+          "title": "Reducer manages strategy.md sections 7-11 only; analyst owns sections 1-6 and 12-13 with post-reducer re-add to prevent",
+          "category": "adr",
+          "source_file": "005-claudest/decision-record.md",
+          "source_lines": "230-320",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Reducer manages strategy.md sections 7-11 only; analyst owns sections 1-6 and 12-13 with post-reducer re-add to prevent",
+          "phase_1_keywords": [
+            "reducer",
+            "manages",
+            "strategy",
+            "sections"
+          ]
+        },
+        {
+          "id": "ADR-004",
+          "title": "Cross-phase boundary with sibling phase 001-claude-optimization-settings: implementation-side analysis here, audit-patte",
+          "category": "adr",
+          "source_file": "005-claudest/decision-record.md",
+          "source_lines": "321-407",
+          "confidence": "high",
+          "recommendation_status": "n/a",
+          "summary": "Cross-phase boundary with sibling phase 001-claude-optimization-settings: implementation-side analysis here, audit-patte",
+          "phase_1_keywords": [
+            "cross-phase",
+            "boundary",
+            "sibling",
+            "001-claude-optimization-settings"
+          ]
+        },
+        {
+          "id": "4.1",
+          "title": "Discovery is registry-first, not autodiscovery",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "52-59",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "external/.claude-plugin/marketplace.json is the discovery root. It declares marketplace identity (name, description, owner) plus a plugins array whose entries each carry name, description, version, and a relative source",
+          "phase_1_keywords": [
+            "discovery",
+            "registry-first",
+            "autodiscovery",
+            "external"
+          ]
+        },
+        {
+          "id": "4.2",
+          "title": "Per-plugin manifests are intentionally thin package descriptors",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "60-67",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/.claude-plugin/plugin.json and external/plugins/claude-skills/.claude-plugin/plugin.json carry only package identity (name, version, description, author, keywords). No install graph, no upd",
+          "phase_1_keywords": [
+            "per-plugin",
+            "manifests",
+            "intentionally",
+            "thin"
+          ]
+        },
+        {
+          "id": "5.1",
+          "title": "Version parity holds in this checkout, but the discipline is fragile",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "70-77",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "A manifest sweep across external/plugins/*/.claude-plugin/plugin.json against the root catalog shows version parity for all eight plugins (e.g. claude-memory@0.8.56, claude-skills@0.5.15, claude-coding@0.2.18). The dupli",
+          "phase_1_keywords": [
+            "version",
+            "parity",
+            "holds",
+            "checkout"
+          ]
+        },
+        {
+          "id": "5.2",
+          "title": "Auto-update is Claude /plugin runtime behavior, not repo metadata",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "78-85",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "external/README.md documents /plugin marketplace add gupsammy/claudest, /plugin install <plugin>@claudest, and a Marketplaces-tab toggle for auto-update \u2014 but neither the root marketplace JSON nor any inspected per-plugi",
+          "phase_1_keywords": [
+            "auto-update",
+            "claude",
+            "plugin",
+            "runtime"
+          ]
+        },
+        {
+          "id": "6.1",
+          "title": "v3 schema separates messages from branch indices",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "88-106",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py defines:",
+          "phase_1_keywords": [
+            "schema",
+            "separates",
+            "messages",
+            "branch"
+          ]
+        },
+        {
+          "id": "6.2",
+          "title": "FTS capability is detected at runtime, not assumed",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "107-114",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Both messages_fts and branches_fts virtual tables are defined alongside detect_fts_support(), which reads PRAGMA compile_options and prefers ENABLE_FTS5, falls back to ENABLE_FTS4/ENABLE_FTS3, and returns None otherwise.",
+          "phase_1_keywords": [
+            "fts",
+            "capability",
+            "detected",
+            "runtime"
+          ]
+        },
+        {
+          "id": "7.1",
+          "title": "Search ranks branches, not individual messages",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "117-130",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "external/plugins/claude-memory/skills/recall-conversations/scripts/search_conversations.py runs MATCH against branches_fts (not messages_fts), filters to b.is_active = 1, sanitizes query tokens, and builds an OR-joined q",
+          "phase_1_keywords": [
+            "search",
+            "ranks",
+            "branches",
+            "individual"
+          ]
+        },
+        {
+          "id": "7.2",
+          "title": "Chronological browsing is a separate, deterministic path",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "131-138",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/skills/recall-conversations/scripts/recent_chats.py reads active branches joined to sessions/projects, orders by b.ended_at, then reconstructs the visible transcript through branch_messages",
+          "phase_1_keywords": [
+            "chronological",
+            "browsing",
+            "separate",
+            "deterministic"
+          ]
+        },
+        {
+          "id": "8.1",
+          "title": "Hook chain spans the lifecycle, not a user command",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "141-157",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "external/plugins/claude-memory/hooks/hooks.json proves the flow is hook-driven across lifecycle boundaries:",
+          "phase_1_keywords": [
+            "hook",
+            "chain",
+            "spans",
+            "lifecycle"
+          ]
+        },
+        {
+          "id": "8.2",
+          "title": "Session selection is project-recency, not spec-folder-aware",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "158-170",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "external/plugins/claude-memory/hooks/memory-context.py select_sessions():",
+          "phase_1_keywords": [
+            "session",
+            "selection",
+            "project-recency",
+            "spec-folder-aware"
+          ]
+        },
+        {
+          "id": "8.3",
+          "title": "Cached summary fast path turns startup recall into a DB lookup",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "171-185",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/hooks/memory-context.py and external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py source-prove the cached path:",
+          "phase_1_keywords": [
+            "cached",
+            "summary",
+            "fast",
+            "path"
+          ]
+        },
+        {
+          "id": "8.4",
+          "title": "Summaries are precomputed at Stop / import time, deterministically",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "186-195",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/hooks/sync_current.py and external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py show the producer side: Stop-time memory-sync.py writes branch metadata",
+          "phase_1_keywords": [
+            "summaries",
+            "precomputed",
+            "stop",
+            "import"
+          ]
+        },
+        {
+          "id": "8.5",
+          "title": "Fallback rendering does NOT match its docstring",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "196-203",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "_build_fallback_context() in memory-context.py advertises a \"last 3 exchanges\" path in its docstring, but the implementation actually mirrors the same short-session/full render and long-session \"first-2 plus last-6\" stru",
+          "phase_1_keywords": [
+            "fallback",
+            "rendering",
+            "match",
+            "docstring"
+          ]
+        },
+        {
+          "id": "9.1",
+          "title": "Four-phase consolidation, not raw write-through",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "206-220",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/skills/extract-learnings/SKILL.md defines a four-phase pipeline:",
+          "phase_1_keywords": [
+            "four-phase",
+            "consolidation",
+            "raw",
+            "write-through"
+          ]
+        },
+        {
+          "id": "9.2",
+          "title": "memory-auditor is a verifier, not a discoverer",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "221-228",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/agents/memory-auditor.md makes the role unambiguous: parse concrete entities already stored in memory, check them against codebase and git evidence, emit only STALE, CONTRADICT, MERGE, or D",
+          "phase_1_keywords": [
+            "memory-auditor",
+            "verifier",
+            "discoverer",
+            "external/plugins/claude-memory/agents/memory-auditor"
+          ]
+        },
+        {
+          "id": "9.3",
+          "title": "signal-discoverer is a miner, not a verifier",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "229-236",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/agents/signal-discoverer.md mines recent sessions, generalizes incidents into reusable principles, and classifies them as UPDATE, CONTRADICT, FILL_GAP, or NOISE, with optional promotion to",
+          "phase_1_keywords": [
+            "signal-discoverer",
+            "miner",
+            "verifier",
+            "external/plugins/claude-memory/agents/signal-discoverer"
+          ]
+        },
+        {
+          "id": "9.4",
+          "title": "Two operating modes: simple capture vs full consolidation",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "237-247",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "The skill explicitly distinguishes:",
+          "phase_1_keywords": [
+            "two",
+            "operating",
+            "modes",
+            "simple"
+          ]
+        },
+        {
+          "id": "10.1",
+          "title": "Claudest's L0\u2013L3 file hierarchy",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "250-264",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Claudest treats memory as a layered file hierarchy with always-loaded and on-demand tiers:",
+          "phase_1_keywords": [
+            "claudest",
+            "file",
+            "hierarchy",
+            "treats"
+          ]
+        },
+        {
+          "id": "10.2",
+          "title": "Public's stack already has stronger retrieval",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "265-272",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Public has repo-wide instruction loading via CLAUDE.md plus auto-surfaced constitutional and trigger-driven memory retrieval via .opencode/skill/system-spec-kit/SKILL.md. Spec-folder-scoped context preservation runs thro",
+          "phase_1_keywords": [
+            "stack",
+            "already",
+            "has",
+            "stronger"
+          ]
+        },
+        {
+          "id": "10.3",
+          "title": "Verdict: borrow the placement rubric, not the hierarchy",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "273-282",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "The strongest transferable idea is not the extra file layer but the placement rubric \u2014 extract-learnings explicitly classifies whether a learning belongs in global instructions, repo instructions, concise working memory,",
+          "phase_1_keywords": [
+            "verdict",
+            "borrow",
+            "placement",
+            "rubric"
+          ]
+        },
+        {
+          "id": "11.1",
+          "title": "JSONL ingestion yields a relational session/turn/hook model",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "285-297",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py:",
+          "phase_1_keywords": [
+            "jsonl",
+            "ingestion",
+            "yields",
+            "relational"
+          ]
+        },
+        {
+          "id": "11.2",
+          "title": "Pricing and cache normalization is per-tier",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "298-309",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "MODEL_PRICING, _get_pricing(), _turn_cost(), and build_output() (lines 62-96, 910-967):",
+          "phase_1_keywords": [
+            "pricing",
+            "cache",
+            "normalization",
+            "per-tier"
+          ]
+        },
+        {
+          "id": "11.3",
+          "title": "Cache-cliff metric is the standout workflow diagnostic",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "310-321",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "compute_session_analytics(), build_output(), build_trends(), _build_insights() (lines 604-655, 974-989, 1314-1323, 1427-1518, 1669-1874) define a cache cliff as:",
+          "phase_1_keywords": [
+            "cache-cliff",
+            "metric",
+            "standout",
+            "workflow"
+          ]
+        },
+        {
+          "id": "11.4",
+          "title": "Skill / agent / hook analytics from normalized tool calls",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "322-335",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "The same script derives:",
+          "phase_1_keywords": [
+            "skill",
+            "agent",
+            "hook",
+            "analytics"
+          ]
+        },
+        {
+          "id": "12.1",
+          "title": "Dashboard is a single-file embedded artifact",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "338-344",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "deploy_dashboard() (ingest_token_data.py:1936-1944) replaces / __INLINE_DATA_PLACEHOLDER__ / in the HTML template with const _INLINE_DATA = {json}. The dashboard boot path (HTML lines 1290-1303) reads _INLINE_DATA direct",
+          "phase_1_keywords": [
+            "dashboard",
+            "single-file",
+            "embedded",
+            "artifact"
+          ]
+        },
+        {
+          "id": "12.2",
+          "title": "Section catalog with payload contracts",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "345-367",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Source: external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html",
+          "phase_1_keywords": [
+            "section",
+            "catalog",
+            "payload",
+            "contracts"
+          ]
+        },
+        {
+          "id": "12.3",
+          "title": "What to borrow vs what to skip",
+          "category": "finding",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "368-386",
+          "confidence": "unknown",
+          "recommendation_status": "n/a",
+          "summary": "Borrow now (highest signal, presentation-agnostic):",
+          "phase_1_keywords": [
+            "borrow",
+            "skip",
+            "now",
+            "highest"
+          ]
+        },
+        {
+          "id": "A1",
+          "title": "Runtime FTS capability cascade (detect_fts_support() reading PRAGMA compile_options, FTS5 \u2192 FTS4 \u2192 none, with same logic",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "395-395",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Runtime FTS capability cascade (detect_fts_support() reading PRAGMA compile_options, FTS5 \u2192 FTS4 \u2192 none, with same logical search API at every level)",
+          "phase_1_keywords": [
+            "runtime",
+            "fts",
+            "capability",
+            "cascade"
+          ]
+        },
+        {
+          "id": "A2",
+          "title": "Cached context_summary SessionStart fast path \u2014 pre-compute summaries at Stop time, serve from a lookup at SessionStart,",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "396-396",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Cached context_summary SessionStart fast path \u2014 pre-compute summaries at Stop time, serve from a lookup at SessionStart, never replay raw transcripts",
+          "phase_1_keywords": [
+            "cached",
+            "context_summary",
+            "sessionstart",
+            "fast"
+          ]
+        },
+        {
+          "id": "A3",
+          "title": "Deterministic Python summary computation at Stop time (\"no LLM calls\") for cheap, reliable session-end snapshots",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "397-397",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Deterministic Python summary computation at Stop time (\"no LLM calls\") for cheap, reliable session-end snapshots",
+          "phase_1_keywords": [
+            "deterministic",
+            "python",
+            "summary",
+            "computation"
+          ]
+        },
+        {
+          "id": "A4",
+          "title": "Auditor vs discoverer split for consolidation work \u2014 verifier emits only STALE/CONTRADICT/MERGE/DATE_FIX; discoverer min",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "398-398",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Auditor vs discoverer split for consolidation work \u2014 verifier emits only STALE/CONTRADICT/MERGE/DATE_FIX; discoverer mines for UPDATE/CONTRADICT/FILL_GAP/NOISE/Meta",
+          "phase_1_keywords": [
+            "auditor",
+            "discoverer",
+            "split",
+            "consolidation"
+          ]
+        },
+        {
+          "id": "A5",
+          "title": "4-phase consolidation contract: orient \u2192 gather \u2192 synthesize (3-7 ranked candidates) \u2192 execute approved",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "399-399",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "4-phase consolidation contract: orient \u2192 gather \u2192 synthesize (3-7 ranked candidates) \u2192 execute approved",
+          "phase_1_keywords": [
+            "4-phase",
+            "consolidation",
+            "contract",
+            "orient"
+          ]
+        },
+        {
+          "id": "A6",
+          "title": "Per-tier pricing and cache normalization (uncached input / output / cache read / 5m write / 1h write; conservative defau",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "400-400",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Per-tier pricing and cache normalization (uncached input / output / cache read / 5m write / 1h write; conservative defaulting)",
+          "phase_1_keywords": [
+            "per-tier",
+            "pricing",
+            "cache",
+            "normalization"
+          ]
+        },
+        {
+          "id": "A7",
+          "title": "Cache-cliff metric (cache_read_ratio drop > 0.5 after user_gap_ms > 300_000ms) as the primary workflow diagnostic",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "401-401",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Cache-cliff metric (cache_read_ratio drop > 0.5 after user_gap_ms > 300_000ms) as the primary workflow diagnostic",
+          "phase_1_keywords": [
+            "cache-cliff",
+            "metric",
+            "cache_read_ratio",
+            "drop"
+          ]
+        },
+        {
+          "id": "A8",
+          "title": "Dashboard JSON contracts for kpis, cost_by_project, project_spend, project_tool_profile, trends, skill_usage, agent_dele",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "402-402",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Dashboard JSON contracts for kpis, cost_by_project, project_spend, project_tool_profile, trends, skill_usage, agent_delegation, hook_performance, findings, recommendations \u2014 borrow the contracts, not the HTML",
+          "phase_1_keywords": [
+            "dashboard",
+            "json",
+            "contracts",
+            "kpis"
+          ]
+        },
+        {
+          "id": "A9",
+          "title": "Cross-manifest version validation rule (if a catalog + per-package manifests are ever introduced)",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "403-403",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Cross-manifest version validation rule (if a catalog + per-package manifests are ever introduced)",
+          "phase_1_keywords": [
+            "cross-manifest",
+            "version",
+            "validation",
+            "rule"
+          ]
+        },
+        {
+          "id": "A10",
+          "title": "Placement rubric for memory consolidation (\"where should this learning live?\") \u2014 global instructions vs repo instruction",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "404-404",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Placement rubric for memory consolidation (\"where should this learning live?\") \u2014 global instructions vs repo instructions vs working memory vs topic files \u2014 mapped onto Public's existing surfaces (CLAUDE.md, spec folder",
+          "phase_1_keywords": [
+            "placement",
+            "rubric",
+            "memory",
+            "consolidation"
+          ]
+        },
+        {
+          "id": "A11",
+          "title": "Search/browse separation \u2014 keep ranked recall (BM25-style) and chronological browsing as two distinct paths, not a singl",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "405-405",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Search/browse separation \u2014 keep ranked recall (BM25-style) and chronological browsing as two distinct paths, not a single unified call",
+          "phase_1_keywords": [
+            "search/browse",
+            "separation",
+            "keep",
+            "ranked"
+          ]
+        },
+        {
+          "id": "A12",
+          "title": "Thin per-package manifests \u2014 if Public ever distributes bundles, keep local manifests as identity descriptors only",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "406-406",
+          "confidence": "unknown",
+          "recommendation_status": "adopt",
+          "summary": "Thin per-package manifests \u2014 if Public ever distributes bundles, keep local manifests as identity descriptors only",
+          "phase_1_keywords": [
+            "thin",
+            "per-package",
+            "manifests",
+            "ever"
+          ]
+        },
+        {
+          "id": "P1",
+          "title": "Branch-aware FTS recall (rank whole branches via branches_fts, hydrate exact transcripts after)",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "412-412",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Branch-aware FTS recall (rank whole branches via branches_fts, hydrate exact transcripts after)",
+          "phase_1_keywords": [
+            "branch-aware",
+            "fts",
+            "recall",
+            "rank"
+          ]
+        },
+        {
+          "id": "P2",
+          "title": "Project-recency session selection for SessionStart conversational continuity",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "413-413",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Project-recency session selection for SessionStart conversational continuity",
+          "phase_1_keywords": [
+            "project-recency",
+            "session",
+            "selection",
+            "sessionstart"
+          ]
+        },
+        {
+          "id": "P3",
+          "title": "Two-mode consolidation (lightweight direct capture vs full consolidation pass)",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "414-414",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Two-mode consolidation (lightweight direct capture vs full consolidation pass)",
+          "phase_1_keywords": [
+            "two-mode",
+            "consolidation",
+            "lightweight",
+            "direct"
+          ]
+        },
+        {
+          "id": "P4",
+          "title": "Single-file embedded HTML dashboard as a deploy mode for Public observability data, but with Public-native theme",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "415-415",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Single-file embedded HTML dashboard as a deploy mode for Public observability data, but with Public-native theme",
+          "phase_1_keywords": [
+            "single-file",
+            "embedded",
+            "html",
+            "dashboard"
+          ]
+        },
+        {
+          "id": "P5",
+          "title": "Marketplace catalog manifest above .opencode/skill/",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "416-416",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Marketplace catalog manifest above .opencode/skill/",
+          "phase_1_keywords": [
+            "marketplace",
+            "catalog",
+            "manifest",
+            "above"
+          ]
+        },
+        {
+          "id": "P6",
+          "title": "Derived MEMORY.md summary view (NOT as a source of truth, only as a human-readable rollup of spec-folder memory)",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "417-417",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Derived MEMORY.md summary view (NOT as a source of truth, only as a human-readable rollup of spec-folder memory)",
+          "phase_1_keywords": [
+            "derived",
+            "memory",
+            "summary",
+            "view"
+          ]
+        },
+        {
+          "id": "P7",
+          "title": "Diagnostic dashboard contracts (cache_trajectory, tool_errors_by_tool, hook_overhead)",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "418-418",
+          "confidence": "unknown",
+          "recommendation_status": "defer",
+          "summary": "Diagnostic dashboard contracts (cache_trajectory, tool_errors_by_tool, hook_overhead)",
+          "phase_1_keywords": [
+            "diagnostic",
+            "dashboard",
+            "contracts",
+            "cache_trajectory"
+          ]
+        },
+        {
+          "id": "R1",
+          "title": "Auto-update behavior as documented in external/README.md",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "424-424",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Auto-update behavior as documented in external/README.md",
+          "phase_1_keywords": [
+            "auto-update",
+            "behavior",
+            "documented",
+            "external/readme"
+          ]
+        },
+        {
+          "id": "R2",
+          "title": "Always-loaded MEMORY.md file at repo root",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "425-425",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Always-loaded MEMORY.md file at repo root",
+          "phase_1_keywords": [
+            "always-loaded",
+            "memory",
+            "file",
+            "repo"
+          ]
+        },
+        {
+          "id": "R3",
+          "title": "Replacing Public's retrieval engine with Claudest's hierarchy",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "426-426",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Replacing Public's retrieval engine with Claudest's hierarchy",
+          "phase_1_keywords": [
+            "replacing",
+            "retrieval",
+            "engine",
+            "claudest"
+          ]
+        },
+        {
+          "id": "R4",
+          "title": "Full dashboard.html HTML/CSS/Chart.js/Google Fonts presentation bundle",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "427-427",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Full dashboard.html HTML/CSS/Chart.js/Google Fonts presentation bundle",
+          "phase_1_keywords": [
+            "full",
+            "dashboard",
+            "html",
+            "html/css/chart"
+          ]
+        },
+        {
+          "id": "R5",
+          "title": "\"Skills to Consider Disabling\" widget as-is (count <= 2 threshold)",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "428-428",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "\"Skills to Consider Disabling\" widget as-is (count <= 2 threshold)",
+          "phase_1_keywords": [
+            "skills",
+            "consider",
+            "disabling",
+            "widget"
+          ]
+        },
+        {
+          "id": "R6",
+          "title": "Treating per-plugin plugin.json as the place where update behavior is configured",
+          "category": "recommendation",
+          "source_file": "005-claudest/research/research.md",
+          "source_lines": "429-429",
+          "confidence": "unknown",
+          "recommendation_status": "reject",
+          "summary": "Treating per-plugin plugin.json as the place where update behavior is configured",
+          "phase_1_keywords": [
+            "treating",
+            "per-plugin",
+            "plugin",
+            "json"
+          ]
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total_items": 274,
+    "by_category": {
+      "finding": 148,
+      "gap": 11,
+      "recommendation": 98,
+      "adr": 17,
+      "other": 0
+    }
+  }
+}

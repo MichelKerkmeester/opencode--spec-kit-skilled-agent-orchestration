@@ -1,0 +1,16 @@
+{
+  "specFolder": "003-memory-quality-issues/001-foundation-templates-truncation",
+  "description": "Phase 1: foundation-templates-truncation",
+  "keywords": [
+    "phase",
+    "foundation-templates-truncation"
+  ],
+  "lastUpdated": "2026-04-07T11:14:04.348Z",
+  "specId": "001",
+  "folderSlug": "foundation-templates-truncation",
+  "parentChain": [
+    "003-memory-quality-issues"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

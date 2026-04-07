@@ -1,0 +1,16 @@
+{
+  "specFolder": "003-memory-quality-issues/003-sanitization-precedence",
+  "description": "Phase 3: sanitization-precedence",
+  "keywords": [
+    "phase",
+    "sanitization-precedence"
+  ],
+  "lastUpdated": "2026-04-07T11:14:04.637Z",
+  "specId": "003",
+  "folderSlug": "sanitization-precedence",
+  "parentChain": [
+    "003-memory-quality-issues"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

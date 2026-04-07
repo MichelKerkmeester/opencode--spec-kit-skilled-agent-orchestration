@@ -1,0 +1,21 @@
+{
+  "specFolder": "003-memory-quality-issues",
+  "description": "Memory quality remediation 9-PR train phase decomposition",
+  "keywords": [
+    "memory",
+    "quality",
+    "remediation",
+    "9-pr",
+    "train",
+    "phase",
+    "decomposition"
+  ],
+  "lastUpdated": "2026-04-07T11:14:04.213Z",
+  "specId": "003",
+  "folderSlug": "memory-quality-issues",
+  "parentChain": [],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "07-04-26_13-08__decomposed-the-locked-9-pr-remediation-train-from.md"
+  ]
+}

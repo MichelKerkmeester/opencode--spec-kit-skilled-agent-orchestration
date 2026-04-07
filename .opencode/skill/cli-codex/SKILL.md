@@ -279,7 +279,7 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 | `--ask-for-approval untrusted` | Prompt before untrusted operations (default) |
 | `--ask-for-approval on-request` | Prompt only when Codex requests approval |
 | `--ask-for-approval never` | Auto-approve all operations (use with caution) |
-| `--full-auto` | Low-friction mode: `workspace-write` sandbox + auto-approval — **requires explicit user approval** |
+| `--full-auto` | Low-friction sandboxed automation: `workspace-write` sandbox + `on-request` approval. Default for unattended orchestration. |
 | `--search` | Enable live web browsing during task execution |
 
 > **Default sandbox behavior**: `codex exec` without an explicit `--sandbox` flag defaults to `read-only` with `approval: never`. This means **file modification tasks will silently fail** — the agent reads the code and plans the changes but cannot write them. Always pass `--sandbox workspace-write` (or `--full-auto`) when the task requires file edits.
@@ -433,8 +433,8 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 
 **NEVER do these:**
 
-1. **NEVER use `--sandbox danger-full-access` or `--full-auto`** without explicit user approval
-   - These modes auto-approve file writes and shell commands beyond the workspace; this can cause damage
+1. **NEVER use `--sandbox danger-full-access`** without explicit user approval
+   - This mode grants full shell access beyond the workspace and can cause damage. `--full-auto` (workspace-write + on-request approval) does not require pre-approval — it stays inside the workspace sandbox.
 
 2. **NEVER trust Codex output blindly** for security-sensitive code
    - Always review for XSS, injection, hardcoded secrets, and eval() calls
@@ -468,8 +468,8 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 3. **ESCALATE IF Codex output conflicts with existing code patterns**
    - Present both perspectives and let user decide
 
-4. **ESCALATE IF task requires `--sandbox danger-full-access` or `--full-auto`**
-   - Describe risks and get explicit user approval before proceeding
+4. **ESCALATE IF task requires `--sandbox danger-full-access`**
+   - Describe risks and get explicit user approval before proceeding. `--full-auto` does not require escalation.
 
 ### Memory Handback Protocol
 

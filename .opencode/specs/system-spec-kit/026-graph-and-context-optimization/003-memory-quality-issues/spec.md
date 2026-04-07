@@ -151,3 +151,51 @@ This spec is a 1:1 derivative of `research/research.md`. Iteration index:
 - **Spec Documentation**: ✅ COMPLETE (this file + plan.md + tasks.md + checklist.md + implementation-summary.md)
 - **Implementation**: ⏸ DEFERRED (next step: `/spec_kit:plan` against this folder to convert remediation matrix into P0/P1/P2/P3 phases)
 - **Memory Save**: ✅ COMPLETE (memory file saved + post-save review patched + reindexed)
+
+---
+title: "phase parent section [template:addendum/phase/phase-parent-section.md]"
+description: "Template document for addendum/phase/phase-parent-section.md."
+trigger_phrases:
+  - "phase"
+  - "parent"
+  - "section"
+  - "template"
+  - "phase parent section"
+importance_tier: "normal"
+contextType: "general"
+---
+<!-- SPECKIT_ADDENDUM: Phase - Parent Section -->
+<!-- Append to parent spec.md after SCOPE section -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
+
+| Phase | Priority | Folder | Focus | PRs / Defects | Depends On | Status |
+|-------|----------|--------|-------|---------------|------------|--------|
+| 1 | P0 | `001-foundation-templates-truncation/` | Anchor-template fix + shared truncation helper + OVERVIEW fix. Independent foundation that enables all later phases. | PR-1 (D8 anchor IDs), PR-2 (D1 truncation) | — | Pending |
+| 2 | P1 | `002-single-owner-metadata/` | Importance-tier SSOT consolidation + capture-mode-only ≤10-LOC provenance injection. Independent of P0/P2. | PR-3 (D4 importance tier), PR-4 (D7 git provenance) | — | Pending |
+| 3 | P2 | `003-sanitization-precedence/` | Trigger-phrase sanitizer extraction + decision precedence-only gate (block lexical fallback when payload has authored decisions). | PR-5 (D3 trigger phrases), PR-6 (D2 decision placeholders) | Phase 1 (PR-2 helper used by sanitizer) | Pending |
+| 4 | P3 | `004-heuristics-refactor-guardrails/` | Auto-supersedes with continuation gate + SaveMode enum refactor + post-save reviewer CHECK-D1..D8 upgrade. | PR-7 (D5 supersedes), PR-8 (SaveMode refactor), PR-9 (post-save reviewer) | Phase 1, 2, 3 (PR-8 refactors helpers from earlier phases; PR-9 asserts on D1/D4/D7/D8 fixes) | Pending |
+| 5 | P4 | `005-operations-tail-prs/` | Optional safe-subset migration of 82 historical files + optional cross-process save lock for D9 candidate + telemetry M1-M9 alerts + release notes update. | PR-10 (migration), PR-11 (D9 save lock), PR-9 telemetry add-on | Phase 4 (PR-10 runs after PR-9 reviewer is live; PR-11 standalone) | Pending |
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
+- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+- Packet-local changelog files live under `changelog/`; root uses `changelog-<packet>-root.md` and phases use `changelog-<packet>-<phase-folder>.md`
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| 001-foundation-templates-truncation | 002-single-owner-metadata | PR-1 + PR-2 merged. Anchor IDs match (`<!-- ANCHOR:overview -->` ↔ `<a id="overview">`). OVERVIEW preserved verbatim with `…` ellipsis pinning when truncated. Shared `lib/truncate-on-word-boundary.ts` exported and unit-tested. | F-AC1 (D1 truncation) and F-AC7 (D8 anchor) fixtures green. `validate.sh` exit 0. |
+| 002-single-owner-metadata | 003-sanitization-precedence | PR-3 + PR-4 merged. Frontmatter ↔ YAML metadata block agree on `importance_tier` for all save modes. Capture-mode `head_ref`/`commit_ref` populated via ≤10-LOC enrichment branch. | F-AC4 (D4 importance tier) and F-AC6 (D7 git provenance, with stubbed git seam) fixtures green. Post-save reviewer drift assertion installed. |
+| 003-sanitization-precedence | 004-heuristics-refactor-guardrails | PR-5 + PR-6 merged. Trigger phrases free of path fragments, stopwords, and synthetic bigrams. Decision extraction never emits `observation decision N` placeholders when `keyDecisions` array is non-empty. Lexical fallback gated behind precedence predicate. | F-AC2 (D2 decisions) and F-AC3 (D3 triggers) fixtures green. Degraded-payload regression fixture green. |
+| 004-heuristics-refactor-guardrails | 005-operations-tail-prs | PR-7 + PR-8 + PR-9 merged. Continuation runs auto-link predecessor via `causal_links.supersedes`. `_source === 'file'` overload replaced by `SaveMode` enum across pipeline. Post-save reviewer asserts CHECK-D1..D8. | F-AC5 (D5 supersedes, with 3+ memory folder lineage fixture) and F-AC8 (clean baseline) fixtures green. Reviewer drift report shows 0 high-severity findings on clean fixture. |
+<!-- /ANCHOR:phase-map -->

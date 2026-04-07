@@ -164,7 +164,85 @@ Q1: Where in the generate-context.js pipeline is the OVERVIEW text truncated, an
 - Machine-owned sections: reducer controls Sections 7-11
 - Canonical pause sentinel: research/.deep-research-pause
 - **Delegation override:** All 10 iterations dispatched via `cli-codex` `gpt-5.4` `model_reasoning_effort=high` `--full-auto` (`workspace-write` sandbox + `approval_policy=never`). Default `@deep-research` sub-agent is overridden per user request.
-- Current generation: 1
-- Started: 2026-04-06T18:35:00.000Z
+- Current generation: 2 (reopened 2026-04-07 via `completed-continue` lifecycle)
+- Gen-1 started: 2026-04-06T18:35:00.000Z (converged at iter 10, snapshot at `research/archive/research-v1-iter010-snapshot.md`)
+- Gen-2 started: 2026-04-07T08:34:20Z (10 iterations 11-20, waves of 2)
 
 <!-- /ANCHOR:research-boundaries -->
+
+<!-- ANCHOR:generation-2 -->
+## 14. GENERATION 2 — FOLLOW-UP INVESTIGATION (iterations 11-20)
+
+**Lifecycle mode:** `completed-continue` — generation 1 converged at iteration 10 with all Q1-Q7 answered and the remediation matrix frozen in `research/research.md`. The generation-1 synthesis is snapshotted immutably at `research/archive/research-v1-iter010-snapshot.md` before this reopen.
+
+**Delegation override (Gen 2):** All 10 iterations dispatched via `cli-copilot` `gpt-5.4` `reasoning_effort=high` `--allow-all-tools` (trusted workspace + `--no-ask-user`). Dispatched in waves of 2 parallel iterations per the orchestrator's explicit user request. Default `@deep-research` sub-agent is overridden.
+
+**Scope extension (not scope drift):** Gen 2 does NOT revisit Q1-Q7. It operates strictly in the post-synthesis space — drift verification, corpus mining, concrete artifact production (fixtures, diffs, call graphs), and rollout planning. No iteration is permitted to re-litigate a Gen-1 root cause.
+
+### Gen-2 Key Questions (Q8-Q17)
+
+| Iter | Wave | Question | Track |
+|------|------|----------|-------|
+| 11 | W1 | Q8 — Re-verify D1-D8 file:line citations against current source tree; report drift from iteration-002..009. | verification |
+| 12 | W1 | Q9 — Repo-wide survey of JSON-mode memory files; produce D1-D8 coverage matrix across ALL `memory/*.md` (not just the 7-file F1-F7 sample). | survey |
+| 13 | W2 | Q10 — D2 precedence-only fix: concrete call graph of `decision-extractor.ts` with the exact branch to gate so raw `keyDecisions` wins over the lexical fallback. | D2-design |
+| 14 | W2 | Q11 — D5 continuation-signal corpus: mine all `extended`, `continuation`, `iter NN`, `resume` phrase patterns from historical memory titles; produce regex + frequency table. | D5-design |
+| 15 | W3 | Q12 — D3 filter-list empirical build: extract every current `trigger_phrase` from `memory/*.md`, flag path fragments / stopwords / bigram junk; produce a data-driven blocklist tested against real samples. | D3-design |
+| 16 | W3 | Q13 — Fixture design for AC-1..AC-8: 8 minimal JSON payload fixtures ready for unit tests; each one isolates one acceptance criterion. | testing |
+| 17 | W4 | Q14 — Refactor dependency map: every caller of the D1/D2/D3/D4 helpers; safe extraction plan for truncation helper, importance-tier SSOT, enrichment-mode flag. | refactor-map |
+| 18 | W4 | Q15 — D7 provenance-only injection design: exact ≤10-line patch for `workflow.ts` JSON-mode to call `extractGitContext()` without reusing the full capture-mode enrichment branch. | D7-design |
+| 19 | W5 | Q16 — Post-save reviewer contract upgrade: new HIGH/MEDIUM assertions in `post-save-review.ts` to catch D1-D8 regressions post-fix; false-positive risk analysis. | guardrails |
+| 20 | W5 | Q17 — PR breakdown + rollout sequence: concrete PR plan for P0-P3 remediation groups; dependency DAG; rollback strategy; validation-per-PR. | rollout |
+
+### Gen-2 Stop Conditions
+
+- All 10 iterations complete (hard cap; no mid-loop convergence check — each question is pre-scoped to exactly one iteration)
+- Each iteration writes `research/iterations/iteration-NNN.md` and appends ONE event to `research/deep-research-state.jsonl` with `generation=2`
+- Each iteration file contains `[SOURCE: file:line]` citations on every finding
+- Gen-2 synthesis is appended as "APPENDIX B" to `research/research.md` (canonical synthesis stays mutable)
+
+### Gen-2 Non-Goals (reaffirmed)
+
+- Do NOT edit source code — all 20 iterations are read-only investigation
+- Do NOT manually patch the 7 broken Gen-1 memory files
+- Do NOT re-open Q1-Q7 — they are frozen by Gen-1 convergence
+- Do NOT touch `deep-research-config.json` (still immutable per file protection)
+- Do NOT run `@deep-research` sub-agent — delegation override is explicit
+
+<!-- /ANCHOR:generation-2 -->
+
+<!-- ANCHOR:generation-3 -->
+## 15. GENERATION 3 — EXTENDED FOLLOW-UP (iterations 21-25)
+
+**Lifecycle mode:** `completed-continue` — generation 2 converged at iteration 20 with all Q8-Q17 answered, APPENDIX B synthesized in `research/research.md`, and a staged 9-PR train locked. Gen-2 synthesis is snapshotted immutably at `research/archive/research-v2-iter020-snapshot.md` before this second reopen.
+
+**Delegation override (Gen 3):** All 5 iterations dispatched via `cli-copilot` `gpt-5.4` `reasoning_effort=high` `--allow-all-tools --no-ask-user`. Wave structure: **2 + 2 + 1** (iter 21+22 parallel, iter 23+24 parallel, iter 25 solo).
+
+**Scope extension:** Gen 3 does NOT revisit Q1-Q17. It operates strictly in the post-rollout-planning space — latent failure mode discovery, performance impact modeling, migration strategy for pre-fix artifacts, observability design, and cross-runtime parity.
+
+### Gen-3 Key Questions (Q18-Q22)
+
+| Iter | Wave | Question | Track |
+|------|------|----------|-------|
+| 21 | W6 | Q18 — Beyond D1-D8, are there latent failure modes in the JSON-mode pipeline? Walk every try/catch, silent swallow, null-check fallthrough, and empty-return path in `generate-context.js` and its extractors. Surface any "D9+" candidate. | latent-bugs |
+| 22 | W6 | Q19 — Estimate PR-7 performance impact (D5 predecessor discovery) on large memory folders. Worst-case Big-O, wall-clock estimate for 50/100/500-file folders. Identify any cliffs or N² patterns. | performance |
+| 23 | W7 | Q20 — Migration strategy for the 82 pre-fix broken JSON-mode memory files found in iter 12. Options: (a) do nothing, (b) auto-heal on next save, (c) one-shot migration script, (d) regenerate. Recommend with rationale. | migration |
+| 24 | W7 | Q21 — Observability / telemetry design: what logs, metrics, and counters should the post-fix pipeline emit so regressions are detected in production before users notice? | observability |
+| 25 | W8 | Q22 — Cross-runtime parity audit: do the same D1-D8 bug classes exist in capture mode (OpenCode capture path)? Spec says capture mode is out of scope — confirm or surface a parity gap. | parity |
+
+### Gen-3 Stop Conditions
+
+- All 5 iterations complete (hard cap)
+- Each iteration writes `research/iterations/iteration-NNN.md` and appends ONE event to `research/deep-research-state.jsonl` with `generation=3`
+- Each finding cites `[SOURCE: path:line]` or `[CITATION: NONE]`
+- Gen-3 synthesis is appended as "APPENDIX C" to `research/research.md`
+
+### Gen-3 Non-Goals (reaffirmed)
+
+- Do NOT edit source code — all 5 iterations are read-only investigation
+- Do NOT manually patch any broken memory files
+- Do NOT re-open Q1-Q17 (frozen by Gen-1 and Gen-2 convergence)
+- Do NOT touch `deep-research-config.json` (still immutable)
+- Do NOT modify the Gen-2 9-PR train in APPENDIX B (additive only — Gen-3 may propose a PR-10 if findings warrant)
+
+<!-- /ANCHOR:generation-3 -->

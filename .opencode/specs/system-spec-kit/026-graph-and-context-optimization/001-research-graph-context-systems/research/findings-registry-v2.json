@@ -1,0 +1,1817 @@
+{
+  "schema_version": "1.1",
+  "iteration": 17,
+  "generated_at": "2026-04-07T12:17:10Z",
+  "total_findings": 88,
+  "summary": {
+    "by_tag": {
+      "phase-1-extended": 41,
+      "phase-1-confirmed": 15,
+      "new-cross-phase": 31,
+      "phase-1-corrected": 1
+    },
+    "by_source_phase": {
+      "1": 5,
+      "cross": 31,
+      "2": 13,
+      "3": 9,
+      "4": 15,
+      "5": 15
+    },
+    "by_recommendation": {
+      "defer": 16,
+      "adapt": 36,
+      "reject": 5,
+      "adopt": 31
+    },
+    "by_composition_risk": {
+      "low": 45,
+      "med": 26,
+      "high": 17
+    },
+    "by_effort": {
+      "n/a": 43,
+      "M": 20,
+      "L": 8,
+      "S": 14,
+      "Speculative": 3
+    }
+  },
+  "findings": [
+    {
+      "id": "F-CROSS-001",
+      "title": "First-tool latency / discoverability impact of ENABLE_TOOL_SEARCH=true",
+      "tag": "phase-1-extended",
+      "source_phase": 1,
+      "evidence": [
+        {
+          "file": "001-claude-optimization-settings/research/research.md",
+          "lines": "49-60"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "Discoverability impact is source-supported: the setting was non-obvious and the author only found it after inspecting tool-schema overhead. First-tool latency and task ergonomics remain unmeasured, so the gap narrows but",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-002",
+      "title": "Edit-retry root-cause attribution across prompt | workflow | guardrail buckets",
+      "tag": "phase-1-confirmed",
+      "source_phase": 1,
+      "evidence": [
+        {
+          "file": "001-claude-optimization-settings/research/research.md",
+          "lines": "559-560"
+        }
+      ],
+      "confidence": 0.45,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "UNKNOWN. After the doc reread and the source reread, the only recoverable fact is that 31 edit-retry chains existed. There is no evidence to bucket them into prompt, workflow, or guardrail causes without fabricating.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-003",
+      "title": "Net-cost audit of /clear + plugin-memory remedy bundle vs stale-resume baseline",
+      "tag": "phase-1-extended",
+      "source_phase": 1,
+      "evidence": [
+        {
+          "file": "001-claude-optimization-settings/research/research.md",
+          "lines": "218-229"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "The bundle's components are now clearer, but the net-cost question still is not answered. The source names the compensating mechanisms behind /clear, yet never counts the extra injected tokens, hook writes, or recall cos",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-004",
+      "title": "Reddit-post arithmetic reconciliation",
+      "tag": "phase-1-extended",
+      "source_phase": 1,
+      "evidence": [
+        {
+          "file": "001-claude-optimization-settings/decision-record.md",
+          "lines": "139-160"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "The sub-math is mixed. 264M tokens is locally consistent as a rounded 14,000*22*858 estimate, and the 54% idle-gap ratio matches 6,152/11,357. But the post still never reconciles the 926-session header or why 11,357, not",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-005",
+      "title": "Cross-phase validation of phase 005 auditor/parser vs F14-F17 expectations",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "001-claude-optimization-settings/research/research.md",
+          "lines": "179-196"
+        },
+        {
+          "file": "001-claude-optimization-settings/research/research.md",
+          "lines": "335-339"
+        },
+        {
+          "file": "research/iterations/iteration-3.md",
+          "lines": "129-133"
+        }
+      ],
+      "confidence": 0.58,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "The cross-phase closure still matters, but v2 treats it as a guarded contract fit rather than a clean adopt. The Claudest-style auditor/parser expectation is directionally aligned with phase 001, yet still depends on adapter boundaries and current-host assumptions.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-006",
+      "title": "Empirical validation of the 11.2x token claim",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "002-codesight/research/research.md",
+          "lines": "338-341"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "There is no empirical Claude/GPT validation in this checkout. The 11.2x headline is a README benchmark built from heuristic token math, while the shipped eval harness validates detector accuracy only. The honest closure",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-007",
+      "title": "tRPC / Fastify contract enrichment despite AST routing",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "002-codesight/research/research.md",
+          "lines": "668-672"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed as a real implementation gap. tRPC gets AST route discovery but no contract pass at all. Fastify is not fully missing, but it only receives the same generic Hono-skewed regex enrichment as several other TS framewo",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-008",
+      "title": "Go regex+brace-tracking labeled confidence: ast",
+      "tag": "phase-1-corrected",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "002-codesight/research/research.md",
+          "lines": "676-681"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "This is a mislabel, not pending AST support. The implementation is a structured regex parser constrained by a binary confidence enum, and it currently advertises that result as ast. The honest fix would be a third label",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-009",
+      "title": "Monorepo support beyond pnpm + npm workspaces",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "002-codesight/research/research.md",
+          "lines": "691-696"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "Support is genuinely limited to npm-style workspaces and pnpm-workspace manifests. That creates a real omission risk for turbo, nx, lerna, or Rush repos that do not mirror workspace membership into those files. The silen",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-010",
+      "title": "Blast-radius BFS leak and heuristic schema-impact false-positive rate",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "002-codesight/research/research.md",
+          "lines": "243-255"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "The failure modes are source-confirmed, so the qualitative risk is real: depth can leak one hop too far and schema impact can over-fire whenever an affected file owns any db-tagged route. But the actual false-positive ra",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-011",
+      "title": "93% token reduction is estimated from fixed constants, not benchmarked against Public's typed stack",
+      "tag": "phase-1-extended",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "003-contextador/research/research.md",
+          "lines": "145-153"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "The 93% figure is not a benchmark. It is synthetic arithmetic over two hard-coded 25k-token constants plus recorded usage counters, and the repo does not contain any side-by-side task benchmark against Public's CocoIndex",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-012",
+      "title": "Mainframe privacy model is weakened by public_chat room creation and plaintext local credentials",
+      "tag": "phase-1-confirmed",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "003-contextador/research/research.md",
+          "lines": "135-143"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "reject",
+      "depends_on": [],
+      "rationale": "Closed negatively: the privacy weakness is real, not speculative. Mainframe stores reusable local credentials in plaintext, shares rich query metadata in room history, and uses a room preset that weakens the intent of pr",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-013",
+      "title": "Matrix room-state writes use optimistic blind updates with no atomic conflict semantics",
+      "tag": "phase-1-extended",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "003-contextador/research/research.md",
+          "lines": "138-143"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "reject",
+      "depends_on": [],
+      "rationale": "The contention question closes negatively. Mainframe has no atomic lock or merge protocol: budget and janitor state are optimistic read-modify-write records, so concurrent agents can overwrite each other or both proceed",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-014",
+      "title": "GitHub webhook automation lacks idempotency tracking, secret rotation, and routed failure notificati",
+      "tag": "phase-1-extended",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "003-contextador/research/research.md",
+          "lines": "215-223"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed negatively at the source level. The webhook flow is deterministic enough to understand, but it is not hardened: no idempotency keying, no secret-rotation lane, and no explicit out-of-band failure notification beyo",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-015",
+      "title": "Repair queue has no completion guarantee after regeneration failures",
+      "tag": "phase-1-extended",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "003-contextador/research/research.md",
+          "lines": "105-113"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "The repair queue does not provide completion guarantees. It offers eventual reattempt opportunity, not eventual success: failures are carried forward, some paths degrade to stubs or stamps, and nothing enforces bounded r",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-016",
+      "title": "71.5x token reduction is heuristic math, not Anthropic count_tokens-grounded",
+      "tag": "phase-1-confirmed",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "004-graphify/research/research.md",
+          "lines": "68-68"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "The 71.5x number remains a heuristic, not a token-API-grounded benchmark. Phase 4 was correct to treat it as directionally interesting but not credibility-grade evidence for Public without count_tokens validation.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-017",
+      "title": "Graphify cache has monotonic growth, mtime-only incremental detection, and no deletion tombstones",
+      "tag": "phase-1-confirmed",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "004-graphify/research/research.md",
+          "lines": "127-131"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed negatively. Graphify does have a useful content-hash cache layer, but the maintenance story is weak: cache entries accumulate indefinitely, deletion is all-or-nothing, and incremental detection has no deletion or",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-018",
+      "title": "Cross-language extraction parity is uneven and Swift is detected but never extracted",
+      "tag": "phase-1-confirmed",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "004-graphify/research/research.md",
+          "lines": "621-623"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed. The parity gap is structural, not anecdotal: Python has the only rich extractor surface, the other 11 extractors are materially thinner, and Swift support is advertised at detection time but absent from both file",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-019",
+      "title": "INFERRED confidence-score inconsistency does not drive built-in ranking, but it leaks into reports a",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "004-graphify/research/research.md",
+          "lines": "128-128"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "The inconsistency is real, but it does not currently harm graphify's built-in ranking quality. Ranking and surprise ordering use categorical confidence only; the mixed 0.5 vs 0.4-0.9 numerics mainly affect exported `grap",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-020",
+      "title": "mixed-corpus multimodal claim is not supported by the checked-in worked artifact",
+      "tag": "phase-1-confirmed",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "004-graphify/research/research.md",
+          "lines": "683-685"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "The artifact-level issue is real: the checked-in `mixed-corpus` report is stale or mislabeled relative to the narrative around it. What remains unclosed is whether a fresh rerun would show the promised multimodal nodes;",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-021",
+      "title": "PreToolUse Glob|Grep nudge effectiveness is still unmeasured",
+      "tag": "phase-1-confirmed",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "004-graphify/research/research.md",
+          "lines": "76-76"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "defer",
+      "depends_on": [],
+      "rationale": "UNKNOWN. The repo proves the hook mechanism and the intended behavioral nudge, but it contains no measured evidence that Claude actually changes tool-selection behavior or improves outcomes because of it.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-022",
+      "title": "Claudest truly supports PRAGMA-based FTS4 fallback, but Public's safe v1 remains FTS5 BM25 to LIKE",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "005-claudest/research/research.md",
+          "lines": "107-113"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed. Claudest's own pattern is real: it probes SQLite capabilities and can create either FTS5 or FTS4 tables. That strengthens phase 5's narrowed conclusion that Public's smallest safe v1 is `fts5_bm25 -> like_scan` u",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-023",
+      "title": "Stop hook still omits transcript_path persistence, cache-token carry-forward, and turn-level offsets",
+      "tag": "phase-1-confirmed",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "005-claudest/research/research.md",
+          "lines": "613-616"
+        }
+      ],
+      "confidence": 0.45,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed negatively. Phase 5's continuation docs already resolved the ambiguity: Public's current Stop hook is not yet a trustworthy producer for normalized analytics, and Brief B remains blocked until that producer metada",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-024",
+      "title": "The claude-memory plugin-specific CLAUDE.md is absent in this checkout",
+      "tag": "phase-1-confirmed",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "005-claudest/research/research.md",
+          "lines": "444-444"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed. The anomaly stands: there is no plugin-local `claude-memory/CLAUDE.md` to inspect in this checkout, so any per-plugin layer model still has to be reconstructed from the root CLAUDE, README material, and skill/age",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-025",
+      "title": "Fallback-context docstring contradicts the implemented first-2 plus last-6 renderer",
+      "tag": "phase-1-confirmed",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "005-claudest/research/research.md",
+          "lines": "198-200"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed. The drift is real and source-proven: the docstring is stale, but the actual fallback behavior matches the summarizer's full-or-first/last rendering scheme rather than a last-3-exchanges view.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-026",
+      "title": "Public's 008-signal-extraction packet is a monolithic extractor unification, not an auditor/discover",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "005-claudest/research/research.md",
+          "lines": "219-235"
+        }
+      ],
+      "confidence": 0.7,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Closed. Public's `008-signal-extraction` packet is a monolithic extractor-unification effort: one canonical `SemanticSignalExtractor` plus thin adapters. It does not already embody Claudest's verifier/discoverer split, s",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-027",
+      "title": "Single-canonical-ScanResult orchestration shape",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "22-22"
+        }
+      ],
+      "confidence": 0.68,
+      "composition_risk": "high",
+      "license_compatibility": "mixed",
+      "recommendation": "defer",
+      "depends_on": [
+        "F-CROSS-028",
+        "F-CROSS-029",
+        "F-CROSS-030"
+      ],
+      "rationale": "Assumes one upstream scan feeding multiple surfaces; clashes with explicit split routing.",
+      "effort": "L"
+    },
+    {
+      "id": "F-CROSS-028",
+      "title": "AST-first / regex-fallback / confidence labels",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "23-23"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Single-surface structural improvement; no semantic/memory overlap.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-029",
+      "title": "Per-tool profile overlay split",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "24-24"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Static assistant-profile generation sits beside the three core surfaces.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-030",
+      "title": "Static artifacts as default + MCP as overlay",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "25-25"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "high",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-029"
+      ],
+      "rationale": "Adds a packaging layer above existing surfaces and needs careful source-of-truth boundaries.",
+      "effort": "L"
+    },
+    {
+      "id": "F-CROSS-031",
+      "title": "F1 fixture harness for detector regression",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "26-26"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Test-only utility; zero routing conflict.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-032",
+      "title": "Hot-file ranking by incoming import count",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "27-27"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Fits structural analysis only if named honestly as degree count.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-033",
+      "title": "SQLAlchemy AST schema extraction",
+      "tag": "phase-1-extended",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "28-28"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-028"
+      ],
+      "rationale": "New detector/schema work inside one surface; no cross-surface ownership conflict.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-034",
+      "title": "Config-gated bootstrap layering",
+      "tag": "phase-1-extended",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "29-29"
+        }
+      ],
+      "confidence": 0.68,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [
+        "F-CROSS-035",
+        "F-CROSS-046",
+        "F-CROSS-054"
+      ],
+      "rationale": "Pushes toward one bootstrap facade over all three substrates; risks turning split routing into a monolith.",
+      "effort": "L"
+    },
+    {
+      "id": "F-CROSS-035",
+      "title": "Generated `.mcp.json` scaffold plus setup hints",
+      "tag": "phase-1-extended",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "30-30"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Activation ergonomics only; no schema conflict with core surfaces.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-036",
+      "title": "Benchmark-honest token reporting",
+      "tag": "phase-1-extended",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "research/iterations/q-a-token-honesty.md",
+          "lines": "115-125"
+        },
+        {
+          "file": "research/iterations/cost-reality-iter-14.md",
+          "lines": "25-40"
+        }
+      ],
+      "confidence": 0.84,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Measurement rubric layers cleanly onto existing telemetry/reporting.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-037",
+      "title": "Evidence-tagging contract + `confidence_score`",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "32-32"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "high",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-041",
+        "F-CROSS-028"
+      ],
+      "rationale": "Additive schema extension across two read surfaces; safe if tiers remain surface-local.",
+      "effort": "Speculative"
+    },
+    {
+      "id": "F-CROSS-038",
+      "title": "Graph-first PreToolUse hook",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "33-33"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-035"
+      ],
+      "rationale": "Nudges the model toward the existing split instead of replacing it.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-039",
+      "title": "Two-layer cache invalidation",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "34-34"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "high",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-041"
+      ],
+      "rationale": "Cross-surface freshness policy work, but still preserves separate owners and indexes.",
+      "effort": "L"
+    },
+    {
+      "id": "F-CROSS-040",
+      "title": "CLAUDE.md companion section pattern",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "35-35"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-038"
+      ],
+      "rationale": "Guidance layer only; composes by reinforcing split routing.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-041",
+      "title": "`validate.py` schema-boundary validator",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "36-36"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Local validation layer at interchange boundary; no routing conflict.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-042",
+      "title": "Leiden clustering",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "37-37"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-044"
+      ],
+      "rationale": "Optional structural overlay; one-surface change with tunable params needed from day one.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-043",
+      "title": "Modality-aware rebuild policy layer",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "38-38"
+        }
+      ],
+      "confidence": 0.68,
+      "composition_risk": "high",
+      "license_compatibility": "mixed",
+      "recommendation": "defer",
+      "depends_on": [
+        "F-CROSS-039",
+        "F-CROSS-044"
+      ],
+      "rationale": "Coordinates freshness across multiple surfaces and can blur who owns rebuild state.",
+      "effort": "L"
+    },
+    {
+      "id": "F-CROSS-044",
+      "title": "Stable JSON interchange artifact",
+      "tag": "phase-1-extended",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "39-39"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "high",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-041"
+      ],
+      "rationale": "Adds a durable projection boundary, but needs provenance ownership rules.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-045",
+      "title": "Runtime FTS capability cascade",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "005-claudest/research/research.md",
+          "lines": "395-405"
+        },
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "177-177"
+        }
+      ],
+      "confidence": 0.83,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-036"
+      ],
+      "rationale": "Single-surface storage/search change, but it touches schema, migration, and query fallback behavior.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-046",
+      "title": "Cached `context_summary` SessionStart fast path",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "41-41"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-047"
+      ],
+      "rationale": "Direct fit for continuity/recovery surface; no semantic or structural overlap.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-047",
+      "title": "Deterministic summary computation at Stop time",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "42-42"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Producer-side improvement inside the same memory pipeline.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-048",
+      "title": "Auditor vs discoverer split",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "43-43"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-049",
+        "F-CROSS-053"
+      ],
+      "rationale": "Reorganizes memory-quality workflow inside one surface; no cross-surface conflict, but non-trivial pipeline split.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-049",
+      "title": "4-phase consolidation contract",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "44-44"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Workflow scaffold for existing memory review flows.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-050",
+      "title": "Per-tier pricing and cache normalization",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "45-45"
+        }
+      ],
+      "confidence": 0.74,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-036",
+        "F-CROSS-047"
+      ],
+      "rationale": "Analytics schema extension within one surface; moderate implementation cost, low topology risk.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-051",
+      "title": "Cache-cliff metric",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "46-46"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-050"
+      ],
+      "rationale": "Observability metric on top of existing session/telemetry data.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-052",
+      "title": "Dashboard JSON contracts",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "47-47"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-050"
+      ],
+      "rationale": "Presentation contract only if HTML is not imported wholesale.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-053",
+      "title": "Placement rubric for memory consolidation",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "48-48"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-049"
+      ],
+      "rationale": "Policy layer over existing memory destinations, not a new retrieval surface.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-054",
+      "title": "Search/browse separation",
+      "tag": "phase-1-extended",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "49-49"
+        }
+      ],
+      "confidence": 0.82,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-045"
+      ],
+      "rationale": "Strengthens one surface API and already partly matches Public\u2019s mode split.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-055",
+      "title": "Public should only publish token-savings headlines from frozen, quality-gated tasks",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/q-a-token-honesty.md",
+          "lines": "115-125"
+        }
+      ],
+      "confidence": 0.78,
+      "composition_risk": "low",
+      "license_compatibility": "n/a",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "Q-A converged on one publication rule: frozen tasks, answer-quality gates, and provider-counted totals before any headline multiplier.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-056",
+      "title": "Public leads structural and semantic query, so adoption should reinforce routing",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/cross-phase-matrix.md",
+          "lines": "40-56"
+        },
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "11-16"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "n/a",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "The matrix supports Public leading structural and semantic query, and the composition study supports using that lead to reinforce routing across existing owners. v2 removes the uncited \u201cthat matter most\u201d weighting from the claim.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-057",
+      "title": "Monolithic scan or bootstrap facades are the main architecture risk in this packet",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "11-16"
+        }
+      ],
+      "confidence": 0.91,
+      "composition_risk": "high",
+      "license_compatibility": "n/a",
+      "recommendation": "reject",
+      "depends_on": [],
+      "rationale": "Q-C found only three high-risk candidates, and all three tried to sit above semantic, structural, and memory ownership at once.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-058",
+      "title": "P0 should front-load measurement, producer summaries, and schema discipline before feature scale",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/q-d-adoption-sequencing.md",
+          "lines": "6-11"
+        }
+      ],
+      "confidence": 0.92,
+      "composition_risk": "low",
+      "license_compatibility": "n/a",
+      "recommendation": "adopt",
+      "depends_on": [
+        "F-CROSS-055"
+      ],
+      "rationale": "Q-D sequences rails first because they unlock later work without forcing topology changes.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-059",
+      "title": "Contextador is a concept-transfer-only reference because AGPL and Bun are both real gates",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/q-e-license-runtime.md",
+          "lines": "50-69"
+        }
+      ],
+      "confidence": 0.93,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "reject",
+      "depends_on": [],
+      "rationale": "Q-E makes the AGPL/Bun boundary explicit: study the patterns, but do not borrow source, fixtures, or program-shaped prompts.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-060",
+      "title": "Warm-start memory plus graph-first routing survives only as a conditional bundle",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/combo-stress-test-iter-12.md",
+          "lines": "22-45"
+        },
+        {
+          "file": "research/iterations/counter-evidence-iter-16.md",
+          "lines": "76-84"
+        }
+      ],
+      "confidence": 0.76,
+      "composition_risk": "low",
+      "license_compatibility": "n/a",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-046",
+        "F-CROSS-047",
+        "F-CROSS-038"
+      ],
+      "rationale": "Iter-12 weakened the combo without killing it. It is useful when summary fidelity, graph readiness, and task class line up, but it no longer supports a default early-multiplier framing.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-061",
+      "title": "Phase 001 supports ENABLE_TOOL_SEARCH as upstream evidence, not current-turn runtime proof",
+      "tag": "phase-1-confirmed",
+      "source_phase": 1,
+      "evidence": [
+        {
+          "file": "001-claude-optimization-settings/research/research.md",
+          "lines": "36-47"
+        },
+        {
+          "file": "research/iterations/iteration-9-skeptical-review.md",
+          "lines": "66-66"
+        }
+      ],
+      "confidence": 0.78,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "The first-pass conclusion that deferred tool loading is already a baseline win remains intact and was never contradicted later.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-062",
+      "title": "generateAIConfigs demonstrates one shared summary projected into assistant-specific files",
+      "tag": "phase-1-confirmed",
+      "source_phase": 2,
+      "evidence": [
+        {
+          "file": "002-codesight/research/research.md",
+          "lines": "283-286"
+        },
+        {
+          "file": "research/iterations/iteration-9-skeptical-review.md",
+          "lines": "67-67"
+        }
+      ],
+      "confidence": 0.78,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "rationale": "CodeSight\u2019s per-tool overlay generation remained reusable across the whole consolidation and reappears in both Q-C and Q-D as a clean packaging pattern.",
+      "effort": "M"
+    },
+    {
+      "id": "F-CROSS-063",
+      "title": "Bootstrap is root-scoped, config-driven, and keeps Mainframe optional",
+      "tag": "phase-1-confirmed",
+      "source_phase": 3,
+      "evidence": [
+        {
+          "file": "003-contextador/research/research.md",
+          "lines": "55-64"
+        }
+      ],
+      "confidence": 0.78,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Contextador\u2019s bootstrap ergonomics survived as concept-transfer guidance even though the source itself remains legally and operationally blocked.",
+      "effort": "n/a"
+    },
+    {
+      "id": "F-CROSS-064",
+      "title": "Evidence labeling is a transport-level guarantee, not a UI convention",
+      "tag": "phase-1-confirmed",
+      "source_phase": 4,
+      "evidence": [
+        {
+          "file": "004-graphify/research/research.md",
+          "lines": "633-634"
+        },
+        {
+          "file": "research/iterations/combo-stress-test-iter-12.md",
+          "lines": "87-103"
+        }
+      ],
+      "confidence": 0.78,
+      "composition_risk": "med",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Graphify\u2019s evidence-tagging contract stayed central to the composition study and remains a reusable pattern if Public keeps confidence local to each surface.",
+      "effort": "Speculative"
+    },
+    {
+      "id": "F-CROSS-065",
+      "title": "Cached summary fast path can turn startup recall into a DB lookup when fidelity checks pass",
+      "tag": "phase-1-confirmed",
+      "source_phase": 5,
+      "evidence": [
+        {
+          "file": "005-claudest/research/research.md",
+          "lines": "171-185"
+        },
+        {
+          "file": "research/iterations/counter-evidence-iter-16.md",
+          "lines": "31-39"
+        }
+      ],
+      "confidence": 0.78,
+      "composition_risk": "low",
+      "license_compatibility": "mixed",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "rationale": "Claudest\u2019s cached-summary fast path stayed valid throughout the run and became the highest-ranked combo ingredient as well as a P1 roadmap item.",
+      "effort": "S"
+    },
+    {
+      "id": "F-CROSS-066",
+      "title": "Precision laundering recurs across metrics, provenance, and pricing outputs",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/cross-phase-patterns-iter-15.md",
+          "lines": "13-33"
+        }
+      ],
+      "confidence": 0.88,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Iter-15 showed the same presentation-layer precision upgrade across all five systems. Public should treat uncertainty labeling as a platform contract, not a dashboard cosmetic."
+    },
+    {
+      "id": "F-CROSS-067",
+      "title": "Multiple systems validate mechanisms one seam earlier than the claim they make",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/cross-phase-patterns-iter-15.md",
+          "lines": "35-55"
+        }
+      ],
+      "confidence": 0.86,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "The recurring problem is not lack of tests but seam mismatch between local validation and user-visible claims. Public should require with/without evidence at the same seam as each promised outcome."
+    },
+    {
+      "id": "F-CROSS-068",
+      "title": "Durable context repeatedly arrives before freshness authority is explicit",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/cross-phase-patterns-iter-15.md",
+          "lines": "57-75"
+        }
+      ],
+      "confidence": 0.84,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Static profiles, graph artifacts, and cached summaries all become risky first sources of truth when freshness and invalidation remain implicit. This is the main design-direction warning for artifact-first UX."
+    },
+    {
+      "id": "F-CROSS-069",
+      "title": "Cost concentration sits at cross-surface contracts more than missing substrate",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/cross-phase-patterns-iter-15.md",
+          "lines": "77-96"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Iter-13 and iter-14 shifted the cost model from parser absence toward interchange, trust, freshness, and ledger contracts. Public should budget cross-owner work upward by default."
+    },
+    {
+      "id": "F-CROSS-070",
+      "title": "Public already has a canonical recovery surface in session_bootstrap",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "183-185"
+        }
+      ],
+      "confidence": 0.92,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "session_bootstrap is a moat that should be preserved rather than replaced by imported bootstrap facades."
+    },
+    {
+      "id": "F-CROSS-071",
+      "title": "Public ships a broader cross-runtime warm-start pipeline than any single external system",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "186-186"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Claude and Gemini startup/compaction hooks plus startup-brief generation mean Public already has strong warm-start substrate."
+    },
+    {
+      "id": "F-CROSS-072",
+      "title": "Public five-channel retrieval fusion is a moat, not a gap to refill",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "187-187"
+        }
+      ],
+      "confidence": 0.91,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Vector, FTS5, BM25, graph, and degree signals already coexist in Public, so external retrieval ideas should reinforce routing rather than replace the stack."
+    },
+    {
+      "id": "F-CROSS-073",
+      "title": "Public already embeds a research-grade eval stack inside the shipped runtime",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "188-188"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Ablation, shadow scoring, and persisted eval tables mean Public needs better publication contracts more than it needs basic observability substrate."
+    },
+    {
+      "id": "F-CROSS-074",
+      "title": "Public memory governance already combines constitutional rules with tier and state cognition",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "189-190"
+        }
+      ],
+      "confidence": 0.88,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "This governance depth exceeds the compared systems and should constrain how memory-lane patterns are imported."
+    },
+    {
+      "id": "F-CROSS-075",
+      "title": "Public shared-memory governance is deeper than any external systems collaboration model",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "190-190"
+        }
+      ],
+      "confidence": 0.88,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Deny-by-default spaces, memberships, audits, and kill switches are moat features that should not be eroded by imported shared-context patterns."
+    },
+    {
+      "id": "F-CROSS-076",
+      "title": "Public explicit split-topology contract is itself a moat worth preserving",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "191-191"
+        }
+      ],
+      "confidence": 0.93,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Semantic, structural, and continuity owners are clearly named and only merged in bounded recovery or compaction flows."
+    },
+    {
+      "id": "F-CROSS-077",
+      "title": "Runtime capability staging inside Public is a moat for paced adoption",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "192-192"
+        }
+      ],
+      "confidence": 0.86,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "n/a",
+      "rationale": "Capability flags and staged rollout semantics give Public a safer place to land incremental changes than the external systems generally expose."
+    },
+    {
+      "id": "F-CROSS-078",
+      "title": "Monolithic scan-first adoption is blocked by the absence of one canonical scan artifact",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "158-159"
+        }
+      ],
+      "confidence": 0.9,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "reject",
+      "depends_on": [],
+      "effort": "L",
+      "rationale": "Public deliberately exposes multiple owners rather than one upstream scan table, so monolithic scan orchestration remains blocked on architecture, not enthusiasm."
+    },
+    {
+      "id": "F-CROSS-079",
+      "title": "Trust-heavy cross-surface outputs are blocked by the missing evidence and freshness contract",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "160-160"
+        },
+        {
+          "file": "research/iterations/combo-stress-test-iter-12.md",
+          "lines": "94-103"
+        }
+      ],
+      "confidence": 0.91,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-041",
+        "F-CROSS-044"
+      ],
+      "effort": "Speculative",
+      "rationale": "Without one cross-surface contract that separates provenance, evidence status, and freshness, trust-heavy packaging will compound ambiguity rather than reduce it."
+    },
+    {
+      "id": "F-CROSS-080",
+      "title": "Shared invalidation remains blocked by the absence of one cross-surface ledger",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "161-161"
+        }
+      ],
+      "confidence": 0.88,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "effort": "L",
+      "rationale": "Public has invalidation-related pieces, but not one authoritative ledger for structural and semantic freshness together."
+    },
+    {
+      "id": "F-CROSS-081",
+      "title": "SQLAlchemy schema extraction is bounded by missing ORM-specific extraction logic, not parser absence",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "162-162"
+        }
+      ],
+      "confidence": 0.8,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "effort": "M",
+      "rationale": "Public already has AST plumbing; what it lacks is the ORM-specific logic that makes this candidate valuable."
+    },
+    {
+      "id": "F-CROSS-082",
+      "title": "The activation scaffold remains partly missing because no command emits the mcp config directly",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "163-163"
+        }
+      ],
+      "confidence": 0.8,
+      "composition_risk": "low",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adopt",
+      "depends_on": [],
+      "effort": "S",
+      "rationale": "The underlying template content largely exists; the missing piece is a surfaced generator path that makes activation less manual."
+    },
+    {
+      "id": "F-CROSS-083",
+      "title": "Boundary validation cannot become authoritative until a stable interchange artifact exists",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "164-166"
+        }
+      ],
+      "confidence": 0.87,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-044"
+      ],
+      "effort": "M",
+      "rationale": "A validator can land early, but its authority ceiling stays limited until multiple producers and consumers share one durable contract."
+    },
+    {
+      "id": "F-CROSS-084",
+      "title": "Modality-aware rebuild remains blocked by missing multimodal freshness coordination",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "165-165"
+        }
+      ],
+      "confidence": 0.79,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "effort": "L",
+      "rationale": "The blocker is not lack of reindex tooling; it is the absence of one classifier and freshness authority for multimodal rebuild decisions."
+    },
+    {
+      "id": "F-CROSS-085",
+      "title": "Artifact-first packaging lacks a durable versioned interchange artifact today",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "166-166"
+        }
+      ],
+      "confidence": 0.88,
+      "composition_risk": "high",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "defer",
+      "depends_on": [],
+      "effort": "M",
+      "rationale": "Without a versioned artifact that multiple consumers can trust, packaging durable context remains a fragile source-of-truth exercise."
+    },
+    {
+      "id": "F-CROSS-086",
+      "title": "Public still lacks the canonical persisted Stop-summary artifact assumed by fast-start patterns",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "167-167"
+        }
+      ],
+      "confidence": 0.89,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "effort": "M",
+      "rationale": "The summary column and adjacent startup substrate exist, but the canonical persisted producer artifact is still missing."
+    },
+    {
+      "id": "F-CROSS-087",
+      "title": "Auditor-discoverer separation remains conceptual because no first-class workflow contract exists",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "168-168"
+        }
+      ],
+      "confidence": 0.84,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [],
+      "effort": "M",
+      "rationale": "Public has governance and evaluation pieces, but not yet a named two-role consolidation workflow that matches the Claudest-inspired pattern."
+    },
+    {
+      "id": "F-CROSS-088",
+      "title": "Publication-grade cost analytics are blocked by the missing tier-priced ledger and cache-cliff schema",
+      "tag": "new-cross-phase",
+      "source_phase": "cross",
+      "evidence": [
+        {
+          "file": "research/iterations/public-infrastructure-iter-13.md",
+          "lines": "169-169"
+        }
+      ],
+      "confidence": 0.87,
+      "composition_risk": "med",
+      "license_compatibility": "concept-transfer-only",
+      "recommendation": "adapt",
+      "depends_on": [
+        "F-CROSS-036"
+      ],
+      "effort": "M",
+      "rationale": "Public telemetry is strong, but publication-grade spend analysis still needs a ledger and schema that explicitly models tiers and cache cliffs."
+    }
+  ]
+}

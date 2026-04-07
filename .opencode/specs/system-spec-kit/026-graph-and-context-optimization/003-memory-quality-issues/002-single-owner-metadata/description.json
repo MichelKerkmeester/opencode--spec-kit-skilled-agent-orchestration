@@ -1,0 +1,16 @@
+{
+  "specFolder": "003-memory-quality-issues/002-single-owner-metadata",
+  "description": "Phase 2: single-owner-metadata",
+  "keywords": [
+    "phase",
+    "single-owner-metadata"
+  ],
+  "lastUpdated": "2026-04-07T11:14:04.496Z",
+  "specId": "002",
+  "folderSlug": "single-owner-metadata",
+  "parentChain": [
+    "003-memory-quality-issues"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

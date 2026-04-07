@@ -1,19 +1,19 @@
 {
-  "timestamp": "06-04-26 18-30",
-  "messageCount": 1,
-  "decisionCount": 6,
+  "timestamp": "07-04-26 13-08",
+  "messageCount": 4,
+  "decisionCount": 9,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
-    "noiseFiltered": 0,
+    "totalProcessed": 4,
+    "noiseFiltered": 4,
     "duplicatesRemoved": 0,
-    "qualityScore": 70,
+    "qualityScore": 0,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-06T17:30:09.682Z",
+        "timestamp": "2026-04-07T12:08:41.654Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -43,20 +43,22 @@
           "/^reasoning$/i",
           "/^<reasoning>.*<\\/reasoning>$/s"
         ],
-        "matchesFound": [],
+        "matchesFound": [
+          "/^[\\s\\u00A0]*$/ x4"
+        ],
         "actionsTaken": [
-          "filtered_noise:0",
+          "filtered_noise:4",
           "filtered_empty:0",
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:1",
-          "kept_items:1"
+          "input_items:4",
+          "kept_items:0"
         ]
       }
     ],
     "filtered": {
-      "noise": 0,
+      "noise": 4,
       "empty": 0,
       "duplicate": 0,
       "lowQuality": 0
@@ -66,7 +68,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-06T17:30:09.648Z",
+      "timestamp": "2026-04-07T12:08:41.608Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +128,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:52"
+        "processed_fields:54"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-06T17:30:09.682Z",
+      "timestamp": "2026-04-07T12:08:41.654Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -161,20 +163,22 @@
         "/^reasoning$/i",
         "/^<reasoning>.*<\\/reasoning>$/s"
       ],
-      "matchesFound": [],
+      "matchesFound": [
+        "/^[\\s\\u00A0]*$/ x4"
+      ],
       "actionsTaken": [
-        "filtered_noise:0",
+        "filtered_noise:4",
         "filtered_empty:0",
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:1",
-        "kept_items:1"
+        "input_items:4",
+        "kept_items:0"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-06T17:30:09.715Z",
+      "timestamp": "2026-04-07T12:08:41.695Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,31 +195,31 @@
       ],
       "passedThrough": [
         "current_spec:003-memory-quality-issues",
-        "trigger_phrases:30",
+        "trigger_phrases:36",
         "key_topics:12",
-        "captured_file_count:4",
-        "filesystem_file_count:4"
+        "captured_file_count:10",
+        "filesystem_file_count:10"
       ]
     }
   ],
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 1,
+    "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
-      "implementation": 1,
+      "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 0
     }
   },
   "fileCounts": {
-    "fileCount": 4,
-    "capturedFileCount": 4,
-    "filesystemFileCount": 4,
+    "fileCount": 10,
+    "capturedFileCount": 10,
+    "filesystemFileCount": 10,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -228,9 +232,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 1836,
-    "updatedAt": "2026-04-06T17:30:10.597Z",
-    "generatedAt": "2026-04-06T17:30:10.597Z",
+    "memoryId": 1940,
+    "updatedAt": "2026-04-07T12:08:43.340Z",
+    "generatedAt": "2026-04-07T12:08:43.340Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }
