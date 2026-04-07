@@ -36,6 +36,9 @@ Phase 003 of the graph-and-context-optimization research track investigates Cont
 | **Status** | In Progress |
 | **Created** | 2026-04-06 |
 | **Branch** | `main` (research packet, no feature branch) |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor Phase** | `../002-codesight/spec.md` |
+| **Successor Phase** | `../004-graphify/spec.md` |
 
 ---
 
@@ -253,7 +256,7 @@ Produce a Level 3 Spec Kit research packet that turns Contextador's source code 
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Phase Research Prompt**: See `phase-research-prompt.md`
+- **Phase Research Prompt**: See `scratch/phase-research-prompt.md`
 - **Final Research**: See research/research.md (created during synthesis)
 
 ---

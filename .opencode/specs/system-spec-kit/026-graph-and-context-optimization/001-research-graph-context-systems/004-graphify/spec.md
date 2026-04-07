@@ -35,6 +35,9 @@ Phase 4 of `001-research-graph-context-systems` is a read-only audit of the grap
 | **Status** | Complete |
 | **Created** | 2026-04-06 |
 | **Branch** | `main` (research-only phase, no branch needed) |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor Phase** | `../003-contextador/spec.md` |
+| **Successor Phase** | `../005-claudest/spec.md` |
 
 ---
 

@@ -243,8 +243,61 @@ The estimate is dominated by the codex stall in Phase 2 (iters 4-5). Without tha
 
 <!-- /ANCHOR:effort -->
 
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+
+- [x] Original-charter findings K1-K12 preserved before continuation work
+- [x] Continuation-charter findings K13-K22 appended without rewriting the earlier audit trail
+- [x] `research/deep-research-state.jsonl` and reducer outputs remain append-only
+
+### Rollback Procedure
+
+1. Revert the plan, task, and decision-record edits if they misstate the actual research chronology.
+2. If the continuation charter is later judged misleading, restore the pre-continuation packet state and remove the appended continuation findings from the follow-on synthesis documents.
+3. Re-run reducer and strict validation after any revert so the packet returns to a coherent audited state.
+
+### Data Reversal
+
+- **Has data migrations?** No
+- **Reversal procedure**: N/A. This phase changes research packet docs and state artifacts only.
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!-- ANCHOR:critical-path -->
+## L3: CRITICAL PATH
+
+1. **Phase 1 setup and validator baseline** - CRITICAL
+2. **Original-charter iterations 1-5** - CRITICAL
+3. **Continuation-charter parallel dispatch and recovery for iters 6-10** - CRITICAL
+4. **Synthesis, memory save, and strict validation handoff** - CRITICAL
+
+**Total Critical Path**: setup -> original charter -> continuation charter -> synthesis and validation
+
+**Parallel Opportunities**:
+- Continuation iterations 6-10 were intentionally parallelized because the five unexplored modules were independent.
+- Validation and memory save still remain sequential after the synthesis completes.
+<!-- /ANCHOR:critical-path -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | Setup complete | Baseline validation, state files, and strategy exist | Phase 1 |
+| M2 | Original charter complete | Questions from the first charter are answered through iter 5 | Phase 2 |
+| M3 | Continuation charter complete | Independent modules covered by iters 6-10 | Phase 3 |
+| M4 | Packet handoff ready | Synthesis, memory save, and validation complete | Phase 4 |
+<!-- /ANCHOR:milestones -->
+
+---
+
 <!-- ANCHOR:dependency-graph -->
-## L3: ARCHITECTURE DECISION RECORD
+### Architecture Decision Summary
 
 See `decision-record.md` for the four ADRs:
 
@@ -255,11 +308,11 @@ See `decision-record.md` for the four ADRs:
 
 ---
 
-### L3: AI EXECUTION PROTOCOL
+#### AI Execution Protocol
 
 This section defines how an AI orchestrator (Claude Code, OpenCode, or any compatible runtime) should execute the research loop autonomously.
 
-### Pre-Task Checklist
+##### Pre-Task Checklist
 
 Before dispatching any iteration, verify:
 
@@ -271,7 +324,7 @@ Before dispatching any iteration, verify:
 - [x] No `research/.deep-research-pause` sentinel file
 - [x] Phase prompt has a unique focus area for this iteration
 
-### Task Execution Rules
+##### Task Execution Rules
 
 | Rule ID | Constraint | Enforcement |
 |---------|------------|-------------|
@@ -284,7 +337,7 @@ Before dispatching any iteration, verify:
 | TASK-SEQ-004 | Convergence check before each iteration | composite_converged stop unless user override |
 | TASK-PARA-001 | Continuation-charter iterations MAY execute in parallel when modules are independent | Justified by ADR-003; reducer runs after all parallel iterations complete |
 
-### Status Reporting Format
+##### Status Reporting Format
 
 After each iteration, the orchestrator must report:
 

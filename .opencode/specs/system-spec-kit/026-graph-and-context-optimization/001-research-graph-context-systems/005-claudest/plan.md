@@ -239,8 +239,61 @@ The estimate is dominated by the 12 sequential cli-codex dispatches; clean execu
 
 <!-- /ANCHOR:effort -->
 
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+
+- [x] Q1-Q10 baseline findings preserved before continuation iterations 8-12
+- [x] Strategy mixed-ownership rule documented so reducer-managed sections can be reconstructed if needed
+- [x] Packet-ready briefs remain grounded in the continuation files that generated them
+
+### Rollback Procedure
+
+1. Revert the plan and continuation-charter documentation if the sequential dependency story is later found to be inaccurate.
+2. If packet-ready briefs need to be withdrawn, restore the research packet to the state that ended at iter 7 and mark the continuation findings as superseded.
+3. Re-run reducer-dependent documents and strict validation after any revert so the research packet is internally consistent again.
+
+### Data Reversal
+
+- **Has data migrations?** No
+- **Reversal procedure**: N/A. This phase changes research packet docs and state artifacts only.
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!-- ANCHOR:critical-path -->
+## L3: CRITICAL PATH
+
+1. **Phase 1 setup and baseline validation** - CRITICAL
+2. **Original 7-iteration charter** - CRITICAL
+3. **Sequential continuation charter iterations 8-12** - CRITICAL
+4. **Packet-ready briefs, memory save, and strict validation handoff** - CRITICAL
+
+**Total Critical Path**: setup -> original charter -> sequential continuation charter -> handoff artifacts
+
+**Parallel Opportunities**:
+- The sequential continuation charter intentionally has no safe internal parallelism because each iteration consumes the prior synthesis output.
+- Validation can only start after the final continuation closeout and document sync are complete.
+<!-- /ANCHOR:critical-path -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | Setup complete | Baseline validation, state files, and strategy exist | Phase 1 |
+| M2 | Original charter complete | Q1-Q10 baseline covered through iter 7 | Phase 1 continuation |
+| M3 | Continuation charter complete | Matrix, sequencing, v1 slicing, briefs, and closeout done through iter 12 | Phase 2 |
+| M4 | Packet handoff ready | Packet-ready briefs, memory save, and validation complete | Phase 4 |
+<!-- /ANCHOR:milestones -->
+
+---
+
 <!-- ANCHOR:dependency-graph -->
-## L3: ARCHITECTURE DECISION RECORD
+### Architecture Decision Summary
 
 See `decision-record.md` for the four ADRs:
 
@@ -251,11 +304,11 @@ See `decision-record.md` for the four ADRs:
 
 ---
 
-### L3: AI EXECUTION PROTOCOL
+#### AI Execution Protocol
 
 This section defines how an AI orchestrator (Claude Code, OpenCode, or any compatible runtime) should execute the research loop autonomously.
 
-### Pre-Task Checklist
+##### Pre-Task Checklist
 
 Before dispatching any iteration, verify:
 
@@ -267,7 +320,7 @@ Before dispatching any iteration, verify:
 - [x] No `research/.deep-research-pause` sentinel file
 - [x] Phase prompt has a unique focus area for this iteration
 
-### Task Execution Rules
+##### Task Execution Rules
 
 | Rule ID | Constraint | Enforcement |
 |---------|------------|-------------|
@@ -280,7 +333,7 @@ Before dispatching any iteration, verify:
 | TASK-SEQ-004 | Convergence check before each iteration | composite_converged stop unless user override |
 | TASK-CONT-001 | Continuation iterations 8-12 are synthesis-class and depend on prior synthesis output | Sequential dispatch, no parallelism |
 
-### Status Reporting Format
+##### Status Reporting Format
 
 After each iteration, the orchestrator must report:
 

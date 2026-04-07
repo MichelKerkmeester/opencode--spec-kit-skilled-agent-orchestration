@@ -1,0 +1,218 @@
+{
+  "linkResults": [
+    {
+      "file": "001-claude-optimization-settings/memory/06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./checklist.md",
+        "./decision-record.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "001-claude-optimization-settings/memory/06-04-26_13-47__extended-deep-research-run-13-iterations-total-8.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./checklist.md",
+        "./decision-record.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "002-codesight/memory/06-04-26_16-34__5-iteration-deep-research-session-investigating.md",
+      "brokenLinks": [
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "002-codesight/memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md",
+      "brokenLinks": [
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "003-contextador/memory/06-04-26_12-25__completed-deep-research-phase-003-contextador-via.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./checklist.md",
+        "./decision-record.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "003-contextador/memory/06-04-26_13-49__extended-deep-research-phase-003-contextador-from.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./checklist.md",
+        "./decision-record.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "004-graphify/memory/06-04-26_15-37__deep-research-on-graphify-external-repo-python.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "004-graphify/memory/06-04-26_18-17__completed-10-iteration-deep-research-audit-of.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./checklist.md",
+        "./decision-record.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "005-claudest/external/plugins/claude-coding/skills/make-readme/SKILL.md",
+      "brokenLinks": [
+        "...",
+        "demo.gif"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "005-claudest/external/plugins/claude-thinking/README.md",
+      "brokenLinks": [
+        "docs/skill-ideas.md",
+        "../../LICENSE"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "005-claudest/memory/.archive-pre-quality-rebuild/06-04-26_17-13__deep-research-synthesis-on-the-claudest-external.md",
+      "brokenLinks": [
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "005-claudest/memory/.archive-pre-quality-rebuild/06-04-26_19-41__12-iteration-deep-research-audit-of-the-claudest.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./checklist.md",
+        "./decision-record.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "005-claudest/memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
+      "brokenLinks": [
+        "./spec.md",
+        "./plan.md",
+        "./tasks.md",
+        "./checklist.md",
+        "./decision-record.md",
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "memory/07-04-26_11-57__master-consolidation-of-5-system-external.md",
+      "brokenLinks": [
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "memory/07-04-26_13-31__extended-master-consolidation-of-5-system.md",
+      "brokenLinks": [
+        "./research/research.md"
+      ],
+      "aliasViolations": []
+    },
+    {
+      "file": "scratch/copilot-phase-3-validate-prompt.md",
+      "brokenLinks": [
+        "path"
+      ],
+      "aliasViolations": []
+    }
+  ],
+  "jsonResults": [
+    {
+      "file": "001-claude-optimization-settings/description.json",
+      "parses": true,
+      "requiredFields": true,
+      "nonEmpty": true,
+      "missing": [],
+      "empty": [],
+      "notes": ""
+    },
+    {
+      "file": "002-codesight/description.json",
+      "parses": true,
+      "requiredFields": true,
+      "nonEmpty": false,
+      "missing": [],
+      "empty": [
+        "memoryNameHistory"
+      ],
+      "notes": ""
+    },
+    {
+      "file": "003-contextador/description.json",
+      "parses": true,
+      "requiredFields": true,
+      "nonEmpty": true,
+      "missing": [],
+      "empty": [],
+      "notes": ""
+    },
+    {
+      "file": "004-graphify/description.json",
+      "parses": true,
+      "requiredFields": true,
+      "nonEmpty": true,
+      "missing": [],
+      "empty": [],
+      "notes": ""
+    },
+    {
+      "file": "005-claudest/description.json",
+      "parses": true,
+      "requiredFields": true,
+      "nonEmpty": true,
+      "missing": [],
+      "empty": [],
+      "notes": ""
+    },
+    {
+      "file": "description.json",
+      "parses": true,
+      "requiredFields": true,
+      "nonEmpty": false,
+      "missing": [],
+      "empty": [
+        "memoryNameHistory"
+      ],
+      "notes": ""
+    }
+  ],
+  "markdownCount": 311,
+  "descriptionCount": 6
+}

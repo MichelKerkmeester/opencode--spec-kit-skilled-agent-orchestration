@@ -1,0 +1,38 @@
+[
+  {
+    "folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+    "name": "001-research-graph-context-systems",
+    "validate_exit": 2,
+    "issue_lines": []
+  },
+  {
+    "folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
+    "name": "001-claude-optimization-settings",
+    "validate_exit": 2,
+    "issue_lines": []
+  },
+  {
+    "folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
+    "name": "002-codesight",
+    "validate_exit": 2,
+    "issue_lines": []
+  },
+  {
+    "folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+    "name": "003-contextador",
+    "validate_exit": 2,
+    "issue_lines": []
+  },
+  {
+    "folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
+    "name": "004-graphify",
+    "validate_exit": 2,
+    "issue_lines": []
+  },
+  {
+    "folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
+    "name": "005-claudest",
+    "validate_exit": 2,
+    "issue_lines": []
+  }
+]

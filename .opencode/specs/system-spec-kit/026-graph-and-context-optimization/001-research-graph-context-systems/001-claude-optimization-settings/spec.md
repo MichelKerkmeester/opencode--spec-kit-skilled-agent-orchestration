@@ -19,7 +19,7 @@ contextType: "research"
 
 ## EXECUTIVE SUMMARY
 
-This phase audited a Reddit primary-source field report covering 858-926 Claude Code sessions against `Code_Environment/Public`'s actual `.claude/settings.local.json` and `CLAUDE.md`. The headline configuration recommendation from the post -- `ENABLE_TOOL_SEARCH=true` -- is already present in this repo, making the central deliverable a ranked recommendation set rather than a new config flip. Seventeen findings (F1-F17) were produced across four prioritization tiers, with 8 adopt-now, 7 prototype-later, and 2 reject labels. This is a research-only phase; no settings were changed, no hooks were implemented, and no auditor was built.
+This phase audited a Reddit primary-source field report covering 858-926 Claude Code sessions against `Code_Environment/Public`'s actual `.claude/settings.local.json` and `CLAUDE.md`. The headline configuration recommendation from the post -- `ENABLE_TOOL_SEARCH=true` -- is already present in this repo, making the central deliverable a ranked recommendation set rather than a new config flip. Twenty-four findings (F1-F24) were produced across four prioritization tiers, with 11 adopt-now, 11 prototype-later, and 2 reject labels. The original 8-iteration synthesis-ready loop was extended to 13 iterations by user request via `cli-codex` `gpt-5.4` high reasoning to bring an independent skeptical perspective before closeout. This is a research-only phase; no settings were changed, no hooks were implemented, and no auditor was built.
 
 **Key Decisions**: Treat the Reddit post as a primary-source field report (not an implementation spec); defer auditor implementation to phase 005-claudest.
 
@@ -27,7 +27,6 @@ This phase audited a Reddit primary-source field report covering 858-926 Claude 
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -37,9 +36,10 @@ This phase audited a Reddit primary-source field report covering 858-926 Claude 
 | **Status** | Complete (research phase) |
 | **Created** | 2026-04-06 |
 | **Phase Folder** | `001-claude-optimization-settings` |
-| **Research Iterations** | 8 (cli-copilot gpt-5.4, reasoning_effort=high) |
-| **Findings** | 17 (F1-F17), 30 raw deduplicated |
-<!-- /ANCHOR:metadata -->
+| **Research Iterations** | 13 (`cli-copilot` core loop, then iterations 009-013 added by user request via `cli-codex` `gpt-5.4` high reasoning) |
+| **Findings** | 24 (F1-F24), 56 raw across 13 iterations |
+| **Parent Spec** | `../spec.md` |
+| **Successor Phase** | `../002-codesight/spec.md` |
 
 ---
 
@@ -88,10 +88,10 @@ Produce an evidence-anchored recommendation set, cross-checked against this repo
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `research/research.md` | Create | Canonical synthesis output with F1-F17, 12 sections, config checklist |
+| `research/research.md` | Create | Canonical synthesis output with F1-F24, 12 sections, config checklist |
 | `spec.md` | Create | This document |
 | `plan.md` | Create | Research methodology and convergence trajectory |
-| `tasks.md` | Create | Backfilled task list for the 8-iteration research run |
+| `tasks.md` | Create | Backfilled task list for the 13-iteration research run |
 | `checklist.md` | Create | P0/P1/P2 verification checklist with evidence references |
 | `decision-record.md` | Create | Four key decisions (ADR-001 through ADR-004) |
 | `implementation-summary.md` | Create | Delivery summary: artifacts, stats, next-phase boundary |
@@ -106,7 +106,7 @@ Produce an evidence-anchored recommendation set, cross-checked against this repo
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | `research/research.md` must exist with at least 5 evidence-backed findings | File present; >=5 findings visible; see research.md §4 |
+| REQ-001 | `research/research.md` must exist with the authoritative evidence-backed synthesis | File present; 24 findings (F1-F24) visible; see research.md §4. The original 8-iteration cap was extended to 13 by user request via `cli-codex` `gpt-5.4` high reasoning to add an independent skeptical pass before closeout. |
 | REQ-002 | Each finding must cite a specific external/reddit_post.md passage | Every finding in research.md §4 has a "Source passage anchor" and "Source quote" field |
 | REQ-003 | Each finding must carry a recommendation label | Every finding labeled `adopt now`, `prototype later`, or `reject` |
 | REQ-004 | Cross-check against current `.claude/settings.local.json` and `CLAUDE.md` must be present | research.md §3 cross-check table present with repo-state column |
@@ -132,11 +132,11 @@ Produce an evidence-anchored recommendation set, cross-checked against this repo
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `research/research.md` contains F1-F17 with source anchors, recommendation labels, tier assignments, and affected-area notes -- verified by reading research.md §4.
+- **SC-001**: `research/research.md` contains F1-F24 with source anchors, recommendation labels, tier assignments, and affected-area notes -- verified by reading research.md §4.
 - **SC-002**: The config-change checklist in research.md §5 correctly identifies `ENABLE_TOOL_SEARCH=true` as already present and any hook-design flags as repo-local experimental (not post-backed settings).
 - **SC-003**: The phase 005-claudest boundary in research.md §9 is present and contains no implementation duplication.
 - **SC-004**: The discrepancy table in research.md §2 preserves both mismatches (926-vs-858 sessions; 18,903-vs-11,357 turns denominator) without normalizing them.
-- **SC-005**: Recommendation split is 8 adopt-now / 7 prototype-later / 2 reject as reported in research.md §12 convergence report.
+- **SC-005**: Recommendation split is 11 adopt-now / 11 prototype-later / 2 reject as reported in research.md §12 convergence report.
 - **SC-006**: Level 3 spec documents (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md) all exist in this phase folder.
 <!-- /ANCHOR:success-criteria -->
 
@@ -188,7 +188,7 @@ Produce an evidence-anchored recommendation set, cross-checked against this repo
 |-----------|-------|----------|
 | Scope | 15/25 | Cross-phase boundary handling, 17-finding taxonomy, multi-surface (config/hooks/behavior/observability) |
 | Risk | 15/25 | Source discrepancy handling, JSONL fragility risk, unshipped UX risk |
-| Research | 18/20 | 8-iteration deep-research loop, 12 research questions, externalized JSONL state |
+| Research | 18/20 | 13-iteration deep-research loop, 12 research questions, externalized JSONL state |
 | Multi-Agent | 6/15 | LEAF-only execution, no sub-agent dispatch, cli-copilot runner |
 | Coordination | 10/15 | Phase 005-claudest cross-phase boundary, four-tier prioritization framework |
 | **Total** | **64/100** | **Level 3** |
@@ -214,7 +214,7 @@ Produce an evidence-anchored recommendation set, cross-checked against this repo
 **As a** developer planning Claude Code workflow improvements for Code_Environment/Public, **I want** a ranked list of recommendations tied to specific evidence from the Reddit post, **so that** I can decide what to adopt now, prototype later, or reject without having to re-read and interpret the source myself.
 
 **Acceptance Criteria**:
-1. **Given** research.md §4 is open, **When** I search for any finding F1-F17, **Then** I find a source passage anchor, recommendation label, tier, and affected area.
+1. **Given** research.md §4 is open, **When** I search for any finding F1-F24, **Then** I find a source passage anchor, recommendation label, tier, and affected area.
 2. **Given** a recommendation is labeled "adopt now", **When** I check it against .claude/settings.local.json or CLAUDE.md, **Then** I find either it is already present or the exact change is described in documentation terms.
 
 ---
@@ -257,4 +257,4 @@ Produce an evidence-anchored recommendation set, cross-checked against this repo
 - **Delivery Summary**: See `implementation-summary.md`
 - **Primary Source**: external/reddit_post.md (read-only)
 - **Research Strategy**: See `research/deep-research-strategy.md`
-- **Phase 005 Boundary**: See `../005-claudest/phase-research-prompt.md`
+- **Phase 005 Boundary**: See `../005-claudest/scratch/phase-research-prompt.md`

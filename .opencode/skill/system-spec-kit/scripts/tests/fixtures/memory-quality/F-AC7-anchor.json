@@ -1,0 +1,23 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues",
+  "sessionSummary": "Phase 1 foundation work aligned the OVERVIEW anchor names across the template.",
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
+      "action": "Modified",
+      "description": "OVERVIEW anchor comment marker renamed from summary to overview"
+    }
+  ],
+  "keyDecisions": [
+    {
+      "decision": "Standardize anchor identity on overview",
+      "rationale": "Eliminates the literal mismatch between TOC fragment, HTML id, and comment marker in the OVERVIEW block"
+    }
+  ],
+  "triggerPhrases": [
+    "phase 1 anchor fixture"
+  ],
+  "nextSteps": [
+    "Validate rendered markdown anchors"
+  ]
+}

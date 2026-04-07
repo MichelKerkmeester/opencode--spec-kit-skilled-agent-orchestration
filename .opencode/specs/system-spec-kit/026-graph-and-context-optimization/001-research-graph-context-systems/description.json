@@ -1,0 +1,27 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "description": "Level 3 master research packet for graph and context optimization that turns the v2 synthesis into root requirements, adoption decisions, sequencing, and packet-conformance fixes for Public.",
+  "keywords": [
+    "graph",
+    "context",
+    "optimization",
+    "master",
+    "research",
+    "packet",
+    "adoption",
+    "sequencing"
+  ],
+  "lastUpdated": "2026-04-07T13:06:08.010Z",
+  "specId": "001",
+  "folderSlug": "research-graph-context-systems",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "07-04-26_11-57__master-consolidation-of-5-system-external.md",
+    "07-04-26_13-31__extended-master-consolidation-of-5-system.md",
+    "07-04-26_14-55__spec-documentation-perfection-task-used-cli.md"
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: Phase 001 - Claude Optimization Settings (Reddit field-report audit)"
-description: "Four key decisions made during the 8-iteration deep-research run: source framing, discrepancy handling, prioritization framework, and implementation deferral."
+description: "Four key decisions made during the 13-iteration deep-research run: source framing, discrepancy handling, prioritization framework, and implementation deferral."
 trigger_phrases:
   - "claude optimization decisions"
   - "reddit post framing decision"
@@ -78,14 +78,14 @@ How it works: each finding anchors to a specific paragraph in the post ("Source 
 - The repo avoids adopting unvalidated latency claims or importing implementation scope that belongs to phase 005.
 
 **What it costs**:
-- More analytical overhead per finding than a direct "copy this config" pass. Mitigation: the iteration model with externalized state handles this incrementally across 8 loops.
+- More analytical overhead per finding than a direct "copy this config" pass. Mitigation: the iteration model with externalized state handles this incrementally across 13 loops, including the skeptical extension.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Future summaries quote findings as if they were replicated results rather than sourced claims | Med | research.md §2 opens with source-framing language; ADR-001 is explicit about the distinction |
-| Post's methodology is internally inconsistent enough to undermine architectural conclusions | Low | research.md §2 argues discrepancies weaken exact prevalence but not structural conclusions; ADR-002 handles this separately |
+| Future summaries quote findings as if they were replicated results rather than sourced claims | Med | `research/research.md` §2 opens with source-framing language; ADR-001 is explicit about the distinction |
+| Post's methodology is internally inconsistent enough to undermine architectural conclusions | Low | `research/research.md` §2 argues discrepancies weaken exact prevalence but not structural conclusions; ADR-002 handles this separately |
 <!-- /ANCHOR:adr-001-consequences -->
 
 ---
@@ -110,18 +110,18 @@ How it works: each finding anchors to a specific paragraph in the post ("Source 
 ### Implementation
 
 **What changes**:
-- research.md opens with a source-framing section (§2) that defines the post's status before any findings appear
-- Every finding in research.md §4 uses the compact schema: source passage anchor, source quote, what it documents, why it matters for this repo, recommendation label
+- `research/research.md` opens with a source-framing section (§2) that defines the post's status before any findings appear
+- Every finding in `research/research.md` §4 uses the compact schema: source passage anchor, source quote, what it documents, why it matters for this repo, recommendation label
 - phase-research-prompt §3 Task framing is preserved in deep-research-strategy.md §2 Topic
 
-**How to roll back**: If the source framing is found to be overly charitable or insufficiently charitable, edit research.md §2 to adjust the framing statement; findings do not need to change because they are already passage-anchored.
+**How to roll back**: If the source framing is found to be overly charitable or insufficiently charitable, edit `research/research.md` §2 to adjust the framing statement; findings do not need to change because they are already passage-anchored.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
 
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Preserve the 926-vs-858 sessions and 18,903-vs-11,357 turns denominator discrepancies explicitly
+### ADR-002: Preserve the 926-vs-858 sessions and 18,903-vs-11,357 turns denominator discrepancies explicitly
 
 ### Metadata
 
@@ -157,7 +157,7 @@ We had to decide whether to smooth these into a single normalized total or prese
 
 We chose to preserve both discrepancies explicitly in every document that references the session or turn counts.
 
-How it works: research.md §2 contains a discrepancy table with both mismatches, their anchor sentences, and an explanation of why they weaken exact prevalence claims but not architectural conclusions. spec.md §6 carries both as risk items. decision-record.md (this document) and implementation-summary.md both note the discrepancies. No document in this spec set contains a normalized total.
+How it works: `research/research.md` §2 contains a discrepancy table with both mismatches, their anchor sentences, and an explanation of why they weaken exact prevalence claims but not architectural conclusions. spec.md §6 carries both as risk items. decision-record.md (this document) and implementation-summary.md both note the discrepancies. No document in this spec set contains a normalized total.
 <!-- /ANCHOR:adr-002-decision -->
 
 ---
@@ -185,14 +185,14 @@ How it works: research.md §2 contains a discrepancy table with both mismatches,
 - Structural conclusions (cache expiry is dominant waste, hook design is worth prototyping, JSONL auditing is fragile) stand independently of the exact percentages.
 
 **What it costs**:
-- Slightly more verbose source citations. Mitigation: the discrepancy table in research.md §2 is the canonical reference; other documents can point there rather than re-explain.
+- Slightly more verbose source citations. Mitigation: the discrepancy table in `research/research.md` §2 is the canonical reference; other documents can point there rather than re-explain.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | Future summaries smooth the discrepancy for convenience | Med | NFR-D01 in spec.md makes preservation a non-functional requirement; this ADR formalizes the rationale |
-| Post author clarifies in a comment; this phase cannot update | Low | The post is treated as a static primary source; if new authoritative information appears, a follow-up note can be added to research.md §2 without changing the finding structure |
+| Post author clarifies in a comment; this phase cannot update | Low | The post is treated as a static primary source; if new authoritative information appears, a follow-up note can be added to `research/research.md` §2 without changing the finding structure |
 <!-- /ANCHOR:adr-002-consequences -->
 
 ---
@@ -204,7 +204,7 @@ How it works: research.md §2 contains a discrepancy table with both mismatches,
 |---|-------|--------|----------|
 | 1 | **Necessary?** | PASS | Without this decision, different documents might independently choose different totals |
 | 2 | **Beyond Local Maxima?** | PASS | Four options considered; the others all require inventing an explanation the source does not provide |
-| 3 | **Sufficient?** | PASS | A two-row discrepancy table in research.md §2 is the simplest complete solution |
+| 3 | **Sufficient?** | PASS | A two-row discrepancy table in `research/research.md` §2 is the simplest complete solution |
 | 4 | **Fits Goal?** | PASS | The goal is an evidence-anchored recommendation set; this preserves the evidence integrity |
 | 5 | **Open Horizons?** | PASS | Future phases can cite the discrepancy table rather than re-deriving it |
 
@@ -217,19 +217,19 @@ How it works: research.md §2 contains a discrepancy table with both mismatches,
 ### Implementation
 
 **What changes**:
-- research.md §2 discrepancy table: two rows, each with the anchor sentence and a "Why it matters" explanation
+- `research/research.md` §2 discrepancy table: two rows, each with the anchor sentence and a "Why it matters" explanation
 - spec.md §6 risk table: R-001 and side-note covering both discrepancies
 - decision-record.md ADR-002 (this document): formal rationale
 - implementation-summary.md limitations section: notes both discrepancies as preserved intentionally
 
-**How to roll back**: If a future authoritative clarification from the post author resolves the mismatch, update research.md §2 discrepancy table with the resolution, remove or supersede this ADR, and add a note in any document that previously cited the preserved discrepancy.
+**How to roll back**: If a future authoritative clarification from the post author resolves the mismatch, update `research/research.md` §2 discrepancy table with the resolution, remove or supersede this ADR, and add a note in any document that previously cited the preserved discrepancy.
 <!-- /ANCHOR:adr-002-impl -->
 <!-- /ANCHOR:adr-002 -->
 
 ---
 
 <!-- ANCHOR:adr-003 -->
-## ADR-003: Apply the four-tier prioritization framework from phase-research-prompt §10.3
+### ADR-003: Apply the four-tier prioritization framework from phase-research-prompt §10.3
 
 ### Metadata
 
@@ -244,7 +244,7 @@ How it works: research.md §2 contains a discrepancy table with both mismatches,
 <!-- ANCHOR:adr-003-context -->
 ### Context
 
-The research produced 30 raw findings across 8 iterations that needed to be ranked for actionability. Without a consistent prioritization framework, different readers might rank the same findings differently depending on their role (config-focused, hook-focused, instrumentation-focused). phase-research-prompt §10.3 provided an explicit four-tier ordering: config changes first (high-impact / low-effort), then hook implementations (high-impact / medium-effort), then behavioral changes (lower effort, documentation-first), then instrumentation-heavy or format-fragile ideas last.
+The research produced 56 raw findings across 13 iterations that needed to be ranked for actionability. Without a consistent prioritization framework, different readers might rank the same findings differently depending on their role (config-focused, hook-focused, instrumentation-focused). phase-research-prompt §10.3 provided an explicit four-tier ordering: config changes first (high-impact / low-effort), then hook implementations (high-impact / medium-effort), then behavioral changes (lower effort, documentation-first), then instrumentation-heavy or format-fragile ideas last.
 
 ### Constraints
 
@@ -259,7 +259,11 @@ The research produced 30 raw findings across 8 iterations that needed to be rank
 
 We chose to apply the four-tier framework as the primary ranking dimension, with the hybrid label allowed for findings that span two categories.
 
-How it works: each finding in research.md §4 carries a "Tier: 1/2/3/4" label. Tier 1 = config baselines (F1, F2). Tier 2 = hook prototype work (F3-F8). Tier 3 = adopt-now behavioral/documentation changes (F9-F13). Tier 4 = instrumentation-heavy or format-fragile ideas requiring later measurement (F14-F17). The consolidated ledger in iteration-008.md uses this tier structure.
+How it works: each finding in `research/research.md` §4 carries a "Tier: 1/2/3/4" label. In the final F1-F24 ledger, Tier 1 contains the config baselines and prerequisite synthesis safeguards (F1, F2, F13, F19, F20, F21, F24); Tier 2 contains the hook and observability-adjacent prototype work (F4, F6, F7, F10, F14, F16, F18, F22); Tier 3 contains the behavioral/documentation changes and planning guardrails (F3, F8, F11, F12, F23); Tier 4 contains the highest-risk or later-phase remedy and portability items (F5, F9, F15, F17). The final tier ordering is recorded in `research/research.md` §12 and iteration-012.md.
+
+#### Amendment 2026-04-07
+
+After iteration 008 reached a synthesis-ready baseline, the loop was extended from 8 to 13 iterations by user request via `cli-codex` `gpt-5.4` high reasoning so the final F1-F24 tier map would incorporate an independent skeptical pass before closeout.
 <!-- /ANCHOR:adr-003-decision -->
 
 ---
@@ -269,7 +273,7 @@ How it works: each finding in research.md §4 carries a "Tier: 1/2/3/4" label. T
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Four-tier framework** (chosen) | Directly maps to effort and adoption risk; aligns with phase-research-prompt §10.3; consistent across 17 findings | Tier labels are somewhat coarse; some findings span tiers | 9/10 |
+| **Four-tier framework** (chosen) | Directly maps to effort and adoption risk; aligns with phase-research-prompt §10.3; consistent across 24 findings | Tier labels are somewhat coarse; some findings span tiers | 9/10 |
 | Impact-effort matrix only (no tier labels) | More granular; per-finding positioning | More subjective; harder to compare across findings without shared tier labels | 6/10 |
 | Adopt-now / prototype-later / reject only (no tiers) | Simpler; matches recommendation label granularity | Loses effort differentiation between hook work (medium effort) and config work (low effort) | 5/10 |
 | No ranking framework; alphabetical | Zero friction to apply | Useless for planning prioritization | 1/10 |
@@ -283,7 +287,7 @@ How it works: each finding in research.md §4 carries a "Tier: 1/2/3/4" label. T
 ### Consequences
 
 **What improves**:
-- Downstream phases can filter research.md §4 by tier to find the lowest-friction changes first.
+- Downstream phases can filter `research/research.md` §4 by tier to find the lowest-friction changes first.
 - The tier-2 cluster (hook work) maps naturally to a future hook-implementation spec without needing re-ranking.
 - The tier-4 cluster (observability work) is clearly separated from the tier-3 behavioral changes that can be shipped as documentation immediately.
 
@@ -294,7 +298,7 @@ How it works: each finding in research.md §4 carries a "Tier: 1/2/3/4" label. T
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Tier labels drift across future documents referencing these findings | Low | research.md §4 is the canonical tier source; other documents should reference finding IDs rather than re-assign tiers |
+| Tier labels drift across future documents referencing these findings | Low | `research/research.md` §4 is the canonical tier source; other documents should reference finding IDs rather than re-assign tiers |
 <!-- /ANCHOR:adr-003-consequences -->
 
 ---
@@ -304,9 +308,9 @@ How it works: each finding in research.md §4 carries a "Tier: 1/2/3/4" label. T
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | 30 raw findings need consistent ranking for planning use |
+| 1 | **Necessary?** | PASS | 56 raw findings need consistent ranking for planning use |
 | 2 | **Beyond Local Maxima?** | PASS | Three alternatives considered; the four-tier framework is the only one that maps to effort levels |
-| 3 | **Sufficient?** | PASS | Tier 1-4 plus hybrid label covers all 17 findings without forcing artificial categorization |
+| 3 | **Sufficient?** | PASS | Tier 1-4 plus hybrid label covers all 24 findings without forcing artificial categorization |
 | 4 | **Fits Goal?** | PASS | Goal is actionable recommendations for downstream planning; tier labels enable that directly |
 | 5 | **Open Horizons?** | PASS | Future additions to the finding set can use the same tier labels without restructuring |
 
@@ -319,19 +323,19 @@ How it works: each finding in research.md §4 carries a "Tier: 1/2/3/4" label. T
 ### Implementation
 
 **What changes**:
-- research.md §4: each finding has "Tier: 1/2/3/4" field
-- research.md §12 convergence report: tier distribution T1=2, T2=6, T3=5, T4=4
-- iteration-006.md: ranked tier table across all iterations as the de facto ordering reference
-- iteration-008.md: final F1-F17 consolidated ledger with tier column
+- `research/research.md` §4: each finding has "Tier: 1/2/3/4" field
+- `research/research.md` §12 convergence report: tier distribution T1=7, T2=8, T3=5, T4=4
+- iteration-012.md: updated tier table plus recommendation flips across F1-F24
+- iteration-013.md: amendment landing pass that applied the updated F1-F24 ordering into `research/research.md`
 
-**How to roll back**: If the phase-research-prompt tier framework is revised in a future phase, re-run the tier assignment across F1-F17 in research.md §4 and update the iteration-008 consolidated ledger.
+**How to roll back**: If the phase-research-prompt tier framework is revised in a future phase, re-run the tier assignment across F1-F24 in `research/research.md` §4 and update the iteration-012/013 amendment trail.
 <!-- /ANCHOR:adr-003-impl -->
 <!-- /ANCHOR:adr-003 -->
 
 ---
 
 <!-- ANCHOR:adr-004 -->
-## ADR-004: Defer the auditor implementation to phase 005-claudest; this phase owns only the recommendation set
+### ADR-004: Defer the auditor implementation to phase 005-claudest; this phase owns only the recommendation set
 
 ### Metadata
 
@@ -364,7 +368,7 @@ Phase `005-claudest` was pre-designated as the implementation-provenance packet 
 
 We chose to keep phase 001 as the decision/adoption layer and defer all implementation provenance to phase 005-claudest. The allowed overlap is one-way and narrow: phase 001 may cite phase 005 only to point at the concrete implementation home of the auditor; phase 005 may cite phase 001 only to explain why the implementation matters.
 
-How it works: research.md §9 contains a single boundary paragraph. This phase's findings that reference the auditor (F14, F16, F17) are labeled "prototype later" and their "Affected area" fields point to the phase 005 folder path rather than prescribing implementation steps.
+How it works: `research/research.md` §9 contains a single boundary paragraph. This phase's findings that reference the auditor (F14, F16, F17) are labeled "prototype later" and their "Affected area" fields point to the phase 005 folder path rather than prescribing implementation steps.
 <!-- /ANCHOR:adr-004-decision -->
 
 ---
@@ -392,14 +396,14 @@ How it works: research.md §9 contains a single boundary paragraph. This phase's
 - The boundary is easy to enforce in future documents: any `claude-memory` or `get-token-insights` implementation detail belongs in 005, not 001.
 
 **What it costs**:
-- Prototype-lane findings (F4-F7, F14, F15, F17) cannot be validated until phase 005 ships. Mitigation: those findings are explicitly labeled "prototype later" and their validation cost is noted in research.md §10 risks.
+- Prototype-lane findings (F4-F7, F14, F15, F17) cannot be validated until phase 005 ships. Mitigation: those findings are explicitly labeled "prototype later" and their validation cost is noted in `research/research.md` §10 risks.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | Phase 005 delay blocks the Tier 2/4 findings indefinitely | Low | Phase 001's recommendation set is already complete; phase 005 delay does not change the what/why labels |
-| Future authoring accidentally re-introduces implementation content into phase 001 documents | Med | Out of Scope list in spec.md §3, boundary paragraph in research.md §9, and this ADR all serve as guardrails |
+| Future authoring accidentally re-introduces implementation content into phase 001 documents | Med | Out of Scope list in spec.md §3, boundary paragraph in `research/research.md` §9, and this ADR all serve as guardrails |
 <!-- /ANCHOR:adr-004-consequences -->
 
 ---
@@ -411,7 +415,7 @@ How it works: research.md §9 contains a single boundary paragraph. This phase's
 |---|-------|--------|----------|
 | 1 | **Necessary?** | PASS | Without this decision, every author touching phase 001 would need to independently decide how much implementation detail to include |
 | 2 | **Beyond Local Maxima?** | PASS | Three options considered; the partial-implementation option has no benefit that outweighs the duplication cost |
-| 3 | **Sufficient?** | PASS | One boundary paragraph in research.md §9 plus this ADR is the minimum necessary to enforce the separation |
+| 3 | **Sufficient?** | PASS | One boundary paragraph in `research/research.md` §9 plus this ADR is the minimum necessary to enforce the separation |
 | 4 | **Fits Goal?** | PASS | Phase 001's goal is a recommendation set; this ADR keeps the work focused on that goal |
 | 5 | **Open Horizons?** | PASS | Phase 005 retains full freedom to design the implementation without being constrained by partial design choices made in phase 001 |
 
@@ -424,11 +428,11 @@ How it works: research.md §9 contains a single boundary paragraph. This phase's
 ### Implementation
 
 **What changes**:
-- research.md §9: boundary paragraph stating one-way narrow overlap rule
-- research.md §4 F14, F16, F17: affected-area fields point to phase 005 folder, not to implementation paths inside this phase
+- `research/research.md` §9: boundary paragraph stating one-way narrow overlap rule
+- `research/research.md` §4 F14, F16, F17: affected-area fields point to phase 005 folder, not to implementation paths inside this phase
 - spec.md §3: Out of Scope includes "Plugin implementation (lives in 005-claudest)"
 - implementation-summary.md: next-phase ownership section states boundary
 
-**How to roll back**: If the phases are merged or re-scoped, remove research.md §9 boundary paragraph and re-assign F14/F16/F17 affected areas to reflect the new ownership.
+**How to roll back**: If the phases are merged or re-scoped, remove `research/research.md` §9 boundary paragraph and re-assign F14/F16/F17 affected areas to reflect the new ownership.
 <!-- /ANCHOR:adr-004-impl -->
 <!-- /ANCHOR:adr-004 -->

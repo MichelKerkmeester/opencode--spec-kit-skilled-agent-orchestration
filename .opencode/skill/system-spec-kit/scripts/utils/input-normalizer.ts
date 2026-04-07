@@ -15,6 +15,7 @@ import {
   matchesSpecAffinityText,
   normalizeText,
 } from './spec-affinity';
+import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
 import type { Observation, RecentContextEntry } from '../types/session-types';
 
 // ───────────────────────────────────────────────────────────────
@@ -272,15 +273,11 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
  * @returns An Observation of type 'feature' representing the session summary.
  */
 function buildSessionSummaryObservation(summary: string, triggerPhrases: string[] = []): Observation {
-  const summaryTitle: string = summary.length > 100
-    ? summary.substring(0, 100).replace(/\s+\S*$/, '') + '...'
-    : summary;
+  const summaryTitle: string = truncateOnWordBoundary(summary, 100);
 
   // Truncate narrative to avoid verbatim duplication with OVERVIEW section.
   // T09b: Increased from 200→500 for richer semantic content in JSON mode
-  const narrativeText: string = summary.length > 500
-    ? summary.substring(0, 500).replace(/\s+\S*$/, '') + '...'
-    : summary;
+  const narrativeText: string = truncateOnWordBoundary(summary, 500);
 
   return {
     type: 'feature',

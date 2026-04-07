@@ -14,7 +14,7 @@ contextType: "general"
 
 ## What This File Is
 
-This file is a stub created so that validate.sh --strict in the 003-contextador phase folder does not flag references to "CONTEXT.md" inside `phase-research-prompt.md` as missing markdown files.
+This file is a stub created so that validate.sh --strict in the 003-contextador phase folder does not flag references to "CONTEXT.md" inside `scratch/phase-research-prompt.md` as missing markdown files.
 
 In Contextador (the system being researched in this phase), `CONTEXT.md` is the name of the Markdown artifact that Contextador's MCP server creates and queries. Contextador maps a codebase into a hierarchy of `CONTEXT.md` files and serializes structured pointers from those files when an agent asks a natural-language question.
 
@@ -32,7 +32,7 @@ In Contextador (the system being researched in this phase), `CONTEXT.md` is the 
 
 ## Where to Look Instead
 
-- Phase prompt: phase-research-prompt.md
+- Phase prompt: scratch/phase-research-prompt.md
 - Research scaffold: spec.md, plan.md, tasks.md, checklist.md, decision-record.md
 - Final research: research/research.md (populated during synthesis)
 - Source under study: external/src/mcp.ts and the rest of the Contextador checkout

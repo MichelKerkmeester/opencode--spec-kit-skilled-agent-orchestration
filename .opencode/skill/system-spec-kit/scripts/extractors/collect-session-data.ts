@@ -17,6 +17,7 @@ import { formatTimestamp } from '../utils/message-utils';
 import { pickBestContentName } from '../utils/slug-utils';
 import { structuredLog } from '../utils/logger';
 import { coerceFactsToText } from '../utils/fact-coercion';
+import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
 import { detectSpecFolder } from '../spec-folder';
 
 import {
@@ -874,7 +875,7 @@ async function collectSessionData(
     || observations.slice(0, 3).map((o) => o.title).filter(Boolean).join('; ');
   // Rec 3: Prefer explicit sessionSummary from JSON over transcript-derived learning
   const SUMMARY: string = (typeof data.sessionSummary === 'string' && data.sessionSummary.length > 20)
-    ? data.sessionSummary.substring(0, 500)
+    ? truncateOnWordBoundary(data.sessionSummary, 500)
     : (!isErrorContent && learningIsTopical && rawLearning.length > 0)
       ? rawLearning
       : observationFallback

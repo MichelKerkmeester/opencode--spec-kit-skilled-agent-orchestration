@@ -1,8 +1,8 @@
 ---
-title: "Tasks: Phase 1 — Foundation (Templates & Truncation)"
-description: "Ordered Phase 1 execution tasks for PR-1 and PR-2, including helper extraction, call-site migration, fixture authoring, validation, and parent packet status handoff."
+title: "Tasks: Phase 1: Foundation (Templates & Truncation)"
+description: "Ordered Phase 1 execution tasks for PR-1 and PR-2, including helper extraction, call-site migration, contract validator + memory parser alignment, fixture authoring, validation, and parent packet status handoff."
 ---
-# Tasks: Phase 1 — Foundation (Templates & Truncation)
+# Tasks: Phase 1: Foundation (Templates & Truncation)
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->
@@ -17,178 +17,299 @@ description: "Ordered Phase 1 execution tasks for PR-1 and PR-2, including helpe
 | `T1.x` | Phase 1 task identifier |
 | `Acceptance` | Concrete AC fixture, CLI check, or file check |
 | `Dependencies` | Blocking predecessor tasks |
+
+Execution is intentionally linear because helper extraction, validator coupling, fixture coverage, and parent handoff are tightly coupled. The only safe parallelism is inside individual test authoring once the helper surface is defined. [SOURCE: research.md §10] [SOURCE: research/iterations/iteration-017.md:60-75]
 <!-- /ANCHOR:notation -->
 
 ---
 
-## Execution Order
-
-These tasks are intentionally linear because the helper extraction, fixture coverage, and parent handoff criteria are tightly coupled. The only safe parallelism is inside individual test authoring once the helper surface is defined. [SOURCE: research.md §10] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-017.md:60-75]
-
----
-
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Foundation Code
+## Phase 1: Setup
 
-### T1.1 — Create `truncateOnWordBoundary()` and its unit tests
+### T1.0: Read research, plan, and pin conventions
 
-**Description**  
-Create `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts` with the helper signature proposed in iteration 17 and add focused unit coverage for whitespace-boundary trimming, exact-length passthrough, and the pinned ellipsis behavior. [SOURCE: research.md §D.2] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-017.md:29-31]
+**Description**
+Read `../research/research.md`, `../research/iterations/iteration-016.md`, and `../research/iterations/iteration-017.md` once before touching code. Confirm the canonical ellipsis is `…` (U+2026) per parent handoff criteria, the helper extraction order is `input-normalizer.ts` first then `collect-session-data.ts`, and the scope is locked to PR-1 + PR-2 files only.
 
-**File(s)**  
-- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
-- `.opencode/skill/system-spec-kit/scripts/tests/truncate-on-word-boundary.vitest.ts`
+**File(s)**
+- `../research/research.md`
+- `../research/iterations/iteration-016.md`
+- `../research/iterations/iteration-017.md`
+- `../spec.md` (phase map + handoff criteria)
 
-**Acceptance**  
-Helper unit tests pass and explicitly prove the F-AC1 truncation contract at representative lengths. [SOURCE: research.md §11] [SOURCE: research.md §D.3]
+**Acceptance**
+Ellipsis choice pinned, extraction order understood, scope lock acknowledged.
 
-**Dependencies**  
-None.
-
----
-
-### T1.2 — Migrate the OVERVIEW owner in `collect-session-data.ts`
-
-**Description**  
-Replace the raw `data.sessionSummary.substring(0, 500)` in `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:875-881` with the new helper so the OVERVIEW block no longer cuts mid-token. [SOURCE: research.md §5] [SOURCE: research.md §7]
-
-**File(s)**  
-- `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`
-- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
-
-**Acceptance**  
-F-AC1-style rendered OVERVIEW assertions pass and the file no longer contains the raw D1 clamp. [SOURCE: research.md §D.1]
-
-**Dependencies**  
-T1.1
-
----
-
-### T1.3 — Migrate the existing observation-summary callsites in `input-normalizer.ts`
-
-**Description**  
-Refactor `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:274-283` and the `normalizeInputData()` usage seam at `:668-674` to call the shared helper instead of inlining a second boundary-aware truncation rule. [SOURCE: research.md §B.4] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-017.md:18-19]
-
-**File(s)**  
-- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
-- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
-
-**Acceptance**  
-The observation-summary path and OVERVIEW path share one helper contract, and the existing narrative behavior stays intact apart from the phase-pinned suffix decision. [SOURCE: research.md §13] [SOURCE: research.md §D.2]
-
-**Dependencies**  
-T1.1
-
----
-
-### T1.4 — Fix the OVERVIEW anchor IDs in `.opencode/skill/system-spec-kit/templates/context_template.md`
-
-**Description**  
-Standardize the TOC fragment, HTML id, and comment marker on `overview` in `.opencode/skill/system-spec-kit/templates/context_template.md:172-183` and `:330-352`. [SOURCE: research.md §5] [SOURCE: research.md §D.1]
-
-**File(s)**  
-- `.opencode/skill/system-spec-kit/templates/context_template.md`
-
-**Acceptance**  
-F-AC7 assertions pass and no `ANCHOR:summary` marker remains in the OVERVIEW block. [SOURCE: research.md §D.3]
-
-**Dependencies**  
+**Dependencies**
 None.
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Fixtures and Replay
+## Phase 2: Implementation
 
-### T1.5 — Author fixture `F-AC1`
+### T1.1: Create `truncateOnWordBoundary()` and its unit tests
 
-**Description**  
-Create the Phase 1 JSON fixture that reproduces the mid-word OVERVIEW truncation by pushing `sessionSummary` just beyond the 500-character boundary and asserting the post-fix word-boundary result. [SOURCE: research.md §D.3] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-016.md:37-54]
+**Description**
+Create `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts` exporting `truncateOnWordBoundary(text, limit, opts?: { ellipsis?: string; minBoundary?: number })`. Default ellipsis is `…` (U+2026). Add focused unit coverage for whitespace-boundary trimming, exact-length passthrough, custom ellipsis option, and empty/negative-limit edge cases.
 
-**File(s)**  
-- `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC1-truncation.json`
-- `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts`
+**File(s)**
+- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
+- `.opencode/skill/system-spec-kit/scripts/tests/truncate-on-word-boundary.vitest.ts`
 
-**Acceptance**  
-The fixture matches the Phase 1 contract: no mid-token ending, capped rendered length envelope, and the exact pinned suffix. [SOURCE: research.md §11] [SOURCE: research.md §D.3]
+**Acceptance**
+Helper unit tests pass (7 cases) and explicitly assert the `…` suffix is a single codepoint, never three ASCII dots. [SOURCE: research.md §D.3]
 
-**Dependencies**  
-T1.1, T1.2, T1.3
-
----
-
-### T1.6 — Author fixture `F-AC7`
-
-**Description**  
-Create the minimal OVERVIEW-render fixture that proves anchor consistency in the rendered markdown for the D8 template patch. [SOURCE: research.md §D.3] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-016.md:187-203]
-
-**File(s)**  
-- `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC7-anchor.json`
-- `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts`
-
-**Acceptance**  
-The rendered markdown contains the `overview` TOC fragment, HTML id, and comment marker, and excludes the `ANCHOR:summary` marker from the OVERVIEW block. [SOURCE: research.md §11] [SOURCE: research.md §D.3]
-
-**Dependencies**  
-T1.4
+**Dependencies**
+T1.0.
 
 ---
 
-### T1.7 — Replay both fixtures through `generate-context.js`
+### T1.2: Migrate the OVERVIEW owner in `collect-session-data.ts`
 
-**Description**  
-Run the compiled JSON-mode entrypoint against F-AC1 and F-AC7, asserting exit `0` for both fixture replays and confirming that helper-level fixes hold under the real CLI boundary. [SOURCE: research.md §11]
+**Description**
+Replace `data.sessionSummary.substring(0, 500)` at the `SUMMARY` assignment in `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:877-881` with `truncateOnWordBoundary(data.sessionSummary, 500)`. Add the import at the top of the file preserving the relative import style used by sibling files.
 
-**File(s)**  
-- `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
+**File(s)**
+- `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`
+- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
+
+**Acceptance**
+`tests/collect-session-data.vitest.ts` still passes. The file no longer contains the raw D1 clamp.
+
+**Dependencies**
+T1.1.
+
+---
+
+### T1.3: Migrate the observation-summary callsites in `input-normalizer.ts`
+
+**Description**
+Refactor `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:275-280` so both `summaryTitle` (limit 100) and `narrativeText` (limit 500) call the shared helper instead of inlining their own boundary-aware rules. This intentionally swaps the suffix from `'...'` (three ASCII dots) to `'…'` (single Unicode char), pinning the canonical form for Phase 1 and beyond.
+
+**File(s)**
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
+- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
+
+**Acceptance**
+`tests/input-normalizer-unit.vitest.ts` still passes. Both callsites route through the helper.
+
+**Dependencies**
+T1.1.
+
+---
+
+### T1.4: Fix the OVERVIEW anchor IDs in the context template
+
+**Description**
+Rename the OVERVIEW block comment markers in the context template file at `.opencode/skill/system-spec-kit/templates/context_template.md` from the legacy `summary` opener and closer to the new `overview` opener and closer at the `<a id="overview">` section (line 330 and line 352 of the template).
+
+**File(s)**
+- `.opencode/skill/system-spec-kit/templates/context_template.md`
+
+**Acceptance**
+F-AC7 assertions pass and no legacy `summary` opener remains in the OVERVIEW block. Other unrelated legacy `summary` markers elsewhere in the repo (plan and checklist templates, anchor-metadata test fixtures) are untouched.
+
+**Dependencies**
+T1.0.
+
+---
+
+### T1.4b: Align the contract validator SECTION_RULES (discovered coupling)
+
+**Description**
+Update `.opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts` line 51 so the OVERVIEW rule reads `{ sectionId: 'overview', commentId: 'overview', ... }` instead of `commentId: 'summary'`. The template rename in T1.4 breaks the quality gate without this update. Every rendered OVERVIEW memory aborts with `QUALITY_GATE_ABORT: missing_anchor_comment:overview` otherwise.
+
+**File(s)**
+- `.opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts`
+
+**Acceptance**
+Post-build quality gate accepts the renamed marker in the rendered memory output.
+
+**Dependencies**
+T1.4.
+
+---
+
+### T1.4c: Update the memory parser regex for backward compatibility
+
+**Description**
+Update the memory parser at `mcp_server/lib/parsing/memory-parser` line 526 so the OVERVIEW section regex accepts both the legacy `summary` and the new `overview` closing markers as end-of-section terminators. This preserves parser compatibility with historical memory files written under the old marker.
+
+**File(s)**
+- `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts`
+
+**Acceptance**
+Historical memories still parse correctly; new memories parse correctly via the `overview` branch.
+
+**Dependencies**
+T1.4.
+
+---
+
+### T1.5: Author fixture `F-AC1` and the Phase 1 vitest suite
+
+**Description**
+Create the F-AC1 fixture JSON file that reproduces the mid-word OVERVIEW truncation with a `sessionSummary` over 600 characters. Author the Phase 1 vitest suite covering F-AC1 (helper output + grep proof the owner file calls the helper).
+
+**File(s)**
 - `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC1-truncation.json`
+- `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts`
+
+**Acceptance**
+`memory-quality-phase1.vitest.ts` F-AC1 describe block passes: result ends with `…`, total length ≤ 501, next char in original is whitespace, and the source of `collect-session-data.ts` contains the helper call literal.
+
+**Dependencies**
+T1.1, T1.2, T1.3.
+
+---
+
+### T1.6: Author fixture `F-AC7`
+
+**Description**
+Create the minimal OVERVIEW-render fixture that proves anchor consistency in the rendered template for the D8 patch. Extend `memory-quality-phase1.vitest.ts` with the F-AC7 describe block that reads the context template file via fs and asserts the `ANCHOR:overview` opener, the `<a id="overview">` tag, and the `[OVERVIEW](#overview)` TOC link are all present, and that the legacy `summary` opener is absent from the OVERVIEW block.
+
+**File(s)**
 - `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC7-anchor.json`
+- `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts`
 
-**Acceptance**  
-Both commands exit `0` and any follow-up markdown assertions pass. [SOURCE: research.md §D.3]
+**Acceptance**
+F-AC7 describe block passes against the updated template.
 
-**Dependencies**  
-T1.2, T1.3, T1.4, T1.5, T1.6
+**Dependencies**
+T1.4.
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Validation and Handoff
+## Phase 3: Verification
 
-### T1.8 — Validate the Phase 1 spec folder
+### T1.7: Build both TypeScript packages
 
-**Description**  
-Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh` against `001-foundation-templates-truncation/` after code and fixture work land so the child packet is structurally complete before handoff. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:185-193]
+**Description**
+Run `npm run build` in `.opencode/skill/system-spec-kit/scripts` and `.opencode/skill/system-spec-kit/mcp_server` so `dist/` reflects the T1.1–T1.4c source changes.
 
-**File(s)**  
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/checklist.md`
+**File(s)**
+- `.opencode/skill/system-spec-kit/scripts/package.json`
+- `.opencode/skill/system-spec-kit/mcp_server/package.json`
 
-**Acceptance**  
-`validate.sh` exits `0` for the phase folder. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:197-197]
+**Acceptance**
+Both builds exit `0`. No compile errors.
 
-**Dependencies**  
-T1.5, T1.6, T1.7
+**Dependencies**
+T1.1, T1.2, T1.3, T1.4, T1.4b, T1.4c.
 
 ---
 
-### T1.9 — Update the parent PHASE DOCUMENTATION MAP status
+### T1.8: Run the four vitest suites
 
-**Description**  
-After all Phase 1 checks pass, update the parent `spec.md` row for `001-foundation-templates-truncation/` from `Pending` to `Complete` and preserve the published handoff criteria for Phase 2. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:179-197]
+**Description**
+Run vitest against the new helper tests, the Phase 1 suite, and both pre-existing regression suites.
 
-**File(s)**  
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md`
+```bash
+cd .opencode/skill/system-spec-kit/scripts && \
+  npx vitest run \
+    tests/truncate-on-word-boundary.vitest.ts \
+    tests/memory-quality-phase1.vitest.ts \
+    tests/input-normalizer-unit.vitest.ts \
+    tests/collect-session-data.vitest.ts \
+    --config ../mcp_server/vitest.config.ts --root .
+```
 
-**Acceptance**  
-The parent map row shows `Complete`, and the existing handoff line still references PR-1, PR-2, F-AC1, F-AC7, and the shared helper requirement. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:197-197]
+**File(s)**
+- See command above.
 
-**Dependencies**  
-T1.8
+**Acceptance**
+All four suites pass.
+
+**Dependencies**
+T1.7.
+
+---
+
+### T1.9: Replay both fixtures through the compiled CLI
+
+**Description**
+Replay F-AC1 and F-AC7 through `dist/memory/generate-context.js` using ABSOLUTE spec-folder paths. Confirm both exit `0`.
+
+```bash
+cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && \
+  node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+    "$PWD/.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC1-truncation.json" \
+    "$PWD/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation"
+
+cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && \
+  node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+    "$PWD/.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC7-anchor.json" \
+    "$PWD/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation"
+```
+
+**File(s)**
+- `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
+- `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC1-truncation.json`
+- `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC7-anchor.json`
+
+**Acceptance**
+Both commands exit `0`.
+
+**Dependencies**
+T1.8.
+
+---
+
+### T1.10: Clean fixture-written memory artifacts
+
+**Description**
+Remove the memory files and metadata.json created by the F-AC1 and F-AC7 replays from the Phase 1 `memory/` folder so the real packet memory store stays clean. Do NOT touch unrelated memory files.
+
+**File(s)**
+- `./memory/*.md` (fixture-written entries only)
+- `./memory/metadata.json`
+
+**Acceptance**
+`git status` on the Phase 1 folder shows no fixture-written memory residue.
+
+**Dependencies**
+T1.9.
+
+---
+
+### T1.11: Validate the Phase 1 spec folder
+
+**Description**
+Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh` against this folder. Must exit `0`.
+
+**File(s)**
+- `./spec.md`
+- `./plan.md`
+- `./tasks.md`
+- `./checklist.md`
+- `./README.md`
+- `./implementation-summary.md`
+
+**Acceptance**
+`validate.sh` exits `0` for the phase folder.
+
+**Dependencies**
+T1.5, T1.6, T1.9, T1.10.
+
+---
+
+### T1.12: Update the parent PHASE DOCUMENTATION MAP status
+
+**Description**
+Flip the parent `../spec.md` row for `001-foundation-templates-truncation/` from `Pending` to `Complete` and preserve the published handoff criteria for Phase 2.
+
+**File(s)**
+- `../spec.md`
+
+**Acceptance**
+The parent map row shows `Complete` and the handoff line still references PR-1, PR-2, F-AC1, F-AC7, and the shared helper requirement.
+
+**Dependencies**
+T1.11.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -196,9 +317,23 @@ T1.8
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- Phase 1 code work is complete only when T1.1 through T1.9 are all done in order.
-- No task may claim done without either an AC fixture, a concrete CLI check, or a file-level verification artifact.
-- Parent handoff to Phase 2 is blocked until T1.9 is complete. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:197-197]
+- [x] T1.0 Research + iterations read; ellipsis decision pinned to `…`
+- [x] T1.1 `truncateOnWordBoundary` helper and unit tests created
+- [x] T1.2 `collect-session-data.ts` OVERVIEW owner migrated to helper
+- [x] T1.3 `input-normalizer.ts` observation-summary callsites migrated to helper
+- [x] T1.4 Context template OVERVIEW comment markers renamed to `overview`
+- [x] T1.4b Contract validator SECTION_RULES aligned with new `overview` commentId
+- [x] T1.4c Memory parser regex accepts both `summary` and `overview` terminators
+- [x] T1.5 F-AC1 fixture authored and vitest suite asserts helper boundary contract
+- [x] T1.6 F-AC7 fixture authored and vitest suite asserts template anchor consistency
+- [x] T1.7 Scripts + mcp_server TypeScript builds succeed
+- [x] T1.8 Four vitest suites pass (helper, phase1, input-normalizer, collect-session-data)
+- [x] T1.9 Both fixture CLI replays exit 0 against absolute spec-folder paths
+- [x] T1.10 Fixture-written memory artifacts cleaned up
+- [x] T1.11 Spec folder `validate.sh` exits 0
+- [x] T1.12 Parent phase map updated to `Complete`
+
+No task may claim done without either an AC fixture, a concrete CLI check, or a file-level verification artifact. Parent handoff to Phase 2 is blocked until T1.12 is complete. [SOURCE: ../spec.md:197]
 <!-- /ANCHOR:completion -->
 
 ---
@@ -209,4 +344,7 @@ T1.8
 - Specification: `spec.md`
 - Implementation plan: `plan.md`
 - Verification checklist: `checklist.md`
+- Implementation summary: `implementation-summary.md`
+- Parent spec: `../spec.md`
+- Research: `../research/research.md`
 <!-- /ANCHOR:cross-refs -->

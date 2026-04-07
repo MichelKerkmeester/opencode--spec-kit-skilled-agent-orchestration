@@ -45,25 +45,6 @@ Thirteen cli-codex (gpt-5.4, model_reasoning_effort=high) iterations executed th
 
 `research/research.md` Section 4 contains the cross-comparison table against CocoIndex, Code Graph MCP, and Spec Kit Memory, with NEW/DUPLICATE/HYBRID/NEGATIVE verdicts per capability. Section 5 contains the cross-phase ownership table for 002-codesight, 003-contextador, and 004-graphify, establishing that 003 owns runtime retrieval ergonomics, 002 owns scan-time analysis and artifact generation, and 004 owns graph and provenance intelligence.
 
-### Files Changed
-
-| File | Action | Purpose |
-|------|--------|---------|
-| spec.md | Created | Level 3 specification scoping the research-only phase |
-| plan.md | Created | Research methodology, deep-research orchestration plan, AI execution protocol |
-| tasks.md | Created | Task list for setup, deep-research loop, synthesis, and save |
-| checklist.md | Created and finalized | Verification checklist with evidence and completion marks |
-| decision-record.md | Created | ADR-001 covering research-only scope and cli-codex iteration delegation |
-| implementation-summary.md | Created and finalized | This file |
-| CONTEXT.md | Created | Reference stub for the Contextador `CONTEXT.md` concept used by phase prompt |
-| research/deep-research-config.json | Created | sk-deep-research config with cli-codex preference |
-| research/deep-research-state.jsonl | Created and appended | 1 config record + 8 iteration records |
-| research/deep-research-strategy.md | Created and reduced | Strategy file with key questions and reducer-owned sections |
-| research/findings-registry.json | Created and reduced | Reducer-owned findings registry |
-| research/deep-research-dashboard.md | Auto-generated | Dashboard refreshed by reducer after each iteration |
-| research/iterations/iteration-001..008.md | Created | 8 per-iteration finding files (~111 KB total) |
-| research/research.md | Created and finalized | Canonical 17-section synthesis with 15 findings |
-| memory/*.md | Created via generate-context.js | Memory artifact (final step) |
 <!-- /ANCHOR:what-built -->
 
 ---

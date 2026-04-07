@@ -1,7 +1,7 @@
 {
-  "timestamp": "06-04-26 13-47",
+  "timestamp": "07-04-26 16-18",
   "messageCount": 1,
-  "decisionCount": 2,
+  "decisionCount": 5,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -9,11 +9,11 @@
     "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 60,
+    "qualityScore": 40,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-06T12:47:49.298Z",
+        "timestamp": "2026-04-07T15:18:13.399Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-06T12:47:49.266Z",
+      "timestamp": "2026-04-07T15:18:13.366Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:19"
+        "processed_fields:41"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-06T12:47:49.298Z",
+      "timestamp": "2026-04-07T15:18:13.399Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-06T12:47:49.326Z",
+      "timestamp": "2026-04-07T15:18:13.428Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,7 +191,7 @@
       ],
       "passedThrough": [
         "current_spec:001-claude-optimization-settings",
-        "trigger_phrases:47",
+        "trigger_phrases:39",
         "key_topics:12",
         "captured_file_count:0",
         "filesystem_file_count:0"
@@ -201,7 +201,7 @@
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 4,
+    "filesModified": 1,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
@@ -225,12 +225,12 @@
     "sessionUpdated": 0
   },
   "embedding": {
-    "status": "indexed",
+    "status": "skipped_embedding_unavailable",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 1817,
-    "updatedAt": "2026-04-06T12:47:50.611Z",
-    "generatedAt": "2026-04-06T12:47:50.611Z",
-    "reason": "Indexed after all write and semantic-index gates passed."
+    "memoryId": null,
+    "updatedAt": "2026-04-07T15:18:20.515Z",
+    "lastAttemptedAt": "2026-04-07T15:18:20.515Z",
+    "reason": "Embedding generation returned null, so semantic indexing was skipped for this saved memory."
   }
 }

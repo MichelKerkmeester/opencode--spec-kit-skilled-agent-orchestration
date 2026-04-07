@@ -1,5 +1,5 @@
 {
-  "timestamp": "07-04-26 13-31",
+  "timestamp": "07-04-26 14-55",
   "messageCount": 0,
   "decisionCount": 10,
   "diagramCount": 0,
@@ -13,7 +13,7 @@
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-07T12:31:43.803Z",
+        "timestamp": "2026-04-07T13:55:30.837Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-07T12:31:43.765Z",
+      "timestamp": "2026-04-07T13:55:30.801Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -131,7 +131,7 @@
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-07T12:31:43.803Z",
+      "timestamp": "2026-04-07T13:55:30.837Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-07T12:31:43.846Z",
+      "timestamp": "2026-04-07T13:55:30.881Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,7 +191,7 @@
       ],
       "passedThrough": [
         "current_spec:001-research-graph-context-systems",
-        "trigger_phrases:66",
+        "trigger_phrases:69",
         "key_topics:12",
         "captured_file_count:10",
         "filesystem_file_count:10"
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 1941,
-    "updatedAt": "2026-04-07T12:31:46.288Z",
-    "generatedAt": "2026-04-07T12:31:46.288Z",
+    "memoryId": 1960,
+    "updatedAt": "2026-04-07T13:55:42.332Z",
+    "generatedAt": "2026-04-07T13:55:42.332Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

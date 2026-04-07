@@ -48,7 +48,7 @@ const SECTION_RULES: MemoryTemplateSectionRule[] = [
   { sectionId: 'continue-session', commentId: 'continue-session', headingPattern: /^##\s+CONTINUE SESSION\s*$/i, includeHtmlId: true, required: 'mandatory' },
   { sectionId: 'project-state-snapshot', commentId: 'project-state-snapshot', headingPattern: /^##\s+PROJECT STATE SNAPSHOT\s*$/i, includeHtmlId: true, required: 'mandatory' },
   { sectionId: 'implementation-guide', commentId: 'task-guide', headingPattern: /^##\s+(?:\d+\.\s+)?IMPLEMENTATION GUIDE\s*$/i, includeHtmlId: true, required: 'conditional' },
-  { sectionId: 'overview', commentId: 'summary', headingPattern: /^##\s+(?:\d+\.\s+)?OVERVIEW\s*$/i, includeHtmlId: true, required: 'conditional' },
+  { sectionId: 'overview', commentId: 'overview', headingPattern: /^##\s+(?:\d+\.\s+)?OVERVIEW\s*$/i, includeHtmlId: true, required: 'conditional' },
   { sectionId: 'detailed-changes', commentId: 'detailed-changes', headingPattern: /^##\s+(?:\d+\.\s+)?DETAILED CHANGES\s*$/i, includeHtmlId: true, required: 'conditional' },
   { sectionId: 'workflow-visualization', commentId: 'workflow-visualization', headingPattern: /^##\s+(?:\d+\.\s+)?WORKFLOW VISUALIZATION\s*$/i, includeHtmlId: true, required: 'conditional' },
   { sectionId: 'decisions', commentId: 'decisions', headingPattern: /^##\s+(?:\d+\.\s+)?DECISIONS\s*$/i, includeHtmlId: true, required: 'mandatory' },

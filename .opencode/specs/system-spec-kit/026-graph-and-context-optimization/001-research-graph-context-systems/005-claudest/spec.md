@@ -35,6 +35,8 @@ Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Clau
 | **Status** | Complete |
 | **Created** | 2026-04-06 |
 | **Branch** | `main` (research-only phase, no branch needed) |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor Phase** | `../004-graphify/spec.md` |
 
 ---
 

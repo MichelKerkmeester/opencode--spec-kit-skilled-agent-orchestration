@@ -1,0 +1,27 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
+  "description": "Spec: 002 CodeSight research phase covering scan-time detector discipline, AST and regex provenance, MCP tool design, profile generation, and blast-radius analysis patterns for Public.",
+  "keywords": [
+    "spec",
+    "002",
+    "codesight",
+    "research",
+    "ast",
+    "detectors",
+    "profiles",
+    "blast-radius"
+  ],
+  "lastUpdated": "2026-04-07T13:06:08.010Z",
+  "specId": "002",
+  "folderSlug": "codesight",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-graph-context-systems"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "06-04-26_16-34__5-iteration-deep-research-session-investigating.md",
+    "06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md"
+  ]
+}

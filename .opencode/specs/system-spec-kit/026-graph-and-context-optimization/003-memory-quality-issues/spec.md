@@ -176,7 +176,7 @@ contextType: "general"
 
 | Phase | Priority | Folder | Focus | PRs / Defects | Depends On | Status |
 |-------|----------|--------|-------|---------------|------------|--------|
-| 1 | P0 | `001-foundation-templates-truncation/` | Anchor-template fix + shared truncation helper + OVERVIEW fix. Independent foundation that enables all later phases. | PR-1 (D8 anchor IDs), PR-2 (D1 truncation) | — | Pending |
+| 1 | P0 | `001-foundation-templates-truncation/` | Anchor-template fix + shared truncation helper + OVERVIEW fix. Independent foundation that enables all later phases. | PR-1 (D8 anchor IDs), PR-2 (D1 truncation) | — | Complete |
 | 2 | P1 | `002-single-owner-metadata/` | Importance-tier SSOT consolidation + capture-mode-only ≤10-LOC provenance injection. Independent of P0/P2. | PR-3 (D4 importance tier), PR-4 (D7 git provenance) | — | Pending |
 | 3 | P2 | `003-sanitization-precedence/` | Trigger-phrase sanitizer extraction + decision precedence-only gate (block lexical fallback when payload has authored decisions). | PR-5 (D3 trigger phrases), PR-6 (D2 decision placeholders) | Phase 1 (PR-2 helper used by sanitizer) | Pending |
 | 4 | P3 | `004-heuristics-refactor-guardrails/` | Auto-supersedes with continuation gate + SaveMode enum refactor + post-save reviewer CHECK-D1..D8 upgrade. | PR-7 (D5 supersedes), PR-8 (SaveMode refactor), PR-9 (post-save reviewer) | Phase 1, 2, 3 (PR-8 refactors helpers from earlier phases; PR-9 asserts on D1/D4/D7/D8 fixes) | Pending |

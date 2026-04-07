@@ -523,7 +523,7 @@ export function extractTitle(content: string): string | null {
   const summaryLine = body.match(/\*\*Summary:\*\*\s*(.+)$/im);
   contextualCandidates.push(normalizeExtractedTitle(summaryLine?.[1] || ''));
 
-  const overviewSection = body.match(/##\s+\d+\.\s+OVERVIEW([\s\S]*?)(?:\n##\s+|\n<!--\s*\/ANCHOR:summary\s*-->|$)/i);
+  const overviewSection = body.match(/##\s+\d+\.\s+OVERVIEW([\s\S]*?)(?:\n##\s+|\n<!--\s*\/ANCHOR:(?:summary|overview)\s*-->|$)/i);
   contextualCandidates.push(getFirstMeaningfulLine(overviewSection?.[1] || ''));
 
   const h2Match = body.match(/^##\s+(.+)$/m);

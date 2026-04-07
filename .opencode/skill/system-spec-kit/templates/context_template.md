@@ -327,7 +327,7 @@ Next: {{NEXT_ACTION}}
 ---
 {{/HAS_IMPLEMENTATION_GUIDE}}
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## {{#HAS_IMPLEMENTATION_GUIDE}}2{{/HAS_IMPLEMENTATION_GUIDE}}{{^HAS_IMPLEMENTATION_GUIDE}}1{{/HAS_IMPLEMENTATION_GUIDE}}. OVERVIEW
@@ -349,7 +349,7 @@ Next: {{NEXT_ACTION}}
 {{#FILES}}| `{{FILE_PATH}}` | {{DESCRIPTION}} |
 {{/FILES}}
 {{/HAS_FILES}}
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 {{#HAS_TECHNICAL_CONTEXT}}
 

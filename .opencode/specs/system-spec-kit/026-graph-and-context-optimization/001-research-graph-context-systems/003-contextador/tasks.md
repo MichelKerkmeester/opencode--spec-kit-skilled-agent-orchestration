@@ -101,6 +101,6 @@ contextType: "general"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md`
-- **Phase Prompt**: See `phase-research-prompt.md`
+- **Phase Prompt**: See `scratch/phase-research-prompt.md`
 - **Final Output**: See research/research.md (populated during synthesis)
 <!-- /ANCHOR:cross-refs -->
