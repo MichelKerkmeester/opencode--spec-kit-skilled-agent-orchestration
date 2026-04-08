@@ -30,6 +30,10 @@ import {
   evaluateCollectedDataSpecAffinity,
 } from '../utils/spec-affinity';
 import { deriveMemoryDescription } from '../lib/memory-frontmatter';
+import {
+  isAllowlistedShortProductName,
+  sanitizeTriggerPhrases,
+} from '../lib/trigger-phrase-sanitizer';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
 import type { SemanticFileInfo } from '../extractors/file-extractor';
@@ -70,6 +74,10 @@ import {
 } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
 import { reviewPostSaveQuality, printPostSaveReview, computeReviewScorePenalty } from './post-save-review';
+import {
+  emitMemoryMetric,
+  METRIC_M9_MEMORY_SAVE_DURATION_SECONDS,
+} from '../lib/memory-telemetry';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
 import { structuredLog } from '../utils/logger';
@@ -78,6 +86,7 @@ import type { ThinFileInput, ThinningResult } from './tree-thinning';
 import { getSourceCapabilities } from '../utils/source-capabilities';
 import { normalizeInputData } from '../utils/input-normalizer';
 import type { RawInputData } from '../utils/input-normalizer';
+import { resolveSaveMode, SaveMode } from '../types/save-mode';
 
 // Extracted modules
 import { stripWorkflowHtmlOutsideCodeFences, escapeLiteralAnchorExamples } from './content-cleaner';
@@ -143,12 +152,18 @@ function filterTriggerPhrases(phrases: string[]): string[] {
   });
 
   // Stage 3: Remove n-gram shingle phrases that are substrings of longer retained phrases
-  const lowerPhrases = filtered.map(p => p.toLowerCase());
+  const lowerPhrases = filtered.map((p) => p.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim());
   filtered = filtered.filter((p, idx) => {
     const lower = lowerPhrases[idx];
+    if (isAllowlistedShortProductName(p)) {
+      return true;
+    }
     // Check if this phrase is a substring of any other (longer) phrase
     for (let j = 0; j < lowerPhrases.length; j++) {
-      if (j !== idx && lowerPhrases[j].length > lower.length && lowerPhrases[j].includes(lower)) {
+      if (j !== idx && (
+        (lowerPhrases[j] === lower && j < idx)
+        || (lowerPhrases[j].length > lower.length && lowerPhrases[j].includes(lower))
+      )) {
         return false;
       }
     }
@@ -455,8 +470,8 @@ async function enrichCapturedSessionData(
   specFolder: string,
   projectRoot: string
 ): Promise<CollectedDataFull> {
-  // Only enrich runtime-captured inputs — file-backed JSON is authoritative
-  if (collectedData._source === 'file') return collectedData;
+  // Only enrich runtime-captured inputs — structured/manual saves are authoritative.
+  if (resolveSaveMode(collectedData) !== SaveMode.Capture) return collectedData;
 
   const enriched: CollectedDataFull = { ...collectedData };
 
@@ -650,12 +665,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if (!collectedData) {
       throw new Error('No data available - provide dataFile, collectedData, or loadDataFn');
     }
+    collectedData.saveMode = resolveSaveMode(collectedData);
 
     // Step 1.5: Captured-session alignment check
     // When no JSON data file was provided, data comes from the active OpenCode session.
     // Verify the captured content relates to the target spec folder to prevent
     // Cross-spec contamination (e.g., session working on spec A saved to spec B).
-    const isCapturedSessionMode = collectedData._source !== 'file' && collectedData._isSimulation !== true;
+    const isCapturedSessionMode = collectedData.saveMode === SaveMode.Capture;
     if (isCapturedSessionMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
       const alignmentTargets = await resolveAlignmentTargets(activeSpecFolderArg);
       const specAffinityTargets = buildSpecAffinityTargets(activeSpecFolderArg);
@@ -921,6 +937,15 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
       log();
     }
+    // PR-4 PROVENANCE BLOCK START
+    if (collectedData.saveMode !== SaveMode.Capture) {
+      const gitContext = await extractGitContext(CONFIG.PROJECT_ROOT, specFolder).catch(() => null);
+      collectedData.headRef = gitContext?.headRef ?? null;
+      collectedData.commitRef = gitContext?.commitRef ?? null;
+      collectedData.repositoryState = gitContext?.repositoryState ?? 'unavailable';
+      collectedData.isDetachedHead = gitContext?.isDetachedHead ?? false;
+    }
+    // PR-4 PROVENANCE BLOCK END
 
     // Clean FILE descriptions that may contain contamination from git commit subjects
     if (collectedData.FILES && Array.isArray(collectedData.FILES)) {
@@ -1226,14 +1251,20 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
       if (f.DESCRIPTION && !f.DESCRIPTION.includes('pending')) triggerSourceParts.push(f.DESCRIPTION);
     });
-    // Add spec folder name tokens as trigger source
-    const folderNameForTriggers = specFolderName.replace(/^\d{1,3}-/, '').replace(/-/g, ' ');
-    triggerSourceParts.push(folderNameForTriggers);
+    const normalizeTriggerComparisonKey = (value: string): string =>
+      value.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+    const folderSegmentsForTriggers = specFolderName
+      .split('/')
+      .map((segment) => segment.replace(/^\d{1,3}-/, '').replace(/-/g, ' ').trim())
+      .filter(Boolean);
+    const folderNameForTriggers = folderSegmentsForTriggers.join(' ');
 
     const triggerSource = triggerSourceParts.join('\n');
     const autoExtractedTriggers = extractTriggerPhrases(triggerSource);
     const mergedTriggers: string[] = [];
     const seenMergedTriggers = new Set<string>();
+    const manualTriggerKeys = new Set<string>();
+    const titleTriggerKey = normalizeTriggerComparisonKey(memoryTitle);
 
     // RC2: Merge manual trigger phrases from JSON into frontmatter triggers.
     // Manual phrases stay prepended, but the merged set still goes through the
@@ -1247,10 +1278,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         if (trimmedPhrase.length === 0) {
           continue;
         }
-        const loweredPhrase = trimmedPhrase.toLowerCase();
+        const loweredPhrase = normalizeTriggerComparisonKey(trimmedPhrase);
         if (!seenMergedTriggers.has(loweredPhrase)) {
           mergedTriggers.push(trimmedPhrase);
           seenMergedTriggers.add(loweredPhrase);
+          manualTriggerKeys.add(loweredPhrase);
         }
       }
     }
@@ -1260,7 +1292,18 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       if (trimmedPhrase.length === 0) {
         continue;
       }
-      const loweredPhrase = trimmedPhrase.toLowerCase();
+      const loweredPhrase = normalizeTriggerComparisonKey(trimmedPhrase);
+      if (
+        !isAllowlistedShortProductName(trimmedPhrase)
+        && (
+          titleTriggerKey.includes(loweredPhrase)
+          || Array.from(manualTriggerKeys).some((manualKey) => (
+            manualKey.includes(loweredPhrase) || loweredPhrase.includes(manualKey)
+          ))
+        )
+      ) {
+        continue;
+      }
       if (!seenMergedTriggers.has(loweredPhrase)) {
         mergedTriggers.push(trimmedPhrase);
         seenMergedTriggers.add(loweredPhrase);
@@ -1269,10 +1312,17 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     // Phase 004 T011-T013: Filter the merged trigger set so manual phrases
     // follow the same quality rules as auto-extracted phrases.
-    preExtractedTriggers = filterTriggerPhrases(mergedTriggers);
+    const sanitizedMergedTriggers = sanitizeTriggerPhrases(mergedTriggers);
+    preExtractedTriggers = filterTriggerPhrases(sanitizedMergedTriggers);
+    for (const phrase of sanitizedMergedTriggers) {
+      if (!isAllowlistedShortProductName(phrase)) {
+        continue;
+      }
+      if (!preExtractedTriggers.includes(phrase)) {
+        preExtractedTriggers.unshift(phrase);
+      }
+    }
 
-    const folderTokens = folderNameForTriggers.split(/\s+/).filter(t => t.length >= 3);
-    const existingLower = new Set(preExtractedTriggers.map(p => p.toLowerCase()));
     // CG-04: Domain-specific stopwords for single-word trigger phrases from folder names
     const FOLDER_STOPWORDS = new Set([
       'system', 'spec', 'kit', 'hybrid', 'rag', 'fusion', 'agents', 'alignment',
@@ -1284,14 +1334,34 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       'quality', 'command', 'skill', 'memory', 'context', 'search', 'index',
       'generation', 'epic', 'audit', 'enforcement', 'remediation',
     ]);
-    for (const token of folderTokens) {
-      // CG-04: Skip single words that are domain stopwords
-      if (FOLDER_STOPWORDS.has(token.toLowerCase())) {
-        continue;
-      }
-      if (!existingLower.has(token.toLowerCase())) {
-        preExtractedTriggers.push(token.toLowerCase());
-        existingLower.add(token.toLowerCase());
+    const leafFolderAnchor = folderSegmentsForTriggers.length === 0
+      ? ''
+      : (() => {
+          const leafSegment = folderSegmentsForTriggers[folderSegmentsForTriggers.length - 1];
+          const leafWords = leafSegment.split(/\s+/).filter(Boolean);
+          if (leafWords.length !== 1) {
+            return leafSegment;
+          }
+          const parentSegment = folderSegmentsForTriggers[folderSegmentsForTriggers.length - 2] || '';
+          const parentLead = parentSegment.split(/\s+/).find((token) => token.length >= 3 && !FOLDER_STOPWORDS.has(token.toLowerCase()));
+          return parentLead ? `${leafSegment} ${parentLead}` : leafSegment;
+        })();
+    const leafFolderAnchorKey = normalizeTriggerComparisonKey(leafFolderAnchor);
+    const existingLower = new Set(preExtractedTriggers.map((phrase) => normalizeTriggerComparisonKey(phrase)));
+    const leafAnchorIsInformative = leafFolderAnchorKey.length > 0
+      && leafFolderAnchorKey.split(/\s+/).some((token) => !FOLDER_STOPWORDS.has(token));
+    const leafAnchorAlreadyCovered = isAllowlistedShortProductName(leafFolderAnchor)
+      || titleTriggerKey.includes(leafFolderAnchorKey)
+      || Array.from(manualTriggerKeys).some((manualKey) => (
+        manualKey.includes(leafFolderAnchorKey) || leafFolderAnchorKey.includes(manualKey)
+      ));
+    if (leafAnchorIsInformative && !leafAnchorAlreadyCovered && !existingLower.has(leafFolderAnchorKey)) {
+      const sanitizedLeafAnchor = sanitizeTriggerPhrases([leafFolderAnchor])[0];
+      if (sanitizedLeafAnchor) {
+        const sanitizedLeafAnchorKey = normalizeTriggerComparisonKey(sanitizedLeafAnchor);
+        if (!existingLower.has(sanitizedLeafAnchorKey)) {
+          preExtractedTriggers.push(sanitizedLeafAnchor);
+        }
       }
     }
 
@@ -1305,6 +1375,41 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const keyFiles = buildKeyFiles(enhancedFiles, specFolder);
   const memoryClassification = buildMemoryClassificationContext(collectedData, sessionData);
   const sessionDedup = buildSessionDedupContext(collectedData, sessionData, memoryTitle);
+  const currentSnakeCaseCausalLinks = (
+    collectedData.causal_links
+    && typeof collectedData.causal_links === 'object'
+    && !Array.isArray(collectedData.causal_links)
+  ) ? { ...(collectedData.causal_links as Record<string, unknown>) } : null;
+  const currentCamelCaseCausalLinks = (
+    collectedData.causalLinks
+    && typeof collectedData.causalLinks === 'object'
+    && !Array.isArray(collectedData.causalLinks)
+  ) ? { ...(collectedData.causalLinks as Record<string, unknown>) } : null;
+  const existingSupersedes = [currentSnakeCaseCausalLinks, currentCamelCaseCausalLinks]
+    .flatMap((value) => (Array.isArray(value?.supersedes) ? value.supersedes : []))
+    .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+    .map((value) => value.trim());
+  if (existingSupersedes.length === 0) {
+    const { findPredecessorMemory } = await import('./find-predecessor-memory');
+    const predecessorSessionId = await findPredecessorMemory(specFolder, {
+      title: memoryTitle,
+      summary: sessionData.SUMMARY,
+      sessionId: sessionData.SESSION_ID,
+      filename: rawCtxFilename,
+      sourceSessionId: sessionData.SOURCE_SESSION_ID,
+      causal_links: currentSnakeCaseCausalLinks ?? undefined,
+      causalLinks: currentCamelCaseCausalLinks ?? undefined,
+    });
+
+    if (predecessorSessionId) {
+      const nextCausalLinks = {
+        ...(currentSnakeCaseCausalLinks ?? currentCamelCaseCausalLinks ?? {}),
+        supersedes: [predecessorSessionId],
+      };
+      collectedData.causal_links = nextCausalLinks;
+      collectedData.causalLinks = nextCausalLinks;
+    }
+  }
   const causalLinks = buildCausalLinksContext(collectedData);
   const effectiveDecisionCount = Math.max(sessionData.DECISION_COUNT, decisions.DECISIONS.length);
 
@@ -1776,24 +1881,77 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const jsonSessionSummary = typeof (collectedData as Record<string, unknown>)?._JSON_SESSION_SUMMARY === 'string'
       ? (collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY as string
       : undefined;
+    const reviewStartedAt = Date.now();
+    const reviewInputMode = typeof captureCapabilities.inputMode === 'string'
+      ? captureCapabilities.inputMode
+      : SaveMode.Json;
+    const reviewCollectedData = collectedData
+      ? {
+          ...collectedData,
+          sessionSummary: collectedData.sessionSummary || jsonSessionSummary,
+          provenanceExpected: collectedData.saveMode === SaveMode.Json
+            && collectedData.repositoryState !== 'unavailable',
+        }
+      : collectedData;
+    structuredLog('info', 'memory_save_started', {
+      input_mode: reviewInputMode,
+      save_mode: collectedData?.saveMode ?? SaveMode.Json,
+      spec_folder_name: specFolderName,
+      provenance_expected: reviewCollectedData?.provenanceExpected === true,
+      review_enabled: true,
+    });
     const reviewResult = reviewPostSaveQuality({
       savedFilePath,
-      collectedData: collectedData
-        ? {
-            ...collectedData,
-            sessionSummary: collectedData.sessionSummary || jsonSessionSummary,
-          }
-        : collectedData,
-      inputMode: captureCapabilities.inputMode,
+      content: files[ctxFilename],
+      collectedData: reviewCollectedData,
+      inputMode: reviewInputMode,
     });
     printPostSaveReview(reviewResult);
+    const reviewDurationSeconds = (Date.now() - reviewStartedAt) / 1000;
+    emitMemoryMetric(METRIC_M9_MEMORY_SAVE_DURATION_SECONDS, reviewDurationSeconds, {
+      input_mode: reviewInputMode,
+      save_mode: collectedData?.saveMode ?? SaveMode.Json,
+      outcome: reviewResult.status.toLowerCase(),
+    });
+    structuredLog(
+      reviewResult.status === 'REJECTED'
+        ? 'error'
+        : reviewResult.status === 'ISSUES_FOUND' || reviewResult.status === 'REVIEWER_ERROR'
+          ? 'warn'
+          : 'info',
+      'memory_save_review_completed',
+      {
+        status: reviewResult.status,
+        issue_count: reviewResult.issues.length,
+        high_count: reviewResult.highCount ?? reviewResult.issues.filter((issue) => issue.severity === 'HIGH').length,
+        medium_count: reviewResult.mediumCount ?? reviewResult.issues.filter((issue) => issue.severity === 'MEDIUM').length,
+        low_count: reviewResult.lowCount ?? reviewResult.issues.filter((issue) => issue.severity === 'LOW').length,
+        score_penalty: reviewResult.issues.length > 0 ? computeReviewScorePenalty(reviewResult.issues) : 0,
+        duration_ms: Math.round(reviewDurationSeconds * 1000),
+        blocking: reviewResult.blocking === true,
+      },
+    );
+    if (reviewResult.status === 'REVIEWER_ERROR') {
+      warn(`   Post-save reviewer failed: ${reviewResult.reviewerError || 'unknown reviewer error'}`);
+      structuredLog('warn', 'memory_save_review_failure', {
+        check_id: 'D10',
+        severity: 'HIGH',
+        saved_file_path: savedFilePath,
+        input_mode: reviewInputMode,
+        save_mode: collectedData?.saveMode ?? SaveMode.Json,
+        message: reviewResult.reviewerError || 'Unexpected reviewer failure',
+      });
+    }
     // Phase 002 T035: Log post-save review score impact (advisory — does not patch saved file
     // to preserve content-based duplicate detection at line 1259)
-    if (reviewResult.status === 'ISSUES_FOUND' && reviewResult.issues.length > 0) {
+    if ((reviewResult.status === 'ISSUES_FOUND' || reviewResult.status === 'REJECTED') && reviewResult.issues.length > 0) {
       const scorePenalty = computeReviewScorePenalty(reviewResult.issues);
       if (scorePenalty < 0) {
         log(`   Post-save review: quality_score penalty ${scorePenalty.toFixed(2)} (${reviewResult.issues.length} issues found)`);
       }
+    }
+    if (reviewResult.status === 'REJECTED') {
+      throw new Error(reviewResult.blockerReason || 'POST_SAVE_REVIEW_REJECTED');
     }
   }
 

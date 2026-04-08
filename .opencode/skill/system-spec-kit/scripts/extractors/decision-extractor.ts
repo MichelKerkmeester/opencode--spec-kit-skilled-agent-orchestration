@@ -34,6 +34,7 @@ const HIGH_CONFIDENCE_THRESHOLD = 0.8;
 const MEDIUM_CONFIDENCE_THRESHOLD = 0.5;
 const PLACEHOLDER_CHOICE_REGEX = /^(?:chosen approach|n\/a|option [a-z0-9]+|alternative [a-z0-9]+)$/i;
 const TRADEOFF_SIGNAL_REGEX = /\b(?:pro|con|advantage|disadvantage|trade-?off|caveat|warning|limitation)\b/i;
+const MAX_AUTHORED_DECISION_TEXT_LENGTH = 2000;
 
 function normalizeConfidence(value: number): number {
   const normalized = value > 1 ? value / 100 : value;
@@ -47,6 +48,45 @@ function isSpecificChoice(choice: string): boolean {
 
 function hasTradeoffSignals(values: string[]): boolean {
   return values.some((value) => TRADEOFF_SIGNAL_REGEX.test(value));
+}
+
+function normalizeProposition(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function dedupeFallbackRationale(title: string, rationaleCandidate: string, authoredRationale: string): string {
+  if (authoredRationale.length > 0) {
+    return authoredRationale;
+  }
+
+  if (normalizeProposition(rationaleCandidate) === normalizeProposition(title)) {
+    return '';
+  }
+
+  return rationaleCandidate;
+}
+
+function readDecisionText(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function isValidAuthoredDecision(entry: unknown): entry is Record<string, unknown> {
+  if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+    return false;
+  }
+
+  const record = entry as Record<string, unknown>;
+  const decision = readDecisionText(record.decision);
+  const title = readDecisionText(record.title);
+  if (decision.length === 0 && title.length === 0) {
+    return false;
+  }
+
+  return `${decision} ${title}`.trim().length <= MAX_AUTHORED_DECISION_TEXT_LENGTH;
 }
 
 function buildDecisionConfidence(params: {
@@ -180,9 +220,24 @@ function buildLexicalDecisionObservations(collectedData: CollectedDataSubset<'_m
 ------------------------------------------------------------------*/
 
 async function extractDecisions(
-  collectedData: CollectedDataSubset<'_manualDecisions' | 'SPEC_FOLDER' | 'userPrompts' | 'observations'> | null
+  collectedData: CollectedDataSubset<'_manualDecisions' | 'SPEC_FOLDER' | 'userPrompts' | 'observations' | 'keyDecisions'> | null
 ): Promise<DecisionData> {
-  const manualDecisions = collectedData?._manualDecisions || [];
+  const rawKeyDecisions = Array.isArray(collectedData?.keyDecisions)
+    ? collectedData.keyDecisions as Array<string | Record<string, unknown>>
+    : [];
+  const validatedAuthoredDecisions = rawKeyDecisions.filter(isValidAuthoredDecision);
+  const manualDecisions = Array.isArray(collectedData?._manualDecisions)
+    ? collectedData._manualDecisions
+    : [];
+  const manualDecisionInputs = (manualDecisions.length > 0
+    ? manualDecisions.filter((entry): entry is string | Record<string, unknown> => (
+        typeof entry === 'string'
+          ? entry.trim().length > 0
+          : isValidAuthoredDecision(entry)
+      ))
+    // Drop malformed keyDecisions entries instead of letting them suppress the
+    // safer lexical recovery path.
+    : validatedAuthoredDecisions);
 
   // F-12: Return empty decisions for null input instead of synthetic simulation data
   if (!collectedData) {
@@ -191,10 +246,10 @@ async function extractDecisions(
 
   // F-12: Process manual decisions, then merge with observation-extracted decisions
   let processedManualDecisions: DecisionRecord[] = [];
-  if (manualDecisions.length > 0) {
-    console.log(`   Processing ${manualDecisions.length} manual decision(s)`);
+  if (manualDecisionInputs.length > 0) {
+    console.log(`   Processing ${manualDecisionInputs.length} manual decision(s)`);
 
-    processedManualDecisions = manualDecisions.map(
+    processedManualDecisions = manualDecisionInputs.map(
       (manualDec: string | Record<string, unknown>, index: number): DecisionRecord => {
         const manualObj = typeof manualDec === 'object' && manualDec !== null && !Array.isArray(manualDec)
           ? manualDec as Record<string, unknown>
@@ -205,7 +260,7 @@ async function extractDecisions(
         if (typeof manualDec === 'string') {
           decisionText = manualDec;
         } else if (manualObj) {
-          decisionText = toText(manualObj.decision) || toText(manualObj.title) || JSON.stringify(manualObj);
+          decisionText = toText(manualObj.decision) || toText(manualObj.title);
         } else {
           decisionText = `Decision ${index + 1}`;
         }
@@ -277,7 +332,8 @@ async function extractDecisions(
           }];
 
         const rationaleFromInput = toText(manualObj?.rationale) || toText(manualObj?.reasoning);
-        const rationale: string = rationaleFromInput || sentenceSplitRationale || decisionText;
+        const rationaleCandidate = sentenceSplitRationale || decisionText;
+        const rationale: string = dedupeFallbackRationale(title, rationaleCandidate, rationaleFromInput);
         const hasAlternatives = rawAlternatives.length >= 2;
         const chosenLabel = toText(manualObj?.chosen) || toText(manualObj?.choice) || toText(manualObj?.selected)
           || OPTIONS[0]?.DESCRIPTION || OPTIONS[0]?.LABEL || 'Chosen Approach';
@@ -379,7 +435,9 @@ async function extractDecisions(
   // P0-3: Also suppress lexical extraction when manual decisions exist,
   // since those observations were already built from the same manual decisions
   const lexicalDecisionObservations =
-    decisionObservations.length === 0 && processedManualDecisions.length === 0
+    decisionObservations.length === 0
+    && processedManualDecisions.length === 0
+    && validatedAuthoredDecisions.length === 0
       ? buildLexicalDecisionObservations(collectedData)
       : [];
 
@@ -452,7 +510,8 @@ async function extractDecisions(
       || (OPTIONS.length > 0 ? OPTIONS[0].LABEL : 'N/A');
 
     const rationaleMatch = narrative.match(/(?:because|rationale|reason):?\s+([^\.\n]+)/i);
-    const RATIONALE: string = rationaleMatch?.[1]?.trim() || narrative.substring(0, 200);
+    const rationaleCandidate = rationaleMatch?.[1]?.trim() || narrative.substring(0, 200);
+    const RATIONALE: string = dedupeFallbackRationale(obs.title || narrative, rationaleCandidate, '');
     const confidenceMatch = narrative.match(/confidence:?\s*(\d+(?:\.\d+)?)(?:%|\b)/i);
     const parsedConfidence = confidenceMatch ? parseFloat(confidenceMatch[1]) : NaN;
     const manualConfidence = manualDecision?.confidence;
