@@ -42,9 +42,9 @@ Validate graph and bridge payload trust metadata first, preserve the three trust
 - [x] Predecessor 006 and successor 008 are named explicitly.
 
 ### Definition of Done
-- [ ] Packet docs are synchronized and placeholder-free.
-- [ ] Focused validator and trust-preservation checks exist for the packet seam.
-- [ ] Packet validation passes cleanly.
+- [x] Packet docs are synchronized and placeholder-free.
+- [x] Focused validator and trust-preservation checks exist for the packet seam.
+- [x] Packet validation passes cleanly.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -104,19 +104,19 @@ The packet validates graph and bridge payload trust metadata at emission time, c
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Re-read the canonical research conclusions for R5 and R10.
-- [ ] Verify predecessor packet 006 status and scope boundaries.
-- [ ] Confirm the first runtime and contract touchpoints.
+- [x] Re-read the canonical research conclusions for R5 and R10.
+- [x] Verify predecessor packet 006 status and scope boundaries.
+- [x] Confirm the first runtime and contract touchpoints.
 
 ### Phase 2: Core Implementation
-- [ ] Implement the bounded payload validator described in `spec.md`.
-- [ ] Preserve the three trust axes across the named consumer paths.
-- [ ] Keep all edits additive to the current owner surfaces.
+- [x] Implement the bounded payload validator described in `spec.md`.
+- [x] Preserve the three trust axes across the named consumer paths.
+- [x] Keep all edits additive to the current owner surfaces.
 
 ### Phase 3: Verification
-- [ ] Run packet-local validator and preservation tests.
-- [ ] Run `validate.sh --strict` on the packet folder.
-- [ ] Record successor-packet handoff notes for 008.
+- [x] Run packet-local validator and preservation tests.
+- [x] Run `validate.sh --strict` on the packet folder.
+- [x] Record successor-packet handoff notes for 008.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -139,7 +139,7 @@ The packet validates graph and bridge payload trust metadata at emission time, c
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | R5 and R10 research conclusions | Internal | Green | Packet scope would lose its evidence base |
-| `006-structural-trust-axis-contract` | Internal | Yellow | Implementation must pause until the contract stays stable enough to enforce |
+| `006-structural-trust-axis-contract` | Internal | Green | Implementation imports the shipped 006 vocabulary and enforces it without redefinition |
 | Shared runtime surfaces | Internal | Green | Packet must enrich current owners rather than invent new ones |
 <!-- /ANCHOR:dependencies -->
 
@@ -188,9 +188,9 @@ Setup -> Core implementation -> Verification
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Predecessor packet 006 re-verified
-- [ ] Scope boundary re-read from `spec.md`
-- [ ] Focused malformed-metadata and preservation fixtures prepared
+- [x] Predecessor packet 006 re-verified
+- [x] Scope boundary re-read from `spec.md`
+- [x] Focused malformed-metadata and preservation fixtures prepared
 
 ### Rollback Procedure
 1. Revert packet-local runtime changes.

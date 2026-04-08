@@ -43,6 +43,15 @@ These flags can add evidence around future reporting surfaces, but they must sti
 | `SPECKIT_EXTENDED_TELEMETRY` | Adds more detailed telemetry for later analysis, but does not change certainty or authority requirements. |
 | `SPECKIT_EVAL_LOGGING` | Persists evaluation events for later review, but does not authorize publication-grade multiplier claims. |
 | `SPECKIT_ABLATION` | Enables ablation studies, but any exported savings story still needs provider-counted authority plus methodology metadata. |
+
+### Auditable Savings Publication Contract (009)
+
+Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate beside the packet `005` measurement contract.
+
+- Publishable reporting rows must include a supported `methodologyStatus`, a non-empty `schemaVersion`, and at least one provenance entry.
+- Rows that fail the publication contract must surface one exclusion reason: `missing_methodology`, `missing_schema_version`, `missing_provenance`, or `unsupported_certainty`.
+- There is no environment variable that bypasses the row gate. Reporting toggles can add supporting evidence, but they cannot upgrade unsupported certainty values or fill in missing provenance.
+- The current dashboard reader remains aggregate-only. Future export or publication surfaces should import the shared gate helper instead of re-encoding eligibility logic in handler-local code.
 <!-- /ANCHOR:overview -->
 
 ---
@@ -292,6 +301,13 @@ These flags can add evidence around future reporting surfaces, but they must sti
 | `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | Maximum row limit for reporting dashboard queries. | `lib/eval/reporting-dashboard.ts` |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | Detailed retrieval metrics collection (latency breakdown, quality scores). Opt-in: set `true` to enable. | `lib/telemetry/retrieval-telemetry.ts` |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | Include debug file counts in index scan results. Opt-in: set `true` to enable. | `handlers/memory-index.ts` |
+
+### Conditional warm-start bundle (013)
+
+- Toggle: `SPECKIT_WARM_START_BUNDLE`
+- Default: `false`
+- Rollout gate: only enable after the frozen corpus benchmark shows combined configuration dominates baseline and component-only variants on lower cost with equal-or-better pass rate.
+- Spec: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/spec.md`
 <!-- /ANCHOR:eval-telemetry -->
 
 ---

@@ -75,4 +75,5 @@ The delivery stayed inside the bounded owner surfaces from `spec.md`: first I ha
 
 1. `lexicalPath` currently emits `fts5` or `bm25_fallback` for this runtime seam. The broader response schema can represent `like`, but packet `010` does not claim that lane here.
 2. This packet only hardens capability truth and response metadata. It does not add broader search features or user-facing search workflow changes.
+3. **006-memory-redundancy alignment** This packet is classified **"No change"** under `../001-research-graph-context-systems/006-research-memory-redundancy/spec.md` Section 3A. Retrieval-lane hardening is independent from generated memory-body duplication, so no changes to the memory save generator, collector, body template, or memory-template-contract are introduced by this packet. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files remain compact retrieval wrappers pointing at canonical docs per the wrapper-contract runtime shipped by packet `003-memory-quality-issues/006-memory-duplication-reduction` (commit `7f0c0572a`).
 <!-- /ANCHOR:limitations -->

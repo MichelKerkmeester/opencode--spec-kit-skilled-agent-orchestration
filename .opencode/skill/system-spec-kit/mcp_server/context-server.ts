@@ -128,6 +128,7 @@ import { initIngestJobQueue } from './lib/ops/job-queue.js';
 import { startFileWatcher, type FSWatcher } from './lib/ops/file-watcher.js';
 import { getCanonicalPathKey } from './lib/utils/canonical-path.js';
 import { runBatchLearning } from './lib/feedback/batch-learning.js';
+import { getSessionSnapshot } from './lib/session/session-snapshot.js';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -247,6 +248,36 @@ interface DispatchGraphContextMeta {
   error?: string;
 }
 
+export interface StructuralRoutingNudge {
+  advisory: true;
+  readiness: 'ready';
+  preferredTool: 'code_graph_query';
+  secondaryTool: 'code_graph_context';
+  message: string;
+  preservesAuthority: 'session_bootstrap';
+  surface: 'response-hints' | 'session-bootstrap' | 'memory-context';
+}
+
+const STRUCTURAL_MISFIRE_PATTERNS = [
+  /\b(?:who|what)\s+calls?\b/i,
+  /\bcallers?\s+of\b/i,
+  /\b(?:who|what)\s+imports?\b/i,
+  /\bimports?\s+of\b/i,
+  /\b(?:show|list)\s+(?:the\s+)?outline\b/i,
+  /\boutline\s+of\b/i,
+  /\bdependenc(?:y|ies)\b/i,
+  /\bdependents?\b/i,
+  /\bwhat\s+extends\b/i,
+];
+
+const NON_STRUCTURAL_SUPPRESS_PATTERNS = [
+  /\bfind code\b/i,
+  /\bimplementation of\b/i,
+  /\bsimilar code\b/i,
+  /\bexplain\b/i,
+  /\bpurpose of\b/i,
+];
+
 function isMutationStatus(status: string | undefined): boolean {
   return status === 'indexed' || status === 'updated' || status === 'reinforced' || status === 'deferred';
 }
@@ -256,6 +287,61 @@ let detectedRuntime: RuntimeInfo | null = null;
 
 export function getDetectedRuntime(): RuntimeInfo | null {
   return detectedRuntime;
+}
+
+export function maybeStructuralNudge(
+  task: string,
+  options: {
+    graphReady: boolean;
+    activationScaffoldReady: boolean;
+    surface?: StructuralRoutingNudge['surface'];
+  },
+): StructuralRoutingNudge | null {
+  const normalizedTask = task.trim();
+  if (!normalizedTask) {
+    return null;
+  }
+
+  if (!options.graphReady || !options.activationScaffoldReady) {
+    return null;
+  }
+
+  if (NON_STRUCTURAL_SUPPRESS_PATTERNS.some((pattern) => pattern.test(normalizedTask))) {
+    return null;
+  }
+
+  if (!STRUCTURAL_MISFIRE_PATTERNS.some((pattern) => pattern.test(normalizedTask))) {
+    return null;
+  }
+
+  return {
+    advisory: true,
+    readiness: 'ready',
+    preferredTool: 'code_graph_query',
+    secondaryTool: 'code_graph_context',
+    message: 'Advisory only: this looks like a structural question. Prefer `code_graph_query` before Grep or Glob for callers, imports, outline, and dependency lookups.',
+    preservesAuthority: 'session_bootstrap',
+    surface: options.surface ?? 'response-hints',
+  };
+}
+
+function injectStructuralRoutingNudge(
+  envelope: Record<string, unknown>,
+  nudge: StructuralRoutingNudge,
+): void {
+  const hints = Array.isArray(envelope.hints)
+    ? envelope.hints.filter((hint): hint is string => typeof hint === 'string')
+    : [];
+  envelope.hints = hints;
+  if (!hints.includes(nudge.message)) {
+    hints.push(nudge.message);
+  }
+
+  const meta = typeof envelope.meta === 'object' && envelope.meta !== null && !Array.isArray(envelope.meta)
+    ? envelope.meta as Record<string, unknown>
+    : {};
+  meta.structuralRoutingNudge = nudge;
+  envelope.meta = meta;
 }
 
 function resolveToolCallId(request: { id?: unknown }): string {
@@ -902,6 +988,31 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
           }
         } catch {
           // Response is not JSON envelope — skip hint injection
+        }
+      }
+
+      if (queryStr) {
+        try {
+          const envelope = JSON.parse(result.content[0].text) as Record<string, unknown>;
+          if (envelope && typeof envelope === 'object' && !Array.isArray(envelope)) {
+            const meta = typeof envelope.meta === 'object' && envelope.meta !== null && !Array.isArray(envelope.meta)
+              ? envelope.meta as Record<string, unknown>
+              : {};
+            const snapshot = getSessionSnapshot();
+            const nudge = meta.structuralRoutingNudge
+              ? null
+              : maybeStructuralNudge(queryStr, {
+                graphReady: snapshot.graphFreshness === 'fresh',
+                activationScaffoldReady: snapshot.primed,
+                surface: 'response-hints',
+              });
+            if (nudge) {
+              injectStructuralRoutingNudge(envelope, nudge);
+              result.content[0].text = JSON.stringify(envelope, null, 2);
+            }
+          }
+        } catch {
+          // Response is not JSON envelope — skip structural nudge injection
         }
       }
     }

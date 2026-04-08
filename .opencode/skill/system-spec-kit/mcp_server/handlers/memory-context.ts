@@ -184,6 +184,7 @@ interface BuildResponseMetaParams {
   discoveredFolder?: string;
   includeTrace: boolean;
   sessionTransition: SessionTransitionTrace;
+  structuralRoutingNudge: StructuralRoutingNudgeMeta | null;
 }
 
 interface StrategyErrorPayload {
@@ -193,6 +194,26 @@ interface StrategyErrorPayload {
   hints: string[];
   severity: string | null;
 }
+
+interface StructuralRoutingNudgeMeta {
+  advisory: true;
+  readiness: 'ready';
+  preferredTool: 'code_graph_query';
+  message: string;
+  preservesAuthority: 'session_bootstrap';
+}
+
+const STRUCTURAL_ROUTING_PATTERNS = [
+  /\b(?:who|what)\s+calls?\b/i,
+  /\bcallers?\s+of\b/i,
+  /\b(?:who|what)\s+imports?\b/i,
+  /\bimports?\s+of\b/i,
+  /\b(?:show|list)\s+(?:the\s+)?outline\b/i,
+  /\boutline\s+of\b/i,
+  /\bdependenc(?:y|ies)\b/i,
+  /\bdependents?\b/i,
+  /\bwhat\s+extends\b/i,
+];
 
 function extractResultRowsFromContextResponse(responseText: string): Array<Record<string, unknown>> {
   try {
@@ -272,6 +293,37 @@ function extractStrategyError(result: ContextResult): StrategyErrorPayload | nul
       severity: null,
     };
   }
+}
+
+function buildStructuralRoutingNudge(
+  input: string,
+  queryIntentMetadata: {
+    queryIntent: string;
+    confidence: number;
+  } | null,
+  graphContextResult: Record<string, unknown> | null,
+): StructuralRoutingNudgeMeta | null {
+  if (!queryIntentMetadata || queryIntentMetadata.queryIntent !== 'structural' || queryIntentMetadata.confidence <= 0.65) {
+    return null;
+  }
+
+  if (!STRUCTURAL_ROUTING_PATTERNS.some((pattern) => pattern.test(input))) {
+    return null;
+  }
+
+  const metadata = graphContextResult?.metadata as Record<string, unknown> | undefined;
+  const totalNodes = typeof metadata?.totalNodes === 'number' ? metadata.totalNodes : 0;
+  if (totalNodes <= 0) {
+    return null;
+  }
+
+  return {
+    advisory: true,
+    readiness: 'ready',
+    preferredTool: 'code_graph_query',
+    message: 'Advisory only: this looks like a structural question. Prefer `code_graph_query` before Grep or Glob for callers, imports, outline, and dependency lookups.',
+    preservesAuthority: 'session_bootstrap',
+  };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -956,6 +1008,7 @@ function buildResponseMeta(params: BuildResponseMetaParams): Record<string, unkn
     discoveredFolder,
     includeTrace,
     sessionTransition,
+    structuralRoutingNudge,
   } = params;
   const { detectedIntent, intentConfidence, source } = intentClassification;
 
@@ -1013,6 +1066,7 @@ function buildResponseMeta(params: BuildResponseMetaParams): Record<string, unkn
       specFolder: discoveredFolder,
       source: 'folder-discovery',
     } : null,
+    structuralRoutingNudge,
     ...telemetryMeta,
   };
 }
@@ -1403,6 +1457,14 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   if (queryIntentMetadata) {
     responseData.queryIntentRouting = queryIntentMetadata;
   }
+  const structuralRoutingNudge = buildStructuralRoutingNudge(
+    normalizedInput,
+    queryIntentMetadata,
+    graphContextResult,
+  );
+  if (structuralRoutingNudge) {
+    responseData.structuralRoutingNudge = structuralRoutingNudge;
+  }
 
   // Build response with layer metadata
   const _contextResponse = createMCPResponse({
@@ -1415,6 +1477,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       `Mode: ${CONTEXT_MODES[effectiveMode].description}`,
       `For more granular control, use L2 tools: memory_search, memory_match_triggers`,
       `Token budget: ${effectiveBudget} (${effectiveMode} mode)`,
+      ...(structuralRoutingNudge ? [structuralRoutingNudge.message] : []),
       ...(pressureWarning ? [pressureWarning] : [])
     ],
     extraMeta: buildResponseMeta({
@@ -1437,6 +1500,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       discoveredFolder,
       includeTrace: options.includeTrace === true,
       sessionTransition,
+      structuralRoutingNudge,
     })
   });
 

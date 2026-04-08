@@ -11,6 +11,7 @@ import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import {
+  attachStructuralTrustFields,
   createSharedPayloadEnvelope,
   makeStructuralTrust,
   summarizeUnknown,
@@ -19,6 +20,7 @@ import {
   type SharedPayloadCertainty,
   type SharedPayloadEnvelope,
   type SharedPayloadSection,
+  type StructuralTrust,
 } from '../lib/context/shared-payload.js';
 import {
   buildOpenCodeTransportPlan,
@@ -43,7 +45,14 @@ interface SessionBootstrapResult {
   resume: Record<string, unknown>;
   health: Record<string, unknown>;
   cachedSummary?: CachedSessionSummaryDecision;
-  structuralContext?: StructuralBootstrapContract;
+  structuralContext?: StructuralBootstrapContract & StructuralTrust;
+  structuralRoutingNudge?: {
+    advisory: true;
+    readiness: 'ready';
+    preferredTool: 'code_graph_query';
+    message: string;
+    preservesAuthority: 'session_bootstrap';
+  };
   payloadContract?: SharedPayloadEnvelope;
   opencodeTransport?: OpenCodeTransportPlan;
   graphOps?: CodeGraphOpsContract;
@@ -118,7 +127,7 @@ function buildNextActions(
 
 function buildStructuralContextTrust(
   structuralContext: StructuralBootstrapContract,
-) {
+): StructuralTrust {
   if (structuralContext.status === 'ready') {
     return makeStructuralTrust({
       parserProvenance: 'ast',
@@ -140,6 +149,36 @@ function buildStructuralContextTrust(
     evidenceStatus: 'unverified',
     freshnessAuthority: 'unknown',
   });
+}
+
+function extractStructuralTrustFromPayload(
+  payload: SharedPayloadEnvelope | null,
+): StructuralTrust | null {
+  if (!payload) {
+    return null;
+  }
+
+  const structuralSection = payload.sections.find((section) =>
+    section.key === 'structural-context' && section.structuralTrust,
+  );
+
+  return structuralSection?.structuralTrust ?? null;
+}
+
+function buildStructuralRoutingNudge(
+  structuralContext: StructuralBootstrapContract,
+): SessionBootstrapResult['structuralRoutingNudge'] | null {
+  if (structuralContext.status !== 'ready') {
+    return null;
+  }
+
+  return {
+    advisory: true,
+    readiness: 'ready',
+    preferredTool: 'code_graph_query',
+    message: 'Advisory only: when the next question is about callers, imports, dependencies, or outline, prefer `code_graph_query` before Grep or Glob.',
+    preservesAuthority: 'session_bootstrap',
+  };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -189,6 +228,10 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   if (cachedSummary?.status === 'accepted') {
     allHints.push('Cached continuity summary accepted as additive bootstrap context.');
   }
+  const structuralRoutingNudge = buildStructuralRoutingNudge(structuralContext);
+  if (structuralRoutingNudge) {
+    allHints.push(structuralRoutingNudge.message);
+  }
 
   // Deduplicate hints
   const uniqueHints = [...new Set(allHints)];
@@ -203,7 +246,20 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const cachedCertainty: SharedPayloadCertainty = cachedSummary?.status === 'accepted' ? 'estimated' : 'defaulted';
   const structuralCertainty: SharedPayloadCertainty = 'exact';
   const nextActionsCertainty: SharedPayloadCertainty = 'defaulted';
-  const structuralTrust = buildStructuralContextTrust(structuralContext);
+  const resumePayload = coerceSharedPayloadEnvelope(resumeData.payloadContract);
+  const healthPayload = coerceSharedPayloadEnvelope(healthData.payloadContract);
+  const structuralTrust = extractStructuralTrustFromPayload(resumePayload)
+    ?? buildStructuralContextTrust(structuralContext);
+  const structuralContextWithTrust = attachStructuralTrustFields(
+    structuralContext,
+    structuralTrust,
+    { label: 'session_bootstrap structural context payload' },
+  );
+  const resumeWithTrust = attachStructuralTrustFields(
+    resumeData,
+    structuralTrust,
+    { label: 'session_bootstrap resume payload' },
+  );
 
   const payloadSections: SharedPayloadSection[] = [
     {
@@ -271,8 +327,6 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
       sourceRefs: ['session-resume', 'session-health', 'session-snapshot'],
     },
   });
-  const resumePayload = coerceSharedPayloadEnvelope(resumeData.payloadContract);
-  const healthPayload = coerceSharedPayloadEnvelope(healthData.payloadContract);
   const graphOps = buildCodeGraphOpsContract({
     graphFreshness: structuralContext.status === 'ready'
       ? 'fresh'
@@ -283,10 +337,11 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   });
 
   const result: SessionBootstrapResult = {
-    resume: resumeData,
+    resume: resumeWithTrust,
     health: healthData,
     ...(cachedSummary ? { cachedSummary } : {}),
-    structuralContext,
+    structuralContext: structuralContextWithTrust,
+    ...(structuralRoutingNudge ? { structuralRoutingNudge } : {}),
     payloadContract,
     opencodeTransport: buildOpenCodeTransportPlan({
       bootstrapPayload: payloadContract,
@@ -296,6 +351,8 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
     }),
     graphOps,
     hints: uniqueHints,
+    // Keep advisory routing guidance out of nextActions so bootstrap and resume
+    // remain the authoritative recovery owners for startup and deep resume flows.
     nextActions: buildNextActions(resumeData, healthData, structuralContext),
   };
 

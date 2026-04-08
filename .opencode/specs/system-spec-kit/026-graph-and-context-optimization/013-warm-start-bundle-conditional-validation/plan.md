@@ -42,10 +42,10 @@ Freeze the resume-plus-follow-up corpus first, benchmark baseline and component-
 - [x] The owner surfaces for tests, eval orchestration, and ENV docs are named explicitly.
 
 ### Definition of Done
-- [ ] Packet docs are synchronized and placeholder-free.
-- [ ] The frozen corpus and full variant matrix are defined.
-- [ ] Focused benchmark evidence exists for baseline, component-only, and combined bundle runs.
-- [ ] Packet validation passes cleanly.
+- [x] Packet docs are synchronized and placeholder-free.
+- [x] The frozen corpus and full variant matrix are defined.
+- [x] Focused benchmark evidence exists for baseline, component-only, and combined bundle runs.
+- [x] Packet validation passes cleanly.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -103,19 +103,19 @@ The packet freezes the benchmark corpus first, runs baseline and component-only 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Re-read R8 and confirm the dependency order remains R2 -> R3 -> R4 -> bundle validation.
-- [ ] Verify predecessor packet status or equivalent readiness evidence.
-- [ ] Define and freeze the resume-plus-follow-up evaluation corpus around compact continuity wrappers and canonical-doc ownership assumptions.
+- [x] Re-read R8 and confirm the dependency order remains R2 -> R3 -> R4 -> bundle validation.
+- [x] Verify predecessor packet status or equivalent readiness evidence.
+- [x] Define and freeze the resume-plus-follow-up evaluation corpus around compact continuity wrappers and canonical-doc ownership assumptions.
 
 ### Phase 2: Core Implementation
-- [ ] Add the bounded test fixtures and runner entrypoints for the frozen corpus.
-- [ ] Add or refine eval orchestration for baseline, R2-only, R3-only, R4-only, and combined bundle runs.
-- [ ] Update ENV documentation so the warm-start bundle stays explicitly conditional and non-default.
+- [x] Add the bounded test fixtures and runner entrypoints for the frozen corpus.
+- [x] Add or refine eval orchestration for baseline, R2-only, R3-only, R4-only, and combined bundle runs.
+- [x] Update ENV documentation so the warm-start bundle stays explicitly conditional and non-default.
 
 ### Phase 3: Verification
-- [ ] Run the full benchmark matrix on the frozen corpus.
-- [ ] Confirm whether the combined bundle lowers cost with equal-or-better pass rate versus baseline and component-only variants.
-- [ ] Run `validate.sh --strict` on the packet folder and record the gating outcome.
+- [x] Run the full benchmark matrix on the frozen corpus.
+- [x] Confirm whether the combined bundle lowers cost with equal-or-better pass rate versus baseline and component-only variants.
+- [x] Run `validate.sh --strict` on the packet folder and record the gating outcome.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -138,9 +138,9 @@ The packet freezes the benchmark corpus first, runs baseline and component-only 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | R8 recommendations in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md` | Internal | Green | Packet scope would lose its evidence base |
-| `002-implement-cache-warning-hooks` (R2) | Internal | Yellow | The bundle producer side cannot be trusted |
-| `012-cached-sessionstart-consumer-gated` (R3) | Internal | Red | Combined validation remains blocked until the consumer exists or equivalent evidence is accepted |
-| `008-graph-first-routing-nudge` (R4) | Internal | Yellow | The routing component would be missing from the comparison matrix |
+| `002-implement-cache-warning-hooks` (R2) | Internal | Green | The bundle producer side cannot be trusted |
+| `012-cached-sessionstart-consumer-gated` (R3) | Internal | Green | Combined validation remains blocked until the consumer exists or equivalent evidence is accepted |
+| `008-graph-first-routing-nudge` (R4) | Internal | Green | The routing component would be missing from the comparison matrix |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -188,9 +188,9 @@ R2 + R3 + R4 readiness -> frozen corpus -> comparison matrix -> bundle gate
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Predecessor packets or equivalent evidence verified
-- [ ] Frozen corpus locked before benchmark runs
-- [ ] Non-default bundle gate re-read from `spec.md`
+- [x] Predecessor packets or equivalent evidence verified
+- [x] Frozen corpus locked before benchmark runs
+- [x] Non-default bundle gate re-read from `spec.md`
 
 ### Rollback Procedure
 1. Revert packet-local benchmark and documentation changes.

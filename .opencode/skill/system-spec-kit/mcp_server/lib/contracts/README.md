@@ -22,6 +22,8 @@ trigger_phrases:
 - [4. STRUCTURAL TRUST CONTRACT (006)](#4--structural-trust-contract-006)
 - [5. USAGE EXAMPLES](#5--usage-examples)
 - [6. RELATED RESOURCES](#6--related-resources)
+- [8. GRAPH PAYLOAD VALIDATOR AND TRUST PRESERVATION (011)](#8--graph-payload-validator-and-trust-preservation-011)
+- [9. AUDITABLE SAVINGS PUBLICATION CONTRACT (009)](#9--auditable-savings-publication-contract-009)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -290,3 +292,47 @@ Packet `007` adds honest provenance markers for audited detector modules and a r
 
 **Version**: 2.0.0
 **Last Updated**: 2026-03-08
+
+---
+
+## 8. GRAPH PAYLOAD VALIDATOR AND TRUST PRESERVATION (011)
+
+Packet `011-graph-payload-validator-and-trust-preservation` hardens emission boundaries that surface structural trust. The implementation remains additive to packet `006`: import `ParserProvenance`, `EvidenceStatus`, `FreshnessAuthority`, and the shared validation helpers from `lib/context/shared-payload.ts` instead of defining a graph-local contract.
+
+### Enforcement Rules
+
+- Emit code-graph or bridge-facing payloads only after validating that `parserProvenance`, `evidenceStatus`, and `freshnessAuthority` are all present as separate fields.
+- Fail closed when any axis is missing, malformed, or collapsed into scalar stand-ins such as `trust`, `trustScore`, `confidence`, `confidenceScore`, or `authorityScore`.
+- Preserve the three axes distinctly through bootstrap or resume-facing payloads. Do not merge them into a single "graph trust" label during transport.
+
+### Authority Boundary
+
+- Packet `011` does not introduce a parallel graph-only trust contract family.
+- Current owner surfaces remain authoritative: shared payload sections, session bootstrap or resume consumers, and bridge-facing graph payloads.
+- Ranking confidence and other retrieval-ordering metadata stay separate from `StructuralTrust`.
+
+---
+
+## 9. AUDITABLE SAVINGS PUBLICATION CONTRACT (009)
+
+Packet `009-auditable-savings-publication-contract` adds a fail-closed publication gate for row-level reporting exports. The current aggregate dashboard reader remains a read-only analytics surface, so row eligibility is enforced through `lib/context/publication-gate.ts` rather than by inventing a second reporting subsystem.
+
+### Row Eligibility Rules
+
+- Rows are publishable only when they use packet `005`'s certainty vocabulary from `lib/context/shared-payload.ts`.
+- Rows must include a supported `methodologyStatus`, a non-empty `schemaVersion`, and at least one normalized provenance entry before they can be published.
+- Multiplier rows must reuse packet `005`'s `canPublishMultiplier()` helper. Do not restate the provider-counted authority rule in packet-local code.
+
+### Exclusion Reasons
+
+| Reason | Meaning |
+|--------|---------|
+| `missing_methodology` | The row is missing a supported publication methodology status. |
+| `missing_schema_version` | The row omits the measurement or reporting schema version. |
+| `missing_provenance` | The row omits normalized reader or telemetry provenance. |
+| `unsupported_certainty` | The row uses a certainty value outside packet `005`, or a multiplier row fails the shared multiplier-publish gate. |
+
+### Dependency Boundary
+
+- Packet `009` consumes packet `005`'s certainty and multiplier contracts. It does not define a dashboard-local certainty enum.
+- The analytics reader remains the substrate for future publication surfaces. Packet `009` only establishes the row contract that those readers must honor.

@@ -32,10 +32,10 @@ contextType: "tasks"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Re-read `recommendations.md:15-33` and confirm `R3` depends on `R2`.
-- [ ] T002 Re-read packet `002` and confirm the producer metadata contract this packet consumes.
-- [ ] T003 Confirm the consumer owner surfaces in `session-bootstrap.ts`, `session-resume.ts`, and `session-prime.ts`.
-- [ ] T004 Define required fidelity and freshness gate inputs before implementation.
+- [x] T001 Re-read `recommendations.md:15-33` and confirm `R3` depends on `R2`.
+- [x] T002 Re-read packet `002` and confirm the producer metadata contract this packet consumes.
+- [x] T003 Confirm the consumer owner surfaces in `session-bootstrap.ts`, `session-resume.ts`, and `session-prime.ts`.
+- [x] T004 Define required fidelity and freshness gate inputs before implementation.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -43,10 +43,10 @@ contextType: "tasks"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T011 Add the guarded cached-summary consumer path to `session-bootstrap.ts`.
-- [ ] T012 Route valid cached summaries additively through `session-resume.ts` continuity paths.
-- [ ] T013 Surface optional startup hints in `session-prime.ts` only when a valid cached summary exists.
-- [ ] T014 Keep authority-boundary wording synchronized across packet-local docs and runtime comments if needed.
+- [x] T011 Add the guarded cached-summary consumer path to `session-bootstrap.ts`.
+- [x] T012 Route valid cached summaries additively through `session-resume.ts` continuity paths.
+- [x] T013 Surface optional startup hints in `session-prime.ts` only when a valid cached summary exists.
+- [x] T014 Keep authority-boundary wording synchronized across packet-local docs and runtime comments if needed.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -54,11 +54,11 @@ contextType: "tasks"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T021 Create the frozen resume corpus under `scripts/tests/`.
-- [ ] T022 Compare guarded cached reuse against live reconstruction and require equal-or-better pass rate.
-- [ ] T023 Run focused tests for fidelity, freshness, invalidation, and fail-closed behavior.
-- [ ] T024 Run `validate.sh --strict` on the packet folder.
-- [ ] T025 Record successor handoff notes for `013-warm-start-bundle-conditional-validation`.
+- [x] T021 Create the frozen resume corpus under `scripts/tests/`.
+- [x] T022 Compare guarded cached reuse against live reconstruction and require equal-or-better pass rate.
+- [x] T023 Run focused tests for fidelity, freshness, invalidation, and fail-closed behavior.
+- [x] T024 Run `validate.sh --strict` on the packet folder.
+- [x] T025 Record successor handoff notes for `013-warm-start-bundle-conditional-validation`.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -66,9 +66,9 @@ contextType: "tasks"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All packet tasks marked complete
-- [ ] No blocked items remain without explicit rationale
-- [ ] Frozen-corpus verification evidence captured
+- [x] All packet tasks marked complete
+- [x] No blocked items remain without explicit rationale
+- [x] Frozen-corpus verification evidence captured
 <!-- /ANCHOR:completion -->
 
 ---

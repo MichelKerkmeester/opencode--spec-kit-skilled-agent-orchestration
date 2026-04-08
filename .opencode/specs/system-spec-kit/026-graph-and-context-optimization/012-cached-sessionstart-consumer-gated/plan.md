@@ -42,9 +42,9 @@ Implement the guarded cached-summary consumer after confirming packet `002`'s pr
 - [x] Scope is limited to additive continuity and optional startup hints.
 
 ### Definition of Done
-- [ ] Fidelity and freshness gates are documented and implemented in the named owner surfaces.
-- [ ] Frozen resume corpus demonstrates equal-or-better pass rate versus live reconstruction.
-- [ ] Packet docs are synchronized and placeholder-free.
+- [x] Fidelity and freshness gates are documented and implemented in the named owner surfaces.
+- [x] Frozen resume corpus demonstrates equal-or-better pass rate versus live reconstruction.
+- [x] Packet docs are synchronized and placeholder-free.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,7 +56,7 @@ Implement the guarded cached-summary consumer after confirming packet `002`'s pr
 
 ### Pre-Task Checklist
 
-- Re-read `recommendations.md:15-33` and packet `002` before implementation starts.
+- Re-read `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md:15-33` and packet `002` before implementation starts.
 - Confirm the producer artifact contains the fields this consumer expects.
 - Re-confirm that `session_bootstrap()` and memory resume remain authoritative.
 - Re-run packet validation after doc edits and before any future closeout claim.
@@ -105,21 +105,21 @@ Packet `002` writes the bounded Stop-summary artifact first. This packet reads t
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Re-read `R2`, `R3`, and packet `002` to confirm the producer contract.
-- [ ] Confirm the first consumer owner surfaces in `session-bootstrap.ts`, `session-resume.ts`, and `session-prime.ts`.
-- [ ] Define the fidelity and freshness gate inputs before touching runtime code.
+- [x] Re-read `R2`, `R3`, and packet `002` to confirm the producer contract.
+- [x] Confirm the first consumer owner surfaces in `session-bootstrap.ts`, `session-resume.ts`, and `session-prime.ts`.
+- [x] Define the fidelity and freshness gate inputs before touching runtime code.
 
 ### Phase 2: Core Implementation
-- [ ] Implement the guarded consumer in `session-bootstrap.ts`.
-- [ ] Route valid cached summaries additively through `session-resume.ts`.
-- [ ] Surface optional startup hints in `session-prime.ts` only when a valid cached summary exists.
-- [ ] Keep authority-boundary wording synchronized in packet-local docs.
+- [x] Implement the guarded consumer in `session-bootstrap.ts`.
+- [x] Route valid cached summaries additively through `session-resume.ts`.
+- [x] Surface optional startup hints in `session-prime.ts` only when a valid cached summary exists.
+- [x] Keep authority-boundary wording synchronized in packet-local docs.
 
 ### Phase 3: Verification
-- [ ] Build the frozen resume corpus and baseline comparison.
-- [ ] Run focused tests or corpus checks for equal-or-better pass rate.
-- [ ] Run `validate.sh --strict` on the packet folder.
-- [ ] Record successor handoff notes for packet `013`.
+- [x] Build the frozen resume corpus and baseline comparison.
+- [x] Run focused tests or corpus checks for equal-or-better pass rate.
+- [x] Run `validate.sh --strict` on the packet folder.
+- [x] Record successor handoff notes for packet `013`.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -142,7 +142,7 @@ Packet `002` writes the bounded Stop-summary artifact first. This packet reads t
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | `002-implement-cache-warning-hooks` | Internal predecessor | Yellow | Consumer packet cannot activate without the producer metadata contract |
-| `recommendations.md` `R2` and `R3` | Research | Green | Packet would lose its scope and acceptance anchor |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md` `R2` and `R3` | Research | Green | Packet would lose its scope and acceptance anchor |
 | `013-warm-start-bundle-conditional-validation` | Internal successor | Green | Successor warm-start validation remains blocked until this guarded consumer is proven |
 <!-- /ANCHOR:dependencies -->
 
@@ -191,9 +191,9 @@ Packet 002 -> packet 012 -> packet 013
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Producer metadata from packet `002` verified
-- [ ] Fidelity and freshness gates defined
-- [ ] Frozen resume corpus prepared
+- [x] Producer metadata from packet `002` verified
+- [x] Fidelity and freshness gates defined
+- [x] Frozen resume corpus prepared
 
 ### Rollback Procedure
 1. Revert packet-local consumer changes in the named handler surfaces.

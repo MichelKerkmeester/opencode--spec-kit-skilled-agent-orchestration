@@ -100,6 +100,9 @@ export interface StructuralTrust {
   freshnessAuthority: FreshnessAuthority;
 }
 
+export type StructuralTrustCarrier<T extends object = Record<string, unknown>> =
+  T & StructuralTrust;
+
 export type MultiplierAuthorityField = Pick<PublishableMetricField<number>, 'certainty' | 'authority'>;
 
 export type MultiplierAuthorityFields = Partial<Record<MultiplierRequiredField, MultiplierAuthorityField | null>>;
@@ -148,6 +151,11 @@ export interface SharedPayloadEnvelope {
 }
 
 const SUMMARY_MAX_CHARS = 220;
+const STRUCTURAL_TRUST_REQUIRED_FIELDS = [
+  'parserProvenance',
+  'evidenceStatus',
+  'freshnessAuthority',
+] as const;
 const PROHIBITED_STRUCTURAL_TRUST_KEYS = [
   'trust',
   'trustScore',
@@ -155,6 +163,15 @@ const PROHIBITED_STRUCTURAL_TRUST_KEYS = [
   'confidenceScore',
   'authorityScore',
 ] as const;
+
+export class StructuralTrustPayloadError extends Error {
+  readonly code = 'STRUCTURAL_TRUST_PAYLOAD_INVALID';
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'StructuralTrustPayloadError';
+  }
+}
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
@@ -278,23 +295,64 @@ export function createPublishableMetricField<T>(
   };
 }
 
-export function makeStructuralTrust(input: StructuralTrust): StructuralTrust {
-  if (typeof input !== 'object' || input === null) {
-    throw new Error('Structural trust requires a structured object with separate trust axes.');
+function assertStructuralTrustPayloadRecord(
+  payload: unknown,
+  label: string,
+): Record<string, unknown> {
+  if (typeof payload !== 'object' || payload === null || Array.isArray(payload)) {
+    throw new StructuralTrustPayloadError(
+      `${label} requires a structured object with separate parserProvenance, evidenceStatus, and freshnessAuthority fields.`,
+    );
   }
 
-  for (const prohibitedKey of PROHIBITED_STRUCTURAL_TRUST_KEYS) {
-    if (Object.prototype.hasOwnProperty.call(input, prohibitedKey)) {
-      throw new Error(
-        `Structural trust forbids collapsed scalar fields like "${prohibitedKey}".`,
-      );
-    }
+  return payload as Record<string, unknown>;
+}
+
+export function validateStructuralTrustPayload(
+  payload: unknown,
+  options: { label?: string } = {},
+): StructuralTrust {
+  const label = options.label ?? 'Structural trust payload';
+  const record = assertStructuralTrustPayloadRecord(payload, label);
+
+  const collapsedKeys = PROHIBITED_STRUCTURAL_TRUST_KEYS.filter((key) =>
+    Object.prototype.hasOwnProperty.call(record, key),
+  );
+  if (collapsedKeys.length > 0) {
+    throw new StructuralTrustPayloadError(
+      `${label} rejects collapsed scalar fields: ${collapsedKeys.join(', ')}.`,
+    );
+  }
+
+  const missingFields = STRUCTURAL_TRUST_REQUIRED_FIELDS.filter((field) =>
+    !Object.prototype.hasOwnProperty.call(record, field),
+  );
+  if (missingFields.length > 0) {
+    throw new StructuralTrustPayloadError(
+      `${label} requires separate parserProvenance, evidenceStatus, and freshnessAuthority fields. Missing: ${missingFields.join(', ')}.`,
+    );
   }
 
   return {
-    parserProvenance: assertParserProvenance(input.parserProvenance),
-    evidenceStatus: assertEvidenceStatus(input.evidenceStatus),
-    freshnessAuthority: assertFreshnessAuthority(input.freshnessAuthority),
+    parserProvenance: assertParserProvenance(record.parserProvenance),
+    evidenceStatus: assertEvidenceStatus(record.evidenceStatus),
+    freshnessAuthority: assertFreshnessAuthority(record.freshnessAuthority),
+  };
+}
+
+export function makeStructuralTrust(input: StructuralTrust): StructuralTrust {
+  return validateStructuralTrustPayload(input, { label: 'Structural trust' });
+}
+
+export function attachStructuralTrustFields<T extends object>(
+  payload: T,
+  trustPayload: unknown,
+  options: { label?: string } = {},
+): StructuralTrustCarrier<T> {
+  const structuralTrust = validateStructuralTrustPayload(trustPayload, options);
+  return {
+    ...payload,
+    ...structuralTrust,
   };
 }
 
@@ -361,7 +419,11 @@ export function createSharedPayloadEnvelope(input: {
     .map((section) => ({
       ...section,
       ...(section.structuralTrust
-        ? { structuralTrust: makeStructuralTrust(section.structuralTrust) }
+        ? {
+          structuralTrust: validateStructuralTrustPayload(section.structuralTrust, {
+            label: `Shared payload section "${section.key}" structuralTrust`,
+          }),
+        }
         : {}),
     }));
   const summary = input.summary

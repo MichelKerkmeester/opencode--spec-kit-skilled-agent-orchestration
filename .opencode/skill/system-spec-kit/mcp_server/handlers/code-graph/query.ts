@@ -5,6 +5,7 @@
 
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
 import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
+import { attachStructuralTrustFields } from '../../lib/context/shared-payload.js';
 
 export interface QueryArgs {
   operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to';
@@ -48,6 +49,38 @@ function resolveSubject(subject: string): string | null {
   if (byName) return byName.symbol_id;
 
   return null;
+}
+
+function buildQueryStructuralTrust(readiness: ReadyResult) {
+  if (readiness.freshness === 'fresh') {
+    return {
+      parserProvenance: 'ast',
+      evidenceStatus: 'confirmed',
+      freshnessAuthority: 'live',
+    } as const;
+  }
+
+  if (readiness.freshness === 'stale') {
+    return {
+      parserProvenance: 'ast',
+      evidenceStatus: 'probable',
+      freshnessAuthority: 'stale',
+    } as const;
+  }
+
+  return {
+    parserProvenance: 'unknown',
+    evidenceStatus: 'unverified',
+    freshnessAuthority: 'unknown',
+  } as const;
+}
+
+function buildGraphQueryPayload<T extends Record<string, unknown>>(
+  payload: T,
+  readiness: ReadyResult,
+  label: string,
+) {
+  return attachStructuralTrustFields(payload, buildQueryStructuralTrust(readiness), { label });
 }
 
 /** BFS transitive traversal from a symbolId via the given edge type */
@@ -143,7 +176,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         type: 'text',
         text: JSON.stringify({
           status: 'ok',
-          data: {
+          data: buildGraphQueryPayload({
             operation: 'outline',
             filePath: subject,
             readiness,
@@ -156,7 +189,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
               signature: n.signature,
               symbolId: n.symbolId,
             })),
-          },
+          }, readiness, 'code_graph_query outline payload'),
         }, null, 2),
       }],
     };
@@ -183,7 +216,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         type: 'text',
         text: JSON.stringify({
           status: 'ok',
-          data: {
+          data: buildGraphQueryPayload({
             operation,
             symbolId,
             edgeType: requestedEdgeType,
@@ -191,7 +224,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             maxDepth,
             readiness,
             nodes: transitive,
-          },
+          }, readiness, `code_graph_query ${operation} payload`),
         }, null, 2),
       }],
     };
@@ -228,10 +261,10 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       type: 'text',
       text: JSON.stringify({
         status: 'ok',
-        data: {
+        data: buildGraphQueryPayload({
           ...result,
           readiness,
-        },
+        }, readiness, `code_graph_query ${operation} payload`),
       }, null, 2),
     }],
   };

@@ -42,9 +42,9 @@ Consume the measurement contract, apply row eligibility and exclusion rules, the
 - [x] Predecessor packets are named explicitly.
 
 ### Definition of Done
-- [ ] Packet docs are synchronized and placeholder-free.
-- [ ] Focused tests or corpus checks exist for the packet seam.
-- [ ] Packet validation passes cleanly.
+- [x] Packet docs are synchronized and placeholder-free.
+- [x] Focused tests or corpus checks exist for the packet seam.
+- [x] Packet validation passes cleanly.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -103,19 +103,19 @@ The packet locks one seam in the train first, then hands a narrow change set to 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Re-read the canonical research conclusions for this seam.
-- [ ] Verify predecessor packet status and scope boundaries.
-- [ ] Confirm the first runtime or contract touchpoints.
+- [x] Re-read the canonical research conclusions for this seam.
+- [x] Verify predecessor packet status and scope boundaries.
+- [x] Confirm the first runtime or contract touchpoints.
 
 ### Phase 2: Core Implementation
-- [ ] Implement the narrow runtime or contract change described in `spec.md`.
-- [ ] Keep all edits inside the named owner surfaces.
-- [ ] Update packet-local docs as implementation truth changes.
+- [x] Implement the narrow runtime or contract change described in `spec.md`.
+- [x] Keep all edits inside the named owner surfaces.
+- [x] Update packet-local docs as implementation truth changes.
 
 ### Phase 3: Verification
-- [ ] Run packet-local tests or corpus checks.
-- [ ] Run `validate.sh --strict` on the packet folder.
-- [ ] Record any successor-packet handoff notes.
+- [x] Run packet-local tests or corpus checks.
+- [x] Run `validate.sh --strict` on the packet folder.
+- [x] Record any successor-packet handoff notes.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -138,7 +138,7 @@ The packet locks one seam in the train first, then hands a narrow change set to 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Canonical research packet | Internal | Green | Packet scope would lose its evidence base |
-| Named predecessor packets | Internal | Yellow | Implementation must pause until dependencies are ready |
+| Named predecessor packets | Internal | Green | Packet `005` plus the named follow-on contracts were re-read and verified before implementation started |
 | Shared runtime surfaces | Internal | Green | Packet must enrich current owners rather than invent new ones |
 <!-- /ANCHOR:dependencies -->
 
@@ -187,9 +187,9 @@ Predecessor packets -> this packet -> successor packets
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Predecessor packets verified
-- [ ] Scope boundary re-read from `spec.md`
-- [ ] Focused verification corpus prepared
+- [x] Predecessor packets verified
+- [x] Scope boundary re-read from `spec.md`
+- [x] Focused verification corpus prepared
 
 ### Rollback Procedure
 1. Revert packet-local runtime changes.
