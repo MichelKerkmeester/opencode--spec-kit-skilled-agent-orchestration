@@ -1,0 +1,75 @@
+{
+  "files": [
+    {
+      "FILE_PATH": "research/spec.md",
+      "DESCRIPTION": "Canonical carrier row for the research packet.",
+      "ACTION": "Modified"
+    },
+    {
+      "FILE_PATH": "research/research.md",
+      "DESCRIPTION": "Detailed research synthesis source.",
+      "ACTION": "Modified"
+    },
+    {
+      "FILE_PATH": "research/deep-research-state.jsonl",
+      "DESCRIPTION": "Deep research state log.",
+      "ACTION": "Modified"
+    },
+    {
+      "FILE_PATH": "research/deep-research-config.json",
+      "DESCRIPTION": "Deep research config snapshot.",
+      "ACTION": "Modified"
+    }
+  ],
+  "thinningResult": {
+    "thinned": [
+      {
+        "path": "research/spec.md",
+        "content": "",
+        "tokenCount": 90,
+        "action": "keep"
+      },
+      {
+        "path": "research/research.md",
+        "content": "",
+        "tokenCount": 40,
+        "action": "merged-into-parent"
+      },
+      {
+        "path": "research/deep-research-state.jsonl",
+        "content": "",
+        "tokenCount": 35,
+        "action": "merged-into-parent"
+      },
+      {
+        "path": "research/deep-research-config.json",
+        "content": "",
+        "tokenCount": 32,
+        "action": "merged-into-parent"
+      }
+    ],
+    "merged": [
+      {
+        "parentPath": "research",
+        "childPaths": [
+          "research/research.md",
+          "research/deep-research-state.jsonl",
+          "research/deep-research-config.json"
+        ],
+        "mergedSummary": "<!-- merged from: research/research.md --> research synthesis\n---\n<!-- merged from: research/deep-research-state.jsonl --> state log\n---\n<!-- merged from: research/deep-research-config.json --> config snapshot"
+      }
+    ],
+    "stats": {
+      "totalFiles": 4,
+      "thinnedCount": 3,
+      "mergedCount": 1,
+      "tokensSaved": 180
+    }
+  },
+  "expectedCarrierPath": "research/spec.md",
+  "expectedMergedSources": [
+    "research/research.md",
+    "research/deep-research-state.jsonl",
+    "research/deep-research-config.json"
+  ]
+}

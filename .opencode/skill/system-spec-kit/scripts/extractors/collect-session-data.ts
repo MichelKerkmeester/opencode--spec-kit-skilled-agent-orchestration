@@ -19,6 +19,7 @@ import { structuredLog } from '../utils/logger';
 import { coerceFactsToText } from '../utils/fact-coercion';
 import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
 import { detectSpecFolder } from '../spec-folder';
+import { resolveSaveMode, SaveMode } from '../types/save-mode';
 
 import {
   generateSessionId,
@@ -40,8 +41,10 @@ import { buildImplementationGuideData } from './implementation-guide-extractor';
 import type { ImplementationGuideData } from './implementation-guide-extractor';
 
 import type {
+  CanonicalDocs,
   CollectedDataBase,
   ContextItem,
+  DistinguishingEvidenceItem,
   FileChange,
   FileEntry,
   GapDescription,
@@ -368,7 +371,7 @@ function determineSessionStatus(
     // Fix 2: Also check observations for "Next Steps" title (normalizer may consume the field)
     const hasNextSteps = !!collectedData.nextSteps
       || observations.some(obs => /^next\s*steps?\b/i.test(obs.title || ''));
-    const isFileSource = collectedData._source === 'file';
+    const saveMode = resolveSaveMode(collectedData);
 
     const unresolvedNextSteps = Array.isArray(collectedData.nextSteps)
       ? collectedData.nextSteps.filter(step => !isCompletedNextStep(step))
@@ -381,7 +384,7 @@ function determineSessionStatus(
 
     // If explicit JSON data has summary + decisions + next steps, session is complete
     // But if there are pending nextSteps, downgrade to partial (IN_PROGRESS)
-    if (isFileSource && hasSessionSummary && (hasKeyDecisions || hasNextSteps)) {
+    if (saveMode === SaveMode.Json && hasSessionSummary && (hasKeyDecisions || hasNextSteps)) {
       if (hasUnresolvedNextSteps) {
         return 'IN_PROGRESS';
       }
@@ -477,8 +480,8 @@ function estimateCompletionPercent(
   // O5-3: Access fields directly via CollectedDataBase instead of Record casts
   if (collectedData) {
     const hasSessionSummary = !!collectedData.sessionSummary;
-    const isFileSource = collectedData._source === 'file';
-    if (isFileSource && hasSessionSummary) {
+    const saveMode = resolveSaveMode(collectedData);
+    if (saveMode === SaveMode.Json && hasSessionSummary) {
       return 95;
     }
   }
@@ -597,6 +600,60 @@ function generateContextSummary(
   return parts.join('\n\n');
 }
 
+function normalizeProposition(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractDecisionTitle(value: string | Record<string, unknown>): string {
+  const toText = (input: unknown): string => typeof input === 'string' ? input.trim() : '';
+  const decisionText = typeof value === 'string'
+    ? value.trim()
+    : toText(value.decision) || toText(value.title) || '';
+
+  if (!decisionText) {
+    return '';
+  }
+
+  const titleMatch = decisionText.match(/^(?:Decision\s*(?:\d+\s*)?:\s*)?(.+?)(?:\s+(?:--|[\u2013\u2014])\s+(.+))?$/i);
+  return titleMatch?.[1]?.trim() || decisionText;
+}
+
+function collectDecisionPropositions(
+  collectedData: CollectedDataFull,
+  observations: Observation[],
+): Set<string> {
+  const propositions = new Set<string>();
+  const rawDecisions = Array.isArray(collectedData._manualDecisions)
+    ? collectedData._manualDecisions as Array<string | Record<string, unknown>>
+    : Array.isArray(collectedData.keyDecisions)
+      ? collectedData.keyDecisions as Array<string | Record<string, unknown>>
+      : [];
+
+  for (const decision of rawDecisions) {
+    const normalized = normalizeProposition(extractDecisionTitle(decision));
+    if (normalized) {
+      propositions.add(normalized);
+    }
+  }
+
+  for (const observation of observations) {
+    if (detectObservationType(observation) !== 'decision') {
+      continue;
+    }
+
+    const normalized = normalizeProposition(observation.title || observation.narrative || '');
+    if (normalized) {
+      propositions.add(normalized);
+    }
+  }
+
+  return propositions;
+}
+
 function generateResumeContext(
   files: FileChange[],
   specFiles: SpecFileEntry[],
@@ -617,14 +674,125 @@ function generateResumeContext(
 
   const lastMeaningful = [...observations].reverse().find((o) => o.narrative && o.narrative.length > 50);
   if (lastMeaningful) {
-    const lastText = (lastMeaningful.title || lastMeaningful.narrative || '').substring(0, 80);
-    const lastTruncated = lastText.length >= 80
-      ? (lastText.lastIndexOf(' ', 77) > 30 ? lastText.substring(0, lastText.lastIndexOf(' ', 77)) : lastText.substring(0, 77)) + '...'
-      : lastText;
-    items.push({ CONTEXT_ITEM: `Last: ${lastTruncated}` });
+    const lastSource = [lastMeaningful.title, lastMeaningful.narrative]
+      .find((value): value is string => typeof value === 'string' && value.trim().length >= 20)
+      || lastMeaningful.narrative
+      || lastMeaningful.title
+      || '';
+    const lastTruncated = truncateOnWordBoundary(lastSource.trim(), 80, {
+      ellipsis: '…',
+      minBoundary: 20,
+    });
+    if (lastTruncated.replace(/…$/, '').trim().length >= 20) {
+      items.push({ CONTEXT_ITEM: `Last: ${lastTruncated}` });
+    }
   }
 
   return items.slice(0, 5);
+}
+
+// CanonicalDocs type lives in scripts/types/session-types.ts — imported above.
+
+function deriveCanonicalDocPointers(
+  specFiles: SpecFileEntry[],
+  options: {
+    contextType: string;
+    preferDecisionRecord: boolean;
+    preferImplementationSummary: boolean;
+    preferReviewReport: boolean;
+    preferResearchReport: boolean;
+  }
+): CanonicalDocs {
+  const hasDecisionRecord = specFiles.some(f => f.FILE_NAME === 'decision-record.md');
+  const hasImplementationSummary = specFiles.some(f => f.FILE_NAME === 'implementation-summary.md');
+  const hasReviewReport = specFiles.some(f => f.FILE_NAME.includes('review-report.md') || (f.FILE_PATH ?? '').includes('review/review-report.md'));
+  const hasResearchReport = specFiles.some(f => f.FILE_NAME === 'research.md' || (f.FILE_PATH ?? '').includes('research/research.md'));
+
+  const decisionRecordPath = hasDecisionRecord
+    ? specFiles.find(f => f.FILE_NAME === 'decision-record.md')?.FILE_PATH || 'decision-record.md'
+    : '';
+  const implementationSummaryPath = hasImplementationSummary
+    ? specFiles.find(f => f.FILE_NAME === 'implementation-summary.md')?.FILE_PATH || 'implementation-summary.md'
+    : '';
+  const reviewReportPath = hasReviewReport
+    ? specFiles.find(f => f.FILE_NAME.includes('review-report.md'))?.FILE_PATH || 'review/review-report.md'
+    : '';
+  const researchReportPath = hasResearchReport
+    ? specFiles.find(f => f.FILE_NAME === 'research.md' || (f.FILE_PATH ?? '').includes('research/research.md'))?.FILE_PATH || 'research/research.md'
+    : '';
+
+  return {
+    hasDecisionRecord,
+    hasImplementationSummary,
+    hasReviewReport,
+    hasResearchReport,
+    HAS_DECISION_RECORD: hasDecisionRecord,
+    HAS_IMPLEMENTATION_SUMMARY: hasImplementationSummary,
+    HAS_REVIEW_REPORT: hasReviewReport,
+    HAS_RESEARCH_REPORT: hasResearchReport,
+    DECISION_RECORD_PATH: decisionRecordPath,
+    IMPLEMENTATION_SUMMARY_PATH: implementationSummaryPath,
+    REVIEW_REPORT_PATH: reviewReportPath,
+    RESEARCH_REPORT_PATH: researchReportPath,
+  };
+}
+
+interface EvidenceEntry {
+  EVIDENCE_ITEM: string;
+}
+
+function buildDistinctiveEvidence(params: {
+  observations: Observation[];
+  files: FileChange[];
+  outcomes: OutcomeEntry[];
+  nextAction: string;
+  blockers: string;
+  limit: number;
+}): EvidenceEntry[] {
+  const { observations, files, outcomes, nextAction, blockers, limit } = params;
+  const evidence: EvidenceEntry[] = [];
+
+  // Add top 2 outcomes if they exist and are not generic
+  const meaningfulOutcomes = outcomes
+    .filter(o => o.OUTCOME && o.OUTCOME !== 'Session in progress' && o.OUTCOME !== 'Session completed')
+    .slice(0, 2);
+  for (const outcome of meaningfulOutcomes) {
+    evidence.push({ EVIDENCE_ITEM: outcome.OUTCOME });
+    if (evidence.length >= limit) return evidence;
+  }
+
+  // Add distinctive observations (skip decisions, those live in decision-record.md)
+  const distinctiveObs = observations
+    .filter(obs => {
+      const obsType = detectObservationType(obs);
+      return obsType !== 'decision' && obs.narrative && obs.narrative.length >= 30;
+    })
+    .slice(0, 1);
+  for (const obs of distinctiveObs) {
+    const text = obs.title || obs.narrative || '';
+    evidence.push({ EVIDENCE_ITEM: truncateOnWordBoundary(text, 120, { ellipsis: '…', minBoundary: 30 }) });
+    if (evidence.length >= limit) return evidence;
+  }
+
+  // Add next action if meaningful
+  if (nextAction && nextAction !== 'Continue implementation' && nextAction !== 'No pending tasks') {
+    evidence.push({ EVIDENCE_ITEM: `Next: ${nextAction}` });
+    if (evidence.length >= limit) return evidence;
+  }
+
+  // Add blocker if present
+  if (blockers && blockers !== 'None') {
+    evidence.push({ EVIDENCE_ITEM: `Blocker: ${blockers}` });
+    if (evidence.length >= limit) return evidence;
+  }
+
+  // Add file count if significant
+  if (files.length >= 3) {
+    evidence.push({ EVIDENCE_ITEM: `${files.length} files modified` });
+    if (evidence.length >= limit) return evidence;
+  }
+
+  return evidence;
 }
 
 interface ContinueSessionParams {
@@ -834,6 +1002,7 @@ async function collectSessionData(
     (file) => file._provenance === 'git',
   );
   const filesystemFileCount = filesystemDerivedCount > 0 ? filesystemDerivedCount : capturedFileCount;
+  // Persist source-session fields as metadata only; SaveMode governs behavior elsewhere.
   const sourceTranscriptPath = typeof data._sourceTranscriptPath === 'string' ? data._sourceTranscriptPath : '';
   const sourceSessionId = typeof data._sourceSessionId === 'string'
     ? data._sourceSessionId
@@ -847,12 +1016,30 @@ async function collectSessionData(
     ? data._sourceSessionUpdated
     : 0;
 
-  const OUTCOMES: OutcomeEntry[] = observations
-    .slice(0, 10)
-    .map((obs) => ({
-      OUTCOME: obs.title || obs.narrative?.substring(0, 300) || '',
-      TYPE: detectObservationType(obs)
-    }));
+  const decisionPropositions = collectDecisionPropositions(data, observations);
+  const seenOutcomePropositions = new Set<string>();
+  const OUTCOMES: OutcomeEntry[] = [];
+  for (const observation of observations) {
+    const outcomeText = (observation.title || observation.narrative?.substring(0, 300) || '').trim();
+    if (!outcomeText) {
+      continue;
+    }
+
+    const normalizedOutcome = normalizeProposition(outcomeText);
+    if (!normalizedOutcome || seenOutcomePropositions.has(normalizedOutcome) || decisionPropositions.has(normalizedOutcome)) {
+      continue;
+    }
+
+    seenOutcomePropositions.add(normalizedOutcome);
+    OUTCOMES.push({
+      OUTCOME: outcomeText,
+      TYPE: detectObservationType(observation),
+    });
+
+    if (OUTCOMES.length >= 10) {
+      break;
+    }
+  }
 
   const rawLearning = (sessionInfo as RecentContextEntry).learning || '';
   const isErrorContent = /\bAPI\s+Error:\s*\d{3}\b/i.test(rawLearning)
@@ -985,10 +1172,17 @@ async function collectSessionData(
     }
   }
 
-  const implementationGuide: ImplementationGuideData = buildImplementationGuideData(
-    observations, FILES, folderName
-  );
+  // Derive canonical doc pointers from SPEC_FILES
+  const CANONICAL_DOCS = deriveCanonicalDocPointers(SPEC_FILES, {
+    contextType,
+    preferDecisionRecord: true,
+    preferImplementationSummary: true,
+    preferReviewReport: contextType === 'review',
+    preferResearchReport: contextType === 'research',
+  });
 
+  // Project state snapshot must run BEFORE distinguishing-evidence because
+  // nextAction and blockers come from here.
   const { projectPhase, activeFile, lastAction, nextAction, blockers, fileProgress } =
     buildProjectStateSnapshot({
       toolCounts,
@@ -1000,6 +1194,28 @@ async function collectSessionData(
       recentContext: data.recentContext,
       explicitProjectPhase,
     });
+
+  // Build compact distinguishing evidence (limit to 4 items)
+  const DISTINGUISHING_EVIDENCE = buildDistinctiveEvidence({
+    observations,
+    files: FILES,
+    outcomes: OUTCOMES,
+    nextAction,
+    blockers,
+    limit: 4,
+  });
+
+  // Only build implementation guide if no canonical implementation-summary.md exists
+  const implementationGuide: ImplementationGuideData = CANONICAL_DOCS.hasImplementationSummary
+    ? {
+        HAS_IMPLEMENTATION_GUIDE: false,
+        TOPIC: '',
+        IMPLEMENTATIONS: [],
+        IMPL_KEY_FILES: [],
+        EXTENSION_GUIDES: [],
+        PATTERNS: [],
+      }
+    : buildImplementationGuideData(observations, FILES, folderName);
 
   const expiresAtEpoch: number = calculateExpiryEpoch(importanceTier, createdAtEpoch);
 
@@ -1059,6 +1275,8 @@ async function collectSessionData(
     HAS_TECHNICAL_CONTEXT: Array.isArray(data.TECHNICAL_CONTEXT) && data.TECHNICAL_CONTEXT.length > 0,
     SPEC_FILES,
     HAS_SPEC_FILES: SPEC_FILES.length > 0,
+    CANONICAL_DOCS,
+    DISTINGUISHING_EVIDENCE,
     ...implementationGuide,
     SESSION_ID: sessionId,
     CHANNEL: channel,

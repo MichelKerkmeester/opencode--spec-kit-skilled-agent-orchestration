@@ -246,6 +246,21 @@ function createSessionData(config: SessionConfig = {}): SessionData {
     COMMIT_REF: null,
     REPOSITORY_STATE: 'unavailable',
     IS_DETACHED_HEAD: false,
+    CANONICAL_DOCS: {
+      hasDecisionRecord: false,
+      hasImplementationSummary: false,
+      hasReviewReport: false,
+      hasResearchReport: false,
+      HAS_DECISION_RECORD: false,
+      HAS_IMPLEMENTATION_SUMMARY: false,
+      HAS_REVIEW_REPORT: false,
+      HAS_RESEARCH_REPORT: false,
+      DECISION_RECORD_PATH: '',
+      IMPLEMENTATION_SUMMARY_PATH: '',
+      REVIEW_REPORT_PATH: '',
+      RESEARCH_REPORT_PATH: '',
+    },
+    DISTINGUISHING_EVIDENCE: [],
   };
 }
 

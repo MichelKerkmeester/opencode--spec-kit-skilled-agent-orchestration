@@ -1,0 +1,41 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/024-compact-code-graph",
+  "sessionSummary": "Codex-cli-compact audit for tree-sitter and implementation-summary coverage across api cli mcp entry points.",
+  "triggerPhrases": [
+    "codex-cli-compact",
+    "codex cli compact",
+    "tree-sitter",
+    "tree sitter",
+    "implementation-summary",
+    "implementation summary",
+    "api",
+    "cli",
+    "mcp"
+  ],
+  "keyDecisions": [
+    {
+      "decision": "Keep codex cli compact aliases canonical",
+      "rationale": "tree sitter and implementation summary variants should collapse to the canonical hyphenated anchors."
+    }
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
+      "action": "modified",
+      "description": "Canonicalize codex cli compact and tree sitter aliases while preserving api cli mcp anchors."
+    }
+  ],
+  "expectedPresentTriggers": [
+    "codex-cli-compact",
+    "tree-sitter",
+    "implementation-summary",
+    "api",
+    "cli",
+    "mcp"
+  ],
+  "expectedAbsentTriggers": [
+    "codex cli compact",
+    "tree sitter",
+    "implementation summary"
+  ]
+}

@@ -1,14 +1,20 @@
 {
-  "specFolder": "003-memory-quality-issues/005-operations-tail-prs",
-  "description": "Phase 5: operations-tail-prs",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/005-operations-tail-prs",
+  "description": "Feature Specification: Phase 5 — Operations & Tail PRs",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
-    "operations-tail-prs"
+    "operations",
+    "tail",
+    "prs"
   ],
-  "lastUpdated": "2026-04-07T11:14:04.913Z",
+  "lastUpdated": "2026-04-08T14:27:35.700Z",
   "specId": "005",
   "folderSlug": "operations-tail-prs",
   "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
     "003-memory-quality-issues"
   ],
   "memorySequence": 0,

@@ -1,0 +1,38 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata",
+  "sessionSummary": "Phase 2 PR-4 adds JSON-mode git provenance without changing the authored memory narrative.",
+  "observations": [
+    {
+      "type": "implementation",
+      "title": "JSON-mode provenance branch",
+      "narrative": "Verified the workflow adds only git provenance for JSON-mode saves.",
+      "facts": [
+        "The save path should preserve the authored summary and decisions."
+      ],
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts"
+      ]
+    }
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      "action": "Modified",
+      "description": "Add JSON-mode-only provenance injection beside Step 3.5."
+    }
+  ],
+  "keyDecisions": [
+    {
+      "decision": "Keep JSON-mode provenance injection separate from capture-mode enrichment",
+      "rationale": "Avoid leaking captured-session summary, observations, trigger phrases, and decisions into structured JSON saves."
+    }
+  ],
+  "triggerPhrases": [
+    "phase 2 provenance-only injection",
+    "f-ac6 fixture"
+  ],
+  "nextSteps": [
+    "Run the targeted PR-4 vitest",
+    "Confirm workflow.ts diff stays within the accepted tiny-patch bound"
+  ]
+}

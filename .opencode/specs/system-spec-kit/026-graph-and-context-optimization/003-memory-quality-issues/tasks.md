@@ -133,6 +133,7 @@ These tasks are intentionally preserved as the original placeholder matrix, but 
 - [x] Research delivery tasks in Phase 1 are complete (`T001` through `T016`).
 - [x] Deferred implementation placeholders in Phase 2 are superseded by phase folders `001-005`.
 - [x] Scope split between research delivery and deferred remediation is explicitly documented.
+- [x] Future follow-on work stays narrowed to Phases 6-7 rather than reopening the shipped Phase 1-5 remediation train.
 <!-- /ANCHOR:completion -->
 
 ---

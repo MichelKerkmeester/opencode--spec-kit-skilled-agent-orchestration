@@ -33,6 +33,8 @@ contextType: "implementation"
 
 This packet moved all the way from research findings to a validated, phase-by-phase remediation train. You can now trace the complete D1-D8 repair path across five child phases, see which PRs landed in each slice, and verify the outcome from phase-local checklists instead of relying on a stale research-only parent snapshot. The packet also closed the operational tail honestly: PR-10 stops at dry-run classification in this packet, and PR-11 is explicitly deferred rather than implied.
 
+The later memory-redundancy research does not reopen Phases 1-5. Instead, it narrows any future follow-on work to compact-wrapper and canonical-doc-ownership surfaces, while this parent packet remains the long-form closeout owner for the shipped remediation train.
+
 ### Phase 1 — PR-1 and PR-2
 
 Phase 1 fixed the OVERVIEW anchor mismatch and replaced the raw truncation clamp with a shared boundary-aware helper. That closed D8 and D1, exported the helper for later phases, and established the foundation the rest of the train reuses.
@@ -83,6 +85,7 @@ The train shipped in the order the parent packet planned. Foundation fixes lande
 | Decision | Why |
 |----------|-----|
 | Keep the packet split into five child phases instead of collapsing the closeout back into one parent story | The child folders now carry the clearest verification evidence, and the parent packet is most useful as a roll-up surface. |
+| Keep future redundancy follow-on work narrow | The sibling redundancy research found the remaining duplication problem in memory generation and template composition, so any new work should target compact-wrapper and canonical-doc-ownership seams rather than reopen the shipped D1-D8 phases. |
 | Treat PR-10 dry-run as complete work for this packet, but not PR-10 apply | Phase 5 deliberately made apply operator-gated, so claiming more than the dry-run would overstate what actually shipped. |
 | Record PR-11 as deferred | The D9 candidate is real enough to keep visible, but not urgent enough to pretend it shipped without supporting concurrency pressure. |
 | Leave the remaining parent strict-validation blockers explicit | The remaining parent failures now live in out-of-scope packet files, so the honest result is "child phases green, parent root still partially blocked." |
@@ -110,8 +113,7 @@ The train shipped in the order the parent packet planned. Foundation fixes lande
 
 ---
 
-<!-- ANCHOR:deep-review-remediation -->
-## Deep-Review Remediation Cycle (2026-04-08)
+**Deep-Review Remediation Cycle (2026-04-08)**
 
 A 7-iteration `/spec_kit:deep-review` ran against this packet on 2026-04-08, delegating every iteration to `cli-codex exec` with `gpt-5.4` reasoning=high service_tier=fast and a read-only sandbox. Full artifacts: `review/review-report.md`, `review/iterations/iteration-00{1..7}.md`, `review/deep-review-dashboard.md`, and `review/deep-review-findings-registry.json`.
 
@@ -140,10 +142,10 @@ A 7-iteration `/spec_kit:deep-review` ran against this packet on 2026-04-08, del
 
 **Parent-rollup cluster (RW-B):**
 - **P1-004** parent `spec.md:83` phase map for Phases 2-5 — status qualified to `Phase-local complete, parent gates pending` with explanatory footnote
-- **P1-006** `005/spec.md` + `005/implementation-summary.md` — Phase 5 phase-local closeout separated from blocked parent closeout
+- **P1-006** `005-operations-tail-prs/spec.md` + `005-operations-tail-prs/implementation-summary.md` — Phase 5 phase-local closeout separated from blocked parent closeout
 - **P1-007** parent `plan.md` + `tasks.md` — ⚠️ SUPERSEDED BY PHASES 1-5 banners added; `T101-T502` NEXT-PLAN placeholders converted to `SUPERSEDED` pointers at owning phase folders
 - **P1-011** parent `spec.md:88` — Phase 7 row upgraded from `Pending` to the same qualified shipped label as Phases 2-5 (Phase 7 child docs claimed complete)
-- **P1-012** Phase 6 normalized to **placeholder** state — `006/checklist.md` shipped-evidence rows unchecked and marked preview-only; `006/implementation-summary.md` + `006/tasks.md` were already placeholder and left as-is
+- **P1-012** Phase 6 normalized to **placeholder** state — `006-memory-duplication-reduction/checklist.md` shipped-evidence rows unchecked and marked preview-only; `006-memory-duplication-reduction/implementation-summary.md` + `006-memory-duplication-reduction/tasks.md` were already placeholder and left as-is
 - **P1-013** parent `spec.md:105` — explicit Phase 5→6 and 6→7 handoff-waiver footnote added immediately after the handoff criteria table
 
 **Operator contract cluster (RW-C):**
@@ -151,14 +153,14 @@ A 7-iteration `/spec_kit:deep-review` ran against this packet on 2026-04-08, del
 
 ### P2 Fixes Landed (9 of 9) — RW-D
 
-- **P2-001** `001/implementation-summary.md` — stable anchor citation `../spec.md#phase-handoff-criteria` replaces stale line-number reference
-- **P2-002** `001/plan.md` + `001/tasks.md` — migration order aligned (input-normalizer first, then D1 owner)
+- **P2-001** `001-foundation-templates-truncation/implementation-summary.md` — stable anchor citation `../spec.md#phase-handoff-criteria` replaces stale line-number reference
+- **P2-002** `001-foundation-templates-truncation/plan.md` + `001-foundation-templates-truncation/tasks.md` — migration order aligned (input-normalizer first, then D1 owner)
 - **P2-003** `scripts/lib/trigger-phrase-sanitizer.ts` — generic prefilter added: NFC normalization + max-length cap (200) + control-char rejection (`/[\x00-\x1F\x7F-\x9F]/`)
 - **P2-004** parent `checklist.md:65` D6 row — replaced non-owning Phase 4 citation with historical-classification reference + Phase 5 safe-subset evidence
 - **P2-005** parent `checklist.md` CHK-003/010/050/051 — relabeled as explicit parent-level assertions instead of pretending to be phase-backed
-- **P2-006** `005/spec.md` + `005/plan.md` — alert artifact path normalized to shipped phase-local `memory-save-quality-alerts.yml` (no `monitoring/` prefix)
+- **P2-006** `005-operations-tail-prs/spec.md` + `005-operations-tail-prs/plan.md` — alert artifact path normalized to shipped phase-local `memory-save-quality-alerts.yml` (no `monitoring/` prefix)
 - **P2-007** `scripts/core/workflow.ts:~1392` — predecessor discovery gate narrowed with `SaveMode.Json` check; manual saves no longer pay the directory-walk cost
-- **P2-008** `scripts/memory/migrate-historical-json-mode-memories.ts:703` — code comment added documenting fixture non-reproducibility (fixture-locked harness deferred); `005/spec.md` + `005/plan.md` `--apply` wording cleaned to "dry-run only (apply mode deferred)"
+- **P2-008** `scripts/memory/migrate-historical-json-mode-memories.ts:703` — code comment added documenting fixture non-reproducibility (fixture-locked harness deferred); `005-operations-tail-prs/spec.md` + `005-operations-tail-prs/plan.md` `--apply` wording cleaned to "dry-run only (apply mode deferred)"
 - **P2-009** parent `checklist.md:106` — P0 count corrected from `5/6` to `6/6`
 
 ### Verification After Remediation
@@ -195,8 +197,6 @@ Per project memory rule (2026-04-08), all deep-review remediation `codex exec` i
 ```
 
 RW-B and RW-A inherited `service_tier=fast` from `~/.codex/config.toml`; RW-C and RW-D pass it explicitly. Sandbox was `workspace-write` (auto-promoted by `--full-auto`) for write workstreams; review iterations earlier the same day used `read-only`.
-
-<!-- /ANCHOR:deep-review-remediation -->
 
 ---
 

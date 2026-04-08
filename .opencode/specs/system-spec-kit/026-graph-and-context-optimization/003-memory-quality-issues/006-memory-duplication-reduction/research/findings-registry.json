@@ -1,0 +1,159 @@
+[
+  {
+    "iteration": 1,
+    "dimension": "trigger_phrases duplication across memories",
+    "findings": [
+      {
+        "id": "F001.1",
+        "label": "packet/path scaffold phrases repeat across sibling memories",
+        "severity": "HIGH",
+        "owner": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1248-1253; 1313-1328",
+        "remediation": "code"
+      },
+      {
+        "id": "F001.2",
+        "label": "generic unigram survivors are preserved in corpus even though current sanitizer should block some of them",
+        "severity": "MEDIUM",
+        "owner": ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts:46-69; .opencode/skill/system-spec-kit/scripts/core/workflow.ts:141-165; .opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts:966-972",
+        "remediation": "migration"
+      },
+      {
+        "id": "F001.3",
+        "label": "title path overlap and hyphen space variants create redundant near-duplicates",
+        "severity": "MEDIUM",
+        "owner": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:131-167; .opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts:83-140; .opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts:966-972",
+        "remediation": "code"
+      }
+    ],
+    "confidence": 0.84,
+    "files_sampled": 52,
+    "completed_at": "2026-04-08T09:12:27Z"
+  },
+  {
+    "iteration": 2,
+    "dimension": "observations and decisions textual duplication",
+    "findings": [
+      {
+        "id": "F002.1",
+        "label": "live generic observation placeholder leak",
+        "severity": "HIGH",
+        "owner": ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts:337-364; .opencode/skill/system-spec-kit/templates/context_template.md:380-389",
+        "remediation": "code"
+      },
+      {
+        "id": "F002.2",
+        "label": "decision title, outcome bullet, and rationale often restate the same proposition",
+        "severity": "MEDIUM",
+        "owner": ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:852-857; .opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts:214-222; 285-348",
+        "remediation": "code"
+      },
+      {
+        "id": "F002.3",
+        "label": "same decision survives across same-folder memories under different wording",
+        "severity": "LOW",
+        "owner": "same-folder historical corpus behavior; no current generator owner proven",
+        "remediation": "defer"
+      },
+      {
+        "id": "F002.4",
+        "label": "PR6 D2 placeholder fix is holding for new saves, but historical placeholder artifacts remain searchable",
+        "severity": "LOW",
+        "owner": "historical corpus artifacts only",
+        "remediation": "migration"
+      }
+    ],
+    "confidence": 0.87,
+    "files_sampled": 52,
+    "completed_at": "2026-04-08T09:15:12Z"
+  },
+  {
+    "iteration": 3,
+    "dimension": "key_topics and FILES table duplication",
+    "findings": [
+      {
+        "id": "F003.1",
+        "label": "tree-thinning carrier rows create apparent FILES duplication without duplicate FILE_PATH rows",
+        "severity": "MEDIUM",
+        "owner": ".opencode/skill/system-spec-kit/scripts/core/alignment-validator.ts:151-178",
+        "remediation": "code"
+      },
+      {
+        "id": "F003.2",
+        "label": "singular/plural key_topics duplication survives in older memories but not in the recent post-PR5 corpus",
+        "severity": "LOW",
+        "owner": ".opencode/skill/system-spec-kit/scripts/lib/semantic-signal-extractor.ts:321-323",
+        "remediation": "migration"
+      }
+    ],
+    "confidence": 0.88,
+    "files_sampled": 51,
+    "completed_at": "2026-04-08T09:17:36Z"
+  },
+  {
+    "iteration": 4,
+    "dimension": "OVERVIEW and SUMMARY narrative duplication",
+    "findings": [
+      {
+        "id": "F004.1",
+        "label": "completed-packet closure guidance is echoed across three sections in the same memory",
+        "severity": "MEDIUM",
+        "owner": ".opencode/skill/system-spec-kit/templates/context_template.md:208",
+        "remediation": "code"
+      },
+      {
+        "id": "F004.2",
+        "label": "a separate Last resume-context truncation path still produces repeated ellipsis-trimmed fragments",
+        "severity": "MEDIUM",
+        "owner": ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:619",
+        "remediation": "code"
+      },
+      {
+        "id": "F004.3",
+        "label": "residual OVERVIEW ellipsis is isolated, not a new repeated post-PR2 overview pattern",
+        "severity": "LOW",
+        "owner": ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:878",
+        "remediation": "audit"
+      }
+    ],
+    "confidence": 0.84,
+    "files_sampled": 51,
+    "completed_at": "2026-04-08T09:19:48Z"
+  },
+  {
+    "iteration": 5,
+    "dimension": "structural duplication",
+    "findings": [
+      {
+        "id": "F005.1",
+        "label": "comment anchors plus html ids plus headings are emitted as parallel section scaffolding",
+        "severity": "MEDIUM",
+        "owner": ".opencode/skill/system-spec-kit/templates/context_template.md:187-188; 736-737; .opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:274-278; .opencode/skill/system-spec-kit/scripts/core/memory-metadata.ts:343-345",
+        "remediation": "code"
+      },
+      {
+        "id": "F005.2",
+        "label": "frontmatter still mirrors context type and trigger phrases into MEMORY METADATA",
+        "severity": "HIGH",
+        "owner": ".opencode/skill/system-spec-kit/templates/context_template.md:1-6; 755-836; .opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts:1027-1087; .opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:666-673",
+        "remediation": "code"
+      },
+      {
+        "id": "F005.3",
+        "label": "Key Topics is written twice in human snapshot and metadata yaml",
+        "severity": "LOW",
+        "owner": ".opencode/skill/system-spec-kit/templates/context_template.md:274; 831-833",
+        "remediation": "defer"
+      },
+      {
+        "id": "F005.4",
+        "label": "one historical memory still has duplicate html ids for decisions and conversation",
+        "severity": "LOW",
+        "owner": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/memory/16-01-26_16-09__memory-ranking.md:151-201",
+        "remediation": "migration"
+      }
+    ],
+    "confidence": 0.88,
+    "files_sampled": 52,
+    "completed_at": "2026-04-08T09:22:21Z"
+  }
+]

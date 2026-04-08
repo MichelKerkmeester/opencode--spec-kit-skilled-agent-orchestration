@@ -1,19 +1,19 @@
 {
-  "timestamp": "07-04-26 13-08",
-  "messageCount": 4,
-  "decisionCount": 9,
+  "timestamp": "08-04-26 14-26",
+  "messageCount": 1,
+  "decisionCount": 6,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 4,
-    "noiseFiltered": 4,
+    "totalProcessed": 1,
+    "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 0,
+    "qualityScore": 30,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-07T12:08:41.654Z",
+        "timestamp": "2026-04-08T13:26:29.183Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -43,22 +43,20 @@
           "/^reasoning$/i",
           "/^<reasoning>.*<\\/reasoning>$/s"
         ],
-        "matchesFound": [
-          "/^[\\s\\u00A0]*$/ x4"
-        ],
+        "matchesFound": [],
         "actionsTaken": [
-          "filtered_noise:4",
+          "filtered_noise:0",
           "filtered_empty:0",
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:4",
-          "kept_items:0"
+          "input_items:1",
+          "kept_items:1"
         ]
       }
     ],
     "filtered": {
-      "noise": 4,
+      "noise": 0,
       "empty": 0,
       "duplicate": 0,
       "lowQuality": 0
@@ -68,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-07T12:08:41.608Z",
+      "timestamp": "2026-04-08T13:26:28.888Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -128,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:54"
+        "processed_fields:65"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-07T12:08:41.654Z",
+      "timestamp": "2026-04-08T13:26:29.183Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -163,22 +161,20 @@
         "/^reasoning$/i",
         "/^<reasoning>.*<\\/reasoning>$/s"
       ],
-      "matchesFound": [
-        "/^[\\s\\u00A0]*$/ x4"
-      ],
+      "matchesFound": [],
       "actionsTaken": [
-        "filtered_noise:4",
+        "filtered_noise:0",
         "filtered_empty:0",
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:4",
-        "kept_items:0"
+        "input_items:1",
+        "kept_items:1"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-07T12:08:41.695Z",
+      "timestamp": "2026-04-08T13:26:29.219Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -195,10 +191,10 @@
       ],
       "passedThrough": [
         "current_spec:003-memory-quality-issues",
-        "trigger_phrases:36",
+        "trigger_phrases:29",
         "key_topics:12",
-        "captured_file_count:10",
-        "filesystem_file_count:10"
+        "captured_file_count:0",
+        "filesystem_file_count:0"
       ]
     }
   ],
@@ -209,17 +205,17 @@
     "decisions": 0,
     "messageStats": {
       "intent": 0,
-      "plan": 0,
+      "plan": 1,
       "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 0
+      "total": 1
     }
   },
   "fileCounts": {
-    "fileCount": 10,
-    "capturedFileCount": 10,
-    "filesystemFileCount": 10,
+    "fileCount": 0,
+    "capturedFileCount": 0,
+    "filesystemFileCount": 0,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -229,12 +225,12 @@
     "sessionUpdated": 0
   },
   "embedding": {
-    "status": "indexed",
+    "status": "skipped_index_policy",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 1940,
-    "updatedAt": "2026-04-07T12:08:43.340Z",
-    "generatedAt": "2026-04-07T12:08:43.340Z",
-    "reason": "Indexed after all write and semantic-index gates passed."
+    "memoryId": null,
+    "updatedAt": "2026-04-08T13:26:29.259Z",
+    "lastAttemptedAt": "2026-04-08T13:26:29.259Z",
+    "reason": "Validation rules require write-only persistence without semantic indexing: V12"
   }
 }

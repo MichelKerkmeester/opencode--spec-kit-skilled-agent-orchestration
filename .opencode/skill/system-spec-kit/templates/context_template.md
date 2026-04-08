@@ -1,6 +1,7 @@
 ---
 title: "{{MEMORY_DASHBOARD_TITLE}}"
 description: "{{MEMORY_DESCRIPTION}}"
+# Canonical classification lives in frontmatter; MEMORY METADATA mirrors these values.
 {{TRIGGER_PHRASES_YAML}}
 importance_tier: "{{IMPORTANCE_TIER}}"
 contextType: "{{CONTEXT_TYPE}}"
@@ -172,20 +173,16 @@ git_changed_file_count: {{GIT_CHANGED_FILE_COUNT}}
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
-- [PROJECT STATE SNAPSHOT](#project-state-snapshot)
-{{#HAS_IMPLEMENTATION_GUIDE}}- [IMPLEMENTATION GUIDE](#implementation-guide)
-{{/HAS_IMPLEMENTATION_GUIDE}}- [OVERVIEW](#overview)
-{{#HAS_OBSERVATIONS}}- [DETAILED CHANGES](#detailed-changes)
-{{/HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}- [WORKFLOW VISUALIZATION](#workflow-visualization)
-{{/HAS_WORKFLOW_DIAGRAM}}- [DECISIONS](#decisions)
-- [CONVERSATION](#conversation)
+- [CANONICAL SOURCES](#canonical-docs)
+- [OVERVIEW](#overview)
+- [DISTINGUISHING EVIDENCE](#evidence)
 - [RECOVERY HINTS](#recovery-hints)
-- [MEMORY METADATA](#memory-metadata)
+{{#HAS_POSTFLIGHT_DELTA}}- [POSTFLIGHT LEARNING DELTA](#postflight)
+{{/HAS_POSTFLIGHT_DELTA}}- [MEMORY METADATA](#memory-metadata)
 
 ---
 
 <!-- ANCHOR:continue-session -->
-<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -205,14 +202,10 @@ git_changed_file_count: {{GIT_CHANGED_FILE_COUNT}}
 
 {{CONTEXT_SUMMARY}}
 
+{{#PENDING_TASKS}}
 ### Pending Work
 
-{{#PENDING_TASKS}}
 - [ ] **{{TASK_ID}}**: {{TASK_DESCRIPTION}} (Priority: {{TASK_PRIORITY}})
-{{/PENDING_TASKS}}
-{{^PENDING_TASKS}}
-- No pending tasks - session completed successfully
-{{/PENDING_TASKS}}
 
 ### Quick Resume
 
@@ -237,401 +230,66 @@ Next: {{NEXT_ACTION}}
 - Review PROJECT STATE SNAPSHOT for current state
 - Check DECISIONS for recent choices made
 {{/RESUME_CONTEXT}}
+{{/PENDING_TASKS}}
 <!-- /ANCHOR:continue-session -->
 
 ---
 
-<!-- ANCHOR:project-state-snapshot -->
-<a id="project-state-snapshot"></a>
+<!-- ANCHOR:canonical-docs -->
 
-## PROJECT STATE SNAPSHOT
+## CANONICAL SOURCES
 
-| Field | Value |
-|-------|-------|
-| Phase | {{PROJECT_PHASE}} |
-| Active File | {{ACTIVE_FILE}} |
-| Last Action | {{LAST_ACTION}} |
-| Next Action | {{NEXT_ACTION}} |
-| Blockers | {{BLOCKERS}} |
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
 
-{{#HAS_FILE_PROGRESS}}
-### File Progress
+{{#CANONICAL_DOCS}}
+{{#HAS_DECISION_RECORD}}- [`decision-record.md`]({{DECISION_RECORD_PATH}}) — Architectural decisions and rationale
+{{/HAS_DECISION_RECORD}}
+{{#HAS_IMPLEMENTATION_SUMMARY}}- [`implementation-summary.md`]({{IMPLEMENTATION_SUMMARY_PATH}}) — Build story, verification results, and outcomes
+{{/HAS_IMPLEMENTATION_SUMMARY}}
+{{#HAS_REVIEW_REPORT}}- [`review-report.md`]({{REVIEW_REPORT_PATH}}) — Review findings and quality assessment
+{{/HAS_REVIEW_REPORT}}
+{{#HAS_RESEARCH_REPORT}}- [`research.md`]({{RESEARCH_REPORT_PATH}}) — Research findings and methodology
+{{/HAS_RESEARCH_REPORT}}
+{{/CANONICAL_DOCS}}
+{{^CANONICAL_DOCS}}
+- No canonical static documents detected in this spec folder yet
+- This memory may contain expanded narrative as a fallback
+{{/CANONICAL_DOCS}}
 
-| File | Status |
-|------|--------|
-{{#FILE_PROGRESS}}| {{FILE_NAME}} | {{FILE_STATUS}} |
-{{/FILE_PROGRESS}}
-{{/HAS_FILE_PROGRESS}}
-
-{{#HAS_SPEC_FILES}}
-
-**Related Documentation:**
-{{#SPEC_FILES}}- [`{{FILE_NAME}}`]({{FILE_PATH}}) - {{DESCRIPTION}}
-{{/SPEC_FILES}}
-{{/HAS_SPEC_FILES}}
-
-{{#HAS_KEY_TOPICS}}
-**Key Topics:** {{#TOPICS}}`{{.}}`{{^LAST}} | {{/LAST}}{{/TOPICS}}
-{{/HAS_KEY_TOPICS}}
-{{#hasToolCalls}}
-
-**Tool Calls:** {{TOOL_CALLS_COMPACT}}
-{{/hasToolCalls}}
-{{#hasExchanges}}
-
-**Exchanges:** {{EXCHANGES_COMPACT}}
-{{/hasExchanges}}
-<!-- /ANCHOR:project-state-snapshot -->
+<!-- /ANCHOR:canonical-docs -->
 
 ---
-
-{{#HAS_IMPLEMENTATION_GUIDE}}
-<!-- ANCHOR:task-guide -->
-<a id="implementation-guide"></a>
-
-## 1. IMPLEMENTATION GUIDE
-
-**What Was Built**:
-{{#IMPLEMENTATIONS}}
-- **{{FEATURE_NAME}}** - {{DESCRIPTION}}
-{{/IMPLEMENTATIONS}}
-{{^IMPLEMENTATIONS}}
-- No specific implementations recorded
-{{/IMPLEMENTATIONS}}
-
-**Key Files and Their Roles**:
-{{#IMPL_KEY_FILES}}
-- `{{FILE_PATH}}` - {{ROLE}}
-{{/IMPL_KEY_FILES}}
-{{^IMPL_KEY_FILES}}
-- No key files identified
-{{/IMPL_KEY_FILES}}
-
-**How to Extend**:
-{{#EXTENSION_GUIDES}}
-- {{GUIDE_TEXT}}
-{{/EXTENSION_GUIDES}}
-{{^EXTENSION_GUIDES}}
-- No extension guides available
-{{/EXTENSION_GUIDES}}
-
-**Common Patterns**:
-{{#PATTERNS}}
-- **{{PATTERN_NAME}}**: {{USAGE}}
-{{/PATTERNS}}
-{{^PATTERNS}}
-- No patterns identified
-{{/PATTERNS}}
-<!-- /ANCHOR:task-guide -->
-
----
-{{/HAS_IMPLEMENTATION_GUIDE}}
 
 <!-- ANCHOR:overview -->
-<a id="overview"></a>
 
-## {{#HAS_IMPLEMENTATION_GUIDE}}2{{/HAS_IMPLEMENTATION_GUIDE}}{{^HAS_IMPLEMENTATION_GUIDE}}1{{/HAS_IMPLEMENTATION_GUIDE}}. OVERVIEW
+## OVERVIEW
 
 {{SUMMARY}}
 
-**Key Outcomes**:
-{{#OUTCOMES}}- {{OUTCOME}}
-{{/OUTCOMES}}
-{{^OUTCOMES}}
-- No specific outcomes recorded.
-{{/OUTCOMES}}
-{{#HAS_FILES}}
-
-**Key Files:**
-
-| **File** | **Description** |
-|:---------|:----------------|
-{{#FILES}}| `{{FILE_PATH}}` | {{DESCRIPTION}} |
-{{/FILES}}
-{{/HAS_FILES}}
 <!-- /ANCHOR:overview -->
 
-{{#HAS_TECHNICAL_CONTEXT}}
-
-### Technical Context
-
-| Aspect | Detail |
-|--------|--------|
-{{#TECHNICAL_CONTEXT}}| **{{KEY}}** | {{VALUE}} |
-{{/TECHNICAL_CONTEXT}}
-
-{{/HAS_TECHNICAL_CONTEXT}}
-{{#HAS_GRAPH_CONTEXT}}
 ---
 
-<!-- ANCHOR:graph-context -->
-{{GRAPH_CONTEXT}}
-<!-- /ANCHOR:graph-context -->
-{{/HAS_GRAPH_CONTEXT}}
+<!-- ANCHOR:evidence -->
 
----
-{{#HAS_OBSERVATIONS}}
+## DISTINGUISHING EVIDENCE
 
-<!-- ANCHOR:detailed-changes -->
-<a id="detailed-changes"></a>
+**Compact session-specific evidence that distinguishes this memory from the canonical static docs:**
 
-## {{#HAS_IMPLEMENTATION_GUIDE}}3{{/HAS_IMPLEMENTATION_GUIDE}}{{^HAS_IMPLEMENTATION_GUIDE}}2{{/HAS_IMPLEMENTATION_GUIDE}}. DETAILED CHANGES
+{{#DISTINGUISHING_EVIDENCE}}
+- {{EVIDENCE_ITEM}}
+{{/DISTINGUISHING_EVIDENCE}}
+{{^DISTINGUISHING_EVIDENCE}}
+- {{LAST_ACTION}}
+- Next: {{NEXT_ACTION}}
+{{#BLOCKERS}}- Blocker: {{BLOCKERS}}{{/BLOCKERS}}
+{{/DISTINGUISHING_EVIDENCE}}
 
-{{#OBSERVATIONS}}
-{{^IS_DECISION}}
-<!-- ANCHOR:{{ANCHOR_ID}} -->
-### {{TYPE}}: {{TITLE}}
-
-{{NARRATIVE}}
-
-{{#HAS_FILES}}**Files:** {{FILES_LIST}}{{/HAS_FILES}}
-{{#HAS_FACTS}}**Details:** {{FACTS_LIST}}{{/HAS_FACTS}}
-<!-- /ANCHOR:{{ANCHOR_ID}} -->
-
-{{/IS_DECISION}}
-{{/OBSERVATIONS}}
-<!-- /ANCHOR:detailed-changes -->
-
----
-{{/HAS_OBSERVATIONS}}
-{{#HAS_WORKFLOW_DIAGRAM}}
-
-<!-- ANCHOR:workflow-visualization -->
-<a id="workflow-visualization"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes before this)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | This Section # |
-  |------------|--------------|----------------|
-  | No         | No           | 2              |
-  | No         | Yes          | 3              |
-  | Yes        | No           | 3              |
-  | Yes        | Yes          | 4              |
--->
-## {{#HAS_IMPLEMENTATION_GUIDE}}{{#HAS_OBSERVATIONS}}4{{/HAS_OBSERVATIONS}}{{^HAS_OBSERVATIONS}}3{{/HAS_OBSERVATIONS}}{{/HAS_IMPLEMENTATION_GUIDE}}{{^HAS_IMPLEMENTATION_GUIDE}}{{#HAS_OBSERVATIONS}}3{{/HAS_OBSERVATIONS}}{{^HAS_OBSERVATIONS}}2{{/HAS_OBSERVATIONS}}{{/HAS_IMPLEMENTATION_GUIDE}}. WORKFLOW VISUALIZATION
-
-**Pattern Type**: {{PATTERN_TYPE}}
-
-**Use Case**: {{USE_CASE_TITLE}}
-
-```
-{{WORKFLOW_FLOWCHART}}
-```
-
-{{#HAS_PHASES}}
-### Phase Breakdown
-
-{{#PHASES}}
-**Phase {{INDEX}}: {{PHASE_NAME}}** - Duration: {{DURATION}}
-{{#ACTIVITIES}}
-- {{.}}
-{{/ACTIVITIES}}
-
-{{/PHASES}}
-{{/HAS_PHASES}}
-
-### Key Features Demonstrated
-
-{{#FEATURES}}
-- **{{FEATURE_NAME}}**: {{FEATURE_DESC}}
-{{/FEATURES}}
-
-### When to Use This Pattern
-
-{{#USE_CASES}}
-- {{.}}
-{{/USE_CASES}}
-
-**Reading Guide**:
-- Rounded boxes = Start/End points
-- Standard boxes = Process steps
-- Arrows = Flow direction (top to bottom)
-
-> **Pattern Reference**: This workflow uses the **{{PATTERN_TYPE}}** pattern.
->
-> **Workflow Pattern Guide**:
-> - **Linear workflows**: Sequential phase execution, ideal for <=4 phases
-> - **Parallel workflows**: Concurrent phase execution, ideal for >4 phases
-> - **This session**: {{PATTERN_TYPE}} pattern with {{PHASE_COUNT}} phases
->
-> For detailed pattern examples, see:
-> `.opencode/skill/system-spec-kit/references/`
-<!-- /ANCHOR:workflow-visualization -->
-
----
-{{/HAS_WORKFLOW_DIAGRAM}}
-
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-## {{#HAS_IMPLEMENTATION_GUIDE}}{{#HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}5{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}4{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{^HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}4{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}3{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{/HAS_IMPLEMENTATION_GUIDE}}{{^HAS_IMPLEMENTATION_GUIDE}}{{#HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}4{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}3{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{^HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}3{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}2{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{/HAS_IMPLEMENTATION_GUIDE}}. DECISIONS
-{{#DECISIONS}}
-
-<!-- ANCHOR:{{DECISION_ANCHOR_ID}} -->
-### Decision {{INDEX}}: {{TITLE}}
-
-**Context**: {{CONTEXT}}
-
-**Timestamp**: {{TIMESTAMP}}
-
-**Importance**: {{DECISION_IMPORTANCE}}
-
-{{#HAS_DECISION_TREE}}
-
-#### Visual Decision Tree
-
-```
-{{DECISION_TREE}}
-```
-{{/HAS_DECISION_TREE}}
-
-#### Options Considered
-{{#OPTIONS}}
-
-{{OPTION_NUMBER}}. **{{LABEL}}**
-   {{DESCRIPTION}}
-{{/OPTIONS}}
-
-#### Chosen Approach
-
-**Selected**: {{CHOSEN}}
-
-**Rationale**: {{RATIONALE}}
-
-#### Trade-offs
-{{#HAS_PROS}}
-
-**Advantages**:
-{{#PROS}}- {{PRO}}
-{{/PROS}}
-{{/HAS_PROS}}
-{{#HAS_CONS}}
-
-**Disadvantages**:
-{{#CONS}}- {{CON}}
-{{/CONS}}
-{{/HAS_CONS}}
-{{#HAS_EVIDENCE}}
-
-**Supporting Evidence**:
-{{#EVIDENCE}}- {{EVIDENCE_ITEM}}
-{{/EVIDENCE}}
-{{/HAS_EVIDENCE}}
-{{#HAS_CAVEATS}}
-
-**Caveats**:
-{{#CAVEATS}}- {{CAVEAT_ITEM}}
-{{/CAVEATS}}
-{{/HAS_CAVEATS}}
-{{#HAS_FOLLOWUP}}
-
-**Follow-up Actions**:
-{{#FOLLOWUP}}- {{FOLLOWUP_ITEM}}
-{{/FOLLOWUP}}
-{{/HAS_FOLLOWUP}}
-
-{{#HAS_SPLIT_CONFIDENCE}}
-**Confidence**: {{CONFIDENCE}}% (Choice: {{CHOICE_CONFIDENCE}}% / Rationale: {{RATIONALE_CONFIDENCE}}%)
-{{/HAS_SPLIT_CONFIDENCE}}
-{{^HAS_SPLIT_CONFIDENCE}}
-**Confidence**: {{CONFIDENCE}}%
-{{/HAS_SPLIT_CONFIDENCE}}
-<!-- /ANCHOR:{{DECISION_ANCHOR_ID}} -->
-
----
-{{/DECISIONS}}
-{{^DECISIONS}}
-
-decision_count: 0
-
----
-{{/DECISIONS}}
-<!-- /ANCHOR:decisions -->
-
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-## {{#HAS_IMPLEMENTATION_GUIDE}}{{#HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}6{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}5{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{^HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}5{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}4{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{/HAS_IMPLEMENTATION_GUIDE}}{{^HAS_IMPLEMENTATION_GUIDE}}{{#HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}5{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}4{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{^HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}4{{/HAS_WORKFLOW_DIAGRAM}}{{^HAS_WORKFLOW_DIAGRAM}}3{{/HAS_WORKFLOW_DIAGRAM}}{{/HAS_OBSERVATIONS}}{{/HAS_IMPLEMENTATION_GUIDE}}. CONVERSATION
-
-Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
-
-This session followed a **{{FLOW_PATTERN}}** conversation pattern with **{{PHASE_COUNT}}** phase segments{{#UNIQUE_PHASE_COUNT}} across **{{UNIQUE_PHASE_COUNT}}** unique phases{{/UNIQUE_PHASE_COUNT}}.
-
-##### Conversation Phases
-{{#PHASES}}- **{{PHASE_NAME}}** - {{DURATION}}
-{{/PHASES}}
-{{^PHASES}}
-- Single continuous phase
-{{/PHASES}}
-
----
-
-### Message Timeline
-{{#MESSAGES}}
-
-> **{{ROLE}}** | {{TIMESTAMP}}
-
-{{CONTENT}}
-{{#TOOL_CALLS}}
-
-**Tool: {{TOOL_NAME}}**
-{{DESCRIPTION}}
-{{#HAS_RESULT}}
-
-<details>
-<summary>Result Preview</summary>
-
-```
-{{RESULT_PREVIEW}}
-```
-
-</details>
-{{/HAS_RESULT}}
-{{/TOOL_CALLS}}
-
----
-{{/MESSAGES}}
-{{^MESSAGES}}
-
-No conversation messages were captured. This may indicate an issue with data collection or the session has just started.
-
----
-{{/MESSAGES}}
-<!-- /ANCHOR:session-history -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
 <!-- ANCHOR:recovery-hints -->
-<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -686,7 +344,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 
 {{#HAS_POSTFLIGHT_DELTA}}
 <!-- ANCHOR:postflight -->
-<a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
 
@@ -734,7 +391,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 ---
 
 <!-- ANCHOR:metadata -->
-<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -754,7 +410,7 @@ is_detached_head: {{IS_DETACHED_HEAD}}
 
 # Classification
 importance_tier: "{{IMPORTANCE_TIER}}"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "{{CONTEXT_TYPE}}"        # implementation|planning|research|general
+context_type: "{{CONTEXT_TYPE}}"        # mirrors frontmatter contextType
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -832,7 +488,7 @@ key_topics:
 {{#TOPICS}}  - "{{.}}"
 {{/TOPICS}}
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 {{TRIGGER_PHRASES_YAML}}
 
 key_files:

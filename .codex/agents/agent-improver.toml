@@ -1,6 +1,7 @@
 # Agent: agent-improver
 # Converted from: .opencode/agent/agent-improver.md
 name = "agent-improver"
+description = "Proposal-only mutator for bounded agent-improver candidate generation with evaluator-first rules"
 profile = "default"
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"

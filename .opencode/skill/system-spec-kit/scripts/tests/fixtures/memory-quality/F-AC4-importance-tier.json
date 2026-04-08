@@ -1,0 +1,26 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata",
+  "sessionSummary": "Phase 2 PR-3 validation keeps the importance-tier resolver authoritative while the managed-frontmatter rewrite re-emits both serialized tier locations from the same resolved value. This fixture models the historical drift case where an explicit important-tier save could later be normalized back to a default-looking frontmatter tier if migration treated the serializer as a second authority.",
+  "importance_tier": "important",
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts",
+      "action": "Modified",
+      "description": "Managed-frontmatter rewrite now synchronizes frontmatter and MEMORY METADATA importance_tier from a single resolved value"
+    }
+  ],
+  "keyDecisions": [
+    {
+      "decision": "Use session-extractor as the canonical importance-tier resolver",
+      "rationale": "PR-3 treats migration and post-save review as consumers of the resolved tier rather than separate authorities"
+    }
+  ],
+  "triggerPhrases": [
+    "phase 2 importance tier ssot",
+    "f ac4 importance tier drift"
+  ],
+  "nextSteps": [
+    "Run the targeted PR-3 vitest coverage",
+    "Replay the fixture through generate-context.js and confirm tier parity"
+  ]
+}

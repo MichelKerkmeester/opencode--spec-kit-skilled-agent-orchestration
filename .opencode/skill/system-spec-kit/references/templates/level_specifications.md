@@ -761,7 +761,7 @@ Some templates are not level-specific but can be used at any documentation level
 
 | Folder | Purpose | Creation Method |
 |--------|---------|-----------------|
-| `memory/` | Session context preservation | `generate-context.ts` script via `/memory:save` |
+| `memory/` | Session context preservation | `generate-context.js` runtime script via `/memory:save` |
 | `scratch/` | Temporary workspace (disposable) | Manual creation (no template needed) |
 
 **Important:**
@@ -849,7 +849,7 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 - [debug-delegation.md](../../templates/debug-delegation.md) - Debug task delegation
 
 **Non-Template Folders:**
-- `memory/` - Context preservation (auto-generated via generate-context.ts)
+- `memory/` - Context preservation (auto-generated via generate-context.js)
 - `scratch/` - Temporary workspace (create ad-hoc files as needed)
 
 ### Related Skills

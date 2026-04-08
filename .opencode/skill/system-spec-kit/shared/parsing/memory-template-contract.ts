@@ -18,8 +18,7 @@ export type MemoryTemplateViolationCode =
   | 'legacy_template_banner'
   | 'constitutional_guidance_comment'
   | 'missing_section'
-  | 'missing_anchor_comment'
-  | 'missing_html_id';
+  | 'missing_anchor_comment';
 
 export interface MemoryTemplateViolation {
   code: MemoryTemplateViolationCode;
@@ -39,23 +38,21 @@ export interface MemoryTemplateSectionRule {
   sectionId: string;
   commentId: string;
   headingPattern: RegExp;
-  includeHtmlId: boolean;
   required: 'mandatory' | 'conditional';
 }
 
 const SECTION_RULES: MemoryTemplateSectionRule[] = [
-  { sectionId: 'preflight', commentId: 'preflight', headingPattern: /^##\s+PREFLIGHT BASELINE\s*$/i, includeHtmlId: false, required: 'conditional' },
-  { sectionId: 'continue-session', commentId: 'continue-session', headingPattern: /^##\s+CONTINUE SESSION\s*$/i, includeHtmlId: true, required: 'mandatory' },
-  { sectionId: 'project-state-snapshot', commentId: 'project-state-snapshot', headingPattern: /^##\s+PROJECT STATE SNAPSHOT\s*$/i, includeHtmlId: true, required: 'mandatory' },
-  { sectionId: 'implementation-guide', commentId: 'task-guide', headingPattern: /^##\s+(?:\d+\.\s+)?IMPLEMENTATION GUIDE\s*$/i, includeHtmlId: true, required: 'conditional' },
-  { sectionId: 'overview', commentId: 'overview', headingPattern: /^##\s+(?:\d+\.\s+)?OVERVIEW\s*$/i, includeHtmlId: true, required: 'conditional' },
-  { sectionId: 'detailed-changes', commentId: 'detailed-changes', headingPattern: /^##\s+(?:\d+\.\s+)?DETAILED CHANGES\s*$/i, includeHtmlId: true, required: 'conditional' },
-  { sectionId: 'workflow-visualization', commentId: 'workflow-visualization', headingPattern: /^##\s+(?:\d+\.\s+)?WORKFLOW VISUALIZATION\s*$/i, includeHtmlId: true, required: 'conditional' },
-  { sectionId: 'decisions', commentId: 'decisions', headingPattern: /^##\s+(?:\d+\.\s+)?DECISIONS\s*$/i, includeHtmlId: true, required: 'mandatory' },
-  { sectionId: 'conversation', commentId: 'session-history', headingPattern: /^##\s+(?:\d+\.\s+)?CONVERSATION\s*$/i, includeHtmlId: true, required: 'mandatory' },
-  { sectionId: 'recovery-hints', commentId: 'recovery-hints', headingPattern: /^##\s+RECOVERY HINTS\s*$/i, includeHtmlId: true, required: 'mandatory' },
-  { sectionId: 'postflight-learning-delta', commentId: 'postflight', headingPattern: /^##\s+POSTFLIGHT LEARNING DELTA\s*$/i, includeHtmlId: true, required: 'conditional' },
-  { sectionId: 'memory-metadata', commentId: 'metadata', headingPattern: /^##\s+MEMORY METADATA\s*$/i, includeHtmlId: true, required: 'mandatory' },
+  { sectionId: 'preflight', commentId: 'preflight', headingPattern: /^##\s+PREFLIGHT BASELINE\s*$/i, required: 'conditional' },
+  { sectionId: 'continue-session', commentId: 'continue-session', headingPattern: /^##\s+CONTINUE SESSION\s*$/i, required: 'mandatory' },
+  { sectionId: 'canonical-docs', commentId: 'canonical-docs', headingPattern: /^##\s+CANONICAL (?:SOURCES|DOCS)\s*$/i, required: 'mandatory' },
+  { sectionId: 'overview', commentId: 'overview', headingPattern: /^##\s+(?:\d+\.\s+)?OVERVIEW\s*$/i, required: 'mandatory' },
+  { sectionId: 'evidence', commentId: 'evidence', headingPattern: /^##\s+(?:DISTINGUISHING\s+)?EVIDENCE\s*$/i, required: 'mandatory' },
+  { sectionId: 'implementation-guide', commentId: 'task-guide', headingPattern: /^##\s+(?:\d+\.\s+)?IMPLEMENTATION GUIDE\s*$/i, required: 'conditional' },
+  { sectionId: 'detailed-changes', commentId: 'detailed-changes', headingPattern: /^##\s+(?:\d+\.\s+)?DETAILED CHANGES\s*$/i, required: 'conditional' },
+  { sectionId: 'workflow-visualization', commentId: 'workflow-visualization', headingPattern: /^##\s+(?:\d+\.\s+)?WORKFLOW VISUALIZATION\s*$/i, required: 'conditional' },
+  { sectionId: 'recovery-hints', commentId: 'recovery-hints', headingPattern: /^##\s+RECOVERY HINTS\s*$/i, required: 'mandatory' },
+  { sectionId: 'postflight-learning-delta', commentId: 'postflight', headingPattern: /^##\s+POSTFLIGHT LEARNING DELTA\s*$/i, required: 'conditional' },
+  { sectionId: 'memory-metadata', commentId: 'metadata', headingPattern: /^##\s+MEMORY METADATA\s*$/i, required: 'mandatory' },
 ];
 
 interface ParsedFrontmatterSection {
@@ -168,32 +165,22 @@ function findHeadingIndex(lines: string[], rule: MemoryTemplateSectionRule): num
 
 function hasAnchorScaffolding(lines: string[], headingIndex: number, rule: MemoryTemplateSectionRule): {
   hasComment: boolean;
-  hasHtmlId: boolean;
 } {
   const expectedComment = `<!-- ANCHOR:${rule.commentId} -->`;
-  const expectedId = `<a id="${rule.sectionId}"></a>`;
   let hasComment = false;
-  let hasHtmlId = false;
 
-  for (let offset = -3; offset <= 2; offset += 1) {
-    const line = lines[headingIndex + offset];
-    if (!line) {
-      continue;
-    }
-
-    const trimmed = line.trim();
+  for (let index = headingIndex - 1; index >= 0; index -= 1) {
+    const trimmed = lines[index].trim();
     if (trimmed === expectedComment) {
       hasComment = true;
+      break;
     }
-    if (rule.includeHtmlId && trimmed === expectedId) {
-      hasHtmlId = true;
+    if (/^##\s+/.test(trimmed) || trimmed === '---') {
+      break;
     }
   }
 
-  return {
-    hasComment,
-    hasHtmlId: rule.includeHtmlId ? hasHtmlId : true,
-  };
+  return { hasComment };
 }
 
 function hasClosingAnchor(lines: string[], headingIndex: number, commentId: string): boolean {
@@ -338,14 +325,6 @@ export function validateMemoryTemplateContract(content: string): MemoryTemplateC
       violations.push({
         code: 'missing_anchor_comment',
         message: `Rendered memory is missing the ANCHOR comment for ${rule.sectionId}.`,
-        sectionId: rule.sectionId,
-      });
-    }
-    if (!scaffolding.hasHtmlId) {
-      missingAnchors.push(rule.sectionId);
-      violations.push({
-        code: 'missing_html_id',
-        message: `Rendered memory is missing the HTML id for ${rule.sectionId}.`,
         sectionId: rule.sectionId,
       });
     }

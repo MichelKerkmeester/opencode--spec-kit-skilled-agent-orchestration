@@ -1,0 +1,13 @@
+{
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction",
+  "observations": [
+    {
+      "type": "implementation",
+      "title": "Documentation cleanup plan for duplication review alignment across resume context handling surfaces",
+      "narrative": "Documentation cleanup plan for duplication review alignment across resume context handling surfaces remains the active thread while the follow-up extractor validation is still pending after the audit.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts"
+      ]
+    }
+  ]
+}

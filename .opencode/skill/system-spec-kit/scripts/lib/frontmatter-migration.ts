@@ -9,6 +9,7 @@
 
 import * as path from 'path';
 import { CANONICAL_CONTEXT_TYPES, LEGACY_CONTEXT_TYPE_ALIASES } from '@spec-kit/shared/context-types';
+import { resolveImportanceTier } from '../extractors/session-extractor';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -1023,6 +1024,162 @@ function inferImportanceTier(
   return DOC_DEFAULT_IMPORTANCE[classification.documentType] || 'normal';
 }
 
+function extractMemoryMetadataBlock(content: string): string | null {
+  const match = content.match(/## MEMORY METADATA[\s\S]*?```yaml\s*([\s\S]*?)```/);
+  return match?.[1] ?? null;
+}
+
+function extractMemoryMetadataScalar(content: string, fieldNames: string[]): string | null {
+  const metadataBlock = extractMemoryMetadataBlock(content);
+  if (!metadataBlock) {
+    return null;
+  }
+
+  const normalizedFieldNames = new Set(fieldNames.map((fieldName) => lower(fieldName)));
+  for (const rawLine of metadataBlock.split('\n')) {
+    const line = rawLine.trim();
+    if (line.length === 0 || line.startsWith('#') || !line.includes(':')) {
+      continue;
+    }
+
+    const colonIndex = line.indexOf(':');
+    const key = lower(line.substring(0, colonIndex).trim());
+    if (!normalizedFieldNames.has(key)) {
+      continue;
+    }
+
+    return line.substring(colonIndex + 1).trim().replace(/^['"]|['"]$/g, '');
+  }
+
+  return null;
+}
+
+function extractMemoryMetadataStringArray(content: string, fieldName: string): string[] {
+  const metadataBlock = extractMemoryMetadataBlock(content);
+  if (!metadataBlock) {
+    return [];
+  }
+
+  const lines = metadataBlock.split('\n');
+  const startIndex = lines.findIndex((line) => lower(line.trim()) === `${lower(fieldName)}:`);
+  if (startIndex === -1) {
+    return [];
+  }
+
+  const values: string[] = [];
+  for (let index = startIndex + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    const trimmed = line.trim();
+
+    if (trimmed.length === 0) {
+      continue;
+    }
+    if (trimmed === '[]') {
+      return [];
+    }
+    if (/^-\s+/.test(trimmed)) {
+      values.push(trimmed.replace(/^-\s+/, '').replace(/^['"]|['"]$/g, ''));
+      continue;
+    }
+    if (!/^\s/.test(line)) {
+      break;
+    }
+  }
+
+  return values.filter(Boolean);
+}
+
+function extractMemoryMetadataImportanceTier(content: string): string | null {
+  return normalizeImportanceTier(extractMemoryMetadataScalar(content, ['importance_tier']));
+}
+
+function resolveManagedImportanceTier(
+  content: string,
+  existingTier: string | null,
+  classification: ClassifiedDocument,
+  contextType: string
+): string {
+  if (classification.kind !== 'memory') {
+    return inferImportanceTier(content, existingTier, classification);
+  }
+
+  const metadataTier = extractMemoryMetadataImportanceTier(content);
+  const tableMatch = content.match(/\|\s*Importance\s*Tier\s*\|\s*([^|\n]+)\|/i);
+  const tableTier = normalizeImportanceTier(tableMatch?.[1]?.trim());
+  const resolvedSeed = metadataTier ?? tableTier ?? existingTier;
+
+  return resolveImportanceTier([classification.filePath], contextType, resolvedSeed);
+}
+
+function mutateMemoryMetadataBlock(
+  content: string,
+  updater: (yamlBody: string) => string,
+): string {
+  const metadataBlockPattern = /(## MEMORY METADATA[\s\S]*?```yaml\s*)([\s\S]*?)(\n?```)/;
+
+  return content.replace(metadataBlockPattern, (_match, prefix: string, yamlBody: string, suffix: string) => {
+    const nextYamlBody = updater(yamlBody).replace(/\s*$/u, '');
+    return `${prefix}${nextYamlBody}\n${suffix}`;
+  });
+}
+
+function upsertTopLevelYamlField(yamlBody: string, fieldName: string, replacementLines: string[]): string {
+  const lines = yamlBody.replace(/\s*$/u, '').split('\n');
+  const normalizedFieldName = lower(fieldName);
+  const startIndex = lines.findIndex((line) => lower(line.trim()).startsWith(`${normalizedFieldName}:`));
+
+  if (startIndex === -1) {
+    return [...lines, ...replacementLines].join('\n').replace(/\n{3,}$/u, '\n\n');
+  }
+
+  let endIndex = startIndex + 1;
+  while (endIndex < lines.length) {
+    const line = lines[endIndex];
+    const trimmed = line.trim();
+
+    if (trimmed.length === 0) {
+      endIndex += 1;
+      continue;
+    }
+    if (/^\s+-\s+/.test(line) || trimmed === '[]') {
+      endIndex += 1;
+      continue;
+    }
+    if (!/^\s/.test(line)) {
+      break;
+    }
+    endIndex += 1;
+  }
+
+  lines.splice(startIndex, endIndex - startIndex, ...replacementLines);
+  return lines.join('\n');
+}
+
+function syncMemoryMetadataImportanceTier(content: string, importanceTier: string): string {
+  return mutateMemoryMetadataBlock(content, (yamlBody) => (
+    upsertTopLevelYamlField(yamlBody, 'importance_tier', [`importance_tier: "${importanceTier}"`])
+  ));
+}
+
+function syncMemoryMetadataContextType(content: string, contextType: string): string {
+  return mutateMemoryMetadataBlock(content, (yamlBody) => (
+    upsertTopLevelYamlField(yamlBody, 'context_type', [`context_type: "${contextType}"`])
+  ));
+}
+
+function syncMemoryMetadataTriggerPhrases(content: string, triggerPhrases: string[] | undefined): string {
+  const resolvedTriggerPhrases = triggerPhrases && triggerPhrases.length > 0
+    ? triggerPhrases
+    : extractMemoryMetadataStringArray(content, 'trigger_phrases');
+  const replacementLines = resolvedTriggerPhrases.length > 0
+    ? ['trigger_phrases:', ...resolvedTriggerPhrases.map((triggerPhrase) => `  - "${triggerPhrase}"`)]
+    : ['trigger_phrases: []'];
+
+  return mutateMemoryMetadataBlock(content, (yamlBody) => (
+    upsertTopLevelYamlField(yamlBody, 'trigger_phrases', replacementLines)
+  ));
+}
+
 function inferContextType(
   content: string,
   existingContext: string | null,
@@ -1036,6 +1193,11 @@ function inferContextType(
   }
 
   if (classification.kind === 'memory') {
+    const metadataContext = normalizeContextType(extractMemoryMetadataScalar(content, ['context_type', 'contextType']));
+    if (metadataContext) {
+      return metadataContext;
+    }
+
     const tableMatch = content.match(/\|\s*Context\s*Type\s*\|\s*([^|\n]+)\|/i);
     const parsed = normalizeContextType(tableMatch?.[1]?.trim());
     if (parsed) {
@@ -1114,8 +1276,13 @@ export function buildManagedFrontmatter(
 
   const description = inferDescription(content, existingDescription, classification);
   const trigger_phrases = inferTriggerPhrases(title, existingTriggers, classification);
-  const importance_tier = inferImportanceTier(content, existingTier, classification);
   const contextType = inferContextType(content, existingContext, classification);
+  const importance_tier = resolveManagedImportanceTier(
+    content,
+    existingTier,
+    classification,
+    contextType
+  );
 
   return {
     title,
@@ -1221,6 +1388,12 @@ export function buildFrontmatterContent(
     content = `${originalContent.slice(0, detection.start)}${frontmatterText}${originalContent.slice(detection.end)}`;
   } else {
     content = `${frontmatterText}${originalContent}`;
+  }
+
+  if (classification.kind === 'memory') {
+    content = syncMemoryMetadataImportanceTier(content, managed.importance_tier);
+    content = syncMemoryMetadataContextType(content, managed.contextType);
+    content = syncMemoryMetadataTriggerPhrases(content, managed.trigger_phrases);
   }
 
   return {

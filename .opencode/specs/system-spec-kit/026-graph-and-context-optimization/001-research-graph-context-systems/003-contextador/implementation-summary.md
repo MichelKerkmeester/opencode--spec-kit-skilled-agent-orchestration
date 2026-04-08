@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase produced a deep, source-grounded research packet on Contextador, the Bun-based MCP query server. The headline takeaway is that Public already wins on retrieval substrate (CocoIndex semantic, Code Graph structural, Spec Kit Memory continuity), so Contextador's surviving value is runtime retrieval ergonomics, not a replacement retrieval engine. The 93% token-reduction claim is estimated from fixed constants in `external/src/lib/core/stats.ts:26-28`, not benchmarked, and the served `context` payload is narrower than the README suggests. After 13 iterations, source coverage is approximately 84.8% of files in `external/src/` and approximately 100% of non-test production source files.
+This phase produced a deep, source-grounded research packet on Contextador, the Bun-based MCP query server. The headline takeaway is that Public already wins on retrieval substrate (CocoIndex semantic, Code Graph structural, Spec Kit Memory continuity), so Contextador's surviving value is runtime retrieval ergonomics, not a replacement retrieval engine. The 93% token-reduction claim is estimated from fixed constants in `external/src/lib/core/stats.ts:26-28`, not benchmarked, and the served `context` payload is narrower than the README suggests. After the 20-iteration closeout, source coverage remained approximately 84.8% of files in `external/src/` and approximately 100% of non-test production source files, with the extension pass focused on question closure rather than broader production-file discovery.
 
 ### Source-grounded research output
 
@@ -39,7 +39,7 @@ Thirteen cli-codex (gpt-5.4, model_reasoning_effort=high) iterations executed th
 
 ### 18 evidence-backed findings
 
-`research/research.md` v2 consolidates the iteration outputs into 18 findings, each with the phase prompt's required schema (source evidence, evidence type, what Contextador does, why it matters for Public, affected subsystem, recommendation, cross-phase ownership note, risk/ambiguity). Recommendations are: 3 adopt now, 9 prototype later, 6 reject. Every finding cites concrete file paths and line ranges in `external/src/`. Iterations 9 and 10 upgraded several findings from source-proven to test-confirmed at the branch level. Iterations 9, 10, 11, 12, and 13 added new findings for the budget subsystem, the github automation pipeline, and the closing core helper sweep.
+`research/research.md` consolidates the iteration outputs into 18 findings, each with the phase prompt's required schema (source evidence, evidence type, what Contextador does, why it matters for Public, affected subsystem, recommendation, cross-phase ownership note, risk/ambiguity). Recommendations are: 3 adopt now, 9 prototype later, 6 reject. Every finding cites concrete file paths and line ranges in `external/src/`. Iterations 9-13 deepened subsystem coverage, and iterations 14-20 converted the packet into an explicit question-closure and adoption-boundary closeout across all 12 tracked research questions.
 
 ### Cross-comparison and cross-phase boundary tables
 
@@ -52,7 +52,7 @@ Thirteen cli-codex (gpt-5.4, model_reasoning_effort=high) iterations executed th
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The phase ran the autonomous sk-deep-research loop with cli-codex (gpt-5.4 high) preferred for every iteration. Codex was invoked via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --sandbox workspace-write --skip-git-repo-check -` with prompts piped via stdin from temporary prompt files under /tmp. After each iteration, the reducer script `node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs` synchronized findings-registry.json, the strategy file, and the dashboard file. The final synthesis pass also ran via cli-codex and replaced the placeholder research output with the canonical 17-section synthesis. Zero internal `@deep-research` fallback was required; cli-codex completed all 8 iterations and the synthesis pass cleanly.
+The phase ran the autonomous sk-deep-research loop with cli-codex (gpt-5.4 high) preferred for the primary research pass. Codex was invoked via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --sandbox workspace-write --skip-git-repo-check -` with prompts piped via stdin from temporary prompt files under `/tmp`. After each iteration, the reducer script `node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs` synchronized findings-registry.json, the strategy file, and the dashboard file. The packet then received a local extension from 13 to 20 total iterations, closing every tracked question, refreshing reducer-owned artifacts, and updating the canonical synthesis. Zero internal `@deep-research` fallback was required across the full lineage.
 
 Validation guardrails ran before any research started: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh ... --strict` was executed and iterated until 0 errors and 0 warnings, after which the deep-research loop began. After synthesis, the same `validate.sh --strict` was re-run for final compliance.
 <!-- /ANCHOR:how-delivered -->
@@ -68,7 +68,7 @@ Validation guardrails ran before any research started: `bash .opencode/skill/sys
 | cli-codex (gpt-5.4, high) for every iteration | User explicitly requested cli-codex gpt-5.4 high agents wherever possible; gpt-5.4 high provides the strongest reasoning depth for source-grounded code analysis |
 | Internal `@deep-research` retained as documented fallback | Resilience if Codex CLI failed mid-loop; in practice fallback was not needed |
 | Run validate.sh --strict before AND after research | Phase prompt §5 step 12 explicitly requires the strict validation; running it twice catches scaffolding regressions and synthesis-time integrity drift |
-| Synthesize via cli-codex rather than inline | Codex has direct access to all 8 iteration files plus the external sources for spot-citation verification, and can produce a 17-section markdown deliverable in a single pass |
+| Synthesize via Codex-backed closeout rather than inline manual editing | The packet needed a source-aware synthesis refresh that could reconcile the original cli-codex pass with the later 20-iteration extension and keep citations aligned |
 | Treat the 93% token-reduction headline as estimated, not benchmarked | `external/src/lib/core/stats.ts:26-28` uses fixed-constant averages rather than per-query measurement, so the README number is best understood as an aggregate estimate |
 <!-- /ANCHOR:decisions -->
 
@@ -80,10 +80,10 @@ Validation guardrails ran before any research started: `bash .opencode/skill/sys
 | Check | Result |
 |-------|--------|
 | validate.sh --strict on phase folder before research | PASSED, 0 errors and 0 warnings (17 of 17 checks) |
-| 13 cli-codex iterations executed under tool-call budget | PASSED, all 13 iterations stayed within or near target 8 / max 12 (iterations 9, 10, 13 used the upper end at 12, 12, 14) |
-| Reducer ran after every iteration | PASSED, 13 reducer runs recorded |
-| Convergence detected | Original 8-iteration loop converged at ratio 0.24; user extended maxIterations to 13 and ran 5 more covering untraced areas |
-| research/research.md contains ≥5 evidence-backed findings | PASSED, v2 contains 18 findings |
+| 20 total iterations completed with bounded closeout scope | PASSED, the packet reached 20 of 20 iterations and the extension runs were explicitly limited to question closure and final boundary validation |
+| Reducer synchronization kept registry/dashboard/strategy current | PASSED, reducer-owned artifacts now report the full 20-iteration lineage and final synthesis state |
+| Convergence detected | Original 8-iteration loop converged at ratio 0.24; the user then extended the lineage to 13 and finally 20 total iterations, with the last 7 runs dedicated to explicit question closure and adoption-boundary validation |
+| research/research.md contains ≥5 evidence-backed findings | PASSED, the canonical synthesis contains 18 findings |
 | Each finding labeled adopt now / prototype later / reject | PASSED, all 18 findings labeled |
 | Each finding states evidence type | PASSED, all findings carry source-proven, README-documented, both, or inferred labels |
 | 93% token-reduction claim verified against stats.ts | PASSED, finding 10 documents the estimate-vs-benchmark gap |
@@ -92,7 +92,7 @@ Validation guardrails ran before any research started: `bash .opencode/skill/sys
 | No edits made under external/ | PASSED, sandbox restrictions plus prompt enforcement held |
 | No edits made outside the phase folder | PASSED, all writes confined to 003-contextador/ |
 | checklist.md updated with evidence | PASSED, all P0 items marked with evidence |
-| Memory saved via generate-context.js | PENDING (final step) |
+| Memory saved via generate-context.js | PASSED, latest artifact `memory/08-04-26_08-11__extended-the-003-contextador-deep-research-packet.md` is present and indexed |
 <!-- /ANCHOR:verification -->
 
 ---

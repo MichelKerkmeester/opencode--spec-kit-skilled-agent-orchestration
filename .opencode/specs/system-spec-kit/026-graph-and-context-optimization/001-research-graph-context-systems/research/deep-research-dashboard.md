@@ -1,8 +1,8 @@
 # Deep Research Dashboard — Master Consolidation
 
-**Last updated:** 2026-04-07T12:30:00Z (post-iter-18, **RIGOR LANE COMPLETE**)
-**Status:** ✅ **COMPLETE** — 18 iterations, v1 + v2 deliverables landed, verdict **with-caveats** (1 retag nit on registry)
-**Iteration:** 2 / 12 complete + 1 in flight
+**Last updated:** 2026-04-08T08:17:02Z (canonical root refresh after the `002-codesight`, `003-contextador`, `004-graphify`, and `005-claudest` 20-iteration closeouts, plus bounded `006-research-memory-redundancy` follow-on visibility sync)
+**Status:** ✅ **COMPLETE** — 18 master iterations complete, the 002-005 closeout feed-ins are reflected in the canonical root synthesis, the derivative `006-research-memory-redundancy` follow-on is now visible in the continuity lane without changing the capability matrix, superseded snapshots are archived under `research/archive/`, and validation still **STRICT-FAILED WITH WARNINGS** from known decision-record anchor deviations outside the synced research files
+**Iteration:** 18 / 18 complete; canonical refresh applied
 
 ---
 
@@ -16,15 +16,17 @@
 | Convergence flag | **CONVERGED** (v1: question-coverage + composite; v2: rigor-lane stable) |
 | Gaps closed (after iter-10 re-attempt) | 20 closed / 4 partial / 2 UNKNOWN-confirmed of 26 |
 | Cross-phase questions answered | **6 / 6 ✓** + **4 new patterns** (iter-15) |
-| Findings registry v1 / v2 | 65 / **88** (+23 new, 65 amended) |
-| Recommendations v1 / v2 | 10 / 10 (5 keep / 4 downgrade / 1 replace) |
-| Killer combos v1 / v2 | 3 / 2 (Combo 3 falsified by iter-12 stress-test) |
-| Citations in research-v2.md | (validates clean of phase-N/ literal paths) |
+| Current findings registry | **98** (promoted from the rigor-lane registry snapshot into `findings-registry.json`) |
+| Current recommendations | 10 ranked (5 keep / 4 downgrade / 1 replace; no top-level rank-order change after the 002-005 closeout feed-ins) |
+| Killer combos | 2 surviving / 1 falsified (Combo 3 failed the iter-12 stress-test) |
+| Canonical research citations | current `research.md` remains the citation-clean rigor-lane synthesis, now with 002-005 closeout framing folded in |
 | Public moats identified (iter-13) | 8 |
 | Public hidden prereqs (iter-13) | 11 |
 | Effort corrections (iter-14) | 5 under-sized + 1 over-sized + 2 speculative |
 | Tokens spent (codex total) | ~3.45M (1.87M v1 + 1.58M rigor lane) |
-| Validation verdict (iter-18) | **with-caveats** (1 registry tag nit; v2 narrative + recs clean) |
+| Post-closeout feed-in | `002-codesight`, `003-contextador`, `004-graphify`, and `005-claudest` now 20 / 20; tightened projection-lane boundaries, ergonomics-vs-substrate boundary, additive graph enrichment guidance, and the Claudest six-packet train with no master verdict reversal |
+| Follow-on sync | `006-research-memory-redundancy` now visible from the root as a derivative continuity-lane clarification packet; `cross-phase-matrix.md` intentionally unchanged |
+| Validation verdict (post-sync) | **STRICT FAILED WITH WARNINGS** (0 errors, 3 warning groups; known non-blocking anchor deviations in parent, `001`, and `002` decision records outside the synced research files) |
 
 ## Cross-phase questions
 
@@ -57,14 +59,26 @@
 | iterations/q-d-adoption-sequencing.md | ✅ done (15KB) |
 | iterations/q-f-killer-combos.md | ✅ done (10KB) |
 | iterations/iteration-7.md | ✅ done |
-| research.md | ✅ done (46KB, 6,015 words, 11 sections, 125 citations) |
-| findings-registry.json | ✅ done (43KB, 65 findings) |
-| recommendations.md | ✅ done (10KB, 10 ranked) |
+| research.md | ✅ current canonical synthesis (promoted from the rigor-lane snapshot and refreshed with 002-005 closeout framing) |
+| findings-registry.json | ✅ current canonical registry (98 findings, promoted from the rigor-lane snapshot) |
+| recommendations.md | ✅ current canonical recommendations (10 ranked; 002-005 closeout note folded in) |
+| 006-research-memory-redundancy/research/research.md | ✅ derivative child-packet authority referenced from the root continuity lane |
 | iterations/iteration-8.md | ✅ done |
-| cross-phase-matrix.md | pending iter-4 |
-| research.md | pending iter-8 |
-| findings-registry.json | pending iter-8 |
-| recommendations.md | pending iter-8 |
+| research/archive/ | ✅ done (v1, pre-CodeSight-closeout rigor snapshot, and diff note archived out of the root folder) |
+| dashboard sync note | ✅ done (master packet status refreshed after the canonical-file cleanup and child-phase closeouts) |
+
+## Post-closeout sync
+
+- 2026-04-08: folded the `002-codesight` packet's 20-iteration closeout into the canonical root synthesis and recommendations without re-opening the master packet or changing the top-10 ordering.
+- Net effect: stronger evidence for unified scan projection, conditional artifact emission, namespaced per-tool overlay patterns, and detector fixture discipline; stronger rejection of repo-mutating automation, cold-query side effects, breadcrumb-grade detector outputs as authority surfaces, and HTML as a priority feature.
+- 2026-04-08: folded the `003-contextador` packet's 20-iteration closeout into the active v2 synthesis, recommendations, and registry without re-opening the master packet or changing the top-10 ordering.
+- Net effect: stronger evidence for bootstrap/setup ergonomics, bounded local budget gates, and scoped automation patterns; stronger rejection of pointer-first delivery, Mainframe governance as-is, and helper-surface overclaiming.
+- 2026-04-08: folded the `004-graphify` packet's 20-iteration Public-translation closeout into the active v2 synthesis, recommendations, and registry without re-opening the master packet or changing the top-10 ordering.
+- Net effect: tighter graph-lane guidance around additive payload and bridge enrichment, layered graph-first nudges in existing runtime surfaces, local-file-only multimodal scope, optional later clustering, and explicit rejection of subsystem replacement.
+- 2026-04-08: folded the `005-claudest` packet's 20-iteration execution-ready continuation into the active v2 synthesis and recommendations without re-opening the master packet or changing the top-10 ordering.
+- Net effect: the Claudest lane now has explicit packet order and acceptance gates: FTS helper/tests, Stop-hook metadata patch, normalized analytics reader, cached-summary fast path, verifier/discoverer workflow split, then token-insight contracts.
+- 2026-04-08: folded the derivative `006-research-memory-redundancy` follow-on into the root visibility surfaces without re-opening the master packet, re-scoring the capability matrix, or changing the top-10 ordering.
+- Net effect: the continuity lane now carries an explicit compact-wrapper contract for persisted or cached summary artifacts, while canonical packet narrative remains owned by `decision-record.md` and `implementation-summary.md`.
 
 ## Recent iterations
 
@@ -86,5 +100,5 @@
 | 14 | ✅ complete | 2026-04-07T11:50:21Z | codex/gpt-5.4/high | 21 evaluated: 13 accurate / 5 under-sized / 1 over-sized / 2 speculative |
 | 15 | ✅ complete | 2026-04-07T11:59:21Z | codex/gpt-5.4/high | 4 new patterns: precision laundering / seam-early validation / freshness-authority debt / contract-seam cost concentration |
 | 16 | ✅ complete | 2026-04-07T12:03:45Z | codex/gpt-5.4/high | 5 keep / 4 downgrade / 1 replace / 0 remove; 1 fatal counter (R10/Combo 3 trust collision) |
-| 17 | ✅ complete | 2026-04-07T12:19:37Z | codex/gpt-5.4/high | V2 assembled: research-v2.md (8576w/13sec), registry-v2 (88), recs-v2 (10); validation passed |
-| 18 | ✅ complete | 2026-04-07T12:26:14Z | codex/gpt-5.4/high | Final validation: research-v2 + recs-v2 PASS, registry-v2 FAIL on 1 tag-taxonomy nit; v2 verdict with-caveats; RIGOR_LANE_COMPLETE |
+| 17 | ✅ complete | 2026-04-07T12:19:37Z | codex/gpt-5.4/high | Rigor-lane synthesis assembled; later promoted into the canonical root files after archival cleanup |
+| 18 | ✅ complete | 2026-04-07T12:26:14Z | codex/gpt-5.4/high | Final rigor-lane validation: synthesis and recommendations passed; registry had 1 tag-taxonomy nit; verdict with caveats |

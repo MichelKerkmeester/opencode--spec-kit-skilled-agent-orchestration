@@ -1,12 +1,5 @@
 {
-  "openQuestions": [
-    {
-      "id": "question-10-q10-which-claudest-ideas-are-implementation-backed-and-ready-to-borrow-adopt-now",
-      "text": "Q10: Which Claudest ideas are implementation-backed and ready to borrow (`adopt now`), which need prototyping because they depend on Claude-specific local JSONL formats or plugin runtime behavior (`prototype later`), and which should be rejected because Public already covers the capability another way (`reject`)?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    }
-  ],
+  "openQuestions": [],
   "resolvedQuestions": [
     {
       "id": "question-1-q1-how-does-claudest-s-plugin-discovery-model-actually-work-from-external-claude",
@@ -61,6 +54,60 @@
       "text": "Q9: How do plugin versioning and auto-update work in practice, including root marketplace manifests, per-plugin manifests, and the `/plugin` marketplace auto-update flow? Preserve any version discrepancies between root and plugin-local manifests.",
       "addedAtIteration": 0,
       "resolvedAtIteration": 1
+    },
+    {
+      "id": "question-10-q10-which-claudest-ideas-are-implementation-backed-and-ready-to-borrow-adopt-now",
+      "text": "Q10: Which Claudest ideas are implementation-backed and ready to borrow (`adopt now`), which need prototyping because they depend on Claude-specific local JSONL formats or plugin runtime behavior (`prototype later`), and which should be rejected because Public already covers the capability another way (`reject`)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-11-q11-what-is-the-smallest-accurate-fts-capability-helper-contract-public-should-a",
+      "text": "Q11: What is the smallest accurate FTS capability helper contract Public should add before importing more of Claudest's recall cascade?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 13
+    },
+    {
+      "id": "question-12-q12-what-forced-degrade-test-matrix-proves-the-fts-portability-lane-without-over",
+      "text": "Q12: What forced-degrade test matrix proves the FTS portability lane without overstating current Public support?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 14
+    },
+    {
+      "id": "question-13-q13-what-bounded-stop-hook-metadata-patch-is-required-before-normalized-analytic",
+      "text": "Q13: What bounded Stop-hook metadata patch is required before normalized analytics can be made durable?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 15
+    },
+    {
+      "id": "question-14-q14-what-reader-owned-replay-schema-and-idempotency-keys-best-translate-claudest",
+      "text": "Q14: What reader-owned replay schema and idempotency keys best translate Claudest's analytics model into Public's current hook-state reality?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 16
+    },
+    {
+      "id": "question-15-q15-where-exactly-should-the-cached-summary-fast-path-land-in-public-s-existing-",
+      "text": "Q15: Where exactly should the cached-summary fast path land in Public's existing SessionStart and startup-brief surfaces?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 17
+    },
+    {
+      "id": "question-16-q16-how-should-claudest-s-verifier-discoverer-split-be-translated-into-public-s-",
+      "text": "Q16: How should Claudest's verifier/discoverer split be translated into Public's existing signal extraction and post-save review seams?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 18
+    },
+    {
+      "id": "question-17-q17-which-token-observability-contracts-are-portable-now-once-public-has-a-norma",
+      "text": "Q17: Which token-observability contracts are portable now once Public has a normalized reader, and which Claudest fields should stay presentation-only?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 19
+    },
+    {
+      "id": "question-18-q18-what-is-the-dependency-ordered-roadmap-and-acceptance-gate-sequence-for-turn",
+      "text": "Q18: What is the dependency-ordered roadmap and acceptance-gate sequence for turning the Claudest research into Public implementation packets?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 20
     }
   ],
   "keyFindings": [
@@ -1687,6 +1734,683 @@
         "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
         "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`"
       ]
+    },
+    {
+      "id": "finding-13-5-caller-migration-should-be-narrow-hybrid-search-ts-and-graph-search-fn-ts-should",
+      "text": "Caller migration should be narrow. `hybrid-search.ts` and `graph-search-fn.ts` should stop probing `sqlite_master` directly and instead receive typed backend information from the helper; no other search callers need to move in the first packet. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:454-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts:102-109]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-1-public-already-has-the-query-primitive-but-not-the-capability-contract-fts5bm25s",
+      "text": "Public already has the query primitive but not the capability contract. `fts5Bm25Search()` owns the weighted MATCH plus BM25 query and swallows runtime failures to `[]`, while `isFts5Available()` only checks whether `memory_fts` exists in `sqlite_master`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:48-145]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-3-public-still-provisions-only-memory-fts-using-fts5-so-the-safe-helper-contract-c",
+      "text": "Public still provisions only `memory_fts USING fts5`, so the safe helper contract cannot promise an FTS4 execution lane today. Any helper that reports `fts4_match` as a live backend would be overstating current schema reality. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-6-the-packet-boundary-is-now-explicit-first-packet-helper-caller-migration-backend",
+      "text": "The packet boundary is now explicit: first packet = helper + caller migration + backend metadata + degrade tests. Schema expansion for a real FTS4 lane is a separate, opt-in stretch. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-2-the-same-table-existence-probe-is-duplicated-in-two-consumers-hybrid-search-ts-c",
+      "text": "The same table-existence probe is duplicated in two consumers. `hybrid-search.ts` carries `isFtsAvailable()` and `graph-search-fn.ts` carries `isFtsTableAvailable()`, so the current portability story is spread across three files with slightly different semantics. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts:63-109]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-4-the-smallest-safe-helper-is-therefore-a-lexical-capability-descriptor-not-anothe",
+      "text": "The smallest safe helper is therefore a lexical capability descriptor, not another search wrapper: `{ compileSupport, tablePresent, bm25Usable, backend, degradeReason }`, returned from one shared location in `sqlite-fts.ts` and consumed by both lexical and graph search paths before they branch. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:48-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts:63-109]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-14-5-fts4-match-must-stay-out-of-the-default-matrix-public-does-not-create-an-alterna",
+      "text": "`fts4_match` must stay out of the default matrix. Public does not create an alternate FTS4 table today, so testing it as a live execution tier would blur design intent with unimplemented schema. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-14-1-current-tests-cover-only-the-happy-path-and-the-table-missing-gate-sqlite-fts-vi",
+      "text": "Current tests cover only the happy path and the \"table missing\" gate. `sqlite-fts.vitest.ts` proves `isFts5Available()` table detection, BM25 scoring, archive filtering, empty-query handling, and sort order, but it does not exercise compile-level or runtime forced-degrade scenarios. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:60-145]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-14-2-the-first-required-forced-degrade-case-is-table-missing-because-that-is-the-only",
+      "text": "The first required forced-degrade case is \"table missing,\" because that is the only absence the current helper can truly observe. That case already exists in test form and should be preserved as the lowest-risk baseline when the helper grows. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:65-68]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-14-4-the-fourth-case-is-compile-probe-miss-but-that-is-only-meaningful-after-the-help",
+      "text": "The fourth case is compile-probe miss, but that is only meaningful after the helper grows beyond `sqlite_master` probing. This test belongs in the packet as a fake capability-helper branch, not as a schema fixture. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:123-135]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-14-3-the-second-and-third-cases-belong-to-runtime-failures-not-schema-assertions-no-s",
+      "text": "The second and third cases belong to runtime failures, not schema assertions: `no such module: fts5` and `unable to use function bm25`. Those failures currently collapse to `[]` inside `fts5Bm25Search()`, which means the next packet should add explicit degrade metadata instead of silently depending on empty-result semantics. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`"
+      ]
+    },
+    {
+      "id": "finding-15-6-claudesessionid-remains-the-safe-primary-session-key-the-stop-hook-does-not-popu",
+      "text": "`claudeSessionId` remains the safe primary session key. The Stop hook does not populate `speckitSessionId` today, so the metadata patch should treat that field as nullable follow-on work instead of trying to fix two join contracts at once. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:16-19] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:166-171]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-15-4-the-bounded-producer-patch-is-therefore-metadata-only-extend-hookstate-metrics-t",
+      "text": "The bounded producer patch is therefore metadata-only: extend `HookState.metrics` to keep cache-read/cache-write tokens, persist `transcriptPath`, and persist one replay identity marker (`transcriptSizeBytes`, fingerprint, or equivalent high-water field) alongside the existing `lastTranscriptOffset`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-216]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-15-2-the-persisted-state-is-still-too-thin-for-analytics-replay-hookstate-metrics-sto",
+      "text": "The persisted state is still too thin for analytics replay. `HookState.metrics` stores only prompt tokens, completion tokens, and `lastTranscriptOffset`, while `speckitSessionId` defaults to an empty string and no transcript identity is retained. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:162-180]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-15-1-the-stop-hook-already-sees-the-right-raw-inputs-hookinput-includes-session-id-tr",
+      "text": "The Stop hook already sees the right raw inputs. `HookInput` includes `session_id`, `transcript_path`, `stop_hook_active`, and `last_assistant_message`, and `session-stop.ts` already uses `transcript_path` to replay transcript JSONL incrementally. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:12-22] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:179-223]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-15-3-the-transcript-parser-is-already-collecting-the-missing-cache-fields-but-the-sto",
+      "text": "The transcript parser is already collecting the missing cache fields, but the Stop hook drops them. `parseTranscript()` aggregates `cacheCreationTokens` and `cacheReadTokens`; `storeTokenSnapshot()` and the later `updateState()` call persist only prompt/completion plus offset. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:21-30] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:149-166] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:205-216]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-15-5-this-stays-aligned-with-the-original-packet-boundary-024-003-explicitly-chose-ho",
+      "text": "This stays aligned with the original packet boundary. `024/003` explicitly chose hook-state JSON over a new SQLite writer and documented that its current cost estimate omits cache pricing and cross-session queryability, so the safe next packet is additive metadata plus a reader-owned replay model. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-1-claudesessionid-is-the-only-currently-trustworthy-session-key-it-is-read-from-st",
+      "text": "`claudeSessionId` is the only currently trustworthy session key. It is read from stdin, persisted in hook state, and reused across Stop-hook updates; `speckitSessionId` exists in the type but is not filled by the Stop hook. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:191-216] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:16-19] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:166-171]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-2-lasttranscriptoffset-is-a-session-replay-checkpoint-not-a-turn-identifier-parset",
+      "text": "`lastTranscriptOffset` is a session replay checkpoint, not a turn identifier. `parseTranscript()` returns only aggregate usage and `newOffset=fileSize`, so a future reader cannot key individual turns from that field alone. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-6-model-pricing-versioned-and-cache-tier-normalized-reader-owned-lookup-tables-so-",
+      "text": "`model_pricing_versioned` and `cache_tier_normalized`: reader-owned lookup tables so cost logic can evolve without mutating hook-state history. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:73-80] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:40-84]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-4-sessions-one-row-per-claudesessionid-plus-latest-persisted-transcript-identity-s",
+      "text": "`sessions`: one row per `claudeSessionId`, plus latest persisted transcript identity, spec-folder hint, summary, and aggregate usage totals.",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-5-turns-replay-derived-rows-keyed-by-claude-session-id-transcript-path-byte-start-",
+      "text": "`turns`: replay-derived rows keyed by `(claude_session_id, transcript_path, byte_start)` or `(claude_session_id, transcript_path, line_no)`.",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-7-idempotency-should-be-proven-by-replaying-the-same-transcript-twice-first-ingest",
+      "text": "Idempotency should be proven by replaying the same transcript twice: first ingestion creates one `sessions` row and N `turns`; second ingestion updates replay checkpoint metadata but does not duplicate the prior turn rows. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:197-216] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:72-118]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-8-the-portable-contract-from-claudest-is-the-normalized-reporting-surface-not-the-",
+      "text": "The portable contract from Claudest is the normalized reporting surface, not the HTML shell. Once Public has the reader-owned schema above, it can safely add spend, usage, hook-latency, and recommendation contracts without copying presentation code. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:40-84] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-9-the-reader-packet-should-explicitly-state-that-cache-token-fields-are-optional-u",
+      "text": "The reader packet should explicitly state that cache token fields are optional until the producer patch lands, but the schema must already have room for them so historical backfill does not require another migration. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:23-30] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:54-80]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-16-3-the-safe-additive-schema-is-therefore-split-by-ownership",
+      "text": "The safe additive schema is therefore split by ownership:",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-17-1-public-already-separates-startup-resume-clear-and-compact-routing-session-prime-",
+      "text": "Public already separates startup, resume, clear, and compact routing. `session-prime.ts` dispatches per source and uses startup/resume as tool-guidance and continuity surfaces, not as active retrieval calls. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:85-168]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`"
+      ]
+    },
+    {
+      "id": "finding-17-3-that-means-the-safest-claudest-style-import-is-a-cached-summary-augmentation-on-",
+      "text": "That means the safest Claudest-style import is a cached-summary augmentation on `resume` and `compact`, plus an optional startup brief hint when a fresh deterministic summary is available. It should not replace the current instruction to call `memory_context({ input: \"resume previous work\", mode: \"resume\", profile: \"resume\" })`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:66-83] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:140-167]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`"
+      ]
+    },
+    {
+      "id": "finding-17-2-the-current-startup-brief-is-intentionally-shallow-buildstartupsurface-says-sess",
+      "text": "The current startup brief is intentionally shallow. `buildStartupSurface()` says \"session continuity available\" or \"startup summary only (resume on demand),\" and `buildSessionContinuity()` only emits `lastSpecFolder` plus a truncated `sessionSummary`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts:88-129] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts:179-193]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`"
+      ]
+    },
+    {
+      "id": "finding-17-4-the-producer-seam-for-that-cached-summary-is-already-nearby-generatecontextsumma",
+      "text": "The producer seam for that cached summary is already nearby. `generateContextSummary()` and `buildContinueSessionData()` create bounded summary structures in the script layer, so Public can compute a deterministic \"resume brief\" at save time instead of building a new LLM summarizer. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:572-683]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`"
+      ]
+    },
+    {
+      "id": "finding-17-5-this-preserves-the-explicit-design-from-024-002-startup-remains-a-lightweight-or",
+      "text": "This preserves the explicit design from `024/002`: startup remains a lightweight orientation surface, resume remains explicit, clear stays minimal, and compact keeps the cached payload path. The improvement is simply that the continuity summary becomes richer and cheaper to inject. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md:68-83]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-7-decision-extraction-should-stay-on-the-discovery-side-extractdecisions-is-still-",
+      "text": "Decision extraction should stay on the discovery side. `extractDecisions()` is still about candidate harvesting and precedence, not about confirming whether the rendered memory artifact truthfully reflects the input payload. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts:182-388]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-4-discoverer-lane-semantic-extraction-plus-ranked-proposal-generation-from-session",
+      "text": "discoverer lane = semantic extraction plus ranked proposal generation from session data;",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-1-public-already-has-a-discovery-substrate-phase-022-008-signal-extraction-central",
+      "text": "Public already has a discovery substrate. Phase `022/.../008-signal-extraction` centralized semantic extraction, stopword filtering, n-gram scoring, and ranked signal output into one shared script-side contract, which is the natural home for a discoverer-style lane. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md:35-54]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-2-public-already-has-a-verification-substrate-too-reviewpostsavequality-compares-t",
+      "text": "Public already has a verification substrate too. `reviewPostSaveQuality()` compares the saved artifact against the original payload and emits HIGH/MEDIUM/LOW issues for title, trigger phrases, tier mismatches, missing decisions, and generic descriptions. That is the right starting point for an auditor-style lane. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:208-360]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-8-the-public-packet-boundary-becomes-sharper-do-not-create-a-new-auditor-subsystem",
+      "text": "The Public packet boundary becomes sharper: do not create a new \"auditor subsystem\" first. Instead, add a proposal phase above the current save path, let post-save review and narrow fact checks serve as the verifier, and keep mutation in the existing workflow. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:212-360]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-3-the-split-should-therefore-be-operational-not-organizational",
+      "text": "The split should therefore be operational, not organizational:",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-9-this-also-keeps-the-placement-rubric-insight-from-claudest-discovery-should-prop",
+      "text": "This also keeps the placement-rubric insight from Claudest. Discovery should propose candidate memory placement and wording; verification should reject noisy or contradictory proposals before they reach a writer. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md:49-54]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-5-verifier-lane-post-save-review-plus-targeted-factual-checks-on-the-candidate-out",
+      "text": "verifier lane = post-save review plus targeted factual checks on the candidate output and its metadata;",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-6-writer-lane-existing-save-workflow-once-both-prior-lanes-agree-source-users-mich",
+      "text": "writer lane = existing save workflow once both prior lanes agree. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md:37-40] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:240-360]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts`",
+        "`.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-5-agent-delegation",
+      "text": "`agent_delegation`",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-7-findings",
+      "text": "`findings`",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-6-hook-performance",
+      "text": "`hook_performance`",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-8-recommendations",
+      "text": "`recommendations`",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-4-skill-usage",
+      "text": "`skill_usage`",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-3-trends",
+      "text": "`trends`",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-9-cache-tier-pricing-is-the-highest-leverage-sub-contract-public-s-current-stop-ho",
+      "text": "Cache-tier pricing is the highest-leverage sub-contract. Public's current Stop-hook packet explicitly says cost estimation omits cache pricing, so the analytics reader should elevate cache-read/cache-write costs to first-class fields before any dashboard or recommendations layer depends on them. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:95-106]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-10-hook-latency-and-surfaced-token-counts-are-already-aligned-enough-to-be-carried-",
+      "text": "Hook latency and surfaced token counts are already aligned enough to be carried forward. `response-hints.ts` attaches `latencyMs` and aggregate token counts to auto-surfaced payloads, which makes `hook_performance` a realistic early contract once session/turn normalization exists. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:111-128]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-11-presentation-remains-out-of-scope-the-portable-layer-is-typed-json-payloads-and-",
+      "text": "Presentation remains out of scope. The portable layer is typed JSON payloads and documented field semantics; any HTML, charting, theme, or widget layer should come later and be designed around Public's own product surface. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:86-133]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-1-public-already-exposes-the-beginnings-of-a-token-contract-response-hints-ts-can-",
+      "text": "Public already exposes the beginnings of a token contract. `response-hints.ts` can aggregate prompt, completion, cache-creation, cache-read, and total tokens from surfaced envelopes and attach `tokenCount` metadata, which means the future analytics reader does not start from zero. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:40-84] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:122-133]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-19-2-the-portable-contract-set-remains-the-same-as-the-earlier-claudest-synthesis-but",
+      "text": "The portable contract set remains the same as the earlier Claudest synthesis, but generation 2 can now state the dependency explicitly:",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts`",
+        "`.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md`"
+      ]
+    },
+    {
+      "id": "finding-20-1-packet-1-fts-capability-helper-and-degrade-tests-entry-condition-keep-scope-to-t",
+      "text": "**Packet 1: FTS capability helper and degrade tests.** Entry condition: keep scope to the shared helper, two caller migrations, backend metadata, and the forced-degrade matrix (compile-probe miss, missing table, `no such module: fts5`, BM25 runtime failure). Acceptance gate: `sqlite-fts.vitest.ts` proves helper truthfulness and deterministic LIKE fallback without promising an FTS4 execution tier. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-013.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-014.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-2-packet-2-stop-hook-metadata-patch-entry-condition-preserve-024-003-s-producer-bo",
+      "text": "**Packet 2: Stop-hook metadata patch.** Entry condition: preserve `024/003`'s producer boundary while persisting transcript identity, cache token fields, and replay metadata in hook state. Acceptance gate: repeated Stop fires advance replay state monotonically and retain the new metadata without changing current autosave or summary behavior. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-015.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-3-packet-3-normalized-analytics-reader-entry-condition-packet-2-metadata-exists-ac",
+      "text": "**Packet 3: normalized analytics reader.** Entry condition: packet 2 metadata exists. Acceptance gate: replaying the same transcript twice yields one `sessions` row, stable aggregate totals, and idempotent `turns` rows keyed by transcript identity plus offset/line position. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-016.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-4-packet-4-sessionstart-cached-summary-fast-path-entry-condition-reuse-current-sou",
+      "text": "**Packet 4: SessionStart cached-summary fast path.** Entry condition: reuse current source-aware routing and deterministic summary generation; no new recovery system. Acceptance gate: `resume` and `compact` surfaces gain richer cached summaries while `startup` and `clear` remain bounded and `memory_context(...resume...)` stays canonical. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-017.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-5-packet-5-discoverer-verifier-workflow-split-entry-condition-discovery-proposals-",
+      "text": "**Packet 5: discoverer/verifier workflow split.** Entry condition: discovery proposals and verification checks are separated in the workflow, not introduced as parallel storage systems. Acceptance gate: proposal generation runs before mutation, post-save review can reject noisy output, and final writes remain scoped to the current save workflow. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-018.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-6-packet-6-token-insight-contracts-entry-condition-analytics-reader-exists-so-cont",
+      "text": "**Packet 6: token-insight contracts.** Entry condition: analytics reader exists so contract fields are queryable. Acceptance gate: Public emits documented JSON contracts (`trends`, `skill_usage`, `agent_delegation`, `hook_performance`, `findings`, `recommendations`) with cache pricing and surfaced token counts, while presentation remains a separate concern. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-019.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-8-the-only-intentional-deferrals-are-still-the-same-marketplace-runtime-packaging-",
+      "text": "The only intentional deferrals are still the same: marketplace runtime packaging, branch-ranked recall schema, and dashboard presentation chrome. Those remain outside the first implementation train. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:545-552]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-7-the-roadmap-now-explains-why-research-can-stop-every-remaining-ambiguity-is-impl",
+      "text": "The roadmap now explains why research can stop. Every remaining ambiguity is implementation-scoped, not discovery-scoped, and every lane has a bounded first packet with a defined gate. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-013.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-019.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
     }
   ],
   "ruledOutDirections": [
@@ -1869,16 +2593,96 @@
       "id": "ruled-out-12-3-treating-speckitsessionid-as-the-primary-analytics-join-key-the-stop-hook-does-n",
       "text": "Treating `speckitSessionId` as the primary analytics join key. The Stop hook does not populate it today, so the reliable current key remains `claudeSessionId`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:162-180]",
       "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-13-1-no-new-dead-end-path-occurred-the-main-correction-was-shrinking-the-vague-port-c",
+      "text": "No new dead-end path occurred. The main correction was shrinking the vague \"port Claudest fallback\" story into one concrete helper contract and two concrete caller migrations. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:123-145]",
+      "addedAtIteration": 13
+    },
+    {
+      "id": "ruled-out-13-2-treating-the-helper-as-a-broad-rewrite-of-the-whole-search-stack-the-current-evi",
+      "text": "Treating the helper as a broad rewrite of the whole search stack. The current evidence supports a narrow capability contract plus caller migration, not a lexical subsystem rewrite. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478]",
+      "addedAtIteration": 13
+    },
+    {
+      "id": "ruled-out-14-2-adding-an-fts4-happy-path-test-to-prove-portability-that-would-validate-a-lane-t",
+      "text": "Adding an FTS4 happy-path test to \"prove portability.\" That would validate a lane the current schema does not support. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]",
+      "addedAtIteration": 14
+    },
+    {
+      "id": "ruled-out-14-1-no-new-dead-end-path-occurred-the-correction-was-simply-distinguishing-helper-br",
+      "text": "No new dead-end path occurred. The correction was simply distinguishing helper-branch tests from schema-backed execution tests. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:60-145]",
+      "addedAtIteration": 14
+    },
+    {
+      "id": "ruled-out-15-1-no-new-dead-end-path-occurred-the-main-correction-was-refusing-to-treat-ephemera",
+      "text": "No new dead-end path occurred. The main correction was refusing to treat ephemeral hook input as already durable state. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:12-22] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33]",
+      "addedAtIteration": 15
+    },
+    {
+      "id": "ruled-out-15-2-rewriting-session-stop-ts-into-the-analytics-reader-the-current-evidence-support",
+      "text": "Rewriting `session-stop.ts` into the analytics reader. The current evidence supports a narrow metadata patch, not a producer-side normalization job. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110]",
+      "addedAtIteration": 15
+    },
+    {
+      "id": "ruled-out-16-1-no-new-dead-end-path-occurred-the-main-correction-was-separating-replay-checkpoi",
+      "text": "No new dead-end path occurred. The main correction was separating replay checkpoint state from durable per-turn identity. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:209-216]",
+      "addedAtIteration": 16
+    },
+    {
+      "id": "ruled-out-16-2-using-lasttranscriptoffset-as-the-turn-level-natural-key-the-parser-never-emits-",
+      "text": "Using `lastTranscriptOffset` as the turn-level natural key. The parser never emits per-turn offsets today, so that would create false idempotency. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123]",
+      "addedAtIteration": 16
+    },
+    {
+      "id": "ruled-out-17-1-no-new-dead-end-path-occurred-the-correction-was-placement-not-capability-the-fa",
+      "text": "No new dead-end path occurred. The correction was placement, not capability: the fast path belongs inside current source-aware routing, not beside it as a separate recovery system. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:186-206]",
+      "addedAtIteration": 17
+    },
+    {
+      "id": "ruled-out-17-2-replacing-session-bootstrap-or-memory-context-resume-with-a-hook-only-recency-he",
+      "text": "Replacing `session_bootstrap()` or `memory_context(...resume...)` with a hook-only recency heuristic. Public's existing recovery surfaces remain the source of truth. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md:73-76]",
+      "addedAtIteration": 17
+    },
+    {
+      "id": "ruled-out-18-2-building-a-brand-new-memory-auditor-framework-before-using-the-verification-mach",
+      "text": "Building a brand-new memory-auditor framework before using the verification machinery Public already has. The split can start as a workflow contract over existing seams. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:208-360]",
+      "addedAtIteration": 18
+    },
+    {
+      "id": "ruled-out-18-1-no-new-dead-end-path-occurred-the-key-correction-was-realizing-that-public-alrea",
+      "text": "No new dead-end path occurred. The key correction was realizing that Public already owns both halves of the split, just under different names. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md:35-54]",
+      "addedAtIteration": 18
+    },
+    {
+      "id": "ruled-out-19-1-no-new-dead-end-path-occurred-the-main-correction-was-tying-each-contract-to-an-",
+      "text": "No new dead-end path occurred. The main correction was tying each contract to an explicit analytics-reader dependency instead of implying they are available immediately from hook state. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 19
+    },
+    {
+      "id": "ruled-out-19-2-treating-the-dashboard-shell-as-part-of-the-adoption-contract-public-should-borr",
+      "text": "Treating the dashboard shell as part of the adoption contract. Public should borrow field semantics and recommendation logic, not an embedded UI. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]",
+      "addedAtIteration": 19
+    },
+    {
+      "id": "ruled-out-20-1-no-new-dead-end-path-occurred-the-key-result-was-replacing-next-good-ideas-with-",
+      "text": "No new dead-end path occurred. The key result was replacing \"next good ideas\" with a dependency-ordered packet train and concrete acceptance gates. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-015.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-016.md]",
+      "addedAtIteration": 20
+    },
+    {
+      "id": "ruled-out-20-2-reopening-discovery-before-planning-the-generation-2-work-converted-the-remainin",
+      "text": "Reopening discovery before planning. The generation-2 work converted the remaining unknowns into packet boundaries and test gates, which means more research would mostly restate existing evidence. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-013.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-019.md]",
+      "addedAtIteration": 20
     }
   ],
   "metrics": {
-    "iterationsCompleted": 12,
-    "openQuestions": 1,
-    "resolvedQuestions": 9,
-    "keyFindings": 103,
-    "convergenceScore": 0.36,
+    "iterationsCompleted": 20,
+    "openQuestions": 0,
+    "resolvedQuestions": 18,
+    "keyFindings": 162,
+    "convergenceScore": 0.18,
     "coverageBySources": {
-      "other": 120
+      "other": 146
     }
   }
 }

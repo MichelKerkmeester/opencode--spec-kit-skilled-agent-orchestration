@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated",
+  "description": "Feature Specification: Cached SessionStart Consumer (Gated)",
+  "keywords": [
+    "feature",
+    "specification",
+    "cached",
+    "sessionstart",
+    "consumer",
+    "gated"
+  ],
+  "lastUpdated": "2026-04-08T14:06:26Z",
+  "specId": "012",
+  "folderSlug": "cached-sessionstart-consumer-gated",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

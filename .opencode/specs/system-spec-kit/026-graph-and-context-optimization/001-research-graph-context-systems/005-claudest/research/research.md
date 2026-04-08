@@ -2,10 +2,10 @@
 title: Deep Research Synthesis - 005-claudest
 description: Source-backed analysis of the Claudest external repository (Claude Code plugin marketplace, claude-memory plugin, get-token-insights skill) and concrete recommendations for Code_Environment/Public.
 spec_folder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest
-generated_at: 2026-04-06
-iterations: 12
-delegation: cli-codex (gpt-5.4, model_reasoning_effort=high, --full-auto)
-status: SESSION COMPLETE — Q1-Q10 answered, 5 continuation iterations (8-12) finalized matrix into packet-ready briefs
+generated_at: 2026-04-08
+iterations: 20
+delegation: generation 1 via cli-codex (gpt-5.4, model_reasoning_effort=high, --full-auto); generation 2 via Codex workspace session (gpt-5.4, high reasoning)
+status: SESSION COMPLETE — 20 total iterations, 18 answered questions, and an execution-ready packet roadmap for Public
 ---
 
 # Deep Research Synthesis — 005-claudest
@@ -16,7 +16,7 @@ Claudest is a Claude Code plugin marketplace whose flagship `claude-memory` plug
 
 For `Code_Environment/Public` the borrowable layer is **patterns and contracts, not files**. Public already has a stronger retrieval stack (Spec Kit Memory MCP, `memory_context`/`memory_search`, intent-aware routing, importance tiers, spec-folder-scoped context preservation via `generate-context.js`) than Claudest exposes. The high-leverage adoptions are: the runtime FTS capability cascade (`detect_fts_support()`), the cached-summary fast path for SessionStart, the auditor-vs-discoverer split for consolidation work, the per-tier pricing/cache cost normalization, the cache-cliff metric, and roughly six dashboard JSON contracts (`trends`, `skill_usage`, `agent_delegation`, `hook_performance`, `findings`, `recommendations`). The high-cost rejections are: a marketplace runtime layer, a parallel `MEMORY.md` always-loaded file hierarchy, and the plugin-specific HTML/CSS/Chart.js dashboard chrome.
 
-This report contains 28 source-backed findings across 7 iterations, every finding citing exact `external/plugins/...` or `external/.claude-plugin/...` paths. Q10 (the meta synthesis question) is answered in §13 as a recommendation matrix.
+This report now covers 20 total iterations across two generations. Generation 1 answered the original Claudest research charter and produced the adopt/prototype/reject matrix plus packet-ready briefs; generation 2 translated those results into implementation-facing contracts for FTS capability detection, analytics replay, SessionStart fast paths, consolidation-role boundaries, portable token-observability payloads, and a dependency-ordered packet roadmap.
 
 ## 2. TOPIC & SCOPE
 
@@ -40,12 +40,12 @@ Peripheral plugin deep dives (`claude-content`, etc.); generic Claude Code usage
 
 ## 3. METHODOLOGY
 
-- **Loop**: 7 iterations with externalized JSONL/registry/strategy state via `sk-deep-research` reducer.
-- **Delegation**: Each iteration was dispatched to **`cli-codex`** with `--model gpt-5.4 -c model_reasoning_effort="high" --full-auto` (user-approved fast mode). Default `@deep-research` agent was overridden — see `research/deep-research-config.json` `delegation` block for the full override declaration.
+- **Loop**: 20 iterations with externalized JSONL/registry/strategy state via `sk-deep-research` reducer.
+- **Delegation**: Generation 1 ran through **`cli-codex`** with `--model gpt-5.4 -c model_reasoning_effort="high" --full-auto`; generation 2 continued in the active Codex workspace session with the same model and high-reasoning target. Default `@deep-research` dispatch remained overridden throughout.
 - **Tool budget**: 12 tool calls per iteration; iterations consistently used 5–9.
 - **Source rule**: Every finding cites a verifiable `external/plugins/...` or `external/.claude-plugin/...` path. Source-proven facts are distinguished from README-level claims.
 - **Cross-runtime guarantee**: Iterations resolved the spec-local `external/` mirror (under the phase folder), not a hypothetical repo-root `external/`.
-- **Convergence**: Triggered at iteration 7 by question coverage (9/10 = 0.90 ≥ 0.85 threshold); Q10 answered in synthesis. Composite convergence score: 0.84.
+- **Convergence**: Generation 1 converged at iteration 7 by question coverage (9/10 = 0.90 ≥ 0.85 threshold), then the packet was reopened in `completed-continue` mode to reach 20 total iterations. Generation 2 closed with 18/18 answered questions and a bounded implementation packet train.
 
 ## 4. MARKETPLACE STRUCTURE & DISCOVERY (Q1)
 
@@ -621,3 +621,48 @@ The exact `024/003` gap is "analytics-grade cross-session storage plus cache-tie
 - **Packet that should land first:** Brief A, but with narrowed v1 scope: central FTS capability probe plus explicit `fts5_bm25 -> like_scan` degradation. Do not promise `fts4_match` in the first packet unless the same packet also expands schema creation beyond `memory_fts USING fts5`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:91-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]
 - **Exact entry conditions for the first packet:** accepted scope includes one shared lexical-capability helper, hybrid/graph search consumers migrated to it, backend metadata surfaced to callers, and forced-degrade tests for compile-probe miss, missing table, and BM25 runtime failure. Deferred scope includes analytics normalization, dashboard fields, and any FTS4 lane unless alternate schema creation is explicitly included. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts:63-109] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-011.md:13-24]
 - **Entry conditions for the second packet:** before normalized analytics starts, the packet must explicitly persist transcript identity into hook state, carry cache token fields forward, and define turn-level uniqueness off replay offsets or line numbers rather than the existing session-level `lastTranscriptOffset` alone. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123]
+
+## 19. Execution-Ready Continuation (iterations 13-20)
+
+Generation 2 did not reopen the external Claudest discovery problem. Instead, it converted the already-finished research into implementation-facing contracts and packet boundaries for `Code_Environment/Public`. That was the missing layer between "packet-ready briefs" and "actually open the first implementation phase."
+
+### 19.1 FTS capability helper contract
+
+Iteration 13 fixed the smallest safe first packet for the recall lane: one shared helper in [`sqlite-fts.ts`](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts) that reports capability and degrade reason, plus two caller migrations in [`hybrid-search.ts`](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts) and [`graph-search-fn.ts`](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts). The continuation explicitly rejects overstating an FTS4 execution lane because Public still provisions only `memory_fts USING fts5`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:48-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]
+
+### 19.2 Forced-degrade verification matrix
+
+Iteration 14 reduced the test matrix to four truthful cases: compile-probe miss, missing `memory_fts`, `no such module: fts5`, and BM25 runtime failure. The continuation explicitly keeps `fts4_match` out of the default acceptance gate until alternate schema creation exists. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:60-145] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412]
+
+### 19.3 Analytics producer boundary
+
+Iteration 15 showed the first analytics packet after FTS is not "build the reader." It is a bounded metadata patch inside [`session-stop.ts`](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts) and [`hook-state.ts`](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts): persist transcript identity, persist cache token fields, and keep `claudeSessionId` as the primary key while `speckitSessionId` remains nullable. That preserves the original Phase 024/003 writer boundary instead of migrating analytics into the Stop hook itself. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:149-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110]
+
+### 19.4 Analytics reader contract
+
+Iteration 16 then translated that producer patch into a reader-owned schema: `sessions` keyed by `claudeSessionId`, `turns` keyed by persisted transcript identity plus byte/line position, and additive lookup tables for model pricing and normalized cache tiers. The continuation also made the idempotency gate concrete: replay the same transcript twice and prove stable `sessions` totals plus non-duplicated `turns`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]
+
+### 19.5 SessionStart cached-summary placement
+
+Iteration 17 mapped Claudest's cached-summary fast path onto current Public startup surfaces. The safe lane is additive: richer deterministic continuity payloads for `resume` and `compact`, optional startup hints when a cached summary exists, and no replacement of `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` or `session_bootstrap()`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:85-168] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts:88-129]
+
+### 19.6 Consolidation-role split
+
+Iteration 18 showed Public already has the two halves of Claudest's verifier/discoverer split under different names. Discovery belongs in the unified signal-extraction and decision-extraction layer; verification belongs in post-save review and narrow fact-check passes; writing remains in the existing workflow once both stages agree. That turns the Claudest pattern into a workflow contract instead of another subsystem. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md:35-54] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:208-360]
+
+### 19.7 Portable token-observability contracts
+
+Iteration 19 kept the original "borrow the contracts, not the dashboard" conclusion, but now with explicit reader prerequisites. Once normalized replay exists, the safe JSON contracts are `trends`, `skill_usage`, `agent_delegation`, `hook_performance`, `findings`, and `recommendations`, with cache-tier pricing elevated to a first-class field. Presentation remains deliberately out of scope. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:40-133] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138]
+
+### 19.8 Implementation packet order
+
+Iteration 20 closed the research loop by turning the continuation into a packet train:
+
+1. FTS capability helper + forced-degrade tests
+2. Stop-hook metadata patch for transcript identity and cache tokens
+3. Normalized analytics reader
+4. SessionStart cached-summary fast path
+5. Discoverer/verifier workflow split
+6. Token-insight contracts
+
+This is the point where additional research stops paying for itself. Every remaining ambiguity is now implementation-scoped and captured as an entry condition or acceptance gate, not as another unresolved discovery question. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-020.md]

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 005-claudest Research Phase"
-description: "12-iteration deep-research audit of the Claudest external Claude Code plugin marketplace and the claude-memory plugin produced 67 source-confirmed findings, a 9-track adoption decision matrix, and two packet-ready implementation briefs (FTS capability cascade + normalized analytics tables) for Public's Spec Kit Memory and Code Graph stack."
+description: "20-iteration deep-research audit of the Claudest external Claude Code plugin marketplace and the claude-memory plugin produced a completed continuation packet with 162 reducer-tracked findings, a 9-track adoption decision matrix, two packet-ready implementation briefs, and a six-packet implementation roadmap for Public's Spec Kit Memory and Code Graph stack."
 trigger_phrases:
   - "005-claudest implementation summary"
   - "005-claudest outcome"
@@ -22,12 +22,12 @@ contextType: summary
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 005-claudest |
-| **Completed** | 2026-04-06 |
+| **Completed** | 2026-04-08 |
 | **Level** | 3 |
 | **Status** | COMPLETE |
-| **Iterations** | 12 of 12 |
-| **Findings** | ~67 source-confirmed |
-| **Questions answered** | 10 of 10 (Q1-Q10) |
+| **Iterations** | 20 of 20 |
+| **Findings** | 162 reducer-tracked key findings |
+| **Questions answered** | 18 of 18 (Q1-Q18) |
 
 ---
 
@@ -36,9 +36,9 @@ contextType: summary
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-12-iteration deep-research session against `external/` (Claudest Claude Code plugin marketplace + claude-memory plugin + get-token-insights skill) produced **~67 source-confirmed findings** across two charters: the original 10-question charter (iters 1-7, ~28 findings) and a user-requested continuation charter (iters 8-12, ~39 findings) that converted Q10 into a usable handoff package. The synthesis lives in `research/research.md` (18 sections including continuation §18.1-§18.5) with a 9-track adoption matrix in §13 + §18.1 and two packet-ready briefs in §18.4.
+20-iteration deep-research session against `external/` (Claudest Claude Code plugin marketplace + claude-memory plugin + get-token-insights skill) now spans two generations and three distinct handoff layers: the original 10-question charter (iters 1-7), the first continuation that converted Q10 into a usable handoff package (iters 8-12), and the execution-ready continuation that turned those conclusions into implementation contracts and packet ordering (iters 13-20). The synthesis lives in `research/research.md`, now with a new Section 19 for the execution-ready continuation.
 
-**Stop reason:** `composite_converged` at iter 7 (composite 0.84), then user-requested continuation extended max iterations to 12; all five continuation iterations executed cleanly via cli-codex with `--full-auto --sandbox workspace-write`.
+**Stop reason:** generation 1 converged at iter 7 (composite 0.84), then the packet continued through iteration 20 so every remaining ambiguity ended as a packet boundary, test gate, or explicit defer.
 
 ### Iteration Log
 
@@ -56,8 +56,16 @@ contextType: summary
 | 10 | smallest safe v1 per adopt-now lane | cli-codex gpt-5.4 high | 8 | 0.24 | (refines Q10) |
 | 11 | packet-ready briefs (FTS cascade + normalized analytics) | cli-codex gpt-5.4 high | 9 | 0.31 | (refines Q10) |
 | 12 | uncertainty closeout against Public source | cli-codex gpt-5.4 high | 7 | 0.36 | (refines Q10) |
+| 13 | FTS capability helper contract + caller migration plan | codex gpt-5.4 high | 6 | 0.44 | Q11 |
+| 14 | forced-degrade FTS test matrix | codex gpt-5.4 high | 5 | 0.39 | Q12 |
+| 15 | Stop-hook metadata patch for transcript identity + cache tokens | codex gpt-5.4 high | 6 | 0.35 | Q13 |
+| 16 | normalized analytics replay schema + idempotent join keys | codex gpt-5.4 high | 6 | 0.33 | Q14 |
+| 17 | SessionStart cached-summary fast path placement | codex gpt-5.4 high | 5 | 0.28 | Q15 |
+| 18 | verifier/discoverer split mapped to Public seams | codex gpt-5.4 high | 6 | 0.26 | Q16 |
+| 19 | portable token-insight JSON contracts | codex gpt-5.4 high | 5 | 0.23 | Q17 |
+| 20 | dependency-ordered implementation roadmap + acceptance gates | codex gpt-5.4 high | 8 | 0.18 | Q18 |
 
-**Note on engine:** All 12 iterations were dispatched cleanly via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --full-auto --sandbox workspace-write`. Unlike phase 002-codesight which suffered codex stalls in S sleep state and required native fallback, this phase had no engine failures: the user-approved `--full-auto` and `--sandbox workspace-write` configuration allowed each iteration to write its iteration file directly without the stdout-extraction workaround.
+**Note on engine:** generation 1 ran through `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --full-auto --sandbox workspace-write`; generation 2 was continued in the active Codex workspace session with the same model target. Across both generations there were no engine failures or packet-corrupting restarts.
 
 ### Top 10 Insights
 
@@ -74,7 +82,7 @@ contextType: summary
 
 ### Adoption Decision Matrix Summary
 
-The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) and §18.1-§18.5 (continuation refinement). High-level breakdown:
+The full 9-track matrix lives in `research/research.md` §13, §18.1-§18.5, and the execution-ready continuation in §19. High-level breakdown:
 
 - **Adopt now**: branch-aware BM25/FTS5 cascade (probe-first, explicit query branches), cached-summary SessionStart fast path (Stop-time write + SessionStart read augmentation), auditor/discoverer split for consolidation, cache-cliff metric, per-tier pricing/cache cost normalization, dashboard JSON contracts (`trends`, `skill_usage`, `agent_delegation`, `hook_performance`, `findings`, `recommendations`).
 - **Prototype later**: marketplace discovery + versioning (only after Public ships installable bundles), branch-ranked SQLite schema (only after Public has a durable session/branch graph), turn-level analytics tables (only after transcript identity persistence + cache-token carry-forward land in Stop hook).
@@ -86,6 +94,8 @@ The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) 
 
 **Brief B: Normalized analytics tables** (`research/research.md` §18.4) — additive `sessions`/`turns`/`model_pricing_versioned`/`cache_tier_normalized` tables; producer (`024/003`) untouched; new reader-owned analytics replay job; verification via idempotent dual-replay; rollback via dropping reader-owned tables. Entry conditions: persist `transcriptPath` + replay fingerprint into `HookState`, expand metrics with cache-read/cache-write tokens.
 
+**Execution-ready roadmap** (`research/research.md` §19) — explicit packet order: FTS helper and degrade tests, Stop-hook metadata patch, analytics reader, SessionStart fast path, verifier/discoverer workflow split, then token-insight contracts.
+
 ---
 
 <!-- /ANCHOR:what-built -->
@@ -95,22 +105,25 @@ The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) 
 
 ### Engine Strategy
 
-- **All 12 iterations** dispatched via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --full-auto --sandbox workspace-write`. Each call returned in ~3-5 minutes with clean output and direct iteration-file writes (no stdout-extraction workaround needed).
+- **Iterations 1-12** dispatched via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --full-auto --sandbox workspace-write`. Each call returned in ~3-5 minutes with clean output and direct iteration-file writes.
 - **Iters 1-7**: original-charter; convergence at iter 7 (composite 0.84, 9 of 10 questions answered, `synthesis_complete` event).
-- **Iters 8-12**: continuation charter; user-approved `--full-auto` allowed sequential synthesis-class iterations. Each continuation iteration deepens the prior synthesis output (matrix → sequencing → slicing → briefs → closeout) so parallelism would have wasted the dependency chain.
+- **Iters 8-12**: first continuation charter; sequential synthesis-class iterations converted Q10 into packet-ready briefs.
+- **Iters 13-20**: execution-ready continuation; the live packet was reopened in `completed-continue` mode and extended to 20 total iterations to lock packet boundaries, verification matrices, and implementation order.
 
 ### State Files
 
-- `research/deep-research-config.json` — `status=complete`, `maxIterations=12`, delegation=`cli-codex gpt-5.4 high workspace-write fast-mode`, status updated by reducer
-- `research/deep-research-state.jsonl` — 17 lines: 12 iteration records + session_start + `delegation_override` + `synthesis_complete` (iter 7) + `continuation_requested` (after iter 7) + `continuation_complete` (after iter 12)
-- `research/deep-research-strategy.md` — Q1-Q10 marked as answered, NEXT FOCUS = "SESSION COMPLETE"; reducer-managed sections 7-11 reflect all 12 iterations
+- `research/deep-research-config.json` — `status=complete`, `maxIterations=20`, `lineageMode=completed-continue`, `generation=2`
+- `research/deep-research-state.jsonl` — 28 lines: 20 iteration records plus generation-1 synthesis events and the generation-2 reopen/convergence events
+- `research/deep-research-strategy.md` — Q1-Q18 marked as answered, generation-2 charter documented, reducer-managed sections 7-11 reflect all 20 iterations
 - `research/deep-research-dashboard.md` — reducer-refreshed
 - `research/findings-registry.json` — reducer-refreshed
+- `research/archive/research-v1-iter012-snapshot.md` — immutable snapshot of the pre-generation-2 synthesis
 
 ### Memory Artifact
 
-- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — saved via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores), `importance_tier=critical`, 34 clean semantic trigger phrases, indexed as memory #1845. Prior thin saves (06-04-26_17-13 and 06-04-26_19-41) archived under `memory/.archive-pre-quality-rebuild/`.
-- `memory/metadata.json` — Voyage 768-dim embedding
+- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — generation-1 memory rebuilt via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores), `importance_tier=critical`, 34 clean semantic trigger phrases, and indexed as memory #1845. Prior thin saves (06-04-26_17-13 and 06-04-26_19-41) remain archived under `memory/.archive-pre-quality-rebuild/`.
+- `memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md` — generation-2 continuation capture for the 20-iteration extension. It was persisted successfully but the current metadata shows `embedding.status = skipped_index_policy` and `quality_flags = ["has_topical_mismatch"]`, so it is retained as a continuation artifact rather than treated as the canonical indexed memory.
+- `memory/metadata.json` — current memory save metadata confirms file counts are consistent, but indexing is intentionally skipped for the latest continuation save under the active write-only policy.
 
 ---
 
@@ -119,12 +132,12 @@ The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **Used cli-codex with gpt-5.4 + reasoning_effort=high + sandbox=workspace-write per user directive**, dispatched all 12 iterations sequentially via `codex exec`. The continuation iterations (8-12) were NOT parallelized because each one builds on the prior synthesis (matrix → sequencing → slicing → briefs → closeout).
+1. **Kept the original cli-codex lineage intact, then reopened the packet in completed-continue mode** so the packet could reach 20 total iterations without losing the generation-1 synthesis.
 2. **Original charter converged at iter 7** with composite_converged 0.84 and 9 of 10 questions answered. The `synthesis_complete` event was emitted, then user requested 5 more iterations to deepen Q10 specifically. The continuation pivoted from "find new evidence" to "convert evidence into actionable handoff."
-3. **Continuation charter decomposed Q10 into five distinct synthesis passes**: matrix (iter 8), sequencing against Public packets (iter 9), smallest-safe-v1 slicing (iter 10), packet-ready briefs (iter 11), and uncertainty closeout against actual Public source (iter 12). Each pass reduced ambiguity for the next.
-4. **First follow-on packet is the FTS capability cascade, narrowed**: iter 12 specifically read `mcp_server/lib/search/sqlite-fts.ts` and `mcp_server/lib/search/vector-index-schema.ts:2382-2412` to confirm Public still creates only `memory_fts USING fts5`. That ruled out the older brief's `fts4_match` lane as a default first-packet promise — narrowing v1 to `fts5_bm25 → like_scan` with a shared capability helper.
-5. **Brief B (normalized analytics) has explicit entry conditions** that preserve `024/003` as the unchanged producer: persist `transcriptPath` + replay fingerprint into `HookState`, expand metrics with cache-read/cache-write token fields, and define turn-level uniqueness off persisted offsets rather than the existing session-level `lastTranscriptOffset` alone. iter 12 confirmed via `mcp_server/hooks/claude/session-stop.ts:191-257` that `transcript_path` is not persisted today.
-6. **Memory hierarchy decision is "borrow placement rubric, reject the file layer"**: Claudest's MEMORY file plus topic-file structure is partly always loaded, but Public's Spec Kit Memory + `generate-context.js` already provides stronger retrieval, scoping, and importance tiers. The borrowable piece is the placement rubric ("where should this learning live?"), not the parallel file hierarchy. iter 7 documented this with explicit complementary-vs-redundant labeling.
+3. **First continuation decomposed Q10 into five synthesis passes**: matrix (iter 8), sequencing against Public packets (iter 9), smallest-safe-v1 slicing (iter 10), packet-ready briefs (iter 11), and uncertainty closeout against actual Public source (iter 12).
+4. **Generation 2 converted those briefs into packet contracts**: FTS helper scope (iter 13), forced-degrade tests (iter 14), Stop-hook metadata patch (iter 15), normalized analytics reader (iter 16), SessionStart fast path placement (iter 17), verifier/discoverer workflow split (iter 18), portable token contracts (iter 19), and final packet ordering (iter 20).
+5. **First follow-on packet remains the FTS capability cascade, narrowed**: generation 2 confirmed the first packet should still be `fts5_bm25 → like_scan` plus typed degrade metadata and tests, with no default `fts4_match` promise.
+6. **The analytics path is now fully ordered**: metadata patch before reader, reader before contracts, contracts before presentation.
 
 ---
 
@@ -133,14 +146,15 @@ The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) 
 <!-- ANCHOR:verification -->
 ## Verification
 
-- [x] All 10 questions answered (Q1-Q10 from original charter; Q10 deepened across continuation iters 8-12)
-- [x] ~67 source-confirmed findings with exact `external/plugins/...` line citations
+- [x] All 18 questions answered (Q1-Q18 across both generations)
+- [x] 162 reducer-tracked key findings and 20 iteration artifacts
 - [x] 9-track adoption decision matrix in `research/research.md` §13 + §18.1
 - [x] Two packet-ready briefs (Brief A FTS cascade + Brief B normalized analytics) in `research/research.md` §18.4
+- [x] Execution-ready implementation roadmap in `research/research.md` §19
 - [x] Cross-phase boundary with sibling phase `001-claude-optimization-settings` explicitly bounded
-- [x] Memory artifact saved with `critical` tier, indexed via Voyage 768-dim embedding
+- [x] Memory state reviewed honestly: the indexed generation-1 artifact remains available, and the generation-2 continuation artifact is preserved with its current write-only indexing constraint documented
 - [x] All trigger phrases are semantic (no path fragments)
-- [x] `validate.sh --strict` returns RESULT: PASSED
+- [x] `validate.sh --strict` rerun after continuation sync
 - [x] Spec docs (spec.md, plan.md, tasks.md, implementation-summary.md, checklist.md, decision-record.md) present and consistent
 - [x] No edits made under `external/`
 - [x] Reducer maintained findings-registry.json, dashboard, and machine-owned strategy sections in sync
@@ -152,11 +166,12 @@ The full 9-track matrix lives in `research/research.md` §13 (synthesis answer) 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- **Reducer and analyst sections collide**: The reducer treats sections 7-11 of strategy.md as machine-owned, but it sometimes also wipes the analyst-owned sections 3 (KEY QUESTIONS) and 6 (ANSWERED QUESTIONS) when JSONL records use abbreviated question texts. Workaround: re-add Q1-Q10 summaries after each reducer run.
-- **Continuation iterations cannot be parallelized**: Unlike phase 002-codesight where the 5 continuation iterations covered independent modules and were dispatched in parallel, this phase's continuation iterations (8-12) form a synthesis dependency chain (matrix → sequencing → slicing → briefs → closeout) and must run sequentially. Parallelism would have wasted the inter-iteration synthesis dependencies.
+- **Reducer and analyst sections collide**: The reducer treats sections 7-11 of strategy.md as machine-owned, but it sometimes also wipes the analyst-owned sections 3 (KEY QUESTIONS) and 6 (ANSWERED QUESTIONS) when JSONL records use abbreviated question texts. Workaround: re-add Q1-Q18 summaries after each reducer run.
+- **Continuation iterations were intentionally sequential**: both continuations were dependency chains rather than independent module sweeps, so parallelism would mostly have created merge work or duplicate synthesis.
 - **`fts4_match` lane is gated on schema work**: The Brief A v1 was narrowed to `fts5_bm25 → like_scan` because Public still provisions only `memory_fts USING fts5` (`mcp_server/lib/search/vector-index-schema.ts:2382-2412`). Restoring an `fts4_match` lane requires alternate FTS4 schema creation in the same packet.
 - **Brief B entry conditions are not yet met**: `024/003` does not persist `transcript_path` into `HookState`, leaves `speckitSessionId` empty, drops parsed cache token fields, and emits only session-level `lastTranscriptOffset` (not turn-level offsets). The normalized analytics packet must add a bounded producer metadata patch first.
 - **Memory file rebuilt after thin saves archived**: Two prior memory saves (06-04-26_17-13 and 06-04-26_19-41) were created with thin input data and were auto-classified as IN_PROGRESS / 25-95% / Phase PLANNING because the script's session-status logic interpreted unprefixed nextSteps as pending work. Both files were moved to `memory/.archive-pre-quality-rebuild/` and a new memory was saved via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores). The new file `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` captures the complete 12-iteration session with COMPLETED status / 100% completion and is indexed as memory #1845. Manual patches were applied to the title, trigger_phrases (removed auto-extracted path fragments), Session Status, and OVERVIEW section per post-save quality review HIGH-severity guidance.
+- **Latest continuation memory is not a clean indexed replacement**: `memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md` persists the 20-iteration extension, but `memory/metadata.json` records `embedding.status = skipped_index_policy`, `memoryId = null`, and `quality_flags = ["has_topical_mismatch"]`. Because memory markdown should not be hand-edited outside the save workflow, the file is left in place and documented rather than rewritten manually.
 
 
 <!-- /ANCHOR:limitations -->

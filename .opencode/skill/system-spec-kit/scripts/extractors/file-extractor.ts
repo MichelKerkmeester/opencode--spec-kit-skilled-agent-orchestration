@@ -61,8 +61,30 @@ const ACTION_MAP: Record<string, string> = {
   rename: 'Renamed',
 };
 
+const GENERIC_OBSERVATION_TITLES = new Set([
+  'observation',
+  'note',
+  'item',
+  'entry',
+]);
+
 function normalizeFileAction(action: string): string {
   return ACTION_MAP[action.toLowerCase()] || 'Modified';
+}
+
+function normalizeObservationTitle(title: string | undefined): string {
+  return typeof title === 'string'
+    ? title.trim().toLowerCase()
+    : '';
+}
+
+function shouldRenderObservation(obs: ObservationInput, obsType: string): boolean {
+  if (obsType === 'decision') {
+    return true;
+  }
+
+  const normalizedTitle = normalizeObservationTitle(obs.title);
+  return normalizedTitle.length > 0 && !GENERIC_OBSERVATION_TITLES.has(normalizedTitle);
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -339,29 +361,33 @@ function buildObservationsWithAnchors(
 
   return deduped
     .filter((obs) => obs != null)
-    .map((obs) => {
+    .flatMap((obs) => {
+      const obsType: string = detectObservationType(obs);
+      if (!shouldRenderObservation(obs, obsType)) {
+        return [];
+      }
+
+      const title = (obs.title || '').trim() || 'Observation';
       const coercedFacts = coerceFactsToText(obs.facts, {
         component: 'file-extractor',
         fieldPath: 'observations[].facts',
       });
       const category: string = categorizeSection(
-        obs.title || 'Observation',
+        title,
         obs.narrative || ''
       );
 
       let anchorId: string = generateAnchorId(
-        obs.title || 'Observation',
+        title,
         category,
         specNumber
       );
       anchorId = validateAnchorUniqueness(anchorId, usedAnchorIds);
       usedAnchorIds.push(anchorId);
 
-      const obsType: string = detectObservationType(obs);
-
-      return {
+      return [{
         TYPE: obsType.toUpperCase(),
-        TITLE: obs.title || 'Observation',
+        TITLE: title,
         NARRATIVE: obs.narrative || '',
         HAS_FILES: !!(obs.files && obs.files.length > 0),
         FILES_LIST: obs.files ? obs.files.join(', ') : '',
@@ -369,7 +395,7 @@ function buildObservationsWithAnchors(
         FACTS_LIST: coercedFacts.join(' | '),
         ANCHOR_ID: anchorId,
         IS_DECISION: obsType === 'decision'
-      };
+      }];
     });
 }
 

@@ -1,37 +1,37 @@
 {
-  "openQuestions": [
+  "openQuestions": [],
+  "resolvedQuestions": [
     {
       "id": "question-1-q1-enable-tool-search-credibility-and-current-state-diff-how-should-the-post-s-c",
       "text": "Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's claimed 45k -> 20k base-context drop and 20k -> 6k tool-schema drop be interpreted given that this repo already has `ENABLE_TOOL_SEARCH=true` in `.claude/settings.local.json`? What follow-up validation, latency tradeoffs, and discoverability risks remain even after the flag is set?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-2-q2-cache-expiry-mitigation-taxonomy-how-should-the-post-s-claim-that-54-of-turns",
       "text": "Q2. Cache-expiry mitigation taxonomy: how should the post's claim that 54% of turns followed >5-minute idle gaps and that 232 cache cliffs occurred across 858 sessions be modeled? Which mitigations are pure config (e.g., compaction defaults), which are hook implementations (Stop/UserPromptSubmit/SessionStart cache warnings), and which are behavioral (clear-and-restart vs compact vs resume)?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-3-q3-skill-schema-bloat-detection-how-should-this-repo-detect-low-usage-skills-the",
       "text": "Q3. Skill schema bloat detection: how should this repo detect low-usage skills (the post reports 19 of 42 had <=2 invocations across 858 sessions) and schema bloat? What counts as evidence strong enough to disable, gate, or lazy-load a skill given that this repo's skill_advisor.py already gates Gate 2 routing?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-4-q4-cache-warning-hook-designs-how-should-the-three-proposed-hooks-stop-idle-time",
       "text": "Q4. Cache-warning hook designs: how should the three proposed hooks (Stop = idle-timestamp, UserPromptSubmit = idle-gap warning, SessionStart = cache-rebuild estimator) be evaluated against this repo's existing PreCompact/SessionStart/Stop hook architecture without conflicting with session-prime, session-stop, and compact-inject behavior?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-5-q5-bash-vs-native-redundant-read-edit-retry-reinforcement-how-should-the-post-s-",
       "text": "Q5. Bash-vs-native + redundant-read + edit-retry reinforcement: how should the post's findings of 662 bash `cat`/`grep`/`find` calls, 1,122 redundant file reads, and 31 edit-retry chains be translated into prompt rules, hooks, or telemetry for this repo (which already has a Code Search Decision Tree mandate in CLAUDE.md)?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     }
   ],
-  "resolvedQuestions": [],
   "keyFindings": [
     {
       "id": "finding-1-8-affected-area-in-this-repo-users-michelkerkmeester-mega-development-code-environ",
@@ -2082,9 +2082,9 @@
   ],
   "ruledOutDirections": [],
   "metrics": {
-    "iterationsCompleted": 11,
-    "openQuestions": 5,
-    "resolvedQuestions": 0,
+    "iterationsCompleted": 13,
+    "openQuestions": 0,
+    "resolvedQuestions": 5,
     "keyFindings": 341,
     "convergenceScore": 0.18,
     "coverageBySources": {}

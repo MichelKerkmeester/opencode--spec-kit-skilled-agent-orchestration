@@ -1,0 +1,34 @@
+{
+  "sessionId": "session-2026-04-08T15-10-00Z-003mq-verification-v2",
+  "parentSessionId": "session-2026-04-08T12-10-08Z-003mq-review",
+  "generation": 2,
+  "lineageMode": "fork",
+  "findingsByStatus": {
+    "closed": [],
+    "still_open": [],
+    "partial": [],
+    "regression": [],
+    "not_yet_verified": [
+      "P1-001", "P1-002", "P1-003", "P1-004", "P1-005", "P1-006", "P1-007",
+      "P1-008", "P1-009", "P1-010", "P1-011", "P1-012", "P1-013",
+      "P2-001", "P2-002", "P2-003", "P2-004", "P2-005", "P2-006",
+      "P2-007", "P2-008", "P2-009"
+    ]
+  },
+  "verificationCounts": {
+    "closed": 0,
+    "still_open": 0,
+    "partial": 0,
+    "regression": 0,
+    "not_yet_verified": 22
+  },
+  "dimensionCoverage": {
+    "correctness": false,
+    "security": false,
+    "traceability": false,
+    "maintainability": false,
+    "performance": false,
+    "reliability": false,
+    "completeness": false
+  }
+}

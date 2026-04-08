@@ -32,7 +32,7 @@ contextType: planning
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Owner Lock + Fixture Setup
+## Phase 1: Setup
 
 - [ ] **T201** Identify the D4 `importance_tier` SSOT owner inside the PR-3 owner set and document the deferral contract in implementation notes.
   Rationale: PR-3 freezes the D4 owner set to `frontmatter-migration.ts:1112-1183`, `session-extractor.ts:607-612`, and `post-save-review.ts:279-289`, while the research says the repair should be a writer-synchronization and SSOT change first. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1156-1156] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:191-192]
@@ -53,7 +53,7 @@ contextType: planning
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Provenance-only Injection
+## Phase 2: Implementation
 
 - [ ] **T206** Design the `≤10 LOC` provenance-only insertion at `workflow.ts:658-659,877-923`.
   Scope anchor: PR-4 owner map and the iteration-18 accepted patch shape. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1157-1157] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:197-198]
@@ -74,7 +74,7 @@ contextType: planning
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Validation + Roll-up
+## Phase 3: Verification
 
 - [ ] **T211** Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata --strict`.
   Scope anchor: each phase must validate independently before integration. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:187-190]
@@ -94,7 +94,7 @@ contextType: planning
 
 ---
 
-## Task Dependencies
+### Task Dependencies
 
 | Task | Depends On | Reason |
 |------|------------|--------|
@@ -131,7 +131,7 @@ contextType: planning
 
 ---
 
-## Definition of Done
+### Definition of Done
 
 - [ ] PR-3 lands as a single-owner metadata synchronization change, not a scattered cleanup.
 - [ ] PR-4 lands as a provenance-only insertion with deterministic seam-backed proof.
@@ -140,7 +140,7 @@ contextType: planning
 
 ---
 
-## Verification Commands
+### Verification Commands
 
 | Command | Purpose |
 |---------|---------|

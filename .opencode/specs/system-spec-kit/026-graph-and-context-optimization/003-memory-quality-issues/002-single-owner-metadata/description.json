@@ -1,16 +1,25 @@
 {
-  "specFolder": "003-memory-quality-issues/002-single-owner-metadata",
-  "description": "Phase 2: single-owner-metadata",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata",
+  "description": "Feature Specification: Phase 2 — Single-Owner Metadata Fixes",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
-    "single-owner-metadata"
+    "single-owner",
+    "metadata",
+    "fixes"
   ],
-  "lastUpdated": "2026-04-07T11:14:04.496Z",
+  "lastUpdated": "2026-04-08T14:27:35.685Z",
   "specId": "002",
   "folderSlug": "single-owner-metadata",
   "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
     "003-memory-quality-issues"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "08-04-26_08-06__phase-2-pr-3-validation-keeps-the-importance-tier.md",
+    "08-04-26_08-06__phase-2-pr-3-validation-keeps-the-importance-tier-1.md"
+  ]
 }

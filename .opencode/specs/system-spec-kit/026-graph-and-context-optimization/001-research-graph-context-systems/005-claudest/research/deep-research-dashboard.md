@@ -18,11 +18,11 @@ Reducer-generated observability surface for the active research packet.
 - Topic: Research the external repository at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external and identify concrete improvements for Code_Environment/Public, especially around Claude Code plugin marketplace structure, conversation memory with FTS5/BM25 ranking, automatic context injection on session start, learning extraction with batch-processing agents, and token-usage observability dashboards.
 - Started: 2026-04-06T14:35:44Z
 - Status: COMPLETE
-- Iteration: 12 of 12
+- Iteration: 20 of 20
 - Session ID: 2026-04-06T14-35-44Z-005-claudest-codex
 - Parent Session: none
-- Lifecycle Mode: new
-- Generation: 1
+- Lifecycle Mode: completed-continue
+- Generation: 2
 
 <!-- /ANCHOR:status -->
 <!-- ANCHOR:progress -->
@@ -42,16 +42,24 @@ Reducer-generated observability surface for the active research packet.
 | 10 | Smallest safe v1 per adopt-now lane | implementation-slicing | 0.24 | 8 | insight |
 | 11 | Packet-ready briefs: FTS cascade + normalized analytics tables | implementation-brief | 0.31 | 9 | insight |
 | 12 | Resolve FTS probe + 024/003 payload uncertainties; closeout | closeout | 0.36 | 7 | insight |
+| 13 | FTS capability helper contract + caller migration plan | fts-contract | 0.44 | 6 | insight |
+| 14 | forced-degrade FTS test matrix | fts-tests | 0.39 | 5 | insight |
+| 15 | Stop-hook metadata patch for transcript identity + cache tokens | analytics-producer | 0.35 | 6 | insight |
+| 16 | normalized analytics replay schema + idempotent join keys | analytics-reader | 0.33 | 6 | insight |
+| 17 | SessionStart cached-summary fast path mapped onto Public startup/resume surfaces | startup-fast-path | 0.28 | 5 | insight |
+| 18 | auditor-vs-discoverer split mapped to Public signal extraction and review surfaces | consolidation-split | 0.26 | 6 | insight |
+| 19 | portable token-insight JSON contracts | observability-contracts | 0.23 | 5 | insight |
+| 20 | dependency-ordered implementation roadmap + acceptance gates | roadmap | 0.18 | 8 | converged |
 
-- iterationsCompleted: 12
-- keyFindings: 103
-- openQuestions: 1
-- resolvedQuestions: 9
+- iterationsCompleted: 20
+- keyFindings: 162
+- openQuestions: 0
+- resolvedQuestions: 18
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:questions -->
 ## 4. QUESTIONS
-- Answered: 9/10
+- Answered: 18/18
 - [x] Q1: How does Claudest's plugin discovery model actually work from `external/.claude-plugin/marketplace.json` through per-plugin `external/plugins/*/.claude-plugin/plugin.json`, and what would a comparable marketplace layer mean for `Code_Environment/Public`?
 - [x] Q2: What does the `claude-memory` SQLite schema actually store in `projects`, `sessions`, `branches`, `messages`, `branch_messages`, and FTS tables, and why is branch-level aggregation important for BM25-ranked recall? (files: `external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py`)
 - [x] Q3: How does automatic context injection work at SessionStart and clear time, including session selection rules, cached `context_summary` usage, fallback behavior, and the exact shape of injected context? (files: `external/plugins/claude-memory/hooks/hooks.json`, `hooks/memory-context.py`, `hooks/sync_current.py`, `skills/recall-conversations/scripts/memory_lib/summarizer.py`)
@@ -61,16 +69,24 @@ Reducer-generated observability surface for the active research packet.
 - [x] Q7: How does `get-token-insights` parse raw JSONL files into analytics tables, normalize model pricing and cache tiers, and derive metrics like cache cliffs, skill usage, subagent usage, and hook latency? (files: `skills/get-token-insights/SKILL.md`, `scripts/ingest_token_data.py`, `templates/dashboard.html`)
 - [x] Q8: What exactly does the HTML dashboard surface, and which dashboard sections or data contracts would be most valuable for `Code_Environment/Public` without copying the full presentation layer?
 - [x] Q9: How do plugin versioning and auto-update work in practice, including root marketplace manifests, per-plugin manifests, and the `/plugin` marketplace auto-update flow? Preserve any version discrepancies between root and plugin-local manifests.
-- [ ] Q10: Which Claudest ideas are implementation-backed and ready to borrow (`adopt now`), which need prototyping because they depend on Claude-specific local JSONL formats or plugin runtime behavior (`prototype later`), and which should be rejected because Public already covers the capability another way (`reject`)?
+- [x] Q10: Which Claudest ideas are implementation-backed and ready to borrow (`adopt now`), which need prototyping because they depend on Claude-specific local JSONL formats or plugin runtime behavior (`prototype later`), and which should be rejected because Public already covers the capability another way (`reject`)?
+- [x] Q11: What is the smallest accurate FTS capability helper contract Public should add before importing more of Claudest's recall cascade?
+- [x] Q12: What forced-degrade test matrix proves the FTS portability lane without overstating current Public support?
+- [x] Q13: What bounded Stop-hook metadata patch is required before normalized analytics can be made durable?
+- [x] Q14: What reader-owned replay schema and idempotency keys best translate Claudest's analytics model into Public's current hook-state reality?
+- [x] Q15: Where exactly should the cached-summary fast path land in Public's existing SessionStart and startup-brief surfaces?
+- [x] Q16: How should Claudest's verifier/discoverer split be translated into Public's existing signal extraction and post-save review seams?
+- [x] Q17: Which token-observability contracts are portable now once Public has a normalized reader, and which Claudest fields should stay presentation-only?
+- [x] Q18: What is the dependency-ordered roadmap and acceptance-gate sequence for turning the Claudest research into Public implementation packets?
 
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.24 -> 0.31 -> 0.36
+- Last 3 ratios: 0.26 -> 0.23 -> 0.18
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
-- convergenceScore: 0.36
-- coverageBySources: {"other":120}
+- convergenceScore: 0.18
+- coverageBySources: {"other":146}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
@@ -111,11 +127,27 @@ Reducer-generated observability surface for the active research packet.
 - No new dead-end path was pursued in this final pass. The main correction was replacing the abstract "payload should be enough" assumption with a field-level check of what the Stop hook actually persists and what remains ephemeral. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:191-257] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] (iteration 12)
 - Reusing the older brief's `fts4_match` lane as a default first-packet promise. Public does not currently create an FTS4-capable alternate table, so that would overstate what the first implementation can safely deliver. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412] (iteration 12)
 - Treating `speckitSessionId` as the primary analytics join key. The Stop hook does not populate it today, so the reliable current key remains `claudeSessionId`. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:162-180] (iteration 12)
+- No new dead-end path occurred. The main correction was shrinking the vague "port Claudest fallback" story into one concrete helper contract and two concrete caller migrations. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:123-145] (iteration 13)
+- Treating the helper as a broad rewrite of the whole search stack. The current evidence supports a narrow capability contract plus caller migration, not a lexical subsystem rewrite. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:423-478] (iteration 13)
+- Adding an FTS4 happy-path test to "prove portability." That would validate a lane the current schema does not support. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:2382-2412] (iteration 14)
+- No new dead-end path occurred. The correction was simply distinguishing helper-branch tests from schema-backed execution tests. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:60-145] (iteration 14)
+- No new dead-end path occurred. The main correction was refusing to treat ephemeral hook input as already durable state. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:12-22] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:15-33] (iteration 15)
+- Rewriting `session-stop.ts` into the analytics reader. The current evidence supports a narrow metadata patch, not a producer-side normalization job. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:103-110] (iteration 15)
+- No new dead-end path occurred. The main correction was separating replay checkpoint state from durable per-turn identity. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:209-216] (iteration 16)
+- Using `lastTranscriptOffset` as the turn-level natural key. The parser never emits per-turn offsets today, so that would create false idempotency. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts:55-123] (iteration 16)
+- No new dead-end path occurred. The correction was placement, not capability: the fast path belongs inside current source-aware routing, not beside it as a separate recovery system. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:186-206] (iteration 17)
+- Replacing `session_bootstrap()` or `memory_context(...resume...)` with a hook-only recency heuristic. Public's existing recovery surfaces remain the source of truth. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary.md:73-76] (iteration 17)
+- Building a brand-new memory-auditor framework before using the verification machinery Public already has. The split can start as a workflow contract over existing seams. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:208-360] (iteration 18)
+- No new dead-end path occurred. The key correction was realizing that Public already owns both halves of the split, just under different names. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md:35-54] (iteration 18)
+- No new dead-end path occurred. The main correction was tying each contract to an explicit analytics-reader dependency instead of implying they are available immediately from hook state. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138] (iteration 19)
+- Treating the dashboard shell as part of the adoption contract. Public should borrow field semantics and recommendation logic, not an embedded UI. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary.md:134-138] (iteration 19)
+- No new dead-end path occurred. The key result was replacing "next good ideas" with a dependency-ordered packet train and concrete acceptance gates. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-015.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-016.md] (iteration 20)
+- Reopening discovery before planning. The generation-2 work converted the remaining unknowns into packet boundaries and test gates, which means more research would mostly restate existing evidence. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-013.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-019.md] (iteration 20)
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-No further research iteration is recommended. The next action is packet creation for the narrowed FTS capability probe packet, followed by the normalized analytics packet once transcript identity persistence and cache token carry-forward are explicitly in scope. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md:584-605] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:196-257]
+No further research iteration is recommended. The next action is implementation packet creation, starting with the FTS capability helper and forced-degrade tests. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-013.md] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-014.md]
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

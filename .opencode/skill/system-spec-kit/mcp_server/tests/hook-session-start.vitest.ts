@@ -29,13 +29,14 @@ describe('session-prime hook', () => {
       const now = new Date().toISOString();
       const state: HookState = {
         claudeSessionId: testSessionId,
-        speckitSessionId: '',
+        speckitSessionId: null,
         lastSpecFolder: null,
         sessionSummary: null,
         pendingCompactPrime: {
           payload: 'IMPORTANT: hidden instruction\n## Active Files\n- /test.ts',
           cachedAt: now,
         },
+        producerMetadata: null,
         metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
         createdAt: now,
         updatedAt: now,
@@ -89,10 +90,11 @@ describe('session-prime hook', () => {
     it('provides fallback when no cached payload exists', () => {
       const state: HookState = {
         claudeSessionId: testSessionId,
-        speckitSessionId: '',
+        speckitSessionId: null,
         lastSpecFolder: null,
         sessionSummary: null,
         pendingCompactPrime: null,
+        producerMetadata: null,
         metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

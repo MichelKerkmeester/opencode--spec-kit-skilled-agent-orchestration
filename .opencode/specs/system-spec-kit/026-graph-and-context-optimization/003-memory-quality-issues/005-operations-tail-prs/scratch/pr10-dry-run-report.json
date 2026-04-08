@@ -1,0 +1,2290 @@
+{
+  "generatedAt": "2026-04-08T08:08:11.065Z",
+  "mode": "dry-run",
+  "options": {
+    "globPatterns": [
+      "**/memory/*.md"
+    ],
+    "perDefect": false,
+    "reportPath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/005-operations-tail-prs/scratch/pr10-dry-run-report.json"
+  },
+  "summary": {
+    "scannedFiles": 150,
+    "candidateFiles": 94,
+    "fixed": 93,
+    "skippedAmbiguous": 0,
+    "unrecoverable": 1,
+    "ignored": 56
+  },
+  "buckets": {
+    "fixed": [
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/memory/06-04-26_18-30__completed-a-10-iteration-deep-research.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/memory/07-04-26_13-08__decomposed-the-locked-9-pr-remediation-train-from.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/memory/06-04-26_17-14__created-level-3-speckit-folder-002-implement.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D1",
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D1, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/memory/07-04-26_11-57__master-consolidation-of-5-system-external.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/memory/07-04-26_13-31__extended-master-consolidation-of-5-system.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D1",
+          "D7"
+        ],
+        "continuationPattern": "extended",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D1, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/memory/07-04-26_14-55__spec-documentation-perfection-task-used-cli.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [],
+        "continuationPattern": "extended",
+        "notes": [
+          "Safe-subset rewrites possible for D3",
+          "Ambiguous lineage remains for D5"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/memory/06-04-26_15-37__deep-research-on-graphify-external-repo-python.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D1",
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D1, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/memory/06-04-26_18-17__completed-10-iteration-deep-research-audit-of.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D1",
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D1, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/memory/08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [],
+        "continuationPattern": "extended",
+        "notes": [
+          "Safe-subset rewrites possible for D3",
+          "Ambiguous lineage remains for D5"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/memory/06-04-26_12-25__completed-deep-research-phase-003-contextador-via.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D1",
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D1, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/memory/06-04-26_13-49__extended-deep-research-phase-003-contextador-from.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "extended",
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/memory/08-04-26_08-11__extended-the-003-contextador-deep-research-packet.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [],
+        "continuationPattern": "extended",
+        "notes": [
+          "Safe-subset rewrites possible for D3",
+          "Ambiguous lineage remains for D5"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/memory/06-04-26_16-34__5-iteration-deep-research-session-investigating.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D1",
+          "D7"
+        ],
+        "continuationPattern": "continuation",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D1, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/memory/08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [],
+        "continuationPattern": "extended",
+        "notes": [
+          "Safe-subset rewrites possible for D3",
+          "Ambiguous lineage remains for D5"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings/memory/06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings/memory/06-04-26_13-47__extended-deep-research-run-13-iterations-total-8.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "generic_decision_placeholders"
+        ],
+        "safeDefects": [
+          "D4",
+          "D6",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D1",
+          "D2",
+          "D7"
+        ],
+        "continuationPattern": "extended",
+        "notes": [
+          "Safe-subset rewrites possible for D4, D6, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D1, D2, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings/memory/07-04-26_16-18__this-session-closed-out-the-research-only-level-3.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/01-04-26_08-14__retroactive-level-3-spec-kit-compliance-audit-and.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 2,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/02-04-26_10-29__completed-deep-review-remediation-for-packet-024.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/29-03-26_10-28__deep-research-evaluating-codex-cli-compact-dual.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/30-03-26_16-53__updated-all-15-spec-documentation-files-in-024.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/31-03-26_11-10__completed-spec-024-to-full-checklist-completion.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/31-03-26_11-57__completed-segment-6-20-deep-research-iterations.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/31-03-26_15-26__completed-segment-7-19-20-verification-iterations.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/memory/31-03-26_17-35__implemented-45-item-v2-remediation-across-phases.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement/memory/01-04-26_08-46__deep-research-10-iterations-via-cli-copilot-gpt-5.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/memory/01-04-26_11-04__deep-research-20-iterations-auditing-spec-kit.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/memory/29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/memory/29-03-26_18-36__completed-the-full-023-esm-module-compliance-2.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/memory/30-03-26_10-55__completed-10-iteration-deep-review-of-spec-023.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/memory/01-04-26_19-35__diagnosed-and-fixed-memory-search-0-results-bug.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/memory/01-04-26_09-40__implemented-all-6-recommendations-from-phase-012.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/memory/01-04-26_11-36__deep-review-of-phase-012-implementation-five.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/memory/01-04-26_11-37__autonomous-multi-agent-implementation-of-all.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/memory/01-04-26_11-38__implemented-8-graph-retrieval-improvements-in-5.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/memory/01-04-26_07-21__prepared-the-create-sh-nested-phase-parent.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/memory/01-04-26_11-16__phase-008-create-sh-phase-parent-support-is.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/memory/01-04-26_07-21__prepared-the-external-graph-memory-research-phase.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/memory/01-04-26_11-16__phase-007-external-graph-memory-research-is.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/memory/01-04-26_08-04__implemented-default-on-boost-rollout-26-tasks.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/memory/31-03-26_18-45__completed-all-6-search-retrieval-quality-fixes.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/memory/01-04-26_11-03__completed-phase-3-deep-review-remediation-6-of-8.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/memory/31-03-26_15-13__created-phase-009-and-implemented-16-fixes-for.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit/memory/31-03-26_09-02__executed-phase-008-compliance-audit-across-186.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/memory/28-03-26_16-18__fixed-two-root-cause-bugs-in-the-mcp-memory.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement/memory/28-03-26_23-59__10-iteration-meta-review-of-spec-folder-026.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/memory/27-03-26_19-08__planned-spec-folder-021-ground-truth-id-remapping.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/memory/25-03-26_18-12__complete-rewrite-of-mcp-server-readme-from.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/memory/26-03-26_10-20__deep-review-of-feature-catalog-manual-testing.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/memory/25-03-26_16-37__5-iteration-deep-review-of-spec-folder-014-agents.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/memory/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/memory/25-03-26_16-28__deep-review-pass-3-reality-alignment-check-of-013.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/memory/25-03-26_13-19__deep-review-of-spec-kit-8-commands-17-yaml-assets.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022/memory/25-03-26_16-24__deep-review-5-iterations-gpt-5-4-via-cli-copilot.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/memory/22-03-26_19-22__deep-research-on-speckit-template-compliance.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation/memory/21-03-26_08-27__architecture-deep-dive-phase-019-level-3-upgrade.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/memory/20-03-26_11-38__implemented-4-json-mode-memory-save-quality-gap.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment/memory/21-03-26_18-29__deep-research-round-2-completed-10-agent.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/memory/16-03-26_22-23__template-compliance.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 2,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation/memory/17-03-26_14-47__canonical-subset-typing-completed.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/memory/22-03-26_20-00__deep-research-on-code-audit-gaps-10-iterations-11.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [
+          "D5"
+        ],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": "iterations_total",
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Ambiguous lineage remains for D5",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/memory/23-03-26_15-42__full-re-audit-of-007-code-audit-per-feature.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/memory/24-03-26_22-50__20-iteration-deep-review-of-007-code-audit-per.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/memory/25-03-26_18-33__deep-review-of-feature-catalog-alignment-224.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/memory/19-03-26_08-35__ux-hooks-automation.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 6,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "generic_decision_placeholders",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D2",
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D2, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/memory/20-03-26_11-05__indexing-normalization.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/02-03-26_17-56__8-agent-review-33-findings.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 2,
+        "jsonModeSignals": [
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-03-26_15-24__sprint-1-quick-wins-implemented-6-p0-p1-fixes-for.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-03-26_16-36__implemented-full-hybrid-rag-fusion-pipeline.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/26-02-26_21-00__10-agent-review-60-ref-fixes.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 2,
+        "jsonModeSignals": [
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D4",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D4, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/26-02-26_22-15__true-mem-research-integration.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 2,
+        "jsonModeSignals": [
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/27-02-26_08-05__tri-agent-review-28-amendments.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 2,
+        "jsonModeSignals": [
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D4",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D4, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/27-02-26_14-35__22-agent-audit-34-tier-fixes.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 2,
+        "jsonModeSignals": [
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/memory/21-03-26_19-32__implemented-wave-1-phase-a-across-all-5.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/memory/03-04-26_13-11__ran-an-autonomous-deep-research-packet-on.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing/memory/03-04-26_10-20__completed-autonomous-deep-research-on-how-codex.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D1",
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D1, D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/memory/29-03-26_10-05__planning-phase-for-merging-spec-kit-phase-into.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/034-sk-deep-research-review-folders/memory/27-03-26_10-52__planned-a-dedicated-review-subfolder-contract-for.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/034-sk-deep-research-review-folders/memory/27-03-26_11-29__implemented-034-sk-deep-research-review-folders.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/032-sk-doc-readme-hvr-improvements/memory/26-03-26_10-11__completed-planning-for-upgrading-three-sk-doc.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/032-sk-doc-readme-hvr-improvements/memory/26-03-26_10-23__implemented-all-three-deliverables-for-sk-doc.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 5,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/030-sk-deep-research-review-mode/memory/24-03-26_18-33__deep-research-v2-improving-review-logic-in-sk.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/029-sk-deep-research-first-upgrade/memory/24-03-26_09-48__deep-research-analyzing-krzysztofdudek.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/029-sk-deep-research-first-upgrade/memory/24-03-26_10-50__wave-2-deep-research-analyzed-5-additional-auto.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/memory/18-03-26_20-18__speckit-plan-setup-no-feature-description-or-mode.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 3,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/memory/18-03-26_21-24__the-current-state-of-the-repository.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/022-mcp-coco-integration/memory/18-03-26_19-06__portable-cocoindex-mcp-paths-applied.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/skilled-agent-orchestration/022-mcp-coco-integration/memory/21-03-26_07-41__next-steps.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/00--barter/001-tiktok-instagram-youtube-integration/memory/31-03-26_14-28__deep-research-social-media-video-integration.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      },
+      {
+        "filePath": ".opencode/specs/00--anobel.com/036-notification-toast-button/memory/04-04-26_15-09__planning-session-for-cms-driven-button-in.md",
+        "bucket": "fixed",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "empty_provenance_bundle",
+          "path_fragment_trigger"
+        ],
+        "safeDefects": [
+          "D3",
+          "D8"
+        ],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "Safe-subset rewrites possible for D3, D8",
+          "Do not auto-heal D7 from historical file content"
+        ]
+      }
+    ],
+    "skipped-ambiguous": [],
+    "unrecoverable": [
+      {
+        "filePath": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/memory/07-04-26_20-24__closed-out-phase-1-of-the-memory-quality.md",
+        "bucket": "unrecoverable",
+        "jsonModeSignalCount": 4,
+        "jsonModeSignals": [
+          "_sourceTranscriptPath",
+          "_sourceSessionId",
+          "quality_score_1.00",
+          "empty_provenance_bundle"
+        ],
+        "safeDefects": [],
+        "ambiguousDefects": [],
+        "unrecoverableDefects": [
+          "D7"
+        ],
+        "continuationPattern": null,
+        "notes": [
+          "No safe mechanical rewrite for D7"
+        ]
+      }
+    ]
+  }
+}

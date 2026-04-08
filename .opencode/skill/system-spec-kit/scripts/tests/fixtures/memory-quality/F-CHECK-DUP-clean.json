@@ -1,0 +1,26 @@
+{
+  "frontmatterContextType": "implementation",
+  "metadataContextType": "implementation",
+  "frontmatterTriggerPhrases": [
+    "clean duplication baseline",
+    "phase 6 reviewer"
+  ],
+  "metadataTriggerPhrases": [
+    "clean duplication baseline",
+    "phase 6 reviewer"
+  ],
+  "overviewOutcomes": [
+    "Keep reviewer surfaces unique."
+  ],
+  "decisionTitle": "Keep reviewer surfaces unique",
+  "decisionRationale": "Preserve only distinct rationale text.",
+  "observationHeadings": [
+    "### OBSERVATION: Real extractor signal"
+  ],
+  "pendingNoTasksLine": "",
+  "continuationNext": "Continue the in-flight implementation work.",
+  "nextAction": "Continue the in-flight implementation work.",
+  "lastLine": "Ends with a clean sentence.",
+  "fileDescription": "Merged from alpha.md: short note.",
+  "useLegacyHtmlAnchors": false
+}

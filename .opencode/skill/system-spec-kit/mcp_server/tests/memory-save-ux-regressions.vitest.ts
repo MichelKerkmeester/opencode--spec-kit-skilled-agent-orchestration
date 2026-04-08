@@ -62,7 +62,6 @@ contextType: "implementation"
 | Fixture Type | memory-save-ux |
 
 <!-- ANCHOR:continue-session -->
-<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -70,17 +69,16 @@ Continue validating the \`memory_save\` UX contract with a fixture that is rich 
 
 <!-- /ANCHOR:continue-session -->
 
-<!-- ANCHOR:project-state-snapshot -->
-<a id="project-state-snapshot"></a>
+<!-- ANCHOR:canonical-docs -->
 
-## PROJECT STATE SNAPSHOT
+## CANONICAL SOURCES
 
-The handler is saving into a sandbox spec folder. This fixture intentionally captures concrete file roles, operator-visible save outcomes, and enough semantic detail to survive the shared insufficiency contract before duplicate detection or success-response shaping occurs.
+- \`decision-record.md\` — UX contract and duplicate detection strategy
+- \`implementation-summary.md\` — Save pipeline integration story
 
-<!-- /ANCHOR:project-state-snapshot -->
+<!-- /ANCHOR:canonical-docs -->
 
-<!-- ANCHOR:summary -->
-<a id="overview"></a>
+<!-- ANCHOR:overview -->
 
 ## OVERVIEW
 
@@ -88,47 +86,19 @@ ${body}
 
 This regression fixture exists to prove that successful saves and duplicate no-op saves still report the correct UX payloads after the shared insufficiency gate and rendered-memory template contract were added to the save pipeline.
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
-<!-- ANCHOR:detailed-changes -->
-<a id="detailed-changes"></a>
+<!-- ANCHOR:evidence -->
 
-## DETAILED CHANGES
+## DISTINGUISHING EVIDENCE
 
-### Key Files
+- Validated duplicate no-op response shape
+- Confirmed post-mutation feedback integration
+- Tested deferred embedding with immediate save return
 
-| File | Role |
-|------|------|
-| \`mcp_server/handlers/memory-save.ts\` | Coordinates atomic save, sufficiency enforcement, duplicate detection, and post-mutation feedback for the memory save path. |
-| \`mcp_server/handlers/save/response-builder.ts\` | Shapes MCP success, duplicate, deferred-indexing, and rejected response payloads for operators. |
-
-### Observation: atomic save verification
-
-Executed the save path with a durable fixture so the test reaches duplicate handling and post-mutation hook feedback instead of stopping early on insufficient context. Verified that successful saves surface cache invalidation feedback while duplicate no-op saves leave caches unchanged.
-
-<!-- /ANCHOR:detailed-changes -->
-
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-## DECISIONS
-
-- Decided to keep the insufficiency gate active before duplicate and response UX handling so thin memories reject early instead of producing misleading save results.
-- Chosen fixture content keeps the duplicate regression exact-match behavior while preserving concrete file, decision, and workflow evidence for the newer durable-memory contract.
-
-<!-- /ANCHOR:decisions -->
-
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-## CONVERSATION
-
-The operator requested regression coverage for duplicate no-op responses, post-mutation feedback fields, and deferred-indexing hints. The handler parsed this memory, ran save-path enforcement, and then returned the resulting UX payload for assertion.
-
-<!-- /ANCHOR:session-history -->
+<!-- /ANCHOR:evidence -->
 
 <!-- ANCHOR:recovery-hints -->
-<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -138,7 +108,6 @@ The operator requested regression coverage for duplicate no-op responses, post-m
 <!-- /ANCHOR:recovery-hints -->
 
 <!-- ANCHOR:metadata -->
-<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

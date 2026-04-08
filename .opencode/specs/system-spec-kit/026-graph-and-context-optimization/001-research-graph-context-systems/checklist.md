@@ -31,7 +31,7 @@ contextType: "checklist"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] The parent folder now has a real Level 3 root packet [Evidence: root `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `description.json`]
-- [x] CHK-002 [P0] Every parent document is grounded in frozen source deliverables [Evidence: citations in root docs point to `research/research-v2.md`, `research/recommendations-v2.md`, `research/findings-registry-v2.json`, `research/iterations/q-d-adoption-sequencing.md`, or `research/iterations/q-f-killer-combos.md`]
+- [x] CHK-002 [P0] Every parent document is grounded in the canonical root research deliverables [Evidence: citations in root docs point to `research/research.md`, `research/recommendations.md`, `research/findings-registry.json`, `research/iterations/q-d-adoption-sequencing.md`, or `research/iterations/q-f-killer-combos.md`]
 - [x] CHK-003 [P1] Repo-native metadata schema used for new description files [Evidence: `description.json` and `002-codesight/description.json`; schema aligned to `folder-discovery.ts:678-688`]
 <!-- /ANCHOR:pre-impl -->
 
@@ -51,9 +51,9 @@ contextType: "checklist"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Root packet requirements match the frozen v2 recommendation order [Evidence: `spec.md` requirements plus `plan.md` phases cite `research/recommendations-v2.md`]
-- [x] CHK-021 [P0] Root plan reflects the P0 through P3 ordering from the sequencing source [Evidence: `plan.md` phases 2 through 4 cite `research/research-v2.md` and `research/iterations/q-d-adoption-sequencing.md`]
-- [x] CHK-022 [P1] Root tasks are executable packet-opening or verification work, not prose findings [Evidence: `tasks.md` T006-T019]
+- [x] CHK-020 [P0] Root packet requirements match the frozen v2 recommendation order [Evidence: `spec.md` requirements plus `plan.md` phases cite `research/recommendations.md`]
+- [x] CHK-021 [P0] Root plan reflects the P0 through P3 ordering from the sequencing source [Evidence: `plan.md` phases 2 through 4 cite `research/research.md` and `research/iterations/q-d-adoption-sequencing.md`]
+- [x] CHK-022 [P1] Root tasks are executable packet-maintenance or verification work, not prose findings [Evidence: `tasks.md` T006-T016]
 - [x] CHK-023 [P1] Root ADRs cover the packet's four load-bearing decisions [Evidence: `decision-record.md` ADR-001 through ADR-004]
 <!-- /ANCHOR:testing -->
 
@@ -62,7 +62,7 @@ contextType: "checklist"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No frozen deliverable under `research/` or `memory/` was modified [Evidence: scope of edits limited to root docs, child docs, and scratch report]
+- [x] CHK-030 [P0] Root research edits stayed inside canonical promotion and archive organization, and generated memory markdown was not hand-rewritten [Evidence: `research/research.md`, `research/recommendations.md`, `research/archive/`, root `memory/` review]
 - [x] CHK-031 [P0] No new metadata schema or hidden fields were introduced [Evidence: new description files use only the folder-discovery fields]
 - [x] CHK-032 [P1] Packet language does not claim runtime rollout or production deployment that did not happen [Evidence: packet-only wording in `plan.md`, `checklist.md`, and `implementation-summary.md`]
 <!-- /ANCHOR:security -->
@@ -72,7 +72,7 @@ contextType: "checklist"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Root spec, plan, tasks, checklist, decision record, and implementation summary are synchronized [Evidence: cross-references and shared recommendation order]
+- [x] CHK-040 [P1] Root spec, plan, tasks, checklist, decision record, implementation summary, canonical research files, and the derivative `006-research-memory-redundancy` follow-on references are synchronized [Evidence: cross-references and shared recommendation order]
 - [x] CHK-041 [P1] Child packet repairs preserve useful auxiliary content that the audit chose to keep [Evidence: `003-contextador/CONTEXT.md` retained and relinked]
 - [x] CHK-042 [P2] Phase-2 summary report records before and after line counts for every changed file [Evidence: `scratch/spec-doc-phase-2-summary.md`]
 <!-- /ANCHOR:docs -->
@@ -82,8 +82,8 @@ contextType: "checklist"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] All new packet docs live at the parent root where the audit expected them [Evidence: root folder contents]
-- [x] CHK-051 [P1] Summary output is confined to `scratch/` and not mixed into frozen research deliverables [Evidence: `scratch/spec-doc-phase-2-summary.md` only]
+- [x] CHK-050 [P1] The root research folder uses a canonical current-plus-archive layout instead of versioned top-level filenames [Evidence: `research/research.md`, `research/recommendations.md`, `research/findings-registry.json`, `research/archive/`]
+- [x] CHK-051 [P1] Summary output remains confined to `scratch/`, while superseded research snapshots live under `research/archive/` rather than mixed into the live root set [Evidence: `scratch/spec-doc-phase-2-summary.md`, `research/archive/`]
 - [x] CHK-052 [P2] Child-folder metadata coverage is now complete for 001 through 005 [Evidence: new `002-codesight/description.json` plus existing description files]
 <!-- /ANCHOR:file-org -->
 
@@ -98,7 +98,7 @@ contextType: "checklist"
 | P1 Items | 9 | 9/9 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-04-07
+**Verification Date**: 2026-04-08
 <!-- /ANCHOR:summary -->
 
 ---
@@ -151,7 +151,7 @@ contextType: "checklist"
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] Root docs cross-link correctly to sibling packet docs and frozen research deliverables [Evidence: related-document sections in root docs]
+- [x] CHK-140 [P1] Root docs cross-link correctly to sibling packet docs, the derivative `006-research-memory-redundancy` follow-on, and frozen research deliverables [Evidence: related-document sections in root docs]
 - [x] CHK-141 [P1] Child plans now contain the Level 3 rollback, critical-path, and milestone sections where the audit flagged them missing [Evidence: patched `002-codesight/plan.md` and `005-claudest/plan.md`]
 - [x] CHK-142 [P2] Child Level 3 summaries no longer retain the forbidden `Files Changed` table where the audit flagged it [Evidence: patched `003-contextador/implementation-summary.md`]
 - [x] CHK-143 [P2] Root implementation summary documents both the v1 assembly lane and the rigor lane without claiming runtime implementation completion [Evidence: `implementation-summary.md`]
@@ -164,7 +164,7 @@ contextType: "checklist"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| Phase 2 packet assembly | Documentation run | [x] Approved | 2026-04-07 |
-| Child conformance patching | Packet normalization | [x] Approved | 2026-04-07 |
-| Validation handoff | Phase 3 target ready | [x] Approved | 2026-04-07 |
+| Parent/root packet sync | Documentation run | [x] Approved | 2026-04-08 |
+| Root research organization | Canonical plus archive layout | [x] Approved | 2026-04-08 |
+| Validation handoff | Warning-only target ready | [x] Approved | 2026-04-08 |
 <!-- /ANCHOR:sign-off -->

@@ -17,7 +17,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 30 (`030-opencode-graph-plugin`) |
 | **Predecessor** | `029-review-remediation` |
-| **Successor** | None |
+| **Successor** | `031-normalized-analytics-reader` |
 | **Handoff Criteria** | Six completed child phases stay truth-synced with runtime evidence, strict validation passes, and broader memory-durability work remains explicitly out of scope |
 
 # Feature Specification: OpenCode Graph Plugin Phased Execution

@@ -120,7 +120,6 @@ How it works: each finding anchors to a specific paragraph in the post ("Source 
 
 ---
 
-<!-- ANCHOR:adr-002 -->
 ### ADR-002: Preserve the 926-vs-858 sessions and 18,903-vs-11,357 turns denominator discrepancies explicitly
 
 ### Metadata
@@ -133,7 +132,6 @@ How it works: each finding anchors to a specific paragraph in the post ("Source 
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 The Reddit post contains two unresolved numeric mismatches that cannot be resolved from within the document:
@@ -148,21 +146,17 @@ We had to decide whether to smooth these into a single normalized total or prese
 - phase-research-prompt §5 instruction 4 explicitly says "preserve the discrepancy explicitly instead of normalizing the numbers silently."
 - Smoothing would introduce artificial precision that the source itself does not support.
 - Later planning documents could inherit the smoothed total and make incorrect extrapolations.
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 We chose to preserve both discrepancies explicitly in every document that references the session or turn counts.
 
 How it works: `research/research.md` §2 contains a discrepancy table with both mismatches, their anchor sentences, and an explanation of why they weaken exact prevalence claims but not architectural conclusions. spec.md §6 carries both as risk items. decision-record.md (this document) and implementation-summary.md both note the discrepancies. No document in this spec set contains a normalized total.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -173,11 +167,9 @@ How it works: `research/research.md` §2 contains a discrepancy table with both 
 | Average or weighted combine | Mathematically tidy | Produces a number that appears nowhere in the source; fabricates precision | 1/10 |
 
 **Why this one**: The source explicitly uses different numbers in different places. The right response is to show both, explain the gap, and let the reader decide how much precision to draw from the prevalence claims.
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -193,11 +185,9 @@ How it works: `research/research.md` §2 contains a discrepancy table with both 
 |------|--------|------------|
 | Future summaries smooth the discrepancy for convenience | Med | NFR-D01 in spec.md makes preservation a non-functional requirement; this ADR formalizes the rationale |
 | Post author clarifies in a comment; this phase cannot update | Low | The post is treated as a static primary source; if new authoritative information appears, a follow-up note can be added to `research/research.md` §2 without changing the finding structure |
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -209,11 +199,9 @@ How it works: `research/research.md` §2 contains a discrepancy table with both 
 | 5 | **Open Horizons?** | PASS | Future phases can cite the discrepancy table rather than re-deriving it |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -223,12 +211,9 @@ How it works: `research/research.md` §2 contains a discrepancy table with both 
 - implementation-summary.md limitations section: notes both discrepancies as preserved intentionally
 
 **How to roll back**: If a future authoritative clarification from the post author resolves the mismatch, update `research/research.md` §2 discrepancy table with the resolution, remove or supersede this ADR, and add a note in any document that previously cited the preserved discrepancy.
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
 ### ADR-003: Apply the four-tier prioritization framework from phase-research-prompt §10.3
 
 ### Metadata
@@ -241,7 +226,6 @@ How it works: `research/research.md` §2 contains a discrepancy table with both 
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
 The research produced 56 raw findings across 13 iterations that needed to be ranked for actionability. Without a consistent prioritization framework, different readers might rank the same findings differently depending on their role (config-focused, hook-focused, instrumentation-focused). phase-research-prompt §10.3 provided an explicit four-tier ordering: config changes first (high-impact / low-effort), then hook implementations (high-impact / medium-effort), then behavioral changes (lower effort, documentation-first), then instrumentation-heavy or format-fragile ideas last.
@@ -250,11 +234,9 @@ The research produced 56 raw findings across 13 iterations that needed to be ran
 
 - The repo already has `ENABLE_TOOL_SEARCH=true`, which changes the tier-1 situation: the highest-leverage config recommendation is already adopted, so tier-1 work is validation rather than a new flip.
 - Some findings span multiple categories (e.g., discrepancy preservation is both a process change and a research quality rule).
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 We chose to apply the four-tier framework as the primary ranking dimension, with the hybrid label allowed for findings that span two categories.
@@ -264,11 +246,9 @@ How it works: each finding in `research/research.md` §4 carries a "Tier: 1/2/3/
 #### Amendment 2026-04-07
 
 After iteration 008 reached a synthesis-ready baseline, the loop was extended from 8 to 13 iterations by user request via `cli-codex` `gpt-5.4` high reasoning so the final F1-F24 tier map would incorporate an independent skeptical pass before closeout.
-<!-- /ANCHOR:adr-003-decision -->
 
 ---
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -279,11 +259,9 @@ After iteration 008 reached a synthesis-ready baseline, the loop was extended fr
 | No ranking framework; alphabetical | Zero friction to apply | Useless for planning prioritization | 1/10 |
 
 **Why this one**: The framework was specified in the phase prompt, aligns with the repo's known effort profile (config changes are lower friction than hook engineering), and produces findings that are directly actionable for planning downstream phases.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -299,11 +277,9 @@ After iteration 008 reached a synthesis-ready baseline, the loop was extended fr
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | Tier labels drift across future documents referencing these findings | Low | `research/research.md` §4 is the canonical tier source; other documents should reference finding IDs rather than re-assign tiers |
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -315,11 +291,9 @@ After iteration 008 reached a synthesis-ready baseline, the loop was extended fr
 | 5 | **Open Horizons?** | PASS | Future additions to the finding set can use the same tier labels without restructuring |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -329,12 +303,9 @@ After iteration 008 reached a synthesis-ready baseline, the loop was extended fr
 - iteration-013.md: amendment landing pass that applied the updated F1-F24 ordering into `research/research.md`
 
 **How to roll back**: If the phase-research-prompt tier framework is revised in a future phase, re-run the tier assignment across F1-F24 in `research/research.md` §4 and update the iteration-012/013 amendment trail.
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
 
 ---
 
-<!-- ANCHOR:adr-004 -->
 ### ADR-004: Defer the auditor implementation to phase 005-claudest; this phase owns only the recommendation set
 
 ### Metadata
@@ -347,7 +318,6 @@ After iteration 008 reached a synthesis-ready baseline, the loop was extended fr
 
 ---
 
-<!-- ANCHOR:adr-004-context -->
 ### Context
 
 The Reddit post describes a token-usage auditor (`claude-memory` plugin on `claudest` marketplace, `/get-token-insights` skill) and its implementation: JSONL parsing, SQLite normalization, waste classification, dollar estimation, interactive dashboard. That implementation detail is analytically interesting but belongs to a sibling phase. We needed to decide whether this phase should investigate or partially replicate that implementation work.
@@ -359,21 +329,17 @@ Phase `005-claudest` was pre-designated as the implementation-provenance packet 
 - phase-research-prompt §8 explicitly says "Don't conflate this phase with phase 005-claudest; this phase owns the what and why, while phase 005 owns the implementation-oriented how."
 - phase-research-prompt §10.2 Out of Scope list includes "full claudest plugin implementation analysis."
 - The iteration runner was LEAF-only (no sub-agent dispatch); building implementation artifacts was not possible within the constraint anyway.
-<!-- /ANCHOR:adr-004-context -->
 
 ---
 
-<!-- ANCHOR:adr-004-decision -->
 ### Decision
 
 We chose to keep phase 001 as the decision/adoption layer and defer all implementation provenance to phase 005-claudest. The allowed overlap is one-way and narrow: phase 001 may cite phase 005 only to point at the concrete implementation home of the auditor; phase 005 may cite phase 001 only to explain why the implementation matters.
 
 How it works: `research/research.md` §9 contains a single boundary paragraph. This phase's findings that reference the auditor (F14, F16, F17) are labeled "prototype later" and their "Affected area" fields point to the phase 005 folder path rather than prescribing implementation steps.
-<!-- /ANCHOR:adr-004-decision -->
 
 ---
 
-<!-- ANCHOR:adr-004-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -383,11 +349,9 @@ How it works: `research/research.md` §9 contains a single boundary paragraph. T
 | Merge phases 001 and 005 into one | No boundary overhead | Phases were pre-designated with different targets (post audit vs implementation walkthrough); merging would require re-scoping both | 2/10 |
 
 **Why this one**: The phases were intentionally separated in the cross-phase awareness table. Phase 001's value is in the evidence extraction and recommendation labels, not the implementation. Mixing them would dilute both.
-<!-- /ANCHOR:adr-004-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-004-consequences -->
 ### Consequences
 
 **What improves**:
@@ -404,11 +368,9 @@ How it works: `research/research.md` §9 contains a single boundary paragraph. T
 |------|--------|------------|
 | Phase 005 delay blocks the Tier 2/4 findings indefinitely | Low | Phase 001's recommendation set is already complete; phase 005 delay does not change the what/why labels |
 | Future authoring accidentally re-introduces implementation content into phase 001 documents | Med | Out of Scope list in spec.md §3, boundary paragraph in `research/research.md` §9, and this ADR all serve as guardrails |
-<!-- /ANCHOR:adr-004-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-004-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -420,11 +382,9 @@ How it works: `research/research.md` §9 contains a single boundary paragraph. T
 | 5 | **Open Horizons?** | PASS | Phase 005 retains full freedom to design the implementation without being constrained by partial design choices made in phase 001 |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-004-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-004-impl -->
 ### Implementation
 
 **What changes**:
@@ -434,5 +394,3 @@ How it works: `research/research.md` §9 contains a single boundary paragraph. T
 - implementation-summary.md: next-phase ownership section states boundary
 
 **How to roll back**: If the phases are merged or re-scoped, remove `research/research.md` §9 boundary paragraph and re-assign F14/F16/F17 affected areas to reflect the new ownership.
-<!-- /ANCHOR:adr-004-impl -->
-<!-- /ANCHOR:adr-004 -->

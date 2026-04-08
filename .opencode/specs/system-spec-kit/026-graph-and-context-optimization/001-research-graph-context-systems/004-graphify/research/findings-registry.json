@@ -1,79 +1,139 @@
 {
-  "openQuestions": [
+  "openQuestions": [],
+  "resolvedQuestions": [
     {
       "id": "question-1-q1-which-languages-and-extensions-are-actually-supported-by-the-ast-pass-in-exte",
       "text": "Q1: Which languages and extensions are actually supported by the AST pass in `external/graphify/extract.py` and `external/graphify/detect.py`, and where does runtime coverage diverge between detection and extraction?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-2-q2-what-exact-entities-and-relationship-types-does-the-deterministic-pass-emit-r",
       "text": "Q2: What exact entities and relationship types does the deterministic pass emit (rationale nodes, method stubs, imports, calls, inheritance, cross-file `uses` edges)?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-3-q3-how-does-the-semantic-subagent-prompt-in-external-skills-graphify-skill-md-de",
       "text": "Q3: How does the semantic subagent prompt in `external/skills/graphify/skill.md` define extraction behavior for docs, papers, images, semantic similarity, and hyperedges?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-4-q4-how-are-ast-and-semantic-outputs-merged-deduplicated-cached-and-promoted-into",
       "text": "Q4: How are AST and semantic outputs merged, deduplicated, cached, and promoted into final `graphify-out/graph.json`?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-5-q5-what-are-the-actual-leiden-parameter-choices-in-external-graphify-cluster-py-",
       "text": "Q5: What are the actual Leiden parameter choices in `external/graphify/cluster.py`, and what is the rationale behind community splitting at 25% of graph size with min split size 10?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-6-q6-how-does-graphify-represent-evidence-and-confidence-extracted-inferred-ambigu",
       "text": "Q6: How does graphify represent evidence and confidence (EXTRACTED/INFERRED/AMBIGUOUS semantics, default scores, downstream JSON and `GRAPH_REPORT.md` reporting)?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-7-q7-how-does-the-multimodal-pipeline-work-in-practice-for-pdfs-and-images-pypdf-u",
       "text": "Q7: How does the multimodal pipeline work in practice for PDFs and images (`pypdf` usage, image handling, Claude vision vs OCR)?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-8-q8-what-is-the-cache-invalidation-strategy-across-external-graphify-cache-py-and",
       "text": "Q8: What is the cache invalidation strategy across `external/graphify/cache.py` and `external/graphify/detect.py`, and how much of the system can rerun without invoking Claude?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-9-q9-how-does-the-pretooluse-hook-in-external-graphify-main-py-fire-what-message-d",
       "text": "Q9: How does the PreToolUse hook in `external/graphify/__main__.py` fire, what message does it inject, and how might a similar hook reshape Public's search behavior?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-10-q10-how-does-graph-report-md-identify-god-nodes-surprising-connections-ambiguous",
       "text": "Q10: How does `GRAPH_REPORT.md` identify god nodes, surprising connections, ambiguous edges, low-cohesion communities, and suggested questions, and which patterns are reusable in Public?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-11-q11-how-credible-is-the-71-5x-token-reduction-claim-when-cross-checked-against-e",
       "text": "Q11: How credible is the 71.5x token-reduction claim when cross-checked against `external/worked/karpathy-repos/`, README wording, and benchmark expectations?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
     },
     {
       "id": "question-12-q12-which-graphify-ideas-should-be-adopted-directly-adapted-into-existing-mcp-su",
       "text": "Q12: Which graphify ideas should be Adopted directly, Adapted into existing MCP surfaces, or Rejected because Public already covers them with Code Graph MCP or CocoIndex?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-13-q13-which-existing-public-handlers-and-payload-contracts-should-carry-graphify-s",
+      "text": "Q13: Which existing Public handlers and payload contracts should carry graphify-style provenance tiers and numeric confidence without breaking current callers?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-14-q14-where-should-a-graph-first-nudge-live-in-public-today-pretooluse-sessionstar",
+      "text": "Q14: Where should a graph-first nudge live in Public today (PreToolUse, SessionStart, PreCompact, bootstrap, or command routing), and what exact existing hook/runtime files govern that path?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-15-q15-which-current-code-graph-mcp-and-cocoindex-bridge-surfaces-already-expose-en",
+      "text": "Q15: Which current Code Graph MCP and CocoIndex bridge surfaces already expose enough structure to absorb community labels, confidence metadata, or graph-first routing hints?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-16-q16-where-does-public-already-implement-mtime-hash-incremental-indexing-and-wher",
+      "text": "Q16: Where does Public already implement mtime/hash/incremental indexing, and where does graphify's two-layer invalidation pattern still add net value?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-17-q17-what-is-the-narrowest-viable-multimodal-adoption-path-for-public-pdfs-screen",
+      "text": "Q17: What is the narrowest viable multimodal adoption path for Public (PDFs, screenshots, diagrams) without forcing a graphify-style full-ingestion subsystem?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-18-q18-if-public-wanted-graph-aware-clustering-what-is-the-lightest-weight-implemen",
+      "text": "Q18: If Public wanted graph-aware clustering, what is the lightest-weight implementation path using current code-graph data stores and query surfaces?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-19-q19-which-existing-tests-validators-or-manual-playbooks-would-need-extension-to-",
+      "text": "Q19: Which existing tests, validators, or manual playbooks would need extension to prove graph-first routing and evidence-tagged retrieval work correctly?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-20-q20-what-evaluation-metrics-should-public-use-instead-of-graphify-s-71-5x-headli",
+      "text": "Q20: What evaluation metrics should Public use instead of graphify's 71.5x headline so future rollout claims are architecture-native and reproducible?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-21-q21-which-current-security-governance-or-trust-boundary-constraints-in-public-ma",
+      "text": "Q21: Which current security, governance, or trust-boundary constraints in Public make direct graphify ingestion patterns unsafe or incomplete without adaptation?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
+    },
+    {
+      "id": "question-22-q22-what-phased-adopt-adapt-reject-rollout-plan-best-fits-public-s-architecture-",
+      "text": "Q22: What phased Adopt / Adapt / Reject rollout plan best fits Public's architecture over immediate, near-term, and later phases?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 0
     }
   ],
-  "resolvedQuestions": [],
   "keyFindings": [
     {
       "id": "finding-1-7-architecture-md-is-partially-stale-relative-to-the-implementation-it-assigns-col",
@@ -1441,13 +1501,13 @@
     }
   ],
   "metrics": {
-    "iterationsCompleted": 10,
-    "openQuestions": 12,
-    "resolvedQuestions": 0,
+    "iterationsCompleted": 20,
+    "openQuestions": 0,
+    "resolvedQuestions": 22,
     "keyFindings": 103,
-    "convergenceScore": 0.9,
+    "convergenceScore": 0.42,
     "coverageBySources": {
-      "code": 70,
+      "code": 106,
       "other": 25
     }
   }

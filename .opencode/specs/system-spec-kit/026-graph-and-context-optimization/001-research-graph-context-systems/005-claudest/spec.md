@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 005-claudest Research Phase"
-description: "Read-only research investigation of the Claudest external Claude Code plugin marketplace and the claude-memory plugin (FTS5/BM25 conversation recall, SessionStart context injection, extract-learnings consolidation, get-token-insights observability) to identify adopt/prototype/reject patterns for Code_Environment/Public's Spec Kit Memory and Code Graph stack."
+description: "Read-only 20-iteration research investigation of the Claudest external Claude Code plugin marketplace and the claude-memory plugin (FTS5/BM25 conversation recall, SessionStart context injection, extract-learnings consolidation, get-token-insights observability) to identify adopt/prototype/reject patterns and execution-ready follow-on packet contracts for Code_Environment/Public's Spec Kit Memory and Code Graph stack."
 trigger_phrases:
   - "005-claudest research spec"
   - "005-claudest phase spec"
@@ -18,9 +18,9 @@ contextType: spec
 
 ## EXECUTIVE SUMMARY
 
-Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Claudest external Claude Code plugin marketplace (`external/.claude-plugin/marketplace.json`) and its flagship `claude-memory` plugin to translate concrete patterns into actionable improvements for `Code_Environment/Public`. The plugin is studied at function level: the v3 SQLite schema with branch-aware BM25/FTS5 recall, the Stop/SessionStart hook chain that pre-computes branch summaries and injects them into the next session via `hookSpecificOutput.additionalContext`, the `extract-learnings` consolidation pipeline split between `memory-auditor` and `signal-discoverer`, and the `get-token-insights` skill that ingests Claude JSONL session logs into a relational analytics model with embedded HTML dashboard. The deliverable is an evidence-grounded `adopt now` / `prototype later` / `reject` matrix grounded in `external/plugins/...` file:line citations across 12 deep-research iterations, plus packet-ready briefs for the first two follow-on Public packets (FTS capability cascade + normalized analytics tables).
+Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Claudest external Claude Code plugin marketplace (`external/.claude-plugin/marketplace.json`) and its flagship `claude-memory` plugin to translate concrete patterns into actionable improvements for `Code_Environment/Public`. The plugin is studied at function level: the v3 SQLite schema with branch-aware BM25/FTS5 recall, the Stop/SessionStart hook chain that pre-computes branch summaries and injects them into the next session via `hookSpecificOutput.additionalContext`, the `extract-learnings` consolidation pipeline split between `memory-auditor` and `signal-discoverer`, and the `get-token-insights` skill that ingests Claude JSONL session logs into a relational analytics model with embedded HTML dashboard. The deliverable is an evidence-grounded `adopt now` / `prototype later` / `reject` matrix grounded in `external/plugins/...` file:line citations across 20 deep-research iterations, plus packet-ready briefs and an execution-ready follow-on packet roadmap for Public's FTS, analytics, SessionStart, and consolidation seams.
 
-**Key Decisions**: Use deep-research loop with 12 iterations through cli-codex `gpt-5.4` high reasoning effort with `--full-auto --sandbox workspace-write`. Original charter (10 questions Q1-Q10) executed iters 1-7 with synthesis convergence at iter 7 (composite_converged 0.84). User-requested continuation charter (5 more iterations 8-12) decomposed Q10 into matrix synthesis, sequencing, smallest-safe-v1 slicing, packet-ready briefs, and uncertainty closeout. Produce a 9-track adoption matrix plus two packet-ready implementation briefs (FTS capability cascade + normalized analytics tables).
+**Key Decisions**: Keep the original 12-iteration cli-codex lineage intact, then reopen the packet in `completed-continue` mode and extend it to 20 total iterations. Generation 1 (iters 1-12) answered the original charter and converted Q10 into a usable handoff package. Generation 2 (iters 13-20) translated those conclusions into implementation-facing contracts: FTS helper scope, forced-degrade tests, Stop-hook metadata patch, normalized analytics replay shape, SessionStart fast-path placement, verifier/discoverer split mapping, token-observability contracts, and a dependency-ordered packet roadmap.
 
 **Critical Dependencies**: cli-codex CLI installed (verified `codex-cli 0.118.0`); `external/` accessible at the spec folder root containing the Claudest checkout; reducer script at `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs`; memory script at `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`.
 
@@ -71,6 +71,7 @@ Produce an evidence-grounded `adopt now` / `prototype later` / `reject` matrix f
 - Memory hierarchy comparison: Claudest `CLAUDE.md → MEMORY.md → topic files` versus Public's Spec Kit Memory + `generate-context.js` model.
 - Plugin versioning and auto-update implementation in marketplace + plugin manifests.
 - Continuation charter (iters 8-12): Q10 synthesis matrix, sequencing against existing Public packets, smallest-safe-v1 slicing, packet-ready briefs (FTS cascade + normalized analytics), and uncertainty closeout against Public's `mcp_server/lib/search/sqlite-fts.ts` + `mcp_server/hooks/claude/session-stop.ts`.
+- Completed-continue execution charter (iters 13-20): FTS helper contract, forced-degrade verification matrix, Stop-hook transcript identity/cache token patch, normalized analytics replay schema, SessionStart cached-summary placement, verifier/discoverer workflow split, token-observability JSON contracts, and dependency-ordered implementation roadmap.
 - Cross-phase boundary with sibling phase `001-claude-optimization-settings` (which extracts Reddit-post audit patterns).
 
 ### Out of Scope
@@ -113,8 +114,9 @@ Produce an evidence-grounded `adopt now` / `prototype later` / `reject` matrix f
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- All 10 original-charter questions (Q1-Q10) answered with source-cited findings; original charter converged at iter 7 (composite 0.84).
+- All 18 questions (Q1-Q18) answered with source-cited findings across the 20-iteration two-generation run; original charter converged at iter 7 (composite 0.84) and later continuations closed every remaining ambiguity as a packet boundary, contract, or acceptance gate.
 - All 5 continuation iterations (8-12) executed via cli-codex gpt-5.4 high in fast mode and produce packet-ready handoff content.
+- All 8 completed-continue iterations (13-20) land execution-ready contracts and a dependency-ordered roadmap in `research/research.md` §19.
 - Adoption matrix lives in `research/research.md` §13 (original) and §18 (continuation) with every row citing at least one `external/plugins/...` source.
 - Two packet-ready briefs (FTS capability cascade + normalized analytics tables) live in `research/research.md` §18.4 with named Public file surfaces, forced-degrade matrices, and rollback plans.
 - Cross-phase boundary with sibling phase `001-claude-optimization-settings` is bounded explicitly.
@@ -133,7 +135,7 @@ Produce an evidence-grounded `adopt now` / `prototype later` / `reject` matrix f
 
 | ID | Risk | Mitigation |
 |----|------|-----------|
-| R-001 | Reducer overwrites analyst-owned strategy sections | Re-add Q1-Q10 summaries to KEY QUESTIONS and ANSWERED QUESTIONS sections after each reducer run |
+| R-001 | Reducer overwrites analyst-owned strategy sections | Re-add Q1-Q18 summaries to KEY QUESTIONS and ANSWERED QUESTIONS sections after each reducer run |
 | R-002 | Validator infers wrong level for research phase folder | Declare `<!-- SPECKIT_LEVEL: 3 -->` explicitly in spec.md |
 | R-003 | README claims (e.g., auto-update flow) quoted as truth without source verification | Iter 1 explicitly distinguishes README-level vs source-proven evidence; auto-update flagged as `/plugin` runtime owned |
 | R-004 | Continuation iterations duplicate iter 1-7 work | Reducer-managed `EXHAUSTED APPROACHES` section tracks blocked directions; iters 8-12 prompts include explicit avoid-list of synthesized topics |
@@ -179,7 +181,7 @@ Produce an evidence-grounded `adopt now` / `prototype later` / `reject` matrix f
 | Inter-module coupling | 6 | claude-memory recall + hooks + extract-learnings are coupled by the SQLite schema; get-token-insights is a separate skill |
 | External dependencies | 2 | Claude Code `/plugin` runtime is referenced but not exercised; cli-codex is the only hard external CLI |
 | Documentation discipline | 6 | README and source mostly agree; auto-update and a few hierarchy claims diverge in measurable ways |
-| Total complexity | 5 | Mid; 12-iteration loop spans surfaces but converges cleanly into two follow-on briefs |
+| Total complexity | 6 | Mid-high; a 20-iteration, two-generation loop spans marketplace, hooks, analytics, consolidation, and Public integration seams, but still converges cleanly into a bounded packet train |
 
 ---
 
@@ -260,20 +262,21 @@ Produce an evidence-grounded `adopt now` / `prototype later` / `reject` matrix f
 <!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
-None — all 10 questions (Q1-Q10) answered. See `research/research.md` §13 for the original-charter synthesis and §18 for the continuation synthesis (matrix → sequencing → slicing → briefs → closeout).
+None — all 18 questions (Q1-Q18) answered. See `research/research.md` §13 for the original synthesis, §18 for the first continuation (matrix → sequencing → slicing → briefs → closeout), and §19 for the execution-ready continuation roadmap.
 
 ---
 
 ## RELATED DOCUMENTS
 
-- `research/research.md` — canonical synthesis (18 sections including continuation §18.1 through §18.5)
-- `research/iterations/iteration-001.md` through `research/iterations/iteration-012.md` — per-iteration findings
+- `research/research.md` — canonical synthesis (19 sections including continuation §18.1 through §18.5 and execution-ready roadmap §19)
+- `research/iterations/iteration-001.md` through `research/iterations/iteration-020.md` — per-iteration findings
 - `research/deep-research-strategy.md` — analyst + reducer strategy file
 - `research/deep-research-dashboard.md` — reducer-generated dashboard
 - `plan.md` — implementation plan
 - `tasks.md` — task tracking
 - `implementation-summary.md` — outcome summary
-- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — saved memory artifact (12-iteration session, importance_tier=critical, indexed via Voyage 768-dim embeddings as memory #1845)
+- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — generation-1 synthesis memory artifact (12-iteration snapshot, importance_tier=critical, indexed via Voyage 768-dim embeddings as memory #1845)
+- `memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md` — generation-2 continuation memory artifact (20-iteration extension summary, persisted under the current write-only indexing policy)
 
 
 <!-- /ANCHOR:questions -->

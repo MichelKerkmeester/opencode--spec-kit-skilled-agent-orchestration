@@ -1,0 +1,50 @@
+{
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction",
+  "session_summary": "Observation-title filtering fixture for Phase 6 extractor coverage.",
+  "user_prompts": [
+    {
+      "prompt": "Suppress blank observation headings before rendering.",
+      "timestamp": "2026-04-08T09:00:00.000Z"
+    }
+  ],
+  "observations": [
+    {
+      "type": "observation",
+      "title": "",
+      "narrative": "Blank observation title should never create a generic heading.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts"
+      ]
+    },
+    {
+      "type": "observation",
+      "title": "Observation",
+      "narrative": "Generic placeholder titles should be suppressed before the template renders headings.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts"
+      ]
+    },
+    {
+      "type": "observation",
+      "title": "   ",
+      "narrative": "Whitespace-only observation titles should also be suppressed.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts"
+      ]
+    },
+    {
+      "type": "observation",
+      "title": "Real extractor signal",
+      "narrative": "A substantive observation title should still render normally after the generic-title filter lands.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts"
+      ]
+    }
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts",
+      "changes_summary": "Filter generic non-decision observation titles before rendering."
+    }
+  ]
+}

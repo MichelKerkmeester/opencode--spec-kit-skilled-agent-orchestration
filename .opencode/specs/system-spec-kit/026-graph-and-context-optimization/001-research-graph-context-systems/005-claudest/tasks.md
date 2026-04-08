@@ -1,6 +1,6 @@
 ---
 title: "Tasks: 005-claudest Research Phase"
-description: "Task tracking for the 12-iteration deep-research loop on the Claudest external Claude Code plugin checkout plus original-charter and continuation-charter synthesis, memory save, and verification."
+description: "Task tracking for the full 20-iteration Claudest deep-research packet, including the original charter, the first continuation, the completed-continue execution charter, doc sync, memory review, and verification."
 trigger_phrases:
   - "005-claudest research tasks"
   - "005-claudest task list"
@@ -73,6 +73,19 @@ contextType: tasks
 - [x] T209 Append continuation_requested, 5 iteration records, and continuation_complete events to `deep-research-state.jsonl`
 - [x] T210 Run reducer to refresh dashboard and findings-registry after each iteration
 
+### Completed-Continue Execution Charter (iters 13-20, Q11-Q18)
+
+- [x] T211 Reopen the completed packet in `completed-continue` mode with `generation=2`, `continuedFromRun=12`, and `maxIterations=20`
+- [x] T212 Iteration 13: FTS capability helper contract + caller migration plan — Codex gpt-5.4 high → 6 findings, newInfoRatio 0.44
+- [x] T213 Iteration 14: forced-degrade FTS test matrix — Codex gpt-5.4 high → 5 findings, newInfoRatio 0.39
+- [x] T214 Iteration 15: Stop-hook metadata patch for transcript identity + cache tokens — Codex gpt-5.4 high → 6 findings, newInfoRatio 0.35
+- [x] T215 Iteration 16: normalized analytics replay schema + idempotent join keys — Codex gpt-5.4 high → 6 findings, newInfoRatio 0.33
+- [x] T216 Iteration 17: SessionStart cached-summary fast path placement — Codex gpt-5.4 high → 5 findings, newInfoRatio 0.28
+- [x] T217 Iteration 18: verifier/discoverer split mapped onto Public seams — Codex gpt-5.4 high → 6 findings, newInfoRatio 0.26
+- [x] T218 Iteration 19: portable token-insight JSON contracts — Codex gpt-5.4 high → 5 findings, newInfoRatio 0.23
+- [x] T219 Iteration 20: dependency-ordered implementation roadmap + acceptance gates — Codex gpt-5.4 high → 8 findings, newInfoRatio 0.18
+- [x] T220 Sync `research/research.md` §19, reducer outputs, and Level 3 packet docs to the 20-iteration completed-continue state
+
 ---
 
 <!-- /ANCHOR:phase-2 -->
@@ -87,6 +100,7 @@ contextType: tasks
 - [x] T305 Create spec.md, plan.md, tasks.md, implementation-summary.md, checklist.md, decision-record.md to satisfy validator Level 3 requirements
 - [x] T306 Re-run reducer after manual strategy edits to keep machine-owned sections in sync
 - [x] T307 Run `validate.sh --strict` and confirm RESULT: PASSED
+- [x] T308 Review `memory/` usefulness, duplication, and metadata health without hand-editing saved memory markdown content; keep archived thin saves in `.archive-pre-quality-rebuild/`
 
 ---
 
@@ -95,12 +109,13 @@ contextType: tasks
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All 10 questions (Q1-Q10) answered with source-cited evidence across the 12-iteration loop
-- [x] Source-confirmed findings across 12 iterations: ~67 (28 from original charter iters 1-7 + 39 from continuation iters 8-12)
+- [x] All 18 questions (Q1-Q18) answered with source-cited evidence across the 20-iteration packet
+- [x] Reducer-tracked findings across 20 iterations: 162, with generation 2 closing the implementation contract layer
 - [x] 9-track adoption matrix in `research/research.md` §13 + §18.1
 - [x] Two packet-ready briefs in `research/research.md` §18.4 (Brief A FTS capability cascade + Brief B normalized analytics tables)
+- [x] Execution-ready roadmap landed in `research/research.md` §19
 - [x] Cross-phase boundary with sibling phase `001-claude-optimization-settings` explicitly bounded
-- [x] Memory artifact saved with `critical` importance tier and clean trigger phrases
+- [x] Active memory set reviewed: indexed 12-iteration generation-1 memory retained, thin saves archived, and generation-2 continuation memory documented with current indexing-policy constraints
 - [x] Spec compliance: spec.md, plan.md, tasks.md, implementation-summary.md, checklist.md, decision-record.md present and consistent
 - [x] Validator passes with `--strict` flag
 - [x] No edits made under `external/`
@@ -112,12 +127,13 @@ contextType: tasks
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **spec.md** — Feature specification with REQ-001 through REQ-012 mapped to tasks T101-T206
-- **plan.md** — Implementation plan with the 4-phase architecture and rollback steps
-- **implementation-summary.md** — Outcome summary with the 12-row iteration log and matrix highlights
-- **research/research.md** — Canonical synthesis (18 sections including continuation §18.1-§18.5)
-- **research/iterations/iteration-001.md** through **research/iterations/iteration-012.md** — Per-iteration findings
-- **memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md** — Saved memory artifact (12-iteration session, importance_tier=critical, indexed as memory #1845; prior thin saves archived under memory/.archive-pre-quality-rebuild/)
+- **spec.md** — Feature specification aligned to the 20-iteration, two-generation packet state
+- **plan.md** — Implementation plan with the 5-phase architecture and rollback steps
+- **implementation-summary.md** — Outcome summary with the 20-row iteration log and roadmap highlights
+- **research/research.md** — Canonical synthesis (19 sections including continuation §18.1-§18.5 and roadmap §19)
+- **research/iterations/iteration-001.md** through **research/iterations/iteration-020.md** — Per-iteration findings
+- **memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md** — Indexed generation-1 memory artifact (memory #1845)
+- **memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md** — Generation-2 continuation memory artifact retained as a write-only persistence record under the current indexing policy
 
 
 <!-- /ANCHOR:cross-refs -->

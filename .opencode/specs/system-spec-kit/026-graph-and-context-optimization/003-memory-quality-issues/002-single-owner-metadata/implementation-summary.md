@@ -1,17 +1,16 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: Phase 2 — Single-Owner Metadata Fixes"
+description: "Phase 2 closed the metadata drift slice by making importance tier single-owner and by adding provenance-only JSON-mode enrichment without summary contamination."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "phase 2 implementation summary"
+  - "single owner metadata summary"
+  - "d4 d7 closeout"
+importance_tier: important
+contextType: "implementation"
 ---
-# Implementation Summary
+# Implementation Summary: Phase 2 — Single-Owner Metadata Fixes
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -22,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 002-single-owner-metadata |
+| **Completed** | 2026-04-08 |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,28 +31,28 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+Phase 2 removed the two-writer ambiguity behind D4 and closed the JSON-mode provenance hole behind D7 without widening into later-phase refactors. The save path now resolves `importance_tier` once, writes that resolved value into both the frontmatter and the bottom metadata block, and teaches the reviewer to fail loudly if those two surfaces ever drift again. JSON-mode saves also pick up git provenance fields through a narrow extraction seam that leaves authored summaries, observations, and decisions untouched.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Single-owner metadata contract
 
-### [Feature Name]
+You can now rely on one authoritative importance-tier contract across the Phase 2 owner set. `session-extractor.ts` remains the resolver surface, `frontmatter-migration.ts` serializes the same resolved tier into both rendered locations, and `post-save-review.ts` treats frontmatter-vs-metadata disagreement as a real defect instead of a cosmetic mismatch.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Provenance-only JSON enrichment
+
+JSON-mode saves no longer miss `head_ref`, `commit_ref`, and `repository_state` simply because they do not pass through the capture-only branch. The Phase 2 workflow patch copies only the git-provenance fields from the extractor seam and explicitly avoids reusing the broader capture-mode merge path. That keeps the fix narrow and prevents summary contamination.
 
 ### Files Changed
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
 | File | Action | Purpose |
 |------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+| `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Modified | Keeps the resolved importance-tier contract explicit for the Phase 2 owner set. |
+| `.opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts` | Modified | Rewrites both rendered tier locations from the same resolved value. |
+| `.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts` | Modified | Adds direct frontmatter-vs-metadata drift detection. |
+| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modified | Adds the provenance-only JSON-mode enrichment block. |
+| `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase2-pr3.test.ts` | Created/Modified | Proves F-AC4 tier parity and reviewer drift coverage. |
+| `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase2-pr4.test.ts` | Created/Modified | Proves F-AC6 provenance population without summary contamination. |
+| `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC4-importance-tier.json` | Created/Modified | Divergent-tier fixture for the D4 repair. |
+| `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json` | Created/Modified | Stubbed-git fixture for the D7 repair. |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +60,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+Delivery followed the phase contract in two passes. PR-3 locked the single-owner metadata flow first so the serialized shape and reviewer contract matched. PR-4 then added the provenance-only workflow insertion with a stubbed git seam, keeping the change inside the accepted tiny-patch boundary and verifying that authored summary content stayed unchanged.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +68,12 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Treat `session-extractor.ts` as the authoritative tier resolver | The research packet scoped D4 as a writer-synchronization problem, so Phase 2 needed one owner and only deferring consumers. |
+| Make `frontmatter-migration.ts` rewrite both rendered tier locations | Fixing only frontmatter would leave the human-readable metadata block stale and would keep the trust defect alive. |
+| Add a provenance-only JSON-mode insertion instead of reusing capture-mode enrichment wholesale | The accepted D7 fix was intentionally narrow because the capture branch also carries summaries, observations, and decisions that JSON-mode saves must not inherit. |
+| Keep F-AC6 seam-controlled instead of using live git state | The phase needed deterministic proof, not environment-sensitive verification. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +81,14 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| `npx vitest run tests/memory-quality-phase2-pr3.test.ts` | PASS |
+| `npx vitest run tests/memory-quality-phase2-pr4.test.ts` | PASS |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json \"$(cat .opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC4-importance-tier.json)\" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata` | PASS |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json \"$(cat .opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json)\" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata` | PASS |
+| `git diff --stat -- .opencode/skill/system-spec-kit/scripts/core/workflow.ts` | PASS, Phase 2 checklist records the accepted tiny D7 patch size |
+| `checklist.md` | Phase-local evidence recorded under CHK-210 through CHK-227 |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +96,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **Phase 2 stays deliberately narrow.** It does not reopen D2, D3, D5, SaveMode refactors, or the broader reviewer guardrail work.
+2. **Historical file repair remains outside this slice.** Phase 2 fixes future JSON-mode saves; Phase 5 owns any migration decisions for already-written files.
+3. **Parent packet closure still depends on later phases.** This summary closes the Phase 2 contract only, not the full packet. 
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

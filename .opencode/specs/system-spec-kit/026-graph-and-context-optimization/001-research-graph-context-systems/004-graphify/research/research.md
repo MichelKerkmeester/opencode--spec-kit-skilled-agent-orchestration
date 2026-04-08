@@ -27,16 +27,16 @@ Comprehensive analysis of graphify (external Python skill) identifying concrete 
 - **Spec path**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/`
 - **Status**: Complete
 - **Date Started**: 2026-04-06
-- **Date Completed**: 2026-04-06
+- **Date Completed**: 2026-04-08
 - **Phase**: 004-graphify (Phase 4 of `001-research-graph-context-systems`)
-- **Researcher**: Claude Code (opus, 1M context) — direct reads after codex iter 2 starved on parallel-job API contention. Iterations 8-10 dispatched via cli-codex gpt-5.4 high in fast (`exec`) mode per explicit user directive after composite_converged was reached at iter 7.
-- **Iterations**: 10 (4× codex gpt-5.4 high — runs 1, 8, 9, 10; 6× claude-opus-direct — runs 2-7)
-- **Convergence**: composite_converged at iter 7 (coverage 91.7%); user override added 3 forced cli-codex iterations (8-10) → final coverage 100% (12 of 12 questions answered) at max_iterations=10
+- **Researcher**: Wave 1: Claude Code (opus, 1M context) plus cli-codex gpt-5.4 high for runs 1 and 8-10. Wave 2: Codex direct repo reads against current Public runtime, handler, validation, and scoring surfaces after reopening the packet in `completed-continue` mode.
+- **Iterations**: 20 total (wave 1 runs 1-10 on external graphify; wave 2 runs 11-20 on Public-internal translation and rollout mapping)
+- **Convergence**: composite_converged at iter 7 (coverage 91.7%) then user override extended wave 1 to iter 10; wave 2 reopened the completed packet and closed Q13-Q22. Final coverage reached 100% (22 of 22 questions answered) at max_iterations=20
 
 **Related documents**:
 - Phase prompt: `phase-research-prompt.md`
 - Strategy: `research/deep-research-strategy.md`
-- Iteration files: `research/iterations/iteration-001.md` through `iteration-010.md`
+- Iteration files: `research/iterations/iteration-001.md` through `iteration-020.md`
 - Findings registry: `research/findings-registry.json`
 - Dashboard: `research/deep-research-dashboard.md`
 - Cross-phase: phases 002 (codesight), 003 (contextador), 005 (claudest) under same parent
@@ -67,9 +67,9 @@ Public does NOT currently have:
 
 graphify is structurally simple (~5,500 lines of Python across 18 modules + a single 650-line skill.md orchestration prompt) but operationally rich. **The headline 71.5x token-reduction claim is mathematically reproducible from graphify's own published numbers** (`123,488 / 1,726 = 71.55x`, finding K1 below) **but rests on three load-bearing assumptions that limit its generalizability** (naive baseline, 4-char token heuristic, BFS-subgraph cost model). The 71.5x is NOT the strongest evidence for adoption; the **graph-quality findings** (correct community separation, cross-repo similarity discovery, paper→code bridging, image semantic interpretation) are.
 
-**Public should adopt 4 patterns directly, adapt 5 patterns into existing surfaces, and reject 4 patterns as duplicative or non-applicable.** Full Adopt/Adapt/Reject table in §12.
+**Public should adopt 6 patterns directly, adapt 7 patterns into existing surfaces, and reject 4 patterns as duplicative or non-applicable.** Full Adopt/Adapt/Reject table in §12.
 
-### Headline Findings (5 of 12 — full list in §13)
+### Headline Findings (5 of 22 — full list in §13, §13.A, and §13.B)
 
 1. **Evidence labeling is a transport-level guarantee, not a UI convention** [SOURCE: external/graphify/export.py:250, 264-275; external/graphify/validate.py:5; external/graphify/report.py:21-29]. Every edge in `graph.json` carries both a categorical `confidence` ∈ `{EXTRACTED, INFERRED, AMBIGUOUS}` AND a numeric `confidence_score` (backfilled from `_CONFIDENCE_SCORE_DEFAULTS = {EXTRACTED: 1.0, INFERRED: 0.5, AMBIGUOUS: 0.2}` if missing). The validator at `validate.py:5` enforces `VALID_CONFIDENCES = {"EXTRACTED", "INFERRED", "AMBIGUOUS"}` as a hard schema constraint. The semantic subagent prompt at `skill.md:191-194` defines AMBIGUOUS as "uncertain — flag for review, **do not omit**", making graphify treat negative knowledge as a first-class output. **Public should add provenance tiers and numeric confidence to graph/context retrieval payloads** so downstream ranking can distinguish direct structural facts from inferred or review-worthy relationships instead of flattening them into a single relevance score.
 
@@ -553,7 +553,7 @@ Per the prompt's Cross-Phase Awareness table at `phase-research-prompt.md:33-39`
 
 ## 12. Adopt / Adapt / Reject Recommendations
 
-### 12.1 ADOPT (4 patterns — high impact, low effort, no Public-side equivalent)
+### 12.1 ADOPT (6 patterns — high impact, low effort, no Public-side equivalent)
 
 | # | Pattern | Why Adopt | Concrete Adoption Plan | Source Citations |
 |---|---|---|---|---|
@@ -561,8 +561,10 @@ Per the prompt's Cross-Phase Awareness table at `phase-research-prompt.md:33-39`
 | **A2** | **Graph-first PreToolUse hook with matcher `"Glob\|Grep"` and conditional payload** | Surgical insertion point that nudges Claude toward Public's existing structural indexers without blocking. Public has the hook infra (per 024-compact-code-graph) but no graph-first nudge today. | Install a project-local PreToolUse hook in `.claude/settings.json` with payload `[ -f .opencode/code-graph/graph.db ] && echo 'Public: code graph is available. Use code_graph_query for callers/imports/deps and mcp__cocoindex_code__search for semantic concept search before raw Grep.' \|\| true`. Conditional firing keeps it silent when no graph exists. | external/graphify/__main__.py:9-21, 108-131 |
 | **A3** | **Two-layer cache invalidation (manifest mtime + SHA256 content hash)** | The two layers protect different failure modes. Manifest catches "file edited" cheaply (no hashing), SHA256 catches "rename / autosave / revert without content change". | Refactor Public's CocoIndex incremental update path to use both layers: (a) manifest mtime filter from the existing index timestamps, (b) SHA256 hash check before re-running the embedding pass on candidate files. Same pattern applies to Code Graph MCP's incremental rebuilds. | external/graphify/detect.py:237-274; external/graphify/cache.py:9-49; external/graphify/extract.py:2371-2378 |
 | **A4** | **CLAUDE.md companion section pattern** (declarative guidance + procedural hook = two-pronged Claude steering) | Hooks alone can be ignored or filtered out. CLAUDE.md instructions are loaded at session start and shape the model's reasoning. Together they're more durable than either alone. | When installing the PreToolUse hook (A2), also add a `## Public Code Graph` section to the project's CLAUDE.md instructing Claude to (a) prefer `code_graph_query` for structural questions, (b) prefer `mcp__cocoindex_code__search` for concept search, (c) use raw Grep only when both above return nothing useful. | external/graphify/__main__.py:70-79 |
+| **A5** | **`validate.py` schema-boundary validator** as a composable hardening layer for graph/export interchange | This is the most portable artifact in the repo: small, dependency-light, and orthogonal to graph construction details. It hardens ingestion and export boundaries without competing with Code Graph MCP. | Add a small validator at Public graph-export or interchange boundaries that enforces required node and edge fields plus bounded provenance tiers before persistence or serving. Keep it independent from the main graph engine so it can validate future JSON exports, community payloads, or multimodal graph artifacts. | external/graphify/validate.py:1-71 |
+| **A6** | **Wiki-style narrative export with EXTRACTED / INFERRED / AMBIGUOUS audit summaries baked into prose** | This creates a human-readable handoff artifact that complements live MCP queries instead of replacing them. It is especially useful for research packets, audits, and offline review. | Add an optional narrative export mode that emits community- or topic-level markdown articles plus an index, including source-file rollups and confidence-breakdown summaries. Keep it explicitly secondary to live handlers and optimize it for handoff and review, not interactive querying. | external/graphify/wiki.py:25-89; external/graphify/wiki.py:128-165; external/graphify/wiki.py:168-214 |
 
-### 12.2 ADAPT (5 patterns — valuable but need significant rework for Public)
+### 12.2 ADAPT (7 patterns — valuable but need significant rework for Public)
 
 | # | Pattern | Why Adapt (not Adopt) | Adaptation Plan | Source Citations |
 |---|---|---|---|---|
@@ -571,6 +573,8 @@ Per the prompt's Cross-Phase Awareness table at `phase-research-prompt.md:33-39`
 | **D3** | **Auto-rebuild on git commit / branch switch** via post-commit + post-checkout hooks | Pattern is reusable for any Public indexer that derives from source code. graphify's specific scripts are too tied to its own pipeline. | Build a generic Public hook installer that registers post-commit and post-checkout hooks, each calling a Public-specific rebuild entry point. Use marker comments (`# public-rebuild-hook`) for idempotent install/uninstall. Coexist with other tooling's hooks via append-or-skip. Apply to both Code Graph MCP and CocoIndex incremental updates. | external/graphify/hooks.py:8-77, 89-117 |
 | **D4** | **Suggested questions generator** (5 categories: ambiguous edges, bridge nodes, verify-inferred, isolated nodes, low-cohesion communities) | Concept is valuable — graph shape can drive proactive questioning. Implementation is graphify-specific and not directly portable to Code Graph MCP's data model. | Port the 5-category logic to Public's structural index. Specifically: (a) flag any retrieval results below a confidence threshold as "ambiguous → ask user", (b) flag high-betweenness nodes as "bridges → why does this connect X to Y?", (c) flag isolated symbols as "what connects X to the rest of the system?", (d) flag low-cohesion communities (if Public adopts clustering — see D5) as "should this be split?". | external/graphify/analyze.py:326-440 |
 | **D5** | **Leiden clustering via graspologic** with single-pass split for oversized communities | Public could benefit from clustered navigation, but graphify's hardcoded constants (`_MAX_COMMUNITY_FRACTION = 0.25`, `_MIN_SPLIT_SIZE = 10`) and lack of tunable parameters are too rigid. | Add Leiden as an optional clustering layer over Public's existing Code Graph MCP. Expose `resolution`, `randomness`, `max_community_fraction`, `min_split_size`, and `recursive_depth` as tunable parameters from the start. Default values can mirror graphify's, but they should NOT be hardcoded. Use the lazy-import trick to avoid the 15s numba JIT cost on cold paths. | external/graphify/cluster.py:23-89; external/graphify/cluster.py:39 |
+| **D6** | **Modality-aware rebuild policy layer** (code-only fast path vs full multimodal slow path) | The value is in the orchestration decision, not in graphify's exact pipeline. Public already has stronger low-level invalidation and only needs the policy layer that decides when semantic or multimodal work is actually necessary. | Add a policy layer above current Code Graph MCP and CocoIndex refresh paths that inspects changed-file modalities, keeps code-only refreshes structural and cheap, and only triggers semantic or multimodal passes when docs, PDFs, screenshots, or diagrams actually changed. | external/skills/graphify/skill.md:236-400; external/skills/graphify/skill.md:666-705 |
+| **D7** | **Stable JSON interchange artifact preserving community + provenance numerics** (`to_json()` discipline) | A durable JSON artifact makes serving and review layers stateless projections over a shared source of truth. Public should adapt the discipline, not copy graphify's exact schema. | Define a typed interchange artifact for optional graph-enrichment exports that preserves community metadata, provenance tiers, and numeric confidence so downstream tools can project from it without re-running clustering or re-deriving confidence. Keep the schema aligned with current Public payload contracts instead of adopting graphify's node-link structure wholesale. | external/graphify/export.py:250-275 |
 
 ### 12.3 REJECT (4 patterns — duplicative, non-applicable, or actively harmful)
 
@@ -588,10 +592,12 @@ Per the prompt's Cross-Phase Awareness table at `phase-research-prompt.md:33-39`
                   ┌─────────────────────────────┬──────────────────────────────┐
        HIGH       │ A1 Evidence tagging         │ D1 Semantic prompt pattern   │
        IMPACT     │ A2 PreToolUse hook          │ D5 Leiden clustering         │
-                  │ A4 CLAUDE.md companion      │                              │
+                  │ A4 CLAUDE.md companion      │ D6 Modality-aware rebuild    │
+                  │ A5 validate.py validator    │                              │
                   ├─────────────────────────────┼──────────────────────────────┤
-       MEDIUM     │ D2 Per-image-type strategies│ D3 Auto-rebuild on commit    │
-       IMPACT     │                             │ D4 Suggested questions       │
+       MEDIUM     │ A6 Wiki narrative export    │ D3 Auto-rebuild on commit    │
+       IMPACT     │ D2 Per-image-type strategies│ D4 Suggested questions       │
+                  │ D7 Stable JSON interchange  │                              │
                   ├─────────────────────────────┼──────────────────────────────┤
        LOW        │ A3 Two-layer cache          │                              │
        IMPACT     │   invalidation              │                              │
@@ -599,10 +605,10 @@ Per the prompt's Cross-Phase Awareness table at `phase-research-prompt.md:33-39`
 ```
 
 **Implementation order recommendation**:
-1. **Sprint 1 (week 1)**: A1 + A2 + A4 — three low-effort high-impact wins
-2. **Sprint 2 (week 2)**: A3 + D2 — refactor cache + add image strategies
-3. **Sprint 3 (week 3-4)**: D1 + D3 — semantic prompt skill + auto-rebuild hooks
-4. **Sprint 4 (later)**: D4 + D5 — suggested questions + Leiden clustering (only if 1-3 prove valuable)
+1. **Sprint 1 (week 1)**: A1 + A2 + A4 + A5 — provenance tiers, graph-first nudges, CLAUDE guidance, and schema hardening
+2. **Sprint 2 (week 2)**: A3 + A6 + D2 — cache discipline, narrative export, and image-strategy adoption
+3. **Sprint 3 (week 3-4)**: D1 + D6 + D7 — semantic prompt packaging, modality-aware rebuild policy, and stable interchange schema
+4. **Sprint 4 (later)**: D3 + D4 + D5 — hook automation, suggested questions, and optional clustering (only if 1-3 prove valuable)
 
 ---
 
@@ -713,9 +719,9 @@ These findings extend the K1-K12 baseline with the export/serve surface (iter 8)
 
 **K32.** **Graphify's validation layer (`validate.py`) is the most directly portable artifact in the entire repo.** It enforces required `id`, `label`, `type` on nodes; required `source`, `target`, `relation`, `confidence` on edges; bounded `confidence ∈ {EXTRACTED, INFERRED, AMBIGUOUS}`; and validates hyperedges only structurally. The whole validator is 71 lines, has no external dependencies beyond NetworkX, and is orthogonal to Public's existing graph engine — it would harden ingestion boundaries without competing with Code Graph MCP. ADOPT directly as a small composable hardening layer for any graph/export interchange. [SOURCE: external/graphify/validate.py:1-71]
 
-### 13.A.4 Extension Notes for §12 (Adopt/Adapt/Reject)
+### 13.A.4 Section 12 Integration Notes (historical lineage)
 
-The §12 table was finalized at iter 7 and remains structurally accurate. Iter 8-10 evidence extends specific rows:
+The iter 8-10 evidence originally landed here as proposed extensions to §12. During the packet audit pass, those rows were inlined into §12 as A5, A6, D6, and D7 so the canonical recommendation table now stands on its own. This subsection remains as lineage context showing why those rows were promoted:
 
 - **A1 (evidence tagging)** is now reinforced by K30: Public should NOT source AMBIGUOUS from graphify's per-language extractor code, only from semantic-pass output or Public's own ranking.
 - **A2 (PreToolUse hook) + A4 (CLAUDE.md companion)** unchanged.
@@ -727,13 +733,37 @@ The §12 table was finalized at iter 7 and remains structurally accurate. Iter 8
 - **R3 (HTML viewer)** is reinforced by K14: the hardcoded 5,000-node cap is two orders of magnitude below Public's graph.
 - **R4 (wholesale replacement)** unchanged.
 
-**New ADOPT row to add (A5):** **`validate.py` schema-boundary validator** as a small composable hardening layer for graph/export interchange. Effort: S. Evidence: K32. Why: 71 lines, no dependencies, orthogonal to Code Graph MCP, hardens ingestion boundaries without competing.
+## 13.B Iterations 11-20 Findings (Public translation and rollout mapping)
 
-**New ADOPT row to add (A6):** **Wiki-style narrative export with EXTRACTED/INFERRED/AMBIGUOUS audit summaries baked into prose.** Effort: S-M. Evidence: K18. Why: distinct from live MCP query surfaces; useful for research-packet handoff and human evidence review.
+Wave 2 reopened the packet in `completed-continue` mode and translated graphify's strongest patterns onto current Public code. The focus shifted from "what graphify does" to "where Public can carry the same ideas without introducing a second graph subsystem." These findings close Q13-Q22 and turn the packet into implementation-grade follow-on guidance.
 
-**New ADAPT row to add (D6):** **Modality-aware rebuild policy layer** (code-only fast path vs full multimodal slow path). Effort: M. Evidence: K25. Why: lets Code Graph MCP stay cheap on code-only changes while only invoking CocoIndex/semantic passes when non-code assets actually change.
+### 13.B.1 Payload Contracts, Runtime Nudges, and Bridge Surfaces
 
-**New ADAPT row to add (D7):** **Stable JSON interchange artifact preserving community + provenance numerics** (the `to_json()` discipline). Effort: S-M. Evidence: K13, K19. Why: enables stateless serving layers as projections from a durable artifact rather than tightly coupled to the build pipeline.
+**K33.** **Public already has the right payload contracts for graphify-style provenance tiers and numeric confidence.** The result-confidence catalog already defines numeric confidence plus drivers, the result-provenance catalog already defines `graphEvidence` with contributing edges and community IDs, and `code-graph/context.ts` already returns anchors with `confidence`, `resolution`, `source`, and `metadata`. The correct adoption path is additive enrichment of current contracts, not a parallel graph-only payload family. [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/19-result-confidence.md:10-31; .opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/20-result-provenance.md:10-36; .opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:171-189]
+
+**K34.** **Public's graph-first nudge should be layered across existing runtime surfaces, not copied as a single PreToolUse hook.** `session-prime.ts` already injects startup and resume context, `compact-inject.ts` preserves code-graph and cocoindex context under token pressure, and `response-hints.ts` already appends measured auto-surface hints after the fact. Public should use all three layers, with bootstrap/resume remaining the generic cross-runtime transport. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:35-157; .opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:205-259; .opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:86-133; .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:203-217]
+
+**K35.** **The current bridge surfaces are already sufficient to absorb graph signals.** The bridge-context feature catalog, `code-graph/context.ts`, bootstrap/resume payloads, and `stage2-fusion.ts` already form a bridge between semantic search, structural graph context, and ranking. Community labels, provenance metadata, and graph-first routing hints should land there instead of spawning a new bridge tool. [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md:10-13,28-36; .opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:106-152,171-189; .opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:200-213; .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:21-34,76-89]
+
+### 13.B.2 Indexing, Multimodal Scope, and Clustering Fit
+
+**K36.** **Public already exceeds graphify's low-level invalidation logic inside its incremental semantic index.** `incremental-index.ts` stores metadata and content hashes, takes an mtime fast path, and still detects content-hash mismatches and pending or failed embeddings. graphify's remaining value is architectural: a modality-aware rebuild policy that coordinates structural and semantic refresh, not a better low-level invalidation algorithm. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts:111-145; .opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts:152-191]
+
+**K37.** **The narrowest viable multimodal path for Public is local-file-only PDFs, screenshots, and diagrams.** Public already has a structured `diagram-extractor.ts` and a local-path-guarded ingest surface in `memory-ingest.ts`; that makes graphify's prompt discipline portable without copying its remote-fetch-heavy ingestion subsystem. [SOURCE: .opencode/skill/system-spec-kit/scripts/extractors/diagram-extractor.ts:121-188; .opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts:165-227]
+
+**K38.** **If Public adds clustering, the lightest path is additive metadata on the current code graph, not a second graph platform.** Community-detection validation already exists in the playbook, `stage2-fusion.ts` already consumes community co-retrieval and graph signals, and `code-graph/context.ts` can already carry graph metadata on anchors. Cluster labels should therefore be persisted on current graph entities and consumed by existing ranking/context layers. [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/10--graph-signal-activation/022-community-detection-n2c.md:18-29; .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:21-34; .opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:171-189]
+
+### 13.B.3 Verification, Metrics, and Trust Boundaries
+
+**K39.** **Public can prove graph-first routing and provenance-tagged retrieval by extending existing verification surfaces.** The routing manual playbook already tests semantic versus structural routing, provenance docs already point at formatter and envelope tests, bootstrap/resume already expose stable payload contracts, and `response-hints.ts` already records latency and token counts. No separate graph-first QA subsystem is necessary. [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:16-35; .opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/20-result-provenance.md:28-36; .opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:86-133]
+
+**K40.** **Public's evaluation metrics should be architecture-native rather than benchmark-headline-native.** The current repo already measures session quality through recency, recovery, graph freshness, and continuity, and it already captures hint timing and token counts. The right scorecard is routing precision, seed-resolution quality, graph freshness, session quality, and hint overhead, not a single synthetic token-reduction ratio. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/session/context-metrics.ts:206-245; .opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:40-83,86-133; .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:16-35]
+
+**K41.** **Public's current trust boundary requires local ingestion, explicit provenance, and typed payload compatibility.** `memory-ingest.ts` is path-bounded and traversal-safe, bootstrap/resume already carry provenance-aware payload contracts, and `code-graph/context.ts` already records source and confidence per anchor. Direct graphify-style remote ingestion would cross today's trust boundary. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts:165-227; .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:154-191; .opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:171-189]
+
+### 13.B.4 Final Rollout Guidance
+
+**K42.** **Public's best rollout is three-phase and enrichment-first.** Immediate phase: extend current confidence/provenance contracts, bootstrap/resume hints, response hints, and routing playbooks. Near-term phase: add modality-aware rebuild policy and local-file-only multimodal handling. Later phase: optionally add community labels and community-aware ranking if the first two phases prove valuable. The evidence does not justify a graphify-style replacement path for Code Graph MCP or CocoIndex. [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/19-result-confidence.md:10-31; .opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts:152-191; .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:21-34; .opencode/skill/system-spec-kit/mcp_server/lib/session/context-metrics.ts:206-245]
 
 ---
 
@@ -809,6 +839,71 @@ Per-iteration source coverage (cumulative):
 - `external/graphify/extract.py:2367-2505` (dispatch table + extension list)
 - `external/graphify/validate.py:1-71` (full schema validator — confirmed as the most directly portable artifact in the repo)
 
+### Iteration 11 (Codex direct — payload contracts and provenance tiers)
+- `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/19-result-confidence.md:10-31`
+- `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/20-result-provenance.md:10-36`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:171-189`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:154-217`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:155-213`
+
+### Iteration 12 (Codex direct — runtime nudge placement)
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:86-133`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:35-157`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:45-68,74-124,205-259`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:68-100,203-217`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:139-143,200-213`
+
+### Iteration 13 (Codex direct — indexing and invalidation)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts:111-145,152-191`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:95-104`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:125-133`
+
+### Iteration 14 (Codex direct — multimodal scope)
+- `.opencode/skill/system-spec-kit/scripts/extractors/diagram-extractor.ts:8-20,121-188`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts:165-227`
+
+### Iteration 15 (Codex direct — clustering fit)
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/10--graph-signal-activation/022-community-detection-n2c.md:18-29`
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:21-34,76-89`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:106-152,171-189`
+
+### Iteration 16 (Codex direct — validation and playbooks)
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:16-35`
+- `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/20-result-provenance.md:28-36`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:154-217`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:155-213`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:86-133`
+
+### Iteration 17 (Codex direct — architecture-native metrics)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/session/context-metrics.ts:206-245`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:40-83,86-133`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:16-35`
+
+### Iteration 18 (Codex direct — trust boundaries)
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts:165-227`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:154-191`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:155-194`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:171-189`
+
+### Iteration 19 (Codex direct — bridge surfaces)
+- `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md:10-13,28-36`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:10-33,106-152,171-189`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:203-217`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:200-213`
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:21-34,76-89,218-256`
+
+### Iteration 20 (Codex direct — phased rollout plan)
+- `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/19-result-confidence.md:10-31`
+- `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/20-result-provenance.md:10-36`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts:86-133`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:16-35`
+- `.opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts:152-191`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts:95-104,171-189`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts:165-227`
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:21-34`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/10--graph-signal-activation/022-community-detection-n2c.md:18-29`
+- `.opencode/skill/system-spec-kit/mcp_server/lib/session/context-metrics.ts:206-245`
+
 **Total source coverage**: ~5,500 lines of Python (estimated full repo Python LOC) + 650+ lines of skill.md (cumulative across iterations) + 8 worked-example artifact files across `karpathy-repos` and `mixed-corpus`.
 
 **Files NOT read** (after iter 8-10 closure): `external/graphify/export.py:1-249` (HTML viewer scaffolding boilerplate — covered by iter 8 read of full file but not deeply analyzed since K14 closed the question), `external/CHANGELOG.md`, `external/SECURITY.md`, `external/pyproject.toml`, `external/tests/*`, `external/worked/example/*`, `external/worked/httpx/*`, `external/worked/mixed-corpus/raw/*`. None of these would change the recommendations.
@@ -817,7 +912,7 @@ Per-iteration source coverage (cumulative):
 
 ## 15. Open Questions / Out of Scope
 
-- **Q12 final answer is in §12 (Adopt/Adapt/Reject) — answered by synthesis, not by an additional research iteration.**
+- **Q12 final answer is fully in §12 (Adopt/Adapt/Reject), with §13.A.4 retained only as historical lineage; Q13-Q22 are answered in §13.B.**
 - **`external/worked/mixed-corpus/`** was not deeply examined; would provide a second data point for benchmark credibility but the karpathy-repos worked example is the canonical reference.
 - **`external/worked/httpx/`** was not examined; would show how graphify performs on a single-repo Python codebase (closer to typical Public use case) but the abstract findings hold.
 - **Real Claude tokenization counts** (vs the 4-char heuristic) were not measured; would tighten the credibility verdict on K1 but not change the directional conclusion.
@@ -828,18 +923,18 @@ Per-iteration source coverage (cumulative):
 ## 16. Convergence Report
 
 - **Initial stop reason (iter 7)**: composite_converged (coverage 91.7% ≥ 85% threshold)
-- **Final stop reason (iter 10)**: max_iterations_reached AND all_questions_answered (coverage 100%, 12 of 12)
-- **Total iterations**: 10
-- **Questions answered**: 12 of 12. Iter 7 closed Q1-Q11; iter 10 closed Q12 with line-grounded Adopt/Adapt/Reject grounding.
+- **Final stop reason (iter 20)**: max_iterations_reached AND all_questions_answered (coverage 100%, 22 of 22)
+- **Total iterations**: 20
+- **Questions answered**: 22 of 22. Wave 1 closed Q1-Q12; wave 2 closed Q13-Q22 with Public-specific rollout guidance.
 - **Last 3 iteration summaries**:
-  - Run 8: export-serve (newInfoRatio 0.95) — `to_json`/wiki/serve surface, 10 findings
-  - Run 9: build-orchestration (newInfoRatio 0.92) — manifest, build, modality-aware update, mixed-corpus packaging mismatch, 10 findings
-  - Run 10: per-language-final-synthesis (newInfoRatio 0.90) — 12-language extractor matrix + final Q12 table, 12 findings
+  - Run 18: security-boundaries (newInfoRatio 0.54) — local ingest trust boundary, provenance transport, 4 findings
+  - Run 19: bridge-surfaces (newInfoRatio 0.49) — bridge context, fusion, bootstrap/resume integration, 4 findings
+  - Run 20: rollout-plan (newInfoRatio 0.42) — immediate / near-term / later adoption plan, 4 findings
 - **Convergence threshold**: 0.05 (rolling average newInfoRatio)
 - **Coverage trigger**: 0.85 (questions answered / total questions) — exceeded at iter 7, then user override pushed to 100%
 - **Quality guards**: passed — every finding has ≥1 file:line citation, sources are diverse across iterations, no single-weak-source answers
-- **Engine breakdown**: 4 iterations via cli-codex gpt-5.4 high (runs 1, 8, 9, 10 — iter 1 baseline + iters 8-10 user-forced extension), 6 iterations via claude-opus-direct (runs 2-7) after iter 2 codex starvation
-- **User override note**: Iterations 8-10 were dispatched by explicit user directive after the iter 7 composite_converged stop, using `cli-codex gpt-5.4` with `model_reasoning_effort=high` in fast `exec` mode. All three iterations stayed within the 12-tool-call budget and produced 32 net-new findings (10 + 10 + 12) beyond the K1-K12 baseline.
+- **Engine breakdown**: 4 iterations via cli-codex gpt-5.4 high (runs 1, 8, 9, 10), 6 iterations via claude-opus-direct (runs 2-7), 10 iterations via Codex direct repo reads for wave 2 (runs 11-20)
+- **User override note**: Iterations 8-10 were dispatched by explicit user directive after the iter 7 composite_converged stop. Iterations 11-20 were added by explicit user directive to reopen the packet to 20 total iterations and focus on repo-internal translation rather than more external graphify reading.
 
 ---
 
@@ -856,4 +951,5 @@ Per-iteration source coverage (cumulative):
 | Date | Author | Change |
 |---|---|---|
 | 2026-04-06 | Claude (opus 1M, direct) | Initial synthesis from 7 iterations. Adopted research template structure with adaptations for repo-survey audit (vs feature-implementation research). 12 key findings consolidated with file:line citations. Adopt/Adapt/Reject recommendations finalized in §12. |
-| 2026-04-06 | Claude (opus 1M) + cli-codex (gpt-5.4 high, fast `exec` mode) | User-directed extension: 3 additional iterations (8, 9, 10) dispatched via cli-codex gpt-5.4 high after the iter 7 composite_converged stop. Added §13.A with 20 new findings (K13-K32), expanded §14 with iter 8-10 source coverage, updated §16 convergence report, proposed 4 new §12 rows (A5, A6, D6, D7). Final coverage 100% (12 of 12 questions), final stop reason `max_iterations_reached AND all_questions_answered`. |
+| 2026-04-06 | Claude (opus 1M) + cli-codex (gpt-5.4 high, fast `exec` mode) | User-directed extension: 3 additional iterations (8, 9, 10) dispatched via cli-codex gpt-5.4 high after the iter 7 composite_converged stop. Added §13.A with 20 new findings (K13-K32), expanded §14 with iter 8-10 source coverage, updated §16 convergence report, and produced the evidence later promoted into §12 rows A5, A6, D6, and D7. Final coverage 100% (12 of 12 questions), final stop reason `max_iterations_reached AND all_questions_answered`. |
+| 2026-04-08 | Codex | User-directed completed-continue wave added 10 more iterations (11-20) to reach 20 total. Added §13.B with Public-internal translation findings (K33-K42), expanded §14 with iter 11-20 source coverage, and updated metadata/convergence to 22 of 22 questions answered. |

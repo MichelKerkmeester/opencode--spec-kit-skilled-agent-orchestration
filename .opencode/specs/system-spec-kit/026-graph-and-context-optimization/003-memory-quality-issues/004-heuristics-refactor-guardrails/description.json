@@ -1,14 +1,20 @@
 {
-  "specFolder": "003-memory-quality-issues/004-heuristics-refactor-guardrails",
-  "description": "Phase 4: heuristics-refactor-guardrails",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/004-heuristics-refactor-guardrails",
+  "description": "Feature Specification: Phase 4 — Heuristics, Refactor & Guardrails",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
-    "heuristics-refactor-guardrails"
+    "heuristics",
+    "refactor",
+    "guardrails"
   ],
-  "lastUpdated": "2026-04-07T11:14:04.774Z",
+  "lastUpdated": "2026-04-08T14:27:35.695Z",
   "specId": "004",
   "folderSlug": "heuristics-refactor-guardrails",
   "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
     "003-memory-quality-issues"
   ],
   "memorySequence": 0,

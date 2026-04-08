@@ -1,0 +1,34 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "sessionSummary": "We reject across 4 prioritization tiers and the full Level 3 spec set while the spec kit validator stays green for adjacent topic extraction.",
+  "triggerPhrases": [
+    "with phases",
+    "session for",
+    "level spec",
+    "spec kit"
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/lib/semantic-signal-extractor.ts",
+      "action": "Modified",
+      "description": "Rejects stopword-collapsed synthetic bigrams before they reach Key Topics"
+    }
+  ],
+  "nextSteps": [
+    "Inspect rendered Key Topics"
+  ],
+  "expectedAbsentTriggers": [
+    "with phases",
+    "session for",
+    "level spec"
+  ],
+  "expectedPresentTriggers": [
+    "spec kit"
+  ],
+  "expectedAbsentTopics": [
+    "tiers full",
+    "full level",
+    "level spec"
+  ],
+  "expectedPresentTopics": []
+}

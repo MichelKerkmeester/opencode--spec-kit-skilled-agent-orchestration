@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-provisional-measurement-contract",
+  "description": "Feature Specification: Provisional Measurement Contract",
+  "keywords": [
+    "feature",
+    "specification",
+    "provisional",
+    "measurement",
+    "contract"
+  ],
+  "lastUpdated": "2026-04-08T14:27:35.710Z",
+  "specId": "005",
+  "folderSlug": "provisional-measurement-contract",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

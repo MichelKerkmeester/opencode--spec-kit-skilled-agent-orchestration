@@ -1,0 +1,32 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "sessionSummary": "Phase 3 replay keeps meaningful indexing terms while removing numbered and identifier-shaped junk that previously polluted saved trigger phrases.",
+  "triggerPhrases": [
+    "phase 7 cocoindex",
+    "f21 arithmetic inconsistency",
+    "iteration 15 filter list",
+    "index health",
+    "mcp"
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
+      "action": "Created",
+      "description": "Adds suspicious-prefix filtering from the frozen D3 corpus"
+    }
+  ],
+  "nextSteps": [
+    "Verify the saved trigger list"
+  ],
+  "expectedAbsentTriggers": [
+    "phase 7 cocoindex",
+    "f21 arithmetic inconsistency",
+    "iteration 15 filter list"
+  ],
+  "expectedPresentTriggers": [
+    "index health",
+    "mcp"
+  ],
+  "expectedAbsentTopics": [],
+  "expectedPresentTopics": []
+}

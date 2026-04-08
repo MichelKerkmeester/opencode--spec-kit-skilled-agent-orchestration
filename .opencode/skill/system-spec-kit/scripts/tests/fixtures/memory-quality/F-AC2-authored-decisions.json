@@ -1,0 +1,22 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "sessionSummary": "Short neutral session summary for decision precedence testing.",
+  "keyDecisions": [
+    {
+      "decision": "Adopt strict TypeScript config",
+      "rationale": "It keeps the remediation packet compiler-clean while tightening the extractor contract."
+    },
+    {
+      "decision": "Use Voyage-4 embeddings",
+      "rationale": "It preserves the retrieval-quality target already approved for the packet."
+    }
+  ],
+  "userPrompts": [
+    {
+      "prompt": "We decided to adopt strict TypeScript config for this remediation."
+    },
+    {
+      "prompt": "We chose Voyage-4 embeddings for the retrieval path."
+    }
+  ]
+}

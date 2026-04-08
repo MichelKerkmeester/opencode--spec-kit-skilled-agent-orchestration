@@ -1,19 +1,19 @@
 {
-  "timestamp": "06-04-26 18-17",
+  "timestamp": "08-04-26 08-42",
   "messageCount": 1,
-  "decisionCount": 6,
+  "decisionCount": 4,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
     "totalProcessed": 1,
-    "noiseFiltered": 0,
+    "noiseFiltered": 1,
     "duplicatesRemoved": 0,
-    "qualityScore": 60,
+    "qualityScore": 0,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-06T17:17:10.422Z",
+        "timestamp": "2026-04-08T07:42:12.812Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -43,20 +43,22 @@
           "/^reasoning$/i",
           "/^<reasoning>.*<\\/reasoning>$/s"
         ],
-        "matchesFound": [],
+        "matchesFound": [
+          "/^[\\s\\u00A0]*$/ x1"
+        ],
         "actionsTaken": [
-          "filtered_noise:0",
+          "filtered_noise:1",
           "filtered_empty:0",
           "stripped_wrappers:0"
         ],
         "passedThrough": [
           "input_items:1",
-          "kept_items:1"
+          "kept_items:0"
         ]
       }
     ],
     "filtered": {
-      "noise": 0,
+      "noise": 1,
       "empty": 0,
       "duplicate": 0,
       "lowQuality": 0
@@ -66,7 +68,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-06T17:17:10.385Z",
+      "timestamp": "2026-04-08T07:42:12.550Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +128,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:61"
+        "processed_fields:18"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-06T17:17:10.422Z",
+      "timestamp": "2026-04-08T07:42:12.812Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -161,20 +163,22 @@
         "/^reasoning$/i",
         "/^<reasoning>.*<\\/reasoning>$/s"
       ],
-      "matchesFound": [],
+      "matchesFound": [
+        "/^[\\s\\u00A0]*$/ x1"
+      ],
       "actionsTaken": [
-        "filtered_noise:0",
+        "filtered_noise:1",
         "filtered_empty:0",
         "stripped_wrappers:0"
       ],
       "passedThrough": [
         "input_items:1",
-        "kept_items:1"
+        "kept_items:0"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-06T17:17:10.454Z",
+      "timestamp": "2026-04-08T07:42:12.842Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,7 +195,7 @@
       ],
       "passedThrough": [
         "current_spec:004-graphify",
-        "trigger_phrases:47",
+        "trigger_phrases:32",
         "key_topics:12",
         "captured_file_count:10",
         "filesystem_file_count:10"
@@ -201,15 +205,15 @@
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 8,
+    "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
-      "implementation": 1,
+      "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 0
     }
   },
   "fileCounts": {
@@ -229,8 +233,8 @@
     "model": "voyage-4",
     "dimensions": 768,
     "memoryId": null,
-    "updatedAt": "2026-04-06T17:17:10.489Z",
-    "lastAttemptedAt": "2026-04-06T17:17:10.489Z",
+    "updatedAt": "2026-04-08T07:42:12.876Z",
+    "lastAttemptedAt": "2026-04-08T07:42:12.876Z",
     "reason": "Validation rules require write-only persistence without semantic indexing: V12"
   }
 }

@@ -1,81 +1,38 @@
 ---
-title: "Level 1 Templates [template:level_1/README.md]"
-description: "Baseline documentation templates for low-risk, small-scope changes."
+title: "README: Phase 5 — Operations & Tail PRs"
+description: "Quick orientation for the Phase 5 packet that closes the memory-quality remediation work."
 trigger_phrases:
-  - "level 1"
-  - "small change"
-  - "baseline docs"
-importance_tier: "normal"
+  - "phase 5 readme"
+  - "operations tail quick start"
+  - "memory quality closeout phase"
+importance_tier: normal
 contextType: "general"
 ---
-# Level 1 Templates
+# README: Phase 5 — Operations & Tail PRs
 
-Use for simple work where full verification/governance overhead is unnecessary.
+Phase 5 is the closeout packet for `003-memory-quality-issues`. It does not reopen the core D1-D8 remediation train. Instead, it captures the operational tail that sits after Phases 1-4: telemetry cataloging, alert-rule drafting, PR-10 dry-run evidence, PR-11 defer-or-ship status, release framing, and parent packet closure.
 
-## TABLE OF CONTENTS
-<!-- ANCHOR:table-of-contents -->
+## What Lives Here
 
-- [1. OVERVIEW](#1--overview)
-- [2. REQUIRED FILES](#2--required-files)
-- [3. QUICK START](#3--quick-start)
-- [4. PHASE DECOMPOSITION](#4--phase-decomposition)
-- [5. RELATED](#5--related)
+- `spec.md`, `plan.md`, `tasks.md`, `checklist.md` define the approved Phase 5 scope.
+- `telemetry-catalog.md` is the human-readable M1-M9 crosswalk.
+- `memory-save-quality-alerts.yml` is the alert-rule draft aligned to iteration 24.
+- `release-notes-draft.md` carries the capture-mode parity framing and tail PR statuses.
+- `pr11-defer-rationale.md` records the D9 defer decision and reopen triggers.
+- `scratch/pr10-dry-run-report.json` is the PR-10 dry-run evidence artifact.
 
-<!-- /ANCHOR:table-of-contents -->
+## Validation Surface
 
-## 1. OVERVIEW
-<!-- ANCHOR:overview -->
+- Build the scripts package from `.opencode/skill/system-spec-kit/scripts/`.
+- Run the PR-10 CLI in dry-run mode only.
+- Validate this phase folder with `validate.sh --strict`.
+- Validate the parent packet with `validate.sh --strict`.
 
-- Typical size is under 100 LOC.
-- Scope is clear and low risk.
-- No architecture decision record needed.
+## Related Docs
 
-Move to Level 2 when verification checklist tracking is required.
-
-<!-- /ANCHOR:overview -->
-
-## 2. REQUIRED FILES
-<!-- ANCHOR:files -->
-
-- `spec.md`
-- `plan.md`
-- `tasks.md`
-- `implementation-summary.md` (required output, finalized after implementation)
-
-<!-- /ANCHOR:files -->
-
-## 3. QUICK START
-<!-- ANCHOR:quick-start -->
-
-```bash
-mkdir -p specs/###-short-name
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/###-short-name/
-cp .opencode/skill/system-spec-kit/templates/level_1/plan.md specs/###-short-name/
-cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-short-name/
-```
-
-At completion, add and fill:
-
-```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-short-name/
-```
-
-<!-- /ANCHOR:quick-start -->
-
-## 4. PHASE DECOMPOSITION
-<!-- ANCHOR:phase -->
-
-Phase decomposition is typically not needed at Level 1. Most Level 1 tasks are small enough to complete in a single pass without phased ordering.
-
-If a task unexpectedly grows beyond Level 1 scope, consider escalating to Level 2+ with phase decomposition rather than splitting a Level 1 spec. See the Phase System in the [main templates README](../README.md#phase-system).
-
-<!-- /ANCHOR:phase -->
-
-## 5. RELATED
-<!-- ANCHOR:related -->
-
-- `../level_2/README.md`
-- `../../references/templates/level_specifications.md`
-- `../../references/validation/validation_rules.md`
-
-<!-- /ANCHOR:related -->
+- `./spec.md`
+- `./plan.md`
+- `./tasks.md`
+- `./checklist.md`
+- `../spec.md`
+- `../research/research.md`

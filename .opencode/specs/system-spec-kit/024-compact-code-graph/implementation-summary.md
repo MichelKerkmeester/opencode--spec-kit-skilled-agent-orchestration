@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Hybrid Context Injection [system-spec-kit/024-compact-code-graph]"
-description: "28-phase hybrid context-preservation system: Claude hooks, hookless bootstrap/resume recovery, code graph, CocoIndex bridge, and follow-on review remediation."
+description: "31 shipped phases plus 3 draft follow-ons for the hybrid context-preservation system: Claude hooks, hookless bootstrap or resume recovery, code graph, analytics replay, and continuity governance."
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -69,9 +69,9 @@ Template compliance shim anchor for limitations.
 |-------|-------|
 | **Spec Folder** | 024-compact-code-graph |
 | **Started** | 2026-03-29 |
-| **Completed** | 2026-04-02 (v1+v2+v3+v4 truth-sync through phase 028) |
+| **Completed** | 2026-04-08 (root packet truth-synced through phase 031 and draft follow-ons 032-034) |
 | **Level** | 3 |
-| **Phases** | 28 (001-028) |
+| **Phases** | 31 shipped + 3 draft follow-ons (001-034) |
 | **Total LOC** | ~3,500+ across all phases |
 <!-- /ANCHOR:metadata -->
 
@@ -126,13 +126,15 @@ A 95-iteration deep research and 30-iteration deep review (Codex CLI + Copilot C
 - **Phase 028**: Startup highlights remediation with deduplication, path filtering, relevance, and diversity gates.
 - **Phase 029**: Review-remediation truth-sync that closed the active review drift without reopening sibling phase work.
 - **Phase 030**: Startup-surface, transport, and code-graph parity follow-on packet, including OpenCode transport surfacing and later runtime parity work.
+- **Phase 031**: Normalized analytics reader, which turned the Stop-hook producer seam into a reader-owned replay model for cross-session token analytics.
+- **Draft follow-ons 032-034**: Cached-summary fidelity gates, optional FTS forced-degrade hardening, and the optional workflow-split/token-insight tail packet were opened as scoped child packets without claiming runtime delivery yet.
 <!-- /ANCHOR:what-built -->
 
 ---
 
 <!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
-Implementation proceeded in five waves. v1 phases (001-012) were built sequentially over the initial design period, with each phase tested independently before proceeding. v2 remediation (013-016) was executed by 16 parallel Codex CLI agents (GPT-5.4, high reasoning effort) in 5 simultaneous waves. v3 phases (017-025) addressed parser hardening, hookless priming, routing, observability, and tool-routing enforcement/documentation parity. v4 phases (026-029) covered SessionStart debugging, hookless structural priming, startup-highlight remediation, and review-remediation truth-sync. v5 phase 030 split the startup-surface and code-graph parity follow-on into a dedicated child packet with its own internal phases. Each phase has its own child spec folder with spec.md, plan.md, checklist.md, and implementation-summary.md.
+Implementation proceeded in six waves. v1 phases (001-012) were built sequentially over the initial design period, with each phase tested independently before proceeding. v2 remediation (013-016) was executed by 16 parallel Codex CLI agents (GPT-5.4, high reasoning effort) in 5 simultaneous waves. v3 phases (017-025) addressed parser hardening, hookless priming, routing, observability, and tool-routing enforcement/documentation parity. v4 phases (026-029) covered SessionStart debugging, hookless structural priming, startup-highlight remediation, and review-remediation truth-sync. v5 phase 030 split the startup-surface and code-graph parity follow-on into a dedicated child packet with its own internal phases. v6 phase 031 added the reader-owned normalized analytics seam, and the next continuity packets 032-034 were opened as draft follow-ons so the train stays explicit without overstating shipped runtime scope. Each shipped phase has its own child spec folder with spec.md, plan.md, checklist.md, and implementation-summary.md.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -166,9 +168,11 @@ Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-
 | v2 phase 016 checklist | PASS for root-packet scope — original partials were closed by later runtime/doc truth-sync through phases 021-028 |
 | phase 025 checklist | PASS — runtime hints and docs synced |
 | v3-v4 phases 017-028 | All 12 phases implemented with implementation summaries |
+| phases 029-031 | PASS — review remediation, graph-plugin parity, and normalized analytics reader tracked in child packets |
 | vitest suites | PASS — code-graph-indexer (18), crash-recovery (36), budget-allocator (15), compact-merger (15) |
 | ESLint | PASS on all modified TypeScript files (0 errors) |
 | Root checklist (v1 + v2) | All P0 items PASS, all P1 items PASS, and P2 items PASS with later-phase follow-through recorded explicitly |
+| draft follow-ons 032-034 | PASS for packet-planning scope — child packet docs created to hold the next train without claiming implementation |
 | Deep review verdict at rerun time | CONDITIONAL (0 P0, 16 P1 addressed, 16 P2 addressed); follow-up root/runtime truth-sync landed afterward |
 <!-- /ANCHOR:verification -->
 

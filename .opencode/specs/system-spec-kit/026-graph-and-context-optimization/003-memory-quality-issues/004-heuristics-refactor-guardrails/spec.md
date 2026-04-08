@@ -97,6 +97,8 @@ The current reviewer is advisory and narrow. It compares payload and frontmatter
 Phase 4 closes that gap by upgrading `post-save-review.ts` to run CHECK-D1 through CHECK-D8 after the existing baseline checks and by promoting any new HIGH finding into a blocking review state. The guardrail must also stay deterministic: no repo scans, no runtime git probing, and no hidden cross-folder search inside the reviewer. The checks should work from the saved artifact plus the collected payload contract only. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-019.md:119-154] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-019.md:169-176]
 <!-- /ANCHOR:problem -->
 
+> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/`, the implementation host for the `001-research-graph-context-systems/006-research-memory-redundancy/` research findings. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
+
 ---
 
 ### User Stories
@@ -124,6 +126,15 @@ As a release owner, I want the reviewer to detect each defect class with determi
 - **Given** broken fixtures for D1, D4, D7, and D8 and one clean `F-AC8` fixture
 - **When** the upgraded reviewer runs
 - **Then** the broken fixtures fire the matching checks, the clean fixture reports zero false positives, and any new HIGH finding blocks completion [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1162-1162] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-019.md:80-90] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-019.md:119-154]
+
+### Story 4 — SaveMode preserves metadata while changing control flow
+
+As a maintainer, I want the SaveMode migration to change only behavior branching, not the persisted source-session metadata, so the refactor reduces coupling without erasing provenance fields that older tooling still reads. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-017.md:50-58] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1507-1510]
+
+- **Given** a save request that still carries `_sourceTranscriptPath` and `_sourceSessionId`
+- **When** Phase 4 migrates the workflow to `SaveMode`
+- **Then** control flow resolves only from the explicit save mode,
+- **And** the source-session fields continue to persist as metadata rather than becoming behavior switches again. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-017.md:50-58]
 
 ---
 

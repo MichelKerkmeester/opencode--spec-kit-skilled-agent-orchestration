@@ -1,16 +1,24 @@
 {
-  "specFolder": "003-memory-quality-issues/003-sanitization-precedence",
-  "description": "Phase 3: sanitization-precedence",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "description": "Feature Specification: Phase 3 — Sanitization & Decision Precedence",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
-    "sanitization-precedence"
+    "sanitization",
+    "decision",
+    "precedence"
   ],
-  "lastUpdated": "2026-04-07T11:14:04.637Z",
+  "lastUpdated": "2026-04-08T14:27:35.690Z",
   "specId": "003",
   "folderSlug": "sanitization-precedence",
   "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
     "003-memory-quality-issues"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "08-04-26_08-24__we-reject-across-4-prioritization-tiers-and-the.md"
+  ]
 }

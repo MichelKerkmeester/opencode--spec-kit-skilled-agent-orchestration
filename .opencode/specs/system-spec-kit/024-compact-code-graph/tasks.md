@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Hybrid Context Injection [system-spec-kit/024-compact-code-graph/tasks]"
-description: "30-phase task tracker for hook, recovery, code-graph, and follow-on remediation architecture."
+description: "34-phase task tracker for hook, recovery, code-graph, analytics-reader, and continuity follow-on architecture."
 trigger_phrases:
   - "tasks"
   - "hybrid"
@@ -126,14 +126,19 @@ Evidence base: 95 research iterations + 30 review iterations (Codex CLI + Copilo
 - [x] Phase 028: Startup Highlights Remediation — quality-gated startup highlights follow-through
 - [x] Phase 029: Review Remediation — review-finding truth-sync and closeout sweep
 - [x] Phase 030: OpenCode Graph Plugin — startup-surface, transport, and code-graph parity follow-on packet
+- [x] Phase 031: Normalized Analytics Reader — reader-owned replay model and normalized analytics contract
+- [~] Phase 032: Cached Summary Fidelity Gates — draft follow-on packet opened; runtime consumer work stays gated behind producer and reader truth
+- [~] Phase 033: FTS Forced Degrade Hardening — optional draft follow-on packet opened only if lexical fallback truth gaps remain
+- [~] Phase 034: Workflow Split and Token Insight Contracts — optional tail packet opened for later orchestration and insight contracts
 ---
 
 <!-- ANCHOR:completion -->
 ### Completion Criteria
-- [x] All 30 direct phases have child spec folders with spec.md + plan.md + checklist.md
+- [x] All 31 shipped direct phases have child spec folders with spec.md + plan.md + checklist.md
+- [x] Draft follow-on phases 032-034 are explicitly opened as child packets and do not silently disappear from the train
 - [x] All v1 phases (001-012) implemented and verified
 - [x] All v2 remediation items shipped or explicitly deferred with rationale
-- [x] All v3-v5 phases (017-030) implemented or truth-synced through dedicated follow-on packets
+- [x] All v3-v6 shipped phases (017-031) implemented or truth-synced through dedicated follow-on packets
 - [x] Hook scripts registered in .claude/settings.local.json
 - [x] Cross-runtime fallback verified (Codex CLI tested)
 - [x] Remaining deferred SymbolKinds follow-on is explicitly tracked outside packet completion and no longer blocks packet closeout
@@ -146,5 +151,5 @@ Evidence base: 95 research iterations + 30 review iterations (Codex CLI + Copilo
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Decision Record**: See `decision-record.md` (16 decisions: DR-001 through DR-016)
+- **Decision Record**: See `decision-record.md` (17 decisions: DR-001 through DR-017)
 <!-- /ANCHOR:cross-refs -->

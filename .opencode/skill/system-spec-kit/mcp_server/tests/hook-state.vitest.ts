@@ -96,6 +96,7 @@ describe('hook state management', () => {
         lastSpecFolder: 'specs/test',
         sessionSummary: null,
         pendingCompactPrime: null,
+        producerMetadata: null,
         metrics: { estimatedPromptTokens: 100, estimatedCompletionTokens: 50, lastTranscriptOffset: 0 },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -116,6 +117,8 @@ describe('hook state management', () => {
       const state = updateState('new-session', { lastSpecFolder: 'specs/new' });
       expect(state.lastSpecFolder).toBe('specs/new');
       expect(state.claudeSessionId).toBe('new-session');
+      expect(state.speckitSessionId).toBeNull();
+      expect(state.producerMetadata).toBeNull();
       // Clean up
       try { rmSync(getStatePath('new-session')); } catch { /* ok */ }
     });
@@ -146,6 +149,7 @@ describe('hook state management', () => {
           lastSpecFolder: 'specs/test',
           sessionSummary: { text: 'Summary', extractedAt: new Date().toISOString() },
           pendingCompactPrime: null,
+          producerMetadata: null,
           metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -187,6 +191,7 @@ describe('hook state management', () => {
           lastSpecFolder: 'specs/stale',
           sessionSummary: null,
           pendingCompactPrime: null,
+          producerMetadata: null,
           metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),

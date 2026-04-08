@@ -4,9 +4,8 @@ description: "Verification Date: [YYYY-MM-DD]"
 trigger_phrases:
   - "verification"
   - "checklist"
-  - "cache warning"
-  - "replay harness"
-  - "decision record"
+  - "producer patch"
+  - "replay isolation"
 importance_tier: "normal"
 contextType: "planning"
 ---
@@ -32,15 +31,12 @@ contextType: "planning"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] `spec.md` complete with all 6 phases and citations
-- [ ] CHK-002 [P0] `plan.md` has Phase A-F with concrete file paths and acceptance
-- [ ] CHK-003 [P0] `research.md` pointer present with F4-F8, F19-F20, F22, F24 mapping
-- [ ] CHK-004 [P0] Replay harness design documented in `plan.md` §4 Phase B
-- [ ] CHK-005 [P1] Build pipeline (TS -> dist) understood and documented in `plan.md` §3
-- [ ] CHK-006 [P0] `compact-inject.ts` boundary documented as "unchanged" hard rule
-- [ ] CHK-007 [P1] Sequential build order A -> F is documented as mandatory, not parallelizable
-- [ ] CHK-008 [P1] `decision-record.md` scope is reserved for four ADRs before implementation begins
-- [ ] CHK-009 [P2] `implementation-summary.md` is explicitly deferred until after delivery
+- [x] CHK-001 [P0] `spec.md` reflects the producer-only re-scope and no longer promises an active six-phase warning rollout [EVIDENCE: `spec.md` status and scope now reflect the producer-first packet.]
+- [x] CHK-002 [P0] `research.md` points to the canonical 2026-04-08 synthesis and Claudest continuation order [EVIDENCE: `research.md` names the authoritative synthesis, ranked guidance, and Claudest continuation sources.]
+- [x] CHK-003 [P0] FTS helper plus forced-degrade tests are documented as the hard predecessor [EVIDENCE: predecessor wording is present across `spec.md`, `plan.md`, and `research.md`; `tests/sqlite-fts.vitest.ts` passed.]
+- [x] CHK-004 [P0] `plan.md` documents replay isolation, bounded producer patch, and idempotent verification [EVIDENCE: `plan.md` phases and testing strategy are now marked complete.]
+- [x] CHK-005 [P0] Packet docs explicitly defer `UserPromptSubmit`, startup fast path work, and `.claude/settings.local.json` mutation [EVIDENCE: packet docs defer those surfaces and `git diff --name-only -- .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts .claude/settings.local.json` returned no changes.]
+- [x] CHK-006 [P1] Follow-on continuity packet order is documented honestly [EVIDENCE: docs hand off to analytics reader, cached-summary consumer, workflow split, and token contracts.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -48,12 +44,11 @@ contextType: "planning"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] `tsc --noEmit` passes for all extended hook files
-- [ ] CHK-011 [P0] All new TS code uses strict mode types (no `any`)
-- [ ] CHK-012 [P0] No `console.log`; use existing `hookLog()` utility
-- [ ] CHK-013 [P1] Error paths return `null` or exit `0` gracefully; hooks must not crash
-- [ ] CHK-014 [P0] No new dependencies added to `package.json`
-- [ ] CHK-015 [P0] `HookState` schema extension remains additive-only, with no schema-version or migration layer introduced
+- [x] CHK-010 [P0] Planned code touch set is limited to `hook-state.ts`, `session-stop.ts`, and replay or test infrastructure [EVIDENCE: scoped status shows only those runtime files plus replay harness and tests changed.]
+- [x] CHK-011 [P0] Producer metadata remains additive-only in `HookState` [EVIDENCE: `producerMetadata` was added without replacing existing session metrics or continuity fields.]
+- [x] CHK-012 [P0] `claudeSessionId` remains the primary persisted identity [EVIDENCE: replay suite asserts the persisted state keeps `claudeSessionId` for the active session.]
+- [x] CHK-013 [P1] `speckitSessionId` remains nullable rather than becoming a forced primary contract in this packet [EVIDENCE: `HookState.speckitSessionId` is nullable and tests assert `null` by default.]
+- [x] CHK-014 [P0] No analytics reader, dashboard, or publication logic is introduced in the Stop writer lane [EVIDENCE: `session-stop.ts` only writes additive metadata and the runtime scope excludes analytics readers.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -61,15 +56,12 @@ contextType: "planning"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] Replay harness runs against ALL 4 hook entry points
-- [ ] CHK-021 [P0] Side-effect detection asserts zero writes outside `TMPDIR`
-- [ ] CHK-022 [P0] `source=compact` suppression test passes
-- [ ] CHK-023 [P0] `source=clear` suppression test passes
-- [ ] CHK-024 [P0] Soft-block fires exactly once per idle window
-- [ ] CHK-025 [P0] Acknowledgement persists across resend
-- [ ] CHK-026 [P1] Missing `lastClaudeTurnAt` -> graceful no-op (not a crash)
-- [ ] CHK-027 [P1] Malformed timestamp -> graceful no-op
-- [ ] CHK-028 [P0] `source=resume` stale-threshold replay test emits the warning only when the idle gap exceeds the configured threshold
+- [x] CHK-020 [P0] Replay harness isolates temp state and fails on out-of-bound writes [EVIDENCE: `createStopReplaySandbox()` enforces sandboxed `TMPDIR` and throws on touched paths outside the sandbox.]
+- [x] CHK-021 [P0] One-pass Stop-path replay validation exists [EVIDENCE: `tests/hook-session-stop-replay.vitest.ts` validates first-pass producer persistence.]
+- [x] CHK-022 [P0] Double-replay idempotency validation exists [EVIDENCE: `tests/hook-session-stop-replay.vitest.ts` runs the same transcript twice.]
+- [x] CHK-023 [P0] Double replay proves stable session totals [EVIDENCE: replay suite asserts second-run metrics equal first-run metrics.]
+- [x] CHK-024 [P0] Double replay proves no duplicate turn ingestion or duplicate producer markers [EVIDENCE: replay suite asserts second run parses 0 new messages and leaves exactly one state file.]
+- [x] CHK-025 [P1] `session-prime.ts` remains unchanged in active scope or additive-safe only [EVIDENCE: `git diff --name-only -- .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts .claude/settings.local.json` returned no changes.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -77,11 +69,9 @@ contextType: "planning"
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-030 [P0] No hardcoded secrets
-- [ ] CHK-031 [P0] No prompt content logged to disk
-- [ ] CHK-032 [P1] State files mode `0o600` (existing pattern, verify preserved)
-- [ ] CHK-033 [P1] State directory mode `0o700` (existing pattern, verify preserved)
-- [ ] CHK-034 [P0] Replay validation does not mutate live `.claude/settings.local.json` or any state path outside the replay sandbox
+- [x] CHK-030 [P0] No new network calls or external services are introduced [EVIDENCE: implementation is local-only TypeScript state and test infrastructure.]
+- [x] CHK-031 [P0] Hook stdout contract remains unchanged [EVIDENCE: `session-stop.ts` still writes diagnostics to stderr only and emits no new stdout contract.]
+- [x] CHK-032 [P1] Replay validation does not mutate live settings or live state outside the sandbox [EVIDENCE: replay harness disables autosave, uses isolated `TMPDIR`, and fails on out-of-bound touched paths.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -89,9 +79,9 @@ contextType: "planning"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` synchronized
-- [ ] CHK-041 [P1] Inline code comments cite finding IDs (`F4`, `F19`, etc.) where relevant
-- [ ] CHK-042 [P2] `CLAUDE.md` updated if operator-facing rule emerges
+- [x] CHK-040 [P0] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `research.md` are synchronized [EVIDENCE: packet docs were updated together and strict validation passed.]
+- [x] CHK-041 [P0] Packet language keeps `session_bootstrap()` and memory resume authoritative [EVIDENCE: spec, plan, research, and decision record still preserve bootstrap and memory resume authority.]
+- [x] CHK-042 [P1] Historical phase-001 warning research is retained only as context, not active authority [EVIDENCE: `research.md` keeps phase-001 findings as upstream context only.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -99,9 +89,8 @@ contextType: "planning"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P1] Temp files in scratch/ only
-- [ ] CHK-051 [P1] scratch/ cleaned before completion
-- [ ] CHK-052 [P2] Findings saved to memory/
+- [x] CHK-050 [P1] No runtime enablement files are added to active scope [EVIDENCE: `.claude/settings.local.json` and `session-prime.ts` remained unchanged.]
+- [x] CHK-051 [P1] Scratch or temporary validation artifacts are cleaned before completion [EVIDENCE: no packet-local scratch or temp artifacts were left behind.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -111,89 +100,30 @@ contextType: "planning"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 25 | [ ]/25 |
-| P1 Items | 17 | [ ]/17 |
-| P2 Items | 8 | [ ]/8 |
+| P0 Items | 17 | [x]/17 |
+| P1 Items | 8 | [x]/8 |
+| P2 Items | 0 | [x]/0 |
 
-**Verification Date**: [YYYY-MM-DD]
+**Verification Date**: 2026-04-08
 <!-- /ANCHOR:summary -->
-
----
-
-<!-- Append to Level 2 checklist.md -->
 
 ---
 
 <!-- ANCHOR:arch-verify -->
 ## L3+: ARCHITECTURE VERIFICATION
 
-- [ ] CHK-100 [P0] `decision-record.md` has ADRs for prototype-only gating, sequential build order, `compact-inject` boundary, and replay isolation
-- [ ] CHK-101 [P0] All ADRs Status=`Accepted` (or `Proposed` if pending)
-- [ ] CHK-102 [P1] Five Checks evaluation present in each ADR
-- [ ] CHK-103 [P0] ADR-001 explicitly records the sequential A -> F build order and why parallel execution was rejected
-- [ ] CHK-104 [P0] ADR-002 explicitly rejects `compact-inject.ts` as the warning owner
-- [ ] CHK-105 [P0] ADR-003 makes replay isolation a hard prerequisite for Phase C-F validation
-- [ ] CHK-106 [P0] ADR-004 records env kill-switch gating and observe-only defaults where possible
+- [x] CHK-100 [P0] Decision record explains the re-scope from warning-consumer rollout to producer-first packet [EVIDENCE: ADR-001 documents the packet re-scope.]
+- [x] CHK-101 [P0] Decision record preserves the writer/consumer boundary [EVIDENCE: ADR-001 keeps the active implementation boundary at `session-stop.ts` plus `hook-state.ts`.]
+- [x] CHK-102 [P0] Decision record makes the FTS predecessor explicit [EVIDENCE: ADR-001 constraints and decision text call out the predecessor lane.]
+- [x] CHK-103 [P0] Decision record defers `UserPromptSubmit`, SessionStart fast path, and settings mutation to later packets [EVIDENCE: ADR-001 decision and consequences sections defer those consumers.]
 <!-- /ANCHOR:arch-verify -->
-
----
-
-<!-- ANCHOR:perf-verify -->
-## L3+: PERFORMANCE VERIFICATION
-
-- [ ] CHK-110 [P2] Hook execution stays under existing `3s` and `10s` timeouts in `.claude/settings.local.json`
-- [ ] CHK-111 [P2] Replay harness completes a 4-hook suite in `<5s`
-<!-- /ANCHOR:perf-verify -->
 
 ---
 
 <!-- ANCHOR:deploy-ready -->
 ## L3+: DEPLOYMENT READINESS
 
-- [ ] CHK-120 [P0] Rollback plan present in `plan.md` §7 covering all 6 phases
-- [ ] CHK-121 [P0] Env kill-switches documented for Phase E and Phase F
-- [ ] CHK-122 [P1] Default values ship in observe-only mode where possible
-- [ ] CHK-123 [P1] `UserPromptSubmit` hook entry documented for `settings.local.json` (not auto-applied)
-- [ ] CHK-124 [P0] Compiled `dist` hook outputs are rebuilt before any runtime enablement or replay result is treated as final
+- [x] CHK-120 [P0] Packet performs no runtime rollout by itself [EVIDENCE: runtime scope stops at producer metadata and replay verification.]
+- [x] CHK-121 [P0] Follow-on packet order is documented for later continuity work [EVIDENCE: dependency graph and research pointer list the follow-on order.]
+- [x] CHK-122 [P1] Rollback section in `plan.md` matches the re-scoped packet [EVIDENCE: rollback keeps producer changes narrow and preserves the producer-only re-scope.]
 <!-- /ANCHOR:deploy-ready -->
-
----
-
-<!-- ANCHOR:compliance-verify -->
-## L3+: COMPLIANCE VERIFICATION
-
-- [ ] CHK-130 [P1] No undocumented Claude JSONL parsing introduced (`F16` boundary)
-- [ ] CHK-131 [P1] No new dependency licenses to review
-- [ ] CHK-132 [P2] Source discrepancies (`F13` and `F21`) preserved in any future docs
-<!-- /ANCHOR:compliance-verify -->
-
----
-
-<!-- ANCHOR:docs-verify -->
-## L3+: DOCUMENTATION VERIFICATION
-
-- [ ] CHK-140 [P1] All spec docs synchronized
-- [ ] CHK-141 [P1] `implementation-summary.md` completed AFTER delivery (per `CLAUDE.md` rule)
-- [ ] CHK-142 [P2] Memory context saved post-implementation
-- [ ] CHK-143 [P2] No template placeholders remain in the final spec-doc set
-<!-- /ANCHOR:docs-verify -->
-
----
-
-<!-- ANCHOR:sign-off -->
-## L3+: SIGN-OFF
-
-| Approver | Role | Status | Date |
-|----------|------|--------|------|
-| [Name] | Technical Lead | [ ] Approved | |
-| [Name] | Product Owner | [ ] Approved | |
-| [Name] | QA Lead | [ ] Approved | |
-<!-- /ANCHOR:sign-off -->
-
----
-
-<!--
-Level 3 checklist - Full verification + architecture
-Mark [x] with evidence when verified
-P0 must complete, P1 need approval to defer
--->

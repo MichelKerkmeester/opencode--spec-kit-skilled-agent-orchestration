@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 005-claudest Research Phase"
-description: "Verification checklist for the 12-iteration deep-research audit of the Claudest external Claude Code plugin checkout, including pre-implementation, code quality, testing, security, documentation, file organization, architecture, and sign-off."
+description: "Verification checklist for the 20-iteration deep-research audit of the Claudest external Claude Code plugin checkout, including continuation lineage, generated-state sync, validation, and packet-readiness evidence."
 trigger_phrases:
   - "005-claudest checklist"
   - "005-claudest verification"
@@ -32,7 +32,7 @@ contextType: checklist
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-012 in section 4) (verified)
-- [x] CHK-002 [P0] Technical approach defined in plan.md (12-iteration loop with cli-codex sequential dispatch under `--full-auto --sandbox workspace-write`) (verified)
+- [x] CHK-002 [P0] Technical approach defined in plan.md (20-iteration deep-research loop across two generations; gen-1 via cli-codex, gen-2 via completed-continue continuation) (verified)
 - [x] CHK-003 [P1] Dependencies identified and available (cli-codex CLI 0.118.0 verified; reducer + memory + validator scripts present; substrate Public packets `023/013`, `024/002`, `024/003`, `022/008` referenced) (verified)
 
 ---
@@ -43,7 +43,7 @@ contextType: checklist
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks (no production code modified - research-only phase; all artifacts are markdown + JSON validated by reducer schema) (verified)
-- [x] CHK-011 [P0] No console errors or warnings (reducer ran cleanly across all 12 iterations with exit code 0) (verified)
+- [x] CHK-011 [P0] No console errors or warnings (reducer reran cleanly after the generation-2 continuation and reported `iterationsCompleted: 20`) (verified)
 - [x] CHK-012 [P1] Error handling implemented (cli-codex `--full-auto --sandbox workspace-write` configuration prevented sandbox-block scenarios; no fallback workaround needed for this phase) (verified)
 - [x] CHK-013 [P1] Code follows project patterns (deep-research loop pattern from sk-deep-research skill; reducer + memory scripts used as documented) (verified)
 
@@ -54,8 +54,8 @@ contextType: checklist
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met (US-001 evidence-grounded adoption matrix in §13 + §18.1; US-002 packet-ready briefs in §18.4; US-003 cross-phase boundary explicit in §14 + §15) (verified)
-- [x] CHK-021 [P0] Manual testing complete (all ~67 findings have at least one verifiable file:line citation; iter 12 spot-checked Public source by reading `mcp_server/lib/search/sqlite-fts.ts:91-145` and `mcp_server/hooks/claude/session-stop.ts:191-257` directly to resolve open uncertainties) (verified)
+- [x] CHK-020 [P0] All acceptance criteria met (US-001 evidence-grounded adoption matrix in §13 + §18.1; US-002 packet-ready briefs in §18.4; US-003 execution-ready roadmap in §19; US-004 cross-phase boundary explicit in §15) (verified)
+- [x] CHK-021 [P0] Manual testing complete (generation-2 continuation re-read Public source for FTS helper seams, Stop-hook persistence, SessionStart routing, post-save review, and token envelope metadata before landing the packet roadmap) (verified)
 - [x] CHK-022 [P1] Edge cases tested (auto-update README claim flagged as `/plugin` runtime owned and grounded in absence of repo metadata; the plugin-local CLAUDE file gap under claude-memory was documented in iter 7 with reconstruction from adjacent docs) (verified)
 - [x] CHK-023 [P1] Error scenarios validated (no codex stalls in this phase; `--full-auto --sandbox workspace-write` proved a clean dispatch path; reducer overwrite of analyst sections mitigated by post-reducer re-add) (verified)
 
@@ -77,7 +77,7 @@ contextType: checklist
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized (all 6 main docs reflect 12 iterations and ~67 findings) (verified)
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized (packet docs now reflect 20 iterations, generation-2 continuation lineage, and the execution-ready roadmap) (verified)
 - [x] CHK-041 [P1] Code comments adequate (research artifacts use Markdown headers + frontmatter + inline source citations rather than code comments) (verified)
 - [x] CHK-042 [P2] README updated (if applicable) (N/A — no top-level README change required for a research-only phase)
 
@@ -105,7 +105,7 @@ contextType: checklist
 | P1 Items | 13 | 13/13 |
 | P2 Items | 4 | 4/4 |
 
-**Verification Date**: 2026-04-06
+**Verification Date**: 2026-04-08
 
 ---
 
@@ -130,7 +130,7 @@ contextType: checklist
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Response time targets met (NFR-P01) (each iteration completed under 10 minutes; total wall time ~135 minutes for 12 sequential iterations including reducer runs) (verified)
+- [x] CHK-110 [P1] Response time targets met (NFR-P01) (all 20 iterations remained bounded research passes; generation-2 continuation stayed in narrow source-reading and synthesis territory) (verified)
 - [x] CHK-111 [P1] Throughput targets met (NFR-P02) (every iteration stayed under the 12-tool-call hard max; targets of 8 calls hit on most iters) (verified)
 - [x] CHK-112 [P2] Load testing completed (N/A — research-only phase, no production load)
 - [x] CHK-113 [P2] Performance benchmarks documented (per-iteration findingsCount and newInfoRatio recorded in JSONL state log)
@@ -167,7 +167,7 @@ contextType: checklist
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] All spec documents synchronized (spec.md, plan.md, tasks.md, implementation-summary.md, decision-record.md, checklist.md all reflect 12 iterations and ~67 findings) (verified)
+- [x] CHK-140 [P1] All spec documents synchronized (spec.md, plan.md, tasks.md, implementation-summary.md, decision-record.md, checklist.md, and research/ artifacts now reflect the 20-iteration closeout) (verified)
 - [x] CHK-141 [P1] API documentation complete (if applicable) (N/A — research-only phase) (verified)
 - [x] CHK-142 [P2] User-facing documentation updated (research/research.md is the user-facing artifact and is the canonical synthesis)
 - [x] CHK-143 [P2] Knowledge transfer documented (memory artifact contains summary plus key findings plus decisions plus next steps)
@@ -181,9 +181,9 @@ contextType: checklist
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| Orchestrator | Research Lead | [x] Approved | 2026-04-06 |
-| User | Product Owner | [x] Approved (via continuation directive "5 more iterations of /spec_kit:deep-research with gpt-5.4 high agents in fast mode through cli-codex") | 2026-04-06 |
-| Validator | QA Lead | [x] Approved (validate.sh --strict pass) | 2026-04-06 |
+| Orchestrator | Research Lead | [x] Approved | 2026-04-08 |
+| User | Product Owner | [x] Approved (via continuation directive "5 more iterations of /spec_kit:deep-research with gpt-5.4 high agents in fast mode through cli-codex") | 2026-04-08 |
+| Validator | QA Lead | [x] Approved (validate.sh --strict pass) | 2026-04-08 |
 
 ---
 

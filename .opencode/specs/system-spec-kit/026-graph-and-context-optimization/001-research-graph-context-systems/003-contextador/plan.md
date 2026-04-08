@@ -44,16 +44,16 @@ Run the autonomous sk-deep-research loop against Contextador's checked-in source
 - [x] phase-research-prompt.md present and tailored to 003-contextador
 - [x] external/ checkout intact (`src/mcp.ts`, `src/lib/core/`, `src/lib/mainframe/`, `package.json`, README, TROUBLESHOOTING, LICENSE-COMMERCIAL)
 - [x] cli-codex skill loaded and Codex CLI available on PATH
-- [ ] Level 3 spec docs scaffolded and validate.sh --strict accepted
+- [x] Level 3 spec docs scaffolded and validate.sh --strict accepted
 
 ### Definition of Done
 
-- [ ] research/research.md compiled with at least 5 evidence-backed findings
-- [ ] Each finding labeled `adopt now`, `prototype later`, or `reject`
-- [ ] Cross-phase boundaries with 002-codesight and 004-graphify explicitly resolved
-- [ ] checklist.md fully verified with evidence
-- [ ] implementation-summary.md created
-- [ ] memory artifact written via generate-context.js
+- [x] research/research.md compiled with at least 5 evidence-backed findings
+- [x] Each finding labeled `adopt now`, `prototype later`, or `reject`
+- [x] Cross-phase boundaries with 002-codesight and 004-graphify explicitly resolved
+- [x] checklist.md fully verified with evidence
+- [x] implementation-summary.md created
+- [x] memory artifact written via generate-context.js
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -106,23 +106,23 @@ phase-research-prompt.md
 ### Phase 1: Setup
 
 - [x] Validate user inputs (research topic, spec folder, max iterations, convergence threshold)
-- [ ] Scaffold Level 3 docs (spec.md, plan.md, tasks.md, checklist.md, decision-record.md)
-- [ ] Re-run validate.sh --strict and confirm a clean status
+- [x] Scaffold Level 3 docs (spec.md, plan.md, tasks.md, checklist.md, decision-record.md)
+- [x] Re-run validate.sh --strict and confirm a clean status
 
 ### Phase 2: Deep Research Loop
 
-- [ ] Initialize state files (config json, state jsonl, strategy markdown, findings registry json) inside research/
-- [ ] Load prior context via `memory_context` and inject into strategy.md
-- [ ] Dispatch up to 10 iterations using cli-codex (gpt-5.4 high) wherever possible
-- [ ] After each iteration, run `reduce-state.cjs` and verify iteration outputs
-- [ ] Stop when convergence is reached or max_iterations is hit
+- [x] Initialize state files (config json, state jsonl, strategy markdown, findings registry json) inside research/
+- [x] Load prior context via `memory_context` and inject into strategy.md
+- [x] Dispatch up to 20 iterations using cli-codex (gpt-5.4 high) wherever possible
+- [x] After each iteration, run `reduce-state.cjs` and verify iteration outputs
+- [x] Stop when convergence is reached or max_iterations is hit
 
 ### Phase 3: Synthesis and Save
 
-- [ ] Compile the research output (research markdown) with at least 5 findings and the convergence report
-- [ ] Update checklist.md with evidence
-- [ ] Create implementation-summary.md
-- [ ] Save memory via generate-context.js
+- [x] Compile the research output (research markdown) with at least 5 findings and the convergence report
+- [x] Update checklist.md with evidence
+- [x] Create implementation-summary.md
+- [x] Save memory via generate-context.js
 <!-- /ANCHOR:phases -->
 
 ---
@@ -186,7 +186,7 @@ Phase 1 (Setup) ──► Phase 2 (Deep Research Loop) ──► Phase 3 (Synthe
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Setup | Low | Single round of doc scaffolding plus validation |
-| Deep Research Loop | High | Up to 10 cli-codex iterations with reducer runs |
+| Deep Research Loop | High | Up to 20 total iterations with reducer synchronization and closeout refreshes |
 | Synthesis and Save | Medium | Compile research.md, checklist, summary, memory |
 | **Total** | | **One focused research session** |
 <!-- /ANCHOR:effort -->
@@ -199,8 +199,8 @@ Phase 1 (Setup) ──► Phase 2 (Deep Research Loop) ──► Phase 3 (Synthe
 ### Pre-deployment Checklist
 
 - [x] Backup not required (research-only output, no production code touched)
-- [ ] All writes confined to phase folder
-- [ ] Iteration JSONL preserved before synthesis edits
+- [x] All writes confined to phase folder
+- [x] Iteration JSONL preserved before synthesis edits
 
 ### Rollback Procedure
 
@@ -308,11 +308,11 @@ This subsection captures the protocol the AI loop manager follows during the res
 
 Before each iteration:
 
-- [ ] Latest JSONL state read and current_iteration computed
-- [ ] strategy file Next Focus reviewed
-- [ ] Phase folder confirmed pre-approved (Gate 3 satisfied)
-- [ ] Iteration prompt scoped to a single subsystem from the reading order
-- [ ] cli-codex availability re-checked or fallback path armed
+- [x] Latest JSONL state read and current_iteration computed
+- [x] strategy file Next Focus reviewed
+- [x] Phase folder confirmed pre-approved (Gate 3 satisfied)
+- [x] Iteration prompt scoped to a single subsystem from the reading order
+- [x] cli-codex availability re-checked or fallback path armed
 
 #### Execution Rules
 

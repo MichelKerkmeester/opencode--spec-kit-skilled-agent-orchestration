@@ -225,14 +225,30 @@ export function buildSessionDedupContext(
 }
 
 export function buildCausalLinksContext(collectedData: CollectedDataFull): CausalLinksContext {
-  const rawCausalLinks = readNamedObject(collectedData, 'causal_links', 'causalLinks');
+  const snakeCaseLinks = readNamedObject(collectedData, 'causal_links');
+  const camelCaseLinks = readNamedObject(collectedData, 'causalLinks');
+  const mergeLinkArray = (...keys: string[]): string[] => {
+    const merged: string[] = [];
+    const seen = new Set<string>();
+
+    for (const source of [snakeCaseLinks, camelCaseLinks]) {
+      for (const value of readStringArray(source, ...keys)) {
+        if (!seen.has(value)) {
+          merged.push(value);
+          seen.add(value);
+        }
+      }
+    }
+
+    return merged;
+  };
 
   return {
-    CAUSED_BY: readStringArray(rawCausalLinks, 'caused_by', 'causedBy'),
-    SUPERSEDES: readStringArray(rawCausalLinks, 'supersedes'),
-    DERIVED_FROM: readStringArray(rawCausalLinks, 'derived_from', 'derivedFrom'),
-    BLOCKS: readStringArray(rawCausalLinks, 'blocks'),
-    RELATED_TO: readStringArray(rawCausalLinks, 'related_to', 'relatedTo'),
+    CAUSED_BY: mergeLinkArray('caused_by', 'causedBy'),
+    SUPERSEDES: mergeLinkArray('supersedes'),
+    DERIVED_FROM: mergeLinkArray('derived_from', 'derivedFrom'),
+    BLOCKS: mergeLinkArray('blocks'),
+    RELATED_TO: mergeLinkArray('related_to', 'relatedTo'),
   };
 }
 
@@ -325,6 +341,7 @@ export function buildWorkflowMemoryEvidenceSnapshot(params: {
 
 /** Also used by frontmatter-editor; exported for reuse. */
 export function extractAnchorIds(content: string): string[] {
+  // HTML ids are intentionally ignored; comment anchors are the structural source of truth.
   const matches = content.matchAll(/<!--\s*(?:\/)?ANCHOR:\s*([a-zA-Z0-9][a-zA-Z0-9-]*)\s*-->/g);
   return Array.from(new Set(Array.from(matches, (match) => match[1])));
 }

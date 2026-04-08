@@ -1,17 +1,16 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: Phase 3 — Sanitization & Decision Precedence"
+description: "Phase 3 shipped the trigger-phrase sanitizer and the authored-decision precedence gate while preserving the degraded-payload fallback contract."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "phase 3 implementation summary"
+  - "sanitization precedence summary"
+  - "d3 d2 closeout"
+importance_tier: important
+contextType: "implementation"
 ---
-# Implementation Summary
+# Implementation Summary: Phase 3 — Sanitization & Decision Precedence
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -22,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 003-sanitization-precedence |
+| **Completed** | 2026-04-08 |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,28 +31,28 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+Phase 3 closed the two behavior-sensitive defects in the train without flattening legitimate fallback behavior. Trigger phrases and rendered key topics now pass through a dedicated sanitizer that removes the empirically verified junk classes from the research packet, and the decision extractor now treats authored decision arrays as authoritative before it ever reaches lexical placeholder generation.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Trigger and topic sanitization
 
-### [Feature Name]
+You can now persist trigger phrases without folder-path fragments, standalone stopwords, or synthetic bigrams leaking into saved memories. The new sanitizer centralizes the empirical iteration-15 rules, preserves the allowlisted short names that matter, and keeps `ensureMinTriggerPhrases()` as the guarded low-count fallback instead of turning the fix into blanket suppression.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Authored-decision precedence
+
+The decision extractor now distinguishes between "no authored decisions exist" and "normalization missed authored decisions that still exist in raw arrays." That means authored `keyDecisions` and `decisions` content wins when present, while degraded payloads that genuinely lack those arrays can still fall back to lexical decision recovery.
 
 ### Files Changed
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
 | File | Action | Purpose |
 |------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+| `.opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts` | Created | Encodes the empirical D3 junk-class and allowlist rules. |
+| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modified | Sanitizes workflow-derived trigger additions while keeping the low-count fallback. |
+| `.opencode/skill/system-spec-kit/scripts/lib/semantic-signal-extractor.ts` | Modified | Rejects non-adjacent synthetic bigrams before they reach rendered topics. |
+| `.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts` | Modified | Adds the authored-decision precedence gate and preserves degraded fallback behavior. |
+| `.opencode/skill/system-spec-kit/scripts/tests/trigger-phrase-sanitizer.vitest.ts` | Created/Modified | Covers path fragments, stopwords, suspicious prefixes, bigrams, and allowlisted short names. |
+| `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase3-pr5.vitest.ts` | Created/Modified | Verifies F-AC3 across trigger phrases and key topics. |
+| `.opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase3-pr6.vitest.ts` | Created/Modified | Verifies F-AC2 and the degraded-payload regression. |
+| `.opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC3-*.json` | Created/Modified | Fixture set for the sanitizer and topic-adjacency contract. |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +60,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+Phase 3 delivered PR-5 before PR-6, matching the parent train. The sanitizer contract and its empirical test corpus landed first, then the workflow and topic-extractor integrations, and only after that did the phase harden the decision extractor with the precedence-only gate. The closeout step kept the degraded-payload fixture as a first-class guard so the phase would not "fix" D2 by deleting the only fallback path malformed payloads still need.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +68,12 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Create a dedicated sanitizer module instead of scattering ad hoc string filters | The research packet froze the D3 rules as an empirical contract, so the phase needed one reusable implementation surface with focused tests. |
+| Keep `ensureMinTriggerPhrases()` in place | The accepted D3 fix removed junk, not legitimate low-count fallback behavior. |
+| Gate lexical decision fallback behind authored-array precedence instead of disabling it globally | The research explicitly preserved degraded-payload fallback as a valid behavior when authoritative arrays are absent. |
+| Treat the degraded-payload fixture as a required acceptance surface | That regression is the proof that Phase 3 narrowed D2 safely instead of over-tightening the extractor. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +81,14 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| `npx vitest run --config ../mcp_server/vitest.config.ts tests/trigger-phrase-sanitizer.vitest.ts tests/memory-quality-phase3-pr5.vitest.ts` | PASS |
+| `npx vitest run tests/memory-quality-phase3-pr6.vitest.ts --config ../mcp_server/vitest.config.ts --root .` | PASS |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json \"<F-AC3 payload>\" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence` | PASS |
+| Authored-decision replay | PASS, authored titles win over placeholder labels |
+| Degraded-payload replay | PASS, lexical fallback still produces meaningful decisions when raw arrays are absent |
+| `checklist.md` | Phase-local evidence recorded under CHK-001 through CHK-024 |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +96,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **Phase 3 does not take on D1, D4, D5, D7, SaveMode, or reviewer-wide guardrails.** Those stay in their assigned phases.
+2. **The sanitizer is intentionally empirical.** If a new junk class appears later, it should be added through the same evidence-first path instead of widening the rules blindly.
+3. **Parent closeout still depends on the later phases.** This summary closes only the Phase 3 behavior slice.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

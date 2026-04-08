@@ -320,7 +320,7 @@ Deep research (95 iterations, segments 1-7) and deep review (30 iterations acros
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-This parent packet tracks **30 direct phase folders (001-030)**. Each phase is independently executable and validated.
+This parent packet now tracks **34 direct phase folders (001-034)**. Phases `001-031` are implemented or truth-synced, while phases `032-034` are intentionally opened as draft continuity follow-ons so the next train is explicit without pretending the runtime work already shipped.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
@@ -354,6 +354,10 @@ This parent packet tracks **30 direct phase folders (001-030)**. Each phase is i
 | 028 | `028-startup-highlights-remediation/` | Startup highlights quality-gate remediation | Complete |
 | 029 | `029-review-remediation/` | Review-finding remediation and truth-sync closure | Complete |
 | 030 | `030-opencode-graph-plugin/` | Startup-surface, transport, and code-graph parity follow-on packet | Complete |
+| 031 | `031-normalized-analytics-reader/` | Reader-owned normalized replay model for cross-session analytics | Complete |
+| 032 | `032-cached-summary-fidelity-gates/` | Guarded cached-summary consumer contract for additive startup or resume hints | Draft follow-on |
+| 033 | `033-fts-forced-degrade-hardening/` | Optional lexical fallback hardening if runtime truth gaps remain | Draft follow-on |
+| 034 | `034-workflow-split-and-token-insight-contracts/` | Optional workflow-role and token-insight contract tail packet | Draft follow-on |
 
 ### Phase Transition Rules
 
@@ -372,6 +376,8 @@ This parent packet tracks **30 direct phase folders (001-030)**. Each phase is i
 | 027-opencode-structural-priming | 028-startup-highlights-remediation | Startup highlights retained only if signal quality can be proven | Phase 028 spec/plan/checklist alignment |
 | 028-startup-highlights-remediation | 029-review-remediation | Active review findings remediated and packet truth-sync restored without reopening sibling phase work | Phase 029 checklist + focused post-remediation review sweep |
 | 029-review-remediation | 030-opencode-graph-plugin | Startup-surface and code-graph parity work split into a dedicated follow-on packet with its own child phases | Phase 030 packet implementation summary + recursive validation |
+| 030-opencode-graph-plugin | 031-normalized-analytics-reader | Producer-side parity work handed off to the reader-owned analytics replay model | Phase 031 implementation summary + packet validation |
+| 031-normalized-analytics-reader | 032-cached-summary-fidelity-gates | Consumer-side continuity work remains draft until the reader seam and measurement contract are stable | Phase 032 draft packet docs + dependency review |
 <!-- /ANCHOR:phase-map -->
 
 ### Problem Statement

@@ -1,13 +1,13 @@
 ---
-title: "Implementation Summary [template:level_3/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: Cache-Warning Hook System"
+description: "Producer-first continuity closeout for packet 002, including the compact-wrapper boundary and replay-safe Stop-path handoff."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "002 implementation summary"
+  - "producer-first continuity closeout"
+  - "compact continuity wrapper"
+  - "stop hook metadata handoff"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Implementation Summary
 
@@ -23,7 +23,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-implement-cache-warning-hooks |
-| **Completed** | [YYYY-MM-DD — fill on delivery] |
+| **Completed** | 2026-04-08 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -32,28 +32,17 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+Packet `002` now closes the producer-first continuity seam instead of stopping at research alignment. You now have a bounded Stop-path metadata handoff that persists transcript identity and cache-token carry-forward state, plus an isolated replay harness that proves the seam is safe before any later cached-startup or warning consumer packet builds on it.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+The persisted artifact stays a compact continuity wrapper rather than a second packet narrative, so long-form packet meaning remains owned by this packet's `decision-record.md` and `implementation-summary.md`.
 
-### [Feature Name]
+### Producer Metadata Handoff
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+`HookState` now carries additive `producerMetadata` instead of overloading existing session fields. The Stop hook writes `lastClaudeTurnAt`, a bounded transcript reference with fingerprint and file stats, and cache creation/read token carry-forward values while keeping `claudeSessionId` primary and `speckitSessionId` nullable.
 
-### Files Changed
+### Replay Isolation and Idempotency
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
-| File | Action | Purpose |
-|------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+You can now replay the Stop path inside a sandboxed `TMPDIR` without touching live settings or startup hooks. The new replay harness disables autosave, fails on out-of-bound touched paths, and verifies that replaying the same transcript twice leaves session totals stable with no duplicate producer markers.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +50,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+The delivery stayed inside the packet's narrowed boundary: producer metadata only, no startup fast path, no settings mutation, and no direct warning consumer. I first re-scoped the docs to the canonical 2026-04-08 ordering, then patched `hook-state.ts` and `session-stop.ts`, added a replay harness plus fixture-backed Stop-path tests, and finished with package-level typecheck plus strict packet validation. That left the stored continuity artifact intentionally small and retrieval-oriented while the packet docs remain the canonical long-form explanation surface.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -80,7 +63,9 @@ Explain what the user gains, not what files you touched.]
 
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Keep producer metadata additive in `HookState` | Later packets need a bounded handoff seam without changing startup authority or existing session metrics contracts. |
+| Export a replayable Stop-path runner | Replay verification needed a truthful way to exercise the writer path without shelling into live hook registration or mutating runtime enablement files. |
+| Keep `session-prime.ts` and `.claude/settings.local.json` untouched | Packet `002` is now explicitly a producer-first prerequisite packet, so startup and warning consumers remain follow-on work by design. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -93,7 +78,9 @@ Explain what the user gains, not what files you touched.]
 
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| `TMPDIR=$PWD/.tmp/tsc-tmp npm run typecheck` | PASS |
+| `TMPDIR=$PWD/.tmp/vitest-tmp npx vitest run tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/session-token-resume.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/hook-stop-token-tracking.vitest.ts` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks" --strict` | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -106,7 +93,7 @@ Explain what the user gains, not what files you touched.]
      not "Some features may require configuration."
      Write "None identified." if nothing applies. -->
 
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **Producer-only boundary** This packet intentionally does not add a SessionStart cached-summary fast path, `UserPromptSubmit`, or `.claude/settings.local.json` runtime enablement. Those remain follow-on packets by design.
 <!-- /ANCHOR:limitations -->
 
 ---

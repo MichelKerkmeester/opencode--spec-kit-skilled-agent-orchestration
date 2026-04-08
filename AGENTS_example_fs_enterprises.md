@@ -7,7 +7,6 @@
 ### Multi-Stack Architecture
 
 **Universal Framework:** This AGENTS.md variant extends the base template with stack-aware development workflows. Stack-specific behavior is handled automatically by the `sk--code--full-stack` skill.
-
 **Stack Detection:** Automatic via marker files (first match wins):
 
 | Stack         | Detection Marker                   | Key Patterns                                    |
@@ -47,8 +46,25 @@
 **OPERATIONAL MANDATES:**
 - **All file modifications require a spec folder** (Gate 3).
 - **Never lie or fabricate** — use "UNKNOWN" when uncertain.
-- **Clarify** if confidence < 80% (see §5 Confidence Framework).
+- **Clarify** if confidence < 80% (see §4 Confidence Framework).
 - **Use explicit uncertainty:** Prefix claims with "I'M UNCERTAIN ABOUT THIS:".
+
+---
+
+### Request Analysis & Execution
+
+**Flow:** Parse request → Read files first → Analyze → Design simplest solution → Validate → Execute
+
+#### Execution Behavior
+
+- **Plan before acting** on multi-step work. Decide which files to read first, which tools to use, and how the result will be verified before making changes.
+- **Use a research-first approach.** Read the actual code, docs, and local instructions first. Never use an edit-first approach, and prefer surgical edits over broad rewrites.
+- **Apply project-specific conventions from `CLAUDE.md` files** before acting.
+- **Take responsibility for issues encountered during execution.** Do not dodge ownership with phrases like `not caused by my changes` or `pre-existing issue`; work toward the fix.
+- **Do not stop early when the requested solution is still incomplete.** Do not frame partial progress as a `good stopping point`, `natural checkpoint`, or `future work` when a safe path forward exists.
+- **Do not ask for permission to continue when the next safe step is already clear and in scope.** Avoid `should I continue?` or `want me to keep going?` when you can proceed safely under the existing rules.
+- **Use frequent self-checks and reasoning loops** to catch and fix your own mistakes before asking for help.
+- **Reason from actual data, not assumptions.** Verify against the real files, outputs, and behavior in front of you.
 
 ---
 
@@ -285,33 +301,7 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 ---
 
-## 5. 🧠 REQUEST ANALYSIS & SOLUTION FRAMEWORK
-
-**Flow:** Parse request → Read files first → Analyze → Design simplest solution → Validate → Execute
-
-| Principle         | Rule                                               | Anti-Pattern                            |
-| ----------------- | -------------------------------------------------- | --------------------------------------- |
-| **Simplicity**    | Reuse patterns; earn every abstraction             | Utilities for <3 uses, single-impl intf |
-| **Evidence**      | Cite `[SOURCE: file:lines]` or `[CITATION: NONE]`  | Claims without verification             |
-| **Scope Match**   | Solution size = problem size                       | Refactoring during bug fix              |
-| **Right Problem** | Root cause, not symptom; measure before optimizing | Premature optimization, wrong framing   |
-
-**CLARITY Triggers** (justify before proceeding):
-- Utility for <3 uses | Config for single value | Abstraction without clear boundary
-- Pattern where simple code suffices | Interface for single impl
-- On bias → don't argue, redirect to root cause
-
-**Pre-Change Checklist:**
-- [ ] Read first? | Simplest solution? | Scope discipline?
-- [ ] Confidence ≥80%? | Sources cited? | Spec folder? | Approval?
-
-**Five Checks (>100 LOC):** Necessary now? | Alternatives (≥2)? | Simplest sufficient? | On critical path? | No tech debt?
-
-**STOP CONDITIONS:** Any check unchecked | no spec folder | no approval → STOP and address
-
----
-
-## 6. 🤖 AGENT ROUTING
+## 5. 🤖 AGENT ROUTING
 
 When using the orchestrate agent or Task tool for complex multi-step workflows, route to specialized agents:
 
@@ -345,7 +335,7 @@ Use the agent directory that matches the active runtime/provider profile:
 
 ---
 
-## 7. ⚙️  MCP CONFIGURATION
+## 6. ⚙️  MCP CONFIGURATION
 
 **Two systems:**
 
@@ -359,7 +349,7 @@ Use the agent directory that matches the active runtime/provider profile:
   
 ---
 
-## 8. 🧩 SKILLS SYSTEM
+## 7. 🧩 SKILLS SYSTEM
 
 Skills are specialized, on-demand capabilities that provide domain expertise. Unlike knowledge files (passive references), skills are explicitly invoked to handle complex, multi-step workflows.
 

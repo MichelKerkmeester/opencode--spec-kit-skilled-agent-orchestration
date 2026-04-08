@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 004-graphify Research Phase"
-description: "10-iteration deep-research audit of the graphify external Python skill produced 32 evidence-grounded findings (K1 to K32) and a line-cited Adopt/Adapt/Reject table for Public's Code Graph MCP, CocoIndex, and Spec Kit Memory surfaces."
+description: "20 total deep-research iterations across two waves produced 42 consolidated findings (K1 to K42) and a phased rollout translation for Public's Code Graph, CocoIndex, hooks, validation, and scoring surfaces."
 trigger_phrases:
   - "graphify implementation summary"
   - "004-graphify outcome"
@@ -22,7 +22,7 @@ contextType: summary
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 004-graphify |
-| **Completed** | 2026-04-06 |
+| **Completed** | 2026-04-08 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -31,7 +31,7 @@ contextType: summary
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-You can now point any Public maintainer at `research/research.md` and get a line-grounded translation layer that says exactly which graphify patterns to adopt, adapt, or reject for Code Graph MCP, CocoIndex, Spec Kit Memory, and the project hooks. The audit covered 10 iterations against `external/graphify/`, produced 32 K-findings (K1 through K32) all with `[SOURCE: external/graphify/...:LINE-LINE]` citations, and answered every one of the 12 research questions from the phase prompt. Reading section 12 plus section 13.A.4 gives the complete recommendation set without backfilling assumptions.
+You can now point any Public maintainer at `research/research.md` and get a line-grounded translation layer that says exactly which graphify patterns to adopt, adapt, or reject for Code Graph MCP, CocoIndex, Spec Kit Memory, hooks, validation, and scoring surfaces. The audit now covers 20 total iterations across two waves, produced 42 consolidated K-findings (K1 through K42), and answered all 22 research questions. Reading section 12 plus sections 13.A and 13.B gives the full recommendation and rollout set without backfilling assumptions.
 
 ### Two-pass extraction audit
 
@@ -67,11 +67,11 @@ K28 gives you the full 12-extractor matrix (16 file extensions, Swift detected b
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The audit ran through `/spec_kit:deep-research:auto` as a 10-iteration loop with externalized JSONL state. Iterations 1, 8, 9, and 10 dispatched through `cli-codex gpt-5.4` with `model_reasoning_effort=high` and `sandbox_mode=workspace-write` in fast `exec` mode. Iterations 2 through 7 fell back to `claude-opus-direct` reads after iter 2 starved on codex parallel-job API contention and an `engine_switch` event was logged in JSONL.
+The audit began as a `/spec_kit:deep-research:auto` run against `external/graphify/` and then reopened in `completed-continue` mode to reach 20 total iterations. Wave 1 covered the external repository in 10 runs. Wave 2 added 10 Public-internal translation runs that mapped the external findings onto existing payload contracts, runtime hints, incremental indexing, multimodal scope, clustering fit, verification, metrics, and rollout sequencing.
 
-The reducer (`reduce-state.cjs`) ran after every iteration to refresh the registry, dashboard, and machine-owned strategy sections without the leaf agents needing to write those files directly. composite_converged fired at iter 7 with coverage 91.7%, and the user explicitly overrode the stop with three forced cli-codex iterations (8 to 10) targeting export/serve, build orchestration, and per-language extractor depth. A `continuation` event recorded the override in JSONL, and the iter 8 to 10 findings landed in research.md as a new section 13.A appendix rather than rewriting the K1 to K12 baseline. This kept the lineage auditable: anyone reading research.md can see exactly which findings came from the 7-iteration baseline and which came from the cli-codex extension.
+The reducer (`reduce-state.cjs`) ran after every iteration or wave close to refresh the registry, dashboard, and machine-owned strategy sections without the leaf agents needing to write those files directly. composite_converged fired at iter 7 with coverage 91.7%, and the user explicitly overrode the stop with three forced cli-codex iterations (8 to 10). After wave 1 completed, the user then requested 10 more iterations, so the packet was reopened in generation 2 and section 13.B was added for Public-internal translation findings. This kept lineage auditable: section 13 holds the original baseline, section 13.A holds the wave-1 extension, and section 13.B holds the completed-continue rollout mapping.
 
-After iter 10, synthesis updated research.md (742 to 859 lines, with new section 13.A and four new section 12 rows: A5 validate.py validator, A6 wiki narrative export, D6 modality-aware rebuild policy, D7 stable JSON interchange). `synthesis_complete` fired in JSONL, config.status flipped to `complete`, and `generate-context.js` saved the memory artifact. The post-save quality review flagged HIGH severity trigger_phrases (path fragments leaked from auto-generated content) and a MEDIUM severity importance_tier formatting issue, both of which were manually patched in the memory file before declaring the phase complete.
+After iter 20, synthesis updated `research/research.md` with section 13.B, extended the source-read ledger through iteration 20, and updated the convergence report to 22 of 22 answered questions. `synthesis_complete` fired again for the completed-continue wave, config.status returned to `complete`, and the spec docs were synchronized to the 20-iteration state before the refreshed memory save.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -97,11 +97,11 @@ After iter 10, synthesis updated research.md (742 to 859 lines, with new section
 | Check | Result |
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh ... --strict` | PASS - RESULT: PASSED with zero errors and zero warnings |
-| 12 of 12 research questions answered | PASS - final coverage 1.0 at iter 10 |
-| At least 5 cited findings (REQ minimum) | PASS - 32 findings (K1 to K32), every one with file:line citation |
-| Adopt/Adapt/Reject table line-grounded | PASS - section 12 has 4+5+4 rows; section 13.A.4 adds A5, A6, D6, D7 with explicit K-finding sources |
+| 22 of 22 research questions answered | PASS - final coverage 1.0 at iter 20 |
+| At least 5 cited findings (REQ minimum) | PASS - 42 consolidated findings (K1 to K42), every one with file:line citation |
+| Adopt/Adapt/Reject table line-grounded | PASS - section 12 now has 6+7+4 rows, and each A5/A6/D6/D7 row is fully inlined with explicit source citations |
 | Cross-phase overlap with 002 codesight and 003 contextador | PASS - section 11 documents explicit deduplication; R1 and R2 redirect to the appropriate phases |
-| Memory artifact with critical importance tier | PASS - `memory/06-04-26_18-17__completed-10-iteration-deep-research-audit-of.md` with `importance_tier: critical` and clean trigger phrases (no path fragments) |
+| Memory artifact with critical importance tier | PASS - `memory/08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md` saved after the 20-iteration completed-continue wave and patched for clean trigger phrases |
 | Reducer ran after every iteration | PASS - 10 reducer invocations, registry and dashboard refreshed each time |
 | `synthesis_complete` event in JSONL | PASS - logged at 2026-04-06T18:48:00Z |
 | `config.status == "complete"` | PASS - flipped after synthesis |
@@ -113,10 +113,9 @@ After iter 10, synthesis updated research.md (742 to 859 lines, with new section
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Section 12 in research.md does not yet contain rows A5, A6, D6, D7 inline.** The four new rows are documented in section 13.A.4 with their K-finding sources, but the canonical section 12 table has not been edited to insert them. Future readers should treat section 13.A.4 as authoritative until section 12 is updated. Workaround: read both section 12 and section 13.A.4 together when reviewing recommendations.
-2. **codex parallel-job API contention is unmitigated.** The iter 2 starvation incident proved that codex-cli sequential dispatch is the safe pattern for this loop. Parallel codex dispatches across iterations are NOT supported by this workflow. Workaround: dispatch iterations sequentially, log `engine_switch` events when fallback is needed.
-3. **`mixed-corpus` worked example was not regenerated.** K26 documents that the checked-in `external/worked/mixed-corpus/GRAPH_REPORT.md` does NOT show the multimodal evidence its README claims. We did not run graphify against `mixed-corpus` ourselves to confirm. Workaround: cite K26 as evidence of release-discipline drift, not as proof that graphify cannot do multimodal at small corpus sizes.
-4. **Real Claude tokenization counts were not measured for K1.** The 71.5x verdict relies on graphify's own `_estimate_tokens` heuristic (4 chars per token). A future spike could call Anthropic's `count_tokens` API on the same corpus to tighten the credibility verdict. Workaround: cite K1 with the three load-bearing assumptions explicit; do not present 71.5x as a verified number.
+1. **codex parallel-job API contention is unmitigated.** The iter 2 starvation incident proved that codex-cli sequential dispatch is the safe pattern for this loop. Parallel codex dispatches across iterations are NOT supported by this workflow. Workaround: dispatch iterations sequentially, log `engine_switch` events when fallback is needed.
+2. **`mixed-corpus` worked example was not regenerated.** K26 documents that the checked-in `external/worked/mixed-corpus/GRAPH_REPORT.md` does NOT show the multimodal evidence its README claims. We did not run graphify against `mixed-corpus` ourselves to confirm. Workaround: cite K26 as evidence of release-discipline drift, not as proof that graphify cannot do multimodal at small corpus sizes.
+3. **Real Claude tokenization counts were not measured for K1.** The 71.5x verdict relies on graphify's own `_estimate_tokens` heuristic (4 chars per token). A future spike could call Anthropic's `count_tokens` API on the same corpus to tighten the credibility verdict. Workaround: cite K1 with the three load-bearing assumptions explicit; do not present 71.5x as a verified number.
 <!-- /ANCHOR:limitations -->
 
 ---

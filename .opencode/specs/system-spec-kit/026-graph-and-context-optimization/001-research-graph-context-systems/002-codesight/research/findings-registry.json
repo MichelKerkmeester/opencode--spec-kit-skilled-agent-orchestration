@@ -2221,15 +2221,1821 @@
       "text": "Why it matters for Code_Environment/Public: This is useful as a lightweight map that tells an assistant which UI file to open next, but it is surface-level compared with `routes.md`, which carries method/path/params/request/response/tag detail. It does not preserve prop types, default values, emitted events, slot/children behavior, framework composition, or hierarchy.",
       "addedAtIteration": 10,
       "sources": []
+    },
+    {
+      "id": "finding-11-27-affected-area-automation-and-ux-wording",
+      "text": "Affected area: automation and UX wording",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-13-affected-area-file-discovery-policy",
+      "text": "Affected area: file-discovery policy",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-20-affected-area-git-workflow-integration",
+      "text": "Affected area: git workflow integration",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-6-affected-area-live-context-refresh",
+      "text": "Affected area: live context refresh",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-26-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-5-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-19-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-21-risk-cost-high",
+      "text": "Risk/cost: high",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-14-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-28-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-7-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-15-source-external-src-index-ts-198-232",
+      "text": "Source: `external/src/index.ts:198-232`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-8-source-external-src-index-ts-238-251-external-src-index-ts-275-285",
+      "text": "Source: `external/src/index.ts:238-251`, `external/src/index.ts:275-285`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-1-source-external-src-index-ts-253-289",
+      "text": "Source: `external/src/index.ts:253-289`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-22-source-external-src-index-ts-394-400-external-src-index-ts-538-540",
+      "text": "Source: `external/src/index.ts:394-400`, `external/src/index.ts:538-540`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-16-what-it-does-installgithook-writes-or-appends-a-pre-commit-script-that-runs-npx-",
+      "text": "What it does: `installGitHook()` writes or appends a `pre-commit` script that runs `npx codesight -o <outputDirName>` and then `git add <outputDirName>/`. It only checks for `\"codesight\"` substring presence before deciding the hook already exists.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-23-what-it-does-main-installs-the-hook-if-requested-then-always-runs-scan-into-resu",
+      "text": "What it does: `main()` installs the hook if requested, then always runs `scan(...)` into `result`, and only after that enters `watchMode()`. Watch mode therefore starts from a full baseline scan and then keeps rerunning full scans.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-2-what-it-does-watchmode-accumulates-filenames-into-changedfiles-waits-500ms-print",
+      "text": "What it does: `watchMode()` accumulates filenames into `changedFiles`, waits 500ms, prints the changed filenames, then calls `scan(root, outputDirName, maxDepth, userConfig)` without passing the changed file list into any detector. The only use of `changedFiles` is log formatting.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-9-what-it-does-watch-mode-hardcodes-its-own-watch-extensions-and-ignore-dirs-sets-",
+      "text": "What it does: watch mode hardcodes its own `WATCH_EXTENSIONS` and `IGNORE_DIRS` sets. They overlap heavily with `scanner.ts`, but the logic is duplicated rather than shared. New file types or ignore paths would need parallel maintenance.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-10-why-it-matters-for-code-environment-public-another-example-of-the-repo-s-recurri",
+      "text": "Why it matters for Code_Environment/Public: Another example of the repo's recurring duplication pattern. Automation shells should consume one shared discovery policy or they will drift.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-24-why-it-matters-for-code-environment-public-the-initial-full-scan-is-sensible-but",
+      "text": "Why it matters for Code_Environment/Public: The initial full scan is sensible, but it confirms that Codesight has no \"watch-first\" fast path. Any future port should describe this honestly as \"debounced full refresh.\"",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-3-why-it-matters-for-code-environment-public-this-is-a-good-ux-shell-but-not-an-in",
+      "text": "Why it matters for Code_Environment/Public: This is a good UX shell but not an incremental architecture. Porting it as \"live updates\" without changing the core pipeline would oversell what the runtime is doing.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-17-why-it-matters-for-code-environment-public-this-is-an-aggressive-automation-boun",
+      "text": "Why it matters for Code_Environment/Public: This is an aggressive automation boundary. It silently stages regenerated artifacts into the current commit and assumes `.git/hooks` ownership. That is a risky default in repos with existing hook managers or partial staging discipline.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-12-13-affected-area-low-authority-tagging",
+      "text": "Affected area: low-authority tagging",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-20-affected-area-middleware-graphing",
+      "text": "Affected area: middleware graphing",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-6-affected-area-middleware-surfacing",
+      "text": "Affected area: middleware surfacing",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-27-affected-area-regression-strategy",
+      "text": "Affected area: regression strategy",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-25-evidence-type-test-confirmed",
+      "text": "Evidence type: test-confirmed",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-26-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-5-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-14-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-28-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-7-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-21-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-15-source-external-src-detectors-middleware-ts-111-136",
+      "text": "Source: `external/src/detectors/middleware.ts:111-136`",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-8-source-external-src-detectors-middleware-ts-5-78",
+      "text": "Source: `external/src/detectors/middleware.ts:5-78`",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-1-source-external-src-detectors-middleware-ts-86-109",
+      "text": "Source: `external/src/detectors/middleware.ts:86-109`",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-22-source-external-tests-detectors-test-ts-414-430",
+      "text": "Source: `external/tests/detectors.test.ts:414-430`",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-9-what-it-does-classifymiddleware-concatenates-the-filename-and-only-the-first-500",
+      "text": "What it does: `classifyMiddleware()` concatenates the filename and only the first 500 chars of content, then matches against regex buckets for `auth`, `rate-limit`, `cors`, `validation`, `logging`, and `error-handler`. Anything else becomes `custom`.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-16-what-it-does-route-files-are-rescanned-with-use-s-s-w-s-g-which-only-catches-dir",
+      "text": "What it does: route files are rescanned with `/\\\\.use\\\\s*\\\\(\\\\s*(\\\\w+)\\\\s*\\\\(/g`, which only catches direct identifier calls such as `app.use(cors())` or `app.use(rateLimit(...))`. Anonymous wrappers, arrays, decorator-based middleware, and method chaining outside `.use(...)` are invisible.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-2-what-it-does-the-detector-starts-by-selecting-files-whose-paths-include-middlewa",
+      "text": "What it does: the detector starts by selecting files whose paths include `middleware`, `guard`, `interceptor`, or whose basename starts with `auth` / includes `rate` / `cors`. Only those files are classified as first-class middleware files.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-23-what-it-does-the-only-explicit-middleware-fixture-asserts-that-at-least-two-midd",
+      "text": "What it does: the only explicit middleware fixture asserts that at least two middleware entries are detected from `src/middleware/auth.ts` and `src/middleware/rate-limit.ts`. It does not assert the inferred types, inline `.use(...)` coverage, or false-positive behavior.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-17-why-it-matters-for-code-environment-public-this-confirms-the-surface-is-a-conven",
+      "text": "Why it matters for Code_Environment/Public: This confirms the surface is a convenience index, not a framework-accurate middleware graph.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-10-why-it-matters-for-code-environment-public-this-is-appropriate-for-lightweight-t",
+      "text": "Why it matters for Code_Environment/Public: This is appropriate for lightweight tagging, but it is easy to false-positive on imported names and easy to miss meaning that appears later in the file.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-24-why-it-matters-for-code-environment-public-this-is-enough-to-prevent-the-detecto",
+      "text": "Why it matters for Code_Environment/Public: This is enough to prevent the detector from disappearing, but not enough to trust the classification quality.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-3-why-it-matters-for-code-environment-public-this-is-fast-and-cheap-but-it-misses-",
+      "text": "Why it matters for Code_Environment/Public: This is fast and cheap, but it misses middleware implemented under neutral names or framework-specific folders. It is a naming heuristic, not a code-model.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-13-27-affected-area-context-compaction",
+      "text": "Affected area: context compaction",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-20-affected-area-cross-language-indexing",
+      "text": "Affected area: cross-language indexing",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-6-affected-area-helper-discovery",
+      "text": "Affected area: helper discovery",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-13-affected-area-helper-indexing",
+      "text": "Affected area: helper indexing",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-26-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-12-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-28-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-14-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-21-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-15-source-external-src-detectors-libs-ts-133-209",
+      "text": "Source: `external/src/detectors/libs.ts:133-209`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-1-source-external-src-detectors-libs-ts-5-34",
+      "text": "Source: `external/src/detectors/libs.ts:5-34`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-22-source-external-src-detectors-libs-ts-54-60",
+      "text": "Source: `external/src/detectors/libs.ts:54-60`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-8-source-external-src-detectors-libs-ts-66-130",
+      "text": "Source: `external/src/detectors/libs.ts:66-130`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-23-what-it-does-after-extracting-exports-a-file-is-only-retained-if-at-least-one-ex",
+      "text": "What it does: after extracting exports, a file is only retained if at least one export has `kind === \"function\"` or `kind === \"class\"`. Const-only modules, enum/type-only files, and pure interface barrels can disappear entirely.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-2-what-it-does-it-skips-components-pages-app-routes-views-templates-tests-stories-",
+      "text": "What it does: it skips `/components/`, `/pages/`, `/app/`, `/routes/`, `/views/`, `/templates/`, tests, stories, `.tsx`, and `.jsx`, then scans only `.ts/.js/.mjs/.py/.go` files.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-16-what-it-does-python-skips-names-starting-with-go-only-keeps-names-beginning-with",
+      "text": "What it does: Python skips names starting with `_`; Go only keeps names beginning with uppercase. Both paths collect top-level function/class/interface declarations only.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-9-what-it-does-ts-js-exports-are-parsed-via-regexes-for-export-function-export-con",
+      "text": "What it does: TS/JS exports are parsed via regexes for `export function`, `export const foo = (...) =>`, `export class`, `export interface`, `export type`, `export enum`, and generic `export const`. There is no handling for `export default`, `export { foo }`, re-export barrels, namespace exports, or inferred signatures beyond a few captured groups.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-24-why-it-matters-for-code-environment-public-good-for-shrinking-context-bad-for-co",
+      "text": "Why it matters for Code_Environment/Public: Good for shrinking context, bad for completeness. It favors implementation-heavy helpers over type-rich public surfaces.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-3-why-it-matters-for-code-environment-public-the-detector-is-intentionally-about-h",
+      "text": "Why it matters for Code_Environment/Public: The detector is intentionally about helper modules, not complete project exports. That makes it a good breadcrumb surface and a poor source of architectural truth.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-17-why-it-matters-for-code-environment-public-these-are-reasonable-heuristics-but-t",
+      "text": "Why it matters for Code_Environment/Public: These are reasonable heuristics, but they ignore package-level visibility conventions like `__all__`, receiver methods, nested classes, and module alias patterns.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-10-why-it-matters-for-code-environment-public-this-is-another-fast-inventory-low-au",
+      "text": "Why it matters for Code_Environment/Public: This is another \"fast inventory, low authority\" surface. It is useful for pointing an assistant at likely helper files, not for generating trustworthy API contracts.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-14-6-affected-area-config-surfacing",
+      "text": "Affected area: config surfacing",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-13-affected-area-env-var-discovery",
+      "text": "Affected area: env-var discovery",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-20-affected-area-multi-language-config-context",
+      "text": "Affected area: multi-language config context",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-27-affected-area-regression-strategy",
+      "text": "Affected area: regression strategy",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-25-evidence-type-test-confirmed",
+      "text": "Evidence type: test-confirmed",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-26-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-12-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-28-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-14-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-21-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-15-source-external-src-detectors-config-ts-54-70",
+      "text": "Source: `external/src/detectors/config.ts:54-70`",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-1-source-external-src-detectors-config-ts-6-49",
+      "text": "Source: `external/src/detectors/config.ts:6-49`",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-8-source-external-src-detectors-config-ts-73-174",
+      "text": "Source: `external/src/detectors/config.ts:73-174`",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-22-source-external-tests-detectors-test-ts-392-406",
+      "text": "Source: `external/tests/detectors.test.ts:392-406`",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-2-what-it-does-config-files-is-a-hardcoded-list-of-22-filenames-the-detector-first",
+      "text": "What it does: `CONFIG_FILES` is a hardcoded list of 22 filenames. The detector first matches those in `files`, then separately probes `project.root` for the same filenames via `readFileSafe()` to catch non-code files that `collectFiles()` never returned.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-16-what-it-does-dependencies-and-devdependencies-come-only-from-root-package-json-p",
+      "text": "What it does: `dependencies` and `devDependencies` come only from root `package.json`. Python, Go, Ruby, and Elixir dependencies influence framework/ORM detection elsewhere, but they are not surfaced in `ConfigInfo`.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-9-what-it-does-the-detector-parses-env-env-example-and-env-local-then-scans-code-f",
+      "text": "What it does: the detector parses `.env`, `.env.example`, and `.env.local`, then scans code for `process.env.X`, bracket access, `Bun.env.X`, `import.meta.env.X`, Python `os.environ[...]` / `os.getenv(...)`, and Go `os.Getenv(...)`.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-23-what-it-does-the-only-config-test-creates-env-example-with-three-variables-and-a",
+      "text": "What it does: the only config test creates `.env.example` with three variables and a TS file that reads two of them, then asserts the resulting env-var list is at least length two and contains `DATABASE_URL`.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-17-why-it-matters-for-code-environment-public-the-config-view-is-richer-for-node-pr",
+      "text": "Why it matters for Code_Environment/Public: The \"config\" view is richer for Node projects than for mixed-language repos. Any port should decide whether config reporting is JS-first on purpose or needs multi-language parity.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-24-why-it-matters-for-code-environment-public-the-detector-is-guarded-against-disap",
+      "text": "Why it matters for Code_Environment/Public: The detector is guarded against disappearing, but not against syntax regressions across the Python/Go/Bun/Vite branches or config-file whitelist drift.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-10-why-it-matters-for-code-environment-public-this-captures-a-useful-cross-language",
+      "text": "Why it matters for Code_Environment/Public: This captures a useful cross-language baseline, but it does not model defaults from code branches, wrapper helpers, lowercase env names, or framework-specific config adapters.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-14-3-why-it-matters-for-code-environment-public-this-is-a-useful-pattern-for-bridging",
+      "text": "Why it matters for Code_Environment/Public: This is a useful pattern for bridging file-collection limits, but it is hand-maintained and easy to drift. Unknown config surfaces stay invisible until manually added.",
+      "addedAtIteration": 14,
+      "sources": []
+    },
+    {
+      "id": "finding-15-13-affected-area-artifact-lifecycle",
+      "text": "Affected area: artifact lifecycle",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-27-affected-area-dependency-summarization",
+      "text": "Affected area: dependency summarization",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-20-affected-area-output-stability",
+      "text": "Affected area: output stability",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-34-affected-area-projection-architecture",
+      "text": "Affected area: projection architecture",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-6-affected-area-static-context-generation",
+      "text": "Affected area: static context generation",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-19-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-33-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-12-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-26-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-21-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-35-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-14-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-28-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-1-source-external-src-formatter-ts-11-58",
+      "text": "Source: `external/src/formatter.ts:11-58`",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-8-source-external-src-formatter-ts-13-58",
+      "text": "Source: `external/src/formatter.ts:13-58`",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-22-source-external-src-formatter-ts-196-203-external-src-formatter-ts-308-335",
+      "text": "Source: `external/src/formatter.ts:196-203`, `external/src/formatter.ts:308-335`",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-29-source-external-src-formatter-ts-262-305",
+      "text": "Source: `external/src/formatter.ts:262-305`",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-15-source-external-src-formatter-ts-283-290",
+      "text": "Source: `external/src/formatter.ts:283-290`",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-23-what-it-does-filternotabledeps-compares-root-dependencies-against-a-handwritten-",
+      "text": "What it does: `filterNotableDeps()` compares root dependencies against a handwritten allowlist of frameworks, ORMs, auth libs, payments, infra, AI SDKs, and services.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-30-what-it-does-formatcombined-never-rescans-anything-it-just-formats-project-metad",
+      "text": "What it does: `formatCombined()` never rescans anything; it just formats project metadata, token stats, and the previously generated section content into one canonical file.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-16-what-it-does-formatcombined-rounds-token-counts-to-the-nearest-100-before-writin",
+      "text": "What it does: `formatCombined()` rounds token counts to the nearest 100 before writing the combined markdown and documents the reason inline: deterministic output that avoids git conflicts in worktrees.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-2-what-it-does-routes-schema-components-libs-config-middleware-and-graph-files-are",
+      "text": "What it does: routes, schema, components, libs, config, middleware, and graph files are written only when the corresponding result slice is non-empty; `CODESIGHT.md` is always written from the accumulated `sections` array.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-9-what-it-does-section-files-are-created-when-a-slice-is-non-empty-but-there-is-no",
+      "text": "What it does: section files are created when a slice is non-empty, but there is no branch that deletes `routes.md`, `graph.md`, etc. if a future scan produces zero data for that section.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-10-why-it-matters-for-code-environment-public-context-files-can-become-historically",
+      "text": "Why it matters for Code_Environment/Public: Context files can become historically sticky and overstate current reality unless cleanup or freshness markers are added.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-24-why-it-matters-for-code-environment-public-the-result-is-readable-but-it-hardcod",
+      "text": "Why it matters for Code_Environment/Public: The result is readable, but it hardcodes product judgment into the formatter. Any port should treat this as a policy layer, not an intrinsic truth of the scan.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-3-why-it-matters-for-code-environment-public-this-is-a-clean-context-generation-ru",
+      "text": "Why it matters for Code_Environment/Public: This is a clean context-generation rule: emit only what you can substantively support, then compose a single canonical summary from the same intermediate sections.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-17-why-it-matters-for-code-environment-public-this-is-a-strong-small-design-decisio",
+      "text": "Why it matters for Code_Environment/Public: This is a strong small design decision. If heuristic metrics are shown at all, rounding and explicitly framing them as estimates reduces false precision and diff noise.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-15-31-why-it-matters-for-code-environment-public-this-is-the-deepest-reusable-pattern-",
+      "text": "Why it matters for Code_Environment/Public: This is the deepest reusable pattern in the formatter: one raw result, many late-bound views, no second analysis pass for presentation.",
+      "addedAtIteration": 15,
+      "sources": []
+    },
+    {
+      "id": "finding-16-6-affected-area-mcp-cache-model",
+      "text": "Affected area: MCP cache model",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-20-affected-area-mcp-surface-design",
+      "text": "Affected area: MCP surface design",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-13-affected-area-mcp-tool-contract",
+      "text": "Affected area: MCP tool contract",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-34-affected-area-mcp-transport",
+      "text": "Affected area: MCP transport",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-27-affected-area-runtime-error-design",
+      "text": "Affected area: runtime error design",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-26-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-33-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-12-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-14-risk-cost-high",
+      "text": "Risk/cost: high",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-28-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-35-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-21-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-1-source-external-src-mcp-server-ts-41-49-external-src-mcp-server-ts-283-287",
+      "text": "Source: `external/src/mcp-server.ts:41-49`, `external/src/mcp-server.ts:283-287`",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-8-source-external-src-mcp-server-ts-45-85-external-src-mcp-server-ts-89-95",
+      "text": "Source: `external/src/mcp-server.ts:45-85`, `external/src/mcp-server.ts:89-95`",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-22-source-external-src-mcp-server-ts-450-467-external-src-mcp-server-ts-471-526",
+      "text": "Source: `external/src/mcp-server.ts:450-467`, `external/src/mcp-server.ts:471-526`",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-29-source-external-src-mcp-server-ts-480-534",
+      "text": "Source: `external/src/mcp-server.ts:480-534`",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-15-source-external-src-mcp-server-ts-98-281-external-src-mcp-server-ts-443-448",
+      "text": "Source: `external/src/mcp-server.ts:98-281`, `external/src/mcp-server.ts:443-448`",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-2-what-it-does-cachedresult-and-cachedroot-are-module-level-globals-if-the-request",
+      "text": "What it does: `cachedResult` and `cachedRoot` are module-level globals. If the requested directory resolves to the same root, all tools reuse the same cached scan until `codesight_refresh` clears both values.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-9-what-it-does-getscanresult-always-calls-writeoutput-tempresult-resolve-root-code",
+      "text": "What it does: `getScanResult()` always calls `writeOutput(tempResult, resolve(root, \".codesight\"))` before caching, even for tools like `codesight_get_routes` or `codesight_get_env`. `codesight_scan` then calls `writeOutput(...)` again with final token stats.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-30-what-it-does-startmcpserver-buffers-stdin-parses-content-length-headers-queues-j",
+      "text": "What it does: `startMCPServer()` buffers stdin, parses `Content-Length` headers, queues JSON-RPC requests, and processes them serially through `processQueue()`.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-16-what-it-does-every-tool-returns-a-string-that-is-wrapped-as-content-type-text-te",
+      "text": "What it does: every tool returns a string that is wrapped as `content: [{ type: \"text\", text: result }]`. Routes, schema, blast radius, env vars, hot files, and summary are all formatted prose or markdown-like text.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-23-what-it-does-unknown-tool-names-and-unknown-methods-use-json-rpc-error-envelopes",
+      "text": "What it does: unknown tool names and unknown methods use JSON-RPC `error` envelopes, while handler failures return `result.content` text with `isError: true`. Parse failures become `-32700` errors pushed on the protocol stream.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-24-why-it-matters-for-code-environment-public-clients-must-understand-two-failure-s",
+      "text": "Why it matters for Code_Environment/Public: Clients must understand two failure shapes. That is survivable, but it weakens machine-readability and testability.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-10-why-it-matters-for-code-environment-public-the-mcp-interface-is-not-read-only-in",
+      "text": "Why it matters for Code_Environment/Public: The MCP interface is not read-only in practice. Querying the server can mutate repo files on disk, which is a major contract choice for any assistant integration.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-31-why-it-matters-for-code-environment-public-this-is-a-solid-small-server-baseline",
+      "text": "Why it matters for Code_Environment/Public: This is a solid small-server baseline. It proves you can ship a useful assistant MCP without dependencies, but it also shows where richer lifecycle support (`shutdown`, cancellation, structured diagnostics) has been intentionally omitted.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-3-why-it-matters-for-code-environment-public-this-is-good-enough-for-a-single-sess",
+      "text": "Why it matters for Code_Environment/Public: This is good enough for a single-session assistant, but not for multi-root or concurrent work. The design assumes one active project context at a time.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-16-17-why-it-matters-for-code-environment-public-this-is-great-for-direct-assistant-co",
+      "text": "Why it matters for Code_Environment/Public: This is great for direct assistant consumption and poor for composability. If Public wants downstream automation or richer agent orchestration, it should prefer structured JSON or dual text+JSON responses.",
+      "addedAtIteration": 16,
+      "sources": []
+    },
+    {
+      "id": "finding-17-27-affected-area-assistant-instructions",
+      "text": "Affected area: assistant instructions",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-6-affected-area-assistant-profile-generation",
+      "text": "Affected area: assistant profile generation",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-20-affected-area-assistant-file-generation",
+      "text": "Affected area: assistant-file generation",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-13-affected-area-config-lifecycle",
+      "text": "Affected area: config lifecycle",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-34-affected-area-metric-presentation-discipline",
+      "text": "Affected area: metric presentation discipline",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-33-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-12-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-19-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-26-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-21-risk-cost-high",
+      "text": "Risk/cost: high",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-28-risk-cost-high",
+      "text": "Risk/cost: high",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-35-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-14-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-1-source-external-src-generators-ai-config-ts-14-69-external-src-generators-ai-con",
+      "text": "Source: `external/src/generators/ai-config.ts:14-69`, `external/src/generators/ai-config.ts:171-203`",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-22-source-external-src-generators-ai-config-ts-205-223",
+      "text": "Source: `external/src/generators/ai-config.ts:205-223`",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-29-source-external-src-generators-ai-config-ts-213",
+      "text": "Source: `external/src/generators/ai-config.ts:213`",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-15-source-external-src-generators-ai-config-ts-214-256",
+      "text": "Source: `external/src/generators/ai-config.ts:214-256`",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-8-source-external-src-generators-ai-config-ts-78-155",
+      "text": "Source: `external/src/generators/ai-config.ts:78-155`",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-2-what-it-does-generatecontext-builds-one-generic-project-summary-then-generatepro",
+      "text": "What it does: `generateContext()` builds one generic project summary, then `generateProfileConfig()` layers tool-specific instructions over a compact always-load summary.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-9-what-it-does-existing-claude-md-may-be-appended-if-it-lacks-a-codesight-referenc",
+      "text": "What it does: existing `CLAUDE.md` may be appended if it lacks a codesight reference, `.cursorrules`/`codex.md`/`AGENTS.md` are only created when absent, and Copilot instructions are created only if `.github/` already exists.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-16-what-it-does-profile-mode-rewrites-cursorrules-codex-md-github-copilot-instructi",
+      "text": "What it does: profile mode rewrites `.cursorrules`, `codex.md`, `.github/copilot-instructions.md`, and `.windsurfrules` directly. It also writes `AGENTS.md` at repo root when absent in default generation mode.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-23-what-it-does-the-claude-profile-literally-instructs-the-assistant-to-call-codesi",
+      "text": "What it does: the Claude profile literally instructs the assistant to call `codesight_get_summary`, `codesight_get_routes`, `codesight_get_blast_radius`, and `codesight_get_schema`.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-30-what-it-does-the-claude-profile-says-this-saves-n-tokens-per-conversation-using-",
+      "text": "What it does: the Claude profile says \"This saves ~N tokens per conversation\" using the unrounded `result.tokenStats.saved.toLocaleString()`.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-10-why-it-matters-for-code-environment-public-different-tools-can-drift-from-each-o",
+      "text": "Why it matters for Code_Environment/Public: Different tools can drift from each other over time because only Claude gets append/update behavior in the default multi-file path.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-31-why-it-matters-for-code-environment-public-it-directly-undermines-the-formatter-",
+      "text": "Why it matters for Code_Environment/Public: It directly undermines the formatter's more careful rounded estimate. This is the clearest example of honesty drift between output surfaces.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-24-why-it-matters-for-code-environment-public-public-should-adopt-the-profile-overl",
+      "text": "Why it matters for Code_Environment/Public: Public should adopt the profile-overlay pattern, not these literal tool names. Hardcoding non-existent tools into a generated profile creates broken assistant guidance.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-3-why-it-matters-for-code-environment-public-this-is-one-of-the-best-ideas-in-the-",
+      "text": "Why it matters for Code_Environment/Public: This is one of the best ideas in the repo. It balances shared truth with tool-specific ergonomics instead of forcing one generic prompt format onto every assistant.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-17-17-why-it-matters-for-code-environment-public-this-is-the-sharpest-write-safety-iss",
+      "text": "Why it matters for Code_Environment/Public: This is the sharpest write-safety issue in the whole repo. Root assistant files often already contain human-authored policy. Blind regeneration is too risky for a shared codebase.",
+      "addedAtIteration": 17,
+      "sources": []
+    },
+    {
+      "id": "finding-18-27-affected-area-html-report-adoption",
+      "text": "Affected area: HTML report adoption",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-13-affected-area-metric-consistency",
+      "text": "Affected area: metric consistency",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-20-affected-area-presentation-completeness",
+      "text": "Affected area: presentation completeness",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-6-affected-area-projection-architecture",
+      "text": "Affected area: projection architecture",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-26-recommendation-reject",
+      "text": "Recommendation: reject",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-14-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-28-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-21-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-8-source-external-src-generators-html-report-ts-102-107",
+      "text": "Source: `external/src/generators/html-report.ts:102-107`",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-15-source-external-src-generators-html-report-ts-119-200",
+      "text": "Source: `external/src/generators/html-report.ts:119-200`",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-22-source-external-src-generators-html-report-ts-30-87-external-src-generators-html",
+      "text": "Source: `external/src/generators/html-report.ts:30-87`, `external/src/generators/html-report.ts:119-200`",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-1-source-external-src-generators-html-report-ts-9-20",
+      "text": "Source: `external/src/generators/html-report.ts:9-20`",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-2-what-it-does-generatehtmlreport-just-calls-buildhtml-result-and-writes-the-retur",
+      "text": "What it does: `generateHtmlReport()` just calls `buildHtml(result)` and writes the returned string to `report.html`. There is no second analysis phase and no report-specific data model.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-23-what-it-does-the-file-spends-far-more-code-on-inline-css-than-on-data-shaping-th",
+      "text": "What it does: the file spends far more code on inline CSS than on data shaping. The reusable part is not the visual language; it is the decision to present the same scan as a stat dashboard plus section-specific tables/cards.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-9-what-it-does-the-hero-section-prints-tokenstats-saved-outputtokens-and-estimated",
+      "text": "What it does: the hero section prints `tokenStats.saved`, `outputTokens`, and `estimatedExplorationTokens` with full `toLocaleString()` precision.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-16-what-it-does-the-report-renders-routes-schema-components-hot-files-env-vars-and-",
+      "text": "What it does: the report renders routes, schema, components, hot files, env vars, and middleware, but there is no equivalent rich section for `libs` or `config.configFiles` / notable dependencies.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-17-why-it-matters-for-code-environment-public-even-the-most-visual-surface-still-re",
+      "text": "Why it matters for Code_Environment/Public: Even the most visual surface still reflects product prioritization. It is not a full-fidelity mirror of the scan object.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-10-why-it-matters-for-code-environment-public-the-same-honesty-problem-seen-in-ai-c",
+      "text": "Why it matters for Code_Environment/Public: The same honesty problem seen in `ai-config.ts` appears here. Different output surfaces communicate the same heuristic metric with different confidence levels.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-24-why-it-matters-for-code-environment-public-this-confirms-the-report-should-be-tr",
+      "text": "Why it matters for Code_Environment/Public: This confirms the report should be treated as a presentational reference, not a feature to port wholesale.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-18-3-why-it-matters-for-code-environment-public-this-reinforces-the-repo-s-best-archi",
+      "text": "Why it matters for Code_Environment/Public: This reinforces the repo's best architectural idea: compute once, project many times.",
+      "addedAtIteration": 18,
+      "sources": []
+    },
+    {
+      "id": "finding-19-6-affected-area-collection-policy",
+      "text": "Affected area: collection policy",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-13-affected-area-monorepo-support",
+      "text": "Affected area: monorepo support",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-20-affected-area-project-fingerprinting",
+      "text": "Affected area: project fingerprinting",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-34-affected-area-scan-economics",
+      "text": "Affected area: scan economics",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-27-affected-area-summary-compaction",
+      "text": "Affected area: summary compaction",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-4-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-11-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-18-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-25-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-32-evidence-type-source-confirmed",
+      "text": "Evidence type: source-confirmed",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-26-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-33-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-12-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-19-recommendation-prototype-later",
+      "text": "Recommendation: prototype later",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-28-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-35-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-14-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-21-risk-cost-medium",
+      "text": "Risk/cost: medium",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-8-source-external-src-scanner-ts-107-128-external-src-scanner-ts-380-399",
+      "text": "Source: `external/src/scanner.ts:107-128`, `external/src/scanner.ts:380-399`",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-1-source-external-src-scanner-ts-11-34-external-src-scanner-ts-70-80",
+      "text": "Source: `external/src/scanner.ts:11-34`, `external/src/scanner.ts:70-80`",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-22-source-external-src-scanner-ts-131-165",
+      "text": "Source: `external/src/scanner.ts:131-165`",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-15-source-external-src-scanner-ts-341-378",
+      "text": "Source: `external/src/scanner.ts:341-378`",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-29-source-external-src-scanner-ts-56-86-external-src-scanner-ts-89-95",
+      "text": "Source: `external/src/scanner.ts:56-86`, `external/src/scanner.ts:89-95`",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-30-what-it-does-file-walking-is-simple-read-failures-return-empty-strings-and-most-",
+      "text": "What it does: file walking is simple, read failures return empty strings, and most detection relies on small file probes rather than full parser pipelines.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-16-what-it-does-language-is-inferred-from-tsconfig-json-pyproject-toml-requirements",
+      "text": "What it does: language is inferred from `tsconfig.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Gemfile`, `mix.exs`, Gradle/Maven files, `Cargo.toml`, and `composer.json`. If more than one category is present, the result is simply `\"mixed\"`.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-2-what-it-does-the-walker-skips-entries-starting-with-unless-they-are-env-env-exam",
+      "text": "What it does: the walker skips entries starting with `.` unless they are `.env`, `.env.example`, or `.env.local`. `tsconfig.json`, `.github`, and other dot-config files never appear in the collected file list.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-23-what-it-does-when-a-repo-is-a-monorepo-workspace-deps-are-merged-into-alldeps-th",
+      "text": "What it does: when a repo is a monorepo, workspace deps are merged into `allDeps`, then workspace frameworks and ORMs are deduplicated back into root arrays on `ProjectInfo`.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-9-what-it-does-workspace-patterns-are-converted-with-pattern-replace-then-the-scan",
+      "text": "What it does: workspace patterns are converted with `pattern.replace(\"/*\", \"\")`, then the scanner lists immediate child directories under that root and treats each as a workspace. Nested glob patterns and deeper package hierarchies are not traversed structurally.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-17-why-it-matters-for-code-environment-public-this-is-a-useful-top-level-label-and-",
+      "text": "Why it matters for Code_Environment/Public: This is a useful top-level label and not a nuanced language inventory. Multi-runtime repos lose important detail.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-10-why-it-matters-for-code-environment-public-this-is-enough-for-common-packages-la",
+      "text": "Why it matters for Code_Environment/Public: This is enough for common `packages/*` layouts and weak for more complex monorepos.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-31-why-it-matters-for-code-environment-public-this-is-the-main-reason-codesight-can",
+      "text": "Why it matters for Code_Environment/Public: This is the main reason Codesight can project its scan into so many surfaces. The tradeoff is that many later features inherit the scanner's shallow heuristics.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-3-why-it-matters-for-code-environment-public-this-is-why-detectconfig-has-to-re-pr",
+      "text": "Why it matters for Code_Environment/Public: This is why `detectConfig()` has to re-probe root config files manually. The collector is optimized for code files, not full repo introspection.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-19-24-why-it-matters-for-code-environment-public-this-keeps-the-top-summary-compact-bu",
+      "text": "Why it matters for Code_Environment/Public: This keeps the top summary compact, but it erases which workspace owns which framework/ORM unless a consumer separately inspects `project.workspaces`.",
+      "addedAtIteration": 19,
+      "sources": []
+    },
+    {
+      "id": "finding-20-6-affected-area-context-system-architecture",
+      "text": "Affected area: context-system architecture",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-13-affected-area-rollout-guardrails",
+      "text": "Affected area: rollout guardrails",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-20-affected-area-scope-definition-for-any-follow-on-implementation-packet",
+      "text": "Affected area: scope definition for any follow-on implementation packet",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-4-evidence-type-mixed",
+      "text": "Evidence type: mixed",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-11-evidence-type-mixed",
+      "text": "Evidence type: mixed",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-18-evidence-type-mixed",
+      "text": "Evidence type: mixed",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-5-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-12-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-19-recommendation-adopt-now",
+      "text": "Recommendation: adopt now",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-7-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-14-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-21-risk-cost-low",
+      "text": "Risk/cost: low",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-8-source-research-iterations-iteration-011-md-research-iterations-iteration-016-md",
+      "text": "Source: `research/iterations/iteration-011.md`; `research/iterations/iteration-016.md`; `research/iterations/iteration-017.md`; `research/iterations/iteration-018.md`",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-15-source-research-iterations-iteration-012-md-research-iterations-iteration-013-md",
+      "text": "Source: `research/iterations/iteration-012.md`; `research/iterations/iteration-013.md`; `research/iterations/iteration-014.md`; `research/iterations/iteration-019.md`",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-1-source-research-iterations-iteration-015-md-research-iterations-iteration-016-md",
+      "text": "Source: `research/iterations/iteration-015.md`; `research/iterations/iteration-016.md`; `research/iterations/iteration-018.md`",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-16-what-it-does-middleware-libs-config-and-scanner-heuristics-are-all-useful-for-co",
+      "text": "What it does: middleware, libs, config, and scanner heuristics are all useful for compaction, but none should be described as deep semantic understanding.",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-2-what-it-does-the-formatter-mcp-server-and-html-report-all-show-the-same-pattern-",
+      "text": "What it does: the formatter, MCP server, and HTML report all show the same pattern: one canonical scan result projected into markdown, tool calls, and report surfaces.",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-9-what-it-does-watch-mode-implies-more-incrementalism-than-it-has-mcp-query-tools-",
+      "text": "What it does: watch mode implies more incrementalism than it has, MCP query tools write `.codesight/` on disk, profile generation mutates root assistant files, and token messaging regains false precision outside `CODESIGHT.md`.",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-10-why-it-matters-for-code-environment-public-any-implementation-phase-should-adopt",
+      "text": "Why it matters for Code_Environment/Public: Any implementation phase should adopt Codesight's useful patterns only behind stricter contracts: namespaced outputs, read-only query surfaces, and explicitly heuristic labels.",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-17-why-it-matters-for-code-environment-public-this-gives-a-practical-adoption-lens-",
+      "text": "Why it matters for Code_Environment/Public: This gives a practical adoption lens: low-authority compaction layers are valuable if the product language stays honest and the high-authority structural work remains elsewhere.",
+      "addedAtIteration": 20,
+      "sources": []
+    },
+    {
+      "id": "finding-20-3-why-it-matters-for-code-environment-public-this-is-the-strongest-portable-idea-t",
+      "text": "Why it matters for Code_Environment/Public: This is the strongest portable idea to carry forward into the 026 packet. It complements existing search/graph/memory systems instead of duplicating them.",
+      "addedAtIteration": 20,
+      "sources": []
     }
   ],
   "ruledOutDirections": [],
   "metrics": {
-    "iterationsCompleted": 10,
+    "iterationsCompleted": 20,
     "openQuestions": 0,
     "resolvedQuestions": 0,
-    "keyFindings": 370,
-    "convergenceScore": 0.44,
+    "keyFindings": 671,
+    "convergenceScore": 0.46,
     "coverageBySources": {}
   }
 }

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 004-graphify Research Phase"
-description: "10-iteration deep-research loop dispatched against the graphify external Python skill with cli-codex gpt-5.4 high engine, externalized JSONL state, reducer-managed registry, and post-synthesis memory save."
+description: "20-iteration two-wave deep-research loop covering graphify plus Public rollout translation, with externalized JSONL state, reducer-managed registry, and post-synthesis memory save."
 trigger_phrases:
   - "graphify research plan"
   - "004-graphify execution plan"
@@ -29,7 +29,7 @@ contextType: plan
 
 ### Overview
 
-Run a 10-iteration deep-research loop against `external/graphify/` to translate two-pass codebase knowledge graph patterns into Public-actionable Adopt/Adapt/Reject recommendations. Iterations 1, 8, 9, 10 dispatch through `cli-codex gpt-5.4 high` in fast `exec` mode; iterations 2 through 7 fall back to `claude-opus-direct` after the iter 2 codex parallel-job starvation incident. Externalized state in `research/deep-research-{config,state,strategy,dashboard,findings-registry}` survives crash and resume; reducer runs after every iteration to keep registry, dashboard, and machine-owned strategy sections in sync.
+Run a 20-iteration two-wave deep-research loop. Wave 1 audits `external/graphify/` and establishes Adopt/Adapt/Reject guidance. Wave 2 reopens the completed packet in `completed-continue` mode and maps those findings onto Public's current payload contracts, runtime hints, bridge surfaces, incremental indexing, multimodal scope, clustering path, validation, metrics, and rollout sequencing. Externalized state in `research/deep-research-{config,state,strategy,dashboard,findings-registry}` survives crash and resume; reducer runs after each iteration or wave close to keep registry, dashboard, and machine-owned strategy sections in sync.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -48,7 +48,7 @@ Run a 10-iteration deep-research loop against `external/graphify/` to translate 
 ### Definition of Done
 
 - [x] All P0 requirements (REQ-001 through REQ-012) met
-- [x] research.md contains at least 12 cited findings (delivered: 32 = K1 to K32)
+- [x] research.md contains at least 12 cited findings (delivered: 42 consolidated findings = K1 to K42)
 - [x] Adopt/Adapt/Reject table line-grounded for every row
 - [x] Memory artifact saved with `critical` importance tier and clean trigger phrases
 - [x] `validate.sh --strict` returns RESULT: PASSED
@@ -81,11 +81,11 @@ phase-research-prompt.md
 phase_init: config.json + state.jsonl + strategy.md + findings-registry.json
         |
         v
-phase_loop (x10):
+phase_loop (x20):
   read_state -> check_convergence -> dispatch_iteration -> reduce_state -> evaluate_results -> generate_dashboard
         |
         v
-phase_synthesis: research.md (17 sections + section 13.A) + convergence_complete event
+phase_synthesis: research.md (17 sections + section 13.A + section 13.B) + convergence_complete event
         |
         v
 phase_save: generate-context.js -> memory/*.md
@@ -116,11 +116,12 @@ phase_save: generate-context.js -> memory/*.md
 - [x] **Iteration 8** (cli-codex extension): Export + wiki + MCP serve surface via `cli-codex gpt-5.4 high`. Read `export.py` (954 lines), `wiki.py` (214 lines), `serve.py` (322 lines), `external/worked/mixed-corpus/GRAPH_REPORT.md`. 10 findings (K13 to K21).
 - [x] **Iteration 9** (cli-codex extension): Build orchestration + cross-corpus validation via `cli-codex gpt-5.4 high`. Read `manifest.py`, `build.py`, `skill.md:236-400, 588-705`, `detect.py:216-274`, mixed-corpus + karpathy-repos worked corpora. 10 findings (K22 to K27).
 - [x] **Iteration 10** (cli-codex extension): Per-language extractor inventory + final Q12 grounding via `cli-codex gpt-5.4 high`. Read per-language extractor bodies in `extract.py:301-2206`, dispatch table at `extract.py:2367-2505`, full `validate.py`. 12 findings (K28 to K32) plus comprehensive Adopt/Adapt/Reject table.
+- [x] **Iterations 11-20** (completed-continue wave): Public-internal translation and rollout mapping. Covered payload contracts, runtime nudge placement, indexing and invalidation, multimodal scope, clustering path, validation extensions, architecture-native metrics, trust boundaries, bridge surfaces, and phased rollout guidance. Wrote `research/iterations/iteration-011.md` through `research/iterations/iteration-020.md`.
 
 ### Phase 3: Verification
 
-- [x] Synthesis: `research/research.md` updated to 17 sections + new section 13.A with K13 to K32 findings, expanded section 14, updated section 16 convergence report
-- [x] Convergence final state: max_iterations_reached AND all_questions_answered (coverage 1.0, 12 of 12 questions)
+- [x] Synthesis: `research/research.md` updated to include section 13.A (K13-K32) and section 13.B (K33-K42), expanded section 14, updated section 16 convergence report
+- [x] Convergence final state: max_iterations_reached AND all_questions_answered (coverage 1.0, 22 of 22 questions)
 - [x] config.status flipped from `initialized` to `complete`
 - [x] Memory save via `generate-context.js` with structured JSON contract
 - [x] HIGH severity quality issues (trigger_phrases path fragments) manually patched in memory file
@@ -138,7 +139,7 @@ phase_save: generate-context.js -> memory/*.md
 | Schema validation | JSONL state log records, registry schema | Reducer schema check (rejects malformed delta) |
 | Spec doc validation | Level 3 template headers, section counts, broken refs | `validate.sh --strict` |
 | Memory quality | trigger_phrases, importance_tier, frontmatter | `generate-context.js` post-save quality review |
-| Manual cross-check | Every K1 to K32 finding has a verifiable file:line citation | Read tool + Grep on cited lines |
+| Manual cross-check | Every K1 to K42 finding has a verifiable file:line citation | Read tool + Grep on cited lines |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -261,7 +262,7 @@ Phase 1.5 (Cross-phase awareness) ───┘
 | Phase prompt | None | `scratch/phase-research-prompt.md` | Iter 1 |
 | Iter N | Iter N-1 reducer output | research/iterations/iteration-NNN.md, JSONL append | Iter N+1 |
 | Reducer | Iter N output | Updated registry, dashboard, strategy machine-owned sections | Iter N+1 read_state |
-| Synthesis | All 10 iterations + final reducer | `research/research.md` updates, synthesis_complete event | Memory save |
+| Synthesis | All 20 iterations + final reducer | `research/research.md` updates, synthesis_complete event | Memory save |
 | Memory save | Synthesis | `memory/*.md` artifact | Final verification |
 <!-- /ANCHOR:dependency-graph -->
 
@@ -273,10 +274,11 @@ Phase 1.5 (Cross-phase awareness) ───┘
 1. **Phase prompt + setup** - 30 minutes - CRITICAL
 2. **Iterations 1-7 baseline** - 3 hours - CRITICAL (each iter blocks the next)
 3. **Iterations 8-10 cli-codex extension** - 25 minutes - CRITICAL (sequential, each blocks the next)
-4. **Synthesis** - 30 minutes - CRITICAL
-5. **Memory save + validation** - 15 minutes - CRITICAL
+4. **Iterations 11-20 completed-continue wave** - 60 minutes - CRITICAL
+5. **Synthesis** - 30 minutes - CRITICAL
+6. **Memory save + validation** - 15 minutes - CRITICAL
 
-**Total Critical Path**: ~5 hours wall clock
+**Total Critical Path**: ~6 hours wall clock
 
 **Parallel Opportunities**:
 - None within iterations (each iter must finish + reducer must run before the next iter starts)
@@ -293,8 +295,9 @@ Phase 1.5 (Cross-phase awareness) ───┘
 | M1 | Phase setup complete | phase prompt authored, cross-phase awareness loaded | 2026-04-06 (done) |
 | M2 | Iter 7 composite_converged | coverage >= 0.85, 11 of 12 questions answered | 2026-04-06 (done) |
 | M3 | Iter 10 cli-codex extension complete | 32 cumulative findings (K1 to K32), 12 of 12 questions answered | 2026-04-06 (done) |
-| M4 | Synthesis + memory save | research.md updated, memory artifact saved, config.status=complete | 2026-04-06 (done) |
-| M5 | Verification | `validate.sh --strict` passes, checklist all `[x]` | 2026-04-06 (done) |
+| M4 | Wave 2 completed-continue closeout | iter 20 complete, 22 of 22 questions answered, section 13.B drafted | 2026-04-08 (done) |
+| M5 | Synthesis + memory save | research.md updated, memory artifact saved, config.status=complete | 2026-04-08 (done) |
+| M6 | Verification | `validate.sh --strict` passes, checklist all `[x]` | 2026-04-08 (done) |
 <!-- /ANCHOR:milestones -->
 
 ---

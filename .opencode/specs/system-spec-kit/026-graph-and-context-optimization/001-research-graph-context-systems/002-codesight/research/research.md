@@ -1,22 +1,22 @@
 ---
 title: "Deep Research - 002-codesight: AST-based codebase analysis and AI-assistant context generation"
-description: "Synthesis of 5-iteration deep-research session investigating the Codesight repository for concrete improvements applicable to Code_Environment/Public, covering AST detector design, framework/ORM coverage, MCP tool surface, blast-radius analysis, per-tool profile generation, and benchmark methodology."
+description: "Synthesis of a 20-iteration deep-research session investigating the Codesight repository for concrete improvements applicable to Code_Environment/Public, covering AST detector design, framework/ORM coverage, MCP/tool ergonomics, projection surfaces, automation boundaries, and benchmark methodology."
 phase: 002-codesight
-session_id: dr-002-codesight-20260406T095851Z
-generation: 1
+session_id: dr-002-codesight-20260408T070203Z
+generation: 2
 status: complete
-iterations: 5
-findings: 26
-questions_answered: 12
-questions_total: 12
-stop_reason: all_questions_answered
+iterations: 20
+findings: 95
+questions_answered: 27
+questions_total: 27
+stop_reason: max_iterations_reached
 ---
 
 # Deep Research — 002-codesight
 
 > Source repository: `external/` under `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/external/`
 >
-> Engine: 3 of 5 iterations dispatched via `cli-codex --model gpt-5.4 -c model_reasoning_effort="high" --sandbox read-only --ephemeral` per user preference; iterations 4-5 fell back to native Read/Grep tools after codex stalled in `S` sleep state for 20-50 minutes (likely API throttling from concurrent codex traffic in another window). All findings remain source-confirmed with exact line citations.
+> Engine: iterations 1-10 were completed via the original cli-codex-centered deep-research workflow, including a mixed codex/native fallback path during the first continuation. Iterations 11-20 were reopened via `completed-continue` and executed directly in the active Codex session so the packet could reach 20 total iterations without circular self-delegation. All findings remain source-confirmed or clearly marked as synthesis-level.
 
 <!-- ANCHOR:executive-summary -->
 ## 1. Executive Summary
@@ -60,17 +60,17 @@ For `Code_Environment/Public`, the highest-leverage adoptions are the orchestrat
 <!-- ANCHOR:methodology -->
 ## 3. Methodology
 
-This synthesis is the result of a 5-iteration deep-research loop driven by `/spec_kit:deep-research:auto`, with externalized JSONL state and a reducer that maintains `findings-registry.json`, `deep-research-strategy.md`, and `deep-research-dashboard.md`.
+This synthesis is the result of a 20-iteration deep-research packet driven by `/spec_kit:deep-research:auto`, reopened once via `completed-continue`. State continuity lives in `deep-research-state.jsonl`, `deep-research-strategy.md`, `findings-registry.json`, and the iteration artifacts under `research/iterations/`.
 
-**Iteration engine:** Per the user's request, every iteration was dispatched via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --sandbox read-only --ephemeral` with `-o /tmp/codex-iter-NNN-output.md` to capture the agent's last message. Iterations 1, 2, and 3 returned cleanly (~3 min each); iterations 4 and 5 each had codex stall in `S` sleep state for 20-50 minutes with no output, likely because of concurrent codex API traffic from a parallel session in another window. After killing the stuck processes the orchestrator (Claude Opus 4.6) completed iterations 4 and 5 with native `Read` / `Grep` tools, preserving exact line citations and the same finding template used by codex iterations.
+**Iteration engine:** Iterations 1-10 followed the original cli-codex-driven workflow documented in sections 17-18. For the second continuation (iterations 11-20), the work was executed directly in this Codex session because self-invoking `cli-codex` from Codex would be circular. The same evidence rule still applied: source files were traced directly and every finding had to stay anchored to exact repo paths.
 
 **Reading order discipline:** `external/src/index.ts` was read before `external/README.md` per `phase-research-prompt.md` instruction 3. README claims were always cross-checked against source files and fixtures and labeled `source-confirmed`, `test-confirmed`, `README-level`, or `mixed`.
 
-**Convergence model:** The loop used the standard composite signal (rolling-average newInfoRatio, MAD noise floor, question entropy/coverage) plus three quality guards. It stopped at iteration 5 with stop reason `all_questions_answered` after coverage hit 12/12.
+**Convergence model:** The packet used the standard composite signal (rolling-average newInfoRatio, MAD noise floor, question entropy/coverage) plus quality guards, but the final stop reason for this reopened lineage is `max_iterations_reached` because the user explicitly requested 20 total iterations after the earlier 10-iteration continuation.
 
 **Evidence rule:** Every finding cites exact paths under `external/src/`, `external/eval/`, or `external/tests/` with line ranges. README-only claims are explicitly flagged. Recommendations use the three-bucket rubric (`adopt now`, `prototype later`, `reject`) required by `phase-research-prompt.md` §11.
 
-**Finding count per iteration:** 5, 4, 6, 6, 5 = 26 source-confirmed findings.
+**Finding count per wave:** iterations 1-5 = 26 findings; iterations 6-10 = 26 findings; iterations 11-20 = 43 findings. Total = 95 findings across 20 iterations.
 
 <!-- /ANCHOR:methodology -->
 
@@ -746,3 +746,127 @@ Combining iter 1-5 and iter 6-10 findings:
 - **Sandbox lessons:** read-only sandbox is too tight for agents that need to write external workspace files. For future deep-research dispatches via cli-codex, either (a) use `--sandbox workspace-write` with `--full-auto` and explicit user approval, or (b) keep the orchestrator pattern of extracting from stdout reasoning traces — both worked here.
 
 <!-- /ANCHOR:continuation-iter-6-10 -->
+
+<!-- ANCHOR:continuation-iter-11-20 -->
+## 19. Continuation — Iterations 11-20 (Automation, Projection, and Contract Depth)
+
+> User-requested second continuation: extend the packet from 10 to 20 total iterations. This reopen used the lifecycle mode `completed-continue`, snapshotted the prior synthesis to `research/synthesis-v1.md`, and then added runs 11-20 directly in the active Codex session.
+
+### 19.1 Continuation Charter
+
+The first continuation closed Q13-Q17. Iterations 11-20 targeted the remaining underexplored surfaces that shape how Codesight would actually behave if adopted inside `Code_Environment/Public`:
+
+- **Q18 (iter 11)** — `watchMode()` and `installGitHook()` automation boundaries
+- **Q19 (iter 12)** — middleware detector precision and test depth
+- **Q20 (iter 13)** — libs detector export-scraping limits
+- **Q21 (iter 14)** — config detector breadth and env-var semantics
+- **Q22 (iter 15)** — formatter contract and artifact lifecycle
+- **Q23 (iter 16)** — MCP server cache, side effects, and error semantics
+- **Q24 (iter 17)** — AI config generation write safety and profile coupling
+- **Q25 (iter 18)** — HTML report as projection layer
+- **Q26 (iter 19)** — scanner collection boundaries and project heuristics
+- **Q27 (iter 20)** — full-session adoption synthesis after 20 iterations
+
+### 19.2 New Findings (Iterations 11-20)
+
+**Iteration 11 — Watch mode and pre-commit automation** (4 findings, newInfoRatio 0.74)
+
+1. `watchMode()` is a debounce shell around full rescans. `changedFiles` only affects the console message; detector work is never narrowed. (`external/src/index.ts:253-289`)
+2. Watch-mode file policy is duplicated locally through `WATCH_EXTENSIONS` and `IGNORE_DIRS` rather than shared with `scanner.ts`. (`external/src/index.ts:238-251`)
+3. `installGitHook()` appends a real pre-commit snippet that regenerates `.codesight/` and stages it via `git add`, making the hook a repo-mutating workflow choice, not a passive helper. (`external/src/index.ts:198-232`)
+4. `--watch` still performs the normal baseline scan before entering the long-lived watcher. (`external/src/index.ts:394-400`, `external/src/index.ts:538-540`)
+
+**Iteration 12 — Middleware detector precision and test depth** (4 findings, newInfoRatio 0.71)
+
+1. Middleware discovery is filename/path driven before it is semantic. (`external/src/detectors/middleware.ts:86-109`)
+2. Classification uses regex over the filename plus the first 500 characters of content, making it a low-authority tagger. (`external/src/detectors/middleware.ts:5-78`)
+3. Inline middleware detection only understands `.use(fn(` call shapes and misses many framework-specific forms. (`external/src/detectors/middleware.ts:111-136`)
+4. The only middleware test asserts presence of two fixture files, not classification quality or false positives. (`external/tests/detectors.test.ts:414-430`)
+
+**Iteration 13 — Libs detector export-scraping limits** (4 findings, newInfoRatio 0.69)
+
+1. `detectLibs()` intentionally excludes pages, routes, UI components, stories, and tests to stay focused on helper modules. (`external/src/detectors/libs.ts:5-34`)
+2. TS/JS export extraction is regex-driven and misses `export default`, re-exports, and many barrel patterns. (`external/src/detectors/libs.ts:66-130`)
+3. Python and Go paths use language-specific visibility shortcuts rather than full module semantics. (`external/src/detectors/libs.ts:133-209`)
+4. Files without at least one function/class export are dropped even if they expose meaningful const/type-only API surfaces. (`external/src/detectors/libs.ts:54-60`)
+
+**Iteration 14 — Config detector breadth and env-var semantics** (4 findings, newInfoRatio 0.73)
+
+1. Config-file discovery is a fixed whitelist plus a root reread to compensate for the collector hiding most dotfiles. (`external/src/detectors/config.ts:6-49`)
+2. Env-var discovery spans Node/Bun/Vite/Python/Go syntax but stays regex-based and shallow on semantics such as defaults and wrapper APIs. (`external/src/detectors/config.ts:73-174`)
+3. Dependency reporting in `ConfigInfo` is JS-package-centric even though framework/ORM detection already reads Python/Go/Ruby/Elixir manifests elsewhere. (`external/src/detectors/config.ts:54-70`)
+4. Test coverage is one small happy-path env fixture. (`external/tests/detectors.test.ts:392-406`)
+
+**Iteration 15 — Formatter contract and artifact lifecycle** (5 findings, newInfoRatio 0.76)
+
+1. Conditional artifact emission is one of Codesight's strongest ideas: write only sections backed by actual data, then compose them into one combined context file. (`external/src/formatter.ts:11-58`)
+2. Stale section files are never deleted if later scans stop producing that slice. (`external/src/formatter.ts:13-58`)
+3. `CODESIGHT.md` explicitly rounds token stats to the nearest 100 to reduce diff churn and false precision. (`external/src/formatter.ts:283-290`)
+4. Notable dependency surfacing is policy-driven through a handwritten allowlist, not inferred importance. (`external/src/formatter.ts:196-203`, `external/src/formatter.ts:308-335`)
+5. The combined markdown is a pure projection layer over the already-generated sections. (`external/src/formatter.ts:262-305`)
+
+**Iteration 16 — MCP server request lifecycle and cache semantics** (5 findings, newInfoRatio 0.78)
+
+1. The cache model is one module-global `ScanResult` per resolved root. (`external/src/mcp-server.ts:41-49`, `external/src/mcp-server.ts:283-287`)
+2. Cold query tools write `.codesight/` as a side effect through `getScanResult()`. (`external/src/mcp-server.ts:45-85`)
+3. Tool responses are text-only, optimized for assistants rather than composition. (`external/src/mcp-server.ts:98-281`, `external/src/mcp-server.ts:443-448`)
+4. Handler failures return `isError: true` text payloads while unknown methods/tools use JSON-RPC protocol errors, giving clients two error shapes. (`external/src/mcp-server.ts:450-467`, `external/src/mcp-server.ts:471-526`)
+5. The transport loop is intentionally minimal but serviceable for single-threaded stdio use. (`external/src/mcp-server.ts:480-534`)
+
+**Iteration 17 — AI config generation write safety and profile coupling** (5 findings, newInfoRatio 0.81)
+
+1. Shared summary plus per-tool overlay remains one of the repo's best patterns. (`external/src/generators/ai-config.ts:14-69`, `external/src/generators/ai-config.ts:171-203`)
+2. Default multi-file generation uses inconsistent append/create behavior across tools, which invites drift. (`external/src/generators/ai-config.ts:78-155`)
+3. Profile mode overwrites several assistant files directly and default generation can create root `AGENTS.md` / `codex.md`, which is too risky for shared repos. (`external/src/generators/ai-config.ts:214-256`, `external/src/generators/ai-config.ts:145-155`)
+4. Claude guidance hardcodes `codesight_get_*` MCP tool names, coupling generated instructions to one exact runtime. (`external/src/generators/ai-config.ts:205-223`)
+5. Token-savings messaging regains false precision in assistant-file outputs. (`external/src/generators/ai-config.ts:213`)
+
+**Iteration 18 — HTML report as projection layer** (4 findings, newInfoRatio 0.58)
+
+1. The report is a pure late-bound `ScanResult` projection. (`external/src/generators/html-report.ts:9-20`)
+2. It repeats unrounded token-savings numbers, extending the honesty drift seen in profile generation. (`external/src/generators/html-report.ts:102-107`)
+3. Coverage is broad but selective: routes, schema, components, hot files, env vars, and middleware get rich sections, while libs/config detail are absent. (`external/src/generators/html-report.ts:119-200`)
+4. The reusable value is the section layout, not the inline CSS or visual style. (`external/src/generators/html-report.ts:30-87`, `external/src/generators/html-report.ts:119-200`)
+
+**Iteration 19 — Scanner collection boundaries and project heuristics** (5 findings, newInfoRatio 0.72)
+
+1. `collectFiles()` suppresses most dotfiles, which explains why config detection has to root-reread specific filenames. (`external/src/scanner.ts:11-34`, `external/src/scanner.ts:70-80`)
+2. Workspace expansion is one level deep under `pattern.replace("/*", "")`, not a general glob engine. (`external/src/scanner.ts:107-128`, `external/src/scanner.ts:380-399`)
+3. Language detection is manifest-first and quickly collapses multi-runtime repos to `"mixed"`. (`external/src/scanner.ts:341-378`)
+4. Framework/ORM rollup intentionally compresses workspace ownership into root summaries. (`external/src/scanner.ts:131-165`)
+5. The scanner's economics come from cheap filesystem heuristics and tolerant reads, not deep correctness. (`external/src/scanner.ts:56-95`)
+
+**Iteration 20 — Final adoption synthesis** (3 findings, newInfoRatio 0.46)
+
+1. The dominant transferable idea after 20 iterations is unified scan projection across markdown, MCP, and report surfaces. (`iteration-015.md`, `iteration-016.md`, `iteration-018.md`)
+2. Codesight's highest-risk behaviors cluster around honesty and write boundaries: root-file mutation, side-effectful queries, and heuristic metrics presented too confidently. (`iteration-011.md`, `iteration-016.md`, `iteration-017.md`, `iteration-018.md`)
+3. The shallow detector layers are still valuable when framed as low-authority breadcrumbs rather than semantic truth. (`iteration-012.md`, `iteration-013.md`, `iteration-014.md`, `iteration-019.md`)
+
+### 19.3 Final Adoption Matrix After 20 Iterations
+
+| Adoption candidate | Latest basis | Final recommendation |
+|--------------------|--------------|----------------------|
+| Unified scan -> multiple projections | iters 1, 15, 16, 18, 20 | adopt now |
+| AST-first + explicit confidence labels | iters 1-2, 7 | adopt now |
+| Per-tool overlay generation pattern | iters 4, 17 | adopt now, but only with namespaced outputs and no root-file clobbering |
+| Conditional artifact emission | iters 5, 15 | adopt now |
+| F1 fixture harness | iter 4 | adopt now |
+| Hot-file "change carefully" surface | iters 3, 15 | adopt now, with honest naming |
+| Watch-mode UX shell | iter 11 | prototype later, only if backed by real incremental refresh |
+| Middleware / libs / config breadcrumb layers | iters 12-14, 19 | prototype later as low-authority context only |
+| MCP text-only query surface | iters 3, 16 | prototype later, but make queries read-only and prefer structured outputs |
+| HTML report | iter 18 | reject as a priority feature; borrow only the projection idea |
+| Root assistant-file generation and pre-commit mutation | iters 11, 17 | reject |
+| Heuristic token-savings narrative | iters 8, 15, 17, 18 | reject unless replaced with honest measurement |
+
+### 19.4 Final Convergence
+
+- **Stop reason:** `max_iterations_reached`
+- **Total iterations:** 20 of 20
+- **Questions answered:** 27 / 27
+- **New findings added by iterations 11-20:** 43
+- **Total findings across the full packet:** 95
+- **Lifecycle:** generation 2 reopened via `completed-continue`, prior synthesis snapshotted to `research/synthesis-v1.md`
+- **State health goal:** reducer refresh and memory save required after this continuation because the previous 6-10 continuation left packet metadata partially stale
+
+<!-- /ANCHOR:continuation-iter-11-20 -->

@@ -41,32 +41,33 @@ contextType: "planning"
 
 ---
 
-## P0 - Hard Blockers
+### P0 - Hard Blockers
 
-- [ ] CHK-001 [P0] F-AC3 is green for both saved `trigger_phrases` and rendered `Key Topics`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1158]
+- [x] CHK-001 [P0] F-AC3 is green for both saved `trigger_phrases` and rendered `Key Topics`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1158] [EVIDENCE: `npx vitest run --config ../mcp_server/vitest.config.ts tests/trigger-phrase-sanitizer.vitest.ts tests/memory-quality-phase3-pr5.vitest.ts` exit `0`; `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json "<F-AC3-synthetic-bigrams payload>" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence` saved frontmatter without `with phases`, `session for`, or `level spec` and rendered `Key Topics` without `tiers full` / `level spec`]
 
-- [ ] CHK-002 [P0] The sanitizer confirms zero observed false positives against the iteration-15 empirical filter contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:41-44]
+- [x] CHK-002 [P0] The sanitizer confirms zero observed false positives against the iteration-15 empirical filter contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:41-44] [EVIDENCE: `npx vitest run --config ../mcp_server/vitest.config.ts tests/trigger-phrase-sanitizer.vitest.ts tests/memory-quality-phase3-pr5.vitest.ts` exit `0`; `tests/trigger-phrase-sanitizer.vitest.ts` asserts zero false positives across the tuned category corpus and preserves allowlisted short names]
 
-- [ ] CHK-003 [P0] F-AC2 is green and no authored-decision fixture emits `observation decision N` or `user decision N`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1159-1159]
+- [x] CHK-003 [P0] F-AC2 is green and no authored-decision fixture emits `observation decision N` or `user decision N`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1159-1159] [EVIDENCE: `npx vitest run tests/memory-quality-phase3-pr6.vitest.ts --config ../mcp_server/vitest.config.ts --root .` PASS; authored `generate-context.js` replay rendered `### Decision 1: Adopt strict TypeScript config` and `### Decision 2: Use Voyage-4 embeddings` with no placeholder titles]
 
-- [ ] CHK-004 [P0] The degraded-payload regression fixture is green and still renders meaningful decisions when authored arrays are absent. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1517-1517]
+- [x] CHK-004 [P0] The degraded-payload regression fixture is green and still renders meaningful decisions when authored arrays are absent. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1517-1517] [EVIDENCE: `npx vitest run tests/memory-quality-phase3-pr6.vitest.ts --config ../mcp_server/vitest.config.ts --root .` PASS; degraded `generate-context.js` replay rendered `### Decision 1: observation decision 1` and `### Decision 2: user decision 1`]
 
-- [ ] CHK-005 [P0] `validate.sh` exits 0 for `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:187-190]
+- [x] CHK-005 [P0] `validate.sh` exits 0 for `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:187-190] [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence --strict` -> exit `0`]
+  Evidence: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence --strict` now exits `0`.
 
 ---
 
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P1] `ensureMinTriggerPhrases()` is still present and functional after PR-5. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:82-82] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:214-214]
+- [x] CHK-010 [P1] `ensureMinTriggerPhrases()` is still present and functional after PR-5. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:82-82] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:214-214] [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1320` still routes the sanitized trigger set through `ensureMinTriggerPhrases(...)`; `tests/memory-quality-phase3-pr5.vitest.ts` exercised the shared save path with sparse manual-trigger fixtures and passed]
 
 - [ ] CHK-011 [P1] F-AC1 smoke checks remain green so Phase 3 did not regress the earlier truncation fix contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1514-1518]
 
 - [ ] CHK-012 [P1] F-AC7 smoke checks remain green so Phase 3 did not regress the earlier anchor-template fix contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1514-1518]
 
-- [ ] CHK-013 [P1] The D2 implementation remains precedence-only and did not become a mode-wide lexical shutdown. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1461-1463]
+- [x] CHK-013 [P1] The D2 implementation remains precedence-only and did not become a mode-wide lexical shutdown. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1461-1463] [EVIDENCE: `decision-extractor.ts` now falls back lexically only when `decisionObservations.length === 0`, `processedManualDecisions.length === 0`, and `rawKeyDecisions.length === 0`; degraded fixture still passes]
 
-- [ ] CHK-014 [P1] The D3 implementation remains mode-agnostic across shared save paths. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1467-1469]
+- [x] CHK-014 [P1] The D3 implementation remains mode-agnostic across shared save paths. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1467-1469] [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1283-1320` and `.opencode/skill/system-spec-kit/scripts/lib/semantic-signal-extractor.ts:289-320` add no JSON-only gating; the focused F-AC3 workflow replay passed through the shared save path]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -74,7 +75,7 @@ contextType: "planning"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-014A [P1] The P0 hard blockers above are backed by fixture evidence, not only manual inspection. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:230-237]
+- [x] CHK-014A [P1] The P0 hard blockers above are backed by fixture evidence, not only manual inspection. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:230-237] [EVIDENCE: `tests/memory-quality-phase3-pr5.vitest.ts` replays five F-AC3 fixtures and `tests/trigger-phrase-sanitizer.vitest.ts` covers each empirical sanitizer category; both passed under the focused Vitest run]
 
 - [ ] CHK-014B [P1] F-AC3, F-AC2, and degraded-payload verification are all exercised through `generate-context.js --json` before phase closeout. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:237-237]
 <!-- /ANCHOR:testing -->
@@ -84,7 +85,7 @@ contextType: "planning"
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-015 [P1] No new Phase 3 rule promotes untrusted junk phrases or placeholder decisions ahead of authored content. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:44-46] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1459-1469]
+- [x] CHK-015 [P1] No new Phase 3 rule promotes untrusted junk phrases or placeholder decisions ahead of authored content. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:44-46] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1459-1469] [EVIDENCE: authored raw `keyDecisions` fixture with lexical cue prompts renders authored decision titles first and suppresses `observation decision N` / `user decision N` placeholders]
 <!-- /ANCHOR:security -->
 
 ---
@@ -92,11 +93,11 @@ contextType: "planning"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-020 [P2] `lib/trigger-phrase-sanitizer.ts` includes a header comment documenting the empirical blocklist categories and their corpus basis. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39]
+- [x] CHK-020 [P2] `lib/trigger-phrase-sanitizer.ts` includes a header comment documenting the empirical blocklist categories and their corpus basis. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39] [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts:1-8` points directly to iteration-015 as the empirical authority for the frozen D3 blocklist / allowlist contract]
 
 - [ ] CHK-021 [P2] Phase 3 `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reference the same PR-5 / PR-6 owner map and handoff contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
 
-- [ ] CHK-022 [P2] Final verification evidence includes `generate-context.js --json` runs against the Phase 3 fixtures, not only unit tests. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:237-237]
+- [x] CHK-022 [P2] Final verification evidence includes `generate-context.js --json` runs against the Phase 3 fixtures, not only unit tests. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:237-237] [EVIDENCE: replayed `F-AC3-synthetic-bigrams.json` through `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json "<payload>" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence` and removed the generated memory file immediately afterward]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -104,7 +105,7 @@ contextType: "planning"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-023 [P1] Phase 3 edits are confined to PR-5 / PR-6 code and fixture files plus this child spec folder's documentation surfaces. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:179-183]
+- [x] CHK-023 [P1] Phase 3 edits are confined to PR-5 / PR-6 code and fixture files plus this child spec folder's documentation surfaces. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:179-183] [EVIDENCE: PR-5 execution touched only `scripts/lib/trigger-phrase-sanitizer.ts`, `scripts/core/workflow.ts`, `scripts/lib/semantic-signal-extractor.ts`, `tests/trigger-phrase-sanitizer.vitest.ts`, `tests/memory-quality-phase3-pr5.vitest.ts`, `tests/fixtures/memory-quality/F-AC3-*.json`, and this checklist]
 
 - [ ] CHK-024 [P1] Parent phase status is only updated after the child folder evidence is complete. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
 <!-- /ANCHOR:file-org -->
@@ -116,16 +117,16 @@ contextType: "planning"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 5 | 0 / 5 |
-| P1 Items | 8 | 0 / 8 |
-| P2 Items | 3 | 0 / 3 |
+| P0 Items | 5 | 5 / 5 |
+| P1 Items | 8 | 6 / 8 |
+| P2 Items | 3 | 2 / 3 |
 
 **Verification Date**: 2026-04-07 [SOURCE: .opencode/skill/system-spec-kit/templates/level_2/checklist.md:93-103]
 <!-- /ANCHOR:summary -->
 
 ---
 
-## Phase Handoff Readiness
+### Phase Handoff Readiness
 
 - [ ] Phase 3 satisfies the parent `003-sanitization-precedence -> 004-heuristics-refactor-guardrails` handoff row. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
 
@@ -133,6 +134,6 @@ contextType: "planning"
 
 ---
 
-## Notes
+### Notes
 
 - This checklist is Phase 3 only. D1, D4, D5, D7, PR-8, and PR-9 belong to other phases and should not be checked here. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:179-183] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/plan.md:39-73]

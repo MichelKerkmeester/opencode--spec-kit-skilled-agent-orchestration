@@ -4,7 +4,7 @@
 // Parses Claude Code transcript JSONL files to extract token usage,
 // model info, and conversation content.
 
-import { createReadStream, statSync } from 'node:fs';
+import { closeSync, createReadStream, openSync, readSync, statSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 import { hookLog } from './shared.js';
 
@@ -29,6 +29,22 @@ export interface TranscriptUsage {
   model: string | null;
 }
 
+/** Normalized assistant turn emitted from a Claude transcript replay. */
+export interface TranscriptTurn {
+  claudeSessionId: string | null;
+  transcriptPath: string;
+  lineNo: number;
+  byteStart: number;
+  byteEnd: number;
+  role: string;
+  model: string | null;
+  promptTokens: number;
+  completionTokens: number;
+  cacheCreationTokens: number;
+  cacheReadTokens: number;
+  totalTokens: number;
+}
+
 /** Usage data from Claude API responses */
 interface UsageData {
   input_tokens?: number;
@@ -47,9 +63,81 @@ interface TranscriptMessage {
 
 /** Parsed transcript line */
 interface TranscriptLine {
+  sessionId?: string;
   type?: string;
   message?: TranscriptMessage;
   [key: string]: unknown;
+}
+
+function countLinesBeforeOffset(filePath: string, startOffset: number): number {
+  if (startOffset <= 0) {
+    return 0;
+  }
+
+  const chunkSize = 64 * 1024;
+  const buffer = Buffer.alloc(chunkSize);
+  let fd: number | null = null;
+  let lineCount = 0;
+  let bytesConsumed = 0;
+
+  try {
+    fd = openSync(filePath, 'r');
+    while (bytesConsumed < startOffset) {
+      const bytesToRead = Math.min(chunkSize, startOffset - bytesConsumed);
+      const bytesRead = readSync(fd, buffer, 0, bytesToRead, bytesConsumed);
+      if (bytesRead <= 0) {
+        break;
+      }
+
+      for (let index = 0; index < bytesRead; index += 1) {
+        if (buffer[index] === 0x0a) {
+          lineCount += 1;
+        }
+      }
+
+      bytesConsumed += bytesRead;
+    }
+  } finally {
+    if (fd !== null) {
+      closeSync(fd);
+    }
+  }
+
+  return lineCount;
+}
+
+function toTranscriptTurn(
+  parsed: TranscriptLine,
+  filePath: string,
+  lineNo: number,
+  byteStart: number,
+  byteEnd: number,
+): TranscriptTurn | null {
+  const msg: TranscriptMessage = parsed.message ?? {};
+  const usage = msg.usage;
+  if (!usage) {
+    return null;
+  }
+
+  const promptTokens = usage.input_tokens ?? 0;
+  const completionTokens = usage.output_tokens ?? 0;
+  const cacheCreationTokens = usage.cache_creation_input_tokens ?? 0;
+  const cacheReadTokens = usage.cache_read_input_tokens ?? 0;
+
+  return {
+    claudeSessionId: typeof parsed.sessionId === 'string' ? parsed.sessionId : null,
+    transcriptPath: filePath,
+    lineNo,
+    byteStart,
+    byteEnd,
+    role: msg.role ?? 'assistant',
+    model: msg.model ?? null,
+    promptTokens,
+    completionTokens,
+    cacheCreationTokens,
+    cacheReadTokens,
+    totalTokens: promptTokens + completionTokens,
+  };
 }
 
 /** Parse a transcript JSONL file and extract token usage.
@@ -119,6 +207,61 @@ export async function parseTranscript(
   } catch (err: unknown) {
     hookLog('warn', 'transcript', `Failed to parse transcript: ${err instanceof Error ? err.message : String(err)}`);
     return { usage, newOffset: startOffset };
+  }
+}
+
+/** Parse a transcript JSONL file into deterministic assistant turns.
+ *  Supports incremental replay via byte offset and emits byte ranges for idempotent keys. */
+export async function parseTranscriptTurns(
+  filePath: string,
+  startOffset: number = 0,
+): Promise<{ turns: TranscriptTurn[]; newOffset: number }> {
+  const turns: TranscriptTurn[] = [];
+
+  try {
+    const { size: fileSize } = statSync(filePath);
+    if (startOffset >= fileSize) {
+      return { turns, newOffset: fileSize };
+    }
+
+    const stream = createReadStream(filePath, {
+      encoding: 'utf-8',
+      start: startOffset,
+    });
+    const lineReader = createInterface({
+      input: stream,
+      crlfDelay: Infinity,
+    });
+
+    let currentOffset = startOffset;
+    let lineNo = countLinesBeforeOffset(filePath, startOffset);
+
+    for await (const line of lineReader) {
+      lineNo += 1;
+      const byteLength = Buffer.byteLength(line + '\n', 'utf-8');
+      const byteStart = currentOffset;
+      const byteEnd = currentOffset + byteLength;
+      currentOffset = byteEnd;
+
+      if (!line.trim()) {
+        continue;
+      }
+
+      try {
+        const parsed = JSON.parse(line) as TranscriptLine;
+        const turn = toTranscriptTurn(parsed, filePath, lineNo, byteStart, byteEnd);
+        if (turn) {
+          turns.push(turn);
+        }
+      } catch {
+        // Skip malformed JSON lines
+      }
+    }
+
+    return { turns, newOffset: fileSize };
+  } catch (err: unknown) {
+    hookLog('warn', 'transcript', `Failed to parse transcript turns: ${err instanceof Error ? err.message : String(err)}`);
+    return { turns, newOffset: startOffset };
   }
 }
 

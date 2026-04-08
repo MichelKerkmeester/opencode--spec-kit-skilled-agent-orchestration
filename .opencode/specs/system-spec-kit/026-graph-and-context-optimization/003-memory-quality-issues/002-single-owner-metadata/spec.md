@@ -18,7 +18,7 @@ contextType: planning
 
 ---
 
-## EXECUTIVE SUMMARY
+**Phase Overview**
 
 Phase 2 is the P1 child packet for the two metadata defects that the parent research grouped into the same rollout band: D4 importance-tier mismatch and D7 empty git provenance. The phase exists to land PR-3 and PR-4 without pulling in the broader heuristic or refactor work reserved for later phases. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1156-1157]
 
@@ -77,7 +77,11 @@ This is **Phase 2** of the memory quality remediation packet. It is explicitly i
 ---
 
 <!-- ANCHOR:problem -->
-## 2. PROBLEM STATEMENT
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+
+Phase 2 closes the packet's metadata-trust gap by removing split ownership of `importance_tier` and by filling JSON-mode git provenance without routing those saves through the broader capture-only enrichment branch. The phase is intentionally narrow because both defects are correctness issues with bounded owner files and deterministic fixtures, not a reason to reopen later behavior-sensitive work. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1156-1157] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1537-1538]
 
 ### D4 — Importance-tier mismatch
 
@@ -91,14 +95,16 @@ D7 is not a broken git extractor; it is a gate-placement bug. The research showe
 
 The fix is intentionally tiny because the risk is not absence of data alone; it is contamination from over-reusing the capture branch. The canonical narrowing says Phase 2 must call the existing git extractor for provenance only and must not re-run the wider captured-session merge path that also brings in decisions, observations, file descriptions, trigger phrases, and summary text. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:158-161] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1538-1538]
 
-### Why these two defects belong together
+### Purpose
 
 PR-3 and PR-4 share the same rollout band because both are narrow metadata fixes with bounded owners and deterministic fixtures. The parent PR train places them before the more behavior-sensitive D2 and D3 work and before the heavier post-save reviewer upgrade, which keeps Phase 2 focused on correctness without absorbing later refactor obligations. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1156-1162] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1522-1523]
 <!-- /ANCHOR:problem -->
 
+> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/`, the implementation host for the `001-research-graph-context-systems/006-research-memory-redundancy/` research findings. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
+
 ---
 
-## 3. USER STORIES
+### User Stories
 
 ### Story 1 — Single authoritative importance tier
 
@@ -155,7 +161,7 @@ As a reviewer, I want F-AC4 and F-AC6 to run through deterministic fixtures so t
 - Parent packet file edits during this doc-population turn. Parent status updates are phase-execution tasks, not child-doc authoring work. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:187-190]
 
 <!-- ANCHOR:requirements -->
-### Phase Requirements
+## 4. REQUIREMENTS
 
 | ID | Requirement | Why It Exists |
 |----|-------------|---------------|
@@ -180,7 +186,7 @@ As a reviewer, I want F-AC4 and F-AC6 to run through deterministic fixtures so t
 ---
 
 <!-- ANCHOR:success-criteria -->
-## 5. ACCEPTANCE CRITERIA
+## 5. SUCCESS CRITERIA
 
 | ID | Requirement | Verification |
 |----|-------------|--------------|
@@ -192,7 +198,7 @@ Phase exit requires both acceptance fixtures green, the reviewer drift assertion
 
 ---
 
-## 6. NFRs
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Maintainability
 
@@ -216,7 +222,7 @@ Phase exit requires both acceptance fixtures green, the reviewer drift assertion
 
 ---
 
-## 7. EDGE CASES
+## L2: EDGE CASES
 
 ### D4 edge cases
 
@@ -238,7 +244,7 @@ Phase exit requires both acceptance fixtures green, the reviewer drift assertion
 
 ---
 
-## 8. DEPENDENCIES
+## 6. RISKS & DEPENDENCIES
 
 | Dependency | Type | Status | Why It Matters |
 |------------|------|--------|----------------|
@@ -261,7 +267,7 @@ Phase exit requires both acceptance fixtures green, the reviewer drift assertion
 
 ---
 
-## 9. PRIOR ART
+### Prior Art
 
 The canonical D4 root-cause pass established that the initial render writes one shared `IMPORTANCE_TIER`, while the later managed-frontmatter rewrite introduces the split and the reviewer still misses frontmatter-vs-metadata drift. Phase 2 inherits that exact diagnosis rather than reopening it. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-005.md:19-27]
 

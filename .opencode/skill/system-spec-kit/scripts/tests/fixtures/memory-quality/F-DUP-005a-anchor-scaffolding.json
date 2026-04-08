@@ -1,0 +1,35 @@
+{
+  "templateOverrides": {
+    "SUMMARY": "Phase 6 anchor scaffolding fixture.",
+    "OUTCOMES": [
+      {
+        "OUTCOME": "Removed legacy HTML ids while keeping comment anchors and markdown headers."
+      }
+    ],
+    "OBSERVATIONS": [
+      {
+        "ANCHOR_ID": "phase6-anchor-fixture",
+        "TYPE": "OBSERVATION",
+        "TITLE": "Comment anchors remain authoritative",
+        "NARRATIVE": "The parser and reviewer should accept comment-anchor scaffolding without any HTML ids.",
+        "HAS_FILES": false,
+        "FILES_LIST": "",
+        "HAS_FACTS": false,
+        "FACTS_LIST": "",
+        "IS_DECISION": false
+      }
+    ],
+    "HAS_OBSERVATIONS": true
+  },
+  "expectedAnchors": [
+    "continue-session",
+    "project-state-snapshot",
+    "overview",
+    "phase6-anchor-fixture",
+    "detailed-changes",
+    "decisions",
+    "session-history",
+    "recovery-hints",
+    "metadata"
+  ]
+}

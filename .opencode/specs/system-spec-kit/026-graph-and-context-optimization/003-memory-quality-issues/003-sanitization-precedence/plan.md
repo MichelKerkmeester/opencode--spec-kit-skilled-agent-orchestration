@@ -19,7 +19,7 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:summary -->
-## EXECUTIVE SUMMARY
+## 1. SUMMARY
 
 Phase 3 executes the packet's P2 band by landing PR-5 and PR-6 in sequence: first the D3 sanitization work, then the D2 precedence-only gate. The parent packet and PR train already establish that ordering, and the research explains why D3 should land before D2: D3 is a multi-owner retrieval cleanup, while D2 is semantically critical but must stay narrow enough to protect degraded fallback behavior. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:216-223] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159]
 
@@ -30,7 +30,7 @@ Verification is fixture-led. F-AC3 proves the sanitizer removes empirical junk w
 
 ---
 
-## TECHNICAL APPROACH
+### Technical Approach
 
 ### Approach Summary
 
@@ -59,7 +59,7 @@ The D2 path stays inside `extractDecisions()`. Iteration 13 ruled out a merge/cl
 ---
 
 <!-- ANCHOR:quality-gates -->
-## QUALITY GATES
+## 2. QUALITY GATES
 
 ### Definition of Ready
 
@@ -77,16 +77,16 @@ The D2 path stays inside `extractDecisions()`. Iteration 13 ruled out a merge/cl
 ---
 
 <!-- ANCHOR:architecture -->
-## ARCHITECTURE
+## 3. ARCHITECTURE
 
 The Phase 3 architecture is intentionally seam-based rather than pipeline-wide. PR-5 inserts one reusable sanitizer at the two D3 owners, while PR-6 tightens one lexical predicate inside `extractDecisions()`. No new save mode, packet-wide refactor, or reviewer contract is introduced here. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/plan.md:57-73]
 <!-- /ANCHOR:architecture -->
 
 ---
 
-## IMPLEMENTATION STRATEGY
+## 4. IMPLEMENTATION PHASES
 
-### PR-5 - Trigger-phrase sanitization
+### Phase 1: PR-5 trigger-phrase sanitization
 
 PR-5 creates a new `lib/trigger-phrase-sanitizer.ts` and centralizes the empirical filter rules validated in iteration 15. The module should own the path-fragment matcher, standalone stopword blocker, suspicious-prefix matcher, synthetic-bigram blocker, and allowlist handling for legitimate short names. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1158] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39]
 
@@ -96,7 +96,7 @@ The semantic-topic change should apply the same narrow contract to topic candida
 
 The required safety property for PR-5 is zero observed false positives against the tuned corpus categories. The plan should therefore keep the allowlist small and explicit and should not expand beyond the observed short-name cases or the empirically justified regex classes. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:41-55] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1467-1468]
 
-### PR-6 - Decision precedence-only gate
+### Phase 2: PR-6 decision precedence-only gate
 
 PR-6 stays inside `decision-extractor.ts` and treats the lexical predicate as the patch boundary. Iteration 13 makes the branch explicit: placeholders are only emitted when `decisionObservations.length === 0 && processedManualDecisions.length === 0`. The Phase 3 change hardens that branch so authoritative raw decisions can block lexical fallback even when normalization missed. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-013.md:44-73] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1159-1159]
 
@@ -108,7 +108,7 @@ The required safety property for PR-6 is degraded-payload preservation. The phas
 
 ---
 
-## FILE:LINE CHANGE LIST
+### File:Line Change List
 
 | File / Line Range | Change | Why Here | Source |
 |-------------------|--------|----------|--------|
@@ -123,7 +123,7 @@ The required safety property for PR-6 is degraded-payload preservation. The phas
 ---
 
 <!-- ANCHOR:phases -->
-## ORDER OF OPERATIONS
+### Order of Operations
 
 1. Freeze the PR-5 empirical contract by translating iteration-15 blocklist classes and allowlist values into a module-level spec and header comment. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39]
 
@@ -144,7 +144,7 @@ The required safety property for PR-6 is degraded-payload preservation. The phas
 
 ---
 
-## RISKS & MITIGATIONS
+### Risks & Mitigations
 
 | Risk | Severity | Mitigation | Source |
 |------|----------|------------|--------|
@@ -157,7 +157,7 @@ The required safety property for PR-6 is degraded-payload preservation. The phas
 ---
 
 <!-- ANCHOR:testing -->
-## VERIFICATION PLAN
+## 5. TESTING STRATEGY
 
 ### Unit and helper tests
 
@@ -182,7 +182,7 @@ The required safety property for PR-6 is degraded-payload preservation. The phas
 ---
 
 <!-- ANCHOR:dependencies -->
-## DEPENDENCIES
+## 6. DEPENDENCIES
 
 | Dependency | Status | Why It Matters | Source |
 |------------|--------|----------------|--------|
@@ -195,7 +195,7 @@ The required safety property for PR-6 is degraded-payload preservation. The phas
 ---
 
 <!-- ANCHOR:rollback -->
-## ROLLBACK PLAN
+## 7. ROLLBACK PLAN
 
 - If PR-5 introduces false positives or broken topic output, revert the sanitizer integration seams while keeping the research-backed blocklist in the packet docs for rework. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:41-55]
 
@@ -204,7 +204,7 @@ The required safety property for PR-6 is degraded-payload preservation. The phas
 
 ---
 
-## ROLLOUT
+### Rollout
 
 ### Landing sequence
 

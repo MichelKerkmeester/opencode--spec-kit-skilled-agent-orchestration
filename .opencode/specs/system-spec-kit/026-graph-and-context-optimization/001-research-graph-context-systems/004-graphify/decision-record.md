@@ -122,7 +122,6 @@ The phase needed an engine that could read dense Python source files (extract.py
 
 ---
 
-<!-- ANCHOR:adr-002 -->
 ### ADR-002: Switch engine to claude-opus-direct after iter 2 codex starvation
 
 ### Metadata
@@ -135,7 +134,6 @@ The phase needed an engine that could read dense Python source files (extract.py
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 Iter 1 (cli-codex gpt-5.4 high) finished in ~4 minutes. Iter 2 dispatched the same way starved on parallel-job API contention: ~20 minutes wall clock with 0 CPU time. The user said "do faster", indicating that wall clock was the dominant constraint.
@@ -145,21 +143,17 @@ Iter 1 (cli-codex gpt-5.4 high) finished in ~4 minutes. Iter 2 dispatched the sa
 - Cannot block the loop indefinitely waiting on cli-codex
 - Cannot abandon evidence-grounded reads; whatever replaces codex must still produce file:line citations
 - Engine switches must be auditable
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Switch iterations 2 through 7 from cli-codex to claude-opus-direct (the orchestrator's own context) and log the switch as an `engine_switch` event in `deep-research-state.jsonl`.
 
 **How it works**: The orchestrator reads the cited files directly via the Read tool, performs the same evidence-grounding discipline as codex would have, and writes the iteration file. The reducer treats both engines identically.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -169,11 +163,9 @@ Iter 1 (cli-codex gpt-5.4 high) finished in ~4 minutes. Iter 2 dispatched the sa
 | Retry codex with reduced scope | Might recover | Wastes another iteration of wall clock | 4/10 |
 
 **Why this one**: claude-opus-direct unblocks the loop immediately and produces equally strong findings (iters 2 to 7 each delivered 10 to 13 findings with file:line citations).
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -190,11 +182,9 @@ Iter 1 (cli-codex gpt-5.4 high) finished in ~4 minutes. Iter 2 dispatched the sa
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | Orchestrator context drift across iterations | M | Each iteration scoped to a single focus track; reducer-managed strategy keeps focus disciplined |
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -206,11 +196,9 @@ Iter 1 (cli-codex gpt-5.4 high) finished in ~4 minutes. Iter 2 dispatched the sa
 | 5 | **Open Horizons?** | PASS | Future loops can re-attempt cli-codex when API contention clears |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -219,11 +207,8 @@ Iter 1 (cli-codex gpt-5.4 high) finished in ~4 minutes. Iter 2 dispatched the sa
 - `engine_switch` event logged at JSONL line 4 with `from: codex-cli`, `to: claude-opus-direct`, reason
 
 **How to roll back**: Future iterations can switch back to cli-codex by setting `--model gpt-5.4 -c model_reasoning_effort=high` in the dispatch command. Iters 8 to 10 demonstrated the switch-back is clean.
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 ---
 
-<!-- ANCHOR:adr-003 -->
 ### ADR-003: Override iter 7 composite_converged stop with 3 forced cli-codex iterations
 
 ### Metadata
@@ -236,7 +221,6 @@ Iter 1 (cli-codex gpt-5.4 high) finished in ~4 minutes. Iter 2 dispatched the sa
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
 After iter 7, the loop logged a `convergence_check` event with composite_converged decision, coverage 91.7% (11 of 12 questions answered), and stop reason `composite_converged_coverage_exceeded_threshold`. Q12 (Adopt/Adapt/Reject grounding) was the only unanswered question and was scheduled to be the synthesis output. Three high-value modules were still under-read: full `export.py` (954 lines, only 240-275 read in iter 3), `wiki.py` (never read), `serve.py` (never read), and the per-language extractor matrix in `extract.py:301-2206` was still only sampled. The user explicitly requested "3 more iterations of spec_kit:deep-research with gpt 5.4 high agents in fast mode through cli-codex".
@@ -247,21 +231,17 @@ After iter 7, the loop logged a `convergence_check` event with composite_converg
 - Must preserve audit lineage
 - Each new iteration must still respect the 12-tool-call budget
 - Final coverage must reach 1.0 to declare full closure
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 **We chose**: Override the composite_converged stop, log a `continuation` event in JSONL, dispatch 3 forced iterations (8, 9, 10) via cli-codex gpt-5.4 high in fast `exec` mode, and append findings as a new section 13.A in research.md rather than rewriting K1 to K12.
 
 **How it works**: The orchestrator wrote `continuation` event at JSONL line 12 with reason "user explicit directive to do 3 more iterations (8-10) overriding composite_converged stop at iter 7", then dispatched iter 8 (export/wiki/serve), iter 9 (build orchestration + cross-corpus), iter 10 (per-language matrix + final Q12 grounding). Each iteration used the same cli-codex command pattern established in ADR-001.
-<!-- /ANCHOR:adr-003-decision -->
 
 ---
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -272,11 +252,9 @@ After iter 7, the loop logged a `convergence_check` event with composite_converg
 | Override and dispatch only 1 iteration covering all 3 gaps | Faster | Tool budget would blow past 12 calls; quality would suffer | 4/10 |
 
 **Why this one**: The user directive was explicit about engine, count, and mode. Three iterations let each one focus on a coherent area (export/serve, build orchestration, per-language matrix) without blowing the per-iteration budget.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -296,12 +274,10 @@ After iter 7, the loop logged a `convergence_check` event with composite_converg
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | Iter 8 to 10 findings duplicate K1 to K12 | M | Each iter prompt explicitly listed prior coverage and the "do not re-derive" rule |
-| Section 13.A append breaks cross-references in section 12 | L | Section 13.A.4 documents the new rows that should be added to section 12 |
-<!-- /ANCHOR:adr-003-consequences -->
+| Section 13.A append breaks cross-references in section 12 | L | Keep section 13.A as the evidence ledger, then inline any validated follow-on rows into section 12 during packet refinement |
 
 ---
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -313,11 +289,9 @@ After iter 7, the loop logged a `convergence_check` event with composite_converg
 | 5 | **Open Horizons?** | PASS | Pattern of "user-driven continuation past composite_converged" is reusable |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -327,14 +301,11 @@ After iter 7, the loop logged a `convergence_check` event with composite_converg
 - 3 new iteration records in JSONL (lines 13, 14, 15)
 - New `convergence_check` event in JSONL at line 16 with stop reason `max_iterations_reached_and_all_questions_answered`
 - New section 13.A in research.md with K13 to K32 findings
-- 4 new section 12 rows documented in section 13.A.4 (A5, A6, D6, D7)
+- 4 new section 12 rows originated from section 13.A evidence and were later inlined as A5, A6, D6, and D7 during packet refinement
 
-**How to roll back**: Archive `iteration-{008..010}.md` under `research/archive/iterations/`, append a `correction` event to JSONL, restore research.md from prior generation. Section 12 rows A5/A6/D6/D7 would need to be removed if they were inlined.
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
+**How to roll back**: Archive `iteration-{008..010}.md` under `research/archive/iterations/`, append a `correction` event to JSONL, restore research.md from prior generation, and remove any section 12 rows whose evidence depends exclusively on section 13.A.
 ---
 
-<!-- ANCHOR:adr-004 -->
 ### ADR-004: Append cli-codex findings as section 13.A rather than rewriting K1 to K12
 
 ### Metadata
@@ -347,7 +318,6 @@ After iter 7, the loop logged a `convergence_check` event with composite_converg
 
 ---
 
-<!-- ANCHOR:adr-004-context -->
 ### Context
 
 Iters 8 to 10 produced 32 cumulative findings (K13 to K32 are the new ones). The synthesis had two options: rewrite K1 to K12 to absorb the new evidence, OR append a new section that preserves K1 to K12 and adds the new findings as K13 to K32. K1 to K12 were already cross-referenced from section 12 (Adopt/Adapt/Reject), section 13 (key findings list), and section 16 (convergence report). Rewriting them risked invalidating those cross-references.
@@ -357,21 +327,17 @@ Iters 8 to 10 produced 32 cumulative findings (K13 to K32 are the new ones). The
 - Preserve audit lineage so anyone can see which findings came from which iteration generation
 - Do not break existing cross-references in research.md
 - Keep research.md scannable - append should be a clean new section, not interleaved edits
-<!-- /ANCHOR:adr-004-context -->
 
 ---
 
-<!-- ANCHOR:adr-004-decision -->
 ### Decision
 
-**We chose**: Append iters 8 to 10 findings as a new section 13.A "Iterations 8-10 Findings (cli-codex gpt-5.4 high additions)" with sub-sections 13.A.1 (export/serve), 13.A.2 (build orchestration), 13.A.3 (per-language), and 13.A.4 (extension notes for section 12 with the 4 proposed new rows).
+**We chose**: Append iters 8 to 10 findings as a new section 13.A "Iterations 8-10 Findings (cli-codex gpt-5.4 high additions)" with sub-sections 13.A.1 (export/serve), 13.A.2 (build orchestration), 13.A.3 (per-language), and 13.A.4 (lineage notes for how those findings strengthen section 12).
 
-**How it works**: The synthesis edit added the section after the existing section 13 content but before section 14. Existing K1 to K12 references stay valid. Section 13.A.4 documents what would change in section 12 if those rows were inlined, so the recommendation set is complete even though section 12 itself was not rewritten.
-<!-- /ANCHOR:adr-004-decision -->
+**How it works**: The synthesis edit added the section after the existing section 13 content but before section 14. Existing K1 to K12 references stay valid. A later packet-refinement pass can safely inline any mature recommendation rows into section 12 while preserving section 13.A as the audit trail.
 
 ---
 
-<!-- ANCHOR:adr-004-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -382,11 +348,9 @@ Iters 8 to 10 produced 32 cumulative findings (K13 to K32 are the new ones). The
 | Add an appendix file (research-extension.md) | Cleanest separation | Splits the canonical synthesis across files | 5/10 |
 
 **Why this one**: Audit lineage is the most important property of a research synthesis. A future reader can run `git blame` on research.md and see exactly which findings came from which iteration generation.
-<!-- /ANCHOR:adr-004-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-004-consequences -->
 ### Consequences
 
 **What improves**:
@@ -397,18 +361,16 @@ Iters 8 to 10 produced 32 cumulative findings (K13 to K32 are the new ones). The
 
 **What it costs**:
 
-- Section 12 readers need to also read section 13.A.4 to see the full recommendation set. Mitigation: documented as known limitation in implementation-summary.md.
+- Section 13.A and section 12 must stay synchronized if any extension findings mature into canonical recommendation rows. Mitigation: later audit pass inlines promoted rows while preserving section 13.A for lineage.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Future readers miss section 13.A.4 | L | Cross-reference in section 12 introduction; CHANGELOG mentions the cli-codex extension |
-<!-- /ANCHOR:adr-004-consequences -->
+| Future readers miss the section 13.A evidence lineage behind promoted rows | L | Keep section 13.A.4 as historical notes even after section 12 is inlined |
 
 ---
 
-<!-- ANCHOR:adr-004-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -420,11 +382,9 @@ Iters 8 to 10 produced 32 cumulative findings (K13 to K32 are the new ones). The
 | 5 | **Open Horizons?** | PASS | Pattern reusable for any future continuation past composite_converged |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-004-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-004-impl -->
 ### Implementation
 
 **What changes**:
@@ -434,8 +394,6 @@ Iters 8 to 10 produced 32 cumulative findings (K13 to K32 are the new ones). The
 - Updated section 16 convergence report with both initial and final stop reasons
 
 **How to roll back**: Delete section 13.A from research.md and revert section 16 + CHANGELOG. K1 to K12 stay intact.
-<!-- /ANCHOR:adr-004-impl -->
-<!-- /ANCHOR:adr-004 -->
 
 ---
 

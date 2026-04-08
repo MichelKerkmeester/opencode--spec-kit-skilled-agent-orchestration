@@ -1,6 +1,6 @@
 ---
 title: "Tasks: 002-codesight Research Phase"
-description: "Task tracking for the 10-iteration deep-research loop on the codesight external Node.js/TypeScript skill plus original-charter and continuation-charter synthesis, memory save, and verification."
+description: "Task tracking for the 20-iteration deep-research packet on the codesight external Node.js/TypeScript skill, including completed-continue closeout, memory audit, and phase-doc reconciliation."
 trigger_phrases:
   - "002-codesight research tasks"
   - "002-codesight task list"
@@ -58,7 +58,7 @@ contextType: tasks
 - [x] T107 Compile `research/research.md` synthesis (sections 1-17) from iteration files
 - [x] T108 Save memory artifact (original-charter session) via `generate-context.js`
 
-### Continuation Charter (iters 6-10, Q13-Q17 — User Request)
+### First Continuation Charter (iters 6-10, Q13-Q17 — User Request)
 
 - [x] T201 Read prior iterations 4-5 + research.md state to understand coverage
 - [x] T202 Plan 5 unexplored modules for continuation charter Q13-Q17 (contracts.ts, extract-python.ts/extract-go.ts, tokens.ts, scanner.ts/config.ts, components.ts/telemetry.ts)
@@ -74,6 +74,23 @@ contextType: tasks
 - [x] T212 Append continuation_start, 5 iteration records, and continuation_synthesis_complete events to `deep-research-state.jsonl`
 - [x] T213 Run reducer to refresh dashboard (Status: COMPLETE, Iteration: 10 of 10, iterationsCompleted: 10)
 
+### Completed-Continue Extension (iters 11-20, Q18-Q27 — User Request)
+
+- [x] T214 Reopen the packet in `completed-continue` mode and snapshot the prior synthesis to `research/synthesis-v1.md`
+- [x] T215 Append lifecycle records (`completed_continue`, `segment_start`) to `research/deep-research-state.jsonl`
+- [x] T216 Iteration 11: watch mode and pre-commit automation (Q18) — direct Codex → 4 findings, newInfoRatio 0.74
+- [x] T217 Iteration 12: middleware detector precision and test depth (Q19) — direct Codex → 4 findings, newInfoRatio 0.71
+- [x] T218 Iteration 13: libs detector export-scraping limits (Q20) — direct Codex → 4 findings, newInfoRatio 0.69
+- [x] T219 Iteration 14: config detector breadth and env-var semantics (Q21) — direct Codex → 4 findings, newInfoRatio 0.73
+- [x] T220 Iteration 15: formatter contract and artifact lifecycle (Q22) — direct Codex → 5 findings, newInfoRatio 0.76
+- [x] T221 Iteration 16: MCP server request lifecycle and cache semantics (Q23) — direct Codex → 5 findings, newInfoRatio 0.78
+- [x] T222 Iteration 17: AI config generation write safety and profile coupling (Q24) — direct Codex → 5 findings, newInfoRatio 0.81
+- [x] T223 Iteration 18: HTML report as projection layer (Q25) — direct Codex → 4 findings, newInfoRatio 0.58
+- [x] T224 Iteration 19: scanner collection boundaries and project heuristics (Q26) — direct Codex → 5 findings, newInfoRatio 0.72
+- [x] T225 Iteration 20: final adoption synthesis after 20 total iterations (Q27) — direct Codex → 3 findings, newInfoRatio 0.46
+- [x] T226 Extend `research/research.md` to the 20-iteration closeout and preserve the 22-row decision matrix
+- [x] T227 Re-run reducer to refresh dashboard/registry/strategy to `iterationsCompleted: 20`
+
 ---
 
 <!-- /ANCHOR:phase-2 -->
@@ -87,7 +104,10 @@ contextType: tasks
 - [x] T304 Verify importance_tier is "critical" in saved memory file (line 30 + line 595)
 - [x] T305 Create spec.md, plan.md, tasks.md, implementation-summary.md to satisfy validator Level 3 requirements
 - [x] T306 Re-run reducer after manual strategy edits to keep machine-owned sections in sync
-- [x] T307 Run `validate.sh --strict` and confirm RESULT: PASSED
+- [x] T307 Run `validate.sh --strict` and confirm 0 errors; document the remaining warning-only ADR-anchor bucket
+- [x] T308 Audit nested memory files for quality/usefulness/duplication and keep them unchanged where memory-save rules make direct edits unsafe
+- [x] T309 Reconcile spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, and decision-record.md to the 20-iteration state
+- [x] T310 Refresh `description.json` metadata to match the final packet summary
 
 ---
 
@@ -96,13 +116,13 @@ contextType: tasks
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All 17 questions (Q1-Q12 + Q13-Q17) answered with source-cited evidence
-- [x] 52 source-confirmed findings across 10 iterations (26 from original charter + 26 from continuation charter)
-- [x] 22-row Adopt/Adapt/Reject decision matrix in `research/research.md` §18.3
+- [x] All 27 questions (Q1-Q27) answered with source-cited evidence
+- [x] 95 source-confirmed findings across 20 iterations (26 + 26 + 43)
+- [x] 22-row Adopt/Adapt/Reject decision matrix in `research/research.md` §18.3, reconciled by the final synthesis
 - [x] Cross-phase boundaries with 003-contextador and 004-graphify explicitly bounded
-- [x] Memory artifact saved with `critical` importance tier and clean trigger phrases
+- [x] Memory chronology preserved under `memory/`; newest saved memory quality caveat documented without unsafe manual rewrite
 - [x] Spec compliance: spec.md, plan.md, tasks.md, implementation-summary.md present and consistent
-- [x] Validator passes with `--strict` flag
+- [x] Validator has 0 errors; only the known ADR-anchor warning bucket remains in strict mode
 - [x] No edits made under `external/`
 
 ---
@@ -112,12 +132,12 @@ contextType: tasks
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **spec.md** — Feature specification with REQ-001 through REQ-012 mapped to tasks T101-T209
+- **spec.md** — Feature specification with REQ-001 through REQ-014 mapped across tasks T101-T227
 - **plan.md** — Implementation plan with the 4-phase architecture and rollback steps
-- **implementation-summary.md** — Outcome summary with the 10-row iteration log and 22-row decision matrix highlights
+- **implementation-summary.md** — Outcome summary with the 20-iteration grouped log, memory audit note, and decision matrix highlights
 - **research/research.md** — Canonical synthesis (18 sections, 800+ lines)
-- **research/iterations/iteration-{001..010}.md** — Per-iteration findings
-- **memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md** — Saved memory artifact (memory ID #1835)
+- **research/iterations/iteration-{001..020}.md** — Per-iteration findings
+- **memory/** — Three chronological saved-memory artifacts; the latest one is retained with a documented topical-mismatch quality caveat
 
 
 <!-- /ANCHOR:cross-refs -->

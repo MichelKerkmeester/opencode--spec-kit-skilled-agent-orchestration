@@ -52,7 +52,6 @@ interface PipelineMemoryOverrides {
   triggerPhrasesFormat?: 'list' | 'string' | 'empty_array';
   insertMustache?: boolean;
   missingBlankLineAfterFrontmatter?: boolean;
-  removeHtmlId?: string;
   fileTableEntries?: Array<{ path: string; description: string }>;
   observations?: Array<{ title: string; narrative: string }>;
   decisions?: string[];
@@ -73,7 +72,6 @@ function buildValidPipelineMemory(overrides: PipelineMemoryOverrides = {}): stri
     triggerPhrasesFormat = 'list',
     insertMustache = false,
     missingBlankLineAfterFrontmatter = false,
-    removeHtmlId,
     fileTableEntries = [
       { path: 'mcp_server/handlers/memory-save.ts', description: 'Coordinates atomic save, sufficiency enforcement, duplicate detection, and post-mutation feedback for the memory save path.' },
       { path: 'mcp_server/lib/validation/save-quality-gate.ts', description: 'Three-layer quality gate that validates structure, content density, and semantic deduplication before persisting.' },
@@ -136,7 +134,6 @@ function buildValidPipelineMemory(overrides: PipelineMemoryOverrides = {}): stri
   // CONTINUE SESSION
   mandatorySections['continue-session'] = `
 ${removeAnchors.includes('continue-session') ? '' : '<!-- ANCHOR:continue-session -->'}
-${removeHtmlId === 'continue-session' ? '' : '<a id="continue-session"></a>'}
 
 ## CONTINUE SESSION
 
@@ -145,85 +142,49 @@ Continue validating the memory save pipeline enforcement test suite to ensure al
 ${removeAnchors.includes('continue-session') ? '' : '<!-- /ANCHOR:continue-session -->'}
 `;
 
-  // PROJECT STATE SNAPSHOT
-  mandatorySections['project-state-snapshot'] = `
-${removeAnchors.includes('project-state-snapshot') ? '' : '<!-- ANCHOR:project-state-snapshot -->'}
-${removeHtmlId === 'project-state-snapshot' ? '' : '<a id="project-state-snapshot"></a>'}
+  // CANONICAL SOURCES (new compact format)
+  mandatorySections['canonical-docs'] = `
+${removeAnchors.includes('canonical-docs') ? '' : '<!-- ANCHOR:canonical-docs -->'}
 
-## PROJECT STATE SNAPSHOT
+## CANONICAL SOURCES
 
-The handler is saving into a sandbox spec folder. This fixture intentionally captures concrete file roles, operator-visible save outcomes, and enough semantic detail to survive the shared insufficiency contract before duplicate detection or success-response shaping occurs.
+- \`decision-record.md\` — Pipeline architecture and enforcement strategy decisions
+- \`implementation-summary.md\` — Build story and gate integration
 
-${removeAnchors.includes('project-state-snapshot') ? '' : '<!-- /ANCHOR:project-state-snapshot -->'}
+${removeAnchors.includes('canonical-docs') ? '' : '<!-- /ANCHOR:canonical-docs -->'}
 `;
 
   // OVERVIEW
   mandatorySections['overview'] = `
-${removeAnchors.includes('summary') ? '' : '<!-- ANCHOR:summary -->'}
-${removeHtmlId === 'overview' ? '' : '<a id="overview"></a>'}
+${removeAnchors.includes('overview') ? '' : '<!-- ANCHOR:overview -->'}
 
 ## OVERVIEW
 
 This pipeline enforcement fixture validates that every gate in the memory save pipeline correctly rejects malformed content. The gates include parser validation, quality loop scoring, sufficiency evaluation, template contract validation, and the save quality gate.
 
-${removeAnchors.includes('summary') ? '' : '<!-- /ANCHOR:summary -->'}
+${removeAnchors.includes('overview') ? '' : '<!-- /ANCHOR:overview -->'}
 `;
 
-  // DETAILED CHANGES with file table and observations
-  const fileTableRows = fileTableEntries.map(f =>
-    `| \`${f.path}\` | ${f.description} |`
-  ).join('\n');
+  // DISTINGUISHING EVIDENCE (new compact format)
+  mandatorySections['evidence'] = `
+${removeAnchors.includes('evidence') ? '' : '<!-- ANCHOR:evidence -->'}
 
-  const observationBlocks = observations.map(obs =>
-    `### ${obs.title}\n\n${obs.narrative}`
-  ).join('\n\n');
+## DISTINGUISHING EVIDENCE
 
-  mandatorySections['detailed-changes'] = `
-${removeAnchors.includes('detailed-changes') ? '' : '<!-- ANCHOR:detailed-changes -->'}
-${removeHtmlId === 'detailed-changes' ? '' : '<a id="detailed-changes"></a>'}
+- Validated all six enforcement gates in the save pipeline
+- Confirmed atomic save rollback on rejection
+- Tested malformed frontmatter, insufficient content, and template violations
 
-## DETAILED CHANGES
-
-### Key Files
-
-| File | Role |
-|------|------|
-${fileTableRows}
-
-${observationBlocks}
-
-${removeAnchors.includes('detailed-changes') ? '' : '<!-- /ANCHOR:detailed-changes -->'}
+${removeAnchors.includes('evidence') ? '' : '<!-- /ANCHOR:evidence -->'}
 `;
 
-  // DECISIONS
-  const decisionItems = decisions.map(d => `- ${d}`).join('\n');
-  mandatorySections['decisions'] = `
-${removeAnchors.includes('decisions') ? '' : '<!-- ANCHOR:decisions -->'}
-${removeHtmlId === 'decisions' ? '' : '<a id="decisions"></a>'}
-
-## DECISIONS
-
-${decisionItems}
-
-${removeAnchors.includes('decisions') ? '' : '<!-- /ANCHOR:decisions -->'}
-`;
-
-  // CONVERSATION
-  mandatorySections['conversation'] = `
-${removeAnchors.includes('session-history') ? '' : '<!-- ANCHOR:session-history -->'}
-${removeHtmlId === 'conversation' ? '' : '<a id="conversation"></a>'}
-
-## CONVERSATION
-
-The operator requested comprehensive enforcement coverage for the full memory save pipeline. The handler parsed this memory, ran all gate enforcement checks, and then returned the resulting status for assertion.
-
-${removeAnchors.includes('session-history') ? '' : '<!-- /ANCHOR:session-history -->'}
-`;
+  // DETAILED CHANGES, DECISIONS, CONVERSATION are no longer mandatory in compact format
+  // They can be omitted or included as optional conditional sections
+  // For testing purposes, we'll omit them to validate the compact contract
 
   // RECOVERY HINTS
   mandatorySections['recovery-hints'] = `
 ${removeAnchors.includes('recovery-hints') ? '' : '<!-- ANCHOR:recovery-hints -->'}
-${removeHtmlId === 'recovery-hints' ? '' : '<a id="recovery-hints"></a>'}
 
 ## RECOVERY HINTS
 
@@ -236,7 +197,6 @@ ${removeAnchors.includes('recovery-hints') ? '' : '<!-- /ANCHOR:recovery-hints -
   // MEMORY METADATA
   mandatorySections['memory-metadata'] = `
 ${removeAnchors.includes('metadata') ? '' : '<!-- ANCHOR:metadata -->'}
-${removeHtmlId === 'memory-metadata' ? '' : '<a id="memory-metadata"></a>'}
 
 ## MEMORY METADATA
 
@@ -264,11 +224,9 @@ ${removeAnchors.includes('metadata') ? '' : '<!-- /ANCHOR:metadata -->'}
 ## SESSION SUMMARY
 ${mandatorySections['session-summary'] ?? ''}
 ${mandatorySections['continue-session'] ?? ''}
-${mandatorySections['project-state-snapshot'] ?? ''}
+${mandatorySections['canonical-docs'] ?? ''}
 ${mandatorySections['overview'] ?? ''}
-${mandatorySections['detailed-changes'] ?? ''}
-${mandatorySections['decisions'] ?? ''}
-${mandatorySections['conversation'] ?? ''}
+${mandatorySections['evidence'] ?? ''}
 ${mandatorySections['recovery-hints'] ?? ''}
 ${mandatorySections['memory-metadata'] ?? ''}
 ${contentSuffix}`;
@@ -763,12 +721,12 @@ describe('Cat 4: Template Contract', () => {
     expect(result.violations.some(v => v.code === 'missing_anchor_comment')).toBe(true);
   });
 
-  it('detects missing HTML id for a section', () => {
-    const content = buildValidPipelineMemory({ removeHtmlId: 'continue-session' });
+  it('detects missing OVERVIEW anchor comment', () => {
+    const content = buildValidPipelineMemory({ removeAnchors: ['overview'] });
     const result = validateMemoryTemplateContract(content);
 
     expect(result.valid).toBe(false);
-    expect(result.violations.some(v => v.code === 'missing_html_id')).toBe(true);
+    expect(result.violations.some(v => v.code === 'missing_anchor_comment' && v.sectionId === 'overview')).toBe(true);
   });
 
   it('detects raw mustache {{...}} in rendered content', () => {

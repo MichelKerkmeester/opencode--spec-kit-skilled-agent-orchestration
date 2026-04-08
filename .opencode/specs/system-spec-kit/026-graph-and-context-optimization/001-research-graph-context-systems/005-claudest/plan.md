@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 005-claudest Research Phase"
-description: "12-iteration deep-research loop dispatched against the Claudest external Claude Code plugin checkout via cli-codex gpt-5.4 high engine, externalized JSONL state, reducer-managed registry, and post-synthesis memory save with packet-ready briefs."
+description: "20-iteration deep-research loop dispatched against the Claudest external Claude Code plugin checkout across a 12-iteration cli-codex baseline and an 8-iteration completed-continue extension, with reducer-managed state, refreshed synthesis, and packet-ready follow-on contracts."
 trigger_phrases:
   - "005-claudest research plan"
   - "005-claudest execution plan"
@@ -29,7 +29,7 @@ contextType: plan
 
 ### Overview
 
-Run a 12-iteration deep-research loop against `external/` to translate Claudest's claude-memory plugin (v3 SQLite schema with branch-aware BM25/FTS5 recall, Stop/SessionStart hook chain with cached `context_summary` fast path, `extract-learnings` consolidation with `memory-auditor`/`signal-discoverer` split) and the `get-token-insights` skill into Public-actionable adopt/prototype/reject recommendations and packet-ready briefs. Iterations 1-7 dispatched cleanly through `cli-codex gpt-5.4 high --full-auto --sandbox workspace-write` and converged at iter 7 (composite_converged 0.84, 9 of 10 questions answered). The user then requested 5 more iterations (8-12) to deepen the synthesis: iter 8 produced the explicit Q10 matrix (closing the last open question), iter 9 mapped the matrix onto existing Public packet dependencies for sequencing, iter 10 stress-tested the sequence by defining smallest-safe-v1 slices per adopt-now lane, iter 11 produced packet-ready briefs for the FTS capability cascade and normalized analytics tables, and iter 12 closed the last two implementation uncertainties by reading Public's actual `mcp_server/lib/search/sqlite-fts.ts` and `mcp_server/hooks/claude/session-stop.ts`. Externalized state in `research/deep-research-{config,state,strategy,dashboard,findings-registry}` survives crash and resume; reducer runs after every iteration to keep registry, dashboard, and machine-owned strategy sections in sync.
+Run a 20-iteration deep-research loop against `external/` to translate Claudest's claude-memory plugin (v3 SQLite schema with branch-aware BM25/FTS5 recall, Stop/SessionStart hook chain with cached `context_summary` fast path, `extract-learnings` consolidation with `memory-auditor`/`signal-discoverer` split) and the `get-token-insights` skill into Public-actionable adopt/prototype/reject recommendations, packet-ready briefs, and implementation-ready follow-on contracts. Iterations 1-12 dispatched through `cli-codex gpt-5.4 high --full-auto --sandbox workspace-write`; iteration 7 converged the original charter, then iterations 8-12 deepened Q10 into matrix, sequencing, v1 slicing, packet briefs, and uncertainty closeout. The packet was then reopened in `completed-continue` mode for iterations 13-20, which converted the first continuation into concrete implementation seams: FTS capability helper scope, forced-degrade tests, Stop-hook metadata patch, normalized analytics replay schema, SessionStart fast-path placement, verifier/discoverer split mapping, portable token-observability contracts, and a dependency-ordered roadmap. Externalized state in `research/deep-research-{config,state,strategy,dashboard,findings-registry}` survives crash and resume; reducer runs after every iteration to keep registry, dashboard, and machine-owned strategy sections in sync.
 
 ---
 
@@ -50,7 +50,7 @@ Run a 12-iteration deep-research loop against `external/` to translate Claudest'
 
 - [x] All P0 requirements (REQ-001 through REQ-010) met
 - [x] All P1 requirements (REQ-011, REQ-012) met via continuation charter
-- [x] research.md contains source-cited findings spanning 12 iterations with explicit recommendation labels on every finding
+- [x] research.md contains source-cited findings spanning 20 iterations with explicit recommendation labels on every finding
 - [x] Adopt/Prototype/Reject decision matrix line-grounded for every row (delivered in §13 + §18.1)
 - [x] Two packet-ready briefs delivered in §18.4 (Brief A: FTS capability cascade; Brief B: Normalized analytics tables)
 - [x] Memory artifact saved with `critical` importance tier and clean trigger phrases
@@ -140,17 +140,27 @@ generate-context.js -> memory/<dated-summary>.md + metadata.json
 6. Iteration 12: uncertainty closeout (reads Public's actual `mcp_server/lib/search/sqlite-fts.ts` and `mcp_server/hooks/claude/session-stop.ts` to resolve open implementation ambiguities).
 7. Emit `continuation_complete` event listing iterations 8-12 and confirming `totalIterations=12`.
 
-### Phase 3: Continuation synthesis
-1. Append `research/research.md` §18.1-§18.5 with the continuation matrix, sequencing, slicing, briefs, and closeout (already kept in sync by the iterations themselves through the orchestrator-managed synthesis output).
-2. Update strategy.md to mark Q10 answered and set NEXT FOCUS to "SESSION COMPLETE".
-3. Run reducer to refresh dashboard + findings-registry after each iteration.
+### Phase 3: Completed-continue execution charter (iters 13-20)
+1. Reopen the packet in `completed-continue` mode with `maxIterations=20`, `generation=2`, and `continuedFromRun=12`.
+2. Iteration 13: FTS capability helper contract + caller migration plan.
+3. Iteration 14: forced-degrade FTS verification matrix.
+4. Iteration 15: Stop-hook metadata patch for transcript identity + cache token persistence.
+5. Iteration 16: normalized analytics replay schema + idempotent join keys.
+6. Iteration 17: SessionStart cached-summary fast path mapped onto Public startup/resume surfaces.
+7. Iteration 18: verifier/discoverer split mapped onto Public signal extraction and post-save review seams.
+8. Iteration 19: portable token-insight JSON contracts.
+9. Iteration 20: dependency-ordered implementation roadmap + acceptance gates.
+10. Emit generation-2 completion events and refresh reducer outputs after each iteration.
 
-### Phase 4: Memory save and verification
-1. Compose structured JSON for `generate-context.js` with session summary, files modified, key decisions, trigger phrases, importance_tier=critical, next steps.
-2. Run `generate-context.js` with project-relative spec folder path.
-3. Patch any HIGH severity quality issues (e.g., path-fragment trigger phrases).
-4. Create spec.md, plan.md, tasks.md, implementation-summary.md, checklist.md, decision-record.md to satisfy validator Level 3 requirements.
-5. Run `validate.sh --strict` and confirm RESULT: PASSED.
+### Phase 4: Synthesis and doc sync
+1. Keep `research/research.md` synchronized through §19 with the execution-ready continuation outputs.
+2. Update spec docs so packet status, iteration counts, roadmap references, and memory references match the 20-iteration state.
+3. Preserve the generation-1 indexed memory artifact and record generation-2 memory/indexing constraints honestly rather than hand-editing saved memory markdown.
+
+### Phase 5: Memory review and verification
+1. Review `memory/` for duplicates, stale archives, and metadata health without manually rewriting saved memory markdown content.
+2. Keep archived thin saves under `memory/.archive-pre-quality-rebuild/`; treat the 12-iteration indexed save as the canonical generation-1 memory and the 20-iteration save as a continuation artifact under the current write-only indexing policy.
+3. Run `validate.sh --strict` and completion checks after doc sync.
 
 ---
 
@@ -166,7 +176,7 @@ This is a research-only phase, so the "testing" surface is documentation and val
 - **Frontmatter validity**: All spec docs must have `title`, `description`, `trigger_phrases`, `importance_tier`, `contextType` fields.
 - **Memory quality**: `generate-context.js` post-save review must report no HIGH severity issues; MEDIUM issues should be patched when practical.
 - **Reducer schema**: `reduce-state.cjs` must complete without schema errors and report `iterationsCompleted` matching the actual count.
-- **Semantic indexing**: The saved memory artifact must be indexed by Voyage embeddings.
+- **Memory persistence**: Saved memory artifacts must persist cleanly in `memory/`; if the current indexing policy skips semantic indexing, the docs must state that honestly rather than claiming embedding success.
 
 ---
 
@@ -212,10 +222,11 @@ No production rollback is needed because no production code was modified.
 |-------|-----------|----------|--------|
 | Phase 1 (Setup + original charter iters 1-7) | None | Initialized state files, codex CLI verified, 28 source-confirmed findings, 9/10 questions answered | Phase 2 |
 | Phase 2 (Continuation charter iters 8-12) | Phase 1 (research.md as authoritative knowledge base for the avoid-list) | 39 additional findings (matrix synthesis + sequencing + v1 slices + packet briefs + uncertainty closeout) | Phase 3 |
-| Phase 3 (Continuation synthesis) | Phase 2 | research.md §18.1-§18.5, strategy.md SESSION COMPLETE | Phase 4 |
-| Phase 4 (Memory save + verification) | Phase 3 | Saved memory artifact, validator pass | Done |
+| Phase 3 (Completed-continue charter iters 13-20) | Phase 2 | 55 additional findings, §19 implementation roadmap, generation-2 lineage | Phase 4 |
+| Phase 4 (Synthesis + doc sync) | Phase 3 | 20-iteration research.md plus aligned Level 3 packet docs | Phase 5 |
+| Phase 5 (Memory review + verification) | Phase 4 | Honest memory status, validator pass, completion-ready packet | Done |
 
-**Critical path**: Phase 1 → Phase 2 (sequential iters 8-12 because each builds on the previous synthesis pass) → Phase 3 → Phase 4. Unlike phase 002-codesight, the continuation iterations were NOT parallelized because each iter depends on the previous synthesis output (matrix → sequencing → slicing → briefs → closeout).
+**Critical path**: Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5. Both continuation generations stayed sequential because each synthesis-class iteration depends on the prior output (matrix → sequencing → slicing → briefs → closeout, then contract → tests → producer patch → reader schema → roadmap).
 
 ---
 
@@ -229,11 +240,12 @@ No production rollback is needed because no production code was modified.
 | Phase 1 | ~5 minutes | orchestrator | One-time setup |
 | Phase 1 (iters 1-7) | ~90 minutes | cli-codex | Each iter ~3-5 minutes; some overlap with reducer runs |
 | Phase 2 (iters 8-12) | ~25 minutes | cli-codex | 5 sequential synthesis-class iterations, each ~5 minutes |
-| Phase 3 | ~5 minutes | orchestrator | research.md sync + strategy.md update |
-| Phase 4 | ~10 minutes | orchestrator | Memory save + spec doc creation + validator pass |
-| **Total** | **~135 minutes** | mixed | Sequential continuation iterations dominated by inter-iteration synthesis dependencies |
+| Phase 3 (iters 13-20) | ~40 minutes | mixed Codex | 8 sequential execution-contract iterations across completed-continue generation |
+| Phase 4 | ~10 minutes | orchestrator | research.md + spec-doc sync |
+| Phase 5 | ~10 minutes | orchestrator | Memory review + validator pass |
+| **Total** | **~180 minutes** | mixed | Sequential synthesis and contract iterations dominated by inter-iteration dependencies |
 
-The estimate is dominated by the 12 sequential cli-codex dispatches; clean execution without stalls because `--sandbox workspace-write` allowed each iter to write directly to its iteration file.
+The estimate is dominated by the 20 total sequential dispatches across two generations; clean execution persisted because generation 1 used `--sandbox workspace-write` and generation 2 reused the live Codex workspace with the same model target.
 
 ---
 
@@ -245,6 +257,7 @@ The estimate is dominated by the 12 sequential cli-codex dispatches; clean execu
 ### Pre-deployment Checklist
 
 - [x] Q1-Q10 baseline findings preserved before continuation iterations 8-12
+- [x] Generation-2 continuation preserved the generation-1 synthesis instead of replacing it
 - [x] Strategy mixed-ownership rule documented so reducer-managed sections can be reconstructed if needed
 - [x] Packet-ready briefs remain grounded in the continuation files that generated them
 
@@ -268,12 +281,13 @@ The estimate is dominated by the 12 sequential cli-codex dispatches; clean execu
 1. **Phase 1 setup and baseline validation** - CRITICAL
 2. **Original 7-iteration charter** - CRITICAL
 3. **Sequential continuation charter iterations 8-12** - CRITICAL
-4. **Packet-ready briefs, memory save, and strict validation handoff** - CRITICAL
+4. **Completed-continue execution charter iterations 13-20** - CRITICAL
+5. **Doc sync, memory review, and strict validation handoff** - CRITICAL
 
-**Total Critical Path**: setup -> original charter -> sequential continuation charter -> handoff artifacts
+**Total Critical Path**: setup -> original charter -> first continuation -> completed-continue execution charter -> handoff artifacts
 
 **Parallel Opportunities**:
-- The sequential continuation charter intentionally has no safe internal parallelism because each iteration consumes the prior synthesis output.
+- Both continuation generations intentionally have no safe internal parallelism because each iteration consumes the prior synthesis output.
 - Validation can only start after the final continuation closeout and document sync are complete.
 <!-- /ANCHOR:critical-path -->
 
@@ -287,7 +301,8 @@ The estimate is dominated by the 12 sequential cli-codex dispatches; clean execu
 | M1 | Setup complete | Baseline validation, state files, and strategy exist | Phase 1 |
 | M2 | Original charter complete | Q1-Q10 baseline covered through iter 7 | Phase 1 continuation |
 | M3 | Continuation charter complete | Matrix, sequencing, v1 slicing, briefs, and closeout done through iter 12 | Phase 2 |
-| M4 | Packet handoff ready | Packet-ready briefs, memory save, and validation complete | Phase 4 |
+| M4 | Completed-continue charter complete | Q11-Q18 contracts, tests, and roadmap done through iter 20 | Phase 3 |
+| M5 | Packet handoff ready | Packet-ready docs, memory review, and validation complete | Phase 5 |
 <!-- /ANCHOR:milestones -->
 
 ---
@@ -332,6 +347,7 @@ Before dispatching any iteration, verify:
 | TASK-SCOPE-003 | Findings must cite file:line evidence | `[SOURCE: external/plugins/...:LINE-LINE]` format |
 | TASK-SEQ-004 | Convergence check before each iteration | composite_converged stop unless user override |
 | TASK-CONT-001 | Continuation iterations 8-12 are synthesis-class and depend on prior synthesis output | Sequential dispatch, no parallelism |
+| TASK-CONT-002 | Completed-continue iterations 13-20 remain dependency-ordered contract work | Sequential dispatch, no parallelism |
 
 ##### Status Reporting Format
 

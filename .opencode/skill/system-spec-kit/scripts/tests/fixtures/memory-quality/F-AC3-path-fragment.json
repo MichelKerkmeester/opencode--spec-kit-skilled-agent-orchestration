@@ -1,0 +1,31 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "sessionSummary": "Phase 3 replay verifies that reusable trigger sanitization strips folder leaks before persistence while preserving the intended memory pipeline phrasing for retrieval.",
+  "triggerPhrases": [
+    "kit/026",
+    "optimization/003",
+    "memory pipeline"
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      "action": "Modified",
+      "description": "Routes merged and folder-derived trigger phrases through the D3 sanitizer"
+    }
+  ],
+  "nextSteps": [
+    "Run targeted Vitest coverage"
+  ],
+  "expectedAbsentTriggers": [
+    "kit/026",
+    "optimization/003",
+    "system",
+    "graph",
+    "issues"
+  ],
+  "expectedPresentTriggers": [
+    "memory pipeline"
+  ],
+  "expectedAbsentTopics": [],
+  "expectedPresentTopics": []
+}

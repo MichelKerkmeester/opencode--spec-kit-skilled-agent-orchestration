@@ -16,6 +16,7 @@ import {
   normalizeText,
 } from './spec-affinity';
 import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
+import { resolveSaveMode, type SaveMode } from '../types/save-mode';
 import type { Observation, RecentContextEntry } from '../types/session-types';
 
 // ───────────────────────────────────────────────────────────────
@@ -99,6 +100,8 @@ export interface RawInputData {
   user_prompts?: NormalizedUserPrompt[];
   recentContext?: RecentContext[];
   recent_context?: RecentContext[];
+  saveMode?: SaveMode | string;
+  save_mode?: SaveMode | string;
   [key: string]: unknown;
 }
 
@@ -126,6 +129,7 @@ export interface NormalizedData {
   importanceTier?: string;
   contextType?: string;
   projectPhase?: string;
+  saveMode?: SaveMode;
   // TODO(O3-12): Remove index signature once all dynamic fields are explicitly declared
   [key: string]: unknown;
 }
@@ -169,6 +173,7 @@ export interface TransformedCapture {
   recentContext: RecentContext[];
   FILES: NormalizedFileEntry[];
   _source: DataSource;
+  saveMode?: SaveMode;
   _sessionId?: string;
   _capturedAt?: string;
   _toolCallCount?: number;
@@ -560,6 +565,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     if (typeof fastPathProjectPhase === 'string' && fastPathProjectPhase.length > 0) {
       (cloned as Record<string, unknown>).projectPhase = fastPathProjectPhase;
     }
+    cloned.saveMode = resolveSaveMode(cloned as RawInputData);
     // RC3: Propagate keyDecisions through fast-path
     const keyDecisions = Array.isArray(data.keyDecisions)
       ? data.keyDecisions
@@ -590,6 +596,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     observations: [],
     userPrompts: [],
     recentContext: [],
+    saveMode: resolveSaveMode(data),
   };
 
   if (data.specFolder || data.spec_folder || data.SPEC_FOLDER) {
@@ -804,6 +811,7 @@ const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
   'FILES', 'observations',
   'userPrompts', 'user_prompts',
   'recentContext', 'recent_context',
+  'saveMode', 'save_mode',
   // T06: Preflight/postflight epistemic tracking fields
   'knowledgeScore', 'knowledge_score',
   'uncertaintyScore', 'uncertainty_score',
@@ -1117,7 +1125,14 @@ function transformOpencodeCapture(
 ): TransformedCapture {
   // F-14: Runtime guards — validate capture shape before processing
   if (!capture || typeof capture !== 'object') {
-    return { userPrompts: [], observations: [], recentContext: [], FILES: [], _source: source };
+    return {
+      userPrompts: [],
+      observations: [],
+      recentContext: [],
+      FILES: [],
+      _source: source,
+      saveMode: resolveSaveMode({ _source: source }),
+    };
   }
 
   // RC-10: Normalize snake_case fields from ConversationCapture to camelCase OpencodeCapture.
@@ -1425,6 +1440,7 @@ function transformOpencodeCapture(
     recentContext,
     FILES,
     _source: source,
+    saveMode: resolveSaveMode({ _source: source }),
     _sessionId: normalizedCapture.sessionId,
     _capturedAt: normalizedCapture.capturedAt,
     _toolCallCount: filteredToolCalls.length,

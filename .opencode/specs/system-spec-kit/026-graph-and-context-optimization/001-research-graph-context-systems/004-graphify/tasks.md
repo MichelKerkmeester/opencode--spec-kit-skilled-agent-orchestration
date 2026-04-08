@@ -1,6 +1,6 @@
 ---
 title: "Tasks: 004-graphify Research Phase"
-description: "Task tracking for the 10-iteration deep-research loop on the graphify external Python skill plus synthesis, memory save, and verification."
+description: "Task tracking for the 20-iteration two-wave deep-research loop on graphify plus Public-internal rollout translation, synthesis, memory save, and verification."
 trigger_phrases:
   - "graphify research tasks"
   - "004-graphify task list"
@@ -74,6 +74,22 @@ contextType: tasks
 - [x] T024 Run `reduce-state.cjs` after iter 8
 - [x] T025 Run `reduce-state.cjs` after iter 9
 - [x] T026 Run `reduce-state.cjs` after iter 10
+
+### completed-continue wave iterations (11-20)
+
+- [x] T041 Snapshot prior synthesis into `research/synthesis-v1.md` before reopening the packet
+- [x] T042 Reopen the completed run in generation 2 (`completed-continue`) and raise `maxIterations` from 10 to 20
+- [x] T043 Iteration 11 - map provenance and confidence payload contracts in Public (`research/iterations/iteration-011.md`)
+- [x] T044 Iteration 12 - locate graph-first runtime nudge surfaces (`research/iterations/iteration-012.md`)
+- [x] T045 Iteration 13 - compare Public incremental indexing and invalidation paths (`research/iterations/iteration-013.md`)
+- [x] T046 Iteration 14 - define the narrow multimodal adoption slice (`research/iterations/iteration-014.md`)
+- [x] T047 Iteration 15 - map the lightest community-detection path into current graph/search surfaces (`research/iterations/iteration-015.md`)
+- [x] T048 Iteration 16 - identify existing validation and playbook extensions (`research/iterations/iteration-016.md`)
+- [x] T049 Iteration 17 - define architecture-native evaluation metrics (`research/iterations/iteration-017.md`)
+- [x] T050 Iteration 18 - map security and trust-boundary constraints (`research/iterations/iteration-018.md`)
+- [x] T051 Iteration 19 - map existing bridge surfaces that can absorb graph signals (`research/iterations/iteration-019.md`)
+- [x] T052 Iteration 20 - finalize the phased rollout plan for Public (`research/iterations/iteration-020.md`)
+- [x] T053 Run `reduce-state.cjs` after iter 11-20 wave completion
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -81,20 +97,22 @@ contextType: tasks
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T027 Synthesis - update `research/research.md` to 17 sections plus new section 13.A with K13 to K32 findings
+- [x] T027 Synthesis - update `research/research.md` to include section 13.A (K13-K32) and section 13.B (K33-K42)
 - [x] T028 Append `synthesis_complete` event to `deep-research-state.jsonl`
 - [x] T029 Flip `config.status` from `initialized` to `complete` in `deep-research-config.json`
-- [x] T030 Final reducer pass to ensure dashboard and registry reflect 10 iterations
+- [x] T030 Final reducer pass to ensure dashboard and registry reflect 20 iterations
 - [x] T031 Memory save via `generate-context.js` with structured JSON contract
 - [x] T032 Manual patch HIGH severity quality issues (trigger_phrases path fragments) in memory file
 - [x] T033 Rewrite `spec.md` to Level 3 template (EXECUTIVE SUMMARY, METADATA, PROBLEM, SCOPE, REQUIREMENTS, SUCCESS CRITERIA, RISKS, NFR, EDGE CASES, COMPLEXITY, RISK MATRIX, USER STORIES, OPEN QUESTIONS, RELATED DOCUMENTS)
 - [x] T034 Rewrite `plan.md` to Level 3 template (SUMMARY, QUALITY GATES, ARCHITECTURE, IMPLEMENTATION PHASES, TESTING STRATEGY, DEPENDENCIES, ROLLBACK PLAN plus L2 and L3 addendums)
 - [x] T035 Rewrite `tasks.md` to Level 3 template (Task Notation, Phase 1 Setup, Phase 2 Implementation, Phase 3 Verification, Completion Criteria, Cross-References)
-- [x] T036 Rewrite `implementation-summary.md` to template (Metadata, What Was Built, How It Was Delivered, Key Decisions, Verification, Known Limitations) and reflect 10 iterations
+- [x] T036 Rewrite `implementation-summary.md` to template (Metadata, What Was Built, How It Was Delivered, Key Decisions, Verification, Known Limitations) and reflect 20 iterations
 - [x] T037 Create `decision-record.md` with 4 ADRs covering engine choice, engine switch, iter 7 override, section 13.A append strategy
 - [x] T038 Resolve broken markdown file references (skill.md, phase-research-prompt.md, iteration-NNN.md, GRAPH_REPORT.md, iteration-007.md)
 - [x] T039 Run `validate.sh --strict` and confirm RESULT: PASSED
 - [x] T040 Verify `checklist.md` items all marked `[x]` with evidence
+- [x] T054 Synchronize `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` to 20 iterations / 22 questions / K1-K42 findings
+- [x] T055 Save refreshed wave-2 memory context after validation
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -104,7 +122,7 @@ contextType: tasks
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed: every K1 to K32 finding has a verifiable file:line citation
+- [x] Manual verification passed: every K1 to K42 finding has a verifiable file:line citation
 - [x] `validate.sh --strict` returns RESULT: PASSED
 - [x] Memory artifact saved with critical importance tier and clean trigger phrases (no path fragments)
 - [x] Cross-phase deduplication note in research.md section 11
@@ -121,9 +139,9 @@ contextType: tasks
 - **Implementation Summary**: See `implementation-summary.md`
 - **Verification Checklist**: See `checklist.md`
 - **Canonical research output**: See `research/research.md`
-- **Iteration evidence**: See `research/iterations/iteration-001.md` through `research/iterations/iteration-010.md`
+- **Iteration evidence**: See `research/iterations/iteration-001.md` through `research/iterations/iteration-020.md`
 - **Phase prompt**: `scratch/phase-research-prompt.md`
-- **Memory artifact**: `memory/06-04-26_18-17__completed-10-iteration-deep-research-audit-of.md`
+- **Memory artifact**: `memory/*.md` (latest save reflects the 20-iteration completed-continue wave)
 <!-- /ANCHOR:cross-refs -->
 
 ---

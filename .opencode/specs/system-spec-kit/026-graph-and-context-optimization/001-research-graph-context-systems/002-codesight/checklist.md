@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 002-codesight Research Phase"
-description: "Verification checklist for the 10-iteration deep-research audit of the codesight external Node.js/TypeScript skill, including pre-implementation, code quality, testing, security, documentation, file organization, architecture, and sign-off."
+description: "Verification checklist for the 20-iteration deep-research audit of the codesight external Node.js/TypeScript skill, including completed-continue closeout, memory audit, and final doc synchronization."
 trigger_phrases:
   - "002-codesight checklist"
   - "002-codesight verification"
@@ -31,8 +31,8 @@ contextType: checklist
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-012 in section 4) (verified)
-- [x] CHK-002 [P0] Technical approach defined in plan.md (10-iteration loop with cli-codex + native fallback + sandbox-extract workaround) (verified)
+- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-014 in section 4) (verified)
+- [x] CHK-002 [P0] Technical approach defined in plan.md (20-iteration packet with cli-codex, native fallback, completed-continue direct Codex extension, and sandbox-extract workaround) (verified)
 - [x] CHK-003 [P1] Dependencies identified and available (cli-codex CLI 0.118.0 verified; reducer + memory + validator scripts present) (verified)
 
 ---
@@ -55,7 +55,7 @@ contextType: checklist
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met (US-001 evidence-grounded adoption matrix: 22 rows; US-002 README cross-checking: every headline claim labeled; US-003 cross-phase boundary explicit in §10) (verified)
-- [x] CHK-021 [P0] Manual testing complete (all 52 findings have at least one verifiable file:line citation; spot-checked iter 8 tokens.ts:4-9, iter 9 scanner.ts:107-111, iter 7 extract-go.ts:1-12 against actual source via the codex stdout traces) (verified)
+- [x] CHK-021 [P0] Manual testing complete (representative findings were spot-checked across all three packet segments: iter 8 `tokens.ts`, iter 16 `mcp-server.ts`, iter 19 `scanner.ts`; reducer totals and JSONL counts reconcile to 20 iterations / 95 findings) (verified)
 - [x] CHK-022 [P1] Edge cases tested (cli-codex stall in iters 4-5 → native fallback handled; sandbox `/tmp` block in iters 6-10 → stdout extraction handled) (verified)
 - [x] CHK-023 [P1] Error scenarios validated (memory script "spec folder not found" handled by passing relative spec folder path; HIGH severity trigger_phrases issue handled via manual patch; reducer overwrite of analyst sections handled via post-reducer re-add) (verified)
 
@@ -77,7 +77,7 @@ contextType: checklist
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized (all 4 main docs + checklist + decision-record reflect 10 iterations and 52 findings) (verified)
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized (all 4 main docs + checklist + decision-record reflect 20 iterations and 95 findings) (verified)
 - [x] CHK-041 [P1] Code comments adequate (research artifacts use Markdown headers + frontmatter + inline source citations rather than code comments) (verified)
 - [x] CHK-042 [P2] README updated (if applicable) (N/A — no top-level README change required for a research-only phase)
 
@@ -90,7 +90,7 @@ contextType: checklist
 
 - [x] CHK-050 [P1] Temp files in scratch/ only (`scratch/phase-research-prompt.md` is in scratch/; iteration prompts at `/tmp/codex-iter-{006..010}-prompt.md` are outside the spec folder) (verified)
 - [x] CHK-051 [P1] scratch/ cleaned before completion (only phase-research-prompt.md remains in scratch/; no stale temp files inside the spec folder) (verified)
-- [x] CHK-052 [P2] Findings saved to memory/ (`memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md` exists with critical importance tier; memory ID #1835)
+- [x] CHK-052 [P2] Findings saved to memory/ (three chronological saved-memory artifacts exist; the newest `memory/08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md` is retained with a documented `has_topical_mismatch` quality caveat rather than being hand-edited) (verified)
 
 ---
 
@@ -105,7 +105,7 @@ contextType: checklist
 | P1 Items | 13 | 13/13 |
 | P2 Items | 4 | 4/4 |
 
-**Verification Date**: 2026-04-06
+**Verification Date**: 2026-04-08
 
 ---
 
@@ -167,10 +167,10 @@ contextType: checklist
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] All spec documents synchronized (spec.md, plan.md, tasks.md, implementation-summary.md, decision-record.md, checklist.md all reflect 10 iterations and 52 findings) (verified)
+- [x] CHK-140 [P1] All spec documents synchronized (spec.md, plan.md, tasks.md, implementation-summary.md, decision-record.md, checklist.md all reflect 20 iterations and 95 findings) (verified)
 - [x] CHK-141 [P1] API documentation complete (if applicable) (N/A — research-only phase) (verified)
 - [x] CHK-142 [P2] User-facing documentation updated (research/research.md is the user-facing artifact and is the canonical synthesis)
-- [x] CHK-143 [P2] Knowledge transfer documented (memory artifact contains summary plus key findings plus decisions plus next steps; indexed as memory #1835)
+- [x] CHK-143 [P2] Knowledge transfer documented (canonical truth lives in `research/research.md`; `memory/` preserves three chronological resume artifacts, with the latest retained but caveated because memory-save rules make direct markdown rewrites unsafe)
 
 ---
 
@@ -181,9 +181,9 @@ contextType: checklist
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| Orchestrator | Research Lead | [x] Approved | 2026-04-06 |
-| User | Product Owner | [x] Approved (via continuation directive "5 more iterations of /spec_kit:deep-research with gpt-5.4 high agents in fast mode through cli-codex") | 2026-04-06 |
-| Validator | QA Lead | [x] Approved (validate.sh --strict pass) | 2026-04-06 |
+| Orchestrator | Research Lead | [x] Approved | 2026-04-08 |
+| User | Product Owner | [x] Approved (via continuation and packet-closeout directives extending the phase to 20 iterations) | 2026-04-08 |
+| Validator | QA Lead | [x] Reviewed (0 errors; 1 known ADR-anchor warning bucket in strict mode) | 2026-04-08 |
 
 ---
 

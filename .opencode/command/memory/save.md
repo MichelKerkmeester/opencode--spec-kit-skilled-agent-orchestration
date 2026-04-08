@@ -277,7 +277,7 @@ Content...
     "patterns": "Key patterns or approaches used"
   },
   "toolCalls": [
-    { "tool": "Read", "inputSummary": "Read generate-context.ts", "outputSummary": "612 lines, CLI entry point", "status": "success", "durationEstimate": "fast" },
+    { "tool": "Read", "inputSummary": "Read scripts/dist/memory/generate-context.js", "outputSummary": "Runtime CLI entry point verified for JSON-mode saves", "status": "success", "durationEstimate": "fast" },
     { "tool": "Edit", "inputSummary": "Updated Memory Save Rule in CLAUDE.md", "outputSummary": "Changed JSON-primary wording", "status": "success" }
   ],
   "exchanges": [
@@ -302,7 +302,7 @@ Content...
 
 | Mode                              | Command                                                           | Use When                                     |
 | --------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- |
-| **JSON File** (standard)          | `node generate-context.js ${TMPDIR:-/tmp}/save-context-data.json` | Rich context with decisions, files, triggers |
+| **JSON File** (standard)          | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js ${TMPDIR:-/tmp}/save-context-data.json <spec-folder>` | Rich context with decisions, files, triggers |
 
 > **Why JSON mode:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs.
 
@@ -320,7 +320,7 @@ cat > "$TEMP_FILE" << 'EOF'
 EOF
 
 # 2. Execute the script
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js "$TEMP_FILE"
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js "$TEMP_FILE" specs/###-folder/
 
 # 3. Clean up
 rm "$TEMP_FILE"

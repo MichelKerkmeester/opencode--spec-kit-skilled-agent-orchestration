@@ -574,7 +574,7 @@ The documentation has been updated with DQI score 95/100 [by @write].
 **Trigger:** 15+ tool calls, 5+ files modified, user says "stopping"/"continue later", or session approaching context limits.
 **Action:** Suggest `/spec_kit:handover` → mandate sub-agents save context → compile orchestration decisions summary → preserve task state, pending work, blockers.
 
-After complex multi-agent workflows, save orchestration context via: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
+After complex multi-agent workflows, save orchestration context via JSON mode: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"###-folder","sessionSummary":"..."}' specs/###-folder/`
 
 #### Context Health Monitoring
 

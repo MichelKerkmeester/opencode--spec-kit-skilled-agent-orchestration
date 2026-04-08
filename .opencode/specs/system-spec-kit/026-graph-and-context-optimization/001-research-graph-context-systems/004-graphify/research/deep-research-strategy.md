@@ -11,6 +11,8 @@ description: Session tracking for deep research on graphify external repo with C
 ### Purpose
 Persistent brain for deep research session investigating `external/graphify/` and `external/skills/graphify/` to identify concrete improvements for Code_Environment/Public's codebase navigation, context retrieval, evidence provenance, and multimodal artifact processing.
 
+Wave 2 (`completed-continue`) extends the original external-tool survey into repo-internal translation work: map the strongest graphify patterns onto current Public handlers, hooks, schema surfaces, validation flows, and rollout paths so iterations 11-20 end with implementation-grade adoption guidance rather than only external-tool analysis.
+
 ### Usage
 - Init: orchestrator populated topic, key questions, non-goals, stop conditions, and known context from prior memory
 - Per iteration: agent reads Next Focus, executes 3-5 research actions, writes iteration evidence; reducer refreshes machine-owned sections
@@ -32,18 +34,28 @@ The goal is an evidence-backed translation layer: determine what graphify does t
 <!-- /ANCHOR:topic -->
 <!-- ANCHOR:key-questions -->
 ## 3. KEY QUESTIONS (remaining)
-- [ ] Q1: Which languages and extensions are actually supported by the AST pass in `external/graphify/extract.py` and `external/graphify/detect.py`, and where does runtime coverage diverge between detection and extraction?
-- [ ] Q2: What exact entities and relationship types does the deterministic pass emit (rationale nodes, method stubs, imports, calls, inheritance, cross-file `uses` edges)?
-- [ ] Q3: How does the semantic subagent prompt in `external/skills/graphify/skill.md` define extraction behavior for docs, papers, images, semantic similarity, and hyperedges?
-- [ ] Q4: How are AST and semantic outputs merged, deduplicated, cached, and promoted into final `graphify-out/graph.json`?
-- [ ] Q5: What are the actual Leiden parameter choices in `external/graphify/cluster.py`, and what is the rationale behind community splitting at 25% of graph size with min split size 10?
-- [ ] Q6: How does graphify represent evidence and confidence (EXTRACTED/INFERRED/AMBIGUOUS semantics, default scores, downstream JSON and `GRAPH_REPORT.md` reporting)?
-- [ ] Q7: How does the multimodal pipeline work in practice for PDFs and images (`pypdf` usage, image handling, Claude vision vs OCR)?
-- [ ] Q8: What is the cache invalidation strategy across `external/graphify/cache.py` and `external/graphify/detect.py`, and how much of the system can rerun without invoking Claude?
-- [ ] Q9: How does the PreToolUse hook in `external/graphify/__main__.py` fire, what message does it inject, and how might a similar hook reshape Public's search behavior?
-- [ ] Q10: How does `GRAPH_REPORT.md` identify god nodes, surprising connections, ambiguous edges, low-cohesion communities, and suggested questions, and which patterns are reusable in Public?
-- [ ] Q11: How credible is the 71.5x token-reduction claim when cross-checked against `external/worked/karpathy-repos/`, README wording, and benchmark expectations?
-- [ ] Q12: Which graphify ideas should be Adopted directly, Adapted into existing MCP surfaces, or Rejected because Public already covers them with Code Graph MCP or CocoIndex?
+- [x] Q1: Which languages and extensions are actually supported by the AST pass in `external/graphify/extract.py` and `external/graphify/detect.py`, and where does runtime coverage diverge between detection and extraction?
+- [x] Q2: What exact entities and relationship types does the deterministic pass emit (rationale nodes, method stubs, imports, calls, inheritance, cross-file `uses` edges)?
+- [x] Q3: How does the semantic subagent prompt in `external/skills/graphify/skill.md` define extraction behavior for docs, papers, images, semantic similarity, and hyperedges?
+- [x] Q4: How are AST and semantic outputs merged, deduplicated, cached, and promoted into final `graphify-out/graph.json`?
+- [x] Q5: What are the actual Leiden parameter choices in `external/graphify/cluster.py`, and what is the rationale behind community splitting at 25% of graph size with min split size 10?
+- [x] Q6: How does graphify represent evidence and confidence (EXTRACTED/INFERRED/AMBIGUOUS semantics, default scores, downstream JSON and `GRAPH_REPORT.md` reporting)?
+- [x] Q7: How does the multimodal pipeline work in practice for PDFs and images (`pypdf` usage, image handling, Claude vision vs OCR)?
+- [x] Q8: What is the cache invalidation strategy across `external/graphify/cache.py` and `external/graphify/detect.py`, and how much of the system can rerun without invoking Claude?
+- [x] Q9: How does the PreToolUse hook in `external/graphify/__main__.py` fire, what message does it inject, and how might a similar hook reshape Public's search behavior?
+- [x] Q10: How does `GRAPH_REPORT.md` identify god nodes, surprising connections, ambiguous edges, low-cohesion communities, and suggested questions, and which patterns are reusable in Public?
+- [x] Q11: How credible is the 71.5x token-reduction claim when cross-checked against `external/worked/karpathy-repos/`, README wording, and benchmark expectations?
+- [x] Q12: Which graphify ideas should be Adopted directly, Adapted into existing MCP surfaces, or Rejected because Public already covers them with Code Graph MCP or CocoIndex?
+- [x] Q13: Which existing Public handlers and payload contracts should carry graphify-style provenance tiers and numeric confidence without breaking current callers?
+- [x] Q14: Where should a graph-first nudge live in Public today (PreToolUse, SessionStart, PreCompact, bootstrap, or command routing), and what exact existing hook/runtime files govern that path?
+- [x] Q15: Which current Code Graph MCP and CocoIndex bridge surfaces already expose enough structure to absorb community labels, confidence metadata, or graph-first routing hints?
+- [x] Q16: Where does Public already implement mtime/hash/incremental indexing, and where does graphify's two-layer invalidation pattern still add net value?
+- [x] Q17: What is the narrowest viable multimodal adoption path for Public (PDFs, screenshots, diagrams) without forcing a graphify-style full-ingestion subsystem?
+- [x] Q18: If Public wanted graph-aware clustering, what is the lightest-weight implementation path using current code-graph data stores and query surfaces?
+- [x] Q19: Which existing tests, validators, or manual playbooks would need extension to prove graph-first routing and evidence-tagged retrieval work correctly?
+- [x] Q20: What evaluation metrics should Public use instead of graphify's 71.5x headline so future rollout claims are architecture-native and reproducible?
+- [x] Q21: Which current security, governance, or trust-boundary constraints in Public make direct graphify ingestion patterns unsafe or incomplete without adaptation?
+- [x] Q22: What phased Adopt / Adapt / Reject rollout plan best fits Public's architecture over immediate, near-term, and later phases?
 
 <!-- /ANCHOR:key-questions -->
 <!-- ANCHOR:non-goals -->
@@ -68,8 +80,8 @@ Hard stops (in addition to convergence detection):
 - Comparison section mapping graphify capabilities vs Public's existing Code Graph MCP and CocoIndex
 - Explicit Adopt / Adapt / Reject recommendations
 - Cross-phase overlap with 002 (codesight AST extraction) and 003 (contextador queryable context) acknowledged
-- All 12 key questions either answered or explicitly marked as out-of-scope
-- Iteration cap (10) reached
+- All 22 key questions either answered or explicitly marked as out-of-scope
+- Iteration cap (20) reached for the reopened wave
 - Three consecutive iterations with newInfoRatio < 0.05
 
 ---
@@ -77,7 +89,28 @@ Hard stops (in addition to convergence detection):
 <!-- /ANCHOR:stop-conditions -->
 <!-- ANCHOR:answered-questions -->
 ## 6. ANSWERED QUESTIONS
-[None yet]
+- Q1: Which languages and extensions are actually supported by the AST pass in `external/graphify/extract.py` and `external/graphify/detect.py`, and where does runtime coverage diverge between detection and extraction?
+- Q2: What exact entities and relationship types does the deterministic pass emit (rationale nodes, method stubs, imports, calls, inheritance, cross-file `uses` edges)?
+- Q3: How does the semantic subagent prompt in `external/skills/graphify/skill.md` define extraction behavior for docs, papers, images, semantic similarity, and hyperedges?
+- Q4: How are AST and semantic outputs merged, deduplicated, cached, and promoted into final `graphify-out/graph.json`?
+- Q5: What are the actual Leiden parameter choices in `external/graphify/cluster.py`, and what is the rationale behind community splitting at 25% of graph size with min split size 10?
+- Q6: How does graphify represent evidence and confidence (EXTRACTED/INFERRED/AMBIGUOUS semantics, default scores, downstream JSON and `GRAPH_REPORT.md` reporting)?
+- Q7: How does the multimodal pipeline work in practice for PDFs and images (`pypdf` usage, image handling, Claude vision vs OCR)?
+- Q8: What is the cache invalidation strategy across `external/graphify/cache.py` and `external/graphify/detect.py`, and how much of the system can rerun without invoking Claude?
+- Q9: How does the PreToolUse hook in `external/graphify/__main__.py` fire, what message does it inject, and how might a similar hook reshape Public's search behavior?
+- Q10: How does `GRAPH_REPORT.md` identify god nodes, surprising connections, ambiguous edges, low-cohesion communities, and suggested questions, and which patterns are reusable in Public?
+- Q11: How credible is the 71.5x token-reduction claim when cross-checked against `external/worked/karpathy-repos/`, README wording, and benchmark expectations?
+- Q12: Which graphify ideas should be Adopted directly, Adapted into existing MCP surfaces, or Rejected because Public already covers them with Code Graph MCP or CocoIndex?
+- Q13: Which existing Public handlers and payload contracts should carry graphify-style provenance tiers and numeric confidence without breaking current callers?
+- Q14: Where should a graph-first nudge live in Public today (PreToolUse, SessionStart, PreCompact, bootstrap, or command routing), and what exact existing hook/runtime files govern that path?
+- Q15: Which current Code Graph MCP and CocoIndex bridge surfaces already expose enough structure to absorb community labels, confidence metadata, or graph-first routing hints?
+- Q16: Where does Public already implement mtime/hash/incremental indexing, and where does graphify's two-layer invalidation pattern still add net value?
+- Q17: What is the narrowest viable multimodal adoption path for Public (PDFs, screenshots, diagrams) without forcing a graphify-style full-ingestion subsystem?
+- Q18: If Public wanted graph-aware clustering, what is the lightest-weight implementation path using current code-graph data stores and query surfaces?
+- Q19: Which existing tests, validators, or manual playbooks would need extension to prove graph-first routing and evidence-tagged retrieval work correctly?
+- Q20: What evaluation metrics should Public use instead of graphify's 71.5x headline so future rollout claims are architecture-native and reproducible?
+- Q21: Which current security, governance, or trust-boundary constraints in Public make direct graphify ingestion patterns unsafe or incomplete without adaptation?
+- Q22: What phased Adopt / Adapt / Reject rollout plan best fits Public's architecture over immediate, near-term, and later phases?
 
 <!-- /ANCHOR:answered-questions -->
 <!-- MACHINE-OWNED: START -->
@@ -256,7 +289,7 @@ Hard stops (in addition to convergence detection):
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-**TRANSITION TO SYNTHESIS.** Iteration 8 should compile `research/research.md` with the following structure: 1. Executive summary with the 71.5x credibility verdict (do not lead with 71.5x) 2. Pipeline architecture (from iter 1) 3. AST extraction details (from iter 2) 4. Semantic + merge + cache (from iter 3) 5. Clustering + analysis + report (from iter 4) 6. Hooks + cache invalidation (from iter 5) 7. Multimodal pipeline (from iter 6) 8. Benchmark credibility (from iter 7) 9. **Comparison vs Public's Code Graph MCP and CocoIndex** (synthesis — depth analysis required) 10. **Adopt/Adapt/Reject recommendations** (synthesis — Q12 answer) 11. Evidence-grounded conclusion with specific file:line citations preserved from all 7 iterations The synthesis must produce the 5+ findings the prompt requires, all with file:line citations, and explicitly avoid duplicating findings already covered for codesight (002) or contextador (003).
+[All tracked questions are resolved. Research is complete. Optional next step: open a follow-on implementation packet only if the team decides to execute the phased rollout recommendations.]
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->

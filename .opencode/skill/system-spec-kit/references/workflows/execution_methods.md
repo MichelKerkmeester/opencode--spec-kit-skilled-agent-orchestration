@@ -74,7 +74,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh --json spe
 <!-- ANCHOR:context-saving -->
 ## 4. CONTEXT SAVING
 
-### generate-context.ts
+### generate-context.js runtime entrypoint
 
 Generates memory files from conversation context for future session recovery.
 

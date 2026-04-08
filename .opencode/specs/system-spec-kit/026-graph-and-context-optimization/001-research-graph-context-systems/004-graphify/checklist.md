@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 004-graphify Research Phase"
-description: "Verification checklist for the 10-iteration deep-research audit of the graphify external Python skill, including pre-implementation, code quality, testing, security, documentation, file organization, architecture, and sign-off."
+description: "Verification checklist for the 20-iteration two-wave deep-research audit of graphify plus Public rollout translation, including pre-implementation, testing, documentation, architecture, and sign-off."
 trigger_phrases:
   - "graphify checklist"
   - "graphify verification"
@@ -31,7 +31,7 @@ contextType: checklist
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-016 in section 4) (verified)
-- [x] CHK-002 [P0] Technical approach defined in plan.md (10-iteration loop with cli-codex + claude-opus-direct fallback) (verified)
+- [x] CHK-002 [P0] Technical approach defined in plan.md (20-iteration two-wave loop: external graphify audit plus Public-internal translation and rollout mapping) (verified)
 - [x] CHK-003 [P1] Dependencies identified and available (cli-codex CLI 0.118 verified via `which codex`; reducer + memory scripts present) (verified)
 <!-- /ANCHOR:pre-impl -->
 
@@ -51,8 +51,8 @@ contextType: checklist
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met (US-001 evidence-grounded adoption decisions: 32 findings cited; US-002 cross-phase deduplication: section 11 documents 002/003 redirects; US-003 audit-ready iteration trail: 10 iteration files exist) (verified)
-- [x] CHK-021 [P0] Manual testing complete (every K1 to K32 finding has at least one verifiable file:line citation; spot-checked K8 export.py:264-275 and K28 extract.py:2367-2505 against actual source) (verified)
+- [x] CHK-020 [P0] All acceptance criteria met (US-001 evidence-grounded adoption decisions: 42 consolidated findings cited; US-002 cross-phase deduplication: section 11 documents 002/003 redirects; US-003 audit-ready iteration trail: 20 iteration files exist) (verified)
+- [x] CHK-021 [P0] Manual testing complete (every K1 to K42 finding has at least one verifiable file:line citation; spot-checked K8 export.py:264-275, K33 result-confidence.md:10-31, and K42 stage2-fusion/context-metrics rollout citations against actual source) (verified)
 - [x] CHK-022 [P1] Edge cases tested (composite_converged at iter 7 followed by user override -> handled via continuation event; codex starvation at iter 2 -> handled via engine_switch) (verified)
 - [x] CHK-023 [P1] Error scenarios validated (memory script "spec folder not found" handled by passing relative spec folder path; HIGH severity trigger_phrases issue handled via manual patch) (verified)
 <!-- /ANCHOR:testing -->
@@ -84,7 +84,7 @@ contextType: checklist
 
 - [x] CHK-050 [P1] Temp files in scratch/ only (phase-research-prompt.md is in scratch/; iter prompts at /tmp/iter{8,9,10}-prompt.txt are outside the spec folder) (verified)
 - [x] CHK-051 [P1] scratch/ cleaned before completion (only phase-research-prompt.md and one auxiliary file remain in scratch/; no stale temp files) (verified)
-- [x] CHK-052 [P2] Findings saved to memory/ (memory/06-04-26_17-50__completed-deep-research-session-on-graphify.md exists with critical importance tier)
+- [x] CHK-052 [P2] Findings saved to memory/ (`memory/08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md` exists with critical importance tier and patched trigger phrases)
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -98,7 +98,7 @@ contextType: checklist
 | P1 Items | 13 | 13/13 |
 | P2 Items | 4 | 4/4 |
 
-**Verification Date**: 2026-04-06
+**Verification Date**: 2026-04-08
 <!-- /ANCHOR:summary -->
 
 ---
@@ -155,7 +155,7 @@ contextType: checklist
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] All spec documents synchronized (spec.md, plan.md, tasks.md, implementation-summary.md, decision-record.md, checklist.md all reflect 10 iterations and K1-K32 findings) (verified)
+- [x] CHK-140 [P1] All spec documents synchronized (spec.md, plan.md, tasks.md, implementation-summary.md, decision-record.md, checklist.md all reflect 20 iterations and K1-K42 findings) (verified)
 - [x] CHK-141 [P1] API documentation complete (if applicable) (N/A - research-only phase) (confirmed)
 - [x] CHK-142 [P2] User-facing documentation updated (research/research.md is the user-facing artifact and is the canonical synthesis)
 - [x] CHK-143 [P2] Knowledge transfer documented (memory artifact contains summary plus key findings plus decisions plus next steps)
@@ -168,9 +168,9 @@ contextType: checklist
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| Orchestrator | Research Lead | [x] Approved | 2026-04-06 |
-| User | Product Owner | [x] Approved (via "/spec_kit:deep-research:auto" directive + iter 8 to 10 explicit override) | 2026-04-06 |
-| Validator | QA Lead | [x] Approved (validate.sh --strict pass) | 2026-04-06 |
+| Orchestrator | Research Lead | [x] Approved | 2026-04-08 |
+| User | Product Owner | [x] Approved (via initial deep-research directive, iter 8-10 override, and 2026-04-08 request to extend to 20 total iterations) | 2026-04-08 |
+| Validator | QA Lead | [x] Approved (validate.sh --strict pass) | 2026-04-08 |
 <!-- /ANCHOR:sign-off -->
 
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 002-codesight Research Phase"
-description: "Read-only research investigation of the codesight external Node.js/TypeScript skill to identify zero-dependency AST extraction, framework/ORM detector architecture, MCP tool design, per-tool profile generation, and blast-radius analysis patterns Public should adopt, adapt, or reject."
+description: "Read-only 20-iteration research investigation of the codesight external Node.js/TypeScript skill covering detector discipline, MCP/cache semantics, profile generation safety, scanner heuristics, and adoption patterns Public should adopt, adapt, or reject."
 trigger_phrases:
   - "002-codesight research spec"
   - "002-codesight phase spec"
@@ -18,9 +18,9 @@ contextType: spec
 
 ## EXECUTIVE SUMMARY
 
-Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table grounded in specific `external/src/` file:line citations across 10 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.
+Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.
 
-**Key Decisions**: Use deep-research loop with 10 iterations through cli-codex `gpt-5.4` high reasoning effort. Original charter (12 questions) executed iters 1-5; user-requested continuation charter (5 unexplored modules: contracts.ts, extract-python.ts/extract-go.ts, tokens.ts, scanner.ts/config.ts, components.ts/telemetry.ts) executed iters 6-10. Produce a 22-row Adopt/Adapt/Reject decision matrix synthesizing all 10 iterations.
+**Key Decisions**: Run the packet to 20 total iterations across three segments: original charter (iters 1-5), first continuation charter (iters 6-10), and a `completed-continue` extension (iters 11-20) covering watch/hook automation, middleware/libs/config detectors, formatter lifecycle, MCP cache/error semantics, AI-config write safety, HTML projection, scanner heuristics, and final adoption synthesis. Iterations 1-3 and 6-10 used cli-codex `gpt-5.4` high reasoning effort, iters 4-5 used native fallback after codex stalls, and iters 11-20 executed directly in the active Codex session because self-invoking cli-codex from Codex would be circular. The packet keeps the 22-row Adopt/Adapt/Reject matrix and extends it with the 20-iteration synthesis.
 
 **Critical Dependencies**: cli-codex CLI installed (verified `codex-cli 0.118.0`); `external/` accessible at the spec folder root; reducer script at `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs`; memory script at `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`.
 
@@ -67,7 +67,8 @@ Produce an evidence-grounded Adopt/Adapt/Reject decision matrix for Codesight pa
 - Blast-radius reverse-import BFS in `external/src/detectors/blast-radius.ts` and the underlying graph in `external/src/detectors/graph.ts`.
 - Hot-file ranking and dependency graph as "change carefully" surfaces.
 - Benchmark methodology in `external/src/eval.ts` and fixture coverage under `external/eval/fixtures/`.
-- Continuation charter: contract enrichment (`external/src/detectors/contracts.ts`), Python/Go AST parity (`external/src/ast/extract-python.ts`, `external/src/ast/extract-go.ts`), token stats provenance (`external/src/detectors/tokens.ts`), monorepo + config + plugins (`external/src/scanner.ts`, `external/src/config.ts`), and components + telemetry + cumulative risk inventory (`external/src/detectors/components.ts`, `external/src/telemetry.ts`).
+- First continuation charter: contract enrichment (`external/src/detectors/contracts.ts`), Python/Go AST parity (`external/src/ast/extract-python.ts`, `external/src/ast/extract-go.ts`), token stats provenance (`external/src/detectors/tokens.ts`), monorepo + config + plugins (`external/src/scanner.ts`, `external/src/config.ts`), and components + telemetry + cumulative risk inventory (`external/src/detectors/components.ts`, `external/src/telemetry.ts`).
+- Completed-continue extension: watch mode + pre-commit hook automation (`external/src/index.ts`), middleware/libs/config detector behavior (`external/src/detectors/middleware.ts`, `external/src/detectors/libs.ts`, `external/src/detectors/config.ts`), formatter lifecycle (`external/src/formatter.ts`), MCP cache + error semantics (`external/src/mcp-server.ts`), AI-config write safety (`external/src/generators/ai-config.ts`), HTML projection (`external/src/generators/html-report.ts`), scanner heuristics (`external/src/scanner.ts`), and final synthesis over all 20 iterations.
 - Cross-phase boundary with 003-contextador (self-healing query interface) and 004-graphify (NetworkX/Leiden graph math).
 
 ### Out of Scope
@@ -100,8 +101,10 @@ Produce an evidence-grounded Adopt/Adapt/Reject decision matrix for Codesight pa
 | REQ-008 | P0 | Compare per-tool profile differentiation across Claude Code, Cursor, Codex, Copilot, and Windsurf in `external/src/generators/ai-config.ts` |
 | REQ-009 | P0 | Validate or refute the README's headline benchmark claims against `external/src/eval.ts`, `external/eval/fixtures/`, and `external/tests/detectors.test.ts` |
 | REQ-010 | P0 | Bound cross-phase overlap with phases 003 (contextador) and 004 (graphify) explicitly |
-| REQ-011 | P1 | Continuation charter: trace contract enrichment, Python/Go AST parity, token stats provenance, monorepo + config + plugins, and components + telemetry + cumulative risk inventory |
-| REQ-012 | P1 | Synthesize a 22-row Adopt/Adapt/Reject decision matrix in `research/research.md` §18.3 |
+| REQ-011 | P1 | First continuation charter: trace contract enrichment, Python/Go AST parity, token stats provenance, monorepo + config + plugins, and components + telemetry + cumulative risk inventory |
+| REQ-012 | P1 | Completed-continue extension: trace watch/hook automation, middleware/libs/config detectors, formatter lifecycle, MCP cache/error semantics, AI-config write safety, HTML projection, scanner heuristics, and final adoption synthesis |
+| REQ-013 | P1 | Keep `research/research.md`, reducer outputs, and human-owned phase docs aligned after the `completed-continue` reopen so the packet state agrees on 20 total iterations |
+| REQ-014 | P1 | Preserve the 22-row Adopt/Adapt/Reject decision matrix in `research/research.md` §18.3 and reconcile it with the 20-iteration final closeout |
 
 ---
 
@@ -110,12 +113,12 @@ Produce an evidence-grounded Adopt/Adapt/Reject decision matrix for Codesight pa
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- All 17 questions (Q1-Q12 from original charter + Q13-Q17 from continuation charter) are answered with source-cited findings.
-- At least 12 evidence-backed findings exist (delivered: 52 across 10 iterations).
+- All 27 questions (Q1-Q12 + Q13-Q17 + Q18-Q27) are answered with source-cited findings.
+- At least 12 evidence-backed findings exist (delivered: 95 across 20 iterations).
 - Cross-phase overlap between 002 / 003 / 004 is bounded explicitly in synthesis.
-- A 22-row Adopt/Adapt/Reject decision matrix lives in `research/research.md` §18.3 with every row line-grounded.
-- Memory artifact saved with `critical` importance tier and clean trigger phrases.
-- `validate.sh --strict` returns RESULT: PASSED.
+- A 22-row Adopt/Adapt/Reject decision matrix lives in `research/research.md` §18.3 with every row line-grounded and the late-session synthesis reconciles the matrix against the additional 10 iterations.
+- Memory chronology is preserved under `memory/`; lower-quality saved memories are documented rather than manually rewritten.
+- `validate.sh --strict` reports 0 blocking errors; the remaining strict failure is the known warning-only ADR-anchor bucket in `decision-record.md`.
 - No edits made under `external/`.
 
 ---
@@ -131,9 +134,10 @@ Produce an evidence-grounded Adopt/Adapt/Reject decision matrix for Codesight pa
 |----|------|-----------|
 | R-001 | cli-codex CLI stalls in S sleep state under API throttling | Native Read/Grep fallback (used in iters 4-5) |
 | R-002 | `--sandbox read-only` blocks `/tmp` writes from codex agents | Orchestrator extracts reports from `-o` last-message capture or stdout reasoning trace (used successfully in iters 6-10) |
-| R-003 | Reducer overwrites analyst-owned strategy sections | Re-add Q1-Q17 summaries to KEY QUESTIONS and ANSWERED QUESTIONS sections after each reducer run |
+| R-003 | Reducer overwrites analyst-owned strategy sections | Re-add Q1-Q27 summaries to KEY QUESTIONS and ANSWERED QUESTIONS sections after reducer runs when needed |
 | R-004 | Validator infers wrong level for research phase folder | Declare `<!-- SPECKIT_LEVEL: 3 -->` explicitly in spec.md |
 | R-005 | README headline claims (e.g., "11.2x token reduction") quoted as truth | Iter 4 finding 4 + iter 8 explicitly distinguish heuristic formula from real measurement; flag as `README-level` |
+| R-006 | `completed-continue` reopen leaves human-owned phase docs stale while reducer files move ahead | Reconcile spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, and description.json after generation-2 closeout |
 
 ### Dependencies
 
@@ -198,7 +202,7 @@ Produce an evidence-grounded Adopt/Adapt/Reject decision matrix for Codesight pa
 **I want** an evidence-grounded matrix of Codesight's portable patterns and known gotchas
 **So that** I can adopt the high-leverage low-risk patterns without inheriting the heuristic formulas, the over-marketed claims, or the known bugs
 
-**Acceptance**: research/research.md §18.3 contains a 22-row matrix where every row cites exact `external/src/` line ranges and labels evidence type and recommendation tier.
+**Acceptance**: research/research.md §18.3 contains a 22-row matrix where every row cites exact `external/src/` line ranges and labels evidence type and recommendation tier, and the late-session synthesis updates the recommendation boundaries after the additional 10 iterations.
 
 ### US-002: Researcher needs to know what the README overreaches
 
@@ -238,15 +242,20 @@ Produce an evidence-grounded Adopt/Adapt/Reject decision matrix for Codesight pa
 - **When** iteration 3 traces the BFS internals
 - **Then** the iteration file documents the depth-cap off-by-one bug at the exact line where it occurs
 
-**Scenario 5 (REQ-011 — Continuation charter dispatch)**
+**Scenario 5 (REQ-011 — First continuation charter dispatch)**
 - **Given** the user requests "5 more iterations of /spec_kit:deep-research with gpt-5.4 high agents in fast mode through cli-codex"
 - **When** the orchestrator selects 5 unexplored modules
 - **Then** all 5 iterations dispatch in parallel as background processes via cli-codex with `--sandbox read-only` and produce iteration files with line-cited findings
 
-**Scenario 6 (REQ-012 — 22-row decision matrix)**
-- **Given** all 10 iterations have completed
-- **When** the orchestrator synthesizes §18 of `research/research.md`
-- **Then** the section contains a 22-row Adopt/Adapt/Reject matrix where every row cites at least one iteration source and labels its risk tier (low/medium/high) and recommendation (adopt now / prototype later / reject)
+**Scenario 6 (REQ-012 — Completed-continue extension to 20 total iterations)**
+- **Given** the packet has already completed 10 iterations and the user requests 10 more
+- **When** the orchestrator reopens the packet in `completed-continue` mode
+- **Then** it snapshots the prior synthesis, appends runs 11-20 plus lifecycle events to `deep-research-state.jsonl`, and extends `research/research.md` to the 20-iteration closeout
+
+**Scenario 7 (REQ-014 — 22-row decision matrix retained after generation-2 closeout)**
+- **Given** all 20 iterations have completed
+- **When** the orchestrator finalizes the packet synthesis
+- **Then** the section still contains the 22-row Adopt/Adapt/Reject matrix and the final synthesis explicitly reconciles late-session findings against it
 
 ---
 
@@ -255,20 +264,20 @@ Produce an evidence-grounded Adopt/Adapt/Reject decision matrix for Codesight pa
 <!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
-None — all 17 questions (Q1-Q12 + Q13-Q17) answered. See `research/research.md` §18 for the full coverage report.
+None — all 27 questions (Q1-Q27) answered. See `research/research.md` for the full coverage report.
 
 ---
 
 ## RELATED DOCUMENTS
 
-- `research/research.md` — canonical synthesis (18 sections, 800+ lines)
-- `research/iterations/iteration-{001..010}.md` — per-iteration findings
+- `research/research.md` — canonical generation-2 synthesis (872 lines, 20 iterations)
+- `research/iterations/iteration-{001..020}.md` — per-iteration findings
 - `research/deep-research-strategy.md` — analyst + reducer strategy file
-- `research/deep-research-dashboard.md` — reducer-generated dashboard (Status: COMPLETE, 10/10)
+- `research/deep-research-dashboard.md` — reducer-generated dashboard (Status: COMPLETE, 20/20)
 - `plan.md` — implementation plan
 - `tasks.md` — task tracking
 - `implementation-summary.md` — outcome summary
-- `memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md` — saved memory artifact (memory ID #1835)
+- `memory/` — three chronological saved-memory artifacts; use `research/research.md` as canonical truth if a memory snapshot and packet docs disagree
 
 
 <!-- /ANCHOR:questions -->

@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor",
+  "description": "Feature Specification: FTS Capability Cascade Floor",
+  "keywords": [
+    "feature",
+    "specification",
+    "fts",
+    "capability",
+    "cascade",
+    "floor"
+  ],
+  "lastUpdated": "2026-04-08T14:05:59.000Z",
+  "specId": "010",
+  "folderSlug": "fts-capability-cascade-floor",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

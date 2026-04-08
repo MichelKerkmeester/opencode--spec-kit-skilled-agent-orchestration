@@ -1,0 +1,36 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "sessionSummary": "Phase 3 replay proves standalone trigger junk no longer survives the save path when the packet context includes graph and issues language next to a valid mcp surface.",
+  "triggerPhrases": [
+    "and",
+    "the",
+    "with",
+    "graph",
+    "issues",
+    "mcp",
+    "retrieval quality"
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
+      "action": "Created",
+      "description": "Centralizes standalone stopword and allowlist decisions"
+    }
+  ],
+  "nextSteps": [
+    "Replay the generated context file"
+  ],
+  "expectedAbsentTriggers": [
+    "and",
+    "the",
+    "with",
+    "graph",
+    "issues"
+  ],
+  "expectedPresentTriggers": [
+    "mcp",
+    "retrieval quality"
+  ],
+  "expectedAbsentTopics": [],
+  "expectedPresentTopics": []
+}

@@ -639,6 +639,7 @@ export {
   getChannel,
   detectContextType,
   detectImportanceTier,
+  resolveImportanceTier,
   detectProjectPhase,
   extractActiveFile,
   extractNextAction,

@@ -2,6 +2,8 @@
 // MODULE: Session Types
 // ---------------------------------------------------------------
 
+import type { SaveMode } from './save-mode';
+
 // ───────────────────────────────────────────────────────────────
 // 1. SESSION TYPES
 // ───────────────────────────────────────────────────────────────
@@ -148,6 +150,8 @@ export interface CollectedDataBase {
   keyDecisions?: Array<Record<string, unknown>>;
   nextSteps?: Array<Record<string, unknown>>;
   _source?: string;
+  saveMode?: SaveMode;
+  save_mode?: string;
   _sourceTranscriptPath?: string;
   _sourceSessionId?: string;
   _sessionId?: string;
@@ -641,4 +645,27 @@ export interface SessionData {
   COMMIT_REF: string | null;
   REPOSITORY_STATE: string;
   IS_DETACHED_HEAD: boolean;
+  CANONICAL_DOCS: CanonicalDocs;
+  DISTINGUISHING_EVIDENCE: DistinguishingEvidenceItem[];
+}
+
+/** Canonical document pointers derived from spec folder discovery. */
+export interface CanonicalDocs {
+  hasDecisionRecord: boolean;
+  hasImplementationSummary: boolean;
+  hasReviewReport: boolean;
+  hasResearchReport: boolean;
+  HAS_DECISION_RECORD: boolean;
+  HAS_IMPLEMENTATION_SUMMARY: boolean;
+  HAS_REVIEW_REPORT: boolean;
+  HAS_RESEARCH_REPORT: boolean;
+  DECISION_RECORD_PATH: string;
+  IMPLEMENTATION_SUMMARY_PATH: string;
+  REVIEW_REPORT_PATH: string;
+  RESEARCH_REPORT_PATH: string;
+}
+
+/** Compact evidence item retained in the memory retrieval wrapper. */
+export interface DistinguishingEvidenceItem {
+  EVIDENCE_ITEM: string;
 }

@@ -1,0 +1,17 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "sessionSummary": "Degraded payload with no authored decisions but decision-like prose that should still produce lexical placeholders.",
+  "observations": [
+    {
+      "type": "implementation",
+      "title": "Fallback regression probe",
+      "narrative": "We decided to keep degraded lexical fallback available when authored decision arrays are absent.",
+      "facts": []
+    }
+  ],
+  "userPrompts": [
+    {
+      "prompt": "We chose to preserve placeholder extraction when the payload is malformed or decision-less."
+    }
+  ]
+}

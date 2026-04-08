@@ -1,0 +1,11 @@
+{
+  "frontmatterContextType": "implementation",
+  "metadataContextType": "research",
+  "frontmatterTriggerPhrases": [
+    "dup5 canonical",
+    "frontmatter source"
+  ],
+  "metadataTriggerPhrases": [
+    "dup5 stale metadata"
+  ]
+}

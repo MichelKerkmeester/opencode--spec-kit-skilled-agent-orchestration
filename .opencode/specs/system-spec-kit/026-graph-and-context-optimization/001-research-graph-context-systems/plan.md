@@ -30,7 +30,7 @@ contextType: "plan"
 
 ### Overview
 
-This plan has two jobs. First, it finishes the root packet and normalizes every child-folder drift item so Phase 3 can validate a clean research track. Second, it turns the v2 recommendation order into a downstream adoption sequence that starts with seam contracts and bounded hardening, then moves into conditional adapters, then contract-heavy expansions, and only later touches large packaging or orchestration moves. [SOURCE: research/research-v2.md:148-199] [SOURCE: research/iterations/q-d-adoption-sequencing.md:13-116]
+This plan has two jobs. First, it keeps the parent packet, canonical root research set, and root support folders synchronized so the research track reads like one finished coordination root instead of an intermediate assembly checkpoint. Second, it preserves the downstream adoption sequence from the v2 recommendations without keeping unfinished follow-on packet openings inside this packet's completion state. A later derivative child packet, `006-research-memory-redundancy`, now extends that continuity-lane follow-on set by clarifying compact-wrapper and canonical-doc ownership assumptions for the packets that follow. [SOURCE: research/research.md:148-199] [SOURCE: research/iterations/q-d-adoption-sequencing.md:13-116]
 <!-- /ANCHOR:summary -->
 
 ---
@@ -75,8 +75,8 @@ NEXT STEP: <next concrete packet action>
 - [x] Seven parent packet docs exist with real content in every section.
 - [x] The missing `002-codesight/description.json` exists in the repo-native schema.
 - [x] All 15 child drift items from the audit are patched.
-- [x] A phase-2 before/after summary exists in `scratch/spec-doc-phase-2-summary.md`.
-- [x] Strict validation and changed-scope alignment checks pass on the packet.
+- [x] The root research folder uses canonical current files plus `research/archive/` for superseded snapshots.
+- [x] Strict validation is warning-only with no integrity errors, and the remaining ADR-anchor warning bucket is documented.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -88,13 +88,13 @@ NEXT STEP: <next concrete packet action>
 Coordination-root research packet
 
 ### Key Components
-- **Frozen research layer**: `research/research-v2.md`, `research/recommendations-v2.md`, `research/findings-registry-v2.json`, `research/cross-phase-matrix.md`, and the iter-7/iter-18 synthesis artifacts.
+- **Canonical research layer**: `research/research.md`, `research/recommendations.md`, `research/findings-registry.json`, `research/cross-phase-matrix.md`, `research/deep-research-dashboard.md`, and the archived superseded snapshots under `research/archive/`.
 - **Coordination layer**: root `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, and `description.json`.
 - **Conformance layer**: the five child folders whose packet docs must align with the Level 3 contract before validation.
 - **Follow-on packet layer**: the downstream adoption packets that implement R1, R10, R4, R6, R9, and the other sequenced recommendations.
 
 ### Data Flow
-The frozen research deliverables supply evidence. The root packet turns that evidence into requirements, sequencing, and ADRs. Child-folder patches restore structural consistency so the packet can validate as one unit. The validated packet then becomes the handoff surface for downstream follow-on specs that implement the P0 through P3 roadmap without re-litigating the external research. [SOURCE: scratch/spec-doc-audit.md:193-236] [SOURCE: research/research-v2.md:148-199] [SOURCE: research/iterations/q-d-adoption-sequencing.md:99-116]
+The canonical research deliverables supply evidence. The root packet turns that evidence into requirements, sequencing, and ADRs. Child-folder patches restore structural consistency, while the root `research/` archive split keeps the live synthesis distinct from historical snapshots. The validated packet then becomes the handoff surface for downstream follow-on specs that implement the P0 through P3 roadmap without re-litigating the external research. [SOURCE: scratch/spec-doc-audit.md:193-236] [SOURCE: research/research.md:148-199] [SOURCE: research/iterations/q-d-adoption-sequencing.md:99-116]
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -108,23 +108,24 @@ The frozen research deliverables supply evidence. The root packet turns that evi
 - [x] Patch every audit-listed child drift item, including the ADR-anchor and checklist-order items outside the short task list.
 - [x] Write a phase-2 summary report with before and after line counts.
 
-### Phase 2: P0 foundation rails and substrate-ready hardening
+### Phase 2: Root synthesis normalization and support-folder alignment
+- [x] Canonicalize the root research filenames and archive superseded top-level snapshots.
+- [x] Fold the `002-codesight`, `003-contextador`, `004-graphify`, and `005-claudest` closeout findings into the live synthesis and recommendations.
+- [x] Record the derivative `006-research-memory-redundancy` follow-on in the parent visibility surfaces without re-scoring the capability matrix.
+- [x] Sync parent packet references, dashboard status, and completion language to the canonical root research set.
+- [x] Review root generated-memory artifacts for duplication or staleness and retain manual-edit boundaries where the save workflow owns content. [SOURCE: research/research.md:24-30] [SOURCE: research/recommendations.md:1-12] [SOURCE: research/deep-research-dashboard.md:1-18]
+
+### Phase 3: Validation and completion-truth closeout
+- [x] Run strict validation on the parent packet and verify recursive child status.
+- [x] Verify superseded top-level research filenames are no longer referenced from the parent packet.
+- [x] Confirm the root research folder uses a canonical current-plus-archive layout.
+- [x] Update `tasks.md`, `checklist.md`, and `implementation-summary.md` so they reflect the real done state instead of an intermediate packet-opening phase.
+
+### Phase 4: Downstream packet queue preserved from the root
 - [ ] Open the follow-on packet for the provisional honest measurement contract.
 - [ ] Open the follow-on packet for trust-axis separation and freshness authority before structural packaging.
 - [ ] Open the follow-on packet for the shared-payload validator plus AST-versus-regex provenance honesty.
-- [ ] Open the follow-on packet for the detector fixture harness and hot-file ranking hardening.
-- [ ] Reframe the FTS capability cascade as bounded memory-lane hardening rather than a flagship replacement packet. [SOURCE: research/research-v2.md:151-160] [SOURCE: research/recommendations-v2.md:3-12] [SOURCE: research/recommendations-v2.md:53-71] [SOURCE: research/recommendations-v2.md:93-101]
-
-### Phase 3: P1 conditional adapters and clarity surfaces
-- [ ] Draft the graph-first PreToolUse nudge packet after scaffold and readiness checks are explicit.
-- [ ] Draft the guarded Stop-summary and cached-startup packets with fidelity and freshness gates.
-- [ ] Draft the dashboard publication guard packet and the browse-versus-search clarity work.
-- [ ] Draft the placement-rubric and pricing-normalization work once the measurement contract exists. [SOURCE: research/research-v2.md:162-168] [SOURCE: research/recommendations-v2.md:13-31] [SOURCE: research/recommendations-v2.md:83-91]
-
-### Phase 4: P2 and P3 contract-heavy or speculative follow-ons
-- [ ] Hold evidence-tagging, stable interchange, cache-cliff, SQLAlchemy extraction, and Leiden clustering until the trust contract work lands.
-- [ ] Keep artifact-default packaging, shared invalidation, monolithic scan orchestration, bootstrap layering, and modality-aware rebuild policy out of the early packet set.
-- [ ] Revisit these only after the prerequisite contracts exist and a freshness-sensitive evaluation corpus is in place. [SOURCE: research/research-v2.md:170-199] [SOURCE: research/research-v2.md:229-236]
+- [ ] Draft the graph-first PreToolUse nudge, guarded startup, dashboard-contract, and evaluation-corpus packets from this root rather than inside it. [SOURCE: research/research.md:151-199] [SOURCE: research/recommendations.md:3-101]
 <!-- /ANCHOR:phases -->
 
 ---
@@ -137,7 +138,7 @@ The frozen research deliverables supply evidence. The root packet turns that evi
 | Strict validation | Parent packet plus all five child folders | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <folder> --strict` |
 | Link integrity | All child prompt references and related packet links | `rg -n "phase-research-prompt\\.md"` |
 | Metadata and ADR structure | `## 1. METADATA` stays present in each affected `spec.md` and repeated ADR anchors remain visible in `decision-record.md` | `rg -n "^## 1\\. METADATA|ANCHOR:adr-"` |
-| Plan completeness | Missing Level 3 plan sections in root, `002-codesight`, and `005-claudest` | `rg -n "^## L2: ENHANCED ROLLBACK|^## L3: CRITICAL PATH|^## L3: MILESTONES"` |
+| Plan completeness | Parent packet status, completion truth, and canonical research references | `rg -n "^## L2: ENHANCED ROLLBACK|^## L3: CRITICAL PATH|^## L3: MILESTONES|research-v2|recommendations-v2|findings-registry-v2"` |
 | Scope alignment | Changed `.opencode` markdown and JSON files | `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems` |
 <!-- /ANCHOR:testing -->
 
@@ -149,10 +150,12 @@ The frozen research deliverables supply evidence. The root packet turns that evi
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | `scratch/spec-doc-audit.md` | Internal audit | Green | Without it the patch list is incomplete |
-| `research/research-v2.md` | Frozen synthesis | Green | Root docs would lose evidence grounding |
-| `research/recommendations-v2.md` | Ranked decision source | Green | Recommendation order and verdicts would drift |
+| `research/research.md` | Canonical synthesis | Green | Root docs would lose evidence grounding |
+| `research/recommendations.md` | Ranked decision source | Green | Recommendation order and verdicts would drift |
 | `research/iterations/q-d-adoption-sequencing.md` | Sequencing source | Green | Plan and tasks would lose their dependency order |
 | `research/iterations/q-f-killer-combos.md` | Adoption-decision source | Green | ADRs would lose the combo status and falsification basis |
+| `research/archive/` | Historical snapshots | Green | Without it the root folder would blur live and superseded deliverables |
+| `006-research-memory-redundancy/research/research.md` | Derivative follow-on authority | Green | Continuity-lane compact-wrapper guidance would lose its local source |
 | `folder-discovery.ts` schema | Repo-native metadata contract | Green | New `description.json` files could drift from discovery logic |
 <!-- /ANCHOR:dependencies -->
 
@@ -207,7 +210,7 @@ Packet assembly ───────► P0 foundation packets ─────�
 ### Pre-deployment Checklist
 - [x] Frozen research inputs confirmed unchanged.
 - [x] Child-folder drift list captured from the audit before editing.
-- [x] Recommendation ordering preserved from `research/recommendations-v2.md`.
+- [x] Recommendation ordering preserved from `research/recommendations.md`.
 
 ### Rollback Procedure
 1. Revert the parent packet docs and child-folder patches if Phase 3 detects structural or citation drift.
@@ -226,23 +229,23 @@ Packet assembly ───────► P0 foundation packets ─────�
 ## L3: DEPENDENCY GRAPH
 
 ```text
-research-v2 + recommendations-v2 + q-d + q-f
+research.md + recommendations.md + q-d + q-f
                     │
                     ▼
-          root packet docs created
+     canonical root research + root packet docs
                     │
          ┌──────────┴──────────┐
          ▼                     ▼
- child drift repairs      repo-native metadata
+ child drift repairs      archive + metadata sync
          └──────────┬──────────┘
                     ▼
             strict validation
                     │
                     ▼
-      P0 follow-on packet cluster opens
+      downstream packet queue preserved
                     │
                     ▼
-        P1 adapters and later P2/P3 holds
+        P0/P1 adapters and later P2/P3 holds
 ```
 
 ### Dependency Matrix
@@ -261,16 +264,16 @@ research-v2 + recommendations-v2 + q-d + q-f
 <!-- ANCHOR:critical-path -->
 ## L3: CRITICAL PATH
 
-1. **Create the parent packet docs** - current phase - CRITICAL
-2. **Repair every audit-listed child drift item** - current phase - CRITICAL
-3. **Pass strict validation on the parent and child folders** - next validation phase - CRITICAL
-4. **Open the P0 measurement and trust packets from the validated root** - downstream - CRITICAL
+1. **Create and sync the parent packet docs** - complete - CRITICAL
+2. **Repair every audit-listed child drift item** - complete - CRITICAL
+3. **Normalize root research into canonical current plus archive layout** - complete - CRITICAL
+4. **Pass strict validation in a warning-only or better state** - complete - CRITICAL
 
-**Total Critical Path**: root packet creation -> conformance repair -> validation -> P0 packet launch
+**Total Critical Path**: root packet creation -> conformance repair -> root research normalization -> validation handoff
 
 **Parallel Opportunities**:
-- The three child ADR-anchor repairs can move in parallel after the root docs exist.
-- The eventual P0 follow-on packets can split into measurement, trust, and payload sub-packets once the validation handoff is clean.
+- Cross-reference verification, archive cleanup, and completion-truth doc sync can move in parallel once the canonical research files are settled.
+- The eventual P0 follow-on packets can split into measurement, trust, and payload sub-packets after this packet's validation handoff.
 <!-- /ANCHOR:critical-path -->
 
 ---
@@ -280,10 +283,10 @@ research-v2 + recommendations-v2 + q-d + q-f
 
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
-| M1 | Root packet created | Seven parent docs plus parent metadata exist | Phase 2 |
-| M2 | Child conformance restored | 15 audit-listed drift items patched | Phase 2 |
-| M3 | Validation handoff ready | Strict validation and alignment checks pass | Phase 3 |
-| M4 | P0 program opened | First foundation packets for R1 and R10 are queued from this packet | Downstream |
+| M1 | Root packet created | Seven parent docs plus parent metadata exist | Complete |
+| M2 | Child conformance restored | 15 audit-listed drift items patched | Complete |
+| M3 | Root support folders normalized | Canonical research files live at root and superseded snapshots live under `research/archive/` | Complete |
+| M4 | Validation handoff ready | Strict validation is warning-only with no integrity errors, and downstream queue remains explicit | Complete |
 <!-- /ANCHOR:milestones -->
 
 ---

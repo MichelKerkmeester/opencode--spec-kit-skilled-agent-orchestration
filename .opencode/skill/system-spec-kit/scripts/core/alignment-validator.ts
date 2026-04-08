@@ -32,6 +32,52 @@ const PREFERRED_PARENT_FILES = new Set([
   'readme.md',
 ]);
 
+type FileChangeWithMergeMetadata = FileChange & {
+  merged_sources?: string[];
+  MERGED_PROVENANCE?: string;
+};
+
+function dedupeStrings(values: string[]): string[] {
+  return Array.from(new Set(values.filter((value) => value.trim().length > 0)));
+}
+
+function stripMergedSummary(description: string): string {
+  return description.replace(/\s*\|\s*\(merged from \d+ sources?\)\s*$/i, '').trim();
+}
+
+function updateMergedCarrier(
+  file: FileChange,
+  mergedSources: string[],
+  mergedContent: string,
+): void {
+  const target = file as FileChangeWithMergeMetadata;
+  const allMergedSources = dedupeStrings([
+    ...(target.merged_sources ?? []),
+    ...mergedSources,
+  ]);
+
+  target.merged_sources = allMergedSources;
+  target.MERGED_PROVENANCE = capText(
+    dedupeStrings([
+      target.MERGED_PROVENANCE ?? '',
+      mergedContent,
+    ]).join(' | '),
+    900,
+  );
+
+  const baseDescription = target._synthetic
+    ? `Tree-thinning merged ${allMergedSources.length} small files`
+    : stripMergedSummary(target.DESCRIPTION || '');
+  const mergedSummary = `(merged from ${allMergedSources.length} source${allMergedSources.length === 1 ? '' : 's'})`;
+
+  target.DESCRIPTION = capText(
+    baseDescription.length > 0
+      ? `${baseDescription} | ${mergedSummary}`
+      : mergedSummary,
+    900,
+  );
+}
+
 // ───────────────────────────────────────────────────────────────
 // 3. FUNCTIONS
 // ───────────────────────────────────────────────────────────────
@@ -145,27 +191,15 @@ export function applyThinningToFileChanges(
       continue;
     }
 
-    const childNames = childFiles.map((f) => path.basename(f.FILE_PATH));
     const mergedContent = compactMergedContent(mergedGroup.mergedSummary);
-
-    const mergeNote = capText(
-      `Tree-thinning merged ${childFiles.length} small files (${childNames.join(', ')}). ${mergedContent}`,
-      900,
-    );
+    const mergedSources = childFiles.map((f) => f.FILE_PATH);
 
     const parentDir = normalizeFilePath(mergedGroup.parentPath || '');
     const carrierIndices = indicesByParent.get(parentDir) ?? [];
 
     if (carrierIndices.length > 0) {
       const carrierIdx = pickCarrierIndex(carrierIndices, reducedFiles);
-      const existingDescription = reducedFiles[carrierIdx].DESCRIPTION || '';
-      const mergedDescription = existingDescription.includes(mergeNote)
-        ? existingDescription
-        : (existingDescription.length > 0 ? `${existingDescription} | ${mergeNote}` : mergeNote);
-      reducedFiles[carrierIdx].DESCRIPTION = capText(
-        mergedDescription,
-        900,
-      );
+      updateMergedCarrier(reducedFiles[carrierIdx], mergedSources, mergedContent);
       continue;
     }
 
@@ -173,12 +207,13 @@ export function applyThinningToFileChanges(
       ? `${parentDir}/(merged-small-files)`
       : '(merged-small-files)';
 
-    const syntheticEntry: FileChange = {
+    const syntheticEntry = {
       FILE_PATH: syntheticPath,
-      DESCRIPTION: mergeNote,
+      DESCRIPTION: '',
       ACTION: 'Merged',
       _synthetic: true,
-    };
+    } as FileChange;
+    updateMergedCarrier(syntheticEntry, mergedSources, mergedContent);
 
     const idx = reducedFiles.push(syntheticEntry) - 1;
     const updatedIndices = indicesByParent.get(parentDir) ?? [];

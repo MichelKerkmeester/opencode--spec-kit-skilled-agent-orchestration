@@ -52,7 +52,7 @@ The phase needed an engine that could read dense plugin source files (`external/
 
 **We chose**: Dispatch iterations through `cli-codex gpt-5.4` with `model_reasoning_effort=high`, `--full-auto`, and `--sandbox workspace-write` in fast `exec` mode.
 
-**How it works**: The orchestrator writes a per-iteration prompt file to /tmp/codex-iter-NNN-prompt, then runs `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --full-auto --sandbox workspace-write "$(cat /tmp/codex-iter-NNN-prompt)"`. Each invocation runs as a fresh-context LEAF agent that reads the cited files, writes findings directly to `research/iterations/iteration-001.md` (and iteration-002 through iteration-012 for subsequent runs), and exits.
+**How it works**: Generation 1 writes a per-iteration prompt file to `/tmp/codex-iter-NNN-prompt`, then runs `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --full-auto --sandbox workspace-write "$(cat /tmp/codex-iter-NNN-prompt)"`. Those invocations run as fresh-context LEAF agents that read the cited files and write findings directly to `research/iterations/iteration-001.md` through `research/iterations/iteration-012.md`. Generation 2 reopens the packet in `completed-continue` mode and extends the same research packet through `research/iterations/iteration-013.md` through `research/iterations/iteration-020.md` inside the active Codex workspace session with the same model target.
 
 ---
 
@@ -79,7 +79,7 @@ The phase needed an engine that could read dense plugin source files (`external/
 
 **What improves**:
 
-- Per-iteration findings are line-cited and reproducible (~67 findings across 12 iterations, every one with `[SOURCE: external/plugins/...:LINE-LINE]` or `[SOURCE: <Public source path>:LINE-LINE]`).
+- Per-iteration findings are line-cited and reproducible (162 reducer-tracked findings across 20 iterations, with both external Claudest source and bounded Public-source closeout reads).
 - Fresh context per iteration prevents the orchestrator's context from drifting across long sessions.
 - Direct file writes eliminate the brittle stdout-extraction pattern needed when the sandbox blocks `/tmp` writes.
 
@@ -106,7 +106,7 @@ The phase needed an engine that could read dense plugin source files (`external/
 |---|-------|--------|----------|
 | 1 | **Necessary?** | PASS | Phase needs evidence-grounded reads of large source files |
 | 2 | **Beyond Local Maxima?** | PASS | 4 alternatives compared above |
-| 3 | **Sufficient?** | PASS | All 12 iterations produced findings with line citations under the 12-tool budget |
+| 3 | **Sufficient?** | PASS | All 20 iterations produced findings with line citations under the 12-tool budget |
 | 4 | **Fits Goal?** | PASS | Critical path of the audit |
 | 5 | **Open Horizons?** | PASS | Pattern reusable for future deep-research phases that need direct file writes |
 
@@ -120,7 +120,8 @@ The phase needed an engine that could read dense plugin source files (`external/
 
 **What changes**:
 
-- All 12 iterations dispatched via cli-codex gpt-5.4 high with `--full-auto --sandbox workspace-write`
+- Iterations 1-12 dispatched via cli-codex gpt-5.4 high with `--full-auto --sandbox workspace-write`
+- Iterations 13-20 extended the same packet in completed-continue mode with the same model target and sequential synthesis discipline
 - Each iteration completed in ~3-5 minutes
 - No stdout-extraction workaround required
 
@@ -131,7 +132,6 @@ The phase needed an engine that could read dense plugin source files (`external/
 
 <!-- /ANCHOR:adr-001 -->
 
-<!-- ANCHOR:adr-002 -->
 ### ADR-002: Run continuation charter iterations 8-12 sequentially because each builds on the prior synthesis output
 
 ### Metadata
@@ -144,7 +144,6 @@ The phase needed an engine that could read dense plugin source files (`external/
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 After original-charter convergence at iter 7 (composite 0.84, 9/10 questions answered, `synthesis_complete` event), the user requested 5 more iterations to deepen Q10 specifically. Phase 002-codesight had previously parallelized its 5 continuation iterations because they covered independent modules (contracts.ts, extract-python.ts/extract-go.ts, tokens.ts, scanner.ts/config.ts, components.ts/telemetry.ts), but phase 005-claudest's 5 continuation iterations form a synthesis dependency chain: matrix → sequencing → smallest-safe-v1 slicing → packet-ready briefs → uncertainty closeout. Each iteration's output is the next iteration's required input.
@@ -155,23 +154,19 @@ After original-charter convergence at iter 7 (composite 0.84, 9/10 questions ans
 - Cannot lose the dependency chain by running iters 8-12 in parallel
 - Total wall time should be reasonable; 5 sequential iterations at ~5 minutes each is ~25 minutes
 - The user specified "fast mode" but not "parallel"
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Dispatch iters 8-12 sequentially via `codex exec`, with each iteration's prompt explicitly referencing the prior iteration's iteration file as the load-bearing input.
 
 **How it works**: After iter 7 emitted `synthesis_complete`, the orchestrator emitted `continuation_requested` with `newMaxIterations=12`, then dispatched iter 8 (synthesis matrix), waited for completion + reducer run, then dispatched iter 9 (sequencing), then iter 10 (smallest-safe-v1 slicing), then iter 11 (packet briefs), then iter 12 (uncertainty closeout). Each prompt named the previous iteration file as a required read.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -182,12 +177,10 @@ After original-charter convergence at iter 7 (composite 0.84, 9/10 questions ans
 | Stop at iter 8 (matrix only) and skip iters 9-12 | Cheapest | Loses the packet-ready handoff and uncertainty closeout that make the research actionable | 2/10 |
 
 **Why this one**: The 5 continuation iterations are inherently sequential because each one consumes the prior iteration's output. Parallelism would have required each iter to start from scratch with no synthesis context, defeating the entire point of the continuation charter.
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -200,12 +193,10 @@ After original-charter convergence at iter 7 (composite 0.84, 9/10 questions ans
 
 - Total wall time for the continuation charter was ~25 minutes (vs. ~7 minutes parallel for 002-codesight)
 - The orchestrator had to wait for each iter to complete before dispatching the next
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -217,12 +208,10 @@ After original-charter convergence at iter 7 (composite 0.84, 9/10 questions ans
 | 5 | **Open Horizons?** | PASS | Pattern reusable for future synthesis-class continuation iterations |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -234,14 +223,11 @@ After original-charter convergence at iter 7 (composite 0.84, 9/10 questions ans
 - Iter 12: uncertainty closeout against Public source → 7 findings
 
 **How to roll back**: Re-dispatch any iteration with a new focus, or stop the loop after iter 8 with only the matrix delivered. State files are append-only so re-running an iteration would just append new records.
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
 
 
-<!-- ANCHOR:adr-003 -->
 ### ADR-003: Reducer manages strategy.md sections 7-11 only; analyst owns sections 1-6 and 12-13 with post-reducer re-add to prevent overwrites
 
 ### Metadata
@@ -254,82 +240,71 @@ After original-charter convergence at iter 7 (composite 0.84, 9/10 questions ans
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
-The reducer is configured (in `research/deep-research-config.json`) to own sections 7-11 of `research/deep-research-strategy.md` (`what-worked`, `what-failed`, `exhausted-approaches`, `ruled-out-directions`, `next-focus`). It treats those sections as machine-generated and rewrites them after every iteration. However, when JSONL records use abbreviated question texts in their `answeredQuestions` array, the reducer occasionally also wipes the analyst-owned sections 3 (KEY QUESTIONS) and 6 (ANSWERED QUESTIONS), removing the line-by-line Q1-Q10 tracking the analyst maintains.
+The reducer is configured (in `research/deep-research-config.json`) to own sections 7-11 of `research/deep-research-strategy.md` (`what-worked`, `what-failed`, `exhausted-approaches`, `ruled-out-directions`, `next-focus`). It treats those sections as machine-generated and rewrites them after every iteration. However, when JSONL records use abbreviated question texts in their `answeredQuestions` array, the reducer occasionally also wipes the analyst-owned sections 3 (KEY QUESTIONS) and 6 (ANSWERED QUESTIONS), removing the line-by-line Q1-Q18 tracking the analyst maintains.
 
 ### Constraints
 
 - The reducer must continue to own sections 7-11 (this is a hard config constraint)
-- The analyst must maintain Q1-Q10 line tracking in sections 3 and 6
+- The analyst must maintain Q1-Q18 line tracking in sections 3 and 6
 - Conflicts must be resolved without disabling the reducer
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
-**We chose**: Treat sections 1-6 and 12-13 as analyst-owned, treat sections 7-11 as reducer-owned, and after every reducer run manually re-add the Q1-Q10 summaries to sections 3 and 6 if the reducer removed them.
+**We chose**: Treat sections 1-6 and 12-13 as analyst-owned, treat sections 7-11 as reducer-owned, and after every reducer run manually re-add the Q1-Q18 summaries to sections 3 and 6 if the reducer removed them.
 
-**How it works**: The orchestrator runs the reducer after each iteration, then immediately re-reads `research/deep-research-strategy.md` and re-applies the analyst section content if it was overwritten. The Q10 mark-as-answered edit at the end of the session is the canonical example: after the reducer ran post-iter-12, the orchestrator manually edited section 3 to mark Q10 `[x]` and added a line to section 6 saying "STATUS: SESSION COMPLETE".
-<!-- /ANCHOR:adr-003-decision -->
+**How it works**: The orchestrator runs the reducer after each iteration, then immediately re-reads `research/deep-research-strategy.md` and re-applies the analyst section content if it was overwritten. The first continuation updated Q10 after iter 12; the completed-continue generation then extended the same tracking through Q11-Q18 before the final "SESSION COMPLETE" closeout.
 
 ---
 
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
 | **Mixed ownership with post-reducer re-add** | Preserves both reducer schema and analyst tracking | Manual re-add work after each reducer run | 8/10 |
-| Move Q1-Q10 tracking to a separate analyst-only file | Cleaner separation | Loses single-source-of-truth for strategy.md | 6/10 |
+| Move Q1-Q18 tracking to a separate analyst-only file | Cleaner separation | Loses single-source-of-truth for strategy.md | 6/10 |
 | Disable reducer entirely | No overwrite risk | Loses dashboard refresh, findings-registry sync, machine-owned section maintenance | 3/10 |
 | Reduce JSONL records to use full question texts | Reducer would not abbreviate | Bloats JSONL records significantly | 5/10 |
 
 **Why this one**: Mixed ownership with post-reducer re-add is the lowest-friction recovery from the reducer's overzealous section management, and it preserves both the reducer's schema discipline and the analyst's question-tracking responsibility.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
 
 - strategy.md remains the canonical state file with both machine-generated and analyst-curated content
-- Q1-Q10 tracking survives across all 12 iterations and the SESSION COMPLETE transition
+- Q1-Q18 tracking survives across both generations and the SESSION COMPLETE transition
 
 **What it costs**:
 
 - The orchestrator must remember to re-add analyst sections after each reducer run
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | Reducer overwrite was observed and would have lost Q1-Q10 tracking |
+| 1 | **Necessary?** | PASS | Reducer overwrite was observed and would have lost Q1-Q18 tracking |
 | 2 | **Beyond Local Maxima?** | PASS | 4 alternatives compared |
-| 3 | **Sufficient?** | PASS | Q1-Q10 tracking preserved across all 12 iterations |
+| 3 | **Sufficient?** | PASS | Q1-Q18 tracking preserved across all 20 iterations |
 | 4 | **Fits Goal?** | PASS | Maintains both reducer schema and analyst tracking |
 | 5 | **Open Horizons?** | PASS | Pattern reusable for future deep-research phases |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -338,15 +313,12 @@ The reducer is configured (in `research/deep-research-config.json`) to own secti
 - Analyst owns sections 1-6 and 12-13
 - Post-reducer re-add applied after iter 8, iter 12, and the final SESSION COMPLETE edit
 
-**How to roll back**: Disable the reducer entirely (would lose dashboard refresh) or move Q1-Q10 tracking to a separate file (would lose single-source-of-truth).
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
+**How to roll back**: Disable the reducer entirely (would lose dashboard refresh) or move Q1-Q18 tracking to a separate file (would lose single-source-of-truth).
 
 ---
 
 
 
-<!-- ANCHOR:adr-004 -->
 ### ADR-004: Cross-phase boundary with sibling phase 001-claude-optimization-settings: implementation-side analysis here, audit-pattern analysis there
 
 ### Metadata
@@ -359,7 +331,6 @@ The reducer is configured (in `research/deep-research-config.json`) to own secti
 
 ---
 
-<!-- ANCHOR:adr-004-context -->
 ### Context
 
 Phase `005-claudest` and sibling phase `001-claude-optimization-settings` both touch the Claudest ecosystem but from different angles. Phase 001 extracts lessons from a Reddit audit post about Claude Code optimization patterns. Phase 005 examines the actual Claudest source implementation. Without an explicit boundary, the two phases would risk duplicating findings or contradicting each other.
@@ -369,23 +340,19 @@ Phase `005-claudest` and sibling phase `001-claude-optimization-settings` both t
 - Both phases are in scope simultaneously
 - Findings must be assignable to exactly one phase
 - Cross-references between phases must be acknowledged but not duplicated
-<!-- /ANCHOR:adr-004-context -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-decision -->
 ### Decision
 
 **We chose**: Phase `005-claudest` covers implementation-side analysis (what does the Claudest source actually do at function level); phase `001-claude-optimization-settings` covers audit-pattern analysis (what does the Reddit post say about optimization patterns). The two phases reference each other in their `Known Context` strategy sections without restating findings.
 
 **How it works**: The phase `005-claudest` strategy file `Known Context` section explicitly says "Phase `001-claude-optimization-settings` extracts lessons from the Reddit audit post (pattern side). This phase `005-claudest` examines the implementation side. Do not restate audit patterns - focus on what the Claudest source actually does." All iteration agents respect this boundary.
-<!-- /ANCHOR:adr-004-decision -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -395,12 +362,10 @@ Phase `005-claudest` and sibling phase `001-claude-optimization-settings` both t
 | Run only phase 005 and ignore phase 001 audit findings | Simpler | Loses the audit-pattern context that informs adoption decisions | 4/10 |
 
 **Why this one**: Splitting the two phases by evidence type (implementation source vs Reddit-post audit pattern) is the cleanest boundary because they answer different questions and require different reading depths.
-<!-- /ANCHOR:adr-004-alternatives -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-consequences -->
 ### Consequences
 
 **What improves**:
@@ -413,12 +378,10 @@ Phase `005-claudest` and sibling phase `001-claude-optimization-settings` both t
 
 - Each phase must respect the boundary in every iteration prompt
 - Cross-phase synthesis (if needed later) requires reading both phases
-<!-- /ANCHOR:adr-004-consequences -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -430,20 +393,16 @@ Phase `005-claudest` and sibling phase `001-claude-optimization-settings` both t
 | 5 | **Open Horizons?** | PASS | Pattern reusable for any sibling research phases |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-004-five-checks -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-impl -->
 ### Implementation
 
 **What changes**:
 
 - Phase 005 strategy.md `Known Context` section explicitly references phase 001
-- All 12 iteration prompts respect the boundary (no Reddit-post audit findings restated in phase 005)
+- All 20 iteration prompts respect the boundary (no Reddit-post audit findings restated in phase 005)
 - Phase 005 research.md §14 + §15 explicitly bound the cross-phase scope
 
 **How to roll back**: Merge the two phases by combining their state files, iteration files, and research.md into a single phase folder. This would require renaming and re-running both phase memory artifacts.
-<!-- /ANCHOR:adr-004-impl -->
-<!-- /ANCHOR:adr-004 -->

@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: 002-codesight Research Phase"
-description: "Architecture Decision Records covering engine selection, native fallback after codex stalls, parallel background dispatch for the continuation charter, and sandbox-extract workaround for the codesight deep-research audit."
+description: "Architecture Decision Records covering engine selection, native fallback after codex stalls, parallel background dispatch for the first continuation charter, and sandbox-extract workaround within the 20-iteration codesight deep-research packet."
 trigger_phrases:
   - "002-codesight decision record"
   - "002-codesight ADR"
@@ -78,7 +78,7 @@ The phase needed an engine that could read dense Node.js/TypeScript source files
 
 **What improves**:
 
-- Per-iteration findings are line-cited and reproducible (52 findings across 10 iterations, every one with `[SOURCE: external/src/...:LINE-LINE]`).
+- Per-iteration findings are line-cited and reproducible (95 findings across 20 iterations, every one backed by packet-local source citations).
 - Fresh context per iteration prevents the orchestrator's context from drifting across long sessions.
 
 **What it costs**:
@@ -120,6 +120,7 @@ The phase needed an engine that could read dense Node.js/TypeScript source files
 - Iters 1-3 dispatched via cli-codex gpt-5.4 high (~3 minutes each, clean output)
 - Iters 6-10 dispatched in parallel via cli-codex gpt-5.4 high (~7 minutes total wall time)
 - Iters 4-5 fell back to native Read/Grep after codex stalled (see ADR-002)
+- Iters 11-20 ran directly in the active Codex session once the packet was reopened in `completed-continue` mode
 
 **How to roll back**: Switch any subsequent iteration to native Read/Grep via the orchestrator. No persistent state binds the loop to a specific engine.
 
@@ -128,7 +129,6 @@ The phase needed an engine that could read dense Node.js/TypeScript source files
 
 <!-- /ANCHOR:adr-001 -->
 
-<!-- ANCHOR:adr-002 -->
 ### ADR-002: Switch to native Read/Grep fallback after codex stalled in iters 4-5
 
 ### Metadata
@@ -141,7 +141,6 @@ The phase needed an engine that could read dense Node.js/TypeScript source files
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 After successfully running iters 1-3 via cli-codex, iter 4 dispatched at ~10:30Z and the codex process entered S (interruptible sleep) state. After 40 minutes with no output (likely API throttling from concurrent codex traffic in a sibling session), the orchestrator killed PIDs 5866, 59530, 56544 and prepared to retry. Iter 5 dispatched and exhibited the same stall, killed after 20 minutes (PIDs 59524, 56538). The deep-research loop's stop conditions had not yet been met, so abandoning the iteration was not acceptable.
@@ -151,23 +150,19 @@ After successfully running iters 1-3 via cli-codex, iter 4 dispatched at ~10:30Z
 - Iters 4-5 must still produce evidence-grounded findings with the same template as iters 1-3
 - Cannot wait indefinitely for codex API quota to recover
 - Cannot lose the work already invested in the prompts and the cumulative context
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Complete iters 4-5 using native Read/Grep tools with the same finding template, exact line citations, and the same write target (`research/iterations/iteration-006.md`).
 
 **How it works**: The orchestrator reads each file directly via the Read tool, runs Grep for cross-file confirmation, and composes the iteration markdown manually. Each finding still cites exact file paths and line ranges; the only difference from iters 1-3 is that the write happens from the orchestrator's own context rather than from a codex agent.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -178,12 +173,10 @@ After successfully running iters 1-3 via cli-codex, iter 4 dispatched at ~10:30Z
 | Switch to a different external CLI (Gemini, Copilot) | New engine perspective | More complexity for marginal value | 5/10 |
 
 **Why this one**: Native fallback is the lowest-friction recovery from a codex stall, and it preserves the evidence-grounding discipline of iters 1-3. The cost (orchestrator context growth) is small relative to the cost of losing 2 iterations.
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -195,12 +188,10 @@ After successfully running iters 1-3 via cli-codex, iter 4 dispatched at ~10:30Z
 
 - The audit trail now distinguishes "cli-codex iterations" (1-3) from "native fallback iterations" (4-5). Documented in `research/research.md` §3 Methodology.
 - Future readers may wonder whether the fallback findings are equivalent in quality. Mitigation: same finding template, same line citations, same evidence labels.
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -212,12 +203,10 @@ After successfully running iters 1-3 via cli-codex, iter 4 dispatched at ~10:30Z
 | 5 | **Open Horizons?** | PASS | Pattern reusable when external CLIs stall |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -226,14 +215,11 @@ After successfully running iters 1-3 via cli-codex, iter 4 dispatched at ~10:30Z
 - Iter 5 fallback: 5 findings on static vs query-time + cross-phase scoping
 
 **How to roll back**: Re-dispatch iters 4-5 via cli-codex when API quota recovers. The native-fallback iteration files would be overwritten by the new agent-written versions if desired.
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
 
 
-<!-- ANCHOR:adr-003 -->
 ### ADR-003: Dispatch the continuation charter (iters 6-10) in parallel as background processes
 
 ### Metadata
@@ -246,7 +232,6 @@ After successfully running iters 1-3 via cli-codex, iter 4 dispatched at ~10:30Z
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
 After original-charter convergence at iter 5 (stop reason `all_questions_answered`), the user requested 5 more iterations to deepen coverage of unexplored modules. The user explicitly emphasized "fast mode through cli-codex". The deep-research loop normally runs iterations sequentially because each iteration's strategy.md `Next Focus` informs the next, but the 5 unexplored modules I picked (contracts.ts, extract-python.ts/extract-go.ts, tokens.ts, scanner.ts/config.ts, components.ts/telemetry.ts) are independent — no iteration depends on another's findings.
@@ -257,23 +242,19 @@ After original-charter convergence at iter 5 (stop reason `all_questions_answere
 - Total wall time must be substantially faster than 5x sequential dispatches (~25-30 min)
 - Iteration ordering must not affect findings quality (true independence)
 - The user specified "fast mode" and "cli-codex"
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 **We chose**: Dispatch all 5 continuation iterations as parallel background processes via `Bash run_in_background`. Each codex call writes to its own `/tmp/codex-iter-006-output` and `/tmp/codex-iter-NNN-stdout.log`. The orchestrator processes completion notifications as they arrive (iter 8 finished first, then 6+9, then 7+10).
 
 **How it works**: 5 parallel `codex exec` calls are launched in a single response, each with a unique prompt file and output target. Each prompt explicitly lists the avoid-list of topics covered in iters 1-5 to prevent rehash. Background IDs: bxjs6jo8n (iter 6), boamb0vry (iter 7), bhiek5bm7 (iter 8), b1hramyju (iter 9), b4avf6pv6 (iter 10).
-<!-- /ANCHOR:adr-003-decision -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -284,12 +265,10 @@ After original-charter convergence at iter 5 (stop reason `all_questions_answere
 | Single mega-iteration covering all 5 modules | One agent with full context | Too much for one iteration's tool budget; loses focus discipline | 3/10 |
 
 **Why this one**: The 5 modules are genuinely independent, the user said "fast mode", and parallel dispatch is the only way to honor both constraints. The contention risk is mitigated by the sandbox-extract workaround (ADR-004) -- even when codex hits API limits or sandbox issues, the orchestrator can still extract the assembled report from stdout.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -301,12 +280,10 @@ After original-charter convergence at iter 5 (stop reason `all_questions_answere
 
 - Parallel codex calls increased the risk of API contention. Mitigation: spread the prompts to focus on independent modules so the agents do not duplicate work.
 - The user-visible notification ordering does not match iteration numbers (iter 8 finished first, then 6+9, then 7+10), which slightly complicates progress reporting. Mitigation: orchestrator processes completions in any order and writes iteration files as they arrive.
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -318,12 +295,10 @@ After original-charter convergence at iter 5 (stop reason `all_questions_answere
 | 5 | **Open Horizons?** | PASS | Parallel dispatch pattern reusable for future independent iteration sets |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -332,14 +307,11 @@ After original-charter convergence at iter 5 (stop reason `all_questions_answere
 - Background IDs tracked in tasks.md T204
 
 **How to roll back**: Sequential redispatch via cli-codex or native Read/Grep. State files are append-only so re-running an iteration would just append new records.
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
 
 ---
 
 
 
-<!-- ANCHOR:adr-004 -->
 ### ADR-004: Sandbox-extract workaround when cli-codex --sandbox read-only blocks /tmp writes
 
 ### Metadata
@@ -352,7 +324,6 @@ After original-charter convergence at iter 5 (stop reason `all_questions_answere
 
 ---
 
-<!-- ANCHOR:adr-004-context -->
 ### Context
 
 When dispatching the continuation iterations 6-10 with `cli-codex --sandbox read-only`, every codex agent successfully ran the source trace but failed to write its assembled report to `/tmp/codex-iter-006-output`. The exact errors were `zsh:1: operation not permitted: /tmp/codex-iter-006-output` and `zsh:1: can't create temp file for here document: operation not permitted`. A direct Python `Path.write_text` probe also failed with `PermissionError: [Errno 1] Operation not permitted`. This proved that `--sandbox read-only` fully blocks `/tmp` writes, not just heredoc temp files.
@@ -365,23 +336,19 @@ The user explicitly asked for sandbox=read-only as part of the dispatch policy, 
 - Cannot lose any findings from the 5 successful agent runs
 - Must preserve exact line citations from the agent's reasoning trace
 - Must produce iteration files that match the same template as iters 1-5
-<!-- /ANCHOR:adr-004-context -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-decision -->
 ### Decision
 
 **We chose**: Extract the fully assembled reports from each codex agent's stdout reasoning trace (or `-o` last-message capture for iter 8) and reconstruct the iteration files verbatim.
 
 **How it works**: The codex CLI writes its full reasoning trace to stdout as the agent thinks through the task, including the exact heredoc or Python script that the agent tried to use to write `/tmp/codex-iter-006-output`. This stdout is captured by the orchestrator's bash redirect to `/tmp/codex-iter-NNN-stdout.log`. After each agent's background process completes, the orchestrator greps the stdout log for the assembled report (typically inside the failing heredoc string or a fenced markdown block in the `-o` capture), copies it verbatim into `research/iterations/iteration-006.md`, and adds a "Sandbox Note" section documenting the workaround.
-<!-- /ANCHOR:adr-004-decision -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -392,12 +359,10 @@ The user explicitly asked for sandbox=read-only as part of the dispatch policy, 
 | Discard the failed iterations and start over | Clean slate | Wastes 7 minutes of compute and 700K+ tokens of agent work | 1/10 |
 
 **Why this one**: Extraction preserves the user's directive AND the agent's findings, at the cost of orchestrator effort. The agents already did the hard work (reading the source files, building the findings); we just need to harvest what they produced.
-<!-- /ANCHOR:adr-004-alternatives -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-consequences -->
 ### Consequences
 
 **What improves**:
@@ -410,12 +375,10 @@ The user explicitly asked for sandbox=read-only as part of the dispatch policy, 
 
 - Each iteration file now contains a "Sandbox Note" subsection explaining the workaround. This is light bookkeeping.
 - The orchestrator had to read 60-200KB of stdout per iteration, which inflates orchestrator context usage. Acceptable for a 5-iteration burst; would not scale to 50 iterations.
-<!-- /ANCHOR:adr-004-consequences -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -427,12 +390,10 @@ The user explicitly asked for sandbox=read-only as part of the dispatch policy, 
 | 5 | **Open Horizons?** | PASS | Pattern reusable for any sandbox-blocked dispatch |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-004-five-checks -->
 
 ---
 
 
-<!-- ANCHOR:adr-004-impl -->
 ### Implementation
 
 **What changes**:
@@ -444,5 +405,3 @@ The user explicitly asked for sandbox=read-only as part of the dispatch policy, 
 - Iter 10: Report extracted from stdout reasoning trace (heredoc that failed; agent then ran a probe to confirm the sandbox boundary).
 
 **How to roll back**: Re-dispatch any iteration with `--sandbox workspace-write` (requires explicit user approval). The native iteration files would be replaced by the new agent-written versions.
-<!-- /ANCHOR:adr-004-impl -->
-<!-- /ANCHOR:adr-004 -->

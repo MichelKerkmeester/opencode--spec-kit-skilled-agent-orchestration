@@ -1,0 +1,55 @@
+{
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction",
+  "session_summary": "Decision and outcome dedupe fixture for Phase 6 extractor coverage.",
+  "user_prompts": [
+    {
+      "prompt": "Deduplicate repeated propositions across outcomes and decisions without dropping authored rationale.",
+      "timestamp": "2026-04-08T09:15:00.000Z"
+    }
+  ],
+  "observations": [
+    {
+      "type": "implementation",
+      "title": "Adopt deterministic regression fixtures",
+      "narrative": "Outcome bullet currently repeats the decision proposition and should be removed once dedupe lands.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts"
+      ]
+    },
+    {
+      "type": "implementation",
+      "title": "Keep canonical evidence snapshots",
+      "narrative": "Outcome bullet also repeats the decision title and should not survive beside the authored decision record.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts"
+      ]
+    },
+    {
+      "type": "implementation",
+      "title": "Collect audit evidence separately",
+      "narrative": "A distinct non-decision outcome should still remain in Key Outcomes after dedupe.",
+      "files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts"
+      ]
+    }
+  ],
+  "key_decisions": [
+    {
+      "decision": "Adopt deterministic regression fixtures"
+    },
+    {
+      "decision": "Keep canonical evidence snapshots",
+      "rationale": "Authored rationale text should survive verbatim for downstream review."
+    }
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+      "changes_summary": "Remove duplicate outcome propositions before rendering."
+    },
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts",
+      "changes_summary": "Suppress fallback rationale when it exactly repeats the decision title."
+    }
+  ]
+}

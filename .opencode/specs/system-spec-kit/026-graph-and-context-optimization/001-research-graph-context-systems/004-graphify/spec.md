@@ -20,7 +20,7 @@ contextType: spec
 
 Phase 4 of `001-research-graph-context-systems` is a read-only audit of the graphify external Python skill to translate its two-pass codebase knowledge graph patterns into concrete improvements for Code_Environment/Public's existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table grounded in specific `external/graphify/` file:line citations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.
 
-**Key Decisions**: Use deep-research loop with 10 iterations through cli-codex `gpt-5.4` high reasoning effort; preserve K1 to K32 finding lineage across iter 1 to 10; produce 4+5+4 Adopt/Adapt/Reject recommendations plus 4 cli-codex extension rows (A5, A6, D6, D7).
+**Key Decisions**: Use a 20-iteration two-wave deep-research loop; preserve K1 to K42 finding lineage across the original run plus completed-continue wave; keep Code Graph MCP and CocoIndex as the platform while translating graphify patterns into additive rollout guidance for Public.
 
 **Critical Dependencies**: cli-codex CLI installed; `external/graphify/` accessible at the spec folder root; reducer script at `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs`; memory script at `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`.
 
@@ -88,7 +88,7 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `research/research.md` | Create + Modify | Canonical synthesis: 17 sections, 12 baseline findings (K1 to K12), 20 cli-codex extension findings (K13 to K32), Adopt/Adapt/Reject table |
-| `research/iterations/iteration-001.md` to `research/iterations/iteration-010.md` | Create | 10 per-iteration evidence files |
+| `research/iterations/iteration-001.md` to `research/iterations/iteration-020.md` | Create | 20 per-iteration evidence files across the original run and completed-continue wave |
 | `research/deep-research-config.json` | Create + Modify | Loop config; status flips initialized to complete on synthesis |
 | `research/deep-research-state.jsonl` | Create + Append | Append-only event log |
 | `research/deep-research-strategy.md` | Create + Modify | Strategy + reducer-owned sections |
@@ -116,7 +116,7 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 | REQ-007 | Document Leiden clustering parameters, oversized-community split rules, god nodes, surprising connections, and `external/worked/karpathy-repos/GRAPH_REPORT.md` structure | research.md sections 5 and 12 cover `cluster.py`, `analyze.py`, `report.py` end-to-end |
 | REQ-008 | Verify the 71.5x token-reduction claim against `external/worked/karpathy-repos/` and identify load-bearing assumptions | research.md K1 reproduces `123,488 / 1,726 = 71.55x` and lists the three assumptions |
 | REQ-009 | Compare graphify against Public's existing Code Graph MCP and CocoIndex without duplicating phase 002 or phase 003 findings | research.md section 10 has a capability matrix; section 11 documents cross-phase deduplication |
-| REQ-010 | Produce Adopt / Adapt / Reject recommendations with prioritization | research.md section 12 has 4 Adopt + 5 Adapt + 4 Reject rows plus an impact-effort matrix |
+| REQ-010 | Produce Adopt / Adapt / Reject recommendations with prioritization | research.md section 12 has 6 Adopt + 7 Adapt + 4 Reject rows plus an impact-effort matrix |
 | REQ-011 | Validate the spec folder via `validate.sh --strict` with no errors | Strict validator returns RESULT: PASSED |
 | REQ-012 | Save memory context via `generate-context.js` and verify artifact exists | At least one file in `memory/*.md` with critical importance tier |
 
@@ -124,7 +124,7 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-013 | Per-iteration evidence files for every loop run | `research/iterations/iteration-{001..010}.md` exist with Findings, Sources Queried, Tools Used sections |
+| REQ-013 | Per-iteration evidence files for every loop run | `research/iterations/iteration-{001..020}.md` exist with Findings, Sources Queried, Tools Used sections |
 | REQ-014 | Reducer-managed registry, dashboard, and machine-owned strategy sections | `findings-registry.json`, `research/deep-research-dashboard.md` refreshed by `reduce-state.cjs` after every iteration |
 | REQ-015 | cli-codex extension iterations 8 to 10 produce K13 to K32 findings | research.md section 13.A has 20 net-new findings beyond K1 to K12 |
 | REQ-016 | Cross-corpus validation across `karpathy-repos` and `mixed-corpus` worked examples | research.md K26 cites both corpora and identifies the packaging mismatch |
@@ -135,10 +135,10 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: research.md contains at least 12 cited findings (delivered: 32 = K1 to K32, all with file:line citations)
-- **SC-002**: Adopt / Adapt / Reject table is line-grounded for every row (delivered in section 12 plus 4 additional rows in section 13.A.4)
+- **SC-001**: research.md contains at least 12 cited findings (delivered: 42 consolidated findings = K1 to K42, all with file:line citations)
+- **SC-002**: Adopt / Adapt / Reject table is line-grounded for every row (delivered inline in section 12, with section 13.A.4 retained only as lineage notes)
 - **SC-003**: Cross-phase overlap with 002 and 003 acknowledged in section 11 with explicit deduplication notes
-- **SC-004**: 12 of 12 research questions from `scratch/phase-research-prompt.md` answered (final coverage 1.0 at iter 10)
+- **SC-004**: 22 of 22 research questions answered across wave 1 and wave 2 (final coverage 1.0 at iter 20)
 - **SC-005**: `validate.sh --strict` returns RESULT: PASSED with zero errors
 - **SC-006**: Memory artifact saved with `critical` importance tier and clean trigger phrases
 <!-- /ANCHOR:success-criteria -->
@@ -206,7 +206,7 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 |-----------|-------|----------|
 | Scope | 18/25 | Files: ~25 read, ~10 written, Systems: deep-research loop + reducer + memory pipeline |
 | Risk | 8/25 | Auth: N, API: cli-codex external, Breaking: N (research-only) |
-| Research | 20/20 | 12 explicit research questions, 10-iteration loop, cross-corpus validation |
+| Research | 20/20 | 22 explicit research questions across a 20-iteration two-wave loop, including Public-internal rollout translation |
 | Multi-Agent | 10/15 | Workstreams: 1 leaf agent dispatched per iteration; serial orchestration |
 | Coordination | 10/15 | Dependencies: reducer between iterations, memory script post-synthesis |
 | **Total** | **66/100** | **Level 3 (research lens dominant)** |
@@ -233,8 +233,8 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 
 **Acceptance Criteria**:
 1. **Given** research.md section 12, **When** I scan any row, **Then** I see at least one `[SOURCE: external/graphify/...:LINE-LINE]` citation per row.
-2. **Given** any K1 to K32 finding, **When** I open the cited file at the cited lines, **Then** the code matches the claim.
-3. **Given** the cli-codex extension rows (A5, A6, D6, D7), **When** I trace them to section 13.A, **Then** each cites a K-finding that cites source.
+2. **Given** any K1 to K42 finding, **When** I open the cited file at the cited lines, **Then** the code matches the claim.
+3. **Given** the cli-codex extension rows (A5, A6, D6, D7) now inlined into section 12, **When** I trace their evidence, **Then** each points back to the relevant K-finding lineage in section 13.A.
 
 ---
 
@@ -253,7 +253,7 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 **As a** future researcher resuming this work, **I want** every iteration to have its own evidence file with sources and tools used, **so that** I can replay any iteration and reproduce its findings without re-reading the entire synthesis.
 
 **Acceptance Criteria**:
-1. **Given** `research/iterations/`, **When** I list files, **Then** I see `research/iterations/iteration-001.md` through `research/iterations/iteration-010.md` (10 files).
+1. **Given** `research/iterations/`, **When** I list files, **Then** I see `research/iterations/iteration-001.md` through `research/iterations/iteration-020.md` (20 files).
 2. **Given** any iteration file, **When** I read it, **Then** I see Focus, Findings, Tools Used, Sources Queried sections at minimum.
 
 ---
@@ -274,7 +274,7 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 
 **Acceptance Criteria**:
 1. **Given** any Adopt row in research/research.md section 12, **When** I read the "Concrete Adoption Plan" column, **Then** I see a specific Public surface (for example `code_graph_query` response payload, project hooks, CocoIndex incremental update path).
-2. **Given** the cli-codex extension rows (A5, A6, D6, D7) in section 13.A.4, **When** I read each row, **Then** I see the K-finding source plus the target Public surface.
+2. **Given** the cli-codex extension rows (A5, A6, D6, D7) in section 12, **When** I read each row, **Then** I see the K-finding source plus the target Public surface.
 
 ---
 
@@ -290,7 +290,7 @@ Produce an evidence-backed translation layer that tells Public exactly which gra
 
 ## 12. OPEN QUESTIONS
 
-- None remaining. All 12 research questions answered (final coverage 1.0 at iter 10). Q12 (Adopt/Adapt/Reject grounding) was the synthesis output and is fully covered in research.md section 12 plus the section 13.A.4 cli-codex extension rows.
+- None remaining. All 22 research questions are answered (final coverage 1.0 at iter 20). Q12 is fully covered in section 12, and Q13-Q22 are covered in section 13.B.
 <!-- /ANCHOR:questions -->
 
 ---

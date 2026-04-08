@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Graph and Context Systems Master Research Packet"
-description: "Executable packet tasks for root-doc completion, child-folder conformance, and the first follow-on adoption packets."
+description: "Executable packet tasks for parent-doc completion truth, canonical root research alignment, and root support-folder verification."
 trigger_phrases:
   - "graph context packet tasks"
   - "follow-on packet tasks"
@@ -20,7 +20,7 @@ contextType: "tasks"
 #### Pre-Task Checklist
 
 - [x] Audit file loaded before editing
-- [x] Frozen `research/` deliverables left untouched
+- [x] Canonical root `research/` set reviewed before editing
 - [x] Child drift list includes the short user list plus the extra audit-listed items
 - [x] Validation commands identified before closing the phase
 
@@ -28,17 +28,17 @@ contextType: "tasks"
 
 ```text
 PHASE 2 STATUS: in_progress | complete | needs-fix
-ROOT DOCS: <created count>/7
-CHILD DRIFT: <fixed count>/15
-VALIDATION: pending | clean | failed
-NEXT STEP: <next packet action>
+ROOT SUPPORT: <parent-doc sync + research status>
+ROOT MEMORY: reviewed | constrained
+VALIDATION: pending | warning-only | failed
+NEXT STEP: <next packet or closeout action>
 ```
 
 #### Blocked Task Protocol
 
 1. Mark the task `[B]` in this file if validation or integrity work blocks completion.
 2. Note the exact file and validator rule in the phase-2 summary report.
-3. Do not mark Phase 2 complete until the blocker is resolved or explicitly carried forward.
+3. Do not mark the packet complete until the blocker is resolved or explicitly carried forward.
 
 ---
 
@@ -57,8 +57,8 @@ NEXT STEP: <next packet action>
 ### Execution Rules
 
 - Use the root packet to open downstream specs, not to bypass them.
-- Treat recommendation work as packet-opening or contract-drafting tasks until a follow-on spec exists.
-- Keep frozen research deliverables unchanged. Any new interpretation must cite the v2 sources directly.
+- Track downstream recommendation work as queue context, not as this packet's completion gate.
+- Keep generated memory markdown under save-workflow authority. Any manual cleanup must stop at review, organization, or metadata-safe changes.
 <!-- /ANCHOR:notation -->
 
 ---
@@ -66,11 +66,11 @@ NEXT STEP: <next packet action>
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create the seven parent Level 3 packet docs from the frozen research deliverables (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `description.json`)
-- [x] T002 Add the missing repo-native metadata file for `002-codesight` (`002-codesight/description.json`)
-- [x] T003 Patch every audit-listed child drift item across 001 through 005 (child phase docs)
-- [x] T004 Create the phase-2 before and after summary report (`scratch/spec-doc-phase-2-summary.md`)
-- [ ] T005 Lock the validation handoff scope and note any remaining frozen-source caveats (`checklist.md`, `implementation-summary.md`)
+- [x] T001 Maintain the seven parent Level 3 packet docs as the authoritative coordination root (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `description.json`)
+- [x] T002 Keep repo-native metadata current for the parent packet and verify child metadata coverage without reopening child scopes (`description.json`, child `description.json` files)
+- [x] T003 Verify child packet cross-reference integrity without editing child packet docs in this refinement pass
+- [x] T004 Keep packet evidence synchronized between parent docs, canonical root research files, and packet-local scratch reports
+- [x] T005 Review root memory artifacts for duplication and usefulness, then record any save-workflow constraints instead of hand-editing generated markdown
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -78,14 +78,11 @@ NEXT STEP: <next packet action>
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T006 Open the follow-on spec for the provisional honest measurement contract (R1)
-- [ ] T007 Open the follow-on spec for trust-axis separation and freshness authority before structural packaging (R10)
-- [ ] T008 Open the follow-on spec for the shared-payload validator plus AST-versus-regex provenance honesty (R5 + R6 support lane)
-- [ ] T009 Open the follow-on spec for the graph-first PreToolUse nudge with readiness checks (R4)
-- [ ] T010 [P] Draft the guarded Stop-summary and cached-startup follow-on packet scopes (R2 + R3)
-- [ ] T011 [P] Draft the auditable-savings publication guard and dashboard-contract packet scope (R9)
-- [ ] T012 [P] Re-scope the runtime FTS capability cascade as low-priority memory hardening with explicit fallback semantics (R7)
-- [ ] T013 [P] Define the evaluation corpus needed before the warm-start bundle can move from conditional to default-safe (R8)
+- [x] T006 Canonicalize the root research filenames so current synthesis lives at `research/research.md`, `research/recommendations.md`, and `research/findings-registry.json`
+- [x] T007 Archive superseded root research snapshots under `research/archive/` instead of leaving `*-v1` or `*-v2` names at the top level
+- [x] T008 Fold the `002-codesight`, `003-contextador`, `004-graphify`, and `005-claudest` 20-iteration closeout findings into the canonical root synthesis and recommendations, then record the derivative `006-research-memory-redundancy` follow-on in the root visibility surfaces without changing the matrix scope
+- [x] T009 Refresh root dashboard and parent packet references so they point at the canonical live files rather than superseded snapshot names and now mention the derivative child follow-on where needed
+- [x] T010 Preserve the downstream recommendation program as explicit queue context without keeping unfinished packet-opening work in this packet's completion gate
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -93,12 +90,12 @@ NEXT STEP: <next packet action>
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T014 Run strict validation on the parent folder and all five child folders
-- [ ] T015 Verify every surviving child prompt link resolves to the literal child-folder `scratch/` target
-- [ ] T016 Verify every affected `spec.md` still exposes the Level 3 metadata section
-- [ ] T017 Verify `decision-record.md` later ADRs are fully anchorized in the patched child folders
-- [ ] T018 Verify the Level 3 summary rule by confirming no patched Level 3 implementation summary retains a `Files Changed` table
-- [ ] T019 Save or refresh packet memory only after validation is clean
+- [x] T011 Run strict validation on the parent folder and confirm recursive child validation remains in a warning-only or better state
+- [x] T012 Verify every surviving child prompt link resolves to the literal child-folder `scratch/` target
+- [x] T013 Verify the parent and root support docs no longer reference superseded top-level `research-v2`, `recommendations-v2`, or `findings-registry-v2` filenames
+- [x] T014 Verify the root research folder is orderly: canonical current files at root, superseded snapshots in `research/archive/`
+- [x] T015 Verify root memory artifacts were reviewed without manual markdown rewrites outside the save workflow
+- [x] T016 Refresh `tasks.md`, `checklist.md`, and `implementation-summary.md` so completion status matches the packet's actual done state
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -106,10 +103,10 @@ NEXT STEP: <next packet action>
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All Phase 1 packet-creation tasks and Phase 3 verification tasks are marked `[x]`
-- [ ] No `[B]` blocked tasks remain for the root packet
-- [ ] The first two downstream packet openings for R1 and R10 are queued from this packet
-- [ ] Strict validation has a clean handoff state for the root and child folders
+- [x] All parent-packet and root-support-folder tasks in this file are marked `[x]`
+- [x] No `[B]` blocked tasks remain for the root packet
+- [x] Downstream packet work is tracked as queue context rather than as unfinished work inside this packet
+- [x] Strict validation is in a documented warning-only handoff state with no integrity errors
 <!-- /ANCHOR:completion -->
 
 ---

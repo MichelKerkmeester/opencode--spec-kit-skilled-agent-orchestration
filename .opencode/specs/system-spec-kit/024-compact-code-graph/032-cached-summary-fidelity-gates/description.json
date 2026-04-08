@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates",
+  "description": "Feature Specification: Cached Summary Fidelity Gates",
+  "keywords": [
+    "feature",
+    "specification",
+    "cached",
+    "summary",
+    "fidelity",
+    "gates"
+  ],
+  "lastUpdated": "2026-04-08T14:27:35.660Z",
+  "specId": "032",
+  "folderSlug": "cached-summary-fidelity-gates",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

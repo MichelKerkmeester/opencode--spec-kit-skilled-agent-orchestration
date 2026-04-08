@@ -1,6 +1,6 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
-  "description": "Level 3 master research packet for graph and context optimization that turns the v2 synthesis into root requirements, adoption decisions, sequencing, and packet-conformance fixes for Public.",
+  "description": "Level 3 master research packet for graph and context optimization that turns the canonical synthesis into root requirements, adoption decisions, sequencing, packet-conformance fixes, and orderly root support folders for Public.",
   "keywords": [
     "graph",
     "context",
@@ -11,7 +11,7 @@
     "adoption",
     "sequencing"
   ],
-  "lastUpdated": "2026-04-07T13:06:08.010Z",
+  "lastUpdated": "2026-04-08T08:34:40Z",
   "specId": "001",
   "folderSlug": "research-graph-context-systems",
   "parentChain": [

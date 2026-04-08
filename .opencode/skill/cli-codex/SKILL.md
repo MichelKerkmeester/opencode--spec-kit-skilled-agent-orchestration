@@ -273,6 +273,7 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 |---------------|---------|
 | `--model <id>` | Model selection — `gpt-5.4` or `gpt-5.3-codex` |
 | `-c model_reasoning_effort="<level>"` | Reasoning effort override — `none`, `minimal`, `low`, `medium`, `high`, `xhigh` |
+| `-c service_tier="fast"` | **Fast mode** — routes the request through the fast tier. **Always pass this explicitly** when delegating from another AI so the call is self-documenting and never silently falls back to a slower tier. |
 | `--sandbox read-only` | Safe mode: read files, no writes or shell commands |
 | `--sandbox workspace-write` | Allow file writes within the workspace |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval** |
@@ -283,6 +284,18 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 | `--search` | Enable live web browsing during task execution |
 
 > **Default sandbox behavior**: `codex exec` without an explicit `--sandbox` flag defaults to `read-only` with `approval: never`. This means **file modification tasks will silently fail** — the agent reads the code and plans the changes but cannot write them. Always pass `--sandbox workspace-write` (or `--full-auto`) when the task requires file edits.
+
+> **Fast mode (REQUIRED for cross-AI delegation)**: Always pass `-c service_tier="fast"` explicitly. This routes the call through the fast tier instead of relying on whatever the user's `~/.codex/config.toml` has set as the default. Making it explicit means the invocation is reproducible regardless of who runs it. Canonical orchestration command:
+>
+> ```bash
+> codex exec \
+>   --model gpt-5.4 \
+>   -c model_reasoning_effort="high" \
+>   -c service_tier="fast" \
+>   -c approval_policy=never \
+>   --sandbox workspace-write \
+>   "<prompt>"
+> ```
 | `--image` / `-i` | Attach an image file as visual input |
 
 ### Model Selection

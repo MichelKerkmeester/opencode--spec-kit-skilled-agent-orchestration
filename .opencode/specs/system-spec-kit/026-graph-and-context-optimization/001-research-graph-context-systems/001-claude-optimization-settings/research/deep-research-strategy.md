@@ -31,11 +31,11 @@ Research the Reddit post at `external/reddit_post.md` and identify concrete conf
 <!-- /ANCHOR:topic -->
 <!-- ANCHOR:key-questions -->
 ## 3. KEY QUESTIONS (remaining)
-- [ ] Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's claimed 45k -> 20k base-context drop and 20k -> 6k tool-schema drop be interpreted given that this repo already has `ENABLE_TOOL_SEARCH=true` in `.claude/settings.local.json`? What follow-up validation, latency tradeoffs, and discoverability risks remain even after the flag is set?
-- [ ] Q2. Cache-expiry mitigation taxonomy: how should the post's claim that 54% of turns followed >5-minute idle gaps and that 232 cache cliffs occurred across 858 sessions be modeled? Which mitigations are pure config (e.g., compaction defaults), which are hook implementations (Stop/UserPromptSubmit/SessionStart cache warnings), and which are behavioral (clear-and-restart vs compact vs resume)?
-- [ ] Q3. Skill schema bloat detection: how should this repo detect low-usage skills (the post reports 19 of 42 had <=2 invocations across 858 sessions) and schema bloat? What counts as evidence strong enough to disable, gate, or lazy-load a skill given that this repo's skill_advisor.py already gates Gate 2 routing?
-- [ ] Q4. Cache-warning hook designs: how should the three proposed hooks (Stop = idle-timestamp, UserPromptSubmit = idle-gap warning, SessionStart = cache-rebuild estimator) be evaluated against this repo's existing PreCompact/SessionStart/Stop hook architecture without conflicting with session-prime, session-stop, and compact-inject behavior?
-- [ ] Q5. Bash-vs-native + redundant-read + edit-retry reinforcement: how should the post's findings of 662 bash `cat`/`grep`/`find` calls, 1,122 redundant file reads, and 31 edit-retry chains be translated into prompt rules, hooks, or telemetry for this repo (which already has a Code Search Decision Tree mandate in CLAUDE.md)?
+- [x] Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's claimed 45k -> 20k base-context drop and 20k -> 6k tool-schema drop be interpreted given that this repo already has `ENABLE_TOOL_SEARCH=true` in `.claude/settings.local.json`? What follow-up validation, latency tradeoffs, and discoverability risks remain even after the flag is set?
+- [x] Q2. Cache-expiry mitigation taxonomy: how should the post's claim that 54% of turns followed >5-minute idle gaps and that 232 cache cliffs occurred across 858 sessions be modeled? Which mitigations are pure config (e.g., compaction defaults), which are hook implementations (Stop/UserPromptSubmit/SessionStart cache warnings), and which are behavioral (clear-and-restart vs compact vs resume)?
+- [x] Q3. Skill schema bloat detection: how should this repo detect low-usage skills (the post reports 19 of 42 had <=2 invocations across 858 sessions) and schema bloat? What counts as evidence strong enough to disable, gate, or lazy-load a skill given that this repo's skill_advisor.py already gates Gate 2 routing?
+- [x] Q4. Cache-warning hook designs: how should the three proposed hooks (Stop = idle-timestamp, UserPromptSubmit = idle-gap warning, SessionStart = cache-rebuild estimator) be evaluated against this repo's existing PreCompact/SessionStart/Stop hook architecture without conflicting with session-prime, session-stop, and compact-inject behavior?
+- [x] Q5. Bash-vs-native + redundant-read + edit-retry reinforcement: how should the post's findings of 662 bash `cat`/`grep`/`find` calls, 1,122 redundant file reads, and 31 edit-retry chains be translated into prompt rules, hooks, or telemetry for this repo (which already has a Code Search Decision Tree mandate in CLAUDE.md)?
 
 <!-- /ANCHOR:key-questions -->
 <!-- ANCHOR:non-goals -->
@@ -59,7 +59,7 @@ Research the Reddit post at `external/reddit_post.md` and identify concrete conf
 - At least 5 evidence-backed findings recorded in `research/research.md`, each with source quote, what-it-documents, why-it-matters-for-this-repo, recommendation label (`adopt now` | `prototype later` | `reject`), affected-area, and risk note.
 - Cross-check against repo state complete: every recommendation explicitly notes whether it is already implemented, partially implemented, or missing in this repo.
 - Composite convergence signal hits stop threshold (see `references/convergence.md`).
-- 10 iterations cap reached.
+- 13 iterations cap reached.
 - Three consecutive iterations with newInfoRatio < 0.05 (stuck threshold).
 
 ---
@@ -67,7 +67,11 @@ Research the Reddit post at `external/reddit_post.md` and identify concrete conf
 <!-- /ANCHOR:stop-conditions -->
 <!-- ANCHOR:answered-questions -->
 ## 6. ANSWERED QUESTIONS
-[None yet]
+- Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's claimed 45k -> 20k base-context drop and 20k -> 6k tool-schema drop be interpreted given that this repo already has `ENABLE_TOOL_SEARCH=true` in `.claude/settings.local.json`? What follow-up validation, latency tradeoffs, and discoverability risks remain even after the flag is set?
+- Q2. Cache-expiry mitigation taxonomy: how should the post's claim that 54% of turns followed >5-minute idle gaps and that 232 cache cliffs occurred across 858 sessions be modeled? Which mitigations are pure config (e.g., compaction defaults), which are hook implementations (Stop/UserPromptSubmit/SessionStart cache warnings), and which are behavioral (clear-and-restart vs compact vs resume)?
+- Q3. Skill schema bloat detection: how should this repo detect low-usage skills (the post reports 19 of 42 had <=2 invocations across 858 sessions) and schema bloat? What counts as evidence strong enough to disable, gate, or lazy-load a skill given that this repo's skill_advisor.py already gates Gate 2 routing?
+- Q4. Cache-warning hook designs: how should the three proposed hooks (Stop = idle-timestamp, UserPromptSubmit = idle-gap warning, SessionStart = cache-rebuild estimator) be evaluated against this repo's existing PreCompact/SessionStart/Stop hook architecture without conflicting with session-prime, session-stop, and compact-inject behavior?
+- Q5. Bash-vs-native + redundant-read + edit-retry reinforcement: how should the post's findings of 662 bash `cat`/`grep`/`find` calls, 1,122 redundant file reads, and 31 edit-retry chains be translated into prompt rules, hooks, or telemetry for this repo (which already has a Code Search Decision Tree mandate in CLAUDE.md)?
 
 <!-- /ANCHOR:answered-questions -->
 <!-- MACHINE-OWNED: START -->
@@ -93,7 +97,7 @@ Research the Reddit post at `external/reddit_post.md` and identify concrete conf
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's claimed 45k -> 20k base-context drop and 20k -> 6k tool-schema drop be interpreted given that this repo already has `ENABLE_TOOL_SEARCH=true` in `.claude/settings.local.json`? What follow-up validation, latency tradeoffs, and discoverability risks remain even after the flag is set?
+[All tracked questions are resolved]
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->
@@ -124,7 +128,7 @@ Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's
 <!-- ANCHOR:research-boundaries -->
 ## 13. RESEARCH BOUNDARIES
 
-- Max iterations: 10
+- Max iterations: 13
 - Convergence threshold: 0.05
 - Per-iteration budget: 12 tool calls, 10 minutes
 - Progressive synthesis: true
@@ -137,6 +141,6 @@ Q1. ENABLE_TOOL_SEARCH credibility and current-state diff: how should the post's
 - Capability resolver: `.opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs`
 - Current generation: 1
 - Started: 2026-04-06T09:59:15Z
-- Iteration runner: cli-copilot --model gpt-5.4 (effortLevel: high) per user directive; falls back to inline execution if Copilot unavailable
+- Iteration runner: cli-copilot `gpt-5.4` high for the initial loop, then cli-codex `gpt-5.4` high for the user-requested skeptical extension through iteration 013
 - Sub-agent dispatch: PROHIBITED inside iteration runner per phase prompt §8 ("Don't dispatch sub-agents. This is a depth-1 leaf task")
 <!-- /ANCHOR:research-boundaries -->

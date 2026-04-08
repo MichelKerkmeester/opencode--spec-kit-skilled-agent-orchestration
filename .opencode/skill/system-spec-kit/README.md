@@ -549,7 +549,7 @@ The `scripts/memory/` directory contains 10 scripts for the memory system:
 
 | Script                        | Purpose                                                     |
 | ----------------------------- | ----------------------------------------------------------- |
-| `generate-context.ts`         | Primary workflow for saving session context to memory files |
+| `generate-context.ts`         | Source for the runtime memory-save entrypoint `scripts/dist/memory/generate-context.js` |
 | `backfill-frontmatter.ts`     | Add missing frontmatter to existing memory files            |
 | `rank-memories.ts`            | Rank memories by relevance for a query                      |
 | `reindex-embeddings.ts`       | Rebuild embedding vectors for stored memories               |

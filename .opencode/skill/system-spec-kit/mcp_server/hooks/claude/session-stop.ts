@@ -6,14 +6,19 @@
 // token usage, stores a snapshot, and updates lightweight session state.
 
 import { spawnSync } from 'node:child_process';
-import { openSync, fstatSync, readSync, closeSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { openSync, fstatSync, readSync, closeSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   parseHookStdin, hookLog, withTimeout, HOOK_TIMEOUT_MS,
+  type HookInput,
 } from './shared.js';
-import { ensureStateDir, loadState, updateState, cleanStaleStates } from './hook-state.js';
-import { parseTranscript, estimateCost } from './claude-transcript.js';
+import {
+  ensureStateDir, loadState, updateState, cleanStaleStates, getStatePath,
+  type HookState, type HookProducerMetadata,
+} from './hook-state.js';
+import { parseTranscript, estimateCost, type TranscriptUsage } from './claude-transcript.js';
 
 /** Default max age (ms) for stale state cleanup in --finalize mode */
 const FINALIZE_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
@@ -24,6 +29,7 @@ const SPEC_FOLDER_PATH_RE = /(?:\.opencode\/)?specs\/[^\s"'`]+/g;
 const SPEC_FOLDER_PREFIXES = ['.opencode/specs/', 'specs/'] as const;
 const SPEC_FOLDER_CANONICAL_PREFIX = 'specs/';
 const SPEC_FOLDER_SEGMENT_RE = /^\d{2,3}(?:--|-)[\w-]+$/;
+const SPEC_FOLDER_NAMESPACE_SEGMENT_RE = /^[a-z][\w-]+$/i;
 const HOOK_DIR = dirname(fileURLToPath(import.meta.url));
 const AUTOSAVE_TIMEOUT_MS = 4000;
 const IS_CLI_ENTRY = process.argv[1] ? resolve(process.argv[1]) === fileURLToPath(import.meta.url) : false;
@@ -99,6 +105,26 @@ function runContextAutosave(sessionId: string): void {
   hookLog('warn', 'session-stop', `Context auto-save failed: ${errorText}`);
 }
 
+export interface SessionStopProcessOptions {
+  autosaveMode?: 'enabled' | 'disabled';
+}
+
+export interface SessionStopProcessResult {
+  touchedPaths: string[];
+  parsedMessageCount: number;
+  autosaveMode: 'enabled' | 'disabled';
+  producerMetadataWritten: boolean;
+}
+
+function recordStateUpdate(
+  sessionId: string,
+  patch: Partial<HookState>,
+  touchedPaths: Set<string>,
+): void {
+  updateState(sessionId, patch);
+  touchedPaths.add(getStatePath(sessionId));
+}
+
 function selectDetectedSpecFolder(
   normalizedMatches: string[],
   currentSpecFolder: string | null,
@@ -166,26 +192,49 @@ function storeTokenSnapshot(
   hookLog('info', 'session-stop', `Token snapshot: ${usage.totalTokens} total (${usage.model ?? 'unknown'}), est. $${cost}`);
 }
 
-async function main(): Promise<void> {
-  ensureStateDir();
+function buildProducerMetadata(
+  transcriptPath: string,
+  usage: TranscriptUsage,
+): HookProducerMetadata {
+  const transcriptStat = statSync(transcriptPath);
+  const fingerprint = createHash('sha256')
+    .update(`${transcriptPath}:${transcriptStat.size}:${transcriptStat.mtimeMs}`)
+    .digest('hex')
+    .slice(0, 16);
 
-  // --finalize mode: manual cleanup of stale session states
-  if (process.argv.includes('--finalize')) {
-    const removed = cleanStaleStates(FINALIZE_MAX_AGE_MS);
-    hookLog('info', 'session-stop', `Finalize: cleaned ${removed} stale state file(s) older than 24h`);
-    return;
-  }
+  return {
+    lastClaudeTurnAt: transcriptStat.mtime.toISOString(),
+    transcript: {
+      path: transcriptPath,
+      fingerprint,
+      sizeBytes: transcriptStat.size,
+      modifiedAt: transcriptStat.mtime.toISOString(),
+    },
+    cacheTokens: {
+      cacheCreationInputTokens: usage.cacheCreationTokens,
+      cacheReadInputTokens: usage.cacheReadTokens,
+    },
+  };
+}
 
-  const input = await withTimeout(parseHookStdin(), HOOK_TIMEOUT_MS, null);
-  if (!input) {
-    hookLog('warn', 'session-stop', 'No stdin input received');
-    return;
-  }
+export async function processStopHook(
+  input: HookInput,
+  options: SessionStopProcessOptions = {},
+): Promise<SessionStopProcessResult> {
+  const autosaveMode = options.autosaveMode ?? 'enabled';
+  const touchedPaths = new Set<string>();
+  let parsedMessageCount = 0;
+  let producerMetadataWritten = false;
 
   // Guard: only run if stop hook is actively being processed
   if (input.stop_hook_active === false) {
     hookLog('info', 'session-stop', 'Stop hook not active, skipping');
-    return;
+    return {
+      touchedPaths: [],
+      parsedMessageCount,
+      autosaveMode,
+      producerMetadataWritten,
+    };
   }
 
   const sessionId = input.session_id ?? 'unknown';
@@ -202,18 +251,22 @@ async function main(): Promise<void> {
         startOffset,
       );
 
+      parsedMessageCount = usage.messageCount;
       if (usage.messageCount > 0) {
         const cost = estimateCost(usage);
         storeTokenSnapshot(sessionId, usage, cost);
 
-        // Update offset for incremental parsing on next stop
-        updateState(sessionId, {
+        // Update offset for incremental parsing on next stop and carry forward
+        // producer metadata needed by later continuity packets.
+        recordStateUpdate(sessionId, {
           metrics: {
             estimatedPromptTokens: usage.promptTokens,
             estimatedCompletionTokens: usage.completionTokens,
             lastTranscriptOffset: newOffset,
           },
-        });
+          producerMetadata: buildProducerMetadata(input.transcript_path as string, usage),
+        }, touchedPaths);
+        producerMetadataWritten = true;
 
         hookLog('info', 'session-stop',
           `Parsed ${usage.messageCount} messages: ${usage.promptTokens} prompt + ${usage.completionTokens} completion = ${usage.totalTokens} total tokens`);
@@ -227,12 +280,12 @@ async function main(): Promise<void> {
   if (input.transcript_path) {
     const detectedSpec = detectSpecFolder(input.transcript_path as string, stateBeforeStop?.lastSpecFolder ?? null);
     if (!stateBeforeStop?.lastSpecFolder && detectedSpec) {
-      updateState(sessionId, { lastSpecFolder: detectedSpec });
+      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec }, touchedPaths);
       hookLog('info', 'session-stop', `Auto-detected spec folder: ${detectedSpec}`);
     } else if (stateBeforeStop?.lastSpecFolder && detectedSpec === stateBeforeStop.lastSpecFolder) {
       hookLog('info', 'session-stop', `Validated active spec folder from transcript: ${detectedSpec}`);
     } else if (stateBeforeStop?.lastSpecFolder && detectedSpec && detectedSpec !== stateBeforeStop.lastSpecFolder) {
-      updateState(sessionId, { lastSpecFolder: detectedSpec });
+      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec }, touchedPaths);
       hookLog(
         'info',
         'session-stop',
@@ -246,15 +299,41 @@ async function main(): Promise<void> {
   // Extract session summary from last assistant message
   if (input.last_assistant_message) {
     const text = extractSessionSummary(input.last_assistant_message);
-    updateState(sessionId, {
+    recordStateUpdate(sessionId, {
       sessionSummary: { text, extractedAt: new Date().toISOString() },
-    });
+    }, touchedPaths);
     hookLog('info', 'session-stop', `Session summary extracted (${text.length} chars)`);
   }
 
-  runContextAutosave(sessionId);
+  if (autosaveMode === 'enabled') {
+    runContextAutosave(sessionId);
+  }
 
   hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
+  return {
+    touchedPaths: [...touchedPaths],
+    parsedMessageCount,
+    autosaveMode,
+    producerMetadataWritten,
+  };
+}
+
+async function main(): Promise<void> {
+  ensureStateDir();
+
+  // --finalize mode: manual cleanup of stale session states
+  if (process.argv.includes('--finalize')) {
+    const removed = cleanStaleStates(FINALIZE_MAX_AGE_MS);
+    hookLog('info', 'session-stop', `Finalize: cleaned ${removed} stale state file(s) older than 24h`);
+    return;
+  }
+
+  const input = await withTimeout(parseHookStdin(), HOOK_TIMEOUT_MS, null);
+  if (!input) {
+    hookLog('warn', 'session-stop', 'No stdin input received');
+    return;
+  }
+  await processStopHook(input);
 }
 
 /** Detect active spec folder from transcript content */
@@ -310,15 +389,27 @@ function normalizeSpecFolderPath(rawPath: string): string | null {
     .split('/')
     .filter(Boolean);
   const specSegments: string[] = [];
+  let seenNumberedSegment = false;
 
   for (const segment of relativeSegments) {
-    if (!SPEC_FOLDER_SEGMENT_RE.test(segment)) {
+    if (SPEC_FOLDER_SEGMENT_RE.test(segment)) {
+      seenNumberedSegment = true;
+      specSegments.push(segment);
+      continue;
+    }
+
+    if (!seenNumberedSegment && SPEC_FOLDER_NAMESPACE_SEGMENT_RE.test(segment)) {
+      specSegments.push(segment);
+      continue;
+    }
+
+    if (seenNumberedSegment) {
       break;
     }
-    specSegments.push(segment);
+    return null;
   }
 
-  if (specSegments.length === 0) {
+  if (specSegments.length === 0 || !seenNumberedSegment) {
     return null;
   }
 

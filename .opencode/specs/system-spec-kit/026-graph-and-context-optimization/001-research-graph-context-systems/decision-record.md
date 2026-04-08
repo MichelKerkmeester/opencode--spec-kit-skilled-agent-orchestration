@@ -32,13 +32,13 @@ contextType: "decision-record"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The v2 packet found the same failure mode in several places: approximate or partial evidence becomes crisp-looking output once it reaches a dashboard, artifact, or recommendation surface. Phase 001 preserves unresolved arithmetic, CodeSight overstates `ast` confidence for some regex-backed extraction, Contextador turns fixed constants into savings numbers, Graphify backfills confidence defaults, and Claudest can project certainty through normalized reporting even when some fields are estimated. Public therefore needs one visible rule about what can be published now and what still requires stronger authority. [SOURCE: research/research-v2.md:46-60] [SOURCE: research/research-v2.md:252-256] [SOURCE: research/recommendations-v2.md:3-12]
+The v2 packet found the same failure mode in several places: approximate or partial evidence becomes crisp-looking output once it reaches a dashboard, artifact, or recommendation surface. Phase 001 preserves unresolved arithmetic, CodeSight overstates `ast` confidence for some regex-backed extraction, Contextador turns fixed constants into savings numbers, Graphify backfills confidence defaults, and Claudest can project certainty through normalized reporting even when some fields are estimated. Public therefore needs one visible rule about what can be published now and what still requires stronger authority. [SOURCE: research/research.md:46-60] [SOURCE: research/research.md:252-256] [SOURCE: research/recommendations.md:3-12]
 
 ### Constraints
 
 - Public still lacks provider-counted authority for every headline savings claim.
 - The packet must not freeze a misleading permanent rule just to sound decisive.
-- Downstream dashboard work still needs a usable contract right now. [SOURCE: research/research-v2.md:73-76] [SOURCE: research/iterations/v1-v2-diff-iter-18.md:103-113]
+- Downstream dashboard work still needs a usable contract right now. [SOURCE: research/research.md:73-76] [SOURCE: research/archive/v1-v2-diff-iter-18.md:103-113]
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -48,7 +48,7 @@ The v2 packet found the same failure mode in several places: approximate or part
 
 **We chose**: Make the first packet decision a provisional honest measurement contract that labels every published field `exact`, `estimated`, `defaulted`, or `unknown` and blocks headline multipliers until stronger authority exists.
 
-**How it works**: The root packet treats measurement honesty as the first downstream packet to open. Later dashboard, pricing, and startup-claim work may proceed only through that contract, not around it. [SOURCE: research/recommendations-v2.md:3-12] [SOURCE: research/recommendations-v2.md:83-91]
+**How it works**: The root packet treats measurement honesty as the first downstream packet to open. Later dashboard, pricing, and startup-claim work may proceed only through that contract, not around it. [SOURCE: research/recommendations.md:3-12] [SOURCE: research/recommendations.md:83-91]
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -62,7 +62,7 @@ The v2 packet found the same failure mode in several places: approximate or part
 | Wait for perfect observability before writing any contract | Avoids premature wording | Leaves later packets without a decision surface | 6/10 |
 | Keep v1-style multiplier language and treat caveats as footnotes | Feels decisive | Repeats the precision-laundering problem the rigor lane exposed | 2/10 |
 
-**Why this one**: It is the narrowest move that fixes the load-bearing problem without pretending observability is already finished. [SOURCE: research/research-v2.md:73-76] [SOURCE: research/iterations/v1-v2-diff-iter-18.md:103-105]
+**Why this one**: It is the narrowest move that fixes the load-bearing problem without pretending observability is already finished. [SOURCE: research/research.md:73-76] [SOURCE: research/archive/v1-v2-diff-iter-18.md:103-105]
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---
@@ -116,7 +116,6 @@ The v2 packet found the same failure mode in several places: approximate or part
 
 ---
 
-<!-- ANCHOR:adr-002 -->
 ### ADR-002: Front-load P0 seam hardening before conditional adapters or packaging
 
 ### Metadata
@@ -129,31 +128,26 @@ The v2 packet found the same failure mode in several places: approximate or part
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
-The roadmap stayed directionally stable from v1 to v2, but the rigor lane changed which items are truly "early" work. Honest reporting, Stop-summary production, payload validation, provenance honesty, and detector regression all directly address the seam problems the rigor lane exposed. By contrast, artifact-default packaging, monolithic scan orchestration, and broad cached-startup claims now look attractive only if the missing trust and freshness contracts are ignored. [SOURCE: research/research-v2.md:148-199] [SOURCE: research/iterations/q-d-adoption-sequencing.md:15-61]
+The roadmap stayed directionally stable from v1 to v2, but the rigor lane changed which items are truly "early" work. Honest reporting, Stop-summary production, payload validation, provenance honesty, and detector regression all directly address the seam problems the rigor lane exposed. By contrast, artifact-default packaging, monolithic scan orchestration, and broad cached-startup claims now look attractive only if the missing trust and freshness contracts are ignored. [SOURCE: research/research.md:148-199] [SOURCE: research/iterations/q-d-adoption-sequencing.md:15-61]
 
 ### Constraints
 
 - The first packet wave should reinforce existing owner surfaces, not bypass them.
 - Public's moat is strong enough that external ideas must arrive as supplements.
-- The roadmap must stay compatible with the hidden-prerequisite lens from iter-13. [SOURCE: research/research-v2.md:277-306]
-<!-- /ANCHOR:adr-002-context -->
+- The roadmap must stay compatible with the hidden-prerequisite lens from iter-13. [SOURCE: research/research.md:277-306]
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Make the first downstream packet cluster measurement honesty, trust prerequisites, payload validation, provenance honesty, detector regression, and nearby substrate-ready hardening work. Keep adapters like graph-first nudges and guarded cached-startup work behind that cluster.
 
-**How it works**: `plan.md` and `tasks.md` now treat the P0 rails as the first implementation wave and push adapters into the next wave only after the contracts exist. [SOURCE: research/research-v2.md:151-160] [SOURCE: research/research-v2.md:162-168]
-<!-- /ANCHOR:adr-002-decision -->
+**How it works**: `plan.md` and `tasks.md` now treat the P0 rails as the first implementation wave and push adapters into the next wave only after the contracts exist. [SOURCE: research/research.md:151-160] [SOURCE: research/research.md:162-168]
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -162,12 +156,10 @@ The roadmap stayed directionally stable from v1 to v2, but the rigor lane change
 | Lead with cached-startup and graph-hook bundle | High perceived momentum | Depends on contracts and evaluation work not yet landed | 5/10 |
 | Lead with structural artifact packaging | Produces visible artifacts fast | Revives the exact trust and freshness problems v2 downgraded | 3/10 |
 
-**Why this one**: It is the only order that fits both the hidden-prerequisite inventory and the revised effort sizing. [SOURCE: research/research-v2.md:168-199] [SOURCE: research/iterations/v1-v2-diff-iter-18.md:103-113]
-<!-- /ANCHOR:adr-002-alternatives -->
+**Why this one**: It is the only order that fits both the hidden-prerequisite inventory and the revised effort sizing. [SOURCE: research/research.md:168-199] [SOURCE: research/archive/v1-v2-diff-iter-18.md:103-113]
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -183,11 +175,9 @@ The roadmap stayed directionally stable from v1 to v2, but the rigor lane change
 |------|--------|------------|
 | Stakeholders mistake sequencing discipline for lack of ambition | M | Keep the milestone table and tasks explicit about the later packet waves |
 | Downstream packets cherry-pick adapters without their prerequisites | H | Reference this ADR in future packet charters |
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -199,11 +189,9 @@ The roadmap stayed directionally stable from v1 to v2, but the rigor lane change
 | 5 | **Open Horizons?** | PASS | Later packets remain possible once the contracts land |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -211,12 +199,9 @@ The roadmap stayed directionally stable from v1 to v2, but the rigor lane change
 - `tasks.md` opens measurement, trust, payload, and detector follow-ons before adapter packets.
 
 **How to roll back**: Reorder the downstream packet list only if new evidence disproves the current hidden-prerequisite model.
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
 ### ADR-003: Replace old R10 and former Combo 3 with trust-axis separation before structural packaging
 
 ### Metadata
@@ -229,31 +214,26 @@ The roadmap stayed directionally stable from v1 to v2, but the rigor lane change
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
-The old structural-artifact story depended on one notion of trust doing too much work at once. Iter-12 showed the opposite: CodeSight provenance, Graphify evidence tiers, and artifact-default packaging do not reinforce each other safely today. One upstream path already overclaims `ast`, Graphify uses numeric confidence defaults, and packaging magnifies any mislabel as if it were settled truth. V2 therefore replaced old R10 with a prerequisite contract for provenance, evidence status, and freshness authority. [SOURCE: research/research-v2.md:229-236] [SOURCE: research/research-v2.md:235-236] [SOURCE: research/recommendations-v2.md:43-51] [SOURCE: research/recommendations-v2.md:93-101]
+The old structural-artifact story depended on one notion of trust doing too much work at once. Iter-12 showed the opposite: CodeSight provenance, Graphify evidence tiers, and artifact-default packaging do not reinforce each other safely today. One upstream path already overclaims `ast`, Graphify uses numeric confidence defaults, and packaging magnifies any mislabel as if it were settled truth. V2 therefore replaced old R10 with a prerequisite contract for provenance, evidence status, and freshness authority. [SOURCE: research/research.md:229-236] [SOURCE: research/research.md:235-236] [SOURCE: research/recommendations.md:43-51] [SOURCE: research/recommendations.md:93-101]
 
 ### Constraints
 
 - Structural packaging remains attractive and will keep resurfacing in later packet work.
 - Public already has enough substrate to package outputs, which increases the risk of packaging them too early.
 - The packet must keep the replacement explicit so later readers do not quietly revive the old assumption.
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 **We chose**: Treat trust-axis separation, payload validation, and stable interchange as prerequisites. Do not package structural artifacts as default reusable context until those fields are separate and the contract has been evaluated.
 
-**How it works**: The root packet ties structural packaging to the R10 replacement instead of to the old Combo 3 story. Downstream packet work must name provenance, evidence status, and freshness authority separately. [SOURCE: research/research-v2.md:229-236] [SOURCE: research/recommendations-v2.md:43-51] [SOURCE: research/recommendations-v2.md:93-101]
-<!-- /ANCHOR:adr-003-decision -->
+**How it works**: The root packet ties structural packaging to the R10 replacement instead of to the old Combo 3 story. Downstream packet work must name provenance, evidence status, and freshness authority separately. [SOURCE: research/research.md:229-236] [SOURCE: research/recommendations.md:43-51] [SOURCE: research/recommendations.md:93-101]
 
 ---
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -262,12 +242,10 @@ The old structural-artifact story depended on one notion of trust doing too much
 | Keep old R10 packaging with caveats | Produces portable artifacts sooner | Repeats the falsified Combo 3 premise | 2/10 |
 | Collapse provenance, evidence, and freshness into one scalar confidence | Easy to explain | The rigor lane showed this is exactly the wrong abstraction | 1/10 |
 
-**Why this one**: It is the only option consistent with the combo falsification and the v2 replacement recommendation. [SOURCE: research/iterations/v1-v2-diff-iter-18.md:87-113]
-<!-- /ANCHOR:adr-003-alternatives -->
+**Why this one**: It is the only option consistent with the combo falsification and the v2 replacement recommendation. [SOURCE: research/archive/v1-v2-diff-iter-18.md:87-113]
 
 ---
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -283,11 +261,9 @@ The old structural-artifact story depended on one notion of trust doing too much
 |------|--------|------------|
 | Later packet authors try to shortcut the contract | H | Keep this ADR and the replacement R10 language in every follow-on charter |
 | Trust-axis work expands too broadly | M | Bound the first packet to shared payload fields and stable interchange only |
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -299,11 +275,9 @@ The old structural-artifact story depended on one notion of trust doing too much
 | 5 | **Open Horizons?** | PASS | Honest structural packaging remains possible once the contract exists |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -311,12 +285,9 @@ The old structural-artifact story depended on one notion of trust doing too much
 - `spec.md` and `implementation-summary.md` record the replacement explicitly.
 
 **How to roll back**: Revisit only if new evidence disproves the iter-12 falsification and the iter-16 replacement rationale.
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
 
 ---
 
-<!-- ANCHOR:adr-004 -->
 ### ADR-004: Keep the warm-start bundle conditional and preserve Public's split-topology moat
 
 ### Metadata
@@ -329,31 +300,26 @@ The old structural-artifact story depended on one notion of trust doing too much
 
 ---
 
-<!-- ANCHOR:adr-004-context -->
 ### Context
 
-The warm-start bundle survived, but only as a conditional bundle. Cached summaries can be lossy, the wrong prior session can be selected, and a graph-first hook only catches one class of first-move error. At the same time, iter-13 showed that Public's real strength is its split topology plus its recovery, routing, and governance moats. The packet therefore needs a decision that both preserves the useful bundle and prevents readers from turning it into a default-safe architecture story. [SOURCE: research/research-v2.md:217-228] [SOURCE: research/research-v2.md:277-306]
+The warm-start bundle survived, but only as a conditional bundle. Cached summaries can be lossy, the wrong prior session can be selected, and a graph-first hook only catches one class of first-move error. At the same time, iter-13 showed that Public's real strength is its split topology plus its recovery, routing, and governance moats. The packet therefore needs a decision that both preserves the useful bundle and prevents readers from turning it into a default-safe architecture story. [SOURCE: research/research.md:217-228] [SOURCE: research/research.md:277-306]
 
 ### Constraints
 
 - The bundle still has value and should not be erased.
 - Public's split semantic, structural, and continuity owners are part of the moat, not a problem to solve away.
 - Promotion must be blocked on a real evaluation corpus, not on intuition.
-<!-- /ANCHOR:adr-004-context -->
 
 ---
 
-<!-- ANCHOR:adr-004-decision -->
 ### Decision
 
 **We chose**: Keep the warm-start work as a conditional, later packet and make the split-topology moat explicit in the root packet. The bundle may advance only after fidelity, freshness, and task-outcome checks exist.
 
-**How it works**: The packet records the bundle as downstream work, not as the default early multiplier, and ties it to an evaluation corpus task before promotion. [SOURCE: research/recommendations-v2.md:23-31] [SOURCE: research/recommendations-v2.md:73-81]
-<!-- /ANCHOR:adr-004-decision -->
+**How it works**: The packet records the bundle as downstream work, not as the default early multiplier, and ties it to an evaluation corpus task before promotion. [SOURCE: research/recommendations.md:23-31] [SOURCE: research/recommendations.md:73-81]
 
 ---
 
-<!-- ANCHOR:adr-004-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -362,12 +328,10 @@ The warm-start bundle survived, but only as a conditional bundle. Cached summari
 | Promote cached startup and graph nudges as the default early win | Feels fast and visible | Ignores freshness and fidelity risk, weakens the moat framing | 4/10 |
 | Replace split topology with a single scan or bootstrap facade | Simplifies the narrative | Directly contradicts the moat inventory and composition-risk findings | 1/10 |
 
-**Why this one**: It preserves the only surviving value of Combo 1 without pretending the prerequisites are already solved. [SOURCE: research/research-v2.md:95-96] [SOURCE: research/iterations/v1-v2-diff-iter-18.md:74-83]
-<!-- /ANCHOR:adr-004-alternatives -->
+**Why this one**: It preserves the only surviving value of Combo 1 without pretending the prerequisites are already solved. [SOURCE: research/research.md:95-96] [SOURCE: research/archive/v1-v2-diff-iter-18.md:74-83]
 
 ---
 
-<!-- ANCHOR:adr-004-consequences -->
 ### Consequences
 
 **What improves**:
@@ -383,11 +347,9 @@ The warm-start bundle survived, but only as a conditional bundle. Cached summari
 |------|--------|------------|
 | Readers interpret the downgrade as rejection | M | State that the bundle survived conditionally, not that it failed |
 | A future packet bypasses fidelity and freshness checks | H | Keep corpus definition as an explicit prerequisite task |
-<!-- /ANCHOR:adr-004-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-004-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -399,11 +361,9 @@ The warm-start bundle survived, but only as a conditional bundle. Cached summari
 | 5 | **Open Horizons?** | PASS | The bundle can still advance once evidence supports it |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-004-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-004-impl -->
 ### Implementation
 
 **What changes**:
@@ -411,5 +371,3 @@ The warm-start bundle survived, but only as a conditional bundle. Cached summari
 - `tasks.md` adds an evaluation-corpus task before any promotion.
 
 **How to roll back**: Promote the bundle earlier only if a future follow-on packet proves fidelity, freshness, and pass-rate preservation on a frozen corpus.
-<!-- /ANCHOR:adr-004-impl -->
-<!-- /ANCHOR:adr-004 -->

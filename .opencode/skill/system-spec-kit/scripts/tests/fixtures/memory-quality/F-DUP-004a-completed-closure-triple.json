@@ -1,0 +1,13 @@
+{
+  "templateOverrides": {
+    "SESSION_STATUS": "completed",
+    "COMPLETION_PERCENT": 100,
+    "LAST_ACTION": "Closed the packet after the final verification pass.",
+    "NEXT_ACTION": "Use research/research.md as the canonical closeout baseline.",
+    "PENDING_TASKS": [],
+    "RESUME_CONTEXT": [],
+    "NEXT_CONTINUATION_COUNT": 1,
+    "CONTEXT_SUMMARY": "All requested Phase 6 work is complete."
+  },
+  "expectedCloseout": "Use research/research.md as the canonical closeout baseline."
+}

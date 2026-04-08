@@ -25,43 +25,44 @@ function buildValidMemory(overrides: { triggerBlock?: string; bodyTail?: string 
     '| Total Messages | 3 |',
     '',
     '<!-- ANCHOR:continue-session -->',
-    '<a id="continue-session"></a>',
-    '',
     '## CONTINUE SESSION',
     '',
     'Continue the implementation from the last verified checkpoint.',
     '',
-    '<!-- ANCHOR:project-state-snapshot -->',
-    '<a id="project-state-snapshot"></a>',
+    '<!-- /ANCHOR:continue-session -->',
     '',
-    '## PROJECT STATE SNAPSHOT',
+    '<!-- ANCHOR:canonical-docs -->',
+    '## CANONICAL SOURCES',
+    '',
+    '- `decision-record.md` — Architectural decisions',
+    '- `implementation-summary.md` — Build story and verification',
+    '',
+    '<!-- /ANCHOR:canonical-docs -->',
+    '',
+    '<!-- ANCHOR:overview -->',
+    '## OVERVIEW',
     '',
     'All mandatory sections are present and correctly scaffolded.',
     '',
-    '<!-- ANCHOR:decisions -->',
-    '<a id="decisions"></a>',
+    '<!-- /ANCHOR:overview -->',
     '',
-    '## 2. DECISIONS',
+    '<!-- ANCHOR:evidence -->',
+    '## DISTINGUISHING EVIDENCE',
     '',
-    'A single contract validator is now the source of truth.',
+    '- Validated compact wrapper contract',
+    '- Removed project-state-snapshot, decisions, conversation',
+    '- Added canonical-docs, overview, evidence',
     '',
-    '<!-- ANCHOR:session-history -->',
-    '<a id="conversation"></a>',
-    '',
-    '## 3. CONVERSATION',
-    '',
-    'User requested rigorous contract-based proof.',
+    '<!-- /ANCHOR:evidence -->',
     '',
     '<!-- ANCHOR:recovery-hints -->',
-    '<a id="recovery-hints"></a>',
-    '',
     '## RECOVERY HINTS',
     '',
     'Re-run the validator and creation-path tests if this changes again.',
     '',
-    '<!-- ANCHOR:metadata -->',
-    '<a id="memory-metadata"></a>',
+    '<!-- /ANCHOR:recovery-hints -->',
     '',
+    '<!-- ANCHOR:metadata -->',
     '## MEMORY METADATA',
     '',
     '```yaml',
@@ -83,11 +84,11 @@ describe('memory template contract validator', () => {
 
   it('rejects missing anchor/id scaffolding for mandatory sections', () => {
     const result = validateMemoryTemplateContract(
-      buildValidMemory().replace('<!-- ANCHOR:project-state-snapshot -->\n', '')
+      buildValidMemory().replace('<!-- ANCHOR:canonical-docs -->\n', '')
     );
 
     expect(result.valid).toBe(false);
-    expect(result.missingAnchors).toContain('project-state-snapshot');
+    expect(result.missingAnchors).toContain('canonical-docs');
   });
 
   it('rejects malformed trigger_phrases frontmatter shapes', () => {
@@ -125,8 +126,6 @@ describe('memory template contract validator', () => {
     const result = validateMemoryTemplateContract([
       buildValidMemory(),
       '',
-      '<a id="workflow-visualization"></a>',
-      '',
       '## 4. WORKFLOW VISUALIZATION',
       '',
       'This optional section intentionally omits its ANCHOR comment.',
@@ -163,5 +162,66 @@ describe('memory template contract validator', () => {
           && violation.message.includes('duplicate or orphaned closing ANCHOR comments')
       )
     ).toBe(true);
+  });
+
+  describe('compact wrapper contract (phase 1)', () => {
+    it('accepts memory with canonical-docs, overview, evidence', () => {
+      const result = validateMemoryTemplateContract(buildValidMemory());
+
+      expect(result.valid).toBe(true);
+      expect(result.violations).toEqual([]);
+    });
+
+    it('rejects memory missing canonical-docs anchor', () => {
+      const result = validateMemoryTemplateContract(
+        buildValidMemory().replace(/<!-- ANCHOR:canonical-docs -->[\s\S]*?<!-- \/ANCHOR:canonical-docs -->/m, '')
+      );
+
+      expect(result.valid).toBe(false);
+      expect(result.violations.some(v => v.code === 'missing_section' && v.sectionId === 'canonical-docs')).toBe(true);
+    });
+
+    it('rejects memory missing overview anchor', () => {
+      const result = validateMemoryTemplateContract(
+        buildValidMemory().replace(/<!-- ANCHOR:overview -->[\s\S]*?<!-- \/ANCHOR:overview -->/m, '')
+      );
+
+      expect(result.valid).toBe(false);
+      expect(result.violations.some(v => v.code === 'missing_section' && v.sectionId === 'overview')).toBe(true);
+    });
+
+    it('rejects memory missing evidence anchor', () => {
+      const result = validateMemoryTemplateContract(
+        buildValidMemory().replace(/<!-- ANCHOR:evidence -->[\s\S]*?<!-- \/ANCHOR:evidence -->/m, '')
+      );
+
+      expect(result.valid).toBe(false);
+      expect(result.violations.some(v => v.code === 'missing_section' && v.sectionId === 'evidence')).toBe(true);
+    });
+
+    it('allows memory without old decisions section (no longer mandatory)', () => {
+      const memoryWithoutDecisions = buildValidMemory();
+      const result = validateMemoryTemplateContract(memoryWithoutDecisions);
+
+      expect(result.valid).toBe(true);
+      expect(result.missingAnchors).not.toContain('decisions');
+    });
+
+    it('allows memory without old conversation section (no longer mandatory)', () => {
+      const memoryWithoutConversation = buildValidMemory();
+      const result = validateMemoryTemplateContract(memoryWithoutConversation);
+
+      expect(result.valid).toBe(true);
+      expect(result.missingAnchors).not.toContain('session-history');
+      expect(result.missingAnchors).not.toContain('conversation');
+    });
+
+    it('allows memory without project-state-snapshot (no longer mandatory)', () => {
+      const memoryWithoutSnapshot = buildValidMemory();
+      const result = validateMemoryTemplateContract(memoryWithoutSnapshot);
+
+      expect(result.valid).toBe(true);
+      expect(result.missingAnchors).not.toContain('project-state-snapshot');
+    });
   });
 });

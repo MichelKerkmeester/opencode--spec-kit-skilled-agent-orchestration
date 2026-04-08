@@ -30,6 +30,7 @@ import {
   createValidShortTerms,
   shouldIncludeTopicWord,
 } from './topic-keywords';
+import { sanitizeTriggerPhrase } from './trigger-phrase-sanitizer';
 
 export type SemanticSignalMode = 'topics' | 'triggers' | 'summary' | 'all';
 export type StopwordProfile = 'balanced' | 'aggressive';
@@ -216,6 +217,34 @@ function buildRankedNgrams(filteredTokens: string[], ngramDepth: NgramDepth): Sc
   return scored;
 }
 
+function tokenizeForSourceAdjacency(text: string): string[] {
+  const withBreaks = text
+    .replace(/[.!?]+\s+/g, ' __BREAK__ ')
+    .replace(/\n+/g, ' __BREAK__ ');
+
+  return withBreaks
+    .toLowerCase()
+    .split(/[\s,;:()\[\]{}"'<>]+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length > 0 && (token === '__break__' || /[a-z0-9]/.test(token)));
+}
+
+function buildSourceAdjacentBigrams(text: string): Set<string> {
+  const tokens = tokenizeForSourceAdjacency(text);
+  const adjacentBigrams = new Set<string>();
+
+  for (let index = 0; index < tokens.length - 1; index++) {
+    const current = tokens[index];
+    const next = tokens[index + 1];
+    if (current === '__break__' || next === '__break__') {
+      continue;
+    }
+    adjacentBigrams.add(`${current} ${next}`);
+  }
+
+  return adjacentBigrams;
+}
+
 function buildTriggerPhrases(
   text: string,
   cleanedText: string,
@@ -257,19 +286,27 @@ function buildTriggerPhrases(
   return topPhrases;
 }
 
-function buildTopicTerms(filteredTokens: string[], ngramDepth: NgramDepth): string[] {
+function buildTopicTerms(sourceText: string, filteredTokens: string[], ngramDepth: NgramDepth): string[] {
   if (filteredTokens.length === 0) {
     return [];
   }
 
   const validShortTerms = createValidShortTerms();
   const stopwords = getStopwordSet('aggressive');
+  const adjacentBigrams = buildSourceAdjacentBigrams(sourceText);
   const scoredCandidates = buildRankedNgrams(filteredTokens, ngramDepth);
   const deduplicated = deduplicateSubstrings(scoredCandidates);
 
   return deduplicated
     .filter((candidate) => {
-      const words = candidate.phrase.split(' ');
+      const normalizedPhrase = candidate.phrase.toLowerCase().trim();
+      const words = normalizedPhrase.split(' ');
+      if (words.length === 2 && !adjacentBigrams.has(normalizedPhrase)) {
+        return false;
+      }
+      if (!sanitizeTriggerPhrase(normalizedPhrase).keep) {
+        return false;
+      }
       if (words.length === 1) {
         return shouldIncludeTopicWord(words[0], stopwords, validShortTerms);
       }
@@ -342,7 +379,7 @@ export class SemanticSignalExtractor {
     const tokens = tokenize(cleanedText);
     const filteredTokens = filterStopWordsByProfile(tokens, stopwordProfile);
     const phrases = buildTriggerPhrases(text, cleanedText, filteredTokens, ngramDepth, maxPhrases, minPhraseCount);
-    const topics = buildTopicTerms(filteredTokens, ngramDepth);
+    const topics = buildTopicTerms(cleanedText, filteredTokens, ngramDepth);
     const rankedTerms = options.mode === 'topics'
       ? topics
       : options.mode === 'summary'

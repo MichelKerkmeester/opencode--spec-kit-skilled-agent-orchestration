@@ -13,9 +13,23 @@ import { hookLog } from './shared.js';
 import type { SharedPayloadEnvelope } from '../../lib/context/shared-payload.js';
 
 /** Per-session hook state persisted to temp directory */
+export interface HookProducerMetadata {
+  lastClaudeTurnAt: string | null;
+  transcript: {
+    path: string;
+    fingerprint: string;
+    sizeBytes: number;
+    modifiedAt: string;
+  } | null;
+  cacheTokens: {
+    cacheCreationInputTokens: number;
+    cacheReadInputTokens: number;
+  } | null;
+}
+
 export interface HookState {
   claudeSessionId: string;
-  speckitSessionId: string;
+  speckitSessionId: string | null;
   lastSpecFolder: string | null;
   sessionSummary: { text: string; extractedAt: string } | null;
   pendingCompactPrime: {
@@ -23,6 +37,7 @@ export interface HookState {
     cachedAt: string;
     payloadContract?: SharedPayloadEnvelope | null;
   } | null;
+  producerMetadata: HookProducerMetadata | null;
   metrics: {
     estimatedPromptTokens: number;
     estimatedCompletionTokens: number;
@@ -164,10 +179,11 @@ export function updateState(sessionId: string, patch: Partial<HookState>): HookS
   const now = new Date().toISOString();
   const state: HookState = {
     claudeSessionId: sessionId,
-    speckitSessionId: '',
+    speckitSessionId: null,
     lastSpecFolder: null,
     sessionSummary: null,
     pendingCompactPrime: null,
+    producerMetadata: null,
     metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
     createdAt: now,
     updatedAt: now,

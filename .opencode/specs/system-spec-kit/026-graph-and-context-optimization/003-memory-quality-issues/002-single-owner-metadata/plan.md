@@ -18,7 +18,7 @@ contextType: planning
 ---
 
 <!-- ANCHOR:summary -->
-## EXECUTIVE SUMMARY
+## 1. SUMMARY
 
 This phase implements the P1 metadata corrections defined by PR-3 and PR-4 in the parent PR train. PR-3 repairs D4 by collapsing the importance-tier write surface into one authoritative resolver plus deferring consumers, and PR-4 repairs D7 by adding the already-approved provenance-only JSON-mode insertion in `workflow.ts`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1156-1157]
 
@@ -37,7 +37,7 @@ The plan deliberately keeps both fixes small. D4 is framed as a writer-synchroni
 ---
 
 <!-- ANCHOR:quality-gates -->
-## QUALITY GATES
+## 2. QUALITY GATES
 
 ### Definition of Ready
 
@@ -57,7 +57,7 @@ The plan deliberately keeps both fixes small. D4 is framed as a writer-synchroni
 ---
 
 <!-- ANCHOR:architecture -->
-## ARCHITECTURE
+## 3. ARCHITECTURE
 
 ### Pattern
 
@@ -77,7 +77,7 @@ JSON payload -> tier resolution -> frontmatter/metadata serialization -> post-sa
 
 ---
 
-## TECHNICAL APPROACH
+### Technical Approach
 
 ### D4 owner model
 
@@ -100,7 +100,7 @@ The D7 proof surface is equally fixed: F-AC6 must run through a stubbed git seam
 ---
 
 <!-- ANCHOR:phases -->
-## IMPLEMENTATION STRATEGY
+## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: PR-3 — D4 importance-tier SSOT
 
@@ -143,7 +143,7 @@ Use the two acceptance fixtures, patch-size proof, and child-folder validation a
 
 ---
 
-## FILE:LINE CHANGE LIST
+### File:Line Change List
 
 | PR | File / Lines | Change | Why |
 |----|--------------|--------|-----|
@@ -156,7 +156,7 @@ Use the two acceptance fixtures, patch-size proof, and child-folder validation a
 
 ---
 
-## ORDER OF OPERATIONS
+### Order of Operations
 
 1. Confirm the child spec, plan, tasks, and checklist are aligned with the parent packet and validate cleanly before code work begins. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:187-190]
 2. Implement the D4 owner decision first: lock the authoritative tier resolver surface, then make the managed-frontmatter serializer consume that resolved value. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:191-192]
@@ -170,7 +170,7 @@ This order intentionally keeps D4 before D7 because the parent dependency DAG se
 
 ---
 
-## RISKS & MITIGATIONS
+### Risks & Mitigations
 
 | Risk | Severity | Mitigation |
 |------|----------|------------|
@@ -184,7 +184,7 @@ This order intentionally keeps D4 before D7 because the parent dependency DAG se
 ---
 
 <!-- ANCHOR:testing -->
-## VERIFICATION PLAN
+## 5. TESTING STRATEGY
 
 ### F-AC4
 
@@ -211,7 +211,7 @@ This order intentionally keeps D4 before D7 because the parent dependency DAG se
 ---
 
 <!-- ANCHOR:dependencies -->
-## DEPENDENCIES
+## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
@@ -223,7 +223,7 @@ This order intentionally keeps D4 before D7 because the parent dependency DAG se
 
 ---
 
-## ROLLOUT
+## 7. ROLLBACK PLAN
 
 Phase 2 is a bounded single-owner metadata pass inside the 9-PR train. It should land after the P0 foundation phase and before the behavior-sensitive D3/D2 work, exactly as the parent PR train specifies. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1154-1159]
 

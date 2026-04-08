@@ -32,7 +32,7 @@ contextType: "planning"
 
 ---
 
-## Execution Principles
+### Execution Principles
 
 - Phase 3 stays inside PR-5 and PR-6 only; D1, D4, D5, D7, PR-8, and PR-9 remain out of scope for this child packet. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:179-183]
 
@@ -43,7 +43,7 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: PR-5 Sanitizer Contract
+## Phase 1: Setup
 
 - [ ] T001 Build the empirical Phase 3 blocklist categories from iteration 15 and freeze the initial sanitizer contract for `PATH_FRAGMENT`, `STOPWORD`, `SYNTHETIC_BIGRAM`, `SUSPICIOUS_PREFIX`, and short-name allowlist handling. (`lib/trigger-phrase-sanitizer.ts`) [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:21-39]
 
@@ -63,7 +63,7 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: PR-5 Workflow and Topic Integration
+## Phase 2: Implementation
 
 - [ ] T010 Integrate the sanitizer at `workflow.ts:1271-1298` so folder-derived additions are filtered before persistence instead of after-the-fact cleanup. (`workflow.ts`) [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1158] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-004.md:23-30]
 
@@ -79,7 +79,7 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: PR-6 Decision Precedence
+### PR-6 Decision Precedence
 
 - [ ] T020 Add the authored-decision precedence input at `decision-extractor.ts:182-185` so `extractDecisions()` can reason about authoritative raw arrays when normalization missed. (`decision-extractor.ts`) [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1159-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-013.md:66-73]
 
@@ -96,7 +96,7 @@ contextType: "planning"
 
 ---
 
-## Phase 4: Verification and Closeout
+## Phase 3: Verification
 
 - [ ] T030 Run `generate-context.js --json` against all Phase 3 fixtures after localized tests pass. (`generate-context.js`) [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:237-237]
 
@@ -110,7 +110,7 @@ contextType: "planning"
 
 ---
 
-## Parallel Work Notes
+### Parallel Work Notes
 
 - T004-T007 can run in parallel once T001-T003 define the sanitizer contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39]
 
@@ -120,7 +120,7 @@ contextType: "planning"
 
 ---
 
-## Dependency Notes
+### Dependency Notes
 
 - T001-T007 should land before T010-T014 because PR-5 needs a stable sanitizer contract before workflow integration. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39]
 

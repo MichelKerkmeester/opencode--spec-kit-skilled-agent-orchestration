@@ -19,7 +19,7 @@ contextType: "planning"
 
 ---
 
-## EXECUTIVE SUMMARY
+**Phase Overview**
 
 Phase 3 is the packet's P2 child spec. It isolates the two behavior-sensitive fixes that the parent packet intentionally deferred until the low-risk foundation and metadata phases landed first: PR-5 for D3 trigger-phrase sanitization and PR-6 for the D2 precedence-only decision gate. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:177-183] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:216-223] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159]
 
@@ -72,7 +72,11 @@ This is **Phase 3** of the five-phase memory-quality remediation packet, and it 
 ---
 
 <!-- ANCHOR:problem -->
-## 2. PROBLEM STATEMENT
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+
+Phase 3 needs to improve retrieval and rendered decision quality without deleting the safety valves that still help malformed inputs. The packet research narrowed this slice to two specific contracts: remove empirically proven trigger/topic junk, and make authored decision arrays outrank lexical placeholders only when those authoritative arrays actually exist. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1517-1518]
 
 D3 is a paired retrieval-quality defect, not a single parser bug. The research showed that saved `trigger_phrases` are polluted by folder-token reinsertion after filtering in `workflow.ts:1271-1295`, while `Key Topics` can emit synthetic bigrams because topic extraction counts n-grams after aggressive stopword removal collapses non-adjacent source words together. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:46-46] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:65-65] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-004.md:20-33]
 
@@ -83,11 +87,17 @@ D2 is a semantic corruption defect caused by the decision extractor's dependency
 The narrowed D2 fix is deliberately conservative. The packet rejected a mode-wide lexical shutdown because degraded payloads still benefit from lexical fallback when they genuinely lack authored decisions. This phase therefore has to preserve a meaningful decision section for degraded inputs while preventing lexical placeholders from outranking authored decision arrays. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:81-81] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:110-112] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1461-1463] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1517-1517]
 
 The parent packet already encoded this as the 3 -> 4 handoff rule: trigger phrases must be clean, authored decisions must win, lexical fallback must sit behind a precedence predicate, and the degraded-payload regression must be green before Phase 4 begins. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
+
+### Purpose
+
+Ship the narrowest safe Phase 3 slice: sanitize trigger phrases and topic bigrams with the empirical iteration-15 contract, add the authored-decision precedence gate, and prove both changes with fixture-backed verification that keeps degraded payload behavior intact. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1517-1518]
 <!-- /ANCHOR:problem -->
+
+> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/`, the implementation host for the `001-research-graph-context-systems/006-research-memory-redundancy/` research findings. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
 
 ---
 
-## 3. USER STORIES
+### User Stories
 
 ### Story 1 - Sanitized trigger phrases
 
@@ -161,7 +171,7 @@ As an operator handling malformed or partially normalized JSON, I want degraded 
 ---
 
 <!-- ANCHOR:requirements -->
-## REQUIREMENTS
+## 4. REQUIREMENTS
 
 | ID | Requirement | Why It Exists | Source |
 |----|-------------|---------------|--------|
@@ -175,7 +185,7 @@ As an operator handling malformed or partially normalized JSON, I want degraded 
 ---
 
 <!-- ANCHOR:success-criteria -->
-## 5. ACCEPTANCE CRITERIA
+## 5. SUCCESS CRITERIA
 
 | ID | Acceptance Criterion | Evidence Required | Source |
 |----|----------------------|-------------------|--------|
@@ -189,7 +199,7 @@ As an operator handling malformed or partially normalized JSON, I want degraded 
 ---
 
 <!-- ANCHOR:risks -->
-## 6. NFRs
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 | ID | Requirement | Rationale | Source |
 |----|-------------|-----------|--------|
@@ -202,7 +212,7 @@ As an operator handling malformed or partially normalized JSON, I want degraded 
 
 ---
 
-## 7. EDGE CASES
+## L2: EDGE CASES
 
 | Scenario | Required Behavior | Why It Matters | Source |
 |----------|-------------------|----------------|--------|
@@ -215,7 +225,7 @@ As an operator handling malformed or partially normalized JSON, I want degraded 
 
 ---
 
-## 8. DEPENDENCIES
+## 6. RISKS & DEPENDENCIES
 
 | Dependency | Type | Status | Why It Matters | Source |
 |------------|------|--------|----------------|--------|
@@ -229,7 +239,7 @@ As an operator handling malformed or partially normalized JSON, I want degraded 
 
 ---
 
-## 9. PRIOR ART
+### Prior Art
 
 1. The parent phase map already defines this child as the PR-5 and PR-6 phase and names the exact handoff contract required to unlock Phase 4. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:181-182] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
 
@@ -250,7 +260,7 @@ As an operator handling malformed or partially normalized JSON, I want degraded 
 ---
 
 <!-- ANCHOR:questions -->
-## OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
 - Should the eventual implementation rehydrate authored decisions directly inside `extractDecisions()` or extract that mapping into a shared helper so the raw and normalized paths cannot drift later? [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-013.md:80-82]
 

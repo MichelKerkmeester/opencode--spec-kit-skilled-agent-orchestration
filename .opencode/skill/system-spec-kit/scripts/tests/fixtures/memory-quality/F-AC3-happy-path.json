@@ -1,0 +1,35 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence",
+  "sessionSummary": "Phase 3 replay preserves spec kit retrieval language, semantic search adjacency, and the mcp integration topic without introducing junk trigger phrases.",
+  "triggerPhrases": [
+    "spec kit",
+    "semantic search",
+    "mcp"
+  ],
+  "filesModified": [
+    {
+      "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      "action": "Modified",
+      "description": "Applies the reusable sanitizer without disturbing healthy trigger phrases"
+    }
+  ],
+  "nextSteps": [
+    "Keep the happy-path fixture green"
+  ],
+  "expectedAbsentTriggers": [
+    "kit/026",
+    "graph",
+    "phase 7 cocoindex",
+    "level spec"
+  ],
+  "expectedPresentTriggers": [
+    "spec kit",
+    "semantic search",
+    "mcp"
+  ],
+  "expectedAbsentTopics": [
+    "tiers full",
+    "level spec"
+  ],
+  "expectedPresentTopics": []
+}

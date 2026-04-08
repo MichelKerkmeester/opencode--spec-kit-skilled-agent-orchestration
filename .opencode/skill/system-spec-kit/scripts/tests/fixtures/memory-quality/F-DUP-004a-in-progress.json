@@ -1,0 +1,21 @@
+{
+  "templateOverrides": {
+    "SESSION_STATUS": "in_progress",
+    "COMPLETION_PERCENT": 62,
+    "LAST_ACTION": "Drafted the remaining Phase 6 fixes.",
+    "NEXT_ACTION": "Implement the remaining template and reviewer fixes.",
+    "PENDING_TASKS": [
+      {
+        "TASK_ID": "F004.1",
+        "TASK_DESCRIPTION": "Collapse completed-session closure duplication",
+        "TASK_PRIORITY": "high"
+      }
+    ],
+    "RESUME_CONTEXT": [
+      {
+        "CONTEXT_ITEM": "Re-run the focused Phase 6 Vitest file after the template patch lands."
+      }
+    ],
+    "NEXT_CONTINUATION_COUNT": 2
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "topic": "Eliminate redundancy between memory saves and decision-record/implementation-summary docs in spec packets. Investigate (1) what content patterns memory saves currently duplicate, (2) what UNIQUE value memory saves should provide that static spec docs cannot, (3) whether redundancy lives in generate-context.js, the memory template, or spec doc templates, and (4) what specific changes would eliminate duplication while preserving recall semantics.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-research-memory-redundancy",
+  "createdAt": "2026-04-08T14:27:27Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "lineage": {
+    "sessionId": "drs-014-memory-redundancy-2026-04-08-1427",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart",
+      "fork",
+      "completed-continue"
+    ],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "what-worked",
+      "what-failed",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research/archive",
+  "migrationWindowDays": 28,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  },
+  "worker": {
+    "kind": "codex-cli",
+    "command": "codex exec --model gpt-5.4 -c model_reasoning_effort=high -c approval_policy=never --sandbox workspace-write",
+    "rationale": "User directed cli-codex gpt-5.4 high in fast mode for the research; orchestrator (Claude) dispatches codex per iteration in place of @deep-research agent."
+  }
+}

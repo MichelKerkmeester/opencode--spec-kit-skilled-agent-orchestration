@@ -1,13 +1,12 @@
 ---
 title: "Feature Specification: Cache-Warning Hook System [template:level_3/spec.md]"
-description: "Sequential 6-phase prototype implementation of cache-expiry warning hooks (state schema + replay harness + Stop writer + SessionStart estimator + UserPromptSubmit soft-block) with env kill-switches, driven by research findings F4-F7, F19-F20, F24."
+description: "Research-aligned rescope of packet 002 from a six-phase warning prototype to a bounded producer-side continuity prerequisite packet."
 trigger_phrases:
   - "cache warning hook"
-  - "UserPromptSubmit hook"
-  - "idle timestamp"
-  - "session-prime resume estimator"
-  - "hook replay harness"
-  - "F19 prerequisite"
+  - "stop-hook metadata patch"
+  - "replay isolation"
+  - "continuity prerequisite"
+  - "claudest continuation"
 importance_tier: "important"
 contextType: "planning"
 ---
@@ -20,11 +19,11 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-This feature defines a strictly sequential six-phase prototype that makes Claude cache-expiry visible before an operator accidentally triggers a full-context rebuild. The design starts with deterministic shared state and replay isolation, then adds warning surfaces in increasing UX risk order, with the new `UserPromptSubmit` behavior landing last because it is the only hook that changes immediate send-flow behavior [F5][F19][F20][F24] [SOURCE: research.md §4].
+This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md §1; §2].
 
-**Key Decisions**: Extend the existing shared hook-state JSON instead of creating a parallel warning store; keep stale-warning ownership out of `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts`; ship every new capability behind env kill-switches so the prototype can default to observe-only behavior where possible [F5][F7][F8][F24] [SOURCE: research.md §4].
+**Key Decisions**: Keep `session_bootstrap()` and memory resume authoritative; keep producer work inside `session-stop.ts` plus `hook-state.ts`; treat the persisted artifact as a compact continuity wrapper rather than a second packet narrative; do not mutate `.claude/settings.local.json`; do not implement `UserPromptSubmit` or a new SessionStart warning fast path in this packet [SOURCE: research.md §2; §4].
 
-**Critical Dependencies**: Phase A must land before any downstream warning logic because `lastClaudeTurnAt` is the deterministic idle signal; Phase B must land before any hook validation because replay evidence is not trustworthy without isolated `TMPDIR`, autosave stubbing, and shared-state write boundaries [F19][F20][F24] [SOURCE: research.md §4].
+**Critical Dependencies**: The FTS capability helper and forced-degrade matrix are hard predecessors, and replay isolation is still required before any producer patch can be trusted [SOURCE: research.md §2]. The FTS capability cascade predecessor work is now explicitly owned by new phase 010-fts-capability-cascade-floor (R7, recommendations.md:65-73).
 
 ---
 
@@ -34,7 +33,7 @@ This feature defines a strictly sequential six-phase prototype that makes Claude
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Blocked — awaiting 010 predecessor verification |
 | **Created** | 2026-04-06 |
 | **Branch** | `026-graph-and-context-optimization/002-implement-cache-warning-hooks` |
 
@@ -44,11 +43,20 @@ This feature defines a strictly sequential six-phase prototype that makes Claude
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Cache-expiry is currently invisible across the existing Claude hook surfaces in this repo, which means long-idle sessions can resume or send a new turn without any warning that the next request may rebuild full context from scratch [F4][F5][F6][F7] [SOURCE: research.md §4]. The repo already has a shared hook-state store plus `Stop`, `SessionStart`, and `PreCompact` ownership boundaries, but it does not yet have the deterministic idle timestamp, isolated replay harness, or pre-send warning seam required to prototype cache-cliff mitigation safely [F19][F20][F24] [SOURCE: research.md §4].
+
+Packet `002` was originally framed as a six-phase cache-warning rollout with `SessionStart` estimator and `UserPromptSubmit` behavior. The canonical research now says that framing is too aggressive: warm-start and warning consumers are conditional, additive, and later in the continuity lane, while the defensible near-term work is a bounded producer-side metadata patch plus replay-safe verification [SOURCE: research.md §1; §2; §4].
 
 ### Purpose
-Define a Level 3 implementation plan for a kill-switch-gated cache-warning prototype that is built in six sequential phases, preserves existing hook ownership boundaries, and reduces surprise from cache cliffs without overstating savings or shipping unvalidated UX behavior [F5][F6][F7][F22] [SOURCE: research.md §4; §10].
+
+Define a research-aligned Level 3 packet that captures the producer-side continuity prerequisite work for this lane:
+
+- explicit predecessor dependency on FTS helper plus forced-degrade tests
+- replay harness isolation and side-effect fencing
+- bounded Stop-hook metadata persistence in `session-stop.ts` and `hook-state.ts`
+- idempotent verification and handoff to later packets
 <!-- /ANCHOR:problem -->
+
+> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/`, the implementation host for the `001-research-graph-context-systems/006-research-memory-redundancy/` research findings. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
 
 ---
 
@@ -56,30 +64,32 @@ Define a Level 3 implementation plan for a kill-switch-gated cache-warning proto
 ## 3. SCOPE
 
 ### In Scope
-- Extend `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts` with deterministic idle-timestamp and cache-warning fields that all downstream phases share.
-- Add an isolated replay harness under `.opencode/skill/system-spec-kit/mcp_server/test/hooks/` that can drive the `PreCompact`, `SessionStart`, `Stop`, and new `UserPromptSubmit` entry points against fixtures without contaminating production temp state.
-- Modify `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` and `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` to write/read the shared cache-warning contract in phase order.
-- Create `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts`, register its compiled output in `.claude/settings.local.json`, and add the three new cache-warning env keys with safe defaults.
-- Regenerate the compiled hook outputs under `.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/` and add any inline scaffold needed to wire the new hook into the existing build/test flow.
+
+- Confirm and document the predecessor dependency on the FTS capability helper plus truthful forced-degrade tests.
+- Build or refine replay-safe hook validation that isolates `TMPDIR`, stubs autosave where needed, and detects out-of-bound writes.
+- Extend `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts` with additive producer metadata needed for later continuity and analytics packets.
+- Extend `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` to persist bounded metadata after transcript parsing without turning Stop into an analytics reader.
+- Prove idempotent replay behavior for the producer patch before any later cached-summary consumer or warning surface is considered.
+- Keep long-form packet meaning in `decision-record.md` and `implementation-summary.md` when those docs exist, while the producer artifact remains a compact continuity wrapper.
 
 ### Out of Scope
-- Transcript auditor, SQLite ingest pipeline, and dashboard work remain in phase `005-claudest`; this spec does not implement or depend on that observability stack [F14][F16] [SOURCE: research.md §4; §10].
-- Cross-agent rollout and any broader skill-usage telemetry remain later work; this spec does not implement F17-style rollout infrastructure [SOURCE: research.md §10].
-- Skill-gating auto-disable queue behavior remains deferred; this phase does not solve F15 baseline-window policy or automation [SOURCE: research.md §11].
-- Edit-retry telemetry is not implemented here; F12 remains policy guidance only, not part of the hook prototype in this phase [SOURCE: research.md §10; §11].
-- Warning ownership must not move into `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts`; changing `compact-inject.js` into the warning owner is explicitly rejected [F8] [SOURCE: research.md §4].
+
+- Any new `UserPromptSubmit` hook, warning copy, or soft-block behavior.
+- Any mutation to `.claude/settings.local.json` for new warning or startup hooks.
+- Any `session-prime.ts` fast path that changes `resume`, `compact`, or startup behavior in this packet.
+- Any analytics reader, dashboard, pricing normalization, or token-insight publication contract.
+- Any attempt to make cached summaries or hook metadata authoritative over `session_bootstrap()` or `memory_context(...resume...)`.
+- Any long-form packet-style summary artifact that duplicates canonical packet docs.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts` | Modify | Add `lastClaudeTurnAt` and `cacheWarning` to `HookState`, plus default initialization in `updateState()`. |
-| `.opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts` | Create | Add isolated fixture-driven replay scaffold for all four hook entry points. |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` | Modify | Write `lastClaudeTurnAt` after transcript parsing with no new user-facing stdout. |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` | Modify | Add resume-only cache rebuild estimator and warning section logic. |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` | Create | Add stale-cache pre-send warning hook with observe-only and soft-block-once modes. |
-| `.claude/settings.local.json` | Modify | Add `CACHE_WARNING_IDLE_THRESHOLD_MINUTES`, `CACHE_WARNING_RESUME_ESTIMATE_ENABLED`, `CACHE_WARNING_SOFT_BLOCK_ONCE`, and `UserPromptSubmit` hook registration. |
-| `.opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/*.js` | Regenerate | Ship compiled JavaScript outputs that mirror the TypeScript hook changes. |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts` | Modify | Add bounded producer metadata while keeping `claudeSessionId` primary and `speckitSessionId` nullable. |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` | Modify | Persist bounded transcript identity and cache-token carry-forward fields after transcript parsing. |
+| `.opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts` | Create or refine | Isolated replay harness with side-effect detection for producer verification. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/*.vitest.ts` | Modify | Add replay and idempotency coverage for the producer patch. |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` | Read-only verification | Confirm no consumer fast path is introduced in this packet. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -91,25 +101,25 @@ Define a Level 3 implementation plan for a kill-switch-gated cache-warning proto
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Phase A extends the shared hook-state schema in `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts` with `lastClaudeTurnAt: string \| null` and `cacheWarning: { thresholdMinutes: number; lastAckAt: string \| null; warningsEmitted: number } \| null`. | `HookState` and `updateState()` defaults include both fields; `saveState()` remains the atomic write path; `loadState()` returns the same JSON contract to all consumers without a parallel state file [F19][F7] [SOURCE: research.md §4]. |
-| REQ-002 | Phase B introduces an isolated replay harness at `.opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts` or an equivalent file in the same test area. | Harness provisions a unique `TMPDIR` per run, disables or stubs Stop-hook autosave, enforces shared-state write boundaries, and can replay fixtures for `compact-inject`, `session-prime`, `session-stop`, and `user-prompt-submit` without touching production temp state [F20][F24] [SOURCE: research.md §4]. |
-| REQ-003 | Phase C extends `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` so `main()` writes `lastClaudeTurnAt` after transcript parsing. | The Stop hook calls `updateState(sessionId, { lastClaudeTurnAt: new Date().toISOString() })` after transcript parsing is attempted, emits no new user-facing stdout, and preserves existing summary/spec-folder/autosave behavior [F4][F19] [SOURCE: research.md §4]. |
-| REQ-004 | All new behavior ships behind env kill-switches with safe defaults in `.claude/settings.local.json`. | Config includes `CACHE_WARNING_IDLE_THRESHOLD_MINUTES=5`, `CACHE_WARNING_RESUME_ESTIMATE_ENABLED=true`, and `CACHE_WARNING_SOFT_BLOCK_ONCE=true`; implementation treats kill-switches as the activation gates for new behavior and defaults to observe-only where possible [F5][F6][F24] [SOURCE: research.md §4]. |
-| REQ-005 | Phase D validates the shared hook-state seam without moving warning ownership into `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts`. | Replay fixtures prove that `compact-inject`, `session-prime`, `session-stop`, and `user-prompt-submit` all read/write the same atomic JSON contract via the shared helpers, while `compact-inject` keeps its existing cache-builder responsibility and gains no stale-warning decision logic [F7][F8] [SOURCE: research.md §4]. |
+| REQ-001 | Packet `002` records the FTS helper plus forced-degrade matrix as a hard predecessor. | `spec.md`, `plan.md`, and `tasks.md` all state that this packet is not the first continuity implementation packet and depends on the earlier FTS hardening lane [SOURCE: research.md §2]. |
+| REQ-002 | Replay validation is isolated before any producer patch is treated as trustworthy. | Harness provisions isolated temp state, fences autosave side effects, and reports out-of-bound writes as failures rather than warnings [SOURCE: research.md §2]. |
+| REQ-003 | `hook-state.ts` gains additive producer metadata for continuity handoff. | State keeps `claudeSessionId` primary, leaves `speckitSessionId` nullable, and adds bounded fields for `lastClaudeTurnAt`, transcript identity or reference, and cache-token carry-forward without introducing a reader schema here [SOURCE: research.md §2]. |
+| REQ-004 | `session-stop.ts` persists the producer metadata after transcript parsing without becoming an analytics reader or second narrative owner. | Stop remains a writer-only boundary, persists bounded metadata after parse, emits a compact continuity wrapper, and does not absorb normalized reader, dashboard, publication logic, or canonical packet-doc ownership [SOURCE: research.md §2; §4]. |
+| REQ-005 | Replay verification includes idempotency, not just one-pass success. | Replaying the same transcript twice proves stable session-level totals and no duplicate turn ingestion or duplicate producer state rows [SOURCE: research.md §2]. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | Phase E extends `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` `handleResume()` with a cache rebuild estimate for resumed stale sessions. | On `source=resume`, the hook computes an estimate from `state.metrics.estimatedPromptTokens` plus elapsed time since `lastClaudeTurnAt`, and emits a warning section only when elapsed exceeds `CACHE_WARNING_IDLE_THRESHOLD_MINUTES` and `CACHE_WARNING_RESUME_ESTIMATE_ENABLED=true` [F6][F19] [SOURCE: research.md §4]. |
-| REQ-007 | Resume warnings must obey source-based suppression rules. | `handleResume()` emits the new warning only for `source=resume`; `source=compact` and `source=clear` stay on their existing paths and never display the stale-resume estimate, avoiding duplicate or misplaced warnings [F6] [SOURCE: research.md §4]. |
-| REQ-008 | Phase F creates `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` and wires it into `.claude/settings.local.json` under `UserPromptSubmit`. | The hook reads `lastClaudeTurnAt`, computes idle gap, warns with the exact prototype copy, soft-blocks once only when `CACHE_WARNING_SOFT_BLOCK_ONCE=true` and no acknowledgement exists yet, persists `cacheWarning.lastAckAt` on resend, and otherwise runs in warning-only observe mode [F5][F7] [SOURCE: research.md §4]. |
+| REQ-006 | This packet must preserve startup authority boundaries. | No doc or code path in this packet claims cached summary or Stop metadata replaces `session_bootstrap()` or `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` [SOURCE: research.md §4]. |
+| REQ-007 | `session-prime.ts` remains additive or unchanged in this packet. | Verification shows no new `resume`, `compact`, or startup consumer fast path is introduced here [SOURCE: research.md §2]. |
+| REQ-008 | The packet explicitly hands off deferred work to later continuity packets. | Follow-on notes name the later packets for normalized analytics reader, cached-summary consumer, workflow split, and token-observability contracts [SOURCE: research.md §2]. |
 
 ### P2 - Nice-to-have (ship if low-risk)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-009 | Track lightweight observability counters for warning emission versus acknowledgement in the shared state. | `cacheWarning.warningsEmitted` increments on each warning path, `lastAckAt` is populated only after resend acknowledgement, and replay fixtures assert both counters without introducing a new telemetry pipeline or JSONL dependency [F5][F7] [SOURCE: research.md §4]. |
+| REQ-009 | The packet documents the historical phase-001 warning research as context, not authority. | `research.md` keeps the earlier findings visible while clearly reclassifying them as upstream context rather than the active source of truth [SOURCE: research.md §3]. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -117,11 +127,11 @@ Define a Level 3 implementation plan for a kill-switch-gated cache-warning proto
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All six phases ship behind env kill-switches with safe defaults, and user-flow-changing behavior can be disabled without code changes.
-- **SC-002**: Replay harness validates every hook without contaminating production state, with isolated `TMPDIR` behavior explicitly proven by test setup and teardown.
-- **SC-003**: Resume warning appears in `source=resume` sessions only, and never appears on `source=compact` or `source=clear`.
-- **SC-004**: `UserPromptSubmit` soft-block fires at most once per idle gap, and acknowledgement persists across resend through shared state.
-- **SC-005**: Existing `Stop`, `SessionStart`, and `PreCompact` behavior shows zero regressions under replay coverage after the new cache-warning fields and hook logic land.
+- **SC-001**: Packet docs all align to the canonical 2026-04-08 research instead of the earlier six-phase warning rollout.
+- **SC-002**: Replay harness or equivalent verification proves isolated producer validation with explicit side-effect failure modes.
+- **SC-003**: The planned code change set is limited to `hook-state.ts`, `session-stop.ts`, and replay or test infrastructure; `session-prime.ts` remains unchanged in active scope.
+- **SC-004**: The producer patch persists bounded metadata only and does not introduce an analytics reader, dashboard contract, or startup authority shift.
+- **SC-005**: The packet explicitly defers cached-summary consumers and direct warning surfaces until later prerequisite gates are satisfied.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -131,18 +141,19 @@ Define a Level 3 implementation plan for a kill-switch-gated cache-warning proto
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | **R-001: `UserPromptSubmit` UX is explicitly unshipped in the source and remains prototype-only** [F5] [SOURCE: research.md §4]. | High | Land Phase F last, keep it kill-switch gated, default to observe-only semantics when soft-block is disabled, and require replay coverage before any broader rollout. |
-| Dependency | **R-002: Replay side-effects contaminate evidence without isolation** [F24] [SOURCE: research.md §4]. | High | Treat Phase B as a hard prerequisite for every validation pass; isolate `TMPDIR`, stub autosave, and enforce shared-state boundaries before comparing results. |
-| Risk | **R-003: SessionStart estimate is heuristic without deeper cache telemetry** [F6] [SOURCE: research.md §4]. | Medium | Frame Phase E as an estimate, not accounting; suppress it outside `source=resume`; do not attach savings claims until local measurement exists. |
-| Dependency | **R-004: Schema drift between Stop writer and consumers breaks the seam if the shared contract is not enforced** [F7] [SOURCE: research.md §4]. | High | Keep one JSON contract in `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`, use the existing atomic helpers, and verify all four hook entry points against the same fixture set in Phase D. |
-| Risk | **R-005: `compact-inject.js` responsibility blur creates warning overlap without solving resumed-session coverage** [F8] [SOURCE: research.md §4]. | Medium | Keep `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts` as a mitigation target only; it may recommend `/compact`, but it must not decide stale-cache warning ownership. |
+| Dependency | **R-001: FTS prerequisite missing** | High | Keep the predecessor dependency explicit and do not claim this packet is ready to implement ahead of that lane [SOURCE: research.md §2]. |
+| Risk | **R-002: Producer and consumer boundaries blur again** | High | Keep work inside `session-stop.ts` plus `hook-state.ts`; no SessionStart fast path or `UserPromptSubmit` work here [SOURCE: research.md §2; §4]. |
+| Risk | **R-003: Replay evidence is polluted by autosave or shared temp state** | High | Isolate `TMPDIR`, stub autosave where needed, and fail on out-of-bound writes [SOURCE: research.md §2]. |
+| Risk | **R-004: Cached or persisted summaries are treated as authoritative too early** | High | Preserve `session_bootstrap()` and memory resume as authoritative; defer any cached-summary consumer until later gates [SOURCE: research.md §4]. |
+| Risk | **R-005: Packet keeps stale wording from the older warning prototype** | Medium | Synchronize `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `research.md` in one update pass. |
 
 ### Hard Rules
-- **Prototype-only gating:** Every new feature path in Phases A-F must be controlled by env kill-switches, and defaults must preserve observe-only behavior where possible so the prototype can be rolled back instantly [F5][F24] [SOURCE: research.md §4].
-- **JSONL adapter rule:** This spec does not change the Claude JSONL parser. Any future observability work belongs in phase `005-claudest` as a guarded adapter with coverage counters, fail-closed parsing, parser-failure visibility, and an `unknown` bucket rather than a trusted core contract [F16] [SOURCE: research.md §4; §10].
-- **Isolation rule:** The replay harness is a prerequisite, not a cleanup task. No hook phase can be called validated unless Phase B isolation exists and is exercised in the relevant replay path [F20][F24] [SOURCE: research.md §4].
-- **Source discrepancy preservation:** Do not cite the post's `264 million tokens` or `$1,619` totals as settled fact. Preserve the `926` versus `858` session mismatch and the `18,903` versus `11,357` turn-denominator mismatch anywhere this prototype summarizes source economics [F13][F21] [SOURCE: research.md §4].
-- **Remedy overhead:** This spec claims reduced surprise from cache cliffs, not net-positive savings. `/clear`, `/compact`, and plugin-memory recovery remain promising mitigations, but they are not locally net-costed yet [F22] [SOURCE: research.md §10].
+
+- **No runtime enablement in this packet**: do not add `.claude/settings.local.json` mutations or new hook registrations.
+- **No direct warning consumer in this packet**: do not implement `UserPromptSubmit` or a new warning-only `SessionStart` branch here.
+- **Producer-only boundary**: Stop may persist bounded metadata, but it must not become the analytics reader or publication surface.
+- **Authority preservation**: `session_bootstrap()` and `memory_context(...resume...)` remain authoritative.
+- **Idempotency required**: replay verification must prove stable repeated ingestion before later consumer packets are considered.
 <!-- /ANCHOR:risks -->
 
 ---
@@ -151,36 +162,34 @@ Define a Level 3 implementation plan for a kill-switch-gated cache-warning proto
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: No hook may exceed the existing 1.8s timeout budget defined in `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`; replay coverage must include timeout-sensitive paths.
-- **NFR-P02**: Resume-estimate and pre-send warning logic must use existing state reads plus lightweight elapsed-time math only; no new transcript reread may be added to `handleResume()`.
+- **NFR-P01**: Replay validation for the producer patch must stay within existing hook timeout and test-runtime expectations.
+- **NFR-P02**: The producer patch must not add a second transcript parse or heavy reader logic to `session-stop.ts`.
 
 ### Security
-- **NFR-S01**: The feature must continue using the existing per-session temp-state file model and atomic rename flow; no new external service calls or network dependencies may be introduced.
-- **NFR-S02**: Hook stdout must remain reserved for Claude injection content only; diagnostics stay on stderr so hook registration remains startup-clean.
+- **NFR-S01**: No new external services, network calls, or secret-bearing config changes may be introduced.
+- **NFR-S02**: Hook stdout remains reserved for the existing runtime contract; diagnostics stay on stderr.
 
 ### Reliability
-- **NFR-R01**: All four hook entry points must read/write the same JSON state atomically through `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`.
-- **NFR-R02**: Missing or malformed cache-warning state must fail safe by suppressing warning behavior rather than crashing the hook process.
+- **NFR-R01**: Producer metadata remains additive in `HookState`; no migration layer or second state file is introduced.
+- **NFR-R02**: Replay tests prove idempotent handling for repeated transcript ingestion attempts.
 
 ### Operability
-- **NFR-O01**: Every user-visible warning path must have a corresponding env kill-switch so operators can disable it without modifying code.
-- **NFR-O02**: Replay harness setup must make isolation choices explicit, including `TMPDIR`, autosave stubbing, and state-directory cleanup, so failures are diagnosable.
+- **NFR-O01**: Follow-on consumer work must still have a clear handoff path in the packet docs.
+- **NFR-O02**: Replay isolation choices must be explicit and diagnosable.
 
 ---
 
 ## 8. EDGE CASES
 
 ### Data Boundaries
-- Missing state file: `session-prime` and `user-prompt-submit` must suppress warnings and continue with current fallback behavior when no prior Stop state exists.
-- Missing `lastClaudeTurnAt`: Phase E and Phase F must not infer idleness from `updatedAt`; they must treat the warning seam as unavailable until Phase A data exists [F19] [SOURCE: research.md §4].
-- Malformed or future timestamp: Warning logic must treat invalid elapsed-time math as "no warning" and log only to stderr.
-- Zero or stale token metrics: Resume estimate may render qualitative copy, but it must not invent precise cost numbers when `estimatedPromptTokens` is missing or zero.
+- Missing transcript identity or reference: the producer patch must degrade safely without inventing reader-level structure.
+- Missing cache token inputs: producer metadata may remain partial, but it must not fabricate precision.
+- Replayed transcript with identical offsets: verification must prove no duplicate producer records or duplicated downstream-ready markers.
 
 ### Error Scenarios
-- Autosave still active in replay: Harness must fail the test run rather than silently allowing prototype evidence to pollute live temp state [F24] [SOURCE: research.md §4].
-- Repeated resend after soft-block: `UserPromptSubmit` must block at most once per idle gap; further resends after acknowledgement become warning-only.
-- `source=compact` and `source=clear`: Phase E warning section must never appear on these sources, even if stale state exists [F6] [SOURCE: research.md §4].
-- Concurrent hook writes: Validation must confirm that `saveState()` atomic rename behavior preserves a single JSON seam rather than partial writes.
+- FTS predecessor not yet landed: packet cannot honestly claim implementation readiness.
+- Replay harness still writes outside the sandbox: validation fails and the producer patch remains untrusted.
+- SessionStart temptation creeps back in: packet docs must treat any startup consumer path as follow-on work, not current scope.
 
 ---
 
@@ -188,12 +197,12 @@ Define a Level 3 implementation plan for a kill-switch-gated cache-warning proto
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Touches shared hook state, two existing hooks, one new hook, replay test infrastructure, build outputs, and runtime config. |
-| Risk | 22/25 | Includes a new user-flow-changing hook, heuristic warning copy, and shared-state coupling across four entry points. |
-| Research | 17/20 | Depends on multiple research findings plus preserved risk framing for F5-F8, F13, F16, F19-F24. |
-| Multi-Agent | 3/15 | Work is sequential rather than parallel, but validation spans multiple hook surfaces and compiled/runtime layers. |
-| Coordination | 12/15 | Requires strict phase ordering, kill-switch design, replay isolation, and source-of-truth parity between TS, dist JS, tests, and `.claude/settings.local.json`. |
-| **Total** | **74/100** | **Level 3 because the feature crosses runtime boundaries, needs formal risk framing, and must preserve explicit prototype constraints.** |
+| Scope | 16/25 | Narrower than the original packet, but still crosses writer, state, and test seams. |
+| Risk | 20/25 | Producer or authority drift would poison later continuity packets. |
+| Research | 19/20 | Scope now depends directly on the canonical consolidation and Claudest continuation order. |
+| Multi-Agent | 2/15 | Work is sequential and packet-local. |
+| Coordination | 13/15 | Requires exact predecessor wording, replay isolation, and cross-doc synchronization. |
+| **Total** | **70/100** | **Level 3 because the packet defines a prerequisite seam for later continuity work and must preserve exact boundaries.** |
 
 ---
 
@@ -201,91 +210,61 @@ Define a Level 3 implementation plan for a kill-switch-gated cache-warning proto
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | `UserPromptSubmit` warning UX is still explicitly unshipped and may behave poorly under real send-flow conditions [F5] [SOURCE: research.md §4]. | High | Medium | Keep prototype-only, gate with env flags, and require replay coverage before rollout. |
-| R-002 | Replay evidence is invalid if autosave or temp-state side effects leak into test runs [F24] [SOURCE: research.md §4]. | High | High | Make isolation mandatory in Phase B and fail tests when boundaries are crossed. |
-| R-003 | Resume warning estimate can imply false precision because cached-token rebuild cost is only heuristic [F6] [SOURCE: research.md §4]. | Medium | High | Label the output as an estimate, suppress outside `source=resume`, and avoid savings claims. |
-| R-004 | Shared-state schema drift could desynchronize Stop writer, SessionStart estimator, PreCompact seam, and `UserPromptSubmit` acknowledgement logic [F7][F19] [SOURCE: research.md §4]. | High | Medium | Keep one contract in `hook-state.ts` and validate all four entry points together in Phase D. |
-| R-005 | Boundary blur in `compact-inject.js` would create overlapping ownership and still miss resumed sessions [F8] [SOURCE: research.md §4]. | Medium | Medium | Enforce "no warning ownership in PreCompact" as a hard scope rule. |
-| R-006 | Source arithmetic is not ledger-grade because the source preserves denominator mismatches and inconsistent totals [F13][F21] [SOURCE: research.md §4]. | Low | Certain | Frame source economics qualitatively, preserve discrepancies explicitly, and do not cite the post's totals as settled accounting. |
-| R-007 | Remedy bundle is not net-costed, so the mitigation path could add overhead that erodes claimed savings [F22] [SOURCE: research.md §10]. | Medium | High | Claim reduced surprise only; defer savings language until local measurement is complete. |
+| R-001 | Packet is implemented before the FTS helper plus forced-degrade predecessor lands. | High | Medium | Keep predecessor wording explicit across all packet docs. |
+| R-002 | Stop becomes an analytics reader instead of a bounded writer. | High | Medium | Limit active scope to producer metadata only. |
+| R-003 | Cached summary or warning consumers are reintroduced before fidelity or freshness gates exist. | High | High | Defer those consumers explicitly and keep `session_bootstrap()` authoritative. |
+| R-004 | Replay validation shows one-pass success but misses idempotency failures. | High | Medium | Require double-replay verification before completion. |
+| R-005 | Old six-phase warning language survives in one or more packet docs. | Medium | Medium | Validate all spec docs together and patch drift before closeout. |
 
 ---
 
 ## 11. USER STORIES
 
-### US-001: Warn Before Stale Send (Priority: P0)
+### US-001: Preserve a Trustworthy Producer Boundary (Priority: P0)
 
-**As a** developer with long-running Claude sessions, **I want** a warning before I send a message into a stale cache, **so that** I can `/clear` first and avoid a full cache rebuild.
+**As a** maintainer of the continuity lane, **I want** packet `002` to stop at the producer-side metadata patch, **so that** later analytics and cached-summary consumers build on a trustworthy seam instead of speculative warning UX.
 
 **Acceptance Scenarios**:
 
-- **Given** a session whose `lastClaudeTurnAt` exceeds the configured threshold, **When** I submit the next prompt, **Then** the system warns with the prototype copy before the expensive turn proceeds.
-- **Given** soft-block mode is enabled and no acknowledgement exists yet, **When** I send the first stale prompt, **Then** the hook blocks once and records acknowledgement on resend.
+- **Given** the packet is reviewed against canonical research, **When** scope is finalized, **Then** active work is limited to replay isolation plus `session-stop.ts` and `hook-state.ts` producer metadata.
+- **Given** later continuity packets consume this metadata, **When** they are planned, **Then** they inherit a stable writer boundary rather than an already-collapsed reader contract.
 
 ---
 
-### US-002: Replay Without Production Contamination (Priority: P0)
+### US-002: Verify Producer Changes Without Side Effects (Priority: P0)
 
-**As a** hook author, **I want** isolated replay fixtures, **so that** my prototype tests do not contaminate production state.
+**As a** hook author, **I want** replay-safe validation and idempotency checks, **so that** Stop-hook metadata changes can be trusted before any consumer or analytics work begins.
 
 **Acceptance Scenarios**:
 
-- **Given** replay execution starts, **When** the harness runs, **Then** it provisions a unique `TMPDIR`, prevents autosave from touching live memory paths, and cleans up its temp state afterward.
-- **Given** fixture-driven coverage, **When** I replay any supported hook entry point, **Then** the shared-state writes stay inside the harness boundary only.
+- **Given** replay execution starts, **When** the harness runs, **Then** it isolates temp state and reports any out-of-bound write as a failure.
+- **Given** the same transcript is replayed twice, **When** verification completes, **Then** session totals remain stable and duplicate turn ingestion does not occur.
 
 ---
 
-### US-003: Resume Warning Before First Prompt (Priority: P1)
+### US-003: Keep Startup Authority Intact (Priority: P1)
 
-**As a** `SessionStart` handler, **I want** to estimate cache rebuild cost, **so that** I can warn the user before the first prompt.
-
-**Acceptance Scenarios**:
-
-- **Given** `source=resume` and an idle gap above threshold, **When** `handleResume()` runs, **Then** it renders a warning section derived from stored token metrics and elapsed time.
-- **Given** `source=compact` or `source=clear`, **When** `SessionStart` runs, **Then** the resume warning is suppressed entirely.
-
----
-
-### US-004: Instant Rollback Controls (Priority: P2)
-
-**As an** operator, **I want** env kill-switches on every new hook capability, **so that** I can roll back instantly without code changes.
+**As a** continuity-system maintainer, **I want** this packet to avoid new SessionStart or direct-warning behavior, **so that** `session_bootstrap()` and memory resume stay authoritative until later gates are satisfied.
 
 **Acceptance Scenarios**:
 
-- **Given** a production issue in any new warning path, **When** I disable the relevant env key, **Then** the feature stops emitting or blocking without removing the hook file.
-- **Given** defaults are applied in `.claude/settings.local.json`, **When** the feature first ships, **Then** it starts from the safest supported mode for each phase.
+- **Given** packet `002` completes, **When** a user resumes work, **Then** existing bootstrap and resume guidance remain the authoritative recovery path.
+- **Given** follow-on cached-summary or warning work is planned later, **When** it references packet `002`, **Then** it treats this packet as a producer prerequisite, not a complete warm-start feature.
 
 ---
 
 ## 12. OPEN QUESTIONS
 
-The items below stay open, but the following guardrails are not open for debate in this phase: every new feature remains kill-switch gated, JSONL observability stays in phase `005-claudest` as a guarded adapter only, replay isolation is mandatory, source arithmetic remains qualitative, and this spec does not claim net-positive savings [F13][F16][F21][F22][F24] [SOURCE: research.md §4; §10; §11].
-
-- **Q2 - Deferred-loading ergonomics:** No first-tool latency benchmark exists for `Code_Environment/Public`, so startup ergonomics and discoverability tradeoffs remain unmeasured [SOURCE: research.md §11].
-- **Q8 - Edit-retry root causes:** The post reports 31 retry sequences but does not partition root causes across prompt quality, workflow design, or messaging, so this phase cannot attribute that waste confidently [SOURCE: research.md §11].
-- **Q9 - Plugin overhead net costing:** What is the actual gross-savings-minus-remedy-overhead result for `/clear` plus plugin-memory recovery once injected context, hook writes, and skill surfaces are counted? [F22] [SOURCE: research.md §10; §11].
-- **Q10 - Skill baseline window:** Not relevant to this hook phase's delivery, but still unresolved for phase `005-claudest` and any later skill-usage policy work [SOURCE: research.md §11].
-- **Q11 - Replay-harness isolation boundary:** What exactly must be stubbed or isolated so Stop-hook autosave and shared temp-state writes cannot contaminate validation results? Phase B must resolve this before Phase C or later phases can be treated as verified [F24] [SOURCE: research.md §4; §11].
+1. Which exact transcript-identity field shape should be persisted in `HookState` without prematurely introducing the later reader schema?
+2. Can the replay harness prove idempotency at the writer seam alone, or does it need a minimal reader-side fixture harness in the follow-on packet?
+3. Should the packet title remain unchanged for continuity, or should a later packet rename clean up the historical "cache-warning" label once the implementation lane stabilizes?
 <!-- /ANCHOR:questions -->
 
 ---
 
 ## RELATED DOCUMENTS
 
-- **Research Source**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings/research/research.md`
-- **Existing Hook State**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`
-- **Existing Stop Hook**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`
-- **Existing SessionStart Hook**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`
-- **Existing PreCompact Hook**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts`
-- **Shared Hook Utilities**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts`
-- **Runtime Hook Config**: `.claude/settings.local.json`
-- **Follow-on Planning Docs**: `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`
-
----
-
-<!--
-LEVEL 3 SPEC (~165 lines)
-- Core + L2 + L3 addendums
-- Executive Summary, Risk Matrix, User Stories
-- Full Complexity Assessment
--->
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`
+- **Decision Records**: See `decision-record.md`

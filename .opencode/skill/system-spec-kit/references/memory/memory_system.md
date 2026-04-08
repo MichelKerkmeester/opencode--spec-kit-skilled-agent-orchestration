@@ -23,7 +23,7 @@ The Spec Kit Memory system provides context preservation across sessions through
 | MCP Server | `mcp_server/context-server.ts` | Spec Kit Memory MCP with vector search |
 | Database | `mcp_server/dist/database/context-index.sqlite` | SQLite with FTS5 + vector embeddings (canonical runtime path; `mcp_server/database/context-index.sqlite` is a compatibility symlink) |
 | Constitutional | `constitutional/` | Always-surface rules (Gate 3 enforcement) |
-| Scripts | `scripts/memory/generate-context.ts` | Memory file generation with ANCHOR format |
+| Scripts | runtime `scripts/dist/memory/generate-context.js` (source: `scripts/memory/generate-context.ts`) | Memory file generation with ANCHOR format |
 
 ### Core Capabilities
 
@@ -685,7 +685,7 @@ The effective stability is `max(fsrs_stability, type_stability)`, ensuring new m
 - [environment_variables.md](../config/environment_variables.md) - Configuration options
 
 ### Scripts
-- `scripts/memory/generate-context.ts` - Memory file generation
+- `scripts/dist/memory/generate-context.js` - Runtime memory-save entrypoint (compiled from `scripts/memory/generate-context.ts`)
 - `mcp_server/context-server.ts` - MCP server implementation
 
 ### Related Skills

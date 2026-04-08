@@ -37,12 +37,12 @@ describe('F-AC1 — OVERVIEW truncation', () => {
 });
 
 describe('F-AC7 — OVERVIEW anchor consistency', () => {
-  it('keeps the TOC fragment, HTML id, and OVERVIEW anchor marker aligned on overview', () => {
+  it('keeps the TOC fragment and OVERVIEW anchor marker aligned on overview without legacy HTML ids', () => {
     const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
-    const overviewBlockMatch = template.match(/<!-- ANCHOR:overview -->[\s\S]*?<a id="overview"><\/a>[\s\S]*?<!-- \/ANCHOR:overview -->/);
+    const overviewBlockMatch = template.match(/<!-- ANCHOR:overview -->[\s\S]*?##\s+OVERVIEW[\s\S]*?<!-- \/ANCHOR:overview -->/);
 
     expect(template).toContain('<!-- ANCHOR:overview -->');
-    expect(template).toContain('<a id="overview"></a>');
+    expect(template).not.toContain('<a id="overview"></a>');
     expect(template).toContain('[OVERVIEW](#overview)');
     expect(overviewBlockMatch).not.toBeNull();
     expect(overviewBlockMatch?.[0]).not.toContain('<!-- ANCHOR:summary -->');

@@ -966,7 +966,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 | Templates         | `templates/level_1/` through `level_3+/` (see Resource Inventory above)    | Pre-merged level templates        |
 | Validation        | `scripts/spec/validate.sh`                                                 | Automated validation              |
 | Gates             | `AGENTS.md` Section 2                                                      | Gate definitions                  |
-| Memory gen        | `scripts/memory/generate-context.ts` → `scripts/dist/`                     | Memory file creation              |
+| Memory gen        | runtime `scripts/dist/memory/generate-context.js` (source: `scripts/memory/generate-context.ts`) | Memory file creation              |
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
 | Database          | `mcp_server/database/context-index.sqlite`                                 | Default repo-local memory index path used by checked-in configs |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |

@@ -1,6 +1,6 @@
 ---
 title: "Research: Contextador (003-contextador) -- MCP query interface, self-healing context, Mainframe shared cache"
-description: "Source-grounded v2 synthesis on Contextador's MCP query surface, query routing, self-healing repair loop, Mainframe shared cache, budget controls, setup ergonomics, GitHub automation, token-efficiency claims, multi-provider abstraction, and licensing model. Findings are labeled adopt now / prototype later / reject for Code_Environment/Public."
+description: "Source-grounded v3 synthesis on Contextador's MCP query surface, query routing, self-healing repair loop, Mainframe shared cache, budget controls, setup ergonomics, GitHub automation, token-efficiency claims, multi-provider abstraction, and licensing model. Findings are labeled adopt now / prototype later / reject for Code_Environment/Public after a 20-iteration closeout."
 trigger_phrases:
   - "contextador research"
   - "mcp query interface research"
@@ -22,10 +22,10 @@ contextType: "general"
 - Phase: 003-contextador (track 026 graph-and-context-optimization, sub-track 001 research-graph-context-systems)
 - Status: Complete
 - Date Started: 2026-04-06
-- Date Completed: 2026-04-06
-- Researchers: cli-codex (gpt-5.4 high) iteration agents, re-synthesized into v2 by Codex
-- Iterations completed: 13 of 13
-- Stop reason: extended convergence after the user-requested 9-13 pass, with near-complete production-source coverage and remaining unread `external/src/` files limited to tests
+- Date Completed: 2026-04-08
+- Researchers: cli-codex (gpt-5.4 high) iteration agents for runs 1-13, extended by Codex for runs 14-20 and final synthesis refresh
+- Iterations completed: 20 of 20
+- Stop reason: user-requested extension to 20 total iterations, with all 12 phase questions explicitly resolved and no new top-level subsystem discovered beyond the already-classified runtime ergonomics lane
 - Related: phase-research-prompt.md, spec.md, plan.md, decision-record.md, implementation-summary.md
 
 ## 2. INVESTIGATION REPORT
@@ -40,7 +40,7 @@ The phase prompt asked for a source-grounded study of Contextador as a Bun-based
 
 ### Key Findings Summary
 
-Contextador remains real software, not README theater: after 13 iterations the traced repo now has source-backed and partly test-backed coverage across bootstrap, routing, feedback intake, generator shape, Janitor staging, Mainframe message mechanics, budget enforcement, setup wizard behavior, GitHub automation, and the remaining core helper modules. But the live retrieval path is still materially thinner than the marketing suggests: the served `context` result is plain text built from a narrow pointer schema over authored `CONTEXT.md` files, not a richer typed context object and not a deeper semantic or structural backend. The extended pass strengthened confidence in several mechanics, but it also narrowed claims: `.mcp.json` "auto-detection" is project-file generation plus host discovery, framework presets are lightweight, Mainframe robustness remains under-tested, and the helper layer is weaker than names like `validation.ts` or `writer.ts` imply.
+Contextador remains real software, not README theater: after 20 iterations the traced repo now has source-backed and partly test-backed coverage across bootstrap, routing, feedback intake, generator shape, Janitor staging, Mainframe message mechanics, budget enforcement, setup wizard behavior, GitHub automation, and the remaining core helper modules. The extra 7 runs did not discover a new subsystem; they converted that broad coverage into explicit closure for Q1-Q12 and revalidated the final adoption boundary against current `Code_Environment/Public` surfaces. The core conclusion stayed stable: the live retrieval path is materially thinner than the marketing suggests because the served `context` result is plain text built from a narrow pointer schema over authored `CONTEXT.md` files, not a richer typed context object and not a deeper semantic or structural backend. The final closure pass further narrowed three claims that matter operationally: `.mcp.json` "auto-detection" is project-file generation plus host discovery, Mainframe remains under-governed on privacy/conflict semantics, and the helper layer is weaker than names like `validation.ts` or `writer.ts` imply.
 
 ### Recommendations Snapshot
 
@@ -49,6 +49,15 @@ Contextador remains real software, not README theater: after 13 iterations the t
 - Adopt now: benchmark-honest wording for token-efficiency claims; the source now proves the arithmetic and still disproves any measured-93%-savings framing.
 - Prototype later: model-first routing facade, query-triggered repair plus deterministic enrichment, Mainframe-style answer-cache reuse, local budget gating, bounded event-driven automation, and selective provider/setup ergonomics.
 - Reject: pointer-only context delivery as a primary response model, Contextador as a semantic or structural retrieval replacement, Mainframe's privacy/conflict model as-is, Bun runtime coupling, and any direct source adoption under AGPL/commercial licensing.
+
+### Extension Closure (Iterations 14-20)
+
+The final seven iterations were not a second research branch; they were a deliberate answer-closure pass over the already-traced code. They explicitly resolved the packet's remaining questions by:
+
+- separating the typed `ContextResponse` model from the narrower text-and-pointer MCP contract (`external/src/lib/core/types.ts:49-62`, `external/src/lib/core/pointers.ts:14-190`, `external/src/mcp.ts:185-282`)
+- converting the feedback, janitor, and generator path into a bounded self-healing story instead of a vague "self-improving" claim (`external/src/lib/core/feedback.ts:20-143`, `external/src/lib/core/janitor.ts:84-147`, `external/src/lib/core/janitor.ts:387-490`, `external/src/lib/core/generator.ts:101-156`)
+- tightening the operational and legal adoption boundary for Mainframe, `.mcp.json` onboarding, and AGPL/commercial licensing (`external/src/lib/mainframe/bridge.ts:26-57`, `external/src/lib/mainframe/client.ts:182-188`, `external/src/cli.ts:141-158`, `external/src/cli.ts:769-776`, `external/package.json:2-7`, `external/LICENSE-COMMERCIAL.md:1-20`)
+- rechecking novelty against Public's current semantic, structural, and recovery stack so the keep-vs-reject boundary rests on direct source comparison rather than packet-level intuition (`.opencode/skill/mcp-coco-index/README.md:42-86`, `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:40-44`, `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217`)
 
 ## 3. EVIDENCE-BACKED FINDINGS
 
@@ -348,7 +357,7 @@ Contextador is not an MIT-style reference repo. `external/package.json:6` declar
 
 ## 9. OPEN QUESTIONS (post-research)
 
-No material production-source gap remains after 13 iterations; the remaining uncertainty is prototype-stage validation, not unread core code. The genuinely open questions are now:
+No material production-source gap remains after the 20-iteration closeout; practical production-source coverage was already reached by iteration 13, and the remaining extension work focused on question closure rather than new subsystem discovery. The genuinely open questions are now:
 
 - How much answer quality is lost or preserved if a Public routing facade compresses outputs before delivery instead of returning richer typed results?
 - What governed cache key, retention, reconciliation, and budget model would make shared answer reuse acceptable in Public without inheriting Mainframe's coarse hashes and shallow room-state sync?
@@ -375,32 +384,39 @@ Thirteen iterations were executed via `cli-codex` using `gpt-5.4` with high reas
 | 11 | setup wizard, framework presets, UI helpers, `.mcp.json` reality check | 5 | 0.34 | insight |
 | 12 | GitHub webhook + triage as a real automation example | 5 | 0.31 | insight |
 | 13 | closing module sweep: `agents.ts`, `validation.ts`, `writer.ts`, `sizecheck.ts`, `docsync.ts`, `depscan.ts`, `demolish.ts` | 6 | 0.23 | insight |
+| 14 | question closure pass: MCP tool surface, payload shape, and `routeQuery` decision flow | 4 | 0.19 | insight |
+| 15 | question closure pass: feedback ingestion, repair queue, janitor stages, and self-healing claim boundary | 4 | 0.17 | insight |
+| 16 | question closure pass: Mainframe broadcast/request protocol, janitor locking, and privacy/consistency tradeoffs | 4 | 0.16 | insight |
+| 17 | question closure pass: token-savings arithmetic, budget gating, and provider abstraction support | 4 | 0.15 | insight |
+| 18 | question closure pass: setup wizard, framework presets, and `.mcp.json` onboarding reality | 3 | 0.14 | insight |
+| 19 | question closure pass: AGPL plus commercial licensing, Bun runtime, and direct-reuse constraints | 3 | 0.13 | insight |
+| 20 | final closure pass: novelty-vs-duplication boundary against CocoIndex, Code Graph, and session bootstrap | 4 | 0.12 | insight |
 
 ## 12. CONVERGENCE REPORT
 
-- Stop reason: extended convergence after the user-requested 9-13 pass, with the remaining unread `external/src/` files reduced to tests only and no new top-level subsystem discovered after the closing helper sweep
-- Total iterations: 13 of 13
-- Original phase questions: all 12 answered at least partially by iteration 8; extension questions on test coverage, budget, setup, GitHub automation, and helper-module closure answered by iterations 9-13
-- Last 5 `newInfoRatio` values: `0.41`, `0.46`, `0.34`, `0.31`, `0.23`
-- Overall pattern: iteration 10 briefly increased novelty by tracing `budget.ts` as a previously untraced subsystem, then ratios declined again as the remaining work shifted to validation, narrowing, and closure
-- All 13 iterations executed via cli-codex (gpt-5.4 high), zero internal-agent fallback used
-- Total findings consolidated: ~75 raw across iterations, 18 deduplicated final findings in this v2 synthesis
+- Stop reason: user-requested extension to 20 total iterations, ending at the raised cap after the final comparison pass resolved Q12 and confirmed the same overall recommendation posture
+- Total iterations: 20 of 20
+- Phase questions: all 12 are now explicitly marked resolved in the synchronized strategy/dashboard state
+- Last 7 `newInfoRatio` values: `0.19`, `0.17`, `0.16`, `0.15`, `0.14`, `0.13`, `0.12`
+- Overall pattern: after iteration 13 closed production-source coverage, novelty declined in a healthy way because the remaining work shifted from subsystem discovery to contract clarification, question closure, and final comparison against Public's existing stack
+- Iterations 1-13 were executed via cli-codex (gpt-5.4 high); iterations 14-20 were executed by Codex as a packet-local extension pass
+- Total findings consolidated: 18 primary synthesis findings plus 7 answer-closure iteration artifacts that tighten question coverage and adoption boundaries
 
 ## 13. SOURCE INDEX
 
-Source coverage statement after 13 iterations: approximately `56 / 66 ~= 84.8%` of files under `external/src/` were read directly by some iteration, and effectively `100%` of non-test production source files. The remaining unread slice is test-only, which means the main residual uncertainty is behavioral robustness rather than missing production-source trace coverage.
+Source coverage statement after 20 iterations: approximately `56 / 66 ~= 84.8%` of files under `external/src/` were read directly by some iteration, and effectively `100%` of non-test production source files. The extension pass did not broaden production-file coverage further because it focused on explicit question closure, adoption boundaries, and direct comparison against Public's existing retrieval stack. The remaining unread slice is still test-only, which means the main residual uncertainty is behavioral robustness rather than missing production-source trace coverage.
 
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/phase-research-prompt.md` — cited lines: `8-14`, `49-80`
-- `.opencode/skill/mcp-coco-index/README.md` — cited lines: `42-47`, `53-59`, `94-126`, `137-143`, `161-170`
+- `.opencode/skill/mcp-coco-index/README.md` — cited lines: `42-47`, `42-86`, `53-59`, `94-126`, `137-143`, `161-170`
 - `.opencode/skill/system-spec-kit/SKILL.md` — cited lines: `583-589`, `591`, `604-605`, `612-613`, `616-617`, `638-640`, `702-708`, `741-757`, `767-802`, `782-786`
-- `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` — cited lines: `40-50`
+- `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` — cited lines: `40-44`, `40-50`
 - `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` — cited lines: `67-73`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` — cited lines: `9-16`, `116-238`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts` — cited lines: `86-192`, `166-189`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` — cited lines: `68-143`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` — cited lines: `107-217`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` — cited lines: `131-139`
-- `external/src/mcp.ts` — cited lines: `34-91`, `66-90`, `97-99`, `101-115`, `104-115`, `117-174`, `180-183`, `185-277`, `193-208`, `200-208`, `212-246`, `224-255`, `243-282`, `296-340`, `436-448`, `677-686`
+- `external/src/mcp.ts` — cited lines: `34-91`, `66-90`, `97-99`, `101-115`, `104-115`, `117-174`, `180-183`, `185-277`, `185-282`, `193-208`, `200-208`, `212-246`, `224-255`, `243-282`, `296-340`, `344-671`, `415-671`, `436-448`, `677-686`
 - `external/src/lib/core/projectconfig.ts` — cited lines: `19-65`, `40-64`
 - `external/src/lib/core/types.ts` — cited lines: `49-62`, `91-97`
 - `external/src/lib/core/headmaster.ts` — cited lines: `16-36`, `61-126`, `128-157`, `159-197`, `199-242`
@@ -431,7 +447,7 @@ Source coverage statement after 13 iterations: approximately `56 / 66 ~= 84.8%` 
 - `external/src/lib/mainframe/rooms.ts` — cited lines: `6-69`
 - `external/src/lib/mainframe/dedup.ts` — cited lines: `8-26`
 - `external/src/lib/mainframe/summarizer.ts` — cited lines: `17-21`, `79-99`, `101-108`
-- `external/src/lib/mainframe/client.ts` — cited lines: `81-92`, `124-129`, `163-172`, `182-188`
+- `external/src/lib/mainframe/client.ts` — cited lines: `20-72`, `81-92`, `124-129`, `145-189`, `163-172`, `182-188`
 - `external/src/lib/mainframe/budget.ts` — cited lines: `16-22`, `24-27`, `29-46`, `57-73`, `90-100`
 - `external/src/lib/mainframe/rooms.test.ts` — cited lines: `4-28`
 - `external/src/lib/mainframe/dedup.test.ts` — cited lines: `5-26`
@@ -450,11 +466,11 @@ Source coverage statement after 13 iterations: approximately `56 / 66 ~= 84.8%` 
 - `external/src/lib/github/webhook.ts` — cited lines: `35-68`, `73-148`, `137-142`, `168-275`
 - `external/src/lib/github/triage.test.ts` — cited lines: `27-108`
 - `external/src/lib/github/webhook.test.ts` — cited lines: `1-12`
-- `external/src/cli.ts` — cited lines: `1`, `141-145`, `372-372`, `403-553`, `557-577`, `587-603`, `769-776`, `807-808`, `927-935`
-- `external/package.json` — cited lines: `2-7`, `6`, `27-33`, `44-53`
-- `external/README.md` — cited lines: `13-19`, `31-38`, `51-57`, `113-117`
+- `external/src/cli.ts` — cited lines: `1`, `141-145`, `141-158`, `372-372`, `403-553`, `557-577`, `587-603`, `769-776`, `807-808`, `927-935`
+- `external/package.json` — cited lines: `2-7`, `6`, `8-12`, `27-33`, `44-53`, `51-53`
+- `external/README.md` — cited lines: `13-19`, `31-38`, `46-57`, `51-57`, `98-117`, `113-117`
 - `external/TROUBLESHOOTING.md` — cited lines: `9-24`
-- `external/LICENSE` — cited lines: `1`
+- `external/LICENSE` — cited lines: `1`, `1-26`
 - `external/LICENSE-COMMERCIAL.md` — cited lines: `1-20`
 
 ## 14. APPENDIX A -- iteration files
@@ -472,6 +488,13 @@ Source coverage statement after 13 iterations: approximately `56 / 66 ~= 84.8%` 
 - research/iterations/iteration-011.md
 - research/iterations/iteration-012.md
 - research/iterations/iteration-013.md
+- research/iterations/iteration-014.md
+- research/iterations/iteration-015.md
+- research/iterations/iteration-016.md
+- research/iterations/iteration-017.md
+- research/iterations/iteration-018.md
+- research/iterations/iteration-019.md
+- research/iterations/iteration-020.md
 
 ## 15. APPENDIX B -- state files
 

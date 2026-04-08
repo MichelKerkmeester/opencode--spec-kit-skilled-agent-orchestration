@@ -39,10 +39,10 @@ contextType: "general"
 - [x] T004 Run validate.sh --strict baseline pass (expected to fail until scaffold lands)
 - [x] T005 Scaffold Level 3 spec.md (003-contextador/spec.md)
 - [x] T006 Scaffold Level 3 plan.md (003-contextador/plan.md)
-- [ ] T007 Scaffold Level 3 tasks.md (003-contextador/tasks.md) <!-- this file -->
-- [ ] T008 Scaffold Level 3 checklist.md (003-contextador/checklist.md)
-- [ ] T009 Scaffold Level 3 decision-record.md (003-contextador/decision-record.md)
-- [ ] T010 Re-run validate.sh --strict and confirm clean exit (or only documented warnings)
+- [x] T007 Scaffold Level 3 tasks.md (003-contextador/tasks.md) <!-- this file -->
+- [x] T008 Scaffold Level 3 checklist.md (003-contextador/checklist.md)
+- [x] T009 Scaffold Level 3 decision-record.md (003-contextador/decision-record.md)
+- [x] T010 Re-run validate.sh --strict and confirm clean exit (or only documented warnings)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -52,16 +52,16 @@ contextType: "general"
 <!-- Implementation phase = the deep research loop. The "implementation" here is research execution per phase prompt scope. -->
 ### Phase 2: Deep Research Loop
 
-- [ ] T011 Load prior context via `memory_context` for the research topic
-- [ ] T012 Initialize sk-deep-research state files (config.json, state.jsonl, strategy.md, findings-registry.json)
-- [ ] T013 Iteration 1 - read external/src/mcp.ts and trace `server.tool(...)` registrations (cli-codex gpt-5.4 high)
-- [ ] T014 Iteration 2 - trace query routing in headmaster.ts, hierarchy readers, pointer extraction, stats tracking
-- [ ] T015 Iteration 3 - trace self-healing loop in feedback.ts, janitor.ts, generator.ts, enrichFromFeedback
-- [ ] T016 Iteration 4 - trace Mainframe in bridge.ts, client.ts, rooms.ts, dedup.ts, summarizer.ts
-- [ ] T017 Iteration 5 - read package.json, README, TROUBLESHOOTING, LICENSE-COMMERCIAL for setup, claims, licensing
-- [ ] T018 Iteration 6 - compare against current Public retrieval surfaces (CocoIndex, Code Graph MCP, Spec Kit Memory)
-- [ ] T019 [P] Run reduce-state.cjs after each iteration to refresh registry/dashboard/strategy
-- [ ] T020 Convergence check after each iteration; stop early if convergence is reached
+- [x] T011 Load prior context via `memory_context` for the research topic
+- [x] T012 Initialize sk-deep-research state files (config.json, state.jsonl, strategy.md, findings-registry.json)
+- [x] T013 Iteration 1 - read external/src/mcp.ts and trace `server.tool(...)` registrations (cli-codex gpt-5.4 high)
+- [x] T014 Iteration 2 - trace query routing in headmaster.ts, hierarchy readers, pointer extraction, stats tracking
+- [x] T015 Iteration 3 - trace self-healing loop in feedback.ts, janitor.ts, generator.ts, enrichFromFeedback
+- [x] T016 Iteration 4 - trace Mainframe in bridge.ts, client.ts, rooms.ts, dedup.ts, summarizer.ts
+- [x] T017 Iteration 5 - read package.json, README, TROUBLESHOOTING, LICENSE-COMMERCIAL for setup, claims, licensing
+- [x] T018 Iteration 6 - compare against current Public retrieval surfaces (CocoIndex, Code Graph MCP, Spec Kit Memory)
+- [x] T019 [P] Run reduce-state.cjs after each iteration to refresh registry/dashboard/strategy
+- [x] T020 Convergence check after each iteration; stop early if convergence is reached
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -71,13 +71,13 @@ contextType: "general"
 <!-- Verification phase = synthesis, checklist verification, summary, and memory save. -->
 ### Phase 3: Synthesis and Save
 
-- [ ] T021 Compile research/research.md with at least 5 findings using the minimum schema
-- [ ] T022 Append the convergence report appendix to research/research.md
-- [ ] T023 Update checklist.md with evidence and final marks
-- [ ] T024 Create implementation-summary.md
-- [ ] T025 Run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 003-contextador`
-- [ ] T026 Verify memory artifact exists in 003-contextador/memory/
-- [ ] T027 Re-run validate.sh --strict for final compliance
+- [x] T021 Compile research/research.md with at least 5 findings using the minimum schema
+- [x] T022 Append the convergence report appendix to research/research.md
+- [x] T023 Update checklist.md with evidence and final marks
+- [x] T024 Create implementation-summary.md
+- [x] T025 Run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 003-contextador`
+- [x] T026 Verify memory artifact exists in 003-contextador/memory/
+- [x] T027 Re-run validate.sh --strict for final compliance
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -85,11 +85,11 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] research/research.md cites real source paths for every finding
-- [ ] checklist.md verification summary completed
-- [ ] memory/*.md present
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] research/research.md cites real source paths for every finding
+- [x] checklist.md verification summary completed
+- [x] memory/*.md present
 <!-- /ANCHOR:completion -->
 
 ---

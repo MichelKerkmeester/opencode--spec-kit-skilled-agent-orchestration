@@ -20,6 +20,8 @@ describe('hook-state session resume', () => {
     expect(state).not.toBeNull();
     expect(state!.lastSpecFolder).toBe('specs/024-compact-code-graph');
     expect(state!.metrics.estimatedPromptTokens).toBe(10000);
+    expect(state!.speckitSessionId).toBeNull();
+    expect(state!.producerMetadata).toBeNull();
   });
 
   it('handles missing session gracefully', () => {

@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening",
+  "description": "Feature Specification: FTS Forced-Degrade Hardening",
+  "keywords": [
+    "feature",
+    "specification",
+    "fts",
+    "forced-degrade",
+    "hardening"
+  ],
+  "lastUpdated": "2026-04-08T14:27:35.664Z",
+  "specId": "033",
+  "folderSlug": "fts-forced-degrade-hardening",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

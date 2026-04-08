@@ -1,79 +1,79 @@
 {
-  "openQuestions": [
+  "openQuestions": [],
+  "resolvedQuestions": [
     {
       "id": "question-1-q1-what-exact-mcp-tools-does-contextador-expose-and-how-does-the-tool-surface-ch",
       "text": "Q1. What exact MCP tools does Contextador expose, and how does the tool surface change agent workflow compared with direct file reading?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 14
     },
     {
       "id": "question-2-q2-what-data-shape-is-returned-by-context-queries-and-how-much-of-the-structured",
       "text": "Q2. What data shape is returned by `context` queries, and how much of the structured-context schema comes from CONTEXT.md pointers versus live file reads?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 14
     },
     {
       "id": "question-3-q3-how-does-routequery-decide-between-ai-routing-keyword-fallback-and-fan-out-ac",
       "text": "Q3. How does routeQuery decide between AI routing, keyword fallback, and fan-out across multiple scopes?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 14
     },
     {
       "id": "question-4-q4-how-does-the-self-healing-loop-work-end-to-end-from-context-feedback-through-",
       "text": "Q4. How does the self-healing loop work end to end from context_feedback through repair queue processing, regeneration, Key Files patching, and enrichment?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 15
     },
     {
       "id": "question-5-q5-what-parts-of-the-self-improving-claim-are-backed-by-code-today-and-what-part",
       "text": "Q5. What parts of the \"self-improving\" claim are backed by code today, and what parts remain product language?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 15
     },
     {
       "id": "question-6-q6-how-does-mainframe-synchronize-broadcasts-and-requests-across-agents-what-met",
       "text": "Q6. How does Mainframe synchronize broadcasts and requests across agents, what metadata is shared in Matrix room messages, and where is conflict resolution shallow or missing?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 16
     },
     {
       "id": "question-7-q7-what-privacy-and-operational-tradeoffs-come-from-mainframe-persistent-local-a",
       "text": "Q7. What privacy and operational tradeoffs come from Mainframe (persistent local agent IDs, room-level message history, budget state, optional Docker-hosted Operator setup)?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 16
     },
     {
       "id": "question-8-q8-how-is-the-93-token-reduction-claim-measured-or-approximated-and-does-the-cur",
       "text": "Q8. How is the 93% token-reduction claim measured or approximated, and does the current stats implementation provide strong evidence or only coarse estimates?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 17
     },
     {
       "id": "question-9-q9-how-does-the-provider-abstraction-layer-support-anthropic-openai-google-githu",
       "text": "Q9. How does the provider abstraction layer support Anthropic, OpenAI, Google, GitHub Copilot, OpenRouter, custom servers, and Claude Code?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 17
     },
     {
       "id": "question-10-q10-how-does-mcp-json-auto-detection-and-framework-specific-setup-shape-adoption",
       "text": "Q10. How does .mcp.json auto-detection and framework-specific setup shape adoption compared with this repo's current MCP configuration patterns?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 18
     },
     {
       "id": "question-11-q11-what-is-the-actual-agpl-plus-commercial-licensing-model-and-how-does-that-co",
       "text": "Q11. What is the actual AGPL plus commercial licensing model, and how does that constrain adoption or direct reuse for Code_Environment/Public?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 19
     },
     {
       "id": "question-12-q12-compared-with-cocoindex-code-graph-mcp-and-spec-kit-memory-what-is-genuinely",
       "text": "Q12. Compared with CocoIndex, Code Graph MCP, and Spec Kit Memory, what is genuinely new in Contextador's query model, and what would only duplicate behavior this repo already has?",
       "addedAtIteration": 0,
-      "resolvedAtIteration": null
+      "resolvedAtIteration": 20
     }
   ],
-  "resolvedQuestions": [],
   "keyFindings": [
     {
       "id": "finding-1-33-affected-subsystem-context-maintenance-and-project-bootstrapping",
@@ -2708,15 +2708,341 @@
       "text": "Why it matters for Code_Environment/Public: this closes a misleading terminology gap. Any claims about context file sizing or per-document budget enforcement should stay attached to other modules, not to `sizecheck.ts`.",
       "addedAtIteration": 13,
       "sources": []
+    },
+    {
+      "id": "finding-14-1-q1-answer-the-live-mcp-surface-is-11-explicitly-registered-tools-and-the-flagshi",
+      "text": "Q1 answer: the live MCP surface is 11 explicitly registered tools, and the flagship `context` workflow is cache check -> local routing -> pointer serialization -> optional broadcast, not \"query plus typed object plus direct file snippets\" (`external/src/mcp.ts:185-282`, `external/src/mcp.ts:344-671`). [SOURCE: external/src/mcp.ts:185-282] [SOURCE: external/src/mcp.ts:344-671]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`external/src/mcp.ts:185-282`",
+        "`external/src/mcp.ts:344-671`",
+        "`external/src/lib/core/headmaster.ts:16-242`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`external/src/lib/core/types.ts:49-62`"
+      ]
+    },
+    {
+      "id": "finding-14-2-q2-answer-the-library-defines-a-richer-contextresponse-shape-with-files-types-de",
+      "text": "Q2 answer: the library defines a richer `ContextResponse` shape with `files`, `types`, `dependencies`, `apiSurface`, `tests`, and `contextChain`, but the MCP `context` tool never emits that structure; it extracts a narrower `Pointers` object from `CONTEXT.md` headings and returns plain text via `serializePointers(...)` and `text(...)` (`external/src/lib/core/types.ts:49-62`, `external/src/lib/core/pointers.ts:14-20`, `external/src/lib/core/pointers.ts:23-190`, `external/src/mcp.ts:243-282`). [SOURCE: external/src/lib/core/types.ts:49-62] [SOURCE: external/src/lib/core/pointers.ts:14-20] [SOURCE: external/src/lib/core/pointers.ts:23-190] [SOURCE: external/src/mcp.ts:243-282]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`external/src/mcp.ts:185-282`",
+        "`external/src/mcp.ts:344-671`",
+        "`external/src/lib/core/headmaster.ts:16-242`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`external/src/lib/core/types.ts:49-62`"
+      ]
+    },
+    {
+      "id": "finding-14-3-q3-answer-routequery-loads-contextador-briefing-md-when-present-or-builds-a-summ",
+      "text": "Q3 answer: `routeQuery()` loads `.contextador/briefing.md` when present or builds a summary from every `CONTEXT.md`, asks `local-fast` for JSON `targetScopes`, validates/fuzzy-matches those scopes against real directories, and falls back to keyword scoring with path boosts, hit-log bonuses, and a 60% top-score threshold for fan-out when the model path fails (`external/src/lib/core/headmaster.ts:16-35`, `external/src/lib/core/headmaster.ts:61-126`, `external/src/lib/core/headmaster.ts:128-157`, `external/src/lib/core/headmaster.ts:199-242`). [SOURCE: external/src/lib/core/headmaster.ts:16-35] [SOURCE: external/src/lib/core/headmaster.ts:61-126] [SOURCE: external/src/lib/core/headmaster.ts:128-157] [SOURCE: external/src/lib/core/headmaster.ts:199-242]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`external/src/mcp.ts:185-282`",
+        "`external/src/mcp.ts:344-671`",
+        "`external/src/lib/core/headmaster.ts:16-242`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`external/src/lib/core/types.ts:49-62`"
+      ]
+    },
+    {
+      "id": "finding-14-4-the-agent-workflow-promise-in-the-context-tool-description-is-therefore-partly-e",
+      "text": "The agent-workflow promise in the `context` tool description is therefore partly ergonomic and partly marketing: the live contract strongly nudges agents away from direct file reads first, but it serves markdown-derived pointer text rather than a deeper semantic or structural substrate (`external/src/mcp.ts:185-189`, `external/src/lib/core/pointers.ts:151-190`). [SOURCE: external/src/mcp.ts:185-189] [SOURCE: external/src/lib/core/pointers.ts:151-190]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`external/src/mcp.ts:185-282`",
+        "`external/src/mcp.ts:344-671`",
+        "`external/src/lib/core/headmaster.ts:16-242`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`external/src/lib/core/types.ts:49-62`"
+      ]
+    },
+    {
+      "id": "finding-15-1-q4-answer-step-1-context-feedback-calls-processfeedback-which-increments-feedbac",
+      "text": "Q4 answer, step 1: `context_feedback` calls `processFeedback(...)`, which increments `feedback_failures`, immediately appends `missingFiles` into `## Key Files` for `missing_context`, and queues repair work for `build_failure` and `wrong_location`; if `CONTEXT.md` is missing entirely, the code skips patching and only appends a repair-queue entry (`external/src/mcp.ts:286-340`, `external/src/lib/core/feedback.ts:20-143`). [SOURCE: external/src/mcp.ts:286-340] [SOURCE: external/src/lib/core/feedback.ts:20-143]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`external/src/mcp.ts:286-340`",
+        "`external/src/lib/core/feedback.ts:20-159`",
+        "`external/src/lib/core/janitor.ts:84-147`",
+        "`external/src/lib/core/janitor.ts:160-235`",
+        "`external/src/lib/core/janitor.ts:387-490`",
+        "`external/src/lib/core/generator.ts:101-156`"
+      ]
+    },
+    {
+      "id": "finding-15-2-q4-answer-step-2-after-feedback-intake-the-mcp-tool-may-synchronously-run-proces",
+      "text": "Q4 answer, step 2: after feedback intake, the MCP tool may synchronously run `processRepairQueue(ROOT)` before enrichment, so the user-facing path is not purely deferred background work; `processRepairQueue()` either generates a full `CONTEXT.md` via `generateContextContent(...)`, falls back to a stub, or stamps an existing stale file (`external/src/mcp.ts:308-327`, `external/src/lib/core/janitor.ts:84-147`, `external/src/lib/core/generator.ts:101-156`). [SOURCE: external/src/mcp.ts:308-327] [SOURCE: external/src/lib/core/janitor.ts:84-147] [SOURCE: external/src/lib/core/generator.ts:101-156]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`external/src/mcp.ts:286-340`",
+        "`external/src/lib/core/feedback.ts:20-159`",
+        "`external/src/lib/core/janitor.ts:84-147`",
+        "`external/src/lib/core/janitor.ts:160-235`",
+        "`external/src/lib/core/janitor.ts:387-490`",
+        "`external/src/lib/core/generator.ts:101-156`"
+      ]
+    },
+    {
+      "id": "finding-15-3-q4-answer-step-3-the-broader-janitor-loop-is-deterministic-and-staged-repair-que",
+      "text": "Q4 answer, step 3: the broader janitor loop is deterministic and staged: repair queue, freshness sweep, new-scope detection, dependency scan, hit-log cleanup, then derived artifact regeneration (`briefing.md`, `hierarchy.json`, service index, architecture deps) (`external/src/lib/core/janitor.ts:160-235`, `external/src/lib/core/janitor.ts:317-379`, `external/src/lib/core/janitor.ts:387-490`). [SOURCE: external/src/lib/core/janitor.ts:160-235] [SOURCE: external/src/lib/core/janitor.ts:317-379] [SOURCE: external/src/lib/core/janitor.ts:387-490]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`external/src/mcp.ts:286-340`",
+        "`external/src/lib/core/feedback.ts:20-159`",
+        "`external/src/lib/core/janitor.ts:84-147`",
+        "`external/src/lib/core/janitor.ts:160-235`",
+        "`external/src/lib/core/janitor.ts:387-490`",
+        "`external/src/lib/core/generator.ts:101-156`"
+      ]
+    },
+    {
+      "id": "finding-15-4-q5-answer-the-self-healing-or-self-improving-story-is-real-only-in-a-bounded-doc",
+      "text": "Q5 answer: the \"self-healing\" or \"self-improving\" story is real only in a bounded document-maintenance sense. The code proves patching, queueing, regeneration, and enrichment over `CONTEXT.md`; it does not prove autonomous semantic correctness, strong retry/backoff, or a general-purpose self-improvement loop beyond those artifact-maintenance stages (`external/src/lib/core/feedback.ts:119-143`, `external/src/lib/core/generator.ts:120-156`, `external/src/lib/core/janitor.ts:201-229`). [SOURCE: external/src/lib/core/feedback.ts:119-143] [SOURCE: external/src/lib/core/generator.ts:120-156] [SOURCE: external/src/lib/core/janitor.ts:201-229]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`external/src/mcp.ts:286-340`",
+        "`external/src/lib/core/feedback.ts:20-159`",
+        "`external/src/lib/core/janitor.ts:84-147`",
+        "`external/src/lib/core/janitor.ts:160-235`",
+        "`external/src/lib/core/janitor.ts:387-490`",
+        "`external/src/lib/core/generator.ts:101-156`"
+      ]
+    },
+    {
+      "id": "finding-16-4-conflict-resolution-remains-shallow-cache-reuse-is-query-hash-matching-over-rece",
+      "text": "Conflict resolution remains shallow: cache reuse is query-hash matching over recent broadcasts and budget/lock coordination is just last-write room state. There is no deeper reconciliation layer for conflicting pointer payloads or concurrent state mutation beyond stale-lock timeout behavior (`external/src/lib/mainframe/bridge.ts:128-143`, `external/src/lib/mainframe/bridge.ts:169-175`, `external/src/lib/mainframe/bridge.ts:220-237`). [SOURCE: external/src/lib/mainframe/bridge.ts:128-143] [SOURCE: external/src/lib/mainframe/bridge.ts:169-175] [SOURCE: external/src/lib/mainframe/bridge.ts:220-237]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`external/src/lib/mainframe/bridge.ts:26-57`",
+        "`external/src/lib/mainframe/bridge.ts:77-185`",
+        "`external/src/lib/mainframe/bridge.ts:216-293`",
+        "`external/src/lib/mainframe/rooms.ts:6-69`",
+        "`external/src/lib/mainframe/client.ts:20-189`"
+      ]
+    },
+    {
+      "id": "finding-16-2-q6-answer-message-semantics-a-broadcast-message-carries-raw-query-text-query-has",
+      "text": "Q6 answer, message semantics: a broadcast message carries raw query text, `query_hash`, `scopes`, serialized `pointers`, `tokens_used`, `agent_id`, and `context_validated`; request messages carry `to`, `task`, and `priority`; janitor coordination is a room-state lock with `locked`, `agent_id`, and timestamps (`external/src/lib/mainframe/rooms.ts:6-69`, `external/src/lib/mainframe/bridge.ts:128-185`, `external/src/lib/mainframe/bridge.ts:216-250`, `external/src/lib/mainframe/bridge.ts:253-293`). [SOURCE: external/src/lib/mainframe/rooms.ts:6-69] [SOURCE: external/src/lib/mainframe/bridge.ts:128-185] [SOURCE: external/src/lib/mainframe/bridge.ts:216-250] [SOURCE: external/src/lib/mainframe/bridge.ts:253-293]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`external/src/lib/mainframe/bridge.ts:26-57`",
+        "`external/src/lib/mainframe/bridge.ts:77-185`",
+        "`external/src/lib/mainframe/bridge.ts:216-293`",
+        "`external/src/lib/mainframe/rooms.ts:6-69`",
+        "`external/src/lib/mainframe/client.ts:20-189`"
+      ]
+    },
+    {
+      "id": "finding-16-1-q6-answer-transport-model-mainframe-stores-a-persistent-local-agentid-plus-passw",
+      "text": "Q6 answer, transport model: Mainframe stores a persistent local `agentId` plus password in `.contextador/mainframe-agent.json`, logs in or registers against the Matrix server, joins or creates a project room, and caches the last 100 room messages for history reuse (`external/src/lib/mainframe/bridge.ts:26-57`, `external/src/lib/mainframe/bridge.ts:77-125`, `external/src/lib/mainframe/client.ts:20-72`, `external/src/lib/mainframe/client.ts:145-189`). [SOURCE: external/src/lib/mainframe/bridge.ts:26-57] [SOURCE: external/src/lib/mainframe/bridge.ts:77-125] [SOURCE: external/src/lib/mainframe/client.ts:20-72] [SOURCE: external/src/lib/mainframe/client.ts:145-189]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`external/src/lib/mainframe/bridge.ts:26-57`",
+        "`external/src/lib/mainframe/bridge.ts:77-185`",
+        "`external/src/lib/mainframe/bridge.ts:216-293`",
+        "`external/src/lib/mainframe/rooms.ts:6-69`",
+        "`external/src/lib/mainframe/client.ts:20-189`"
+      ]
+    },
+    {
+      "id": "finding-16-3-q7-answer-privacy-operations-the-matrix-client-creates-rooms-with-visibility-pri",
+      "text": "Q7 answer, privacy/operations: the Matrix client creates rooms with `visibility: \"private\"` but `preset: \"public_chat\"`, the room history contains raw query and pointer payloads, and the local machine keeps the Mainframe password on disk; these are practical collaboration shortcuts, not strong privacy or tenancy controls (`external/src/lib/mainframe/client.ts:182-188`, `external/src/lib/mainframe/bridge.ts:27-57`, `external/src/lib/mainframe/bridge.ts:157-175`). [SOURCE: external/src/lib/mainframe/client.ts:182-188] [SOURCE: external/src/lib/mainframe/bridge.ts:27-57] [SOURCE: external/src/lib/mainframe/bridge.ts:157-175]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`external/src/lib/mainframe/bridge.ts:26-57`",
+        "`external/src/lib/mainframe/bridge.ts:77-185`",
+        "`external/src/lib/mainframe/bridge.ts:216-293`",
+        "`external/src/lib/mainframe/rooms.ts:6-69`",
+        "`external/src/lib/mainframe/client.ts:20-189`"
+      ]
+    },
+    {
+      "id": "finding-17-1-q8-answer-measurement-model-the-token-savings-story-is-coarse-estimation-not-mea",
+      "text": "Q8 answer, measurement model: the token-savings story is coarse estimation, not measured query-by-query proof. `stats.ts` hard-codes `AVG_MANUAL_EXPLORATION_TOKENS = 25000` and `AVG_CACHE_SAVINGS_TOKENS = 25000`, then multiplies those constants by local queries and cache hits to report approximate savings (`external/src/lib/core/stats.ts:26-28`, `external/src/lib/core/stats.ts:43-50`, `external/src/lib/core/stats.ts:75-107`). [SOURCE: external/src/lib/core/stats.ts:26-28] [SOURCE: external/src/lib/core/stats.ts:43-50] [SOURCE: external/src/lib/core/stats.ts:75-107]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`external/src/lib/core/stats.ts:4-107`",
+        "`external/src/lib/mainframe/budget.ts:16-101`",
+        "`external/src/lib/mainframe/bridge.ts:128-185`",
+        "`external/src/lib/mainframe/bridge.ts:283-289`",
+        "`external/src/lib/providers/config.ts:6-132`"
+      ]
+    },
+    {
+      "id": "finding-17-2-q8-answer-practical-implication-the-code-does-track-queriesserved-cachehits-feed",
+      "text": "Q8 answer, practical implication: the code does track `queriesServed`, `cacheHits`, `feedbackReports`, `tokensUsedInit`, `tokensUsedQueries`, and `sweepsRun`, so the system has useful telemetry, but the advertised savings percentage remains only an estimate derived from those counters rather than a measured avoided-read baseline (`external/src/lib/core/stats.ts:4-24`, `external/src/lib/core/stats.ts:88-107`). [SOURCE: external/src/lib/core/stats.ts:4-24] [SOURCE: external/src/lib/core/stats.ts:88-107]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`external/src/lib/core/stats.ts:4-107`",
+        "`external/src/lib/mainframe/budget.ts:16-101`",
+        "`external/src/lib/mainframe/bridge.ts:128-185`",
+        "`external/src/lib/mainframe/bridge.ts:283-289`",
+        "`external/src/lib/providers/config.ts:6-132`"
+      ]
+    },
+    {
+      "id": "finding-17-3-q9-answer-adapter-coverage-the-provider-layer-explicitly-supports-anthropic-open",
+      "text": "Q9 answer, adapter coverage: the provider layer explicitly supports `anthropic`, `openai`, `google`, `copilot`, `openrouter`, `custom`, and `claude-code`, with detection priority of stored config -> env vars -> `claude-code` default; cloud/custom adapters instantiate AI SDK clients, while `claude-code` is host-only and intentionally throws if used like a direct API client (`external/src/lib/providers/config.ts:6-44`, `external/src/lib/providers/config.ts:76-112`, `external/src/lib/providers/config.ts:114-132`). [SOURCE: external/src/lib/providers/config.ts:6-44] [SOURCE: external/src/lib/providers/config.ts:76-112] [SOURCE: external/src/lib/providers/config.ts:114-132]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`external/src/lib/core/stats.ts:4-107`",
+        "`external/src/lib/mainframe/budget.ts:16-101`",
+        "`external/src/lib/mainframe/bridge.ts:128-185`",
+        "`external/src/lib/mainframe/bridge.ts:283-289`",
+        "`external/src/lib/providers/config.ts:6-132`"
+      ]
+    },
+    {
+      "id": "finding-17-4-the-adjacent-budgettracker-is-operationally-useful-but-narrow-it-enforces-daily-",
+      "text": "The adjacent `BudgetTracker` is operationally useful but narrow: it enforces daily limit, room hourly limit, pause, kill, and one-shot 80% alerts, while the bridge uses `canRead()` and `canSpend()` to gate history/task reads and broadcasts; it is not a durable quota authority or audited shared-cost ledger (`external/src/lib/mainframe/budget.ts:16-101`, `external/src/lib/mainframe/bridge.ts:128-185`, `external/src/lib/mainframe/bridge.ts:283-289`). [SOURCE: external/src/lib/mainframe/budget.ts:16-101] [SOURCE: external/src/lib/mainframe/bridge.ts:128-185] [SOURCE: external/src/lib/mainframe/bridge.ts:283-289]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`external/src/lib/core/stats.ts:4-107`",
+        "`external/src/lib/mainframe/budget.ts:16-101`",
+        "`external/src/lib/mainframe/bridge.ts:128-185`",
+        "`external/src/lib/mainframe/bridge.ts:283-289`",
+        "`external/src/lib/providers/config.ts:6-132`"
+      ]
+    },
+    {
+      "id": "finding-18-2-q10-answer-init-time-project-scaffolding-contextador-init-writes-mcp-json-only-w",
+      "text": "Q10 answer, init-time project scaffolding: `contextador init` writes `.mcp.json` only when the file is missing, and the generated content is a single `mcpServers.contextador` entry using `bunx contextador-mcp`; it also adds optional framework-specific helper artifacts only for OpenClaw or Hermes (`external/src/cli.ts:141-158`). [SOURCE: external/src/cli.ts:141-158]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`external/src/lib/setup/wizard.ts:31-149`",
+        "`external/src/lib/setup/wizard.ts:299-325`",
+        "`external/src/cli.ts:141-158`",
+        "`external/src/cli.ts:769-776`",
+        "`external/README.md:46-57`",
+        "`external/README.md:98-117`"
+      ]
+    },
+    {
+      "id": "finding-18-1-q10-answer-wizard-scope-runsetup-asks-for-provider-framework-and-optional-mainfr",
+      "text": "Q10 answer, wizard scope: `runSetup()` asks for provider, framework, and optional Mainframe settings, tests non-`claude-code` providers, then saves the result to `~/.contextador/config.json` with `0600` permissions; it does not itself write project-local MCP wiring (`external/src/lib/setup/wizard.ts:31-114`, `external/src/lib/setup/wizard.ts:116-149`, `external/src/lib/setup/wizard.ts:299-325`). [SOURCE: external/src/lib/setup/wizard.ts:31-114] [SOURCE: external/src/lib/setup/wizard.ts:116-149] [SOURCE: external/src/lib/setup/wizard.ts:299-325]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`external/src/lib/setup/wizard.ts:31-149`",
+        "`external/src/lib/setup/wizard.ts:299-325`",
+        "`external/src/cli.ts:141-158`",
+        "`external/src/cli.ts:769-776`",
+        "`external/README.md:46-57`",
+        "`external/README.md:98-117`"
+      ]
+    },
+    {
+      "id": "finding-18-3-the-readme-s-auto-detected-via-mcp-json-wording-therefore-compresses-two-weaker-",
+      "text": "The README's \"auto-detected via .mcp.json\" wording therefore compresses two weaker realities: the project file is created only by `contextador init`, and the later doctor flow simply checks for `.mcp.json` existence before warning that MCP editors will not auto-detect Contextador if it is missing (`external/src/cli.ts:769-776`, `external/README.md:46-57`, `external/README.md:98-117`). [SOURCE: external/src/cli.ts:769-776] [SOURCE: external/README.md:46-57] [SOURCE: external/README.md:98-117]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`external/src/lib/setup/wizard.ts:31-149`",
+        "`external/src/lib/setup/wizard.ts:299-325`",
+        "`external/src/cli.ts:141-158`",
+        "`external/src/cli.ts:769-776`",
+        "`external/README.md:46-57`",
+        "`external/README.md:98-117`"
+      ]
+    },
+    {
+      "id": "finding-19-3-practical-adoption-consequence-for-code-environment-public-this-keeps-the-postur",
+      "text": "Practical adoption consequence: for `Code_Environment/Public`, this keeps the posture at \"study and reimplement ideas\" rather than \"reuse source directly.\" The runtime metadata reinforces that separation because the package is Bun-native (`bin` targets, `bun` scripts, `engines.bun`), so even non-licensing reuse would not be a drop-in fit for Public's current stack (`external/package.json:8-12`, `external/package.json:27-33`, `external/package.json:51-53`). [SOURCE: external/package.json:8-12] [SOURCE: external/package.json:27-33] [SOURCE: external/package.json:51-53]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`external/package.json:2-53`",
+        "`external/README.md:113-117`",
+        "`external/LICENSE:1-26`",
+        "`external/LICENSE-COMMERCIAL.md:1-20`"
+      ]
+    },
+    {
+      "id": "finding-19-2-q11-answer-commercial-exception-path-the-repository-also-ships-license-commercia",
+      "text": "Q11 answer, commercial exception path: the repository also ships `LICENSE-COMMERCIAL.md`, which explicitly says proprietary or closed-source modification/integration requires a commercial agreement from View AI; the open-source path remains AGPL-based (`external/LICENSE-COMMERCIAL.md:1-20`, `external/LICENSE:1-26`, `external/README.md:113-117`). [SOURCE: external/LICENSE-COMMERCIAL.md:1-20] [SOURCE: external/LICENSE:1-26] [SOURCE: external/README.md:113-117]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`external/package.json:2-53`",
+        "`external/README.md:113-117`",
+        "`external/LICENSE:1-26`",
+        "`external/LICENSE-COMMERCIAL.md:1-20`"
+      ]
+    },
+    {
+      "id": "finding-19-1-q11-answer-license-baseline-the-authoritative-package-metadata-declares-agpl-3-0",
+      "text": "Q11 answer, license baseline: the authoritative package metadata declares `AGPL-3.0-or-later`, not a more permissive or dual-license default (`external/package.json:2-7`). [SOURCE: external/package.json:2-7]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`external/package.json:2-53`",
+        "`external/README.md:113-117`",
+        "`external/LICENSE:1-26`",
+        "`external/LICENSE-COMMERCIAL.md:1-20`"
+      ]
+    },
+    {
+      "id": "finding-20-4-closing-quality-note-this-pass-answered-the-last-unresolved-packet-question-with",
+      "text": "Closing quality note: this pass answered the last unresolved packet question without discovering a new top-level subsystem, which is a strong sign that the extension reached diminishing returns for this repo snapshot. [INFERENCE: based on the 20-iteration state log plus direct comparison sources above]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`external/src/mcp.ts:185-340`",
+        "`external/src/mcp.ts:415-671`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`.opencode/skill/mcp-coco-index/README.md:42-86`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:40-44`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217`"
+      ]
+    },
+    {
+      "id": "finding-20-1-q12-answer-what-is-genuinely-new-contextador-s-clearest-additive-ideas-remain-ru",
+      "text": "Q12 answer, what is genuinely new: Contextador's clearest additive ideas remain runtime ergonomics layered over retrieval artifacts, not a stronger retrieval substrate. The genuinely distinctive parts are the single natural-language `context` facade, query-triggered repair, Mainframe-style answer-cache reuse, and low-friction project scaffolding (`external/src/mcp.ts:185-340`, `external/src/mcp.ts:415-671`). [SOURCE: external/src/mcp.ts:185-340] [SOURCE: external/src/mcp.ts:415-671]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`external/src/mcp.ts:185-340`",
+        "`external/src/mcp.ts:415-671`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`.opencode/skill/mcp-coco-index/README.md:42-86`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:40-44`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217`"
+      ]
+    },
+    {
+      "id": "finding-20-2-q12-answer-what-only-duplicates-or-weakens-public-contextador-s-live-payload-is-",
+      "text": "Q12 answer, what only duplicates or weakens Public: Contextador's live payload is still markdown-derived pointer text, whereas Public already has semantic search via CocoIndex, structural traversal via `code_graph_query`, and merged recovery via `session_bootstrap` / `memory_context`. On those axes, Contextador duplicates or underperforms existing Public surfaces rather than extending them (`external/src/lib/core/pointers.ts:14-190`, `.opencode/skill/mcp-coco-index/README.md:42-86`, `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:40-44`, `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217`). [SOURCE: external/src/lib/core/pointers.ts:14-190] [SOURCE: .opencode/skill/mcp-coco-index/README.md:42-86] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:40-44] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`external/src/mcp.ts:185-340`",
+        "`external/src/mcp.ts:415-671`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`.opencode/skill/mcp-coco-index/README.md:42-86`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:40-44`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217`"
+      ]
+    },
+    {
+      "id": "finding-20-3-the-right-synthesis-boundary-is-therefore-stable-after-20-iterations-keep-studyi",
+      "text": "The right synthesis boundary is therefore stable after 20 iterations: keep studying the routing facade, repair loop, bounded collaboration cache, and onboarding flow; reject Contextador as a semantic-search, graph-query, or session-recovery replacement for `Code_Environment/Public`. [INFERENCE: based on external/src/mcp.ts:185-340, external/src/lib/core/pointers.ts:14-190, .opencode/skill/mcp-coco-index/README.md:42-86, .opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238, and .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`external/src/mcp.ts:185-340`",
+        "`external/src/mcp.ts:415-671`",
+        "`external/src/lib/core/pointers.ts:14-190`",
+        "`.opencode/skill/mcp-coco-index/README.md:42-86`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:40-44`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:116-238`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:107-217`"
+      ]
     }
   ],
   "ruledOutDirections": [],
   "metrics": {
-    "iterationsCompleted": 13,
-    "openQuestions": 12,
-    "resolvedQuestions": 0,
-    "keyFindings": 439,
-    "convergenceScore": 0.23,
-    "coverageBySources": {}
+    "iterationsCompleted": 20,
+    "openQuestions": 0,
+    "resolvedQuestions": 12,
+    "keyFindings": 465,
+    "convergenceScore": 0.12,
+    "coverageBySources": {
+      "code": 70
+    }
   }
 }
