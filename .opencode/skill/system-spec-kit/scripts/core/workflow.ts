@@ -1389,7 +1389,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     .flatMap((value) => (Array.isArray(value?.supersedes) ? value.supersedes : []))
     .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
     .map((value) => value.trim());
-  if (existingSupersedes.length === 0) {
+  if (existingSupersedes.length === 0 && collectedData.saveMode === SaveMode.Json) {
     const { findPredecessorMemory } = await import('./find-predecessor-memory');
     const predecessorSessionId = await findPredecessorMemory(specFolder, {
       title: memoryTitle,

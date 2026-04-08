@@ -66,7 +66,24 @@ T1.0.
 
 ---
 
-### T1.2: Migrate the OVERVIEW owner in `collect-session-data.ts`
+### T1.2: Migrate the observation-summary callsites in `input-normalizer.ts`
+
+**Description**
+Refactor `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:275-280` so both `summaryTitle` (limit 100) and `narrativeText` (limit 500) call the shared helper instead of inlining their own boundary-aware rules. This intentionally swaps the suffix from `'...'` (three ASCII dots) to `'…'` (single Unicode char), pinning the canonical form for Phase 1 and beyond. This step intentionally lands before T1.3 so the helper is first lifted from the already-proven boundary-aware path.
+
+**File(s)**
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
+- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
+
+**Acceptance**
+`tests/input-normalizer-unit.vitest.ts` still passes. Both callsites route through the helper.
+
+**Dependencies**
+T1.1.
+
+---
+
+### T1.3: Migrate the OVERVIEW owner in `collect-session-data.ts`
 
 **Description**
 Replace `data.sessionSummary.substring(0, 500)` at the `SUMMARY` assignment in `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:877-881` with `truncateOnWordBoundary(data.sessionSummary, 500)`. Add the import at the top of the file preserving the relative import style used by sibling files.
@@ -79,24 +96,7 @@ Replace `data.sessionSummary.substring(0, 500)` at the `SUMMARY` assignment in `
 `tests/collect-session-data.vitest.ts` still passes. The file no longer contains the raw D1 clamp.
 
 **Dependencies**
-T1.1.
-
----
-
-### T1.3: Migrate the observation-summary callsites in `input-normalizer.ts`
-
-**Description**
-Refactor `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:275-280` so both `summaryTitle` (limit 100) and `narrativeText` (limit 500) call the shared helper instead of inlining their own boundary-aware rules. This intentionally swaps the suffix from `'...'` (three ASCII dots) to `'…'` (single Unicode char), pinning the canonical form for Phase 1 and beyond.
-
-**File(s)**
-- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
-- `.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts`
-
-**Acceptance**
-`tests/input-normalizer-unit.vitest.ts` still passes. Both callsites route through the helper.
-
-**Dependencies**
-T1.1.
+T1.2.
 
 ---
 
@@ -319,8 +319,8 @@ T1.11.
 
 - [x] T1.0 Research + iterations read; ellipsis decision pinned to `…`
 - [x] T1.1 `truncateOnWordBoundary` helper and unit tests created
-- [x] T1.2 `collect-session-data.ts` OVERVIEW owner migrated to helper
-- [x] T1.3 `input-normalizer.ts` observation-summary callsites migrated to helper
+- [x] T1.2 `input-normalizer.ts` observation-summary callsites migrated to helper
+- [x] T1.3 `collect-session-data.ts` OVERVIEW owner migrated to helper
 - [x] T1.4 Context template OVERVIEW comment markers renamed to `overview`
 - [x] T1.4b Contract validator SECTION_RULES aligned with new `overview` commentId
 - [x] T1.4c Memory parser regex accepts both `summary` and `overview` terminators
@@ -333,7 +333,7 @@ T1.11.
 - [x] T1.11 Spec folder `validate.sh` exits 0
 - [x] T1.12 Parent phase map updated to `Complete`
 
-No task may claim done without either an AC fixture, a concrete CLI check, or a file-level verification artifact. Parent handoff to Phase 2 is blocked until T1.12 is complete. [SOURCE: ../spec.md:197]
+No task may claim done without either an AC fixture, a concrete CLI check, or a file-level verification artifact. Parent handoff to Phase 2 is blocked until T1.12 is complete. [SOURCE: ../spec.md#phase-handoff-criteria]
 <!-- /ANCHOR:completion -->
 
 ---

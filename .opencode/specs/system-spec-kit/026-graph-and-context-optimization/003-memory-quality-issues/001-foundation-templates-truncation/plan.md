@@ -12,11 +12,11 @@ description: "Execution plan for PR-1 and PR-2: align OVERVIEW anchors, extract 
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
-Phase 1 stays narrow. It closes D8 with a template alignment and two tightly coupled validator/parser updates. It closes D1 by extracting a shared truncation helper, migrating the existing boundary-aware observation-summary path, and replacing the raw OVERVIEW clamp. The parent PR train defines these as PR-1 and PR-2. Both are P0, both are independently revertable, and both are required before the packet can hand off to `002-single-owner-metadata`. [SOURCE: research.md §10] [SOURCE: research.md §B.4] [SOURCE: ../spec.md:197]
+Phase 1 stays narrow. It closes D8 with a template alignment and two tightly coupled validator/parser updates. It closes D1 by extracting a shared truncation helper, migrating the existing boundary-aware observation-summary path, and replacing the raw OVERVIEW clamp. The parent PR train defines these as PR-1 and PR-2. Both are P0, both are independently revertable, and both are required before the packet can hand off to `002-single-owner-metadata`. [SOURCE: research.md §10] [SOURCE: research.md §B.4] [SOURCE: ../spec.md#phase-handoff-criteria]
 
 Keep helper extraction controlled. Do not turn it into a broad text-shaping refactor. Iteration 17 already mapped the safe order: first lift the behavior already present in `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:275-280`, then migrate the same file's `normalizeInputData()` path at `:665-670`, then replace the D1 owner at the `SUMMARY` assignment in `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:877-881`. [SOURCE: research/iterations/iteration-017.md:18-20] [SOURCE: research/iterations/iteration-017.md:62-68]
 
-The ellipsis decision is pinned: `…` (Unicode U+2026), per parent handoff criteria. Helper, callsites, fixtures, and assertions all use the single-codepoint form. [SOURCE: research.md §D.3] [SOURCE: ../spec.md:197]
+The ellipsis decision is pinned: `…` (Unicode U+2026), per parent handoff criteria. Helper, callsites, fixtures, and assertions all use the single-codepoint form. [SOURCE: research.md §D.3] [SOURCE: ../spec.md#phase-handoff-criteria]
 
 ### Technical Context
 
@@ -181,7 +181,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-Phase 1 should land as two small PR-sized changes bundled into one child-phase execution sequence: template + validator + parser alignment first, helper extraction plus OVERVIEW migration second. The closeout gate is not "tests look good in isolation"; it is "F-AC1 and F-AC7 pass, JSON-mode replays exit `0`, phase validation passes, and the parent packet can mark this phase complete." [SOURCE: research.md §10] [SOURCE: research.md §11] [SOURCE: ../spec.md:197]
+Phase 1 should land as two small PR-sized changes bundled into one child-phase execution sequence: template + validator + parser alignment first, helper extraction plus OVERVIEW migration second. The closeout gate is not "tests look good in isolation"; it is "F-AC1 and F-AC7 pass, JSON-mode replays exit `0`, phase validation passes, and the parent packet can mark this phase complete." [SOURCE: research.md §10] [SOURCE: research.md §11] [SOURCE: ../spec.md#phase-handoff-criteria]
 
 Rollback strategy:
 

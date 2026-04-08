@@ -101,9 +101,9 @@ Operational tail closeout over an already-frozen PR train.
 | `.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts` | Add M1-M9 emission plumbing, review violation counts, and structured outputs consumable by alerting/tests | Iter 24 names the reviewer surface as the operational guardrail and best fit for PR-9 telemetry | [SOURCE: ../research/iterations/iteration-024.md:109-118] [SOURCE: ../research/iterations/iteration-024.md:144-148] |
 | `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Add Step 10.5 timing capture and any save-boundary metadata needed for M9; if PR-11 ships, harden lock behavior at the save entry path | Iter 24 identifies the Step 10.5 seam; iter 21 identifies the D9 lock seam | [SOURCE: ../research/iterations/iteration-024.md:109-118] [SOURCE: ../research/iterations/iteration-021.md:51-55] |
 | `.opencode/skill/system-spec-kit/scripts/lib/memory-telemetry.ts` | Create helper for metric names, low-cardinality label enforcement, and structured-log emission | Iter 24 recommends a thin helper rather than a tracing platform | [SOURCE: ../research/iterations/iteration-024.md:144-148] [SOURCE: ../research/iterations/iteration-024.md:158-160] |
-| `.opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts` | Create migration CLI with `--dry-run`, `--apply`, `--per-defect`, and JSON report output | Iter 23's Option C requires a one-shot script that mirrors existing migration semantics | [SOURCE: ../research/iterations/iteration-023.md:50-55] [SOURCE: ../research/iterations/iteration-023.md:71-83] |
+| `.opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts` | Create migration CLI with `--dry-run`, `--per-defect`, and JSON report output; keep apply mode deferred in this phase (see `pr11-defer-rationale.md`) | Iter 23's Option C requires a one-shot script that preserves the dry-run evidence surface without overstating shipped historical rewrites | [SOURCE: ../research/iterations/iteration-023.md:50-55] [SOURCE: ../research/iterations/iteration-023.md:71-83] |
 | Historical memory files selected by PR-10 | Rewrite safe-subset fields only, in per-file commits, if and only if the operator approves after dry-run | Iter 23 explicitly narrows the allowed write surface | [SOURCE: ../research/iterations/iteration-023.md:64-83] |
-| `monitoring/memory-save-quality-alerts.yml` | Add alert rules for M4, M6, and M9 plus any kept warning rules from iter 24 | The phase needs a committed alert artifact, not only metric names in prose | [SOURCE: ../research/iterations/iteration-024.md:135-143] |
+| `memory-save-quality-alerts.yml` | Add alert rules for M4, M6, and M9 plus any kept warning rules from iter 24 | The phase needs a committed alert artifact, not only metric names in prose | [SOURCE: ../research/iterations/iteration-024.md:135-143] |
 | Phase-local telemetry catalog artifact | Document metric names, meanings, thresholds, and defect mapping | Operators need a human-readable crosswalk for the new signals | [SOURCE: ../research/iterations/iteration-024.md:23-147] |
 | Phase-local release-note draft artifact | Draft capture-mode parity note and optional-tail-PR status | Iter 25 changes release framing but not scope | [SOURCE: ../research/iterations/iteration-025.md:45-49] |
 | `../spec.md` | Update Phase 5 row to `Complete` during closeout | Phase 5 is terminal and must close the parent packet explicitly | [SOURCE: ../research/research.md:1445-1447] |
@@ -132,13 +132,13 @@ Operational tail closeout over an already-frozen PR train.
 
 **Why second**: Gen-3 requires dry-run first and treats apply as a separate decision. [SOURCE: ../research/iterations/iteration-023.md:71-83]
 
-### Phase 3: PR-10 apply only after approval
+### Phase 3: PR-10 apply deferred after dry-run
 
-- [ ] If approved, run `--apply` only for D3/D4/D6/D8 safe-subset rewrites.
-- [ ] Commit per file or in equally reviewable slices that preserve git auditability.
-- [ ] Re-run the post-save reviewer or equivalent contamination checks on migrated samples. [SOURCE: ../research/iterations/iteration-023.md:75-83]
+- [ ] Record that any historical apply follow-on is deferred after dry-run review; this phase ships dry-run evidence only.
+- [ ] Keep future rewrite steps in operator-facing follow-up notes rather than a shipped CLI flag.
+- [ ] Preserve the reviewability requirements for any future apply follow-on if the operator later reopens it. [SOURCE: ../research/iterations/iteration-023.md:75-83]
 
-**Why third**: apply is optional, safety-gated, and should remain rollback-friendly. [SOURCE: ../research/iterations/iteration-023.md:71-83]
+**Why third**: apply is intentionally deferred from this implementation, so the plan records the future gate without claiming a shipped mode that does not exist. [SOURCE: ../research/iterations/iteration-023.md:71-83]
 
 ### Phase 4: PR-11 optional and last
 

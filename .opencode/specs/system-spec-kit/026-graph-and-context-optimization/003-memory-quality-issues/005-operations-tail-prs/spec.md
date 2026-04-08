@@ -83,7 +83,7 @@ The core remediation train solves future content-quality defects, but it does no
 
 The repo already contains a material legacy population: 82 JSON-mode candidate files across 49 spec folders. D8 appears in all 82, D4 in 81, and D3 in 52, which means "leave history alone" is no longer a tiny cleanup choice. It is a corpus-quality choice with direct implications for retrieval quality, metadata trust, and user confidence in historical memory artifacts. [SOURCE: ../research/iterations/iteration-023.md:15-34] [SOURCE: ../research/iterations/iteration-023.md:88-95]
 
-Gen-3 rejected blanket auto-heal or regeneration. It chose Option C only in the narrowed form: batch-fix D3/D4/D6/D8, skip D1/D2/D5/D7 unless the file is safely recoverable, and force dry-run plus review before any apply. That makes migration an operationally safe but optional tail activity rather than a mandatory repair sweep. [SOURCE: ../research/iterations/iteration-023.md:64-83] [SOURCE: ../research/research.md:1534-1537]
+Gen-3 rejected blanket auto-heal or regeneration. It chose Option C only in the narrowed form: batch-classify D3/D4/D6/D8 in dry-run evidence, skip D1/D2/D5/D7 unless the file is safely recoverable, and defer any future historical apply step to a later operator-approved follow-on. That keeps migration operationally safe without overstating what shipped in this phase. [SOURCE: ../research/iterations/iteration-023.md:64-83] [SOURCE: ../research/research.md:1534-1537]
 
 ### Problem Detail: Save Lock
 
@@ -127,8 +127,8 @@ Phase 5 exists to turn the parent packet from "core fixes researched and phased"
 
 - Fold the nine low-cardinality metrics and associated reviewer/log hooks into the PR-9 post-save reviewer delivery surface. This is required Phase 5 work, not a separate PR. [SOURCE: ../research/research.md:1425-1441] [SOURCE: ../research/iterations/iteration-024.md:144-148]
 - Draft, review, and commit alert rules for the agreed Phase 5 thresholds: M4 page immediately, M6 warn above five per hour, and M9 p95 warn above 500 ms. [SOURCE: ../research/iterations/iteration-024.md:135-143] [SOURCE: ../research/research.md:1530-1530]
-- Build and run a PR-10 dry-run migration that only targets the safe subset (D3/D4/D6/D8), emits a report, and waits for operator approval before apply. [SOURCE: ../research/iterations/iteration-023.md:64-83]
-- If approved, apply the PR-10 migration with per-file commits so historical repair preserves reviewability and rollback clarity. [SOURCE: ../research/iterations/iteration-023.md:71-83]
+- Build and run a PR-10 dry-run migration that only targets the safe subset (D3/D4/D6/D8), emits a report, and records any future historical apply as deferred for a follow-on. [SOURCE: ../research/iterations/iteration-023.md:64-83]
+- Keep PR-10 dry-run only in this phase; apply mode is deferred and not part of the shipped CLI surface. See `pr11-defer-rationale.md` for the matching optional-tail defer framing.
 - Add a D9 latent-bug reproduction test and either implement PR-11 save-lock hardening or document an explicit defer decision with rationale. [SOURCE: ../research/iterations/iteration-021.md:49-55] [SOURCE: ../research/research.md:1422-1423]
 - Draft release notes that explain capture-mode parity benefits and explicitly keep the spec-scope line unchanged. [SOURCE: ../research/iterations/iteration-025.md:45-49] [SOURCE: ../research/research.md:1531-1532]
 - Update the parent phase map and close the parent packet through `/spec_kit:complete`. [SOURCE: ../research/research.md:1445-1447]
@@ -159,8 +159,8 @@ Phase 5 exists to turn the parent packet from "core fixes researched and phased"
 | `.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts` | Modify | Emit PR-9 telemetry metrics and review-derived counts from the existing reviewer contract. [SOURCE: ../research/iterations/iteration-024.md:109-118] [SOURCE: ../research/research.md:1425-1425] |
 | `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modify | Attach timing/provenance context at Step 10.5 and optionally wire D9 lock hardening at the save entry path. [SOURCE: ../research/iterations/iteration-024.md:109-118] [SOURCE: ../research/iterations/iteration-021.md:51-55] |
 | `.opencode/skill/system-spec-kit/scripts/lib/memory-telemetry.ts` | Create | Thin structured-log-backed helper for M1-M9 emission and standardized log events. [SOURCE: ../research/iterations/iteration-024.md:144-148] |
-| `.opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts` | Create | Safe-subset migration CLI with dry-run/apply/report modes and per-defect toggles. [SOURCE: ../research/iterations/iteration-023.md:50-55] [SOURCE: ../research/iterations/iteration-023.md:71-80] |
-| `monitoring/memory-save-quality-alerts.yml` | Create | Alert-rule file for M4, M6, and M9 thresholds. [SOURCE: ../research/iterations/iteration-024.md:135-143] |
+| `.opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts` | Create | Safe-subset migration CLI with dry-run/report modes and per-defect toggles; apply mode deferred in this phase (see `pr11-defer-rationale.md`). [SOURCE: ../research/iterations/iteration-023.md:50-55] [SOURCE: ../research/iterations/iteration-023.md:71-80] |
+| `memory-save-quality-alerts.yml` | Create | Alert-rule file for M4, M6, and M9 thresholds. [SOURCE: ../research/iterations/iteration-024.md:135-143] |
 | Phase-local telemetry catalog artifact | Create | Operator-facing metric catalog and implementation crosswalk for M1-M9. [SOURCE: ../research/iterations/iteration-024.md:23-93] |
 | Phase-local release-notes draft artifact | Create | Draft release communication with capture-mode parity note. [SOURCE: ../research/iterations/iteration-025.md:45-49] |
 | `../spec.md` | Modify | Update the Phase 5 row in the parent phase map to `Complete` during closeout. [SOURCE: ../research/research.md:1445-1447] |
@@ -185,7 +185,7 @@ Phase 5 exists to turn the parent packet from "core fixes researched and phased"
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-506 | PR-10 apply remains optional and operator-gated after dry-run review. [SOURCE: ../research/iterations/iteration-023.md:71-83] | Apply does not start without explicit approval evidence. |
+| REQ-506 | PR-10 stays dry-run only in this phase, and any historical apply follow-on remains explicitly deferred until a later operator decision. [SOURCE: ../research/iterations/iteration-023.md:71-83] | Phase docs record apply as deferred, and the shipped CLI surface stays dry-run only. |
 | REQ-507 | PR-11 may ship or defer, but its status must be explicit and backed by a D9 reproduction path. [SOURCE: ../research/iterations/iteration-021.md:49-55] [SOURCE: ../research/research.md:1422-1423] | Reproduction test exists and ship/defer rationale is recorded. |
 | REQ-508 | Phase 5 must not auto-migrate D1/D2/D5/D7 from historical file content alone. [SOURCE: ../research/research.md:1534-1537] | Dry-run and apply logic classify those defects as unrecoverable or ambiguity-sensitive. |
 | REQ-509 | Telemetry labels must remain low-cardinality and operator-focused. [SOURCE: ../research/iterations/iteration-024.md:8-13] | Detailed context appears only in structured logs, not metric labels. |

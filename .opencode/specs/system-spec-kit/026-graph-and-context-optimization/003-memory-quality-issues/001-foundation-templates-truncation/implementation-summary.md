@@ -77,7 +77,7 @@ Phase 1 shipped in two implementation passes. The first pass landed the template
 
 | Decision | Why |
 |----------|-----|
-| Pin the canonical truncation suffix to single-codepoint `…` (U+2026) | Parent handoff criteria at `../spec.md:197` explicitly require U+2026. Leaving both `...` and `…` valid would let later fixtures drift between punctuation styles, destabilizing snapshots and making AC-1 underspecified. |
+| Pin the canonical truncation suffix to single-codepoint `…` (U+2026) | Parent handoff criteria at `../spec.md#phase-handoff-criteria` explicitly require U+2026. Leaving both `...` and `…` valid would let later fixtures drift between punctuation styles, destabilizing snapshots and making AC-1 underspecified. |
 | Extract the helper from `input-normalizer.ts` first, migrate `collect-session-data.ts` second | Iteration 17 mapped this exact order. The observation-summary path already implemented boundary-aware truncation; lifting it first gives the helper proven behaviour before the D1 owner switches over. |
 | Update `memory-template-contract.ts:51` from `commentId: 'summary'` to `commentId: 'overview'` instead of leaving the validator on the legacy name | The template-only fix the research proposed would have broken every rendered OVERVIEW memory because the quality gate expected the old marker. Aligning both sides is the only way to keep the write path unblocked. |
 | Make the memory parser regex accept BOTH `summary` and `overview` terminators | Historical memory files still carry the legacy `summary` closing marker. Hard-cutting to `overview` would strand the parser on anything written before PR-1. The defensive union preserves full backward compatibility at zero runtime cost. |
