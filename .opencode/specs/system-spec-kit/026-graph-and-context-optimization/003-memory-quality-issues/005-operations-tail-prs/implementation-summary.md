@@ -1,19 +1,17 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: Phase 5 — Operations & Tail PRs"
+description: "Phase 5 finished phase-local operational closeout with telemetry docs, a dry-run-only migration CLI, defer rationale, and qualified parent-status updates while parent closeout remains blocked outside this child scope."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
+  - "phase 5 implementation summary"
+  - "operations tail summary"
+  - "pr10 dry run summary"
+importance_tier: important
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: Phase 5 — Operations & Tail PRs
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,9 +20,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 005-operations-tail-prs |
+| **Completed** | 2026-04-08 |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,28 +30,29 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+Phase 5 finished phase-local operational closeout without widening the packet; parent closeout remains blocked by out-of-scope drift (see §Verification and §Known Limitations below). The work added the missing operator artifacts around the already-landed Phase 4 telemetry code, produced a dry-run-only PR-10 migration report, recorded a defer-with-rationale decision for PR-11, and flipped the parent packet from planned tail work into an explicit phase-local closeout state.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Operational Artifacts
 
-### [Feature Name]
+You can now inspect the telemetry surface, alert thresholds, release framing, and PR-11 rationale directly inside this phase folder. The new docs keep the phase honest about what shipped versus what intentionally deferred.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Dry-Run Migration Utility
+
+You can now run `migrate-historical-json-mode-memories.js` in dry-run mode to classify historical JSON-mode memories into safe-subset, ambiguous, and unrecoverable buckets without mutating the corpus. The generated report is the Phase 5 PR-10 evidence artifact.
 
 ### Files Changed
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
 | File | Action | Purpose |
 |------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+| `.opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts` | Created | Adds the dry-run-only PR-10 migration classifier and report writer. |
+| `telemetry-catalog.md` | Created | Documents the M1-M9 operator crosswalk and alert pointers. |
+| `memory-save-quality-alerts.yml` | Created | Captures the Phase 5 alert draft from iteration 24. |
+| `release-notes-draft.md` | Created | Records packet closeout framing and parity-safe release language. |
+| `pr11-defer-rationale.md` | Created | Documents why PR-11 defers and when to reopen it. |
+| `README.md` | Updated | Reorients the phase folder around the actual closeout artifacts. |
+| `checklist.md` | Updated | Records Phase 5 verification evidence and explicit deferrals. |
+| `../spec.md` | Updated | Flips the parent phase map rows to qualified phase-local status labels instead of full parent closeout claims. |
+| `../checklist.md` | Updated | Ticks the parent D1-D8 remediation rows with phase-local evidence. |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +60,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+Delivery stayed inside the minimal closeout contract: build the scripts package, run the PR-10 CLI in dry-run mode only, verify no historical memory markdown files were rewritten, then validate the phase and parent packet docs under `validate.sh --strict`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +68,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Keep PR-10 dry-run only | The approved Phase 5 scope explicitly defers any apply step until a later operator decision. |
+| Record PR-11 as deferred-with-rationale | Iteration 21 found a real D9 candidate, but not enough concurrency-pressure evidence to justify speculative hardening now. |
+| Add an alert-rule draft artifact in Phase 5 | The rollout stage and checklist both required an alert surface, and a small YAML draft kept that requirement inside the approved operational tail. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +80,12 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| `cd .opencode/skill/system-spec-kit/scripts && npm run build` | PASS |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/migrate-historical-json-mode-memories.js --dry-run --report .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/005-operations-tail-prs/scratch/pr10-dry-run-report.json` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/005-operations-tail-prs --strict` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues --strict` | FAIL / exit 2 (remaining parent validation blockers are outside the Phase 5 child scope and now live in packet-level plan/tasks/memory surfaces rather than this phase folder) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +93,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **PR-10 remains dry-run only.** This phase does not rewrite historical memory files.
+2. **PR-11 remains deferred.** A follow-up should reopen it only if concurrent `--json` saves become a real supported workflow.
+3. **Parent packet validation still has packet-level blockers outside this child scope.** Phase 5 now validates cleanly on its own, but the parent folder still carries out-of-scope structural drift.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

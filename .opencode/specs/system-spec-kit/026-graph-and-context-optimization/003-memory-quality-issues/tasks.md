@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Memory Quality Backend Improvements"
-description: "Research-only task list. Code remediation tasks (T010+) are intentionally left as next-plan placeholders to keep this folder's scope as research delivery only."
+description: "Historical pre-decomposition task list retained for traceability; execution moved to phase folders 001-005."
 trigger_phrases:
   - "memory quality tasks"
   - "research tasks complete"
@@ -16,7 +16,27 @@ contextType: "planning"
 
 ---
 
-## SECTION A — RESEARCH DELIVERY (this folder owns these)
+> **⚠️ SUPERSEDED BY PHASES 1-5:** This file is retained as the original pre-decomposition task list only. Use phase folders `001-foundation-templates-truncation/` through `005-operations-tail-prs/` as the authoritative execution record.
+
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### SECTION A — RESEARCH DELIVERY (this folder owns these)
 
 | ID | Task | Status | Evidence |
 |----|------|--------|----------|
@@ -36,62 +56,92 @@ contextType: "planning"
 | T014 | Patch post-save quality issues (title bracket, importance_tier double-quote, garbage trigger phrases reproducing D3) | DONE | Manual edits to memory file + reindex |
 | T015 | Reindex memory via memory_index_scan | DONE | indexer reports id 1837 (memory) + 1838 (research.md) |
 | T016 | Author Level 2 spec docs (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) | DONE | This folder's spec docs |
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-## SECTION B — CODE REMEDIATION (deferred to follow-up plan)
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-These tasks are intentionally left as **PLACEHOLDERS** so a fresh `/spec_kit:plan` invocation can pick them up. Do NOT execute them in this folder — that would violate the research-only scope.
+### SECTION B — CODE REMEDIATION (deferred to follow-up plan)
+
+These tasks are intentionally preserved as the original placeholder matrix, but they are now superseded by the phase folders that executed the work. Do NOT reopen the fresh `/spec_kit:plan` workflow from this file; use the child phase folders as the execution record instead.
 
 ### P0 (ship first)
 
 | ID | Task | Status |
 |----|------|--------|
-| T101 | D8 — Standardize anchor naming on `overview` in `templates/context_template.md:172-183` and `:330-352` | NEXT-PLAN |
-| T102 | D1 — Replace `substring(0, 500)` in `extractors/collect-session-data.ts:875-881` with shared boundary-aware helper | NEXT-PLAN |
-| T103 | Add helper-level fixture tests for D1 (450/520/900-char inputs) | NEXT-PLAN |
-| T104 | Add template anchor consistency assertion | NEXT-PLAN |
+| T101 | D8 — Standardize anchor naming on `overview` in `templates/context_template.md:172-183` and `:330-352` | SUPERSEDED — See `001-foundation-templates-truncation/` |
+| T102 | D1 — Replace `substring(0, 500)` in `extractors/collect-session-data.ts:875-881` with shared boundary-aware helper | SUPERSEDED — See `001-foundation-templates-truncation/` |
+| T103 | Add helper-level fixture tests for D1 (450/520/900-char inputs) | SUPERSEDED — See `001-foundation-templates-truncation/` |
+| T104 | Add template anchor consistency assertion | SUPERSEDED — See `001-foundation-templates-truncation/` |
 
 ### P1 (structural consistency + provenance)
 
 | ID | Task | Status |
 |----|------|--------|
-| T201 | D4 — Extend `lib/frontmatter-migration.ts:1112-1183` to also rewrite bottom YAML metadata block | NEXT-PLAN |
-| T202 | D4 — Add `core/post-save-review.ts:279-289` reviewer assertion for frontmatter↔metadata drift | NEXT-PLAN |
-| T203 | D7 — Split provenance injection from captured-session enrichment in `core/workflow.ts:453-560`, `:877-923` | NEXT-PLAN |
-| T204 | Add stubbed `extractGitContext()` workflow test for JSON-mode provenance | NEXT-PLAN |
+| T201 | D4 — Extend `lib/frontmatter-migration.ts:1112-1183` to also rewrite bottom YAML metadata block | SUPERSEDED — See `002-single-owner-metadata/` |
+| T202 | D4 — Add `core/post-save-review.ts:279-289` reviewer assertion for frontmatter↔metadata drift | SUPERSEDED — See `002-single-owner-metadata/` |
+| T203 | D7 — Split provenance injection from captured-session enrichment in `core/workflow.ts:453-560`, `:877-923` | SUPERSEDED — See `002-single-owner-metadata/` |
+| T204 | Add stubbed `extractGitContext()` workflow test for JSON-mode provenance | SUPERSEDED — See `002-single-owner-metadata/` |
 
 ### P2 (search-quality, behaviorally sensitive)
 
 | ID | Task | Status |
 |----|------|--------|
-| T301 | D3a — Remove unconditional folder-token append in `core/workflow.ts:1271-1295` (keep `ensureMinTriggerPhrases()` low-count fallback) | NEXT-PLAN |
-| T302 | D3b — Require source adjacency for topic bigrams in `lib/semantic-signal-extractor.ts:260-284` | NEXT-PLAN |
-| T303 | D2 — Add raw `keyDecisions` reader to `extractors/decision-extractor.ts:182-185` before lexical fallback | NEXT-PLAN |
-| T304 | D2 — Implement precedence hardening (do NOT blanket-disable lexical fallback) at `:367-388` | NEXT-PLAN |
-| T305 | F1/F6 replay fixtures asserting absent path-fragment trigger phrases | NEXT-PLAN |
-| T306 | Decision-extractor unit tests for raw / missing-normalized / decision-less JSON fixtures | NEXT-PLAN |
+| T301 | D3a — Remove unconditional folder-token append in `core/workflow.ts:1271-1295` (keep `ensureMinTriggerPhrases()` low-count fallback) | SUPERSEDED — See `003-sanitization-precedence/` |
+| T302 | D3b — Require source adjacency for topic bigrams in `lib/semantic-signal-extractor.ts:260-284` | SUPERSEDED — See `003-sanitization-precedence/` |
+| T303 | D2 — Add raw `keyDecisions` reader to `extractors/decision-extractor.ts:182-185` before lexical fallback | SUPERSEDED — See `003-sanitization-precedence/` |
+| T304 | D2 — Implement precedence hardening (do NOT blanket-disable lexical fallback) at `:367-388` | SUPERSEDED — See `003-sanitization-precedence/` |
+| T305 | F1/F6 replay fixtures asserting absent path-fragment trigger phrases | SUPERSEDED — See `003-sanitization-precedence/` |
+| T306 | Decision-extractor unit tests for raw / missing-normalized / decision-less JSON fixtures | SUPERSEDED — See `003-sanitization-precedence/` |
 
 ### P3 (investigation-first)
 
 | ID | Task | Status |
 |----|------|--------|
-| T401 | D5 — Add `discoverPredecessors()` helper to `core/workflow.ts:1305-1372` (immediate predecessor + continuation gating + ambiguity skip) | NEXT-PLAN |
-| T402 | D5 — Wire helper into pre-render path before `buildCausalLinksContext()` in `core/memory-metadata.ts:227-236` | NEXT-PLAN |
-| T403 | D5 — Add temp-folder lineage fixture (one valid predecessor + one unrelated sibling) | NEXT-PLAN |
-| T404 | D6 — Add F1-based regression fixture for duplicate trigger phrases | NEXT-PLAN |
-| T405 | D6 — Trace duplicate origin only AFTER fixture establishes failing reproducer | NEXT-PLAN |
+| T401 | D5 — Add `discoverPredecessors()` helper to `core/workflow.ts:1305-1372` (immediate predecessor + continuation gating + ambiguity skip) | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
+| T402 | D5 — Wire helper into pre-render path before `buildCausalLinksContext()` in `core/memory-metadata.ts:227-236` | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
+| T403 | D5 — Add temp-folder lineage fixture (one valid predecessor + one unrelated sibling) | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
+| T404 | D6 — Add F1-based regression fixture for duplicate trigger phrases | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
+| T405 | D6 — Trace duplicate origin only AFTER fixture establishes failing reproducer | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
 
 ### Acceptance
 
 | ID | Task | Status |
 |----|------|--------|
-| T501 | Full pipeline replay with `/tmp/save-context-data.json` after all P0-P2 fixes; assert all 8 defect symptoms absent | NEXT-PLAN |
-| T502 | Capture before/after diff of 3 sample memory saves to confirm no regressions | NEXT-PLAN |
+| T501 | Full pipeline replay with `/tmp/save-context-data.json` after all P0-P2 fixes; assert all 8 defect symptoms absent | SUPERSEDED — See `005-operations-tail-prs/` |
+| T502 | Capture before/after diff of 3 sample memory saves to confirm no regressions | SUPERSEDED — See `005-operations-tail-prs/` |
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-## STATUS
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### STATUS
 
 - **Section A (research delivery)**: ✅ ALL DONE — 16 of 16 complete
-- **Section B (code remediation)**: ⏸ DEFERRED — owned by next `/spec_kit:plan` invocation against this folder
+- **Section B (code remediation)**: ⏸ SUPERSEDED — execution moved to phase folders `001-005`
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] Research delivery tasks in Phase 1 are complete (`T001` through `T016`).
+- [x] Deferred implementation placeholders in Phase 2 are superseded by phase folders `001-005`.
+- [x] Scope split between research delivery and deferred remediation is explicitly documented.
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Research Source**: See `research/research.md`
+<!-- /ANCHOR:cross-refs -->

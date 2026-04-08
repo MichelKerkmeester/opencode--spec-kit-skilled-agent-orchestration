@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Memory Quality Backend Improvements"
-description: "Priority-grouped (P0-P3) implementation plan derived from research.md remediation matrix; this folder ships research + spec only, code execution belongs to a follow-up plan invocation."
+description: "Original pre-decomposition implementation plan retained for traceability; actual execution is recorded in phase folders 001-005."
 trigger_phrases:
   - "memory quality plan"
   - "remediation priority"
@@ -19,62 +19,77 @@ contextType: "planning"
 
 ---
 
-## 0. STATUS BANNER
+> **⚠️ SUPERSEDED BY PHASES 1-5:** This file is retained as the original pre-decomposition plan only. Use `001-foundation-templates-truncation/` through `005-operations-tail-prs/` as the authoritative execution record for this packet.
 
-> **This plan is RESEARCH-COMPLETE / IMPLEMENTATION-DEFERRED.**
-> The 10-iteration deep research is the deliverable for this folder. Code remediation work should be picked up by a fresh `/spec_kit:plan` invocation that targets this folder and converts the priority groups below into a sequenced implementation plan.
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
----
+### Technical Context
 
-## 1. APPROACH
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript system-spec-kit scripts plus markdown packet docs |
+| **Framework** | `generate-context.js` + system-spec-kit remediation workflow |
+| **Storage** | Packet-local spec documents and memory artifacts |
+| **Testing** | Helper-level fixtures, replay tests, and strict spec validation |
+
+### Overview
+
+> **This plan is the ORIGINAL PRE-DECOMPOSITION PLAN and is now superseded.**
+> The 10-iteration deep research still explains the priority bands below, but implementation no longer routes through a fresh `/spec_kit:plan` invocation here. Real execution shipped through phase folders `001-foundation-templates-truncation/` through `005-operations-tail-prs`.
 
 The plan follows the **iteration-9-narrowed remediation matrix** from `research/research.md §6`. Defects are grouped by priority (P0 = ship-first, P3 = investigate-first), and each priority group is intentionally small to keep blast radius bounded. Verification is per-defect with helper-level fixtures or replay tests rather than full pipeline runs.
 
 [SOURCE: research.md §6, §10, §11]
+<!-- /ANCHOR:summary -->
 
 ---
 
-## 2. PRIORITY GROUPS
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-### P0 — Low-risk consolidation (ship first)
+### Definition of Ready
 
-| Defect | Owner | Change | Risk |
-|--------|-------|--------|------|
-| D8 | `context_template.md:172-183`, `:330-352` | Standardize anchor naming on `overview` for TOC, HTML id, and comment anchor | None — template-only |
-| D1 | `collect-session-data.ts:875-881` | Replace `substring(0, 500)` with shared boundary-aware trimming helper modeled on `buildSessionSummaryObservation()` | Low — soft cap preserved |
+- [ ] Research deliverables and remediation matrix are complete and available.
+- [ ] Priority groups (P0-P3) are agreed and sequenced.
+- [ ] Verification approach is defined per defect group before implementation.
 
-**Verification**: Helper-level fixture tests (450/520/900 char) + template anchor consistency assertion. No full pipeline runs needed.
+### Definition of Done
 
-### P1 — Structural consistency + provenance
+- [ ] P0 and P1 groups are implemented or explicitly deferred with rationale.
+- [ ] Required verification surfaces for each addressed defect group are green.
+- [ ] Packet-level rollout gates are documented with current status.
 
-| Defect | Owner | Change | Risk |
-|--------|-------|--------|------|
-| D4 | `frontmatter-migration.ts:1112-1183`, `post-save-review.ts:279-289` | Extend managed-frontmatter rewrite to also update bottom YAML block; add reviewer drift assertion | Medium — narrow regex risk |
-| D7 | `workflow.ts:453-560`, `:877-923` | Split git provenance injection from captured-session enrichment so JSON mode always fills `head_ref`/`commit_ref`/`repository_state` without merging summary content | Medium — must stay provenance-only |
+### Rollout Gate Matrix
 
-**Verification**: Frontmatter migration fixture with divergent tier; stubbed `extractGitContext()` workflow test asserting authored summary remains unchanged.
-
-### P2 — Search-quality fixes (behaviorally sensitive)
-
-| Defect | Owner | Change | Risk |
-|--------|-------|--------|------|
-| D3 | `workflow.ts:1271-1295`, `semantic-signal-extractor.ts:260-284` | Remove unconditional folder-token append (keep `ensureMinTriggerPhrases()` low-count fallback); require source adjacency for topic bigrams | Medium — overfilter risk |
-| D2 | `decision-extractor.ts:182-185`, `:367-388` | Add raw `keyDecisions` reader before lexical fallback; precedence hardening only when authoritative arrays exist (do NOT blanket-disable lexical) | High — could regress degraded payloads if scoped wrong |
-
-**Verification**: F1/F6 replay fixtures asserting absent strings; decision-extractor unit tests for valid raw arrays, missing normalized carriers, and degraded decision-less JSON.
-
-### P3 — Investigation-first
-
-| Defect | Owner | Change | Risk |
-|--------|-------|--------|------|
-| D5 | `memory-metadata.ts:227-236`, `workflow.ts:1305-1372` | Add `discoverPredecessors()` helper; immediate-predecessor only with continuation-signal gating + ambiguity skip | High — false positives harden incorrect lineage |
-| D6 | unresolved active owner | Add regression fixture from F1 (not F7) before any code patch | Low — fixture-only |
-
-**Verification**: Temp-folder lineage fixture (one valid + one unrelated sibling); D6 fixture establishes failing reproducer first.
+| Gate | Condition |
+|------|-----------|
+| G1 | P0 fixes (D1, D8) merged + verification passing |
+| G2 | P1 fixes (D4, D7) merged with reviewer drift check live |
+| G3 | P2 fixes (D2, D3) merged + replay fixtures green |
+| G4 | P3 fixes (D5) merged only after lineage fixture passes; D6 still investigation-only |
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-## 3. CROSS-CUTTING REFACTORS (defer to a separate spec)
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+
+Priority-banded remediation sequencing with defect-scoped verification.
+
+### Key Components
+
+- **Research Matrix Authority**: `research/research.md §6` drives all remediation grouping.
+- **Priority Bands**: P0 through P3 partition implementation risk and rollout order.
+- **Verification Layers**: helper tests, fixtures, snapshots, and lineage checks gate rollout.
+
+### Data Flow
+
+Research findings -> priority grouping -> defect-scoped implementation -> layer-specific verification -> rollout gate advancement.
+
+### Cross-Cutting Refactors (defer to a separate spec)
 
 These were identified as `Refactor Opportunities` in `research.md §13` and are listed here for visibility, but should NOT be bundled into this remediation:
 
@@ -83,10 +98,60 @@ These were identified as `Refactor Opportunities` in `research.md §13` and are 
 3. **Explicit enrichment-mode flag** — replace the `_source === 'file'` overload with an explicit save-mode contract.
 
 [SOURCE: research.md §13]
+<!-- /ANCHOR:architecture -->
 
 ---
 
-## 4. VERIFICATION STRATEGY
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+
+#### P0 — Low-risk consolidation (ship first)
+
+| Defect | Owner | Change | Risk |
+|--------|-------|--------|------|
+| D8 | `context_template.md:172-183`, `:330-352` | Standardize anchor naming on `overview` for TOC, HTML id, and comment anchor | None — template-only |
+| D1 | `collect-session-data.ts:875-881` | Replace `substring(0, 500)` with shared boundary-aware trimming helper modeled on `buildSessionSummaryObservation()` | Low — soft cap preserved |
+
+**Verification**: Helper-level fixture tests (450/520/900 char) + template anchor consistency assertion. No full pipeline runs needed.
+
+### Phase 2: Core Implementation
+
+#### P1 — Structural consistency + provenance
+
+| Defect | Owner | Change | Risk |
+|--------|-------|--------|------|
+| D4 | `frontmatter-migration.ts:1112-1183`, `post-save-review.ts:279-289` | Extend managed-frontmatter rewrite to also update bottom YAML block; add reviewer drift assertion | Medium — narrow regex risk |
+| D7 | `workflow.ts:453-560`, `:877-923` | Split git provenance injection from captured-session enrichment so JSON mode always fills `head_ref`/`commit_ref`/`repository_state` without merging summary content | Medium — must stay provenance-only |
+
+**Verification**: Frontmatter migration fixture with divergent tier; stubbed `extractGitContext()` workflow test asserting authored summary remains unchanged.
+
+#### P2 — Search-quality fixes (behaviorally sensitive)
+
+| Defect | Owner | Change | Risk |
+|--------|-------|--------|------|
+| D3 | `workflow.ts:1271-1295`, `semantic-signal-extractor.ts:260-284` | Remove unconditional folder-token append (keep `ensureMinTriggerPhrases()` low-count fallback); require source adjacency for topic bigrams | Medium — overfilter risk |
+| D2 | `decision-extractor.ts:182-185`, `:367-388` | Add raw `keyDecisions` reader before lexical fallback; precedence hardening only when authoritative arrays exist (do NOT blanket-disable lexical) | High — could regress degraded payloads if scoped wrong |
+
+**Verification**: F1/F6 replay fixtures asserting absent strings; decision-extractor unit tests for valid raw arrays, missing normalized carriers, and degraded decision-less JSON.
+
+### Phase 3: Verification
+
+#### P3 — Investigation-first
+
+| Defect | Owner | Change | Risk |
+|--------|-------|--------|------|
+| D5 | `memory-metadata.ts:227-236`, `workflow.ts:1305-1372` | Add `discoverPredecessors()` helper; immediate-predecessor only with continuation-signal gating + ambiguity skip | High — false positives harden incorrect lineage |
+| D6 | unresolved active owner | Add regression fixture from F1 (not F7) before any code patch | Low — fixture-only |
+
+**Verification**: Temp-folder lineage fixture (one valid + one unrelated sibling); D6 fixture establishes failing reproducer first.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
 | Layer | Tool | Use For |
 |-------|------|---------|
@@ -97,20 +162,29 @@ These were identified as `Refactor Opportunities` in `research.md §13` and are 
 | Regression-only | F1 duplicate trigger fixture | D6 |
 
 [SOURCE: research.md §11]
+<!-- /ANCHOR:testing -->
 
 ---
 
-## 5. ROLLOUT GATES
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-| Gate | Condition |
-|------|-----------|
-| G1 | P0 fixes (D1, D8) merged + verification passing |
-| G2 | P1 fixes (D4, D7) merged with reviewer drift check live |
-| G3 | P2 fixes (D2, D3) merged + replay fixtures green |
-| G4 | P3 fixes (D5) merged only after lineage fixture passes; D6 still investigation-only |
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `research/research.md` remediation matrix (`§6`) | Internal | Complete | Priority-group execution cannot be sequenced confidently |
+| Defect-scoped fixtures and replay inputs | Internal | Required for execution | Acceptance criteria cannot be verified deterministically |
+| Follow-up `/spec_kit:plan` invocation | Process | Pending | Implementation remains deferred and grouped work is not converted to executable tasks |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
-## 6. NEXT STEP
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-Run `/spec_kit:plan` against this folder once the team is ready to execute remediation. The new plan should consume `research.md §6` (final remediation matrix) and `plan.md §2` (priority groups) as inputs, then break each priority group into implementation tasks.
+- **Trigger**: Implementation rollout diverges from scoped priority groups, verification gates fail, or defect fixes introduce regressions.
+- **Procedure**: Halt rollout at the current gate, keep unresolved groups deferred, and re-open planning with updated fixture evidence before resuming.
+
+### Next Step
+
+This historical plan is superseded. For the real execution record, use phase folders `001-foundation-templates-truncation/` through `005-operations-tail-prs`, which replaced the fresh-plan workflow described here.
+<!-- /ANCHOR:rollback -->

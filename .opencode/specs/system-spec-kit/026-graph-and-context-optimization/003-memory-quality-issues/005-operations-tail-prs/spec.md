@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Phase 5 — Operations & Tail PRs"
-description: "Phase 5 packages the operational tail work after the core nine-PR train: telemetry folded into PR-9, optional historical safe-subset migration, optional D9 save-lock hardening, release communication, and parent packet closure."
+description: "Phase 5 packages the operational tail work after the core nine-PR train: telemetry folded into PR-9, optional historical safe-subset migration, optional D9 save-lock hardening, release communication, and phase-local closeout while parent closeout is tracked separately."
 trigger_phrases:
   - "phase 5 operations tail prs"
   - "pr-10 safe subset migration"
@@ -27,7 +27,7 @@ Phase 5 is the packet closeout phase for `003-memory-quality-issues/`. It does n
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P4 |
-| **Status** | Planned |
+| **Status** | Phase-local complete, parent gates pending |
 | **Created** | 2026-04-07 |
 | **Branch** | `system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/005-operations-tail-prs` |
 | **Parent Spec** | `../spec.md` |
@@ -36,8 +36,8 @@ Phase 5 is the packet closeout phase for `003-memory-quality-issues/`. It does n
 | **Parent Checklist** | `../checklist.md` |
 | **Phase** | 5 of 5 |
 | **Predecessor** | `004-heuristics-refactor-guardrails` |
-| **Successor** | None |
-| **Handoff Criteria** | Parent phase map row set to `Complete`, parent packet passes `/spec_kit:complete`, and no unresolved Phase 5 P0/P1 blockers remain. [SOURCE: ../research/research.md:1445-1447] |
+| **Successor** | `006-memory-duplication-reduction` (handoff currently waived at parent level) |
+| **Handoff Criteria** | Phase-local done requires telemetry/release artifacts, PR-10 dry-run evidence, explicit PR-11 status, and phase validator success. Parent closeout remains separate and only completes after the parent packet clears its own strict-validation and `/spec_kit:complete` gates. [SOURCE: ../research/research.md:1445-1447] |
 
 <!-- ANCHOR:phase-context -->
 ### Phase Context
@@ -56,7 +56,7 @@ This is **Phase 5 of 5** in the memory-quality packet. It is intentionally the o
 - PR-10 dry-run report plus explicit operator approval gate before any apply step.
 - Optional PR-11 implementation or a documented defer decision.
 - Release-notes draft that calls out capture-mode parity benefits without amending spec scope.
-- Parent packet phase-map update and `/spec_kit:complete` closeout evidence. [SOURCE: ../research/research.md:1238-1250] [SOURCE: ../research/research.md:1527-1532]
+- Parent packet phase-map update to reflect Phase 5 phase-local completion, plus an explicit record of any remaining parent closeout blockers. [SOURCE: ../research/research.md:1238-1250] [SOURCE: ../research/research.md:1527-1532]
 
 <!-- /ANCHOR:phase-context -->
 <!-- /ANCHOR:metadata -->
@@ -115,7 +115,7 @@ Phase 5 exists to turn the parent packet from "core fixes researched and phased"
 
 **Story 3 - Capture-mode User**: As a capture-mode user, I want the release notes to explain which fixes improve my saves too, so that I understand the shared value of the packet without assuming the team changed capture-mode scope directly. [SOURCE: ../research/iterations/iteration-025.md:45-49]
 
-**Story 4 - Release Manager**: As a release manager, I want a final phase that cleanly decides whether tail PRs ship or defer, updates the parent packet status, and closes the packet through `/spec_kit:complete`, so that the packet ends with explicit operational truth instead of an implicit TODO. [SOURCE: ../research/research.md:1445-1447]
+**Story 4 - Release Manager**: As a release manager, I want a final phase that cleanly decides whether tail PRs ship or defer, updates the parent packet status, and records whether parent `/spec_kit:complete` is still blocked, so that the packet ends with explicit operational truth instead of an implicit TODO. [SOURCE: ../research/research.md:1445-1447]
 <!-- /ANCHOR:problem -->
 
 ---
@@ -179,7 +179,7 @@ Phase 5 exists to turn the parent packet from "core fixes researched and phased"
 | REQ-502 | Alert rules must include the frozen thresholds for M4, M6, and M9. [SOURCE: ../research/iterations/iteration-024.md:135-143] | Alert-rule artifact contains the three required rules. |
 | REQ-503 | PR-10 must support dry-run-first execution with report output and per-defect controls. [SOURCE: ../research/iterations/iteration-023.md:71-83] | Dry-run script exists and publishes a structured report. |
 | REQ-504 | Release notes must explicitly mention shared capture-mode benefits while preserving the spec-scope boundary. [SOURCE: ../research/iterations/iteration-025.md:45-49] [SOURCE: ../research/research.md:1531-1532] | Release-note draft contains both the parity note and the unchanged-scope note. |
-| REQ-505 | Parent packet closure must happen through the phase-map update plus `/spec_kit:complete`. [SOURCE: ../research/research.md:1445-1447] | Parent phase row is `Complete` and closeout evidence is recorded. |
+| REQ-505 | Phase 5 must distinguish phase-local closeout from parent packet closeout. [SOURCE: ../research/research.md:1445-1447] | Parent phase row is updated to the qualified phase-local status, and any remaining parent `/spec_kit:complete` blocker is recorded explicitly. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -190,6 +190,36 @@ Phase 5 exists to turn the parent packet from "core fixes researched and phased"
 | REQ-508 | Phase 5 must not auto-migrate D1/D2/D5/D7 from historical file content alone. [SOURCE: ../research/research.md:1534-1537] | Dry-run and apply logic classify those defects as unrecoverable or ambiguity-sensitive. |
 | REQ-509 | Telemetry labels must remain low-cardinality and operator-focused. [SOURCE: ../research/iterations/iteration-024.md:8-13] | Detailed context appears only in structured logs, not metric labels. |
 | REQ-510 | Any PR-11 implementation must preserve acceptable single-process save behavior. [SOURCE: ../research/research.md:1524-1525] | Smoke verification shows no meaningful regression in the common path. |
+
+### Acceptance Scenarios
+
+**Scenario A: Telemetry and alerting stay operator-sized**
+
+- **Given** a completed post-save review for a memory save on the Phase 5 branch,
+- **When** the reviewer and workflow emit the M1-M9 metric payload,
+- **Then** the metric set stays low-cardinality and limited to the agreed guardrail surface,
+- **And** the alert-rule draft contains the required `M4 > 0`, `M6 > 5/hr`, and `M9 p95 > 500 ms` thresholds. [SOURCE: ../research/iterations/iteration-024.md:23-93] [SOURCE: ../research/iterations/iteration-024.md:135-147]
+
+**Scenario B: PR-10 stays dry-run-first and safe-subset only**
+
+- **Given** the historical JSON-mode corpus identified by the Phase 5 migration scan,
+- **When** the PR-10 utility runs in dry-run mode,
+- **Then** it publishes `fixed`, `skipped-ambiguous`, and `unrecoverable` buckets,
+- **And** it proposes automatic rewrites only for D3, D4, D6, and D8 rather than fabricating D1, D2, D5, or D7 content. [SOURCE: ../research/iterations/iteration-023.md:64-83] [SOURCE: ../research/research.md:1534-1537]
+
+**Scenario C: PR-11 status is explicit instead of implied**
+
+- **Given** the D9 concurrency risk remains a low-frequency operational concern,
+- **When** Phase 5 closes without shipping PR-11 hardening,
+- **Then** the phase records a written defer rationale and reopen triggers,
+- **And** the packet does not silently present PR-11 as shipped. [SOURCE: ../research/iterations/iteration-021.md:49-55] [SOURCE: ../research/research.md:1422-1423]
+
+**Scenario D: Parent closeout stays truthful**
+
+- **Given** the phase-local telemetry, migration, release-note, and defer-status artifacts are complete,
+- **When** Phase 5 updates the parent packet for closeout,
+- **Then** the parent phase map marks Phase 5 as phase-local complete with parent gates still tracked separately,
+- **And** the release framing states the capture-mode parity benefits without claiming a broader spec-scope change. [SOURCE: ../research/research.md:1445-1447] [SOURCE: ../research/research.md:1531-1532]
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -207,7 +237,7 @@ Phase 5 exists to turn the parent packet from "core fixes researched and phased"
 | AC-506 | Any PR-10 apply step is blocked behind explicit operator approval after dry-run review. [SOURCE: ../research/iterations/iteration-023.md:71-83] | Approval note recorded before apply tasks can move to done. |
 | AC-507 | A D9 latent-bug reproduction test exists, and Phase 5 records either a passing PR-11 hardening implementation or a documented defer rationale. [SOURCE: ../research/iterations/iteration-021.md:49-55] [SOURCE: ../research/research.md:1422-1423] | Test evidence plus implementation-or-deferral record. |
 | AC-508 | Release notes mention that capture mode also benefits from the shared D2/D3/D5/D8 fixes while keeping the spec-scope line unchanged. [SOURCE: ../research/iterations/iteration-025.md:45-49] [SOURCE: ../research/research.md:1531-1532] | Release-note draft reviewed against parity matrix. |
-| AC-509 | The parent phase map shows Phase 5 as `Complete`, and the packet closes through `/spec_kit:complete` with no unresolved Phase 5 P0 blockers. [SOURCE: ../research/research.md:1445-1447] | Parent phase-map diff plus completion workflow evidence. |
+| AC-509 | The parent phase map shows Phase 5 as `Phase-local complete, parent gates pending`, and the packet records whether parent `/spec_kit:complete` remains blocked outside the child scope. [SOURCE: ../research/research.md:1445-1447] | Parent phase-map diff plus blocker note or completion-workflow evidence. |
 <!-- /ANCHOR:success-criteria -->
 
 ---

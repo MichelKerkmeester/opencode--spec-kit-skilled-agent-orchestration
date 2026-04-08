@@ -1,17 +1,14 @@
 ---
 title: "Feature Specification: Memory Quality Backend Improvements"
-description: "Spec for the eight defect remediation classes (D1-D8) identified in JSON-mode generate-context.js by the 10-iteration deep research; research phase is complete, code remediation is the work product of this spec."
+description: "Parent packet spec for the shipped remediation train; child phases 2-5 and 7 are phase-local complete while parent-gate follow-up remains tracked separately."
 trigger_phrases:
-  - "memory quality"
-  - "generate context"
-  - "json mode"
-  - "remediation matrix"
-  - "deep research D1 D8"
-  - "memory backend defects"
+  - "memory quality parent spec"
+  - "d1 d8 packet closeout"
+  - "five phase remediation train"
+  - "phase documentation map"
 importance_tier: important
 contextType: "planning"
 ---
-
 # Feature Specification: Memory Quality Backend Improvements
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -19,183 +16,221 @@ contextType: "planning"
 
 ---
 
-## EXECUTIVE SUMMARY
-
-This feature converts the findings of the 10-iteration deep research in `research/research.md` into a concrete backend remediation plan that fixes eight defect classes observed in JSON-mode `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`. The research is complete and convergence was reached at iteration 9; this spec packages those findings into actionable, prioritized work without expanding scope. [SOURCE: research.md §1, §6]
-
-**Key Decisions**: Adopt the iteration-9-narrowed remediation matrix (D2 precedence-only, D5 immediate-predecessor with continuation gating, D7 provenance-only, D3 keep `ensureMinTriggerPhrases()`); ship in priority groups P0 → P3 to limit blast radius; verify each fix with targeted unit tests or fixture replays rather than full pipeline runs. [SOURCE: research.md §6, §10, §11]
-
-**Critical Dependencies**: D1, D8 are independent and ship-first. D4 must land before adding the post-save reviewer drift assertion. D2 must land before disabling the lexical fallback for any payload class. D5 should only land with a regression fixture proving the continuation-signal gate works on a 3+ memory folder. [SOURCE: research.md §10]
-
----
-
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Research Complete · Implementation Deferred |
+| **Status** | Complete |
 | **Created** | 2026-04-06 |
 | **Branch** | `026-graph-and-context-optimization/003-memory-quality-issues` |
-| **Research** | Complete (10 iterations, convergence at iter 9) |
-| **Implementation** | Deferred to follow-up `/spec_kit:plan` invocation |
-| **Estimated LOC** | 250-400 across 7 files |
+| **Packet Shape** | Parent packet with 7 child phases |
+| **Research State** | Complete |
+| **Implementation State** | Complete across Phases 1-5 |
+| **Operational Tail State** | Complete with PR-10 dry-run and PR-11 deferred-with-rationale |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-## 2. PROBLEM STATEMENT
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-Seven memory files saved across `026-graph-and-context-optimization/001-research-graph-context-systems/{001..005}/memory/` exhibited eight distinct defect classes when generated through JSON mode of `generate-context.js`:
+### Problem Statement
 
-- **D1 — Truncated overview**: OVERVIEW sections cut mid-sentence at ~500 chars.
-- **D2 — Generic decision placeholders**: authored decisions replaced by `observation decision N` / `user decision N` lexical fallbacks.
-- **D3 — Garbage trigger phrases**: path fragments (`kit/026`, `optimization/003`), single stopwords (`and`, `graph`, `issues`), and synthetic bigrams (`tiers full`, `level spec`).
-- **D4 — Importance tier mismatch**: frontmatter `important` vs YAML metadata block `normal`.
-- **D5 — Missing causal supersedes**: continuation runs (e.g., 8→13 iteration extension) do not auto-link their predecessor.
-- **D6 — Duplicate trigger phrases**: same term appearing twice (historical, not currently reproducible at the inspected merge site).
-- **D7 — Empty git provenance**: `head_ref`, `commit_ref` empty; `repository_state="unavailable"`.
-- **D8 — Anchor ID mismatch**: `<!-- ANCHOR:summary -->` paired with `<a id="overview">`.
+The original research packet identified eight distinct JSON-mode memory defects across content shaping, metadata consistency, lineage capture, git provenance, and template structure. Shipping only the research would have left the save pipeline unrepaired, and shipping only the narrow code fixes would have left the packet without phase-level proof, operational tail decisions, or a durable closeout surface.
 
-[SOURCE: research.md §4]
+### Purpose
+
+Capture the final parent contract for the shipped remediation train: Phases 1-5 delivered their phase-local outcomes, their validation surfaces are linked from this packet, and the parent folder now serves as the packet-level source of truth for what shipped, what intentionally deferred, and which parent-gate follow-ups remain open.
+<!-- /ANCHOR:problem -->
 
 ---
 
-## 3. USER STORIES
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-**Story 1**: As a deep-research operator, I want every JSON-mode memory file to capture authored decisions accurately so that downstream causal-link extraction does not surface placeholder labels.
-- **Given** a JSON payload with a non-empty `keyDecisions` array
-- **When** `generate-context.js` runs
-- **Then** the saved memory file's DECISIONS section reflects each authored decision verbatim and never emits `observation decision N`. [SOURCE: research.md §7 D2]
+### In Scope
 
-**Story 2**: As a memory indexer consumer, I want trigger phrases to be free of path fragments, stopwords, and stopword-collapsed bigrams so that semantic retrieval produces relevant matches.
-- **Given** a JSON payload that mentions `system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues`
-- **When** trigger phrases are extracted
-- **Then** the saved frontmatter excludes `kit/026`, `optimization/003`, `and`, `graph`, `issues`, and any synthetic adjacency bigrams. [SOURCE: research.md §7 D3]
+- Packet-level documentation for the completed five-phase remediation train.
+- Phase-level status roll-up, checklist evidence, and implementation-summary synchronization.
+- Parent closeout coverage for PR-1 through PR-11, including explicit deferral status where Phase 5 kept a tail item optional.
+- Packet-level verification reporting that points readers to the phase-local checklists and validation surfaces.
 
-**Story 3**: As a continuation-run author, I want the new memory file to automatically declare `causal_links.supersedes` referencing the immediate predecessor so that the causal graph captures lineage without manual linking.
-- **Given** a spec folder with one prior memory file and a JSON payload whose title contains `extended` or `continuation`
-- **When** `generate-context.js` runs
-- **Then** the saved memory's `causal_links.supersedes` array contains the predecessor `session_id`, and is empty when ambiguity blocks gating. [SOURCE: research.md §7 D5]
+### Out of Scope
 
----
+- Reopening code work already landed in Phases 1-5.
+- Rewriting historical memory files beyond the Phase 5 dry-run artifact.
+- Inventing new follow-on remediation beyond the packet's documented optional tail decisions.
 
-## 4. ACCEPTANCE CRITERIA
+### Files to Change
 
-| ID | Criterion | Verification |
-|----|-----------|--------------|
-| AC-1 | OVERVIEW never cuts mid-word and adds `…` only when truncated | Helper-level fixture for 450/520/900-char inputs |
-| AC-2 | DECISIONS section never emits `observation decision N` for JSON-mode payloads with `keyDecisions` | Decision-extractor unit test with raw `keyDecisions` fixture |
-| AC-3 | trigger_phrases excludes path fragments and English stopwords | F1/F6 replay assertion for absent strings |
-| AC-4 | Frontmatter `importance_tier` and bottom YAML block agree | Frontmatter-migration test with divergent fixture |
-| AC-5 | `causal_links.supersedes` populated when gating signal present | Temp-folder lineage fixture |
-| AC-6 | `head_ref`, `commit_ref`, `repository_state` populated for JSON mode | Stubbed `extractGitContext()` workflow test |
-| AC-7 | TOC, HTML id, and comment anchor names agree in template | Template anchor consistency assertion |
-| AC-8 | All eight defect symptoms absent from a fresh end-to-end JSON save | Full pipeline replay with `/tmp/save-context-data.json` |
-
----
-
-## 5. SCOPE
-
-**In Scope**:
-- Backend code edits to `collect-session-data.ts`, `decision-extractor.ts`, `workflow.ts`, `semantic-signal-extractor.ts`, `frontmatter-migration.ts`, `post-save-review.ts`, `context_template.md`.
-- Targeted unit tests + fixture replays per defect.
-- Single end-to-end JSON save verification before/after.
-
-**Out of Scope**:
-- Manual repair of the seven historical broken memory files in 001-research-graph-context-systems/.
-- Capture-mode enrichment changes outside JSON mode.
-- Embedding-model upgrades.
-- V8 contamination gate redesign.
-- `/memory:save` UX or CLI surface changes.
-
----
-
-## 6. RISKS
-
-| Risk | Severity | Mitigation |
-|------|----------|------------|
-| D2 fix regresses degraded JSON payloads currently rescued by lexical fallback | High | Precedence hardening only — never blanket-disable lexical fallback |
-| D5 auto-link picks the wrong predecessor in 3+ folder histories | High | Require continuation signal + ambiguity skip |
-| D7 over-reach contaminates JSON-mode summary content | Medium | Provenance-only injection, never reuse full enrichment branch |
-| D3 over-filter removes valid short product names | Medium | Validate against known-good fixtures alongside broken ones |
-
-[SOURCE: research.md §12]
-
----
-
-## 7. RESEARCH BACKING
-
-This spec is a 1:1 derivative of `research/research.md`. Iteration index:
-
-| Iter | Focus | Outcome |
-|------|-------|---------|
-| 1 | Pipeline architecture map | 10 findings |
-| 2 | D1 root cause | `collect-session-data.ts:875-881` |
-| 3 | D2 root cause | `decision-extractor.ts:182-185, 367-388` |
-| 4 | D3 root cause | `workflow.ts:1271-1295` + `semantic-signal-extractor.ts:260-284` |
-| 5 | D4 root cause | `frontmatter-migration.ts:1112-1183` |
-| 6 | D5 root cause | `workflow.ts` no predecessor discovery |
-| 7 | D6/D7/D8 root causes | Template + isCapturedSessionMode gate |
-| 8 | Initial remediation matrix | 8 defect proposals |
-| 9 | Skeptical pass | 4 narrowings adopted |
-| 10 | Final synthesis | research.md compiled, convergence declared |
-
-[SOURCE: research/iterations/iteration-001.md through iteration-010.md]
-
----
-
-## 8. STATUS
-
-- **Research**: ✅ COMPLETE (10 iterations, 7 of 7 questions resolved, D6 reclassified as historical)
-- **Spec Documentation**: ✅ COMPLETE (this file + plan.md + tasks.md + checklist.md + implementation-summary.md)
-- **Implementation**: ⏸ DEFERRED (next step: `/spec_kit:plan` against this folder to convert remediation matrix into P0/P1/P2/P3 phases)
-- **Memory Save**: ✅ COMPLETE (memory file saved + post-save review patched + reindexed)
-
----
-title: "phase parent section [template:addendum/phase/phase-parent-section.md]"
-description: "Template document for addendum/phase/phase-parent-section.md."
-trigger_phrases:
-  - "phase"
-  - "parent"
-  - "section"
-  - "template"
-  - "phase parent section"
-importance_tier: "normal"
-contextType: "general"
----
-<!-- SPECKIT_ADDENDUM: Phase - Parent Section -->
-<!-- Append to parent spec.md after SCOPE section -->
-
----
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Record the final parent packet state and phase map. |
+| `checklist.md` | Modify | Link packet-level remediation items to the phase-local CHK evidence. |
+| `implementation-summary.md` | Modify | Summarize the full PR-1 through PR-11 closeout story. |
 
 <!-- ANCHOR:phase-map -->
-## PHASE DOCUMENTATION MAP
+### Phase Documentation Map
 
-> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
+Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully parent-closed in this packet snapshot. Phases 6-7 are approved follow-on packets that extend this parent tracking map without changing the historical closeout record for the first five phases.
 
 | Phase | Priority | Folder | Focus | PRs / Defects | Depends On | Status |
 |-------|----------|--------|-------|---------------|------------|--------|
-| 1 | P0 | `001-foundation-templates-truncation/` | Anchor-template fix + shared truncation helper + OVERVIEW fix. Independent foundation that enables all later phases. | PR-1 (D8 anchor IDs), PR-2 (D1 truncation) | — | Complete |
-| 2 | P1 | `002-single-owner-metadata/` | Importance-tier SSOT consolidation + capture-mode-only ≤10-LOC provenance injection. Independent of P0/P2. | PR-3 (D4 importance tier), PR-4 (D7 git provenance) | — | Pending |
-| 3 | P2 | `003-sanitization-precedence/` | Trigger-phrase sanitizer extraction + decision precedence-only gate (block lexical fallback when payload has authored decisions). | PR-5 (D3 trigger phrases), PR-6 (D2 decision placeholders) | Phase 1 (PR-2 helper used by sanitizer) | Pending |
-| 4 | P3 | `004-heuristics-refactor-guardrails/` | Auto-supersedes with continuation gate + SaveMode enum refactor + post-save reviewer CHECK-D1..D8 upgrade. | PR-7 (D5 supersedes), PR-8 (SaveMode refactor), PR-9 (post-save reviewer) | Phase 1, 2, 3 (PR-8 refactors helpers from earlier phases; PR-9 asserts on D1/D4/D7/D8 fixes) | Pending |
-| 5 | P4 | `005-operations-tail-prs/` | Optional safe-subset migration of 82 historical files + optional cross-process save lock for D9 candidate + telemetry M1-M9 alerts + release notes update. | PR-10 (migration), PR-11 (D9 save lock), PR-9 telemetry add-on | Phase 4 (PR-10 runs after PR-9 reviewer is live; PR-11 standalone) | Pending |
+| 1 | P0 | `001-foundation-templates-truncation/` | Anchor-template fix, shared truncation helper, OVERVIEW preservation | PR-1 (D8), PR-2 (D1) | — | Complete |
+| 2 | P1 | `002-single-owner-metadata/` | Importance-tier single-owner contract and provenance-only JSON enrichment | PR-3 (D4), PR-4 (D7) | Phase 1 | Phase-local complete, parent gates pending |
+| 3 | P2 | `003-sanitization-precedence/` | Trigger-phrase sanitization and authored-decision precedence | PR-5 (D3), PR-6 (D2) | Phase 2 | Phase-local complete, parent gates pending |
+| 4 | P3 | `004-heuristics-refactor-guardrails/` | Conservative predecessor discovery, SaveMode refactor, reviewer guardrails | PR-7 (D5), PR-8 (SaveMode), PR-9 (reviewer) | Phases 1-3 | Phase-local complete, parent gates pending |
+| 5 | P4 | `005-operations-tail-prs/` | Telemetry artifacts, PR-10 dry-run, PR-11 defer/ship decision, parent closeout | PR-10 (migration dry-run), PR-11 (deferred), PR-9 telemetry fold-in | Phase 4 | Phase-local complete, parent gates pending |
+| 6 | P5 | `006-memory-duplication-reduction/` | Investigate + fix unneeded duplication in current recent memories. 5 parallel deep-research iterations cover trigger phrases, observations/decisions, key topics+FILES, OVERVIEW/SUMMARY narrative, and structural duplication; then implement remediation. | Research + impl PRs (P12-P13) | Phases 1-5 (memory pipeline + reviewer must be stable before measuring residual dup) | Pending |
+| 7 | P6 | `007-skill-catalog-sync/` | Audit whether Phase 1-6 changes need to be reflected in feature catalog, manual testing playbook, SKILL.md, refs, assets, templates, memory commands, MCP server, agent definitions, and READMEs. 10 parallel deep-review iterations cover those 10 surfaces; then implement updates. | Review + update PRs (P14-P15) | Phase 6 (final memory state required before auditing downstream artifacts) | Phase-local complete, parent gates pending |
+
+*Parent note: Child phases may be phase-local complete while parent strict-validation blockers in `plan.md` and `tasks.md` remain out of scope for those folders; this remediation workstream is tracked in `review/review-report.md`.*
 
 ### Phase Transition Rules
 
-- Each phase MUST pass `validate.sh` independently before the next phase begins
-- Parent spec tracks aggregate progress via this map
-- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
-- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
-- Packet-local changelog files live under `changelog/`; root uses `changelog-<packet>-root.md` and phases use `changelog-<packet>-<phase-folder>.md`
+- Each child phase validates independently before parent roll-up.
+- Phase-local checklists own the detailed CHK evidence for each remediation slice.
+- The parent packet records aggregate status only after the child folder evidence is attached.
+- Packet closeout remains truthful even when an optional Phase 5 tail item is deferred with rationale.
 
 ### Phase Handoff Criteria
 
-| From | To | Criteria | Verification |
-|------|-----|----------|--------------|
-| 001-foundation-templates-truncation | 002-single-owner-metadata | PR-1 + PR-2 merged. Anchor IDs match (`<!-- ANCHOR:overview -->` ↔ `<a id="overview">`). OVERVIEW preserved verbatim with `…` ellipsis pinning when truncated. Shared `lib/truncate-on-word-boundary.ts` exported and unit-tested. | F-AC1 (D1 truncation) and F-AC7 (D8 anchor) fixtures green. `validate.sh` exit 0. |
-| 002-single-owner-metadata | 003-sanitization-precedence | PR-3 + PR-4 merged. Frontmatter ↔ YAML metadata block agree on `importance_tier` for all save modes. Capture-mode `head_ref`/`commit_ref` populated via ≤10-LOC enrichment branch. | F-AC4 (D4 importance tier) and F-AC6 (D7 git provenance, with stubbed git seam) fixtures green. Post-save reviewer drift assertion installed. |
-| 003-sanitization-precedence | 004-heuristics-refactor-guardrails | PR-5 + PR-6 merged. Trigger phrases free of path fragments, stopwords, and synthetic bigrams. Decision extraction never emits `observation decision N` placeholders when `keyDecisions` array is non-empty. Lexical fallback gated behind precedence predicate. | F-AC2 (D2 decisions) and F-AC3 (D3 triggers) fixtures green. Degraded-payload regression fixture green. |
-| 004-heuristics-refactor-guardrails | 005-operations-tail-prs | PR-7 + PR-8 + PR-9 merged. Continuation runs auto-link predecessor via `causal_links.supersedes`. `_source === 'file'` overload replaced by `SaveMode` enum across pipeline. Post-save reviewer asserts CHECK-D1..D8. | F-AC5 (D5 supersedes, with 3+ memory folder lineage fixture) and F-AC8 (clean baseline) fixtures green. Reviewer drift report shows 0 high-severity findings on clean fixture. |
+| From Phase | To Phase | Handoff Contract | Exit Signal |
+|------------|----------|------------------|-------------|
+| `001-foundation-templates-truncation` | `002-single-owner-metadata` | Phase 1 foundations are merged and the shared truncation/template surfaces are stable enough for metadata-owner work. | F-AC1 and F-AC7 green; phase validator exit `0`. |
+| `002-single-owner-metadata` | `003-sanitization-precedence` | Phase 2 single-owner metadata fixes are merged and JSON-mode provenance is stable enough for sanitization and authored-decision precedence work. | F-AC4 and F-AC6 green; phase validator exit `0`. |
+| `003-sanitization-precedence` | `004-heuristics-refactor-guardrails` | Phase 3 sanitization and authored-decision precedence are merged and degraded-payload regressions are understood before heuristic/refactor work begins. | F-AC2 and F-AC3 green plus degraded-payload regression coverage; phase validator exit `0`. |
+| `004-heuristics-refactor-guardrails` | `005-operations-tail-prs` | Phase 4 heuristic guardrails and reviewer hardening are merged, leaving the operational tail as the next valid packet slice. | F-AC5 and F-AC8 green plus 3+ lineage fixture and broken D1/D4/D7/D8 fixture coverage; phase validator exit `0`. |
+| `005-operations-tail-prs` | `006-memory-duplication-reduction` | Phase 5 closeout complete (all PR-1..PR-9 merged + telemetry live). Memory save pipeline stable enough that residual duplication can be measured against the post-fix baseline. | All Phase 1-5 fixtures green; parent validate.sh exit <=1. |
+| `006-memory-duplication-reduction` | `007-skill-catalog-sync` | Phase 6 implementation merged. Final memory pipeline behavior frozen so downstream artifacts can be audited against a stable surface. | Phase 6 acceptance fixtures green; phase validate.sh exit 0. |
+
+> **Handoff waiver (recorded 2026-04-08 during deep-review remediation):** The Phase 5→6 and Phase 6→7 handoff gates are explicitly waived for the 026-graph-and-context-optimization remediation cycle. Rationale: the Phase 5 closeout criterion depends on parent strict validation which is blocked by out-of-scope plan/tasks drift (addressed by P1-007), and Phase 6 implementation state is being normalized to placeholder under P1-012. Gates should be re-evaluated when the parent remediation workstream completes. See `review/review-report.md` §7 for full cross-reference evidence.
 <!-- /ANCHOR:phase-map -->
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | All five child phases must validate cleanly under the strict packet validator. | Each phase folder returns exit code `0` from `validate.sh --strict`. |
+| REQ-002 | The parent packet must link every completed remediation slice to phase-local checklist evidence. | Parent checklist items point to phase-local CHK IDs for D1-D8 and the operational tail. |
+| REQ-003 | Parent docs must reflect the final train state rather than the earlier research-only snapshot. | `spec.md`, `checklist.md`, and `implementation-summary.md` all describe the packet as complete. |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Phase 5 must record PR-10 and PR-11 truthfully. | PR-10 is documented as dry-run-only in this packet, and PR-11 is explicitly deferred with rationale. |
+| REQ-005 | The parent phase map must stay aligned with the child folders. | Each phase row matches the actual child-folder validation and checklist state. |
+| REQ-006 | Packet-level verification reporting must surface remaining out-of-scope blockers honestly. | Final reporting distinguishes fixed scoped docs from parent validation blockers in out-of-scope files. |
+
+### Acceptance Scenarios
+
+**Scenario A: Phase-local validation gates the packet**
+
+- **Given** the completed Phase 1-5 child folders,
+- **When** each child folder is run through `validate.sh --strict`,
+- **Then** every child phase returns exit code `0`,
+- **And** the parent packet can link packet-level claims back to those validated child folders.
+
+**Scenario B: Phase evidence rolls up without losing detail**
+
+- **Given** the completed remediation train,
+- **When** the parent checklist summarizes D1-D8 and the operational tail,
+- **Then** each packet-level item cites the owning phase checklist CHK IDs,
+- **And** the parent packet avoids restating phase evidence as unsupported prose.
+
+**Scenario C: Optional tail work stays explicit**
+
+- **Given** Phase 5 closed with PR-10 dry-run evidence and a PR-11 defer rationale,
+- **When** the parent implementation summary describes the full train,
+- **Then** it records PR-10 as dry-run-only in this packet,
+- **And** it records PR-11 as deferred rather than implying it shipped.
+
+**Scenario D: Parent closeout remains honest about remaining blockers**
+
+- **Given** the parent folder still contains out-of-scope plan/tasks/memory validation drift,
+- **When** the final verification report is produced,
+- **Then** the report distinguishes those blockers from the now-clean child phases,
+- **And** it does not claim a full parent strict pass unless the out-of-scope files are also remediated.
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The phase map shows Phase 1 as `Complete`, Phases 2-5 and 7 as `Phase-local complete, parent gates pending`, and Phase 6 as pending placeholder work.
+- **SC-002**: The parent checklist links packet-level remediation claims to phase-local CHK evidence.
+- **SC-003**: The parent implementation summary accurately describes PR-1 through PR-11 closeout status, including Phase 5 defer decisions.
+- **SC-004**: Child-phase validation passes are easy to verify from the packet root documentation.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Phase-local checklists remain the detailed evidence owners | Parent claims can drift from child evidence if phase checklists are not kept current | Point packet-level evidence directly at child CHK IDs and update both together |
+| Risk | Parent packet still carries older research-era docs outside the scoped files | Parent strict validation can still fail even after the phase docs are synchronized | Report those blockers explicitly as out-of-scope until the parent plan/tasks/memory files are remediated |
+| Risk | Optional Phase 5 tail work is misread as shipped work | Release or audit readers could overstate the packet outcome | Keep PR-10 apply and PR-11 status explicit in both checklist and summary |
+| Dependency | Phase 5 dry-run artifact remains the only approved historical-migration evidence in this packet | Historical repair claims can become overstated | Limit historical-fix statements to the dry-run classification and defer any apply claims |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Traceability
+
+- Parent packet claims must be traceable to a phase checklist, validator run, or phase-local artifact.
+- Child-phase and parent-phase wording should describe the same shipped state.
+
+### Maintainability
+
+- Parent docs should summarize rather than duplicate the full child evidence.
+- Optional tail work must stay explicit so follow-on operators know what still requires approval.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+- Child phases pass while the parent packet still fails because of out-of-scope files: report the split state honestly.
+- Optional tail work is deferred: keep the phase complete but record the defer rationale clearly.
+- Historical migration evidence exists only as dry-run output: do not describe apply-time results that never happened in this packet.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 22/25 | Five child phases plus packet-level roll-up |
+| Risk | 18/25 | Parent claims can drift if they outpace child evidence |
+| Research | 14/20 | Research is complete, but packet closeout still depends on accurate synthesis |
+| **Total** | **54/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- Should the out-of-scope parent `plan.md`, `tasks.md`, and `memory/` validation drift be remediated in a follow-on packet closeout pass?
+- If PR-10 apply is ever approved, should the resulting historical-file evidence live in this packet or in a dedicated migration follow-up?
+<!-- /ANCHOR:questions -->
