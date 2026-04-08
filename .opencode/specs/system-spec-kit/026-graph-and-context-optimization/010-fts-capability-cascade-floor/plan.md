@@ -42,9 +42,9 @@ Harden FTS capability detection first, surface lexical-path and fallback truth s
 - [x] Phase `002-implement-cache-warning-hooks` is named explicitly as the blocked successor.
 
 ### Definition of Done
-- [ ] Packet docs are synchronized and truthful about shipped versus planned behavior.
-- [ ] Forced-degrade coverage exists for all four named failure cases.
-- [ ] Packet validation passes cleanly.
+- [x] Packet docs are synchronized and truthful about shipped versus planned behavior.
+- [x] Forced-degrade coverage exists for all four named failure cases.
+- [x] Packet validation passes cleanly.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -103,19 +103,19 @@ The lexical helper detects the available lane, classifies degrade cases truthful
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Re-read the canonical research conclusions for R7.
-- [ ] Verify the phase `002` dependency and packet boundary.
-- [ ] Confirm the runtime and test owner surfaces to modify.
+- [x] Re-read the canonical research conclusions for R7.
+- [x] Verify the phase `002` dependency and packet boundary.
+- [x] Confirm the runtime and test owner surfaces to modify.
 
 ### Phase 2: Core Implementation
-- [ ] Implement runtime FTS5 capability detection and degrade classification.
-- [ ] Surface lexical-path and fallback metadata on `memory_search` responses and logs.
-- [ ] Update packet-local and runtime docs with the truthful lane vocabulary.
+- [x] Implement runtime FTS5 capability detection and degrade classification.
+- [x] Surface lexical-path and fallback metadata on `memory_search` responses and logs.
+- [x] Update packet-local and runtime docs with the truthful lane vocabulary.
 
 ### Phase 3: Verification
-- [ ] Run forced-degrade tests for compile-probe miss, missing table, `no such module: fts5`, and BM25 runtime failure.
-- [ ] Run `validate.sh --strict` on the packet folder.
-- [ ] Record successor-packet handoff notes for phase `002`.
+- [x] Run forced-degrade tests for compile-probe miss, missing table, `no such module: fts5`, and BM25 runtime failure.
+- [x] Run `validate.sh --strict` on the packet folder.
+- [x] Record successor-packet handoff notes for phase `002`.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -187,9 +187,9 @@ Research root -> 010-fts-capability-cascade-floor -> 002-implement-cache-warning
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Research citation re-read from `spec.md`
-- [ ] Scope boundary re-read from `spec.md`
-- [ ] Forced-degrade checks prepared for all four named cases
+- [x] Research citation re-read from `spec.md`
+- [x] Scope boundary re-read from `spec.md`
+- [x] Forced-degrade checks prepared for all four named cases
 
 ### Rollback Procedure
 1. Revert packet-local runtime changes.

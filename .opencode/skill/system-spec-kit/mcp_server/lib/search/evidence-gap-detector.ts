@@ -6,6 +6,8 @@
 // On RRF scores to detect low-confidence retrieval and inject
 // Warnings for the MCP markdown output layer.
 // ───────────────────────────────────────────────────────────────
+import type { ParserProvenance } from '../context/shared-payload.js';
+
 // 1. CONSTANTS
 
 // ───────────────────────────────────────────────────────────────
@@ -61,6 +63,21 @@ interface MemoryGraphLike {
   /** Map from node id → list of node ids that point INTO it (inbound edges). */
   inbound: Map<string, string[]>;
 }
+
+/**
+ * Packet 007 guardrail: these detectors are heuristic/statistical lanes.
+ * They are useful regression targets, but they are not AST-backed parsers.
+ */
+export const EVIDENCE_GAP_DETECTOR_PROVENANCE = {
+  predictGraphCoverage: {
+    parserProvenance: 'heuristic',
+    basis: 'Token overlap against node ids and labels plus inbound memory counts.',
+  },
+  detectEvidenceGap: {
+    parserProvenance: 'heuristic',
+    basis: 'Z-score and absolute-threshold heuristics over ranked score distributions.',
+  },
+} as const satisfies Record<string, { parserProvenance: ParserProvenance; basis: string }>;
 
 // ───────────────────────────────────────────────────────────────
 // 3. CORE FUNCTIONS

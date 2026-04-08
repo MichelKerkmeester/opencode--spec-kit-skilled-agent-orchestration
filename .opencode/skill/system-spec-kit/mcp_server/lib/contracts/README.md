@@ -19,8 +19,9 @@ trigger_phrases:
 - [1. OVERVIEW](#1--overview)
 - [2. STRUCTURE](#2--structure)
 - [3. FEATURES](#3--features)
-- [4. USAGE EXAMPLES](#4--usage-examples)
-- [5. RELATED RESOURCES](#5--related-resources)
+- [4. STRUCTURAL TRUST CONTRACT (006)](#4--structural-trust-contract-006)
+- [5. USAGE EXAMPLES](#5--usage-examples)
+- [6. RELATED RESOURCES](#6--related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -163,7 +164,35 @@ shared/contracts/
 
 ---
 
-## 4. USAGE EXAMPLES
+## 4. STRUCTURAL TRUST CONTRACT (006)
+<!-- ANCHOR:structural-trust-contract -->
+
+Packet `006-structural-trust-axis-contract` adds a separate structural trust contract for structural payload sections. The contract lives in `lib/context/shared-payload.ts` and must be imported rather than redefined by follow-on packets.
+
+### Structural Trust Axes
+
+| Field | Allowed Values | Meaning |
+|-------|----------------|---------|
+| `parserProvenance` | `ast`, `regex`, `heuristic`, `unknown` | Which parser or extraction family produced the structural signal |
+| `evidenceStatus` | `confirmed`, `probable`, `unverified`, `unknown` | How strong the structural evidence is |
+| `freshnessAuthority` | `live`, `cached`, `stale`, `unknown` | Whether the structural signal is current and authoritative |
+
+### Contract Rules
+
+- Keep `parserProvenance`, `evidenceStatus`, and `freshnessAuthority` as three separate fields inside `StructuralTrust`.
+- Do not replace those axes with a single scalar such as `trust`, `confidence`, `authorityScore`, or `freshnessScore`.
+- Ranking confidence from `lib/search/confidence-scoring.ts` is retrieval-ordering metadata only and must not be reused as `StructuralTrust`.
+- Packet `007`, packet `008`, and packet `011` must import the shared contract from `lib/context/shared-payload.ts` instead of redefining local trust enums or wrappers.
+
+### Current Authority Surfaces
+
+Bootstrap and resume remain the authority surfaces for structural context. Packet `006` only adds the shared trust contract beside packet `005`'s certainty contract; it does not create a new graph-only owner surface.
+
+<!-- /ANCHOR:structural-trust-contract -->
+
+---
+
+## 5. USAGE EXAMPLES
 <!-- ANCHOR:usage-examples -->
 
 ### Example 1: Create a Trace and Record Stages
@@ -219,7 +248,7 @@ console.log(`Failure: ${degraded.failure_mode}, confidence impact: ${degraded.co
 
 ---
 
-## 5. RELATED RESOURCES
+## 6. RELATED RESOURCES
 <!-- ANCHOR:related -->
 
 ### Internal Documentation
@@ -240,6 +269,22 @@ console.log(`Failure: ${degraded.failure_mode}, confidence impact: ${degraded.co
 | `lib/telemetry/trace-schema.ts` | Trace schema definitions |
 
 <!-- /ANCHOR:related -->
+
+---
+
+## 7. DETECTOR PROVENANCE AND REGRESSION FLOOR (007)
+
+Packet `007-detector-provenance-and-regression-floor` treats frozen detector fixtures as a regression-integrity floor only. The acceptance criterion from research recommendation R6 is the governing boundary: Public must land frozen detector fixtures that fail on structural regressions, while follow-on task corpora for user-visible structural quality are defined separately.
+
+### Boundary Rules
+
+- Fixture success proves detector integrity for the covered regex or heuristic lanes only; it does not prove user-visible structural quality, routing quality, or graph-context usefulness.
+- Successor packets must keep floor tests separate from outcome evaluation. Do not cite detector-floor passes as evidence that broader structural context is now trustworthy.
+- Weak detector lanes should stay visible in packet closeouts and follow-on planning even when the frozen fixture floor passes.
+
+### Current Packet 007 Scope
+
+Packet `007` adds honest provenance markers for audited detector modules and a reusable frozen Vitest floor under `scripts/tests/detector-regression-floor.vitest.ts.test.ts`. Future packets may extend that floor, but they must pair any quality claims with separate outcome-oriented evaluation.
 
 ---
 

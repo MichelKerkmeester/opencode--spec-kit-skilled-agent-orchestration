@@ -20,7 +20,12 @@
 //     "label": "good" | "weak" | "gap"
 //   }
 // }
+//
+// IMPORTANT: This module only models ranking confidence for retrieval ordering.
+// It is not freshness authority and it is not a substitute for StructuralTrust.
 import { resolveEffectiveScore, type PipelineRow } from './pipeline/types.js';
+
+declare const rankingConfidenceBrand: unique symbol;
 
 // -- Constants --
 
@@ -45,6 +50,15 @@ const STRONG_CHANNEL_AGREEMENT_MIN = 2;
 /** Confidence label for a single result. */
 export type ConfidenceLabel = 'high' | 'medium' | 'low';
 
+/**
+ * Branded ranking score for retrieval ordering only.
+ * Consumers must not reuse this as parser provenance, evidence status,
+ * freshness authority, or any other StructuralTrust axis.
+ */
+export type RankingConfidenceValue = number & {
+  readonly [rankingConfidenceBrand]: 'RankingConfidenceValue';
+};
+
 /** Quality label at the request level (across all results). */
 export type RequestQualityLabel = 'good' | 'weak' | 'gap';
 
@@ -56,12 +70,18 @@ export type ConfidenceDriver =
   | 'anchor_density';
 
 /** Per-result confidence payload. */
+export interface RankingConfidenceContract {
+  label: ConfidenceLabel;
+  value: RankingConfidenceValue;
+  drivers: ConfidenceDriver[];
+  structuralTrust?: never;
+  parserProvenance?: never;
+  evidenceStatus?: never;
+  freshnessAuthority?: never;
+}
+
 export interface ResultConfidence {
-  confidence: {
-    label: ConfidenceLabel;
-    value: number;
-    drivers: ConfidenceDriver[];
-  };
+  confidence: RankingConfidenceContract;
 }
 
 /** Request-level quality assessment (one per search call). */
@@ -181,6 +201,11 @@ function toConfidenceLabel(value: number): ConfidenceLabel {
   return 'low';
 }
 
+export function asRankingConfidenceValue(value: number): RankingConfidenceValue {
+  const clamped = Math.max(0, Math.min(1, value));
+  return (Math.round(clamped * 1000) / 1000) as RankingConfidenceValue;
+}
+
 // -- Public API --
 
 /**
@@ -245,13 +270,13 @@ export function computeResultConfidence(results: ScoredResult[]): ResultConfiden
     if (hasReranker) drivers.push('reranker_boost');
     if (anchorCount >= 2) drivers.push('anchor_density');
 
-    return {
-      confidence: {
-        label: toConfidenceLabel(value),
-        value: Math.round(value * 1000) / 1000,
-        drivers,
-      },
-    };
+      return {
+        confidence: {
+          label: toConfidenceLabel(value),
+          value: asRankingConfidenceValue(value),
+          drivers,
+        },
+      };
   });
 }
 

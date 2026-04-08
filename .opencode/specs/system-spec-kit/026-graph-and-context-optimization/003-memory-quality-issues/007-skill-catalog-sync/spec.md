@@ -34,9 +34,9 @@ Phase 7 is the downstream audit phase for `003-memory-quality-issues`. It starts
 | **Parent Plan** | `../plan.md` |
 | **Parent Tasks** | `../tasks.md` |
 | **Parent Checklist** | `../checklist.md` |
-| **Phase** | 7 of 7 |
+| **Phase** | 7 of 8 |
 | **Predecessor** | `006-memory-duplication-reduction` |
-| **Successor** | None |
+| **Successor** | `008-input-normalizer-fastpath-fix` |
 | **Validation Target** | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync --strict` |
 | **Handoff Criteria** | Phase 6 implementation is merged and the final memory surface is stable enough for downstream parity review. |
 <!-- /ANCHOR:metadata -->
@@ -55,7 +55,7 @@ This packet must review multiple downstream surfaces, not just one README. Some 
 Run ten focused deep-review iterations across the named downstream surfaces, synthesize the true drift set, and then update only the artifacts that genuinely need parity changes after Phase 1-6.
 <!-- /ANCHOR:problem -->
 
-> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/`, the implementation host for the `001-research-graph-context-systems/006-research-memory-redundancy/` research findings. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
+> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/`, the implementation host for the `001-research-graph-context-systems/006-research-memory-redundancy/` research findings. Canonical narrative ownership stays in the packet decision record and `implementation-summary.md`; memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
 
 ---
 

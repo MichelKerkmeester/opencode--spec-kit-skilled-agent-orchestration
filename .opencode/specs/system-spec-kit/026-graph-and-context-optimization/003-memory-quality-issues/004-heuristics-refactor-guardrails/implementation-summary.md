@@ -93,6 +93,7 @@ The phase followed the planned order strictly: PR-7 first, PR-8 second, PR-9 las
 | `F-AC5` lineage fixture | PASS, hit/miss/ambiguity behavior validated on 3+ sibling histories |
 | `F-AC8` clean reviewer fixture | PASS, zero false positives |
 | `checklist.md` | Phase-local evidence recorded under CHK-010 through CHK-062 |
+| Handoff notes | Partial-header reader shipped via 2048-byte bounded header reads; `SaveMode` shipped as `Json` / `Capture` / `ManualFile` with compatibility mapping; reviewer severity contract preserved HIGH for D1 / D2 / D4 / D7, MEDIUM for D3 / D5 / D6 / D8, plus `REVIEWER_ERROR` structured failure handling |
 <!-- /ANCHOR:verification -->
 
 ---

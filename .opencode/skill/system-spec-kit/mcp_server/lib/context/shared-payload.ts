@@ -19,11 +19,98 @@ export type SharedPayloadTrustState =
   | 'rebuilt'
   | 'rehomed';
 
+export const SHARED_PAYLOAD_CERTAINTY_VALUES = [
+  'exact',
+  'estimated',
+  'defaulted',
+  'unknown',
+] as const;
+
+export type SharedPayloadCertainty = (typeof SHARED_PAYLOAD_CERTAINTY_VALUES)[number];
+
+export const PARSER_PROVENANCE_VALUES = [
+  'ast',
+  'regex',
+  'heuristic',
+  'unknown',
+] as const;
+
+export type ParserProvenance = (typeof PARSER_PROVENANCE_VALUES)[number];
+
+export const EVIDENCE_STATUS_VALUES = [
+  'confirmed',
+  'probable',
+  'unverified',
+  'unknown',
+] as const;
+
+export type EvidenceStatus = (typeof EVIDENCE_STATUS_VALUES)[number];
+
+export const FRESHNESS_AUTHORITY_VALUES = [
+  'live',
+  'cached',
+  'stale',
+  'unknown',
+] as const;
+
+export type FreshnessAuthority = (typeof FRESHNESS_AUTHORITY_VALUES)[number];
+
+export const MEASUREMENT_AUTHORITY_VALUES = [
+  'provider_counted',
+  'estimated',
+  'defaulted',
+  'unknown',
+] as const;
+
+export type MeasurementAuthority = (typeof MEASUREMENT_AUTHORITY_VALUES)[number];
+
+export const PUBLICATION_METHODOLOGY_STATUSES = [
+  'provisional',
+  'published',
+] as const;
+
+export type PublicationMethodologyStatus = (typeof PUBLICATION_METHODOLOGY_STATUSES)[number];
+
+export const MULTIPLIER_REQUIRED_FIELDS = [
+  'promptTokens',
+  'completionTokens',
+  'cacheReadTokens',
+  'cacheWriteTokens',
+] as const;
+
+export type MultiplierRequiredField = (typeof MULTIPLIER_REQUIRED_FIELDS)[number];
+
+export interface PublicationMethodologyMetadata {
+  schemaVersion: string;
+  methodologyStatus: PublicationMethodologyStatus;
+  provenance: string[];
+}
+
+export interface PublishableMetricField<T = unknown> {
+  key: string;
+  value: T;
+  certainty: SharedPayloadCertainty;
+  authority: MeasurementAuthority;
+  methodology: PublicationMethodologyMetadata;
+}
+
+export interface StructuralTrust {
+  parserProvenance: ParserProvenance;
+  evidenceStatus: EvidenceStatus;
+  freshnessAuthority: FreshnessAuthority;
+}
+
+export type MultiplierAuthorityField = Pick<PublishableMetricField<number>, 'certainty' | 'authority'>;
+
+export type MultiplierAuthorityFields = Partial<Record<MultiplierRequiredField, MultiplierAuthorityField | null>>;
+
 export interface SharedPayloadSection {
   key: string;
   title: string;
   content: string;
   source: 'memory' | 'code-graph' | 'semantic' | 'session' | 'operational';
+  certainty?: SharedPayloadCertainty;
+  structuralTrust?: StructuralTrust;
 }
 
 export interface SharedPayloadProvenance {
@@ -61,6 +148,182 @@ export interface SharedPayloadEnvelope {
 }
 
 const SUMMARY_MAX_CHARS = 220;
+const PROHIBITED_STRUCTURAL_TRUST_KEYS = [
+  'trust',
+  'trustScore',
+  'confidence',
+  'confidenceScore',
+  'authorityScore',
+] as const;
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+export function isSharedPayloadCertainty(value: unknown): value is SharedPayloadCertainty {
+  return typeof value === 'string'
+    && SHARED_PAYLOAD_CERTAINTY_VALUES.includes(value as SharedPayloadCertainty);
+}
+
+export function isParserProvenance(value: unknown): value is ParserProvenance {
+  return typeof value === 'string'
+    && PARSER_PROVENANCE_VALUES.includes(value as ParserProvenance);
+}
+
+export function isEvidenceStatus(value: unknown): value is EvidenceStatus {
+  return typeof value === 'string'
+    && EVIDENCE_STATUS_VALUES.includes(value as EvidenceStatus);
+}
+
+export function isFreshnessAuthority(value: unknown): value is FreshnessAuthority {
+  return typeof value === 'string'
+    && FRESHNESS_AUTHORITY_VALUES.includes(value as FreshnessAuthority);
+}
+
+export function assertSharedPayloadCertainty(value: unknown): SharedPayloadCertainty {
+  if (!isSharedPayloadCertainty(value)) {
+    throw new Error(
+      `Invalid shared payload certainty: expected one of ${SHARED_PAYLOAD_CERTAINTY_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
+
+function assertParserProvenance(value: unknown): ParserProvenance {
+  if (!isParserProvenance(value)) {
+    throw new Error(
+      `Invalid parser provenance: expected one of ${PARSER_PROVENANCE_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
+
+function assertEvidenceStatus(value: unknown): EvidenceStatus {
+  if (!isEvidenceStatus(value)) {
+    throw new Error(
+      `Invalid evidence status: expected one of ${EVIDENCE_STATUS_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
+
+function assertFreshnessAuthority(value: unknown): FreshnessAuthority {
+  if (!isFreshnessAuthority(value)) {
+    throw new Error(
+      `Invalid freshness authority: expected one of ${FRESHNESS_AUTHORITY_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
+
+export function isMeasurementAuthority(value: unknown): value is MeasurementAuthority {
+  return typeof value === 'string'
+    && MEASUREMENT_AUTHORITY_VALUES.includes(value as MeasurementAuthority);
+}
+
+export function assertMeasurementAuthority(value: unknown): MeasurementAuthority {
+  if (!isMeasurementAuthority(value)) {
+    throw new Error(
+      `Invalid measurement authority: expected one of ${MEASUREMENT_AUTHORITY_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
+
+export function createPublicationMethodologyMetadata(
+  metadata: PublicationMethodologyMetadata,
+): PublicationMethodologyMetadata {
+  if (!isNonEmptyString(metadata.schemaVersion)) {
+    throw new Error('Publication methodology metadata requires a non-empty schemaVersion.');
+  }
+
+  if (!PUBLICATION_METHODOLOGY_STATUSES.includes(metadata.methodologyStatus)) {
+    throw new Error(
+      `Publication methodology status must be one of ${PUBLICATION_METHODOLOGY_STATUSES.join(', ')}.`,
+    );
+  }
+
+  if (!Array.isArray(metadata.provenance) || metadata.provenance.length === 0) {
+    throw new Error('Publication methodology metadata requires at least one provenance entry.');
+  }
+
+  const normalizedProvenance = metadata.provenance
+    .filter((entry): entry is string => isNonEmptyString(entry))
+    .map((entry) => entry.trim());
+
+  if (normalizedProvenance.length === 0) {
+    throw new Error('Publication methodology metadata requires non-empty provenance entries.');
+  }
+
+  return {
+    schemaVersion: metadata.schemaVersion.trim(),
+    methodologyStatus: metadata.methodologyStatus,
+    provenance: [...new Set(normalizedProvenance)],
+  };
+}
+
+export function createPublishableMetricField<T>(
+  field: PublishableMetricField<T>,
+): PublishableMetricField<T> {
+  if (!isNonEmptyString(field.key)) {
+    throw new Error('Publishable metric fields require a non-empty key.');
+  }
+
+  return {
+    key: field.key.trim(),
+    value: field.value,
+    certainty: assertSharedPayloadCertainty(field.certainty),
+    authority: assertMeasurementAuthority(field.authority),
+    methodology: createPublicationMethodologyMetadata(field.methodology),
+  };
+}
+
+export function makeStructuralTrust(input: StructuralTrust): StructuralTrust {
+  if (typeof input !== 'object' || input === null) {
+    throw new Error('Structural trust requires a structured object with separate trust axes.');
+  }
+
+  for (const prohibitedKey of PROHIBITED_STRUCTURAL_TRUST_KEYS) {
+    if (Object.prototype.hasOwnProperty.call(input, prohibitedKey)) {
+      throw new Error(
+        `Structural trust forbids collapsed scalar fields like "${prohibitedKey}".`,
+      );
+    }
+  }
+
+  return {
+    parserProvenance: assertParserProvenance(input.parserProvenance),
+    evidenceStatus: assertEvidenceStatus(input.evidenceStatus),
+    freshnessAuthority: assertFreshnessAuthority(input.freshnessAuthority),
+  };
+}
+
+export function isStructuralTrustComplete(value: StructuralTrust | null | undefined): value is StructuralTrust {
+  if (!value) {
+    return false;
+  }
+
+  const trust = makeStructuralTrust(value);
+  return trust.parserProvenance !== 'unknown'
+    && trust.evidenceStatus !== 'unknown'
+    && trust.freshnessAuthority !== 'unknown';
+}
+
+export function canPublishMultiplier(fields: MultiplierAuthorityFields): boolean {
+  return MULTIPLIER_REQUIRED_FIELDS.every((fieldName) => {
+    const field = fields[fieldName];
+    return field?.authority === 'provider_counted';
+  });
+}
+
+export function summarizeCertaintyContract(entries: Array<{
+  label: string;
+  certainty: SharedPayloadCertainty;
+}>): string {
+  return entries
+    .map(({ label, certainty }) => `${label}=${assertSharedPayloadCertainty(certainty)}`)
+    .join(', ');
+}
 
 function truncateInline(text: string, maxChars: number = SUMMARY_MAX_CHARS): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
@@ -93,7 +356,14 @@ export function createSharedPayloadEnvelope(input: {
   summary?: string;
   selection?: PreMergeSelectionMetadata;
 }): SharedPayloadEnvelope {
-  const sections = input.sections.filter((section) => section.content.trim().length > 0);
+  const sections = input.sections
+    .filter((section) => section.content.trim().length > 0)
+    .map((section) => ({
+      ...section,
+      ...(section.structuralTrust
+        ? { structuralTrust: makeStructuralTrust(section.structuralTrust) }
+        : {}),
+    }));
   const summary = input.summary
     ? truncateInline(input.summary)
     : truncateInline(

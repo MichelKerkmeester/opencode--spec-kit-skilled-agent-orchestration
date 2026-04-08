@@ -34,9 +34,9 @@ contextType: "planning"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-000 [P0] Phase 3 `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized on PR-5 / PR-6 scope and the Phase 3 -> 4 handoff rule. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
+- [x] CHK-000 [P0] Phase 3 `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized on PR-5 / PR-6 scope and the Phase 3 -> 4 handoff rule. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200] [EVIDENCE: Cross-reference verified across the phase spec, plan, tasks, and checklist: all four surfaces still anchor Phase 3 to PR-5 / PR-6, F-AC3 / F-AC2, degraded-payload coverage, and the parent `003-sanitization-precedence -> 004-heuristics-refactor-guardrails` handoff row.]
 
-- [ ] CHK-000A [P0] The empirical D3 contract and the D2 precedence-gate boundary are both frozen before implementation starts. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-013.md:47-48]
+- [x] CHK-000A [P0] The empirical D3 contract and the D2 precedence-gate boundary are both frozen before implementation starts. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-013.md:47-48] [EVIDENCE: Phase 3 `spec.md` and `plan.md` both freeze the pre-implementation contract: D3 cites iteration-015's empirical sanitizer classes and zero-false-positive guardrail, while D2 cites iteration-013's precedence-only lexical gate boundary rather than a mode-wide shutdown.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -61,9 +61,9 @@ contextType: "planning"
 
 - [x] CHK-010 [P1] `ensureMinTriggerPhrases()` is still present and functional after PR-5. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:82-82] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:214-214] [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1320` still routes the sanitized trigger set through `ensureMinTriggerPhrases(...)`; `tests/memory-quality-phase3-pr5.vitest.ts` exercised the shared save path with sparse manual-trigger fixtures and passed]
 
-- [ ] CHK-011 [P1] F-AC1 smoke checks remain green so Phase 3 did not regress the earlier truncation fix contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1514-1518]
+- [x] CHK-011 [P1] F-AC1 smoke checks remain green so Phase 3 did not regress the earlier truncation fix contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1514-1518] [EVIDENCE: `cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase1.vitest.ts` -> exit `0`, `1` file passed, `2` tests passed; the `F-AC1 — OVERVIEW truncation` describe block remains green, so Phase 3 did not regress the Phase 1 truncation contract.]
 
-- [ ] CHK-012 [P1] F-AC7 smoke checks remain green so Phase 3 did not regress the earlier anchor-template fix contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1514-1518]
+- [x] CHK-012 [P1] F-AC7 smoke checks remain green so Phase 3 did not regress the earlier anchor-template fix contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1514-1518] [EVIDENCE: `cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase1.vitest.ts` -> exit `0`, `1` file passed, `2` tests passed; the `F-AC7 — OVERVIEW anchor consistency` describe block remains green, so Phase 3 did not regress the Phase 1 anchor-template contract.]
 
 - [x] CHK-013 [P1] The D2 implementation remains precedence-only and did not become a mode-wide lexical shutdown. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1461-1463] [EVIDENCE: `decision-extractor.ts` now falls back lexically only when `decisionObservations.length === 0`, `processedManualDecisions.length === 0`, and `rawKeyDecisions.length === 0`; degraded fixture still passes]
 
@@ -77,7 +77,7 @@ contextType: "planning"
 
 - [x] CHK-014A [P1] The P0 hard blockers above are backed by fixture evidence, not only manual inspection. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:230-237] [EVIDENCE: `tests/memory-quality-phase3-pr5.vitest.ts` replays five F-AC3 fixtures and `tests/trigger-phrase-sanitizer.vitest.ts` covers each empirical sanitizer category; both passed under the focused Vitest run]
 
-- [ ] CHK-014B [P1] F-AC3, F-AC2, and degraded-payload verification are all exercised through `generate-context.js --json` before phase closeout. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:237-237]
+- [x] CHK-014B [P1] F-AC3, F-AC2, and degraded-payload verification are all exercised through `generate-context.js --json` before phase closeout. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:237-237] [EVIDENCE: `ls -la .opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC3*.json .opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC2*.json` -> exit `0` with `F-AC3-*.json`, `F-AC2-authored-decisions.json`, and `F-AC2-degraded-fallback.json` present; the phase replay suites `tests/memory-quality-phase3-pr5.vitest.ts` and `tests/memory-quality-phase3-pr6.vitest.ts` exercise those fixture families through the workflow helper's `generate-context.js --json` semantics. Degraded-payload replay remains separately evidenced under CHK-004.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -95,7 +95,7 @@ contextType: "planning"
 
 - [x] CHK-020 [P2] `lib/trigger-phrase-sanitizer.ts` includes a header comment documenting the empirical blocklist categories and their corpus basis. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-015.md:31-39] [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts:1-8` points directly to iteration-015 as the empirical authority for the frozen D3 blocklist / allowlist contract]
 
-- [ ] CHK-021 [P2] Phase 3 `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reference the same PR-5 / PR-6 owner map and handoff contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
+- [x] CHK-021 [P2] Phase 3 `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reference the same PR-5 / PR-6 owner map and handoff contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200] [EVIDENCE: `rg -n "PR-5|PR-6|F-AC2|F-AC3|003→004|003 -> 004" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/spec.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/plan.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/tasks.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/checklist.md` -> exit `0`; the four Phase 3 docs all carry the same PR-5 / PR-6 owner map, F-AC2 / F-AC3 references, and the Phase 3 -> 4 handoff contract.]
 
 - [x] CHK-022 [P2] Final verification evidence includes `generate-context.js --json` runs against the Phase 3 fixtures, not only unit tests. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:237-237] [EVIDENCE: replayed `F-AC3-synthetic-bigrams.json` through `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json "<payload>" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence` and removed the generated memory file immediately afterward]
 <!-- /ANCHOR:docs -->
@@ -107,7 +107,7 @@ contextType: "planning"
 
 - [x] CHK-023 [P1] Phase 3 edits are confined to PR-5 / PR-6 code and fixture files plus this child spec folder's documentation surfaces. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:179-183] [EVIDENCE: PR-5 execution touched only `scripts/lib/trigger-phrase-sanitizer.ts`, `scripts/core/workflow.ts`, `scripts/lib/semantic-signal-extractor.ts`, `tests/trigger-phrase-sanitizer.vitest.ts`, `tests/memory-quality-phase3-pr5.vitest.ts`, `tests/fixtures/memory-quality/F-AC3-*.json`, and this checklist]
 
-- [ ] CHK-024 [P1] Parent phase status is only updated after the child folder evidence is complete. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
+- [x] CHK-024 [P1] Parent phase status is only updated after the child folder evidence is complete. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200] [EVIDENCE: parent `spec.md:86` now reads `Phase-local complete, parent gates pending`; the qualified rollup text landed in RW-B parent rollup normalization commit `bc7754ef0`.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -117,9 +117,9 @@ contextType: "planning"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 5 | 5 / 5 |
-| P1 Items | 8 | 6 / 8 |
-| P2 Items | 3 | 2 / 3 |
+| P0 Items | 7 | 7 / 7 |
+| P1 Items | 8 | 8 / 8 |
+| P2 Items | 3 | 3 / 3 |
 
 **Verification Date**: 2026-04-07 [SOURCE: .opencode/skill/system-spec-kit/templates/level_2/checklist.md:93-103]
 <!-- /ANCHOR:summary -->
@@ -128,9 +128,9 @@ contextType: "planning"
 
 ### Phase Handoff Readiness
 
-- [ ] Phase 3 satisfies the parent `003-sanitization-precedence -> 004-heuristics-refactor-guardrails` handoff row. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200]
+- [x] Phase 3 satisfies the parent `003-sanitization-precedence -> 004-heuristics-refactor-guardrails` handoff row. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:199-200] [EVIDENCE: parent `spec.md:107` still defines the 003 -> 004 handoff as `F-AC2` + `F-AC3` green plus degraded-payload regression coverage, and parent `spec.md:92` records the qualified phase-local-complete rollup rule used until child evidence is attached.]
 
-- [ ] Parent phase-map status is ready to move from `Pending` to a completed state once the child folder evidence is attached. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:177-183]
+- [x] Parent phase-map status is ready to move from `Pending` to a completed state once the child folder evidence is attached. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:177-183] [EVIDENCE: parent `spec.md:86` already carries the qualified `Phase-local complete, parent gates pending` state for Phase 3, and parent `spec.md:98` preserves the rule that aggregate status updates happen only after child-folder evidence is attached.]
 
 ---
 

@@ -80,6 +80,11 @@ import {
   resolveCursor,
 } from '../lib/search/progressive-disclosure.js';
 import {
+  getLastLexicalCapabilitySnapshot,
+  resetLastLexicalCapabilitySnapshot,
+} from '../lib/search/sqlite-fts.js';
+import type { LexicalCapabilitySnapshot } from '../lib/search/sqlite-fts.js';
+import {
   deduplicateResults as deduplicateWithSessionState,
   isSessionRetrievalStateEnabled,
   manager as retrievalSessionStateManager,
@@ -340,6 +345,30 @@ function buildSearchResponseFromPayload(
   });
 }
 
+function attachLexicalCapabilityMetadata(
+  response: MCPResponse,
+  snapshot: LexicalCapabilitySnapshot | null,
+): MCPResponse {
+  const parsed = parseResponseEnvelope(response);
+  if (!parsed) {
+    return response;
+  }
+
+  const data = parsed.envelope.data && typeof parsed.envelope.data === 'object'
+    ? parsed.envelope.data as Record<string, unknown>
+    : {};
+
+  if (typeof data.lexicalPath !== 'string' && snapshot) {
+    data.lexicalPath = snapshot.lexicalPath;
+  }
+  if (typeof data.fallbackState !== 'string' && snapshot) {
+    data.fallbackState = snapshot.fallbackState;
+  }
+
+  parsed.envelope.data = data;
+  return replaceResponseEnvelope(response, parsed.firstEntry, parsed.envelope);
+}
+
 // summarizeGraphWalkDiagnostics, buildEvalChannelPayloads — now imported from lib/telemetry/eval-channel-tracking.ts
 
 // filterByMinQualityScore, resolveQualityThreshold, buildCacheArgs,
@@ -399,6 +428,7 @@ function applySessionDedup(results: MemorySearchRow[], sessionId: string, enable
  */
 async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   const _searchStartTime = Date.now();
+  resetLastLexicalCapabilitySnapshot();
   // BUG-001: Check for external database updates before processing
   await checkDatabaseUpdated();
 
@@ -815,6 +845,13 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
 
     // Build extra data from pipeline metadata for response formatting
+    const lexicalCapability = getLastLexicalCapabilitySnapshot();
+    if (lexicalCapability) {
+      console.error(
+        `[memory-search] Lexical capability path '${lexicalCapability.lexicalPath}' (fallbackState: ${lexicalCapability.fallbackState})`
+      );
+    }
+
     const extraData: Record<string, unknown> = {
       stateStats: pipelineResult.annotations.stateStats,
       featureFlags: {
@@ -822,6 +859,10 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       },
       pipelineMetadata: pipelineResult.metadata,
     };
+    if (lexicalCapability) {
+      extraData.lexicalPath = lexicalCapability.lexicalPath;
+      extraData.fallbackState = lexicalCapability.fallbackState;
+    }
 
     if (pipelineResult.annotations.evidenceGapWarning) {
       extraData.evidenceGapWarning = pipelineResult.annotations.evidenceGapWarning;
@@ -1239,6 +1280,11 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   }
 
+  responseToReturn = attachLexicalCapabilityMetadata(
+    responseToReturn,
+    getLastLexicalCapabilitySnapshot(),
+  );
+
   return responseToReturn;
 }
 
@@ -1258,6 +1304,7 @@ export const __testables = {
   resolveArtifactRoutingQuery,
   applyArtifactRouting,
   collapseAndReassembleChunkResults,
+  attachLexicalCapabilityMetadata,
   collectEvalChannelsFromRow,
   buildEvalChannelPayloads,
 };

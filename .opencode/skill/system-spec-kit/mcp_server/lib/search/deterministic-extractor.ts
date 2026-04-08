@@ -8,6 +8,7 @@
 
 import type Database from 'better-sqlite3';
 import { createLogger } from '../utils/logger.js';
+import type { ParserProvenance } from '../context/shared-payload.js';
 
 const logger = createLogger('DeterministicExtractor');
 
@@ -43,6 +44,29 @@ export interface WriteEdgePayload {
   /** IDs of nodes involved in the write (source, target, or affected). */
   nodeIds: string[];
 }
+
+/**
+ * Packet 007 guardrail: deterministic extraction here is regex-backed string
+ * matching. It is not AST parsing and should not be labelled as such.
+ */
+export const DETERMINISTIC_EXTRACTOR_PROVENANCE = {
+  extractCodeFenceTechnologies: {
+    parserProvenance: 'regex',
+    basis: 'Matches fenced code annotations with a regular expression.',
+  },
+  extractHeadings: {
+    parserProvenance: 'regex',
+    basis: 'Matches markdown heading lines with a regular expression.',
+  },
+  extractAliases: {
+    parserProvenance: 'regex',
+    basis: 'Matches alias patterns with bounded regular expressions.',
+  },
+  extractRelationPhrases: {
+    parserProvenance: 'regex',
+    basis: 'Matches relation phrases with bounded regular expressions.',
+  },
+} as const satisfies Record<string, { parserProvenance: ParserProvenance; basis: string }>;
 
 /* ───────────────────────────────────────────────────────────────
    2. EXTRACTION FUNCTIONS

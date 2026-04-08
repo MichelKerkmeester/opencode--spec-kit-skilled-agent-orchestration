@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T09:49:46.750Z",
+  "generatedAt": "2026-04-08T17:19:12.421Z",
   "mode": "dry-run",
   "options": {
     "scanRoots": [
@@ -8,14 +8,14 @@
     ],
     "reportPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/scratch/pr13-dry-run-sample.json",
     "safetyLimit": 200,
-    "discoveredFiles": 133,
+    "discoveredFiles": 135,
     "truncatedBySafetyLimit": false
   },
   "summary": {
-    "scannedFiles": 116,
+    "scannedFiles": 117,
     "changedFiles": 87,
-    "unchangedFiles": 29,
-    "skippedFiles": 17,
+    "unchangedFiles": 30,
+    "skippedFiles": 18,
     "removedPhraseCount": 425,
     "preservedUsefulAnchorCount": 2,
     "removedByReason": {
@@ -26,6 +26,22 @@
     }
   },
   "files": [
+    {
+      "filePath": "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Code-Environment-Public/memory/feedback_codex_cli_fast_mode.md",
+      "title": "",
+      "changed": false,
+      "originalCount": 0,
+      "finalCount": 0,
+      "removedPhrases": [],
+      "removedDetails": [],
+      "preservedUsefulAnchors": [],
+      "beforeTriggerPhrases": [],
+      "afterTriggerPhrases": [],
+      "auditRecord": {
+        "beforeHash": "97d170e1550eee4afc0af065b78cda302a97674c",
+        "afterHash": "97d170e1550eee4afc0af065b78cda302a97674c"
+      }
+    },
     {
       "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md",
       "title": "005 Claudest Deep-Research Extension to 20 Iterations",
@@ -8116,6 +8132,14 @@
   ],
   "skippedFiles": [
     {
+      "filePath": "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Code-Environment-Public/memory/MEMORY.md",
+      "reason": "Frontmatter not found"
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/memory/08-04-26_14-26__ran-7-iteration-deep-review-on-this-packet.md",
+      "reason": "Frontmatter not found"
+    },
+    {
       "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/memory/07-04-26_14-55__spec-documentation-perfection-task-used-cli.md",
       "reason": "Frontmatter not found"
     },
@@ -8125,10 +8149,6 @@
     },
     {
       "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/memory/07-04-26_11-57__master-consolidation-of-5-system-external.md",
-      "reason": "Frontmatter not found"
-    },
-    {
-      "filePath": "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Code-Environment-Public/memory/MEMORY.md",
       "reason": "Frontmatter not found"
     },
     {

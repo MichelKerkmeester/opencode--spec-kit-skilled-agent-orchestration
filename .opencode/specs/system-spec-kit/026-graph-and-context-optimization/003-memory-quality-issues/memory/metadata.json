@@ -1,19 +1,19 @@
 {
-  "timestamp": "08-04-26 14-26",
-  "messageCount": 1,
-  "decisionCount": 6,
+  "timestamp": "08-04-26 19-10",
+  "messageCount": 2,
+  "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
+    "totalProcessed": 2,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 30,
+    "qualityScore": 35,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-08T13:26:29.183Z",
+        "timestamp": "2026-04-08T18:10:34.996Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:1",
-          "kept_items:1"
+          "input_items:2",
+          "kept_items:2"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-08T13:26:28.888Z",
+      "timestamp": "2026-04-08T18:10:34.676Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:65"
+        "processed_fields:64"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-08T13:26:29.183Z",
+      "timestamp": "2026-04-08T18:10:34.996Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -168,13 +168,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:1",
-        "kept_items:1"
+        "input_items:2",
+        "kept_items:2"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-08T13:26:29.219Z",
+      "timestamp": "2026-04-08T18:10:35.016Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,7 +191,7 @@
       ],
       "passedThrough": [
         "current_spec:003-memory-quality-issues",
-        "trigger_phrases:29",
+        "trigger_phrases:20",
         "key_topics:12",
         "captured_file_count:0",
         "filesystem_file_count:0"
@@ -201,15 +201,15 @@
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 0,
+    "filesModified": 1,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
-      "plan": 1,
-      "implementation": 0,
+      "plan": 0,
+      "implementation": 1,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 2
     }
   },
   "fileCounts": {
@@ -229,8 +229,8 @@
     "model": "voyage-4",
     "dimensions": 768,
     "memoryId": null,
-    "updatedAt": "2026-04-08T13:26:29.259Z",
-    "lastAttemptedAt": "2026-04-08T13:26:29.259Z",
+    "updatedAt": "2026-04-08T18:10:35.053Z",
+    "lastAttemptedAt": "2026-04-08T18:10:35.053Z",
     "reason": "Validation rules require write-only persistence without semantic indexing: V12"
   }
 }

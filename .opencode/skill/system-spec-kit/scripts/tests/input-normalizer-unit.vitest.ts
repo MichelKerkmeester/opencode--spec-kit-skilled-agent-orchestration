@@ -195,6 +195,60 @@ describe('normalizeInputData importanceTier propagation (BUG-006)', () => {
   });
 });
 
+describe('normalizeInputData fast-path string coercion and enrichment merge', () => {
+  it('coerces string arrays into structured fast-path objects', () => {
+    const result = normalizeInputData({
+      user_prompts: ['Capture the session context'],
+      observations: ['Fast-path observations should survive. They must stay readable.'],
+      recent_context: ['Investigated the failing save path'],
+    } as RawInputData) as NormalizedData;
+
+    expect(result.userPrompts).toHaveLength(1);
+    expect(result.userPrompts[0].prompt).toBe('Capture the session context');
+    expect(result.userPrompts[0].timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+
+    expect(result.observations).toHaveLength(1);
+    expect(result.observations[0].title).toBe('Fast-path observations should survive.');
+    expect(result.observations[0].narrative).toBe('Fast-path observations should survive. They must stay readable.');
+    expect(result.observations[0].facts).toEqual([]);
+
+    expect(result.recentContext).toEqual([
+      {
+        request: 'Investigated the failing save path',
+        learning: 'Investigated the failing save path',
+      },
+    ]);
+  });
+
+  it('merges slow-path enrichments when fast-path arrays are already present', () => {
+    const result = normalizeInputData({
+      userPrompts: [{ prompt: 'Existing prompt', timestamp: '2026-04-08T10:00:00.000Z' }],
+      observations: [{ type: 'feature', title: 'Existing observation', narrative: 'Existing narrative', facts: [] }],
+      recentContext: [{ request: 'Existing request', learning: 'Existing learning' }],
+      sessionSummary: 'Patched the fast-path normalizer and verified the save flow end to end.',
+      keyDecisions: ['Chose additive coercion to preserve object-shaped callers.'],
+      nextSteps: ['Run the regression suite'],
+      filesModified: ['scripts/utils/input-normalizer.ts - add fast-path coercion'],
+      toolCalls: [{ tool: 'Bash', title: 'npm run build' }],
+      exchanges: [{ userInput: 'Can you fix the broken memory save?', assistantResponse: 'Yes.' }],
+    } as RawInputData) as NormalizedData;
+
+    expect(result.FILES).toEqual([
+      {
+        FILE_PATH: 'scripts/utils/input-normalizer.ts',
+        DESCRIPTION: 'add fast-path coercion',
+        ACTION: 'Modified',
+      },
+    ]);
+    expect(result._manualDecisions).toHaveLength(1);
+    expect(result.userPrompts.map((prompt) => prompt.prompt)).toContain('Can you fix the broken memory save?');
+    expect(result.observations.some((observation) => observation.narrative === 'Patched the fast-path normalizer and verified the save flow end to end.')).toBe(true);
+    expect(result.observations.some((observation) => observation.title === 'Tool: Bash' && observation.narrative === 'npm run build')).toBe(true);
+    expect(result.observations.some((observation) => observation.title === 'Next Steps')).toBe(true);
+    expect(result.observations.some((observation) => observation.type === 'decision')).toBe(true);
+  });
+});
+
 describe('normalizeInputData Phase 016 regressions', () => {
   it('deduplicates duplicate observations in fast-path structured payloads', () => {
     const result = normalizeInputData({

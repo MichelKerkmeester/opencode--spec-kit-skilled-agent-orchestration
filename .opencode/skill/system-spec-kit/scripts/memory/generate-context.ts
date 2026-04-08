@@ -59,7 +59,7 @@ Options:
   --help, -h        Show this help message
   --stdin           Read structured JSON from stdin (preferred when a caller already has curated session data)
   --json <string>   Read structured JSON from an inline string (preferred when structured data is available)
-  --session-id <uuid>  Explicit session ID for deterministic Claude Code transcript selection
+  --session-id <uuid>  Explicit session ID to attach to the saved memory metadata
 
 Examples:
   node generate-context.js /tmp/context-data.json

@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeAll, beforeEach, afterAll, afterEach } 
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-search';
 import * as core from '../core';
+import * as toolCache from '../lib/cache/tool-cache';
 import * as vectorIndex from '../lib/search/vector-index';
 
 type MemorySearchResponse = Awaited<ReturnType<typeof handler.handleMemorySearch>>;
@@ -124,6 +125,74 @@ describe('C138: Evidence Gap Warning Injection', () => {
   it('C138-T2: warning contains actionable guidance', () => {
     const warning = '> **⚠️ EVIDENCE GAP DETECTED:** Retrieved context has low mathematical confidence. Consider first principles.';
     expect(warning).toContain('first principles');
+  });
+});
+
+describe('Packet 010 lexical capability response surface', () => {
+  beforeEach(() => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+    vi.spyOn(toolCache, 'isEnabled').mockReturnValue(true);
+    vi.spyOn(toolCache, 'generateCacheKey').mockReturnValue('packet-010-cache-key');
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('P010-T1: handleMemorySearch returns lexicalPath and fallbackState on cached degraded responses', async () => {
+    vi.spyOn(toolCache, 'get').mockReturnValue({
+      summary: 'Found 1 memories',
+      data: {
+        count: 1,
+        results: [
+          {
+            id: 101,
+            title: 'Fallback-safe result',
+            similarity: 0.42,
+          },
+        ],
+        lexicalPath: 'bm25_fallback',
+        fallbackState: 'compile_probe_miss',
+      },
+      hints: [],
+    });
+
+    const response = await handler.handleMemorySearch({ query: 'fallback-safe query' });
+    const payload = parseEnvelope(response);
+    const data = getNestedRecord(payload, 'data');
+
+    expect(data?.lexicalPath).toBe('bm25_fallback');
+    expect(data?.fallbackState).toBe('compile_probe_miss');
+    expect(Array.isArray(data?.results)).toBe(true);
+    expect((data?.results as Array<Record<string, unknown>>)[0]?.id).toBe(101);
+  });
+
+  it('P010-T2: handleMemorySearch returns lexicalPath and fallbackState on cached healthy responses', async () => {
+    vi.spyOn(toolCache, 'get').mockReturnValue({
+      summary: 'Found 1 memories',
+      data: {
+        count: 1,
+        results: [
+          {
+            id: 202,
+            title: 'Healthy FTS result',
+            similarity: 0.91,
+          },
+        ],
+        lexicalPath: 'fts5',
+        fallbackState: 'ok',
+      },
+      hints: [],
+    });
+
+    const response = await handler.handleMemorySearch({ query: 'healthy query' });
+    const payload = parseEnvelope(response);
+    const data = getNestedRecord(payload, 'data');
+
+    expect(data?.lexicalPath).toBe('fts5');
+    expect(data?.fallbackState).toBe('ok');
+    expect(Array.isArray(data?.results)).toBe(true);
+    expect((data?.results as Array<Record<string, unknown>>)[0]?.id).toBe(202);
   });
 });
 

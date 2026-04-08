@@ -1,6 +1,6 @@
 ---
-title: "Implementation Summary: Structural Trust Axis Contract [template:level_3/implementation-summary.md]"
-description: "Closeout placeholder for 006-structural-trust-axis-contract."
+title: "Implementation Summary: Structural Trust Axis Contract"
+description: "Packet 006 closeout for the additive structural trust contract that now sits beside packet 005's certainty contract."
 trigger_phrases:
   - "006-structural-trust-axis-contract"
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Implementation Summary: Structural Trust Axis Contract
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
@@ -22,7 +22,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 006-structural-trust-axis-contract |
-| **Completed** | Not yet implemented |
+| **Completed** | 2026-04-08 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -31,7 +31,9 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet has been opened and scoped only. No runtime implementation has shipped from this folder yet; the current work establishes the documentation, dependency boundary, and verification seam for later coding work.
+Packet `006` now ships the shared structural trust contract that the research called for before any artifact-first graph packaging. `shared-payload.ts` now exports separate `parserProvenance`, `evidenceStatus`, and `freshnessAuthority` vocabularies plus a `StructuralTrust` envelope and validation helpers, while preserving packet `005`'s certainty and publication-methodology contract untouched.
+
+Bootstrap now emits those trust axes on the `structural-context` payload section instead of implying that certainty or ranking confidence can stand in for freshness or authority. The retrieval confidence module also now brands ranking confidence as ordering-only metadata, and the contracts README tells packets `007`, `008`, and `011` to import this shared contract instead of redefining trust locally.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -39,7 +41,9 @@ This packet has been opened and scoped only. No runtime implementation has shipp
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The folder was scaffolded and then documented as part of the approved follow-on train. This session established packet scope, dependencies, verification expectations, and ADR rationale only.
+The delivery stayed inside the packet's frozen seam. I first re-read the research basis, packet docs, and packet `005` surfaces, then added the structural trust helpers beside the existing certainty contract in `shared-payload.ts`. From there I threaded the new envelope only into bootstrap's `structural-context` section, documented the no-collapse rule in `.opencode/skill/system-spec-kit/mcp_server/lib/contracts/README.md`, added focused trust-axis tests, and reran the exact packet verification commands.
+
+The implementation remains additive by design: packet `005` certainty fields, `canPublishMultiplier()`, and the visible bootstrap certainty summary all remain intact.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -49,9 +53,9 @@ The folder was scaffolded and then documented as part of the approved follow-on 
 
 | Decision | Why |
 |----------|-----|
-| Create the packet now but keep it draft | The user asked to implement the phase train as spec work before runtime implementation begins. |
-| Keep the packet bounded to one seam | The research specifically rejects broad subsystem replacements. |
-| Leave runtime changes unclaimed | The packet currently documents future work only and should not overstate shipped behavior. |
+| Keep `StructuralTrust` beside the packet `005` certainty contract | Packet `006` needed a new trust-axis family without deleting or weakening the shipped publication and certainty work from packet `005`. |
+| Enforce the no-collapse rule in shared helpers | A central helper makes later packets reuse the same guardrails instead of re-arguing whether one scalar trust field is acceptable. |
+| Attach trust axes to bootstrap's `structural-context` section only | The packet spec calls for additive adoption on current authority surfaces, not a new graph-only owner surface or a broad payload rewrite. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -61,9 +65,9 @@ The folder was scaffolded and then documented as part of the approved follow-on 
 
 | Check | Result |
 |-------|--------|
-| Packet docs created | PASS |
-| Placeholder text removed from packet-local docs | PASS |
-| Focused packet validation | Pending |
+| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/tsc-tmp npm run typecheck` | PASS |
+| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/structural-trust-axis.vitest.ts tests/shared-payload-certainty.vitest.ts tests/hook-session-start.vitest.ts` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-structural-trust-axis-contract` | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -71,6 +75,6 @@ The folder was scaffolded and then documented as part of the approved follow-on 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. This packet is scoped and documented but not yet implemented in runtime code.
-2. Successor packet work remains blocked on the dependencies named in `spec.md`.
+1. **Bootstrap-first adoption** This packet adds the shared contract and wires it into bootstrap's `structural-context` payload. Other structural authority surfaces must import the same contract in later packets instead of redefining it.
+2. **Contract boundary only** The ranking-confidence branding and README rules prevent trust-axis collapse by contract, but they do not expand structural trust emission across unrelated payload sections in this packet.
 <!-- /ANCHOR:limitations -->

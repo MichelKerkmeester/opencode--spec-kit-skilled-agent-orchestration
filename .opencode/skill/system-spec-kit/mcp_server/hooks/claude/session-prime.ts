@@ -11,7 +11,8 @@ import {
   calculatePressureAdjustedBudget, sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
   type OutputSection,
 } from './shared.js';
-import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from './hook-state.js';
+import { ensureStateDir, loadMostRecentState, loadState, readCompactPrime, clearCompactPrime } from './hook-state.js';
+import { getCachedSessionSummaryDecision, logCachedSummaryDecision } from '../../handlers/session-resume.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
 type StartupBrief = {
@@ -82,21 +83,43 @@ function handleCompact(sessionId: string): OutputSection[] {
   return sections;
 }
 
+function buildFallbackStartupSurface(hasCachedContinuity: boolean): string {
+  return [
+    'Session context received. Current state:',
+    '',
+    `- Memory: ${hasCachedContinuity ? 'session continuity available' : 'startup summary only (resume on demand)'}`,
+    '- Code Graph: unavailable',
+    '- CocoIndex: unknown',
+    '',
+    'What would you like to work on?',
+  ].join('\n');
+}
+
+function rewriteStartupMemoryLine(startupSurface: string, hasCachedContinuity: boolean): string {
+  return startupSurface.replace(
+    /^- Memory: .*$/m,
+    `- Memory: ${hasCachedContinuity ? 'session continuity available' : 'startup summary only (resume on demand)'}`,
+  );
+}
+
 /** Handle source=startup: prime new session with constitutional memories + overview */
 function handleStartup(): OutputSection[] {
   const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  const cachedSummaryDecision = getCachedSessionSummaryDecision({ state: loadMostRecentState() });
+  if (cachedSummaryDecision.status !== 'accepted') {
+    logCachedSummaryDecision('session-prime', cachedSummaryDecision);
+  }
+
+  const sessionContinuity = cachedSummaryDecision.status === 'accepted'
+    ? cachedSummaryDecision.cachedSummary?.startupHint ?? null
+    : null;
+  const startupSurface = startupBrief?.startupSurface
+    ? rewriteStartupMemoryLine(startupBrief.startupSurface, Boolean(sessionContinuity))
+    : buildFallbackStartupSurface(Boolean(sessionContinuity));
   const sections: OutputSection[] = [
     {
       title: 'Session Context',
-      content: startupBrief?.startupSurface ?? [
-        'Session context received. Current state:',
-        '',
-        '- Memory: startup summary unavailable',
-        '- Code Graph: unavailable',
-        '- CocoIndex: unknown',
-        '',
-        'What would you like to work on?',
-      ].join('\n'),
+      content: startupSurface,
     },
     {
       title: 'Recovery Tools',
@@ -120,10 +143,10 @@ function handleStartup(): OutputSection[] {
     });
   }
 
-  if (startupBrief?.sessionContinuity) {
+  if (sessionContinuity) {
     sections.push({
       title: 'Session Continuity',
-      content: startupBrief.sessionContinuity,
+      content: sessionContinuity,
     });
   }
 

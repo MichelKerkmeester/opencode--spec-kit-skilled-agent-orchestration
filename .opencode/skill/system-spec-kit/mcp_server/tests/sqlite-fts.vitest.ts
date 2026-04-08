@@ -2,12 +2,20 @@
 // Verifies weighted BM25 scoring via FTS5 bm25() function.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
-import { fts5Bm25Search, isFts5Available, FTS5_BM25_WEIGHTS } from '../lib/search/sqlite-fts';
+import {
+  fts5Bm25Search,
+  getLastLexicalCapabilitySnapshot,
+  isFts5Available,
+  FTS5_BM25_WEIGHTS,
+  probeFts5Capability,
+  resetLastLexicalCapabilitySnapshot,
+} from '../lib/search/sqlite-fts';
 
 let db: Database.Database;
 
 describe('C138-P2 SQLite FTS5 BM25 Search', () => {
   beforeEach(() => {
+    resetLastLexicalCapabilitySnapshot();
     db = new Database(':memory:');
 
     // Create memory_index table
@@ -141,5 +149,127 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
     for (let i = 0; i < results.length - 1; i++) {
       expect(results[i].fts_score).toBeGreaterThanOrEqual(results[i + 1].fts_score);
     }
+  });
+
+  it('T11: successful FTS search records lexicalPath=fts5 and fallbackState=ok', () => {
+    fts5Bm25Search(db, 'login');
+    expect(getLastLexicalCapabilitySnapshot()).toEqual({
+      lexicalPath: 'fts5',
+      fallbackState: 'ok',
+    });
+  });
+
+  it('T12: forced degrade compile_probe_miss records bm25 fallback without changing array shape', () => {
+    const compileProbeMissDb = {
+      prepare(sql: string) {
+        if (sql === 'PRAGMA compile_options') {
+          return {
+            all: () => [{ compile_options: 'ENABLE_JSON1' }],
+          };
+        }
+
+        throw new Error(`Unexpected SQL for compile probe miss test: ${sql}`);
+      },
+    } as unknown as Database.Database;
+
+    const results = fts5Bm25Search(compileProbeMissDb, 'login');
+    expect(results).toEqual([]);
+    expect(Array.isArray(results)).toBe(true);
+    expect(getLastLexicalCapabilitySnapshot()).toEqual({
+      lexicalPath: 'bm25_fallback',
+      fallbackState: 'compile_probe_miss',
+    });
+  });
+
+  it('T13: forced degrade missing_table records missing_table after a successful compile probe', () => {
+    const missingTableDb = new Database(':memory:');
+    missingTableDb.exec(`
+      CREATE TABLE memory_index (
+        id INTEGER PRIMARY KEY,
+        title TEXT,
+        trigger_phrases TEXT,
+        content_text TEXT,
+        file_path TEXT,
+        spec_folder TEXT,
+        is_archived INTEGER DEFAULT 0,
+        importance_tier TEXT DEFAULT NULL
+      );
+    `);
+
+    expect(probeFts5Capability(missingTableDb)).toEqual({
+      lexicalPath: 'bm25_fallback',
+      fallbackState: 'missing_table',
+    });
+    expect(fts5Bm25Search(missingTableDb, 'login')).toEqual([]);
+    expect(getLastLexicalCapabilitySnapshot()).toEqual({
+      lexicalPath: 'bm25_fallback',
+      fallbackState: 'missing_table',
+    });
+
+    missingTableDb.close();
+  });
+
+  it('T14: forced degrade no_such_module_fts5 records engine-level failure explicitly', () => {
+    const noSuchModuleDb = {
+      prepare(sql: string) {
+        if (sql === 'PRAGMA compile_options') {
+          return {
+            all: () => [{ compile_options: 'ENABLE_FTS5' }],
+          };
+        }
+        if (sql.includes("sqlite_master")) {
+          return {
+            get: () => ({ name: 'memory_fts' }),
+          };
+        }
+        if (sql.includes('FROM memory_fts')) {
+          return {
+            all: () => {
+              throw new Error('no such module: fts5');
+            },
+          };
+        }
+
+        throw new Error(`Unexpected SQL for no-such-module test: ${sql}`);
+      },
+    } as unknown as Database.Database;
+
+    expect(fts5Bm25Search(noSuchModuleDb, 'login')).toEqual([]);
+    expect(getLastLexicalCapabilitySnapshot()).toEqual({
+      lexicalPath: 'bm25_fallback',
+      fallbackState: 'no_such_module_fts5',
+    });
+  });
+
+  it('T15: forced degrade bm25_runtime_failure records ranking failure explicitly', () => {
+    const bm25FailureDb = {
+      prepare(sql: string) {
+        if (sql === 'PRAGMA compile_options') {
+          return {
+            all: () => [{ compile_options: 'ENABLE_FTS5' }],
+          };
+        }
+        if (sql.includes("sqlite_master")) {
+          return {
+            get: () => ({ name: 'memory_fts' }),
+          };
+        }
+        if (sql.includes('FROM memory_fts')) {
+          return {
+            all: () => {
+              throw new Error('unable to use function bm25 in the requested context');
+            },
+          };
+        }
+
+        throw new Error(`Unexpected SQL for bm25 runtime failure test: ${sql}`);
+      },
+    } as unknown as Database.Database;
+
+    expect(fts5Bm25Search(bm25FailureDb, 'login')).toEqual([]);
+    expect(getLastLexicalCapabilitySnapshot()).toEqual({
+      lexicalPath: 'bm25_fallback',
+      fallbackState: 'bm25_runtime_failure',
+    });
   });
 });

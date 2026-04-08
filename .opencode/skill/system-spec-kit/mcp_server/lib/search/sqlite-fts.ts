@@ -25,6 +25,120 @@ interface FtsBm25Options {
   includeArchived?: boolean;
 }
 
+type LexicalPath = 'fts5' | 'like' | 'bm25_fallback';
+type FallbackState =
+  | 'ok'
+  | 'compile_probe_miss'
+  | 'missing_table'
+  | 'no_such_module_fts5'
+  | 'bm25_runtime_failure';
+
+interface LexicalCapabilitySnapshot {
+  lexicalPath: LexicalPath;
+  fallbackState: FallbackState;
+}
+
+let lastLexicalCapabilitySnapshot: LexicalCapabilitySnapshot | null = null;
+
+function cloneLexicalCapabilitySnapshot(
+  snapshot: LexicalCapabilitySnapshot | null
+): LexicalCapabilitySnapshot | null {
+  return snapshot ? { ...snapshot } : null;
+}
+
+function setLastLexicalCapabilitySnapshot(snapshot: LexicalCapabilitySnapshot): void {
+  lastLexicalCapabilitySnapshot = { ...snapshot };
+}
+
+function getLastLexicalCapabilitySnapshot(): LexicalCapabilitySnapshot | null {
+  return cloneLexicalCapabilitySnapshot(lastLexicalCapabilitySnapshot);
+}
+
+function resetLastLexicalCapabilitySnapshot(): void {
+  lastLexicalCapabilitySnapshot = null;
+}
+
+function toErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function readCompileOptionValue(row: unknown): string | null {
+  if (typeof row === 'string') {
+    return row;
+  }
+  if (!row || typeof row !== 'object') {
+    return null;
+  }
+
+  const record = row as Record<string, unknown>;
+  const direct = record.compile_options;
+  if (typeof direct === 'string') {
+    return direct;
+  }
+
+  const firstString = Object.values(record).find((value) => typeof value === 'string');
+  return typeof firstString === 'string' ? firstString : null;
+}
+
+function isNoSuchModuleFts5Error(error: unknown): boolean {
+  return toErrorMessage(error).toLowerCase().includes('no such module: fts5');
+}
+
+function isBm25RuntimeFailure(error: unknown): boolean {
+  const message = toErrorMessage(error).toLowerCase();
+  return message.includes('bm25');
+}
+
+function probeFts5Capability(db: Database.Database): LexicalCapabilitySnapshot {
+  try {
+    const compileRows = (db.prepare('PRAGMA compile_options') as Database.Statement).all() as unknown[];
+    const hasFts5CompileFlag = compileRows
+      .map(readCompileOptionValue)
+      .some((value) => typeof value === 'string' && value.toUpperCase().includes('ENABLE_FTS5'));
+
+    if (!hasFts5CompileFlag) {
+      return {
+        lexicalPath: 'bm25_fallback',
+        fallbackState: 'compile_probe_miss',
+      };
+    }
+  } catch {
+    return {
+      lexicalPath: 'bm25_fallback',
+      fallbackState: 'compile_probe_miss',
+    };
+  }
+
+  try {
+    const result = (db.prepare(
+      `SELECT name FROM sqlite_master WHERE type='table' AND name='memory_fts'`
+    ) as Database.Statement).get() as { name: string } | undefined;
+
+    if (!result) {
+      return {
+        lexicalPath: 'bm25_fallback',
+        fallbackState: 'missing_table',
+      };
+    }
+  } catch (error: unknown) {
+    if (isNoSuchModuleFts5Error(error)) {
+      return {
+        lexicalPath: 'bm25_fallback',
+        fallbackState: 'no_such_module_fts5',
+      };
+    }
+    return {
+      lexicalPath: 'bm25_fallback',
+      fallbackState: 'missing_table',
+    };
+  }
+
+  return {
+    lexicalPath: 'fts5',
+    fallbackState: 'ok',
+  };
+}
+
 // ───────────────────────────────────────────────────────────────
 // 3. CORE FUNCTION
 
@@ -58,7 +172,10 @@ function fts5Bm25Search(
     .map(t => (t.startsWith('"') && t.endsWith('"')) ? t : `"${t}"`)
     .join(' OR ');
 
-  if (!sanitized) return [];
+  if (!sanitized) {
+    setLastLexicalCapabilitySnapshot(probeFts5Capability(db));
+    return [];
+  }
 
   const folderFilter = specFolder
     ? 'AND (m.spec_folder = ? OR m.spec_folder LIKE ? || "/%")'
@@ -88,18 +205,50 @@ function fts5Bm25Search(
     LIMIT ?
   `;
 
+  const capability = probeFts5Capability(db);
+  setLastLexicalCapabilitySnapshot(capability);
+  if (capability.fallbackState !== 'ok') {
+    console.warn(`[sqlite-fts] FTS5 unavailable (${capability.fallbackState}); returning empty lexical lane results`);
+    return [];
+  }
+
   try {
     const rows = (db.prepare(sql) as Database.Statement).all(
       ...params
     ) as Array<Record<string, unknown>>;
 
-    return rows.map(row => ({
+    const normalizedRows = rows.map(row => ({
       ...row,
       id: row.id as number,
       fts_score: (row.fts_score as number) || 0,
     }));
+    setLastLexicalCapabilitySnapshot({
+      lexicalPath: 'fts5',
+      fallbackState: 'ok',
+    });
+    return normalizedRows;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
+    const failureSnapshot: LexicalCapabilitySnapshot = isNoSuchModuleFts5Error(error)
+      ? {
+          lexicalPath: 'bm25_fallback',
+          fallbackState: 'no_such_module_fts5',
+        }
+      : isBm25RuntimeFailure(error)
+        ? {
+            lexicalPath: 'bm25_fallback',
+            fallbackState: 'bm25_runtime_failure',
+          }
+        : msg.toLowerCase().includes('no such table: memory_fts')
+          ? {
+              lexicalPath: 'bm25_fallback',
+              fallbackState: 'missing_table',
+            }
+          : {
+              lexicalPath: 'bm25_fallback',
+              fallbackState: 'bm25_runtime_failure',
+            };
+    setLastLexicalCapabilitySnapshot(failureSnapshot);
     console.warn(`[sqlite-fts] BM25 FTS5 search failed: ${msg}`);
     return [];
   }
@@ -121,17 +270,7 @@ function fts5Bm25Search(
  * ```
  */
 function isFts5Available(db: Database.Database): boolean {
-  try {
-    const result = (db.prepare(
-      `SELECT name FROM sqlite_master WHERE type='table' AND name='memory_fts'`
-    ) as Database.Statement).get() as { name: string } | undefined;
-    return !!result;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return false;
-    }
-    return false;
-  }
+  return probeFts5Capability(db).fallbackState === 'ok';
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -141,13 +280,20 @@ function isFts5Available(db: Database.Database): boolean {
 export {
   BM25_FTS5_WEIGHTS as FTS5_BM25_WEIGHTS,
   fts5Bm25Search,
+  getLastLexicalCapabilitySnapshot,
   isFts5Available,
+  probeFts5Capability,
+  resetLastLexicalCapabilitySnapshot,
+  setLastLexicalCapabilitySnapshot,
 };
 
 /**
  * BM25 FTS result and option types exposed by the SQLite FTS module.
  */
 export type {
+  FallbackState,
   FtsBm25Result,
   FtsBm25Options,
+  LexicalCapabilitySnapshot,
+  LexicalPath,
 };

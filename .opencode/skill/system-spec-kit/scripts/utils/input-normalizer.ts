@@ -95,11 +95,11 @@ export interface RawInputData {
   projectPhase?: string;
   project_phase?: string;
   FILES?: Array<NormalizedFileEntry | Record<string, unknown>>;
-  observations?: Observation[];
-  userPrompts?: NormalizedUserPrompt[];
-  user_prompts?: NormalizedUserPrompt[];
-  recentContext?: RecentContext[];
-  recent_context?: RecentContext[];
+  observations?: Array<Observation | string>;
+  userPrompts?: Array<NormalizedUserPrompt | string>;
+  user_prompts?: Array<NormalizedUserPrompt | string>;
+  recentContext?: Array<RecentContext | string>;
+  recent_context?: Array<RecentContext | string>;
   saveMode?: SaveMode | string;
   save_mode?: SaveMode | string;
   [key: string]: unknown;
@@ -390,6 +390,91 @@ function cloneInputData<T>(data: T): T {
   return JSON.parse(JSON.stringify(data)) as T;
 }
 
+function buildObservationTitleFromNarrative(narrative: string): string {
+  const trimmedNarrative = narrative.trim();
+  if (trimmedNarrative.length === 0) {
+    return '';
+  }
+
+  const [firstSentence] = trimmedNarrative.split(/(?<=[.!?])\s+/);
+  return truncateOnWordBoundary(firstSentence || trimmedNarrative, 80);
+}
+
+function coerceUserPromptEntries(entries: Array<NormalizedUserPrompt | string>): NormalizedUserPrompt[] {
+  const nowIso = new Date().toISOString();
+  return entries.map((entry) => {
+    if (typeof entry === 'string') {
+      return {
+        prompt: entry,
+        timestamp: nowIso,
+      };
+    }
+    return entry;
+  });
+}
+
+function coerceObservationEntries(entries: Array<Observation | string>): Observation[] {
+  return entries.map((entry) => {
+    if (typeof entry === 'string') {
+      return {
+        title: buildObservationTitleFromNarrative(entry),
+        narrative: entry,
+        facts: [],
+      };
+    }
+    return entry;
+  });
+}
+
+function coerceRecentContextEntries(entries: Array<RecentContext | string>): RecentContext[] {
+  return entries.map((entry) => {
+    if (typeof entry === 'string') {
+      return {
+        request: entry,
+        learning: entry,
+      };
+    }
+    return entry;
+  });
+}
+
+function buildPromotedExchangePrompts(exchanges: unknown[], sessionSummary: string): NormalizedUserPrompt[] {
+  const sessionSummaryLower = sessionSummary.toLowerCase();
+  const promotedPrompts: NormalizedUserPrompt[] = [];
+
+  for (const exchange of exchanges.slice(0, 10)) {
+    const userInput = typeof exchange === 'object' && exchange !== null
+      ? (exchange as Record<string, unknown>).userInput || (exchange as Record<string, unknown>).user || ''
+      : '';
+    const inputStr = String(userInput).trim();
+    if (inputStr.length > 10 && !sessionSummaryLower.includes(inputStr.toLowerCase().slice(0, 50))) {
+      promotedPrompts.push({ prompt: inputStr, timestamp: new Date().toISOString() });
+    }
+  }
+
+  return promotedPrompts;
+}
+
+function buildToolCallObservations(toolCalls: unknown[]): Observation[] {
+  const observations: Observation[] = [];
+
+  for (const tc of toolCalls.slice(0, 10)) {
+    const tool = typeof tc === 'object' && tc !== null ? (tc as Record<string, unknown>) : {};
+    const toolName = String(tool.tool || tool.name || 'unknown').trim();
+    const toolTitle = String(tool.title || tool.action || '').trim();
+    if (toolName && toolTitle) {
+      observations.push({
+        type: 'implementation' as const,
+        title: `Tool: ${toolName}`,
+        narrative: toolTitle,
+        facts: [],
+      });
+    }
+  }
+
+  return observations;
+}
+
 function safeString(value: unknown, fallback: string): string {
   if (typeof value === 'string') return value;
   if (value != null && typeof value !== 'object') return String(value);
@@ -471,13 +556,19 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   // F-15: Field-by-field completion instead of early return — backfill missing arrays
   if (data.userPrompts || data.user_prompts || data.observations || data.recentContext || data.recent_context) {
     const cloned = cloneInputData(data) as NormalizedData;
-    if (!Array.isArray(cloned.userPrompts)) cloned.userPrompts = userPrompts;
-    if (!Array.isArray(cloned.recentContext)) cloned.recentContext = recentContext;
+    if (!Array.isArray(cloned.userPrompts)) cloned.userPrompts = userPrompts as NormalizedUserPrompt[];
+    if (!Array.isArray(cloned.recentContext)) cloned.recentContext = recentContext as RecentContext[];
     if (!Array.isArray(cloned.observations)) cloned.observations = [];
+    cloned.userPrompts = coerceUserPromptEntries(cloned.userPrompts as Array<NormalizedUserPrompt | string>);
+    cloned.recentContext = coerceRecentContextEntries(cloned.recentContext as Array<RecentContext | string>);
+    cloned.observations = coerceObservationEntries(cloned.observations as Array<Observation | string>);
     // F-16: Ensure FILES uses FileEntry format
     if (cloned.FILES && Array.isArray(cloned.FILES)) {
       cloned.FILES = cloned.FILES.map((f) => normalizeFileEntryLike(f));
     }
+    const sessionSummary = typeof data.sessionSummary === 'string'
+      ? data.sessionSummary
+      : (typeof data.session_summary === 'string' ? data.session_summary : '');
     // P0: Convert filesModified to FILES on fast-path (mirrors slow-path at lines 504-540)
     if (!cloned.FILES || (Array.isArray(cloned.FILES) && cloned.FILES.length === 0)) {
       const fmFast = Array.isArray(data.filesModified)
@@ -537,8 +628,14 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       }
     }
 
+    if (sessionSummary) {
+      cloned.observations.push(buildSessionSummaryObservation(sessionSummary, triggerPhrases));
+    }
     if (nextSteps.length > 0 && !hasPersistedNextStepsObservation(cloned.observations)) {
       cloned.observations.push(buildNextStepsObservation(nextSteps));
+    }
+    if (Array.isArray(data.toolCalls)) {
+      cloned.observations.push(...buildToolCallObservations(data.toolCalls));
     }
     if (triggerPhrases.length > 0) {
       cloned._manualTriggerPhrases = [...triggerPhrases];
@@ -583,6 +680,17 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
         for (const item of keyDecisions) {
           const obs = transformKeyDecision(item);
           if (obs) cloned.observations.push(obs);
+        }
+      }
+    }
+    if (Array.isArray(data.exchanges)) {
+      const promotedPrompts = buildPromotedExchangePrompts(data.exchanges, sessionSummary);
+      if (promotedPrompts.length > 0) {
+        const existingPrompts = new Set(cloned.userPrompts.map((prompt) => prompt.prompt));
+        for (const prompt of promotedPrompts) {
+          if (!existingPrompts.has(prompt.prompt)) {
+            cloned.userPrompts.push(prompt);
+          }
         }
       }
     }
@@ -705,37 +813,13 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   normalized.observations = dedupeObservationsByNarrative(observations);
 
   // T09b: Promote exchanges to multi-message userPrompts for richer semantic input
-  const promotedPrompts: Array<{ prompt: string; timestamp: string }> = [];
-  // T09b fast-path guard: slow-path and fast-path are separate functions, so this guards
-  // against rich payloads that already populated userPrompts via earlier normalization steps
-  if (Array.isArray(data.exchanges) && (!normalized.userPrompts || normalized.userPrompts.length < 3)) {
-    const sessionSummaryLower = (sessionSummary || '').toLowerCase();
-    for (const exchange of data.exchanges.slice(0, 10)) {
-      const userInput = typeof exchange === 'object' && exchange !== null
-        ? (exchange as Record<string, unknown>).userInput || (exchange as Record<string, unknown>).user || ''
-        : '';
-      const inputStr = String(userInput).trim();
-      if (inputStr.length > 10 && !sessionSummaryLower.includes(inputStr.toLowerCase().slice(0, 50))) {
-        promotedPrompts.push({ prompt: inputStr, timestamp: new Date().toISOString() });
-      }
-    }
-  }
+  const promotedPrompts: Array<{ prompt: string; timestamp: string }> = Array.isArray(data.exchanges)
+    ? buildPromotedExchangePrompts(data.exchanges, sessionSummary || '')
+    : [];
 
   // T09b: Promote toolCalls to implementation observations
   if (Array.isArray(data.toolCalls)) {
-    for (const tc of data.toolCalls.slice(0, 10)) {
-      const tool = typeof tc === 'object' && tc !== null ? (tc as Record<string, unknown>) : {};
-      const toolName = String(tool.tool || tool.name || 'unknown').trim();
-      const toolTitle = String(tool.title || tool.action || '').trim();
-      if (toolName && toolTitle) {
-        normalized.observations.push({
-          type: 'implementation' as const,
-          title: `Tool: ${toolName}`,
-          narrative: toolTitle,
-          facts: [],
-        });
-      }
-    }
+    normalized.observations.push(...buildToolCallObservations(data.toolCalls));
   }
 
   // T09b: Use promoted exchange prompts alongside sessionSummary fallback

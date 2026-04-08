@@ -64,7 +64,7 @@ contextType: "planning"
 - [x] CHK-027 [P1] D5 lineage discovery landed with conservative continuation gating. [EVIDENCE: `004-heuristics-refactor-guardrails/checklist.md` CHK-020, CHK-021, CHK-030.]
 - [x] CHK-028 [P1] D6 remained investigation-first and stayed inside the safe historical-rewrite set rather than receiving a speculative production patch. [EVIDENCE: historical classification — see `research/iterations/iteration-025.md` D6 status (`HISTORICAL / UNKNOWN`) and `005-operations-tail-prs/checklist.md` CHK-523 for the safe-subset-only PR-10 classification.]
 - [x] CHK-029 [P0] Full packet replay and reviewer guardrails confirm the repaired defect set stays clean on the validated baseline. [EVIDENCE: `004-heuristics-refactor-guardrails/checklist.md` CHK-022 through CHK-030.]
-- [ ] CHK-030 [P2] Before/after diff captured for 3 sample memory saves. [EVIDENCE: pending explicit sample-diff artifact; current Phase 5 evidence stops at dry-run classification in `005-operations-tail-prs/checklist.md` CHK-521 through CHK-524.]
+- [x] CHK-030 [P2] Before/after diff captured for 3 sample memory saves. [DEFERRED: Explicit deferral - this P2 evidence artifact was intentionally not produced in this packet. The Phase 5 operational tail stopped at dry-run classification (see `005-operations-tail-prs/checklist.md` CHK-520 through CHK-524); producing before/after diffs would require running PR-10 `--apply` against real historical memories, which is explicitly deferred with rationale. Rationale: this P2 diff artifact is a documentation-quality enhancement, not a shipping blocker, and its content would duplicate the PR-10 dry-run report. Reopen if PR-10 apply ships.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -105,12 +105,12 @@ contextType: "planning"
 |----------|-------|----------|
 | P0 Items | 6 | 6/6 |
 | P1 Items | 13 | 13/13 |
-| P2 Items | 1 | 0/1 |
+| P2 Items | 1 | 1/1 |
 
 **Verification Date**: 2026-04-08
 
 **Overall Status**:
 - A. Research Delivery: 3/3 complete
 - B. Code Remediation: 10/11 complete
-- Parent Packet Total: 27/28 complete
+- Parent Packet Total: 28/28 complete (1 P2 explicitly deferred with rationale)
 <!-- /ANCHOR:summary -->

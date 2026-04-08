@@ -1,14 +1,15 @@
 ---
-title: "Implementation Summary: Detector Provenance and Regression Floor [template:level_3/implementation-summary.md]"
-description: "Closeout placeholder for 007-detector-provenance-and-regression-floor."
+title: "Implementation Summary: Detector Provenance and Regression Floor"
+description: "Packet 007 closeout for detector provenance guardrails, frozen regression floor coverage, and the floor-versus-outcome boundary."
 trigger_phrases:
   - "007-detector-provenance-and-regression-floor"
   - "implementation"
   - "summary"
-importance_tier: "normal"
+  - "detector regression floor"
+importance_tier: "important"
 contextType: "implementation"
 ---
-# Implementation Summary: Detector Provenance and Regression Floor
+# Implementation Summary
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
@@ -22,7 +23,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 007-detector-provenance-and-regression-floor |
-| **Completed** | Not yet implemented |
+| **Completed** | 2026-04-08 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -31,7 +32,19 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet has been opened and scoped only. No runtime implementation has shipped from this folder yet; the current work establishes the documentation, dependency boundary, and verification seam for later coding work.
+Packet `007` shipped the bounded fallback the spec allows when no concrete AST-overclaim labels exist in `lib/search`: explicit provenance guardrails for the audited detector modules, a frozen regression floor that locks their current structural output, and a contract README section that keeps detector-floor success separate from user-visible quality claims.
+
+### Audit Outcome
+
+The audit did not find any live `parserProvenance: "ast"` assignments or equivalent AST-overclaim output labels inside the scoped `lib/search/` detector surfaces. I audited `evidence-gap-detector.ts`, `deterministic-extractor.ts`, `query-surrogates.ts`, `anchor-metadata.ts`, `retrieval-directives.ts`, and the `graph-lifecycle.ts` call site before taking the fallback path.
+
+### Shipped Guardrails
+
+`evidence-gap-detector.ts` now exports typed provenance metadata that labels both `predictGraphCoverage` and `detectEvidenceGap` as `heuristic`, with basis notes that describe the actual token-matching and statistical logic. `deterministic-extractor.ts` now exports typed provenance metadata that labels the save-time heading, alias, relation-phrase, and code-fence extractors as `regex`, which matches the implementation reality.
+
+### Frozen Regression Floor
+
+The new floor harness lives in `scripts/tests/detector-regression-floor.vitest.ts.test.ts`. It freezes small inline samples for the audited detectors and asserts two things together: the provenance label stays honest, and the detector output stays structurally stable. That gives successor packets a reusable regression floor without conflating the harness with broader structural-context quality.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -39,7 +52,11 @@ This packet has been opened and scoped only. No runtime implementation has shipp
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The folder was scaffolded and then documented as part of the approved follow-on train. This session established packet scope, dependencies, verification expectations, and ADR rationale only.
+I started by re-reading the packet docs, the R6 recommendation, the current shared-payload contract from packets `005` and `006`, and the existing `.opencode/skill/system-spec-kit/mcp_server/lib/contracts/README.md` wording. The code audit confirmed that `lib/search/` was missing honest, reusable provenance markers more than it was carrying concrete AST labels, so I kept the runtime change bounded: add typed provenance descriptors to the audited detector modules, freeze their current behavior in one scripts-side Vitest harness, and append the floor-versus-outcome boundary to `.opencode/skill/system-spec-kit/mcp_server/lib/contracts/README.md`.
+
+That approach preserved packet `005`'s certainty contract and packet `006`'s structural-trust axes without widening scope into new routing, dashboards, or detector subsystems. I then re-ran mcp-server typecheck, the new detector floor harness, and the `005`/`006` regression suites before closing the packet docs.
+
+Successor handoff is explicit in the shipped docs: later packets may reuse this floor for detector integrity only, and they still need separate outcome evaluation before making user-visible structural-quality claims. No parent-tracker update was required because packet `007` is independent inside the `026` train, and this closeout left the packet-local `memory/` and `scratch/` directories untouched.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -49,9 +66,9 @@ The folder was scaffolded and then documented as part of the approved follow-on 
 
 | Decision | Why |
 |----------|-----|
-| Create the packet now but keep it draft | The user asked to implement the phase train as spec work before runtime implementation begins. |
-| Keep the packet bounded to one seam | The research specifically rejects broad subsystem replacements. |
-| Leave runtime changes unclaimed | The packet currently documents future work only and should not overstate shipped behavior. |
+| Take the fallback path instead of inventing an AST bug | The audit found no concrete `ast` provenance labels in the scoped detector files, so the honest packet move was to prevent future overclaims and freeze current behavior rather than fabricate a label rewrite. |
+| Export typed provenance descriptors from the detector modules | That gives packet `007` a real runtime artifact that downstream code and tests can read, while keeping the labels aligned to the implementation reality (`heuristic` or `regex`). |
+| Keep the floor harness separate from outcome claims | R6 explicitly says frozen fixtures are a regression floor, not proof of user-visible structural quality, so the README and summary both keep that boundary explicit. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -61,9 +78,10 @@ The folder was scaffolded and then documented as part of the approved follow-on 
 
 | Check | Result |
 |-------|--------|
-| Packet docs created | PASS |
-| Placeholder text removed from packet-local docs | PASS |
-| Focused packet validation | Pending |
+| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/tsc-tmp npm run typecheck` | PASS |
+| `cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/detector-regression-floor.vitest.ts` | PASS (`1` file, `2` tests) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts` | PASS (`2` files, `9` tests) |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-detector-provenance-and-regression-floor` | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -71,6 +89,7 @@ The folder was scaffolded and then documented as part of the approved follow-on 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. This packet is scoped and documented but not yet implemented in runtime code.
-2. Successor packet work remains blocked on the dependencies named in `spec.md`.
+1. **No concrete AST overclaims were present in the audited `lib/search/` files.** This packet therefore ships explicit provenance guards and a frozen regression floor instead of behavior changes to nonexistent `ast` labels.
+2. **The frozen floor is not an outcome benchmark.** It proves detector integrity for the covered regex and heuristic lanes only; successor packets still need separate user-visible quality evaluation.
+3. **The scripts workspace needs a runnable suffix for plain Vitest discovery.** The harness keeps the requested `detector-regression-floor.vitest.ts` stem but uses the file name `detector-regression-floor.vitest.ts.test.ts` so `npx vitest run tests/detector-regression-floor.vitest.ts` resolves under the default scripts-side runner.
 <!-- /ANCHOR:limitations -->

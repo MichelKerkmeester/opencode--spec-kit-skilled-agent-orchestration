@@ -24,6 +24,25 @@ All variables are optional. The server runs with sensible defaults when none are
 | `?.trim()` | String, empty = use default |
 
 Total unique variables documented: 134 (including 7 legacy HYDRA aliases).
+
+### Provisional Measurement Contract
+
+Publication-facing metric rows now use the shared measurement contract from `lib/context/shared-payload.ts`.
+
+- Every publishable metric field must declare one certainty label: `exact`, `estimated`, `defaulted`, or `unknown`.
+- Headline multipliers stay blocked unless prompt, completion, cache-read, and cache-write token fields all have `provider_counted` authority. Later packets should reuse `canPublishMultiplier()` instead of inventing packet-local gates.
+- Publication-grade rows must carry methodology metadata with `schemaVersion`, `methodologyStatus`, and at least one provenance entry before they can be emitted.
+- There is no environment variable that disables or downgrades this contract. Telemetry and reporting toggles may increase supporting evidence, but they do not upgrade certainty labels or bypass the multiplier gate.
+
+### Adjacent Toggles
+
+These flags can add evidence around future reporting surfaces, but they must still honor the contract above:
+
+| Variable | Effect on measurement contract |
+|----------|--------------------------------|
+| `SPECKIT_EXTENDED_TELEMETRY` | Adds more detailed telemetry for later analysis, but does not change certainty or authority requirements. |
+| `SPECKIT_EVAL_LOGGING` | Persists evaluation events for later review, but does not authorize publication-grade multiplier claims. |
+| `SPECKIT_ABLATION` | Enables ablation studies, but any exported savings story still needs provider-counted authority plus methodology metadata. |
 <!-- /ANCHOR:overview -->
 
 ---

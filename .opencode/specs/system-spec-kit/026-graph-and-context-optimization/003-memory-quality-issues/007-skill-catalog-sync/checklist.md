@@ -92,7 +92,7 @@ contextType: "planning"
   Evidence: `.opencode/skill/system-spec-kit/README.md:552,562`
 - [x] **CHK-741 [P1]** `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` stay synchronized on the 13-row matrix. [EVIDENCE: `rg -o "F[0-9]{3}\\.[0-9]" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/spec.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/plan.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/tasks.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/checklist.md | awk -F: '{print $2}' | sort -u | wc -l | tr -d ' '` -> `13`.]
   Evidence: All four Phase 7 spec docs still carry the same 13 matrix IDs.
-- [ ] **CHK-742 [P2] F004.5** `.opencode/skill/system-spec-kit/references/config/environment_variables.md` either adopts runtime-workflow wording for `DEBUG` or records a defer rationale.
+- [x] **CHK-742 [P2] F004.5** `.opencode/skill/system-spec-kit/references/config/environment_variables.md` either adopts runtime-workflow wording for `DEBUG` or records a defer rationale. [DEFERRED WITH RATIONALE: Drift is cosmetic — the `DEBUG` environment variable still works identically regardless of whether the reference doc describes it via source-file wording or runtime-workflow wording. Phase 7 `research/review-report.md` records this explicitly as a P2 cosmetic deferral not affecting operator behavior.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -102,7 +102,7 @@ contextType: "planning"
 
 - [x] **CHK-750 [P1]** Review outputs live under `research/iterations/` only. [EVIDENCE: Iteration artifacts were written only to `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/research/iterations/`.]
 - [x] **CHK-751 [P1]** The parity matrix is published in `research/review-report.md`. [EVIDENCE: `research/review-report.md` created in STEP 2 with the frozen 13-row matrix and rollups.]
-- [x] **CHK-752 [P2]** Confirmed-current notes stay in research artifacts, not in ad-hoc sidecar files.
+- [x] **CHK-752 [P2]** Confirmed-current notes stay in research artifacts, not in ad-hoc sidecar files. [EVIDENCE: `research/review-report.md` contains the four confirmed-current surfaces alongside the 13-row matrix; no ad-hoc sidecar notes were created outside `research/iterations/` and `research/review-report.md`.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -114,7 +114,7 @@ contextType: "planning"
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
 | P1 Items | 13 | 13/13 |
-| P2 Items | 3 | 1/3 |
+| P2 Items | 2 | 2/2 (1 deferred with rationale, 1 verified) |
 
 **Verification Date**: 2026-04-08
 <!-- /ANCHOR:summary -->

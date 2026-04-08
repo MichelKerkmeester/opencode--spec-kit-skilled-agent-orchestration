@@ -5,15 +5,20 @@
 // + session_health in one call, merging results with hints.
 
 import { handleSessionResume } from './session-resume.js';
+import type { CachedSessionSummaryDecision } from './session-resume.js';
 import { handleSessionHealth } from './session-health.js';
 import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import {
   createSharedPayloadEnvelope,
+  makeStructuralTrust,
   summarizeUnknown,
+  summarizeCertaintyContract,
   trustStateFromStructuralStatus,
+  type SharedPayloadCertainty,
   type SharedPayloadEnvelope,
+  type SharedPayloadSection,
 } from '../lib/context/shared-payload.js';
 import {
   buildOpenCodeTransportPlan,
@@ -37,6 +42,7 @@ interface SessionBootstrapArgs {
 interface SessionBootstrapResult {
   resume: Record<string, unknown>;
   health: Record<string, unknown>;
+  cachedSummary?: CachedSessionSummaryDecision;
   structuralContext?: StructuralBootstrapContract;
   payloadContract?: SharedPayloadEnvelope;
   opencodeTransport?: OpenCodeTransportPlan;
@@ -63,6 +69,16 @@ function extractData(response: MCPResponse): Record<string, unknown> {
 function extractHints(data: Record<string, unknown>): string[] {
   if (Array.isArray(data.hints)) return data.hints as string[];
   return [];
+}
+
+function extractCachedSummary(
+  data: Record<string, unknown>,
+): CachedSessionSummaryDecision | null {
+  const candidate = data.cachedSummary;
+  if (candidate && typeof candidate === 'object') {
+    return candidate as CachedSessionSummaryDecision;
+  }
+  return null;
 }
 
 function buildNextActions(
@@ -98,6 +114,32 @@ function buildNextActions(
   }
 
   return [...nextActions].slice(0, 3);
+}
+
+function buildStructuralContextTrust(
+  structuralContext: StructuralBootstrapContract,
+) {
+  if (structuralContext.status === 'ready') {
+    return makeStructuralTrust({
+      parserProvenance: 'ast',
+      evidenceStatus: 'confirmed',
+      freshnessAuthority: 'live',
+    });
+  }
+
+  if (structuralContext.status === 'stale') {
+    return makeStructuralTrust({
+      parserProvenance: 'ast',
+      evidenceStatus: 'probable',
+      freshnessAuthority: 'stale',
+    });
+  }
+
+  return makeStructuralTrust({
+    parserProvenance: 'unknown',
+    evidenceStatus: 'unverified',
+    freshnessAuthority: 'unknown',
+  });
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -143,6 +185,11 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
     );
   }
 
+  const cachedSummary = extractCachedSummary(resumeData);
+  if (cachedSummary?.status === 'accepted') {
+    allHints.push('Cached continuity summary accepted as additive bootstrap context.');
+  }
+
   // Deduplicate hints
   const uniqueHints = [...new Set(allHints)];
 
@@ -151,35 +198,70 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const completeness = resumeData.error || healthData.error ? 'partial' : 'full';
   recordBootstrapEvent('tool', durationMs, completeness);
 
+  const resumeCertainty: SharedPayloadCertainty = resumeData.error ? 'unknown' : 'estimated';
+  const healthCertainty: SharedPayloadCertainty = healthData.error ? 'unknown' : 'estimated';
+  const cachedCertainty: SharedPayloadCertainty = cachedSummary?.status === 'accepted' ? 'estimated' : 'defaulted';
+  const structuralCertainty: SharedPayloadCertainty = 'exact';
+  const nextActionsCertainty: SharedPayloadCertainty = 'defaulted';
+  const structuralTrust = buildStructuralContextTrust(structuralContext);
+
+  const payloadSections: SharedPayloadSection[] = [
+    {
+      key: 'resume-surface',
+      title: 'Resume Surface',
+      content: summarizeUnknown(resumeData),
+      source: 'memory',
+      certainty: resumeCertainty,
+    },
+  ];
+  if (cachedSummary?.status === 'accepted' && cachedSummary.cachedSummary) {
+    payloadSections.push({
+      key: 'cached-continuity',
+      title: 'Cached Continuity',
+      content: [
+        cachedSummary.cachedSummary.continuityText,
+        `Cache tokens: create=${cachedSummary.cachedSummary.cacheCreationInputTokens}; read=${cachedSummary.cachedSummary.cacheReadInputTokens}`,
+        `Transcript: ${cachedSummary.cachedSummary.transcriptFingerprint}`,
+      ].join(' | '),
+      source: 'session',
+      certainty: cachedCertainty,
+    });
+  }
+  payloadSections.push(
+    {
+      key: 'health-surface',
+      title: 'Health Surface',
+      content: summarizeUnknown(healthData),
+      source: 'operational',
+      certainty: healthCertainty,
+    },
+    {
+      key: 'structural-context',
+      title: 'Structural Context',
+      content: structuralContext.summary,
+      source: 'code-graph',
+      certainty: structuralCertainty,
+      structuralTrust,
+    },
+    {
+      key: 'next-actions',
+      title: 'Next Actions',
+      content: buildNextActions(resumeData, healthData, structuralContext).join(' | '),
+      source: 'session',
+      certainty: nextActionsCertainty,
+    },
+  );
+
   const payloadContract = createSharedPayloadEnvelope({
     kind: 'bootstrap',
-    sections: [
-      {
-        key: 'resume-surface',
-        title: 'Resume Surface',
-        content: summarizeUnknown(resumeData),
-        source: 'memory',
-      },
-      {
-        key: 'health-surface',
-        title: 'Health Surface',
-        content: summarizeUnknown(healthData),
-        source: 'operational',
-      },
-      {
-        key: 'structural-context',
-        title: 'Structural Context',
-        content: structuralContext.summary,
-        source: 'code-graph',
-      },
-      {
-        key: 'next-actions',
-        title: 'Next Actions',
-        content: buildNextActions(resumeData, healthData, structuralContext).join(' | '),
-        source: 'session',
-      },
-    ],
-    summary: `Bootstrap payload: structural=${structuralContext.status}, resume=${resumeData.error ? 'error' : 'ok'}, health=${healthData.error ? 'error' : 'ok'}`,
+    sections: payloadSections,
+    summary: `Bootstrap payload: ${summarizeCertaintyContract([
+      { label: 'resume', certainty: resumeCertainty },
+      { label: 'health', certainty: healthCertainty },
+      ...(cachedSummary?.status === 'accepted' ? [{ label: 'cached', certainty: cachedCertainty }] : []),
+      { label: 'structural', certainty: structuralCertainty },
+      { label: 'nextActions', certainty: nextActionsCertainty },
+    ])}; structuralStatus=${structuralContext.status}`,
     provenance: {
       producer: 'session_bootstrap',
       sourceSurface: 'session_bootstrap',
@@ -203,6 +285,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const result: SessionBootstrapResult = {
     resume: resumeData,
     health: healthData,
+    ...(cachedSummary ? { cachedSummary } : {}),
     structuralContext,
     payloadContract,
     opencodeTransport: buildOpenCodeTransportPlan({

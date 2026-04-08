@@ -19,7 +19,7 @@ contextType: "planning"
 
 Create the bounded FTS hardening packet the research described: runtime lexical-path truth, explicit fallback status, and a truthful forced-degrade matrix that preserves current semantics when FTS5 is unavailable.
 
-**Key Decisions**: Record the real lexical lane taken at runtime and reject any overstated `fts4_match` fallback claim.
+**Key Decisions**: Record the real lexical lane taken at runtime and reject any overstated legacy fallback claim.
 
 **Critical Dependencies**: Research recommendation R7; this packet is the hard predecessor for `002-implement-cache-warning-hooks`.
 
@@ -31,7 +31,7 @@ Create the bounded FTS hardening packet the research described: runtime lexical-
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
 | **Parent Packet** | `026-graph-and-context-optimization` |
@@ -65,7 +65,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 - Preservation of current retrieval semantics when FTS5 is unavailable.
 
 ### Out of Scope
-- Any `fts4_match` fallback lane claim.
+- Any unsupported legacy fallback lane claim.
 - Broader search feature work.
 - New search UI or user-facing changes.
 
@@ -93,7 +93,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 | REQ-002 | `memory_search` records the lexical path chosen at runtime. | Search responses and logs identify whether the lexical lane used `FTS5`, `LIKE`, or BM25 fallback. |
 | REQ-003 | Fallback state is explicit and truthful. | `memory_search` responses surface fallback status directly instead of forcing callers to infer it from missing fields or warnings. |
 | REQ-004 | Current retrieval semantics remain intact when FTS5 is unavailable. | The degraded path preserves the existing behavior contract instead of failing closed or changing result-shape semantics. |
-| REQ-005 | The packet does not overstate an unavailable `fts4_match` lane. | No packet doc, test, or runtime surface claims `fts4_match` as a supported fallback lane. |
+| REQ-005 | The packet does not overstate an unavailable legacy lexical lane. | No packet doc, test, or runtime surface claims an unsupported fallback lane as supported. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -120,7 +120,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Memory search records which lexical path was chosen at runtime, exposes fallback status explicitly, preserves current semantics when FTS5 is unavailable, and ships a truthful forced-degrade matrix that covers compile-probe miss, missing table, `no such module: fts5`, and BM25 runtime failure without overstating an `fts4_match` lane.
+- **SC-001**: Memory search records which lexical path was chosen at runtime, exposes fallback status explicitly, preserves current semantics when FTS5 is unavailable, and ships a truthful forced-degrade matrix that covers compile-probe miss, missing table, `no such module: fts5`, and BM25 runtime failure without overstating an unsupported fallback lane.
 - **SC-002**: Phase `002-implement-cache-warning-hooks` has a stable predecessor contract for lexical-path truth and fallback-state semantics.
 - **SC-003**: Packet docs, tests, and runtime surfaces use the same truthful lane vocabulary.
 <!-- /ANCHOR:success-criteria -->
@@ -134,7 +134,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 
 **Given** the SQLite build supports FTS5 but the `memory_fts` table is missing, **when** lexical search runs, **then** the runtime records that missing-table degrade case without pretending the lexical lane failed for the same reason as a compile-probe miss.
 
-**Given** the runtime hits `no such module: fts5`, **when** the lexical helper probes or executes, **then** the forced-degrade matrix records that engine-level failure explicitly and does not claim a hidden `fts4_match` lane.
+**Given** the runtime hits `no such module: fts5`, **when** the lexical helper probes or executes, **then** the forced-degrade matrix records that engine-level failure explicitly and does not claim a hidden unsupported fallback lane.
 
 **Given** the BM25 ranking call fails at runtime, **when** lexical search is recovered, **then** the response and tests record BM25 runtime failure as its own degrade case rather than silently collapsing it into success.
 
@@ -148,7 +148,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Risk | Fallback labels drift away from real runtime behavior | High | Keep runtime logging, response metadata, docs, and tests on the same forced-degrade vocabulary. |
-| Risk | The packet overstates a lexical fallback lane that does not really exist | High | Reject any `fts4_match` claim in docs, code, and test fixtures. |
+| Risk | The packet overstates a lexical fallback lane that does not really exist | High | Reject any unsupported fallback claim in docs, code, and test fixtures. |
 <!-- /ANCHOR:risks -->
 
 ---

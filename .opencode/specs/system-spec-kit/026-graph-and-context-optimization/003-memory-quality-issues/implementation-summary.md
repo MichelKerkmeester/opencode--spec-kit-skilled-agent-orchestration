@@ -206,5 +206,5 @@ RW-B and RW-A inherited `service_tier=fast` from `~/.codex/config.toml`; RW-C an
 1. **Parent strict validation is not yet fully green.** The remaining blockers sit in out-of-scope packet-root files and a saved `memory/` document, not in the scoped files updated here.
 2. **PR-10 does not include apply-time results in this packet.** The dry-run classification exists, but no historical-file rewrite should be described as complete.
 3. **PR-11 remains deferred.** The packet captures the rationale and reopen triggers, but not a shipped lock-hardening implementation.
-4. **One packet-level historical diff artifact is still pending.** The parent checklist still leaves the "3 sample memory saves" diff item open because the current evidence stops at dry-run classification.
+4. **One packet-level historical diff artifact is explicitly deferred.** The parent checklist CHK-030 (P2) was formally deferred rather than produced in this packet. Producing 3 before/after sample-memory-save diffs would have required running PR-10 `--apply` against real historical files, which is itself explicitly deferred. The dry-run classification report at `005-operations-tail-prs/scratch/pr10-dry-run-report.json` serves as the closest available evidence. Reopen if PR-10 apply ships.
 <!-- /ANCHOR:limitations -->

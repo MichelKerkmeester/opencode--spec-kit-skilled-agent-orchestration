@@ -4,6 +4,8 @@
 // Phase 020: Composite MCP tool that merges memory resume context,
 // code graph status, and CocoIndex availability into a single call.
 
+import { createHash } from 'node:crypto';
+import { statSync } from 'node:fs';
 import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import { handleMemoryContext } from './memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
@@ -14,8 +16,11 @@ import type { StructuralBootstrapContract } from '../lib/session/session-snapsho
 import {
   createSharedPayloadEnvelope,
   summarizeUnknown,
+  summarizeCertaintyContract,
   trustStateFromStructuralStatus,
+  type SharedPayloadCertainty,
   type SharedPayloadEnvelope,
+  type SharedPayloadSection,
 } from '../lib/context/shared-payload.js';
 import {
   buildOpenCodeTransportPlan,
@@ -25,11 +30,58 @@ import {
   buildCodeGraphOpsContract,
   type CodeGraphOpsContract,
 } from '../lib/code-graph/ops-hardening.js';
+import { loadMostRecentState, type HookProducerMetadata, type HookState } from '../hooks/claude/hook-state.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */
+
+export const CACHED_SESSION_SUMMARY_SCHEMA_VERSION = 1;
+export const CACHED_SESSION_SUMMARY_MAX_AGE_MS = 30 * 60 * 1000;
+
+export interface CachedSessionSummaryCandidate {
+  schemaVersion: number;
+  lastSpecFolder: string | null;
+  summaryText: string | null;
+  extractedAt: string | null;
+  stateUpdatedAt: string | null;
+  producerMetadata: HookProducerMetadata | null;
+}
+
+export interface CachedSessionSummary {
+  schemaVersion: number;
+  lastSpecFolder: string;
+  summaryText: string;
+  extractedAt: string;
+  lastClaudeTurnAt: string;
+  transcriptPath: string;
+  transcriptFingerprint: string;
+  cacheCreationInputTokens: number;
+  cacheReadInputTokens: number;
+  continuityText: string;
+  startupHint: string;
+}
+
+export interface CachedSessionSummaryDecision {
+  status: 'accepted' | 'rejected';
+  category: 'accepted' | 'fidelity' | 'freshness';
+  reason:
+    | 'accepted'
+    | 'missing_state'
+    | 'schema_version_mismatch'
+    | 'missing_summary'
+    | 'missing_producer_metadata'
+    | 'missing_required_fields'
+    | 'transcript_unreadable'
+    | 'transcript_identity_mismatch'
+    | 'stale_summary'
+    | 'summary_precedes_producer_turn'
+    | 'scope_mismatch'
+    | 'unknown_scope';
+  detail: string;
+  cachedSummary: CachedSessionSummary | null;
+}
 
 interface SessionResumeArgs {
   specFolder?: string;
@@ -53,6 +105,7 @@ interface SessionResumeResult {
   memory: Record<string, unknown>;
   codeGraph: CodeGraphStatus;
   cocoIndex: CocoIndexStatus;
+  cachedSummary?: CachedSessionSummaryDecision;
   structuralContext?: StructuralBootstrapContract;
   sessionQuality?: 'healthy' | 'degraded' | 'critical' | 'unknown';
   payloadContract?: SharedPayloadEnvelope;
@@ -62,7 +115,275 @@ interface SessionResumeResult {
 }
 
 /* ───────────────────────────────────────────────────────────────
-   2. HANDLER
+   2. HELPERS
+──────────────────────────────────────────────────────────────── */
+
+function normalizeSpecFolder(specFolder: string | null | undefined): string | null {
+  if (typeof specFolder !== 'string') {
+    return null;
+  }
+
+  const trimmed = specFolder.trim();
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  return trimmed.replace(/^\.opencode\//, '');
+}
+
+function parseIsoMs(value: string | null | undefined): number | null {
+  if (typeof value !== 'string' || value.trim().length === 0) {
+    return null;
+  }
+
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+function isFiniteNonNegativeNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0;
+}
+
+function buildTranscriptFingerprint(
+  transcriptPath: string,
+  sizeBytes: number,
+  modifiedAtMs: number,
+): string {
+  return createHash('sha256')
+    .update(`${transcriptPath}:${sizeBytes}:${modifiedAtMs}`)
+    .digest('hex')
+    .slice(0, 16);
+}
+
+function rejectCachedSummary(
+  category: 'fidelity' | 'freshness',
+  reason: CachedSessionSummaryDecision['reason'],
+  detail: string,
+): CachedSessionSummaryDecision {
+  return {
+    status: 'rejected',
+    category,
+    reason,
+    detail,
+    cachedSummary: null,
+  };
+}
+
+export function buildCachedSessionSummaryCandidate(
+  state: HookState | null,
+): CachedSessionSummaryCandidate | null {
+  if (!state) {
+    return null;
+  }
+
+  return {
+    schemaVersion: CACHED_SESSION_SUMMARY_SCHEMA_VERSION,
+    lastSpecFolder: state.lastSpecFolder,
+    summaryText: state.sessionSummary?.text ?? null,
+    extractedAt: state.sessionSummary?.extractedAt ?? null,
+    stateUpdatedAt: state.updatedAt,
+    producerMetadata: state.producerMetadata,
+  };
+}
+
+export function evaluateCachedSessionSummaryCandidate(
+  candidate: CachedSessionSummaryCandidate | null,
+  options: {
+    specFolder?: string;
+    nowMs?: number;
+    maxAgeMs?: number;
+  } = {},
+): CachedSessionSummaryDecision {
+  if (!candidate) {
+    return rejectCachedSummary('fidelity', 'missing_state', 'No recent hook state was available for cached continuity reuse.');
+  }
+
+  if (candidate.schemaVersion !== CACHED_SESSION_SUMMARY_SCHEMA_VERSION) {
+    return rejectCachedSummary(
+      'fidelity',
+      'schema_version_mismatch',
+      `Expected schema version ${CACHED_SESSION_SUMMARY_SCHEMA_VERSION} but received ${String(candidate.schemaVersion)}.`,
+    );
+  }
+
+  const summaryText = candidate.summaryText?.trim() ?? '';
+  if (summaryText.length === 0 || parseIsoMs(candidate.extractedAt) === null) {
+    return rejectCachedSummary(
+      'fidelity',
+      'missing_summary',
+      'Cached continuity requires a non-empty session summary with a valid extractedAt timestamp.',
+    );
+  }
+
+  const producerMetadata = candidate.producerMetadata;
+  if (!producerMetadata) {
+    return rejectCachedSummary(
+      'fidelity',
+      'missing_producer_metadata',
+      'Producer metadata from packet 002 was missing, so cached continuity cannot be trusted.',
+    );
+  }
+
+  const transcript = producerMetadata.transcript;
+  const cacheTokens = producerMetadata.cacheTokens;
+  const producerTurnMs = parseIsoMs(producerMetadata.lastClaudeTurnAt);
+  if (
+    producerTurnMs === null
+    || !transcript
+    || typeof transcript.path !== 'string'
+    || transcript.path.trim().length === 0
+    || typeof transcript.fingerprint !== 'string'
+    || transcript.fingerprint.trim().length === 0
+    || !isFiniteNonNegativeNumber(transcript.sizeBytes)
+    || parseIsoMs(transcript.modifiedAt) === null
+    || !cacheTokens
+    || !isFiniteNonNegativeNumber(cacheTokens.cacheCreationInputTokens)
+    || !isFiniteNonNegativeNumber(cacheTokens.cacheReadInputTokens)
+  ) {
+    return rejectCachedSummary(
+      'fidelity',
+      'missing_required_fields',
+      'Producer metadata was missing required transcript identity or cache token fields.',
+    );
+  }
+
+  let transcriptStat: ReturnType<typeof statSync>;
+  try {
+    transcriptStat = statSync(transcript.path);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    return rejectCachedSummary(
+      'fidelity',
+      'transcript_unreadable',
+      `Transcript identity could not be confirmed because the transcript was unreadable: ${message}`,
+    );
+  }
+
+  const expectedFingerprint = buildTranscriptFingerprint(
+    transcript.path,
+    transcriptStat.size,
+    transcriptStat.mtimeMs,
+  );
+  if (
+    transcript.sizeBytes !== transcriptStat.size
+    || transcript.modifiedAt !== transcriptStat.mtime.toISOString()
+    || transcript.fingerprint !== expectedFingerprint
+  ) {
+    return rejectCachedSummary(
+      'fidelity',
+      'transcript_identity_mismatch',
+      'Transcript path, fingerprint, or file stats no longer match the persisted producer identity.',
+    );
+  }
+
+  const extractedAtMs = parseIsoMs(candidate.extractedAt);
+  const nowMs = options.nowMs ?? Date.now();
+  const maxAgeMs = options.maxAgeMs ?? CACHED_SESSION_SUMMARY_MAX_AGE_MS;
+  if (extractedAtMs === null || nowMs - extractedAtMs > maxAgeMs) {
+    return rejectCachedSummary(
+      'freshness',
+      'stale_summary',
+      `Cached summary age exceeded the freshness window of ${maxAgeMs}ms.`,
+    );
+  }
+
+  if (extractedAtMs < producerTurnMs) {
+    return rejectCachedSummary(
+      'freshness',
+      'summary_precedes_producer_turn',
+      'Cached summary predates the latest producer turn metadata and is therefore invalidated.',
+    );
+  }
+
+  const expectedSpecFolder = normalizeSpecFolder(options.specFolder);
+  const cachedSpecFolder = normalizeSpecFolder(candidate.lastSpecFolder);
+  if (expectedSpecFolder) {
+    if (!cachedSpecFolder) {
+      return rejectCachedSummary(
+        'freshness',
+        'unknown_scope',
+        'A target spec folder was requested, but the cached summary did not carry a scope anchor.',
+      );
+    }
+
+    if (cachedSpecFolder !== expectedSpecFolder) {
+      return rejectCachedSummary(
+        'freshness',
+        'scope_mismatch',
+        `Cached summary scope ${cachedSpecFolder} did not match requested scope ${expectedSpecFolder}.`,
+      );
+    }
+  } else if (!cachedSpecFolder) {
+    return rejectCachedSummary(
+      'freshness',
+      'unknown_scope',
+      'Cached summary scope was unknown, so the consumer failed closed instead of guessing.',
+    );
+  }
+
+  const continuityText = `Last session worked on: ${cachedSpecFolder}\nSummary: ${summaryText}`;
+  return {
+    status: 'accepted',
+    category: 'accepted',
+    reason: 'accepted',
+    detail: 'Cached summary passed fidelity and freshness gates and may be used additively.',
+    cachedSummary: {
+      schemaVersion: candidate.schemaVersion,
+      lastSpecFolder: cachedSpecFolder,
+      summaryText,
+      extractedAt: candidate.extractedAt!,
+      lastClaudeTurnAt: producerMetadata.lastClaudeTurnAt!,
+      transcriptPath: transcript.path,
+      transcriptFingerprint: transcript.fingerprint,
+      cacheCreationInputTokens: cacheTokens.cacheCreationInputTokens,
+      cacheReadInputTokens: cacheTokens.cacheReadInputTokens,
+      continuityText,
+      startupHint: continuityText,
+    },
+  };
+}
+
+export function getCachedSessionSummaryDecision(
+  options: {
+    specFolder?: string;
+    nowMs?: number;
+    maxAgeMs?: number;
+    state?: HookState | null;
+  } = {},
+): CachedSessionSummaryDecision {
+  const candidate = buildCachedSessionSummaryCandidate(options.state ?? loadMostRecentState());
+  return evaluateCachedSessionSummaryCandidate(candidate, options);
+}
+
+export function applyCachedSummaryAdditively<T extends Record<string, unknown>>(
+  baseline: T,
+  decision: CachedSessionSummaryDecision,
+): T & { cachedSummary?: CachedSessionSummary } {
+  if (decision.status !== 'accepted' || !decision.cachedSummary) {
+    return { ...baseline };
+  }
+
+  return {
+    ...baseline,
+    cachedSummary: decision.cachedSummary,
+  };
+}
+
+export function logCachedSummaryDecision(
+  surface: string,
+  decision: CachedSessionSummaryDecision,
+): void {
+  if (decision.status === 'accepted' || decision.reason === 'missing_state') {
+    return;
+  }
+
+  console.error(
+    `[${surface}] Cached summary rejected (${decision.category}): ${decision.reason} — ${decision.detail}`,
+  );
+}
+
+/* ───────────────────────────────────────────────────────────────
+   3. HANDLER
 ──────────────────────────────────────────────────────────────── */
 
 /** Handle session_resume tool call — composite resume with memory + graph + cocoindex */
@@ -142,6 +463,14 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     hints.push(`Structural context is ${structuralContext.status}. Call session_bootstrap to refresh.`);
   }
 
+  // Keep live resume authoritative; cached continuity only appends bounded notes when every gate passes.
+  const cachedSummaryDecision = getCachedSessionSummaryDecision({ specFolder: args.specFolder });
+  if (cachedSummaryDecision.status === 'accepted') {
+    hints.push('Cached continuity summary accepted as additive resume context.');
+  } else {
+    logCachedSummaryDecision('session_resume', cachedSummaryDecision);
+  }
+
   let sessionQuality: SessionResumeResult['sessionQuality'];
   if (args.minimal) {
     try {
@@ -151,38 +480,75 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     }
   }
 
+  const memoryCertainty: SharedPayloadCertainty = args.minimal
+    ? 'defaulted'
+    : memoryResult.error
+      ? 'unknown'
+      : 'estimated';
+  const cachedCertainty: SharedPayloadCertainty = cachedSummaryDecision.status === 'accepted' ? 'estimated' : 'defaulted';
+  const codeGraphCertainty: SharedPayloadCertainty = codeGraph.status === 'error' ? 'unknown' : 'exact';
+  const cocoIndexCertainty: SharedPayloadCertainty = 'exact';
+  const structuralCertainty: SharedPayloadCertainty = 'exact';
+
+  const payloadSections: SharedPayloadSection[] = [
+    {
+      key: 'memory-resume',
+      title: 'Memory Resume',
+      content: summarizeUnknown(memoryResult),
+      source: 'memory',
+      certainty: memoryCertainty,
+    },
+  ];
+  if (cachedSummaryDecision.status === 'accepted' && cachedSummaryDecision.cachedSummary) {
+    payloadSections.push({
+      key: 'cached-continuity',
+      title: 'Cached Continuity',
+      content: [
+        cachedSummaryDecision.cachedSummary.continuityText,
+        `Cache tokens: create=${cachedSummaryDecision.cachedSummary.cacheCreationInputTokens}; read=${cachedSummaryDecision.cachedSummary.cacheReadInputTokens}`,
+        `Transcript: ${cachedSummaryDecision.cachedSummary.transcriptFingerprint}`,
+      ].join('\n'),
+      source: 'session',
+      certainty: cachedCertainty,
+    });
+  }
+  payloadSections.push(
+    {
+      key: 'code-graph-status',
+      title: 'Code Graph Status',
+      content: `status=${codeGraph.status}; files=${codeGraph.fileCount}; nodes=${codeGraph.nodeCount}; edges=${codeGraph.edgeCount}; lastScan=${codeGraph.lastScan ?? 'unknown'}`,
+      source: 'code-graph',
+      certainty: codeGraphCertainty,
+    },
+    {
+      key: 'cocoindex-status',
+      title: 'CocoIndex Status',
+      content: cocoIndex.available
+        ? `available at ${cocoIndex.binaryPath}`
+        : `unavailable; expected at ${cocoIndex.binaryPath}`,
+      source: 'semantic',
+      certainty: cocoIndexCertainty,
+    },
+    {
+      key: 'structural-context',
+      title: 'Structural Context',
+      content: structuralContext.summary,
+      source: 'code-graph',
+      certainty: structuralCertainty,
+    },
+  );
+
   // ── Build composite result ──────────────────────────────────
   const payloadContract = createSharedPayloadEnvelope({
     kind: 'resume',
-    sections: [
-      {
-        key: 'memory-resume',
-        title: 'Memory Resume',
-        content: summarizeUnknown(memoryResult),
-        source: 'memory',
-      },
-      {
-        key: 'code-graph-status',
-        title: 'Code Graph Status',
-        content: `status=${codeGraph.status}; files=${codeGraph.fileCount}; nodes=${codeGraph.nodeCount}; edges=${codeGraph.edgeCount}; lastScan=${codeGraph.lastScan ?? 'unknown'}`,
-        source: 'code-graph',
-      },
-      {
-        key: 'cocoindex-status',
-        title: 'CocoIndex Status',
-        content: cocoIndex.available
-          ? `available at ${cocoIndex.binaryPath}`
-          : `unavailable; expected at ${cocoIndex.binaryPath}`,
-        source: 'semantic',
-      },
-      {
-        key: 'structural-context',
-        title: 'Structural Context',
-        content: structuralContext.summary,
-        source: 'code-graph',
-      },
-    ],
-    summary: `Resume payload: memory=${memoryResult.error ? 'degraded' : args.minimal ? 'minimal' : 'available'}, graph=${codeGraph.status}, cocoindex=${cocoIndex.available ? 'available' : 'missing'}`,
+    sections: payloadSections,
+    summary: `Resume payload: ${summarizeCertaintyContract([
+      { label: 'memory', certainty: memoryCertainty },
+      ...(cachedSummaryDecision.status === 'accepted' ? [{ label: 'cached', certainty: cachedCertainty }] : []),
+      { label: 'graph', certainty: codeGraphCertainty },
+      { label: 'cocoindex', certainty: cocoIndexCertainty },
+      { label: 'structural', certainty: structuralCertainty },
+    ])}; graph=${codeGraph.status}; graphStatus=${codeGraph.status}`,
     provenance: {
       producer: 'session_resume',
       sourceSurface: 'session_resume',
@@ -201,6 +567,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     memory: memoryResult,
     codeGraph,
     cocoIndex,
+    cachedSummary: cachedSummaryDecision,
     structuralContext,
     payloadContract,
     opencodeTransport: buildOpenCodeTransportPlan({

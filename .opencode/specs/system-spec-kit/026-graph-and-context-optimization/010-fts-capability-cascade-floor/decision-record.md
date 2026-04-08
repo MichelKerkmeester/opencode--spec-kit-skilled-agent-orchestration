@@ -37,7 +37,7 @@ R7 says the FTS substrate is already mostly shipped, but runtime truth still nee
 ### Constraints
 
 - Must preserve current retrieval semantics when FTS5 is unavailable.
-- Must not overstate an `fts4_match` fallback lane.
+- Must not overstate an unsupported legacy fallback lane.
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -59,7 +59,7 @@ R7 says the FTS substrate is already mostly shipped, but runtime truth still nee
 |--------|------|------|-------|
 | **FTS capability cascade floor packet** | Low-risk hardening that stabilizes successor contracts | Still needs later packets for higher-level user-facing work | 8/10 |
 | **Skip straight to phase 002** | Feels faster for cache-warning work | Leaves lexical-path truth and degrade semantics unresolved | 5/10 |
-| **Claim an `fts4_match` lane anyway** | Sounds like extra coverage | Not supported by the research and would overstate the runtime | 1/10 |
+| **Claim an unsupported legacy lane anyway** | Sounds like extra coverage | Not supported by the research and would overstate the runtime | 1/10 |
 
 **Why this one**: It preserves the refined packet order and keeps successor work from relying on guessed search capabilities.
 <!-- /ANCHOR:adr-001-alternatives -->
@@ -106,8 +106,9 @@ R7 says the FTS substrate is already mostly shipped, but runtime truth still nee
 ### Implementation
 
 **What changes**:
-- Packet-local spec, plan, tasks, checklist, decision-record, and implementation-summary documents.
-- Later runtime and test work in the owner surfaces named in `spec.md`.
+- Packet-local runtime truth now ships in `memory-search.ts` and `sqlite-fts.ts`, with the handler surfacing `lexicalPath` and `fallbackState` directly on `memory_search` responses.
+- Focused tests now freeze compile-probe miss, missing table, `no such module: fts5`, and BM25 runtime failure as distinct degrade cases.
+- Packet docs and the runtime search README now describe the same forced-degrade vocabulary, with packet `002-implement-cache-warning-hooks` called out as the downstream consumer.
 
 **How to roll back**: Revert packet-local runtime changes, keep phase `002` blocked, and reopen the seam only after the truthful fallback contract is restored.
 <!-- /ANCHOR:adr-001-impl -->
