@@ -1,19 +1,18 @@
 {
-  "timestamp": "09-04-26 10-30",
-  "messageCount": 1,
-  "decisionCount": 0,
+  "timestamp": "09-04-26 12-40",
+  "messageCount": 0,
+  "decisionCount": 4,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
+    "totalProcessed": 0,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 40,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-09T09:30:10.810Z",
+        "timestamp": "2026-04-09T11:40:09.310Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +49,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:1",
-          "kept_items:1"
+          "input_items:0",
+          "kept_items:0"
         ]
       }
     ],
@@ -61,12 +60,13 @@
       "duplicate": 0,
       "lowQuality": 0
     },
-    "_note": "qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)"
+    "input_completeness_score": 0,
+    "_note": "input_completeness_score is 0-100 input completeness; render_quality_score is 0.0-1.0 rendered wrapper quality"
   },
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-09T09:30:10.337Z",
+      "timestamp": "2026-04-09T11:40:08.965Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:20"
+        "processed_fields:39"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-09T09:30:10.810Z",
+      "timestamp": "2026-04-09T11:40:09.310Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -168,13 +168,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:1",
-        "kept_items:1"
+        "input_items:0",
+        "kept_items:0"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-09T09:30:10.841Z",
+      "timestamp": "2026-04-09T11:40:09.342Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,10 +191,10 @@
       ],
       "passedThrough": [
         "current_spec:014-code-graph-upgrades",
-        "trigger_phrases:23",
+        "trigger_phrases:4",
         "key_topics:12",
-        "captured_file_count:0",
-        "filesystem_file_count:0"
+        "captured_file_count:5",
+        "filesystem_file_count:5"
       ]
     }
   ],
@@ -209,14 +209,14 @@
       "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 0
     }
   },
   "fileCounts": {
-    "fileCount": 0,
-    "capturedFileCount": 0,
-    "filesystemFileCount": 0,
-    "gitChangedFileCount": 0
+    "fileCount": 5,
+    "capturedFileCount": 5,
+    "filesystemFileCount": 5,
+    "gitChangedFileCount": 5
   },
   "sourceProvenance": {
     "transcriptPath": "",
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 2114,
-    "updatedAt": "2026-04-09T09:30:12.288Z",
-    "generatedAt": "2026-04-09T09:30:12.288Z",
+    "memoryId": 2116,
+    "updatedAt": "2026-04-09T11:40:10.433Z",
+    "generatedAt": "2026-04-09T11:40:10.433Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }
