@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Publication Gate
+// ───────────────────────────────────────────────────────────────────
+
 import {
   PUBLICATION_METHODOLOGY_STATUSES,
   canPublishMultiplier,
