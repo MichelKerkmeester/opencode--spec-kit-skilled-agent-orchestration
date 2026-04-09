@@ -1,50 +1,49 @@
 ---
-title: "Ran 7 Iteration Deep Review On [003-memory-quality-issues/08-04-26_14-26__ran-7-iteration-deep-review-on-this-packet]"
-description: "Ran 7-iteration deep-review on this packet delegating every iteration to cli-codex exec with...; Delegate every deep-review iteration to cli-codex gpt-5.; Use..."
-# Canonical classification lives in frontmatter; MEMORY METADATA mirrors these values.
+title: Ran 7 Iteration Deep Review On
+name: 08-04-26_14-26__ran-7-iteration-deep-review-on-this-packet
+description: Ran 7-iteration deep-review on this packet delegating every iteration to cli-codex exec with...; Delegate every deep-review iteration to cli-codex gpt-5.; Use...
+type: episodic
 trigger_phrases:
-  - "deep review 003 memory quality"
-  - "cli-codex deep review"
-  - "gpt-5.4 high fast mode review"
-  - "review report planning packet"
-  - "rollup drift review"
-  - "shipped code bug cluster"
-  - "operator contract drift"
-  - "hook blocked"
-  - "blocked inside"
-  - "verdict fail"
-  - "read only"
-  - "test in ten seconds"
-  - "setup prompt"
-  - "superset wrapper"
-  - "review config"
-  - "iteration cli-codex"
-  - "delegate every"
-  - "every deep-review"
-  - "deep-review iteration"
-  - "directly instead"
-  - "instead superset"
-  - "wrapper superset"
-  - "wrapper stalled"
-  - "stalled sanity"
-  - "sanity check"
-  - "check notify"
-  - "notify hook"
-  - "inside wrapped"
-  - "memory quality issues"
-importance_tier: "important"
-contextType: "review"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- deep review 003 memory quality
+- cli-codex deep review
+- gpt-5.4 high fast mode review
+- review report planning packet
+- rollup drift review
+- shipped code bug cluster
+- operator contract drift
+- hook blocked
+- blocked inside
+- verdict fail
+- read only
+- test in ten seconds
+- setup prompt
+- superset wrapper
+- review config
+- iteration cli-codex
+- delegate every
+- every deep-review
+- deep-review iteration
+- directly instead
+- instead superset
+- wrapper superset
+- wrapper stalled
+- stalled sanity
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 quality_score: 0.97
-quality_flags:
-  - "has_topical_mismatch"
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+quality_flags: []
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
 
 # Ran 7 Iteration Deep Review On This Packet
@@ -164,6 +163,21 @@ Next: Operator runs spec_kit plan against the Planning Packet embedded in review
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 
 ## PROJECT STATE SNAPSHOT
@@ -213,7 +227,7 @@ Ran 7-iteration deep-review on this packet delegating every iteration to cli-cod
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 
 ## 2. DETAILED CHANGES
 
@@ -233,7 +247,7 @@ Operator runs spec_kit plan against the Planning Packet embedded in review-repor
 **Details:** Next: Operator runs spec_kit plan against the Planning Packet embedded in review-report.md | Follow-up: Start with rollup normalization workstream because it is lowest risk and unblocks audit | Follow-up: Follow with shipped code fixes workstream, security findings first | Follow-up: Reconcile operator telemetry contract as a small standalone change
 <!-- /ANCHOR:guide-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -509,6 +523,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 
 ## MEMORY METADATA
@@ -529,7 +556,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "review"        # mirrors frontmatter contextType
+context_type: "general"        # mirrors frontmatter contextType
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -634,53 +661,6 @@ trigger_phrases:
   - "wrapper superset"
   - "wrapper stalled"
   - "stalled sanity"
-  - "sanity check"
-  - "check notify"
-  - "notify hook"
-  - "inside wrapped"
-  - "memory quality issues"
-
-key_files:
-  - "001-foundation-templates-truncation/checklist.md"
-  - "001-foundation-templates-truncation/description.json"
-  - "001-foundation-templates-truncation/implementation-summary.md"
-  - "001-foundation-templates-truncation/plan.md"
-  - "001-foundation-templates-truncation/README.md"
-  - "001-foundation-templates-truncation/spec.md"
-  - "001-foundation-templates-truncation/tasks.md"
-  - "002-single-owner-metadata/checklist.md"
-  - "002-single-owner-metadata/description.json"
-  - "002-single-owner-metadata/implementation-summary.md"
-  - "002-single-owner-metadata/plan.md"
-  - "002-single-owner-metadata/README.md"
-  - "002-single-owner-metadata/spec.md"
-  - "002-single-owner-metadata/tasks.md"
-  - "003-sanitization-precedence/checklist.md"
-  - "003-sanitization-precedence/description.json"
-  - "003-sanitization-precedence/implementation-summary.md"
-  - "003-sanitization-precedence/plan.md"
-  - "003-sanitization-precedence/README.md"
-  - "003-sanitization-precedence/spec.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

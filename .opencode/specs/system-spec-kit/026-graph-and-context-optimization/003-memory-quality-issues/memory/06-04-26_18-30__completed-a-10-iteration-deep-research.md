@@ -1,49 +1,49 @@
 ---
-title: "Deep Research: Memory Quality Backend Improvements (10 Iterations)"
-description: "10-iteration deep research compiling root causes and a narrowed remediation matrix for the eight JSON-mode generate-context.js memory quality defects (D1-D8); convergence reached at iteration 9."
+title: 'Deep Research: Memory Quality Backend Improvements (10 Iterations)'
+name: 06-04-26_18-30__completed-a-10-iteration-deep-research
+description: 10-iteration deep research compiling root causes and a narrowed remediation matrix for the eight JSON-mode generate-context.js memory quality defects (D1-D8); convergence reached at iteration 9.
+type: episodic
 trigger_phrases:
-  - "memory quality"
-  - "generate context"
-  - "json mode"
-  - "deep research"
-  - "remediation matrix"
-  - "truncated overview"
-  - "decision placeholders"
-  - "garbage trigger phrases"
-  - "importance tier mismatch"
-  - "missing causal supersedes"
-  - "duplicate trigger phrases"
-  - "empty git provenance"
-  - "anchor id mismatch"
-  - "precedence hardening"
-  - "predecessor discovery"
-  - "continuation gating"
-  - "provenance injection"
-  - "truncation helper"
-  - "frontmatter migration"
-  - "lexical fallback"
-  - "folder token append"
-  - "bigram adjacency"
-  - "memory backend"
-  - "spec kit memory"
-  - "017 iterations report"
-  - "convergence report"
-  - "research synthesis"
-  - "backend remediation"
-  - "JSON pipeline defects"
-  - "extractor decision"
+- memory quality
+- generate context
+- json mode
+- deep research
+- remediation matrix
+- truncated overview
+- decision placeholders
+- garbage trigger phrases
+- importance tier mismatch
+- missing causal supersedes
+- duplicate trigger phrases
+- empty git provenance
+- anchor id mismatch
+- precedence hardening
+- predecessor discovery
+- continuation gating
+- provenance injection
+- truncation helper
+- frontmatter migration
+- lexical fallback
+- folder token append
+- bigram adjacency
+- memory backend
+- spec kit memory
 importance_tier: important
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 4
 filesystem_file_count: 4
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 3
+  warnings: 0
 ---
 
 # Deep Research: Memory Quality Backend Improvements (10 Iterations)
@@ -141,6 +141,21 @@ Next: Run spec_kit plan against this folder to convert the remediation matrix in
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -200,7 +215,7 @@ Next: Run spec_kit plan against this folder to convert the remediation matrix in
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -224,11 +239,11 @@ Completed a 10-iteration deep research investigation into memory quality defects
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/(merged-small-files)` | Tree-thinning merged 3 small files (research.md, deep-research-state.jsonl, deep-research-config.json).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md : Modified research | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/deep-research-state.jsonl : Modified deep research state | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/deep-research-config.json : Modified deep research config |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/(merged-small-files)` | Tree-thinning merged 1 small files (iteration-010.md).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-010.md : Modified iteration 010 |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -248,7 +263,7 @@ Run spec_kit plan against this folder to convert the remediation matrix into P0 
 **Details:** Next: Run spec_kit plan against this folder to convert the remediation matrix into P0 through P3 implementation work | Follow-up: Add a regression fixture for D6 duplicate trigger phrases using F1 or a synthetic case | Follow-up: Begin with P0 fixes D1 boundary aware truncation and D8 template anchor consolidation | Follow-up: Add the post save reviewer check for frontmatter versus metadata tier divergence as part of the D4 fix
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -526,6 +541,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -547,7 +575,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: important  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -626,7 +654,7 @@ key_topics:
   - "narrowed fix"
   - "historical stale-sample"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "memory quality"
   - "generate context"
@@ -652,38 +680,6 @@ trigger_phrases:
   - "bigram adjacency"
   - "memory backend"
   - "spec kit memory"
-  - "017 iterations report"
-  - "convergence report"
-  - "research synthesis"
-  - "backend remediation"
-  - "JSON pipeline defects"
-  - "extractor decision"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/iterations/iteration-010.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/deep-research-state.jsonl"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/deep-research-config.json"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

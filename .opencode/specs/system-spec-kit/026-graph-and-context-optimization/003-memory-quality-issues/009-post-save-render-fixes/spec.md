@@ -35,8 +35,9 @@ Packet `009-post-save-render-fixes` repairs the nine systematic render-layer def
 | **Status** | Implemented |
 | **Created** | 2026-04-09 |
 | **Branch** | `main` |
-| **Parent Packet** | `003-memory-quality-issues` |
-| **Predecessor** | `006-memory-duplication-reduction` (soft predecessor) |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `008-input-normalizer-fastpath-fix` |
 | **Successor** | Optional future historical-memory patching only; no required new packet |
 | **Motivating Audit** | `014-code-graph-upgrades/memory/*` plus the manually patched positive reference at `026-graph-and-context-optimization/memory/09-04-26_07-37__...` |
 

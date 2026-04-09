@@ -24,7 +24,7 @@ This is **Phase 8** of `003-memory-quality-issues`.
 | **Parent Plan** | ../plan.md |
 | **Phase** | 8 of 8 |
 | **Predecessor** | 007-skill-catalog-sync |
-| **Successor** | None |
+| **Successor** | 009-post-save-render-fixes |
 | **Handoff Criteria** | Fast-path JSON saves accept plain-string arrays, mixed enrichment payloads stay intact, and the repro save completes successfully. |
 
 **Scope Boundary**: Limit the fix to `scripts/utils/input-normalizer.ts`, `scripts/memory/generate-context.ts`, focused tests, and this new Level-1 phase packet. Do not modify any existing packet docs or prior memory files.

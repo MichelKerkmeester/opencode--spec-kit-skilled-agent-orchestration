@@ -1,42 +1,48 @@
 ---
-title: "Phase 1 Foundation: Templates & Truncation Closeout"
-description: "Closed out Phase 1 of the memory-quality remediation packet to 100% completion. Phase 1 owns PR-1 (OVERVIEW anchor alignment) and PR-2 (shared truncateOnWordBoundary helper..."
+title: 'Phase 1 Foundation: Templates & Truncation Closeout'
+name: 07-04-26_20-24__closed-out-phase-1-of-the-memory-quality
+description: Closed out Phase 1 of the memory-quality remediation packet to 100% completion. Phase 1 owns PR-1 (OVERVIEW anchor alignment) and PR-2 (shared truncateOnWordBoundary helper...
+type: episodic
 trigger_phrases:
-  - "phase 1 foundation templates truncation"
-  - "memory quality d1 d8"
-  - "truncate on word boundary"
-  - "overview anchor fix"
-  - "shared truncation helper"
-  - "memory template contract validator"
-  - "memory parser overview regex"
-  - "canonical unicode ellipsis u2026"
-  - "f-ac1 truncation fixture"
-  - "f-ac7 anchor fixture"
-  - "iteration 17 helper extraction order"
-  - "broken global codex mcp path"
-  - "codex_home tmp clean workaround"
-  - "copilot cli spec polish"
-  - "validate.sh exit 0 phase 1"
-  - "quality gate abort missing anchor comment"
-  - "input normalizer observation summary"
-  - "collect session data overview owner"
-  - "boundary aware truncation"
-  - "generate context json mode replay"
-  - "absolute path spec folder"
-  - "fixture written memory cleanup"
-  - "001 foundation templates truncation complete"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- phase 1 foundation templates truncation
+- memory quality d1 d8
+- truncate on word boundary
+- overview anchor fix
+- shared truncation helper
+- memory template contract validator
+- memory parser overview regex
+- canonical unicode ellipsis u2026
+- f-ac1 truncation fixture
+- f-ac7 anchor fixture
+- iteration 17 helper extraction order
+- broken global codex mcp path
+- codex_home tmp clean workaround
+- copilot cli spec polish
+- validate.sh exit 0 phase 1
+- quality gate abort missing anchor comment
+- input normalizer observation summary
+- collect session data overview owner
+- boundary aware truncation
+- generate context json mode replay
+- absolute path spec folder
+- fixture written memory cleanup
+- 001 foundation templates truncation complete
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
@@ -135,6 +141,20 @@ Next: Begin Phase 2: 002-single-owner-metadata. The packet imports the truncateO
 - Last: Use cli-codex for implementation passes and cli-copilot for documentation...
 
 <!-- /ANCHOR:continue-session -->
+
+---
+
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`plan.md`](../plan.md)
+
+<!-- /ANCHOR:canonical-docs -->
 
 ---
 
@@ -252,7 +272,7 @@ Closed out Phase 1 of the memory-quality remediation packet to 100% completion. 
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -265,7 +285,7 @@ Begin Phase 2: 002-single-owner-metadata. The packet imports the truncateOnWordB
 **Details:** Next: Begin Phase 2: 002-single-owner-metadata. The packet imports the truncateOnWordBoundary helper from.opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary and must NOT reintroduce ad-hoc narrative truncation | Follow-up: Investigate and fix the broken spec_kit_memory MCP path in the global codex config (currently points at a non-existent Opencode Env directory). Fix would unblock Codex CLI without needing the CODEX_HOME tmp clean workaround. | Follow-up: Run validate.sh on sibling phase folders 002 through 005 because they have the same TEMPLATE_HEADERS drift as Phase 1 had before conformance. Apply the same level_2 template conformance pattern when starting each one. | Follow-up: Address the pre-existing ALIGNMENT_HARD_BLOCK and QUALITY_GATE_FAIL V12 reviewer signals that surfaced during F-AC7 replay stderr. They are unrelated to truncation or anchor drift but should be triaged in Phase 2 or later. | Follow-up: Consider migrating decision-extractor.ts narrative truncation callsites to the helper in a future phase. Iteration 17 deferred them to keep Phase 1 narrow.
 <!-- /ANCHOR:guide-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -676,6 +696,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -697,7 +730,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -776,7 +809,7 @@ key_topics:
   - "single-codepoint unicode"
   - "cli-codex implementation"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "phase 1 foundation templates truncation"
   - "memory quality d1 d8"
@@ -801,38 +834,6 @@ trigger_phrases:
   - "absolute path spec folder"
   - "fixture written memory cleanup"
   - "001 foundation templates truncation complete"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/templates/context_template.md"
-  - ".opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts"
-  - ".opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts"
-  - ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts"
-  - ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts"
-  - ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC1-truncation.json"
-  - ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC7-anchor.json"
-  - ".opencode/skill/system-spec-kit/scripts/tests/truncate-on-word-boundary.vitest.ts"
-  - ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

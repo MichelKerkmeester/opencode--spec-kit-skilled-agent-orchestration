@@ -1,31 +1,37 @@
 ---
-title: "Phase Decomposition: 9-PR Memory-Quality Remediation Train Split into 5 Priority Bands"
-description: "Decomposed the locked 9-PR remediation train from the 25-iteration deep-research synthesis into a 5-phase child structure under .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/. Phases align to the P0/P1/P2/P3/P4 priority bands of research.md §10. All 5 child phase folders populated by cli-codex gpt-5.4 in fast mode."
+title: 'Phase Decomposition: 9-PR Memory-Quality Remediation Train Split into 5 Priority Bands'
+name: 07-04-26_13-08__decomposed-the-locked-9-pr-remediation-train-from
+description: "Decomposed the locked 9-PR remediation train from the 25-iteration deep-research synthesis into a 5-phase child structure under .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/. Phases align to the P0/P1/P2/P3/P4 priority bands of research.md \xA710. All 5 child phase folders populated by cli-codex gpt-5.4 in fast mode."
+type: episodic
 trigger_phrases:
-  - "memory quality 5 phase decomposition"
-  - "9 PR train phase split priority bands"
-  - "cli-codex gpt-5.4 phase population delegation"
-  - "spec_kit plan with-phases memory quality"
-  - "phase documentation map populated parent"
-  - "memory-quality-issues phase children scaffold"
-  - "create.sh phase phase-parent five children"
-  - "AC fixture handoff criteria F-AC1 F-AC8"
-  - "9 PR remediation train P0 P1 P2 P3 P4 priority bands"
-  - "PR-1 D8 PR-2 D1 PR-3 D4 PR-4 D7 PR-5 D3 PR-6 D2 PR-7 D5"
-  - "phase decomposition codex full-auto background dispatch"
-  - "iter 16 AC fixture catalog F-AC1 through F-AC8"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- memory quality 5 phase decomposition
+- 9 PR train phase split priority bands
+- cli-codex gpt-5.4 phase population delegation
+- spec_kit plan with-phases memory quality
+- phase documentation map populated parent
+- memory-quality-issues phase children scaffold
+- create.sh phase phase-parent five children
+- AC fixture handoff criteria F-AC1 F-AC8
+- 9 PR remediation train P0 P1 P2 P3 P4 priority bands
+- PR-1 D8 PR-2 D1 PR-3 D4 PR-4 D7 PR-5 D3 PR-6 D2 PR-7 D5
+- phase decomposition codex full-auto background dispatch
+- iter 16 AC fixture catalog F-AC1 through F-AC8
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 66
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":2,"warnings":3}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 2
+  warnings: 3
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 4 noise entries and 0 duplicates were filtered.
 
@@ -122,6 +128,21 @@ Next: Continue implementation
 - Last: 5 cli-codex processes (gpt-5.4 high, fast mode) populated all 5 child phase folders in parallel; 4,224 lines / 1,131 citations written.
 
 <!-- /ANCHOR:continue-session -->
+
+---
+
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
 
 ---
 
@@ -234,7 +255,7 @@ Decomposed the locked 9-PR remediation train from the 25-iteration deep-research
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -288,7 +309,7 @@ The errors split into two categories per phase: (a) `SPEC_DOC_INTEGRITY` flags 4
 
 <!-- /ANCHOR:implementation-observation-05032a15-7 -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -633,6 +654,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -654,7 +688,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -734,7 +768,7 @@ key_topics:
   - "parallel codex background dispatch"
   - "research.md PR train table"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "memory quality 5 phase decomposition"
   - "9 PR train phase split priority bands"
@@ -748,38 +782,6 @@ trigger_phrases:
   - "PR-1 D8 PR-2 D1 PR-3 D4 PR-4 D7 PR-5 D3 PR-6 D2 PR-7 D5"
   - "phase decomposition codex full-auto background dispatch"
   - "iter 16 AC fixture catalog F-AC1 through F-AC8"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata/"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/004-heuristics-refactor-guardrails/"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/005-operations-tail-prs/"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/archive/spec-pre-phase-decomposition.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/archive/plan-pre-phase-decomposition.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/archive/tasks-pre-phase-decomposition.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/archive/checklist-pre-phase-decomposition.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

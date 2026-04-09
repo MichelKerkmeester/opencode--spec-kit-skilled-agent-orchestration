@@ -26,6 +26,10 @@ contextType: "planning"
 | **Status** | Complete |
 | **Created** | 2026-04-06 |
 | **Branch** | `026-graph-and-context-optimization/003-memory-quality-issues` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `002-implement-cache-warning-hooks` |
+| **Successor** | `004-agent-execution-guardrails` |
 | **Packet Shape** | Parent packet with 8 child phases |
 | **Research State** | Complete |
 | **Implementation State** | Complete across Phases 1-5 |
