@@ -6,7 +6,7 @@
 import { execSync } from 'node:child_process';
 import { existsSync, realpathSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
-import { getDefaultConfig } from '../../lib/code-graph/indexer-types.js';
+import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../../lib/code-graph/indexer-types.js';
 import { indexFiles } from '../../lib/code-graph/structural-indexer.js';
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
 
@@ -28,6 +28,72 @@ export interface ScanResult {
   fullReindexTriggered?: boolean;
   currentGitHead?: string | null;
   previousGitHead?: string | null;
+  detectorProvenanceSummary?: graphDb.DetectorProvenanceSummary;
+  graphEdgeEnrichmentSummary?: graphDb.GraphEdgeEnrichmentSummary | null;
+}
+
+function summarizeDetectorProvenance(
+  results: Array<{ detectorProvenance?: DetectorProvenance }>,
+): graphDb.DetectorProvenanceSummary {
+  const counts: Partial<Record<DetectorProvenance, number>> = {};
+  let dominant: DetectorProvenance | 'unknown' = 'unknown';
+  let dominantCount = 0;
+
+  for (const result of results) {
+    if (!result.detectorProvenance) {
+      continue;
+    }
+    const nextCount = (counts[result.detectorProvenance] ?? 0) + 1;
+    counts[result.detectorProvenance] = nextCount;
+    if (nextCount > dominantCount) {
+      dominantCount = nextCount;
+      dominant = result.detectorProvenance;
+    }
+  }
+
+  return { dominant, counts };
+}
+
+function summarizeGraphEdgeEnrichment(
+  results: Array<{ edges: CodeEdge[] }>,
+): graphDb.GraphEdgeEnrichmentSummary | null {
+  let best: graphDb.GraphEdgeEnrichmentSummary | null = null;
+
+  for (const result of results) {
+    for (const edge of result.edges) {
+      const metadata = edge.metadata;
+      if (!metadata || typeof metadata.confidence !== 'number') {
+        continue;
+      }
+
+      const edgeEvidenceClass = (() => {
+        switch (edge.edgeType) {
+          case 'IMPORTS':
+          case 'EXPORTS':
+            return 'import' as const;
+          case 'EXTENDS':
+          case 'IMPLEMENTS':
+          case 'TYPE_OF':
+            return 'type_reference' as const;
+          case 'TESTED_BY':
+            return 'test_coverage' as const;
+          default:
+            return metadata.detectorProvenance === 'heuristic' || metadata.evidenceClass === 'INFERRED'
+              ? 'inferred_heuristic' as const
+              : 'direct_call' as const;
+        }
+      })();
+
+      if (!best || metadata.confidence > best.numericConfidence) {
+        best = {
+          edgeEvidenceClass,
+          numericConfidence: metadata.confidence,
+        };
+      }
+    }
+  }
+
+  return best;
 }
 
 function getCurrentGitHead(rootDir: string): string | null {
@@ -114,6 +180,8 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   }
 
   const results = await indexFiles(config);
+  const detectorProvenanceSummary = summarizeDetectorProvenance(results);
+  const graphEdgeEnrichmentSummary = summarizeGraphEdgeEnrichment(results);
 
   let filesIndexed = 0;
   let filesSkipped = 0;
@@ -161,8 +229,19 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     }
   }
 
+  if (filesIndexed > 0 && results.length > 0) {
+    graphDb.setLastDetectorProvenance(results[0].detectorProvenance);
+  }
+
   if (currentGitHead) {
     graphDb.setLastGitHead(currentGitHead);
+  }
+  if (detectorProvenanceSummary.dominant !== 'unknown') {
+    graphDb.setLastDetectorProvenance(detectorProvenanceSummary.dominant);
+  }
+  graphDb.setLastDetectorProvenanceSummary(detectorProvenanceSummary);
+  if (graphEdgeEnrichmentSummary) {
+    graphDb.setLastGraphEdgeEnrichmentSummary(graphEdgeEnrichmentSummary);
   }
 
   const scanResult: ScanResult = {
@@ -176,6 +255,8 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     fullReindexTriggered,
     currentGitHead,
     previousGitHead,
+    detectorProvenanceSummary,
+    graphEdgeEnrichmentSummary,
   };
 
   return {

@@ -28,6 +28,15 @@ export const SHARED_PAYLOAD_CERTAINTY_VALUES = [
 
 export type SharedPayloadCertainty = (typeof SHARED_PAYLOAD_CERTAINTY_VALUES)[number];
 
+export const DETECTOR_PROVENANCE_VALUES = [
+  'ast',
+  'structured',
+  'regex',
+  'heuristic',
+] as const;
+
+export type DetectorProvenance = (typeof DETECTOR_PROVENANCE_VALUES)[number];
+
 export const PARSER_PROVENANCE_VALUES = [
   'ast',
   'regex',
@@ -100,8 +109,31 @@ export interface StructuralTrust {
   freshnessAuthority: FreshnessAuthority;
 }
 
+export interface HotFileBreadcrumb {
+  degree: number;
+  changeCarefullyReason: string;
+}
+
+export const EDGE_EVIDENCE_CLASS_VALUES = [
+  'direct_call',
+  'import',
+  'type_reference',
+  'inferred_heuristic',
+  'test_coverage',
+] as const;
+
+export type EdgeEvidenceClass = (typeof EDGE_EVIDENCE_CLASS_VALUES)[number];
+
+export interface GraphEdgeEnrichment {
+  edgeEvidenceClass: EdgeEvidenceClass;
+  numericConfidence: number;
+}
+
 export type StructuralTrustCarrier<T extends object = Record<string, unknown>> =
   T & StructuralTrust;
+
+export type GraphEdgeEnrichmentCarrier<T extends object = Record<string, unknown>> =
+  T & GraphEdgeEnrichment;
 
 export type MultiplierAuthorityField = Pick<PublishableMetricField<number>, 'certainty' | 'authority'>;
 
@@ -114,6 +146,8 @@ export interface SharedPayloadSection {
   source: 'memory' | 'code-graph' | 'semantic' | 'session' | 'operational';
   certainty?: SharedPayloadCertainty;
   structuralTrust?: StructuralTrust;
+  graphEdgeEnrichment?: GraphEdgeEnrichment;
+  hotFileBreadcrumb?: HotFileBreadcrumb;
 }
 
 export interface SharedPayloadProvenance {
@@ -187,6 +221,11 @@ export function isParserProvenance(value: unknown): value is ParserProvenance {
     && PARSER_PROVENANCE_VALUES.includes(value as ParserProvenance);
 }
 
+export function isDetectorProvenance(value: unknown): value is DetectorProvenance {
+  return typeof value === 'string'
+    && DETECTOR_PROVENANCE_VALUES.includes(value as DetectorProvenance);
+}
+
 export function isEvidenceStatus(value: unknown): value is EvidenceStatus {
   return typeof value === 'string'
     && EVIDENCE_STATUS_VALUES.includes(value as EvidenceStatus);
@@ -210,6 +249,15 @@ function assertParserProvenance(value: unknown): ParserProvenance {
   if (!isParserProvenance(value)) {
     throw new Error(
       `Invalid parser provenance: expected one of ${PARSER_PROVENANCE_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
+
+export function assertDetectorProvenance(value: unknown): DetectorProvenance {
+  if (!isDetectorProvenance(value)) {
+    throw new Error(
+      `Invalid detector provenance: expected one of ${DETECTOR_PROVENANCE_VALUES.join(', ')}`,
     );
   }
   return value;
@@ -245,6 +293,18 @@ export function assertMeasurementAuthority(value: unknown): MeasurementAuthority
     );
   }
   return value;
+}
+
+export function detectorProvenanceToParserProvenance(
+  value: DetectorProvenance,
+): ParserProvenance {
+  if (value === 'structured') {
+    // Packet 006 owns the parser trust-axis vocabulary. Structured detector
+    // fallbacks are preserved separately and map to the nearest legacy parser
+    // provenance only when a 006 trust-axis carrier explicitly needs it.
+    return 'regex';
+  }
+  return assertParserProvenance(value);
 }
 
 export function createPublicationMethodologyMetadata(
@@ -382,6 +442,56 @@ export function attachStructuralTrustFields<T extends object>(
   };
 }
 
+export function isEdgeEvidenceClass(value: unknown): value is EdgeEvidenceClass {
+  return typeof value === 'string'
+    && EDGE_EVIDENCE_CLASS_VALUES.includes(value as EdgeEvidenceClass);
+}
+
+export function assertEdgeEvidenceClass(value: unknown): EdgeEvidenceClass {
+  if (!isEdgeEvidenceClass(value)) {
+    throw new Error(
+      `Invalid edge evidence class: expected one of ${EDGE_EVIDENCE_CLASS_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
+
+export function validateGraphEdgeEnrichment(
+  value: unknown,
+  options: { label?: string } = {},
+): GraphEdgeEnrichment {
+  const label = options.label ?? 'Graph edge enrichment';
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    throw new Error(`${label} requires an object payload.`);
+  }
+
+  const record = value as Record<string, unknown>;
+  const numericConfidence = record.numericConfidence;
+  if (typeof numericConfidence !== 'number' || Number.isNaN(numericConfidence)) {
+    throw new Error(`${label} requires a numericConfidence number.`);
+  }
+  if (numericConfidence < 0 || numericConfidence > 1) {
+    throw new Error(`${label} numericConfidence must be within [0, 1].`);
+  }
+
+  return {
+    edgeEvidenceClass: assertEdgeEvidenceClass(record.edgeEvidenceClass),
+    numericConfidence,
+  };
+}
+
+export function attachGraphEdgeEnrichment<T extends object>(
+  payload: T,
+  enrichment: unknown,
+  options: { label?: string } = {},
+): GraphEdgeEnrichmentCarrier<T> {
+  const graphEdgeEnrichment = validateGraphEdgeEnrichment(enrichment, options);
+  return {
+    ...payload,
+    ...graphEdgeEnrichment,
+  };
+}
+
 export function isStructuralTrustComplete(value: StructuralTrust | null | undefined): value is StructuralTrust {
   if (!value) {
     return false;
@@ -448,6 +558,13 @@ export function createSharedPayloadEnvelope(input: {
         ? {
           structuralTrust: validateStructuralTrustPayload(section.structuralTrust, {
             label: `Shared payload section "${section.key}" structuralTrust`,
+          }),
+        }
+        : {}),
+      ...(section.graphEdgeEnrichment
+        ? {
+          graphEdgeEnrichment: validateGraphEdgeEnrichment(section.graphEdgeEnrichment, {
+            label: `Shared payload section "${section.key}" graphEdgeEnrichment`,
           }),
         }
         : {}),

@@ -12,6 +12,7 @@ import type {
   ParseResult, SupportedLanguage, SymbolKind,
 } from './indexer-types.js';
 import { generateContentHash } from './indexer-types.js';
+import { detectorProvenanceFromParserBackend } from './structural-indexer.js';
 import { extractEdges, capturesToNodes, type RawCapture } from './structural-indexer.js';
 
 // ── Types ──────────────────────────────────────────────────────
@@ -610,6 +611,7 @@ export class TreeSitterParser implements ParserAdapter {
         language,
         nodes: [],
         edges: [],
+        detectorProvenance: detectorProvenanceFromParserBackend('treesitter'),
         contentHash: generateContentHash(content),
         parseHealth: 'error',
         parseErrors: ['TreeSitterParser not initialized — call TreeSitterParser.init() first'],
@@ -628,6 +630,7 @@ export class TreeSitterParser implements ParserAdapter {
           language,
           nodes: [],
           edges: [],
+          detectorProvenance: detectorProvenanceFromParserBackend('treesitter'),
           contentHash,
           parseHealth: 'error',
           parseErrors: [`Grammar not loaded for ${language} — call TreeSitterParser.loadLanguage() first`],
@@ -641,7 +644,8 @@ export class TreeSitterParser implements ParserAdapter {
 
       const captures = walkAST(tree.rootNode as TSNode, language, lines);
       const nodes = capturesToNodes(captures, '', language, content);
-      const edges = extractEdges(nodes, lines, captures);
+      const detectorProvenance = detectorProvenanceFromParserBackend('treesitter');
+      const edges = extractEdges(nodes, lines, captures, detectorProvenance);
 
       const hasError = (tree.rootNode as TSNode).hasError;
       const parseHealth: ParseResult['parseHealth'] = hasError
@@ -653,6 +657,7 @@ export class TreeSitterParser implements ParserAdapter {
         language,
         nodes,
         edges,
+        detectorProvenance,
         contentHash,
         parseHealth,
         parseErrors: hasError ? ['Tree contains syntax errors (partial parse)'] : [],
@@ -664,6 +669,7 @@ export class TreeSitterParser implements ParserAdapter {
         language,
         nodes: [],
         edges: [],
+        detectorProvenance: detectorProvenanceFromParserBackend('treesitter'),
         contentHash,
         parseHealth: 'error',
         parseErrors: [err instanceof Error ? err.message : String(err)],

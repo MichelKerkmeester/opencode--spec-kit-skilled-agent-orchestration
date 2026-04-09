@@ -195,6 +195,7 @@ async function indexWithTimeout(config: IndexerConfig, timeoutMs: number): Promi
     ]);
 
     // Persist results to DB
+    let persistedDetectorProvenance: ReturnType<typeof graphDb.getLastDetectorProvenance> = null;
     for (const result of results) {
       try {
         const fileId = graphDb.upsertFile(
@@ -205,9 +206,14 @@ async function indexWithTimeout(config: IndexerConfig, timeoutMs: number): Promi
         graphDb.replaceNodes(fileId, result.nodes);
         const sourceIds = result.nodes.map(n => n.symbolId);
         graphDb.replaceEdges(sourceIds, result.edges);
+        persistedDetectorProvenance ??= result.detectorProvenance;
       } catch {
         // Best-effort: skip files that fail to persist
       }
+    }
+
+    if (persistedDetectorProvenance) {
+      graphDb.setLastDetectorProvenance(persistedDetectorProvenance);
     }
   } finally {
     clearTimeout(timer);

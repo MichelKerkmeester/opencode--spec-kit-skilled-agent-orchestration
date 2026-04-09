@@ -5,15 +5,22 @@
 
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
 import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
-import { attachStructuralTrustFields } from '../../lib/context/shared-payload.js';
+import {
+  attachGraphEdgeEnrichment,
+  attachStructuralTrustFields,
+  type EdgeEvidenceClass,
+  type HotFileBreadcrumb,
+} from '../../lib/context/shared-payload.js';
 
 export interface QueryArgs {
-  operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to';
+  operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to' | 'blast_radius';
   subject: string; // filePath, fqName, or symbolId
+  subjects?: string[];
   edgeType?: string;
   limit?: number;
   includeTransitive?: boolean;
   maxDepth?: number;
+  unionMode?: 'single' | 'multi';
 }
 
 function resolveRequestedEdgeType(args: QueryArgs): string | undefined {
@@ -79,8 +86,23 @@ function buildGraphQueryPayload<T extends Record<string, unknown>>(
   payload: T,
   readiness: ReadyResult,
   label: string,
+  graphEdgeEnrichment?: {
+    edgeEvidenceClass: EdgeEvidenceClass;
+    numericConfidence: number;
+  } | null,
 ) {
-  return attachStructuralTrustFields(payload, buildQueryStructuralTrust(readiness), { label });
+  const withTrust = attachStructuralTrustFields({
+    ...payload,
+    graphMetadata: {
+      detectorProvenance: graphDb.getLastDetectorProvenance() ?? 'unknown',
+    },
+  }, buildQueryStructuralTrust(readiness), { label });
+
+  return graphEdgeEnrichment
+    ? attachGraphEdgeEnrichment(withTrust, graphEdgeEnrichment, {
+      label: `${label} graph edge enrichment`,
+    })
+    : withTrust;
 }
 
 /** BFS transitive traversal from a symbolId via the given edge type */
@@ -104,6 +126,10 @@ function transitiveTraversal(
 
       if (direction === 'from') {
         for (const { edge, targetNode } of graphDb.queryEdgesFrom(item.id, edgeType)) {
+          const nextDepth = item.depth + 1;
+          if (nextDepth > maxDepth) {
+            continue;
+          }
           if (!visited.has(edge.targetId)) {
             if (!resultSymbolIds.has(edge.targetId)) {
               resultSymbolIds.add(edge.targetId);
@@ -112,15 +138,19 @@ function transitiveTraversal(
                 fqName: targetNode?.fqName ?? null,
                 filePath: targetNode?.filePath ?? null,
                 line: targetNode?.startLine ?? null,
-                depth: item.depth + 1,
+                depth: nextDepth,
               });
             }
             if (results.length >= limit) break;
-            next.push({ id: edge.targetId, depth: item.depth + 1 });
+            next.push({ id: edge.targetId, depth: nextDepth });
           }
         }
       } else {
         for (const { edge, sourceNode } of graphDb.queryEdgesTo(item.id, edgeType)) {
+          const nextDepth = item.depth + 1;
+          if (nextDepth > maxDepth) {
+            continue;
+          }
           if (!visited.has(edge.sourceId)) {
             if (!resultSymbolIds.has(edge.sourceId)) {
               resultSymbolIds.add(edge.sourceId);
@@ -129,11 +159,11 @@ function transitiveTraversal(
                 fqName: sourceNode?.fqName ?? null,
                 filePath: sourceNode?.filePath ?? null,
                 line: sourceNode?.startLine ?? null,
-                depth: item.depth + 1,
+                depth: nextDepth,
               });
             }
             if (results.length >= limit) break;
-            next.push({ id: edge.sourceId, depth: item.depth + 1 });
+            next.push({ id: edge.sourceId, depth: nextDepth });
           }
         }
       }
@@ -144,6 +174,144 @@ function transitiveTraversal(
   }
 
   return results.slice(0, limit);
+}
+
+function classifyEdgeEvidenceClass(
+  edgeType: string,
+  metadata: Record<string, unknown> | undefined,
+): EdgeEvidenceClass {
+  switch (edgeType) {
+    case 'IMPORTS':
+    case 'EXPORTS':
+      return 'import';
+    case 'EXTENDS':
+    case 'IMPLEMENTS':
+    case 'TYPE_OF':
+      return 'type_reference';
+    case 'TESTED_BY':
+      return 'test_coverage';
+    default:
+      return metadata?.detectorProvenance === 'heuristic' || metadata?.evidenceClass === 'INFERRED'
+        ? 'inferred_heuristic'
+        : 'direct_call';
+  }
+}
+
+function clampNumericConfidence(value: unknown): number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return 0;
+  }
+  return Math.max(0, Math.min(1, value));
+}
+
+function buildHotFileBreadcrumbs(filePaths: string[]): Array<{
+  filePath: string;
+  hotFileBreadcrumb: HotFileBreadcrumb;
+}> {
+  const uniqueFilePaths = [...new Set(filePaths)];
+  if (uniqueFilePaths.length === 0) {
+    return [];
+  }
+
+  const degreeRows = graphDb.queryFileDegrees(uniqueFilePaths);
+  const positiveDegrees = degreeRows
+    .map((row) => row.degree)
+    .filter((degree) => degree > 0)
+    .sort((left, right) => right - left);
+  if (positiveDegrees.length === 0) {
+    return [];
+  }
+
+  const topCount = Math.max(1, Math.ceil(positiveDegrees.length * 0.1));
+  const threshold = Math.min(20, positiveDegrees[topCount - 1] ?? positiveDegrees[0]);
+
+  return degreeRows
+    .filter((row) => row.degree >= threshold)
+    .map((row) => ({
+      filePath: row.filePath,
+      hotFileBreadcrumb: {
+        degree: row.degree,
+        changeCarefullyReason: `High-degree node; change carefully because changes here ripple to ${row.degree} dependents.`,
+      },
+    }));
+}
+
+function computeBlastRadius(sourceFiles: string[], maxDepth: number, limit: number) {
+  const importedBy = new Map<string, Set<string>>();
+  for (const edge of graphDb.queryFileImportDependents()) {
+    const importers = importedBy.get(edge.importedFilePath) ?? new Set<string>();
+    importers.add(edge.importerFilePath);
+    importedBy.set(edge.importedFilePath, importers);
+  }
+
+  const affectedByFile = new Map<string, number>();
+  const normalizedSources = [...new Set(sourceFiles)];
+
+  for (const sourceFile of normalizedSources) {
+    const visited = new Set<string>([sourceFile]);
+    const queue: Array<{ filePath: string; depth: number }> = [{ filePath: sourceFile, depth: 0 }];
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      if (!current) break;
+
+      const importers = importedBy.get(current.filePath);
+      if (!importers) continue;
+
+      for (const importerFilePath of importers) {
+        const nextDepth = current.depth + 1;
+        if (nextDepth > maxDepth || visited.has(importerFilePath)) {
+          continue;
+        }
+        visited.add(importerFilePath);
+        queue.push({ filePath: importerFilePath, depth: nextDepth });
+
+        if (normalizedSources.includes(importerFilePath)) {
+          continue;
+        }
+
+        const previousDepth = affectedByFile.get(importerFilePath);
+        if (previousDepth === undefined || nextDepth < previousDepth) {
+          affectedByFile.set(importerFilePath, nextDepth);
+        }
+      }
+    }
+  }
+
+  const affectedFiles = [...affectedByFile.entries()]
+    .map(([filePath, depth]) => ({ filePath, depth }))
+    .sort((left, right) => left.depth - right.depth || left.filePath.localeCompare(right.filePath))
+    .slice(0, limit);
+  const breadcrumbByFile = new Map(
+    buildHotFileBreadcrumbs([
+      ...normalizedSources,
+      ...affectedFiles.map((entry) => entry.filePath),
+    ]).map((entry) => [entry.filePath, entry.hotFileBreadcrumb]),
+  );
+
+  return {
+    sourceFiles: normalizedSources,
+    nodes: [
+      ...normalizedSources.map((filePath) => ({
+        filePath,
+        depth: 0,
+        isSeed: true,
+        ...(breadcrumbByFile.get(filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(filePath) } : {}),
+      })),
+      ...affectedFiles.map((entry) => ({
+        ...entry,
+        ...(breadcrumbByFile.get(entry.filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(entry.filePath) } : {}),
+      })),
+    ],
+    affectedFiles: affectedFiles.map((entry) => ({
+      ...entry,
+      ...(breadcrumbByFile.get(entry.filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(entry.filePath) } : {}),
+    })),
+    hotFileBreadcrumbs: [...breadcrumbByFile.entries()].map(([filePath, hotFileBreadcrumb]) => ({
+      filePath,
+      hotFileBreadcrumb,
+    })),
+  };
 }
 
 /** Handle code_graph_query tool call */
@@ -167,6 +335,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
 
   const { operation, subject, limit = 50 } = args;
   const requestedEdgeType = resolveRequestedEdgeType(args);
+  const maxDepth = args.maxDepth ?? 3;
 
   if (operation === 'outline') {
     const nodes = graphDb.queryOutline(subject);
@@ -195,6 +364,45 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     };
   }
 
+  if (operation === 'blast_radius') {
+    const rawSubjects = args.unionMode === 'multi'
+      ? [subject, ...(args.subjects ?? [])]
+      : [subject];
+    const sourceFiles = rawSubjects
+      .map((candidate) => graphDb.resolveSubjectFilePath(candidate) ?? candidate)
+      .filter((candidate): candidate is string => typeof candidate === 'string' && candidate.length > 0);
+
+    if (sourceFiles.length === 0) {
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ status: 'error', error: `Could not resolve blast-radius sources: ${rawSubjects.join(', ')}` }),
+        }],
+      };
+    }
+
+    const blastRadius = computeBlastRadius(sourceFiles, maxDepth, limit);
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          status: 'ok',
+          data: buildGraphQueryPayload({
+            operation,
+            sourceFiles: blastRadius.sourceFiles,
+            nodes: blastRadius.nodes,
+            multiFileUnion: args.unionMode === 'multi' && blastRadius.sourceFiles.length > 1,
+            unionMode: args.unionMode ?? 'single',
+            maxDepth: Math.max(0, maxDepth),
+            readiness,
+            affectedFiles: blastRadius.affectedFiles,
+            hotFileBreadcrumbs: blastRadius.hotFileBreadcrumbs,
+          }, readiness, 'code_graph_query blast_radius payload'),
+        }, null, 2),
+      }],
+    };
+  }
+
   const symbolId = resolveSubject(subject);
   if (!symbolId) {
     return {
@@ -204,8 +412,6 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       }],
     };
   }
-
-  const maxDepth = args.maxDepth ?? 3;
 
   // If includeTransitive, use BFS traversal instead of 1-hop
   if (args.includeTransitive) {
@@ -234,22 +440,108 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   switch (operation) {
     case 'calls_from': {
       const edges = graphDb.queryEdgesFrom(symbolId, requestedEdgeType).slice(0, limit);
-      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ target: e.targetNode?.fqName ?? e.edge.targetId, file: e.targetNode?.filePath, line: e.targetNode?.startLine })) };
+      result = {
+        operation,
+        symbolId,
+        edgeType: requestedEdgeType,
+        edges: edges.map((entry) => ({
+          target: entry.targetNode?.fqName ?? entry.edge.targetId,
+          file: entry.targetNode?.filePath,
+          line: entry.targetNode?.startLine,
+          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
+          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
+          edgeEvidenceClass: classifyEdgeEvidenceClass(
+            entry.edge.edgeType,
+            entry.edge.metadata as Record<string, unknown> | undefined,
+          ),
+        })),
+        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
+          edges
+            .map((entry) => entry.targetNode?.filePath)
+            .filter((value): value is string => typeof value === 'string'),
+        ),
+      };
       break;
     }
     case 'calls_to': {
       const edges = graphDb.queryEdgesTo(symbolId, requestedEdgeType).slice(0, limit);
-      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ source: e.sourceNode?.fqName ?? e.edge.sourceId, file: e.sourceNode?.filePath, line: e.sourceNode?.startLine })) };
+      result = {
+        operation,
+        symbolId,
+        edgeType: requestedEdgeType,
+        edges: edges.map((entry) => ({
+          source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
+          file: entry.sourceNode?.filePath,
+          line: entry.sourceNode?.startLine,
+          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
+          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
+          edgeEvidenceClass: classifyEdgeEvidenceClass(
+            entry.edge.edgeType,
+            entry.edge.metadata as Record<string, unknown> | undefined,
+          ),
+        })),
+        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
+          edges
+            .map((entry) => entry.sourceNode?.filePath)
+            .filter((value): value is string => typeof value === 'string'),
+        ),
+      };
       break;
     }
     case 'imports_from': {
       const edges = graphDb.queryEdgesFrom(symbolId, requestedEdgeType).slice(0, limit);
-      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ target: e.targetNode?.fqName ?? e.edge.targetId, file: e.targetNode?.filePath })) };
+      result = {
+        operation,
+        symbolId,
+        edgeType: requestedEdgeType,
+        edges: edges.map((entry) => ({
+          target: entry.targetNode?.fqName ?? entry.edge.targetId,
+          file: entry.targetNode?.filePath,
+          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
+          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
+          edgeEvidenceClass: classifyEdgeEvidenceClass(
+            entry.edge.edgeType,
+            entry.edge.metadata as Record<string, unknown> | undefined,
+          ),
+        })),
+        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
+          edges
+            .map((entry) => entry.targetNode?.filePath)
+            .filter((value): value is string => typeof value === 'string'),
+        ),
+      };
       break;
     }
     case 'imports_to': {
       const edges = graphDb.queryEdgesTo(symbolId, requestedEdgeType).slice(0, limit);
-      result = { operation, symbolId, edgeType: requestedEdgeType, edges: edges.map(e => ({ source: e.sourceNode?.fqName ?? e.edge.sourceId, file: e.sourceNode?.filePath })) };
+      result = {
+        operation,
+        symbolId,
+        edgeType: requestedEdgeType,
+        edges: edges.map((entry) => ({
+          source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
+          file: entry.sourceNode?.filePath,
+          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
+          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
+          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
+          edgeEvidenceClass: classifyEdgeEvidenceClass(
+            entry.edge.edgeType,
+            entry.edge.metadata as Record<string, unknown> | undefined,
+          ),
+        })),
+        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
+          edges
+            .map((entry) => entry.sourceNode?.filePath)
+            .filter((value): value is string => typeof value === 'string'),
+        ),
+      };
       break;
     }
     default:
@@ -259,12 +551,17 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   return {
     content: [{
       type: 'text',
-      text: JSON.stringify({
-        status: 'ok',
-        data: buildGraphQueryPayload({
-          ...result,
-          readiness,
-        }, readiness, `code_graph_query ${operation} payload`),
+        text: JSON.stringify({
+          status: 'ok',
+          data: buildGraphQueryPayload({
+            ...result,
+            readiness,
+          }, readiness, `code_graph_query ${operation} payload`, result.edges[0]
+            ? {
+              edgeEvidenceClass: result.edges[0].edgeEvidenceClass,
+              numericConfidence: result.edges[0].numericConfidence,
+            }
+            : null),
       }, null, 2),
     }],
   };

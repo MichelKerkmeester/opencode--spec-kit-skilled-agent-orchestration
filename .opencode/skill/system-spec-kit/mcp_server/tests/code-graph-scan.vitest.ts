@@ -6,6 +6,9 @@ const mocks = vi.hoisted(() => ({
   realpathSyncMock: vi.fn(),
   indexFilesMock: vi.fn(),
   getLastGitHeadMock: vi.fn(),
+  setLastDetectorProvenanceMock: vi.fn(),
+  setLastDetectorProvenanceSummaryMock: vi.fn(),
+  setLastGraphEdgeEnrichmentSummaryMock: vi.fn(),
   setLastGitHeadMock: vi.fn(),
   isFileStaleMock: vi.fn(),
   upsertFileMock: vi.fn(),
@@ -30,6 +33,9 @@ vi.mock('../lib/code-graph/structural-indexer.js', () => ({
 
 vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   getLastGitHead: mocks.getLastGitHeadMock,
+  setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
+  setLastDetectorProvenanceSummary: mocks.setLastDetectorProvenanceSummaryMock,
+  setLastGraphEdgeEnrichmentSummary: mocks.setLastGraphEdgeEnrichmentSummaryMock,
   setLastGitHead: mocks.setLastGitHeadMock,
   isFileStale: mocks.isFileStaleMock,
   upsertFile: mocks.upsertFileMock,
@@ -60,6 +66,7 @@ describe('handleCodeGraphScan', () => {
         symbolId: 'current::symbol',
       }],
       edges: [],
+      detectorProvenance: 'structured',
       parseHealth: 'clean',
       parseDurationMs: 10,
       parseErrors: [],
@@ -80,6 +87,10 @@ describe('handleCodeGraphScan', () => {
         fullReindexTriggered: boolean;
         currentGitHead: string | null;
         previousGitHead: string | null;
+        detectorProvenanceSummary: {
+          dominant: string;
+          counts: Record<string, number>;
+        };
       };
     };
 
@@ -96,6 +107,19 @@ describe('handleCodeGraphScan', () => {
     expect(mocks.removeFileMock).toHaveBeenCalledWith('/workspace/removed.ts');
     expect(mocks.isFileStaleMock).not.toHaveBeenCalled();
     expect(mocks.upsertFileMock).toHaveBeenCalledTimes(1);
+    expect(payload.data.detectorProvenanceSummary).toEqual({
+      dominant: 'structured',
+      counts: {
+        structured: 1,
+      },
+    });
+    expect(mocks.setLastDetectorProvenanceMock).toHaveBeenCalledWith('structured');
+    expect(mocks.setLastDetectorProvenanceSummaryMock).toHaveBeenCalledWith({
+      dominant: 'structured',
+      counts: {
+        structured: 1,
+      },
+    });
     expect(mocks.setLastGitHeadMock).toHaveBeenCalledWith('new-head');
   });
 

@@ -7,7 +7,7 @@
 import Database from 'better-sqlite3';
 import { join } from 'node:path';
 import { statSync } from 'node:fs';
-import type { CodeNode, CodeEdge } from './indexer-types.js';
+import type { CodeNode, CodeEdge, DetectorProvenance } from './indexer-types.js';
 import { DATABASE_DIR } from '../../core/config.js';
 
 let db: Database.Database | null = null;
@@ -18,6 +18,33 @@ export interface StartupHighlight {
   kind: string;
   filePath: string;
   callCount: number;
+}
+
+export interface FileImportDependent {
+  importedFilePath: string;
+  importerFilePath: string;
+}
+
+export interface FileDegree {
+  filePath: string;
+  degree: number;
+}
+
+export interface DetectorProvenanceSummary {
+  dominant: DetectorProvenance | 'unknown';
+  counts: Partial<Record<DetectorProvenance, number>>;
+}
+
+export type GraphEdgeEvidenceSummaryClass =
+  | 'import'
+  | 'type_reference'
+  | 'test_coverage'
+  | 'inferred_heuristic'
+  | 'direct_call';
+
+export interface GraphEdgeEnrichmentSummary {
+  edgeEvidenceClass: GraphEdgeEvidenceSummaryClass;
+  numericConfidence: number;
 }
 
 /** Schema version for migration tracking */
@@ -181,6 +208,54 @@ export function getLastGitHead(): string | null {
 
 export function setLastGitHead(head: string): void {
   setMetadata('last_git_head', head);
+}
+
+export function getLastDetectorProvenance(): DetectorProvenance | null {
+  const value = getMetadata('last_detector_provenance');
+  if (value === 'ast' || value === 'structured' || value === 'regex' || value === 'heuristic') {
+    return value;
+  }
+  return null;
+}
+
+export function setLastDetectorProvenance(provenance: DetectorProvenance): void {
+  setMetadata('last_detector_provenance', provenance);
+}
+
+export function getLastDetectorProvenanceSummary(): DetectorProvenanceSummary | null {
+  const value = getMetadata('last_detector_provenance_summary');
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value) as DetectorProvenanceSummary;
+  } catch {
+    return null;
+  }
+}
+
+export function setLastDetectorProvenanceSummary(summary: DetectorProvenanceSummary): void {
+  setMetadata('last_detector_provenance_summary', JSON.stringify(summary));
+}
+
+export function getLastGraphEdgeEnrichmentSummary(): GraphEdgeEnrichmentSummary | null {
+  const value = getMetadata('last_graph_edge_enrichment_summary');
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value) as GraphEdgeEnrichmentSummary;
+  } catch {
+    return null;
+  }
+}
+
+export function setLastGraphEdgeEnrichmentSummary(
+  summary: GraphEdgeEnrichmentSummary,
+): void {
+  setMetadata('last_graph_edge_enrichment_summary', JSON.stringify(summary));
 }
 
 /** Insert or update a file record, returning the file ID */
@@ -449,6 +524,92 @@ export function queryEdgesTo(symbolId: string, edgeType?: string): { edge: CodeE
     const sourceRow = d.prepare('SELECT * FROM code_nodes WHERE symbol_id = ?').get(edge.sourceId) as Record<string, unknown> | undefined;
     return { edge, sourceNode: sourceRow ? rowToNode(sourceRow) : null };
   });
+}
+
+export function resolveSubjectFilePath(subject: string): string | null {
+  const d = getDb();
+
+  const directFile = d.prepare('SELECT file_path FROM code_files WHERE file_path = ? LIMIT 1').get(subject) as { file_path: string } | undefined;
+  if (directFile) return directFile.file_path;
+
+  const byId = d.prepare('SELECT file_path FROM code_nodes WHERE symbol_id = ? LIMIT 1').get(subject) as { file_path: string } | undefined;
+  if (byId) return byId.file_path;
+
+  const byFq = d.prepare('SELECT file_path FROM code_nodes WHERE fq_name = ? LIMIT 1').get(subject) as { file_path: string } | undefined;
+  if (byFq) return byFq.file_path;
+
+  const byName = d.prepare('SELECT file_path FROM code_nodes WHERE name = ? LIMIT 1').get(subject) as { file_path: string } | undefined;
+  if (byName) return byName.file_path;
+
+  return null;
+}
+
+export function queryFileImportDependents(): FileImportDependent[] {
+  const d = getDb();
+  const rows = d.prepare(`
+    SELECT DISTINCT
+      target.file_path AS imported_file_path,
+      source.file_path AS importer_file_path
+    FROM code_edges edge
+    INNER JOIN code_nodes source ON source.symbol_id = edge.source_id
+    INNER JOIN code_nodes target ON target.symbol_id = edge.target_id
+    WHERE UPPER(edge.edge_type) = 'IMPORTS'
+      AND source.file_path != target.file_path
+  `).all() as Array<{
+    imported_file_path: string;
+    importer_file_path: string;
+  }>;
+
+  return rows.map((row) => ({
+    importedFilePath: row.imported_file_path,
+    importerFilePath: row.importer_file_path,
+  }));
+}
+
+export function queryFileDegrees(filePaths: string[]): FileDegree[] {
+  const uniquePaths = [...new Set(filePaths.filter((filePath) => typeof filePath === 'string' && filePath.length > 0))];
+  if (uniquePaths.length === 0) {
+    return [];
+  }
+
+  const d = getDb();
+  const placeholders = uniquePaths.map(() => '?').join(',');
+  const rows = d.prepare(`
+    SELECT
+      node_file_path,
+      COUNT(DISTINCT connected_file_path) AS degree
+    FROM (
+      SELECT
+        source.file_path AS node_file_path,
+        target.file_path AS connected_file_path
+      FROM code_edges edge
+      INNER JOIN code_nodes source ON source.symbol_id = edge.source_id
+      INNER JOIN code_nodes target ON target.symbol_id = edge.target_id
+      WHERE source.file_path IN (${placeholders})
+        AND source.file_path != target.file_path
+
+      UNION ALL
+
+      SELECT
+        target.file_path AS node_file_path,
+        source.file_path AS connected_file_path
+      FROM code_edges edge
+      INNER JOIN code_nodes source ON source.symbol_id = edge.source_id
+      INNER JOIN code_nodes target ON target.symbol_id = edge.target_id
+      WHERE target.file_path IN (${placeholders})
+        AND source.file_path != target.file_path
+    )
+    GROUP BY node_file_path
+  `).all(...uniquePaths, ...uniquePaths) as Array<{
+    node_file_path: string;
+    degree: number;
+  }>;
+
+  const degreeByFile = new Map(rows.map((row) => [row.node_file_path, row.degree]));
+  return uniquePaths.map((filePath) => ({
+    filePath,
+    degree: degreeByFile.get(filePath) ?? 0,
+  }));
 }
 
 /** Get graph statistics */

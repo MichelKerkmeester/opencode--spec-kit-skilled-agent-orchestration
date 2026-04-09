@@ -67,6 +67,8 @@ describe('code graph query trust emission', () => {
       getDb: vi.fn(),
       queryEdgesFrom: vi.fn(() => []),
       queryEdgesTo: vi.fn(() => []),
+      getLastDetectorProvenance: vi.fn(() => 'structured'),
+      queryStartupHighlights: vi.fn(() => []),
     }));
 
     const { handleCodeGraphQuery } = await import('../handlers/code-graph/query.js');
@@ -76,6 +78,9 @@ describe('code graph query trust emission', () => {
     expect(parsed.data.parserProvenance).toBe('ast');
     expect(parsed.data.evidenceStatus).toBe('confirmed');
     expect(parsed.data.freshnessAuthority).toBe('live');
+    expect(parsed.data.graphMetadata).toEqual({
+      detectorProvenance: 'structured',
+    });
     expect(parsed.data).not.toHaveProperty('trust');
     expect(parsed.data).not.toHaveProperty('confidence');
   });
@@ -95,6 +100,8 @@ describe('code graph query trust emission', () => {
       getDb: vi.fn(),
       queryEdgesFrom: vi.fn(() => []),
       queryEdgesTo: vi.fn(() => []),
+      getLastDetectorProvenance: vi.fn(() => 'structured'),
+      queryStartupHighlights: vi.fn(() => []),
     }));
 
     vi.doMock('../lib/context/shared-payload.js', async () => {

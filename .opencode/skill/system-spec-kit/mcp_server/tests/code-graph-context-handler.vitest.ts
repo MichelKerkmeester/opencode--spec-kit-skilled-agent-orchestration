@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   buildContext: vi.fn(),
+  getLastDetectorProvenance: vi.fn(() => 'structured'),
   ensureCodeGraphReady: vi.fn(async () => ({
     freshness: 'fresh',
     action: 'none',
@@ -16,6 +17,10 @@ vi.mock('../lib/code-graph/code-graph-context.js', () => ({
 
 vi.mock('../lib/code-graph/ensure-ready.js', () => ({
   ensureCodeGraphReady: mocks.ensureCodeGraphReady,
+}));
+
+vi.mock('../lib/code-graph/code-graph-db.js', () => ({
+  getLastDetectorProvenance: mocks.getLastDetectorProvenance,
 }));
 
 import { handleCodeGraphContext } from '../handlers/code-graph/context.js';
@@ -56,6 +61,9 @@ describe('code-graph-context handler', () => {
       action: 'none',
       inlineIndexPerformed: false,
       reason: 'ok',
+    });
+    expect(parsed.data.graphMetadata).toEqual({
+      detectorProvenance: 'structured',
     });
     expect(parsed.data.combinedSummary).toBe('summary');
   });

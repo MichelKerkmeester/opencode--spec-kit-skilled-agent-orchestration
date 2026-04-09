@@ -8,7 +8,11 @@ import {
   detectLanguage,
   getDefaultConfig,
 } from '../lib/code-graph/indexer-types.js';
-import { parseFile, extractEdges } from '../lib/code-graph/structural-indexer.js';
+import {
+  parseFile,
+  extractEdges,
+  getRequestedParserBackend,
+} from '../lib/code-graph/structural-indexer.js';
 
 describe('indexer-types', () => {
   describe('generateSymbolId', () => {
@@ -141,6 +145,60 @@ describe('structural-indexer', () => {
       const pyContent = `class Foo:\n    def bar(self):\n        pass`;
       const result = await parseFile('/test.py', pyContent, 'python');
       expect(result.edges.some(e => e.edgeType === 'CONTAINS')).toBe(true);
+    });
+
+    it('serializes structured and heuristic detector provenance honestly on regex-backed edges', async () => {
+      const previousParser = process.env.SPECKIT_PARSER;
+      process.env.SPECKIT_PARSER = 'regex';
+
+      try {
+        const content = [
+          "import { dep } from './dep';",
+          'function dep() {}',
+          'function useDep() {',
+          '  dep();',
+          '}',
+        ].join('\n');
+
+        const result = await parseFile('/test.ts', content, 'typescript');
+        const importEdge = result.edges.find((edge) => edge.edgeType === 'IMPORTS');
+        const callEdge = result.edges.find((edge) => edge.edgeType === 'CALLS');
+
+        expect(importEdge?.metadata).toMatchObject({
+          detectorProvenance: 'structured',
+          evidenceClass: 'EXTRACTED',
+          confidence: 1,
+        });
+        expect(callEdge?.metadata).toMatchObject({
+          detectorProvenance: 'heuristic',
+          evidenceClass: 'INFERRED',
+          confidence: 0.8,
+        });
+      } finally {
+        if (previousParser === undefined) {
+          delete process.env.SPECKIT_PARSER;
+        } else {
+          process.env.SPECKIT_PARSER = previousParser;
+        }
+      }
+    });
+  });
+
+  describe('graph-local parser selector', () => {
+    it('uses SPECKIT_PARSER to expose the requested backend without inventing a new routing surface', () => {
+      const previousParser = process.env.SPECKIT_PARSER;
+
+      process.env.SPECKIT_PARSER = 'regex';
+      expect(getRequestedParserBackend()).toBe('regex');
+
+      process.env.SPECKIT_PARSER = 'treesitter';
+      expect(getRequestedParserBackend()).toBe('treesitter');
+
+      if (previousParser === undefined) {
+        delete process.env.SPECKIT_PARSER;
+      } else {
+        process.env.SPECKIT_PARSER = previousParser;
+      }
     });
   });
 });

@@ -10,13 +10,31 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import type {
   CodeNode, CodeEdge, ParseResult, SupportedLanguage,
-  IndexerConfig, SymbolKind,
+  IndexerConfig, SymbolKind, DetectorProvenance,
 } from './indexer-types.js';
 import { generateSymbolId, generateContentHash, detectLanguage } from './indexer-types.js';
 import { isFileStale } from './code-graph-db.js';
 
 interface ParserAdapter {
   parse(content: string, language: SupportedLanguage): ParseResult;
+}
+
+export type ParserBackend = 'treesitter' | 'regex';
+
+export function detectorProvenanceFromParserBackend(backend: ParserBackend): DetectorProvenance {
+  return backend === 'treesitter' ? 'ast' : 'structured';
+}
+
+function buildEdgeMetadata(
+  confidence: number,
+  detectorProvenance: DetectorProvenance,
+  evidenceClass: 'EXTRACTED' | 'INFERRED' | 'AMBIGUOUS',
+): NonNullable<CodeEdge['metadata']> {
+  return {
+    confidence,
+    detectorProvenance,
+    evidenceClass,
+  };
 }
 
 export interface RawCapture {
@@ -620,13 +638,15 @@ class RegexParser implements ParserAdapter {
 
       const nodes = capturesToNodes(captures, '', language, content);
       const contentLines = content.split('\n');
-      const edges = extractEdges(nodes, contentLines, captures);
+      const detectorProvenance = detectorProvenanceFromParserBackend('regex');
+      const edges = extractEdges(nodes, contentLines, captures, detectorProvenance);
 
       return {
         filePath: '',
         language,
         nodes,
         edges,
+        detectorProvenance,
         contentHash,
         parseHealth: captures.length > 0 ? 'clean' : 'recovered',
         parseErrors: [],
@@ -638,6 +658,7 @@ class RegexParser implements ParserAdapter {
         language,
         nodes: [],
         edges: [],
+        detectorProvenance: detectorProvenanceFromParserBackend('regex'),
         contentHash,
         parseHealth: 'error',
         parseErrors: [err instanceof Error ? err.message : String(err)],
@@ -683,6 +704,10 @@ export async function getParser(): Promise<ParserAdapter> {
   }
 
   return new RegexParser();
+}
+
+export function getRequestedParserBackend(): ParserBackend {
+  return (process.env.SPECKIT_PARSER ?? 'treesitter') === 'regex' ? 'regex' : 'treesitter';
 }
 
 function attachFilePath(result: ParseResult, filePath: string): ParseResult {
@@ -756,6 +781,7 @@ export function extractEdges(
   nodes: CodeNode[],
   contentLines?: string[],
   captures?: RawCapture[],
+  baseDetectorProvenance: DetectorProvenance = 'structured',
 ): CodeEdge[] {
   const edges: CodeEdge[] = [];
   const nodesByName = new Map<string, CodeNode[]>();
@@ -797,7 +823,7 @@ export function extractEdges(
       edges.push({
         sourceId: parent.symbolId, targetId: method.symbolId,
         edgeType: 'CONTAINS', weight: 1.0,
-        metadata: { confidence: '1.0' },
+        metadata: buildEdgeMetadata(1.0, baseDetectorProvenance, 'EXTRACTED'),
       });
     }
   }
@@ -810,7 +836,7 @@ export function extractEdges(
       edges.push({
         sourceId: imp.symbolId, targetId: target.symbolId,
         edgeType: 'IMPORTS', weight: 1.0,
-        metadata: { confidence: '1.0' },
+        metadata: buildEdgeMetadata(1.0, baseDetectorProvenance, 'EXTRACTED'),
       });
     }
   }
@@ -823,7 +849,7 @@ export function extractEdges(
       edges.push({
         sourceId: target.symbolId, targetId: exp.symbolId,
         edgeType: 'EXPORTS', weight: 1.0,
-        metadata: { confidence: '1.0' },
+        metadata: buildEdgeMetadata(1.0, baseDetectorProvenance, 'EXTRACTED'),
       });
     }
   }
@@ -837,7 +863,7 @@ export function extractEdges(
         edges.push({
           sourceId: cls.symbolId, targetId: parent.symbolId,
           edgeType: 'EXTENDS', weight: 0.95,
-          metadata: { confidence: '0.95' },
+          metadata: buildEdgeMetadata(0.95, baseDetectorProvenance, 'EXTRACTED'),
         });
       }
     }
@@ -853,7 +879,7 @@ export function extractEdges(
           edges.push({
             sourceId: cls.symbolId, targetId: iface.symbolId,
             edgeType: 'IMPLEMENTS', weight: 0.95,
-            metadata: { confidence: '0.95' },
+            metadata: buildEdgeMetadata(0.95, baseDetectorProvenance, 'EXTRACTED'),
           });
         }
       }
@@ -886,7 +912,7 @@ export function extractEdges(
           edges.push({
             sourceId: caller.symbolId, targetId: target.symbolId,
             edgeType: 'CALLS', weight: 0.8,
-            metadata: { confidence: '0.8' },
+            metadata: buildEdgeMetadata(0.8, 'heuristic', 'INFERRED'),
           });
         }
       }
@@ -909,7 +935,7 @@ export function extractEdges(
           targetId: decoratedNode.symbolId,
           edgeType: 'DECORATES',
           weight: 0.9,
-          metadata: { confidence: '0.9' },
+          metadata: buildEdgeMetadata(0.9, baseDetectorProvenance, 'EXTRACTED'),
         });
       }
     }
@@ -931,7 +957,7 @@ export function extractEdges(
           targetId: parentMethod.symbolId,
           edgeType: 'OVERRIDES',
           weight: 0.9,
-          metadata: { confidence: '0.9' },
+          metadata: buildEdgeMetadata(0.9, baseDetectorProvenance, 'INFERRED'),
         });
         break;
       }
@@ -958,7 +984,7 @@ export function extractEdges(
           targetId: typeNode.symbolId,
           edgeType: 'TYPE_OF',
           weight: 0.85,
-          metadata: { confidence: '0.85' },
+          metadata: buildEdgeMetadata(0.85, baseDetectorProvenance, 'EXTRACTED'),
         });
       }
     }
@@ -984,6 +1010,7 @@ export async function parseFile(
     return {
       filePath, language,
       nodes: [], edges: [], contentHash,
+      detectorProvenance: detectorProvenanceFromParserBackend(getRequestedParserBackend()),
       parseHealth: 'error',
       parseErrors: [err instanceof Error ? err.message : String(err)],
       parseDurationMs: Date.now() - startTime,
@@ -1130,7 +1157,7 @@ export async function indexFiles(config: IndexerConfig): Promise<ParseResult[]> 
         result.edges.push({
           sourceId: testNode.symbolId, targetId: testedNode.symbolId,
           edgeType: 'TESTED_BY', weight: 0.6,
-          metadata: { confidence: '0.6' },
+          metadata: buildEdgeMetadata(0.6, 'heuristic', 'AMBIGUOUS'),
         });
       }
     }

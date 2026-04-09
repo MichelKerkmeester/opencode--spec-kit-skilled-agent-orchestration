@@ -15,6 +15,19 @@ export type EdgeType =
   | 'EXTENDS' | 'IMPLEMENTS' | 'TESTED_BY'
   | 'DECORATES' | 'OVERRIDES' | 'TYPE_OF';
 
+/** Honest graph-local detector provenance classes for structural indexing lanes. */
+export type DetectorProvenance = 'ast' | 'structured' | 'regex' | 'heuristic';
+
+/** Evidence classes for graph edge payload enrichment. */
+export type EdgeEvidenceClass = 'EXTRACTED' | 'INFERRED' | 'AMBIGUOUS';
+
+export interface CodeEdgeMetadata {
+  confidence?: number;
+  detectorProvenance?: DetectorProvenance;
+  evidenceClass?: EdgeEvidenceClass;
+  [key: string]: string | number | boolean | null | undefined;
+}
+
 /** Languages supported by the structural indexer */
 export type SupportedLanguage = 'javascript' | 'typescript' | 'python' | 'bash';
 
@@ -41,7 +54,7 @@ export interface CodeEdge {
   targetId: string;
   edgeType: EdgeType;
   weight: number;
-  metadata?: Record<string, string>;
+  metadata?: CodeEdgeMetadata;
 }
 
 /** Result of parsing a single file */
@@ -50,6 +63,7 @@ export interface ParseResult {
   language: SupportedLanguage;
   nodes: CodeNode[];
   edges: CodeEdge[];
+  detectorProvenance: DetectorProvenance;
   contentHash: string;
   parseHealth: 'clean' | 'recovered' | 'error';
   parseErrors: string[];

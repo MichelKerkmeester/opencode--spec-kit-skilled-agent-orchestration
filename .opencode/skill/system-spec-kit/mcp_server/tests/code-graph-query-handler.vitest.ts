@@ -5,6 +5,10 @@ const mocks = vi.hoisted(() => ({
   queryEdgesFrom: vi.fn(),
   queryEdgesTo: vi.fn(),
   queryOutline: vi.fn(),
+  resolveSubjectFilePath: vi.fn(),
+  queryFileImportDependents: vi.fn(),
+  queryFileDegrees: vi.fn(),
+  getLastDetectorProvenance: vi.fn(),
   ensureCodeGraphReady: vi.fn(async () => ({
     freshness: 'fresh',
     action: 'none',
@@ -18,6 +22,10 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   queryEdgesFrom: mocks.queryEdgesFrom,
   queryEdgesTo: mocks.queryEdgesTo,
   queryOutline: mocks.queryOutline,
+  resolveSubjectFilePath: mocks.resolveSubjectFilePath,
+  queryFileImportDependents: mocks.queryFileImportDependents,
+  queryFileDegrees: mocks.queryFileDegrees,
+  getLastDetectorProvenance: mocks.getLastDetectorProvenance,
 }));
 
 vi.mock('../lib/code-graph/ensure-ready.js', () => ({
@@ -49,6 +57,10 @@ describe('code-graph-query handler', () => {
     mocks.queryEdgesFrom.mockReturnValue([]);
     mocks.queryEdgesTo.mockReturnValue([]);
     mocks.queryOutline.mockReturnValue([]);
+    mocks.resolveSubjectFilePath.mockImplementation((subject: string) => subject);
+    mocks.queryFileImportDependents.mockReturnValue([]);
+    mocks.queryFileDegrees.mockReturnValue([]);
+    mocks.getLastDetectorProvenance.mockReturnValue('structured');
   });
 
   it('honors explicit edgeType for one-hop queries', async () => {
@@ -92,5 +104,137 @@ describe('code-graph-query handler', () => {
     expect(parsed.data.edgeType).toBe('OVERRIDES');
     expect(parsed.data.transitive).toBe(true);
     expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('symbol-1', 'OVERRIDES');
+  });
+
+  it('adds nested edge evidence metadata without collapsing trust axes', async () => {
+    mocks.queryEdgesFrom.mockReturnValue([
+      {
+        edge: {
+          targetId: 'symbol-2',
+          metadata: {
+            confidence: 0.8,
+            detectorProvenance: 'heuristic',
+            evidenceClass: 'INFERRED',
+          },
+        },
+        targetNode: { fqName: 'TargetSymbol', filePath: 'src/target.ts', startLine: 12 },
+      },
+    ]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.graphMetadata).toMatchObject({
+      detectorProvenance: 'structured',
+    });
+    expect(parsed.data.edgeEvidenceClass).toBe('inferred_heuristic');
+    expect(parsed.data.numericConfidence).toBe(0.8);
+    expect(parsed.data.edges[0]).toMatchObject({
+      target: 'TargetSymbol',
+      file: 'src/target.ts',
+      line: 12,
+      confidence: 0.8,
+      numericConfidence: 0.8,
+      detectorProvenance: 'heuristic',
+      evidenceClass: 'INFERRED',
+      edgeEvidenceClass: 'inferred_heuristic',
+    });
+    expect(parsed.data).not.toHaveProperty('confidence');
+  });
+
+  it('enforces blast-radius depth before inclusion and unions multiple source files', async () => {
+    mocks.queryFileImportDependents.mockReturnValue([
+      { importedFilePath: 'src/a.ts', importerFilePath: 'src/b.ts' },
+      { importedFilePath: 'src/b.ts', importerFilePath: 'src/c.ts' },
+      { importedFilePath: 'src/c.ts', importerFilePath: 'src/d.ts' },
+      { importedFilePath: 'src/x.ts', importerFilePath: 'src/e.ts' },
+      { importedFilePath: 'src/e.ts', importerFilePath: 'src/f.ts' },
+    ]);
+    mocks.queryFileDegrees.mockReturnValue([
+      { filePath: 'src/a.ts', degree: 1 },
+      { filePath: 'src/x.ts', degree: 1 },
+      { filePath: 'src/b.ts', degree: 2 },
+      { filePath: 'src/e.ts', degree: 3 },
+      { filePath: 'src/c.ts', degree: 5 },
+      { filePath: 'src/f.ts', degree: 1 },
+    ]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+      subjects: ['src/x.ts'],
+      unionMode: 'multi',
+      maxDepth: 2,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.multiFileUnion).toBe(true);
+    expect(parsed.data.sourceFiles).toEqual(['src/a.ts', 'src/x.ts']);
+    expect(parsed.data.nodes).toEqual([
+      { filePath: 'src/a.ts', depth: 0, isSeed: true },
+      { filePath: 'src/x.ts', depth: 0, isSeed: true },
+      { filePath: 'src/b.ts', depth: 1 },
+      {
+        filePath: 'src/e.ts',
+        depth: 1,
+      },
+      {
+        filePath: 'src/c.ts',
+        depth: 2,
+        hotFileBreadcrumb: {
+          degree: 5,
+          changeCarefullyReason: 'High-degree node; change carefully because changes here ripple to 5 dependents.',
+        },
+      },
+      { filePath: 'src/f.ts', depth: 2 },
+    ]);
+    expect(parsed.data.affectedFiles).toEqual([
+      { filePath: 'src/b.ts', depth: 1 },
+      { filePath: 'src/e.ts', depth: 1 },
+      {
+        filePath: 'src/c.ts',
+        depth: 2,
+        hotFileBreadcrumb: {
+          degree: 5,
+          changeCarefullyReason: 'High-degree node; change carefully because changes here ripple to 5 dependents.',
+        },
+      },
+      { filePath: 'src/f.ts', depth: 2 },
+    ]);
+    expect(parsed.data.affectedFiles).not.toContainEqual({ filePath: 'src/d.ts', depth: 3 });
+    expect(parsed.data.hotFileBreadcrumbs).toEqual([
+      {
+        filePath: 'src/c.ts',
+        hotFileBreadcrumb: {
+          degree: 5,
+          changeCarefullyReason: 'High-degree node; change carefully because changes here ripple to 5 dependents.',
+        },
+      },
+    ]);
+  });
+
+  it('returns only the seed node when blast-radius maxDepth is zero', async () => {
+    mocks.queryFileImportDependents.mockReturnValue([
+      { importedFilePath: 'src/a.ts', importerFilePath: 'src/b.ts' },
+    ]);
+    mocks.queryFileDegrees.mockReturnValue([
+      { filePath: 'src/a.ts', degree: 0 },
+    ]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+      maxDepth: 0,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.sourceFiles).toEqual(['src/a.ts']);
+    expect(parsed.data.nodes).toEqual([
+      { filePath: 'src/a.ts', depth: 0, isSeed: true },
+    ]);
+    expect(parsed.data.affectedFiles).toEqual([]);
   });
 });

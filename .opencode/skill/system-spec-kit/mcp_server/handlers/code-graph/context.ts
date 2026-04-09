@@ -6,6 +6,7 @@
 import { buildContext, type ContextArgs, type QueryMode } from '../../lib/code-graph/code-graph-context.js';
 import type { CodeGraphSeed } from '../../lib/code-graph/seed-resolver.js';
 import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
+import { getLastDetectorProvenance } from '../../lib/code-graph/code-graph-db.js';
 
 export interface ContextHandlerArgs {
   input?: string;
@@ -186,6 +187,9 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
             graphContext: result.graphContext,
             textBrief: result.textBrief,
             metadata: result.metadata,
+            graphMetadata: {
+              detectorProvenance: getLastDetectorProvenance() ?? 'unknown',
+            },
           },
         }, null, 2),
       }],

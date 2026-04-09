@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
+  DETECTOR_PROVENANCE_VALUES,
   EVIDENCE_STATUS_VALUES,
   FRESHNESS_AUTHORITY_VALUES,
   PARSER_PROVENANCE_VALUES,
   createSharedPayloadEnvelope,
+  detectorProvenanceToParserProvenance,
+  isDetectorProvenance,
   isStructuralTrustComplete,
   makeStructuralTrust,
 } from '../lib/context/shared-payload.js';
@@ -12,8 +15,15 @@ import { computeResultConfidence } from '../lib/search/confidence-scoring.js';
 describe('structural trust axis contract', () => {
   it('exports the three structural trust axis vocabularies separately', () => {
     expect([...PARSER_PROVENANCE_VALUES]).toEqual(['ast', 'regex', 'heuristic', 'unknown']);
+    expect([...DETECTOR_PROVENANCE_VALUES]).toEqual(['ast', 'structured', 'regex', 'heuristic']);
     expect([...EVIDENCE_STATUS_VALUES]).toEqual(['confirmed', 'probable', 'unverified', 'unknown']);
     expect([...FRESHNESS_AUTHORITY_VALUES]).toEqual(['live', 'cached', 'stale', 'unknown']);
+  });
+
+  it('keeps detector provenance separate from the parser trust-axis vocabulary', () => {
+    expect(isDetectorProvenance('structured')).toBe(true);
+    expect(isDetectorProvenance('marketing')).toBe(false);
+    expect(detectorProvenanceToParserProvenance('structured')).toBe('regex');
   });
 
   it('keeps parser provenance, evidence status, and freshness authority as separate fields', () => {

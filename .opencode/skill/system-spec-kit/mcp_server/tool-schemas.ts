@@ -637,12 +637,13 @@ const codeGraphScan: ToolDefinition = {
 
 const codeGraphQuery: ToolDefinition = {
   name: 'code_graph_query',
-  description: '[L6:Analysis] Query structural relationships: outline (file symbols), calls_from/calls_to (call graph), imports_from/imports_to (dependency graph). Use INSTEAD of Grep for structural queries (callers, imports, dependencies). Supports includeTransitive for multi-hop BFS traversal. Token Budget: 1200.',
+  description: '[L6:Analysis] Query structural relationships: outline (file symbols), calls_from/calls_to (call graph), imports_from/imports_to (dependency graph), and blast_radius (reverse import impact). Use INSTEAD of Grep for structural queries (callers, imports, dependencies). Supports includeTransitive for multi-hop BFS traversal. Token Budget: 1200.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
-      operation: { type: 'string', enum: ['outline', 'calls_from', 'calls_to', 'imports_from', 'imports_to'], description: 'Query operation (required)' },
+      operation: { type: 'string', enum: ['outline', 'calls_from', 'calls_to', 'imports_from', 'imports_to', 'blast_radius'], description: 'Query operation (required)' },
       subject: { type: 'string', minLength: 1, description: 'File path, symbol name, or symbolId to query (required)' },
+      subjects: { type: 'array', items: { type: 'string' }, description: 'Optional additional file paths or symbols for blast-radius union mode' },
       edgeType: { type: 'string', description: 'Filter by edge type (optional)' },
       limit: { type: 'number', minimum: 1, maximum: 200, default: 50, description: 'Max results' },
       includeTransitive: { type: 'boolean', default: false, description: 'Enable multi-hop BFS traversal (follows edges transitively)' },

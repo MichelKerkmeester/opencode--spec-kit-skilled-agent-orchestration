@@ -8,7 +8,11 @@ const mocks = vi.hoisted(() => ({
   getDbMock: vi.fn(),
   getStatsMock: vi.fn(),
   getLastGitHeadMock: vi.fn(),
+  setLastDetectorProvenanceMock: vi.fn(),
   setLastGitHeadMock: vi.fn(),
+  upsertFileMock: vi.fn(),
+  replaceNodesMock: vi.fn(),
+  replaceEdgesMock: vi.fn(),
   ensureFreshFilesMock: vi.fn(),
   isFileStaleMock: vi.fn(),
   getTrackedFilesMock: vi.fn(),
@@ -23,7 +27,11 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   getDb: mocks.getDbMock,
   getStats: mocks.getStatsMock,
   getLastGitHead: mocks.getLastGitHeadMock,
+  setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
   setLastGitHead: mocks.setLastGitHeadMock,
+  upsertFile: mocks.upsertFileMock,
+  replaceNodes: mocks.replaceNodesMock,
+  replaceEdges: mocks.replaceEdgesMock,
   ensureFreshFiles: mocks.ensureFreshFilesMock,
   isFileStale: mocks.isFileStaleMock,
   getTrackedFiles: mocks.getTrackedFilesMock,
@@ -64,10 +72,21 @@ describe('ensure-ready', () => {
       nodesByKind: {}, edgesByType: {}, parseHealthSummary: {},
     });
     mocks.getLastGitHeadMock.mockReturnValue(null);
+    mocks.upsertFileMock.mockReturnValue(1);
     mocks.ensureFreshFilesMock.mockReturnValue({ fresh: [], stale: [] });
     mocks.isFileStaleMock.mockReturnValue(false);
     mocks.getTrackedFilesMock.mockReturnValue([]);
-    mocks.indexFilesMock.mockResolvedValue([]);
+    mocks.indexFilesMock.mockResolvedValue([{
+      filePath: '/tmp/test-root/stale.ts',
+      language: 'typescript',
+      nodes: [],
+      edges: [],
+      detectorProvenance: 'structured',
+      contentHash: 'hash-1',
+      parseHealth: 'clean',
+      parseErrors: [],
+      parseDurationMs: 5,
+    }]);
     mocks.existsSyncMock.mockReturnValue(true);
     mocks.execSyncMock.mockReturnValue('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n');
   });
@@ -167,6 +186,7 @@ describe('ensure-ready', () => {
       expect(result.inlineIndexPerformed).toBe(true);
       expect(result.files).toEqual(['/tmp/test-root/stale.ts']);
       expect(mocks.indexFilesMock).toHaveBeenCalledTimes(1);
+      expect(mocks.setLastDetectorProvenanceMock).toHaveBeenCalledWith('structured');
     });
 
     it('allows selective inline reindex after git HEAD changes when the stale set is small', async () => {
@@ -190,6 +210,7 @@ describe('ensure-ready', () => {
       expect(result.reason).toContain('git HEAD changed: aaaaaaaa -> bbbbbbbb');
       expect(result.reason).toContain('1 file(s) have newer mtime than indexed_at');
       expect(mocks.indexFilesMock).toHaveBeenCalledTimes(1);
+      expect(mocks.setLastDetectorProvenanceMock).toHaveBeenCalledWith('structured');
       expect(mocks.setLastGitHeadMock).toHaveBeenCalledWith(newHead);
     });
 
