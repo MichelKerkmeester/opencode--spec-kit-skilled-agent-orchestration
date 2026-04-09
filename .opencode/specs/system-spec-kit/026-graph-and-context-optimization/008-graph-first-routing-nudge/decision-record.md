@@ -45,7 +45,7 @@ The research retained the graph-first nudge only after narrowing it to existing 
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: Implement the nudge only through existing startup, resume, compact, and response-hint surfaces, and keep it advisory.
+**We chose**: Implement the nudge only through existing bootstrap and request-shaped response-hint surfaces, and keep it advisory.
 
 **How it works**: The packet scope stays narrow, names predecessors clearly, and passes a focused verification seam before any successor packet consumes it.
 <!-- /ANCHOR:adr-001-decision -->

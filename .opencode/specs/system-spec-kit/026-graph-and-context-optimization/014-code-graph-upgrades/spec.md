@@ -62,13 +62,14 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 ### In Scope
 - Detector provenance taxonomy and AST or structured-fallback discipline.
 - Blast-radius correctness, multi-file union mode, and honest degree-based hot-file breadcrumbs.
-- Evidence-tagged edges, numeric confidence backfill, and additive graph metadata on current owner payloads.
+- Evidence-tagged edges, numeric confidence backfill, and additive graph metadata on current graph-owned payloads.
 - Optional query fallback tiering for graph-local lexical helpers.
 - Additive cluster and export contracts only if they stay on the current graph substrate.
 
 ### Out of Scope
 - Startup/resume or response-surface routing nudges already owned by `008`.
 - Fail-closed trust validation already owned by `011`.
+- Resume/bootstrap carriage of graph-edge enrichment beyond the graph-local owner surfaces.
 - Graph subsystem replacement, new graph-only authority surfaces, or remote multimodal ingestion.
 
 ### Files to Change
@@ -80,14 +81,12 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` | Modify | Ship blast-radius traversal, explicit multi-file union semantics, advisory hot-file breadcrumbs, and additive edge enrichment on the query owner surface. |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts` | Modify | Surface detector provenance metadata on code-graph context responses. |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/scan.ts` | Modify | Serialize detector provenance and graph-edge enrichment summaries at scan time. |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | Modify | Preserve additive graph-edge enrichment on the existing resume payload contract. |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` | Modify | Preserve resume-carried graph-edge enrichment through bootstrap output without changing 011 trust validation. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/structural-trust-axis.vitest.ts` | Modify | Verify the detector provenance taxonomy stays separate from packet 006's trust-axis vocabulary. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-context-handler.vitest.ts` | Modify | Verify detector provenance metadata on code-graph context responses. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-scan.vitest.ts` | Modify | Verify detector provenance summaries persist through the scan handler. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts` | Modify | Verify blast-radius depth caps, explicit union mode, advisory breadcrumbs, and additive edge enrichment. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts` | Modify | Verify resume/bootstrap payloads keep additive graph-edge enrichment without weakening certainty contracts. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts` | Modify | Verify numeric confidence validation and resume-to-bootstrap enrichment preservation with the real handler chain. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts` | Read-only verification | Confirm packet `011` trust surfaces remain unchanged while 014 stays graph-local. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts` | Modify | Verify numeric confidence validation on additive graph payload fields without claiming resume/bootstrap carriage. |
 | `.opencode/skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts` | Create | Add the packet-014 frozen regression floor for detector provenance and blast-radius depth behavior. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md` | Modify | Replace the planning placeholder with the shipped runtime closeout and verification record. |
 <!-- /ANCHOR:scope -->
@@ -103,7 +102,7 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 |----|-------------|---------------------|
 | REQ-001 | Graph detector outputs distinguish `ast`, `structured`, `regex`, or `heuristic` provenance and never mislabel non-AST results as AST. | Detector fixtures prove non-AST paths cannot emit `ast` provenance and that explicit fallback states survive serialization. |
 | REQ-002 | Blast-radius traversal enforces depth before result inclusion and supports explicit multi-file union behavior. | A frozen blast-radius corpus proves that nodes beyond `maxDepth` never surface. |
-| REQ-003 | Graph payloads surface edge evidence class and numeric confidence additively on existing owner contracts after `011`. | Graph payload snapshots prove edge evidence classes and numeric confidence are additive on current owners, not parallel graph-only payload families. |
+| REQ-003 | Graph payloads surface edge evidence class and numeric confidence additively on current graph-owned contracts after `011`. | Graph payload snapshots prove edge evidence classes and numeric confidence are additive on graph-owned outputs, not parallel graph-only payload families. |
 | REQ-004 | Every new detector or graph surface lands with frozen regression fixtures under the `007` discipline. | Regression fixtures fail on detector-provenance regressions and blast-radius depth regressions. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -141,7 +140,7 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 
 **Given** a blast-radius query includes a `maxDepth`, **when** the traversal reaches nodes beyond that bound, **then** those nodes do not surface in the result set and multi-file union behavior remains explicit. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:950-951] [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:990-991]
 
-**Given** graph payloads add edge evidence classes or numeric confidence, **when** downstream consumers inspect the payload, **then** the new fields appear additively on existing owner contracts after `011` and never create a parallel graph-only family. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:952-953] [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:992-994]
+**Given** graph payloads add edge evidence classes or numeric confidence, **when** downstream consumers inspect the graph-local payloads, **then** the new fields appear additively on graph-owned outputs after `011` and never create a parallel graph-only family. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:952-953] [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:992-994]
 
 **Given** someone proposes startup, resume, or response-surface nudges during implementation, **when** the packet boundary is checked, **then** that work is rejected or deferred to packet `008`. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:943-945] [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:1001-1002]
 

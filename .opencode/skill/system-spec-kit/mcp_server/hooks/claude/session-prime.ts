@@ -108,19 +108,6 @@ function rewriteStartupMemoryLine(startupSurface: string, hasCachedContinuity: b
   );
 }
 
-function buildStructuralRoutingSection(
-  graphState: StartupBrief['graphState'] | undefined,
-): OutputSection | null {
-  if (graphState !== 'ready') {
-    return null;
-  }
-
-  return {
-    title: 'Structural Routing Hint',
-    content: 'If your first question is about callers, imports, dependencies, or outline, prefer `code_graph_query` before Grep or Glob. Advisory only: `session_bootstrap()` and `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` remain the recovery owners.',
-  };
-}
-
 /** Handle source=startup: prime new session with constitutional memories + overview */
 export function handleStartup(
   input: Pick<HookInput, 'session_id'> & { specFolder?: string } = {},
@@ -176,11 +163,6 @@ export function handleStartup(
     });
   }
 
-  const structuralRoutingSection = buildStructuralRoutingSection(startupBrief?.graphState);
-  if (structuralRoutingSection) {
-    sections.push(structuralRoutingSection);
-  }
-
   if (startupBrief?.graphState === 'stale') {
     sections.push({
       title: 'Stale Code Graph Warning',
@@ -207,11 +189,6 @@ function handleResume(sessionId: string): OutputSection[] {
       title: 'Session Resume',
       content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
     });
-  }
-
-  const structuralRoutingSection = buildStructuralRoutingSection(startupBrief?.graphState);
-  if (structuralRoutingSection) {
-    sections.push(structuralRoutingSection);
   }
 
   return sections;

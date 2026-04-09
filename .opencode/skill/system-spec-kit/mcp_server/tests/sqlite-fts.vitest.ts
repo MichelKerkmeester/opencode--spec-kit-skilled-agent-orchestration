@@ -159,7 +159,7 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
     });
   });
 
-  it('T12: forced degrade compile_probe_miss records bm25 fallback without changing array shape', () => {
+  it('T12: forced degrade compile_probe_miss records an unavailable lexical lane without changing array shape', () => {
     const compileProbeMissDb = {
       prepare(sql: string) {
         if (sql === 'PRAGMA compile_options') {
@@ -176,7 +176,7 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
     expect(results).toEqual([]);
     expect(Array.isArray(results)).toBe(true);
     expect(getLastLexicalCapabilitySnapshot()).toEqual({
-      lexicalPath: 'bm25_fallback',
+      lexicalPath: 'unavailable',
       fallbackState: 'compile_probe_miss',
     });
   });
@@ -197,12 +197,12 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
     `);
 
     expect(probeFts5Capability(missingTableDb)).toEqual({
-      lexicalPath: 'bm25_fallback',
+      lexicalPath: 'unavailable',
       fallbackState: 'missing_table',
     });
     expect(fts5Bm25Search(missingTableDb, 'login')).toEqual([]);
     expect(getLastLexicalCapabilitySnapshot()).toEqual({
-      lexicalPath: 'bm25_fallback',
+      lexicalPath: 'unavailable',
       fallbackState: 'missing_table',
     });
 
@@ -236,7 +236,7 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
 
     expect(fts5Bm25Search(noSuchModuleDb, 'login')).toEqual([]);
     expect(getLastLexicalCapabilitySnapshot()).toEqual({
-      lexicalPath: 'bm25_fallback',
+      lexicalPath: 'unavailable',
       fallbackState: 'no_such_module_fts5',
     });
   });
@@ -268,7 +268,7 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
 
     expect(fts5Bm25Search(bm25FailureDb, 'login')).toEqual([]);
     expect(getLastLexicalCapabilitySnapshot()).toEqual({
-      lexicalPath: 'bm25_fallback',
+      lexicalPath: 'unavailable',
       fallbackState: 'bm25_runtime_failure',
     });
   });

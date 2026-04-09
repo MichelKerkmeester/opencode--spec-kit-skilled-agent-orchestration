@@ -174,7 +174,7 @@ score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/
 
 Packet `026-graph-and-context-optimization/010-fts-capability-cascade-floor` freezes the lexical capability contract that packet `002-implement-cache-warning-hooks` now consumes. `memory_search` responses expose:
 
-- `lexicalPath`: the lane that actually ran for lexical retrieval. Current packet-owned values are `fts5` and `bm25_fallback`. The wider response schema also allows `like`, but packet `010` does not claim that lane for this runtime seam.
+- `lexicalPath`: the lane that actually ran for lexical retrieval. Current packet-owned values are `fts5` and `unavailable`. The wider response schema also allows `like`, but packet `010` does not claim that lane for this runtime seam.
 - `fallbackState`: the truthful FTS capability outcome for the request.
 
 The forced-degrade matrix is:
@@ -182,10 +182,10 @@ The forced-degrade matrix is:
 | `fallbackState` | Meaning | `lexicalPath` |
 |-----------------|---------|---------------|
 | `ok` | FTS5 compile probe passed, `memory_fts` exists, and BM25 ranking executed normally | `fts5` |
-| `compile_probe_miss` | `PRAGMA compile_options` does not report FTS5 support, so lexical work drops to the non-FTS fallback lane | `bm25_fallback` |
-| `missing_table` | FTS5 support is present, but `memory_fts` is missing at runtime | `bm25_fallback` |
-| `no_such_module_fts5` | The SQLite engine rejects FTS5 usage with `no such module: fts5` | `bm25_fallback` |
-| `bm25_runtime_failure` | The FTS5 table exists, but the `bm25(...)` ranking call fails at runtime | `bm25_fallback` |
+| `compile_probe_miss` | `PRAGMA compile_options` does not report FTS5 support, so lexical work cannot run for this request | `unavailable` |
+| `missing_table` | FTS5 support is present, but `memory_fts` is missing at runtime | `unavailable` |
+| `no_such_module_fts5` | The SQLite engine rejects FTS5 usage with `no such module: fts5` | `unavailable` |
+| `bm25_runtime_failure` | The FTS5 table exists, but the `bm25(...)` ranking call fails at runtime | `unavailable` |
 
 The contract is intentionally narrow: preserve result-shape semantics, surface truthful lane metadata, and let later packets build on that truth instead of inferring capability from empty results or warning logs.
 

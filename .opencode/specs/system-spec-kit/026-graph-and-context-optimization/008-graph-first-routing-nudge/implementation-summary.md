@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Graph-First Routing Nudge"
-description: "Advisory-only structural routing nudges added to the existing startup, bootstrap, response-hint, and memory-context surfaces."
+description: "Advisory-only structural routing nudges added to the existing bootstrap, response-hint, and memory-context surfaces."
 trigger_phrases:
   - "008-graph-first-routing-nudge"
   - "implementation"
@@ -32,9 +32,9 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Packet `008` now ships a narrow graph-first routing nudge without creating a new router. The runtime change stays inside the existing startup, bootstrap, response-hint, and `memory_context` surfaces. When graph readiness is truly ready, the server now emits an advisory metadata object and matching hint text for structural-first prompts that often misfire with Grep or Glob, such as callers, imports, dependencies, and outline lookups.
+Packet `008` now ships a narrow graph-first routing nudge without creating a new router. The runtime change stays inside the existing bootstrap, response-hint, and `memory_context` surfaces. When graph readiness is truly ready and the current surface has a structural task shape, the server emits an advisory metadata object and matching hint text for prompts that often misfire with Grep or Glob, such as callers, imports, dependencies, and outline lookups.
 
-The packet also adds a frozen structural-task slice in `tests/graph-first-routing-nudge.vitest.ts`. That suite proves the nudge only fires when readiness and activation scaffolding are present, stays off for semantic queries, and never replaces bootstrap or resume authority.
+The packet also adds a frozen structural-task slice in `tests/graph-first-routing-nudge.vitest.ts`. That suite proves the nudge only fires on the request-shaped surfaces that actually have a task to classify, stays off for semantic queries, and never replaces bootstrap or resume authority.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -42,7 +42,7 @@ The packet also adds a frozen structural-task slice in `tests/graph-first-routin
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The delivery stayed inside the bounded seam named in `spec.md`. I added a guarded helper in `context-server.ts` for likely structural misfires, layered a startup or resume hint into `session-prime.ts`, surfaced a separate advisory field in `session-bootstrap.ts`, and threaded the same metadata through `memory-context.ts` without changing the existing routed backend. The packet closeout then updated `plan.md`, `tasks.md`, and `checklist.md` to reflect the shipped runtime truth, recorded the exact verification commands used for sign-off, and confirmed that no parent tracker updates were required for this packet-local runtime closeout.
+The delivery stayed inside the bounded seam named in `spec.md`. I added a guarded helper in `context-server.ts` for likely structural misfires, surfaced a separate advisory field in `session-bootstrap.ts`, and threaded the same metadata through `memory-context.ts` without changing the existing routed backend. The follow-up remediation then removed the generic startup or resume hook hint from `session-prime.ts` so the packet only claims the request-shaped surfaces it can actually gate truthfully. The packet closeout then updated `plan.md`, `tasks.md`, and `checklist.md` to reflect the shipped runtime truth, recorded the exact verification commands used for sign-off, and confirmed that no parent tracker updates were required for this packet-local runtime closeout.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -53,7 +53,7 @@ The delivery stayed inside the bounded seam named in `spec.md`. I added a guarde
 | Decision | Why |
 |----------|-----|
 | Keep the nudge advisory-only and store it as metadata | The packet needed to reuse existing response surfaces and avoid inventing a competing graph router. |
-| Gate the nudge on ready graph state and activation scaffolding | Structural hints are only trustworthy when the graph is ready and the current surface already has the right bootstrap context. |
+| Gate the nudge on ready graph state and request-shaped context | Structural hints are only trustworthy when the graph is ready and the current surface actually carries a structural task to classify. |
 | Keep bootstrap `nextActions` authoritative | The research and packet spec both require `session_bootstrap()` and deeper resume flows to remain the owners of recovery guidance. |
 <!-- /ANCHOR:decisions -->
 
@@ -75,6 +75,6 @@ The delivery stayed inside the bounded seam named in `spec.md`. I added a guarde
 ## Known Limitations
 
 1. This packet is classified 'No change' under `../001-research-graph-context-systems/006-research-memory-redundancy/spec.md` §3A. Structural routing nudges are orthogonal to the memory-save wrapper contract; no memory generator, collector, or template changes are introduced.
-2. The startup and resume hook hint is intentionally generic because SessionStart priming has no user task yet. Task-shaped nudges still happen later on the response and `memory_context` surfaces.
+2. Startup and resume priming remain intentionally generic because SessionStart surfaces do not carry a concrete user task yet. Task-shaped nudges ship only on `session_bootstrap()` and later request-shaped response surfaces.
 3. The nudge only fires on ready graph state. Stale or missing structural context still falls back to the existing refresh guidance instead of speculating about tool routing.
 <!-- /ANCHOR:limitations -->

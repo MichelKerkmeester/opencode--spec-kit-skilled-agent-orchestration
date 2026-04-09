@@ -151,7 +151,7 @@ describe('Packet 010 lexical capability response surface', () => {
             similarity: 0.42,
           },
         ],
-        lexicalPath: 'bm25_fallback',
+        lexicalPath: 'unavailable',
         fallbackState: 'compile_probe_miss',
       },
       hints: [],
@@ -161,7 +161,7 @@ describe('Packet 010 lexical capability response surface', () => {
     const payload = parseEnvelope(response);
     const data = getNestedRecord(payload, 'data');
 
-    expect(data?.lexicalPath).toBe('bm25_fallback');
+    expect(data?.lexicalPath).toBe('unavailable');
     expect(data?.fallbackState).toBe('compile_probe_miss');
     expect(Array.isArray(data?.results)).toBe(true);
     expect((data?.results as Array<Record<string, unknown>>)[0]?.id).toBe(101);

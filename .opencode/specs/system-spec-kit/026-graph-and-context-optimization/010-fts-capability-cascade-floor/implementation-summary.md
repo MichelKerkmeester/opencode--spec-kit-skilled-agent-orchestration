@@ -33,7 +33,7 @@ contextType: "implementation"
 
 Packet `010` now hardens the lexical capability floor that the research train called for. `sqlite-fts.ts` no longer collapses FTS availability into a single yes-or-no check: it now distinguishes `compile_probe_miss`, `missing_table`, `no_such_module_fts5`, and `bm25_runtime_failure`, while still preserving the existing degraded retrieval behavior.
 
-`memory_search` now surfaces that truth directly on the response envelope with `lexicalPath` and `fallbackState`, so downstream readers do not need to guess whether the lexical lane ran through FTS5 or a degraded BM25 fallback. The packet-local tests freeze all four degrade cases, and the runtime search README now documents the same vocabulary that packet `002-implement-cache-warning-hooks` depends on.
+`memory_search` now surfaces that truth directly on the response envelope with `lexicalPath` and `fallbackState`, so downstream readers do not need to guess whether the lexical lane ran through FTS5 or was unavailable for the request. The packet-local tests freeze all four degrade cases, and the runtime search README now documents the same vocabulary that packet `002-implement-cache-warning-hooks` depends on.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -53,7 +53,7 @@ The delivery stayed inside the bounded owner surfaces from `spec.md`: first I ha
 |----------|-----|
 | Use `PRAGMA compile_options` plus `memory_fts` presence as the FTS capability floor | That keeps compile-probe miss separate from a missing table, which was the core truthfulness requirement in R7. |
 | Surface `lexicalPath` and `fallbackState` directly on `memory_search` data | Phase `002` and later consumers need an explicit contract in the response envelope, not an inference from warnings or empty lexical results. |
-| Keep degraded lexical execution on the existing BM25 fallback lane | The packet was meant to harden runtime truth, not introduce a new lexical subsystem or change retrieval semantics. |
+| Mark degraded lexical execution as `unavailable` | The packet was meant to harden runtime truth, not claim a hidden fallback lane that never actually executes lexical retrieval. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -73,7 +73,7 @@ The delivery stayed inside the bounded owner surfaces from `spec.md`: first I ha
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. `lexicalPath` currently emits `fts5` or `bm25_fallback` for this runtime seam. The broader response schema can represent `like`, but packet `010` does not claim that lane here.
+1. `lexicalPath` currently emits `fts5` or `unavailable` for this runtime seam. The broader response schema can represent `like`, but packet `010` does not claim that lane here.
 2. This packet only hardens capability truth and response metadata. It does not add broader search features or user-facing search workflow changes.
 3. **006-memory-redundancy alignment** This packet is classified **"No change"** under `../001-research-graph-context-systems/006-research-memory-redundancy/spec.md` Section 3A. Retrieval-lane hardening is independent from generated memory-body duplication, so no changes to the memory save generator, collector, body template, or memory-template-contract are introduced by this packet. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files remain compact retrieval wrappers pointing at canonical docs per the wrapper-contract runtime shipped by packet `003-memory-quality-issues/006-memory-duplication-reduction` (commit `7f0c0572a`).
 <!-- /ANCHOR:limitations -->

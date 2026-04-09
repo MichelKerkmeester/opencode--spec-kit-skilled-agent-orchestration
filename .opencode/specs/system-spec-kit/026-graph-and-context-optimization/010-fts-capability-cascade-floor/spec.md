@@ -62,7 +62,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 ### In Scope
 - FTS5 compile-probe at runtime.
 - Forced-degrade matrix for compile-probe miss, missing table, `no such module: fts5`, and BM25 runtime failure.
-- Runtime logging of which lexical path was chosen (`FTS5` vs `LIKE` vs BM25 fallback).
+- Runtime logging of which lexical path was chosen (`FTS5` vs `LIKE` vs `unavailable`).
 - Explicit fallback status surface on `memory_search` responses.
 - Preservation of current retrieval semantics when FTS5 is unavailable.
 
@@ -92,7 +92,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Runtime capability detection distinguishes the real FTS5 availability state. | The runtime can distinguish compile-probe miss, missing `memory_fts`, `no such module: fts5`, and BM25 runtime failure without collapsing them into a vague generic status. |
-| REQ-002 | `memory_search` records the lexical path chosen at runtime. | Search responses and logs identify whether the lexical lane used `FTS5`, `LIKE`, or BM25 fallback. |
+| REQ-002 | `memory_search` records the lexical path chosen at runtime. | Search responses and logs identify whether the lexical lane used `FTS5`, `LIKE`, or was unavailable. |
 | REQ-003 | Fallback state is explicit and truthful. | `memory_search` responses surface fallback status directly instead of forcing callers to infer it from missing fields or warnings. |
 | REQ-004 | Current retrieval semantics remain intact when FTS5 is unavailable. | The degraded path preserves the existing behavior contract instead of failing closed or changing result-shape semantics. |
 | REQ-005 | The packet does not overstate an unavailable legacy lexical lane. | No packet doc, test, or runtime surface claims an unsupported fallback lane as supported. |
@@ -132,7 +132,7 @@ Open the bounded FTS hardening packet that stabilizes runtime truth before phase
 
 ### Acceptance Scenarios
 
-**Given** SQLite is available but the runtime compile probe says FTS5 support is absent, **when** `memory_search` executes, **then** the response records the degraded lexical path and explicit fallback status while preserving current retrieval semantics.
+**Given** SQLite is available but the runtime compile probe says FTS5 support is absent, **when** `memory_search` executes, **then** the response records that the lexical lane was unavailable and surfaces the explicit fallback status while preserving current retrieval semantics.
 
 **Given** the SQLite build supports FTS5 but the `memory_fts` table is missing, **when** lexical search runs, **then** the runtime records that missing-table degrade case without pretending the lexical lane failed for the same reason as a compile-probe miss.
 

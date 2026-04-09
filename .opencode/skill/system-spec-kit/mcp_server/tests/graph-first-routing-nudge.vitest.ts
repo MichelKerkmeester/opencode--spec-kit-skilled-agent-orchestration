@@ -53,6 +53,39 @@ describe('graph-first routing nudge helper', () => {
   });
 });
 
+describe('session-prime startup surface', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.resetModules();
+    vi.clearAllMocks();
+  });
+
+  it('keeps startup priming generic instead of emitting a task-shaped structural routing hint', async () => {
+    vi.doMock('../handlers/session-resume.js', () => ({
+      getCachedSessionSummaryDecision: vi.fn(() => ({ status: 'rejected' })),
+      logCachedSummaryDecision: vi.fn(),
+    }));
+
+    vi.doMock('../lib/code-graph/startup-brief.js', () => ({
+      buildStartupBrief: vi.fn(() => ({
+        startupSurface: '- Spec folder: none\n- Memory: startup summary only\n- What would you like to work on?',
+        graphState: 'ready',
+        graphOutline: 'Code graph ready',
+      })),
+    }));
+
+    const { handleStartup } = await import('../hooks/claude/session-prime.ts');
+    const sections = handleStartup({});
+
+    expect(sections.some((section) => section.title === 'Structural Routing Hint')).toBe(false);
+    expect(sections.some((section) => section.title === 'Structural Context')).toBe(true);
+  });
+});
+
 describe('memory_context advisory metadata', () => {
   beforeEach(() => {
     vi.resetModules();

@@ -31,7 +31,7 @@ contextType: "verification"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Spec, plan, and tasks preserve the same post-R5/R6 side-branch boundary. [SOURCE: spec.md:24] [SOURCE: plan.md:123] [SOURCE: tasks.md:31] [EVIDENCE: all shipped runtime edits stayed on code-graph-local detector, payload, and query seams only]
-- [x] CHK-002 [P0] Packets `007` and `011` are named as hard predecessors before implementation starts. [SOURCE: spec.md:24] [SOURCE: plan.md:123] [EVIDENCE: `session-bootstrap.ts:242` still enforces packet `011` trust extraction before additive enrichment lands]
+- [x] CHK-002 [P0] Packets `007` and `011` are named as hard predecessors before implementation starts. [SOURCE: spec.md:24] [SOURCE: plan.md:123] [EVIDENCE: spec and plan keep packet `011` as the validator owner, and packet `014` stays bounded to graph-local surfaces.]
 - [x] CHK-003 [P1] Packet `008` remains explicitly out of scope for runtime nudges. [SOURCE: spec.md:40] [SOURCE: decision-record.md:89] [EVIDENCE: modified runtime files exclude `hooks/claude/session-prime.ts`, compact surfaces, and response-hint routing surfaces owned by packet `008`]
 <!-- /ANCHOR:pre-impl -->
 
@@ -52,7 +52,7 @@ contextType: "verification"
 
 - [x] CHK-020 [P0] Frozen detector fixtures prove fallback states survive serialization. [SOURCE: spec.md:77] [SOURCE: plan.md:112] [SOURCE: ../../../../../skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts:49] [EVIDENCE: the regression-floor fixture locks `structured` and `heuristic` fallback expectations]
 - [x] CHK-021 [P0] A frozen blast-radius corpus proves nodes beyond `maxDepth` never surface. [SOURCE: spec.md:75] [SOURCE: spec.md:96] [SOURCE: ../../../../../skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts:59] [EVIDENCE: the frozen blast-radius fixture fails if depth-3 or depth-4 nodes leak past a `maxDepth: 2` query]
-- [x] CHK-022 [P0] Graph payload snapshots prove edge evidence and numeric confidence stay additive on current owners. [SOURCE: spec.md:76] [SOURCE: spec.md:97] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:152] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts:172] [EVIDENCE: resume/bootstrap tests assert `structuralTrust` coexists with `edgeEvidenceClass` and `numericConfidence`]
+- [x] CHK-022 [P0] Graph payload snapshots prove edge evidence and numeric confidence stay additive on current graph owners. [SOURCE: spec.md:76] [SOURCE: spec.md:97] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:564] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts:133] [EVIDENCE: query-handler snapshots expose `edgeEvidenceClass` and `numericConfidence`, and shared-payload validation keeps them additive on graph-local sections.]
 - [x] CHK-023 [P1] If fallback tiering ships, forced-degrade tests cover compile-probe miss, missing table or index, and runtime ranking failure. [SOURCE: spec.md:82] [EVIDENCE: no lexical fallback cascade shipped in `handlers/code-graph/query.ts`, so this conditional gate remained not applicable in the implemented scope]
 - [x] CHK-024 [P1] `validate.sh --strict` passes on the packet folder before completion is claimed. [SOURCE: plan.md:42] [EVIDENCE: final closeout includes a passing strict validator run for packet 014]
 <!-- /ANCHOR:testing -->
@@ -63,7 +63,7 @@ contextType: "verification"
 ## Security
 
 - [x] CHK-030 [P0] No new graph-only authority surface or replacement router appears. [SOURCE: spec.md:69] [SOURCE: decision-record.md:34] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:127] [EVIDENCE: graph enrichment landed as additive fields on existing shared payload owners instead of a new payload family]
-- [x] CHK-031 [P1] Additive metadata stays on current owner payloads after packet `011`. [SOURCE: spec.md:76] [SOURCE: decision-record.md:35] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:242] [EVIDENCE: bootstrap preserves resume-carried enrichment only after trust extraction succeeds, so packet `011` stays authoritative]
+- [x] CHK-031 [P1] Additive metadata stays on current graph-owned payloads after packet `011`. [SOURCE: spec.md:76] [SOURCE: decision-record.md:35] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:564] [EVIDENCE: graph enrichment stays on graph-local payload sections, so packet `011` remains the authority owner for resume/bootstrap trust surfaces.]
 <!-- /ANCHOR:security -->
 
 ---

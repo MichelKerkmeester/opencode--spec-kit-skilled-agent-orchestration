@@ -33,7 +33,7 @@ This packet no longer treats the earlier six-phase warning-hook prototype as the
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Blocked — awaiting 010 predecessor verification |
+| **Status** | Implemented — predecessor verified |
 | **Created** | 2026-04-06 |
 | **Branch** | `026-graph-and-context-optimization/002-implement-cache-warning-hooks` |
 | **Parent Spec** | `../spec.md` |

@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Graph-First Routing Nudge [template:level_3/spec.md]"
-description: "Implement the narrow graph-first nudge the research retained after rejecting larger graph-router ambitions by tightening structural hints on existing startup, resume, compact, and response surfaces only."
+description: "Implement the narrow graph-first nudge the research retained after rejecting larger graph-router ambitions by tightening structural hints on existing bootstrap and request-shaped response surfaces only."
 trigger_phrases:
   - "008-graph-first-routing-nudge"
   - "graph-first routing nudge"
@@ -17,11 +17,11 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-Implement the narrow graph-first nudge the research retained after rejecting larger graph-router ambitions by tightening structural hints on existing startup, resume, compact, and response surfaces only.
+Implement the narrow graph-first nudge the research retained after rejecting larger graph-router ambitions by tightening structural hints on existing bootstrap and request-shaped response surfaces only.
 
 **Key Decisions**: Use existing surfaces only; keep `session_bootstrap()` authoritative.
 
-**Critical Dependencies**: Research recommendation R4 (recommendations.md:35-43); requires 006-structural-trust-axis-contract (R10) and 011-graph-payload-validator-and-trust-preservation (R5) before implementation can start. Activation scaffolding lives inside existing session-prime, compact-inject, response-hints, and bootstrap/resume surfaces per research recommendations.md:41 — do NOT introduce a new graph-router subsystem.
+**Critical Dependencies**: Research recommendation R4 (recommendations.md:35-43); requires 006-structural-trust-axis-contract (R10) and 011-graph-payload-validator-and-trust-preservation (R5) before implementation can start. Task-shaped nudges stay on existing bootstrap and request-shaped response surfaces only; do NOT introduce a new graph-router subsystem.
 
 ---
 
@@ -31,7 +31,7 @@ Implement the narrow graph-first nudge the research retained after rejecting lar
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
@@ -59,7 +59,7 @@ Define the additive routing-hint packet that nudges structural tasks toward the 
 ## 3. SCOPE
 
 ### In Scope
-- Add readiness-gated structural hints to existing startup, resume, compact, or response-hint surfaces.
+- Add readiness-gated structural hints to existing bootstrap or request-shaped response-hint surfaces.
 - Scope the nudge to structural-first task shapes after likely `Glob|Grep` misfires.
 - Define a frozen task slice for first-query routing evaluation.
 - Keep all behavior advisory and additive.
@@ -74,7 +74,6 @@ Define the additive routing-hint packet that nudges structural tasks toward the 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Modify | Refine structural routing hints for likely misfires. |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` | Modify | Surface readiness-gated structural hints during startup or resume priming. |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` | Modify | Add bounded structural-routing guidance while preserving bootstrap authority. |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | Modify | Thread advisory-only structural guidance into relevant responses. |
 <!-- /ANCHOR:scope -->
@@ -117,7 +116,7 @@ Define the additive routing-hint packet that nudges structural tasks toward the 
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: Structural-task guidance becomes more specific without becoming a new router.
-- **SC-002**: Graph readiness and scaffold state control when hints appear.
+- **SC-002**: Graph readiness and task-shaped response context control when hints appear.
 - **SC-003**: A frozen corpus exists to judge whether the nudge improves first-query routing.
 <!-- /ANCHOR:success-criteria -->
 
@@ -126,7 +125,7 @@ Define the additive routing-hint packet that nudges structural tasks toward the 
 
 ### Acceptance Scenarios
 
-**Given** this packet is reviewed before runtime work starts, **when** a maintainer reads the spec, **then** the packet stays clearly marked as draft planning work rather than shipped behavior.
+**Given** this packet is reviewed after shipment, **when** a maintainer reads the spec, **then** the docs distinguish the shipped bootstrap and request-shaped response nudges from the unshipped startup or resume hook hint.
 
 **Given** a dependency named in this packet is still incomplete, **when** implementation planning resumes, **then** the docs direct the maintainer to stop and re-verify the predecessor instead of assuming readiness.
 
@@ -153,7 +152,7 @@ Define the additive routing-hint packet that nudges structural tasks toward the 
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Keep the packet focused on startup/resume/response hint surfaces with readiness gates rather than broad subsystem work.
+- **NFR-P01**: Keep the packet focused on bootstrap and request-shaped response hint surfaces with readiness gates rather than broad subsystem work.
 
 ### Security
 - **NFR-S01**: Stay inside current runtime and data-exposure boundaries.
@@ -201,7 +200,7 @@ Define the additive routing-hint packet that nudges structural tasks toward the 
 
 ### US-001: Nudge structural misfires (Priority: P1)
 
-As a user, I want startup and response hints to steer structural questions toward graph tools so I choose the right first tool more often.
+As a user, I want bootstrap and response hints to steer structural questions toward graph tools so I choose the right first tool more often.
 
 **Acceptance Criteria**:
 1. Given a structural-task prompt and a ready graph, when routing guidance is emitted, then it recommends the structural path explicitly.
@@ -213,7 +212,7 @@ As a user, I want startup and response hints to steer structural questions towar
 As a maintainer, I want the nudge to stay advisory so bootstrap and resume remain the authority surfaces.
 
 **Acceptance Criteria**:
-1. Given a startup or resume flow, when the nudge appears, then it adds guidance without replacing the owner surface.
+1. Given a bootstrap flow or request-shaped response, when the nudge appears, then it adds guidance without replacing the owner surface.
 
 ---
 

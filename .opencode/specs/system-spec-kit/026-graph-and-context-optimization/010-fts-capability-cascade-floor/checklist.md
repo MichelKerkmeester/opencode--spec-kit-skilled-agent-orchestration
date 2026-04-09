@@ -41,7 +41,7 @@ contextType: "verification"
 ## Code Quality
 
 - [x] CHK-010 [P0] Runtime or contract changes stay inside the declared owner surfaces [EVIDENCE: shipped runtime work stays in the two owner files declared by the spec and only adds packet-scoped response metadata.] [SOURCE: spec.md:72-80] [SOURCE: sqlite-fts.ts:92-140] [SOURCE: memory-search.ts:348-370]
-- [x] CHK-011 [P0] No invented competing lexical subsystem is introduced [EVIDENCE: the summary and README keep the implementation on the existing BM25 fallback lane rather than introducing a new lexical owner.] [SOURCE: implementation-summary.md:52-56] [SOURCE: README.md:175-190]
+- [x] CHK-011 [P0] No invented competing lexical subsystem is introduced [EVIDENCE: the summary and README keep the degraded path labeled `unavailable` instead of inventing a hidden lexical fallback owner.] [SOURCE: implementation-summary.md:52-56] [SOURCE: README.md:175-190]
 - [x] CHK-012 [P1] Packet language stays honest about what is and is not shipped [EVIDENCE: the spec status, closeout summary, and limitations now describe shipped capability truth without promising broader search work.] [SOURCE: spec.md:32-39] [SOURCE: implementation-summary.md:24-37]
 <!-- /ANCHOR:code-quality -->
 

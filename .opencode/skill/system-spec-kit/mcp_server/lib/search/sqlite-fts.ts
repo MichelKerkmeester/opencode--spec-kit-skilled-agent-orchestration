@@ -25,7 +25,7 @@ interface FtsBm25Options {
   includeArchived?: boolean;
 }
 
-type LexicalPath = 'fts5' | 'like' | 'bm25_fallback';
+type LexicalPath = 'fts5' | 'like' | 'unavailable';
 type FallbackState =
   | 'ok'
   | 'compile_probe_miss'
@@ -98,13 +98,13 @@ function probeFts5Capability(db: Database.Database): LexicalCapabilitySnapshot {
 
     if (!hasFts5CompileFlag) {
       return {
-        lexicalPath: 'bm25_fallback',
+        lexicalPath: 'unavailable',
         fallbackState: 'compile_probe_miss',
       };
     }
   } catch {
     return {
-      lexicalPath: 'bm25_fallback',
+      lexicalPath: 'unavailable',
       fallbackState: 'compile_probe_miss',
     };
   }
@@ -116,19 +116,19 @@ function probeFts5Capability(db: Database.Database): LexicalCapabilitySnapshot {
 
     if (!result) {
       return {
-        lexicalPath: 'bm25_fallback',
+        lexicalPath: 'unavailable',
         fallbackState: 'missing_table',
       };
     }
   } catch (error: unknown) {
     if (isNoSuchModuleFts5Error(error)) {
       return {
-        lexicalPath: 'bm25_fallback',
+        lexicalPath: 'unavailable',
         fallbackState: 'no_such_module_fts5',
       };
     }
     return {
-      lexicalPath: 'bm25_fallback',
+      lexicalPath: 'unavailable',
       fallbackState: 'missing_table',
     };
   }
@@ -231,21 +231,21 @@ function fts5Bm25Search(
     const msg = error instanceof Error ? error.message : String(error);
     const failureSnapshot: LexicalCapabilitySnapshot = isNoSuchModuleFts5Error(error)
       ? {
-          lexicalPath: 'bm25_fallback',
+          lexicalPath: 'unavailable',
           fallbackState: 'no_such_module_fts5',
         }
       : isBm25RuntimeFailure(error)
         ? {
-            lexicalPath: 'bm25_fallback',
+            lexicalPath: 'unavailable',
             fallbackState: 'bm25_runtime_failure',
           }
         : msg.toLowerCase().includes('no such table: memory_fts')
           ? {
-              lexicalPath: 'bm25_fallback',
+              lexicalPath: 'unavailable',
               fallbackState: 'missing_table',
             }
           : {
-              lexicalPath: 'bm25_fallback',
+              lexicalPath: 'unavailable',
               fallbackState: 'bm25_runtime_failure',
             };
     setLastLexicalCapabilitySnapshot(failureSnapshot);

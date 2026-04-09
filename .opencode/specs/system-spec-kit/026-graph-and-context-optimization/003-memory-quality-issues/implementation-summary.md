@@ -115,7 +115,7 @@ The train shipped in the order the parent packet planned. Foundation fixes lande
 
 **Deep-Review Remediation Cycle (2026-04-08)**
 
-A 7-iteration `/spec_kit:deep-review` ran against this packet on 2026-04-08, delegating every iteration to `cli-codex exec` with `gpt-5.4` reasoning=high service_tier=fast and a read-only sandbox. Full artifacts: `review/review-report.md`, `review/iterations/iteration-00{1..7}.md`, `review/deep-review-dashboard.md`, and `review/deep-review-findings-registry.json`.
+A 7-iteration `/spec_kit:deep-review` ran against this packet on 2026-04-08, delegating every iteration to `cli-codex exec` with `gpt-5.4` reasoning=high service_tier=fast and a read-only sandbox. Full artifacts: `../review/003-memory-quality-issues/review-report.md`, `../review/003-memory-quality-issues/iterations/iteration-00{1..7}.md`, `../review/003-memory-quality-issues/deep-review-dashboard.md`, and `../review/003-memory-quality-issues/deep-review-findings-registry.json`.
 
 **Review verdict:** `FAIL` — 0 P0, 13 P1, 9 P2 (22 total active findings, no blockers).
 

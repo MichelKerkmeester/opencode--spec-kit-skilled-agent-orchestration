@@ -33,7 +33,7 @@ contextType: "implementation"
 
 Packet `014` now ships the adopt-now code-graph runtime lane instead of staying planning-only. The implementation added a dedicated detector provenance vocabulary, fixed blast-radius depth handling at traversal time, exposed explicit multi-file union mode, and surfaced low-authority hot-file breadcrumbs on graph-owned outputs.
 
-The payload layer now carries additive `edgeEvidenceClass` and `numericConfidence` metadata on the existing owner contracts. That enrichment survives the real `session_resume` to `session_bootstrap` path without weakening packet `011`'s structural-trust validation.
+The payload layer now carries additive `edgeEvidenceClass` and `numericConfidence` metadata on graph-local owner contracts. That enrichment lands on code-graph outputs and shared-payload validators without expanding `session_resume` or `session_bootstrap`.
 
 ### Detector Provenance and Serialization
 
@@ -45,7 +45,7 @@ The payload layer now carries additive `edgeEvidenceClass` and `numericConfidenc
 
 ### Additive Edge Evidence Enrichment
 
-Shared payload sections can now carry `graphEdgeEnrichment` with `edgeEvidenceClass` and `numericConfidence`. Query responses emit the fields directly, scan stores the latest summary, and resume/bootstrap preserve the enrichment on existing payload owners.
+Shared payload sections can now carry `graphEdgeEnrichment` with `edgeEvidenceClass` and `numericConfidence`. Query responses emit the fields directly, scan stores the latest summary, and shared-payload validators enforce the shape for graph-local owners.
 
 ### Frozen Regression Floor
 
@@ -57,7 +57,7 @@ The packet adds a dedicated script-side regression floor for provenance honesty 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The work started by lifting the planning-only fence in `spec.md`, then implementing the required lanes in order. Lane A added the detector provenance contract and scan/context serialization hooks. Lane B corrected blast-radius traversal and made multi-file union explicit. Lane C layered advisory hot-file breadcrumbs on the same graph-owned response shape. Lane D added additive edge evidence metadata and carried it through resume/bootstrap without replacing packet `011`'s trust contract. Lane E closed the loop with a frozen regression-floor fixture under the scripts-side harness.
+The work started by lifting the planning-only fence in `spec.md`, then implementing the required lanes in order. Lane A added the detector provenance contract and scan/context serialization hooks. Lane B corrected blast-radius traversal and made multi-file union explicit. Lane C layered advisory hot-file breadcrumbs on the same graph-owned response shape. Lane D added additive edge evidence metadata on graph-local payload owners without extending the resume/bootstrap contracts. Lane E closed the loop with a frozen regression-floor fixture under the scripts-side harness.
 
 After the runtime work was stable, the packet docs were rewritten to match what actually shipped, what stayed deferred, and how the boundaries with packets `007`, `008`, and `011` were preserved.
 <!-- /ANCHOR:how-delivered -->
@@ -72,7 +72,7 @@ After the runtime work was stable, the packet docs were rewritten to match what 
 | Reuse packet `006` trust axes instead of extending them directly | `DetectorProvenance` needed a richer graph-local vocabulary, but packet `011` still expects the existing `ParserProvenance` contract. The compatibility mapper keeps both truths intact. |
 | Enforce blast-radius depth in the traversal loop | A post-filter would still walk out-of-bound nodes and could leak them through future response shapes. Cutting traversal at `maxDepth` fixes the root cause instead of the symptom. |
 | Keep hot-file breadcrumbs advisory only | The breadcrumb is meant to warn about blast radius, not to compete with packet `011`'s trust envelope or invent a new authority scale. |
-| Preserve edge enrichment through resume/bootstrap additively | Existing owner surfaces already carry the trust contract, so the enrichment needed to ride along on those payloads rather than creating a graph-only parallel contract. |
+| Keep edge enrichment scoped to graph-local payload owners | The packet improves graph-local richness without reopening the resume/bootstrap authority surfaces or claiming carriage that the runtime does not ship. |
 | Defer lexical fallback cascades, clustering, and export work | `code_graph_query` has no lexical fallback cascade today, and ADR-003 keeps clustering and export work prototype-later so the adopt-now lane stays bounded. |
 <!-- /ANCHOR:decisions -->
 
@@ -96,7 +96,7 @@ After the runtime work was stable, the packet docs were rewritten to match what 
 
 1. `code_graph_query` still has no lexical fallback cascade, so Lane F stayed not applicable in this run. If a lexical fallback is added later, it still needs its own capability selector and forced-degrade matrix.
 2. Clustering, routing facade, GraphML or Cypher export, and rationale-node support remain prototype-later per ADR-003 and did not ship here.
-3. Packet `014` enriches graph-local outputs plus additive resume/bootstrap preservation only. Startup, compact, and response-surface routing nudges still belong to packet `008`.
+3. Packet `014` enriches graph-local outputs only. Resume/bootstrap trust preservation stays with packet `011`, and startup, compact, and response-surface routing nudges still belong to packet `008`.
 <!-- /ANCHOR:limitations -->
 
 ---
