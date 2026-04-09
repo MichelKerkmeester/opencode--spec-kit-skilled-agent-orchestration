@@ -34,7 +34,10 @@ Turn the reporting half of the research into a dedicated publication packet that
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `008-graph-first-routing-nudge` |
+| **Successor** | `010-fts-capability-cascade-floor` |
 
 ---
 

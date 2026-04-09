@@ -36,8 +36,9 @@ Create the guarded consumer packet described by recommendation `R3`: cached Sess
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
-| **Predecessor** | `002-implement-cache-warning-hooks` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `011-graph-payload-validator-and-trust-preservation` |
 | **Successor** | `013-warm-start-bundle-conditional-validation` |
 | **Research Citation** | `001-research-graph-context-systems/research/recommendations.md:25-33` with producer context from `:15-23` |
 

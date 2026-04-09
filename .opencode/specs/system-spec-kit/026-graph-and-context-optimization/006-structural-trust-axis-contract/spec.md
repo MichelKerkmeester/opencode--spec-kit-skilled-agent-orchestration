@@ -34,7 +34,10 @@ Define the structural trust contract that the research moved ahead of graph pack
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `005-provisional-measurement-contract` |
+| **Successor** | `007-detector-provenance-and-regression-floor` |
 
 ---
 

@@ -36,6 +36,10 @@ This packet no longer treats the earlier six-phase warning-hook prototype as the
 | **Status** | Blocked — awaiting 010 predecessor verification |
 | **Created** | 2026-04-06 |
 | **Branch** | `026-graph-and-context-optimization/002-implement-cache-warning-hooks` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `001-research-graph-context-systems` |
+| **Successor** | `003-memory-quality-issues` |
 
 ---
 

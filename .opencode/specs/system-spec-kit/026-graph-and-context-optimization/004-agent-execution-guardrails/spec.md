@@ -30,10 +30,11 @@ Phase 4 is the narrow execution-guidance packet for `026-graph-and-context-optim
 | **Status** | Complete |
 | **Created** | 2026-04-08 |
 | **Branch** | `026-graph-and-context-optimization/004-agent-execution-guardrails` |
-| **Parent Packet** | `../` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
 | **Phase** | 4 |
 | **Predecessor** | `003-memory-quality-issues` |
-| **Successor** | None |
+| **Successor** | `005-provisional-measurement-contract` |
 | **Validation Target** | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails --strict` |
 | **Handoff Criteria** | All three AGENTS files are updated, packet docs stay aligned to those edits, and phase validation is captured. |
 <!-- /ANCHOR:metadata -->
@@ -52,7 +53,7 @@ The packet also has a cross-repo scope boundary. The guidance must land in the P
 Define and verify a tightly scoped Level 2 packet that updates exactly the three named AGENTS files with explicit execution guardrails and leaves an auditable packet record for the same-session implementation.
 <!-- /ANCHOR:problem -->
 
-> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/`, the implementation host for the `001-research-graph-context-systems/006-research-memory-redundancy/` research findings. Canonical narrative ownership stays in `decision-record.md` and `implementation-summary.md`; memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
+> **Memory save contract (cross-ref):** Memory saves in this packet follow the compact retrieval wrapper contract owned by `../003-memory-quality-issues/006-memory-duplication-reduction/`. Canonical narrative ownership stays in the packet's canonical static docs, including `../003-memory-quality-issues/006-memory-duplication-reduction/implementation-summary.md`, while memory files carry only canonical-doc pointers, distinguishing evidence, continuation state, and recovery metadata. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]
 
 ---
 

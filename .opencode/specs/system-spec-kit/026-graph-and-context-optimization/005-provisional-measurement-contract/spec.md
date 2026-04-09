@@ -34,7 +34,10 @@ Define the first follow-on governance packet from the graph-and-context research
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `004-agent-execution-guardrails` |
+| **Successor** | `006-structural-trust-axis-contract` |
 
 ---
 

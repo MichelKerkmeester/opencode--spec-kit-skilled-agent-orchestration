@@ -1,57 +1,49 @@
 ---
-title: "Created Level 3 [002-implement-cache-warning-hooks/06-04-26_17-14__created-level-3-speckit-folder-002-implement]"
-description: "Created Level 3 SpecKit folder 002-implement-cache-warning-hooks. Six sequential implementation phases A through F: shared HookState schema extension, replay harness with..."
+title: Created Level 3
+name: 06-04-26_17-14__created-level-3-speckit-folder-002-implement
+description: 'Created Level 3 SpecKit folder 002-implement-cache-warning-hooks. Six sequential implementation phases A through F: shared HookState schema extension, replay harness with...'
+type: episodic
 trigger_phrases:
-  - "UserPromptSubmit hook"
-  - "lastClaudeTurnAt"
-  - "replay harness isolation"
-  - "session-prime resume estimator"
-  - "CACHE_WARNING env keys"
-  - "phase A through F sequential build"
-  - "soft block once acknowledgement"
-  - "implement cache warning hooks"
-  - "highest risk"
-  - "cli codex"
-  - "read side"
-  - "compact inject"
-  - "session prime"
-  - "user prompt submit"
-  - "side effect"
-  - "kill switches"
-  - "observe only"
-  - "tree thinning"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "chosen approach"
-  - "seam validation"
-  - "modified research system"
-  - "phase schema"
-  - "schema prerequisite"
-  - "prerequisite every"
-  - "every read-side"
-  - "phase harness"
-  - "harness prerequisite"
-  - "prerequisite validation"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/002"
-  - "implement"
-  - "cache"
-  - "warning"
-  - "hooks"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- UserPromptSubmit hook
+- lastClaudeTurnAt
+- replay harness isolation
+- session-prime resume estimator
+- CACHE_WARNING env keys
+- phase A through F sequential build
+- soft block once acknowledgement
+- implement cache warning hooks
+- highest risk
+- cli codex
+- read side
+- compact inject
+- session prime
+- user prompt submit
+- side effect
+- kill switches
+- observe only
+- tree thinning
+- system spec kit
+- graph and context optimization
+- chosen approach
+- seam validation
+- modified research system
+- phase schema
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 6
 filesystem_file_count: 6
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
@@ -152,6 +144,21 @@ Next: Review the spec packet at.opencode/specs/system-spec-kit/026-graph-and-con
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -188,7 +195,7 @@ Next: Review the spec packet at.opencode/specs/system-spec-kit/026-graph-and-con
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -215,11 +222,11 @@ Created Level 3 SpecKit folder 002-implement-cache-warning-hooks. Six sequential
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/decision-record.md` | Modified decision record |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/research.md` | Modified research |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -252,7 +259,7 @@ Review the spec packet at.opencode/specs/system-spec-kit/026-graph-and-context-o
 **Details:** Next: Review the spec packet at.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/ | Follow-up: Run /spec_kit:implement to begin Phase A schema extension | Follow-up: Build replay harness in Phase B before any code changes to session-stop.ts or session-prime.ts | Follow-up: Optionally normalize the two template-strictness warnings in plan.md and decision-record.md
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -549,6 +556,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -570,7 +590,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -649,7 +669,7 @@ key_topics:
   - "ships observe-only"
   - "validated without"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "UserPromptSubmit hook"
   - "lastClaudeTurnAt"
@@ -675,48 +695,6 @@ trigger_phrases:
   - "seam validation"
   - "modified research system"
   - "phase schema"
-  - "schema prerequisite"
-  - "prerequisite every"
-  - "every read-side"
-  - "phase harness"
-  - "harness prerequisite"
-  - "prerequisite validation"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/002"
-  - "implement"
-  - "cache"
-  - "warning"
-  - "hooks"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/plan.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/tasks.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/checklist.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/decision-record.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/research.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

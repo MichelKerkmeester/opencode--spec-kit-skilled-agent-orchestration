@@ -1,6 +1,6 @@
 ---
 title: Shipped The 014 Code Graph Upgrades Runtime Lane
-name: 09-04-26_12-40__shipped-the-014-code-graph-upgrades-runtime-lane
+name: 09-04-26_12-53__shipped-the-014-code-graph-upgrades-runtime-lane
 description: Shipped the 014 code graph upgrades runtime lane across detector provenance, blast-radius correctness, hot-file breadcrumbs, edge evidence, and a frozen regression floor. The...
 type: episodic
 trigger_phrases:
@@ -26,7 +26,7 @@ spec_folder_health:
   warnings: 1
 quality_flags: []
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (input_completeness_score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
 
 # Shipped The 014 Code Graph Upgrades Runtime Lane
@@ -36,10 +36,10 @@ quality_flags: []
 | **Meta Data** | **Value** |
 |:--------------|:----------|
 | Session Date | 2026-04-09 |
-| Session ID | session-1775734809280-aeb14157e832 |
+| Session ID | session-1775735629834-eba37a1275e0 |
 | Spec Folder | system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades |
 | Channel | system-speckit/026-graph-and-context-optimization |
-| Git Ref | system-speckit/026-graph-and-context-optimization (`706c4e2516d3`) |
+| Git Ref | system-speckit/026-graph-and-context-optimization (`60d949788c55`) |
 | Importance Tier | normal |
 | Context Type | implementation |
 | Total Messages | 11 |
@@ -47,8 +47,8 @@ quality_flags: []
 | Decisions Made | 4 |
 | Follow-up Items Recorded | 0 |
 | Created At | 2026-04-09 |
-| Created At (Epoch) | 1775734809 |
-| Last Accessed (Epoch) | 1775734809 |
+| Created At (Epoch) | 1775735629 |
+| Last Accessed (Epoch) | 1775735629 |
 | Access Count | 1 |
 
 ---
@@ -76,9 +76,9 @@ quality_flags: []
 
 | Field | Value |
 |-------|-------|
-| Session Status | IN_PROGRESS |
-| Completion % | 95% |
-| Last Activity | 2026-04-09T11:40:09.309Z |
+| Session Status | COMPLETED |
+| Completion % | 100% |
+| Last Activity | 2026-04-09T11:53:49.861Z |
 | Time in Session | N/A |
 | Continuation Count | 1 |
 
@@ -140,7 +140,7 @@ Next: Monitor downstream consumers of the new code graph payload fields for addi
 
 ## OVERVIEW
 
-Shipped the 014 code graph upgrades runtime lane across detector provenance, blast-radius correctness, hot-file breadcrumbs, edge evidence, and a frozen regression floor. The runtime adds a DetectorProvenance taxonomy to shared-payload, enforces blast-radius depth-cap at BFS traversal time with explicit multi-file unionMode, emits advisory hotFileBreadcrumb entries with low-authority wording, carries edgeEvidenceClass and numericConfidence additively on existing owner payloads without replacing…
+Shipped the 014 code graph upgrades runtime lane across detector provenance, blast-radius correctness, hot-file breadcrumbs, edge evidence, and a frozen regression floor. The runtime adds a DetectorProvenance taxonomy to shared-payload, enforces blast-radius depth-cap at BFS traversal time with explicit multi-file unionMode, emits advisory hotFileBreadcrumb entries with low-authority wording, carries edgeEvidenceClass and numericConfidence additively on existing owner payloads without replacing the StructuralTrust envelope, and locks the provenance plus depth expectations behind a scripts-side frozen fixture floor. Strict packet validation passes.
 
 <!-- /ANCHOR:overview -->
 
@@ -235,14 +235,14 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ```yaml
 # Core Identifiers
-session_id: "session-1775734809280-aeb14157e832"
+session_id: "session-1775735629834-eba37a1275e0"
 spec_folder: "system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades"
 channel: "system-speckit/026-graph-and-context-optimization"
 
 # Git Provenance (M-007d)
 head_ref: "system-speckit/026-graph-and-context-optimization"
-commit_ref: "706c4e2516d3"
-repository_state: "dirty"
+commit_ref: "60d949788c55"
+repository_state: "clean"
 is_detached_head: No
 
 # Classification
@@ -263,7 +263,7 @@ memory_classification:
 session_dedup:
   memories_surfaced: 0   # count of memories shown this session
   dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "0a614a33ba7498268c72df6b1ca22f6628c4f598"         # content hash for dedup detection
+  fingerprint_hash: "93891ba3278fd40b68bd3e49c143562dd892d33d"         # content hash for dedup detection
   similar_memories:
 
     []
@@ -279,8 +279,7 @@ causal_links:
     []
 
   derived_from:
-
-    []
+    - "session-1775734809280-aeb14157e832"
 
   blocks:
 
@@ -292,9 +291,9 @@ causal_links:
 
 # Timestamps (for decay calculations)
 created_at: "2026-04-09"
-created_at_epoch: 1775734809
-last_accessed_epoch: 1775734809
-expires_at_epoch: 1783510809  # 0 for critical (never expires)
+created_at_epoch: 1775735629
+last_accessed_epoch: 1775735629
+expires_at_epoch: 1783511629  # 0 for critical (never expires)
 
 # Session Metrics
 message_count: 11
@@ -313,6 +312,7 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 
 # Content Indexing
 key_topics:
+  - "without replacing"
   - "wording changecarefullyreason"
   - "numericconfidence validated"
   - "existing structuraltrust"
@@ -324,7 +324,6 @@ key_topics:
   - "post-filter unionmode"
   - "structuraltrust axes"
   - "attached additively"
-  - "structured regex"
 
 # Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:

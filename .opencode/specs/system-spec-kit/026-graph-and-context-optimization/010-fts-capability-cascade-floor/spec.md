@@ -34,8 +34,10 @@ Create the bounded FTS hardening packet the research described: runtime lexical-
 | **Status** | Implemented |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
-| **Successor** | `002-implement-cache-warning-hooks` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `009-auditable-savings-publication-contract` |
+| **Successor** | `011-graph-payload-validator-and-trust-preservation` |
 | **Research Citation** | `R7` in `001-research-graph-context-systems/research/recommendations.md:65-73` |
 
 ---

@@ -34,8 +34,9 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 | **Status** | Implemented |
 | **Created** | 2026-04-09 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
-| **Predecessor** | `007-detector-regression-floor`, `011-graph-payload-validator-and-trust-preservation` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `013-warm-start-bundle-conditional-validation` |
 | **Successor** | Optional future graph-local rollout only; no new R-chain prerequisite |
 | **Research Citation** | `002-codesight/research/research.md:924-1033` |
 

@@ -34,7 +34,10 @@ Implement the narrow graph-first nudge the research retained after rejecting lar
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `007-detector-provenance-and-regression-floor` |
+| **Successor** | `009-auditable-savings-publication-contract` |
 
 ---
 

@@ -34,8 +34,10 @@ Open the terminal validation packet for R8 so the warm-start bundle remains cond
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
-| **Predecessors** | `002-implement-cache-warning-hooks (R2)`, `012-cached-sessionstart-consumer-gated (R3)`, `008-graph-first-routing-nudge (R4)` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `012-cached-sessionstart-consumer-gated` |
+| **Successor** | `014-code-graph-upgrades` |
 | **Research citation** | `R8 in recommendations.md:75-83` |
 
 ---

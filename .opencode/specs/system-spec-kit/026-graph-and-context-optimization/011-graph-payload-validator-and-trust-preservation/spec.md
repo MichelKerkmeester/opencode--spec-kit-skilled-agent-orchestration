@@ -34,9 +34,10 @@ Implement the bounded R5 packet that validates graph and bridge payload trust me
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
-| **Predecessor** | `006-structural-trust-axis-contract` |
-| **Successor** | `008-graph-first-routing-nudge` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `010-fts-capability-cascade-floor` |
+| **Successor** | `012-cached-sessionstart-consumer-gated` |
 | **Research Citation** | `R5 in recommendations.md:45-53; R10 context in recommendations.md:95-103` |
 
 ---

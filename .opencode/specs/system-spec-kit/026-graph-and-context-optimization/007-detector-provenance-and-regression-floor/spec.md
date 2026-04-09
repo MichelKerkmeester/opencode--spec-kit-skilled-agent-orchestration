@@ -34,7 +34,10 @@ Create the bounded detector packet the research described: AST-versus-regex hone
 | **Status** | Draft |
 | **Created** | 2026-04-08 |
 | **Branch** | `main` |
-| **Parent Packet** | `026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `006-structural-trust-axis-contract` |
+| **Successor** | `008-graph-first-routing-nudge` |
 
 ---
 
