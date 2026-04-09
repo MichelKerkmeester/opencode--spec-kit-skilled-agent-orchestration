@@ -1,497 +1,466 @@
 ---
-title: "Deep Review Report — 026 Graph and Context Optimization"
-description: "Final synthesis of 15-iteration deep review across 4 dimensions for the 026 graph-and-context-optimization packet family. 6 P1 findings, 0 P0, 0 P2. Verdict: CONDITIONAL — remediation required before any further activation."
+title: "Batch Phase Review Consolidated Report — 026 Phases 002-014"
+description: "Consolidated verdict across 13 child phases of 026-graph-and-context-optimization. Aggregate findings: 0 P0 / 7 P1 / 0 P2. Overall program verdict: CONDITIONAL."
 trigger_phrases:
-  - "deep-review 026"
-  - "026-graph-context review report"
-  - "026 release readiness"
-  - "deep-review iteration synthesis 026"
+  - "026 batch review consolidated"
+  - "026 phase-by-phase review synthesis"
+  - "026 aggregate findings report"
+  - "026 program verdict"
 importance_tier: "important"
 contextType: "review-report"
-session_id: "2026-04-09T03:59:45Z"
-verdict: "CONDITIONAL"
-hasAdvisories: false
 ---
 
-# Deep Review Report — 026 Graph and Context Optimization
+# Batch Phase Review Consolidated Report — 026 Phases 002-014
 
-<!-- ANCHOR:overview -->
-## 1. OVERVIEW
+## 1. Executive Summary
 
-| Field | Value |
-|---|---|
-| **Review target** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/` (parent + 27 child/sub-phase folders) |
-| **Reviewer backend** | cli-codex `gpt-5.4` (`reasoning_effort=high`, `service_tier=fast`, `sandbox=workspace-write`) |
-| **Session id** | `2026-04-09T03:59:45Z` |
-| **Iterations executed** | 15 of 20 (early-stop after 9 consecutive thought-only iterations + user approval) |
-| **Dimensions covered** | D1 Correctness, D2 Security, D3 Traceability, D4 Maintainability |
-| **Findings (active)** | **0 P0**, **6 P1**, **0 P2** |
-| **Verdict** | **CONDITIONAL** — 6 P1 blockers must be resolved before any further activation of 026 packets 009/011/012/013 |
-| **hasAdvisories** | `false` (no P2 nits surfaced) |
-| **Convergence reason** | Composite vote: rolling avg ratio = 0.00, all dimensions touched, coverage_age ≥ 9. P0=0 means no clean-stop blocker; P1=6 means CONDITIONAL not PASS. |
-<!-- /ANCHOR:overview -->
+- **Scope**: 13 phases under `026-graph-and-context-optimization/`, reviewed via per-phase deep-review packets. The original batch plan targeted 5 iterations per phase (65 planned), but extension reruns and convergence-driven stops produced 108 actual executed iterations across the available reports.
+- **Phases with per-phase review reports available**: 13 of 13 — `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `004-agent-execution-guardrails`, `005-provisional-measurement-contract`, `006-structural-trust-axis-contract`, `007-detector-provenance-and-regression-floor`, `008-graph-first-routing-nudge`, `009-auditable-savings-publication-contract`, `010-fts-capability-cascade-floor`, `011-graph-payload-validator-and-trust-preservation`, `012-cached-sessionstart-consumer-gated`, `013-warm-start-bundle-conditional-validation`, `014-code-graph-upgrades`
+- **Phases MISSING review reports**: none
+- **Total iterations executed across available phases**: 108
+- **Aggregate findings by severity**:
+  - P0 (Blockers): 0
+  - P1 (Required): 7
+  - P2 (Suggestions): 0
+- **Phases that early-stopped on convergence**: `011-graph-payload-validator-and-trust-preservation` (4 iterations), `012-cached-sessionstart-consumer-gated` (4 iterations)
+- **Dimension coverage across the batch**: every per-phase review covered D1, D2, D3, and D4 before synthesis or convergence.
+- **Overall 026 program verdict**: CONDITIONAL
+- **Rationale for verdict**: The phase-level sweep confirms that the parent review's runtime-heavy packet cluster in `009`, `011`, and `012` has been remediated, and `004`, `005`, `006`, `007`, and `009` now read as clean PASS packets. The remaining open work is entirely P1 rather than P0, but it is still release-relevant: six phase lanes carry seven truthfulness or surface-contract findings, with the heaviest concentration in packet-state accuracy (`002`, `003`, `013`) and adjacent-surface overclaim (`008`, `010`, `014`). Under the specified verdict rule, zero P0 and nonzero P1 yields a program-level `CONDITIONAL`.
 
 ---
 
-<!-- ANCHOR:scope -->
-## 2. SCOPE & METHODOLOGY
+## 2. Per-Phase Verdict Table
 
-### What was reviewed
+| Phase | Iterations | Verdict | P0 | P1 | P2 | Top Finding |
+|-------|-----------|---------|----|----|----|-------------|
+| 002-implement-cache-warning-hooks | 10 | CONDITIONAL | 0 | 1 | 0 | Packet metadata still advertises `Blocked` while the same packet records shipped completion and PASS verification. |
+| 003-memory-quality-issues | 10 | FAIL | 0 | 2 | 0 | Parent packet `003` is no longer a trustworthy roll-up for the actual child topology or later child status story. |
+| 004-agent-execution-guardrails | 10 | PASS | 0 | 0 | 0 | None active. |
+| 005-provisional-measurement-contract | 10 | PASS | 0 | 0 | 0 | None active. |
+| 006-structural-trust-axis-contract | 10 | PASS | 0 | 0 | 0 | None active. |
+| 007-detector-provenance-and-regression-floor | 10 | PASS | 0 | 0 | 0 | None active. |
+| 008-graph-first-routing-nudge | 10 | CONDITIONAL | 0 | 1 | 0 | `session-prime.ts` emits the structural routing hint on graph readiness alone, without the promised activation-scaffold gate. |
+| 009-auditable-savings-publication-contract | 10 | PASS | 0 | 0 | 0 | None active; the helper now has a real `memory-search.ts` consumer. |
+| 010-fts-capability-cascade-floor | 10 | CONDITIONAL | 0 | 1 | 0 | `bm25_fallback` is reported as the executed degraded lane even though no lexical fallback actually runs. |
+| 011-graph-payload-validator-and-trust-preservation | 4 | PASS | 0 | 0 | 0 | None active after convergence. |
+| 012-cached-sessionstart-consumer-gated | 4 | PASS | 0 | 0 | 0 | None active after convergence. |
+| 013-warm-start-bundle-conditional-validation | 5 | CONDITIONAL | 0 | 1 | 0 | CHK-022 still cites stale `pass 28` evidence while the shipped benchmark source of truth reports `38/40`. |
+| 014-code-graph-upgrades | 5 | CONDITIONAL | 0 | 1 | 0 | Resume/bootstrap graph-edge enrichment preservation is claimed but not implemented. |
 
-Primary focus: the 9 packets shipped 2026-04-09 in commit `33823d006`:
-- **005** (R1) provisional measurement contract
-- **006** (R10) structural trust axis contract
-- **007** (R6) detector provenance + regression floor
-- **008** (R4) graph-first routing nudge
-- **009** (R9) auditable savings publication contract
-- **010** (R7) FTS capability cascade floor
-- **011** (R5) graph payload validator + trust preservation
-- **012** (R3) cached SessionStart consumer (gated)
-- **013** (R8) warm-start bundle conditional validation
-
-Secondary context: research lineage in `001-research-graph-context-systems/`, the 006-research-memory-redundancy classification map, prior shipped work in `002`/`003`/`004`.
-
-### Reviewer protocol
-
-15 fresh-context cli-codex iterations dispatched serially. Each iteration:
-1. Read `deep-review-strategy.md`, `deep-review-state.jsonl`, `deep-review-findings-registry.json`, `deep-review-config.json`
-2. Picked next dimension/focus from §12 NEXT FOCUS
-3. Read 2–14 target files
-4. Wrote `iterations/iteration-{NNN}.md` with findings
-5. Appended JSONL record
-6. Updated strategy.md (running findings, completed dimensions, next focus)
-7. Rewrote findings-registry.json
-
-The orchestrator (Claude Opus 4.6) substituted cli-codex for `Task @deep-review` because the LEAF agent's model parameter only accepts sonnet/opus/haiku, while the user's explicit reviewer preference was GPT-5.4.
-
-### Iteration timeline
-
-| Iter | Dimension | Status | New Findings | Cumulative | Ratio |
-|---|---|---|---|---|---|
-| 001 | D1 Correctness | insight | +1 P1 | 1 | 1.00 |
-| 002 | D1 Correctness | insight | +1 P1 | 2 | 0.50 |
-| 003 | D1 Correctness | insight | +1 P1 | 3 | 0.33 |
-| 004 | D1 Correctness | insight | +1 P1 | 4 | 0.25 |
-| 005 | D2 Security | insight | +1 P1 | 5 | 0.20 |
-| 006 | D2 Security | insight | +1 P1 | 6 | 0.17 |
-| 007 | D2 Security | thought | 0 | 6 | 0.00 |
-| 008 | D3 Traceability | thought | 0 | 6 | 0.00 |
-| 009 | D3 Traceability | thought | 0 | 6 | 0.00 |
-| 010 | D4 Maintainability | thought | 0 | 6 | 0.00 |
-| 011 | D4 Maintainability | thought | 0 | 6 | 0.00 |
-| 012 | D3 Traceability | thought | 0 | 6 | 0.00 |
-| 013 | D3 Traceability | thought | 0 | 6 | 0.00 |
-| 014 | D3 Traceability | thought | 0 | 6 | 0.00 |
-| 015 | D3 Traceability | thought | 0 | 6 | 0.00 |
-
-Iteration 6 was killed and retried after stalling for 1+ hour (silent OpenAI API delay); the retry completed in ~3 minutes. State remained intact (clean restart, no partial JSONL writes).
-<!-- /ANCHOR:scope -->
+Convergence note: every phase covered D1-D4. `011` and `012` stopped after four iterations because those four baseline dimensions cleared with no active findings; both per-phase review reports say all reviewed claims matched the shipped runtime and packet evidence rather than needing the operator-requested stability extension used elsewhere in the batch.
 
 ---
 
-<!-- ANCHOR:findings -->
-## 3. FINDINGS
+## 3. Aggregate Findings — All Active P0 and P1
 
-### Cluster summary
+No active P0 findings were reported by any available phase review.
 
-| Affected packet | Finding count | Severity | Theme |
-|---|---|---|---|
-| **011** | 1 (+1 cross-cut) | P1 | Resume trust preservation overclaimed; bootstrap synthesizes trust instead of preserving it |
-| **012** | 1 (+1 cross-cut) | P1 | Frozen-corpus proof bypasses real `session_resume`/`session_bootstrap`/`session-prime` paths; cross-session cached selection unscoped |
-| **013** | 1 | P1 | Bundle benchmark cannot observe pass-rate regressions (constant by construction) |
-| **009** | 1 | P1 | Publication-gate ships as helper-only; spec required handler-level publication output behavior |
+After normalizing by file plus claim title, the active set remains 7 unique P1 findings. No two phase reports described the same underlying defect closely enough to collapse into a single shared finding record.
 
-All 6 are P1 (Required) — no P0 blockers, no P2 advisories. The cluster centers on **two structural problems**: (a) packets that ship helpers without wiring them into the spec-named consumer surfaces (009, 012, 013), and (b) trust-axis preservation that is overclaimed but not actually plumbed end-to-end (011, 012 cross-cut, 005's bootstrap fallback path).
+### 002-implement-cache-warning-hooks
 
----
-
-### DR-026-I001-P1-001 — Packet 011 does not preserve structural trust through the shipped `session_resume` payload
-
-**Severity**: P1 · **Dimension**: D1 Correctness · **Affected packet**: 011 · **Source iteration**: 1
-
-**Claim**: 011's spec.md and implementation-summary.md claim end-to-end resume trust preservation across `shared-payload`, `bootstrap`, `resume`, `graph-context`, and `bridge`. The shipped runtime does not satisfy this claim: `session-resume.ts` emits the `structural-context` section with `certainty` only, no `structuralTrust`. `session-bootstrap.ts:251` attempts `extractStructuralTrustFromPayload(resumePayload) ?? buildStructuralContextTrust(structuralContext)` — the `??` always falls through because the resume payload never carries structural trust, so bootstrap synthesizes trust from its independent local snapshot rather than preserving the runtime-emitted resume trust. The graph-payload-validator vitest stubs a resume payload that already contains `structuralTrust`, so the test does not exercise the real path.
-
-**Evidence**:
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:64` (REQ-002 acceptance criterion: end-to-end preservation)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:94` (REQ-002 detail)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/implementation-summary.md:36` (overclaim "end-to-end")
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/implementation-summary.md:46`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/implementation-summary.md:79`
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:533` (structural-context section emitted without `structuralTrust` field)
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:251` (`??` fallback)
-- `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:138` (mocked stub bypasses real path)
-
-**Adversarial spot-check (orchestrator)**: Confirmed by direct read of session-resume.ts:525-540 and session-bootstrap.ts:245-265. The `??` is exactly where described.
+- **Finding ID**: `DR-002-I003-P1-001`
+- **Title**: Packet `002` still presents itself as blocked even though the packet records completed delivery and passing verification
+- **Affected phase(s)**: `002-implement-cache-warning-hooks`
+- **Severity**: P1
+- **Dimension**: D3 Traceability
+- **Summary**: The packet's `spec.md` metadata still says `Blocked — awaiting 010 predecessor verification`, while the same packet's `implementation-summary.md` records completed delivery and passing verification evidence. That contradiction makes the packet an unreliable status signal for downstream operators and for any later consolidated program review.
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:36`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:25`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:35`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:81`
+- **Typed claim-adjudication block**:
 
 ```json
 {
-  "claim": "Packet 011 overclaims end-to-end resume trust preservation while session-resume.ts emits structural-context without structuralTrust and session-bootstrap synthesizes from local snapshot.",
-  "evidenceRefs": ["session-resume.ts:533", "session-bootstrap.ts:251", "011/spec.md:64", "011/spec.md:94", "011/implementation-summary.md:36"],
-  "counterevidenceSought": "Searched for any other path that propagates structuralTrust from resume to bootstrap; none exists.",
-  "alternativeExplanation": "The synthesized trust may still be 'correct enough' because graph snapshot is independent and authoritative — but this still violates the 'preserve end-to-end' contract claimed in 011's docs.",
-  "finalSeverity": "P1",
-  "confidence": 0.95,
-  "downgradeTrigger": "If 011's spec is rewritten to scope preservation to graph-context payloads only (not the resume → bootstrap chain), the finding downgrades to P2 documentation honesty."
-}
-```
-
-**Recommended remediation**:
-1. EITHER (preferred): plumb `structuralTrust` through `session-resume.ts`'s `structural-context` section, then update bootstrap to consume it directly without the local-snapshot fallback.
-2. OR: rewrite 011's spec REQ-002 + implementation-summary §What Was Built to honestly scope preservation to graph-context payloads only (not resume → bootstrap chain), and document the local-snapshot synthesis explicitly.
-3. Add an integration test that exercises the real `session_resume` → `session_bootstrap` flow with structural trust assertion (replacing the current mock stub).
-
----
-
-### DR-026-I002-P1-001 — Packet 012's frozen-corpus proof does not exercise real `session_resume`/`session_bootstrap`/`session-prime` surfaces
-
-**Severity**: P1 · **Dimension**: D1 Correctness · **Affected packet**: 012 · **Source iteration**: 2
-
-**Claim**: 012's spec.md (REQ-005, REQ-008) and implementation-summary.md state the frozen corpus proves equal-or-better behavior relative to live reconstruction. The shipped test `scripts/tests/session-cached-consumer.vitest.ts.test.ts` imports only the helper-level gate/additive functions (e.g., `evaluateCachedConsumerGates`, `additiveEnrichBootstrap`) and scores a handcrafted baseline object instead of exercising `session-bootstrap.ts`, `session-resume.ts`, or `session-prime.ts`. The "equal-or-better pass rate" claim is therefore unproven against the real consumer surfaces named in spec.md §3 Files to Change.
-
-**Evidence**:
-- `012/spec.md:112` (REQ-005 mirrors R3 acceptance: corpus shows equal-or-better pass rate)
-- `012/spec.md:114` (REQ-005 detail)
-- `012/spec.md:122` (REQ-008 corpus comparison requirement)
-- `012/spec.md:142` (success criterion SC-004)
-- `012/implementation-summary.md:35` (claims corpus proven)
-- `012/implementation-summary.md:47`
-- `012/implementation-summary.md:81`
-- `scripts/tests/session-cached-consumer.vitest.ts.test.ts:6` (imports helpers only)
-- `scripts/tests/session-cached-consumer.vitest.ts.test.ts:138`
-- `scripts/tests/session-cached-consumer.vitest.ts.test.ts:152`
-
-```json
-{
-  "claim": "012's frozen-corpus test bypasses session-bootstrap/session-resume/session-prime; the corpus comparison runs only against helper functions.",
-  "evidenceRefs": ["session-cached-consumer.vitest.ts.test.ts:6", "session-cached-consumer.vitest.ts.test.ts:138", "012/spec.md:112", "012/implementation-summary.md:35"],
-  "counterevidenceSought": "Searched for any integration test importing session-bootstrap/session-resume in scripts/tests/ — none found that exercise the cached-consumer path.",
-  "alternativeExplanation": "Helper-level coverage may be intentionally bounded to avoid test flakiness; if so, the spec's R3 acceptance criterion is mis-stated.",
-  "finalSeverity": "P1",
-  "confidence": 0.92,
-  "downgradeTrigger": "If 012's spec is rewritten to scope the corpus to helper-level gating only, finding downgrades to P2 documentation honesty."
-}
-```
-
-**Recommended remediation**:
-1. Add an integration test that mounts the real `session_bootstrap` and `session_resume` handlers, feeds them mocked stop-summary fixtures via the producer hook-state path, and asserts equal-or-better behavior across cached-accept and cached-reject scenarios.
-2. OR rewrite 012/spec.md REQ-005, REQ-008, SC-004 to honestly scope the corpus to helper-level gating, and update the implementation-summary to match.
-
----
-
-### DR-026-I003-P1-001 — Packet 013's bundle benchmark cannot observe pass-rate regressions
-
-**Severity**: P1 · **Dimension**: D1 Correctness · **Affected packet**: 013 · **Source iteration**: 3
-
-**Claim**: The warm-start variant runner counts only wrapper-derived `REQUIRED_FINAL_FIELDS` (`title`, `triggers`, `evidenceBullets`, `continuationState`, `decisionRecordPointer`, `implementationSummaryPointer`, `followUpResolution`) that are populated by every scenario for every variant. Therefore every lane scores the full pass count (28/28 across all variants in the benchmark matrix). The R8 / REQ-006 "equal-or-better pass rate" gate is **unfalsifiable by construction** — rejected cached continuity and weaker follow-up resolutions change cost but never measured pass rate.
-
-**Evidence**:
-- `013/spec.md:96` (REQ-004 mirrors R8 acceptance: lower cost AND equal-or-better pass rate)
-- `013/spec.md:103` (REQ-006 honest comparison)
-- `013/implementation-summary.md:59`
-- `013/implementation-summary.md:73`
-- `mcp_server/lib/eval/warm-start-variant-runner.ts:82` (REQUIRED_FINAL_FIELDS list)
-- `mcp_server/lib/eval/warm-start-variant-runner.ts:191`
-- `mcp_server/lib/eval/warm-start-variant-runner.ts:215`
-- `scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:176`
-
-**Adversarial spot-check (orchestrator)**: Confirmed. `REQUIRED_FINAL_FIELDS` at line 82-90 is exactly the wrapper boilerplate; any scenario produces all of them regardless of which variant is active.
-
-```json
-{
-  "claim": "warm-start-variant-runner's pass-rate counter is constant by construction; the bundle-dominance claim (cost 43 vs baseline 64, pass 28/28) cannot be falsified.",
-  "evidenceRefs": ["warm-start-variant-runner.ts:82", "warm-start-variant-runner.ts:191", "warm-start-variant-runner.ts:215"],
-  "counterevidenceSought": "Searched for any pass-rate-affecting field outside REQUIRED_FINAL_FIELDS — none exist; the runner only scores wrapper boilerplate.",
-  "alternativeExplanation": "If pass-rate parity is intended to be 'wrapper completeness' rather than 'follow-up answer correctness', the spec must say so explicitly. Currently it does not.",
+  "claim": "Packet 002 still advertises a blocked status even though its own implementation summary and verification table say the producer seam shipped successfully.",
+  "evidenceRefs": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:36",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:25",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:35",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:81"
+  ],
+  "counterevidenceSought": "Checked for any qualification that completion was provisional or future-dated; none was present.",
+  "alternativeExplanation": "The spec metadata may simply have been left stale after the predecessor lane landed.",
   "finalSeverity": "P1",
   "confidence": 0.97,
-  "downgradeTrigger": "If 013's spec is rewritten to define pass-rate as wrapper-completeness only, finding downgrades to P2 honesty."
+  "downgradeTrigger": "Downgrade if the packet is intentionally treated as a frozen pre-implementation snapshot and operators are told not to trust its status field."
 }
 ```
 
-**Recommended remediation**:
-1. Extend `REQUIRED_FINAL_FIELDS` (or add a separate scoring dimension) to include scenario-derived fields that vary per variant: e.g., `cachedReuseAccepted`, `followUpResolutionAccuracy`, `liveReconstructionParity`.
-2. Add at least one scenario in the corpus where the cached path is *rejected* and the live reconstruction *fails* a follow-up — so a pass-rate regression is observable.
-3. Re-run the benchmark and update `scratch/benchmark-matrix.md` with honest numbers (the current `28/28` across all variants is a tell that the test is non-discriminating).
+### 003-memory-quality-issues
 
----
-
-### DR-026-I004-P1-001 — Packet 009 marks the publication contract implemented without any live publication/export consumer
-
-**Severity**: P1 · **Dimension**: D1 Correctness · **Affected packet**: 009 · **Source iteration**: 4
-
-**Claim**: Packet 009's spec.md REQ-001/002 require publication output behavior (eligibility gates + exclusion reasons surfaced on real reporting handlers). The shipped runtime is `lib/context/publication-gate.ts` (a helper) plus `tests/publication-gate.vitest.ts` (a unit test). No publication or export handler in `mcp_server/handlers/` consumes the helper. Implementation-summary.md claims the contract is implemented and shipped — that overclaims runtime delivery.
-
-**Evidence**:
-- `009/spec.md:73` (Files to Change names `mcp_server/handlers` apply gates)
-- `009/spec.md:87` (REQ-001 publication output requirement)
-- `009/spec.md:88` (REQ-002 exclusion reason surfaced)
-- `009/spec.md:115` (SC-001 publishable rows are auditable)
-- `009/spec.md:116` (SC-002 hard eligibility gate)
-- `009/implementation-summary.md:34`
-- `009/implementation-summary.md:44`
-- `009/implementation-summary.md:76`
-- `mcp_server/lib/context/publication-gate.ts:47` (helper exists)
-- `mcp_server/tests/publication-gate.vitest.ts:3` (unit test only)
-
-**Note**: The codex implementer for 009 reported in its LIMITATIONS section: *"no row-oriented export handler exists yet, so the publication contract ships as a shared helper for future reporting/export surfaces"*. This honest limitation does NOT match the spec's REQ-001/002 acceptance criteria, which require handler-level enforcement. The packet should not have been marked Implemented.
+- **Finding ID**: `DR-003-I001-P1-001`
+- **Title**: Parent packet `003` omits actual child phase `008-input-normalizer-fastpath-fix/` and renumbers `009-post-save-render-fixes` as phase 8
+- **Affected phase(s)**: `003-memory-quality-issues`
+- **Severity**: P1
+- **Dimension**: D1 Correctness
+- **Summary**: The parent phase map no longer matches the real child packet set. Because packet `003` still presents itself as the roll-up for the remediation train, this topology drift breaks its authority as a navigation and status artifact.
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:33`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:84`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:95`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix/spec.md:21`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix/spec.md:25`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/009-post-save-render-fixes/implementation-summary.md:23`
+- **Typed claim-adjudication block**:
 
 ```json
 {
-  "claim": "009 ships only the helper + unit test; no consumer handler enforces the publication gate, contradicting spec REQ-001/002 + SC-001/002.",
-  "evidenceRefs": ["publication-gate.ts:47", "publication-gate.vitest.ts:3", "009/spec.md:73", "009/spec.md:87"],
-  "counterevidenceSought": "Searched for any handler in mcp_server/handlers/ that imports publication-gate.ts; none found.",
-  "alternativeExplanation": "Could be intentional 'contract first, consumer later' staging — but the implementation-summary does not say that; it claims the contract is implemented.",
+  "claim": "The parent roll-up omits actual child phase 008 and renumbers 009 as phase 8, so the packet's phase map no longer matches the real child packet set.",
+  "evidenceRefs": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:33",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:84",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:95",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix/spec.md:21",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix/spec.md:25",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/009-post-save-render-fixes/implementation-summary.md:23"
+  ],
+  "counterevidenceSought": "Looked for an explicit parent note that 008 was intentionally excluded from the phase map; none exists.",
+  "alternativeExplanation": "The parent map may have been updated quickly for 009 and accidentally skipped the new 008 child.",
   "finalSeverity": "P1",
-  "confidence": 0.94,
-  "downgradeTrigger": "If 009/spec.md is rewritten to declare 'helper-only contract for future consumers' and impl-summary acknowledges the helper-only status, downgrades to P2 honesty."
+  "confidence": 0.98,
+  "downgradeTrigger": "Downgrade if the parent packet is explicitly re-scoped to ignore post-Phase-7 children."
 }
 ```
 
-**Recommended remediation**:
-1. Either wire `publication-gate.ts` into a real reporting/export handler (e.g., `handlers/memory-search.ts` for query response gating, or a new `handlers/export.ts`)
-2. OR rewrite 009/spec.md scope + impl-summary to honestly declare "helper-only, consumer deferred" and downgrade the SC-001/SC-002 success criteria to "shared helper exported and tested".
-3. Re-run validate.sh on 009 after the change.
-
----
-
-### DR-026-I005-P1-001 — `session_bootstrap` synthesizes live structural trust onto errored resume outputs
-
-**Severity**: P1 · **Dimension**: D2 Security · **Affected packets**: 005 (bootstrap), 011 (trust contract), 012 (cached consumer cross-cut) · **Source iteration**: 5
-
-**Claim**: When `handleSessionResume()` throws inside `session-bootstrap.ts`, the bootstrap branch reduces the resume object to `{ error }` and then **annotates that errored object** with graph-derived `parserProvenance`/`evidenceStatus`/`freshnessAuthority` from the independent local structural snapshot (via `attachStructuralTrustFields`). This **widens authority** instead of failing closed when the resume owner surface never emitted validated trust metadata. The combined output then advertises a `StructuralTrust` envelope on a payload section whose owner explicitly errored — a fail-closed contract violation.
-
-**Evidence**:
-- `mcp_server/handlers/session-bootstrap.ts:201` (resume try/catch)
-- `mcp_server/handlers/session-bootstrap.ts:203` (error reduction to `{ error }`)
-- `mcp_server/handlers/session-bootstrap.ts:251` (`extractStructuralTrustFromPayload(resumePayload) ?? buildStructuralContextTrust(structuralContext)` synthesizes trust on error path)
-- `mcp_server/handlers/session-bootstrap.ts:258` (attaches synthesized trust to errored resume)
-- `011/spec.md:63` (fail-closed validator at code-graph and bridge boundaries)
-- `011/spec.md:93` (REQ-001 fail-closed acceptance)
-- `012/spec.md:24` (additive consumer must NOT widen authority)
-- `012/implementation-summary.md:43` (compact wrapper not authority surface)
+- **Finding ID**: `DR-003-I003-P1-001`
+- **Title**: Parent packet `003` status roll-up contradicts both its own success criteria and child metadata for phases `006` and `007`
+- **Affected phase(s)**: `003-memory-quality-issues`
+- **Severity**: P1
+- **Dimension**: D3 Traceability
+- **Summary**: The parent phase map says phases `006` and `007` are effectively complete, while `SC-001` still expects placeholder work and the child specs still show `Status | Draft`. That mismatch leaves packet `003` unable to serve as a trustworthy later-phase status roll-up.
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:93`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:94`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:178`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/spec.md:30`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/spec.md:30`
+- **Typed claim-adjudication block**:
 
 ```json
 {
-  "claim": "On resume error, session-bootstrap annotates the errored resume payload with synthesized structural trust from the local snapshot, widening authority instead of failing closed.",
-  "evidenceRefs": ["session-bootstrap.ts:201", "session-bootstrap.ts:203", "session-bootstrap.ts:258", "011/spec.md:63"],
-  "counterevidenceSought": "Searched for any error-branch fail-closed guard in session-bootstrap.ts that would suppress structuralTrust attachment; none exists.",
-  "alternativeExplanation": "The bootstrap may intentionally keep structural-context payload available even when resume errors, to give the caller something to render. If so, the structural trust attachment should be on a SEPARATE payload section (the local snapshot), not on the errored resume payload.",
+  "claim": "The parent roll-up contradicts both its own success criteria and the child phase metadata for phases 006 and 007.",
+  "evidenceRefs": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:93",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:94",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:178",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/spec.md:30",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/spec.md:30"
+  ],
+  "counterevidenceSought": "Checked for a child-level note or parent waiver that explicitly permits Draft child metadata while the parent marks them complete; none exists in the cited files.",
+  "alternativeExplanation": "The parent remediation wave may have updated roll-up prose before the child metadata cleanup happened.",
   "finalSeverity": "P1",
-  "confidence": 0.93,
-  "downgradeTrigger": "If a separate structural-snapshot payload section is added and the errored resume is left untrusted, finding closes."
+  "confidence": 0.96,
+  "downgradeTrigger": "Downgrade if the parent packet is updated to explain that 006 and 007 child specs intentionally remain frozen Draft snapshots."
 }
 ```
 
-**Recommended remediation**:
-1. In `session-bootstrap.ts:251`, when `resumeData.error` is set, do NOT call `attachStructuralTrustFields(resumeData, …)`. Either omit `structuralTrust` from the errored resume payload entirely, or attach it to a separate `structural-snapshot` payload section that is clearly distinct from the resume section.
-2. Add a vitest case that throws from `handleSessionResume()` and asserts the errored resume payload does NOT carry `structuralTrust`.
-3. Cross-reference with finding DR-026-I001-P1-001: the resume preservation gap and this fail-closed gap have a shared root cause (bootstrap is the only trust-attachment owner today).
+### 008-graph-first-routing-nudge
 
----
-
-### DR-026-I006-P1-001 — Unscoped cached continuity selection reuses the newest project hook state across sessions
-
-**Severity**: P1 · **Dimension**: D2 Security · **Affected packets**: 012 (consumer), 002 (producer cross-cut) · **Source iteration**: 6
-
-**Claim**: 012's candidate-selection path defaults to `loadMostRecentState()` in `hook-state.ts`, which picks the newest hook-state file in the project by mtime. SessionStart startup and `session_resume()` calls **without an explicit `specFolder`** therefore can accept and surface another recent session's cached continuity summary without proving that artifact belongs to the active session or requested scope. This violates 012/spec.md REQ-002 (freshness gate must include scope) and REQ-007 (invalidation must be explicit, not heuristic).
-
-**Evidence**:
-- `mcp_server/hooks/claude/hook-state.ts:91` (`loadMostRecentState` definition)
-- `mcp_server/hooks/claude/hook-state.ts:99` (newest-by-mtime selection)
-- `mcp_server/handlers/session-resume.ts:346` (loadMostRecentState call without scope)
-- `mcp_server/handlers/session-resume.ts:354`
-- `mcp_server/handlers/session-resume.ts:467`
-- `mcp_server/hooks/claude/session-prime.ts:121`
-- `mcp_server/hooks/claude/session-prime.ts:126`
-- `012/spec.md:111` (REQ-002 freshness + scope)
-- `012/spec.md:123` (REQ-007 explicit invalidation)
+- **Finding ID**: `DR-008-I001-P1-001`
+- **Title**: `session-prime.ts` emits a structural routing hint without the activation-scaffold gate promised by packet `008`
+- **Affected phase(s)**: `008-graph-first-routing-nudge`
+- **Severity**: P1
+- **Dimension**: D1 Correctness
+- **Summary**: Packet `008` documents a readiness-plus-activation-scaffolding gate, but the startup or resume hook path in `session-prime.ts` emits the hint whenever `graphState === "ready"`. The focused regression suite only proves the stricter helper surface, so the hook path is both out of contract and under-tested.
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md:92`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md:120`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:35`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:37`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:45`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:56`; `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:114`; `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:120`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-first-routing-nudge.vitest.ts:15`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-first-routing-nudge.vitest.ts:67`
+- **Typed claim-adjudication block**:
 
 ```json
 {
-  "claim": "Cached continuity selection falls back to newest-by-mtime project-wide; unscoped sessions can surface another session's hook-state.",
-  "evidenceRefs": ["hook-state.ts:91", "hook-state.ts:99", "session-resume.ts:346", "session-prime.ts:121"],
-  "counterevidenceSought": "Searched for explicit-scope guards in session-resume's loadMostRecentState callsites; the calls do not pass a scope filter.",
-  "alternativeExplanation": "If the project only ever has one active session at a time (which is fragile), this is harmless. With concurrent sessions, branches, or worktrees, it leaks one session's continuity into another.",
+  "claim": "session-prime emits a structural routing hint on graph readiness alone, violating packet 008's promised readiness-plus-activation-scaffolding gate.",
+  "evidenceRefs": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md:92",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md:120",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:35",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:37",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:45",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/implementation-summary.md:56",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:114",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:120",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/graph-first-routing-nudge.vitest.ts:15",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/graph-first-routing-nudge.vitest.ts:67"
+  ],
+  "counterevidenceSought": "Reviewed the hook implementation and the focused regression file for any activation-scaffold or task-shape gate on the startup hint path.",
+  "alternativeExplanation": "The generic startup hint may have been intentional because SessionStart has no user task, but that scope exception is not what the packet documents or tests claim.",
   "finalSeverity": "P1",
-  "confidence": 0.91,
-  "downgradeTrigger": "If specFolder/sessionId scoping is added to loadMostRecentState and all unscoped callsites are removed or wrapped, finding closes."
+  "confidence": 0.96,
+  "downgradeTrigger": "Downgrade if packet 008 is explicitly re-scoped so the readiness-plus-scaffolding gate excludes the startup hook surface."
 }
 ```
 
-**Recommended remediation**:
-1. Add `specFolder` and/or `claudeSessionId` filtering to `loadMostRecentState()` and require all callers to pass it.
-2. Update the 3 unscoped callsites in `session-resume.ts:346`, `session-resume.ts:467`, and `session-prime.ts:121` to pass scope.
-3. Add a vitest case where two sessions write hook-states in parallel; assert that session A's resume only surfaces session A's cached continuity.
-4. Update 012/spec.md REQ-002 to make the scope-binding requirement explicit at the candidate-selection level, not just at the gate level.
+### 010-fts-capability-cascade-floor
 
-<!-- /ANCHOR:findings -->
+- **Finding ID**: `DR-010-I001-P1-001`
+- **Title**: Packet `010` labels degraded requests as `bm25_fallback` even though no fallback lexical lane executes
+- **Affected phase(s)**: `010-fts-capability-cascade-floor`
+- **Severity**: P1
+- **Dimension**: D1 Correctness
+- **Summary**: The runtime records degraded capability states, but the lane name overstates what actually happened. `sqlite-fts.ts` logs `bm25_fallback` and returns an empty lexical result set as soon as FTS5 is unavailable, so the named fallback lane is a vocabulary overclaim rather than an executed path.
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/spec.md:95`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/spec.md:98`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/spec.md:125`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/implementation-summary.md:34`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/implementation-summary.md:36`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/implementation-summary.md:56`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:99`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:101`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:210`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:212`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:177`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:185`
+- **Typed claim-adjudication block**:
 
----
-
-<!-- ANCHOR:traceability -->
-## 4. TRACEABILITY VERIFICATION
-
-| Protocol | Level | Status | Notes |
-|---|---|---|---|
-| `spec_code` | core | **partial** | 4 of 9 packets (009, 011, 012, 013) have spec/code drift; the other 5 (005, 006, 007, 008, 010) align cleanly with spec Files to Change tables and acceptance criteria |
-| `checklist_evidence` | core | **partial** | All 9 packets' checklists are marked `[x]` with `[SOURCE: file:line]` citations, but 4 packets (009, 011, 012, 013) cite code that doesn't actually satisfy the cited acceptance criterion (P1 findings above) |
-| `skill_agent` | overlay | pass | No skill or agent file modifications in 005-013; cross-runtime agent definitions unchanged |
-| `agent_cross_runtime` | overlay | notApplicable | No agent work in scope |
-| `feature_catalog_code` | overlay | notApplicable | No feature catalog work in scope |
-| `playbook_capability` | overlay | notApplicable | No testing playbook work in scope |
-
-**Research citation integrity (R1–R10 → recommendations.md)**: All 9 packets cite specific line ranges in `001-research-graph-context-systems/research/recommendations.md`. Spot-checked R1 (lines 5–13, 005), R5 (lines 45–53, 011), R8 (lines 75–83, 013) — all citations resolve. **Pass.**
-
-**006-research-memory-redundancy alignment (§3A Downstream Impact Map)**: All 9 packets carry the explicit classification note in their implementation-summary.md (verified via grep). 005/006/007/008/009/010/011 = "No change", 012/013 = "Recommendation/assumption alignment". **Pass.**
-<!-- /ANCHOR:traceability -->
-
----
-
-<!-- ANCHOR:dimension-summary -->
-## 5. DIMENSION SUMMARIES
-
-### D1 Correctness (iters 1–4, 11)
-**Verdict: CONDITIONAL.** 4 P1 findings. The shared-payload contract is internally consistent and additive across the 3 layered packets (005/006/011); no duplicate type definitions. The break is **propagation** through the named consumer surfaces (resume preservation, cached corpus, bundle benchmark, publication consumer). All 4 findings share a structural pattern: helpers ship, but the spec's acceptance criterion requires consumer-level enforcement that did not land.
-
-### D2 Security (iters 5–7)
-**Verdict: CONDITIONAL.** 2 P1 findings. Both relate to fail-closed contract violations:
-- Bootstrap synthesizes trust onto errored resume (widens authority instead of failing closed)
-- Cached continuity selection falls back to newest-by-mtime project-wide without scope binding (cross-session leakage risk)
-
-No injection paths, no secrets exposure, no unsafe deserialization paths discovered.
-
-### D3 Traceability (iters 8–9, 12–15)
-**Verdict: PASS with caveat.** Spec/code drift is fully captured by the D1 findings. Research citations resolve. Checklist evidence cites real files and lines. The "caveat" is that 4 packets' checklists cite code that exists but doesn't actually meet the acceptance criterion — this is a D1 issue surfaced through D3 review.
-
-### D4 Maintainability (iters 10–11)
-**Verdict: PASS.** No findings. Layered shared-payload composition is clean. Doc honesty is high outside the 4 overclaim cases above. ENV_REFERENCE.md sections are coherent. contracts/README.md sections are additive (no rewrites of prior sections).
-<!-- /ANCHOR:dimension-summary -->
-
----
-
-<!-- ANCHOR:remediation-lanes -->
-## 6. REMEDIATION LANES
-
-Four parallel lanes for the next implementation cycle. Each lane is independently shippable and reverts cleanly if needed.
-
-### Lane A — Packet 011 trust-preservation propagation (1 finding)
-**Findings**: DR-026-I001-P1-001 (and cross-cut with DR-026-I005-P1-001)
-**Files**: `session-resume.ts`, `session-bootstrap.ts`, `tests/graph-payload-validator.vitest.ts`, `011/spec.md`, `011/implementation-summary.md`
-**Effort**: M
-**Approach**: Either plumb `structuralTrust` through `session-resume.ts:533` (recommended) or rewrite 011/spec REQ-002 to scope preservation to graph-context payloads only. Add a real integration test.
-
-### Lane B — Packet 012 corpus + scoping (2 findings)
-**Findings**: DR-026-I002-P1-001, DR-026-I006-P1-001
-**Files**: `scripts/tests/session-cached-consumer.vitest.ts.test.ts`, `mcp_server/hooks/claude/hook-state.ts`, `mcp_server/handlers/session-resume.ts`, `mcp_server/hooks/claude/session-prime.ts`, `012/spec.md`
-**Effort**: M-L
-**Approach**:
-1. Add session-bootstrap/session-resume integration coverage to the cached-consumer corpus test
-2. Add `specFolder` scope filtering to `loadMostRecentState()` and update all callsites
-3. Update 012/spec.md REQ-002 + REQ-007 to make scope-binding explicit at selection level
-
-### Lane C — Packet 013 falsifiable benchmark (1 finding)
-**Findings**: DR-026-I003-P1-001
-**Files**: `mcp_server/lib/eval/warm-start-variant-runner.ts`, `scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts`, `013/scratch/benchmark-matrix.md`, `013/implementation-summary.md`
-**Effort**: S-M
-**Approach**: Extend `REQUIRED_FINAL_FIELDS` (or add a parallel scoring dimension) for scenario-varying outputs. Add a rejection scenario where pass-rate is observable. Re-run benchmark and update matrix with honest numbers.
-
-### Lane D — Packet 009 publication consumer (1 finding)
-**Findings**: DR-026-I004-P1-001
-**Files**: One of `mcp_server/handlers/memory-search.ts` (gating consumer) OR new `mcp_server/handlers/export.ts`, `009/spec.md`, `009/implementation-summary.md`
-**Effort**: S-M
-**Approach**: Wire `publication-gate.ts` into a real reporting handler OR rewrite 009 docs to honestly declare helper-only status.
-
-### Cross-cutting: bootstrap fail-closed (Lane A overlap)
-**Findings**: DR-026-I005-P1-001
-**Files**: `session-bootstrap.ts`
-**Effort**: S
-**Approach**: When `handleSessionResume()` throws, do NOT attach `structuralTrust` to the errored resume payload. Move local-snapshot trust to a separate payload section. Add a vitest case for the error branch.
-<!-- /ANCHOR:remediation-lanes -->
-
----
-
-<!-- ANCHOR:packets-cleared -->
-## 7. PACKETS THAT PASSED REVIEW CLEAN
-
-The following 5 packets had **zero findings** across all 4 dimensions and 15 iterations:
-
-| Packet | R# | Title | Notes |
-|---|---|---|---|
-| **005** | R1 | Provisional measurement contract | Shared CertaintyStatus vocabulary is clean, additive, used by 009. canPublishMultiplier helper works as specified. |
-| **006** | R10 | Structural trust axis contract | ParserProvenance/EvidenceStatus/FreshnessAuthority types are separate and never collapsed. Imports cleanly into 011 validator. |
-| **007** | R6 | Detector provenance + regression floor | Audit found no AST overclaims (codex-implementer correctly pivoted to honest provenance descriptors + frozen fixture). |
-| **008** | R4 | Graph-first routing nudge | Advisory-only, readiness-gated. No new router subsystem. Tests cover positive and negative cases. |
-| **010** | R7 | FTS capability cascade floor | All 4 forced-degrade cases distinguished. Lexical-path metadata surfaces correctly. No `fts4_match` overclaim. |
-
-005/006/007/008/010 are **release-ready**. The 4 conditional packets (009/011/012/013) require remediation before further activation, but do not require revert — the runtime they shipped is functional, just narrower than the spec claims.
-<!-- /ANCHOR:packets-cleared -->
-
----
-
-<!-- ANCHOR:risk-assessment -->
-## 8. RISK ASSESSMENT
-
-### Severity-weighted release readiness
-
-| Severity | Count | Impact on 026 release |
-|---|---|---|
-| P0 (Blockers) | 0 | None — no release-blocking defects |
-| P1 (Required) | 6 | **CONDITIONAL** — requires remediation before further activation of 009/011/012/013 |
-| P2 (Suggestions) | 0 | None |
-
-### Why no findings are P0
-
-All 6 P1 findings share the property that the shipped code is **functionally usable** today — it just doesn't meet the spec's acceptance criteria fully. None of them break existing behavior, leak secrets, corrupt state, or block other packets. The risk is **truth-of-shipped-claims**, not runtime correctness of working code.
-
-If 009/011/012/013 are not activated for production-grade reporting/trust/consumer flows yet, the P1s are **deferred-actionable**, not blocking. The remediation lanes can ship in a follow-up feature branch.
-
-### Ship-now-vs-fix-first decision matrix
-
-| Question | Answer |
-|---|---|
-| Do the P1s break tests? | No. All vitest, typecheck, and validate.sh continue to pass. |
-| Do the P1s break other packets? | No. 005/006/007/008/010 are clean. |
-| Do the P1s block downstream activation? | Yes — for any caller of 009 publication, 011 trust preservation, 012 cached consumer, 013 bundle. |
-| Are the P1s reversible? | All 6 findings have a doc-only rewrite path that downgrades them to P2 honesty issues. The preferred remediation is the runtime fix; the fallback is honest scoping. |
-<!-- /ANCHOR:risk-assessment -->
-
----
-
-<!-- ANCHOR:next-steps -->
-## 9. NEXT STEPS
-
-1. **Decide ship-now-vs-fix-first** — present this report to packet owner. The 5 clean packets (005/006/007/008/010) can stay in main branch unchanged. The 4 conditional packets need a decision.
-2. **If fix-first**: spawn `/spec_kit:plan` for each remediation lane (A, B, C, D) and dispatch implementation via cli-codex per-lane (similar pattern to the original 9-packet orchestration).
-3. **If ship-now-with-known-debt**: rewrite the 4 affected packets' implementation-summary.md to add a "Known Limitations / Deferred Acceptance" section citing this review report. Downgrade SC-001/SC-002 in spec.md as needed. Re-run validate.sh.
-4. **Always**: add the integration tests recommended in each finding's remediation steps. The current vitest suite uses too many helper-level mocks; integration tests at the handler level would have caught all 6 findings.
-5. **Memory save** the review session via `generate-context.js` so the findings are recoverable in future sessions.
-
-| Condition | Suggested next command |
-|---|---|
-| Fix-first (recommended for 011, 012) | `/spec_kit:plan "remediation lane A — packet 011 trust preservation"` |
-| Ship-now-with-debt (acceptable for 009, 013 if no consumer is live) | Manual edits to 009/013 impl-summary.md, then commit |
-| Re-run with deeper scope | `/spec_kit:deep-review:auto ".../026-graph-and-context-optimization/" --max-iterations=20 --convergence=0.05` |
-| Want to investigate one finding deeper | `/spec_kit:deep-research "finding DR-026-I001-P1-001 — 011 resume trust preservation"` |
-| Save context | `/memory:save .opencode/specs/system-spec-kit/026-graph-and-context-optimization/` |
-<!-- /ANCHOR:next-steps -->
-
----
-
-## STATUS
-
-```
-STATUS=OK
-PATH=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/
-ITERATIONS=15
-STOP_REASON=converged_with_user_approval
-P0=0 P1=6 P2=0
-VERDICT=CONDITIONAL
-HAS_ADVISORIES=false
-PACKETS_CLEAN=[005, 006, 007, 008, 010]
-PACKETS_CONDITIONAL=[009, 011, 012, 013]
-REMEDIATION_LANES=4
+```json
+{
+  "claim": "Packet 010 labels degraded requests as bm25_fallback even though the runtime returns empty lexical results instead of executing a fallback lexical lane.",
+  "evidenceRefs": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/spec.md:95",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/spec.md:98",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/spec.md:125",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/implementation-summary.md:34",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/implementation-summary.md:36",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/implementation-summary.md:56",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:99",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:101",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:210",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:212",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:177",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:185"
+  ],
+  "counterevidenceSought": "Reviewed sqlite-fts.ts, handler metadata wiring, README text, and focused tests for any actual non-FTS lexical query behind the bm25_fallback label.",
+  "alternativeExplanation": "The label may have been intended as capability shorthand rather than a description of executed work, but that is not how the packet documents or response field are worded today.",
+  "finalSeverity": "P1",
+  "confidence": 0.97,
+  "downgradeTrigger": "Downgrade if the packet docs and metadata are rewritten so bm25_fallback is explicitly only a capability-status label for an empty lexical lane."
+}
 ```
 
-**Generated**: 2026-04-09T04:50:00Z
-**Reviewer backend**: cli-codex gpt-5.4 high fast (orchestrator: Claude Opus 4.6 1M)
-**Session id**: 2026-04-09T03:59:45Z
+### 013-warm-start-bundle-conditional-validation
+
+- **Finding ID**: `DR-013-I003-P1-001`
+- **Title**: Checklist evidence for CHK-022 is stale and contradicts the shipped benchmark totals
+- **Affected phase(s)**: `013-warm-start-bundle-conditional-validation`
+- **Severity**: P1
+- **Dimension**: D3 Traceability
+- **Summary**: The shipped benchmark sources agree on `38/40`, but the checklist still cites `pass 28`. That leaves a P0 benchmark gate with stale evidence even though the runtime benchmark and implementation summary were updated.
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/spec.md:98`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/checklist.md:55`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/implementation-summary.md:71`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/scratch/benchmark-matrix.md:20`; `.opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:188`; `.opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:192`
+- **Typed claim-adjudication block**:
+
+```json
+{
+  "claim": "CHK-022 cites stale benchmark evidence and therefore no longer matches the packet's shipped benchmark totals.",
+  "evidenceRefs": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/spec.md:98",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/checklist.md:55",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/implementation-summary.md:71",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/scratch/benchmark-matrix.md:20",
+    ".opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:188",
+    ".opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:192"
+  ],
+  "counterevidenceSought": "Checked the implementation summary, scratch benchmark matrix, and benchmark assertions for a matching 28-pass result; none existed in the current packet state.",
+  "alternativeExplanation": "The checklist line appears to have been copied from an older benchmark revision and never refreshed after the discriminating pass metric landed.",
+  "finalSeverity": "P1",
+  "confidence": 0.98,
+  "downgradeTrigger": "Downgrade if the benchmark source of truth is intentionally 28 and the implementation summary plus scratch matrix were accidentally updated without rerunning the packet evidence."
+}
+```
+
+### 014-code-graph-upgrades
+
+- **Finding ID**: `DR-014-I001-P1-001`
+- **Title**: Resume/bootstrap graph-edge enrichment preservation is claimed but not implemented
+- **Affected phase(s)**: `014-code-graph-upgrades`
+- **Severity**: P1
+- **Dimension**: D1 Correctness
+- **Summary**: Packet `014` says `session_resume` and `session_bootstrap` preserve additive graph-edge enrichment, yet neither handler carries `graphEdgeEnrichment`, `edgeEvidenceClass`, or `numericConfidence`, and the cited tests do not assert those fields. The graph-local query upgrades may have landed, but the resume/bootstrap preservation story remains overclaimed.
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:84`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:89`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:90`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:106`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:75`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md:55`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:587`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:326`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:198`; `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts:228`
+- **Typed claim-adjudication block**:
+
+```json
+{
+  "claim": "Packet 014 claims resume/bootstrap preserve graph-edge enrichment, but neither handler or test currently carries or asserts those fields.",
+  "evidenceRefs": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:84",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:89",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:90",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:106",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:75",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md:55",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:587",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:326",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:198",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts:228"
+  ],
+  "counterevidenceSought": "Searched both handlers and the claimed preservation tests for graphEdgeEnrichment, edgeEvidenceClass, and numericConfidence. No hits existed outside graph-local query surfaces.",
+  "alternativeExplanation": "The implementation may have intentionally limited edge enrichment to graph-local outputs, but the packet docs and checklist were not rewritten to reflect that narrower scope.",
+  "finalSeverity": "P1",
+  "confidence": 0.99,
+  "downgradeTrigger": "Downgrade if another shipped resume/bootstrap serialization path injects graphEdgeEnrichment before MCP responses are returned, or if packet 014 is formally re-scoped to exclude resume/bootstrap preservation."
+}
+```
+
+P2 appendix table: None applicable.
+
+---
+
+## 4. Cross-Phase Patterns
+
+### Pattern 1: Packet-truth drift and overclaim vs ship
+
+- **Phases affected**: `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `010-fts-capability-cascade-floor`, `013-warm-start-bundle-conditional-validation`, `014-code-graph-upgrades`
+- **Severity cluster**: P1
+- **Recommended structural remediation**: Run one packet-truth reconciliation sweep across `spec.md`, `implementation-summary.md`, `checklist.md`, phase maps, and emitted runtime vocabulary before any release claim. The root cause is not only missing code; it is stale metadata, stale evidence, or broader narrative scope than the current runtime actually supports.
+
+### Pattern 2: Adjacent claimed surfaces are less constrained than the tested helper or handler path
+
+- **Phases affected**: `008-graph-first-routing-nudge`, `010-fts-capability-cascade-floor`, `014-code-graph-upgrades`
+- **Severity cluster**: P1
+- **Recommended structural remediation**: Add a release gate that requires one focused assertion against every named surface in the packet claim, not just the helper or primary handler. If a packet says a hook, degraded lane, or resume/bootstrap path is governed, the test and checklist evidence must hit that exact surface.
+
+### Pattern 3: Parent and child roll-up artifacts can become less trustworthy than the child runtime itself
+
+- **Phases affected**: `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `013-warm-start-bundle-conditional-validation`
+- **Severity cluster**: P1
+- **Recommended structural remediation**: Treat packet-state artifacts as first-class release surfaces. Before closing a phase family, require a single "state consistency" pass that checks status fields, success-criteria summaries, and checklist evidence against child specs and current benchmark sources of truth.
+
+### Pattern 4: Earlier parent-review runtime concerns were mostly corrected once real consumers and real-surface coverage landed
+
+- **Phases affected**: `009-auditable-savings-publication-contract`, `011-graph-payload-validator-and-trust-preservation`, `012-cached-sessionstart-consumer-gated`
+- **Severity cluster**: Historically P1 in the parent review, now PASS in the phase reviews
+- **Recommended structural remediation**: Keep the same discipline for later packets: helper-first work is acceptable only if the packet docs explicitly say helper-only, and any "implemented" closeout must be backed by a real consumer or real end-to-end surface proof.
+
+### Pattern 5: Counterevidence repeatedly failed to find explicit scope waivers or frozen-snapshot disclaimers
+
+- **Phases affected**: `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `008-graph-first-routing-nudge`, `010-fts-capability-cascade-floor`, `014-code-graph-upgrades`
+- **Severity cluster**: P1
+- **Recommended structural remediation**: When a packet is intentionally narrower than its broader prose, or when an artifact is meant to be historical rather than live status, state that exception directly in the packet and checklist. Multiple review lanes searched for those disclaimers and found none, which is why the defects remained P1 truthfulness failures instead of being downgraded to intentional scope notes.
+
+---
+
+## 5. Comparison with the Earlier 15-iter Parent Review
+
+The existing `026/review/review-report.md` (session `2026-04-09T03:59:45Z`) reviewed the 026 parent packet with 15 iterations and surfaced 6 P1 findings clustered in packets 009/011/012/013:
+
+- DR-026-I001: Packet 011 does not preserve structural trust through session_resume payload
+- DR-026-I002: Packet 012's frozen-corpus proof does not exercise real session_resume/session_bootstrap/session-prime surfaces
+- DR-026-I003: Packet 013's bundle benchmark cannot observe pass-rate regressions
+- DR-026-I004: Packet 009 marks publication contract implemented without a live consumer
+- DR-026-I005: session_bootstrap synthesizes live structural trust onto errored resume outputs
+- DR-026-I006: Unscoped cached continuity selection reuses newest project hook state cross-session
+
+For each of the 6 parent-review findings, the batch review points to the following status:
+
+| Parent Finding ID | Status in Batch Review | Evidence |
+|-------------------|------------------------|----------|
+| DR-026-I001 | RESOLVED | Parent findings registry marks it resolved at iteration 16, and the per-phase `011` review now reports PASS with no active findings and says packet 011 behaves like the actual trust-preservation prerequisite for packets 012 and 014. |
+| DR-026-I002 | RESOLVED | Parent findings registry marks it resolved, and the per-phase `012` review now reports PASS and explicitly says the frozen-corpus test mounts the real session surfaces through hook-state fixtures. |
+| DR-026-I003 | RESOLVED | Parent findings registry marks it resolved. The per-phase `013` review no longer reports an unfalsifiable pass-rate gate; its only remaining P1 is stale CHK-022 evidence, which is a different packet-truth issue. |
+| DR-026-I004 | RESOLVED | Parent findings registry marks it resolved, and the per-phase `009` review now reports PASS and explicitly states that the helper has a real `memory-search.ts` consumer. |
+| DR-026-I005 | RESOLVED | Parent findings registry marks it resolved, while the per-phase `005`, `011`, and `012` reviews all report PASS with no active fail-open or trust-widening finding remaining. |
+| DR-026-I006 | RESOLVED | Parent findings registry marks it resolved, and the per-phase `012` review now reports PASS across cached session-start gating, hook-state fail-closed behavior, and real-surface coverage. |
+
+Also note:
+
+- **NEW findings caught by the batch review that the parent review missed**: 7 active P1 findings. They cluster in `002` blocked-state drift, two separate `003` parent-roll-up integrity failures, `008` startup-hook gate drift, `010` degraded-lane overstatement, `013` stale checklist evidence, and `014` resume/bootstrap enrichment overclaim.
+- **Findings both reviews missed**: None identifiable from the current artifacts. The batch sweep broadened coverage into packet-truth and roll-up integrity, which is the main category the earlier parent review did not emphasize.
+
+---
+
+## 6. Remediation Priority Queue
+
+1. **Lane 1 — Repair packet `003` parent topology and status truthfulness** (P1, affected phases: `003-memory-quality-issues`)
+   - Target files: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:33`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:84`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:93`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:178`
+   - Effort: M
+   - Recommended fix: Restore the correct child topology, then reconcile the later-phase status table against the child specs and `SC-001`. If packet `003` is meant to stop at the earlier remediation train, explicitly re-scope it and remove the broken later-phase roll-up.
+   - Downgrade path: Doc-only re-scope to a frozen earlier train is acceptable if operators are told not to use `003` as a current child-phase index.
+
+2. **Lane 2 — Honor or narrow packet `014`'s resume/bootstrap enrichment preservation claim** (P1, affected phases: `014-code-graph-upgrades`, with downstream coupling to `011-graph-payload-validator-and-trust-preservation`)
+   - Target files: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246`
+   - Effort: M/L
+   - Recommended fix: Either carry `graphEdgeEnrichment`, `edgeEvidenceClass`, and `numericConfidence` through `session-resume.ts` and `session-bootstrap.ts` with matching tests, or narrow the packet docs and checklist so the claim stays limited to graph-local query surfaces.
+   - Downgrade path: Doc-only re-scope to graph-local outputs converts the finding from a runtime delivery gap into a documentation honesty fix.
+
+3. **Lane 3 — Add the missing startup-hook gate in packet `008` or narrow the claimed surface** (P1, affected phases: `008-graph-first-routing-nudge`)
+   - Target files: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:114`, `.opencode/skill/system-spec-kit/mcp_server/tests/graph-first-routing-nudge.vitest.ts:15`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md:92`
+   - Effort: S/M
+   - Recommended fix: Add the promised activation-scaffold or task-shape gate to the startup or resume hook path and extend the focused regression suite to assert that surface. If the startup hook is intentionally broader, narrow the packet language so it no longer claims the stricter gate there.
+   - Downgrade path: Explicitly exclude the startup hook surface from the readiness-plus-scaffolding contract.
+
+4. **Lane 4 — Make packet `010`'s degraded-lane vocabulary truthful** (P1, affected phases: `010-fts-capability-cascade-floor`, with downstream wording impact on `002-implement-cache-warning-hooks`)
+   - Target files: `.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:210`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:177`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor/spec.md:95`
+   - Effort: S/M
+   - Recommended fix: Either implement a real degraded lexical fallback or rename the lane and docs so they describe an explicit empty lexical state rather than a fallback that actually ran.
+   - Downgrade path: Rename `bm25_fallback` to an honest capability-status label and update docs plus tests to match.
+
+5. **Lane 5 — Clear packet `002`'s stale blocked-state metadata** (P1, affected phases: `002-implement-cache-warning-hooks`)
+   - Target files: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:36`
+   - Effort: S
+   - Recommended fix: Update the packet status to match the already-shipped implementation summary and verification table, keeping predecessor notes under dependencies or limitations instead of the main packet state.
+   - Downgrade path: If the packet is intentionally treated as a frozen historical snapshot, state that explicitly and tell operators not to trust the live status field.
+
+6. **Lane 6 — Refresh packet `013`'s CHK-022 benchmark evidence** (P1, affected phases: `013-warm-start-bundle-conditional-validation`)
+   - Target files: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/checklist.md:55`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/implementation-summary.md:71`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/scratch/benchmark-matrix.md:20`
+   - Effort: S
+   - Recommended fix: Refresh CHK-022 so its cited totals and evidence match the current `38/40` benchmark source of truth, then check sibling artifacts for copied `pass 28` text.
+   - Downgrade path: None meaningful beyond correcting the stale evidence; this is already a documentation-truth fix.
+
+---
+
+## 7. Verdict Trajectory for the 026 Train
+
+- **Pre-session state** (before 2026-04-08): the 026 train already contained earlier foundation packets and planning artifacts, but it did not yet have a completed parent deep-review cycle or a phase-by-phase synthesized verdict.
+- **After the original 9-packet ship** (commit `33823d006`): the runtime and packet docs for `005` through `013` were shipped together, but they were still effectively unreviewed as a coordinated train.
+- **After the 15-iter parent review** (2026-04-09T03:59:45Z): `CONDITIONAL` with 6 P1 findings, clustered in packets `009`, `011`, `012`, and `013`.
+- **After the 9-packet remediation** (commit `ef30b31f7` + verification): the parent-review cluster was remediated; the current parent findings registry now records all six `DR-026-I001` through `DR-026-I006` findings as resolved.
+- **After packet 014 shipped + regression floor** (commits `2837e157a` + `66bd323bb` + `df4c14745`): packet `014` added graph-local upgrades and regression-floor work, but the batch review still found one open P1 because the resume/bootstrap enrichment-preservation claim is broader than the current runtime.
+- **After 009 render-layer fix + gap closure** (commit `eb1f49c3e` + `f90ba01cd`): the memory-quality pipeline and render-layer fixes closed the earlier runtime gap, but the batch review still found packet `003` roll-up truth drift inside the parent packet itself.
+- **Current verdict from this batch review**: CONDITIONAL with 0 P0 / 7 P1 / 0 P2 across 13 reviewed phases.
+- **Recommended next step**: hold the 026 train for the six remediation lanes above, then rerun targeted per-phase reviews on the touched packets and regenerate this synthesis before any release-readiness or merge claim.
+
+---
+
+## 8. Next Steps
+
+1. For each P0 finding: None applicable.
+2. For each P1 finding: remediate packet `003` roll-up truth, then packet `014` enrichment scope, packet `008` startup-hook gate, packet `010` degraded-lane wording or runtime, packet `002` blocked-state metadata, and packet `013` stale benchmark evidence before the next release-readiness claim.
+3. For each recurring pattern in §4: add one structural packet-truth and named-surface parity gate so later packets cannot ship helper-only or stale-evidence overclaims without a matching test plus checklist assertion on the exact claimed surface.
+4. For each MISSING per-phase review: None applicable.
+5. For the 026 branch itself: hold for remediation, then rerun targeted phase reviews and refresh this consolidated report before opening or advancing any release-oriented PR.
+
+---
+
+## 9. Data Provenance
+
+- Batch state consulted: `026/review/batch-phase-review-state.json`
+- Per-phase reports read:
+  - `026/review/002-implement-cache-warning-hooks/review-report.md`
+  - `026/review/003-memory-quality-issues/review-report.md`
+  - `026/review/004-agent-execution-guardrails/review-report.md`
+  - `026/review/005-provisional-measurement-contract/review-report.md`
+  - `026/review/006-structural-trust-axis-contract/review-report.md`
+  - `026/review/007-detector-provenance-and-regression-floor/review-report.md`
+  - `026/review/008-graph-first-routing-nudge/review-report.md`
+  - `026/review/009-auditable-savings-publication-contract/review-report.md`
+  - `026/review/010-fts-capability-cascade-floor/review-report.md`
+  - `026/review/011-graph-payload-validator-and-trust-preservation/review-report.md`
+  - `026/review/012-cached-sessionstart-consumer-gated/review-report.md`
+  - `026/review/013-warm-start-bundle-conditional-validation/review-report.md`
+  - `026/review/014-code-graph-upgrades/review-report.md`
+- Per-phase findings registries read:
+  - `026/review/002-implement-cache-warning-hooks/deep-review-findings-registry.json`
+  - `026/review/003-memory-quality-issues/deep-review-findings-registry.json`
+  - `026/review/004-agent-execution-guardrails/deep-review-findings-registry.json`
+  - `026/review/005-provisional-measurement-contract/deep-review-findings-registry.json`
+  - `026/review/006-structural-trust-axis-contract/deep-review-findings-registry.json`
+  - `026/review/007-detector-provenance-and-regression-floor/deep-review-findings-registry.json`
+  - `026/review/008-graph-first-routing-nudge/deep-review-findings-registry.json`
+  - `026/review/009-auditable-savings-publication-contract/deep-review-findings-registry.json`
+  - `026/review/010-fts-capability-cascade-floor/deep-review-findings-registry.json`
+  - `026/review/011-graph-payload-validator-and-trust-preservation/deep-review-findings-registry.json`
+  - `026/review/012-cached-sessionstart-consumer-gated/deep-review-findings-registry.json`
+  - `026/review/013-warm-start-bundle-conditional-validation/deep-review-findings-registry.json`
+  - `026/review/014-code-graph-upgrades/deep-review-findings-registry.json`
+- Per-phase stop reasons and dimension coverage:
+
+| Phase | Stop reason | Dimensions covered | Notes |
+|-------|-------------|--------------------|-------|
+| `002-implement-cache-warning-hooks` | `max_iterations` | `D1, D2, D3, D4` | Operator-extended from the original 5-iteration plan to 10 iterations. |
+| `003-memory-quality-issues` | `max_iterations` | `D1, D2, D3, D4` | Operator-extended from the original 5-iteration plan to 10 iterations. |
+| `004-agent-execution-guardrails` | `max_iterations` | `D1, D2, D3, D4` | Operator-extended from the original 5-iteration plan to 10 iterations. |
+| `005-provisional-measurement-contract` | `max_iterations` | `D1, D2, D3, D4` | Operator-extended from the original 5-iteration plan to 10 iterations. |
+| `006-structural-trust-axis-contract` | `max_iterations` | `D1, D2, D3, D4` | Dashboard records 4-of-4 dimension coverage in bullet-list form rather than the later table layout. |
+| `007-detector-provenance-and-regression-floor` | `max_iterations` | `D1, D2, D3, D4` | Dashboard records 4-of-4 dimension coverage in bullet-list form rather than the later table layout. |
+| `008-graph-first-routing-nudge` | `max_iterations` | `D1, D2, D3, D4` | Dashboard records 4-of-4 dimension coverage in bullet-list form rather than the later table layout. |
+| `009-auditable-savings-publication-contract` | `max_iterations` | `D1, D2, D3, D4` | Dashboard records 4-of-4 dimension coverage in bullet-list form rather than the later table layout. |
+| `010-fts-capability-cascade-floor` | `max_iterations` | `D1, D2, D3, D4` | Dashboard records 4-of-4 dimension coverage in bullet-list form rather than the later table layout. |
+| `011-graph-payload-validator-and-trust-preservation` | `converged` | `D1, D2, D3, D4` | Early stop after D1-D4 because the phase report says all reviewed claims matched shipped runtime and packet evidence. |
+| `012-cached-sessionstart-consumer-gated` | `converged` | `D1, D2, D3, D4` | Early stop after D1-D4 because the phase report says all reviewed claims matched shipped runtime and packet evidence, including real session-surface mounting through hook-state fixtures. |
+| `013-warm-start-bundle-conditional-validation` | `max_iterations` | `D1, D2, D3, D4` | Completed the full 5-iteration plan with one remaining P1 traceability finding. |
+| `014-code-graph-upgrades` | `max_iterations` | `D1, D2, D3, D4` | Completed the full 5-iteration plan with one remaining P1 correctness finding. |
+- Parent review consulted: `026/review/review-report.md` (session `2026-04-09T03:59:45Z`)
+- Parent findings registry consulted: `026/review/deep-review-findings-registry.json`
+- Data-quality note: `011` and `012` frontmatter descriptions say "5-iteration deep review," but both the phase overview sections and `batch-phase-review-state.json` record 4 converged iterations. This synthesis uses the batch-state counts for iteration totals and flags the discrepancy here rather than smoothing it over.
+- Synthesis timestamp: `2026-04-09T15:22:59Z`
+- Synthesis session id: `2026-04-09T15:22:59Z-consolidated`
+- Synthesizer: `cli-codex gpt-5.4 high fast`
