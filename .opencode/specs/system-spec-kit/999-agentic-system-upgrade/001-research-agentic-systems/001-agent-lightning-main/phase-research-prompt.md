@@ -67,7 +67,7 @@ systems rather than duplicating capabilities that are already mature.
    as the pre-approved spec folder. Skip Gate 3, do not create a sibling packet, and keep every write
    inside this phase folder only.
 2. Read the governing `AGENTS.md` files first: the repo root `AGENTS.md` and the external repo
-   `external/agent-lightning-main/AGENTS.md`. Treat everything under `external/` as read-only.
+   `external/AGENTS.md`. Treat everything under `external/` as read-only.
 3. Create or refresh Level 3 Spec Kit docs in this phase folder before deep research begins:
    `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`.
 4. Use `@speckit` for markdown authoring when the runtime supports agent routing. If the runtime cannot
@@ -85,7 +85,7 @@ systems rather than duplicating capabilities that are already mature.
    ```
 8. Read the external repo in this order: `README.md`; then `agentlightning/tracer/base.py`,
    `agentlightning/store/base.py`, `agentlightning/adapter/triplet.py`, `agentlightning/trainer/trainer.py`,
-   and `agentlightning/algorithm/base.py`; then `examples/README.md` plus one or two representative example
+   and `agentlightning/algorithm/base.py`; then `external/examples/README.md` plus one or two representative example
    subfolders; then relevant `docs/` pages for confirmation.
 9. Use CocoIndex first for concept search across tracing, rewards, adapters, rollout state, and hooks.
    Use `grep` or equivalent exact search to confirm file paths, function names, interfaces, and call chains.
