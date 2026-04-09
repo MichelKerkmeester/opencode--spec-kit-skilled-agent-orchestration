@@ -22,49 +22,41 @@ Persistent brain for the 002-codesight deep-research loop. Records what to inves
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:topic -->
 ## 2. TOPIC
-Research the external repository at /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/external and identify concrete improvements for Code_Environment/Public, especially around AST-based codebase analysis, framework/ORM detector architecture, AI-assistant context file generation, MCP tool design, and per-tool config profile patterns.
+Translate the completed cross-phase research across `002-codesight`, `003-contextador`, `004-graphify`, and `005-claudest` into a concrete code graph upgrade roadmap for Public's Code Graph MCP: gap analysis, cost/benefit/risk scoring, and a packet-ready proposal that can be inserted into the 026 DAG without duplicating packet `008` or `011`.
 
 ---
 
 <!-- /ANCHOR:topic -->
 <!-- ANCHOR:key-questions -->
 ## 3. KEY QUESTIONS (remaining)
-None. The reopened packet reached 20 total iterations and closed all tracked research questions:
-
-- Q1-Q12: original charter on execution flow, route/schema extraction, MCP tools, profiles, benchmark claims, and cross-phase boundaries
-- Q13-Q17: first continuation on contracts, Python/Go parity, token stats, monorepo/config/plugins, and components/telemetry
-- Q18-Q27: completed-continue extension on watch/hook automation, middleware/libs/config detectors, formatter lifecycle, MCP cache/error semantics, AI-config write safety, HTML projection, scanner heuristics, and final adoption synthesis
+[None yet]
 
 <!-- /ANCHOR:key-questions -->
 <!-- ANCHOR:non-goals -->
 ## 4. NON-GOALS
-- HTML report styling and presentational dashboard polish.
-- npm publishing workflow, semver, or release engineering details.
-- Generic TypeScript style commentary unrelated to AST detector design.
-- Phase 003 self-healing query interface analysis (covered by `003-contextador`).
-- Phase 004 graph visualization, NetworkX/Leiden community detection, or evidence-tagging analysis (covered by `004-graphify`).
-- Re-creating CocoIndex semantic search, Code Graph MCP structural queries, or Spec Kit Memory in Public.
+- Re-auditing iterations 1-20 of `002-codesight` or re-deriving the 22-row §18.3 matrix.
+- Editing anything under any `external/` tree or touching sibling phase docs.
+- Verifying proposals against Public's live Code Graph MCP source in this research phase.
+- AI-config/profile generation, memory-quality work, warm-start bundle work, or detector-regression-floor implementation tasks already owned elsewhere in 026.
+- Recommending any graph-router subsystem that duplicates packet `008` or any trust-validator work that duplicates packet `011`.
 
 ---
 
 <!-- /ANCHOR:non-goals -->
 <!-- ANCHOR:stop-conditions -->
 ## 5. STOP CONDITIONS
-- All tracked key questions are answered with source-cited evidence in `iterations/`.
-- At least 5 evidence-backed findings exist with explicit `adopt now | prototype later | reject` recommendations and concrete impact statements for `Code_Environment/Public`.
-- Cross-phase overlap between 002 / 003 / 004 is bounded explicitly in synthesis.
-- Composite convergence score >= 0.60 OR rolling avg(newInfoRatio, 3) < 0.05 OR question coverage >= 0.85.
-- Stuck count >= 3 consecutive iterations with no new findings → recovery, then forced synthesis if recovery fails.
+- Iterations 21-35 land with exact sibling-packet citations and explicit evidence-type labels.
+- `research/research.md` gains a new top-level charter section with gap analysis, a 15-20 row decision matrix, packet skeleton, acceptance criteria, risk matrix, DAG notes, and explicit non-overlap with `008` and `011`.
+- The upgrade list distinguishes `adopt now`, `prototype later`, and `reject or defer` candidates against Public's existing 026 DAG.
+- A final lifecycle event closes the new segment with `completed_continue_segment_end` and `iterationsCompleted=35`.
+- Strict validation passes with no blocking errors after reducer refresh and memory save.
 
 ---
 
 <!-- /ANCHOR:stop-conditions -->
 <!-- ANCHOR:answered-questions -->
 ## 6. ANSWERED QUESTIONS
-- Q1-Q12 answered by iterations 1-5 and the initial synthesis.
-- Q13-Q17 answered by iterations 6-10 and the first continuation synthesis.
-- Q18-Q27 answered by iterations 11-20 and the final generation-2 closeout.
-- Canonical evidence lives in `research/research.md`; use the packet docs, not the saved-memory snapshots, as the source of truth when they disagree.
+[None yet]
 
 <!-- /ANCHOR:answered-questions -->
 <!-- MACHINE-OWNED: START -->
@@ -90,25 +82,25 @@ None. The reopened packet reached 20 total iterations and closed all tracked res
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-No new research focus. The packet is ready for reducer refresh, synthesis update, memory save, and a follow-on planning/implementation phase if the parent 026 packet decides to operationalize the adopt-now patterns.
+None. The code-graph-upgrade charter is complete and ready for packet creation follow-on work.
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->
 <!-- ANCHOR:known-context -->
 ## 12. KNOWN CONTEXT
-- Memory query for "codesight AST detector framework ORM analysis MCP tool profile generation blast radius" returned **no prior memories** for this topic; evidence gap detected (Z=0.00). Treat the session as a fresh investigation.
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/phase-research-prompt.md` is the authoritative TIDD-EC contract for this phase: it forbids edits under `external/`, mandates source-before-README reading order, and pre-approves the phase folder so Gate 3 is skipped.
-- Cross-phase context: phase 001 = Reddit narrative (no code), phase 003 = contextador self-healing query interface, phase 004 = graphify NetworkX + Leiden + EXTRACTED/INFERRED tags, phase 005 = claudest plugin marketplace. Findings here must avoid duplicating 003 (MCP query) and 004 (knowledge graph) terrain.
-- `Code_Environment/Public` already has CocoIndex semantic search, Code Graph MCP for structural queries, Spec Kit Memory for context preservation, and `validate.sh` for spec validation. It lacks Codesight-style automated `CLAUDE.md` / `.cursorrules` / `codex.md` / `AGENTS.md` generation, per-tool profile generation, and a blast-radius command built around reverse import-graph BFS.
-- The first continuation (iters 6-10) updated `research/research.md` and iteration files but left packet metadata and reducer-owned views partially stale. The second continuation should treat `completed-continue` lineage and reducer refresh as first-class closeout work.
-- Delegation policy for this session: iterations 1-10 were dispatched via `codex exec --model gpt-5.4 -c model_reasoning_effort="high" --sandbox read-only` per the original user request. Iterations 11-20 are executed directly in the active Codex session because self-invoking `cli-codex` from Codex would be circular; the same source-tracing and citation standards still apply.
+- This segment is deliberately additive to the existing packet. Section 18.3 remains the canonical CodeSight adopt/prototype/reject matrix; section 20 extends it into a cross-phase roadmap instead of replacing it.
+- The primary evidence sources are sibling packet syntheses and iteration files under `003-contextador`, `004-graphify`, and `005-claudest`, plus the parent 026 spec, parent recommendations, and the scoped specs for packets `008` and `011`.
+- Packet `008` owns advisory graph-first nudges on existing startup, resume, compact, and response surfaces; packet `011` owns fail-closed validation and preservation of provenance, evidence, and freshness fields. Any candidate that recreates either scope must be explicitly deferred.
+- The strongest surviving code-graph-shaped candidates entering this segment are: AST-first/structured-fallback detector discipline, honest degree-based hot-file breadcrumbs, blast-radius BFS hardening, evidence-tagged edges, provenance metadata, additive clustering metadata, and graph query fallback tiering.
+- The strongest surviving non-owners from sibling research are runtime ergonomics and cache/reuse patterns, not subsystem replacement: `routeQuery()`-style routing facades, bounded feedback-driven repair, Mainframe-like reuse, graph-first hook nudges, and capability-cascade fallbacks.
+- Generation-3 execution runs directly in the active Codex session with workspace-write scoped to this packet because self-delegation remains circular and the charter requires packet-local writes only.
 
 ---
 
 <!-- /ANCHOR:known-context -->
 <!-- ANCHOR:research-boundaries -->
 ## 13. RESEARCH BOUNDARIES
-- Max iterations: 20
+- Max iterations: 35
 - Convergence threshold: 0.05
 - Per-iteration budget: 12 tool calls, 10 minutes
 - Progressive synthesis: true (default)
@@ -119,8 +111,9 @@ No new research focus. The packet is ready for reducer refresh, synthesis update
 - Capability matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
 - Capability matrix doc: `.opencode/skill/sk-deep-research/references/capability_matrix.md`
 - Capability resolver: `.opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs`
-- Current generation: 2
+- Current generation: 3
 - Started: 2026-04-06T09:58:51Z
 - Reopened: 2026-04-08T07:02:03Z via `completed-continue`
-- Delegation: iterations 1-10 via cli-codex (gpt-5.4 + reasoning_effort=high, sandbox=read-only); iterations 11-20 via direct Codex execution in the active session
+- Reopened again: 2026-04-09T06:58:00Z via `completed-continue`
+- Delegation: iterations 1-10 via cli-codex (gpt-5.4 + reasoning_effort=high, sandbox=read-only); iterations 11-35 via direct Codex execution in the active session
 <!-- /ANCHOR:research-boundaries -->

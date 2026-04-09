@@ -15,14 +15,14 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Topic: Research the external repository at /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/external and identify concrete improvements for Code_Environment/Public, especially around AST-based codebase analysis, framework/ORM detector architecture, AI-assistant context file generation, MCP tool design, and per-tool config profile patterns.
+- Topic: Translate the completed cross-phase research across 002-codesight, 003-contextador, 004-graphify, and 005-claudest into a concrete code graph upgrade roadmap for Public's Code Graph MCP, including a scoped packet proposal that fits the 026 DAG without duplicating packets 008 or 011.
 - Started: 2026-04-06T09:58:51Z
 - Status: COMPLETE
-- Iteration: 20 of 20
-- Session ID: dr-002-codesight-20260408T070203Z
-- Parent Session: dr-002-codesight-20260406T095851Z
+- Iteration: 35 of 35
+- Session ID: dr-002-codesight-20260409T065800Z
+- Parent Session: dr-002-codesight-20260408T070203Z
 - Lifecycle Mode: completed-continue
-- Generation: 2
+- Generation: 3
 
 <!-- /ANCHOR:status -->
 <!-- ANCHOR:progress -->
@@ -50,8 +50,23 @@ Reducer-generated observability surface for the active research packet.
 | 18 | iteration 18: HTML report as projection layer | - | 0.58 | 4 | insight |
 | 19 | iteration 19: scanner collection boundaries and project heuristics | - | 0.72 | 5 | insight |
 | 20 | iteration 20: final adoption synthesis after 20 total iterations | - | 0.46 | 3 | insight |
+| 21 | iteration 21: gap analysis against current DAG | gap-analysis | 0.74 | 2 | insight |
+| 22 | iteration 22: candidate classification and owner separation | gap-analysis | 0.69 | 2 | insight |
+| 23 | iteration 23: detector provenance taxonomy | detectors | 0.72 | 2 | insight |
+| 24 | iteration 24: cross-language extraction depth | detectors | 0.66 | 2 | insight |
+| 25 | iteration 25: extractor inventory and extensibility | detectors | 0.61 | 2 | insight |
+| 26 | iteration 26: evidence-tagged edges | structure | 0.77 | 2 | insight |
+| 27 | iteration 27: clustering and export contracts | structure | 0.59 | 2 | insight |
+| 28 | iteration 28: routing facade versus pointer delivery | query-surface | 0.64 | 2 | insight |
+| 29 | iteration 29: fallback tiering and blast-radius hardening | query-surface | 0.78 | 2 | insight |
+| 30 | iteration 30: overlap check with packet 008 | hook-routing | 0.53 | 1 | insight |
+| 31 | iteration 31: hot-file breadcrumbs and low-authority hints | query-surface | 0.57 | 2 | insight |
+| 32 | iteration 32: upgrade decision matrix consolidation | synthesis | 0.71 | 1 | thought |
+| 33 | iteration 33: packet proposal draft scope and requirements | proposal | 0.63 | 1 | thought |
+| 34 | iteration 34: packet proposal draft tasks and DAG notes | proposal | 0.52 | 1 | thought |
+| 35 | iteration 35: final code-graph-upgrade synthesis | synthesis | 0.48 | 1 | thought |
 
-- iterationsCompleted: 20
+- iterationsCompleted: 35
 - keyFindings: 671
 - openQuestions: 0
 - resolvedQuestions: 0
@@ -64,10 +79,10 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.58 -> 0.72 -> 0.46
+- Last 3 ratios: 0.63 -> 0.52 -> 0.48
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
-- convergenceScore: 0.46
+- convergenceScore: 0.48
 - coverageBySources: {}
 
 <!-- /ANCHOR:trend -->
@@ -78,7 +93,7 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-No new research focus. The packet is ready for reducer refresh, synthesis update, memory save, and a follow-on planning/implementation phase if the parent 026 packet decides to operationalize the adopt-now patterns.
+None. The code-graph-upgrade charter is complete and ready for packet creation follow-on work.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

@@ -4031,11 +4031,11 @@
   ],
   "ruledOutDirections": [],
   "metrics": {
-    "iterationsCompleted": 20,
+    "iterationsCompleted": 35,
     "openQuestions": 0,
     "resolvedQuestions": 0,
     "keyFindings": 671,
-    "convergenceScore": 0.46,
+    "convergenceScore": 0.48,
     "coverageBySources": {}
   }
 }

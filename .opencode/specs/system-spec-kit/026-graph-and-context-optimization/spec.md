@@ -14,6 +14,7 @@ This packet's phases form a research-aligned dependency graph. Logical execution
     - **012 (R3)** — Cached SessionStart consumer (gated)
 - **011 (R5)** — Graph payload validator — requires 006
   - **008 (R4)** — Graph-first routing nudge — requires 011
+  - **014 (side branch)** — Code graph upgrades — requires 007 + 011; sibling to 008 with explicit non-overlap
 - **009 (R9)** — Auditable savings publication — requires 005 + external reader
 - **013 (R8)** — Warm-start bundle conditional validation — terminal; requires 002, 012, 008
 
