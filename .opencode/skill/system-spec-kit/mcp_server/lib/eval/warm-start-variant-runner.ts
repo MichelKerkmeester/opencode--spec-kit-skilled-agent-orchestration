@@ -45,6 +45,9 @@ export interface WarmStartFollowUpTask {
   prompt: string;
   kind: 'structural' | 'implementation' | 'verification';
   graphReady: boolean;
+  liveBaselineResolution: 'code_graph_query' | 'memory_context' | 'memory_context_then_grep';
+  liveBaselineAccuracy: number;
+  minimumAcceptableAccuracy: number;
 }
 
 export interface WarmStartScenario {
@@ -79,7 +82,7 @@ export interface WarmStartVariantAggregate {
   scenarioResults: WarmStartScenarioResult[];
 }
 
-const REQUIRED_FINAL_FIELDS = [
+const WRAPPER_REQUIRED_FIELDS = [
   'title',
   'triggers',
   'evidenceBullets',
@@ -143,12 +146,54 @@ function buildFollowUpResolution(
   return 'memory_context';
 }
 
+function buildFollowUpResolutionAccuracy(
+  scenario: WarmStartScenario,
+  resolution: string,
+): number {
+  if (resolution === scenario.followUp.liveBaselineResolution) {
+    return scenario.followUp.liveBaselineAccuracy;
+  }
+
+  if (scenario.followUp.kind === 'structural') {
+    if (resolution === 'code_graph_query') {
+      return 1;
+    }
+
+    if (resolution === 'memory_context_then_grep') {
+      return 0.5;
+    }
+  }
+
+  return 0;
+}
+
+function countScenarioPasses(
+  scenario: WarmStartScenario,
+  finalState: Record<string, unknown>,
+): number {
+  const wrapperPasses = countPresentFields(finalState, WRAPPER_REQUIRED_FIELDS);
+  const cachedReuseAccepted = finalState.cachedReuseAccepted === true ? 1 : 0;
+  const followUpResolutionAccuracy = typeof finalState.followUpResolutionAccuracy === 'number'
+    && finalState.followUpResolutionAccuracy >= scenario.followUp.minimumAcceptableAccuracy
+    ? 1
+    : 0;
+  const liveReconstructionParity = finalState.liveReconstructionParity === true ? 1 : 0;
+
+  return wrapperPasses + cachedReuseAccepted + followUpResolutionAccuracy + liveReconstructionParity;
+}
+
 export function runWarmStartScenario(
   scenario: WarmStartScenario,
   variant: WarmStartVariant,
 ): WarmStartScenarioResult {
   const caps = getVariantCapabilities(variant);
   const cachedAccepted = acceptsCachedContinuity(scenario, variant);
+  const followUpResolution = buildFollowUpResolution(scenario, variant);
+  const followUpResolutionAccuracy = buildFollowUpResolutionAccuracy(
+    scenario,
+    followUpResolution,
+  );
+  const liveReconstructionParity = followUpResolution === scenario.followUp.liveBaselineResolution;
 
   let toolCalls = 1; // session_bootstrap
   let steps = 1; // parse compact continuity wrapper
@@ -195,12 +240,15 @@ export function runWarmStartScenario(
     continuationState: scenario.wrapper.continuationState,
     decisionRecordPointer: scenario.wrapper.canonicalDocs.decisionRecord,
     implementationSummaryPointer: scenario.wrapper.canonicalDocs.implementationSummary,
-    followUpResolution: buildFollowUpResolution(scenario, variant),
+    followUpResolution,
     cachedContinuityStatus: cachedAccepted
       ? 'accepted'
       : caps.consumer
         ? 'live_fallback'
         : 'unused',
+    cachedReuseAccepted: cachedAccepted,
+    followUpResolutionAccuracy,
+    liveReconstructionParity,
   };
 
   return {
@@ -212,8 +260,8 @@ export function runWarmStartScenario(
         ? 'rejected'
         : 'unused',
     finalState,
-    passCount: countPresentFields(finalState, REQUIRED_FINAL_FIELDS),
-    requiredFieldCount: REQUIRED_FINAL_FIELDS.length,
+    passCount: countScenarioPasses(scenario, finalState),
+    requiredFieldCount: WRAPPER_REQUIRED_FIELDS.length + 3,
     cost: {
       toolCalls,
       steps,

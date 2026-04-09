@@ -192,7 +192,37 @@ describe('session_bootstrap authority preservation', () => {
       handleSessionResume: vi.fn(async () => ({
         content: [{
           type: 'text',
-          text: JSON.stringify({ status: 'ok', data: { memory: { resumed: true }, hints: ['resume ok'] } }),
+          text: JSON.stringify({
+            status: 'ok',
+            data: {
+              memory: { resumed: true },
+              hints: ['resume ok'],
+              payloadContract: {
+                kind: 'resume',
+                summary: 'Resume payload: structural=exact',
+                sections: [{
+                  key: 'structural-context',
+                  title: 'Structural Context',
+                  content: 'Code graph ready',
+                  source: 'code-graph',
+                  certainty: 'exact',
+                  structuralTrust: {
+                    parserProvenance: 'ast',
+                    evidenceStatus: 'confirmed',
+                    freshnessAuthority: 'live',
+                  },
+                }],
+                provenance: {
+                  producer: 'session_resume',
+                  sourceSurface: 'session_resume',
+                  trustState: 'live',
+                  generatedAt: '2026-04-08T12:00:00.000Z',
+                  lastUpdated: '2026-04-08T12:00:00.000Z',
+                  sourceRefs: ['session-snapshot'],
+                },
+              },
+            },
+          }),
         }],
       })),
     }));

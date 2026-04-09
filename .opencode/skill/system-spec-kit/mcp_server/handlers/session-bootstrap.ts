@@ -12,14 +12,15 @@ import { buildStructuralBootstrapContract } from '../lib/session/session-snapsho
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import {
   attachStructuralTrustFields,
+  buildStructuralContextTrust,
   createSharedPayloadEnvelope,
-  makeStructuralTrust,
   summarizeUnknown,
   summarizeCertaintyContract,
   trustStateFromStructuralStatus,
   type SharedPayloadCertainty,
   type SharedPayloadEnvelope,
   type SharedPayloadSection,
+  StructuralTrustPayloadError,
   type StructuralTrust,
 } from '../lib/context/shared-payload.js';
 import {
@@ -125,32 +126,6 @@ function buildNextActions(
   return [...nextActions].slice(0, 3);
 }
 
-function buildStructuralContextTrust(
-  structuralContext: StructuralBootstrapContract,
-): StructuralTrust {
-  if (structuralContext.status === 'ready') {
-    return makeStructuralTrust({
-      parserProvenance: 'ast',
-      evidenceStatus: 'confirmed',
-      freshnessAuthority: 'live',
-    });
-  }
-
-  if (structuralContext.status === 'stale') {
-    return makeStructuralTrust({
-      parserProvenance: 'ast',
-      evidenceStatus: 'probable',
-      freshnessAuthority: 'stale',
-    });
-  }
-
-  return makeStructuralTrust({
-    parserProvenance: 'unknown',
-    evidenceStatus: 'unverified',
-    freshnessAuthority: 'unknown',
-  });
-}
-
 function extractStructuralTrustFromPayload(
   payload: SharedPayloadEnvelope | null,
 ): StructuralTrust | null {
@@ -248,18 +223,25 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const nextActionsCertainty: SharedPayloadCertainty = 'defaulted';
   const resumePayload = coerceSharedPayloadEnvelope(resumeData.payloadContract);
   const healthPayload = coerceSharedPayloadEnvelope(healthData.payloadContract);
-  const structuralTrust = extractStructuralTrustFromPayload(resumePayload)
-    ?? buildStructuralContextTrust(structuralContext);
+  const structuralSnapshotTrust = buildStructuralContextTrust(structuralContext);
+  const resumeStructuralTrust = extractStructuralTrustFromPayload(resumePayload);
+  if (!resumeData.error && !resumeStructuralTrust) {
+    throw new StructuralTrustPayloadError(
+      'session_bootstrap expected session_resume to emit structural-context.structuralTrust.',
+    );
+  }
   const structuralContextWithTrust = attachStructuralTrustFields(
     structuralContext,
-    structuralTrust,
+    structuralSnapshotTrust,
     { label: 'session_bootstrap structural context payload' },
   );
-  const resumeWithTrust = attachStructuralTrustFields(
-    resumeData,
-    structuralTrust,
-    { label: 'session_bootstrap resume payload' },
-  );
+  const resumeWithTrust = resumeData.error
+    ? resumeData
+    : attachStructuralTrustFields(
+      resumeData,
+      resumeStructuralTrust,
+      { label: 'session_bootstrap resume payload' },
+    );
 
   const payloadSections: SharedPayloadSection[] = [
     {
@@ -294,10 +276,12 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
     {
       key: 'structural-context',
       title: 'Structural Context',
+      // This section carries trust derived from the local structural snapshot,
+      // which remains valid even when the remote resume surface fails closed.
       content: structuralContext.summary,
       source: 'code-graph',
       certainty: structuralCertainty,
-      structuralTrust,
+      structuralTrust: structuralSnapshotTrust,
     },
     {
       key: 'next-actions',

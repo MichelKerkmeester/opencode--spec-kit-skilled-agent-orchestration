@@ -344,6 +344,32 @@ export function makeStructuralTrust(input: StructuralTrust): StructuralTrust {
   return validateStructuralTrustPayload(input, { label: 'Structural trust' });
 }
 
+export function buildStructuralContextTrust(
+  structuralContext: { status: string },
+): StructuralTrust {
+  if (structuralContext.status === 'ready') {
+    return makeStructuralTrust({
+      parserProvenance: 'ast',
+      evidenceStatus: 'confirmed',
+      freshnessAuthority: 'live',
+    });
+  }
+
+  if (structuralContext.status === 'stale') {
+    return makeStructuralTrust({
+      parserProvenance: 'ast',
+      evidenceStatus: 'probable',
+      freshnessAuthority: 'stale',
+    });
+  }
+
+  return makeStructuralTrust({
+    parserProvenance: 'unknown',
+    evidenceStatus: 'unverified',
+    freshnessAuthority: 'unknown',
+  });
+}
+
 export function attachStructuralTrustFields<T extends object>(
   payload: T,
   trustPayload: unknown,

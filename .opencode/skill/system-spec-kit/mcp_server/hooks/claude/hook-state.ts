@@ -49,6 +49,11 @@ export interface HookState {
 
 const MAX_RECENT_STATE_AGE_MS = 24 * 60 * 60 * 1000;
 
+export interface HookStateScope {
+  specFolder?: string;
+  claudeSessionId?: string;
+}
+
 /** SHA-256 hash of cwd, first 12 chars */
 export function getProjectHash(): string {
   return createHash('sha256').update(process.cwd()).digest('hex').slice(0, 12);
@@ -84,11 +89,45 @@ export function loadState(sessionId: string): HookState | null {
   }
 }
 
+function matchesScope(state: HookState, scope: HookStateScope): boolean {
+  if (scope.specFolder && state.lastSpecFolder !== scope.specFolder) {
+    return false;
+  }
+
+  if (scope.claudeSessionId && state.claudeSessionId !== scope.claudeSessionId) {
+    return false;
+  }
+
+  return true;
+}
+
 /**
  * Load the most recently updated hook state file for this project.
- * Returns null when no state exists or the newest state is older than maxAgeMs.
+ * Returns null when no matching state exists, when the newest matching state is
+ * older than maxAgeMs, or when the caller cannot prove scope.
  */
-export function loadMostRecentState(maxAgeMs: number = MAX_RECENT_STATE_AGE_MS): HookState | null {
+export function loadMostRecentState(
+  options: {
+    maxAgeMs?: number;
+    scope?: HookStateScope;
+  } = {},
+): HookState | null {
+  const maxAgeMs = options.maxAgeMs ?? MAX_RECENT_STATE_AGE_MS;
+  const scope = options.scope;
+  const hasScope = Boolean(scope?.specFolder || scope?.claudeSessionId);
+
+  if (!hasScope) {
+    hookLog(
+      'warn',
+      'state',
+      JSON.stringify({
+        event: 'load_most_recent_state_rejected',
+        reason: 'scope_unknown_fail_closed',
+      }),
+    );
+    return null;
+  }
+
   try {
     const dir = getStateDir();
     const candidates = readdirSync(dir).filter((file) => file.endsWith('.json'));
@@ -96,27 +135,32 @@ export function loadMostRecentState(maxAgeMs: number = MAX_RECENT_STATE_AGE_MS):
       return null;
     }
 
-    let newestPath: string | null = null;
+    let newestState: HookState | null = null;
     let newestMtimeMs = -1;
     for (const file of candidates) {
       const filePath = join(dir, file);
       const mtimeMs = statSync(filePath).mtimeMs;
+      if (Date.now() - mtimeMs > maxAgeMs) {
+        continue;
+      }
+
+      const raw = readFileSync(filePath, 'utf-8');
+      const state = JSON.parse(raw) as HookState;
+      if (!matchesScope(state, scope!)) {
+        continue;
+      }
+
       if (mtimeMs > newestMtimeMs) {
         newestMtimeMs = mtimeMs;
-        newestPath = filePath;
+        newestState = state;
       }
     }
 
-    if (!newestPath) {
+    if (!newestState) {
       return null;
     }
 
-    if (Date.now() - newestMtimeMs > maxAgeMs) {
-      return null;
-    }
-
-    const raw = readFileSync(newestPath, 'utf-8');
-    return JSON.parse(raw) as HookState;
+    return newestState;
   } catch {
     return null;
   }

@@ -14,6 +14,7 @@ import { computeQualityScore, recordMetricEvent, recordBootstrapEvent } from '..
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import {
+  buildStructuralContextTrust,
   createSharedPayloadEnvelope,
   summarizeUnknown,
   summarizeCertaintyContract,
@@ -85,6 +86,7 @@ export interface CachedSessionSummaryDecision {
 
 interface SessionResumeArgs {
   specFolder?: string;
+  sessionId?: string;
   minimal?: boolean;
 }
 
@@ -346,12 +348,21 @@ export function evaluateCachedSessionSummaryCandidate(
 export function getCachedSessionSummaryDecision(
   options: {
     specFolder?: string;
+    claudeSessionId?: string;
     nowMs?: number;
     maxAgeMs?: number;
     state?: HookState | null;
   } = {},
 ): CachedSessionSummaryDecision {
-  const candidate = buildCachedSessionSummaryCandidate(options.state ?? loadMostRecentState());
+  const candidate = buildCachedSessionSummaryCandidate(
+    options.state ?? loadMostRecentState({
+      maxAgeMs: options.maxAgeMs,
+      scope: {
+        specFolder: options.specFolder,
+        claudeSessionId: options.claudeSessionId,
+      },
+    }),
+  );
   return evaluateCachedSessionSummaryCandidate(candidate, options);
 }
 
@@ -463,8 +474,13 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     hints.push(`Structural context is ${structuralContext.status}. Call session_bootstrap to refresh.`);
   }
 
+  const structuralTrust = buildStructuralContextTrust(structuralContext);
+
   // Keep live resume authoritative; cached continuity only appends bounded notes when every gate passes.
-  const cachedSummaryDecision = getCachedSessionSummaryDecision({ specFolder: args.specFolder });
+  const cachedSummaryDecision = getCachedSessionSummaryDecision({
+    specFolder: args.specFolder,
+    claudeSessionId: typeof args.sessionId === 'string' ? args.sessionId : undefined,
+  });
   if (cachedSummaryDecision.status === 'accepted') {
     hints.push('Cached continuity summary accepted as additive resume context.');
   } else {
@@ -535,6 +551,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
       content: structuralContext.summary,
       source: 'code-graph',
       certainty: structuralCertainty,
+      structuralTrust,
     },
   );
 

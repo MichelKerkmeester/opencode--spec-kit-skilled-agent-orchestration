@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-  createSharedPayloadEnvelope,
   validateStructuralTrustPayload,
 } from '../lib/context/shared-payload.js';
 
@@ -135,46 +134,36 @@ describe('session bootstrap trust preservation', () => {
     vi.doUnmock('../lib/context/shared-payload.js');
   });
 
-  it('preserves separate trust axes through shared payload to bootstrap output', async () => {
-    const resumePayload = createSharedPayloadEnvelope({
-      kind: 'resume',
-      summary: 'Resume payload: structural=exact',
-      sections: [{
-        key: 'structural-context',
-        title: 'Structural Context',
-        content: 'Code graph ready',
-        source: 'code-graph',
-        certainty: 'exact',
-        structuralTrust: {
-          parserProvenance: 'ast',
-          evidenceStatus: 'confirmed',
-          freshnessAuthority: 'live',
-        },
-      }],
-      provenance: {
-        producer: 'session_resume',
-        sourceSurface: 'session_resume',
-        trustState: 'live',
-        generatedAt: '2026-04-08T12:00:00.000Z',
-        lastUpdated: '2026-04-08T12:00:00.000Z',
-        sourceRefs: ['session-snapshot'],
-      },
-    });
-
-    vi.doMock('../handlers/session-resume.js', () => ({
-      handleSessionResume: vi.fn(async () => ({
+  it('preserves separate trust axes through real session_resume and session_bootstrap outputs', async () => {
+    vi.doMock('../handlers/memory-context.js', () => ({
+      handleMemoryContext: vi.fn(async () => ({
         content: [{
           type: 'text',
           text: JSON.stringify({
             status: 'ok',
-            data: {
-              memory: { resumed: true },
-              payloadContract: resumePayload,
-              hints: ['resume ok'],
-            },
+            data: { resumed: true },
           }),
         }],
       })),
+    }));
+
+    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+      getStats: vi.fn(() => ({
+        lastScanTimestamp: '2026-04-08T12:00:00.000Z',
+        totalNodes: 42,
+        totalEdges: 17,
+        totalFiles: 9,
+      })),
+    }));
+
+    vi.doMock('../lib/utils/cocoindex-path.js', () => ({
+      isCocoIndexAvailable: vi.fn(() => true),
+    }));
+
+    vi.doMock('../lib/session/context-metrics.js', () => ({
+      recordBootstrapEvent: vi.fn(),
+      recordMetricEvent: vi.fn(),
+      computeQualityScore: vi.fn(() => ({ level: 'healthy' })),
     }));
 
     vi.doMock('../handlers/session-health.js', () => ({
@@ -186,10 +175,6 @@ describe('session bootstrap trust preservation', () => {
       })),
     }));
 
-    vi.doMock('../lib/session/context-metrics.js', () => ({
-      recordBootstrapEvent: vi.fn(),
-    }));
-
     vi.doMock('../lib/session/session-snapshot.js', () => ({
       buildStructuralBootstrapContract: vi.fn(() => ({
         status: 'ready',
@@ -199,6 +184,19 @@ describe('session bootstrap trust preservation', () => {
         provenance: { lastUpdated: '2026-04-08T12:00:00.000Z' },
       })),
     }));
+
+    const { handleSessionResume } = await import('../handlers/session-resume.js');
+    const resumeResult = await handleSessionResume({ specFolder: 'specs/026-root' });
+    const parsedResume = JSON.parse(resumeResult.content[0].text);
+    const resumeStructuralSection = parsedResume.data.payloadContract.sections.find(
+      (section: { key: string }) => section.key === 'structural-context',
+    );
+
+    expect(resumeStructuralSection?.structuralTrust).toEqual({
+      parserProvenance: 'ast',
+      evidenceStatus: 'confirmed',
+      freshnessAuthority: 'live',
+    });
 
     const { handleSessionBootstrap } = await import('../handlers/session-bootstrap.js');
     const result = await handleSessionBootstrap({ specFolder: 'specs/026-root' });

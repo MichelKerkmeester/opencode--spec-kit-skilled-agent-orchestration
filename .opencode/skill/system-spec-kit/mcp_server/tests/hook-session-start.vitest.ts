@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: SessionStart Hook
 // ───────────────────────────────────────────────────────────────
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { rmSync } from 'node:fs';
 import { ensureStateDir, saveState, getStatePath, type HookState } from '../hooks/claude/hook-state.js';
 import {
@@ -133,6 +133,71 @@ describe('session-prime hook', () => {
     it('routes compact correctly', () => {
       const source = 'compact';
       expect(source).toBe('compact');
+    });
+  });
+});
+
+describe('session bootstrap fail-closed trust handling', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.resetModules();
+    vi.clearAllMocks();
+  });
+
+  it('keeps structural snapshot trust off the errored resume payload while preserving it on structural context', async () => {
+    vi.doMock('../handlers/session-resume.js', () => ({
+      handleSessionResume: vi.fn(async () => {
+        throw new Error('synthetic resume failure');
+      }),
+    }));
+
+    vi.doMock('../handlers/session-health.js', () => ({
+      handleSessionHealth: vi.fn(async () => ({
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ status: 'ok', data: { state: 'ok', hints: ['health ok'] } }),
+        }],
+      })),
+    }));
+
+    vi.doMock('../lib/session/context-metrics.js', () => ({
+      recordBootstrapEvent: vi.fn(),
+    }));
+
+    vi.doMock('../lib/session/session-snapshot.js', () => ({
+      buildStructuralBootstrapContract: vi.fn(() => ({
+        status: 'ready',
+        summary: 'Structural snapshot ready',
+        recommendedAction: 'Use code_graph_query for structural lookups.',
+        sourceSurface: 'session_bootstrap',
+        provenance: { lastUpdated: '2026-04-09T10:00:00.000Z' },
+      })),
+    }));
+
+    const { handleSessionBootstrap } = await import('../handlers/session-bootstrap.js');
+    const result = await handleSessionBootstrap({ specFolder: 'specs/026-root' });
+    const parsed = JSON.parse(result.content[0].text);
+    const structuralSection = parsed.data.payloadContract.sections.find(
+      (section: { key: string }) => section.key === 'structural-context',
+    );
+
+    expect(parsed.data.resume.error).toContain('synthetic resume failure');
+    expect(parsed.data.resume).not.toHaveProperty('parserProvenance');
+    expect(parsed.data.resume).not.toHaveProperty('evidenceStatus');
+    expect(parsed.data.resume).not.toHaveProperty('freshnessAuthority');
+    expect(parsed.data.structuralContext).toMatchObject({
+      parserProvenance: 'ast',
+      evidenceStatus: 'confirmed',
+      freshnessAuthority: 'live',
+    });
+    expect(structuralSection?.structuralTrust).toEqual({
+      parserProvenance: 'ast',
+      evidenceStatus: 'confirmed',
+      freshnessAuthority: 'live',
     });
   });
 });

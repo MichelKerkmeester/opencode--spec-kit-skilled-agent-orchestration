@@ -1,6 +1,6 @@
 import { cpSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { basename, dirname, join } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { mkdtempSync } from 'node:fs';
 import {
   ensureStateDir,
@@ -63,7 +63,7 @@ export function createStopReplaySandbox(
   fixturePath: string,
   sessionId: string = 'replay-session',
 ): StopReplaySandbox {
-  const sandboxRoot = mkdtempSync(join(tmpdir(), 'speckit-stop-replay-'));
+  const sandboxRoot = mkdtempSync(join(resolve(tmpdir()), 'speckit-stop-replay-'));
   const projectRoot = join(sandboxRoot, 'project');
   const tempRoot = join(sandboxRoot, 'tmp');
   const transcriptRoot = join(sandboxRoot, 'transcripts');

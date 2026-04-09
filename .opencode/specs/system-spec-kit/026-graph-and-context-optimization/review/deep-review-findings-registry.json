@@ -1,0 +1,166 @@
+{
+  "sessionId": "2026-04-09T03:59:45Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [],
+  "resolvedFindings": [
+    {
+      "id": "DR-026-I001-P1-001",
+      "title": "Packet 011 does not preserve structural trust through the shipped session_resume payload",
+      "severity": "P1",
+      "dimension": "D1 Correctness",
+      "status": "resolved",
+      "summary": "session-resume.ts emits the structural-context section with certainty only, while packet 011's spec and implementation summary claim end-to-end resume preservation. session-bootstrap therefore synthesizes fallback trust instead of preserving runtime-emitted resume trust.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:64",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:94",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/implementation-summary.md:36",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/implementation-summary.md:46",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/implementation-summary.md:79",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:533",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:251",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:138"
+      ],
+      "sourceIterations": [
+        1
+      ],
+      "resolvedAt": "2026-04-09T08:27:12Z",
+      "resolvedIteration": 16
+    },
+    {
+      "id": "DR-026-I002-P1-001",
+      "title": "Packet 012's frozen-corpus proof does not compare cached reuse against the real live reconstruction surfaces",
+      "severity": "P1",
+      "dimension": "D1 Correctness",
+      "status": "resolved",
+      "summary": "Packet 012's spec and implementation summary say the frozen corpus proved equal-or-better behavior relative to live reconstruction, but the shipped test imports only helper-level gate/additive functions and scores a handcrafted baseline object instead of exercising session_resume, session_bootstrap, or session-prime.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md:112",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md:114",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md:122",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md:142",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/implementation-summary.md:35",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/implementation-summary.md:47",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/implementation-summary.md:81",
+        ".opencode/skill/system-spec-kit/scripts/tests/session-cached-consumer.vitest.ts.test.ts:6",
+        ".opencode/skill/system-spec-kit/scripts/tests/session-cached-consumer.vitest.ts.test.ts:138",
+        ".opencode/skill/system-spec-kit/scripts/tests/session-cached-consumer.vitest.ts.test.ts:152"
+      ],
+      "sourceIterations": [
+        2
+      ],
+      "resolvedAt": "2026-04-09T08:27:12Z",
+      "resolvedIteration": 16
+    },
+    {
+      "id": "DR-026-I003-P1-001",
+      "title": "Packet 013's bundle benchmark cannot observe pass-rate regressions",
+      "severity": "P1",
+      "dimension": "D1 Correctness",
+      "status": "resolved",
+      "summary": "The warm-start variant runner counts only wrapper-derived fields that are populated for every scenario and variant, so every lane scores the full pass count. Packet 013 therefore cannot honestly prove the R8 / REQ-006 'equal-or-better pass rate' gate because rejected cached continuity and weaker follow-up resolutions change cost but not measured pass rate.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/spec.md:96",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/spec.md:103",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/implementation-summary.md:59",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/implementation-summary.md:73",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:82",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:191",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:215",
+        ".opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:176"
+      ],
+      "sourceIterations": [
+        3
+      ],
+      "resolvedAt": "2026-04-09T08:27:12Z",
+      "resolvedIteration": 16
+    },
+    {
+      "id": "DR-026-I004-P1-001",
+      "title": "Packet 009 marks the publication contract implemented without any live publication/export consumer",
+      "severity": "P1",
+      "dimension": "D1 Correctness",
+      "status": "resolved",
+      "summary": "Packet 009 ships a helper-level publication gate and focused unit test, but no publication or export handler consumes that helper. The spec still requires handler-level publication-output behavior and surfaced exclusion reasons, so the packet's implemented closeout overclaims runtime delivery.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/spec.md:73",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/spec.md:87",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/spec.md:88",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/spec.md:115",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/spec.md:116",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/implementation-summary.md:34",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/implementation-summary.md:44",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/implementation-summary.md:76",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/publication-gate.ts:47",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/publication-gate.vitest.ts:3"
+      ],
+      "sourceIterations": [
+        4
+      ],
+      "resolvedAt": "2026-04-09T08:27:12Z",
+      "resolvedIteration": 16
+    },
+    {
+      "id": "DR-026-I005-P1-001",
+      "title": "session_bootstrap synthesizes live structural trust onto errored resume outputs",
+      "severity": "P1",
+      "dimension": "D2 Security",
+      "status": "resolved",
+      "summary": "When handleSessionResume() throws, session-bootstrap reduces the resume branch to { error } and then annotates that errored object with graph-derived parserProvenance/evidenceStatus/freshnessAuthority from the independent structural snapshot. That widens authority instead of failing closed when the resume owner surface never emitted validated trust metadata.",
+      "evidenceRefs": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:201",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:203",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:251",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:258",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:63",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:93",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md:24",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/implementation-summary.md:43"
+      ],
+      "sourceIterations": [
+        5
+      ],
+      "resolvedAt": "2026-04-09T08:27:12Z",
+      "resolvedIteration": 16
+    },
+    {
+      "id": "DR-026-I006-P1-001",
+      "title": "Unscoped cached continuity selection reuses the newest project hook state across sessions",
+      "severity": "P1",
+      "dimension": "D2 Security",
+      "status": "resolved",
+      "summary": "Packet 012's candidate-selection path defaults to loadMostRecentState(), which picks the newest hook-state file in the project by mtime. SessionStart startup and session_resume() calls without specFolder therefore can accept and surface another recent session's cached continuity summary without proving that it belongs to the active session or requested scope.",
+      "evidenceRefs": [
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:91",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts:99",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:346",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:354",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:467",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:121",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:126",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md:111",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md:123"
+      ],
+      "sourceIterations": [
+        6
+      ],
+      "resolvedAt": "2026-04-09T08:27:12Z",
+      "resolvedIteration": 16
+    }
+  ],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "openFindingsCount": 0,
+  "resolvedFindingsCount": 6,
+  "convergenceScore": 1
+}

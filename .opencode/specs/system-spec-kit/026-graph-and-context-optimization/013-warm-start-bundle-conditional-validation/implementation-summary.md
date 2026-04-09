@@ -56,7 +56,7 @@ Those cases intentionally mix valid cached continuity reuse, non-structural foll
 - `R3` as guarded cached-summary reuse
 - `R4` as the structural routing nudge
 
-The runner uses the same cost proxy dimensions for every variant: tool calls, steps, and fields resolved. It uses the same pass-rate proxy for every variant too: required final-state fields present after resume plus follow-up planning.
+The runner uses the same cost proxy dimensions for every variant: tool calls, steps, and fields resolved. It now scores pass rate on discriminating fields rather than wrapper boilerplate alone: required final-state wrapper fields, whether cached reuse was actually accepted, whether the follow-up answer was accurate enough for that scenario, and whether the variant matched the live reconstruction reference.
 
 ### Measured Matrix
 
@@ -64,13 +64,15 @@ The frozen matrix totals from the benchmark are:
 
 | Variant | Cost | Pass |
 |---------|------|------|
-| `baseline` | `64` | `28` |
-| `R2_only` | `80` | `28` |
-| `R3_only` | `68` | `28` |
-| `R4_only` | `54` | `28` |
-| `R2+R3+R4_combined` | `43` | `28` |
+| `baseline` | `64` | `34/40` |
+| `R2_only` | `80` | `34/40` |
+| `R3_only` | `68` | `34/40` |
+| `R4_only` | `54` | `35/40` |
+| `R2+R3+R4_combined` | `43` | `38/40` |
 
-That means the combined bundle lowers total cost versus the baseline and every component-only variant while holding pass count flat, so the packet satisfies the R8 validation criterion without turning the bundle into default behavior.
+The rejection scenario `structural-scope-mismatch` is now the falsifiability check that the old matrix lacked. It forces cached reuse rejection while comparing the variant follow-up against a degraded live baseline, which makes the pass counts diverge by variant (`baseline=9`, `R2_only=9`, `R3_only=9`, `R4_only=8`, `combined=8`) instead of staying constant by construction.
+
+That means the combined bundle still lowers total cost versus the baseline and every component-only variant while keeping the strongest measured pass count, so the packet satisfies the R8 validation criterion without turning the bundle into default behavior.
 <!-- /ANCHOR:what-built -->
 
 ---

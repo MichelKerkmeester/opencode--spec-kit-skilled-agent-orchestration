@@ -108,7 +108,7 @@ Open the narrow consumer packet in the continuity lane:
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Cached summaries must pass a fidelity gate before they are consumed. | The consumer rejects summaries that are missing required producer fields, fail schema or completeness checks, or cannot prove they came from the bounded Stop-summary producer path. |
-| REQ-002 | Cached summaries must pass a freshness gate before they are consumed. | Timestamp, invalidation metadata, and scope checks must all pass before cached reuse is allowed. |
+| REQ-002 | Cached summaries must pass a freshness gate before they are consumed. | Timestamp, invalidation metadata, and scope-bound candidate selection tied to the active `specFolder` and/or session identity must all pass before cached reuse is allowed. |
 | REQ-003 | The consumer must stay additive to current continuity surfaces. | Valid cached summaries feed existing `resume` and `compact` continuity paths without replacing live reconstruction as the source of truth. |
 | REQ-004 | Startup hints remain optional and gated. | `session-prime.ts` emits startup hints only when a valid cached summary exists and never invents hints from stale or partial artifacts. |
 | REQ-005 | Packet acceptance mirrors the research requirement exactly. | `SessionStart uses cached summaries only when fidelity and freshness checks pass, routes them through additive resume and compact continuity paths plus optional startup hints, and a frozen resume corpus shows equal-or-better pass rate relative to live reconstruction.` |
@@ -118,7 +118,7 @@ Open the narrow consumer packet in the continuity lane:
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-006 | This packet must preserve producer and authority boundaries from `R2` and packet `002`. | No code or doc path claims the cached consumer replaces `session_bootstrap()` or memory resume as authority, and no packet doc treats the cached artifact as a second long-form narrative owner. |
-| REQ-007 | Consumer invalidation must be explicit rather than heuristic. | Rejection reasons name failed gate categories such as stale timestamp, invalidated scope, or fidelity mismatch instead of relying on guesswork. |
+| REQ-007 | Consumer invalidation must be explicit rather than heuristic. | Rejection reasons name failed gate categories such as stale timestamp, invalidated scope, `scope_unknown_fail_closed`, or fidelity mismatch instead of relying on guesswork. |
 | REQ-008 | Resume-corpus evaluation must compare guarded cache consumption against the current live baseline. | Frozen corpus outputs show the guarded path matches or exceeds live reconstruction pass rate before the packet is eligible to move beyond draft. |
 | REQ-009 | Fail-closed behavior must be the default. | Any missing producer metadata, unknown scope, or unreadable cached summary falls back to live reconstruction without partial cached injection. |
 

@@ -42,6 +42,9 @@ const frozenCorpus: readonly WarmStartScenario[] = [
       prompt: 'Compare the current structural follow-up path against the graph-ready routing advice.',
       kind: 'structural',
       graphReady: true,
+      liveBaselineResolution: 'code_graph_query',
+      liveBaselineAccuracy: 1,
+      minimumAcceptableAccuracy: 1,
     },
   },
   {
@@ -70,6 +73,9 @@ const frozenCorpus: readonly WarmStartScenario[] = [
       prompt: 'Continue the additive consumer implementation without reopening narrative ownership.',
       kind: 'implementation',
       graphReady: false,
+      liveBaselineResolution: 'memory_context',
+      liveBaselineAccuracy: 1,
+      minimumAcceptableAccuracy: 1,
     },
   },
   {
@@ -98,6 +104,9 @@ const frozenCorpus: readonly WarmStartScenario[] = [
       prompt: 'Finish verification and update the packet closeout with the measured matrix.',
       kind: 'verification',
       graphReady: true,
+      liveBaselineResolution: 'memory_context',
+      liveBaselineAccuracy: 1,
+      minimumAcceptableAccuracy: 1,
     },
   },
   {
@@ -126,6 +135,9 @@ const frozenCorpus: readonly WarmStartScenario[] = [
       prompt: 'Investigate structural readiness after the cached continuity scope changed.',
       kind: 'structural',
       graphReady: true,
+      liveBaselineResolution: 'memory_context_then_grep',
+      liveBaselineAccuracy: 0.5,
+      minimumAcceptableAccuracy: 0.5,
     },
   },
 ] as const;
@@ -162,7 +174,7 @@ describe('warm-start bundle conditional validation benchmark', () => {
     expect(envReference).toContain('only enable after the frozen corpus benchmark shows combined configuration dominates baseline and component-only variants');
   });
 
-  it('shows the combined bundle beats baseline and each component-only variant on cost without losing pass rate', () => {
+  it('scores cost and pass rate with cache reuse, follow-up accuracy, and live-baseline parity', () => {
     const matrix = runWarmStartVariantMatrix(frozenCorpus);
     expect(matrix.map((entry) => entry.variant)).toEqual([...WARM_START_VARIANTS]);
 
@@ -173,11 +185,28 @@ describe('warm-start bundle conditional validation benchmark', () => {
     expect(totalsByVariant.get('R4_only')?.totalCost).toBe(54);
     expect(totalsByVariant.get('R2+R3+R4_combined')?.totalCost).toBe(43);
 
-    expect(totalsByVariant.get('baseline')?.totalPassCount).toBe(28);
-    expect(totalsByVariant.get('R2_only')?.totalPassCount).toBe(28);
-    expect(totalsByVariant.get('R3_only')?.totalPassCount).toBe(28);
-    expect(totalsByVariant.get('R4_only')?.totalPassCount).toBe(28);
-    expect(totalsByVariant.get('R2+R3+R4_combined')?.totalPassCount).toBe(28);
+    expect(totalsByVariant.get('baseline')?.totalPassCount).toBe(34);
+    expect(totalsByVariant.get('R2_only')?.totalPassCount).toBe(34);
+    expect(totalsByVariant.get('R3_only')?.totalPassCount).toBe(34);
+    expect(totalsByVariant.get('R4_only')?.totalPassCount).toBe(35);
+    expect(totalsByVariant.get('R2+R3+R4_combined')?.totalPassCount).toBe(38);
+
+    expect(totalsByVariant.get('baseline')?.totalRequiredFieldCount).toBe(40);
+    expect(totalsByVariant.get('R2+R3+R4_combined')?.totalRequiredFieldCount).toBe(40);
+
+    const rejectionScenarioPasses = Object.fromEntries(
+      matrix.map((entry) => {
+        const scenarioResult = entry.scenarioResults.find((scenario) => scenario.scenarioId === 'structural-scope-mismatch');
+        return [entry.variant, scenarioResult?.passCount ?? null];
+      }),
+    );
+    expect(rejectionScenarioPasses).toEqual({
+      baseline: 9,
+      R2_only: 9,
+      R3_only: 9,
+      R4_only: 8,
+      'R2+R3+R4_combined': 8,
+    });
 
     expect(doesCombinedVariantDominate(matrix), `Matrix did not dominate:\n${formatMatrix(matrix)}`).toBe(true);
   });

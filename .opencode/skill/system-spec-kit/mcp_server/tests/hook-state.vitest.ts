@@ -133,7 +133,7 @@ describe('hook state management', () => {
   });
 
   describe('loadMostRecentState', () => {
-    it('returns the newest state file when within the recency window', () => {
+    it('returns the newest state file that matches the requested scope', () => {
       const originalCwd = process.cwd();
       const projectCwd = join(tmpdir(), `speckit-recent-state-${Date.now()}`);
       mkdirSync(projectCwd, { recursive: true });
@@ -141,12 +141,12 @@ describe('hook state management', () => {
       try {
         process.chdir(projectCwd);
         ensureStateDir();
-        const olderSessionId = 'older-session';
-        const newerSessionId = 'newer-session';
+        const matchingSessionId = 'matching-session';
+        const mismatchedSessionId = 'mismatched-session';
 
         const baseState: Omit<HookState, 'claudeSessionId'> = {
           speckitSessionId: 'sk',
-          lastSpecFolder: 'specs/test',
+          lastSpecFolder: 'specs/matching',
           sessionSummary: { text: 'Summary', extractedAt: new Date().toISOString() },
           pendingCompactPrime: null,
           producerMetadata: null,
@@ -155,25 +155,34 @@ describe('hook state management', () => {
           updatedAt: new Date().toISOString(),
         };
 
-        saveState(olderSessionId, { ...baseState, claudeSessionId: olderSessionId });
-        saveState(newerSessionId, { ...baseState, claudeSessionId: newerSessionId });
+        saveState(matchingSessionId, { ...baseState, claudeSessionId: matchingSessionId });
+        saveState(mismatchedSessionId, {
+          ...baseState,
+          claudeSessionId: mismatchedSessionId,
+          lastSpecFolder: 'specs/mismatched',
+        });
 
-        const olderPath = getStatePath(olderSessionId);
-        const newerPath = getStatePath(newerSessionId);
-        const olderTime = new Date(Date.now() - 5 * 60 * 1000);
-        const newerTime = new Date();
-        utimesSync(olderPath, olderTime, olderTime);
-        utimesSync(newerPath, newerTime, newerTime);
+        const matchingPath = getStatePath(matchingSessionId);
+        const mismatchedPath = getStatePath(mismatchedSessionId);
+        const matchingTime = new Date(Date.now() - 5 * 60 * 1000);
+        const mismatchedTime = new Date();
+        utimesSync(matchingPath, matchingTime, matchingTime);
+        utimesSync(mismatchedPath, mismatchedTime, mismatchedTime);
 
-        const state = loadMostRecentState();
-        expect(state?.claudeSessionId).toBe(newerSessionId);
+        const state = loadMostRecentState({ scope: { specFolder: 'specs/matching' } });
+        expect(state?.claudeSessionId).toBe(matchingSessionId);
+        expect(state?.lastSpecFolder).toBe('specs/matching');
 
-        try { rmSync(olderPath); } catch { /* ok */ }
-        try { rmSync(newerPath); } catch { /* ok */ }
+        try { rmSync(matchingPath); } catch { /* ok */ }
+        try { rmSync(mismatchedPath); } catch { /* ok */ }
       } finally {
         process.chdir(originalCwd);
         rmSync(projectCwd, { recursive: true, force: true });
       }
+    });
+
+    it('fails closed when the caller cannot prove scope', () => {
+      expect(loadMostRecentState()).toBeNull();
     });
 
     it('returns null when the newest state is older than 24 hours', () => {
@@ -202,7 +211,9 @@ describe('hook state management', () => {
         const staleTime = new Date(Date.now() - 26 * 60 * 60 * 1000);
         utimesSync(stalePath, staleTime, staleTime);
 
-        expect(loadMostRecentState()).toBeNull();
+        expect(loadMostRecentState({
+          scope: { specFolder: 'specs/stale', claudeSessionId: staleSessionId },
+        })).toBeNull();
         try { rmSync(stalePath); } catch { /* ok */ }
       } finally {
         process.chdir(originalCwd);

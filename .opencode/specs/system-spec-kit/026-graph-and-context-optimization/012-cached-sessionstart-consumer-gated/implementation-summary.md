@@ -32,11 +32,11 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Packet `012` shipped the guarded cached-summary consumer that R3 allows: a fidelity-and-freshness gate in `session-resume.ts`, additive reuse in `session-bootstrap.ts`, gated startup continuity in `session-prime.ts`, and a frozen scripts-side corpus that proves valid reuse does not underperform the live baseline.
+Packet `012` shipped the guarded cached-summary consumer that R3 allows: a fidelity-and-freshness gate in `session-resume.ts`, additive reuse in `session-bootstrap.ts`, gated startup continuity in `session-prime.ts`, and a frozen scripts-side corpus that now exercises the real `session_resume`, `session_bootstrap`, and `session-prime` surfaces against the live baseline.
 
 ### Guarded Cached Consumer
 
-`session-resume.ts` now exports the bounded cached-summary consumer contract for this packet. It builds a candidate from the latest Stop-hook state, validates schema version, summary presence, producer metadata completeness, transcript identity, freshness window, and scope compatibility, then either returns an accepted additive continuity wrapper or a rejected decision with a named fidelity or freshness reason.
+`session-resume.ts` now exports the bounded cached-summary consumer contract for this packet. It selects candidates only from hook-state files whose persisted scope matches the active `specFolder` and/or Claude session id, fails closed when that scope cannot be proven, validates summary presence, producer metadata completeness, transcript identity, freshness window, and scope compatibility, then either returns an accepted additive continuity wrapper or a rejected decision with a named fidelity or freshness reason.
 
 ### Additive Continuity Routing
 
@@ -44,7 +44,7 @@ Packet `012` shipped the guarded cached-summary consumer that R3 allows: a fidel
 
 ### Startup Hints and Frozen Corpus
 
-`session-prime.ts` now shows SessionStart continuity only when a valid cached summary exists. The new corpus file `scripts/tests/session-cached-consumer.vitest.ts.test.ts` freezes one stale case, one scope mismatch, one fidelity failure, and one valid case, then compares the valid additive path against a live baseline with a required-field pass-rate proxy.
+`session-prime.ts` now shows SessionStart continuity only when a valid cached summary exists. The scripts-side corpus in `scripts/tests/session-cached-consumer.vitest.ts.test.ts` freezes one stale case, one scope mismatch, one fidelity failure, and one valid case, mounts each scenario through the real hook-state path, and then checks the real `session_resume`, `session_bootstrap`, and SessionStart surfaces against a live-reconstruction baseline.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -77,8 +77,8 @@ That kept `session_bootstrap()` and memory resume authoritative, preserved packe
 | Check | Result |
 |-------|--------|
 | `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/tsc-tmp npm run typecheck` | PASS |
-| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/session-token-resume.vitest.ts tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts tests/sqlite-fts.vitest.ts tests/handler-memory-search.vitest.ts` | PASS |
-| `cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/session-cached-consumer.vitest.ts.test.ts` | PASS |
+| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/session-token-resume.vitest.ts tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts tests/sqlite-fts.vitest.ts tests/handler-memory-search.vitest.ts` | PASS |
+| `cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/session-cached-consumer.vitest.ts.test.ts` | PASS (helper corpus + real-handler integration coverage) |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated` | PASS |
 <!-- /ANCHOR:verification -->
 

@@ -84,6 +84,7 @@ import {
   resetLastLexicalCapabilitySnapshot,
 } from '../lib/search/sqlite-fts.js';
 import type { LexicalCapabilitySnapshot } from '../lib/search/sqlite-fts.js';
+import { evaluatePublicationGate } from '../lib/context/publication-gate.js';
 import {
   deduplicateResults as deduplicateWithSessionState,
   isSessionRetrievalStateEnabled,
@@ -364,6 +365,62 @@ function attachLexicalCapabilityMetadata(
   if (typeof data.fallbackState !== 'string' && snapshot) {
     data.fallbackState = snapshot.fallbackState;
   }
+
+  parsed.envelope.data = data;
+  return replaceResponseEnvelope(response, parsed.firstEntry, parsed.envelope);
+}
+
+function hasPublicationContractFields(result: Record<string, unknown>): boolean {
+  return [
+    'certainty',
+    'methodologyStatus',
+    'schemaVersion',
+    'provenance',
+    'multiplierAuthorityFields',
+  ].some((field) => Object.prototype.hasOwnProperty.call(result, field));
+}
+
+function applyPublicationGateToResponse(response: MCPResponse): MCPResponse {
+  const parsed = parseResponseEnvelope(response);
+  if (!parsed) {
+    return response;
+  }
+
+  const data = parsed.envelope.data && typeof parsed.envelope.data === 'object'
+    ? parsed.envelope.data as Record<string, unknown>
+    : null;
+  const results = Array.isArray(data?.results)
+    ? data.results as Array<Record<string, unknown>>
+    : null;
+
+  if (!data || !results) {
+    return response;
+  }
+
+  data.results = results.map((result) => {
+    if (!hasPublicationContractFields(result)) {
+      return result;
+    }
+
+    const gateResult = evaluatePublicationGate({
+      certainty: result.certainty,
+      methodologyStatus: result.methodologyStatus as 'provisional' | 'published' | null | undefined,
+      schemaVersion: result.schemaVersion as string | null | undefined,
+      provenance: Array.isArray(result.provenance) ? result.provenance as string[] : null,
+      multiplierAuthorityFields: result.multiplierAuthorityFields as Record<string, unknown> | null | undefined,
+    });
+
+    return gateResult.publishable
+      ? {
+        ...result,
+        publishable: true,
+      }
+      : {
+        ...result,
+        publishable: false,
+        exclusionReason: gateResult.exclusionReason,
+      };
+  });
 
   parsed.envelope.data = data;
   return replaceResponseEnvelope(response, parsed.firstEntry, parsed.envelope);
@@ -980,6 +1037,8 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       }
     }
 
+    formatted = applyPublicationGateToResponse(formatted);
+
     const cachePayload = extractSearchCachePayload(formatted);
     if (cachePayload && cacheEnabled) {
       toolCache.set(cacheKey, cachePayload, { toolName: 'memory_search' });
@@ -989,6 +1048,8 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       ? buildSearchResponseFromPayload(cachePayload, _searchStartTime, false)
       : formatted;
   }
+
+  responseToReturn = applyPublicationGateToResponse(responseToReturn);
 
   if (sessionId && isSessionRetrievalStateEnabled() && !sessionManager.isEnabled()) {
     const parsedResponse = parseResponseEnvelope(responseToReturn);

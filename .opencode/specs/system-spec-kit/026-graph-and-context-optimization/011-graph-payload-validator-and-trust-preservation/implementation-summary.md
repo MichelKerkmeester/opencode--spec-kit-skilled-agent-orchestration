@@ -31,9 +31,9 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Packet `011` now enforces packet `006` at the graph payload boundary instead of relying on downstream discipline alone. `shared-payload.ts` exports a fail-closed structural-trust validator that rejects collapsed scalar packaging and missing axis fields, and `code-graph/query.ts` now emits validated `parserProvenance`, `evidenceStatus`, and `freshnessAuthority` fields on graph results instead of shipping graph JSON without trust metadata.
+Packet `011` now enforces packet `006` at the graph payload boundary instead of relying on downstream discipline alone. `shared-payload.ts` exports a fail-closed structural-trust validator that rejects collapsed scalar packaging and missing axis fields, `session-resume.ts` now emits `structuralTrust` on its `structural-context` shared-payload section, and `code-graph/query.ts` emits validated `parserProvenance`, `evidenceStatus`, and `freshnessAuthority` fields on graph results instead of shipping graph JSON without trust metadata.
 
-Bootstrap output now preserves those same three axes through the existing owner surfaces. `session-bootstrap.ts` reuses trust metadata from the embedded resume payload when it is present, falls back to the shipped structural bootstrap contract when it is not, and forwards the three fields separately on both `resume` and `structuralContext` while keeping the shared payload section's `structuralTrust` object intact.
+Bootstrap output now preserves those same three axes through the existing owner surfaces. `session-bootstrap.ts` consumes trust metadata from the embedded resume payload on the non-error path, treats missing resume-carried trust as a contract violation, and forwards the three fields separately on both `resume` and `structuralContext` while keeping the shared payload section's `structuralTrust` object intact. When `session_resume` itself errors, bootstrap now fails closed on the resume branch and keeps local structural-snapshot trust only on the `structuralContext` section.
 
 The contract README now records the packet `011` enforcement rules and repeats the no-parallel-family boundary from the research train so later packets do not invent a graph-only trust contract.
 <!-- /ANCHOR:what-built -->
@@ -55,7 +55,7 @@ The delivery stayed inside the packet's declared seam. I first re-read R5, the `
 |----------|-----|
 | Put the fail-closed validator in `shared-payload.ts` | Packet `011` exists to enforce the shipped `006` vocabulary, so the owner surface needed one shared validator instead of graph-local enums or wrappers. |
 | Add separate trust-axis fields directly to code-graph query responses | R5 requires graph or bridge payloads to carry provenance, evidence, and freshness distinctly at emission time rather than hiding them inside a scalar trust label. |
-| Preserve bootstrap trust by forwarding existing resume payload trust first | That keeps packet `011` additive to current owners and avoids redefining or second-guessing any future packet `012` resume carrier work. |
+| Preserve bootstrap trust by requiring the real resume payload to carry it | That keeps packet `011` additive to current owners and avoids synthesizing trust onto successful resume payloads that never emitted the required contract. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -77,5 +77,5 @@ The delivery stayed inside the packet's declared seam. I first re-read R5, the `
 
 1. This packet is classified 'No change' under 001-research-graph-context-systems/006-research-memory-redundancy/spec.md §3A. Graph payload trust preservation is orthogonal to the memory-save wrapper contract; no memory generator, collector, or template changes are introduced.
 2. Packet `011` enforces graph and bootstrap payload seams only. It does not widen packet `006`, change retrieval-ranking confidence semantics, or create a graph-only authority surface for later packets.
-3. Direct `session_resume.ts` output remains owned by its existing packet line. This packet preserves the separate trust axes through bootstrap and graph emission surfaces without reopening additional runtime files.
+3. Direct `session_resume.ts` output now participates in the preserved trust path, but packet `011` still stays bounded to trust-carrier enforcement. It does not widen packet `006`, change retrieval-ranking confidence semantics, or create a graph-only authority surface for later packets.
 <!-- /ANCHOR:limitations -->

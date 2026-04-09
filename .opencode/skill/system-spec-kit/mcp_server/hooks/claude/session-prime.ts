@@ -5,16 +5,22 @@
 // Runs on Claude Code SessionStart event. Injects context via stdout
 // based on the session source (compact, startup, resume, clear).
 
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   parseHookStdin, hookLog, formatHookOutput, truncateToTokenBudget,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
   calculatePressureAdjustedBudget, sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
+  type HookInput,
   type OutputSection,
 } from './shared.js';
-import { ensureStateDir, loadMostRecentState, loadState, readCompactPrime, clearCompactPrime } from './hook-state.js';
+import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from './hook-state.js';
 import { getCachedSessionSummaryDecision, logCachedSummaryDecision } from '../../handlers/session-resume.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
+const IS_CLI_ENTRY = process.argv[1]
+  ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  : false;
 type StartupBrief = {
   graphOutline: string | null;
   sessionContinuity: string | null;
@@ -116,9 +122,16 @@ function buildStructuralRoutingSection(
 }
 
 /** Handle source=startup: prime new session with constitutional memories + overview */
-function handleStartup(): OutputSection[] {
+export function handleStartup(
+  input: Pick<HookInput, 'session_id'> & { specFolder?: string } = {},
+): OutputSection[] {
+  const sessionId = typeof input.session_id === 'string' ? input.session_id : undefined;
+  const requestedSpecFolder = typeof input.specFolder === 'string' ? input.specFolder : undefined;
   const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
-  const cachedSummaryDecision = getCachedSessionSummaryDecision({ state: loadMostRecentState() });
+  const cachedSummaryDecision = getCachedSessionSummaryDecision({
+    specFolder: requestedSpecFolder,
+    claudeSessionId: sessionId,
+  });
   if (cachedSummaryDecision.status !== 'accepted') {
     logCachedSummaryDecision('session-prime', cachedSummaryDecision);
   }
@@ -236,7 +249,7 @@ async function main(): Promise<void> {
       budget = COMPACTION_TOKEN_BUDGET;
       break;
     case 'startup':
-      sections = handleStartup();
+      sections = handleStartup(input);
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     case 'resume':
@@ -248,7 +261,7 @@ async function main(): Promise<void> {
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     default:
-      sections = handleStartup();
+      sections = handleStartup(input);
       budget = SESSION_PRIME_TOKEN_BUDGET;
   }
 
@@ -275,8 +288,10 @@ async function main(): Promise<void> {
 }
 
 // Run — exit cleanly even on error
-main().catch((err: unknown) => {
-  hookLog('error', 'session-prime', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
-}).finally(() => {
-  process.exit(0);
-});
+if (IS_CLI_ENTRY) {
+  main().catch((err: unknown) => {
+    hookLog('error', 'session-prime', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
+  }).finally(() => {
+    process.exit(0);
+  });
+}

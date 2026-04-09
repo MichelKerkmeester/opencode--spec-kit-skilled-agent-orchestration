@@ -196,6 +196,90 @@ describe('Packet 010 lexical capability response surface', () => {
   });
 });
 
+describe('Packet 009 publication gate consumer', () => {
+  beforeEach(() => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+    vi.spyOn(toolCache, 'isEnabled').mockReturnValue(true);
+    vi.spyOn(toolCache, 'generateCacheKey').mockReturnValue('packet-009-cache-key');
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('annotates publishable rows and exclusion reasons on handler results', async () => {
+    vi.spyOn(toolCache, 'get').mockReturnValue({
+      summary: 'Found 5 reporting rows',
+      data: {
+        count: 5,
+        results: [
+          {
+            id: 301,
+            certainty: 'exact',
+            methodologyStatus: 'published',
+            schemaVersion: 'measurement-contract/v1',
+            provenance: ['eval_metric_snapshots'],
+          },
+          {
+            id: 302,
+            certainty: 'exact',
+            schemaVersion: 'measurement-contract/v1',
+            provenance: ['eval_metric_snapshots'],
+          },
+          {
+            id: 303,
+            certainty: 'exact',
+            methodologyStatus: 'published',
+            schemaVersion: '',
+            provenance: ['eval_metric_snapshots'],
+          },
+          {
+            id: 304,
+            certainty: 'exact',
+            methodologyStatus: 'published',
+            schemaVersion: 'measurement-contract/v1',
+            provenance: [],
+          },
+          {
+            id: 305,
+            certainty: 'high',
+            methodologyStatus: 'published',
+            schemaVersion: 'measurement-contract/v1',
+            provenance: ['eval_metric_snapshots'],
+          },
+          {
+            id: 306,
+            certainty: 'exact',
+            methodologyStatus: 'published',
+            schemaVersion: 'measurement-contract/v1',
+            provenance: ['eval_metric_snapshots'],
+            multiplierAuthorityFields: {
+              promptTokens: { certainty: 'exact', authority: 'provider_counted' },
+              completionTokens: { certainty: 'exact', authority: 'provider_counted' },
+              cacheReadTokens: { certainty: 'exact', authority: 'provider_counted' },
+              cacheWriteTokens: { certainty: 'estimated', authority: 'estimated' },
+            },
+          },
+        ],
+      },
+      hints: [],
+    });
+
+    const response = await handler.handleMemorySearch({ query: 'publication reporting rows' });
+    const payload = parseEnvelope(response);
+    const data = getNestedRecord(payload, 'data');
+    const results = Array.isArray(data?.results) ? data.results as Array<Record<string, unknown>> : [];
+    const byId = new Map(results.map((result) => [result.id, result]));
+
+    expect(byId.get(301)).toMatchObject({ publishable: true });
+    expect(byId.get(302)).toMatchObject({ publishable: false, exclusionReason: 'missing_methodology' });
+    expect(byId.get(303)).toMatchObject({ publishable: false, exclusionReason: 'missing_schema_version' });
+    expect(byId.get(304)).toMatchObject({ publishable: false, exclusionReason: 'missing_provenance' });
+    expect(byId.get(305)).toMatchObject({ publishable: false, exclusionReason: 'unsupported_certainty' });
+    expect(byId.get(306)).toMatchObject({ publishable: false, exclusionReason: 'unsupported_certainty' });
+  });
+});
+
 /* ───────────────────────────────────────────────────────────────
    T002: Chunk Collapse Dedup — G3 Fix
    collapseAndReassembleChunkResults is exported via __testables.
