@@ -1,54 +1,37 @@
 ---
-title: "Completed 10 Iteration Deep Research [004-graphify/06-04-26_18-17__completed-10-iteration-deep-research-audit-of]"
-description: "Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4 high engine for iters 1, 8, 9, 10 and claude-opus-direct fallback for iters..."
+title: Completed 10 Iteration Deep Research
+name: 06-04-26_18-17__completed-10-iteration-deep-research-audit-of
+description: Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4 high engine for iters 1, 8, 9, 10 and claude-opus-direct fallback for iters...
+type: episodic
 trigger_phrases:
-  - "graphify research"
-  - "graphify external repo"
-  - "graphify deep research"
-  - "graphify export wiki serve"
-  - "graphify per-language extractor"
-  - "graphify cli-codex extension"
-  - "graphify K13 K32"
-  - "two-pass extraction adopt adapt reject"
-  - "code graph mcp"
-  - "evidence tagging EXTRACTED INFERRED AMBIGUOUS"
-  - "PreToolUse hook graph-first"
-  - "Leiden community detection"
-  - "per-language extractor inventory"
-  - "validate.py portable validator"
-  - "modality-aware rebuild policy"
-  - "cross-corpus validation karpathy mixed-corpus"
-  - "composite converged"
-  - "model reasoning effort"
-  - "engine switch"
-  - "trigger phrases"
-  - "cli codex"
-  - "claude opus direct"
-  - "line cited"
-  - "mixed corpus"
-  - "cross validation"
-  - "implementation summary"
-  - "decision record"
-  - "workspace write"
-  - "line ground"
-  - "auto generated"
-  - "domain specific"
-  - "tree thinning"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
-  - "chosen approach"
-  - "strict validation"
-  - "spec docs"
-  - "memory file"
-  - "zero warnings system"
-  - "audit-ready iteration trail"
-  - "Adopt Adapt Reject table"
-  - "graphify validate.py portable"
+- graphify research
+- graphify external repo
+- graphify deep research
+- graphify export wiki serve
+- graphify per-language extractor
+- graphify cli-codex extension
+- graphify K13 K32
+- two-pass extraction adopt adapt reject
+- code graph mcp
+- evidence tagging EXTRACTED INFERRED AMBIGUOUS
+- PreToolUse hook graph-first
+- Leiden community detection
+- per-language extractor inventory
+- validate.py portable validator
+- modality-aware rebuild policy
+- cross-corpus validation karpathy mixed-corpus
+- composite converged
+- model reasoning effort
+- engine switch
+- trigger phrases
+- cli codex
+- claude opus direct
+- line cited
+- mixed corpus
 importance_tier: critical
-contextType: "research"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+contextType: research
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
@@ -56,7 +39,12 @@ filesystem_file_count: 10
 git_changed_file_count: 0
 quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":1.0,"errors":0,"warnings":0,"strictPassed":true}
+spec_folder_health:
+  pass: true
+  score: 1.0
+  errors: 0
+  warnings: 0
+  strictPassed: true
 ---
 
 # Completed 10 Iteration Deep Research Audit Of
@@ -156,6 +144,22 @@ Next: Optional: Inline the 4 new section 12 rows (A5 validate.py validator, A6 w
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -239,7 +243,7 @@ Next: Optional: Inline the 4 new section 12 rows (A5 validate.py validator, A6 w
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -264,11 +268,11 @@ Completed 10-iteration deep-research audit of graphify external Python skill wit
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/(merged-small-files)` | Tree-thinning merged 3 small files (research.md, deep-research-state.jsonl, deep-research-config.json).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md : 32 K-findings (K1 to K32) all line-cited from... | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-state.jsonl : Modified deep research state | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-config.json : Modified deep research config |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/(merged-small-files)` | Tree-thinning merged 3 small files (iteration-008.md, iteration-009.md, iteration-010.md).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-008.md : Modified iteration 008 | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-009.md : Modified iteration 009 | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-010.md : Modified iteration 010 |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -289,7 +293,7 @@ Optional: Inline the 4 new section 12 rows (A5 validate.py validator, A6 wiki na
 **Details:** Next: Optional: Inline the 4 new section 12 rows (A5 validate.py validator, A6 wiki narrative export, D6 modality-aware rebuild policy, D7 stable JSON interchange) into research.md section 12 itself rather than just section 13.A.4. | Follow-up: Optional: Run /spec_kit:plan to convert the section 12 recommendations into an implementation plan against Public's Code Graph MCP, CocoIndex, Spec Kit Memory, and project hooks. | Follow-up: Optional: Synthesize across phases 002 (codesight), 003 (contextador), 004 (graphify), 005 (claudest) for the parent 026 packet.
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -544,6 +548,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -569,7 +586,7 @@ context_type: "research"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
+  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
   half_life_days: 365     # decay half-life in days (0 = never decays)
   decay_factors:
     base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
@@ -644,7 +661,7 @@ key_topics:
   - "mode=workspace-write fast"
   - "fragments domain-specific"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "graphify research"
   - "graphify external repo"
@@ -670,61 +687,6 @@ trigger_phrases:
   - "claude opus direct"
   - "line cited"
   - "mixed corpus"
-  - "cross validation"
-  - "implementation summary"
-  - "decision record"
-  - "workspace write"
-  - "line ground"
-  - "auto generated"
-  - "domain specific"
-  - "tree thinning"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
-  - "chosen approach"
-  - "strict validation"
-  - "spec docs"
-  - "memory file"
-  - "zero warnings system"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/004"
-  - "graphify"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-008.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-009.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-010.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-state.jsonl"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-config.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/spec.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/plan.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/tasks.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/implementation-summary.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

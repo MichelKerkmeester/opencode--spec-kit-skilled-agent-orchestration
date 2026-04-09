@@ -1,67 +1,49 @@
 ---
-title: "Extended Deep Research [001-claude-optimization-settings/06-04-26_13-47__extended-deep-research-run-13-iterations-total-8]"
-description: "Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex gpt-5.4 high) auditing Reddit field-report on Claude Code token waste against..."
+title: Extended Deep Research
+name: 06-04-26_13-47__extended-deep-research-run-13-iterations-total-8
+description: 'Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex gpt-5.4 high) auditing Reddit field-report on Claude Code token waste against...'
+type: episodic
 trigger_phrases:
-  - "claude code optimization"
-  - "ENABLE_TOOL_SEARCH"
-  - "cache expiry"
-  - "reddit audit"
-  - "token waste"
-  - "cli-copilot deep-research"
-  - "cli-codex deep-research"
-  - "claude optimization settings"
-  - "cache warning hooks"
-  - "f21 arithmetic inconsistency"
-  - "f22 plugin remedy net-cost"
-  - "f23 skill baseline window"
-  - "f24 hook replay isolation"
-  - "extended skeptical pass"
-  - "deep research"
-  - "cli copilot"
-  - "cli codex"
-  - "field report"
-  - "prototype later"
-  - "contains findings"
-  - "findings t1=7"
-  - "t1=7 t2=8"
-  - "t2=8 t3=5"
-  - "t3=5 t4=4"
-  - "t4=4 recommendations"
-  - "recommendations split"
-  - "split adopt-now"
-  - "adopt-now prototype-later"
-  - "prototype-later reject"
-  - "context optimization"
-  - "context systems"
-  - "chosen approach system"
-  - "gpt-5.4 high"
-  - "new findings"
-  - "decision contains"
-  - "extended deep-research"
-  - "deep-research run"
-  - "run iterations"
-  - "extended skeptical pass"
-  - "13 iteration deep research"
-  - "f21 arithmetic inconsistency"
-  - "f22 plugin remedy net-cost"
-  - "f23 skill baseline window"
-  - "f24 hook replay isolation"
-  - "f9 recommendation flip"
-  - "f14 prerequisite validation asset"
-  - "11 adopt-now 11 prototype-later"
-  - "cli-codex independent perspective"
-importance_tier: "high"
-contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- claude code optimization
+- ENABLE_TOOL_SEARCH
+- cache expiry
+- reddit audit
+- token waste
+- cli-copilot deep-research
+- cli-codex deep-research
+- claude optimization settings
+- cache warning hooks
+- f21 arithmetic inconsistency
+- f22 plugin remedy net-cost
+- f23 skill baseline window
+- f24 hook replay isolation
+- extended skeptical pass
+- deep research
+- cli copilot
+- cli codex
+- field report
+- prototype later
+- contains findings
+- findings t1=7
+- t1=7 t2=8
+- t2=8 t3=5
+- t3=5 t4=4
+importance_tier: critical
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
+spec_folder_health:
+  pass: true
+  score: 0.75
+  errors: 0
+  warnings: 5
 ---
 
 # Extended Deep Research Run 13 Iterations Total 8
@@ -154,6 +136,22 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -192,7 +190,7 @@ Next: Continue implementation
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -202,11 +200,11 @@ Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high 
 **Key Outcomes**:
 - Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex...
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -219,7 +217,7 @@ Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high 
 **Details:** claude code optimization | ENABLE_TOOL_SEARCH | cache expiry | reddit audit | token waste | cli-copilot deep-research | cli-codex deep-research | claude optimization settings | cache warning hooks | f21 arithmetic inconsistency | f22 plugin remedy net-cost | f23 skill baseline window | f24 hook replay isolation | 13 iteration deep research | extended skeptical pass
 <!-- /ANCHOR:guide-extended-deepresearch-run-iterations-b58b609b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -450,6 +448,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -470,7 +481,7 @@ repository_state: "unavailable"
 is_detached_head: No
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
@@ -550,7 +561,7 @@ key_topics:
   - "observation decision"
   - "decision contains"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "claude code optimization"
   - "ENABLE_TOOL_SEARCH"
@@ -576,66 +587,6 @@ trigger_phrases:
   - "t1=7 t2=8"
   - "t2=8 t3=5"
   - "t3=5 t4=4"
-  - "t4=4 recommendations"
-  - "recommendations split"
-  - "split adopt-now"
-  - "adopt-now prototype-later"
-  - "prototype-later reject"
-  - "context optimization"
-  - "context systems"
-  - "chosen approach system"
-  - "gpt-5.4 high"
-  - "new findings"
-  - "decision contains"
-  - "extended deep-research"
-  - "deep-research run"
-  - "run iterations"
-  - "extended skeptical pass"
-  - "13 iteration deep research"
-  - "f21 arithmetic inconsistency"
-  - "f22 plugin remedy net-cost"
-  - "f23 skill baseline window"
-  - "f24 hook replay isolation"
-  - "f9 recommendation flip"
-  - "f14 prerequisite validation asset"
-  - "11 adopt-now 11 prototype-later"
-  - "cli-codex independent perspective"
-
-key_files:
-  - "checklist.md"
-  - "decision-record.md"
-  - "description.json"
-  - "external/reddit_post.md"
-  - "implementation-summary.md"
-  - "phase-research-prompt.md"
-  - "plan.md"
-  - "research/deep-research-config.json"
-  - "research/deep-research-dashboard.md"
-  - "research/deep-research-strategy.md"
-  - "research/findings-registry.json"
-  - "research/research.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

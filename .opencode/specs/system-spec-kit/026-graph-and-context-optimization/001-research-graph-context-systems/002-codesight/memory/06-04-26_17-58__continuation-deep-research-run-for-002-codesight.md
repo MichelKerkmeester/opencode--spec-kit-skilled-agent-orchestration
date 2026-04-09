@@ -1,44 +1,49 @@
 ---
-title: "Continuation Deep Research Run For [002-codesight/06-04-26_17-58__continuation-deep-research-run-for-002-codesight]"
-description: "Continuation deep-research run for 002-codesight: 5 additional iterations (6-10) executed via cli-codex (gpt-5.4 high, sandbox=read-only) in parallel as background processes...."
+title: Continuation Deep Research Run For
+name: 06-04-26_17-58__continuation-deep-research-run-for-002-codesight
+description: 'Continuation deep-research run for 002-codesight: 5 additional iterations (6-10) executed via cli-codex (gpt-5.4 high, sandbox=read-only) in parallel as background processes....'
+type: episodic
 trigger_phrases:
-  - "002-codesight continuation iterations 6 to 10"
-  - "codesight contract enrichment regex-only Hono-biased tRPC"
-  - "codesight Python Go AST extraction parity SQLAlchemy GORM"
-  - "codesight tokens.ts heuristic linear formula no tokenizer"
-  - "codesight monorepo pnpm yarn config plugin contract"
-  - "codesight telemetry NOT adoption blocker local opt-in"
-  - "codesight cumulative risk inventory adoption decision matrix"
-  - "cli-codex sandbox read-only blocked tmp write workaround stdout extraction"
-  - "deep research continuation charter Q13 Q14 Q15 Q16 Q17"
-  - "codesight 52 findings 10 iterations final synthesis"
-  - "codesight enrichRouteContracts post-detection regex mutator"
-  - "codesight extract-python subprocess ast.parse genuine AST"
-  - "codesight extract-go brace-tracking regex no go parser mislabel"
-  - "codesight calculateTokenStats hand-tuned linear formula no tokenizer"
-  - "codesight scanner.ts pnpm-workspace.yaml monorepo aggregation"
-  - "codesight CodesightPlugin contract typed but untested in-tree"
-  - "codesight components.ts React-biased shallow no Solid Qwik"
-  - "codesight telemetry.ts no HTTP no postinstall opt-in only"
-  - "codesight 22-row adoption decision matrix research.md section 18.3"
-  - "codesight SQLAlchemy index extraction richer than Drizzle"
-  - "codesight blast-radius depth-cap off-by-one bug"
-  - "codesight 11.2x token reduction README-only not in fixtures"
-  - "codesight FastAPI fixture ground-truth tautology missing prefix composition"
-  - "codesight zero-dependency claim AST loader project-local typescript"
-  - "codesight static .codesight artifacts MCP same ScanResult projection"
-importance_tier: "critical"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- 002-codesight continuation iterations 6 to 10
+- codesight contract enrichment regex-only Hono-biased tRPC
+- codesight Python Go AST extraction parity SQLAlchemy GORM
+- codesight tokens.ts heuristic linear formula no tokenizer
+- codesight monorepo pnpm yarn config plugin contract
+- codesight telemetry NOT adoption blocker local opt-in
+- codesight cumulative risk inventory adoption decision matrix
+- cli-codex sandbox read-only blocked tmp write workaround stdout extraction
+- deep research continuation charter Q13 Q14 Q15 Q16 Q17
+- codesight 52 findings 10 iterations final synthesis
+- codesight enrichRouteContracts post-detection regex mutator
+- codesight extract-python subprocess ast.parse genuine AST
+- codesight extract-go brace-tracking regex no go parser mislabel
+- codesight calculateTokenStats hand-tuned linear formula no tokenizer
+- codesight scanner.ts pnpm-workspace.yaml monorepo aggregation
+- codesight CodesightPlugin contract typed but untested in-tree
+- codesight components.ts React-biased shallow no Solid Qwik
+- codesight telemetry.ts no HTTP no postinstall opt-in only
+- codesight 22-row adoption decision matrix research.md section 18.3
+- codesight SQLAlchemy index extraction richer than Drizzle
+- codesight blast-radius depth-cap off-by-one bug
+- codesight 11.2x token reduction README-only not in fixtures
+- codesight FastAPI fixture ground-truth tautology missing prefix composition
+- codesight zero-dependency claim AST loader project-local typescript
+importance_tier: critical
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 8
 filesystem_file_count: 8
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 3
+  warnings: 0
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
@@ -138,6 +143,22 @@ Next: Optionally validate the spec folder via `bash.opencode/skill/system-spec-k
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -205,7 +226,7 @@ Next: Optionally validate the spec folder via `bash.opencode/skill/system-spec-k
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -229,11 +250,11 @@ Continuation deep-research run for 002-codesight: 5 additional iterations (6-10)
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-010.md` | Modified iteration 010 |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/(merged-small-files)` | Tree-thinning merged 3 small files (research.md, deep-research-strategy.md, deep-research-state.jsonl).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/research.md : Modified research | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-strategy.md : Modified deep research strategy | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-state.jsonl : Modified deep research state |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -246,7 +267,7 @@ Optionally validate the spec folder via `bash.opencode/skill/system-spec-kit/scr
 **Details:** Next: Optionally validate the spec folder via `bash.opencode/skill/system-spec-kit/scripts/spec/validate.sh.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight --strict` to confirm the level-3 docs are still consistent after adding §18 to research.md and the 5 new iteration files. | Follow-up: Optionally regenerate findings-registry.json and deep-research-dashboard.md via `node.opencode/skill/sk-deep-research/scripts/reduce-state.cjs.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight` so the reducer-owned views catch up with iters 6-10 (they currently still show iter 5 as latest). | Follow-up: If a 002-codesight implementation phase is opened, start from the §18.3 Updated Adoption Decision Matrix in research.md — adopt-now items are the 11 low-risk patterns; prototype-later items are the 6 medium-risk patterns with documented preconditions; reject items (token math, GORM, README headline) should be explicitly excluded in any port plan. | Follow-up: Synthesize across phases 002 (codesight), 003 (contextador), 004 (graphify), 005 (claudest) for the parent 026 packet roll-up — the cross-phase boundary work in iter 5 already establishes that 002 owns AST detectors + profile generation + static artifacts, 003 owns query MCP, 004 owns graph math.
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -572,6 +593,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -593,7 +627,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -672,7 +706,7 @@ key_topics:
   - "stdout reasoning"
   - "sandbox blocked"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "002-codesight continuation iterations 6 to 10"
   - "codesight contract enrichment regex-only Hono-biased tRPC"
@@ -698,37 +732,6 @@ trigger_phrases:
   - "codesight 11.2x token reduction README-only not in fixtures"
   - "codesight FastAPI fixture ground-truth tautology missing prefix composition"
   - "codesight zero-dependency claim AST loader project-local typescript"
-  - "codesight static .codesight artifacts MCP same ScanResult projection"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-006.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-007.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-008.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-009.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-010.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/research.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-strategy.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-state.jsonl"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

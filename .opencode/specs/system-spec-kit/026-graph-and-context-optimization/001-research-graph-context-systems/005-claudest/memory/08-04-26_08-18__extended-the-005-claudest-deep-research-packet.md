@@ -1,51 +1,49 @@
 ---
-title: "005 Claudest Deep-Research Extension to 20 Iterations"
-description: "Extended the 005-claudest deep-research packet from 12 to 20 total iterations, added a completed-continue generation with iterations 13-20, refreshed the synthesis and packet docs, and closed the research with a strict-clean packet state."
+title: 005 Claudest Deep-Research Extension to 20 Iterations
+name: 08-04-26_08-18__extended-the-005-claudest-deep-research-packet
+description: Extended the 005-claudest deep-research packet from 12 to 20 total iterations, added a completed-continue generation with iterations 13-20, refreshed the synthesis and packet docs, and closed the research with a strict-clean packet state.
+type: episodic
 trigger_phrases:
-  - "session bootstrap"
-  - "memory context"
-  - "completed continue"
-  - "forced degrade"
-  - "reader owned"
-  - "signal extraction"
-  - "post save"
-  - "tree thinning"
-  - "deep research config"
-  - "deep research state"
-  - "deep research strategy"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
-  - "chosen approach"
-  - "strict validator"
-  - "capability helper"
-  - "reopened completed"
-  - "completed packet"
-  - "packet completed-continue"
-  - "completed-continue mode"
-  - "mode instead"
-  - "instead creating"
-  - "creating new"
-  - "new research"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/005"
-  - "claudest"
-importance_tier: "critical"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- session bootstrap
+- memory context
+- completed continue
+- forced degrade
+- reader owned
+- signal extraction
+- post save
+- tree thinning
+- deep research config
+- deep research state
+- deep research strategy
+- system spec kit
+- graph and context optimization
+- research graph context systems
+- chosen approach
+- strict validator
+- capability helper
+- reopened completed
+- completed packet
+- packet completed-continue
+- completed-continue mode
+- mode instead
+- instead creating
+- creating new
+importance_tier: critical
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":1.0,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1.0
+  errors: 0
+  warnings: 0
 ---
 > **Manual refinement note:** This memory was edited on 2026-04-08 to replace low-signal generated placeholders with a cleaner closeout summary. The packet is complete even though semantic indexing for this memory was skipped by policy.
 
@@ -145,6 +143,22 @@ Next: Use the completed packet as the canonical Claudest research reference; ope
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -217,7 +231,7 @@ Extended the 005-claudest deep-research packet from 12 to 20 total iterations, a
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -242,7 +256,7 @@ Extended the 005-claudest deep-research packet from 12 to 20 total iterations, a
 
 <!-- /ANCHOR:implementation-observation-05032a15-4 -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -560,6 +574,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -581,7 +608,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -660,7 +687,7 @@ key_topics:
   - "normalized analytics"
   - "plus forced-degrade"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "session bootstrap"
   - "memory context"
@@ -686,45 +713,6 @@ trigger_phrases:
   - "mode instead"
   - "instead creating"
   - "creating new"
-  - "new research"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/005"
-  - "claudest"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-config.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-dashboard.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/findings-registry.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-013.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-014.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-015.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-016.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*

@@ -1,52 +1,49 @@
 ---
-title: "Deep Research On Graphify External Repo [004-graphify/06-04-26_15-37__deep-research-on-graphify-external-repo-python]"
-description: "Deep research on graphify external repo (Python Claude Code skill, ~5500 LOC, 18 modules). 7 iterations converged at 91.7% question coverage. Iter 1 via codex gpt-5.4 high;..."
+title: Deep Research On Graphify External Repo
+name: 06-04-26_15-37__deep-research-on-graphify-external-repo-python
+description: Deep research on graphify external repo (Python Claude Code skill, ~5500 LOC, 18 modules). 7 iterations converged at 91.7% question coverage. Iter 1 via codex gpt-5.4 high;...
+type: episodic
 trigger_phrases:
-  - "graphify research"
-  - "graphify external repo survey"
-  - "two-pass AST extraction LLM"
-  - "Leiden community detection clustering"
-  - "EXTRACTED INFERRED AMBIGUOUS evidence tagging"
-  - "PreToolUse hook Glob Grep matcher"
-  - "graphify multimodal pipeline PDF image"
-  - "two-layer cache invalidation manifest SHA256"
-  - "graphify Adopt Adapt Reject Public"
-  - "71.5x token reduction credibility"
-  - "claude opus direct"
-  - "prompt as data"
-  - "per image type"
-  - "auto rebuild"
-  - "load bearing"
-  - "tree thinning"
-  - "deep research config"
-  - "deep research state"
-  - "deep research strategy"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
-  - "graph based"
-  - "seven stage"
-  - "chosen approach"
-  - "questions generator"
-  - "tunable parameters"
-  - "into extractor"
-  - "codebase knowledge extraction"
-  - "multimodal artifact processing"
-  - "covered phase"
-  - "codex gpt-5.4"
-importance_tier: "critical"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- graphify research
+- graphify external repo survey
+- two-pass AST extraction LLM
+- Leiden community detection clustering
+- EXTRACTED INFERRED AMBIGUOUS evidence tagging
+- PreToolUse hook Glob Grep matcher
+- graphify multimodal pipeline PDF image
+- two-layer cache invalidation manifest SHA256
+- graphify Adopt Adapt Reject Public
+- 71.5x token reduction credibility
+- claude opus direct
+- prompt as data
+- per image type
+- auto rebuild
+- load bearing
+- tree thinning
+- deep research config
+- deep research state
+- deep research strategy
+- system spec kit
+- graph and context optimization
+- research graph context systems
+- graph based
+- seven stage
+importance_tier: critical
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 quality_score: 0.97
-quality_flags:
-  - "has_topical_mismatch"
-spec_folder_health: {"pass":false,"score":0.7,"errors":2,"warnings":0}
+quality_flags: []
+spec_folder_health:
+  pass: false
+  score: 0.7
+  errors: 2
+  warnings: 0
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
@@ -147,6 +144,22 @@ Next: Review research.md and Adopt/Adapt/Reject recommendations in §12
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -181,7 +194,7 @@ Next: Review research.md and Adopt/Adapt/Reject recommendations in §12
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -205,11 +218,11 @@ Deep research on graphify external repo (Python Claude Code skill, ~5500 LOC, 18
 | `research/iterations/iteration-004.md` | Modified iteration 004 | Tree-thinning merged 3 small files (iteration-001.md, iteration-002.md, iteration-003.md).  Merged from research/iterations/iteration-001.md : # Iteration 1: Pipeline Architecture Lock ## Focus This iteration locked the graphify pipeline at the architecture level before drilling into extractor internals. I read the top-level architecture and README, verified the Python CLI and Claude hook entry points, inventoried the implementation files under `external/graphify/` and `external/skills/graphify/`, and mapped the documented stages to concrete modules. ## Findings 1. The documented canonical pipeline is a seven-stage chain, `detect() → | Merged from research/iterations/iteration-002.md : # Iteration 2: AST Extraction Internals ## Focus Resolve language coverage (Q1) and e... |
 | `research/iterations/iteration-005.md` | Modified iteration 005 |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -222,7 +235,7 @@ Review research.md and Adopt/Adapt/Reject recommendations in §12 If A1 (evidenc
 **Details:** Next: Review research.md and Adopt/Adapt/Reject recommendations in §12 | Follow-up: If A1 (evidence tagging) approved: extend code_graph_query and mcp__cocoindex_code__search response payloads with confidence + confidence_score fields | Follow-up: If A2 (PreToolUse hook) approved: install conditional hook in.claude/settings.json with matcher Glob|Grep nudging toward Public's structural indexers | Follow-up: Run /spec_kit:plan to convert recommendations into implementation plan if any patterns are approved for adoption | Follow-up: Cross-reference with phase 005 (claudest) findings before finalizing recommendations across the 026 packet
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -519,6 +532,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -540,7 +566,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -619,7 +645,7 @@ key_topics:
   - "two-layer cache"
   - "api contention"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "graphify research"
   - "graphify external repo survey"
@@ -645,53 +671,6 @@ trigger_phrases:
   - "research graph context systems"
   - "graph based"
   - "seven stage"
-  - "chosen approach"
-  - "questions generator"
-  - "tunable parameters"
-  - "into extractor"
-  - "codebase knowledge extraction"
-  - "multimodal artifact processing"
-  - "covered phase"
-  - "codex gpt-5.4"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/004"
-  - "graphify"
-
-key_files:
-  - "research/deep-research-config.json"
-  - "research/deep-research-state.jsonl"
-  - "research/deep-research-strategy.md"
-  - "research/findings-registry.json"
-  - "research/deep-research-dashboard.md"
-  - "research/iterations/iteration-001.md"
-  - "research/iterations/iteration-002.md"
-  - "research/iterations/iteration-003.md"
-  - "research/iterations/iteration-004.md"
-  - "research/iterations/iteration-005.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

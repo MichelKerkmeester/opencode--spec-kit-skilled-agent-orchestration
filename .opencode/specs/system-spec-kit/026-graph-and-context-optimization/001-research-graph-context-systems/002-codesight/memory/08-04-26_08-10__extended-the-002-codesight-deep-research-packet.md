@@ -1,51 +1,49 @@
 ---
-title: "002 Codesight Deep-Research Extension to 20 Iterations"
-description: "Extended the 002-codesight deep-research packet from 10 to 20 total iterations via completed-continue, snapshotted the earlier synthesis to research/synthesis-v1.md, added iterations 011-020, refreshed the reducer-owned state, and closed the packet with the canonical 20-iteration research set."
+title: 002 Codesight Deep-Research Extension to 20 Iterations
+name: 08-04-26_08-10__extended-the-002-codesight-deep-research-packet
+description: Extended the 002-codesight deep-research packet from 10 to 20 total iterations via completed-continue, snapshotted the earlier synthesis to research/synthesis-v1.md, added iterations 011-020, refreshed the reducer-owned state, and closed the packet with the canonical 20-iteration research set.
+type: episodic
 trigger_phrases:
-  - "watch mode"
-  - "install git hook"
-  - "detect middl"
-  - "session id"
-  - "completed continue"
-  - "findings registry"
-  - "deep research dashboard"
-  - "deep research strategy"
-  - "tree thinning"
-  - "deep research config"
-  - "blast radius"
-  - "dr 002 codesight 20260406t095851z"
-  - "repo mutating"
-  - "watchmode"
-  - "installgithook"
-  - "context generation"
-  - "profile generation"
-  - "session investigating"
-  - "context optimization"
-  - "context systems"
-  - "tree-thinning merged"
-  - "merged small"
-  - "small files"
-  - "title deep"
-  - "research 002-codesight"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/002"
-  - "codesight"
-importance_tier: "normal"
-contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- watch mode
+- install git hook
+- detect middl
+- session id
+- completed continue
+- findings registry
+- deep research dashboard
+- deep research strategy
+- tree thinning
+- deep research config
+- blast radius
+- dr 002 codesight 20260406t095851z
+- repo mutating
+- watchmode
+- installgithook
+- context generation
+- profile generation
+- session investigating
+- context optimization
+- context systems
+- tree-thinning merged
+- merged small
+- small files
+- title deep
+importance_tier: normal
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":1.0,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1.0
+  errors: 0
+  warnings: 0
 ---
 > **Manual refinement note:** This memory was edited on 2026-04-08 to remove stale continuation cues and sharpen the recovery summary around the final 20-iteration packet state.
 # 002 Codesight Deep Research Packet Extended to 20 Iterations
@@ -139,6 +137,22 @@ Next: Use research/research.md and the updated packet docs as the canonical clos
 - Last: 002-codesight deep-research extended to 20 iterations
 
 <!-- /ANCHOR:continue-session -->
+
+---
+
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
 
 ---
 
@@ -242,7 +256,7 @@ Extended the 002-codesight deep-research packet from 10 to 20 total iterations v
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -256,7 +270,7 @@ Added a completed-continue continuation covering watch mode, git hook automation
 **Details:** Reducer refreshed packet state to 20 completed iterations | Strict validation still fails on pre-existing decision-record anchor warnings unrelated to the research packet continuation
 <!-- /ANCHOR:implementation-002codesight-deepresearch-extended-iterations-98d5dce3 -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -352,6 +366,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 <!-- /ANCHOR:recovery-hints -->
 
 ---
+
+---
+
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
 
 ---
 
@@ -455,7 +482,7 @@ key_topics:
   - "via completed-continue"
   - "generation iterations"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "watch mode"
   - "install git hook"
@@ -481,45 +508,6 @@ trigger_phrases:
   - "merged small"
   - "small files"
   - "title deep"
-  - "research 002-codesight"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/002"
-  - "codesight"
-
-key_files:
-  - "research/synthesis-v1.md"
-  - "research/research.md"
-  - "research/deep-research-config.json"
-  - "research/deep-research-strategy.md"
-  - "research/deep-research-state.jsonl"
-  - "research/iterations/iteration-011.md"
-  - "research/iterations/iteration-012.md"
-  - "research/iterations/iteration-013.md"
-  - "research/iterations/iteration-014.md"
-  - "research/iterations/iteration-015.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*

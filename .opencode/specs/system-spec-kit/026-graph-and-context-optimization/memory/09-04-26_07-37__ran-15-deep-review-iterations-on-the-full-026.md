@@ -1,40 +1,45 @@
 ---
-title: "026 Deep Review (15 iter, CONDITIONAL): 6 P1 blockers cluster across packets 009/011/012/013"
-description: "15-iteration deep-review of 026 graph-and-context-optimization packet family via cli-codex gpt-5.4 high fast. Verdict CONDITIONAL: 6 P1 findings, 0 P0, 0 P2. 5 packets clean (005/006/007/008/010), 4 packets conditional (009/011/012/013) with 4 remediation lanes."
-# Canonical classification lives in frontmatter; MEMORY METADATA mirrors these values.
+title: '026 Deep Review (15 iter, CONDITIONAL): 6 P1 blockers cluster across packets 009/011/012/013'
+name: 09-04-26_07-37__ran-15-deep-review-iterations-on-the-full-026
+description: '15-iteration deep-review of 026 graph-and-context-optimization packet family via cli-codex gpt-5.4 high fast. Verdict CONDITIONAL: 6 P1 findings, 0 P0, 0 P2. 5 packets clean (005/006/007/008/010), 4 packets conditional (009/011/012/013) with 4 remediation lanes.'
+type: episodic
 trigger_phrases:
-  - "026-graph-context deep review"
-  - "026 conditional verdict"
-  - "026 P1 remediation lanes"
-  - "packet 011 resume trust preservation gap"
-  - "packet 012 frozen corpus helper-only"
-  - "packet 013 unfalsifiable bundle benchmark"
-  - "packet 009 publication gate helper only"
-  - "session-bootstrap fail-closed widening"
-  - "cached continuity unscoped selection"
-  - "DR-026-I001 resume trust gap"
-  - "DR-026-I003 unfalsifiable bench"
-  - "cli-codex gpt-5.4 reviewer substitute"
-  - "Task @deep-review model limitation"
-  - "9 consecutive thought-only iterations"
-  - "verdict CONDITIONAL not FAIL"
-  - "structural trust preservation overclaim"
-  - "publication gate helper-only no consumer"
-  - "cached continuity newest-by-mtime cross-session leak"
-  - "warm-start variant runner constant pass-rate"
-  - "doc-only rewrite downgrade path"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- 026-graph-context deep review
+- 026 conditional verdict
+- 026 P1 remediation lanes
+- packet 011 resume trust preservation gap
+- packet 012 frozen corpus helper-only
+- packet 013 unfalsifiable bundle benchmark
+- packet 009 publication gate helper only
+- session-bootstrap fail-closed widening
+- cached continuity unscoped selection
+- DR-026-I001 resume trust gap
+- DR-026-I003 unfalsifiable bench
+- cli-codex gpt-5.4 reviewer substitute
+- Task @deep-review model limitation
+- 9 consecutive thought-only iterations
+- verdict CONDITIONAL not FAIL
+- structural trust preservation overclaim
+- publication gate helper-only no consumer
+- cached continuity newest-by-mtime cross-session leak
+- warm-start variant runner constant pass-rate
+- doc-only rewrite downgrade path
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 7
 filesystem_file_count: 7
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":false,"score":0.45,"errors":3,"warnings":2}
+spec_folder_health:
+  pass: false
+  score: 0.45
+  errors: 3
+  warnings: 2
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
@@ -133,16 +138,12 @@ Next: Decide ship-now-vs-fix-first per packet for 009/011/012/013 (5 clean packe
 
 ## CANONICAL SOURCES
 
-**Authoritative documentation for this packet. This memory save is a compact retrieval wrapper per the 006-research-memory-redundancy contract; full narrative context lives in these canonical docs:**
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
 
-- **Review Report (PRIMARY narrative owner)**: [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/review-report.md`](../review/review-report.md) — 9-section synthesis with all 6 P1 findings, evidence, adversarial spot-checks, remediation lanes, and verdict.
-- **Findings Registry (machine-readable)**: [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/deep-review-findings-registry.json`](../review/deep-review-findings-registry.json) — 6 active P1 findings with full evidenceRefs.
-- **Iteration Files**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/iterations/iteration-001.md` through `iteration-015.md` — per-iteration findings + claim-adjudication packets.
-- **Strategy + Dashboard**: [`review/deep-review-strategy.md`](../review/deep-review-strategy.md), [`review/deep-review-dashboard.md`](../review/deep-review-dashboard.md) — convergence trace, dimension coverage, file map.
-- **Parent packet specs (in scope)**: [`spec.md`](../spec.md) (parent), `005-013/spec.md`, `005-013/decision-record.md`, `005-013/implementation-summary.md` (per-packet narrative owners).
-- **Wrapper contract source**: [`001-research-graph-context-systems/006-research-memory-redundancy/spec.md`](../001-research-graph-context-systems/006-research-memory-redundancy/spec.md) §3A Downstream Impact Map (defines no-change/assumption-alignment classifications referenced in this review).
-- **Wrapper contract runtime owner**: [`003-memory-quality-issues/006-memory-duplication-reduction/`](../003-memory-quality-issues/006-memory-duplication-reduction/) (commit `7f0c0572a` — collector/template/sanitizer runtime).
-- **Originating commit reviewed**: `33823d006` (feat 026-graph-context: ship packets 005-013, 40 files, +2125/-391).
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
 
 <!-- /ANCHOR:canonical-docs -->
 
@@ -234,6 +235,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 
 ## MEMORY METADATA
@@ -254,7 +268,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # mirrors frontmatter contextType
+context_type: "general"        # mirrors frontmatter contextType
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -355,28 +369,6 @@ trigger_phrases:
   - "cached continuity newest-by-mtime cross-session leak"
   - "warm-start variant runner constant pass-rate"
   - "doc-only rewrite downgrade path"
-
-key_files:
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

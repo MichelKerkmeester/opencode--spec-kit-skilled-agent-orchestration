@@ -1,49 +1,49 @@
 ---
-title: "5 Iteration Deep Research Session [002-codesight/06-04-26_16-34__5-iteration-deep-research-session-investigating]"
-description: "5-iteration deep-research session investigating the Codesight repository (TypeScript/Node.js zero-runtime-dep CLI) for concrete improvements to Code Environment/Public around..."
+title: 5 Iteration Deep Research Session
+name: 06-04-26_16-34__5-iteration-deep-research-session-investigating
+description: 5-iteration deep-research session investigating the Codesight repository (TypeScript/Node.js zero-runtime-dep CLI) for concrete improvements to Code Environment/Public around...
+type: episodic
 trigger_phrases:
-  - "codesight research findings"
-  - "AST detector pipeline codesight"
-  - "per-tool profile generation overlay"
-  - "blast radius reverse BFS"
-  - "MCP tool surface 8 tools cached"
-  - "zero-dependency AST loader borrow typescript"
-  - "framework ORM detector architecture"
-  - "static codesight artifacts conditional emission"
-  - "Hono NestJS Drizzle AST extraction"
-  - "11.2x token savings unreproducible"
-  - "deep research 002-codesight"
-  - "ScanResult single canonical projection"
-  - "F1 precision recall fixture harness"
-  - "depth cap off by one blast radius"
-  - "all questions answered convergence"
-  - "zero runtime dep"
-  - "source confirmed"
-  - "cli codex gpt-5.4 high"
-  - "reject in current form"
-  - "Code_Environment Public context generation"
-  - "phase 002 codesight"
-  - "Drizzle index extraction gap"
-  - "static artifacts MCP projection"
-  - "cross-phase boundary 003 contextador 004 graphify"
-  - "writeOutput 8 conditional markdown files"
-  - "NestJS decorator walking AST"
-  - "Hono use prefix chain extraction"
-  - "calcMetrics precision recall F1"
-  - "loadTypeScript 3 strategy fallback"
-  - "iterationsCompleted 5"
-importance_tier: "critical"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- codesight research findings
+- AST detector pipeline codesight
+- per-tool profile generation overlay
+- blast radius reverse BFS
+- MCP tool surface 8 tools cached
+- zero-dependency AST loader borrow typescript
+- framework ORM detector architecture
+- static codesight artifacts conditional emission
+- Hono NestJS Drizzle AST extraction
+- 11.2x token savings unreproducible
+- deep research 002-codesight
+- ScanResult single canonical projection
+- F1 precision recall fixture harness
+- depth cap off by one blast radius
+- all questions answered convergence
+- zero runtime dep
+- source confirmed
+- cli codex gpt-5.4 high
+- reject in current form
+- Code_Environment Public context generation
+- phase 002 codesight
+- Drizzle index extraction gap
+- static artifacts MCP projection
+- cross-phase boundary 003 contextador 004 graphify
+importance_tier: critical
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 9
 filesystem_file_count: 9
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 3
+  warnings: 0
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
@@ -142,6 +142,22 @@ Next: Optionally run validate.sh --strict against the spec folder to ensure Leve
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -170,7 +186,7 @@ Next: Optionally run validate.sh --strict against the spec folder to ensure Leve
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -193,11 +209,11 @@ Next: Optionally run validate.sh --strict against the spec folder to ensure Leve
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-005.md` | Modified iteration 005 |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-strategy.md` | Modified deep research strategy | Tree-thinning merged 3 small files (research.md, deep-research-config.json, deep-research-state.jsonl).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/research.md : Modified research | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-config.json : Modified deep research config | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-state.jsonl : Modified deep research state |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -210,7 +226,7 @@ Optionally run validate.sh --strict against the spec folder to ensure Level 3 co
 **Details:** Next: Optionally run validate.sh --strict against the spec folder to ensure Level 3 compliance (spec.md, plan.md, tasks.md, checklist.md, decision-record.md) - this synthesis only produced research/research.md, not the full Level 3 doc set. | Follow-up: Optionally re-dispatch iterations 4 and 5 via cli-codex when API throttling clears, to reproduce findings under the originally requested engine. | Follow-up: Use research findings as input to /spec_kit:plan when ready to design concrete improvements for Code_Environment/Public around the orchestration shape, AST-first detector pattern, per-tool profile overlays, and F1 fixture harness. | Follow-up: Cross-reference with phase 003-contextador research (when complete) to confirm the MCP query interface boundary, and with phase 004-graphify research to confirm the dependency-graph community detection boundary.
 <!-- /ANCHOR:guide-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -502,6 +518,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -523,7 +552,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -602,7 +631,7 @@ key_topics:
   - "remain source-confirmed"
   - "regardless newinforatio"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "codesight research findings"
   - "AST detector pipeline codesight"
@@ -628,43 +657,6 @@ trigger_phrases:
   - "Drizzle index extraction gap"
   - "static artifacts MCP projection"
   - "cross-phase boundary 003 contextador 004 graphify"
-  - "writeOutput 8 conditional markdown files"
-  - "NestJS decorator walking AST"
-  - "Hono use prefix chain extraction"
-  - "calcMetrics precision recall F1"
-  - "loadTypeScript 3 strategy fallback"
-  - "iterationsCompleted 5"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/research.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-001.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-002.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-003.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-004.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/iterations/iteration-005.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-config.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-state.jsonl"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/deep-research-strategy.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

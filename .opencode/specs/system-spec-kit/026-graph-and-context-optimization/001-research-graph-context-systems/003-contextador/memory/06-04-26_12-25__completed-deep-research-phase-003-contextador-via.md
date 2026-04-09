@@ -1,37 +1,43 @@
 ---
-title: "Completed Deep Research Phase 003 [003-contextador/06-04-26_12-25__completed-deep-research-phase-003-contextador-via]"
-description: "Completed deep research phase 003-contextador via 8 cli-codex (gpt-5.4 high) iterations. Produced research/research.md with 15 evidence-backed findings on Contextador's MCP..."
+title: Completed Deep Research Phase 003
+name: 06-04-26_12-25__completed-deep-research-phase-003-contextador-via
+description: Completed deep research phase 003-contextador via 8 cli-codex (gpt-5.4 high) iterations. Produced research/research.md with 15 evidence-backed findings on Contextador's MCP...
+type: episodic
 trigger_phrases:
-  - "contextador research"
-  - "contextador findings"
-  - "phase 003 contextador"
-  - "mcp query interface contextador"
-  - "self-healing context contextador"
-  - "mainframe shared cache"
-  - "93% token reduction claim"
-  - "contextador AGPL licensing"
-  - "cli-codex gpt-5.4 high"
-  - "model first routing"
-  - "token efficiency claim"
-  - "multi provider abstraction"
-  - "dual track licensing"
-  - "deep research 003-contextador"
-  - "cross comparison cocoindex code graph spec kit memory"
-  - "clean room reimplementation"
-  - "runtime retrieval ergonomics"
-  - "graph and context optimization 026"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- contextador research
+- contextador findings
+- phase 003 contextador
+- mcp query interface contextador
+- self-healing context contextador
+- mainframe shared cache
+- 93% token reduction claim
+- contextador AGPL licensing
+- cli-codex gpt-5.4 high
+- model first routing
+- token efficiency claim
+- multi provider abstraction
+- dual track licensing
+- deep research 003-contextador
+- cross comparison cocoindex code graph spec kit memory
+- clean room reimplementation
+- runtime retrieval ergonomics
+- graph and context optimization 026
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
@@ -133,6 +139,22 @@ Next: Optionally run sibling phases 002-codesight, 004-graphify, 005-claudest de
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -210,7 +232,7 @@ Next: Optionally run sibling phases 002-codesight, 004-graphify, 005-claudest de
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -237,11 +259,11 @@ Completed deep research phase 003-contextador via 8 cli-codex (gpt-5.4 high) ite
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/CONTEXT.md` | Modified CONTEXT |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/(merged-small-files)` | Tree-thinning merged 3 small files (deep-research-config.json, deep-research-state.jsonl, deep-research-strategy.md).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-config.json : Modified deep research config | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-state.jsonl : Modified deep research state | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-strategy.md : Modified deep research strategy |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -254,7 +276,7 @@ Optionally run sibling phases 002-codesight, 004-graphify, 005-claudest deep res
 **Details:** Next: Optionally run sibling phases 002-codesight, 004-graphify, 005-claudest deep research with same cli-codex (gpt-5.4 high) approach | Follow-up: Synthesize a track-level summary across 001-005 phases under 026-graph-and-context-optimization/ once all sibling research packets are complete | Follow-up: If pursuing any 'adopt now' recommendation, create a follow-up implementation spec under specs/system-spec-kit/026-graph-and-context-optimization/ that translates the recommendation into a concrete code change with clean-room reimplementation | Follow-up: Validate the prototype-later recommendations against measured task-quality benchmarks before promoting any of them
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -606,6 +628,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -627,7 +662,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -706,7 +741,7 @@ key_topics:
   - "clean-room reimplementation"
   - "outside 003-contextador/"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "contextador research"
   - "contextador findings"
@@ -726,38 +761,6 @@ trigger_phrases:
   - "clean room reimplementation"
   - "runtime retrieval ergonomics"
   - "graph and context optimization 026"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/spec.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/plan.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/tasks.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/checklist.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/decision-record.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/implementation-summary.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/CONTEXT.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-config.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-state.jsonl"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-strategy.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

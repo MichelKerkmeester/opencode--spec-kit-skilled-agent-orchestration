@@ -1,41 +1,47 @@
 ---
-title: "Deep Research Run 8 [001-claude-optimization-settings/06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot]"
-description: "Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on Claude Code token waste against Code Environment/Public state. Produced..."
+title: Deep Research Run 8
+name: 06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot
+description: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on Claude Code token waste against Code Environment/Public state. Produced...
+type: episodic
 trigger_phrases:
-  - "claude code optimization"
-  - "ENABLE_TOOL_SEARCH"
-  - "cache expiry"
-  - "reddit audit token waste"
-  - "cli-copilot deep-research"
-  - "claude optimization settings"
-  - "cache warning hooks"
-  - "claude code field report"
-  - "phase 005-claudest boundary"
-  - "F1 ENABLE_TOOL_SEARCH baseline"
-  - "F4 idle timestamp session-stop"
-  - "F6 cache rebuild session-prime"
-  - "F8 compact-inject reject"
-  - "F14 transcript auditor prototype"
-  - "858 sessions 926 audit"
-  - "18903 turns 11357 denominator"
-  - "232 cache cliffs 54% idle gap"
-  - "8 iteration synthesis blueprint"
-  - "17 deduplicated F1-F17 findings"
-  - "8 adopt-now 7 prototype-later 2 reject"
-  - "research.md 12 sections"
-  - "convergence 0.93 to 0.12"
-importance_tier: "important"
-contextType: "research"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- claude code optimization
+- ENABLE_TOOL_SEARCH
+- cache expiry
+- reddit audit token waste
+- cli-copilot deep-research
+- claude optimization settings
+- cache warning hooks
+- claude code field report
+- phase 005-claudest boundary
+- F1 ENABLE_TOOL_SEARCH baseline
+- F4 idle timestamp session-stop
+- F6 cache rebuild session-prime
+- F8 compact-inject reject
+- F14 transcript auditor prototype
+- 858 sessions 926 audit
+- 18903 turns 11357 denominator
+- 232 cache cliffs 54% idle gap
+- 8 iteration synthesis blueprint
+- 17 deduplicated F1-F17 findings
+- 8 adopt-now 7 prototype-later 2 reject
+- research.md 12 sections
+- convergence 0.93 to 0.12
+importance_tier: important
+contextType: research
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
+spec_folder_health:
+  pass: true
+  score: 0.75
+  errors: 0
+  warnings: 5
 ---
 
 # Deep Research Run 8 Iterations Via Cli Copilot
@@ -128,6 +134,22 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -166,7 +188,7 @@ Next: Continue implementation
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -187,11 +209,11 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 - 7 prototype-later items defer to cache-warning hooks and observability layer
 - 2 reject items: compact-inject as warning owner (F8), Claude JSONL as core infra (F16)
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -204,7 +226,7 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 **Details:** claude code optimization | ENABLE_TOOL_SEARCH | cache expiry | reddit audit | token waste | cli-copilot deep-research | claude optimization settings | cache warning hooks | claude code field report | tool schema bloat | skill bloat detection | jsonl audit fragility | phase 005-claudest boundary
 <!-- /ANCHOR:implementation-deepresearch-run-iterations-via-6686f5ea -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -433,6 +455,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -533,7 +568,7 @@ key_topics:
   - "reddit field report audit"
   - "12 section research synthesis"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "claude code optimization"
   - "ENABLE_TOOL_SEARCH"
@@ -557,41 +592,6 @@ trigger_phrases:
   - "8 adopt-now 7 prototype-later 2 reject"
   - "research.md 12 sections"
   - "convergence 0.93 to 0.12"
-
-key_files:
-  - "checklist.md"
-  - "decision-record.md"
-  - "external/reddit_post.md"
-  - "implementation-summary.md"
-  - "phase-research-prompt.md"
-  - "plan.md"
-  - "research/deep-research-config.json"
-  - "research/deep-research-dashboard.md"
-  - "research/deep-research-strategy.md"
-  - "research/findings-registry.json"
-  - "research/research.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

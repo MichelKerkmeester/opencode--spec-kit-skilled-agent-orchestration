@@ -1,59 +1,49 @@
 ---
-title: "Master Consolidation v1 — 5-System External Research (8 Codex Iterations)"
-description: "v1 master consolidation of 5-system external research (Claude Optimization Settings, CodeSight, Contextador, Graphify, Claudest). 8 codex/gpt-5.4/high iterations in --full-auto orchestrated by Claude. Built upon 5 first-pass packets without redoing them. Closed 16/26 gaps, partially closed 8, marked 2 UNKNOWN. Answered all 6 cross-phase questions Q-A through Q-F. Final composite 0.94. Produced research.md (6015w/11 sections/125 citations), findings-registry.json (65 findings), recommendations.md (10 ranked), cross-phase-matrix.md (9 caps × 6 systems). Charter at scratch/deep-research-prompt-master-consolidation.md."
+title: "Master Consolidation v1 \u2014 5-System External Research (8 Codex Iterations)"
+name: 07-04-26_11-57__master-consolidation-of-5-system-external
+description: "v1 master consolidation of 5-system external research (Claude Optimization Settings, CodeSight, Contextador, Graphify, Claudest). 8 codex/gpt-5.4/high iterations in --full-auto orchestrated by Claude. Built upon 5 first-pass packets without redoing them. Closed 16/26 gaps, partially closed 8, marked 2 UNKNOWN. Answered all 6 cross-phase questions Q-A through Q-F. Final composite 0.94. Produced research.md (6015w/11 sections/125 citations), findings-registry.json (65 findings), recommendations.md (10 ranked), cross-phase-matrix.md (9 caps \xD7 6 systems). Charter at scratch/deep-research-prompt-master-consolidation.md."
+type: episodic
 trigger_phrases:
-  - "graph and context optimization"
-  - "026-graph-and-context-optimization"
-  - "001-research-graph-context-systems"
-  - "master consolidation"
-  - "second-pass deep research"
-  - "deep-research second pass"
-  - "external systems research"
-  - "claude optimization settings"
-  - "codesight"
-  - "contextador"
-  - "graphify"
-  - "claudest"
-  - "token honesty audit"
-  - "capability matrix"
-  - "cross-phase capability matrix"
-  - "composition risk"
-  - "adoption sequencing"
-  - "killer combo"
-  - "license runtime feasibility"
-  - "AGPL Contextador"
-  - "Public split topology"
-  - "CocoIndex Code Graph Spec Kit Memory"
-  - "frozen task methodology"
-  - "provider-counted tokens"
-  - "Stop-time summary"
-  - "cached SessionStart"
-  - "graph-first PreToolUse hook"
-  - "codex orchestration"
-  - "codex full-auto"
-  - "deep research prompt master consolidation"
-  - "findings registry"
-  - "claude opus orchestrator"
-  - "bootstrap facade"
-  - "Q-A token honesty"
-  - "Q-B capability matrix"
-  - "Q-C composition risk"
-  - "Q-D adoption sequencing"
-  - "Q-E license runtime"
-  - "Q-F killer combos"
-  - "ENABLE_TOOL_SEARCH"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- graph and context optimization
+- 026-graph-and-context-optimization
+- 001-research-graph-context-systems
+- master consolidation
+- second-pass deep research
+- deep-research second pass
+- external systems research
+- claude optimization settings
+- codesight
+- contextador
+- graphify
+- claudest
+- token honesty audit
+- capability matrix
+- cross-phase capability matrix
+- composition risk
+- adoption sequencing
+- killer combo
+- license runtime feasibility
+- AGPL Contextador
+- Public split topology
+- CocoIndex Code Graph Spec Kit Memory
+- frozen task methodology
+- provider-counted tokens
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 8
 filesystem_file_count: 8
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 3
+  warnings: 0
 ---
 > **Note:** This memory was saved via JSON-mode (`generate-context.js --json`) so the auto-extractor's quality score (0/100) reflects the absence of raw conversation messages, NOT the underlying session quality. The actual session orchestrated 8 codex iterations and produced 4 master deliverables under research/. See sessionSummary and key decisions below.
 
@@ -152,6 +142,22 @@ Next: Optional: review research.md (root) and recommendations.md for any final a
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -180,7 +186,7 @@ Next: Optional: review research.md (root) and recommendations.md for any final a
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -208,11 +214,11 @@ Master consolidation of 5-system external research (graph + context optimization
 | `research/deep-research-{config.json,state.jsonl,strategy.md,dashboard.md}` | Modified deep research... |
 | `.opencode/skill/cli-codex/(merged-small-files)` | Tree-thinning merged 1 small files (SKILL.md).  Merged from .opencode/skill/cli-codex/SKILL.md : Modified SKILL |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -225,7 +231,7 @@ Optional: review research.md (root) and recommendations.md for any final adjustm
 **Details:** Next: Optional: review research.md (root) and recommendations.md for any final adjustments | Follow-up: Optional: open R1 (publish honest token-measurement rule) as a separate spec folder under.opencode/specs/ since it's the highest-priority P0 fast win | Follow-up: Optional: consider an R2/R3 implementation packet for deterministic Stop-time summaries + cached SessionStart fast path (these are R1's natural follow-ons in the Q-D P0 phase) | Follow-up: Read the 4 master deliverables: research/research.md, research/findings-registry.json, research/recommendations.md, research/cross-phase-matrix.md | Follow-up: Iterate on iter-9+ only if specific gaps need re-attempt (the 2 UNKNOWN gaps could be revisited if measurement instrumentation lands)
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -605,6 +611,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -626,7 +645,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -705,7 +724,7 @@ key_topics:
   - "re-detect already-written"
   - "authority orchestration"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "graph and context optimization"
   - "026-graph-and-context-optimization"
@@ -731,52 +750,6 @@ trigger_phrases:
   - "CocoIndex Code Graph Spec Kit Memory"
   - "frozen task methodology"
   - "provider-counted tokens"
-  - "Stop-time summary"
-  - "cached SessionStart"
-  - "graph-first PreToolUse hook"
-  - "codex orchestration"
-  - "codex full-auto"
-  - "deep research prompt master consolidation"
-  - "findings registry"
-  - "claude opus orchestrator"
-  - "bootstrap facade"
-  - "Q-A token honesty"
-  - "Q-B capability matrix"
-  - "Q-C composition risk"
-  - "Q-D adoption sequencing"
-  - "Q-E license runtime"
-  - "Q-F killer combos"
-  - "ENABLE_TOOL_SEARCH"
-
-key_files:
-  - "research/research.md"
-  - "research/findings-registry.json"
-  - "research/recommendations.md"
-  - "research/cross-phase-matrix.md"
-  - "research/phase-1-inventory.json"
-  - "research/iterations/"
-  - "research/deep-research-{config.json,state.jsonl,strategy.md,dashboard.md}"
-  - ".opencode/skill/cli-codex/SKILL.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

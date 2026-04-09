@@ -1,88 +1,49 @@
 ---
-title: "Spec-Doc Perfection - Master Research Packet Closeout"
-description: "Three-phase spec-documentation hardening pass for the master graph-and-context research packet. The run created the root Level 3 packet, patched child-folder drift, and established the canonical current-plus-archive root research layout. This memory was manually refined on 2026-04-08 so the resume state reflects the current strict-clean packet rather than the earlier warning-only checkpoint."
+title: Spec-Doc Perfection - Master Research Packet Closeout
+name: 07-04-26_14-55__spec-documentation-perfection-task-used-cli
+description: Three-phase spec-documentation hardening pass for the master graph-and-context research packet. The run created the root Level 3 packet, patched child-folder drift, and established the canonical current-plus-archive root research layout. This memory was manually refined on 2026-04-08 so the resume state reflects the current strict-clean packet rather than the earlier warning-only checkpoint.
+type: episodic
 trigger_phrases:
-  - "spec documentation perfection"
-  - "spec doc perfection"
-  - "spec doc audit"
-  - "Level 3 spec docs"
-  - "Level 3 packet"
-  - "level_3 templates"
-  - "system-spec-kit templates"
-  - "graph and context optimization"
-  - "026-graph-and-context-optimization"
-  - "001-research-graph-context-systems"
-  - "PARENT spec docs"
-  - "PARENT Level 3"
-  - "cli-copilot autopilot"
-  - "copilot gpt-5.4 high"
-  - "copilot --effort high"
-  - "copilot --allow-all-tools"
-  - "phase 1 audit"
-  - "phase 2 create patch"
-  - "phase 3 validation"
-  - "spec-doc-audit.md"
-  - "spec-doc-phase-2-summary.md"
-  - "spec-doc-phase-3-validation.md"
-  - "description.json schema"
-  - "folder-discovery.ts"
-  - "memorySequence"
-  - "ANCHORS_VALID warning"
-  - "ADR multiplicity mismatch"
-  - "multi-ADR block"
-  - "metadata anchor pair"
-  - "L2 ENHANCED ROLLBACK"
-  - "L3 CRITICAL PATH"
-  - "L3 MILESTONES"
-  - "phase-research-prompt.md broken link"
-  - "Files Changed table removal"
-  - "alignment drift verifier"
-  - "validate.sh strict"
-  - "PASS-WITH-CAVEATS verdict"
-  - "002-codesight description.json"
-  - "PARENT description.json"
-  - "empty memorynamehistory"
-  - "broken links"
-  - "memory name history"
-  - "spec folder"
-  - "last updated"
-  - "spec id"
-  - "folder slug"
-  - "parent chain"
-  - "memory sequence"
-  - "context type"
-  - "anchors valid"
-  - "trigger phrases"
-  - "importance tier"
-  - "cli copilot"
-  - "system spec kit"
-  - "read only"
-  - "sub folders"
-  - "decision record"
-  - "implementation summary"
-  - "allow all tools"
-  - "no ask user"
-  - "reasoning effort"
-  - "research only"
-  - "folder discovery"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- spec documentation perfection
+- spec doc perfection
+- spec doc audit
+- Level 3 spec docs
+- Level 3 packet
+- level_3 templates
+- system-spec-kit templates
+- graph and context optimization
+- 026-graph-and-context-optimization
+- 001-research-graph-context-systems
+- PARENT spec docs
+- PARENT Level 3
+- cli-copilot autopilot
+- copilot gpt-5.4 high
+- copilot --effort high
+- copilot --allow-all-tools
+- phase 1 audit
+- phase 2 create patch
+- phase 3 validation
+- spec-doc-audit.md
+- spec-doc-phase-2-summary.md
+- spec-doc-phase-3-validation.md
+- description.json schema
+- folder-discovery.ts
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.8,"errors":0,"warnings":4}
+spec_folder_health:
+  pass: true
+  score: 0.8
+  errors: 0
+  warnings: 4
 ---
 > **Note:** This memory was saved via JSON-mode (`generate-context.js --json`) so the auto-extractor's quality score (0/100) reflects the absence of raw conversation messages, NOT the underlying session quality. The actual session orchestrated 3 cli-copilot phases producing 23+ file operations across the parent + 5 sub-folder spec packets. See sessionSummary, key decisions, and the phase reports under `scratch/` for full details.
 
@@ -182,6 +143,22 @@ Next: Use the strict-clean parent packet and canonical root research files as th
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -261,7 +238,7 @@ Next: Use the strict-clean parent packet and canonical root research files as th
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -291,11 +268,11 @@ Spec documentation perfection task. Used cli-copilot/gpt-5.4/high autopilot in 3
 | `002-codesight/(merged-small-files)` | Tree-thinning merged 1 small files (description.json).  Merged from 002-codesight/description.json : { "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight", "description": "Spec: 002 CodeSight research phase covering scan-time detector discipline, AST and regex provenance, MCP tool design, profile generation, and blast-radius analysis patterns for Public.", "keywords": [ "spec", "002", "codesight", "research", "ast", "detectors", "profiles", "blast-radius" ], "lastUpdated": "2026-04-07T13:06 |
 | `001-claude-optimization-settings/(merged-small-files)` | Tree-thinning merged 2 small files (spec.md, tasks.md).  Merged from 001-claude-optimization-settings/spec.md : | title: "Spec: Phase 001 - Claude Optimization Settings (Reddit field-report audit)" description: "Deliver an evidence-anchored recommendation set for reducing Claude Code token spend in Code_Environment/Public, derived from auditing a primary-source Reddit field report covering 858-926 sessions." trigger_phrases: - "claude optimization settings" - "enable tool search" - "cache expiry" - "token waste" - "reddit field report audit" importance_tier: "important" contextType: "research" | Merged from 001-claude-optimization-settings/tasks.md : | title: "Tasks: Phase 001 - Claude Optimization Settings (Reddit field-report audit)" description: "Backfilled task list for the 8-iteration deep-research run plus spec doc creatio... |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -308,7 +285,7 @@ Optional: review the new PARENT spec docs (spec.md/plan.md/tasks.md/checklist.md
 **Details:** Next: Optional: review the new PARENT spec docs (spec.md/plan.md/tasks.md/checklist.md/decision-record.md/implementation-summary.md/description.json) for content accuracy | Follow-up: Optional: if strict-green is required later, fix the strict validator's ADR multiplicity check rather than deleting the multi-ADR navigation from decision records | Follow-up: The packet is ready for handoff. Use the new tasks.md as the executable work breakdown for downstream implementation (each task references a recommendation ID R1-R10 from recommendations-v2.md) | Follow-up: If you want to clean up broken links in frozen memory/ snapshots or vendored 005-claudest/external/ third-party docs, those would be a separate scoped task | Follow-up: Future spec-doc work should use cli-copilot with --effort high in 3-phase audit/create-patch/validate orchestration; this proven pattern took ~54 minutes total for a packet of this size
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -743,6 +720,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -764,7 +754,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -843,7 +833,7 @@ key_topics:
   - "server/lib/search/folder-discovery.ts fields"
   - "memorysequence memorynamehistory"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "spec documentation perfection"
   - "spec doc perfection"
@@ -869,82 +859,6 @@ trigger_phrases:
   - "spec-doc-phase-3-validation.md"
   - "description.json schema"
   - "folder-discovery.ts"
-  - "memorySequence"
-  - "ANCHORS_VALID warning"
-  - "ADR multiplicity mismatch"
-  - "multi-ADR block"
-  - "metadata anchor pair"
-  - "L2 ENHANCED ROLLBACK"
-  - "L3 CRITICAL PATH"
-  - "L3 MILESTONES"
-  - "phase-research-prompt.md broken link"
-  - "Files Changed table removal"
-  - "alignment drift verifier"
-  - "validate.sh strict"
-  - "PASS-WITH-CAVEATS verdict"
-  - "002-codesight description.json"
-  - "PARENT description.json"
-  - "empty memorynamehistory"
-  - "broken links"
-  - "memory name history"
-  - "spec folder"
-  - "last updated"
-  - "spec id"
-  - "folder slug"
-  - "parent chain"
-  - "memory sequence"
-  - "context type"
-  - "anchors valid"
-  - "trigger phrases"
-  - "importance tier"
-  - "cli copilot"
-  - "system spec kit"
-  - "read only"
-  - "sub folders"
-  - "decision record"
-  - "implementation summary"
-  - "allow all tools"
-  - "no ask user"
-  - "reasoning effort"
-  - "research only"
-  - "folder discovery"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems"
-
-key_files:
-  - "spec.md"
-  - "plan.md"
-  - "tasks.md"
-  - "checklist.md"
-  - "decision-record.md"
-  - "implementation-summary.md"
-  - "description.json"
-  - "002-codesight/description.json"
-  - "001-claude-optimization-settings/spec.md"
-  - "001-claude-optimization-settings/tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*

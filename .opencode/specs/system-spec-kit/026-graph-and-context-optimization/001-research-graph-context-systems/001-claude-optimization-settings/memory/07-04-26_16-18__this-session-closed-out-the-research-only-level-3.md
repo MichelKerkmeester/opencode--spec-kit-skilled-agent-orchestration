@@ -1,24 +1,30 @@
 ---
-title: "Phase 001 100% Completion — Reconciled to F1-F24 / 13 Iterations via cli-codex Closeout"
-description: "Closeout pass on the Phase 001 Claude-optimization-settings packet: reconciled the Level 3 docs to the verified 24 findings (F1-F24), 13 iterations, and 11/11/2 recommendation split. Manually refined on 2026-04-08 so this recovery memory reflects the current strict-clean packet instead of the earlier warning-only validation checkpoint."
+title: "Phase 001 100% Completion \u2014 Reconciled to F1-F24 / 13 Iterations via cli-codex Closeout"
+name: 07-04-26_16-18__this-session-closed-out-the-research-only-level-3
+description: 'Closeout pass on the Phase 001 Claude-optimization-settings packet: reconciled the Level 3 docs to the verified 24 findings (F1-F24), 13 iterations, and 11/11/2 recommendation split. Manually refined on 2026-04-08 so this recovery memory reflects the current strict-clean packet instead of the earlier warning-only validation checkpoint.'
+type: episodic
 trigger_phrases:
-  - "claude optimization settings"
-  - "reddit field report audit"
-  - "F1-F24 findings"
-  - "claude code session waste"
-  - "extended skeptical pass"
+- claude optimization settings
+- reddit field report audit
+- F1-F24 findings
+- claude code session waste
+- extended skeptical pass
 importance_tier: important
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
+spec_folder_health:
+  pass: true
+  score: 0.75
+  errors: 0
+  warnings: 5
 ---
 
 # This Session Closed Out The Research Only Level 3
@@ -113,6 +119,22 @@ Next: Treat this packet as complete and use research/research.md plus the checkl
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -151,7 +173,7 @@ Next: Treat this packet as complete and use research/research.md plus the checkl
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -166,11 +188,11 @@ This session closed out the research-only Level 3 packet for Claude optimization
 - Boundary decision (ADR-004): keep this packet as the recommendation layer and defer implementation provenance to phase 005-claudest.
 - Iteration extension amendment: the loop was extended from 8 to 13 iterations and the final closeout now reflects that full lineage.
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -183,7 +205,7 @@ This session closed out the research-only Level 3 packet for Claude optimization
 **Details:** claude optimization settings | reddit field report audit | F1-F24 findings | claude code session waste | extended skeptical pass | packet closeout complete | recommendation split
 <!-- /ANCHOR:discovery-session-closed-out-researchonly-ec43527f -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -409,6 +431,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -430,7 +465,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -509,81 +544,13 @@ key_topics:
   - "decision adr-002"
   - "explicit instead"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "claude optimization settings"
   - "reddit field report audit"
   - "F1-F24 findings"
   - "claude code session waste"
   - "extended skeptical pass"
-  - "packet closeout complete"
-  - "recommendation split"
-  - "research only"
-  - "primary source"
-  - "turn count"
-  - "four tier"
-  - "cli codex"
-  - "session closed"
-  - "context optimization"
-  - "context systems"
-  - "chosen approach system"
-  - "framing decision"
-  - "decision adr-001"
-  - "adr-001 treat"
-  - "treat reddit"
-  - "reddit post"
-  - "post primary-source"
-  - "primary-source field"
-  - "report rather"
-  - "rather implementation"
-  - "discrepancy preservation"
-  - "preservation decision"
-  - "decision adr-002"
-  - "adr-002 keep"
-  - "keep session"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/001"
-  - "claude"
-  - "optimization"
-  - "settings"
-
-key_files:
-  - "checklist.md"
-  - "decision-record.md"
-  - "description.json"
-  - "external/reddit_post.md"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "research/deep-research-config.json"
-  - "research/deep-research-dashboard.md"
-  - "research/deep-research-strategy.md"
-  - "research/findings-registry.json"
-  - "research/research.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*

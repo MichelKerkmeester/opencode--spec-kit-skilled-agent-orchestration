@@ -1,53 +1,49 @@
 ---
-title: "12-iteration Claudest deep-research audit complete (005-claudest)"
-description: "Completed a 12-iteration deep-research audit of the external Claudest Claude Code plugin marketplace and the flagship claude-memory plugin. Original 7-iteration charter answered Q1-Q9 (composite_converged 0.84); user-requested continuation iterations 8-12 deepened Q10 into a usable handoff package: matrix synthesis, sequencing against existing Public packets, smallest-safe-v1 slicing per adopt-now lane, packet-ready briefs for FTS capability cascade and normalized analytics tables, and uncertainty closeout against Public's actual mcp_server source. All 12 iterations dispatched cleanly via cli-codex gpt-5.4 high in fast mode."
+title: 12-iteration Claudest deep-research audit complete (005-claudest)
+name: 06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of
+description: 'Completed a 12-iteration deep-research audit of the external Claudest Claude Code plugin marketplace and the flagship claude-memory plugin. Original 7-iteration charter answered Q1-Q9 (composite_converged 0.84); user-requested continuation iterations 8-12 deepened Q10 into a usable handoff package: matrix synthesis, sequencing against existing Public packets, smallest-safe-v1 slicing per adopt-now lane, packet-ready briefs for FTS capability cascade and normalized analytics tables, and uncertainty closeout against Public''s actual mcp_server source. All 12 iterations dispatched cleanly via cli-codex gpt-5.4 high in fast mode.'
+type: episodic
 trigger_phrases:
-  - "005-claudest deep research complete"
-  - "Claudest claude-memory plugin research"
-  - "FTS5 BM25 cascade research"
-  - "Claudest SessionStart cached summary"
-  - "extract-learnings auditor discoverer split"
-  - "get-token-insights cache cliff dashboard"
-  - "Claude Code plugin marketplace research"
-  - "FTS capability cascade packet brief"
-  - "normalized analytics tables packet brief"
-  - "claude-memory v3 SQLite branch BM25"
-  - "deep research codex gpt-5.4 fast mode"
-  - "cli-codex full-auto workspace-write"
-  - "memory hierarchy placement rubric"
-  - "branches_fts BM25 ranking aggregated_content"
-  - "summarizer deterministic Python no LLM"
-  - "memory-auditor STALE CONTRADICT MERGE DATE_FIX"
-  - "signal-discoverer UPDATE FILL_GAP NOISE"
-  - "model_pricing cache tier normalized cost"
-  - "fts5_bm25 like_scan fallback narrowed"
-  - "transcriptPath replay fingerprint hook state"
-  - "memory_fts USING fts5 schema gap"
-  - "hybrid-search graph-search-fn capability helper"
-  - "Claudest cross-phase boundary 001-claude-optimization-settings"
-  - "claudest adopt prototype reject matrix"
-  - "12 iteration deep research audit Claudest"
-  - "Q10 synthesis matrix continuation"
-  - "first follow-on packet FTS cascade"
-  - "second follow-on packet normalized analytics"
-  - "024 003 stop hook payload uncertainty"
-  - "branches_fts aggregated_content context_summary"
-  - "compute_session_analytics cache cliffs"
-  - "dashboard JSON contract trends skill_usage"
-  - "extract-learnings consolidation flow"
-  - "sk-deep-research convergence loop"
-importance_tier: "critical"
-contextType: "research"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- 005-claudest deep research complete
+- Claudest claude-memory plugin research
+- FTS5 BM25 cascade research
+- Claudest SessionStart cached summary
+- extract-learnings auditor discoverer split
+- get-token-insights cache cliff dashboard
+- Claude Code plugin marketplace research
+- FTS capability cascade packet brief
+- normalized analytics tables packet brief
+- claude-memory v3 SQLite branch BM25
+- deep research codex gpt-5.4 fast mode
+- cli-codex full-auto workspace-write
+- memory hierarchy placement rubric
+- branches_fts BM25 ranking aggregated_content
+- summarizer deterministic Python no LLM
+- memory-auditor STALE CONTRADICT MERGE DATE_FIX
+- signal-discoverer UPDATE FILL_GAP NOISE
+- model_pricing cache tier normalized cost
+- fts5_bm25 like_scan fallback narrowed
+- transcriptPath replay fingerprint hook state
+- memory_fts USING fts5 schema gap
+- hybrid-search graph-search-fn capability helper
+- Claudest cross-phase boundary 001-claude-optimization-settings
+- claudest adopt prototype reject matrix
+importance_tier: critical
+contextType: research
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
+spec_folder_health:
+  pass: true
+  score: 0.75
+  errors: 0
+  warnings: 5
 ---
 # 12-iteration Claudest deep-research audit complete
 
@@ -175,6 +171,22 @@ Next: Open FTS capability cascade follow-on packet (R001) under system-spec-kit/
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -217,7 +229,7 @@ Next: Open FTS capability cascade follow-on packet (R001) under system-spec-kit/
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -234,11 +246,11 @@ Completed a 12-iteration deep-research audit of the external Claudest Claude Cod
 - Cross-phase boundary with sibling phase 001-claude-optimization-settings is explicitly bounded: phase 005 owns implementation-side analysis (Claudest source); phase 001 owns Reddit-audit pattern analysis. No duplicate findings across siblings.
 - All six Level 3 spec docs (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md) verified by validate.sh --strict (0 errors / 0 warnings). Sign-offs from Orchestrator + User + Validator are present.
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
@@ -259,7 +271,7 @@ Completed a 12-iteration deep-research audit of the external Claudest Claude Cod
 **Details:** Next: [x] Done: 12-iteration deep-research session complete; all 10 questions Q1-Q10 answered with source-cited evidence | Follow-up: [x] Done: Adoption matrix (9 tracks) delivered in research/research.md §13 + §18.1 with evidence-grounded recommendations | Follow-up: [x] Done: Packet-ready Brief A (FTS capability cascade) delivered in research/research.md §18.4 with named Public file surfaces and forced-degrade verification matrix | Follow-up: [x] Done: Packet-ready Brief B (normalized analytics tables) delivered in research/research.md §18.4 with explicit entry conditions for the 024/003 producer metadata patch | Follow-up: [x] Done: Iter 12 closeout against Public source (sqlite-fts.ts + session-stop.ts) confirmed gaps; Brief A v1 narrowed and Brief B prerequisites locked in | Follow-up: [x] Done: Six Level 3 spec docs created and validated (validate.sh --strict pass with 0 errors / 0 warnings) | Follow-up: [x] Done: Memory rebuilt with high quality after archiving prior thin saves | Follow-up: Recommendation: Open the FTS capability cascade follow-on packet under system-spec-kit/023 family with narrowed v1 scope (fts5_bm25 -> like_scan only) and consumers in hybrid-search.ts and graph-search-fn.ts | Follow-up: Recommendation: Add a bounded producer metadata patch to system-spec-kit/024/003 Stop hook to persist transcriptPath + replay fingerprint into HookState and expand metrics with cache-read/cache-write token fields | Follow-up: Recommendation: Open the normalized analytics tables follow-on packet only AFTER the 024/003 producer patch lands
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -797,7 +809,7 @@ context_type: "research"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
+  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
   half_life_days: 365     # decay half-life in days (0 = never decays)
   decay_factors:
     base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
@@ -872,7 +884,7 @@ key_topics:
   - "requested iterations"
   - "normalized analytics"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "005-claudest deep research complete"
   - "Claudest claude-memory plugin research"
@@ -898,77 +910,6 @@ trigger_phrases:
   - "hybrid-search graph-search-fn capability helper"
   - "Claudest cross-phase boundary 001-claude-optimization-settings"
   - "claudest adopt prototype reject matrix"
-  - "with wrong"
-  - "wrong active"
-  - "claude session id"
-  - "last transcript offset"
-  - "transcript path"
-  - "session summary"
-  - "key decisions"
-  - "next steps"
-  - "tool calls"
-  - "recent context"
-  - "resolve project phase"
-  - "determine session status"
-  - "composite converged"
-  - "synthesis complete"
-  - "like scan"
-  - "model pricing versioned"
-  - "claude memory"
-  - "cli codex"
-  - "full auto"
-  - "workspace write"
-  - "read only"
-  - "meta synthesis"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/005"
-  - "claudest"
-
-key_files:
-  - "checklist.md"
-  - "decision-record.md"
-  - "description.json"
-  - "external/.claude-plugin/marketplace.json"
-  - "external/CHANGELOG.md"
-  - "external/CLAUDE.md"
-  - "external/docs/session-context-injection-spec.md"
-  - "external/plugins/claude-claw/.claude-plugin/plugin.json"
-  - "external/plugins/claude-claw/CHANGELOG.md"
-  - "external/plugins/claude-claw/README.md"
-  - "external/plugins/claude-claw/skills/claw-advisor/references/topic-routing.md"
-  - "external/plugins/claude-claw/skills/claw-advisor/SKILL.md"
-  - "external/plugins/claude-claw/skills/create-claw-skill/examples/sample-command/SKILL.md"
-  - "external/plugins/claude-claw/skills/create-claw-skill/references/claw-patterns.md"
-  - "external/plugins/claude-claw/skills/create-claw-skill/references/frontmatter-options.md"
-  - "external/plugins/claude-claw/skills/create-claw-skill/references/script-patterns.md"
-  - "external/plugins/claude-claw/skills/create-claw-skill/SKILL.md"
-  - "external/plugins/claude-coding/.claude-plugin/plugin.json"
-  - "external/plugins/claude-coding/agents/architecture-auditor.md"
-  - "external/plugins/claude-coding/agents/code-auditor.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-

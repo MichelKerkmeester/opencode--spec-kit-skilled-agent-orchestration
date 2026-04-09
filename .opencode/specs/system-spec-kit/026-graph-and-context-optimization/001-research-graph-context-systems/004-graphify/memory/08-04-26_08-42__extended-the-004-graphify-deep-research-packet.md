@@ -1,34 +1,40 @@
 ---
-title: "004 Graphify Deep-Research Extension to 20 Iterations"
-description: "Extended the 004-graphify deep-research packet from 10 to 20 total iterations in completed-continue mode, added the Public rollout-translation findings for Q13-Q22, refreshed reducer-owned state, synchronized the packet docs, and closed the phase in a strict-clean state."
+title: 004 Graphify Deep-Research Extension to 20 Iterations
+name: 08-04-26_08-42__extended-the-004-graphify-deep-research-packet
+description: Extended the 004-graphify deep-research packet from 10 to 20 total iterations in completed-continue mode, added the Public rollout-translation findings for Q13-Q22, refreshed reducer-owned state, synchronized the packet docs, and closed the phase in a strict-clean state.
+type: episodic
 trigger_phrases:
-  - "004-graphify wave 2"
-  - "completed-continue deep research"
-  - "graphify rollout translation"
-  - "20 iteration graphify packet"
-  - "public graph-first routing"
-  - "graphify payload contracts"
-  - "graphify clustering rollout"
-  - "graphify multimodal scope"
-  - "architecture native"
-  - "trust boundary"
-  - "bridge surface"
-  - "rollout plan"
-  - "strict validation"
-  - "research"
-  - "graphify"
-importance_tier: "critical"
-contextType: "research"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- 004-graphify wave 2
+- completed-continue deep research
+- graphify rollout translation
+- 20 iteration graphify packet
+- public graph-first routing
+- graphify payload contracts
+- graphify clustering rollout
+- graphify multimodal scope
+- architecture native
+- trust boundary
+- bridge surface
+- rollout plan
+- strict validation
+- research
+- graphify
+importance_tier: critical
+contextType: research
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":1.0,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1.0
+  errors: 0
+  warnings: 0
 ---
 > **Manual refinement note:** This memory was edited on 2026-04-08 to remove stale in-progress language and align the recovery summary with the final strict-clean packet state.
 
@@ -126,6 +132,22 @@ Next: Use the completed research packet as the canonical reference; open a follo
 - Last: Next Steps
 
 <!-- /ANCHOR:continue-session -->
+
+---
+
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
 
 ---
 
@@ -243,7 +265,7 @@ Extended the 004-graphify deep-research packet from 10 to 20 total iterations in
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -287,7 +309,7 @@ Open a follow-on implementation packet if the team wants to ship the phased roll
 **Details:** Next: Open a follow-on implementation packet if the team wants to ship the phased rollout recommendations from section 13.B and the updated section 12 guidance. | Follow-up: If rollout begins, start with additive payload/provenance enrichment and routing-playbook extensions before any clustering work.
 <!-- /ANCHOR:implementation-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -489,6 +511,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -514,7 +549,7 @@ context_type: "research"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
+  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
   half_life_days: 365     # decay half-life in days (0 = never decays)
   decay_factors:
     base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
@@ -589,71 +624,23 @@ key_topics:
   - "rollout guidance"
   - "guidance rather"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
+  - "004-graphify wave 2"
   - "completed-continue deep research"
   - "graphify rollout translation"
+  - "20 iteration graphify packet"
   - "public graph-first routing"
   - "graphify payload contracts"
   - "graphify clustering rollout"
   - "graphify multimodal scope"
-  - "completed continue"
-  - "decision record"
-  - "tree thinning"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
   - "architecture native"
   - "trust boundary"
   - "bridge surface"
   - "rollout plan"
-  - "replacement system"
   - "strict validation"
-  - "added validation"
-  - "research iteration system"
-  - "iteration added"
-  - "chosen approach"
-  - "completed-continue mode"
-  - "reopen completed"
-  - "completed packet"
-  - "packet completed-continue"
-  - "mode instead"
-  - "instead overwriting"
-  - "overwriting 10-iteration"
-  - "10-iteration wave"
   - "research"
   - "graphify"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-011.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-012.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-013.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-014.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-015.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-016.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-017.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-018.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-019.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-020.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*

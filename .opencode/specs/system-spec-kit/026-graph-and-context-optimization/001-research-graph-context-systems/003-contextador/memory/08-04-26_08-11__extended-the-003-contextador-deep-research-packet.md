@@ -1,51 +1,49 @@
 ---
-title: "003 Contextador Deep-Research Extension to 20 Iterations"
-description: "Extended the 003-contextador deep-research packet from 13 to 20 total iterations, resolved all 12 tracked questions, reran reducer synchronization, refreshed the canonical synthesis, and closed the packet in a strict-clean state."
+title: 003 Contextador Deep-Research Extension to 20 Iterations
+name: 08-04-26_08-11__extended-the-003-contextador-deep-research-packet
+description: Extended the 003-contextador deep-research packet from 13 to 20 total iterations, resolved all 12 tracked questions, reran reducer synchronization, refreshed the canonical synthesis, and closed the packet in a strict-clean state.
+type: episodic
 trigger_phrases:
-  - "tree thinning"
-  - "deep research config"
-  - "deep research state"
-  - "deep research strategy"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
-  - "updated research system"
-  - "extended 003-contextador"
-  - "003-contextador deep-research"
-  - "deep-research packet"
-  - "packet total"
-  - "total iterations"
-  - "iterations resolved"
-  - "resolved tracked"
-  - "tracked questions"
-  - "questions reran"
-  - "reran reducer"
-  - "reducer synchronization"
-  - "synchronization refreshed"
-  - "refreshed main"
-  - "main synthesis"
-  - "synthesis report"
-  - "report validated"
-  - "validated phase"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/003"
-  - "contextador"
-importance_tier: "normal"
-contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- tree thinning
+- deep research config
+- deep research state
+- deep research strategy
+- system spec kit
+- graph and context optimization
+- research graph context systems
+- updated research system
+- extended 003-contextador
+- 003-contextador deep-research
+- deep-research packet
+- packet total
+- total iterations
+- iterations resolved
+- resolved tracked
+- tracked questions
+- questions reran
+- reran reducer
+- reducer synchronization
+- synchronization refreshed
+- refreshed main
+- main synthesis
+- synthesis report
+- report validated
+importance_tier: normal
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 7
 filesystem_file_count: 7
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
 
 # Extended The 003 Contextador Deep Research Packet
@@ -139,6 +137,22 @@ Next: Use the completed packet as the canonical research reference; only open a 
 - Last: Extension pass tightened adoption boundaries
 
 <!-- /ANCHOR:continue-session -->
+
+---
+
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
 
 ---
 
@@ -244,7 +258,7 @@ Extended the 003-contextador deep-research packet from 13 to 20 total iterations
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -267,7 +281,7 @@ The extra seven iterations did not change the core recommendation, but they made
 **Details:** Q1-Q12 are explicitly answered in strategy/dashboard state | Contextador remains an ergonomics reference, not a retrieval-core replacement
 <!-- /ANCHOR:decision-extension-pass-tightened-adoption-f0182f4b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -363,6 +377,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 <!-- /ANCHOR:recovery-hints -->
 
 ---
+
+---
+
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
 
 ---
 
@@ -466,7 +493,7 @@ key_topics:
   - "report validated"
   - "questions reran"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "tree thinning"
   - "deep research config"
@@ -492,42 +519,6 @@ trigger_phrases:
   - "main synthesis"
   - "synthesis report"
   - "report validated"
-  - "validated phase"
-  - "kit/026"
-  - "graph"
-  - "and"
-  - "optimization/001"
-  - "research"
-  - "systems/003"
-  - "contextador"
-
-key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-config.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-state.jsonl"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-strategy.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/deep-research-dashboard.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/research.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/iterations/iteration-014.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/iterations/iteration-020.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*

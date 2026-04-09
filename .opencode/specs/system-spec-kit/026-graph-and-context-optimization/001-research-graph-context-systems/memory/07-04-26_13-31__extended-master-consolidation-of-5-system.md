@@ -1,70 +1,49 @@
 ---
-title: "Extended Master Consolidation v2 — Rigor Lane Complete (18 Codex Iterations)"
-description: "v2 extended master consolidation. 18 codex/gpt-5.4/high iterations: 8 original (iter-1..8 produced v1) + 10 rigor lane (iter-9..18). Rigor lane: skeptical review (iter-9), gap re-attempt (iter-10), citation audit (iter-11), combo stress-test (iter-12 → Combo 3 FALSIFIED), Public infra inventory (iter-13 → 8 moats + 11 hidden prereqs), cost reality check (iter-14), pattern hunt (iter-15 → 4 new patterns), counter-evidence (iter-16 → R10 replaced, R2/R3/R7/R8 downgraded), v2 assembly (iter-17), final validation (iter-18 → with-caveats on 1 registry tag nit). Produced v2 deliverables alongside v1: research-v2.md (8576w/13 sections), findings-registry-v2.json (88 findings, +23 vs v1), recommendations-v2.md (10 with iter-16 verdicts). Total ~3.45M codex tokens. Final composite 0.82, newInfoRatio 0.08."
+title: "Extended Master Consolidation v2 \u2014 Rigor Lane Complete (18 Codex Iterations)"
+name: 07-04-26_13-31__extended-master-consolidation-of-5-system
+description: "v2 extended master consolidation. 18 codex/gpt-5.4/high iterations: 8 original (iter-1..8 produced v1) + 10 rigor lane (iter-9..18). Rigor lane: skeptical review (iter-9), gap re-attempt (iter-10), citation audit (iter-11), combo stress-test (iter-12 \u2192 Combo 3 FALSIFIED), Public infra inventory (iter-13 \u2192 8 moats + 11 hidden prereqs), cost reality check (iter-14), pattern hunt (iter-15 \u2192 4 new patterns), counter-evidence (iter-16 \u2192 R10 replaced, R2/R3/R7/R8 downgraded), v2 assembly (iter-17), final validation (iter-18 \u2192 with-caveats on 1 registry tag nit). Produced v2 deliverables alongside v1: research-v2.md (8576w/13 sections), findings-registry-v2.json (88 findings, +23 vs v1), recommendations-v2.md (10 with iter-16 verdicts). Total ~3.45M codex tokens. Final composite 0.82, newInfoRatio 0.08."
+type: episodic
 trigger_phrases:
-  - "graph and context optimization"
-  - "026-graph-and-context-optimization"
-  - "001-research-graph-context-systems"
-  - "master consolidation"
-  - "master consolidation v2"
-  - "research-v2"
-  - "rigor lane"
-  - "second-pass deep research"
-  - "deep-research second pass"
-  - "extended master consolidation"
-  - "combo stress-test"
-  - "Combo 3 falsified"
-  - "Public infrastructure inventory"
-  - "Public moats"
-  - "Public hidden prerequisites"
-  - "cost reality check"
-  - "cross-phase patterns"
-  - "precision laundering"
-  - "seam-early validation"
-  - "freshness-authority debt"
-  - "contract-seam cost concentration"
-  - "counter-evidence search"
-  - "R10 replaced"
-  - "trust-axis freshness contract"
-  - "token honesty audit"
-  - "capability matrix"
-  - "AGPL Contextador"
-  - "codex gpt-5.4 high full-auto"
-  - "CocoIndex Code Graph Spec Kit Memory"
-  - "ENABLE_TOOL_SEARCH"
-  - "Stop-time summary"
-  - "cached SessionStart"
-  - "graph-first PreToolUse hook"
-  - "frozen task methodology"
-  - "provider-counted tokens"
-  - "with-caveats verdict"
-  - "registry tag taxonomy nit"
-  - "skeptical review"
-  - "citation accuracy audit"
-  - "literal phase-N path bug"
-  - "Q-A token honesty"
-  - "Q-B capability matrix"
-  - "Q-C composition risk"
-  - "Q-D adoption sequencing"
-  - "Q-E license runtime"
-  - "Q-F killer combos"
-  - "claudest"
-  - "graphify"
-  - "contextador"
-  - "codesight"
-  - "claude optimization settings"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- graph and context optimization
+- 026-graph-and-context-optimization
+- 001-research-graph-context-systems
+- master consolidation
+- master consolidation v2
+- research-v2
+- rigor lane
+- second-pass deep research
+- deep-research second pass
+- extended master consolidation
+- combo stress-test
+- Combo 3 falsified
+- Public infrastructure inventory
+- Public moats
+- Public hidden prerequisites
+- cost reality check
+- cross-phase patterns
+- precision laundering
+- seam-early validation
+- freshness-authority debt
+- contract-seam cost concentration
+- counter-evidence search
+- R10 replaced
+- trust-axis freshness contract
+importance_tier: important
+contextType: general
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
+quality_score: 1.0
 quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 3
+  warnings: 0
 ---
 > **Note:** This memory was saved via JSON-mode (`generate-context.js --json`) so the auto-extractor's quality score (0/100) reflects the absence of raw conversation messages, NOT the underlying session quality. The actual session orchestrated 18 codex iterations across 2 deliverable sets (v1 + v2). See sessionSummary and key decisions below.
 
@@ -164,6 +143,22 @@ Next: Optional: small retag pass on findings-registry-v2.json to move 8 Public-m
 
 ---
 
+<!-- ANCHOR:canonical-docs -->
+
+## CANONICAL SOURCES
+
+**Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
+
+- [`spec.md`](../spec.md)
+- [`implementation-summary.md`](../implementation-summary.md)
+- [`decision-record.md`](../decision-record.md)
+- [`plan.md`](../plan.md)
+- [`research/research.md`](../research/research.md)
+
+<!-- /ANCHOR:canonical-docs -->
+
+---
+
 <!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
@@ -233,7 +228,7 @@ Next: Optional: small retag pass on findings-registry-v2.json to move 8 Public-m
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:overview -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -262,11 +257,11 @@ EXTENDED master consolidation of 5-system external research. 18 codex iterations
 | `research/iterations/cross-phase-patterns-iter-15.md` | Modified cross phase patterns iter 15 |
 | `research/(merged-small-files)` | Tree-thinning merged 3 small files (research-v2.md, findings-registry-v2.json, recommendations-v2.md).  Merged from research/research-v2.md : # V1 -> V2 Changelog | Area | v2 change | Source iter | |---|---|---| | Executive summary | Added rigor-lane caveats on falsified combos, hidden prerequisites, and effort re-sizing | 9, 12, 13, 14 | | Q-F combo framing | Combo 1 weakened, Combo 2 retained, Combo 3 marked FALSIFIED without hedging | 12 | | Gap ledger | Reclassified 4 partials to closed and 2 UNKNOWNs to UNKNOWN-confirmed | 10 | | Composition risk | Added Public hidden-prerequisite lens and distinguished missing contracts from mi | Merged from research/findings-registry-v2.json : { "schema_version": "1.1", "iteration": 17, "generated_at": "2026-04-07T12:17:10Z", "total_findings": 88, "summary": {... |
 
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:detailed-changes -->
+<!-- ANCHOR:evidence -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -279,7 +274,7 @@ Optional: small retag pass on findings-registry-v2.json to move 8 Public-moat fi
 **Details:** Next: Optional: small retag pass on findings-registry-v2.json to move 8 Public-moat findings off 'new-cross-phase' tag (would convert iter-18 verdict from with-caveats to yes without changing conclusions) | Follow-up: Use research-v2.md as the production deliverable going forward (preserves v1 alongside for diffing) | Follow-up: R1 (publish honest token-measurement rule) is the highest-priority P0 fast win; can be opened as a separate spec folder under.opencode/specs/ | Follow-up: R10 in v2 is the new trust-axis/freshness contract recommendation (replaced after Combo 3 falsification); review if it deserves its own spec folder | Follow-up: iter-18 v1-v2 diff report (research/iterations/v1-v2-diff-iter-18.md) is the canonical changelog if you need to understand what changed and why
 <!-- /ANCHOR:guide-next-steps-7e5b0c6b -->
 
-<!-- /ANCHOR:detailed-changes -->
+<!-- /ANCHOR:evidence -->
 
 ---
 
@@ -713,6 +708,19 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 
 ---
 
+<!-- ANCHOR:postflight -->
+
+## POSTFLIGHT
+
+**Closeout and handoff status for this session snapshot.**
+
+- Packet status remains summarized in CONTINUE SESSION and the canonical docs above.
+- Use this memory as a continuity wrapper, not as the canonical narrative owner for the packet.
+
+<!-- /ANCHOR:postflight -->
+
+---
+
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
@@ -734,7 +742,7 @@ is_detached_head: No
 
 # Classification
 importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
+context_type: "general"        # implementation|planning|research|general
 
 # Memory Classification (v2.2)
 memory_classification:
@@ -813,7 +821,7 @@ key_topics:
   - "incompatible confidence"
   - "infrastructure stronger"
 
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
 trigger_phrases:
   - "graph and context optimization"
   - "026-graph-and-context-optimization"
@@ -839,65 +847,6 @@ trigger_phrases:
   - "counter-evidence search"
   - "R10 replaced"
   - "trust-axis freshness contract"
-  - "token honesty audit"
-  - "capability matrix"
-  - "AGPL Contextador"
-  - "codex gpt-5.4 high full-auto"
-  - "CocoIndex Code Graph Spec Kit Memory"
-  - "ENABLE_TOOL_SEARCH"
-  - "Stop-time summary"
-  - "cached SessionStart"
-  - "graph-first PreToolUse hook"
-  - "frozen task methodology"
-  - "provider-counted tokens"
-  - "with-caveats verdict"
-  - "registry tag taxonomy nit"
-  - "skeptical review"
-  - "citation accuracy audit"
-  - "literal phase-N path bug"
-  - "Q-A token honesty"
-  - "Q-B capability matrix"
-  - "Q-C composition risk"
-  - "Q-D adoption sequencing"
-  - "Q-E license runtime"
-  - "Q-F killer combos"
-  - "claudest"
-  - "graphify"
-  - "contextador"
-  - "codesight"
-  - "claude optimization settings"
-
-key_files:
-  - "research/research-v2.md"
-  - "research/findings-registry-v2.json"
-  - "research/recommendations-v2.md"
-  - "research/iterations/iteration-9-skeptical-review.md"
-  - "research/iterations/gap-reattempt-iter-10.json"
-  - "research/iterations/citation-audit-iter-11.json"
-  - "research/iterations/combo-stress-test-iter-12.md"
-  - "research/iterations/public-infrastructure-iter-13.md"
-  - "research/iterations/cost-reality-iter-14.md"
-  - "research/iterations/cross-phase-patterns-iter-15.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
-chunk_count: 1
 ```
 
 <!-- /ANCHOR:metadata -->
-
----
-
-*Generated by system-spec-kit skill v1.7.2*
-
