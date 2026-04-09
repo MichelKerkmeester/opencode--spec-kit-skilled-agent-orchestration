@@ -1,0 +1,32 @@
+{
+  "sessionId": "2026-04-09T14:30:44Z-013-warm-start-bundle-conditional-validation",
+  "openFindings": [
+    {
+      "id": "DR-013-I003-P1-001",
+      "severity": "P1",
+      "title": "Checklist evidence for CHK-022 is stale and contradicts the shipped benchmark totals",
+      "summary": "The packet checklist still claims the combined bundle achieved pass 28, but the benchmark source of truth and implementation summary both report 38/40.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/spec.md:98",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/checklist.md:55",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/implementation-summary.md:71",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/scratch/benchmark-matrix.md:20",
+        ".opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:188",
+        ".opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:192"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "convergenceScore": 0.8
+}

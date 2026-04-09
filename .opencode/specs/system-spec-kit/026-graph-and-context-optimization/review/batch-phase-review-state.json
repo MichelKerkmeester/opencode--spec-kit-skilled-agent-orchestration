@@ -1,0 +1,213 @@
+{
+  "batchId": "2026-04-09T14:22:32Z",
+  "totalPhases": 13,
+  "phasesCompleted": 13,
+  "phasesRemaining": [],
+  "currentPhase": null,
+  "phaseResults": [
+    {
+      "phaseSlug": "002-implement-cache-warning-hooks",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 1,
+        "P2": 0
+      },
+      "verdict": "CONDITIONAL",
+      "keyFindings": [
+        "Spec metadata still says Blocked awaiting phase 010 while the same packet records completed delivery and PASS verification (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:36)."
+      ],
+      "completedAt": "2026-04-09T15:24:10Z"
+    },
+    {
+      "phaseSlug": "003-memory-quality-issues",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 2,
+        "P2": 0
+      },
+      "verdict": "FAIL",
+      "keyFindings": [
+        "Parent phase map omits actual child phase 008 and renumbers 009 as phase 8, so the parent roll-up is no longer authoritative (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:33,84-95).",
+        "Parent status roll-up contradicts both its own success criteria and child metadata for phases 006 and 007 (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:93-95,178)."
+      ],
+      "completedAt": "2026-04-09T15:29:10Z"
+    },
+    {
+      "phaseSlug": "004-agent-execution-guardrails",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "verdict": "PASS",
+      "keyFindings": [
+        "No active findings after 10 review passes across the three AGENTS targets and the packet-local evidence."
+      ],
+      "completedAt": "2026-04-09T15:34:10Z"
+    },
+    {
+      "phaseSlug": "005-provisional-measurement-contract",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "verdict": "PASS",
+      "keyFindings": [
+        "No active findings after 10 review passes across the certainty helpers, bootstrap/resume adoption, and focused tests."
+      ],
+      "completedAt": "2026-04-09T15:39:10Z"
+    },
+    {
+      "phaseSlug": "006-structural-trust-axis-contract",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "verdict": "PASS",
+      "keyFindings": [
+        "No active findings; shared trust-axis contract stayed additive and fail-closed on the reviewed seams."
+      ],
+      "completedAt": "2026-04-09T16:08:00Z"
+    },
+    {
+      "phaseSlug": "007-detector-provenance-and-regression-floor",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "verdict": "PASS",
+      "keyFindings": [
+        "No active findings; detector provenance labels and the frozen regression floor remained honest and bounded."
+      ],
+      "completedAt": "2026-04-09T16:18:00Z"
+    },
+    {
+      "phaseSlug": "008-graph-first-routing-nudge",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 1,
+        "P2": 0
+      },
+      "verdict": "CONDITIONAL",
+      "keyFindings": [
+        "session-prime.ts:114 emits the startup structural hint on graph readiness alone, despite packet 008 claiming a readiness-plus-activation-scaffolding gate."
+      ],
+      "completedAt": "2026-04-09T16:28:00Z"
+    },
+    {
+      "phaseSlug": "009-auditable-savings-publication-contract",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "verdict": "PASS",
+      "keyFindings": [
+        "No active findings; publication-gate.ts is now consumed by memory-search.ts and covered by focused handler tests."
+      ],
+      "completedAt": "2026-04-09T16:38:00Z"
+    },
+    {
+      "phaseSlug": "010-fts-capability-cascade-floor",
+      "iterationsCompleted": 10,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 1,
+        "P2": 0
+      },
+      "verdict": "CONDITIONAL",
+      "keyFindings": [
+        "sqlite-fts.ts:210 labels degraded requests as bm25_fallback but immediately returns empty lexical results, so the named fallback lane never actually runs."
+      ],
+      "completedAt": "2026-04-09T16:48:00Z"
+    },
+    {
+      "phaseSlug": "011-graph-payload-validator-and-trust-preservation",
+      "iterationsCompleted": 4,
+      "stopReason": "converged",
+      "findings": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "verdict": "PASS",
+      "keyFindings": [
+        "No active findings after 4 review passes across validator enforcement, trust preservation, and focused handler coverage."
+      ],
+      "completedAt": "2026-04-09T14:50:30Z"
+    },
+    {
+      "phaseSlug": "012-cached-sessionstart-consumer-gated",
+      "iterationsCompleted": 4,
+      "stopReason": "converged",
+      "findings": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "verdict": "PASS",
+      "keyFindings": [
+        "No active findings after 4 review passes across cached session-start gating, hook-state fail-closed behavior, and real-surface coverage."
+      ],
+      "completedAt": "2026-04-09T14:50:30Z"
+    },
+    {
+      "phaseSlug": "013-warm-start-bundle-conditional-validation",
+      "iterationsCompleted": 5,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 1,
+        "P2": 0
+      },
+      "verdict": "CONDITIONAL",
+      "keyFindings": [
+        "CHK-022 still cites stale combined-bundle evidence (`pass 28`) even though the benchmark source of truth, scratch matrix, and implementation summary report `38/40` (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/checklist.md:55)."
+      ],
+      "completedAt": "2026-04-09T14:50:30Z"
+    },
+    {
+      "phaseSlug": "014-code-graph-upgrades",
+      "iterationsCompleted": 5,
+      "stopReason": "max_iterations",
+      "findings": {
+        "P0": 0,
+        "P1": 1,
+        "P2": 0
+      },
+      "verdict": "CONDITIONAL",
+      "keyFindings": [
+        "Packet docs claim `session_resume` and `session_bootstrap` preserve graph-edge enrichment, but the current handlers and cited tests do not carry or assert those fields (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83)."
+      ],
+      "completedAt": "2026-04-09T14:50:30Z"
+    }
+  ],
+  "aggregateFindings": {
+    "P0": 0,
+    "P1": 7,
+    "P2": 0
+  },
+  "status": "complete",
+  "startedAt": "2026-04-09T14:22:32Z",
+  "lastUpdated": "2026-04-09T16:48:30Z"
+}

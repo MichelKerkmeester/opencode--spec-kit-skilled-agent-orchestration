@@ -1,0 +1,25 @@
+{
+  "sessionId": "2026-04-09T14:20:47Z-008-graph-first-routing-nudge",
+  "openFindings": [
+    {
+      "id": "DR-008-I001-P1-001",
+      "severity": "P1",
+      "title": "session-prime emits a structural routing hint without the activation-scaffold gate promised by packet 008",
+      "dimension": "correctness",
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "convergenceScore": 1.0
+}

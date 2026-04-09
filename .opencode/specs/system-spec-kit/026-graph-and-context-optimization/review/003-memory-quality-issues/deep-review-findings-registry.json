@@ -1,0 +1,45 @@
+{
+  "sessionId": "2026-04-09T14:22:32Z-003-memory-quality-issues",
+  "openFindings": [
+    {
+      "id": "DR-003-I001-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "summary": "The parent packet's phase map omits actual child phase 008 and renumbers phase 009 as phase 8, so the parent roll-up no longer describes the real child packet set.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:33",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:84",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:95",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix/spec.md:21",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix/spec.md:25",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/009-post-save-render-fixes/implementation-summary.md:23"
+      ]
+    },
+    {
+      "id": "DR-003-I003-P1-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "summary": "The parent phase-status roll-up contradicts both its own success criteria and child metadata for phases 006 and 007.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:93",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:94",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:178",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/spec.md:30",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/007-skill-catalog-sync/spec.md:30"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 0
+  },
+  "convergenceScore": 0.97
+}

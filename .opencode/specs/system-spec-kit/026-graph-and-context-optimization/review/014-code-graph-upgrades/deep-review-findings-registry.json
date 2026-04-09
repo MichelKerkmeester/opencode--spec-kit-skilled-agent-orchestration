@@ -1,0 +1,37 @@
+{
+  "sessionId": "2026-04-09T14:31:56Z-014-code-graph-upgrades",
+  "openFindings": [
+    {
+      "id": "DR-014-I001-P1-001",
+      "severity": "P1",
+      "title": "Resume/bootstrap graph-edge enrichment preservation is claimed but not implemented",
+      "summary": "Packet 014 says session_resume and session_bootstrap preserve additive graph-edge enrichment, yet neither handler references graphEdgeEnrichment, edgeEvidenceClass, or numericConfidence, and the supporting tests only assert structuralTrust and certainty.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:84",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:89",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:90",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:106",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md:55",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:198",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts:228"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "convergenceScore": 0.8
+}

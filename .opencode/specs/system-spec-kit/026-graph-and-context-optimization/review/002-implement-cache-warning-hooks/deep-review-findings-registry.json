@@ -1,0 +1,30 @@
+{
+  "sessionId": "2026-04-09T14:22:32Z-002-implement-cache-warning-hooks",
+  "openFindings": [
+    {
+      "id": "DR-002-I003-P1-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "summary": "Packet metadata still advertises Blocked state even though the same packet records completed delivery and PASS validation.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:36",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:25",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:35",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:81"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "convergenceScore": 0.95
+}
