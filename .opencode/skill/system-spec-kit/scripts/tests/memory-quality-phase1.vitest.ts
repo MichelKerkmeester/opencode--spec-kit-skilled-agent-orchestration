@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
+import { extractDecisions } from '../extractors/decision-extractor';
 import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -33,6 +34,29 @@ describe('F-AC1 — OVERVIEW truncation', () => {
     expect(fixture.sessionSummary.startsWith(keptText)).toBe(true);
     expect(/\s/.test(nextChar)).toBe(true);
     expect(collectSessionDataSource).toContain('truncateOnWordBoundary(data.sessionSummary, 500)');
+  });
+
+  it('applies the shared truncation helper to decision-extractor fallback surfaces', async () => {
+    const longNarrative = 'The shared helper keeps the decision narrative readable while preserving word boundaries throughout the saved memory output. '
+      .repeat(6)
+      .trim();
+    const expectedSnippet = truncateOnWordBoundary(longNarrative, 200);
+
+    const result = await extractDecisions({
+      SPEC_FOLDER: '003-memory-quality-issues',
+      observations: [
+        {
+          type: 'decision',
+          title: 'Use the shared truncation helper',
+          narrative: longNarrative,
+          facts: [],
+        },
+      ],
+      userPrompts: [],
+    });
+
+    expect(result.DECISIONS[0]?.OPTIONS[0]?.DESCRIPTION).toBe(expectedSnippet);
+    expect(result.DECISIONS[0]?.RATIONALE).toBe(expectedSnippet);
   });
 });
 

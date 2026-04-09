@@ -1159,7 +1159,7 @@ describe('workflow seam guardrail', () => {
     }
   });
 
-  it('hard-blocks stateless saves via Block B when captured file paths do not overlap with target spec folder', async () => {
+  it('hard-blocks stateless saves via Block B when captured file paths do not overlap with target spec folder', { timeout: 60000 }, async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');

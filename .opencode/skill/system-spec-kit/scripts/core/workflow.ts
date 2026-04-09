@@ -104,6 +104,8 @@ import {
   buildMemoryClassificationContext,
   buildSessionDedupContext,
   autoPopulateCausalLinks,
+  buildCausalLinksContext,
+  readExplicitMemoryText,
   resolveParentSpec,
   buildWorkflowMemoryEvidenceSnapshot,
 } from './memory-metadata';
@@ -129,23 +131,34 @@ import {
 // Phase 004 T011: Trigger phrase filter — suppresses path fragments, short tokens, and shingle subsets
 const TRIGGER_ALLOW_LIST = new Set(['rag', 'bm25', 'mcp', 'adr', 'jwt', 'api', 'cli', 'llm', 'ai']);
 
-function filterTriggerPhrases(phrases: string[]): string[] {
+function normalizeWorkflowTriggerKey(value: string): string {
+  return value.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function filterTriggerPhrases(
+  phrases: string[],
+  manualPhraseKeys: Set<string> = new Set(),
+): string[] {
   // Stage 1: Remove entries containing path separators (forward/backslash, multi-word path segments)
   let filtered = phrases.filter(p => {
     const trimmed = p.trim();
+    const comparisonKey = normalizeWorkflowTriggerKey(trimmed);
+    if (manualPhraseKeys.has(comparisonKey)) {
+      return true;
+    }
     if (trimmed.includes('/') || trimmed.includes('\\')) return false;
-    // Multi-word path segment pattern: sequences like "system spec kit" that look like folder paths
     if (/^\d{1,3}\s/.test(trimmed)) {
-      const words = trimmed.split(/\s+/).filter(Boolean);
-      if (words.length <= 3) {
-        return false; // Short folder-like packet shorthand (e.g., "022 hybrid rag")
-      }
+      return false;
     }
     return true;
   });
 
   // Stage 2: Remove entries where every word is under 3 characters (unless in allow-list)
   filtered = filtered.filter(p => {
+    const comparisonKey = normalizeWorkflowTriggerKey(p);
+    if (manualPhraseKeys.has(comparisonKey)) {
+      return true;
+    }
     const words = p.trim().split(/\s+/);
     if (words.length === 1 && words[0].length < 3 && !TRIGGER_ALLOW_LIST.has(words[0].toLowerCase())) {
       return false;
@@ -161,6 +174,9 @@ function filterTriggerPhrases(phrases: string[]): string[] {
   const lowerPhrases = filtered.map((p) => p.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim());
   filtered = filtered.filter((p, idx) => {
     const lower = lowerPhrases[idx];
+    if (manualPhraseKeys.has(lower)) {
+      return true;
+    }
     if (isAllowlistedShortProductName(p)) {
       return true;
     }
@@ -651,9 +667,14 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         _manualDecisions: n._manualDecisions ?? preloadedData._manualDecisions,
         _manualTriggerPhrases: n._manualTriggerPhrases ?? preloadedData._manualTriggerPhrases,
         TECHNICAL_CONTEXT: n.TECHNICAL_CONTEXT ?? preloadedData.TECHNICAL_CONTEXT,
+        title: n.title ?? preloadedData.title,
+        description: n.description ?? preloadedData.description,
+        causalLinks: n.causalLinks ?? preloadedData.causalLinks,
+        causal_links: n.causal_links ?? preloadedData.causal_links,
         importanceTier: n.importanceTier ?? preloadedData.importanceTier,
         contextType: n.contextType ?? preloadedData.contextType,
         projectPhase: n.projectPhase ?? preloadedData.projectPhase,
+        saveMode: n.saveMode ?? preloadedData.saveMode,
       }) as CollectedDataFull;
       log('   Using pre-loaded data (normalized)');
     } else if (loadDataFn) {
@@ -1225,17 +1246,20 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
   let ctxFilename: string = rawCtxFilename;
+  const explicitMemoryText = readExplicitMemoryText(collectedData);
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
-  const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE, contentSlug);
+  const memoryTitle = explicitMemoryText.title
+    ?? buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE, contentSlug);
   // Keep dashboard titles stable across duplicate-save retries so content dedup
   // compares the rendered memory itself, not a collision suffix.
   const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, rawCtxFilename);
-  const memoryDescription = deriveMemoryDescription({
-    summary: sessionData.SUMMARY,
-    title: memoryTitle,
-  });
+  const memoryDescription = explicitMemoryText.description
+    ?? deriveMemoryDescription({
+      summary: sessionData.SUMMARY,
+      title: memoryTitle,
+    });
 
   // Pre-extract trigger phrases for template embedding AND later indexing
   let preExtractedTriggers: string[] = [];
@@ -1275,8 +1299,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     // RC2: Merge manual trigger phrases from JSON into frontmatter triggers.
     // Manual phrases stay prepended, but the merged set still goes through the
     // same quality filter as auto-extracted phrases.
-    if (collectedData?._manualTriggerPhrases && Array.isArray(collectedData._manualTriggerPhrases)) {
-      for (const phrase of collectedData._manualTriggerPhrases) {
+    const manualTriggerPhrases = Array.isArray(collectedData?._manualTriggerPhrases)
+      ? sanitizeTriggerPhrases(collectedData._manualTriggerPhrases, { source: 'manual' })
+      : [];
+    if (manualTriggerPhrases.length > 0) {
+      for (const phrase of manualTriggerPhrases) {
         if (typeof phrase !== 'string') {
           continue;
         }
@@ -1294,7 +1321,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     }
 
     if (manualTriggerKeys.size === 0) {
-      for (const phrase of autoExtractedTriggers) {
+      const sanitizedAutoTriggers = sanitizeTriggerPhrases(autoExtractedTriggers, { source: 'extracted' });
+      for (const phrase of sanitizedAutoTriggers) {
         const trimmedPhrase = phrase.trim();
         if (trimmedPhrase.length === 0) {
           continue;
@@ -1313,11 +1341,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
     }
 
-    // Phase 004 T011-T013: Filter the merged trigger set so manual phrases
-    // follow the same quality rules as auto-extracted phrases.
-    const sanitizedMergedTriggers = sanitizeTriggerPhrases(mergedTriggers);
-    preExtractedTriggers = filterTriggerPhrases(sanitizedMergedTriggers);
-    for (const phrase of sanitizedMergedTriggers) {
+    preExtractedTriggers = filterTriggerPhrases(mergedTriggers, manualTriggerKeys);
+    for (const phrase of mergedTriggers) {
       if (!isAllowlistedShortProductName(phrase)) {
         continue;
       }
@@ -1359,7 +1384,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         manualKey.includes(leafFolderAnchorKey) || leafFolderAnchorKey.includes(manualKey)
       ));
     if (manualTriggerKeys.size === 0 && leafAnchorIsInformative && !leafAnchorAlreadyCovered && !existingLower.has(leafFolderAnchorKey)) {
-      const sanitizedLeafAnchor = sanitizeTriggerPhrases([leafFolderAnchor])[0];
+      const sanitizedLeafAnchor = sanitizeTriggerPhrases([leafFolderAnchor], { source: 'extracted' })[0];
       if (sanitizedLeafAnchor) {
         const sanitizedLeafAnchorKey = normalizeTriggerComparisonKey(sanitizedLeafAnchor);
         if (!existingLower.has(sanitizedLeafAnchorKey)) {
@@ -1396,6 +1421,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const { findPredecessorMemory } = await import('./find-predecessor-memory');
     const predecessorSessionId = await findPredecessorMemory(specFolder, {
       title: memoryTitle,
+      description: explicitMemoryText.description ?? memoryDescription,
       summary: sessionData.SUMMARY,
       sessionId: sessionData.SESSION_ID,
       filename: rawCtxFilename,
@@ -1417,16 +1443,48 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     sessionId: sessionData.SESSION_ID,
     contextType: sessionData.CONTEXT_TYPE,
   });
+  const currentCausalLinkField = (...keys: string[]): unknown => {
+    for (const source of [currentSnakeCaseCausalLinks, currentCamelCaseCausalLinks]) {
+      if (!source) {
+        continue;
+      }
+      for (const key of keys) {
+        if (key in source) {
+          return source[key];
+        }
+      }
+    }
+    return undefined;
+  };
+  const mergeCausalLinkList = (primary: unknown, fallback: string[]): string[] => {
+    const seen = new Set<string>();
+    const merged: string[] = [];
+    for (const value of [
+      ...(Array.isArray(primary) ? primary : []),
+      ...fallback,
+    ]) {
+      if (typeof value !== 'string') {
+        continue;
+      }
+      const trimmed = value.trim();
+      if (!trimmed || seen.has(trimmed)) {
+        continue;
+      }
+      seen.add(trimmed);
+      merged.push(trimmed);
+    }
+    return merged;
+  };
   collectedData.causal_links = {
-    ...(collectedData.causal_links && typeof collectedData.causal_links === 'object' ? collectedData.causal_links as Record<string, unknown> : {}),
-    caused_by: autoCausalLinks.CAUSED_BY,
-    supersedes: autoCausalLinks.SUPERSEDES,
-    derived_from: autoCausalLinks.DERIVED_FROM,
-    blocks: autoCausalLinks.BLOCKS,
-    related_to: autoCausalLinks.RELATED_TO,
+    ...((currentSnakeCaseCausalLinks ?? currentCamelCaseCausalLinks ?? {}) as Record<string, unknown>),
+    caused_by: mergeCausalLinkList(currentCausalLinkField('caused_by', 'causedBy'), autoCausalLinks.CAUSED_BY),
+    supersedes: mergeCausalLinkList(currentCausalLinkField('supersedes'), autoCausalLinks.SUPERSEDES),
+    derived_from: mergeCausalLinkList(currentCausalLinkField('derived_from', 'derivedFrom'), autoCausalLinks.DERIVED_FROM),
+    blocks: mergeCausalLinkList(currentCausalLinkField('blocks'), autoCausalLinks.BLOCKS),
+    related_to: mergeCausalLinkList(currentCausalLinkField('related_to', 'relatedTo'), autoCausalLinks.RELATED_TO),
   };
   collectedData.causalLinks = collectedData.causal_links;
-  const causalLinks = autoCausalLinks;
+  const causalLinks = buildCausalLinksContext(collectedData);
   const effectiveDecisionCount = Math.max(sessionData.DECISION_COUNT, decisions.DECISIONS.length);
 
   const files: Record<string, string> = {
@@ -1603,7 +1661,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Step 8.6: Quality validation + scoring
   log('Step 8.6: Quality scoring...');
-  const qualityValidation = validateMemoryQualityContent(files[ctxFilename]);
+  const qualityValidation = validateMemoryQualityContent(files[ctxFilename], {
+    filePath: path.join(contextDir, ctxFilename),
+  });
   contaminationAuditTrail.push(qualityValidation.contaminationAudit);
   const metadataJson = JSON.parse(files['metadata.json']) as Record<string, unknown>;
   metadataJson.contaminationAudit = contaminationAuditTrail;

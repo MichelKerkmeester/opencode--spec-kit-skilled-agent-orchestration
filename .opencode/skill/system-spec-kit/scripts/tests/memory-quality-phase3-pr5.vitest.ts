@@ -141,9 +141,13 @@ describe('Phase 3 PR-5 F-AC3 fixture replay', () => {
     const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf8');
     const triggerPhrases = parseFrontmatterTriggerPhrases(rendered);
     const keyTopics = parseKeyTopics(rendered);
+    const manualTriggerKeys = new Set(
+      (fixture.triggerPhrases ?? []).map((phrase) => phrase.toLowerCase()),
+    );
 
     for (const phrase of triggerPhrases) {
-      expect(sanitizeTriggerPhrase(phrase).keep).toBe(true);
+      const source = manualTriggerKeys.has(phrase) ? 'manual' : 'extracted';
+      expect(sanitizeTriggerPhrase(phrase, { source }).keep).toBe(true);
     }
 
     for (const phrase of keyTopics) {
@@ -151,6 +155,9 @@ describe('Phase 3 PR-5 F-AC3 fixture replay', () => {
     }
 
     for (const phrase of fixture.expectedAbsentTriggers ?? []) {
+      if (manualTriggerKeys.has(phrase.toLowerCase())) {
+        continue;
+      }
       expect(triggerPhrases).not.toContain(phrase.toLowerCase());
     }
 

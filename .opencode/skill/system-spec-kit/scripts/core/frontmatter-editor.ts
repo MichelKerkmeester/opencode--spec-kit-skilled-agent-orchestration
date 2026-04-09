@@ -6,6 +6,7 @@
 
 import * as path from 'node:path';
 import type { SpecDocHealthResult } from '@spec-kit/shared/parsing/spec-doc-health';
+import { sanitizeTriggerPhrases } from '../lib/trigger-phrase-sanitizer';
 import type { FileChange } from '../types/session-types';
 
 // CG-04: Domain-specific stopwords — duplicated from workflow.ts to avoid circular imports
@@ -105,27 +106,61 @@ export function renderTriggerPhrasesYaml(triggerPhrases: string[]): string {
   return ['trigger_phrases:', ...escapedPhrases].join('\n');
 }
 
+function normalizeSpecSegment(segment: string): string {
+  return segment
+    .replace(/^\d{1,3}-/, '')
+    .replace(/[-_]+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function buildLeafFolderAnchor(specFolderName: string): string {
+  const segments = specFolderName
+    .split(/[\\/]/)
+    .map((segment) => normalizeSpecSegment(segment))
+    .filter(Boolean);
+
+  if (segments.length === 0) {
+    return '';
+  }
+
+  const leafSegment = segments[segments.length - 1];
+  const leafWords = leafSegment.split(/\s+/).filter(Boolean);
+  if (leafWords.length !== 1) {
+    return leafSegment;
+  }
+
+  const parentSegment = segments[segments.length - 2] || '';
+  const parentLead = parentSegment
+    .split(/\s+/)
+    .find((token) => token.length >= 3 && !FOLDER_STOPWORDS.has(token));
+
+  return parentLead ? `${leafSegment} ${parentLead}` : leafSegment;
+}
+
 export function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileChange[], specFolderName: string): string[] {
   if (existing.length >= 2) {
     return existing;
   }
 
-  const topicFromFolder = specFolderName.replace(/^\d{1,3}-/, '');
+  const topicFromFolder = normalizeSpecSegment(path.basename(specFolderName));
   const folderTokens = topicFromFolder
     .split(/[-_]/)
     .map((token) => token.trim().toLowerCase())
     .filter((token) => token.length >= 3 && !FOLDER_STOPWORDS.has(token));
-  const combined = [...new Set([...existing, ...folderTokens])];
+  const leafFolderAnchor = buildLeafFolderAnchor(specFolderName);
+  const fallbackPhrases = sanitizeTriggerPhrases([
+    ...folderTokens,
+    leafFolderAnchor,
+  ], { source: 'extracted' });
+  const combined = [...new Set([...existing, ...fallbackPhrases])];
   if (combined.length >= 2) {
     return combined;
   }
 
   if (combined.length === 1) {
-    // CG-04: Filter compound folder phrase through FOLDER_STOPWORDS to prevent folder-derived fallback contamination
-    const compoundPhrase = topicFromFolder.replace(/-/g, ' ').toLowerCase();
-    const compoundTokens = compoundPhrase.split(/\s+/);
-    const hasNonStopword = compoundTokens.some((t) => t.length >= 3 && !FOLDER_STOPWORDS.has(t));
-    return [combined[0], hasNonStopword ? compoundPhrase : 'session'];
+    const compoundFallback = sanitizeTriggerPhrases([leafFolderAnchor || topicFromFolder], { source: 'extracted' })[0];
+    return [combined[0], compoundFallback && compoundFallback !== combined[0] ? compoundFallback : 'session'];
   }
 
   return ['session', 'context'];
@@ -136,7 +171,7 @@ export function ensureMinSemanticTopics(existing: string[], enhancedFiles: FileC
     return existing;
   }
 
-  const topicFromFolder = specFolderName.replace(/^\d{1,3}-/, '');
+  const topicFromFolder = normalizeSpecSegment(path.basename(specFolderName));
   const folderTokens = topicFromFolder
     .split(/[-_]/)
     .map((token) => token.trim().toLowerCase())

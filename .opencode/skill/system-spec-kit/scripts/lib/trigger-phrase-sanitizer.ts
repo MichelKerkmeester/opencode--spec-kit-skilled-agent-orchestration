@@ -9,6 +9,7 @@
 
 export type TriggerPhraseSanitizeReason =
   | 'empty'
+  | 'contamination'
   | 'control_character'
   | 'path_fragment'
   | 'standalone_stopword'
@@ -16,15 +17,23 @@ export type TriggerPhraseSanitizeReason =
   | 'synthetic_bigram'
   | 'too_long';
 
+export type TriggerPhraseSource = 'manual' | 'extracted';
+
 export interface TriggerPhraseSanitizeResult {
   keep: boolean;
   reason?: TriggerPhraseSanitizeReason;
 }
 
+export interface TriggerPhraseSanitizeOptions {
+  source?: TriggerPhraseSource;
+}
+
 const PATH_FRAGMENT_PATTERN = /[\\/]/;
-const PATH_LIKE_SLUG_PATTERN = /(?:^|\b)\d{3}-[a-z0-9_-]+(?:$|\b)/i;
+const PATH_LIKE_SLUG_PATTERN = /^\d{3}-[a-z0-9_-]+$/i;
+const MANUAL_FINDING_ID_PREFIX_PATTERN = /^DR-\d{3}-I\d{3}-P\d-\d{3}\b/i;
 const SUSPICIOUS_PREFIX_PATTERN = /^(?:(?:f|q)\d+|ac-?\d+|phase\s+\d+|iter(?:ation)?\s+\d+)\b/i;
 const CONTROL_CHARACTER_PATTERN = /[\x00-\x1F\x7F-\x9F]/;
+const CONTAMINATION_PATTERN = /<[^>]+>|\b(?:ignore previous|system prompt|developer message|tool state|tool output|assistant:|user:)\b/i;
 const MAX_TRIGGER_PHRASE_LENGTH = 200;
 
 const SHORT_PRODUCT_ALLOWLIST = new Set([
@@ -66,6 +75,8 @@ const STANDALONE_STOPWORD_BLOCKLIST = new Set([
   'of',
   'on',
   'or',
+  'phases',
+  'research',
   'the',
   'to',
   'via',
@@ -100,7 +111,11 @@ export function isAllowlistedShortProductName(phrase: string): boolean {
   return SHORT_PRODUCT_ALLOWLIST.has(normalizePhrase(phrase));
 }
 
-export function sanitizeTriggerPhrase(phrase: string): TriggerPhraseSanitizeResult {
+export function sanitizeTriggerPhrase(
+  phrase: string,
+  options: TriggerPhraseSanitizeOptions = {},
+): TriggerPhraseSanitizeResult {
+  const source: TriggerPhraseSource = options.source ?? 'extracted';
   const unicodeNormalized = normalizeUnicodeForm(phrase);
 
   if (unicodeNormalized.length > MAX_TRIGGER_PHRASE_LENGTH) {
@@ -121,26 +136,44 @@ export function sanitizeTriggerPhrase(phrase: string): TriggerPhraseSanitizeResu
     return { keep: true };
   }
 
+  if (CONTAMINATION_PATTERN.test(normalized)) {
+    return { keep: false, reason: 'contamination' };
+  }
+
+  if (
+    source === 'manual'
+    && MANUAL_FINDING_ID_PREFIX_PATTERN.test(unicodeNormalized.trim())
+  ) {
+    return { keep: true };
+  }
+
+  if (source === 'manual') {
+    return { keep: true };
+  }
+
   if (PATH_FRAGMENT_PATTERN.test(normalized) || PATH_LIKE_SLUG_PATTERN.test(normalized)) {
     return { keep: false, reason: 'path_fragment' };
   }
 
-  if (SUSPICIOUS_PREFIX_PATTERN.test(normalized)) {
+  if (source === 'extracted' && SUSPICIOUS_PREFIX_PATTERN.test(normalized)) {
     return { keep: false, reason: 'suspicious_prefix' };
   }
 
-  if (SYNTHETIC_BIGRAM_BLOCKLIST.has(normalized)) {
+  if (source === 'extracted' && SYNTHETIC_BIGRAM_BLOCKLIST.has(normalized)) {
     return { keep: false, reason: 'synthetic_bigram' };
   }
 
-  if (!normalized.includes(' ') && STANDALONE_STOPWORD_BLOCKLIST.has(normalized)) {
+  if (source === 'extracted' && !normalized.includes(' ') && STANDALONE_STOPWORD_BLOCKLIST.has(normalized)) {
     return { keep: false, reason: 'standalone_stopword' };
   }
 
   return { keep: true };
 }
 
-export function sanitizeTriggerPhrases(phrases: string[]): string[] {
+export function sanitizeTriggerPhrases(
+  phrases: string[],
+  options: TriggerPhraseSanitizeOptions = {},
+): string[] {
   const sanitized: string[] = [];
   const seen = new Set<string>();
 
@@ -149,7 +182,7 @@ export function sanitizeTriggerPhrases(phrases: string[]): string[] {
       continue;
     }
 
-    const verdict = sanitizeTriggerPhrase(phrase);
+    const verdict = sanitizeTriggerPhrase(phrase, options);
     if (!verdict.keep) {
       continue;
     }

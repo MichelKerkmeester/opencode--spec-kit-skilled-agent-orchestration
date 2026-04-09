@@ -30,7 +30,7 @@ contextType: "planning"
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | `002-implement-cache-warning-hooks` |
 | **Successor** | `004-agent-execution-guardrails` |
-| **Packet Shape** | Parent packet with 9 child phases |
+| **Packet Shape** | Parent packet with 10 child phases |
 | **Research State** | Complete |
 | **Implementation State** | Mixed across child phases; see phase map for current truth |
 | **Operational Tail State** | Complete with PR-10 dry-run and PR-11 deferred-with-rationale |
@@ -81,7 +81,7 @@ Capture the final parent contract for the shipped remediation train: Phases 1-5 
 <!-- ANCHOR:phase-map -->
 ### Phase Documentation Map
 
-Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully parent-closed in this packet snapshot. Phases 6-9 are approved follow-on packets that extend this parent tracking map without changing the historical closeout record for the first five phases. The later children split into two lanes: `008-input-normalizer-fastpath-fix` closes the Phase 6 runtime hole, and `009-post-save-render-fixes` addresses the 2026-04-09 packet-014 memory audit that surfaced nine remaining render-layer defects in fresh compact-wrapper saves.
+Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully parent-closed in this packet snapshot. Phases 6-10 are approved follow-on packets that extend this parent tracking map without changing the historical closeout record for the first five phases. The later children split into three lanes: `008-input-normalizer-fastpath-fix` closes the Phase 6 runtime hole, `009-post-save-render-fixes` repairs the live render-layer defects surfaced by the 2026-04-09 packet-014 audit, and `010-memory-save-heuristic-calibration` closes the remaining schema, validator, and D5 heuristic gaps identified by the same-day RCA and skipped-recommendation audits.
 
 | Phase | Priority | Folder | Focus | PRs / Defects | Depends On | Status |
 |-------|----------|--------|-------|---------------|------------|--------|
@@ -94,6 +94,7 @@ Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully paren
 | 7 | P6 | `007-skill-catalog-sync/` | Audit downstream docs, templates, commands, MCP surfaces, and agents only after the narrower Phase 6 compact-wrapper contract lands, so parity review targets the final wrapper behavior instead of a broader dedupe program. | Review + update PRs (P14-P15) | Phase 6 (final compact-wrapper contract required before auditing downstream artifacts) | Draft |
 | 8 | P7 | `008-input-normalizer-fastpath-fix/` | Repair the input-normalizer fast path so packet-local save generation preserves normalized trigger shaping and compact-wrapper structure instead of bypassing the hardened path. | Fast-path normalization fix | Phase 6 contract stable and runtime save path isolated | Complete |
 | 9 | P8 | `009-post-save-render-fixes/` | Repair the nine render-layer defects still visible in live compact-wrapper saves after Phase 6 shipped: title suffix garbage, empty canonical sources, zeroed file counts, trigger noise, duplicated evidence, stale phase or status, missing lineage, self-referential parent spec, and ambiguous quality-score names. | Render-layer follow-on fixes (A-I) | Phase 6 runtime stable and the 014 memory audit complete | Implemented |
+| 10 | P9 | `010-memory-save-heuristic-calibration/` | Close the remaining memory-save schema, sanitizer, validator, and continuation-linker gaps still exposed by the 2026-04-09 RCA and skipped-recommendation audits: explicit title/description/causal-links payload fields, manual DR trigger preservation, V8/V12 calibration, D5 linker-reviewer alignment, and REC-003 helper cleanup. | RCA Issues 1-5 + REC-003/006/008/018 | Phase 9 render fixes shipped and the RCA/skipped-recommendation audits complete | In Progress |
 
 *Parent note: Child phases may be phase-local complete while parent strict-validation blockers in `plan.md` and `tasks.md` remain out of scope for those folders; this remediation workstream is tracked in `../review/003-memory-quality-issues/review-report.md`.*
 
@@ -176,7 +177,7 @@ Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully paren
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: The phase map shows all nine child phases with statuses that match each child folder's current metadata.
+- **SC-001**: The phase map shows all ten child phases with statuses that match each child folder's current metadata.
 - **SC-002**: The parent checklist links packet-level remediation claims to phase-local CHK evidence.
 - **SC-003**: The parent implementation summary accurately describes PR-1 through PR-11 closeout status, including Phase 5 defer decisions.
 - **SC-004**: Child-phase validation passes are easy to verify from the packet root documentation.

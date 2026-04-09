@@ -2,13 +2,26 @@ import * as path from 'node:path';
 import { open, readdir } from 'node:fs/promises';
 
 const HEADER_READ_BYTES = 2048;
-const POSITIVE_CONTINUATION_SIGNAL =
-  /\b(?:extended|continu(?:ation|e)|resume|follow[- ]up|part\s*\d+|iter(?:ation)?\s*\d+|\d+[- ]*iterations?(?:[- ]*total[- ]*\d+)?)\b/i;
+const GENERIC_TITLE_SIGNAL_WORDS = new Set([
+  'context',
+  'development',
+  'implementation',
+  'memory',
+  'notes',
+  'save',
+  'session',
+  'summary',
+]);
+export const CONTINUATION_SIGNAL_PATTERNS: Array<{ label: string; pattern: RegExp }> = [
+  { label: 'extended', pattern: /\bextended\b/i },
+  { label: 'continuation', pattern: /\bcontinu(?:ation|e)\b/i },
+];
 const TITLE_FAMILY_WORD_LIMIT = 6;
 const TITLE_FAMILY_OVERLAP_THRESHOLD = 0.5;
 
 type CurrentSession = {
   title: string;
+  description?: string;
   sessionId?: string;
   summary?: string;
   sessionSummary?: string;
@@ -60,15 +73,44 @@ function hasExistingSupersedes(currentSession: CurrentSession): boolean {
     || readSupersedes(currentSession.causalLinks).length > 0;
 }
 
+export function detectContinuationPattern(value: string): string | null {
+  const text = value.trim();
+  if (text.length === 0) {
+    return null;
+  }
+
+  for (const candidate of CONTINUATION_SIGNAL_PATTERNS) {
+    if (candidate.pattern.test(text)) {
+      return candidate.label;
+    }
+  }
+
+  return null;
+}
+
+function hasWeakTitleSignal(title: string): boolean {
+  const tokens = buildTitleFamilyTokens(title);
+  return tokens.length === 0 || tokens.every((token) => GENERIC_TITLE_SIGNAL_WORDS.has(token));
+}
+
 function hasContinuationSignal(currentSession: CurrentSession): boolean {
-  const candidates = [
-    currentSession.title,
+  if (detectContinuationPattern(currentSession.title)) {
+    return true;
+  }
+
+  const secondaryCandidates = [
+    currentSession.description,
     currentSession.summary,
     currentSession.sessionSummary,
     currentSession.filename ? path.parse(currentSession.filename).name : '',
   ];
 
-  return candidates.some((value) => typeof value === 'string' && POSITIVE_CONTINUATION_SIGNAL.test(value));
+  return secondaryCandidates.some((value) => (
+    typeof value === 'string'
+    && value.trim().length > 0
+    && (hasWeakTitleSignal(currentSession.title) || value !== currentSession.title)
+    && detectContinuationPattern(value) !== null
+  ));
 }
 
 function parseTimestampFromFilename(filename: string): number | null {

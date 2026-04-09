@@ -12,6 +12,7 @@ import { validateDataStructure } from '../utils/data-validator';
 import { coerceFactsToText } from '../utils/fact-coercion';
 import { generateAnchorId, validateAnchorUniqueness, extractSpecNumber } from '../lib/anchor-generator';
 import { generateDecisionTree } from '../lib/decision-tree-generator';
+import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
 import type { DecisionNode } from '../lib/decision-tree-generator';
 // O5-4: Removed dead simFactory import (F-12 eliminated simulation fallback path)
 import type {
@@ -384,7 +385,7 @@ async function extractDecisions(
 
         // Fix 1: CONTEXT = brief "why this decision mattered", not the full rationale
         const contextText: string = rationaleFromInput
-          ? `${title} — ${rationaleFromInput.substring(0, 120)}`
+          ? `${title} — ${truncateOnWordBoundary(rationaleFromInput, 120)}`
           : title;
 
         // Anchor ID assigned in the unified pass at line ~562 (avoids double-assignment)
@@ -486,14 +487,7 @@ async function extractDecisions(
 
     // Ensure at least one option for template rendering
     if (OPTIONS.length === 0 && narrative.trim()) {
-      let impliedDescription: string;
-      if (narrative.length > 200) {
-        const truncated = narrative.substring(0, 200);
-        const lastSpace = truncated.lastIndexOf(' ');
-        impliedDescription = (lastSpace > 80 ? truncated.substring(0, lastSpace) : truncated) + '...';
-      } else {
-        impliedDescription = narrative;
-      }
+      const impliedDescription = truncateOnWordBoundary(narrative, 200);
       OPTIONS.push({
         OPTION_NUMBER: 1,
         LABEL: 'Chosen Approach',
@@ -510,7 +504,7 @@ async function extractDecisions(
       || (OPTIONS.length > 0 ? OPTIONS[0].LABEL : 'N/A');
 
     const rationaleMatch = narrative.match(/(?:because|rationale|reason):?\s+([^\.\n]+)/i);
-    const rationaleCandidate = rationaleMatch?.[1]?.trim() || narrative.substring(0, 200);
+    const rationaleCandidate = rationaleMatch?.[1]?.trim() || truncateOnWordBoundary(narrative, 200);
     const RATIONALE: string = dedupeFallbackRationale(obs.title || narrative, rationaleCandidate, '');
     const confidenceMatch = narrative.match(/confidence:?\s*(\d+(?:\.\d+)?)(?:%|\b)/i);
     const parsedConfidence = confidenceMatch ? parseFloat(confidenceMatch[1]) : NaN;

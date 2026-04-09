@@ -132,6 +132,8 @@ export interface CollectedDataBase {
   SPEC_FOLDER?: string;
   FILES?: CollectedFileEntry[];
   SUMMARY?: string;
+  title?: string;
+  description?: string;
   importanceTier?: string;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
   /** Alias for filesModified — accepted in JSON payloads, mapped during normalization */

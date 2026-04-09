@@ -97,4 +97,26 @@ describe('Phase 3 PR-6 decision precedence gate', () => {
       ])
     );
   });
+
+  it('uses boundary-safe truncation for authored decision context when rationale text is long', async () => {
+    const longRationale = 'Because the shared truncation helper keeps the decision context readable and avoids clipping words in the saved memory output. '
+      .repeat(4)
+      .trim();
+
+    const result = await extractDecisions({
+      SPEC_FOLDER: '003-sanitization-precedence',
+      keyDecisions: [
+        {
+          decision: 'Adopt the shared truncation helper everywhere',
+          rationale: longRationale,
+        },
+      ],
+      observations: [],
+      userPrompts: [],
+    });
+
+    expect(result.DECISIONS[0]?.CONTEXT).not.toMatch(/\.\.\./);
+    expect(result.DECISIONS[0]?.CONTEXT.endsWith('…')).toBe(true);
+    expect(result.DECISIONS[0]?.CONTEXT).toContain('Adopt the shared truncation helper everywhere');
+  });
 });

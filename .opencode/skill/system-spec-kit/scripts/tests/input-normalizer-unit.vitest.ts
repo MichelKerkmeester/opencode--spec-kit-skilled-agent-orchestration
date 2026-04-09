@@ -195,6 +195,58 @@ describe('normalizeInputData importanceTier propagation (BUG-006)', () => {
   });
 });
 
+describe('normalizeInputData explicit memory metadata propagation', () => {
+  it('preserves explicit title, description, and causalLinks through the slow path', () => {
+    const result = normalizeInputData({
+      sessionSummary: 'Slow-path metadata propagation test.',
+      title: 'Authored slow-path title',
+      description: 'Authored slow-path description',
+      causalLinks: {
+        supersedes: ['previous-session'],
+        derivedFrom: ['planning-session'],
+      },
+    }) as NormalizedData;
+
+    expect(result.title).toBe('Authored slow-path title');
+    expect(result.description).toBe('Authored slow-path description');
+    expect(result.causalLinks).toMatchObject({
+      supersedes: ['previous-session'],
+      derivedFrom: ['planning-session'],
+      derived_from: ['planning-session'],
+    });
+    expect(result.causal_links).toMatchObject({
+      supersedes: ['previous-session'],
+      derivedFrom: ['planning-session'],
+    });
+  });
+
+  it('preserves explicit title, description, and causal_links through the fast path', () => {
+    const result = normalizeInputData({
+      userPrompts: [{ prompt: 'Existing prompt', timestamp: '2026-04-09T20:00:00.000Z' }],
+      observations: [{ type: 'implementation', title: 'Existing observation', narrative: 'Existing narrative', facts: [] }],
+      recentContext: [{ request: 'Existing request', learning: 'Existing learning' }],
+      title: 'Authored fast-path title',
+      description: 'Authored fast-path description',
+      causal_links: {
+        supersedes: ['fast-path-predecessor'],
+        caused_by: ['root-cause-investigation'],
+      },
+    }) as NormalizedData;
+
+    expect(result.title).toBe('Authored fast-path title');
+    expect(result.description).toBe('Authored fast-path description');
+    expect(result.causalLinks).toMatchObject({
+      supersedes: ['fast-path-predecessor'],
+      causedBy: ['root-cause-investigation'],
+      caused_by: ['root-cause-investigation'],
+    });
+    expect(result.causal_links).toMatchObject({
+      supersedes: ['fast-path-predecessor'],
+      causedBy: ['root-cause-investigation'],
+    });
+  });
+});
+
 describe('normalizeInputData fast-path string coercion and enrichment merge', () => {
   it('coerces string arrays into structured fast-path objects', () => {
     const result = normalizeInputData({

@@ -1113,6 +1113,9 @@ function extractStructuredFileCandidates(collectedData: CollectedDataFull): stri
 
   if (Array.isArray(collectedData.FILES)) {
     for (const file of collectedData.FILES) {
+      if (typeof file?._provenance === 'string' && file._provenance.trim().length > 0) {
+        continue;
+      }
       const candidate = typeof file?.FILE_PATH === 'string'
         ? file.FILE_PATH
         : typeof file?.path === 'string'

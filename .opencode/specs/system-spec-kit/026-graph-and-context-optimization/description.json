@@ -16,8 +16,11 @@
   "parentChain": [
     "system-spec-kit"
   ],
-  "memorySequence": 1,
+  "memorySequence": 4,
   "memoryNameHistory": [
-    "09-04-26_07-37__ran-15-deep-review-iterations-on-the-full-026.md"
+    "09-04-26_07-37__ran-15-deep-review-iterations-on-the-full-026.md",
+    "09-04-26_20-18__post-compaction-continuation-session-that-landed.md",
+    "09-04-26_21-41__verified-the-026-graph-and-context-optimization.md",
+    "09-04-26_21-41__verified-the-026-graph-and-context-optimization-1.md"
   ]
 }

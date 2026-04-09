@@ -206,7 +206,9 @@ const EXECUTION_SIGNAL_PATTERNS = [
   /\|\s*Tool Executions\s*\|\s*[1-9]/i,    // table says non-zero tools
   /\btool_calls?\b/i,                      // explicit tool_call reference
 ];
-const SPEC_ID_REGEX = /\b\d{3}-[a-z0-9][a-z0-9-]*\b/g;
+const SPEC_ID_REGEX = /\b\d{3}-[a-z][a-z0-9-]*(?=[\s,.)/:"'`]|$)/gi;
+const FINDING_ID_SPEC_FALSE_POSITIVE_REGEX = /^\d{3}-i\d{3}-p\d-\d{3}$/i;
+const NUMERIC_RANGE_SPEC_FALSE_POSITIVE_REGEX = /^\d{3}-\d+(?:-\d+)*$/;
 const TITLE_CONTAMINATION_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
   { pattern: /^(to promote a memory|epistemic state captured at session start|table of contents)\b/i, label: 'template instructional heading' },
   { pattern: /^\[[^\]]+\]$/i, label: 'placeholder bracket title' },
@@ -475,8 +477,39 @@ function hasSignificantFileCountDivergence(
   return ratio >= 2 && absoluteDifference >= 5;
 }
 
+function isValidSpecIdCandidate(candidate: string): boolean {
+  const trimmed = candidate.trim();
+  if (trimmed.length === 0) {
+    return false;
+  }
+
+  if (NUMERIC_RANGE_SPEC_FALSE_POSITIVE_REGEX.test(trimmed)) {
+    return false;
+  }
+
+  if (FINDING_ID_SPEC_FALSE_POSITIVE_REGEX.test(trimmed)) {
+    return false;
+  }
+
+  const tail = trimmed.replace(/^\d{3}-/, '');
+  if (!/^[a-z]/i.test(tail)) {
+    return false;
+  }
+
+  const tailSegments = tail.split('-');
+  if (tailSegments.length === 1 && /\d/.test(tailSegments[0])) {
+    return false;
+  }
+
+  return true;
+}
+
+export function extractSpecIdCandidates(content: string): string[] {
+  return (content.match(SPEC_ID_REGEX) ?? []).filter(isValidSpecIdCandidate);
+}
+
 function countDistinctSpecIds(content: string): Map<string, number> {
-  const matches = content.match(SPEC_ID_REGEX) ?? [];
+  const matches = extractSpecIdCandidates(content);
   const counts = new Map<string, number>();
 
   for (const match of matches) {
@@ -491,7 +524,7 @@ function countSpecIdsInValues(values: string[]): Map<string, number> {
 }
 
 function extractCurrentSpecId(specFolder: string): string | null {
-  const matches = specFolder.match(SPEC_ID_REGEX);
+  const matches = extractSpecIdCandidates(specFolder);
   return matches ? matches[matches.length - 1] : null;
 }
 
@@ -538,7 +571,7 @@ function resolveSpecFolderPath(specFolder: string): string | null {
  *   -> allowed = { "010-perfect-session-capturing", "012-template-compliance" }
  */
 function extractAllowedSpecIds(specFolder: string): Set<string> {
-  const matches = specFolder.match(SPEC_ID_REGEX) ?? [];
+  const matches = extractSpecIdCandidates(specFolder);
   const allowedSpecIds = new Set(matches);
   const resolvedSpecFolder = resolveSpecFolderPath(specFolder);
 
@@ -608,6 +641,19 @@ function ruleAppliesToSource(
 
   const capabilities = getSourceCapabilities(source);
   return metadata.appliesToSources.includes(capabilities.source);
+}
+
+function buildTopicalMatchVariants(phrase: string): string[] {
+  const normalized = phrase.trim().toLowerCase();
+  if (!normalized) {
+    return [];
+  }
+
+  return Array.from(new Set([
+    normalized,
+    normalized.replace(/\s+/g, '-'),
+    normalized.replace(/[-_]+/g, ' '),
+  ]));
 }
 
 function getRuleMetadata(ruleId: QualityRuleId): ValidationRuleMetadata {
@@ -751,7 +797,7 @@ function validateMemoryQualityContent(content: string, options?: { filePath?: st
         const specContent = fs.readFileSync(specMdPath, 'utf-8');
         const relatedSpecs = parseYamlListFromContent(specContent, 'related_specs');
         for (const relatedSpec of relatedSpecs) {
-          const relatedSpecMatches = relatedSpec.match(SPEC_ID_REGEX) ?? [];
+          const relatedSpecMatches = extractSpecIdCandidates(relatedSpec);
           if (relatedSpecMatches.length > 0) {
             relatedSpecMatches.forEach((specId) => allowedSpecIds.add(specId));
             continue;
@@ -898,7 +944,9 @@ function validateMemoryQualityContent(content: string, options?: { filePath?: st
     }
     if (specTriggerPhrases.length > 0) {
       const lowerContent = content.toLowerCase();
-      const hasOverlap = specTriggerPhrases.some(phrase => lowerContent.includes(phrase.toLowerCase()));
+      const hasOverlap = specTriggerPhrases.some((phrase) => (
+        buildTopicalMatchVariants(phrase).some((variant) => lowerContent.includes(variant))
+      ));
       if (!hasOverlap) {
         v12Failed = true;
         v12Message = `V12_TOPICAL_MISMATCH: zero of ${specTriggerPhrases.length} spec trigger_phrases found in memory content`;

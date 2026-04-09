@@ -29,6 +29,15 @@ describe('filterTriggerPhrases', () => {
       expect(result).toEqual(['memory pipeline']);
     });
 
+    it('preserves leading numeric phrases when they are explicitly manual', () => {
+      const manualKey = '022 hybrid rag fusion';
+      const result = filterTriggerPhrases(
+        ['022 hybrid rag fusion', 'memory pipeline'],
+        new Set([manualKey]),
+      );
+      expect(result).toEqual(['022 hybrid rag fusion', 'memory pipeline']);
+    });
+
     it('retains phrases without path separators', () => {
       const input = ['memory pipeline', 'quality scorer'];
       const result = filterTriggerPhrases(input);

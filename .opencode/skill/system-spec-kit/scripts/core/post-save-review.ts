@@ -24,6 +24,7 @@ import {
 import { sanitizeTriggerPhrase, type TriggerPhraseSanitizeReason } from '../lib/trigger-phrase-sanitizer';
 import { resolveSaveMode, SaveMode, type SaveModeInput } from '../types/save-mode';
 import { structuredLog } from '../utils/logger';
+import { detectContinuationPattern } from './find-predecessor-memory';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -136,16 +137,6 @@ const GENERIC_TITLES = new Set([
 
 const DECISION_PLACEHOLDER_PATTERN = /\b(?:observation|user)\s+decision\s+\d+\b/i;
 const HIGH_GUARDRAIL_CHECKS = new Set<ReviewCheckId>(['D1', 'D2', 'D4', 'D7']);
-const CONTINUATION_PATTERNS: Array<{ label: string; pattern: RegExp }> = [
-  { label: 'extended', pattern: /\bextended\b/i },
-  { label: 'continuation', pattern: /\bcontinu(?:ation|e)\b/i },
-  { label: 'resume', pattern: /\bresume\b/i },
-  { label: 'follow_up', pattern: /\bfollow[- ]up\b/i },
-  { label: 'part', pattern: /\bpart\s*\d+\b/i },
-  { label: 'round', pattern: /\bround\s*\d+\b/i },
-  { label: 'iteration', pattern: /\biter(?:ation)?\s*\d+\b/i },
-  { label: 'iterations_total', pattern: /\b\d+[- ]*iterations?(?:[- ]*total[- ]*\d+)?\b/i },
-];
 
 /* ───────────────────────────────────────────────────────────────
    3. PARSING HELPERS
@@ -348,7 +339,23 @@ function extractOverviewAnchorState(content: string): AnchorState {
 }
 
 function extractSupersedesEntries(content: string): string[] {
-  return extractYamlListEntries(extractMemoryMetadataYaml(content), 'supersedes');
+  const yamlBlock = extractMemoryMetadataYaml(content);
+  if (!yamlBlock) {
+    return [];
+  }
+
+  const match = yamlBlock.match(/^\s*supersedes:\s*\n(?<entries>(?:\s*-\s+.*(?:\n|$))*)/m);
+  const rawEntries = match?.groups?.entries ?? '';
+  if (!rawEntries) {
+    return [];
+  }
+
+  return rawEntries
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith('- '))
+    .map((line) => line.replace(/^- /, '').replace(/^['"]|['"]$/g, ''))
+    .filter(Boolean);
 }
 
 function extractMetadataTriggerPhrases(content: string): string[] {
@@ -409,18 +416,40 @@ function isGenericTitle(title: string): boolean {
   return GENERIC_TITLES.has(normalized) || normalized.length < 10;
 }
 
-function detectContinuationPattern(title: string): string | null {
-  for (const candidate of CONTINUATION_PATTERNS) {
-    if (candidate.pattern.test(title)) {
-      return candidate.label;
-    }
-  }
-  return null;
-}
-
 function buildD3Counts(triggerPhrases: string[]): Record<D3Reason, number> {
   return triggerPhrases.reduce<Record<D3Reason, number>>((counts, phrase) => {
     const verdict = sanitizeTriggerPhrase(phrase);
+    if (
+      verdict.keep === false &&
+      verdict.reason &&
+      (verdict.reason === 'path_fragment' || verdict.reason === 'standalone_stopword' || verdict.reason === 'synthetic_bigram')
+    ) {
+      counts[verdict.reason] += 1;
+    }
+    return counts;
+  }, {
+    path_fragment: 0,
+    standalone_stopword: 0,
+    synthetic_bigram: 0,
+  });
+}
+
+function buildManualTriggerKeySet(triggerPhrases: string[] | undefined): Set<string> {
+  return new Set(
+    (Array.isArray(triggerPhrases) ? triggerPhrases : [])
+      .filter((phrase): phrase is string => typeof phrase === 'string')
+      .map((phrase) => phrase.trim().toLowerCase())
+      .filter(Boolean),
+  );
+}
+
+function buildD3CountsWithSource(
+  triggerPhrases: string[],
+  manualTriggerKeys: Set<string>,
+): Record<D3Reason, number> {
+  return triggerPhrases.reduce<Record<D3Reason, number>>((counts, phrase) => {
+    const source = manualTriggerKeys.has(phrase.trim().toLowerCase()) ? 'manual' : 'extracted';
+    const verdict = sanitizeTriggerPhrase(phrase, { source });
     if (
       verdict.keep === false &&
       verdict.reason &&
@@ -615,8 +644,10 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
         : [];
     const explicitTier = normalizeScalarValue(collectedData.importanceTier || collectedData.importance_tier);
     const explicitContextType = normalizeScalarValue(collectedData.contextType || collectedData.context_type);
-    const continuationPattern = detectContinuationPattern(savedTitle);
-    const d3Counts = buildD3Counts(savedTriggers);
+    const savedDescription = normalizeScalarValue(frontmatter.description);
+    const continuationPattern = detectContinuationPattern(savedTitle) || detectContinuationPattern(savedDescription);
+    const manualTriggerKeys = buildManualTriggerKeySet(collectedData._manualTriggerPhrases);
+    const d3Counts = buildD3CountsWithSource(savedTriggers, manualTriggerKeys);
     const provenanceExpected = collectedData.provenanceExpected === true;
 
     // Baseline checks.
@@ -631,7 +662,10 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
     }
 
     if (Array.isArray(collectedData._manualTriggerPhrases) && collectedData._manualTriggerPhrases.length > 0) {
-      const pathFragments = savedTriggers.filter((phrase) => sanitizeTriggerPhrase(phrase).reason === 'path_fragment');
+      const pathFragments = savedTriggers.filter((phrase) => (
+        !manualTriggerKeys.has(phrase.trim().toLowerCase())
+        && sanitizeTriggerPhrase(phrase).reason === 'path_fragment'
+      ));
       if (pathFragments.length > 0) {
         issues.push({
           checkId: 'PSR-2',
@@ -807,7 +841,6 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
       });
     }
 
-    const savedDescription = normalizeScalarValue(frontmatter.description);
     if (savedDescription) {
       const genericDescriptions = [
         'session focused on implementing and testing features',
@@ -899,7 +932,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
         checkId: 'D5',
         severity: 'MEDIUM',
         field: 'causal_links.supersedes',
-        message: `continuation-style title matched "${continuationPattern}" but causal_links.supersedes is empty`,
+        message: `continuation signal matched "${continuationPattern}" but causal_links.supersedes is empty`,
         fix: 'Populate causal_links.supersedes when a continuation save has a valid predecessor',
       });
     }

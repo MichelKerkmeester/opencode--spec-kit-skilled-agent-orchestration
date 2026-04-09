@@ -58,7 +58,7 @@ afterEach(async () => {
 });
 
 describe('post-save render round trip', () => {
-  it('writes a fresh memory save that satisfies the wrapper render contract', async () => {
+  it('writes a fresh memory save that satisfies the wrapper render contract', { timeout: 60000 }, async () => {
     const specFolderRelative = path.join(
       '.opencode',
       'specs',

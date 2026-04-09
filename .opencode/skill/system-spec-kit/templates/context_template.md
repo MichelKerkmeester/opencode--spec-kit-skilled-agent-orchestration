@@ -404,6 +404,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 session_id: "{{SESSION_ID}}"
 spec_folder: "{{SPEC_FOLDER}}"
 channel: "{{CHANNEL}}"
+title: "{{MEMORY_TITLE}}"
 
 # Git Provenance (M-007d)
 head_ref: "{{HEAD_REF}}"

@@ -72,6 +72,8 @@ export type FileEntry = NormalizedFileEntry;
 
 /** Raw input data that may be in manual or MCP-compatible format */
 export interface RawInputData {
+  title?: string;
+  description?: string;
   specFolder?: string;
   spec_folder?: string;
   SPEC_FOLDER?: string;
@@ -108,6 +110,8 @@ export interface RawInputData {
   user_prompts?: Array<NormalizedUserPrompt | string>;
   recentContext?: Array<RecentContext | string>;
   recent_context?: Array<RecentContext | string>;
+  causalLinks?: Record<string, unknown>;
+  causal_links?: Record<string, unknown>;
   saveMode?: SaveMode | string;
   save_mode?: SaveMode | string;
   [key: string]: unknown;
@@ -134,6 +138,10 @@ export interface NormalizedData {
   _manualTriggerPhrases?: string[];
   _manualDecisions?: Array<string | DecisionItemObject>;
   TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
+  title?: string;
+  description?: string;
+  causalLinks?: Record<string, unknown>;
+  causal_links?: Record<string, unknown>;
   importanceTier?: string;
   contextType?: string;
   projectPhase?: string;
@@ -157,6 +165,71 @@ function normalizeCompletionPercent(value: unknown): number | null {
   }
 
   return null;
+}
+
+function normalizeOptionalText(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function normalizeCausalLinkEntries(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const seen = new Set<string>();
+  const normalized: string[] = [];
+  for (const entry of value) {
+    if (typeof entry !== 'string') {
+      continue;
+    }
+    const trimmed = entry.trim();
+    if (!trimmed || seen.has(trimmed)) {
+      continue;
+    }
+    seen.add(trimmed);
+    normalized.push(trimmed);
+  }
+
+  return normalized;
+}
+
+function normalizeCausalLinks(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+  const causedBy = normalizeCausalLinkEntries(record.causedBy ?? record.caused_by);
+  const supersedes = normalizeCausalLinkEntries(record.supersedes);
+  const derivedFrom = normalizeCausalLinkEntries(record.derivedFrom ?? record.derived_from);
+  const blocks = normalizeCausalLinkEntries(record.blocks);
+  const relatedTo = normalizeCausalLinkEntries(record.relatedTo ?? record.related_to);
+
+  if (
+    causedBy.length === 0
+    && supersedes.length === 0
+    && derivedFrom.length === 0
+    && blocks.length === 0
+    && relatedTo.length === 0
+  ) {
+    return null;
+  }
+
+  return {
+    causedBy,
+    caused_by: causedBy,
+    supersedes,
+    derivedFrom,
+    derived_from: derivedFrom,
+    blocks,
+    relatedTo,
+    related_to: relatedTo,
+  };
 }
 
 /** An exchange in an OpenCode capture */
@@ -557,6 +630,9 @@ function normalizeFileEntryLike(file: NormalizedFileEntry | Record<string, unkno
  * @returns A NormalizedData object with unified observations, userPrompts, recentContext, and FILES, or the backfilled input if already in MCP format.
  */
 function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
+  const explicitTitle = normalizeOptionalText(data.title);
+  const explicitDescription = normalizeOptionalText(data.description);
+  const explicitCausalLinks = normalizeCausalLinks(data.causalLinks ?? data.causal_links);
   const nextSteps = Array.isArray(data.nextSteps)
     ? data.nextSteps
     : Array.isArray(data.next_steps)
@@ -668,6 +744,16 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     if (data.specFolder || data.spec_folder || data.SPEC_FOLDER) {
       cloned.SPEC_FOLDER = (data.specFolder || data.spec_folder || data.SPEC_FOLDER) as string;
     }
+    if (explicitTitle) {
+      cloned.title = explicitTitle;
+    }
+    if (explicitDescription) {
+      cloned.description = explicitDescription;
+    }
+    if (explicitCausalLinks) {
+      cloned.causalLinks = explicitCausalLinks;
+      cloned.causal_links = explicitCausalLinks;
+    }
     // Q3: Backfill TECHNICAL_CONTEXT for fast-path data
     if (data.technicalContext && typeof data.technicalContext === 'object' && !cloned.TECHNICAL_CONTEXT) {
       cloned.TECHNICAL_CONTEXT = mapTechnicalContext(data.technicalContext);
@@ -755,6 +841,16 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 
   if (data.specFolder || data.spec_folder || data.SPEC_FOLDER) {
     normalized.SPEC_FOLDER = (data.specFolder || data.spec_folder || data.SPEC_FOLDER) as string;
+  }
+  if (explicitTitle) {
+    normalized.title = explicitTitle;
+  }
+  if (explicitDescription) {
+    normalized.description = explicitDescription;
+  }
+  if (explicitCausalLinks) {
+    normalized.causalLinks = explicitCausalLinks;
+    normalized.causal_links = explicitCausalLinks;
   }
 
   // F-16: Convert filesModified to FileEntry format with ACTION field
@@ -948,6 +1044,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
  */
 // P1: Known fields for unknown-field detection (T007)
 const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
+  'title', 'description',
   'specFolder', 'spec_folder', 'SPEC_FOLDER',
   'filesModified', 'files_modified', 'filesChanged', 'files_changed',
   'sessionSummary', 'session_summary',
@@ -964,6 +1061,7 @@ const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
   'FILES', 'observations',
   'userPrompts', 'user_prompts',
   'recentContext', 'recent_context',
+  'causalLinks', 'causal_links',
   'saveMode', 'save_mode',
   // T06: Preflight/postflight epistemic tracking fields
   'knowledgeScore', 'knowledge_score',
@@ -1015,6 +1113,12 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
   if (typeof data.session_summary === 'string' && data.session_summary.length > 50000) {
     errors.push(`session_summary exceeds maximum length of 50000 characters (got ${data.session_summary.length})`);
   }
+  if (data.title !== undefined && typeof data.title !== 'string') {
+    errors.push('title must be a string');
+  }
+  if (data.description !== undefined && typeof data.description !== 'string') {
+    errors.push('description must be a string');
+  }
   if (Array.isArray(data.triggerPhrases)) {
     for (let i = 0; i < data.triggerPhrases.length; i++) {
       if (typeof data.triggerPhrases[i] === 'string' && (data.triggerPhrases[i] as string).length > 200) {
@@ -1046,6 +1150,12 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
   }
   if (data.trigger_phrases !== undefined && !Array.isArray(data.trigger_phrases)) {
     errors.push('trigger_phrases must be an array');
+  }
+  if (data.causalLinks !== undefined && (!data.causalLinks || typeof data.causalLinks !== 'object' || Array.isArray(data.causalLinks))) {
+    errors.push('causalLinks must be an object');
+  }
+  if (data.causal_links !== undefined && (!data.causal_links || typeof data.causal_links !== 'object' || Array.isArray(data.causal_links))) {
+    errors.push('causal_links must be an object');
   }
 
   if (data.keyDecisions !== undefined && !Array.isArray(data.keyDecisions)) {

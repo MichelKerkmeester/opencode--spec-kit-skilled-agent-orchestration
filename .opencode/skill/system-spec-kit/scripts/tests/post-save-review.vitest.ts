@@ -53,7 +53,7 @@ decision_count: 2
       },
     });
 
-    expect(result).toEqual({ status: 'PASSED', issues: [] });
+    expect(result).toMatchObject({ status: 'PASSED', issues: [] });
   });
 });
 

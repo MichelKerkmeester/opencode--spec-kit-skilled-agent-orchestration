@@ -260,6 +260,19 @@ export function buildCausalLinksContext(collectedData: CollectedDataFull): Causa
   };
 }
 
+export function readExplicitMemoryText(collectedData: CollectedDataFull): {
+  title?: string;
+  description?: string;
+} {
+  const title = readString(collectedData, '', 'title').trim();
+  const description = readString(collectedData, '', 'description').trim();
+
+  return {
+    ...(title.length > 0 ? { title } : {}),
+    ...(description.length > 0 ? { description } : {}),
+  };
+}
+
 function parseFrontmatterValue(frontmatter: string, key: string): string {
   const match = frontmatter.match(new RegExp(`^${key}:\\s*"?(.*?)"?\\s*$`, 'm'));
   return match?.[1]?.trim() ?? '';

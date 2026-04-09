@@ -35,6 +35,10 @@ This packet moved all the way from research findings to a validated, phase-by-ph
 
 The later memory-redundancy research does not reopen Phases 1-5. Instead, it narrows any future follow-on work to compact-wrapper and canonical-doc-ownership surfaces, while this parent packet remains the long-form closeout owner for the shipped remediation train.
 
+### Phase 10 — Memory save heuristic calibration
+
+Phase 10 closes the remaining live-save defects that survived the earlier train: explicit `title`, `description`, and `causalLinks` now survive structured saves; manual trigger phrases stay authoritative through the runtime path; V8 and V12 validator behavior is calibrated; D5 linker and reviewer logic share one continuation contract; and the packet proves the fix with a rebuilt dist entrypoint plus a real parent-folder save. This phase is the follow-on cleanup lane for the remaining post-`009` save-path defects, not a reopening of the earlier PR-1 through PR-11 closure work.
+
 ### Phase 1 — PR-1 and PR-2
 
 Phase 1 fixed the OVERVIEW anchor mismatch and replaced the raw truncation clamp with a shared boundary-aware helper. That closed D8 and D1, exported the helper for later phases, and established the foundation the rest of the train reuses.
@@ -64,6 +68,7 @@ Phase 5 finished the packet operationally. It published the telemetry artifacts 
 | `003-sanitization-precedence/*` | Updated earlier | Closed D3 and D2 with sanitizer and precedence fixes |
 | `004-heuristics-refactor-guardrails/*` | Updated earlier | Closed D5, introduced SaveMode, and landed reviewer guardrails |
 | `005-operations-tail-prs/*` | Updated earlier | Added telemetry artifacts, PR-10 dry-run evidence, and PR-11 defer rationale |
+| `010-memory-save-heuristic-calibration/*` | Added in this pass | Closed the remaining schema, validator, trigger, and D5 save-path defects plus the real dist-based verification |
 | `spec.md` | Modified in this pass | Recast the parent packet as a completed implementation packet |
 | `checklist.md` | Modified in this pass | Linked packet-level claims to phase-local CHK evidence |
 | `implementation-summary.md` | Modified in this pass | Replaced the research-only narrative with the final closeout story |
