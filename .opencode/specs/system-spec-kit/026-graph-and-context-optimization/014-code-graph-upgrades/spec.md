@@ -31,7 +31,7 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-04-09 |
 | **Branch** | `main` |
 | **Parent Packet** | `026-graph-and-context-optimization` |
@@ -51,7 +51,7 @@ Current 026 graph work hardens trust (`011`) and advisory routing (`008`), but i
 Ship the bounded code-graph upgrade lane that improves detector fidelity, graph payload richness, and code-graph-local query ergonomics while explicitly depending on existing trust and routing packets instead of competing with them. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:930-932]
 <!-- /ANCHOR:problem -->
 
-> **Planning boundary:** This is a planning-only packet. It does not authorize code implementation in this run, does not touch live Code Graph MCP source, does not touch any `external/` tree, and keeps packet `008` authoritative for startup, resume, compact, and response-surface nudges. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:942-945] [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:1008-1011]
+> **Runtime authorization:** As of 2026-04-09, runtime implementation of the adopt-now lane is explicitly authorized by the operator. Implementation remains bounded to code-graph-local detector, payload, and query surfaces inside `mcp_server/`. This packet still does NOT touch any `external/` tree and keeps packet `008` authoritative for startup, resume, compact, and response-surface nudges. Clustering, export, and routing-facade work remains prototype-later per ADR-003 and does not land in this run.
 
 ---
 
@@ -74,13 +74,21 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md` | Create | Packet specification copied from the §20 roadmap with Level-3 scaffolding. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/plan.md` | Create | Packet implementation plan with hard dependencies and side-branch placement. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/tasks.md` | Create | Nine roadmap tasks with per-task matrix back-citations. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md` | Create | Level-3 verification checklist mirroring the packet requirements. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/decision-record.md` | Create | ADRs for validator dependency, 008 non-overlap, and prototype-later boundaries. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md` | Create | Placeholder closeout document stating that implementation has not started. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/spec.md` | Modify | Add the new post-R5/R6 side-branch entry to the parent DAG. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts` | Modify | Add detector provenance guards plus additive graph-edge enrichment and hot-file breadcrumb owner fields. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts` | Modify | Persist detector-provenance summaries and expose file-degree plus graph-edge summary helpers for code-graph-local consumers. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` | Modify | Ship blast-radius traversal, explicit multi-file union semantics, advisory hot-file breadcrumbs, and additive edge enrichment on the query owner surface. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts` | Modify | Surface detector provenance metadata on code-graph context responses. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/scan.ts` | Modify | Serialize detector provenance and graph-edge enrichment summaries at scan time. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | Modify | Preserve additive graph-edge enrichment on the existing resume payload contract. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` | Modify | Preserve resume-carried graph-edge enrichment through bootstrap output without changing 011 trust validation. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/structural-trust-axis.vitest.ts` | Modify | Verify the detector provenance taxonomy stays separate from packet 006's trust-axis vocabulary. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-context-handler.vitest.ts` | Modify | Verify detector provenance metadata on code-graph context responses. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-scan.vitest.ts` | Modify | Verify detector provenance summaries persist through the scan handler. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts` | Modify | Verify blast-radius depth caps, explicit union mode, advisory breadcrumbs, and additive edge enrichment. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts` | Modify | Verify resume/bootstrap payloads keep additive graph-edge enrichment without weakening certainty contracts. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts` | Modify | Verify numeric confidence validation and resume-to-bootstrap enrichment preservation with the real handler chain. |
+| `.opencode/skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts` | Create | Add the packet-014 frozen regression floor for detector provenance and blast-radius depth behavior. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md` | Modify | Replace the planning placeholder with the shipped runtime closeout and verification record. |
 <!-- /ANCHOR:scope -->
 
 ---

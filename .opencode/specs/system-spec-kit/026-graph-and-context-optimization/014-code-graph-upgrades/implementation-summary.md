@@ -1,11 +1,11 @@
 ---
 title: "Implementation Summary: Code Graph Upgrades [template:level_3/implementation-summary.md]"
-description: "Planning-only placeholder for 014-code-graph-upgrades. No runtime implementation has been performed yet."
+description: "Implementation closeout for 014-code-graph-upgrades."
 trigger_phrases:
   - "014-code-graph-upgrades"
   - "implementation"
   - "summary"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "implementation"
 ---
 # Implementation Summary: Code Graph Upgrades
@@ -22,8 +22,9 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 014-code-graph-upgrades |
-| **Completed** | Not started |
+| **Completed** | 2026-04-09 |
 | **Level** | 3 |
+| **Implementation Commit** | `2837e157a` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -31,7 +32,9 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-No runtime implementation has been performed yet. This file exists because Level 3 packets require an implementation-summary document, but `014-code-graph-upgrades` is currently a planning-only packet created from the §20 roadmap in `../001-research-graph-context-systems/002-codesight/research/research.md`.
+The adopt-now runtime lane shipped on top of the existing Code Graph MCP surface. The implementation added an honest detector provenance taxonomy, evidence-tagged edge metadata with numeric confidence, bounded blast-radius traversal with explicit multi-file union semantics, and degree-based hot-file breadcrumbs on code-graph-owned outputs.
+
+The packet kept packet `011` authoritative for trust-axis validation and packet `008` authoritative for startup, resume, compact, and response-surface nudges. No clustering, export, or routing-facade lane shipped in this run.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -39,7 +42,14 @@ No runtime implementation has been performed yet. This file exists because Level
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The current run created packet-local planning documents only: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`, plus this placeholder summary. It also updated the parent `026` packet DAG to place `014` as a post-R5/R6 side branch with explicit non-overlap against packet `008`.
+The implementation landed in `2837e157a` across the live code-graph runtime and its regression suite. The runtime work stayed bounded to:
+
+- detector contracts and serialization in `lib/code-graph/`
+- graph-local query and context outputs in `handlers/code-graph/`
+- additive payload helpers in `lib/context/shared-payload.ts`
+- targeted regression coverage in the code-graph vitest suite
+
+The packet closeout then updated `tasks.md`, `checklist.md`, `spec.md`, and this summary to record the shipped scope, the ADR fences that stayed in force, and the remaining prototype-later deferrals.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -49,9 +59,10 @@ The current run created packet-local planning documents only: `spec.md`, `plan.m
 
 | Decision | Why |
 |----------|-----|
-| Depend on `011` rather than replacing it | The roadmap keeps `011` authoritative for trust validation and payload preservation. |
-| Reject startup-surface routing nudges in this packet | Packet `008` already owns that lane. |
-| Keep routing facade, clustering, and export work as prototype-later | The §20 matrix classifies those items outside the adopt-now path. |
+| Keep `011` authoritative for structural trust validation | Additive graph richness had to compose with the existing owner contract instead of replacing it. |
+| Expose detector provenance separately from packet `011` trust axes | The graph needed the new `ast | structured | regex | heuristic` taxonomy without collapsing the validator-owned trust fields. |
+| Keep startup, resume, compact, and response-surface nudges out of scope | Packet `008` already owns that lane, so `014` stayed graph-local. |
+| Defer routing facade, Leiden clustering, and GraphML/Cypher exports | ADR-003 keeps those lanes prototype-later so the adopt-now packet stays executable and low-risk. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -61,10 +72,11 @@ The current run created packet-local planning documents only: `spec.md`, `plan.m
 
 | Check | Result |
 |-------|--------|
-| Planning docs created for `014-code-graph-upgrades` | PASS |
-| Parent `026` DAG updated with the new side-branch entry | PASS |
-| Runtime implementation performed | NOT APPLICABLE |
-| `validate.sh --strict` | Pending until the planning docs are finalized in this run |
+| `node_modules/.bin/vitest run tests/code-graph-indexer.vitest.ts tests/code-graph-query-handler.vitest.ts tests/graph-payload-validator.vitest.ts tests/code-graph-scan.vitest.ts tests/ensure-ready.vitest.ts tests/code-graph-context-handler.vitest.ts tests/structural-trust-axis.vitest.ts` | PASS (51 tests) |
+| `npm run typecheck` | PASS |
+| Packet `007` and `011` preflights re-verified before coding | PASS |
+| `validate.sh --strict` | PASS (`Errors: 0  Warnings: 0`) |
+| Packet memory artifact saved in `014-code-graph-upgrades/memory/` | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -72,7 +84,7 @@ The current run created packet-local planning documents only: `spec.md`, `plan.m
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. No Code Graph MCP implementation has started yet; this packet is planning-only.
-2. The packet remains blocked on `007` and `011` as hard predecessors for later runtime work.
-3. Startup, resume, compact, and response-surface nudges remain outside scope and must stay with packet `008`.
+1. The packet intentionally does not ship routing facades, Leiden clustering, GraphML/Cypher exports, or any new graph-only authority surface.
+2. The runtime lane enriches code-graph-owned outputs only; startup, resume, compact, and response-surface nudges remain with packet `008`.
+3. The parser fallback lane stayed bounded to the existing `SPECKIT_PARSER` selector and did not introduce a new lexical cascade subsystem in this run.
 <!-- /ANCHOR:limitations -->
