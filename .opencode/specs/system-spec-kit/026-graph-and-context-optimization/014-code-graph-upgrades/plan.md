@@ -42,9 +42,9 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 - [x] Packet `008` remains out of scope for startup, resume, compact, and response-surface nudges.
 
 ### Definition of Done
-- [ ] Packet docs are synchronized and placeholder-free.
-- [ ] The nine roadmap tasks remain bounded to graph-local detector, payload, and query surfaces.
-- [ ] `validate.sh --strict` passes on the packet folder before any implementation claim.
+- [x] Packet docs are synchronized and placeholder-free.
+- [x] The nine roadmap tasks remain bounded to graph-local detector, payload, and query surfaces.
+- [x] `validate.sh --strict` passes on the packet folder before any implementation claim.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -101,20 +101,20 @@ The packet upgrades graph-local detector metadata, traversal semantics, and addi
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Re-read the §20 roadmap, packet `007`, packet `011`, and packet `008` boundary notes.
-- [ ] Confirm the graph-local detector, payload, and query seams that match the adopt-now lane.
-- [ ] Verify the packet still sits as a post-R5/R6 side branch rather than a new prerequisite.
+- [x] Re-read the §20 roadmap, packet `007`, packet `011`, and packet `008` boundary notes.
+- [x] Confirm the graph-local detector, payload, and query seams that match the adopt-now lane.
+- [x] Verify the packet still sits as a post-R5/R6 side branch rather than a new prerequisite.
 
 ### Phase 2: Core Implementation
-- [ ] Implement detector provenance taxonomy plus AST or structured-fallback discipline.
-- [ ] Implement blast-radius depth-cap correction, multi-file union semantics, and honest hot-file breadcrumbs.
-- [ ] Add additive edge evidence classes and numeric confidence backfill after `011`.
-- [ ] Keep optional fallback, clustering, and export work behind explicit gating and non-authority wording.
+- [x] Implement detector provenance taxonomy plus AST or structured-fallback discipline.
+- [x] Implement blast-radius depth-cap correction, multi-file union semantics, and honest hot-file breadcrumbs.
+- [x] Add additive edge evidence classes and numeric confidence backfill after `011`.
+- [x] Keep optional fallback, clustering, and export work behind explicit gating and non-authority wording.
 
 ### Phase 3: Verification
-- [ ] Run frozen provenance fixtures, blast-radius corpora, and payload snapshot checks.
-- [ ] Run strict packet validation.
-- [ ] Record any follow-on or deferred prototype-later work without reclassifying it as day-one scope.
+- [x] Run frozen provenance fixtures, blast-radius corpora, and payload snapshot checks.
+- [x] Run strict packet validation.
+- [x] Record any follow-on or deferred prototype-later work without reclassifying it as day-one scope.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -190,9 +190,9 @@ Research charter -> 014 packet docs -> implementation activation
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] `007` re-verified as the detector regression floor
-- [ ] `011` re-verified as the additive payload validator
-- [ ] `008` non-overlap boundary re-read
+- [x] `007` re-verified as the detector regression floor
+- [x] `011` re-verified as the additive payload validator
+- [x] `008` non-overlap boundary re-read
 
 ### Rollback Procedure
 1. Revert packet-local runtime changes.

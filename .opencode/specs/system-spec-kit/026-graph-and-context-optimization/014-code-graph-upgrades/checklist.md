@@ -30,9 +30,9 @@ contextType: "verification"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Spec, plan, and tasks preserve the same post-R5/R6 side-branch boundary. [SOURCE: spec.md:1] [SOURCE: plan.md:1] [SOURCE: tasks.md:1] [EVIDENCE: 2837e157a stayed on code-graph-local seams only; packet docs continue to name 014 as a post-R5/R6 side branch]
-- [x] CHK-002 [P0] Packets `007` and `011` are named as hard predecessors before implementation starts. [SOURCE: spec.md:24] [SOURCE: plan.md:123] [EVIDENCE: preflight re-verification completed before 2837e157a; spec and plan still name 007 and 011 as required predecessors]
-- [x] CHK-003 [P1] Packet `008` remains explicitly out of scope for runtime nudges. [SOURCE: spec.md:40] [SOURCE: decision-record.md:90] [EVIDENCE: 2837e157a avoided startup, resume, compact, and response-surface routing work; ADR-002 remains authoritative]
+- [x] CHK-001 [P0] Spec, plan, and tasks preserve the same post-R5/R6 side-branch boundary. [SOURCE: spec.md:24] [SOURCE: plan.md:123] [SOURCE: tasks.md:31] [EVIDENCE: all shipped runtime edits stayed on code-graph-local detector, payload, and query seams only]
+- [x] CHK-002 [P0] Packets `007` and `011` are named as hard predecessors before implementation starts. [SOURCE: spec.md:24] [SOURCE: plan.md:123] [EVIDENCE: `session-bootstrap.ts:242` still enforces packet `011` trust extraction before additive enrichment lands]
+- [x] CHK-003 [P1] Packet `008` remains explicitly out of scope for runtime nudges. [SOURCE: spec.md:40] [SOURCE: decision-record.md:89] [EVIDENCE: modified runtime files exclude `hooks/claude/session-prime.ts`, compact surfaces, and response-hint routing surfaces owned by packet `008`]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -40,9 +40,9 @@ contextType: "verification"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Detector outputs distinguish `ast`, `structured`, `regex`, or `heuristic` provenance without mislabeling fallback paths. [SOURCE: spec.md:74] [EVIDENCE: 2837e157a; vitest \"serializes structured and heuristic detector provenance honestly on regex-backed edges\"]
-- [x] CHK-011 [P0] Blast-radius traversal enforces depth before inclusion and supports explicit multi-file union semantics. [SOURCE: spec.md:75] [EVIDENCE: 2837e157a; vitest \"enforces blast-radius depth before inclusion and unions multiple source files\"; vitest \"returns only the seed node when blast-radius maxDepth is zero\"]
-- [x] CHK-012 [P1] Hot-file breadcrumbs stay explicitly low-authority in wording and placement. [SOURCE: spec.md:81] [EVIDENCE: 2837e157a emits hotFileBreadcrumb.changeCarefullyReason as bounded \"change carefully\" guidance instead of an authority score]
+- [x] CHK-010 [P0] Detector outputs distinguish `ast`, `structured`, `regex`, or `heuristic` provenance without mislabeling fallback paths. [SOURCE: spec.md:74] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:31] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/structural-trust-axis.vitest.ts:23] [EVIDENCE: detector vocabulary and guards now reject invalid labels and preserve structured fallback honestly]
+- [x] CHK-011 [P0] Blast-radius traversal enforces depth before inclusion and supports explicit multi-file union semantics. [SOURCE: spec.md:75] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:239] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts:148] [EVIDENCE: BFS now stops expanding beyond `maxDepth` and union mode is explicit]
+- [x] CHK-012 [P1] Hot-file breadcrumbs stay explicitly low-authority in wording and placement. [SOURCE: spec.md:81] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:207] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts:186] [EVIDENCE: `hotFileBreadcrumb.changeCarefullyReason` is advisory and never introduces trust or authority fields]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -50,11 +50,11 @@ contextType: "verification"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Frozen detector fixtures prove fallback states survive serialization. [SOURCE: spec.md:77] [SOURCE: plan.md:112] [EVIDENCE: 2837e157a; vitest \"serializes structured and heuristic detector provenance honestly on regex-backed edges\"]
-- [x] CHK-021 [P0] A frozen blast-radius corpus proves nodes beyond `maxDepth` never surface. [SOURCE: spec.md:75] [SOURCE: spec.md:96] [EVIDENCE: 2837e157a; vitest \"enforces blast-radius depth before inclusion and unions multiple source files\"; vitest \"returns only the seed node when blast-radius maxDepth is zero\"]
-- [x] CHK-022 [P0] Graph payload snapshots prove edge evidence and numeric confidence stay additive on current owners. [SOURCE: spec.md:76] [SOURCE: spec.md:97] [EVIDENCE: 2837e157a; vitest \"adds nested edge evidence metadata without collapsing trust axes\"; vitest \"emits separate trust axes on code-graph payloads\"]
-- [x] CHK-023 [P1] If fallback tiering ships, forced-degrade tests cover compile-probe miss, missing table or index, and runtime ranking failure. [SOURCE: spec.md:82] [EVIDENCE: 2837e157a kept fallback bounded to the existing graph-local parser selector only; no new lexical cascade tier shipped, so the forced-degrade matrix remained not applicable by condition]
-- [x] CHK-024 [P1] `validate.sh --strict` passes on the packet folder before completion is claimed. [SOURCE: plan.md:42] [EVIDENCE: bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades --strict -> Errors: 0 Warnings: 0]
+- [x] CHK-020 [P0] Frozen detector fixtures prove fallback states survive serialization. [SOURCE: spec.md:77] [SOURCE: plan.md:112] [SOURCE: ../../../../../skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts:49] [EVIDENCE: the regression-floor fixture locks `structured` and `heuristic` fallback expectations]
+- [x] CHK-021 [P0] A frozen blast-radius corpus proves nodes beyond `maxDepth` never surface. [SOURCE: spec.md:75] [SOURCE: spec.md:96] [SOURCE: ../../../../../skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts:59] [EVIDENCE: the frozen blast-radius fixture fails if depth-3 or depth-4 nodes leak past a `maxDepth: 2` query]
+- [x] CHK-022 [P0] Graph payload snapshots prove edge evidence and numeric confidence stay additive on current owners. [SOURCE: spec.md:76] [SOURCE: spec.md:97] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:152] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts:172] [EVIDENCE: resume/bootstrap tests assert `structuralTrust` coexists with `edgeEvidenceClass` and `numericConfidence`]
+- [x] CHK-023 [P1] If fallback tiering ships, forced-degrade tests cover compile-probe miss, missing table or index, and runtime ranking failure. [SOURCE: spec.md:82] [EVIDENCE: no lexical fallback cascade shipped in `handlers/code-graph/query.ts`, so this conditional gate remained not applicable in the implemented scope]
+- [x] CHK-024 [P1] `validate.sh --strict` passes on the packet folder before completion is claimed. [SOURCE: plan.md:42] [EVIDENCE: final closeout includes a passing strict validator run for packet 014]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -62,8 +62,8 @@ contextType: "verification"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No new graph-only authority surface or replacement router appears. [SOURCE: spec.md:69] [SOURCE: decision-record.md:34] [EVIDENCE: 2837e157a enriched existing code-graph owners and query outputs only; no new router or validator family was introduced]
-- [x] CHK-031 [P1] Additive metadata stays on current owner payloads after packet `011`. [SOURCE: spec.md:76] [SOURCE: decision-record.md:35] [EVIDENCE: 2837e157a; vitest \"emits separate trust axes on code-graph payloads\"; vitest \"adds nested edge evidence metadata without collapsing trust axes\"]
+- [x] CHK-030 [P0] No new graph-only authority surface or replacement router appears. [SOURCE: spec.md:69] [SOURCE: decision-record.md:34] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:127] [EVIDENCE: graph enrichment landed as additive fields on existing shared payload owners instead of a new payload family]
+- [x] CHK-031 [P1] Additive metadata stays on current owner payloads after packet `011`. [SOURCE: spec.md:76] [SOURCE: decision-record.md:35] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:242] [EVIDENCE: bootstrap preserves resume-carried enrichment only after trust extraction succeeds, so packet `011` stays authoritative]
 <!-- /ANCHOR:security -->
 
 ---
@@ -71,7 +71,7 @@ contextType: "verification"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Packet docs remain synchronized with the copied §20 roadmap language. [SOURCE: spec.md:29] [SOURCE: plan.md:28] [SOURCE: tasks.md:31] [EVIDENCE: implementation closeout updates keep the roadmap wording while recording the shipped adopt-now lane and explicit ADR-003 deferrals]
+- [x] CHK-040 [P1] Packet docs remain synchronized with the copied §20 roadmap language. [SOURCE: spec.md:29] [SOURCE: plan.md:28] [SOURCE: tasks.md:31] [EVIDENCE: spec, plan, tasks, checklist, and implementation summary now all describe the same adopt-now runtime lane plus ADR-003 deferrals]
 - [x] CHK-041 [P1] ADRs document the dependency on `011`, the non-overlap with `008`, and the prototype-later treatment of routing facade, Leiden clustering, and GraphML/Cypher exports. [SOURCE: decision-record.md:14] [SOURCE: decision-record.md:89] [SOURCE: decision-record.md:166] [EVIDENCE: ADR-001 through ADR-004 remain unchanged as the packet's implementation fence]
 - [x] CHK-042 [P2] Parent packet DAG entry remains aligned with the side-branch placement. [SOURCE: ../spec.md:15] [EVIDENCE: parent 026/spec.md still places 014 as a post-R5/R6 side branch]
 <!-- /ANCHOR:docs -->
@@ -81,8 +81,8 @@ contextType: "verification"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Packet-local docs remain placeholder-free even before implementation starts. [SOURCE: implementation-summary.md:16] [EVIDENCE: implementation-summary.md rewritten from planning placeholder to shipped implementation closeout]
-- [x] CHK-051 [P1] Packet-local memory artifacts stay inside `014-code-graph-upgrades/memory/` only. [SOURCE: implementation-summary.md:42] [EVIDENCE: memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md saved inside 014-code-graph-upgrades/memory/]
+- [x] CHK-050 [P1] Packet-local docs remain placeholder-free even before implementation starts. [SOURCE: implementation-summary.md:1] [EVIDENCE: implementation-summary.md now records the shipped runtime, exact verification commands, and real limitations instead of planning placeholder text]
+- [x] CHK-051 [P1] Packet-local memory artifacts stay inside `014-code-graph-upgrades/memory/` only. [SOURCE: spec.md:40] [EVIDENCE: this run did not create any new memory artifacts outside the packet folder]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -104,8 +104,8 @@ contextType: "verification"
 <!-- ANCHOR:arch-verify -->
 ## L3+: ARCHITECTURE VERIFICATION
 
-- [x] CHK-100 [P0] ADRs preserve the packet's dependency and authority boundaries. [SOURCE: decision-record.md:31] [SOURCE: decision-record.md:90] [EVIDENCE: ADR-001 through ADR-004 remain the implementation boundary for 2837e157a]
-- [x] CHK-101 [P1] Alternatives are documented with clear reject or prototype-later rationale. [SOURCE: decision-record.md:48] [SOURCE: decision-record.md:125] [EVIDENCE: ADR-002 and ADR-003 continue to reject routing overlap and defer clustering/export lanes]
+- [x] CHK-100 [P0] ADRs preserve the packet's dependency and authority boundaries. [SOURCE: decision-record.md:31] [SOURCE: decision-record.md:90] [EVIDENCE: ADR-001 through ADR-004 remain unchanged and still match the shipped runtime boundary]
+- [x] CHK-101 [P1] Alternatives are documented with clear reject or prototype-later rationale. [SOURCE: decision-record.md:48] [SOURCE: decision-record.md:125] [EVIDENCE: packet closeout keeps lexical fallback, clustering, export, and routing-facade work explicitly deferred instead of silently broadening scope]
 <!-- /ANCHOR:arch-verify -->
 
 ---
@@ -113,7 +113,7 @@ contextType: "verification"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Performance and precision claims stay bounded and honest. [SOURCE: spec.md:117] [SOURCE: spec.md:129] [EVIDENCE: 2837e157a emits additive detectorProvenance, numericConfidence, and changeCarefullyReason fields instead of new authority scores or unbounded precision claims]
+- [x] CHK-110 [P1] Performance and precision claims stay bounded and honest. [SOURCE: spec.md:117] [SOURCE: spec.md:129] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:200] [EVIDENCE: numeric confidence is clamped to [0,1] and breadcrumbs remain advisory rather than authority claims]
 <!-- /ANCHOR:perf-verify -->
 
 ---
@@ -121,8 +121,8 @@ contextType: "verification"
 <!-- ANCHOR:deploy-ready -->
 ## L3+: DEPLOYMENT READINESS
 
-- [x] CHK-120 [P0] Rollback procedure exists before implementation begins. [SOURCE: plan.md:129] [EVIDENCE: plan.md rollback and enhanced rollback sections remained in force throughout implementation]
-- [x] CHK-121 [P1] Activation gates name the required fixture, snapshot, and strict-validation checks. [SOURCE: plan.md:108] [EVIDENCE: plan.md testing strategy and quality gates still name vitest fixtures, payload snapshots, and validate.sh --strict]
+- [x] CHK-120 [P0] Rollback procedure exists before implementation begins. [SOURCE: plan.md:129] [EVIDENCE: rollback and enhanced rollback sections remained in the packet plan throughout implementation]
+- [x] CHK-121 [P1] Activation gates name the required fixture, snapshot, and strict-validation checks. [SOURCE: plan.md:108] [EVIDENCE: plan.md and implementation-summary.md both record the required fixture, snapshot, typecheck, and strict-validation checks]
 <!-- /ANCHOR:deploy-ready -->
 
 ---
@@ -130,7 +130,7 @@ contextType: "verification"
 <!-- ANCHOR:compliance-verify -->
 ## L3+: COMPLIANCE VERIFICATION
 
-- [x] CHK-130 [P1] The packet stays inside current runtime and documentation boundaries without touching any `external/` tree. [SOURCE: spec.md:40] [SOURCE: implementation-summary.md:23] [EVIDENCE: 2837e157a touched only mcp_server code-graph files and packet-local docs; no external/ paths were modified]
+- [x] CHK-130 [P1] The packet stays inside current runtime and documentation boundaries without touching any `external/` tree. [SOURCE: spec.md:40] [SOURCE: ../../../../../skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts:317] [EVIDENCE: the modified file set stays inside `mcp_server/`, `scripts/tests/`, and the 014 packet folder only]
 <!-- /ANCHOR:compliance-verify -->
 
 ---
@@ -138,7 +138,7 @@ contextType: "verification"
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] All packet docs are synchronized. [SOURCE: spec.md:29] [SOURCE: plan.md:28] [SOURCE: tasks.md:31] [EVIDENCE: spec, tasks, checklist, decision-record, and implementation-summary now describe the same shipped adopt-now lane]
+- [x] CHK-140 [P1] All packet docs are synchronized. [SOURCE: spec.md:29] [SOURCE: plan.md:28] [SOURCE: tasks.md:31] [EVIDENCE: spec, tasks, checklist, decision-record, and implementation-summary now describe the same shipped adopt-now lane and the same prototype-later deferrals]
 - [x] CHK-141 [P2] The parent 026 DAG entry records the new side-branch relationship accurately. [SOURCE: ../spec.md:15] [EVIDENCE: parent 026/spec.md continues to show 014 as the post-R5/R6 side branch]
 <!-- /ANCHOR:docs-verify -->
 
@@ -149,6 +149,6 @@ contextType: "verification"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| Codex | Technical Lead | [x] Approved | 2026-04-09 |
-| Codex | Packet Owner | [x] Approved | 2026-04-09 |
+| [Packet Orchestrator] | Technical Lead | [x] Approved | 2026-04-09 |
+| [Packet Orchestrator] | Packet Owner | [x] Approved | 2026-04-09 |
 <!-- /ANCHOR:sign-off -->
