@@ -354,3 +354,13 @@ export function scoreMemoryQuality(
     } : null,
   };
 }
+
+export function buildRenderQualityScoreFields(result: Pick<QualityScoreResult, 'score01' | 'qualityFlags'>): {
+  render_quality_score: number;
+  render_quality_flags: QualityFlag[];
+} {
+  return {
+    render_quality_score: Number(result.score01.toFixed(2)),
+    render_quality_flags: [...result.qualityFlags],
+  };
+}

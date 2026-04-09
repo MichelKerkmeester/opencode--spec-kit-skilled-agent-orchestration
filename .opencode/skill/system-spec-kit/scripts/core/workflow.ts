@@ -103,7 +103,8 @@ import {
 import {
   buildMemoryClassificationContext,
   buildSessionDedupContext,
-  buildCausalLinksContext,
+  autoPopulateCausalLinks,
+  resolveParentSpec,
   buildWorkflowMemoryEvidenceSnapshot,
 } from './memory-metadata';
 import {
@@ -1287,26 +1288,23 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
     }
 
-    for (const phrase of autoExtractedTriggers) {
-      const trimmedPhrase = phrase.trim();
-      if (trimmedPhrase.length === 0) {
-        continue;
-      }
-      const loweredPhrase = normalizeTriggerComparisonKey(trimmedPhrase);
-      if (
-        !isAllowlistedShortProductName(trimmedPhrase)
-        && (
-          titleTriggerKey.includes(loweredPhrase)
-          || Array.from(manualTriggerKeys).some((manualKey) => (
-            manualKey.includes(loweredPhrase) || loweredPhrase.includes(manualKey)
-          ))
-        )
-      ) {
-        continue;
-      }
-      if (!seenMergedTriggers.has(loweredPhrase)) {
-        mergedTriggers.push(trimmedPhrase);
-        seenMergedTriggers.add(loweredPhrase);
+    if (manualTriggerKeys.size === 0) {
+      for (const phrase of autoExtractedTriggers) {
+        const trimmedPhrase = phrase.trim();
+        if (trimmedPhrase.length === 0) {
+          continue;
+        }
+        const loweredPhrase = normalizeTriggerComparisonKey(trimmedPhrase);
+        if (
+          !isAllowlistedShortProductName(trimmedPhrase)
+          && titleTriggerKey.includes(loweredPhrase)
+        ) {
+          continue;
+        }
+        if (!seenMergedTriggers.has(loweredPhrase)) {
+          mergedTriggers.push(trimmedPhrase);
+          seenMergedTriggers.add(loweredPhrase);
+        }
       }
     }
 
@@ -1355,7 +1353,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       || Array.from(manualTriggerKeys).some((manualKey) => (
         manualKey.includes(leafFolderAnchorKey) || leafFolderAnchorKey.includes(manualKey)
       ));
-    if (leafAnchorIsInformative && !leafAnchorAlreadyCovered && !existingLower.has(leafFolderAnchorKey)) {
+    if (manualTriggerKeys.size === 0 && leafAnchorIsInformative && !leafAnchorAlreadyCovered && !existingLower.has(leafFolderAnchorKey)) {
       const sanitizedLeafAnchor = sanitizeTriggerPhrases([leafFolderAnchor])[0];
       if (sanitizedLeafAnchor) {
         const sanitizedLeafAnchorKey = normalizeTriggerComparisonKey(sanitizedLeafAnchor);
@@ -1410,7 +1408,20 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       collectedData.causalLinks = nextCausalLinks;
     }
   }
-  const causalLinks = buildCausalLinksContext(collectedData);
+  const autoCausalLinks = autoPopulateCausalLinks(collectedData, specFolder, {
+    sessionId: sessionData.SESSION_ID,
+    contextType: sessionData.CONTEXT_TYPE,
+  });
+  collectedData.causal_links = {
+    ...(collectedData.causal_links && typeof collectedData.causal_links === 'object' ? collectedData.causal_links as Record<string, unknown> : {}),
+    caused_by: autoCausalLinks.CAUSED_BY,
+    supersedes: autoCausalLinks.SUPERSEDES,
+    derived_from: autoCausalLinks.DERIVED_FROM,
+    blocks: autoCausalLinks.BLOCKS,
+    related_to: autoCausalLinks.RELATED_TO,
+  };
+  collectedData.causalLinks = collectedData.causal_links;
+  const causalLinks = autoCausalLinks;
   const effectiveDecisionCount = Math.max(sessionData.DECISION_COUNT, decisions.DECISIONS.length);
 
   const files: Record<string, string> = {
@@ -1432,6 +1443,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       PHASE_COUNT: conversations.PHASE_COUNT,
       // Compact wrapper mode: pass canonical docs and evidence instead of full decisions/conversation
       CANONICAL_DOCS: sessionData.CANONICAL_DOCS || {},
+      CANONICAL_SOURCE_ENTRIES: Array.isArray((sessionData.CANONICAL_DOCS as unknown as Record<string, unknown> | undefined)?.CANONICAL_SOURCE_ENTRIES)
+        ? (sessionData.CANONICAL_DOCS as unknown as Record<string, unknown>).CANONICAL_SOURCE_ENTRIES as Array<Record<string, string>>
+        : [],
       DISTINGUISHING_EVIDENCE: sessionData.DISTINGUISHING_EVIDENCE || [],
       DECISION_HEADLINES: decisions.DECISIONS.slice(0, 2).map(d => d.TITLE),
       HAS_EXPANDED_DECISIONS: false,
@@ -1469,7 +1483,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       ...sessionDedup,
       ...causalLinks,
       RELATED_SESSIONS: [],
-      PARENT_SPEC: sessionData.SPEC_FOLDER || '',
+      PARENT_SPEC: resolveParentSpec(specFolder, specFolderName),
       CHILD_SESSIONS: [],
       EMBEDDING_MODEL: MODEL_NAME || 'text-embedding-3-small',
       EMBEDDING_VERSION: '1.0',
@@ -1509,13 +1523,15 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       diagramCount: diagrams.DIAGRAMS.length,
       skillVersion: CONFIG.SKILL_VERSION,
       autoTriggered: shouldAutoSave(sessionData.MESSAGE_COUNT),
-      filtering: {
-        ...filterPipeline.getStats(),
-        // RC-7: Clarify the two scoring systems to prevent confusion.
-        // Metadata.json qualityScore is 0-100 (legacy scorer), while
-        // Frontmatter quality_score is 0.0-1.0 (v2 scorer). Different metrics.
-        _note: 'qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)',
-      },
+      filtering: (() => {
+        const rawFiltering = filterPipeline.getStats() as unknown as Record<string, unknown>;
+        const { qualityScore, ...restFiltering } = rawFiltering;
+        return {
+          ...restFiltering,
+          input_completeness_score: typeof qualityScore === 'number' ? qualityScore : null,
+          _note: 'input_completeness_score is 0-100 input completeness; render_quality_score is 0.0-1.0 rendered wrapper quality',
+        };
+      })(),
       contaminationAudit: contaminationAuditTrail,
       semanticSummary: {
         task: implSummary.task.substring(0, 100),
@@ -1885,6 +1901,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           sessionSummary: collectedData.sessionSummary || jsonSessionSummary,
           provenanceExpected: collectedData.saveMode === SaveMode.Json
             && collectedData.repositoryState !== 'unavailable',
+          renderQualityScore: qualityResult.score01,
+          inputCompletenessScore: typeof (filterPipeline.getStats() as { qualityScore?: unknown }).qualityScore === 'number'
+            ? (filterPipeline.getStats() as { qualityScore: number }).qualityScore
+            : null,
         }
       : collectedData;
     structuredLog('info', 'memory_save_started', {
@@ -1941,7 +1961,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if ((reviewResult.status === 'ISSUES_FOUND' || reviewResult.status === 'REJECTED') && reviewResult.issues.length > 0) {
       const scorePenalty = computeReviewScorePenalty(reviewResult.issues);
       if (scorePenalty < 0) {
-        log(`   Post-save review: quality_score penalty ${scorePenalty.toFixed(2)} (${reviewResult.issues.length} issues found)`);
+        log(`   Post-save review: render_quality_score penalty ${scorePenalty.toFixed(2)} (${reviewResult.issues.length} issues found)`);
       }
     }
     if (reviewResult.status === 'REJECTED') {

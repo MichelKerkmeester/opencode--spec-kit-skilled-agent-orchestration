@@ -5,6 +5,8 @@
 // snapshot construction. Extracted from workflow.ts to reduce module size.
 
 import * as crypto from 'node:crypto';
+import * as fsSync from 'node:fs';
+import * as path from 'node:path';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
 import type { MemoryEvidenceSnapshot } from '@spec-kit/shared/parsing/memory-sufficiency';
 import type { FileChange } from '../types/session-types';
@@ -36,6 +38,12 @@ export type CausalLinksContext = {
   DERIVED_FROM: string[];
   BLOCKS: string[];
   RELATED_TO: string[];
+};
+
+type ExistingMemoryHeader = {
+  sessionId: string;
+  contextType: string;
+  timestampMs: number;
 };
 
 export type WorkflowObservationEvidence = {
@@ -250,6 +258,96 @@ export function buildCausalLinksContext(collectedData: CollectedDataFull): Causa
     BLOCKS: mergeLinkArray('blocks'),
     RELATED_TO: mergeLinkArray('related_to', 'relatedTo'),
   };
+}
+
+function parseFrontmatterValue(frontmatter: string, key: string): string {
+  const match = frontmatter.match(new RegExp(`^${key}:\\s*"?(.*?)"?\\s*$`, 'm'));
+  return match?.[1]?.trim() ?? '';
+}
+
+function parseExistingMemoryHeader(filePath: string): ExistingMemoryHeader | null {
+  try {
+    const content = fsSync.readFileSync(filePath, 'utf8');
+    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    if (!frontmatterMatch) {
+      return null;
+    }
+
+    const frontmatter = frontmatterMatch[1];
+    const sessionId = parseFrontmatterValue(frontmatter, 'session_id');
+    if (!sessionId) {
+      return null;
+    }
+
+    return {
+      sessionId,
+      contextType: parseFrontmatterValue(frontmatter, 'context_type').toLowerCase(),
+      timestampMs: fsSync.statSync(filePath).mtimeMs,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function autoPopulateCausalLinks(
+  collectedData: CollectedDataFull,
+  specFolderPath: string,
+  currentSession: { sessionId: string; contextType: string },
+): CausalLinksContext {
+  const existing = buildCausalLinksContext(collectedData);
+  const memoryDir = path.join(specFolderPath, 'memory');
+  if (!fsSync.existsSync(memoryDir) || !fsSync.statSync(memoryDir).isDirectory()) {
+    return existing;
+  }
+
+  const previousMemories = fsSync.readdirSync(memoryDir)
+    .filter((entry) => entry.endsWith('.md'))
+    .map((entry) => parseExistingMemoryHeader(path.join(memoryDir, entry)))
+    .filter((entry): entry is ExistingMemoryHeader => entry !== null && entry.sessionId !== currentSession.sessionId)
+    .sort((left, right) => right.timestampMs - left.timestampMs);
+
+  if (previousMemories.length === 0) {
+    return existing;
+  }
+
+  const latest = previousMemories[0];
+  const merge = (current: string[], additions: string[]): string[] => {
+    const seen = new Set<string>();
+    const merged: string[] = [];
+    for (const value of [...current, ...additions]) {
+      const trimmed = value.trim();
+      if (!trimmed || seen.has(trimmed)) {
+        continue;
+      }
+      seen.add(trimmed);
+      merged.push(trimmed);
+    }
+    return merged;
+  };
+
+  return {
+    ...existing,
+    DERIVED_FROM: merge(existing.DERIVED_FROM, [latest.sessionId]),
+    SUPERSEDES: currentSession.contextType === 'implementation' && latest.contextType === 'planning'
+      ? merge(existing.SUPERSEDES, [latest.sessionId])
+      : existing.SUPERSEDES,
+  };
+}
+
+export function resolveParentSpec(specFolderPath: string, specFolderName: string): string {
+  const parentPath = path.dirname(specFolderPath);
+  const parentSpecPath = path.join(parentPath, 'spec.md');
+  if (!fsSync.existsSync(parentSpecPath)) {
+    return '';
+  }
+
+  const normalizedSpecFolder = specFolderName.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+  const parentRelative = normalizedSpecFolder.split('/').slice(0, -1).join('/');
+  if (!parentRelative || parentRelative === normalizedSpecFolder) {
+    return '';
+  }
+
+  return parentRelative;
 }
 
 function normalizeEvidenceLine(value: unknown): string {

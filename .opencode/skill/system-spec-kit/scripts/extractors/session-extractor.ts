@@ -462,11 +462,13 @@ function calculateExpiryEpoch(importanceTier: string, createdAtEpoch: number): n
  */
 async function detectRelatedDocs(specFolderPath: string): Promise<RelatedDoc[]> {
   const docFiles = [
+    { name: 'review/review-report.md', role: 'Review findings and quality assessment' },
+    { name: 'decision-record.md', role: 'Architectural decisions and rationale' },
+    { name: 'implementation-summary.md', role: 'Build story, verification results, and outcomes' },
     { name: 'spec.md', role: 'Requirements specification' },
     { name: 'plan.md', role: 'Implementation plan' },
     { name: 'tasks.md', role: 'Task breakdown' },
     { name: 'checklist.md', role: 'QA checklist' },
-    { name: 'decision-record.md', role: 'Architecture decisions' },
     { name: 'research/research.md', role: 'Research findings' },
     { name: 'handover.md', role: 'Session handover notes' },
     { name: 'debug-delegation.md', role: 'Debug task delegation' }
@@ -495,9 +497,7 @@ async function detectRelatedDocs(specFolderPath: string): Promise<RelatedDoc[]> 
   }
 
   const parentPath = path.dirname(specFolderPath);
-  const parentName = path.basename(parentPath);
-
-  if (/^\d{3}-/.test(parentName) && path.basename(path.dirname(parentPath)) === 'specs') {
+  if (await fileExists(path.join(parentPath, 'spec.md'))) {
     for (const doc of docFiles) {
       const parentDocPath = path.join(parentPath, doc.name);
       if (await fileExists(parentDocPath)) {

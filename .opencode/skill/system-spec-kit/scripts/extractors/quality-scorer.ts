@@ -222,12 +222,23 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
   };
 }
 
+function buildInputCompletenessScoreFields(result: Pick<QualityScoreResult, 'score100' | 'qualityFlags'>): {
+  input_completeness_score: number;
+  input_completeness_flags: QualityFlag[];
+} {
+  return {
+    input_completeness_score: result.score100,
+    input_completeness_flags: [...result.qualityFlags],
+  };
+}
+
 /* ───────────────────────────────────────────────────────────────
    3. EXPORTS
 ------------------------------------------------------------------*/
 
 export {
   scoreMemoryQuality,
+  buildInputCompletenessScoreFields,
 };
 
 export type {

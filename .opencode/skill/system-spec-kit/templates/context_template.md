@@ -241,6 +241,13 @@ Next: {{NEXT_ACTION}}
 
 **Authoritative documentation for this packet. The memory save is a compact retrieval wrapper; full narrative context lives here:**
 
+{{#CANONICAL_SOURCE_ENTRIES}}
+- **{{ROLE}}**: [{{FILE_NAME}}]({{FILE_PATH}}) — {{DESCRIPTION}}
+{{/CANONICAL_SOURCE_ENTRIES}}
+{{^CANONICAL_SOURCE_ENTRIES}}
+- No canonical static documents detected in this spec folder yet
+- This memory may contain expanded narrative as a fallback
+{{/CANONICAL_SOURCE_ENTRIES}}
 {{#CANONICAL_DOCS}}
 {{#HAS_DECISION_RECORD}}- [`decision-record.md`]({{DECISION_RECORD_PATH}}) — Architectural decisions and rationale
 {{/HAS_DECISION_RECORD}}
@@ -250,10 +257,6 @@ Next: {{NEXT_ACTION}}
 {{/HAS_REVIEW_REPORT}}
 {{#HAS_RESEARCH_REPORT}}- [`research.md`]({{RESEARCH_REPORT_PATH}}) — Research findings and methodology
 {{/HAS_RESEARCH_REPORT}}
-{{/CANONICAL_DOCS}}
-{{^CANONICAL_DOCS}}
-- No canonical static documents detected in this spec folder yet
-- This memory may contain expanded narrative as a fallback
 {{/CANONICAL_DOCS}}
 
 <!-- /ANCHOR:canonical-docs -->

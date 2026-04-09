@@ -45,11 +45,11 @@ export function injectQualityMetadata(content: string, qualityScore: number, qua
       skippingQualityFlags = false;
     }
 
-    if (/^quality_score\s*:/i.test(trimmed)) {
+    if (/^(?:quality_score|render_quality_score)\s*:/i.test(trimmed)) {
       continue;
     }
 
-    if (/^quality_flags\s*:/i.test(trimmed)) {
+    if (/^(?:quality_flags|render_quality_flags)\s*:/i.test(trimmed)) {
       skippingQualityFlags = true;
       continue;
     }
@@ -58,10 +58,10 @@ export function injectQualityMetadata(content: string, qualityScore: number, qua
   }
 
   const qualityLines = [
-    `quality_score: ${qualityScore.toFixed(2)}`,
+    `render_quality_score: ${qualityScore.toFixed(2)}`,
     ...(qualityFlags.length > 0
-      ? ['quality_flags:', ...qualityFlags.map((flag) => `  - ${JSON.stringify(flag)}`)]
-      : ['quality_flags: []']),
+      ? ['render_quality_flags:', ...qualityFlags.map((flag) => `  - ${JSON.stringify(flag)}`)]
+      : ['render_quality_flags: []']),
   ];
   const updatedFrontmatter = [
     '---',

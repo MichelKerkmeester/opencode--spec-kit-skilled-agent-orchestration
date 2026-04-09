@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Memory Quality Backend Improvements"
-description: "Parent packet spec for the shipped remediation train; child phases 2-5 and 7 are phase-local complete while parent-gate follow-up remains tracked separately."
+description: "Parent packet spec for the shipped remediation train plus the scoped Phase 8 render-fix follow-on triggered by the 014 memory audit."
 trigger_phrases:
   - "memory quality parent spec"
   - "d1 d8 packet closeout"
@@ -26,7 +26,7 @@ contextType: "planning"
 | **Status** | Complete |
 | **Created** | 2026-04-06 |
 | **Branch** | `026-graph-and-context-optimization/003-memory-quality-issues` |
-| **Packet Shape** | Parent packet with 7 child phases |
+| **Packet Shape** | Parent packet with 8 child phases |
 | **Research State** | Complete |
 | **Implementation State** | Complete across Phases 1-5 |
 | **Operational Tail State** | Complete with PR-10 dry-run and PR-11 deferred-with-rationale |
@@ -77,7 +77,7 @@ Capture the final parent contract for the shipped remediation train: Phases 1-5 
 <!-- ANCHOR:phase-map -->
 ### Phase Documentation Map
 
-Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully parent-closed in this packet snapshot. Phases 6-7 are approved follow-on packets that extend this parent tracking map without changing the historical closeout record for the first five phases.
+Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully parent-closed in this packet snapshot. Phases 6-8 are approved follow-on packets that extend this parent tracking map without changing the historical closeout record for the first five phases. The newest child, `009-post-save-render-fixes`, is motivated by the 2026-04-09 packet-014 memory audit, which surfaced nine remaining render-layer defects in fresh compact-wrapper saves.
 
 | Phase | Priority | Folder | Focus | PRs / Defects | Depends On | Status |
 |-------|----------|--------|-------|---------------|------------|--------|
@@ -88,6 +88,7 @@ Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully paren
 | 5 | P4 | `005-operations-tail-prs/` | Telemetry artifacts, PR-10 dry-run, PR-11 defer/ship decision, parent closeout | PR-10 (migration dry-run), PR-11 (deferred), PR-9 telemetry fold-in | Phase 4 | Phase-local complete, parent gates pending |
 | 6 | P5 | `006-memory-duplication-reduction/` | Narrow the future implementation home to the compact-wrapper and canonical-doc-ownership contract identified by the sibling `001/.../006-research-memory-redundancy` packet. Focus future runtime work on collector, workflow, template-contract, and template-body surfaces plus bounded verification rather than a broad residual-dedup rewrite. | Implementation re-scope + bounded follow-on PRs (P12-P13) | Phases 1-5 stable and sibling redundancy synthesis complete | Phase-local complete, parent gates pending |
 | 7 | P6 | `007-skill-catalog-sync/` | Audit downstream docs, templates, commands, MCP surfaces, and agents only after the narrower Phase 6 compact-wrapper contract lands, so parity review targets the final wrapper behavior instead of a broader dedupe program. | Review + update PRs (P14-P15) | Phase 6 (final compact-wrapper contract required before auditing downstream artifacts) | Phase-local complete, parent gates pending |
+| 8 | P7 | `009-post-save-render-fixes/` | Repair the nine render-layer defects still visible in live compact-wrapper saves after Phase 6 shipped: title suffix garbage, empty canonical sources, zeroed file counts, trigger noise, duplicated evidence, stale phase or status, missing lineage, self-referential parent spec, and ambiguous quality-score names. | Render-layer follow-on fixes (A-I) | Phase 6 runtime stable and the 014 memory audit complete | Phase-local complete, parent gates pending |
 
 *Parent note: Child phases may be phase-local complete while parent strict-validation blockers in `plan.md` and `tasks.md` remain out of scope for those folders; this remediation workstream is tracked in `review/review-report.md`.*
 

@@ -8,6 +8,7 @@
 // Orchestrates session data collection — gathers observations, files, decisions, and context
 
 // Node stdlib
+import { execSync } from 'node:child_process';
 import * as path from 'path';
 import * as fsSync from 'fs';
 
@@ -117,6 +118,13 @@ export interface ContinueSessionData {
   PENDING_TASKS: PendingTask[];
   NEXT_CONTINUATION_COUNT: number;
   RESUME_CONTEXT: ContextItem[];
+}
+
+interface CanonicalSourceEntry {
+  ROLE: string;
+  FILE_NAME: string;
+  FILE_PATH: string;
+  DESCRIPTION: string;
 }
 
 /** Full collected session payload used by downstream extractors. */
@@ -355,6 +363,45 @@ function determineSessionStatus(
   messageCount: number,
   collectedData?: CollectedDataFull | null
 ): string {
+  const explicitStatus = (() => {
+    const rawStatus = (
+      (collectedData as Record<string, unknown> | undefined)?.sessionStatus
+      ?? (collectedData as Record<string, unknown> | undefined)?.session_status
+      ?? (collectedData as Record<string, unknown> | undefined)?.status
+    );
+    if (typeof rawStatus !== 'string') {
+      return null;
+    }
+
+    const normalized = rawStatus.trim().toUpperCase().replace(/[\s-]+/g, '_');
+    if (['COMPLETED', 'COMPLETE', 'DONE', 'SUCCESS'].includes(normalized)) {
+      return 'COMPLETED';
+    }
+    if (['BLOCKED', 'STUCK', 'WAITING'].includes(normalized)) {
+      return 'BLOCKED';
+    }
+    if (['IN_PROGRESS', 'INPROGRESS', 'RUNNING', 'DRAFT'].includes(normalized)) {
+      return 'IN_PROGRESS';
+    }
+    return null;
+  })();
+  if (explicitStatus) {
+    return explicitStatus;
+  }
+
+  const repositoryState = typeof collectedData?.repositoryState === 'string'
+    ? collectedData.repositoryState.toLowerCase()
+    : '';
+  if (repositoryState.includes('dirty') || repositoryState.includes('modified') || repositoryState.includes('untracked')) {
+    return 'IN_PROGRESS';
+  }
+  if (repositoryState.includes('clean') && (
+    typeof collectedData?.commitRef === 'string'
+    || typeof collectedData?.headRef === 'string'
+  )) {
+    return 'COMPLETED';
+  }
+
   const completionKeywords = /\b(?:done|complete[d]?|finish(?:ed)?|success(?:ful(?:ly)?)?)\b/i;
   const resolutionKeywords = /\b(?:resolved|fixed|unblocked|works?\s+now|workaround)\b/i;
   const pendingWorkKeywords = /\b(?:todo|remaining|pending|left to do|follow-?up|next(?:\s+step|\s+action)?|need(?:s)? to|still need(?:s)?|still pending)\b/i;
@@ -473,6 +520,20 @@ function estimateCompletionPercent(
   sessionStatus: string,
   collectedData?: CollectedDataFull | null
 ): number {
+  const explicitPercent = (() => {
+    const rawPercent = (
+      (collectedData as Record<string, unknown> | undefined)?.completionPercent
+      ?? (collectedData as Record<string, unknown> | undefined)?.completion_percent
+      ?? (collectedData as Record<string, unknown> | undefined)?.percentComplete
+    );
+    return typeof rawPercent === 'number' && Number.isFinite(rawPercent)
+      ? Math.max(0, Math.min(100, Math.round(rawPercent)))
+      : null;
+  })();
+  if (explicitPercent !== null) {
+    return explicitPercent;
+  }
+
   if (sessionStatus === 'COMPLETED') return 100;
   if (sessionStatus === 'BLOCKED') return Math.min(90, messageCount * 5);
 
@@ -702,24 +763,64 @@ function deriveCanonicalDocPointers(
     preferReviewReport: boolean;
     preferResearchReport: boolean;
   }
-): CanonicalDocs {
+): CanonicalDocs & { CANONICAL_SOURCE_ENTRIES: CanonicalSourceEntry[]; HAS_CANONICAL_SOURCES: boolean } {
+  const findDocPath = (...matches: string[]): string => {
+    for (const specFile of specFiles) {
+      const filePath = specFile.FILE_PATH ?? '';
+      const fileName = specFile.FILE_NAME ?? '';
+      if (matches.some((match) => fileName === match || filePath.endsWith(match))) {
+        return filePath || `./${matches[0]}`;
+      }
+    }
+    return '';
+  };
+
   const hasDecisionRecord = specFiles.some(f => f.FILE_NAME === 'decision-record.md');
   const hasImplementationSummary = specFiles.some(f => f.FILE_NAME === 'implementation-summary.md');
   const hasReviewReport = specFiles.some(f => f.FILE_NAME.includes('review-report.md') || (f.FILE_PATH ?? '').includes('review/review-report.md'));
   const hasResearchReport = specFiles.some(f => f.FILE_NAME === 'research.md' || (f.FILE_PATH ?? '').includes('research/research.md'));
+  const hasSpec = specFiles.some(f => f.FILE_NAME === 'spec.md');
+  const hasPlan = specFiles.some(f => f.FILE_NAME === 'plan.md');
 
-  const decisionRecordPath = hasDecisionRecord
-    ? specFiles.find(f => f.FILE_NAME === 'decision-record.md')?.FILE_PATH || 'decision-record.md'
-    : '';
-  const implementationSummaryPath = hasImplementationSummary
-    ? specFiles.find(f => f.FILE_NAME === 'implementation-summary.md')?.FILE_PATH || 'implementation-summary.md'
-    : '';
-  const reviewReportPath = hasReviewReport
-    ? specFiles.find(f => f.FILE_NAME.includes('review-report.md'))?.FILE_PATH || 'review/review-report.md'
-    : '';
-  const researchReportPath = hasResearchReport
-    ? specFiles.find(f => f.FILE_NAME === 'research.md' || (f.FILE_PATH ?? '').includes('research/research.md'))?.FILE_PATH || 'research/research.md'
-    : '';
+  const decisionRecordPath = hasDecisionRecord ? findDocPath('decision-record.md') : '';
+  const implementationSummaryPath = hasImplementationSummary ? findDocPath('implementation-summary.md') : '';
+  const reviewReportPath = hasReviewReport ? findDocPath('review/review-report.md', 'review-report.md') : '';
+  const researchReportPath = hasResearchReport ? findDocPath('research/research.md', 'research.md') : '';
+  const specPath = hasSpec ? findDocPath('spec.md') : '';
+  const planPath = hasPlan ? findDocPath('plan.md') : '';
+
+  const canonicalSourceEntries: CanonicalSourceEntry[] = [
+    hasReviewReport ? {
+      ROLE: 'Review Report',
+      FILE_NAME: 'review-report.md',
+      FILE_PATH: reviewReportPath,
+      DESCRIPTION: 'Review findings and quality assessment',
+    } : null,
+    hasDecisionRecord ? {
+      ROLE: 'Decision Record',
+      FILE_NAME: 'decision-record.md',
+      FILE_PATH: decisionRecordPath,
+      DESCRIPTION: 'Architectural decisions and rationale',
+    } : null,
+    hasImplementationSummary ? {
+      ROLE: 'Implementation Summary',
+      FILE_NAME: 'implementation-summary.md',
+      FILE_PATH: implementationSummaryPath,
+      DESCRIPTION: 'Build story, verification results, and outcomes',
+    } : null,
+    hasSpec ? {
+      ROLE: 'Specification',
+      FILE_NAME: 'spec.md',
+      FILE_PATH: specPath,
+      DESCRIPTION: 'Feature requirements and acceptance criteria',
+    } : null,
+    hasPlan ? {
+      ROLE: 'Plan',
+      FILE_NAME: 'plan.md',
+      FILE_PATH: planPath,
+      DESCRIPTION: 'Execution phases and verification strategy',
+    } : null,
+  ].filter((entry): entry is CanonicalSourceEntry => entry !== null);
 
   return {
     hasDecisionRecord,
@@ -734,6 +835,8 @@ function deriveCanonicalDocPointers(
     IMPLEMENTATION_SUMMARY_PATH: implementationSummaryPath,
     REVIEW_REPORT_PATH: reviewReportPath,
     RESEARCH_REPORT_PATH: researchReportPath,
+    CANONICAL_SOURCE_ENTRIES: canonicalSourceEntries,
+    HAS_CANONICAL_SOURCES: canonicalSourceEntries.length > 0,
   };
 }
 
@@ -748,16 +851,70 @@ function buildDistinctiveEvidence(params: {
   nextAction: string;
   blockers: string;
   limit: number;
+  explicitEvidence?: unknown[];
+  keyDecisions?: unknown[];
 }): EvidenceEntry[] {
-  const { observations, files, outcomes, nextAction, blockers, limit } = params;
+  const { observations, files, outcomes, nextAction, blockers, limit, explicitEvidence = [], keyDecisions = [] } = params;
   const evidence: EvidenceEntry[] = [];
+  const seen = new Set<string>();
+  const lineAnchorPattern = /\S+\.(?:ts|tsx|js|jsx|md|json|yml|yaml|sh):\d+/i;
+
+  const addEvidence = (value: unknown): void => {
+    const normalized = typeof value === 'string' ? value.trim() : '';
+    if (!normalized || seen.has(normalized)) {
+      return;
+    }
+    seen.add(normalized);
+    evidence.push({ EVIDENCE_ITEM: normalized });
+  };
+
+  const explicitCandidates: string[] = [];
+  if (Array.isArray(explicitEvidence)) {
+    for (const item of explicitEvidence) {
+      if (typeof item === 'string' && item.trim().length > 0) {
+        explicitCandidates.push(item.trim());
+      }
+    }
+  }
+  if (explicitCandidates.length === 0 && Array.isArray(keyDecisions)) {
+    for (const decision of keyDecisions) {
+      if (typeof decision === 'string' && decision.trim().length > 0) {
+        explicitCandidates.push(decision.trim());
+        continue;
+      }
+      if (decision && typeof decision === 'object') {
+        const record = decision as Record<string, unknown>;
+        const parts = [
+          typeof record.evidence === 'string' ? record.evidence.trim() : '',
+          typeof record.decision === 'string' ? record.decision.trim() : '',
+          typeof record.rationale === 'string' ? record.rationale.trim() : '',
+        ].filter(Boolean);
+        const combined = parts.join(' — ').trim();
+        if (combined.length > 0) {
+          explicitCandidates.push(combined);
+        }
+      }
+    }
+  }
+  if (explicitCandidates.length > 0) {
+    explicitCandidates
+      .filter((candidate, index, all) => all.indexOf(candidate) === index)
+      .sort((left, right) => {
+        const leftRank = lineAnchorPattern.test(left) ? 1 : 0;
+        const rightRank = lineAnchorPattern.test(right) ? 1 : 0;
+        return rightRank - leftRank;
+      })
+      .slice(0, limit)
+      .forEach(addEvidence);
+    return evidence;
+  }
 
   // Add top 2 outcomes if they exist and are not generic
   const meaningfulOutcomes = outcomes
     .filter(o => o.OUTCOME && o.OUTCOME !== 'Session in progress' && o.OUTCOME !== 'Session completed')
     .slice(0, 2);
   for (const outcome of meaningfulOutcomes) {
-    evidence.push({ EVIDENCE_ITEM: outcome.OUTCOME });
+    addEvidence(outcome.OUTCOME);
     if (evidence.length >= limit) return evidence;
   }
 
@@ -770,25 +927,25 @@ function buildDistinctiveEvidence(params: {
     .slice(0, 1);
   for (const obs of distinctiveObs) {
     const text = obs.title || obs.narrative || '';
-    evidence.push({ EVIDENCE_ITEM: truncateOnWordBoundary(text, 120, { ellipsis: '…', minBoundary: 30 }) });
+    addEvidence(truncateOnWordBoundary(text, 120, { ellipsis: '…', minBoundary: 30 }));
     if (evidence.length >= limit) return evidence;
   }
 
   // Add next action if meaningful
   if (nextAction && nextAction !== 'Continue implementation' && nextAction !== 'No pending tasks') {
-    evidence.push({ EVIDENCE_ITEM: `Next: ${nextAction}` });
+    addEvidence(`Next: ${nextAction}`);
     if (evidence.length >= limit) return evidence;
   }
 
   // Add blocker if present
   if (blockers && blockers !== 'None') {
-    evidence.push({ EVIDENCE_ITEM: `Blocker: ${blockers}` });
+    addEvidence(`Blocker: ${blockers}`);
     if (evidence.length >= limit) return evidence;
   }
 
   // Add file count if significant
   if (files.length >= 3) {
-    evidence.push({ EVIDENCE_ITEM: `${files.length} files modified` });
+    addEvidence(`${files.length} files modified`);
     if (evidence.length >= limit) return evidence;
   }
 
@@ -881,6 +1038,22 @@ interface SpecFolderResolution {
   matchedRoot: string | null;
 }
 
+function resolveProvidedSpecFolder(folderName: string, candidateSpecsDirs: string[]): SpecFolderResolution {
+  if (path.isAbsolute(folderName)) {
+    return resolveSpecFolderRelative(path.resolve(folderName).replace(/\\/g, '/'), candidateSpecsDirs);
+  }
+
+  const normalizedFolder = folderName.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+  for (const candidateRoot of candidateSpecsDirs) {
+    const candidatePath = path.resolve(candidateRoot, normalizedFolder);
+    if (fsSync.existsSync(candidatePath)) {
+      return { relative: normalizedFolder, matchedRoot: candidateRoot };
+    }
+  }
+
+  return { relative: normalizedFolder, matchedRoot: null };
+}
+
 function resolveSpecFolderRelative(normalizedDetected: string, candidateSpecsDirs: string[]): SpecFolderResolution {
   for (const candidateRoot of candidateSpecsDirs) {
     const normalizedRoot = path.resolve(candidateRoot).replace(/\\/g, '/');
@@ -918,6 +1091,80 @@ function countDistinctFilePaths(
   return normalizedPaths.size;
 }
 
+function extractStructuredFileCandidates(collectedData: CollectedDataFull): string[] {
+  const candidates: string[] = [];
+
+  if (Array.isArray(collectedData.FILES)) {
+    for (const file of collectedData.FILES) {
+      const candidate = typeof file?.FILE_PATH === 'string'
+        ? file.FILE_PATH
+        : typeof file?.path === 'string'
+          ? file.path
+          : '';
+      if (candidate) {
+        candidates.push(candidate);
+      }
+    }
+  }
+
+  if (Array.isArray(collectedData.filesModified)) {
+    for (const file of collectedData.filesModified as Array<Record<string, unknown>>) {
+      const candidate = typeof file.path === 'string'
+        ? file.path
+        : typeof file.filePath === 'string'
+          ? file.filePath
+          : typeof file.FILE_PATH === 'string'
+            ? file.FILE_PATH
+            : '';
+      if (candidate) {
+        candidates.push(candidate);
+      }
+    }
+  }
+
+  const filesChanged = (collectedData as Record<string, unknown>).filesChanged;
+  if (Array.isArray(filesChanged)) {
+    for (const file of filesChanged) {
+      if (typeof file === 'string' && file.trim().length > 0) {
+        candidates.push(file.trim());
+      }
+    }
+  }
+
+  return Array.from(new Set(candidates.map((value) => value.replace(/\\/g, '/').trim()).filter(Boolean)));
+}
+
+function collectGitStatusFallbackFiles(): FileChange[] {
+  try {
+    const output = execSync('git status --porcelain --untracked-files=all', {
+      cwd: CONFIG.PROJECT_ROOT,
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+      timeout: 5000,
+    }).trim();
+
+    if (!output) {
+      return [];
+    }
+
+    return output
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => line.replace(/^[ MARCUD?!]{1,2}\s+/, ''))
+      .filter(Boolean)
+      .map((filePath) => ({
+        FILE_PATH: filePath.replace(/\\/g, '/'),
+        DESCRIPTION: 'Modified during session',
+        ACTION: 'Modified',
+        MODIFICATION_MAGNITUDE: 'unknown' as const,
+        _provenance: 'git' as const,
+      }));
+  } catch {
+    return [];
+  }
+}
+
 async function collectSessionData(
   collectedData: CollectedDataFull | null,
   specFolderName: string | null = null,
@@ -929,18 +1176,21 @@ async function collectSessionData(
   // CODEX2-004: Preserve the winning specs root from phase 1 for use in phase 2
   let folderName: string = specFolderName || '';
   let resolvedSpecsRoot: string | null = null;
+  const candidateSpecsDirs = Array.from(new Set([
+    findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs'),
+    ...getSpecsDirectories(),
+    path.join(CONFIG.PROJECT_ROOT, 'specs'),
+    path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
+  ]));
   if (!folderName) {
     const detectedFolder = await detectSpecFolder();
     const normalizedDetected = path.resolve(detectedFolder).replace(/\\/g, '/');
 
-    const candidateSpecsDirs = Array.from(new Set([
-      findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs'),
-      ...getSpecsDirectories(),
-      path.join(CONFIG.PROJECT_ROOT, 'specs'),
-      path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
-    ]));
-
     const resolution = resolveSpecFolderRelative(normalizedDetected, candidateSpecsDirs);
+    folderName = resolution.relative;
+    resolvedSpecsRoot = resolution.matchedRoot;
+  } else {
+    const resolution = resolveProvidedSpecFolder(folderName, candidateSpecsDirs);
     folderName = resolution.relative;
     resolvedSpecsRoot = resolution.matchedRoot;
   }
@@ -988,19 +1238,36 @@ async function collectSessionData(
   }
 
   const duration: string = calculateSessionDuration(userPrompts, now);
-  const FILES: FileChange[] = extractFilesFromData(data, observations);
-  const capturedFileCount = countDistinctFilePaths(
+  let FILES: FileChange[] = extractFilesFromData(data, observations);
+  if (FILES.length === 0) {
+    const structuredFileCandidates = extractStructuredFileCandidates(data);
+    if (structuredFileCandidates.length > 0) {
+      FILES = structuredFileCandidates.map((filePath) => ({
+        FILE_PATH: filePath,
+        DESCRIPTION: 'Modified during session',
+        ACTION: 'Modified',
+        MODIFICATION_MAGNITUDE: 'unknown',
+      }));
+    } else {
+      FILES = collectGitStatusFallbackFiles();
+    }
+  }
+  const structuredFileCount = extractStructuredFileCandidates(data).length;
+  let capturedFileCount = Math.max(structuredFileCount, countDistinctFilePaths(
     FILES,
     (file) => file._provenance !== 'git' && file._provenance !== 'spec-folder',
-  );
-  const filesystemDerivedCount = countDistinctFilePaths(
+  ));
+  const filesystemDerivedCount = Math.max(structuredFileCount, countDistinctFilePaths(
     FILES,
     (file) => file._provenance === 'git' || file._provenance === 'spec-folder',
-  );
-  const gitChangedFileCount = countDistinctFilePaths(
+  ));
+  const gitChangedFileCount = Math.max(structuredFileCount, countDistinctFilePaths(
     FILES,
     (file) => file._provenance === 'git',
-  );
+  ));
+  if (capturedFileCount === 0 && filesystemDerivedCount > 0) {
+    capturedFileCount = filesystemDerivedCount;
+  }
   const filesystemFileCount = filesystemDerivedCount > 0 ? filesystemDerivedCount : capturedFileCount;
   // Persist source-session fields as metadata only; SaveMode governs behavior elsewhere.
   const sourceTranscriptPath = typeof data._sourceTranscriptPath === 'string' ? data._sourceTranscriptPath : '';
@@ -1078,7 +1345,11 @@ async function collectSessionData(
   // RC5-ext: Extract explicit projectPhase from JSON payload
   let explicitProjectPhase = typeof data.projectPhase === 'string'
     ? data.projectPhase
-    : (typeof data.project_phase === 'string' ? data.project_phase : null);
+    : (typeof data.project_phase === 'string'
+      ? data.project_phase
+      : (typeof (data as Record<string, unknown>).phase === 'string'
+        ? (data as Record<string, unknown>).phase as string
+        : null));
   const { contextType, importanceTier, decisionCount, toolCounts } =
     detectSessionCharacteristics(
       observations,
@@ -1202,7 +1473,9 @@ async function collectSessionData(
     outcomes: OUTCOMES,
     nextAction,
     blockers,
-    limit: 4,
+    limit: 5,
+    explicitEvidence: (data as Record<string, unknown>).evidenceBullets as unknown[] | undefined,
+    keyDecisions: data.keyDecisions,
   });
 
   // Only build implementation guide if no canonical implementation-summary.md exists
@@ -1329,4 +1602,8 @@ export {
   extractPendingTasks,
   generateContextSummary,
   generateResumeContext,
+  deriveCanonicalDocPointers,
+  buildDistinctiveEvidence,
+  resolveSpecFolderRelative,
+  countDistinctFilePaths,
 };

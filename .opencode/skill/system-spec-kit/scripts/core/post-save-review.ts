@@ -72,6 +72,8 @@ export interface PostSaveReviewResult {
   highCount?: number;
   mediumCount?: number;
   lowCount?: number;
+  renderQualityScore?: number | null;
+  inputCompletenessScore?: number | null;
 }
 
 export interface PostSaveReviewInput {
@@ -92,6 +94,8 @@ export interface PostSaveReviewInput {
     repositoryState?: string | null;
     isDetachedHead?: boolean | null;
     provenanceExpected?: boolean;
+    renderQualityScore?: number | null;
+    inputCompletenessScore?: number | null;
   } & SaveModeInput) | null;
   inputMode?: string;
 }
@@ -542,10 +546,14 @@ function emitGuardrailTelemetry(
 
 export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveReviewResult {
   const { savedFilePath, content, collectedData, inputMode } = input;
+  const scoreSummary = {
+    renderQualityScore: collectedData?.renderQualityScore ?? null,
+    inputCompletenessScore: collectedData?.inputCompletenessScore ?? null,
+  };
 
   if (!collectedData) {
     // SKIPPED is intentional-only now: missing payload means there is nothing valid to compare.
-    return { status: 'SKIPPED', issues: [], skipReason: 'No collected data to compare against' };
+    return { status: 'SKIPPED', issues: [], skipReason: 'No collected data to compare against', ...scoreSummary };
   }
 
   const saveMode = resolveSaveMode({
@@ -556,7 +564,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
   });
   if (saveMode !== SaveMode.Json) {
     // JSON-mode saves are the only ones with a reviewer contract today.
-    return { status: 'SKIPPED', issues: [], skipReason: `SaveMode is ${saveMode}, not json` };
+    return { status: 'SKIPPED', issues: [], skipReason: `SaveMode is ${saveMode}, not json`, ...scoreSummary };
   }
 
   try {
@@ -968,6 +976,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
       return {
         status: 'PASSED',
         issues: [],
+        ...scoreSummary,
       };
     }
 
@@ -985,6 +994,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
       highCount,
       mediumCount,
       lowCount,
+      ...scoreSummary,
     };
   } catch (error: unknown) {
     const reviewerError = `Unexpected reviewer failure for ${savedFilePath}: ${error instanceof Error ? error.message : String(error)}`;
@@ -992,6 +1002,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
       status: 'REVIEWER_ERROR',
       issues: [],
       reviewerError,
+      ...scoreSummary,
     };
   }
 }
@@ -1023,6 +1034,11 @@ export function printPostSaveReview(result: PostSaveReviewResult): void {
   const payload = {
     status: result.status,
     issues: result.issues,
+    // Two scores intentionally coexist:
+    // - renderQualityScore: rendered wrapper quality after template/output validation
+    // - inputCompletenessScore: input-data completeness before render
+    renderQualityScore: result.renderQualityScore ?? null,
+    inputCompletenessScore: result.inputCompletenessScore ?? null,
     scorePenalty,
     blocking: result.blocking ?? false,
     blockerReason: result.blockerReason,

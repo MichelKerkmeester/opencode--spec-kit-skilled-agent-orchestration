@@ -244,7 +244,30 @@ function extractFilesFromData(
   // F-16: Always pass 'Modified' action for filesModified entries
   if (collectedData.filesModified && Array.isArray(collectedData.filesModified)) {
     for (const fileInfo of collectedData.filesModified) {
-      addFile(fileInfo.path, fileInfo.changes_summary || 'Modified during session', 'Modified');
+      const rawPath = typeof fileInfo.path === 'string'
+        ? fileInfo.path
+        : typeof (fileInfo as Record<string, unknown>).filePath === 'string'
+          ? (fileInfo as Record<string, unknown>).filePath as string
+          : typeof (fileInfo as Record<string, unknown>).FILE_PATH === 'string'
+            ? (fileInfo as Record<string, unknown>).FILE_PATH as string
+            : '';
+      const summary = typeof fileInfo.changes_summary === 'string'
+        ? fileInfo.changes_summary
+        : typeof (fileInfo as Record<string, unknown>).description === 'string'
+          ? (fileInfo as Record<string, unknown>).description as string
+          : 'Modified during session';
+      if (rawPath) {
+        addFile(rawPath, summary, 'Modified');
+      }
+    }
+  }
+
+  const filesChanged = (collectedData as Record<string, unknown>).filesChanged;
+  if (Array.isArray(filesChanged)) {
+    for (const fileInfo of filesChanged) {
+      if (typeof fileInfo === 'string' && fileInfo.trim().length > 0) {
+        addFile(fileInfo.trim(), 'Modified during session', 'Modified');
+      }
     }
   }
 

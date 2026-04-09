@@ -59,29 +59,9 @@ export function buildMemoryTitle(_implementationTask: string, _specFolderName: s
 }
 
 export function buildMemoryDashboardTitle(memoryTitle: string, specFolderName: string, contextFilename: string): string {
-  const specLeaf = specFolderName.split('/').filter(Boolean).pop() || specFolderName;
-  const fileStem = path.basename(contextFilename, path.extname(contextFilename));
-  const suffix = `[${specLeaf}/${fileStem}]`;
-
-  if (memoryTitle.endsWith(suffix)) {
-    return memoryTitle;
-  }
-
-  const maxLength = 120;
-  const maxBaseLength = Math.max(24, maxLength - suffix.length - 1);
-  let base = memoryTitle.trim();
-
-  if (base.length > maxBaseLength) {
-    const hardCut = base.slice(0, maxBaseLength).trim();
-    const lastSpace = hardCut.lastIndexOf(' ');
-    if (lastSpace >= Math.floor(maxBaseLength * 0.6)) {
-      base = hardCut.slice(0, lastSpace);
-    } else {
-      base = hardCut;
-    }
-  }
-
-  return `${base} ${suffix}`;
+  void specFolderName;
+  void contextFilename;
+  return memoryTitle.trim();
 }
 
 export function extractSpecTitle(specFolderPath: string): string {
