@@ -52,12 +52,33 @@ describe('causal link auto-population', () => {
       fs.mkdirSync(memoryDir, { recursive: true });
       fs.writeFileSync(path.join(specFolderPath, 'spec.md'), '# Causal Link Fixture\n', 'utf8');
       fs.writeFileSync(path.join(memoryDir, '09-04-26_08-46__planning-save.md'), `---
-session_id: "planning-save-1"
 title: "Planning Save"
-context_type: "planning"
 ---
 # Planning Save
+
+## MEMORY METADATA
+
+\`\`\`yaml
+session_id: "planning-save-1"
+context_type: "planning"
+\`\`\`
 `, 'utf8');
+      fs.writeFileSync(path.join(memoryDir, '09-04-26_09-15__review-save.md'), `---
+title: "Review Save"
+---
+# Review Save
+
+## MEMORY METADATA
+
+\`\`\`yaml
+session_id: "review-save-1"
+context_type: "review"
+\`\`\`
+`, 'utf8');
+      const planningPath = path.join(memoryDir, '09-04-26_08-46__planning-save.md');
+      const reviewPath = path.join(memoryDir, '09-04-26_09-15__review-save.md');
+      fs.utimesSync(reviewPath, new Date('2026-04-09T09:15:00Z'), new Date('2026-04-09T09:15:00Z'));
+      fs.utimesSync(planningPath, new Date('2026-04-09T10:30:00Z'), new Date('2026-04-09T10:30:00Z'));
 
       workflowHarness.specFolderPath = specFolderPath;
       workflowHarness.contextDir = memoryDir;
@@ -82,6 +103,7 @@ context_type: "planning"
 
       expect(rendered).toContain('derived_from:');
       expect(rendered).toContain('    - "planning-save-1"');
+      expect(rendered).not.toContain('    - "review-save-1"');
       expect(rendered).toContain('supersedes:');
       expect(rendered).toContain('    - "planning-save-1"');
     } finally {

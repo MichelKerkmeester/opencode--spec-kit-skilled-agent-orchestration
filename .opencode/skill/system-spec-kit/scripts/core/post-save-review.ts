@@ -302,12 +302,27 @@ function extractYamlListEntries(yamlBlock: string, fieldName: string): string[] 
 }
 
 function extractSection(content: string, sectionName: string): string {
-  const escapedSectionName = sectionName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = new RegExp(
-    `^##\\s+(?:\\d+\\.\\s+)?${escapedSectionName}\\s*$([\\s\\S]*?)(?=^##\\s+(?:\\d+\\.\\s+)?[^\\n]+$|\\Z)`,
-    'im',
-  );
-  return pattern.exec(content)?.[1]?.trim() ?? '';
+  const headingPattern = new RegExp(`^##\\s+(?:\\d+\\.\\s+)?${sectionName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'i');
+  const lines = content.split('\n');
+  const startIndex = lines.findIndex((line) => headingPattern.test(line.trim()));
+
+  if (startIndex === -1) {
+    return '';
+  }
+
+  const collected: string[] = [];
+  for (let index = startIndex + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (/^##\s+(?:\d+\.\s+)?[^\n]+$/i.test(line.trim())) {
+      break;
+    }
+    if (/^<!--\s*\/ANCHOR:/i.test(line.trim())) {
+      break;
+    }
+    collected.push(line);
+  }
+
+  return collected.join('\n').trim();
 }
 
 function stripSectionScaffolding(sectionContent: string): string {

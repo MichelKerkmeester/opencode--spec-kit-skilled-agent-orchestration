@@ -135,7 +135,12 @@ function filterTriggerPhrases(phrases: string[]): string[] {
     const trimmed = p.trim();
     if (trimmed.includes('/') || trimmed.includes('\\')) return false;
     // Multi-word path segment pattern: sequences like "system spec kit" that look like folder paths
-    if (/^\d{1,3}\s/.test(trimmed)) return false; // Leading number prefix (e.g., "022 hybrid rag")
+    if (/^\d{1,3}\s/.test(trimmed)) {
+      const words = trimmed.split(/\s+/).filter(Boolean);
+      if (words.length <= 3) {
+        return false; // Short folder-like packet shorthand (e.g., "022 hybrid rag")
+      }
+    }
     return true;
   });
 
@@ -1662,7 +1667,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
 
   if (filterStats.qualityScore < 20) {
-    const warningHeader = `> **Note:** This session had limited actionable content (quality score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;
+    const warningHeader = `> **Note:** This session had limited actionable content (input_completeness_score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;
     files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], warningHeader);
     log(`   Warning: Low quality session (${filterStats.qualityScore}/100) - warning header added`);
   }

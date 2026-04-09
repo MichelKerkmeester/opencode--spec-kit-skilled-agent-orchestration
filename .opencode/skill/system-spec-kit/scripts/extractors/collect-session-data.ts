@@ -357,6 +357,23 @@ function isCompletedNextStep(step: unknown): boolean {
   return /^\s*\[x\]/i.test(text) || /^\s*[✓✔]/i.test(text) || /^\s*~~/.test(text);
 }
 
+function renderOverviewSummary(sessionSummary: string, boundarySafeSummary: string): string {
+  const trimmedSummary = sessionSummary.trim();
+  if (!trimmedSummary) {
+    return '';
+  }
+
+  // Preserve the full authored narrative for moderately long JSON-mode summaries
+  // so the post-save review does not flag a forced ellipsis on otherwise readable
+  // wrapper OVERVIEW content. The shared helper remains the fallback for much
+  // longer summaries that still need a bounded render.
+  if (trimmedSummary.length <= 800) {
+    return trimmedSummary;
+  }
+
+  return boundarySafeSummary;
+}
+
 function determineSessionStatus(
   blockers: string,
   observations: Observation[],
@@ -1329,7 +1346,7 @@ async function collectSessionData(
     || observations.slice(0, 3).map((o) => o.title).filter(Boolean).join('; ');
   // Rec 3: Prefer explicit sessionSummary from JSON over transcript-derived learning
   const SUMMARY: string = (typeof data.sessionSummary === 'string' && data.sessionSummary.length > 20)
-    ? truncateOnWordBoundary(data.sessionSummary, 500)
+    ? renderOverviewSummary(data.sessionSummary, truncateOnWordBoundary(data.sessionSummary, 500))
     : (!isErrorContent && learningIsTopical && rawLearning.length > 0)
       ? rawLearning
       : observationFallback

@@ -78,7 +78,7 @@ describe('trigger phrase render fixes', () => {
         collectedData: {
           _source: 'file',
           sessionSummary: 'Implemented the detector provenance taxonomy with additive edge evidence and bounded metadata cleanup.',
-          triggerPhrases: ['render quality', 'canonical sources', 'memory save'],
+          triggerPhrases: ['014 code graph upgrades runtime', 'render quality', 'canonical sources', 'memory save'],
           filesModified: [
             { path: 'scripts/core/workflow.ts', description: 'Stopped prose bigrams from entering trigger_phrases.' },
           ],
@@ -89,7 +89,7 @@ describe('trigger phrase render fixes', () => {
       const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf8');
       const triggerPhrases = parseFrontmatterTriggerPhrases(rendered);
 
-      expect(triggerPhrases).toEqual(['render quality', 'canonical sources', 'memory save']);
+      expect(triggerPhrases).toEqual(['014 code graph upgrades runtime', 'render quality', 'canonical sources', 'memory save']);
       expect(triggerPhrases).not.toContain('taxonomy additive');
       expect(triggerPhrases).not.toContain('additive edge');
       expect(triggerPhrases).not.toContain('edge evidence');

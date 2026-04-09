@@ -94,6 +94,14 @@ export interface RawInputData {
   context_type?: string;
   projectPhase?: string;
   project_phase?: string;
+  phase?: string;
+  status?: string;
+  sessionStatus?: string;
+  session_status?: string;
+  completionPercent?: number | string;
+  completion_percent?: number | string;
+  completionPercentage?: number | string;
+  percentComplete?: number | string;
   FILES?: Array<NormalizedFileEntry | Record<string, unknown>>;
   observations?: Array<Observation | string>;
   userPrompts?: Array<NormalizedUserPrompt | string>;
@@ -129,9 +137,26 @@ export interface NormalizedData {
   importanceTier?: string;
   contextType?: string;
   projectPhase?: string;
+  sessionStatus?: string;
+  completionPercent?: number;
   saveMode?: SaveMode;
   // TODO(O3-12): Remove index signature once all dynamic fields are explicitly declared
   [key: string]: unknown;
+}
+
+function normalizeCompletionPercent(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return Math.max(0, Math.min(100, Math.round(value)));
+  }
+
+  if (typeof value === 'string' && value.trim().length > 0) {
+    const parsed = Number.parseFloat(value);
+    if (Number.isFinite(parsed)) {
+      return Math.max(0, Math.min(100, Math.round(parsed)));
+    }
+  }
+
+  return null;
 }
 
 /** An exchange in an OpenCode capture */
@@ -658,9 +683,30 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       cloned.contextType = fastPathContextType;
     }
     // Phase 002 T028: Propagate projectPhase through fast-path (mirrors contextType pattern)
-    const fastPathProjectPhase = (data as Record<string, unknown>).projectPhase || (data as Record<string, unknown>).project_phase;
+    const fastPathProjectPhase = (
+      (data as Record<string, unknown>).projectPhase
+      || (data as Record<string, unknown>).project_phase
+      || (data as Record<string, unknown>).phase
+    );
     if (typeof fastPathProjectPhase === 'string' && fastPathProjectPhase.length > 0) {
       (cloned as Record<string, unknown>).projectPhase = fastPathProjectPhase;
+    }
+    const fastPathSessionStatus = (
+      (data as Record<string, unknown>).sessionStatus
+      || (data as Record<string, unknown>).session_status
+      || (data as Record<string, unknown>).status
+    );
+    if (typeof fastPathSessionStatus === 'string' && fastPathSessionStatus.length > 0) {
+      (cloned as Record<string, unknown>).sessionStatus = fastPathSessionStatus;
+    }
+    const fastPathCompletionPercent = normalizeCompletionPercent(
+      (data as Record<string, unknown>).completionPercent
+      ?? (data as Record<string, unknown>).completion_percent
+      ?? (data as Record<string, unknown>).completionPercentage
+      ?? (data as Record<string, unknown>).percentComplete
+    );
+    if (fastPathCompletionPercent !== null) {
+      (cloned as Record<string, unknown>).completionPercent = fastPathCompletionPercent;
     }
     cloned.saveMode = resolveSaveMode(cloned as RawInputData);
     // RC3: Propagate keyDecisions through fast-path
@@ -851,9 +897,30 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     normalized.contextType = slowPathContextType;
   }
   // Phase 002 T029: Propagate projectPhase through slow-path (mirrors contextType pattern)
-  const slowPathProjectPhase = (data as Record<string, unknown>).projectPhase || (data as Record<string, unknown>).project_phase;
+  const slowPathProjectPhase = (
+    (data as Record<string, unknown>).projectPhase
+    || (data as Record<string, unknown>).project_phase
+    || (data as Record<string, unknown>).phase
+  );
   if (typeof slowPathProjectPhase === 'string' && slowPathProjectPhase.length > 0) {
     normalized.projectPhase = slowPathProjectPhase;
+  }
+  const slowPathSessionStatus = (
+    (data as Record<string, unknown>).sessionStatus
+    || (data as Record<string, unknown>).session_status
+    || (data as Record<string, unknown>).status
+  );
+  if (typeof slowPathSessionStatus === 'string' && slowPathSessionStatus.length > 0) {
+    normalized.sessionStatus = slowPathSessionStatus;
+  }
+  const slowPathCompletionPercent = normalizeCompletionPercent(
+    (data as Record<string, unknown>).completionPercent
+    ?? (data as Record<string, unknown>).completion_percent
+    ?? (data as Record<string, unknown>).completionPercentage
+    ?? (data as Record<string, unknown>).percentComplete
+  );
+  if (slowPathCompletionPercent !== null) {
+    normalized.completionPercent = slowPathCompletionPercent;
   }
 
   // T06: Propagate preflight/postflight epistemic data through slow-path
@@ -890,7 +957,9 @@ const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
   'triggerPhrases', 'trigger_phrases',
   'importanceTier', 'importance_tier',
   'contextType', 'context_type',
-  'projectPhase', 'project_phase',
+  'projectPhase', 'project_phase', 'phase',
+  'status', 'sessionStatus', 'session_status',
+  'completionPercent', 'completion_percent', 'completionPercentage', 'percentComplete',
   'toolCalls', 'exchanges',
   'FILES', 'observations',
   'userPrompts', 'user_prompts',

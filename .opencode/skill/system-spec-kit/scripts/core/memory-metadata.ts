@@ -265,23 +265,34 @@ function parseFrontmatterValue(frontmatter: string, key: string): string {
   return match?.[1]?.trim() ?? '';
 }
 
+function parseStructuredValue(content: string, keys: string[]): string {
+  for (const key of keys) {
+    const value = parseFrontmatterValue(content, key);
+    if (value) {
+      return value;
+    }
+  }
+
+  return '';
+}
+
 function parseExistingMemoryHeader(filePath: string): ExistingMemoryHeader | null {
   try {
     const content = fsSync.readFileSync(filePath, 'utf8');
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!frontmatterMatch) {
-      return null;
-    }
-
-    const frontmatter = frontmatterMatch[1];
-    const sessionId = parseFrontmatterValue(frontmatter, 'session_id');
+    const frontmatter = frontmatterMatch?.[1] ?? '';
+    const sessionId = parseStructuredValue(frontmatter, ['session_id'])
+      || parseStructuredValue(content, ['session_id']);
     if (!sessionId) {
       return null;
     }
 
+    const contextType = parseStructuredValue(frontmatter, ['context_type', 'contextType'])
+      || parseStructuredValue(content, ['context_type', 'contextType']);
+
     return {
       sessionId,
-      contextType: parseFrontmatterValue(frontmatter, 'context_type').toLowerCase(),
+      contextType: contextType.toLowerCase(),
       timestampMs: fsSync.statSync(filePath).mtimeMs,
     };
   } catch {
