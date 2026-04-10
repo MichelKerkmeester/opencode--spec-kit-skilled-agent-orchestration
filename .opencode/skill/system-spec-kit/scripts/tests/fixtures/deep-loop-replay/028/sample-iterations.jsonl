@@ -1,0 +1,4 @@
+{"type":"config","mode":"research","topic":"Legacy holdout replay fixture","maxIterations":5,"convergenceThreshold":0.15,"stuckThreshold":3,"sessionId":"replay-028-fixture"}
+{"type":"iteration","mode":"research","run":1,"status":"complete","focus":"Initial exploration","findingsCount":2,"newFindingsRatio":0.80,"timestamp":"2026-03-18T10:10:00Z","durationMs":45000}
+{"type":"iteration","mode":"research","run":2,"status":"complete","focus":"Deep dive","findingsCount":3,"newFindingsRatio":0.20,"timestamp":"2026-03-18T10:20:00Z","durationMs":40000}
+{"type":"event","event":"synthesis_complete","mode":"research","totalIterations":2,"verdict":"PASS","stopReason":"converged","timestamp":"2026-03-18T10:22:00Z"}

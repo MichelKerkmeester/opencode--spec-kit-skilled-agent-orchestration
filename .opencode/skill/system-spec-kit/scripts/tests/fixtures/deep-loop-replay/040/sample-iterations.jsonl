@@ -1,0 +1,5 @@
+{"type":"config","mode":"review","topic":"Replay fixture for 040","maxIterations":7,"convergenceThreshold":0.10,"stuckThreshold":2,"sessionId":"replay-040-fixture"}
+{"type":"iteration","mode":"review","run":1,"status":"complete","focus":"Initial review","findingsCount":3,"newFindingsRatio":0.85,"timestamp":"2026-03-20T14:10:00Z","durationMs":60000}
+{"type":"iteration","mode":"review","run":2,"status":"complete","focus":"Follow-up review","findingsCount":4,"newFindingsRatio":0.30,"timestamp":"2026-03-20T14:20:00Z","durationMs":55000}
+{"type":"iteration","mode":"review","run":3,"status":"complete","focus":"Final pass","findingsCount":4,"newFindingsRatio":0.05,"convergenceSignals":{"rollingAvg":0.08,"madScore":0.04,"noveltyRatio":0.05,"compositeStop":0.65},"timestamp":"2026-03-20T14:30:00Z","durationMs":50000}
+{"type":"event","event":"synthesis_complete","mode":"review","totalIterations":3,"verdict":"PASS","stopReason":"converged","timestamp":"2026-03-20T14:32:00Z"}
