@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,7 +18,6 @@ vi.mock('@spec-kit/mcp-server/api/providers', () => ({
 }));
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(TEST_DIR, '..', '..', '..', '..', '..');
 const FIXTURE_DIR = path.join(TEST_DIR, 'fixtures', 'post-save-render', 'test-packet');
 const TEMP_DIRS: string[] = [];
 
@@ -44,6 +44,9 @@ afterEach(async () => {
 
 describe('memory save title/description overrides', () => {
   it('renders explicit title and description verbatim with no unknown-field warnings', { timeout: 60000 }, async () => {
+    const projectRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'speckit-title-override-'));
+    TEMP_DIRS.push(projectRoot);
+
     const specFolderRelative = path.join(
       '.opencode',
       'specs',
@@ -52,24 +55,30 @@ describe('memory save title/description overrides', () => {
       '003-memory-quality-issues',
       '100-title-description-override-fixture',
     );
-    const specFolderPath = path.join(REPO_ROOT, specFolderRelative);
-    TEMP_DIRS.push(specFolderPath);
+    const specFolderPath = path.join(projectRoot, specFolderRelative);
     await fs.rm(specFolderPath, { recursive: true, force: true });
     await fs.cp(FIXTURE_DIR, specFolderPath, { recursive: true });
 
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const { main } = await import('../memory/generate-context');
-    await main([
-      '--json',
-      JSON.stringify({
-        specFolder: specFolderRelative,
-        sessionSummary: 'Patched the structured memory-save schema so explicit authored metadata wins.',
-        title: 'Authored Memory Save Title That Must Survive',
-        description: 'Authored description that must survive the structured JSON contract without truncation or fallback rewriting.',
-        triggerPhrases: ['authored metadata override', 'structured json save'],
-      }),
-      specFolderRelative,
-    ]);
+    const { CONFIG } = await import('../core');
+    const previousProjectRoot = CONFIG.PROJECT_ROOT;
+    CONFIG.PROJECT_ROOT = projectRoot;
+    try {
+      const { main } = await import('../memory/generate-context');
+      await main([
+        '--json',
+        JSON.stringify({
+          specFolder: specFolderRelative,
+          sessionSummary: 'Patched the structured memory-save schema so explicit authored metadata wins.',
+          title: 'Authored Memory Save Title That Must Survive',
+          description: 'Authored description that must survive the structured JSON contract without truncation or fallback rewriting.',
+          triggerPhrases: ['authored metadata override', 'structured json save'],
+        }),
+        specFolderRelative,
+      ]);
+    } finally {
+      CONFIG.PROJECT_ROOT = previousProjectRoot;
+    }
 
     const rendered = await readLatestMemory(specFolderPath);
 
@@ -84,6 +93,9 @@ describe('memory save title/description overrides', () => {
   });
 
   it('keeps auto-generated title behavior when no explicit title is provided', { timeout: 60000 }, async () => {
+    const projectRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'speckit-title-fallback-'));
+    TEMP_DIRS.push(projectRoot);
+
     const specFolderRelative = path.join(
       '.opencode',
       'specs',
@@ -92,22 +104,28 @@ describe('memory save title/description overrides', () => {
       '003-memory-quality-issues',
       '101-title-fallback-fixture',
     );
-    const specFolderPath = path.join(REPO_ROOT, specFolderRelative);
-    TEMP_DIRS.push(specFolderPath);
+    const specFolderPath = path.join(projectRoot, specFolderRelative);
     await fs.rm(specFolderPath, { recursive: true, force: true });
     await fs.cp(FIXTURE_DIR, specFolderPath, { recursive: true });
 
-    const { main } = await import('../memory/generate-context');
-    await main([
-      '--json',
-      JSON.stringify({
-        specFolder: specFolderRelative,
-        sessionSummary: 'Implemented a fallback save path for the title builder when explicit title is absent.',
-        description: 'Fallback description is still explicit here, but the title should be auto-generated.',
-        triggerPhrases: ['title fallback verification'],
-      }),
-      specFolderRelative,
-    ]);
+    const { CONFIG } = await import('../core');
+    const previousProjectRoot = CONFIG.PROJECT_ROOT;
+    CONFIG.PROJECT_ROOT = projectRoot;
+    try {
+      const { main } = await import('../memory/generate-context');
+      await main([
+        '--json',
+        JSON.stringify({
+          specFolder: specFolderRelative,
+          sessionSummary: 'Implemented a fallback save path for the title builder when explicit title is absent.',
+          description: 'Fallback description is still explicit here, but the title should be auto-generated.',
+          triggerPhrases: ['title fallback verification'],
+        }),
+        specFolderRelative,
+      ]);
+    } finally {
+      CONFIG.PROJECT_ROOT = previousProjectRoot;
+    }
 
     const rendered = await readLatestMemory(specFolderPath);
     const generatedTitle = parseFrontmatterValue(rendered, 'title');

@@ -96,12 +96,12 @@ describe('wave-lifecycle', () => {
       expect(ctx.generation).toBe(2);
     });
 
-    it('throws for empty target', () => {
-      expect(() => lifecycle.createWaveContext('', 'review')).toThrow();
+    it('returns null for empty target', () => {
+      expect(lifecycle.createWaveContext('', 'review')).toBeNull();
     });
 
-    it('throws for invalid loop type', () => {
-      expect(() => lifecycle.createWaveContext('test', 'invalid' as any)).toThrow();
+    it('returns null for invalid loop type', () => {
+      expect(lifecycle.createWaveContext('test', 'invalid' as any)).toBeNull();
     });
   });
 
@@ -133,12 +133,12 @@ describe('wave-lifecycle', () => {
       expect(result.deferredSegments).toBe(10);
     });
 
-    it('throws for empty segments', () => {
-      expect(() => lifecycle.dispatchWave([], { sessionId: 's', waveNumber: 1 })).toThrow();
+    it('returns null for empty segments', () => {
+      expect(lifecycle.dispatchWave([], { sessionId: 's', waveNumber: 1 })).toBeNull();
     });
 
-    it('throws for missing config', () => {
-      expect(() => lifecycle.dispatchWave([{ segmentId: 'x' }], null as any)).toThrow();
+    it('returns null for missing config', () => {
+      expect(lifecycle.dispatchWave([{ segmentId: 'x' }], null as any)).toBeNull();
     });
   });
 

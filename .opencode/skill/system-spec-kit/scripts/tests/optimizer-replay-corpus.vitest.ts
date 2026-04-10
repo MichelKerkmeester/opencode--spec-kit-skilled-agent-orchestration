@@ -250,8 +250,8 @@ describe('Replay Corpus Builder (T001)', () => {
       }
     });
 
-    it('should throw on missing corpus file', () => {
-      expect(() => replayCorpus.loadCorpus('/nonexistent/path.json')).toThrow();
+    it('should return an empty corpus for a missing corpus file', () => {
+      expect(replayCorpus.loadCorpus('/nonexistent/path.json')).toEqual([]);
     });
   });
 

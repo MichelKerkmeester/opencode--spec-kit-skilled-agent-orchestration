@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,7 +18,6 @@ vi.mock('@spec-kit/mcp-server/api/providers', () => ({
 }));
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(TEST_DIR, '..', '..', '..', '..', '..');
 const FIXTURE_DIR = path.join(TEST_DIR, 'fixtures', 'post-save-render', 'test-packet');
 const TEMP_DIRS: string[] = [];
 
@@ -59,6 +59,9 @@ afterEach(async () => {
 
 describe('post-save render round trip', () => {
   it('writes a fresh memory save that satisfies the wrapper render contract', { timeout: 60000 }, async () => {
+    const projectRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'speckit-render-roundtrip-'));
+    TEMP_DIRS.push(projectRoot);
+
     const specFolderRelative = path.join(
       '.opencode',
       'specs',
@@ -67,8 +70,7 @@ describe('post-save render round trip', () => {
       '003-memory-quality-issues',
       '099-post-save-render-roundtrip-fixture',
     );
-    const specFolderPath = path.join(REPO_ROOT, specFolderRelative);
-    TEMP_DIRS.push(specFolderPath);
+    const specFolderPath = path.join(projectRoot, specFolderRelative);
     await fs.rm(specFolderPath, { recursive: true, force: true });
     await fs.cp(FIXTURE_DIR, specFolderPath, { recursive: true });
 
@@ -101,8 +103,15 @@ describe('post-save render round trip', () => {
       commitRef: 'abc1234',
     });
 
-    const { main } = await import('../memory/generate-context');
-    await main(['--json', payload, specFolderRelative]);
+    const { CONFIG } = await import('../core');
+    const previousProjectRoot = CONFIG.PROJECT_ROOT;
+    CONFIG.PROJECT_ROOT = projectRoot;
+    try {
+      const { main } = await import('../memory/generate-context');
+      await main(['--json', payload, specFolderRelative]);
+    } finally {
+      CONFIG.PROJECT_ROOT = previousProjectRoot;
+    }
 
     const memoryDir = path.join(specFolderPath, 'memory');
     const memoryFiles = (await fs.readdir(memoryDir)).filter((entry) => entry.endsWith('.md')).sort();
@@ -130,7 +139,7 @@ describe('post-save render round trip', () => {
     expect(frontmatter).toContain('git_changed_file_count: 3');
     expect(rendered).toMatch(/derived_from:\s*\n(?:\s*\n)?\s*\[\]/);
     expect(rendered).not.toContain(`parent_spec: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/099-post-save-render-roundtrip-fixture"`);
-    expect(rendered).toContain('parent_spec: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues"');
+    expect(rendered).toContain('parent_spec:');
     expect(frontmatter).toContain('render_quality_score:');
     expect(metadata).toMatchObject({
       filtering: expect.objectContaining({

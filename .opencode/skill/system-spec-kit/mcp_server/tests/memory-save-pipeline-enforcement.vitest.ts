@@ -154,6 +154,14 @@ ${removeAnchors.includes('canonical-docs') ? '' : '<!-- ANCHOR:canonical-docs --
 ${removeAnchors.includes('canonical-docs') ? '' : '<!-- /ANCHOR:canonical-docs -->'}
 `;
 
+  mandatorySections['key-files'] = `
+## KEY FILES
+
+| File | Description |
+|:-----|:------------|
+${fileTableEntries.map((entry) => `| \`${entry.path}\` | ${entry.description} |`).join('\n')}
+`;
+
   // OVERVIEW
   mandatorySections['overview'] = `
 ${removeAnchors.includes('overview') ? '' : '<!-- ANCHOR:overview -->'}
@@ -176,6 +184,20 @@ ${removeAnchors.includes('evidence') ? '' : '<!-- ANCHOR:evidence -->'}
 - Tested malformed frontmatter, insufficient content, and template violations
 
 ${removeAnchors.includes('evidence') ? '' : '<!-- /ANCHOR:evidence -->'}
+`;
+
+  mandatorySections['decisions'] = `
+## DECISIONS
+
+${decisions.map((decision) => `- ${decision}`).join('\n')}
+`;
+
+  mandatorySections['outcomes'] = `
+## KEY OUTCOMES
+
+- Verified parser validation runs before all downstream gates.
+- Verified sufficiency rejects thin or generic content before template and semantic validation.
+- Verified template contract failures block the save-quality gate when evidence remains sufficient.
 `;
 
   // DETAILED CHANGES, DECISIONS, CONVERSATION are no longer mandatory in compact format
@@ -225,8 +247,11 @@ ${removeAnchors.includes('metadata') ? '' : '<!-- /ANCHOR:metadata -->'}
 ${mandatorySections['session-summary'] ?? ''}
 ${mandatorySections['continue-session'] ?? ''}
 ${mandatorySections['canonical-docs'] ?? ''}
+${mandatorySections['key-files'] ?? ''}
 ${mandatorySections['overview'] ?? ''}
 ${mandatorySections['evidence'] ?? ''}
+${mandatorySections['decisions'] ?? ''}
+${mandatorySections['outcomes'] ?? ''}
 ${mandatorySections['recovery-hints'] ?? ''}
 ${mandatorySections['memory-metadata'] ?? ''}
 ${contentSuffix}`;

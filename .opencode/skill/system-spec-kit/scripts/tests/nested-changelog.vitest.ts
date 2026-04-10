@@ -7,6 +7,7 @@
 // ───────────────────────────────────────────────────────────────────
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
@@ -19,14 +20,18 @@ import { buildNestedChangelogData, generateNestedChangelogMarkdown, writeNestedC
 // ───────────────────────────────────────────────────────────────────
 
 const tempRoots: string[] = [];
+const ORIGINAL_PROJECT_ROOT = CONFIG.PROJECT_ROOT;
 
 // ───────────────────────────────────────────────────────────────────
 // 3. HELPERS
 // ───────────────────────────────────────────────────────────────────
 
 function makeTempProjectRoot(): string {
+  const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'nested-changelog-project-'));
+  tempRoots.push(projectRoot);
+  CONFIG.PROJECT_ROOT = projectRoot;
   const root = path.join(
-    CONFIG.PROJECT_ROOT,
+    projectRoot,
     'specs',
     '99--nested-changelog-tests',
     `999-nested-changelog-${Math.random().toString(16).slice(2, 8)}`
@@ -42,6 +47,7 @@ function writeFile(filePath: string, content: string): void {
 }
 
 afterEach(() => {
+  CONFIG.PROJECT_ROOT = ORIGINAL_PROJECT_ROOT;
   while (tempRoots.length > 0) {
     const root = tempRoots.pop();
     if (root) {

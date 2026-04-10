@@ -58,11 +58,11 @@ describe('wave-coordination-board', () => {
     });
 
     it('throws for missing sessionId', () => {
-      expect(() => board.createBoard({ loopType: 'review' } as any)).toThrow();
+      expect(board.createBoard({ loopType: 'review' } as any)).toBeNull();
     });
 
     it('throws for invalid loopType', () => {
-      expect(() => board.createBoard({ sessionId: 's', loopType: 'invalid' })).toThrow();
+      expect(board.createBoard({ sessionId: 's', loopType: 'invalid' } as any)).toBeNull();
     });
   });
 
@@ -191,11 +191,11 @@ describe('wave-segment-state', () => {
     });
 
     it('throws for empty segmentId', () => {
-      expect(() => segState.createSegmentState('', { sessionId: 's' })).toThrow();
+      expect(segState.createSegmentState('', { sessionId: 's' })).toBeNull();
     });
 
     it('throws for missing sessionId', () => {
-      expect(() => segState.createSegmentState('seg-1', {} as any)).toThrow();
+      expect(segState.createSegmentState('seg-1', {} as any)).toBeNull();
     });
   });
 
@@ -290,7 +290,11 @@ describe('wave-segment-state', () => {
     });
 
     it('handles malformed JSONL lines', () => {
-      const jsonl = '{"valid":true}\nnot json\n{"also":"valid"}';
+      const jsonl = [
+        '{"sessionId":"s1","generation":1,"segment":"seg-1","wave":"w1","findingId":"f1","valid":true}',
+        'not json',
+        '{"sessionId":"s1","generation":1,"segment":"seg-1","wave":"w1","findingId":"f2","also":"valid"}',
+      ].join('\n');
       const parsed = segState.parseJsonl(jsonl);
       expect(parsed.records.length).toBe(2);
       expect(parsed.errors.length).toBe(1);

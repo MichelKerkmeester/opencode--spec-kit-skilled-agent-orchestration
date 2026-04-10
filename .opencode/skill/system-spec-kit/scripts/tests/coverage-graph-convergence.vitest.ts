@@ -4,309 +4,219 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
-const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../');
+const WORKSPACE_ROOT = path.resolve(TEST_DIR, '..', '..');
 const require = createRequire(import.meta.url);
 
-const reducerModule = require(path.join(
+const convergenceModule = require(path.join(
   WORKSPACE_ROOT,
-  '.opencode/skill/sk-deep-research/scripts/reduce-state.cjs',
+  'scripts/lib/coverage-graph-convergence.cjs',
 )) as {
-  parseGraphEvents: (record: Record<string, unknown>) => { nodes: Array<Record<string, unknown>>; edges: Array<Record<string, unknown>> };
-  getGraphState: (namespace: string, mcpAvailable: boolean, options?: { iterationRecords?: Array<Record<string, unknown>>; localGraphPath?: string }) => { source: string; nodes: Array<Record<string, unknown>>; edges: Array<Record<string, unknown>> };
-  queryGraphConvergence: (namespace: string, options?: { iterationRecords?: Array<Record<string, unknown>>; mcpSignals?: Record<string, unknown> }) => { componentCount: number; isolatedNodes: number; totalNodes: number; totalEdges: number; answerCoverage: number; source: string };
+  SOURCE_DIVERSITY_THRESHOLD: number;
+  EVIDENCE_DEPTH_THRESHOLD: number;
+  computeSourceDiversity: (graph: Graph) => number;
+  computeEvidenceDepth: (graph: Graph) => number;
+  computeQuestionCoverage: (graph: Graph) => number;
+  computeGraphConvergence: (graph: Graph, signals?: { compositeStop?: number }) => {
+    graphScore: number;
+    blendedScore: number;
+    components: {
+      fragmentationScore: number;
+      normalizedDepth: number;
+      questionCoverage: number;
+      sourceDiversity: number;
+      compositeStop: number | null;
+    };
+  };
+  evaluateGraphGates: (graph: Graph) => {
+    sourceDiversity: { pass: boolean; value: number; threshold: number };
+    evidenceDepth: { pass: boolean; value: number; threshold: number };
+    allPass: boolean;
+  };
 };
 
-describe('coverage-graph-convergence (reducer integration)', () => {
-  describe('parseGraphEvents', () => {
-    it('parses node events from an iteration record', () => {
-      const record = {
-        type: 'iteration',
-        run: 1,
-        graphEvents: [
-          { kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'What causes latency?' },
-          { kind: 'node', id: 'f-1', nodeType: 'finding_node', label: 'Connection pooling' },
-        ],
-      };
+type GraphNode = {
+  id: string;
+  type: 'question' | 'finding' | 'source';
+};
 
-      const result = reducerModule.parseGraphEvents(record);
-      expect(result.nodes.length).toBe(2);
-      expect(result.nodes[0].id).toBe('q-1');
-      expect(result.nodes[0].nodeType).toBe('question_node');
-      expect(result.edges.length).toBe(0);
-    });
+type GraphEdge = {
+  source: string;
+  target: string;
+  relation: string;
+  createdAt?: string;
+};
 
-    it('parses edge events from an iteration record', () => {
-      const record = {
-        type: 'iteration',
-        run: 2,
-        graphEvents: [
-          { kind: 'edge', source: 'f-1', target: 'q-1', relation: 'ANSWERS', weight: 1.3 },
-          { kind: 'edge', source: 'f-1', target: 's-1', relation: 'CITES' },
-        ],
-      };
+type Graph = {
+  nodes: Map<string, GraphNode>;
+  edges: Map<string, GraphEdge>;
+};
 
-      const result = reducerModule.parseGraphEvents(record);
-      expect(result.edges.length).toBe(2);
-      expect(result.edges[0].source).toBe('f-1');
-      expect(result.edges[0].relation).toBe('ANSWERS');
-      expect(result.edges[0].weight).toBe(1.3);
-      expect(result.edges[1].weight).toBe(1.0); // default weight
-    });
+function makeGraph(nodes: GraphNode[], edges: GraphEdge[]): Graph {
+  return {
+    nodes: new Map(nodes.map((node) => [node.id, node])),
+    edges: new Map(edges.map((edge, index) => [`edge-${index}`, edge])),
+  };
+}
 
-    it('returns empty arrays for record without graphEvents', () => {
-      const record = { type: 'iteration', run: 1 };
-      const result = reducerModule.parseGraphEvents(record);
-      expect(result.nodes.length).toBe(0);
-      expect(result.edges.length).toBe(0);
-    });
-
-    it('skips malformed events', () => {
-      const record = {
-        type: 'iteration',
-        run: 1,
-        graphEvents: [
-          null,
-          { kind: 'node' }, // missing id
-          { kind: 'edge', source: 'a' }, // missing target
-          { kind: 'node', id: 'valid', nodeType: 'finding_node', label: 'OK' },
-        ],
-      };
-
-      const result = reducerModule.parseGraphEvents(record);
-      expect(result.nodes.length).toBe(1);
-      expect(result.nodes[0].id).toBe('valid');
-    });
-
-    it('attaches iteration number to parsed events', () => {
-      const record = {
-        type: 'iteration',
-        run: 5,
-        graphEvents: [
-          { kind: 'node', id: 'n-1', nodeType: 'question_node', label: 'Q' },
-          { kind: 'edge', source: 'a', target: 'b', relation: 'CITES' },
-        ],
-      };
-
-      const result = reducerModule.parseGraphEvents(record);
-      expect(result.nodes[0].iteration).toBe(5);
-      expect(result.edges[0].iteration).toBe(5);
-    });
+describe('coverage-graph-convergence', () => {
+  it('exports the canonical stop-gate thresholds', () => {
+    expect(convergenceModule.SOURCE_DIVERSITY_THRESHOLD).toBe(0.4);
+    expect(convergenceModule.EVIDENCE_DEPTH_THRESHOLD).toBe(1.5);
   });
 
-  describe('getGraphState', () => {
-    it('rebuilds from JSONL records (priority 1)', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [
-            { kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'Q1' },
-            { kind: 'node', id: 'f-1', nodeType: 'finding_node', label: 'F1' },
-            { kind: 'edge', source: 'f-1', target: 'q-1', relation: 'ANSWERS' },
-          ],
-        },
-      ];
+  it('computes source diversity from unique edge sources over total nodes', () => {
+    const graph = makeGraph(
+      [
+        { id: 'q-1', type: 'question' },
+        { id: 'q-2', type: 'question' },
+        { id: 'f-1', type: 'finding' },
+        { id: 'f-2', type: 'finding' },
+      ],
+      [
+        { source: 'f-1', target: 'q-1', relation: 'ANSWERS' },
+        { source: 'f-2', target: 'q-2', relation: 'ANSWERS' },
+      ],
+    );
 
-      const state = reducerModule.getGraphState('test-ns', false, { iterationRecords: records });
-      expect(state.source).toBe('jsonl');
-      expect(state.nodes.length).toBe(2);
-      expect(state.edges.length).toBe(1);
-    });
-
-    it('deduplicates nodes across iterations', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [{ kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'Q1' }],
-        },
-        {
-          type: 'iteration',
-          run: 2,
-          graphEvents: [{ kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'Q1 updated' }],
-        },
-      ];
-
-      const state = reducerModule.getGraphState('test-ns', false, { iterationRecords: records });
-      expect(state.nodes.length).toBe(1);
-    });
-
-    it('deduplicates edges by source:target:relation', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [{ kind: 'edge', source: 'a', target: 'b', relation: 'CITES' }],
-        },
-        {
-          type: 'iteration',
-          run: 2,
-          graphEvents: [{ kind: 'edge', source: 'a', target: 'b', relation: 'CITES' }],
-        },
-      ];
-
-      const state = reducerModule.getGraphState('test-ns', false, { iterationRecords: records });
-      expect(state.edges.length).toBe(1);
-    });
-
-    it('returns mcp-available source when MCP is available but no JSONL data', () => {
-      const state = reducerModule.getGraphState('test-ns', true, { iterationRecords: [] });
-      expect(state.source).toBe('mcp-available');
-    });
-
-    it('returns none source when no data and no MCP', () => {
-      const state = reducerModule.getGraphState('test-ns', false, { iterationRecords: [] });
-      expect(state.source).toBe('none');
-    });
-
-    it('skips non-iteration records', () => {
-      const records = [
-        { type: 'config', topic: 'Test' },
-        { type: 'event', event: 'stuck_recovery' },
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [{ kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'Q1' }],
-        },
-      ];
-
-      const state = reducerModule.getGraphState('test-ns', false, { iterationRecords: records });
-      expect(state.nodes.length).toBe(1);
-    });
+    expect(convergenceModule.computeSourceDiversity(graph)).toBe(0.5);
   });
 
-  describe('queryGraphConvergence', () => {
-    it('computes convergence signals from JSONL data', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [
-            { kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'Q1' },
-            { kind: 'node', id: 'q-2', nodeType: 'question_node', label: 'Q2' },
-            { kind: 'node', id: 'f-1', nodeType: 'finding_node', label: 'F1' },
-            { kind: 'edge', source: 'f-1', target: 'q-1', relation: 'ANSWERS' },
-          ],
-        },
-      ];
+  it('returns zero source diversity for an empty graph', () => {
+    expect(convergenceModule.computeSourceDiversity(makeGraph([], []))).toBe(0);
+  });
 
-      const result = reducerModule.queryGraphConvergence('test-ns', { iterationRecords: records });
-      expect(result.totalNodes).toBe(3);
-      expect(result.totalEdges).toBe(1);
-      expect(result.answerCoverage).toBe(0.5); // 1 of 2 questions answered
-      expect(result.source).toBe('jsonl');
-    });
+  it('computes average evidence depth from longest-path node depths', () => {
+    const graph = makeGraph(
+      [
+        { id: 'source-1', type: 'source' },
+        { id: 'finding-1', type: 'finding' },
+        { id: 'question-1', type: 'question' },
+      ],
+      [
+        { source: 'source-1', target: 'finding-1', relation: 'SUPPORTS' },
+        { source: 'finding-1', target: 'question-1', relation: 'ANSWERS' },
+      ],
+    );
 
-    it('returns zeros when no graph data exists', () => {
-      const result = reducerModule.queryGraphConvergence('test-ns', { iterationRecords: [] });
-      expect(result.totalNodes).toBe(0);
-      expect(result.totalEdges).toBe(0);
-      expect(result.answerCoverage).toBe(0);
-      expect(result.source).toBe('none');
-    });
+    expect(convergenceModule.computeEvidenceDepth(graph)).toBe(1);
+  });
 
-    it('uses MCP signals when no local data and MCP signals provided', () => {
-      const mcpSignals = {
-        componentCount: 3,
-        isolatedNodes: 1,
-        totalNodes: 15,
-        totalEdges: 20,
-      };
+  it('computes question coverage from ANSWERS edges into question nodes', () => {
+    const graph = makeGraph(
+      [
+        { id: 'q-1', type: 'question' },
+        { id: 'q-2', type: 'question' },
+        { id: 'f-1', type: 'finding' },
+      ],
+      [{ source: 'f-1', target: 'q-1', relation: 'ANSWERS' }],
+    );
 
-      const result = reducerModule.queryGraphConvergence('test-ns', {
-        iterationRecords: [],
-        mcpSignals,
-      });
+    expect(convergenceModule.computeQuestionCoverage(graph)).toBe(0.5);
+  });
 
-      expect(result.totalNodes).toBe(15);
-      expect(result.totalEdges).toBe(20);
-      expect(result.componentCount).toBe(3);
-      expect(result.source).toBe('mcp');
-    });
+  it('treats a graph with no questions as fully covered', () => {
+    const graph = makeGraph(
+      [{ id: 'finding-1', type: 'finding' }],
+      [],
+    );
 
-    it('computes component count correctly', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [
-            { kind: 'node', id: 'a', nodeType: 'finding_node', label: 'A' },
-            { kind: 'node', id: 'b', nodeType: 'finding_node', label: 'B' },
-            { kind: 'node', id: 'c', nodeType: 'finding_node', label: 'C' },
-            { kind: 'node', id: 'd', nodeType: 'finding_node', label: 'D' },
-            { kind: 'edge', source: 'a', target: 'b', relation: 'CITES' },
-            { kind: 'edge', source: 'c', target: 'd', relation: 'CITES' },
-          ],
-        },
-      ];
+    expect(convergenceModule.computeQuestionCoverage(graph)).toBe(1);
+  });
 
-      const result = reducerModule.queryGraphConvergence('test-ns', { iterationRecords: records });
-      expect(result.componentCount).toBe(2);
-      expect(result.isolatedNodes).toBe(0);
-    });
+  it('computes a graph-only convergence score when stop-trace signals are absent', () => {
+    const graph = makeGraph(
+      [
+        { id: 'q-1', type: 'question' },
+        { id: 'q-2', type: 'question' },
+        { id: 'f-1', type: 'finding' },
+        { id: 'source-1', type: 'source' },
+      ],
+      [
+        { source: 'source-1', target: 'f-1', relation: 'SUPPORTS' },
+        { source: 'f-1', target: 'q-1', relation: 'ANSWERS' },
+      ],
+    );
 
-    it('detects isolated nodes', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [
-            { kind: 'node', id: 'connected-a', nodeType: 'finding_node', label: 'A' },
-            { kind: 'node', id: 'connected-b', nodeType: 'finding_node', label: 'B' },
-            { kind: 'node', id: 'isolated', nodeType: 'question_node', label: 'Lonely Q' },
-            { kind: 'edge', source: 'connected-a', target: 'connected-b', relation: 'CITES' },
-          ],
-        },
-      ];
+    const result = convergenceModule.computeGraphConvergence(graph);
+    expect(result.blendedScore).toBe(result.graphScore);
+    expect(result.components.questionCoverage).toBe(0.5);
+    expect(result.components.sourceDiversity).toBe(0.5);
+  });
 
-      const result = reducerModule.queryGraphConvergence('test-ns', { iterationRecords: records });
-      expect(result.isolatedNodes).toBe(1);
-    });
+  it('blends the graph score with compositeStop when stop-trace signals exist', () => {
+    const graph = makeGraph(
+      [
+        { id: 'q-1', type: 'question' },
+        { id: 'f-1', type: 'finding' },
+      ],
+      [{ source: 'f-1', target: 'q-1', relation: 'ANSWERS' }],
+    );
 
-    it('computes full answer coverage', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [
-            { kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'Q1' },
-            { kind: 'node', id: 'q-2', nodeType: 'question_node', label: 'Q2' },
-            { kind: 'node', id: 'f-1', nodeType: 'finding_node', label: 'F1' },
-            { kind: 'node', id: 'f-2', nodeType: 'finding_node', label: 'F2' },
-            { kind: 'edge', source: 'f-1', target: 'q-1', relation: 'ANSWERS' },
-            { kind: 'edge', source: 'f-2', target: 'q-2', relation: 'ANSWERS' },
-          ],
-        },
-      ];
+    const result = convergenceModule.computeGraphConvergence(graph, { compositeStop: 0.8 });
+    expect(result.components.compositeStop).toBe(0.8);
+    expect(result.blendedScore).toBeGreaterThanOrEqual(result.graphScore);
+    expect(result.blendedScore).toBeLessThanOrEqual(0.8);
+  });
 
-      const result = reducerModule.queryGraphConvergence('test-ns', { iterationRecords: records });
-      expect(result.answerCoverage).toBe(1.0);
-    });
+  it('passes graph gates when both diversity and depth clear their thresholds', () => {
+    const graph = makeGraph(
+      [
+        { id: 'source-1', type: 'source' },
+        { id: 'finding-1', type: 'finding' },
+        { id: 'finding-2', type: 'finding' },
+        { id: 'question-1', type: 'question' },
+      ],
+      [
+        { source: 'source-1', target: 'finding-1', relation: 'SUPPORTS' },
+        { source: 'finding-1', target: 'finding-2', relation: 'DERIVED_FROM' },
+        { source: 'finding-2', target: 'question-1', relation: 'ANSWERS' },
+      ],
+    );
 
-    it('merges local and MCP signals when both available', () => {
-      const records = [
-        {
-          type: 'iteration',
-          run: 1,
-          graphEvents: [
-            { kind: 'node', id: 'q-1', nodeType: 'question_node', label: 'Q1' },
-            { kind: 'node', id: 'f-1', nodeType: 'finding_node', label: 'F1' },
-            { kind: 'edge', source: 'f-1', target: 'q-1', relation: 'ANSWERS' },
-          ],
-        },
-      ];
+    const result = convergenceModule.evaluateGraphGates(graph);
+    expect(result.sourceDiversity.pass).toBe(true);
+    expect(result.evidenceDepth.pass).toBe(true);
+    expect(result.allPass).toBe(true);
+  });
 
-      const mcpSignals = { componentCount: 5, totalNodes: 20, totalEdges: 30, isolatedNodes: 2 };
+  it('fails the diversity gate when too few distinct sources are present', () => {
+    const graph = makeGraph(
+      [
+        { id: 'source-1', type: 'source' },
+        { id: 'finding-1', type: 'finding' },
+        { id: 'finding-2', type: 'finding' },
+        { id: 'finding-3', type: 'finding' },
+      ],
+      [
+        { source: 'source-1', target: 'finding-1', relation: 'SUPPORTS' },
+        { source: 'source-1', target: 'finding-2', relation: 'SUPPORTS' },
+      ],
+    );
 
-      const result = reducerModule.queryGraphConvergence('test-ns', {
-        iterationRecords: records,
-        mcpSignals,
-      });
+    const result = convergenceModule.evaluateGraphGates(graph);
+    expect(result.sourceDiversity.pass).toBe(false);
+    expect(result.sourceDiversity.value).toBe(0.25);
+    expect(result.allPass).toBe(false);
+  });
 
-      // Local data takes precedence but source notes MCP was available
-      expect(result.totalNodes).toBe(2);
-      expect(result.source).toContain('jsonl');
-      expect(result.source).toContain('mcp');
-    });
+  it('fails the depth gate when evidence chains are too shallow', () => {
+    const graph = makeGraph(
+      [
+        { id: 'source-1', type: 'source' },
+        { id: 'source-2', type: 'source' },
+        { id: 'finding-1', type: 'finding' },
+        { id: 'finding-2', type: 'finding' },
+      ],
+      [
+        { source: 'source-1', target: 'finding-1', relation: 'SUPPORTS' },
+        { source: 'source-2', target: 'finding-2', relation: 'SUPPORTS' },
+      ],
+    );
+
+    const result = convergenceModule.evaluateGraphGates(graph);
+    expect(result.sourceDiversity.pass).toBe(true);
+    expect(result.evidenceDepth.pass).toBe(false);
+    expect(result.evidenceDepth.value).toBe(0.5);
+    expect(result.allPass).toBe(false);
   });
 });

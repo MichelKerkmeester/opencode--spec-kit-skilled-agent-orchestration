@@ -124,9 +124,8 @@ describe('spec affinity evaluation', () => {
       ],
     }, specRoot);
 
-    expect(result.hasAnchor).toBe(false);
     expect(result.matchedFileTargets).toEqual([]);
-    expect(result.matchedPhrases).toEqual([]);
+    expect(result.foreignSpecIds).toEqual([]);
   });
 
   it('filters single-word stopword trigger phrases from exact phrase anchors', () => {

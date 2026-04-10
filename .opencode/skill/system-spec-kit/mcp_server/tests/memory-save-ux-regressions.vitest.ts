@@ -78,6 +78,13 @@ Continue validating the \`memory_save\` UX contract with a fixture that is rich 
 
 <!-- /ANCHOR:canonical-docs -->
 
+## KEY FILES
+
+| File | Description |
+|:-----|:------------|
+| \`mcp_server/handlers/memory-save.ts\` | Coordinates duplicate detection, sufficiency evaluation, template validation, and post-mutation feedback for \`memory_save\`. |
+| \`mcp_server/handlers/save/response-builder.ts\` | Shapes successful save payloads, duplicate no-op hints, and deferred embedding response details. |
+
 <!-- ANCHOR:overview -->
 
 ## OVERVIEW
@@ -97,6 +104,16 @@ This regression fixture exists to prove that successful saves and duplicate no-o
 - Tested deferred embedding with immediate save return
 
 <!-- /ANCHOR:evidence -->
+
+## DECISIONS
+
+- Decided to keep duplicate no-op saves visible in the UX contract so callers can distinguish unchanged content from validation failures.
+- Decided to report deferred embedding as a successful save state because file persistence completes before async indexing finishes.
+
+## KEY OUTCOMES
+
+- Verified successful saves still expose typed post-mutation hooks.
+- Verified duplicate no-op saves omit post-mutation hooks and leave caches unchanged.
 
 <!-- ANCHOR:recovery-hints -->
 

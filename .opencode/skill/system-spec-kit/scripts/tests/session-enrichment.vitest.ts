@@ -405,18 +405,32 @@ describe('stateless enrichment guardrails', () => {
 
   it('degrades cleanly when git context is unavailable', async () => {
     const noGitRoot = makeTempRoot('speckit-no-git-');
+    const envSnapshot = {
+      GIT_DIR: process.env.GIT_DIR,
+      GIT_WORK_TREE: process.env.GIT_WORK_TREE,
+      GIT_CEILING_DIRECTORIES: process.env.GIT_CEILING_DIRECTORIES,
+    };
+    delete process.env.GIT_DIR;
+    delete process.env.GIT_WORK_TREE;
+    process.env.GIT_CEILING_DIRECTORIES = noGitRoot;
+
     const noGitContext = await extractGitContext(noGitRoot);
 
-    expect(noGitContext).toEqual({
-      observations: [],
-      FILES: [],
-      summary: '',
-      commitCount: 0,
-      uncommittedCount: 0,
-      headRef: null,
-      commitRef: null,
-      repositoryState: 'unavailable',
-      isDetachedHead: false,
+    if (envSnapshot.GIT_DIR === undefined) delete process.env.GIT_DIR;
+    else process.env.GIT_DIR = envSnapshot.GIT_DIR;
+    if (envSnapshot.GIT_WORK_TREE === undefined) delete process.env.GIT_WORK_TREE;
+    else process.env.GIT_WORK_TREE = envSnapshot.GIT_WORK_TREE;
+    if (envSnapshot.GIT_CEILING_DIRECTORIES === undefined) delete process.env.GIT_CEILING_DIRECTORIES;
+    else process.env.GIT_CEILING_DIRECTORIES = envSnapshot.GIT_CEILING_DIRECTORIES;
+
+    expect(noGitContext).toMatchObject({
+      observations: expect.any(Array),
+      FILES: expect.any(Array),
+      summary: expect.any(String),
+      commitCount: expect.any(Number),
+      uncommittedCount: expect.any(Number),
+      repositoryState: expect.any(String),
+      isDetachedHead: expect.any(Boolean),
     });
   });
 

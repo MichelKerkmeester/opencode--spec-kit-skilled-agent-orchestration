@@ -27,7 +27,7 @@ const rubric = require(path.join(
   scoreConvergenceEfficiency: (results: any) => number;
   scoreRecoverySuccessRate: (results: any) => number;
   scoreFindingAccuracy: (results: any) => number;
-  scoreStuckRate: (results: any) => number;
+  scoreSynthesisQuality: (results: any) => number;
   clampScore: (score: number) => number;
 };
 
@@ -44,22 +44,31 @@ describe('Quality Rubric (T002)', () => {
         convergenceEfficiency: 0.50,
         recoverySuccessRate: 0.10,
         findingAccuracy: 0.30,
-        stuckRate: 0.10,
+        synthesisQuality: 0.10,
       });
       expect(r.dimensions.convergenceEfficiency).toBe(0.50);
       expect(r.totalWeight).toBeCloseTo(1.0, 5);
     });
 
-    it('should reject negative weights', () => {
-      expect(() => rubric.defineRubric({ convergenceEfficiency: -0.1 })).toThrow();
+    it('should report negative weights as validation errors', () => {
+      const result = rubric.defineRubric({ convergenceEfficiency: -0.1 }) as {
+        errors?: string[];
+      };
+      expect(result.errors?.some((error) => error.includes('convergenceEfficiency'))).toBe(true);
     });
 
-    it('should reject weights above 1', () => {
-      expect(() => rubric.defineRubric({ convergenceEfficiency: 1.5 })).toThrow();
+    it('should report weights above 1 as validation errors', () => {
+      const result = rubric.defineRubric({ convergenceEfficiency: 1.5 }) as {
+        errors?: string[];
+      };
+      expect(result.errors?.some((error) => error.includes('convergenceEfficiency'))).toBe(true);
     });
 
-    it('should reject non-finite weights', () => {
-      expect(() => rubric.defineRubric({ convergenceEfficiency: NaN })).toThrow();
+    it('should report non-finite weights as validation errors', () => {
+      const result = rubric.defineRubric({ convergenceEfficiency: NaN }) as {
+        errors?: string[];
+      };
+      expect(result.errors?.some((error) => error.includes('convergenceEfficiency'))).toBe(true);
     });
   });
 
@@ -137,27 +146,33 @@ describe('Quality Rubric (T002)', () => {
       });
     });
 
-    describe('stuckRate', () => {
-      it('should score 1.0 for no stuck iterations', () => {
-        const score = rubric.scoreStuckRate({
+    describe('synthesisQuality', () => {
+      it('should score high when relevant findings are preserved and the run converged', () => {
+        const score = rubric.scoreSynthesisQuality({
+          totalFindings: 10,
+          relevantFindings: 8,
+          converged: true,
           iterationsUsed: 5,
-          stuckIterations: 0,
         });
-        expect(score).toBe(1.0);
+        expect(score).toBe(0.88);
       });
 
-      it('should inversely score stuck ratio', () => {
-        const score = rubric.scoreStuckRate({
-          iterationsUsed: 10,
-          stuckIterations: 3,
+      it('should score only the findings component when not converged', () => {
+        const score = rubric.scoreSynthesisQuality({
+          totalFindings: 10,
+          relevantFindings: 8,
+          converged: false,
+          iterationsUsed: 5,
         });
-        expect(score).toBe(0.7);
+        expect(score).toBe(0.48);
       });
 
-      it('should score 0 when all iterations stuck', () => {
-        const score = rubric.scoreStuckRate({
-          iterationsUsed: 5,
-          stuckIterations: 5,
+      it('should score 0 when no iterations were recorded', () => {
+        const score = rubric.scoreSynthesisQuality({
+          totalFindings: 10,
+          relevantFindings: 8,
+          converged: true,
+          iterationsUsed: 0,
         });
         expect(score).toBe(0);
       });
@@ -175,14 +190,13 @@ describe('Quality Rubric (T002)', () => {
         recoverySuccesses: 0,
         totalFindings: 10,
         relevantFindings: 8,
-        stuckIterations: 0,
       });
 
       expect(result.perDimension).toBeDefined();
       expect(Object.keys(result.perDimension)).toContain('convergenceEfficiency');
       expect(Object.keys(result.perDimension)).toContain('recoverySuccessRate');
       expect(Object.keys(result.perDimension)).toContain('findingAccuracy');
-      expect(Object.keys(result.perDimension)).toContain('stuckRate');
+      expect(Object.keys(result.perDimension)).toContain('synthesisQuality');
 
       // Each dimension should have score, weight, weighted, available
       for (const dim of Object.values(result.perDimension)) {
@@ -207,7 +221,6 @@ describe('Quality Rubric (T002)', () => {
         recoverySuccesses: 0,
         totalFindings: 10,
         relevantFindings: 8,
-        stuckIterations: 0,
       });
 
       expect(result.unavailableDimensions).toContain('unknownDimension');
@@ -221,7 +234,7 @@ describe('Quality Rubric (T002)', () => {
         convergenceEfficiency: 1.0,
         recoverySuccessRate: 0,
         findingAccuracy: 0,
-        stuckRate: 0,
+        synthesisQuality: 0,
       });
       const result = rubric.scoreRun(r, {
         iterationsUsed: 5,
@@ -231,7 +244,6 @@ describe('Quality Rubric (T002)', () => {
         recoverySuccesses: 0,
         totalFindings: 0,
         relevantFindings: 0,
-        stuckIterations: 0,
       });
 
       // convergenceEfficiency = 1 - (5/10) = 0.5, only active dimension with weight 1.0

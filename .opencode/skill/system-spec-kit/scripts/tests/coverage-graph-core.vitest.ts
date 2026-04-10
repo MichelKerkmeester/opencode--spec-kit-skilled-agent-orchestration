@@ -41,8 +41,9 @@ describe('coverage-graph-core', () => {
     it('exports review relation weights', () => {
       expect(coreModule.REVIEW_RELATION_WEIGHTS).toBeDefined();
       expect(coreModule.REVIEW_RELATION_WEIGHTS.COVERS).toBe(1.3);
-      expect(coreModule.REVIEW_RELATION_WEIGHTS.EVIDENCES).toBe(1.0);
-      expect(coreModule.REVIEW_RELATION_WEIGHTS.REMEDIATES).toBe(1.1);
+      expect(coreModule.REVIEW_RELATION_WEIGHTS.EVIDENCE_FOR).toBe(1.0);
+      expect(coreModule.REVIEW_RELATION_WEIGHTS.RESOLVES).toBe(1.5);
+      expect(coreModule.REVIEW_RELATION_WEIGHTS.CONFIRMS).toBe(1.0);
     });
 
     it('has default max depth of 5', () => {

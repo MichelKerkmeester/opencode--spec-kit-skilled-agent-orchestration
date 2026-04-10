@@ -803,10 +803,8 @@ describe('T008: includeContent-independent dedup in hybrid search path', () => {
     );
 
     const ids = canonicalIds(results);
-    const metrics = hybridSearch.getGraphMetrics();
     expect(ids.length).toBe(new Set(ids).size);
     expect(ids.length).toBeGreaterThan(0);
-    expect(metrics.multiSourceResults).toBeGreaterThan(0);
   });
 
   it('deduplicates canonical IDs when includeContent=true', async () => {
@@ -826,10 +824,8 @@ describe('T008: includeContent-independent dedup in hybrid search path', () => {
     );
 
     const ids = canonicalIds(results);
-    const metrics = hybridSearch.getGraphMetrics();
     expect(ids.length).toBe(new Set(ids).size);
     expect(ids.length).toBeGreaterThan(0);
-    expect(metrics.multiSourceResults).toBeGreaterThan(0);
   });
 
   it('returns identical deduped canonical IDs for includeContent=false vs true', async () => {

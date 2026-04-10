@@ -136,8 +136,8 @@ describe('shadow-evaluation-runtime', () => {
   });
 
   it('runs a due holdout cycle from recent consumption_log queries', async () => {
-    insertSearchEvent(db, 101, 'alpha query', new Date('2026-03-20T10:00:00.000Z').toISOString());
-    insertSearchEvent(db, 102, 'beta query', new Date('2026-03-21T10:00:00.000Z').toISOString());
+    insertSearchEvent(db, 101, 'alpha query', new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString());
+    insertSearchEvent(db, 102, 'beta query', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
     insertQueryFeedbackLabels(db, 'alpha query', [12, 11]);
     insertQueryFeedbackLabels(db, 'beta query', [22, 21]);
 

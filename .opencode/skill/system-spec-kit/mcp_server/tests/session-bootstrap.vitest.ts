@@ -4,7 +4,39 @@ vi.mock('../handlers/session-resume.js', () => ({
   handleSessionResume: vi.fn(async () => ({
     content: [{
       type: 'text',
-      text: JSON.stringify({ status: 'ok', data: { memory: { resumed: true }, hints: ['resume ok'] } }),
+      text: JSON.stringify({
+        status: 'ok',
+        data: {
+          memory: { resumed: true },
+          hints: ['resume ok'],
+          payloadContract: {
+            kind: 'resume',
+            summary: 'resume payload',
+            sections: [
+              {
+                key: 'structural-context',
+                title: 'Structural Context',
+                content: 'resume structural context',
+                source: 'code-graph',
+                certainty: 'exact',
+                structuralTrust: {
+                  parserProvenance: 'ast',
+                  evidenceStatus: 'confirmed',
+                  freshnessAuthority: 'live',
+                },
+              },
+            ],
+            provenance: {
+              producer: 'session_resume',
+              sourceSurface: 'session_resume',
+              trustState: 'ready',
+              generatedAt: '2026-04-10T00:00:00.000Z',
+              lastUpdated: null,
+              sourceRefs: ['session-snapshot'],
+            },
+          },
+        },
+      }),
     }],
   })),
 }));

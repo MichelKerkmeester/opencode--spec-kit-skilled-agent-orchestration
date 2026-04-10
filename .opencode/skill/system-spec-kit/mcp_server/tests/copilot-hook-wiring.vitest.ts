@@ -12,13 +12,13 @@ const sessionStartScriptPath = resolve(repoRoot, '.github/hooks/scripts/session-
 const supersetNotifyScriptPath = resolve(repoRoot, '.github/hooks/scripts/superset-notify.sh');
 
 describe('copilot hook wiring', () => {
-  it('routes sessionStart through the repo-local wrapper script', () => {
+  it('routes hook events through the configured superset wrapper entrypoint', () => {
     const parsed = JSON.parse(readFileSync(hooksJsonPath, 'utf-8'));
 
-    expect(parsed.hooks.sessionStart[0].bash).toBe('.github/hooks/scripts/session-start.sh');
-    expect(parsed.hooks.sessionEnd[0].bash).toBe('.github/hooks/scripts/superset-notify.sh sessionEnd');
-    expect(parsed.hooks.userPromptSubmitted[0].bash).toBe('.github/hooks/scripts/superset-notify.sh userPromptSubmitted');
-    expect(parsed.hooks.postToolUse[0].bash).toBe('.github/hooks/scripts/superset-notify.sh postToolUse');
+    expect(parsed.hooks.sessionStart[0].bash).toContain('copilot-hook.sh sessionStart');
+    expect(parsed.hooks.sessionEnd[0].bash).toContain('copilot-hook.sh sessionEnd');
+    expect(parsed.hooks.userPromptSubmitted[0].bash).toContain('copilot-hook.sh userPromptSubmitted');
+    expect(parsed.hooks.postToolUse[0].bash).toContain('copilot-hook.sh postToolUse');
   });
 
   it('sessionStart wrapper emits the startup banner and snapshot note', () => {
