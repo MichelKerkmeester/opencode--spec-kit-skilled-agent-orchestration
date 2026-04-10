@@ -378,7 +378,9 @@ workflow:
             - "Change granularity: file-level → function-level → line-level review"
             - "Traceability protocol replay: re-run unresolved core or overlay checks"
             - "Escalate severity review: re-examine P2 findings for potential P1 upgrades"
-          set: { next_dimension: "RECOVERY: {recovery_strategy}. Least-explored dimension: {least_explored}" }
+          pivot_target: "Pivot to the least-covered dimension (the review dimension with the fewest iteration passes and lowest coverage ratio)."
+          append_jsonl: '{"type":"event","event":"stuck_recovery","fromIteration":{current_iteration},"strategy":"{recovery_strategy}","targetDimension":"{least_explored}","outcome":"pending","timestamp":"{ISO_8601_NOW}"}'
+          set: { next_dimension: "RECOVERY: {recovery_strategy}. Least-covered dimension: {least_explored}" }
           reset: { stuck_count: 0 }
         if_continue:
           log: "Iteration {current_iteration}: Continuing. Dimension: {next_dimension}"
@@ -431,7 +433,8 @@ workflow:
             CONSTRAINT: Target 9 tool calls. Soft max 12, hard max 13.
             CONSTRAINT: Write ALL findings to files. Do not hold in context.
             CONSTRAINT: Review target is READ-ONLY. Do not modify reviewed files.
-            CONSTRAINT: Append JSONL record with dimensions, filesReviewed, findingsSummary, findingsNew, traceabilityChecks, and newFindingsRatio.
+            CONSTRAINT: Append JSONL record with dimensions, filesReviewed, findingsSummary, findingsNew, traceabilityChecks, newFindingsRatio, and optional graphEvents.
+            CONSTRAINT: When emitting the iteration JSONL record, include an optional `graphEvents` array of {type, id, label, relation?, source?, target?} objects representing coverage graph nodes and edges discovered this iteration. Omit the field when no graph events are produced.
             CONSTRAINT: Update strategy.md dimension coverage, traceability status, and running findings.
         wait_for_completion: true
 

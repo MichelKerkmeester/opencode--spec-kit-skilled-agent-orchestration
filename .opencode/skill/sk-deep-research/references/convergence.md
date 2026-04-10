@@ -297,8 +297,8 @@ function evaluateLegalStop(state, strategy, config, stopCandidate):
 - **Convergence Gate**: Re-read the most recent N evidence iterations only. Every one of them must remain below the configured novelty threshold.
 - **Coverage Gate**: Every initialized key question must have at least one answer backed by evidence from the iteration artifacts.
 - **Source Diversity**: For each answered question, count distinct independent sources. Require the configured minimum (default 2).
-- **Focus Alignment**: Compare answered question labels against the initialized key-question set. Flag any answer outside the declared scope.
-- **No Single-Weak-Source**: No answered question may depend entirely on a single tentative or otherwise weak source.
+- **Focus Alignment**: Compare current key questions against `config.originalKeyQuestions` (the snapshot of initial key questions populated at session init). Flag any answer outside the declared scope, or any significant drift where the current question set no longer resembles the original set. When `originalKeyQuestions` is absent (legacy packets), fall back to comparing against strategy.md's initialized question list.
+- **No Single-Weak-Source**: No answered question may depend entirely on a single tentative or otherwise weak source. The guard checks the `sourceStrength` field on iteration records (values: `"strong"`, `"moderate"`, `"weak"`) rather than performing implicit JSONL analysis.
 
 `qualityGate.checks` is the replayable quality bundle. Reducers and dashboards must be able to explain a quality pass or failure from packet-local artifacts only.
 

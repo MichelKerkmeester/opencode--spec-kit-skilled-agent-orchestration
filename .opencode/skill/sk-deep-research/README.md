@@ -82,6 +82,7 @@ Pause a running loop by creating `research/.deep-research-pause`. Delete that fi
 | Progressive synthesis | `research.md` can be updated incrementally and is finalized during synthesis. |
 | Negative knowledge | Ruled-out directions and dead ends are preserved as first-class outputs. |
 | Quality guards | Source diversity, focus alignment, and weak-source checks must pass before STOP is accepted. |
+| 3-signal convergence model | Composite stop decision uses three weighted signals: Rolling Average (0.45), MAD Noise Floor (0.30), and Coverage/Age (0.25). STOP requires weighted score > 0.60 threshold. |
 | Graph-aware legal-stop checks | When `graphEvents` exist, structural graph signals add extra STOP-blocking evidence on top of the standard convergence math. |
 | Semantic coverage graph | Each iteration emits `graphEvents` (nodes + edges) in JSONL, building an in-memory coverage graph with relation types (ANSWERS, SUPPORTS, CONTRADICTS, SUPERSEDES, DERIVED_FROM, COVERS, CITES). |
 | Graph convergence guards | STOP-blocking guards: sourceDiversity (>= 0.4) and evidenceDepth (>= 1.5) must pass before convergence is accepted, preventing premature termination from single-source or shallow-evidence research. |

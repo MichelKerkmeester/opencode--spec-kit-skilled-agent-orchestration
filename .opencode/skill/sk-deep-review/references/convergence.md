@@ -494,17 +494,32 @@ When stuck detection triggers (`stuckCount >= stuckThreshold`), the orchestrator
 | Traceability plateau | Required protocols remain partial while ratios stay `< 0.05` | **Protocol-first replay:** re-run the unresolved traceability protocol directly against the conflicting artifacts |
 | Low-value advisory churn | Last 2 iterations found only P2 findings | **Escalate severity review:** explicitly search for P0/P1 patterns or downgrade unsupported severity claims |
 
+### Least-Covered Dimension Pivot
+
+Stuck recovery always pivots to the **least-covered dimension** -- the review dimension with the fewest iteration passes and lowest coverage ratio -- rather than relying solely on strategy-based selection. This ensures recovery escapes local minima by exploring under-examined areas of the review target.
+
+The pivot target is computed as:
+```
+leastCovered = min(dimensions, key=lambda d: (iterationCountFor(d), coverageRatioFor(d)))
+```
+
+When the stuck recovery fires, the YAML workflow appends a `stuck_recovery` JSONL event that records the target dimension:
+```json
+{"type":"event","event":"stuck_recovery","fromIteration":4,"strategy":"change_granularity","targetDimension":"maintainability","outcome":"pending","timestamp":"..."}
+```
+
 ### Selection Logic
 
 ```
 function selectReviewRecoveryStrategy(stuckIterations, state, config):
   lastFocuses = [i.focus for i in stuckIterations[-2:]]
+  leastCovered = findLeastCoveredDimension(state.dimensionCoverage, state.iterations)
 
   if len(set(lastFocuses)) <= 1:                           // same dimension stuck
-    return { strategy: "change_granularity", dimension: lastFocuses[0] }
+    return { strategy: "change_granularity", dimension: leastCovered }
   if hasRequiredProtocolPlateau(state.traceabilityChecks):  // protocols incomplete
-    return { strategy: "protocol_first_replay" }
-  return { strategy: "escalate_severity_review" }           // default
+    return { strategy: "protocol_first_replay", dimension: leastCovered }
+  return { strategy: "escalate_severity_review", dimension: leastCovered }  // default
 ```
 
 ### Recovery Dispatch Prompt

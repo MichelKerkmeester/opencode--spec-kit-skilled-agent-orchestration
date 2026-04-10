@@ -125,6 +125,16 @@ Composite convergence (3-signal weighted > 0.60)?
 Otherwise --> CONTINUE
 ```
 
+### 3-Signal Convergence Model
+
+| Signal | Weight | Min Iterations | Votes STOP When |
+|--------|--------|---------------|-----------------|
+| Rolling Average | 0.45 | 3 | avg(last 3 newInfoRatios) < convergenceThreshold |
+| MAD Noise Floor | 0.30 | 4 | latest ratio <= MAD * 1.4826 |
+| Coverage / Age | 0.25 | 1 | answered / total questions >= 0.85 |
+
+**Composite stop threshold:** 0.60 -- weighted stop score must exceed this before quality guards are evaluated.
+
 Quality guards (source diversity, focus alignment, no single-weak-source) must pass before STOP.
 
 ---

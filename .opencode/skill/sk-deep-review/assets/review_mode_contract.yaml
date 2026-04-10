@@ -335,6 +335,7 @@ contract:
           - scoreEstimate
           - segment
           - convergenceSignals
+          - graphEvents
       synthesisEvent:
         required:
           - type

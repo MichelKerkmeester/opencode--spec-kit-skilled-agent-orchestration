@@ -323,6 +323,7 @@ workflow:
             CONSTRAINT: Target 3-5 research actions. Max 12 tool calls total.
             CONSTRAINT: Write ALL findings to files. Do not hold in context.
             CONSTRAINT: The workflow reducer owns strategy machine-owned sections, registry, and dashboard synchronization.
+            CONSTRAINT: When emitting the iteration JSONL record, include an optional `graphEvents` array of {type, id, label, relation?, source?, target?} objects representing coverage graph nodes and edges discovered this iteration. Omit the field when no graph events are produced.
         wait_for_completion: true
 
       step_reduce_state:

@@ -79,6 +79,7 @@ Created during initialization. Not modified after creation.
 | lineage.lineageMode | string | Yes | "new" | `new`, `resume`, `restart`, `fork`, or `completed-continue` |
 | lineage.generation | number | Yes | 1 | Monotonic generation counter |
 | lineage.continuedFromRun | number or null | No | null | Run number where a resumed or reopened segment continues |
+| originalKeyQuestions | string[] | No | -- | Snapshot of the initial key questions at session init, used by the focus-alignment guard to detect drift |
 | fileProtection | object | No | -- | Mutability declarations for state files (see below) |
 
 ### File Protection Map
@@ -148,6 +149,7 @@ Append-only JSON Lines file. One JSON object per line.
 | ruledOut | array | No | Approaches eliminated this iteration (see Negative Knowledge below) |
 | noveltyJustification | string | No | Human-readable explanation of what newInfoRatio represents (see below) |
 | focusTrack | string | No | Post-hoc grouping label, e.g. `"browser-support"`. Not used for orchestration |
+| sourceStrength | string | No | Overall evidence quality class for this iteration: `"strong"`, `"moderate"`, or `"weak"`. Used by the weak-source guard to detect single-weak-source dependence without implicit JSONL analysis |
 
 ### Convergence Signal Fields
 
