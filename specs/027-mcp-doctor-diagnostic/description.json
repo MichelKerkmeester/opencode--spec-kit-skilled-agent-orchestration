@@ -1,0 +1,25 @@
+{
+  "specFolder": "027-mcp-doctor-diagnostic",
+  "description": "MCP Doctor Diagnostic Command --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit",
+  "keywords": [
+    "mcp",
+    "doctor",
+    "diagnostic",
+    "command",
+    "dir",
+    "users",
+    "michelkerkmeester",
+    "mega",
+    "development",
+    "public",
+    "opencode",
+    "specs",
+    "system-spec-kit"
+  ],
+  "lastUpdated": "2026-04-10T14:48:41.513Z",
+  "specId": "027",
+  "folderSlug": "mcp-doctor-diagnostic",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

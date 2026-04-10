@@ -1,0 +1,305 @@
+# ─────────────────────────────────────────────────────────────────
+# MCP DOCTOR: INSTALL WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+role: MCP Installation Specialist
+purpose: Fresh install or reinstall all 4 MCP servers from install guides
+action: Run 6-step guided installation with verification
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING MODE
+# ─────────────────────────────────────────────────────────────────
+operating_mode:
+  workflow: sequential_6_step
+  workflow_compliance: MANDATORY
+  workflow_execution: interactive
+  approvals: per_server
+  tracking: installed_skipped_failed_per_server
+
+# ─────────────────────────────────────────────────────────────────
+# ARGUMENT PARSING
+# ─────────────────────────────────────────────────────────────────
+arguments:
+  server_filter:
+    flag: "--server"
+    value: "<name>"
+    valid_values: [spec_kit_memory, cocoindex_code, code_mode, sequential_thinking]
+    default: null
+    effect: "Only install the specified server"
+  runtime_filter:
+    flag: "--runtime"
+    value: "<name>"
+    valid_values: [opencode, claude, codex, gemini, vscode]
+    default: null
+    effect: "Only configure for the specified runtime"
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE: INSTALL GUIDES (read these during workflow)
+# ─────────────────────────────────────────────────────────────────
+install_guides:
+  spec_kit_memory: .opencode/install_guides/MCP - Spec Kit Memory.md
+  cocoindex_code: .opencode/install_guides/MCP - CocoIndex Code.md
+  code_mode: .opencode/install_guides/MCP - Code Mode.md
+  sequential_thinking: .opencode/install_guides/MCP - Sequential Thinking.md
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE: SERVER DEFINITIONS
+# ─────────────────────────────────────────────────────────────────
+servers:
+  spec_kit_memory:
+    label: "Spec Kit Memory"
+    runtime: node
+    skill_dir: ".opencode/skill/system-spec-kit"
+    entry_point: "mcp_server/dist/context-server.js"
+    install_script: "scripts/setup/install.sh"
+    rebuild_script: "scripts/setup/rebuild-native-modules.sh"
+    health_checks:
+      - { path: "mcp_server/dist/context-server.js", type: "file_exists" }
+      - { path: "mcp_server/node_modules/better-sqlite3", type: "dir_exists" }
+      - { probe: "node -e \"require('{skill_dir}/mcp_server/node_modules/better-sqlite3')\"", type: "command_succeeds" }
+    install_steps:
+      - "cd {skill_dir} && npm install"
+      - "cd {skill_dir} && npm run build"
+      - "bash {skill_dir}/scripts/setup/rebuild-native-modules.sh"
+    fallback_build: "cd {skill_dir} && npx tsc --build --noCheck --force"
+
+  cocoindex_code:
+    label: "CocoIndex Code"
+    runtime: python
+    skill_dir: ".opencode/skill/mcp-coco-index"
+    entry_point: "mcp_server/.venv/bin/ccc"
+    install_script: "scripts/install.sh"
+    health_checks:
+      - { path: "mcp_server/.venv/bin/ccc", type: "file_executable" }
+      - { probe: "{skill_dir}/mcp_server/.venv/bin/ccc --help", type: "command_succeeds" }
+    install_steps:
+      - "bash {skill_dir}/scripts/install.sh"
+    post_install:
+      - "{skill_dir}/mcp_server/.venv/bin/ccc init"
+      - "{skill_dir}/mcp_server/.venv/bin/ccc index"
+    clean_reinstall:
+      - "rm -rf {skill_dir}/mcp_server/.venv"
+      - "bash {skill_dir}/scripts/install.sh"
+
+  code_mode:
+    label: "Code Mode"
+    runtime: node
+    skill_dir: ".opencode/skill/mcp-code-mode"
+    entry_point: "mcp_server/dist/index.js"
+    install_script: "scripts/install.sh"
+    health_checks:
+      - { path: "mcp_server/dist/index.js", type: "file_exists" }
+      - { path: "mcp_server/node_modules", type: "dir_exists" }
+    install_steps:
+      - "bash {skill_dir}/scripts/install.sh"
+    fallback_install:
+      - "cd {skill_dir}/mcp_server && npm install && npm run build"
+    extra_config:
+      - { path: ".utcp_config.json", type: "file_exists", description: "UTCP config for external MCP servers" }
+
+  sequential_thinking:
+    label: "Sequential Thinking"
+    runtime: node
+    skill_dir: null
+    entry_point: null
+    health_checks:
+      - { probe: "npx -y --package @modelcontextprotocol/server-sequential-thinking node -e \"console.log('ok')\"", type: "command_succeeds" }
+    install_steps:
+      - "npx -y @modelcontextprotocol/server-sequential-thinking --help"
+    note: "npx-based server — no local install needed, just pre-cache"
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE: CONFIG TEMPLATES
+# ─────────────────────────────────────────────────────────────────
+config_files:
+  opencode:
+    path: "opencode.json"
+    format: "json-mcp"
+    label: "OpenCode"
+    guide_section: "Option B: Copilot / OpenCode"
+  claude:
+    path: ".claude/mcp.json"
+    format: "json-mcpServers"
+    label: "Claude Code"
+    guide_section: "Option B: Claude Code CLI"
+  codex:
+    path: ".codex/config.toml"
+    format: "toml"
+    label: "Codex CLI"
+    guide_section: "Option F: Codex CLI"
+  gemini:
+    path: ".gemini/settings.json"
+    format: "json-mcpServers"
+    label: "Gemini CLI"
+    guide_section: "Option D: Gemini CLI"
+  vscode:
+    path: ".vscode/mcp.json"
+    format: "json-mcpServers"
+    label: "VS Code / Copilot"
+    guide_section: "Option A: Claude Code / Option B"
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+
+  step_1_preflight:
+    name: "Preflight"
+    purpose: "Check system prerequisites before any install"
+    activities:
+      - "Check Node.js version: node --version (must be 18+)"
+      - "Check Python version: python3 --version (must be 3.11+ for CocoIndex)"
+      - "Check npm: npm --version"
+      - "Check npx: npx --version"
+      - "Report which servers can be installed based on available prerequisites"
+      - "If --server flag provided, validate server name"
+      - "If --runtime flag provided, validate runtime name"
+    prerequisite_matrix:
+      node_18: { required_for: [spec_kit_memory, code_mode, sequential_thinking], check: "node --version" }
+      python_311: { required_for: [cocoindex_code], check: "python3 --version" }
+      npm: { required_for: [spec_kit_memory, code_mode], check: "npm --version" }
+      npx: { required_for: [sequential_thinking], check: "npx --version" }
+    on_missing_prereq:
+      action: "WARN and skip affected servers, continue with others"
+      hard_block: "If no prerequisites available at all, STATUS=FAIL"
+    outputs:
+      - prerequisite_report: "Which tools available, which servers can proceed"
+      - servers_to_install: "Filtered list based on prereqs + --server flag"
+
+  step_2_assess:
+    name: "Assess Current State"
+    purpose: "For each server, determine: INSTALLED, STALE, or MISSING"
+    activities:
+      - "FOR EACH server in servers_to_install:"
+      - "  1. Read the install guide (Sections 2-3: Prerequisites, Installation)"
+      - "  2. Run health_checks from server definition"
+      - "  3. Classify: INSTALLED (all pass), STALE (some fail), MISSING (none pass)"
+      - "  4. If STALE: identify which specific check failed"
+      - "Present assessment table to user"
+    assessment_format: |
+      | Server | Status | Detail |
+      |--------|--------|--------|
+      | Spec Kit Memory | {status} | {detail} |
+      | CocoIndex Code | {status} | {detail} |
+      | Code Mode | {status} | {detail} |
+      | Sequential Thinking | {status} | {detail} |
+    checkpoint:
+      enabled: true
+      prompt: |
+        Assessment complete. How would you like to proceed?
+
+        A) Install/reinstall all that need it (MISSING + STALE)
+        B) Walk through each server interactively
+        C) Only install MISSING servers (skip STALE)
+        D) Cancel
+      options:
+        - { key: "A", action: "install all MISSING + STALE" }
+        - { key: "B", action: "interactive per-server prompts" }
+        - { key: "C", action: "install MISSING only" }
+        - { key: "D", action: "STATUS=CANCELLED" }
+    outputs:
+      - server_states: "Map of server -> INSTALLED|STALE|MISSING"
+      - install_plan: "Which servers to install based on user choice"
+
+  step_3_install:
+    name: "Install"
+    purpose: "Execute install steps for each server in the install plan"
+    activities:
+      - "FOR EACH server in install_plan:"
+      - "  1. Read the install guide's Installation section (Phase 2 + Phase 3)"
+      - "  2. If STALE and has clean_reinstall: ask user whether to clean first"
+      - "  3. Execute install_steps in order"
+      - "  4. If install fails and fallback_build exists: try fallback"
+      - "  5. Execute post_install steps if defined"
+      - "  6. Run health_checks to confirm install succeeded"
+      - "  7. Report PASS or FAIL per server"
+    per_server_checkpoint:
+      enabled: true
+      condition: "interactive mode (user chose B at step 2)"
+      prompt: |
+        Ready to install {server.label}:
+        Commands: {install_steps}
+        Proceed? [Y/n/skip]
+    on_failure:
+      max_retries: 1
+      action: "Report error, suggest /doctor:mcp_debug --server {name}"
+    outputs:
+      - install_results: "Map of server -> PASS|FAIL + details"
+
+  step_4_configure:
+    name: "Configure Runtime Wiring"
+    purpose: "Verify MCP server entries exist in runtime config files"
+    activities:
+      - "Determine which config files to check:"
+      - "  If --runtime flag: only that runtime's config"
+      - "  Else: all config files that exist on disk"
+      - "FOR EACH config file that exists:"
+      - "  1. Read the file"
+      - "  2. FOR EACH installed server: check if MCP entry is present"
+      - "  3. If entry missing:"
+      - "     a. Read the install guide's Configuration section for the correct snippet"
+      - "     b. Present the snippet to user"
+      - "     c. Ask: Add this entry? [Y/n/manual]"
+      - "     d. If Y: edit the config file to add the entry"
+      - "     e. If manual: show snippet, user edits themselves"
+    config_safety:
+      rule: "Always validate JSON/TOML syntax after edit"
+      validation: "python3 -m json.tool < {config_file} for JSON; grep syntax for TOML"
+      on_validation_fail: "Revert edit, show error, ask user to fix manually"
+    outputs:
+      - config_report: "Which configs have which servers wired"
+
+  step_5_verify:
+    name: "Verify"
+    purpose: "Run full diagnostic to confirm everything works"
+    activities:
+      - "Run: bash .opencode/command/doctor/scripts/mcp-doctor.sh --json"
+      - "Parse JSON results"
+      - "Compare with step_2 assessment: what improved"
+      - "Report any remaining issues"
+    command: "bash .opencode/command/doctor/scripts/mcp-doctor.sh --json"
+    on_remaining_failures:
+      action: "Suggest /doctor:mcp_debug for remaining issues"
+    outputs:
+      - verification_json: "Post-install diagnostic results"
+      - improvements: "Before vs after comparison"
+
+  step_6_summary:
+    name: "Summary"
+    purpose: "Final report with what was done and next steps"
+    report_format: |
+      ## MCP Install — Final Report
+
+      | Server | Before | After | Action Taken |
+      |--------|--------|-------|--------------|
+      | Spec Kit Memory | {before} | {after} | {action} |
+      | CocoIndex Code | {before} | {after} | {action} |
+      | Code Mode | {before} | {after} | {action} |
+      | Sequential Thinking | {before} | {after} | {action} |
+
+      **Config wiring:** {config_summary}
+
+      ### Next Steps
+      - Restart your AI client to pick up MCP servers
+      - Test: ask your AI assistant to use each MCP tool
+      - If issues persist: /doctor:mcp_debug
+
+      STATUS={final_status}
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR HANDLING
+# ─────────────────────────────────────────────────────────────────
+error_handling:
+  node_too_old:
+    check: "node major version < 18"
+    action: "FAIL for Node-based servers, suggest upgrade"
+  python_too_old:
+    check: "python3 minor version < 11"
+    action: "WARN for CocoIndex, skip it, continue with others"
+  npm_install_fails:
+    action: "Clear npm cache (npm cache clean --force), retry once"
+  pip_install_fails:
+    action: "Remove .venv, retry with install script"
+  build_fails:
+    action: "Try fallback_build if defined, else report manual steps"
+  config_edit_fails:
+    action: "Show snippet for manual paste, never force-write broken JSON"

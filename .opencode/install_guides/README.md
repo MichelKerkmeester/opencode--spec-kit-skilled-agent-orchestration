@@ -1396,6 +1396,39 @@ sudo chown -R $(whoami) /usr/local/lib/node_modules
 
 </details>
 
+<details>
+<summary><strong>Automated MCP Diagnostics (Recommended)</strong></summary>
+
+### MCP Doctor Commands
+
+Instead of manual troubleshooting, use the built-in diagnostic commands that check all MCP servers automatically:
+
+```bash
+# Diagnose all 4 MCP servers across all runtimes
+/doctor:mcp_debug
+
+# Auto-fix detected issues
+/doctor:mcp_debug --fix
+
+# Fresh install all MCP servers from scratch
+/doctor:mcp_install
+
+# Diagnose or install a single server
+/doctor:mcp_debug --server cocoindex_code
+/doctor:mcp_install --server spec_kit_memory
+```
+
+The doctor commands read the install guides, check system reality, and offer guided repair. Available across OpenCode, Claude Code, Codex CLI, and Gemini CLI.
+
+Shell script (for direct use outside AI clients):
+```bash
+bash .opencode/command/doctor/scripts/mcp-doctor.sh
+bash .opencode/command/doctor/scripts/mcp-doctor.sh --json
+bash .opencode/command/doctor/scripts/mcp-doctor.sh --fix
+```
+
+</details>
+
 ---
 
 <!-- /ANCHOR:troubleshooting -->

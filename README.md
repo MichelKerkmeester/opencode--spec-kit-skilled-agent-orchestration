@@ -63,7 +63,7 @@ The framework adds three layers on top of the base platform:
 | **⌨️ 21 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility |
 | **🔧 52 MCP Tools** | 43 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings — natural-language discovery across 28+ languages |
-| **🏗️ Code Graph** | Structural indexer + SQLite — call graphs, imports, hierarchy, LLM-oriented neighborhoods |
+| **🏗️ Code Graph** | Structural indexer + SQLite — call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing integration in search pipeline |
 | **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
 | **📄 81 Templates** | CORE + ADDENDUM v2.2 |
@@ -99,8 +99,9 @@ The framework adds three layers on top of the base platform:
                  ▼                           ▼
          ┌──────────────────────────────────────────┐
          │       MEMORY ENGINE (52 MCP tools)       │
-         │  5-channel hybrid: Vector, BM25, FTS5,   │
-         │  Causal Graph, Degree                    │
+         │  5 core + CocoIndex bridge: Vector,      │
+         │  BM25, FTS5, Causal Graph, Degree        │
+         │  Graph-first routing ─ 3-tier fallback   │
          │  FSRS decay ─ RRF fusion ─ query intel   │
          │  runtime flags ─ eval guardrails          │
          │  Voyage │ OpenAI │ HuggingFace Local     │
@@ -367,7 +368,7 @@ Lower layers load only when needed. L1 is always available. L2 loads for any sea
 
 #### HYBRID SEARCH
 
-Every search checks five channels at once:
+Every search checks five core channels at once, with CocoIndex available as a semantic code search bridge:
 
 - **Vector** - Semantic similarity via embeddings. Finds related content when words differ.
 - **FTS5** - Full-text search on exact words and phrases.
@@ -375,7 +376,7 @@ Every search checks five channels at once:
 - **Causal Graph** - Follows cause-and-effect links between memories.
 - **Degree** - Scores by graph connectivity, weighted by edge type.
 
-**Reciprocal Rank Fusion (RRF)** combines results across channels so memories scoring well in multiple channels rise to the top. The system automatically escalates from vector-only to all 5 channels when confidence is low, truncates weak results, and ensures every active channel is represented.
+**Reciprocal Rank Fusion (RRF)** combines results across channels so memories scoring well in multiple channels rise to the top. **Graph-first routing** dispatches structural queries to the Code Graph first, then CocoIndex for semantic code discovery, then the memory pipeline. A **3-tier FTS fallback** automatically escalates from vector-only to vector+BM25 to all channels when confidence is low. The system truncates weak results and ensures every active channel is represented.
 
 
 #### SEARCH PIPELINE
@@ -512,7 +513,7 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Compact Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
 
-The intended split is simple: CocoIndex finds semantic candidates, the code graph expands structural neighbors, and Memory preserves session decisions and active-task context.
+The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory preserves session decisions and active-task context. A 3-tier FTS fallback escalates automatically when results are weak.
 
 #### How the Code Graph Works
 
@@ -536,10 +537,12 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 | **Session bridge tools** | Session bootstrap, resume, and health checks around graph availability | `session_bootstrap`, `session_resume`, `session_health` |
 | **CCC utilities** | CocoIndex availability, reindexing, result feedback | `ccc_status`, `ccc_reindex`, `ccc_feedback` |
 
-#### How Query Routing Works
+#### How Query Routing Works (Graph-First)
 
+The default routing order is: **Code Graph** (structural) -> **CocoIndex** (semantic code) -> **Memory** (session/decision context). This graph-first approach tries structural resolution before semantic similarity, with a 3-tier FTS fallback when earlier stages miss.
+
+- Use the **Compact Code Graph** first for structural questions: callers, callees, imports, hierarchy, file outlines, and reverse impact.
 - Use **CocoIndex** for semantic and intent-based questions: "find code that validates memory quality", "show similar routing patterns", "where is the logic for X?"
-- Use the **Compact Code Graph** for structural questions: callers, callees, imports, hierarchy, file outlines, and reverse impact.
 - Use **session tools** when recovering or checking environment readiness: `session_bootstrap()` on fresh start or after `/clear`, `session_resume()` for reconnect-style follow-up, and `session_health()` to re-check stale or missing structural context.
 - Use **Memory** when the question is about prior decisions, spec history, handovers, or task continuity.
 
@@ -627,7 +630,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 ### ⌨️ Command Architecture
 
 
-21 command entry points across 5 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
+23 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
 #### SPEC KIT
 
@@ -742,6 +745,18 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Refines prompts and prompt packages using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
 - Applies DEPTH thinking methodology with CLEAR quality scoring
 - Used when the target already exists and needs structured improvement rather than new scaffolding
+
+#### DOCTOR
+
+**MCP Debug**
+- Diagnoses all 4 MCP servers (Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking) with PASS/WARN/FAIL per check
+- Investigates failures using install guide knowledge, cross-references config wiring across all 5 runtime configs
+- Interactive repair: walks through each failure with root cause + targeted fix. Also supports `--fix` for automatic repair
+
+**MCP Install**
+- Fresh install or reinstall all 4 MCP servers from their install guides
+- Assesses current state (INSTALLED/STALE/MISSING), runs install scripts, configures runtime wiring, verifies health
+- Handles old-install-conflicting-with-new scenarios (clean reinstall with venv/node_modules removal)
 
 #### UTILITY
 

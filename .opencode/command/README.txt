@@ -37,11 +37,12 @@ trigger_phrases:
 
 Commands are invoked as slash commands (e.g., `/create:feature-catalog`, `/memory:save`, `/spec_kit:plan`). Each command is a markdown file with YAML frontmatter that defines its description, argument hints, and allowed tools.
 
-Commands are organized into four groups:
+Commands are organized into five groups:
 
 | Group | Path | Commands | Purpose |
 |-------|------|----------|---------|
 | **create** | `command/create/` | 6 | Scaffold OpenCode components, documentation packages, and changelogs |
+| **doctor** | `command/doctor/` | 2 | MCP server diagnostics, installation, and repair (mcp_debug, mcp_install) |
 | **improve** | `command/improve/` | 2 | Evaluate and improve AI agents and prompts with structured scoring |
 | **memory** | `command/memory/` | 4 | Memory system operations (search, save, learn, manage with shared lifecycle) |
 | **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, deep-research, deep-review, debug, handover, resume, complete) |
@@ -77,6 +78,11 @@ command/
 │   ├── sk-skill.md           # Create or update skill package/files
 │   ├── testing-playbook.md   # Create or update manual testing playbook package
 │   └── assets/               # YAML workflow definitions (12 files)
+├── doctor/                   # MCP server diagnostic and install commands
+│   ├── mcp_debug.md          # Diagnose and fix MCP connection issues
+│   ├── mcp_install.md        # Fresh install all MCP servers from scratch
+│   ├── assets/               # YAML workflow definitions (2 files)
+│   └── scripts/              # Diagnostic shell scripts (mcp-doctor.sh)
 ├── improve/                  # Agent and prompt improvement commands
 │   ├── agent.md              # Evaluate and improve agents
 │   ├── prompt.md             # Create or improve prompts
@@ -118,6 +124,15 @@ Scaffold OpenCode components using the `sk-doc` skill. Each command supports `:a
 | Folder README | `/create:folder_readme [readme\|install] <target>` | Unified README and install guide workflow |
 | Skill | `/create:sk-skill <name> <operation> [type]` | Unified skill create/update/reference/asset workflow |
 | Testing Playbook | `/create:testing-playbook <skill> [create\|update]` | Create or update a rooted `manual_testing_playbook/` package |
+
+### Doctor Commands
+
+Diagnose, install, and repair MCP server connections. Backed by `mcp-doctor.sh` diagnostic script and interactive YAML workflows.
+
+| Command | Invocation | Purpose |
+|---------|------------|---------|
+| MCP Debug | `/doctor:mcp_debug [--fix] [--server <name>]` | Diagnose and fix MCP connection issues across all runtimes |
+| MCP Install | `/doctor:mcp_install [--server <name>] [--runtime <name>]` | Fresh install or reinstall all 4 MCP servers from install guides |
 
 ### Improve Commands
 

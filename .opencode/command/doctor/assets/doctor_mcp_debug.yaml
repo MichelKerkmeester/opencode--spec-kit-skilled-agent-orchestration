@@ -1,0 +1,249 @@
+# ─────────────────────────────────────────────────────────────────
+# MCP DOCTOR: INTERACTIVE DIAGNOSTIC WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+role: MCP Diagnostic Specialist
+purpose: Diagnose, investigate, and repair MCP server connection issues
+action: Run 5-step interactive diagnostic with guided repair
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING MODE
+# ─────────────────────────────────────────────────────────────────
+operating_mode:
+  workflow: sequential_5_step
+  workflow_compliance: MANDATORY
+  workflow_execution: interactive
+  approvals: per_failure
+  tracking: pass_warn_fail_per_check
+
+# ─────────────────────────────────────────────────────────────────
+# ARGUMENT PARSING
+# ─────────────────────────────────────────────────────────────────
+arguments:
+  fix_mode:
+    flag: "--fix"
+    default: false
+    effect: "Skip interactive prompts for failures; auto-repair all"
+  server_filter:
+    flag: "--server"
+    value: "<name>"
+    valid_values: [spec_kit_memory, cocoindex_code, code_mode, sequential_thinking]
+    default: null
+    effect: "Only diagnose the specified server"
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE: INSTALL GUIDES
+# ─────────────────────────────────────────────────────────────────
+install_guides:
+  spec_kit_memory: .opencode/install_guides/MCP - Spec Kit Memory.md
+  cocoindex_code: .opencode/install_guides/MCP - CocoIndex Code.md
+  code_mode: .opencode/install_guides/MCP - Code Mode.md
+  sequential_thinking: .opencode/install_guides/MCP - Sequential Thinking.md
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE: CONFIG FILES
+# ─────────────────────────────────────────────────────────────────
+config_files:
+  - { path: "opencode.json", format: "json-mcp", label: "OpenCode" }
+  - { path: ".claude/mcp.json", format: "json-mcpServers", label: "Claude Code" }
+  - { path: ".codex/config.toml", format: "toml", label: "Codex CLI" }
+  - { path: ".gemini/settings.json", format: "json-mcpServers", label: "Gemini CLI" }
+  - { path: ".vscode/mcp.json", format: "json-mcpServers", label: "VS Code / Copilot" }
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE: REPAIR ACTIONS
+# ─────────────────────────────────────────────────────────────────
+repair_actions:
+  spec_kit_memory:
+    dist_missing:
+      command: "cd .opencode/skill/system-spec-kit && npm install && npm run build"
+      description: "Install dependencies and rebuild dist"
+    native_module_mismatch:
+      command: "bash .opencode/skill/system-spec-kit/scripts/setup/rebuild-native-modules.sh"
+      description: "Rebuild native modules for current Node.js version"
+    better_sqlite3_fail:
+      command: "cd .opencode/skill/system-spec-kit/mcp_server && npm rebuild better-sqlite3"
+      description: "Rebuild better-sqlite3 native binding"
+  cocoindex_code:
+    binary_missing:
+      command: "bash .opencode/skill/mcp-coco-index/scripts/install.sh"
+      description: "Install CocoIndex Code from PyPI into venv"
+    not_executable:
+      command: "chmod +x .opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc"
+      description: "Make ccc binary executable"
+    index_empty:
+      command: ".opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc init && .opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc index"
+      description: "Initialize and build semantic index"
+    venv_corrupted:
+      command: "rm -rf .opencode/skill/mcp-coco-index/mcp_server/.venv && bash .opencode/skill/mcp-coco-index/scripts/install.sh"
+      description: "Remove corrupted venv and reinstall"
+  code_mode:
+    dist_missing:
+      command: "cd .opencode/skill/mcp-code-mode/mcp_server && npm install && npm run build"
+      description: "Install dependencies and rebuild dist"
+    node_modules_missing:
+      command: "cd .opencode/skill/mcp-code-mode/mcp_server && npm install"
+      description: "Install node_modules"
+  sequential_thinking:
+    package_not_cached:
+      command: "npx -y @modelcontextprotocol/server-sequential-thinking --help"
+      description: "Pre-cache the npx package"
+    npm_cache_broken:
+      command: "npm cache clean --force"
+      description: "Clear npm cache and retry"
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+
+  step_1_diagnose:
+    name: "Run Diagnostic"
+    purpose: "Execute mcp-doctor.sh and capture structured results"
+    activities:
+      - "Parse user arguments (--fix, --server) from command invocation"
+      - "Build the shell command: bash .opencode/command/doctor/scripts/mcp-doctor.sh --json [--server <name>]"
+      - "Execute the command and capture JSON output"
+      - "Parse JSON into structured results: status, summary (pass/warn/fail counts), checks array"
+      - "Store results for subsequent steps"
+    command: "bash .opencode/command/doctor/scripts/mcp-doctor.sh --json {server_flag}"
+    outputs:
+      - diagnostic_json: "Parsed JSON results"
+      - exit_code: "0=healthy, 1=warnings, 2=failures"
+      - fail_list: "Array of checks with status FAIL"
+      - warn_list: "Array of checks with status WARN"
+    on_healthy:
+      action: "Skip to step_5_summary"
+      message: "All MCP servers healthy. No issues found."
+
+  step_2_present:
+    name: "Present Findings"
+    purpose: "Show the user a clear breakdown of what was found"
+    activities:
+      - "Display a formatted summary table:"
+      - "  | Server | Status | Issues |"
+      - "  For each server, aggregate its checks into PASS/WARN/FAIL"
+      - "List each FAIL with its detail and the recommended fix from repair_actions"
+      - "List each WARN with its detail"
+      - "If exit_code == 0: congratulate and skip to step_5"
+      - "If exit_code == 1 (warnings only): show warnings, ask if user wants to investigate"
+      - "If exit_code == 2 (failures): show failures, proceed to step_3"
+    checkpoint:
+      enabled: true
+      condition: "exit_code > 0"
+      prompt: |
+        {fail_count} failure(s) and {warn_count} warning(s) found.
+
+        A) Fix all issues automatically
+        B) Walk through each issue interactively
+        C) Show detailed report and stop
+      options:
+        - { key: "A", action: "set fix_mode=true, goto step_3" }
+        - { key: "B", action: "goto step_3 (interactive per-issue)" }
+        - { key: "C", action: "goto step_5_summary" }
+
+  step_3_investigate:
+    name: "Investigate & Fix"
+    purpose: "For each failure, investigate root cause and apply targeted repair"
+    activities:
+      - "FOR EACH check with status FAIL:"
+      - "  1. Identify the server and check name from the result"
+      - "  2. Load the corresponding install guide section (Troubleshooting)"
+      - "     Read: {install_guides[server]} — focus on the troubleshooting section"
+      - "  3. Cross-reference the failure detail with known repair actions"
+      - "  4. If fix_mode == true: execute repair command immediately"
+      - "  5. If fix_mode == false (interactive):"
+      - "     Present the issue, root cause hypothesis, and proposed fix"
+      - "     Ask: Fix now? [Y/n/skip]"
+      - "       Y → execute repair command"
+      - "       n → skip this issue"
+      - "       skip → skip all remaining issues"
+      - "  6. Record repair result (success/failure)"
+    per_issue_prompt: |
+      Issue: {check.server} — {check.check}
+      Detail: {check.detail}
+      Root cause: {hypothesis}
+      Proposed fix: {repair_action.description}
+      Command: {repair_action.command}
+
+      Fix now? [Y/n/skip]
+    deep_investigation:
+      trigger: "When the failure doesn't match any known repair_action"
+      activities:
+        - "Read the full install guide for the failing server"
+        - "Read the relevant config file and check for syntax errors"
+        - "Read the server's entry point file to check for import errors"
+        - "Check if node_modules or .venv exists and has expected contents"
+        - "Formulate a custom repair plan and present to user"
+    outputs:
+      - repairs_attempted: "Count of repairs run"
+      - repairs_succeeded: "Count of successful repairs"
+      - repairs_failed: "Count of failed repairs"
+
+  step_4_verify:
+    name: "Re-verify"
+    purpose: "Run diagnostics again after repairs to confirm fixes worked"
+    condition: "repairs_attempted > 0"
+    activities:
+      - "Re-run: bash .opencode/command/doctor/scripts/mcp-doctor.sh --json {server_flag}"
+      - "Compare new results with original results"
+      - "Identify which failures are now resolved"
+      - "Identify any remaining or new issues"
+      - "Present verification results"
+    command: "bash .opencode/command/doctor/scripts/mcp-doctor.sh --json {server_flag}"
+    outputs:
+      - verification_json: "Post-repair diagnostic results"
+      - resolved_count: "Number of issues fixed"
+      - remaining_count: "Number of issues still present"
+    checkpoint:
+      enabled: true
+      condition: "remaining_count > 0"
+      prompt: |
+        Verification complete: {resolved_count} fixed, {remaining_count} remaining.
+
+        A) Investigate remaining issues
+        B) Accept current state
+      options:
+        - { key: "A", action: "goto step_3 (for remaining issues only)" }
+        - { key: "B", action: "goto step_5_summary" }
+
+  step_5_summary:
+    name: "Summary"
+    purpose: "Final report with actionable next steps"
+    activities:
+      - "Display final status: healthy / partially fixed / issues remain"
+      - "If all healthy: show the full PASS report"
+      - "If issues remain: list each with manual resolution steps"
+      - "Suggest next steps:"
+      - "  - Restart your AI client to pick up repaired MCP servers"
+      - "  - For persistent issues, check the install guide: /mcp_doctor --server <name>"
+      - "  - For config wiring issues, manually edit the config file"
+    report_format: |
+      ## MCP Doctor — Final Report
+
+      | Server | Before | After | Status |
+      |--------|--------|-------|--------|
+      | Spec Kit Memory | {before} | {after} | {status} |
+      | CocoIndex Code | {before} | {after} | {status} |
+      | Code Mode | {before} | {after} | {status} |
+      | Sequential Thinking | {before} | {after} | {status} |
+
+      **Config wiring:** {config_summary}
+
+      ### Next Steps
+      {next_steps}
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR HANDLING
+# ─────────────────────────────────────────────────────────────────
+error_handling:
+  script_not_found:
+    check: "ls .opencode/command/doctor/scripts/mcp-doctor.sh"
+    on_fail: "STOP — diagnostic script missing. Run: bash .opencode/command/doctor/scripts/mcp-doctor.sh --help to verify installation."
+  node_not_found:
+    check: "command -v node"
+    on_fail: "WARN — Node.js not found. 3 of 4 MCP servers cannot be checked. Install Node.js 18+."
+  json_parse_error:
+    on_fail: "Fall back to human-readable mode: bash .opencode/command/doctor/scripts/mcp-doctor.sh (without --json)"
+  repair_fails:
+    max_retries: 1
+    on_exhaust: "Present manual resolution steps from install guide"
