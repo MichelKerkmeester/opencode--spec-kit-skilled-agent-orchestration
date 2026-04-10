@@ -40,11 +40,11 @@ Treat BAD as a lightweight sprint orchestrator for the broader BMad Method with 
 - BAD depends on BMad Method planning artifacts, especially `sprint-status.yaml`.
 - BAD is packaged as a skill-style Claude module in markdown, not a traditional application service.
 
-Important evidence anchors in the external repo: `README.md`, `docs/index.md`, `skills/bad/SKILL.md`, `skills/bad/references/phase0-dependency-graph.md`, `skills/bad/references/pre-continuation-checks.md`, `skills/bad/references/phase4-auto-merge.md`, `skills/bad/assets/module-setup.md`, `skills/bad/assets/module.yaml`, and `.claude-plugin/marketplace.json`.
+Important evidence anchors in the external repo: `external/README.md`, `external/docs/index.md`, `external/skills/bad/SKILL.md`, `external/skills/bad/references/phase0-dependency-graph.md`, `external/skills/bad/references/pre-continuation-checks.md`, `external/skills/bad/references/phase4-auto-merge.md`, `external/skills/bad/assets/module-setup.md`, `external/skills/bad/assets/module.yaml`, and `external/.claude-plugin/marketplace.json`.
 
 Important caution:
 
-- BAD docs appear to have a config-path inconsistency: `README.md`, `docs/index.md`, and `skills/bad/SKILL.md` refer to `_bmad/bad/config.yaml`, while `skills/bad/assets/module-setup.md` writes shared config into `_bmad/config.yaml`. Do not guess which is correct; verify and document the discrepancy.
+- BAD docs appear to have a config-path inconsistency: `external/README.md`, `external/docs/index.md`, and `external/skills/bad/SKILL.md` refer to `_bmad/bad/config.yaml`, while `external/skills/bad/assets/module-setup.md` writes shared config into `_bmad/config.yaml`. Do not guess which is correct; verify and document the discrepancy.
 
 ### 4.2 Cross-Phase Awareness Table
 
@@ -92,15 +92,15 @@ This means the research should compare equivalent surfaces:
 Follow these steps in order and keep the analysis evidence-first.
 
 1. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development` as the pre-approved phase folder. Skip Gate 3, do not create a sibling packet, and keep every write inside this phase folder only.
-2. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/bmad-autonomous-development-main` as read-only.
-3. Start with `external/bmad-autonomous-development-main/skills/bad/SKILL.md`. Extract the coordinator contract, coordinator-only responsibilities, phase layout, model roles, and rule set before reading anything else.
+2. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external` as read-only.
+3. Start with `external/skills/bad/SKILL.md`. Extract the coordinator contract, coordinator-only responsibilities, phase layout, model roles, and rule set before reading anything else.
 4. Read the phase-specific BAD references next, in this order:
-   - `skills/bad/references/phase0-dependency-graph.md`
-   - `skills/bad/references/pre-continuation-checks.md`
-   - `skills/bad/references/phase4-auto-merge.md`
-5. Read `skills/bad/assets/module-setup.md` and `skills/bad/assets/module.yaml` to understand configuration keys, harness detection, setup-time file writes, and runtime overrides.
-6. Then inspect BAD's config surface. Start from `_bmad/bad/config.yaml` as claimed by `README.md`, `docs/index.md`, and `skills/bad/SKILL.md`. If the repo only provides setup-time evidence for `_bmad/config.yaml`, document the inconsistency explicitly instead of resolving it by assumption.
-7. Read `README.md`, `docs/index.md`, and `.claude-plugin/marketplace.json` to confirm packaging, activation language, user-facing claims, and harness-level positioning.
+   - `external/skills/bad/references/phase0-dependency-graph.md`
+   - `external/skills/bad/references/pre-continuation-checks.md`
+   - `external/skills/bad/references/phase4-auto-merge.md`
+5. Read `external/skills/bad/assets/module-setup.md` and `external/skills/bad/assets/module.yaml` to understand configuration keys, harness detection, setup-time file writes, and runtime overrides.
+6. Then inspect BAD's config surface. Start from `_bmad/bad/config.yaml` as claimed by `external/README.md`, `external/docs/index.md`, and `external/skills/bad/SKILL.md`. If the repo only provides setup-time evidence for `_bmad/config.yaml`, document the inconsistency explicitly instead of resolving it by assumption.
+7. Read `external/README.md`, `external/docs/index.md`, and `external/.claude-plugin/marketplace.json` to confirm packaging, activation language, user-facing claims, and harness-level positioning.
 8. Trace the full BAD execution pipeline end-to-end:
    - dependency graph build
    - GitHub PR status reconciliation
@@ -167,7 +167,7 @@ Use findings in this style.
 
 ### Example A - coordinator-subagent boundary
 
-- **Evidence:** `skills/bad/SKILL.md`, `README.md`, `docs/index.md`
+- **Evidence:** `external/skills/bad/SKILL.md`, `external/README.md`, `external/docs/index.md`
 - **What it does:** BAD keeps the coordinator focused on selection, spawning, timers, and summaries while delegating file reads, git, gh, and disk writes to fresh-context subagents.
 - **Why it matters here:** `Code_Environment/Public` already has a top-level orchestrator with single-hop NDP, but it does not yet have a sprint-specific coordinator that refuses implementation work this aggressively.
 - **Recommendation:** `prototype later`
@@ -176,7 +176,7 @@ Use findings in this style.
 
 ### Example B - unverified `PreToolUse` guard claim
 
-- **Evidence:** `README.md`, `skills/bad/SKILL.md`, plus explicit note that no concrete `PreToolUse` guard / hook file was found in the BAD repo snapshot
+- **Evidence:** `external/README.md`, `external/skills/bad/SKILL.md`, plus explicit note that no concrete `PreToolUse` guard / hook file was found in the BAD repo snapshot
 - **What it does:** BAD documents a strict coordinator-only pattern, but the repo snapshot may not contain a literal `PreToolUse` enforcement hook proving that the rule is technically blocked.
 - **Why it matters here:** This repo should not copy a claimed safety mechanism unless the implementation path is real and portable.
 - **Recommendation:** `prototype later` only after implementation evidence exists

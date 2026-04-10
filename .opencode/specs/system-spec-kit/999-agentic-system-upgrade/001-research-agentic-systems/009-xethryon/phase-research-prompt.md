@@ -23,7 +23,7 @@ Treat Xethryon as an OpenCode fork implemented in TypeScript on Bun with these r
 - multi-provider support across Anthropic, OpenAI, Google, OpenRouter, MiniMax, and local models
 
 Primary evidence anchors:
-- `README.md`, `XETHRYON_CONTEXT.md`, `XETHRYON_MODS.md`
+- `external/README.md`, `external/XETHRYON_CONTEXT.md`, `external/XETHRYON_MODS.md`
 - `packages/opencode/src/session/system.ts`, `packages/opencode/src/session/prompt.ts`
 - `packages/opencode/src/xethryon/memory/*`
 - `packages/opencode/src/xethryon/reflection.ts`, `packages/opencode/src/xethryon/git.ts`, `packages/opencode/src/xethryon/autonomy.ts`
@@ -63,30 +63,30 @@ Research should compare equivalent surfaces: Xethryon memory vs Spec Kit Memory,
 ## 5. Instructions
 Follow these steps in order and keep the analysis evidence-first.
 1. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/009-xethryon` as the pre-approved phase folder. Skip Gate 3, do not create a sibling packet, and keep every write inside this phase folder only.
-2. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/009-xethryon/external/XETHRYON-xethryon` as read-only.
-3. Start with `external/XETHRYON-xethryon/XETHRYON_CONTEXT.md`; extract the architecture map, subsystem claims, and file hotspots before reading implementation files.
-4. Read `external/XETHRYON-xethryon/XETHRYON_MODS.md` next; use it as the modification catalog that separates Xethryon-specific behavior from upstream OpenCode.
-5. Read `external/XETHRYON-xethryon/README.md` only after the two docs above; treat README claims as hypotheses to verify, not final truth.
-6. Inspect `external/XETHRYON-xethryon/packages/opencode/src/session/system.ts` and `external/XETHRYON-xethryon/packages/opencode/src/session/prompt.ts` before diving into subsystems. Identify where memory, relevant-memory recall, git context, autonomy prompt injection, reflection, and post-turn hooks enter the runtime.
+2. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/009-xethryon/external` as read-only.
+3. Start with `external/XETHRYON_CONTEXT.md`; extract the architecture map, subsystem claims, and file hotspots before reading implementation files.
+4. Read `external/XETHRYON_MODS.md` next; use it as the modification catalog that separates Xethryon-specific behavior from upstream OpenCode.
+5. Read `external/README.md` only after the two docs above; treat README claims as hypotheses to verify, not final truth.
+6. Inspect `external/packages/opencode/src/session/system.ts` and `external/packages/opencode/src/session/prompt.ts` before diving into subsystems. Identify where memory, relevant-memory recall, git context, autonomy prompt injection, reflection, and post-turn hooks enter the runtime.
 7. Trace the persistent memory lifecycle in order: `memoryHook.ts` -> `extractMemories.ts` -> file writes under the auto-memory path -> `retrieveMemories.ts` / `findRelevantMemories.ts` -> `autoDream.ts`. Verify extraction triggers, storage format, retrieval mode, and consolidation gates.
 8. Read the memory files in this order after the pipeline entry points: `index.ts`, `memoryHook.ts`, `extractMemories.ts`, `retrieveMemories.ts`, `findRelevantMemories.ts`, `autoDream.ts`, `consolidationLock.ts`, `consolidationPrompt.ts`, `memoryScan.ts`, `paths.ts`.
 9. Verify whether retrieval is truly LLM-ranked at runtime or only optionally LLM-ranked when an `llmCall` callback is provided. If the default prompt-injection path falls back to keyword scoring, document that precisely.
-10. Inspect `external/XETHRYON-xethryon/packages/opencode/src/xethryon/reflection.ts` and then the reflection gate in `session/prompt.ts`. Confirm the one-pass cap, tool-call trigger, subagent exclusion, critique format, synthetic self-reflection injection, and env-toggle behavior.
-11. Inspect `external/XETHRYON-xethryon/packages/opencode/src/xethryon/git.ts` and then the `gitContext()` integration in `session/system.ts`. Verify exactly which git signals are injected and what guidance is added.
-12. Inspect `external/XETHRYON-xethryon/packages/opencode/src/xethryon/autonomy.ts`, `tool/switch_agent.ts`, and `tool/invoke_skill.ts`. Map the autonomy toggle, intent-to-agent switching rules, hard limits, permission checks, and post-task skill invocation logic.
+10. Inspect `external/packages/opencode/src/xethryon/reflection.ts` and then the reflection gate in `session/prompt.ts`. Confirm the one-pass cap, tool-call trigger, subagent exclusion, critique format, synthetic self-reflection injection, and env-toggle behavior.
+11. Inspect `external/packages/opencode/src/xethryon/git.ts` and then the `gitContext()` integration in `session/system.ts`. Verify exactly which git signals are injected and what guidance is added.
+12. Inspect `external/packages/opencode/src/xethryon/autonomy.ts`, `tool/switch_agent.ts`, and `tool/invoke_skill.ts`. Map the autonomy toggle, intent-to-agent switching rules, hard limits, permission checks, and post-task skill invocation logic.
 13. Inspect the swarm stack last: `xethryon/swarm/spawn.ts`, `mailbox.ts`, `tasks-board.ts`, `team.ts`, `state.ts`, `paths.ts`, then `tool/team_create.ts`, `tool/send_message.ts`, and the `task_*` tools. Trace teammate session creation, file IPC, locks, and idle / failure notifications.
 14. Compare Xethryon directly against `.opencode/skill/system-spec-kit/README.md` for memory and session continuity, and `.opencode/agent/orchestrate.md` for routing and delegation boundaries.
 15. Before any deep-research run, ensure this phase folder contains `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`. Validate the folder, run deep research against this same packet, save outputs under `research/`, update `checklist.md`, create `implementation-summary.md`, and save memory from this packet path when complete.
 
 Use this exact deep-research topic:
 ```text
-Research Xethryon at /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/009-xethryon/external/XETHRYON-xethryon, focusing on persistent memory extraction and recall, AutoDream consolidation, self-reflection before delivery, git-aware prompt context, autonomy-mode switching, autonomous skill invocation, and swarm orchestration through file-based IPC so we can identify concrete improvements for Code_Environment/Public.
+Research Xethryon at /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/009-xethryon/external, focusing on persistent memory extraction and recall, AutoDream consolidation, self-reflection before delivery, git-aware prompt context, autonomy-mode switching, autonomous skill invocation, and swarm orchestration through file-based IPC so we can identify concrete improvements for Code_Environment/Public.
 ```
 
 ## 6. Research Questions
 1. What is the exact memory lifecycle in Xethryon from post-turn learning extraction to durable file writes to retrieval and then to AutoDream consolidation?
 2. Does the live runtime actually use LLM-ranked memory retrieval for prompt injection, or is LLM ranking only an optional path while the default runtime path remains keyword / recency scoring?
-3. How are memory files organized on disk, how is `MEMORY.md` maintained, and what operational benefits or risks come from this file-first approach?
+3. How are memory files organized on disk, how is the generated memory index maintained, and what operational benefits or risks come from this file-first approach?
 4. What exact conditions trigger AutoDream, how does the consolidation lock work, and what is the algorithmic shape of the consolidation pass?
 5. How does the self-reflection implementation decide when to review a response, what verdict format does it use, and how does the critique get re-inserted into the same turn?
 6. How much of Xethryon's reflection quality gate is enforced by code versus prompt discipline?
@@ -111,7 +111,7 @@ Research Xethryon at /Users/michelkerkmeester/MEGA/Development/Code_Environment/
 - Don't focus on the cyberpunk theme, branding, or cosmetic UI changes.
 - Don't confuse Xethryon's memory with a simple key-value store; the target is extraction, ranking, consolidation, and recall behavior.
 - Don't ignore AutoDream; the consolidation pattern is a key differentiator from append-only memory.
-- Don't get lost in upstream OpenCode internals that are not part of Xethryon's modifications; use `XETHRYON_MODS.md` to stay anchored on what is unique.
+- Don't get lost in upstream OpenCode internals that are not part of Xethryon's modifications; use `external/XETHRYON_MODS.md` to stay anchored on what is unique.
 - Don't trust README claims until the code path confirms them.
 - Don't recommend Xethryon patterns just because they are more autonomous; compare them to local governance and memory safety first.
 - Don't edit anything under `external/` or outside this phase folder, and do not dispatch sub-agents.
@@ -199,7 +199,7 @@ Use this CLEAR self-check:
 - **Reusability:** Can later packets reuse the findings without re-reading the external repo?
 
 ## 13. Completion Bar
-- The reading order started with `XETHRYON_CONTEXT.md`, then `XETHRYON_MODS.md`, then `README.md`, then the session pipeline files.
+- The reading order started with `external/XETHRYON_CONTEXT.md`, then `external/XETHRYON_MODS.md`, then `external/README.md`, then the session pipeline files.
 - The memory lifecycle is traced end to end from extraction to AutoDream.
 - The retrieval path clearly states whether runtime recall is LLM-ranked, keyword-based, or hybrid.
 - The self-reflection gate is traced with exact evidence from `reflection.ts` and `session/prompt.ts`.

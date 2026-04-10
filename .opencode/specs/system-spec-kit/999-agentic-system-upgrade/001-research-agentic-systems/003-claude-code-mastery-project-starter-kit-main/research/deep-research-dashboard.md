@@ -1,24 +1,48 @@
 # Research Dashboard — 003-claude-code-mastery-project-starter-kit-main
 
-| Iteration | Question | Confidence | Priority | Adopt Target |
-|-----------|----------|------------|----------|--------------|
-| 001 | Does the starter kit's single-file `CLAUDE.md` rulebook provide a better Claude-facing control surface than this repo's split root `CLAUDE.md` plus `.claude/CLAUDE.md` supplement? | high | should-have | `.claude/CLAUDE.md` |
-| 002 | Does the external `/mdd` workflow offer a simpler front-door experience than the current `system-spec-kit` research-plus-plan lifecycle, without replacing Spec Kit governance? | high | should-have | `.opencode/command/spec_kit/README.txt` |
-| 003 | Which parts of the starter kit's `20K -> 200` context-compression story are actual workflow primitives that `system-spec-kit` could adopt? | high | nice-to-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
-| 004 | How do the starter kit's `.mdd` artifacts compare to `system-spec-kit` research, handover, and auto-save artifacts, and what should be adopted or rejected? | high | should-have | `.opencode/skill/system-spec-kit/templates/` |
-| 005 | Is the starter kit's deterministic enforcement-hook architecture a better default than this repo's current recovery-first hook stack? | high | should-have | `.claude/settings.local.json` |
-| 006 | Are secret-blocking and env-sync hooks strong low-risk adoption candidates for this repo's Claude hook layer? | high | must-have | `.claude/settings.local.json` |
-| 007 | Should the starter kit's branch-protection, port-conflict, and E2E gate hooks be transplanted into this repo's Claude workflow? | medium | rejected | `.claude/settings.local.json` |
-| 008 | What lessons from the starter kit's `scope:` command metadata and dynamic help behavior should be applied to `.opencode/command/`? | high | should-have | `.opencode/command/README.txt` |
-| 009 | Does the starter kit's AI monitor reveal a user-facing observability gap in `system-spec-kit`? | medium | nice-to-have | `.opencode/command/memory/manage.md` |
-| 010 | Do the starter kit's tiny specialist agents and MCP packaging patterns outperform this repo's broader agent and skill-routing system? | high | rejected | `.opencode/agent/` |
+| Iteration | Theme | Confidence | Priority | Verdict | Adopt Target |
+|-----------|-------|------------|----------|---------|--------------|
+| 001 | Claude-facing quick-reference layer | high | should-have | KEEP | `.claude/CLAUDE.md` |
+| 002 | Guided doc-first front door | high | should-have | KEEP | `.opencode/command/spec_kit/README.txt` |
+| 003 | Compressed-brief pattern | high | nice-to-have | KEEP | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+| 004 | Lightweight working-brief template | high | should-have | KEEP | `.opencode/skill/system-spec-kit/templates/` |
+| 005 | Thin enforcement layer on top of recovery hooks | high | should-have | KEEP | `.claude/settings.local.json` |
+| 006 | Secret guardrails first | high | must-have | KEEP | `.claude/settings.local.json` |
+| 007 | Branch/port/E2E hook transplant | medium | rejected | KEEP | `none` |
+| 008 | Command audience and distribution metadata | high | should-have | KEEP | `.opencode/command/README.txt` |
+| 009 | Operator-facing observability | medium | nice-to-have | KEEP | `.opencode/command/memory/manage.md` |
+| 010 | Import external mini-agent architecture | high | rejected | KEEP | `none` |
+| 011 | Instruction layering and personal overrides | high | should-have | SIMPLIFY | `CLAUDE.md`, `.claude/CLAUDE.md` |
+| 012 | Working-brief stage before full packet depth | high | should-have | SIMPLIFY | `.opencode/skill/system-spec-kit/templates/` |
+| 013 | Split session digests from promoted memories | high | must-have | REFACTOR | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` |
+| 014 | Move deterministic gates into executable policy | high | should-have | REFACTOR | `CLAUDE.md`, `.claude/settings.local.json` |
+| 015 | Reduce deep-research primary state surfaces | high | should-have | SIMPLIFY | `.opencode/agent/deep-research.md` |
+| 016 | Validation core versus generated readiness views | high | must-have | SIMPLIFY | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
+| 017 | Manifest-driven command architecture | high | should-have | PIVOT | `.opencode/command/README.txt` |
+| 018 | Rebuild runtime around starter-kit app architecture | high | rejected | KEEP | `none` |
+| 019 | Human-readable readiness and progress UX | medium | nice-to-have | KEEP | `command/reporting surfaces` |
+| 020 | Replace governance levels with starter-kit profiles | high | rejected | KEEP | `none` |
 
 ## Convergence Signal
+- Iterations executed: 20 of 20
 - Iterations without new signal: 0
 - Stop rule triggered: no
+- Stop reason: max_iterations
 
-## Finding Totals
-- Must-have: 1
+## Phase 2 Totals
+- Must-have: 2
 - Should-have: 5
-- Nice-to-have: 2
+- Nice-to-have: 1
 - Rejected: 2
+
+## Combined Totals
+- Must-have: 3
+- Should-have: 10
+- Nice-to-have: 3
+- Rejected: 4
+
+## Refactor / Pivot Verdicts
+- REFACTOR: 2
+- PIVOT: 1
+- SIMPLIFY: 4
+- KEEP: 13

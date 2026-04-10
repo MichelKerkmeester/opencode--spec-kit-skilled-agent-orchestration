@@ -12,13 +12,29 @@
 | 008 | How do Ralph's AGENTS.md and CLAUDE.md update rules propagate reusable learnings, and how should system-spec-kit promote similar learnings into always-surface guidance? | medium | should-have | `.opencode/agent/deep-research.md` |
 | 009 | How much of Ralph's one-story-per-iteration discipline comes from prompt wording versus PRD structure, and where should system-spec-kit enforce equivalent focus during implementation? | high | must-have | `.opencode/command/spec_kit/implement.md` |
 | 010 | Which Ralph patterns should system-spec-kit adopt now, prototype later, or reject so the result stays complementary to richer internal orchestration rather than replacing it? | medium | nice-to-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+| 011 | Should system-spec-kit pivot away from its Level 1/2/3+ classification toward Ralph's PRD-to-json execution lifecycle? | medium | should-have | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
+| 012 | Should system-spec-kit's continuity model be refactored into a lightweight execution bridge plus semantic archival memory? | high | must-have | `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` |
+| 013 | Is the current agent-role architecture over-factored compared with Ralph's workflow-local contracts? | medium | should-have | `.opencode/agent/orchestrate.md` |
+| 014 | Should validation simplify toward task-local executable acceptance evidence instead of increasingly heavy document-centered checklists? | high | must-have | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
+| 015 | Does Ralph's developer experience suggest system-spec-kit's command and gate surface is over-exposed for common operator workflows? | medium | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+| 016 | Can Ralph's gitignored run-state pattern be adopted as a lightweight, non-authoritative continuity overlay in system-spec-kit? | medium | nice-to-have | `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` |
+| 017 | Should system-spec-kit simplify its deep-loop failure handling toward Ralph's sentinel-and-max-iterations model? | high | rejected | `.opencode/command/spec_kit/deep-research.md` |
+| 018 | Should task sizing be defined as one strict context window, or as one independently verifiable unit sized to runtime handoff behavior? | high | should-have | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
+| 019 | Does Ralph's interactive flowchart suggest system-spec-kit needs a more visual lifecycle explanation for operators? | medium | nice-to-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+| 020 | Should system-spec-kit expose an explicit lightweight workflow lane instead of making every operator path feel like the full governed stack? | medium | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
 
 ## Convergence Signal
 - Iterations without new signal: 0
 - Stop rule triggered: no
+- Phase 2 stop rule used: max_iterations
 
 ## Finding Totals
-- Must-have: 2
-- Should-have: 4
-- Nice-to-have: 2
-- Rejected: 2
+- Phase 1: must=2 | should=4 | nice=2 | rejected=2
+- Phase 2: must=2 | should=5 | nice=2 | rejected=1
+- Combined: must=4 | should=9 | nice=4 | rejected=3
+
+## Refactor / Pivot Verdicts
+- REFACTOR: 1
+- PIVOT: 1
+- SIMPLIFY: 3
+- KEEP: 2

@@ -65,9 +65,9 @@ Relay's coordinator surfaces are lightweight and communication-oriented. Do not 
    ```text
    Research Relay for Code_Environment/Public with focus on channel-based agent communication, multi-LLM spawning, ready-state synchronization, message interception, broker routing, Claude Code plugin transport UX, TypeScript/Python SDK parity, and how realtime messaging compares with Public's current Task-tool delegation and orchestration patterns.
    ```
-8. Start with the API surface rather than broker internals: `README.md`, `ARCHITECTURE.md`, `packages/sdk/README.md`, `packages/sdk-py/README.md`, then `packages/sdk/src/index.ts`, `packages/sdk/src/client.ts`, `packages/sdk/src/relay.ts`, `packages/sdk/src/protocol.ts`, `packages/sdk/src/workflows/README.md`, `packages/sdk/src/workflows/builder.ts`, and `packages/sdk/src/workflows/coordinator.ts`.
+8. Start with the API surface rather than broker internals: `external/README.md`, `external/ARCHITECTURE.md`, `external/packages/sdk/README.md`, `external/packages/sdk-py/README.md`, then `external/packages/sdk/src/index.ts`, `external/packages/sdk/src/client.ts`, `external/packages/sdk/src/relay.ts`, `external/packages/sdk/src/protocol.ts`, `external/packages/sdk/src/workflows/README.md`, `external/packages/sdk/src/workflows/builder.ts`, and `external/packages/sdk/src/workflows/coordinator.ts`.
 9. After the SDK pass, inspect the Rust broker layer. In this checkout the broker lives under repo-root `src/` rather than a separate `relay-pty/src/` package. Prioritize `src/main.rs`, `src/routing.rs`, `src/pty.rs`, and `src/spawner.rs`.
-10. Then examine the Claude Code plugin surface through `docs/plugin-claude-code.md`, the README's plugin section, and any closely related plugin docs needed to confirm `/relay-team`, `/relay-fanout`, and `/relay-pipeline`.
+10. Then examine the Claude Code plugin surface through `external/docs/plugin-claude-code.md`, the `external/README.md` plugin section, and any closely related plugin docs needed to confirm `/relay-team`, `/relay-fanout`, and `/relay-pipeline`.
 11. Trace the message lifecycle end to end: provider-specific spawn helper or `spawnPty()` -> broker startup/connect -> worker registration and `worker_ready` -> `sendMessage()` or channel post -> routing target resolution -> inbound relay event -> callback firing such as `onMessageReceived`.
 12. Compare the TypeScript and Python SDKs explicitly. Capture where they expose the same concepts (`AgentRelay`, provider-specific spawn helpers, ready waits, event hooks, channels) and where one surface is richer or clearer than the other.
 13. Compare Relay's transport model against Public's current model: `task`-tool dispatch, `.opencode/agent/orchestrate.md`, and the `cli-copilot` / `cli-codex` / `cli-gemini` delegation skills. Explain what Relay adds that Task-tool delegation alone cannot provide, and what should remain outside scope because phase 002 or 005 already owns it.
@@ -117,7 +117,7 @@ Relay's coordinator surfaces are lightweight and communication-oriented. Do not 
 
 ```text
 **Finding: Ready-State Gating Before Peer Messaging**
-- Source: README.md; packages/sdk/src/relay.ts; packages/sdk-py/README.md
+- Source: external/README.md; external/packages/sdk/src/relay.ts; external/packages/sdk-py/README.md
 - What it does: Relay explicitly separates spawn success from transport readiness by exposing `waitForAgentReady()` / `wait_for_agent_ready()` before agents are treated as safe message targets.
 - Why it matters: Public currently delegates work, but it does not expose a first-class readiness handshake for concurrently running agents that need to message each other in realtime.
 - Recommended action: prototype later
