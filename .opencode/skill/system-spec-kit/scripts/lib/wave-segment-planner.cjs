@@ -314,7 +314,8 @@ function segmentForReview(inventory, config) {
   }
 
   const cfg = config || {};
-  const segmentSize = cfg.segmentSize || DEFAULT_SEGMENT_SIZE_REVIEW;
+  if (!cfg.segmentSize || cfg.segmentSize < 1) cfg.segmentSize = DEFAULT_SEGMENT_SIZE_REVIEW;
+  const segmentSize = cfg.segmentSize;
   const maxSegments = cfg.maxSegments || MAX_SEGMENTS_DEFAULT;
 
   const files = inventory.files;
@@ -431,7 +432,8 @@ function segmentForResearch(domainLedger, config) {
   }
 
   const cfg = config || {};
-  const segmentSize = cfg.segmentSize || DEFAULT_SEGMENT_SIZE_RESEARCH;
+  if (!cfg.segmentSize || cfg.segmentSize < 1) cfg.segmentSize = DEFAULT_SEGMENT_SIZE_RESEARCH;
+  const segmentSize = cfg.segmentSize;
   const maxSegments = cfg.maxSegments || MAX_SEGMENTS_DEFAULT;
 
   const domains = domainLedger.domains;

@@ -169,6 +169,17 @@ function replayRun(corpusEntry, config) {
     }
   }
 
+  // Check for graph/wave metrics in the corpus entry and apply graph bonus
+  let graphBonus = 1.0;
+  if (corpusEntry.graphMetrics || corpusEntry.waveMetrics) {
+    const graphMetrics = corpusEntry.graphMetrics || {};
+    const waveMetrics = corpusEntry.waveMetrics || {};
+    // Apply a 1.1x bonus when graph convergence signals are present and positive
+    if (graphMetrics.graphConvergence > 0 || waveMetrics.convergenceScore > 0) {
+      graphBonus = 1.1;
+    }
+  }
+
   return {
     iterationsUsed,
     maxIterations,
@@ -180,6 +191,7 @@ function replayRun(corpusEntry, config) {
     relevantFindings: state.relevantFindings,
     stopReason,
     perIterationSignals,
+    graphBonus,
     finalSignals: perIterationSignals.length > 0
       ? perIterationSignals[perIterationSignals.length - 1]
       : null,

@@ -142,7 +142,7 @@ function updateBoard(board, segmentResults) {
     // Process findings with explicit keys
     if (Array.isArray(result.findings)) {
       for (const finding of result.findings) {
-        const findingRecord = buildFindingRecord(finding, segmentId, board);
+        const findingRecord = buildFindingRecord(finding, segmentId, board, result);
         mergeFinding(board, findingRecord);
       }
     }
@@ -167,13 +167,16 @@ function updateBoard(board, segmentResults) {
  * @param {object} board - Board context for sessionId/generation
  * @returns {object} Board finding record
  */
-function buildFindingRecord(finding, segmentId, board) {
+function buildFindingRecord(finding, segmentId, board, segmentResult) {
+  // Fall back to the segment result's waveId if the finding itself has no wave info
+  const resolvedWave = finding.wave || finding.waveId || (segmentResult && segmentResult.waveId) || null;
+
   return {
     // Explicit merge keys (never rely on append order)
     sessionId: board.sessionId,
     generation: board.generation,
     segment: segmentId,
-    wave: finding.wave || finding.waveId || null,
+    wave: resolvedWave,
     findingId: finding.findingId || generateFindingId(finding, segmentId),
     // Finding content
     title: finding.title || finding.summary || '',
@@ -187,7 +190,7 @@ function buildFindingRecord(finding, segmentId, board) {
     mergedAt: new Date().toISOString(),
     provenance: {
       sourceSegment: segmentId,
-      sourceWave: finding.wave || finding.waveId || null,
+      sourceWave: resolvedWave,
       originalFindingId: finding.findingId || null,
     },
   };

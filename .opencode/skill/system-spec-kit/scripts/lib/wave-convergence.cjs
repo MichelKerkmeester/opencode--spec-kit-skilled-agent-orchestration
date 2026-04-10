@@ -78,7 +78,7 @@ function evaluateWaveConvergence(board, signals, threshold) {
   const signalResults = {};
 
   // Gate: All board segments must be in terminal status before convergence is possible
-  const TERMINAL_STATUSES = new Set(['completed', 'pruned', 'failed']);
+  const TERMINAL_STATUSES = new Set(['completed', 'pruned', 'failed', 'converged']);
   if (board.segments && board.segments.length > 0) {
     const nonTerminal = board.segments.filter(s => !TERMINAL_STATUSES.has(s.status));
     if (nonTerminal.length > 0) {
@@ -185,7 +185,7 @@ function shouldPruneSegment(segment, signals, threshold) {
   }
 
   // Already in a terminal state
-  if (segment.status === 'completed' || segment.status === 'pruned' || segment.status === 'failed') {
+  if (segment.status === 'completed' || segment.status === 'pruned' || segment.status === 'failed' || segment.status === 'converged') {
     return { shouldPrune: false, reason: `Already in terminal status: ${segment.status}`, pruneType: 'none' };
   }
 

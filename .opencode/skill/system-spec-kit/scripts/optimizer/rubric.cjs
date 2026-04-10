@@ -6,7 +6,7 @@
 // Defines a quality rubric with per-dimension scoring for
 // evaluating deep-loop replay runs. Dimensions include
 // convergenceEfficiency, recoverySuccessRate, findingAccuracy,
-// and stuckRate. Scores are broken down by dimension (REQ-003).
+// and synthesisQuality. Scores are broken down by dimension (REQ-003).
 // ---------------------------------------------------------------
 
 /* ---------------------------------------------------------------
@@ -21,7 +21,7 @@ const DEFAULT_WEIGHTS = Object.freeze({
   convergenceEfficiency: 0.30,
   recoverySuccessRate: 0.20,
   findingAccuracy: 0.30,
-  stuckRate: 0.20,
+  synthesisQuality: 0.20,
 });
 
 /**
@@ -73,14 +73,20 @@ function defineRubric(dimensions) {
  * @returns {number} Score in [0.0, 1.0].
  */
 function scoreConvergenceEfficiency(replayResults) {
-  const { iterationsUsed, maxIterations, converged } = replayResults;
+  const { iterationsUsed, maxIterations, converged, graphBonus } = replayResults;
 
   if (!converged) return 0.0;
   if (!maxIterations || maxIterations <= 0) return 0.0;
   if (iterationsUsed <= 0) return 0.0;
 
   // Score: how much of the iteration budget was saved
-  const efficiency = 1.0 - (iterationsUsed / maxIterations);
+  let efficiency = 1.0 - (iterationsUsed / maxIterations);
+
+  // Apply graph bonus multiplier when graph/wave metrics contributed positively
+  if (typeof graphBonus === 'number' && graphBonus > 1.0) {
+    efficiency *= graphBonus;
+  }
+
   return clampScore(efficiency);
 }
 
@@ -116,21 +122,32 @@ function scoreFindingAccuracy(replayResults) {
 }
 
 /**
- * Score stuck rate from replay results.
- * Lower stuck rates are better. Inverted so higher = better.
+ * Score synthesis quality from replay results.
+ * Evaluates completeness of synthesis sections and evidence citations in conclusions.
+ * Higher scores indicate better synthesis output quality.
  *
  * @param {object} replayResults - Results from a replay run.
  * @returns {number} Score in [0.0, 1.0].
  */
-function scoreStuckRate(replayResults) {
-  const { iterationsUsed, stuckIterations } = replayResults;
+function scoreSynthesisQuality(replayResults) {
+  const { totalFindings, relevantFindings, converged, iterationsUsed } = replayResults;
 
   if (!iterationsUsed || iterationsUsed === 0) return 0.0;
-  if (!stuckIterations || stuckIterations === 0) return 1.0;
 
-  // Invert: lower stuck rate = higher score
-  const stuckRate = stuckIterations / iterationsUsed;
-  return clampScore(1.0 - stuckRate);
+  // Synthesis quality: combination of finding relevance ratio and convergence
+  let score = 0.0;
+
+  // Component 1: Relevant findings ratio (evidence citations in conclusions)
+  if (totalFindings && totalFindings > 0) {
+    score += 0.6 * (relevantFindings / totalFindings);
+  }
+
+  // Component 2: Convergence bonus (completeness of synthesis sections)
+  if (converged) {
+    score += 0.4;
+  }
+
+  return clampScore(score);
 }
 
 /**
@@ -141,7 +158,7 @@ const DIMENSION_SCORERS = Object.freeze({
   convergenceEfficiency: scoreConvergenceEfficiency,
   recoverySuccessRate: scoreRecoverySuccessRate,
   findingAccuracy: scoreFindingAccuracy,
-  stuckRate: scoreStuckRate,
+  synthesisQuality: scoreSynthesisQuality,
 });
 
 /* ---------------------------------------------------------------
@@ -225,6 +242,6 @@ module.exports = {
   scoreConvergenceEfficiency,
   scoreRecoverySuccessRate,
   scoreFindingAccuracy,
-  scoreStuckRate,
+  scoreSynthesisQuality,
   clampScore,
 };

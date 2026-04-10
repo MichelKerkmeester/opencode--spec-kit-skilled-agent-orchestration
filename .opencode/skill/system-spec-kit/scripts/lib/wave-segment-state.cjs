@@ -297,23 +297,36 @@ function serializeJsonl(segmentState) {
  */
 function parseJsonl(jsonlString) {
   if (!jsonlString || typeof jsonlString !== 'string') {
-    return { records: [], errors: [] };
+    return { records: [], errors: [], validationErrors: [] };
   }
 
   const lines = jsonlString.split('\n').filter(l => l.trim());
   const records = [];
   const errors = [];
+  const validationErrors = [];
 
   for (let i = 0; i < lines.length; i++) {
     try {
       const record = JSON.parse(lines[i]);
+
+      // Validate that all 5 merge keys exist
+      const missingKeys = MERGE_KEYS.filter(key => !(key in record));
+      if (missingKeys.length > 0) {
+        validationErrors.push({
+          line: i + 1,
+          error: `Missing merge keys: ${missingKeys.join(', ')}`,
+          missingKeys,
+        });
+        continue; // Skip records with missing merge keys
+      }
+
       records.push(record);
     } catch (e) {
       errors.push({ line: i + 1, error: e.message });
     }
   }
 
-  return { records, errors };
+  return { records, errors, validationErrors };
 }
 
 /**

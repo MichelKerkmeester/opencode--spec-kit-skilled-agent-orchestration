@@ -69,6 +69,7 @@ export interface CoverageEdge {
   id: string;
   specFolder: string;
   loopType: LoopType;
+  sessionId: string;
   sourceId: string;
   targetId: string;
   relation: Relation;
@@ -82,6 +83,7 @@ export interface CoverageSnapshot {
   id?: number;
   specFolder: string;
   loopType: LoopType;
+  sessionId: string;
   iteration: number;
   metrics: Record<string, unknown>;
   nodeCount: number;
@@ -166,6 +168,7 @@ const SCHEMA_SQL = `
     id TEXT PRIMARY KEY,
     spec_folder TEXT NOT NULL,
     loop_type TEXT NOT NULL,
+    session_id TEXT NOT NULL,
     source_id TEXT NOT NULL REFERENCES coverage_nodes(id),
     target_id TEXT NOT NULL REFERENCES coverage_nodes(id),
     relation TEXT NOT NULL,
@@ -179,12 +182,13 @@ const SCHEMA_SQL = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     spec_folder TEXT NOT NULL,
     loop_type TEXT NOT NULL,
+    session_id TEXT NOT NULL,
     iteration INTEGER NOT NULL,
     metrics TEXT,
     node_count INTEGER,
     edge_count INTEGER,
     created_at TEXT DEFAULT (datetime('now')),
-    UNIQUE(spec_folder, loop_type, iteration)
+    UNIQUE(spec_folder, loop_type, session_id, iteration)
   );
 
   CREATE TABLE IF NOT EXISTS schema_version (
@@ -199,6 +203,8 @@ const SCHEMA_SQL = `
   CREATE INDEX IF NOT EXISTS idx_coverage_edge_target ON coverage_edges(target_id);
   CREATE INDEX IF NOT EXISTS idx_coverage_edge_relation ON coverage_edges(relation);
   CREATE INDEX IF NOT EXISTS idx_coverage_edge_folder_type ON coverage_edges(spec_folder, loop_type);
+  CREATE INDEX IF NOT EXISTS idx_coverage_edge_session ON coverage_edges(session_id);
+  CREATE INDEX IF NOT EXISTS idx_coverage_snapshot_session ON coverage_snapshots(session_id);
 `;
 
 // ───────────────────────────────────────────────────────────────
@@ -373,12 +379,12 @@ export function upsertEdge(edge: CoverageEdge): string | null {
 
   d.prepare(`
     INSERT INTO coverage_edges (
-      id, spec_folder, loop_type, source_id, target_id,
+      id, spec_folder, loop_type, session_id, source_id, target_id,
       relation, weight, metadata, created_at
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
-    edge.id, edge.specFolder, edge.loopType,
+    edge.id, edge.specFolder, edge.loopType, edge.sessionId,
     edge.sourceId, edge.targetId,
     edge.relation, weight, metadataStr, now,
   );
@@ -395,7 +401,7 @@ export function getEdge(id: string): CoverageEdge | null {
 /** Get all edges in a namespace */
 export function getEdges(ns: Namespace): CoverageEdge[] {
   const d = getDb();
-  const { clause, params } = buildNamespaceWhere({ specFolder: ns.specFolder, loopType: ns.loopType });
+  const { clause, params } = buildNamespaceWhere(ns);
   const rows = d.prepare(`SELECT * FROM coverage_edges WHERE ${clause}`).all(...params) as Record<string, unknown>[];
   return rows.map(rowToEdge);
 }
@@ -445,23 +451,31 @@ export function createSnapshot(snapshot: CoverageSnapshot): number {
 
   const result = d.prepare(`
     INSERT INTO coverage_snapshots (
-      spec_folder, loop_type, iteration, metrics, node_count, edge_count
+      spec_folder, loop_type, session_id, iteration, metrics, node_count, edge_count
     )
-    VALUES (?, ?, ?, ?, ?, ?)
-    ON CONFLICT(spec_folder, loop_type, iteration) DO UPDATE SET
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(spec_folder, loop_type, session_id, iteration) DO UPDATE SET
       metrics = excluded.metrics,
       node_count = excluded.node_count,
       edge_count = excluded.edge_count
   `).run(
-    snapshot.specFolder, snapshot.loopType, snapshot.iteration,
+    snapshot.specFolder, snapshot.loopType, snapshot.sessionId, snapshot.iteration,
     metricsStr, snapshot.nodeCount, snapshot.edgeCount,
   );
   return Number(result.lastInsertRowid);
 }
 
 /** Get the latest snapshot for a namespace */
-export function getLatestSnapshot(specFolder: string, loopType: LoopType): CoverageSnapshot | null {
+export function getLatestSnapshot(specFolder: string, loopType: LoopType, sessionId?: string): CoverageSnapshot | null {
   const d = getDb();
+  if (sessionId) {
+    const row = d.prepare(`
+      SELECT * FROM coverage_snapshots
+      WHERE spec_folder = ? AND loop_type = ? AND session_id = ?
+      ORDER BY iteration DESC LIMIT 1
+    `).get(specFolder, loopType, sessionId) as Record<string, unknown> | undefined;
+    return row ? rowToSnapshot(row) : null;
+  }
   const row = d.prepare(`
     SELECT * FROM coverage_snapshots
     WHERE spec_folder = ? AND loop_type = ?
@@ -471,8 +485,16 @@ export function getLatestSnapshot(specFolder: string, loopType: LoopType): Cover
 }
 
 /** Get all snapshots for a namespace (ordered by iteration) */
-export function getSnapshots(specFolder: string, loopType: LoopType): CoverageSnapshot[] {
+export function getSnapshots(specFolder: string, loopType: LoopType, sessionId?: string): CoverageSnapshot[] {
   const d = getDb();
+  if (sessionId) {
+    const rows = d.prepare(`
+      SELECT * FROM coverage_snapshots
+      WHERE spec_folder = ? AND loop_type = ? AND session_id = ?
+      ORDER BY iteration ASC
+    `).all(specFolder, loopType, sessionId) as Record<string, unknown>[];
+    return rows.map(rowToSnapshot);
+  }
   const rows = d.prepare(`
     SELECT * FROM coverage_snapshots
     WHERE spec_folder = ? AND loop_type = ?
@@ -596,6 +618,7 @@ function rowToEdge(r: Record<string, unknown>): CoverageEdge {
     id: r.id as string,
     specFolder: r.spec_folder as string,
     loopType: r.loop_type as LoopType,
+    sessionId: r.session_id as string,
     sourceId: r.source_id as string,
     targetId: r.target_id as string,
     relation: r.relation as Relation,
@@ -610,6 +633,7 @@ function rowToSnapshot(r: Record<string, unknown>): CoverageSnapshot {
     id: r.id as number,
     specFolder: r.spec_folder as string,
     loopType: r.loop_type as LoopType,
+    sessionId: r.session_id as string,
     iteration: r.iteration as number,
     metrics: r.metrics ? JSON.parse(r.metrics as string) : {},
     nodeCount: r.node_count as number,

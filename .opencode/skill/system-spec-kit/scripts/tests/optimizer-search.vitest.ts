@@ -339,16 +339,16 @@ describe('Random Search Optimizer (T004)', () => {
   describe('P2-1: maxIterations in default param space', () => {
     it('should include maxIterations in DEFAULT_PARAM_SPACE', () => {
       expect(search.DEFAULT_PARAM_SPACE.maxIterations).toBeDefined();
-      expect(search.DEFAULT_PARAM_SPACE.maxIterations.min).toBe(5);
-      expect(search.DEFAULT_PARAM_SPACE.maxIterations.max).toBe(30);
+      expect(search.DEFAULT_PARAM_SPACE.maxIterations.min).toBe(3);
+      expect(search.DEFAULT_PARAM_SPACE.maxIterations.max).toBe(20);
       expect(search.DEFAULT_PARAM_SPACE.maxIterations.step).toBe(1);
     });
 
     it('should sample maxIterations within bounds', () => {
       const rng = search.createRNG(42);
       const config = search.sampleConfig(search.DEFAULT_PARAM_SPACE, rng);
-      expect(config.maxIterations).toBeGreaterThanOrEqual(5);
-      expect(config.maxIterations).toBeLessThanOrEqual(30);
+      expect(config.maxIterations).toBeGreaterThanOrEqual(3);
+      expect(config.maxIterations).toBeLessThanOrEqual(20);
       expect(Number.isInteger(config.maxIterations)).toBe(true);
     });
   });

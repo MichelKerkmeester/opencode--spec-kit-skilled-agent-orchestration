@@ -19,11 +19,13 @@
  */
 /* CALIBRATION-TODO: inherited from memory graph, recalibrate for coverage */
 const RESEARCH_RELATION_WEIGHTS = Object.freeze({
-  ANSWERS:     1.3,
-  CONTRADICTS: 0.8,
-  CITES:       1.0,
-  EXTENDS:     1.1,
-  SUPERSEDES:  1.2,
+  ANSWERS:      1.3,
+  SUPPORTS:     1.0,
+  CONTRADICTS:  0.8,
+  SUPERSEDES:   1.5,
+  DERIVED_FROM: 1.0,
+  COVERS:       1.1,
+  CITES:        1.0,
 });
 
 /**
@@ -32,11 +34,13 @@ const RESEARCH_RELATION_WEIGHTS = Object.freeze({
  */
 /* CALIBRATION-TODO: inherited from memory graph, recalibrate for coverage */
 const REVIEW_RELATION_WEIGHTS = Object.freeze({
-  COVERS:      1.3,
-  CONTRADICTS: 0.8,
-  EVIDENCES:   1.0,
-  REMEDIATES:  1.1,
-  DEPENDS_ON:  0.9,
+  COVERS:       1.3,
+  SUPPORTS:     1.0,
+  DERIVED_FROM: 1.0,
+  EVIDENCE_FOR: 1.0,
+  CONTRADICTS:  0.8,
+  RESOLVES:     1.5,
+  CONFIRMS:     1.0,
 });
 
 const DEFAULT_MAX_DEPTH = 5;

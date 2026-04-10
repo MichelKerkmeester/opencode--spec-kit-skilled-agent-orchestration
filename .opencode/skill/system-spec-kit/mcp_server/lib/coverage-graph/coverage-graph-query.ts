@@ -56,15 +56,14 @@ export interface HotNode {
 // ───────────────────────────────────────────────────────────────
 
 /**
- * Find nodes with no incoming ANSWERS or COVERS edges.
- * For research: questions that have not been answered or covered.
- * For review: dimensions/files with no coverage.
+ * Find nodes with coverage gaps.
+ * For research: questions that have no incoming ANSWERS or COVERS edges.
+ * For review: dimensions/files that are not sources of outgoing COVERS or EVIDENCE_FOR edges.
  */
 export function findCoverageGaps(ns: Namespace): CoverageGap[] {
   const d = getDb();
   const { specFolder, loopType } = ns;
 
-  // Target kinds that need incoming coverage edges
   const coverageRelations = loopType === 'research'
     ? ['ANSWERS', 'COVERS']
     : ['COVERS', 'EVIDENCE_FOR'];
@@ -75,25 +74,52 @@ export function findCoverageGaps(ns: Namespace): CoverageGap[] {
 
   const gaps: CoverageGap[] = [];
 
-  for (const kind of targetKinds) {
-    const nodeRows = d.prepare(`
-      SELECT n.id, n.kind, n.name
-      FROM coverage_nodes n
-      WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = ?
-        AND NOT EXISTS (
-          SELECT 1 FROM coverage_edges e
-          WHERE e.target_id = n.id
-            AND e.relation IN (${coverageRelations.map(() => '?').join(',')})
-        )
-    `).all(specFolder, loopType, kind, ...coverageRelations) as Array<{ id: string; kind: string; name: string }>;
+  if (loopType === 'review') {
+    // Review mode: dimensions/files are sources of outgoing COVERS edges.
+    // A gap means the node has no outgoing coverage edges.
+    for (const kind of targetKinds) {
+      const nodeRows = d.prepare(`
+        SELECT n.id, n.kind, n.name
+        FROM coverage_nodes n
+        WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = ?
+          AND NOT EXISTS (
+            SELECT 1 FROM coverage_edges e
+            WHERE e.source_id = n.id
+              AND e.relation IN (${coverageRelations.map(() => '?').join(',')})
+          )
+      `).all(specFolder, loopType, kind, ...coverageRelations) as Array<{ id: string; kind: string; name: string }>;
 
-    for (const row of nodeRows) {
-      gaps.push({
-        nodeId: row.id,
-        kind: row.kind,
-        name: row.name,
-        reason: `No incoming ${coverageRelations.join(' or ')} edges`,
-      });
+      for (const row of nodeRows) {
+        gaps.push({
+          nodeId: row.id,
+          kind: row.kind,
+          name: row.name,
+          reason: `No outgoing ${coverageRelations.join(' or ')} edges`,
+        });
+      }
+    }
+  } else {
+    // Research mode: questions should have incoming ANSWERS edges.
+    for (const kind of targetKinds) {
+      const nodeRows = d.prepare(`
+        SELECT n.id, n.kind, n.name
+        FROM coverage_nodes n
+        WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = ?
+          AND NOT EXISTS (
+            SELECT 1 FROM coverage_edges e
+            WHERE e.target_id = n.id
+              AND e.relation IN (${coverageRelations.map(() => '?').join(',')})
+          )
+      `).all(specFolder, loopType, kind, ...coverageRelations) as Array<{ id: string; kind: string; name: string }>;
+
+      for (const row of nodeRows) {
+        gaps.push({
+          nodeId: row.id,
+          kind: row.kind,
+          name: row.name,
+          reason: `No incoming ${coverageRelations.join(' or ')} edges`,
+        });
+      }
     }
   }
 
