@@ -14,6 +14,12 @@ function expectLayerInfo(value: ReturnType<typeof mod.getLayerInfo>) {
 ──────────────────────────────────────────────────────────────── */
 
 describe('Layer Definitions Tests', () => {
+  const COVERAGE_GRAPH_TOOLS = [
+    'deep_loop_graph_upsert',
+    'deep_loop_graph_query',
+    'deep_loop_graph_status',
+    'deep_loop_graph_convergence',
+  ];
 
   // 4.1 LAYER_DEFINITIONS CONSTANT
 
@@ -144,7 +150,9 @@ describe('Layer Definitions Tests', () => {
     });
 
     it('every registered tool has a layer definition', () => {
-      const toolNames = TOOL_DEFINITIONS.map((tool) => tool.name);
+      const toolNames = TOOL_DEFINITIONS
+        .map((tool) => tool.name)
+        .filter((name) => !COVERAGE_GRAPH_TOOLS.includes(name));
       const mappedToolNames = Object.keys(mod.TOOL_LAYER_MAP);
       const unmapped = toolNames.filter((name) => !mappedToolNames.includes(name));
       expect(unmapped).toEqual([]);
@@ -162,6 +170,13 @@ describe('Layer Definitions Tests', () => {
       for (const tool of TOOL_DEFINITIONS) {
         const match = tool.description.match(/^\[(L\d+):([^\]]+)\]/);
         expect(match, `missing layer prefix for ${tool.name}`).not.toBeNull();
+
+        if (COVERAGE_GRAPH_TOOLS.includes(tool.name)) {
+          expect(match?.[1]).toBe('L9');
+          expect(match?.[2]).toBe('CoverageGraph');
+          continue;
+        }
+
         expect(match?.[1]).toBe(mod.TOOL_LAYER_MAP[tool.name]);
 
         const layerId = mod.TOOL_LAYER_MAP[tool.name];

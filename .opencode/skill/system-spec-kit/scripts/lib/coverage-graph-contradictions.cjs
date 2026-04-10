@@ -23,6 +23,18 @@ const CONTRADICTION_RELATION = 'CONTRADICTS';
 ----------------------------------------------------------------*/
 
 /**
+ * Check whether a value looks like an in-memory coverage graph.
+ * @param {unknown} graph
+ * @returns {boolean}
+ */
+function isValidGraph(graph) {
+  return !!graph &&
+    typeof graph === 'object' &&
+    graph.nodes instanceof Map &&
+    graph.edges instanceof Map;
+}
+
+/**
  * Scan the graph for all CONTRADICTS edges and return contradiction pairs.
  * Each pair includes the source node, target node, edge details, and any
  * evidence metadata attached to the edge.
@@ -36,6 +48,7 @@ const CONTRADICTION_RELATION = 'CONTRADICTS';
  * @returns {Array<{ edgeId: string, source: string, target: string, weight: number, metadata: object }>}
  */
 function scanContradictions(graph) {
+  if (!isValidGraph(graph)) return [];
   const contradictions = [];
 
   for (const edge of graph.edges.values()) {
@@ -70,6 +83,9 @@ function scanContradictions(graph) {
  * @returns {{ total: number, pairs: Array<object>, byNode: Map<string, object[]> }}
  */
 function reportContradictions(graph) {
+  if (!isValidGraph(graph)) {
+    return { total: 0, pairs: [], byNode: new Map() };
+  }
   const raw = scanContradictions(graph);
 
   const pairs = raw.map((c) => {
@@ -127,6 +143,7 @@ function reportContradictions(graph) {
  * @returns {number} Contradiction density in [0.0, 1.0]
  */
 function contradictionDensity(graph) {
+  if (!isValidGraph(graph)) return 0;
   if (graph.nodes.size === 0) return 0;
 
   const contradictedNodes = new Set();

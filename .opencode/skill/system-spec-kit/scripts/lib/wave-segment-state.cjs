@@ -41,6 +41,15 @@ const SEGMENT_STATE_STATUSES = Object.freeze([
   'completed',
 ]);
 
+/**
+ * Check whether a value is a non-empty string.
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
 /* ---------------------------------------------------------------
    2. SEGMENT STATE CREATION
 ----------------------------------------------------------------*/
@@ -59,11 +68,11 @@ const SEGMENT_STATE_STATUSES = Object.freeze([
  * @returns {object} Segment state object
  */
 function createSegmentState(segmentId, config) {
-  if (!segmentId || typeof segmentId !== 'string') {
-    throw new Error('createSegmentState requires a non-empty segmentId');
+  if (!isNonEmptyString(segmentId)) {
+    return null;
   }
-  if (!config || !config.sessionId) {
-    throw new Error('createSegmentState requires config.sessionId');
+  if (!config || !isNonEmptyString(config.sessionId)) {
+    return null;
   }
 
   const now = new Date().toISOString();
@@ -107,10 +116,10 @@ function createSegmentState(segmentId, config) {
  */
 function createJsonlRecord(data, segmentState) {
   if (!data || typeof data !== 'object') {
-    throw new Error('createJsonlRecord requires a data object');
+    return null;
   }
   if (!segmentState || !segmentState.segmentId) {
-    throw new Error('createJsonlRecord requires a valid segment state');
+    return null;
   }
 
   return {
@@ -142,8 +151,9 @@ function createJsonlRecord(data, segmentState) {
  */
 function appendRecord(segmentState, record) {
   if (!segmentState || !Array.isArray(segmentState.jsonlRecords)) {
-    throw new Error('appendRecord requires a valid segment state with jsonlRecords array');
+    return null;
   }
+  if (!record || typeof record !== 'object') return null;
 
   // Ensure merge keys are present
   const enriched = {

@@ -15,21 +15,16 @@ const TEMPLATE_PATH = path.resolve(
 /** Valid anchor ID pattern — same as memory-parser.ts VALID_ANCHOR_PATTERN */
 const VALID_ANCHOR_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-/]*$/;
 
-/** Expected simple anchors in the template (all 12 types from v2.2) */
+/** Expected simple anchors in the compact v2.2 template */
 const EXPECTED_ANCHORS = [
   'preflight',
   'continue-session',
-  'task-guide',
-  'summary',
-  'detailed-changes',
-  'decisions',
-  'session-history',
+  'canonical-docs',
+  'overview',
+  'evidence',
   'recovery-hints',
   'postflight',
   'metadata',
-  'graph-context',
-  'project-state-snapshot',
-  'workflow-visualization',
 ];
 
 /**
@@ -37,7 +32,7 @@ const EXPECTED_ANCHORS = [
  * {{#DECISIONS}} loops. They use mustache variables as IDs, which is
  * intentional and should be excluded from the "no duplicates" check.
  */
-const DYNAMIC_ANCHOR_PATTERNS = ['{{ANCHOR_ID}}', '{{DECISION_ANCHOR_ID}}'];
+const DYNAMIC_ANCHOR_PATTERNS: string[] = [];
 
 /** Read the template content (cached for performance) */
 let templateContent: string;
@@ -266,15 +261,14 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
       ).toEqual([]);
     });
 
-    it('S13: dynamic anchors ({{ANCHOR_ID}}, {{DECISION_ANCHOR_ID}}) exist in template', () => {
+    it('S13: compact template does not rely on dynamic anchors', () => {
       const content = getTemplate();
       const allAnchors = extractOpeningAnchors(content);
       const dynamicAnchors = allAnchors.filter((a) =>
         DYNAMIC_ANCHOR_PATTERNS.includes(a)
       );
 
-      // There should be at least one dynamic anchor
-      expect(dynamicAnchors.length).toBeGreaterThanOrEqual(1);
+      expect(dynamicAnchors).toEqual([]);
     });
   });
 
@@ -294,14 +288,14 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
       }
     });
 
-    it('S15: template has at least 10 static anchors', () => {
+    it('S15: template has the expected compact anchor set', () => {
       const content = getTemplate();
       const allAnchors = extractOpeningAnchors(content);
       const staticAnchors = allAnchors.filter(
         (a) => !DYNAMIC_ANCHOR_PATTERNS.includes(a)
       );
 
-      expect(staticAnchors.length).toBeGreaterThanOrEqual(10);
+      expect(staticAnchors.length).toBe(EXPECTED_ANCHORS.length);
     });
 
     it('S16: no unexpected new anchors have been added beyond known set', () => {

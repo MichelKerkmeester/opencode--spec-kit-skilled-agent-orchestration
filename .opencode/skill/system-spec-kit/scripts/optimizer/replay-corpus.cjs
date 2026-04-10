@@ -357,11 +357,13 @@ function buildCorpus(packetFamily, options = {}) {
  * @param {string} outputPath - File path for the output.
  */
 function saveCorpus(corpus, outputPath) {
+  if (!Array.isArray(corpus) || typeof outputPath !== 'string' || !outputPath) return false;
   const dir = path.dirname(outputPath);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
   fs.writeFileSync(outputPath, JSON.stringify(corpus, null, 2), 'utf8');
+  return true;
 }
 
 /**
@@ -371,11 +373,16 @@ function saveCorpus(corpus, outputPath) {
  * @returns {object[]} The loaded corpus entries.
  */
 function loadCorpus(corpusPath) {
-  if (!fs.existsSync(corpusPath)) {
-    throw new Error(`Corpus file not found: ${corpusPath}`);
+  if (typeof corpusPath !== 'string' || !corpusPath || !fs.existsSync(corpusPath)) {
+    return [];
   }
-  const content = fs.readFileSync(corpusPath, 'utf8');
-  return JSON.parse(content);
+  try {
+    const content = fs.readFileSync(corpusPath, 'utf8');
+    const parsed = JSON.parse(content);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_error) {
+    return [];
+  }
 }
 
 /* ---------------------------------------------------------------

@@ -2,6 +2,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 // Mock core/db-state to prevent real DB operations (checkDatabaseUpdated throws
@@ -55,9 +56,11 @@ interface ContextResult extends Record<string, unknown> {
 }
 
 type MemoryContextArgs = Parameters<typeof handleMemoryContext>[0];
+const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
+const SERVER_ROOT = path.resolve(TEST_DIR, '..');
 
 const MEMORY_CONTEXT_SOURCE = fs.readFileSync(
-  path.join(process.cwd(), 'handlers', 'memory-context.ts'),
+  path.join(SERVER_ROOT, 'handlers', 'memory-context.ts'),
   'utf-8'
 );
 

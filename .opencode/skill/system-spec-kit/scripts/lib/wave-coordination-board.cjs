@@ -40,6 +40,15 @@ const FINDING_MERGE_STATES = Object.freeze([
   'pruned',
 ]);
 
+/**
+ * Check whether a value is a non-empty string.
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
 /* ---------------------------------------------------------------
    2. BOARD CREATION
 ----------------------------------------------------------------*/
@@ -56,11 +65,11 @@ const FINDING_MERGE_STATES = Object.freeze([
  * @returns {object} Board object (serializable to board.json)
  */
 function createBoard(options) {
-  if (!options || !options.sessionId) {
-    throw new Error('createBoard requires options.sessionId');
+  if (!options || !isNonEmptyString(options.sessionId)) {
+    return null;
   }
   if (options.loopType !== 'review' && options.loopType !== 'research') {
-    throw new Error('createBoard requires loopType "review" or "research"');
+    return null;
   }
 
   const now = new Date().toISOString();
@@ -108,7 +117,7 @@ function createBoard(options) {
  */
 function updateBoard(board, segmentResults) {
   if (!board || typeof board !== 'object') {
-    throw new Error('updateBoard requires a valid board object');
+    return null;
   }
   if (!Array.isArray(segmentResults)) {
     return board;
@@ -168,6 +177,9 @@ function updateBoard(board, segmentResults) {
  * @returns {object} Board finding record
  */
 function buildFindingRecord(finding, segmentId, board, segmentResult) {
+  if (!finding || typeof finding !== 'object' || !board || typeof board !== 'object') {
+    return null;
+  }
   // Fall back to the segment result's waveId if the finding itself has no wave info
   const resolvedWave = finding.wave || finding.waveId || (segmentResult && segmentResult.waveId) || null;
 
@@ -205,6 +217,9 @@ function buildFindingRecord(finding, segmentId, board, segmentResult) {
  * @param {object} findingRecord - Finding record to merge
  */
 function mergeFinding(board, findingRecord) {
+  if (!board || typeof board !== 'object' || !findingRecord || typeof findingRecord !== 'object') {
+    return board;
+  }
   const existingIndex = board.findings.findIndex(
     f => f.findingId === findingRecord.findingId
   );
@@ -402,6 +417,7 @@ function compareSeverity(a, b) {
  * @param {object} board
  */
 function recalculateStats(board) {
+  if (!board || typeof board !== 'object') return null;
   const segments = board.segments || [];
   board.stats = {
     totalSegments: segments.length,
@@ -413,6 +429,7 @@ function recalculateStats(board) {
     duplicateFindings: (board.dedupeLog || []).length,
     conflictFindings: (board.conflicts || []).length,
   };
+  return board.stats;
 }
 
 /* ---------------------------------------------------------------

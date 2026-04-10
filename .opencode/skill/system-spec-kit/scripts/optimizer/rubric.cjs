@@ -41,15 +41,20 @@ const SCORE_RANGE = Object.freeze({ min: 0.0, max: 1.0 });
  * @returns {{ dimensions: Record<string, number>; totalWeight: number }}
  */
 function defineRubric(dimensions) {
-  const merged = { ...DEFAULT_WEIGHTS, ...(dimensions || {}) };
+  const merged = { ...DEFAULT_WEIGHTS };
+  const errors = [];
 
-  // Validate all weights are in [0, 1]
-  for (const [name, weight] of Object.entries(merged)) {
-    if (typeof weight !== 'number' || !Number.isFinite(weight)) {
-      throw new Error(`Dimension "${name}" weight must be a finite number`);
-    }
-    if (weight < 0 || weight > 1) {
-      throw new Error(`Dimension "${name}" weight must be in [0, 1], got ${weight}`);
+  if (dimensions && typeof dimensions === 'object') {
+    for (const [name, weight] of Object.entries(dimensions)) {
+      if (typeof weight !== 'number' || !Number.isFinite(weight)) {
+        errors.push(`Dimension "${name}" weight must be a finite number`);
+        continue;
+      }
+      if (weight < 0 || weight > 1) {
+        errors.push(`Dimension "${name}" weight must be in [0, 1], got ${weight}`);
+        continue;
+      }
+      merged[name] = weight;
     }
   }
 
@@ -58,6 +63,7 @@ function defineRubric(dimensions) {
   return {
     dimensions: merged,
     totalWeight,
+    errors,
   };
 }
 

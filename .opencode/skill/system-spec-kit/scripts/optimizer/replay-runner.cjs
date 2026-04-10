@@ -40,6 +40,26 @@ const DEFAULT_CONFIG = Object.freeze({
  * @returns {{ converged: boolean; stuck: boolean; signals: object }}
  */
 function evaluateConvergence(iteration, config, priorState) {
+  if (!iteration || typeof iteration !== 'object') {
+    return {
+      converged: false,
+      stuck: false,
+      signals: {
+        newInfoRatio: 1.0,
+        rollingAvg: 1.0,
+        compositeScore: 1.0,
+        belowThreshold: false,
+        compositePass: false,
+        consecutiveLowProgress: 0,
+        convergenceThreshold: DEFAULT_CONFIG.convergenceThreshold,
+        stuckThreshold: DEFAULT_CONFIG.stuckThreshold,
+      },
+    };
+  }
+  if (!config || typeof config !== 'object') config = DEFAULT_CONFIG;
+  if (!priorState || typeof priorState !== 'object') {
+    priorState = { newInfoRatios: [], consecutiveLowProgress: 0 };
+  }
   const newInfoRatio = iteration.newInfoRatio ?? 1.0;
   const convergenceThreshold = config.convergenceThreshold ?? DEFAULT_CONFIG.convergenceThreshold;
   const stuckThreshold = config.stuckThreshold ?? DEFAULT_CONFIG.stuckThreshold;
@@ -100,6 +120,23 @@ function evaluateConvergence(iteration, config, priorState) {
  * @returns {{ iterationsUsed: number; maxIterations: number; converged: boolean; stuckIterations: number; recoveryAttempts: number; recoverySuccesses: number; totalFindings: number; relevantFindings: number; stopReason: string; perIterationSignals: object[]; finalSignals: object }}
  */
 function replayRun(corpusEntry, config) {
+  if (!corpusEntry || typeof corpusEntry !== 'object') {
+    return {
+      iterationsUsed: 0,
+      maxIterations: DEFAULT_CONFIG.maxIterations,
+      converged: false,
+      stuckIterations: 0,
+      recoveryAttempts: 0,
+      recoverySuccesses: 0,
+      totalFindings: 0,
+      relevantFindings: 0,
+      stopReason: 'invalidCorpusEntry',
+      perIterationSignals: [],
+      graphBonus: 1.0,
+      finalSignals: null,
+    };
+  }
+  if (!config || typeof config !== 'object') config = DEFAULT_CONFIG;
   const maxIterations = config.maxIterations ?? DEFAULT_CONFIG.maxIterations;
   const iterations = corpusEntry.iterations || [];
 
@@ -206,6 +243,9 @@ function replayRun(corpusEntry, config) {
  * @returns {{ improved: boolean; regressions: string[]; improvements: string[]; delta: Record<string, number> }}
  */
 function compareResults(baseline, candidate) {
+  if (!baseline || typeof baseline !== 'object' || !candidate || typeof candidate !== 'object') {
+    return { improved: false, regressions: ['Missing baseline or candidate results'], improvements: [], delta: {} };
+  }
   const improvements = [];
   const regressions = [];
   const delta = {};

@@ -96,49 +96,58 @@ export function computeNodeSignals(ns: Namespace): NodeSignal[] {
 }
 
 /**
- * Compute topological depth for each node via BFS from root nodes.
+ * Compute longest-path depth for each node from any root node.
+ * Mirrors the in-memory CJS implementation so both layers report
+ * the same structural depth for DAG-shaped coverage graphs.
  */
 function computeDepths(nodes: CoverageNode[], edges: CoverageEdge[]): Map<string, number> {
-  const depthMap = new Map<string, number>();
-  const incomingMap = new Map<string, Set<string>>();
-  const outgoingMap = new Map<string, string[]>();
+  const adjacency = new Map<string, string[]>();
+  const inDegree = new Map<string, number>();
 
   for (const node of nodes) {
-    incomingMap.set(node.id, new Set());
+    adjacency.set(node.id, []);
+    inDegree.set(node.id, 0);
   }
 
   for (const edge of edges) {
-    if (!incomingMap.has(edge.targetId)) incomingMap.set(edge.targetId, new Set());
-    incomingMap.get(edge.targetId)!.add(edge.sourceId);
-
-    if (!outgoingMap.has(edge.sourceId)) outgoingMap.set(edge.sourceId, []);
-    outgoingMap.get(edge.sourceId)!.push(edge.targetId);
+    if (!adjacency.has(edge.sourceId)) adjacency.set(edge.sourceId, []);
+    adjacency.get(edge.sourceId)!.push(edge.targetId);
+    inDegree.set(edge.targetId, (inDegree.get(edge.targetId) ?? 0) + 1);
+    if (!inDegree.has(edge.sourceId)) inDegree.set(edge.sourceId, 0);
   }
 
-  // Root nodes: no incoming edges
-  const roots = nodes.filter(n => (incomingMap.get(n.id)?.size ?? 0) === 0);
-  const queue: Array<{ id: string; depth: number }> = roots.map(n => ({ id: n.id, depth: 0 }));
-  const visited = new Set<string>();
+  const depthMap = new Map<string, number>();
+  const remaining = new Map(inDegree);
+  const queue: string[] = [];
 
-  while (queue.length > 0) {
-    const { id, depth } = queue.shift()!;
-    if (visited.has(id)) continue;
-    visited.add(id);
-    depthMap.set(id, depth);
+  for (const [id, degree] of remaining) {
+    if (degree === 0) {
+      depthMap.set(id, 0);
+      queue.push(id);
+    }
+  }
 
-    const children = outgoingMap.get(id) ?? [];
-    for (const childId of children) {
-      if (!visited.has(childId)) {
-        queue.push({ id: childId, depth: depth + 1 });
+  let queueIndex = 0;
+  while (queueIndex < queue.length) {
+    const current = queue[queueIndex++];
+    const currentDepth = depthMap.get(current) ?? 0;
+
+    for (const childId of adjacency.get(current) ?? []) {
+      const candidateDepth = currentDepth + 1;
+      if (candidateDepth > (depthMap.get(childId) ?? 0)) {
+        depthMap.set(childId, candidateDepth);
+      }
+
+      const nextDegree = (remaining.get(childId) ?? 0) - 1;
+      remaining.set(childId, nextDegree);
+      if (nextDegree === 0) {
+        queue.push(childId);
       }
     }
   }
 
-  // Unvisited nodes (cycles or disconnected) get depth 0
   for (const node of nodes) {
-    if (!depthMap.has(node.id)) {
-      depthMap.set(node.id, 0);
-    }
+    if (!depthMap.has(node.id)) depthMap.set(node.id, 0);
   }
 
   return depthMap;

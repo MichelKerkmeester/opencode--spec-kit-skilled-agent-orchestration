@@ -1,9 +1,9 @@
 ---
-title: "DR-031 -- Graph convergence signals as STOP-blocking guards"
-description: "Verify that graph convergence signals (sourceDiversity, evidenceDepth) act as STOP-blocking guards that must pass before the deep-research loop can terminate."
+title: "DR-031 -- Graph convergence signals act as STOP-blocking guards"
+description: "Verify that low sourceDiversity blocks a STOP vote and records blocked-stop evidence for deep research."
 ---
 
-# DR-031 -- Graph convergence signals as STOP-blocking guards
+# DR-031 -- Graph convergence signals act as STOP-blocking guards
 
 This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DR-031`.
 
@@ -11,11 +11,11 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates that the graph convergence signals (sourceDiversity and evidenceDepth) function as STOP-blocking guards for `DR-031`. The objective is to verify that even when the Phase 1 compositeStop score reaches the convergence threshold, the loop cannot terminate if source diversity is below 0.4 or average evidence depth is below 1.5.
+This scenario validates graph-aware stop blocking for `DR-031`. The objective is to verify that when deep research convergence math votes STOP but `sourceDiversity` remains below the `0.4` guard threshold, STOP is blocked and blocked-stop evidence is recorded.
 
 ### WHY THIS MATTERS
 
-Without structural guards, a research loop could converge prematurely when findings come from a single source or lack corroborating evidence chains. The graph convergence layer adds two mandatory pass/fail gates that prevent this: sourceDiversity (ratio of unique source nodes to total nodes, threshold 0.4) and evidenceDepth (average evidence chain depth, threshold 1.5). These gates block the STOP signal regardless of how high the Phase 1 composite score is.
+Novelty or coverage math can look complete before the evidence graph is structurally healthy. The graph-aware stop guards protect against shallow research by requiring diverse sources and sufficient evidence depth before a stop vote can become legal.
 
 ---
 
@@ -23,13 +23,16 @@ Without structural guards, a research loop could converge prematurely when findi
 
 Operators should run this as a real orchestrator-led check rather than a synthetic command-matrix exercise. The scenario is only complete when the operator can explain the behavior back to a user in plain language.
 
-- Objective: Verify that sourceDiversity and evidenceDepth act as STOP-blocking guards in the convergence algorithm.
-- Real user request: Can the research stop early if all its findings come from the same source? What prevents shallow evidence chains from passing convergence?
-- Orchestrator prompt: Validate the graph convergence STOP-blocking guard contract for sk-deep-research. Confirm that coverage-graph-convergence.cjs defines SOURCE_DIVERSITY_THRESHOLD (0.4) and EVIDENCE_DEPTH_THRESHOLD (1.5) as mandatory pass/fail gates, that computeGraphConvergence blends these with Phase 1 compositeStop, and that the convergence reference documents these as STOP-blocking guards, then return a concise operator-facing verdict.
-- Expected execution process: Inspect coverage-graph-convergence.cjs for threshold constants and guard logic, then the convergence reference for documentation, then the YAML workflow for enforcement.
-- Desired user-facing outcome: The user understands that the research loop has two structural safety guards (source diversity and evidence depth) that independently block convergence even when other signals say "stop".
-- Expected signals: SOURCE_DIVERSITY_THRESHOLD = 0.4; EVIDENCE_DEPTH_THRESHOLD = 1.5; computeSourceDiversity returns ratio in [0.0, 1.0]; computeEvidenceDepth returns average chain depth; both are checked before STOP is allowed.
-- Pass/fail posture: PASS if both thresholds are defined, enforced in the convergence computation, and documented as STOP-blocking guards; FAIL if either threshold is missing, not enforced, or not documented.
+- Title: Graph convergence signals act as STOP-blocking guards.
+- Given: A deep research session with `sourceDiversity` below the `0.4` threshold.
+- When: Convergence math votes STOP.
+- Then: STOP is blocked because the `sourceDiversity` gate failed, and blocked-stop evidence is recorded.
+- Real user request: If the research math says stop but the evidence still comes from too few sources, what actually prevents the loop from ending?
+- Orchestrator prompt: Validate the graph stop-blocking guard contract for sk-deep-research. Confirm that `SOURCE_DIVERSITY_THRESHOLD = 0.4` blocks STOP when unmet, and that the research convergence reference records blocked-stop persistence with `stopReason: "blockedStop"` when legal-stop gates fail, then return a concise operator-facing verdict.
+- Expected execution process: Inspect the graph convergence helper for the threshold and gate logic first, then the deep-research convergence reference for blocked-stop persistence and graph-aware legal-stop behavior.
+- Desired user-facing outcome: The user gets a precise explanation that graph guards veto premature STOP decisions and that blocked-stop state is persisted for recovery.
+- Expected signals: `SOURCE_DIVERSITY_THRESHOLD = 0.4`; `evaluateGraphGates()` fails `sourceDiversity` when below threshold; research convergence docs map failed legal-stop gates to `stopReason: "blockedStop"` and `blocked_stop` persistence.
+- Pass/fail posture: PASS if the graph helper enforces the `sourceDiversity` threshold and the research convergence reference shows failed legal-stop gates persisting blocked-stop state; FAIL if STOP can still be finalized with low source diversity or blocked-stop persistence is undocumented.
 
 ---
 
@@ -38,13 +41,13 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 ### RECOMMENDED ORCHESTRATION PROCESS
 
 1. Restate the user request in plain language before inspecting implementation details.
-2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
+2. Follow the listed command sequence in order so higher-level docs are checked before lower-level implementation helpers.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DR-031 | Graph convergence STOP-blocking guards | Verify sourceDiversity and evidenceDepth act as STOP-blocking guards. | Validate the graph convergence STOP-blocking guard contract for sk-deep-research. Confirm that SOURCE_DIVERSITY_THRESHOLD (0.4) and EVIDENCE_DEPTH_THRESHOLD (1.5) are defined and enforced as mandatory pass/fail gates in the convergence computation, then return a concise operator-facing verdict. | 1. `bash: rg -n 'SOURCE_DIVERSITY_THRESHOLD\|EVIDENCE_DEPTH_THRESHOLD\|STOP.block\|guard' .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs` -> 2. `bash: rg -n 'sourceDiversity\|evidenceDepth\|STOP.block\|graph.guard' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: rg -n 'graph_convergence\|sourceDiversity\|evidenceDepth' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | SOURCE_DIVERSITY_THRESHOLD = 0.4; EVIDENCE_DEPTH_THRESHOLD = 1.5; both computed before STOP decision; documented as STOP-blocking guards. | Capture the threshold constants, the guard check logic in computeGraphConvergence, and the convergence reference documentation. | PASS if both thresholds are defined, enforced, and documented as STOP-blocking guards; FAIL if either is missing, not enforced, or only advisory. | Privilege coverage-graph-convergence.cjs for the authoritative implementation; use convergence.md for the documentation contract. |
+| DR-031 | Graph convergence signals act as STOP-blocking guards | Verify low `sourceDiversity` vetoes STOP and records blocked-stop evidence. | Validate the graph stop-blocking guard contract for sk-deep-research. Confirm that `SOURCE_DIVERSITY_THRESHOLD = 0.4` blocks STOP when unmet, and that failed legal-stop gates persist `stopReason: "blockedStop"` for recovery, then return a concise operator-facing verdict. | 1. `bash: rg -n 'SOURCE_DIVERSITY_THRESHOLD|evaluateGraphGates|sourceDiversityGate|allPass' .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs` -> 2. `bash: rg -n 'blockedStop|blocked_stop|graph-aware convergence|graphEvents|sourceDiversity' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: rg -n 'sourceDiversity|threshold: 0.4|blocking' .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts` | `SOURCE_DIVERSITY_THRESHOLD = 0.4`; low `sourceDiversity` fails the guard; deep-research convergence persists blocked-stop state when legal-stop gates fail. | Capture the helper threshold definition, the `evaluateGraphGates()` pass/fail logic, the convergence reference blocked-stop persistence lines, and one test assertion showing the `0.4` threshold. | PASS if low `sourceDiversity` fails the graph stop gate and blocked-stop persistence is documented for failed legal-stop evaluation; FAIL if either the threshold enforcement or blocked-stop persistence is missing or contradictory. | Privilege `coverage-graph-convergence.cjs` for the enforcement contract and `references/convergence.md` for the deep-research stop-state behavior. If wording differs between `blocked_stop` event name and `blockedStop` stop reason, treat both as the same blocked-stop pathway and note the distinction in the operator verdict. |
 
 ---
 
@@ -60,10 +63,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | File | Role |
 |---|---|
-| `.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs` | Canonical implementation; threshold constants, guard computation functions |
-| `.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs` | Signal computation primitives; computeAllDepths, computeClusterMetrics |
-| `.opencode/skill/sk-deep-research/references/convergence.md` | Convergence reference; graph convergence guard documentation |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Workflow algorithm; graph convergence check in step_check_convergence |
+| `.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs` | Canonical graph stop-guard helper; threshold constants and `evaluateGraphGates()` |
+| `.opencode/skill/sk-deep-research/references/convergence.md` | Deep-research legal-stop and blocked-stop contract, including graph-aware convergence |
+| `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts` | Cross-layer threshold assertions for graph stop-guard behavior |
 
 ---
 

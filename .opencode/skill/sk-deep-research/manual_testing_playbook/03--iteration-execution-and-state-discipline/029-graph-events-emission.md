@@ -1,9 +1,9 @@
 ---
-title: "DR-029 -- Graph events emission in JSONL iteration records"
-description: "Verify that each research iteration emits graphEvents in its JSONL record, containing node and edge events that build the semantic coverage graph."
+title: "DR-029 -- Research iterations emit structured graphEvents"
+description: "Verify that research iteration records carry a graphEvents array with question_node, finding_node, and source_node entries."
 ---
 
-# DR-029 -- Graph events emission in JSONL iteration records
+# DR-029 -- Research iterations emit structured graphEvents
 
 This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DR-029`.
 
@@ -11,11 +11,11 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates that graphEvents are emitted in JSONL iteration records for `DR-029`. The objective is to verify that every research iteration appends a `graphEvents` array to its JSONL record containing typed node events (with id, nodeType, label) and edge events (with source, target, relation, weight).
+This scenario validates structured graph event emission for `DR-029`. The objective is to verify that a running deep research iteration writes a `graphEvents` array that includes research graph nodes such as `question_node`, `finding_node`, and `source_node`.
 
 ### WHY THIS MATTERS
 
-The semantic coverage graph is built incrementally from iteration JSONL records. If iterations do not emit graphEvents, the graph cannot be reconstructed from the JSONL authority chain, breaking the fallback authority order (JSONL first, local JSON second, MCP/SQLite third). Without graph events, convergence guards (sourceDiversity, evidenceDepth) have no data and the coverage graph degrades to empty.
+Graph-aware convergence depends on replayable graph data from iteration records. If research iterations do not persist structured graph events, reducers and graph tooling cannot reconstruct question-to-finding-to-source coverage, and graph-aware stop analysis degrades to missing-data behavior.
 
 ---
 
@@ -23,13 +23,16 @@ The semantic coverage graph is built incrementally from iteration JSONL records.
 
 Operators should run this as a real orchestrator-led check rather than a synthetic command-matrix exercise. The scenario is only complete when the operator can explain the behavior back to a user in plain language.
 
-- Objective: Verify that research iterations emit graphEvents in JSONL records.
-- Real user request: When I run a deep research loop, does each iteration contribute to the coverage graph? Where does the graph data come from?
-- Orchestrator prompt: Validate the graphEvents emission contract for sk-deep-research. Confirm that the state format defines graphEvents as an array of node/edge events in iteration records, that the agent instructions (Step 6) mandate their inclusion, and that the reducer parseGraphEvents function can reconstruct graph state from JSONL records, then return a concise operator-facing verdict.
-- Expected execution process: Inspect state_format.md for the graphEvents schema, then the agent file for Step 6 instructions, then the reducer for parseGraphEvents.
-- Desired user-facing outcome: The user understands that each iteration builds a portion of the coverage graph through structured graphEvents in JSONL, and that this data feeds convergence guards.
-- Expected signals: graphEvents array in JSONL iteration records; node events with {kind: "node", id, nodeType, label}; edge events with {kind: "edge", source, target, relation, weight}; parseGraphEvents reconstructs graph from these events.
-- Pass/fail posture: PASS if state_format.md defines graphEvents, agent instructions mandate emission, and parseGraphEvents successfully reconstructs graph state from JSONL; FAIL if graphEvents are undocumented, optional without enforcement, or parseGraphEvents cannot handle the schema.
+- Title: Research iterations emit structured graphEvents.
+- Given: A running deep research iteration.
+- When: The iteration completes with findings.
+- Then: The JSONL record contains a `graphEvents` array with `question_node`, `finding_node`, and `source_node` entries.
+- Real user request: When a research iteration finishes, what graph data gets written into state so convergence and tooling can replay it later?
+- Orchestrator prompt: Validate the structured `graphEvents` contract for sk-deep-research. Confirm that graph-aware research convergence expects `graphEvents` in iteration records, and that the graph replay tests show research JSONL records carrying `question_node`, `finding_node`, and `source_node` entries, then return a concise operator-facing verdict.
+- Expected execution process: Inspect the deep-research convergence reference for the graph-aware iteration-record contract first, then the coverage-graph replay tests for concrete research node types and JSONL-shaped examples.
+- Desired user-facing outcome: The user understands that completed research iterations emit replayable graph events and which research node types are expected in those records.
+- Expected signals: `graphEvents` referenced as iteration-record input for graph-aware convergence; replay tests include `kind: "node"` entries for `question_node`, `finding_node`, and research node-type coverage including `source_node`.
+- Pass/fail posture: PASS if the convergence reference and graph replay tests agree that completed research iterations carry `graphEvents` and that research node types include `question_node`, `finding_node`, and `source_node`; FAIL if the record contract is absent or the replay tests do not cover those node types.
 
 ---
 
@@ -38,13 +41,13 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 ### RECOMMENDED ORCHESTRATION PROCESS
 
 1. Restate the user request in plain language before inspecting implementation details.
-2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
+2. Follow the listed command sequence in order so higher-level docs are checked before lower-level test contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DR-029 | Graph events emission in JSONL | Verify research iterations emit graphEvents in JSONL records. | Validate the graphEvents emission contract for sk-deep-research. Confirm that graphEvents are defined in the state format, mandated by agent instructions, and consumed by the reducer's parseGraphEvents, then return a concise operator-facing verdict. | 1. `bash: rg -n 'graphEvents\|graph_events\|graphEvent' .opencode/skill/sk-deep-research/references/state_format.md` -> 2. `bash: rg -n 'graphEvents\|graph.*event\|coverage.*graph' .opencode/agent/deep-research.md` -> 3. `bash: rg -n 'parseGraphEvents\|graphEvents' .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts` -> 4. `bash: rg -n 'graphEvents' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | graphEvents array in JSONL; node events {kind: "node", id, nodeType, label}; edge events {kind: "edge", source, target, relation, weight}; parseGraphEvents function exists and handles the schema. | Capture the state format graphEvents definition, agent Step 6 emission mandate, and parseGraphEvents test evidence. | PASS if graphEvents defined, mandated, and parseable; FAIL if undefined, optional, or parseGraphEvents cannot handle them. | Privilege state_format.md for the schema contract; use agent instructions for the emission mandate; use test files for parseGraphEvents evidence. |
+| DR-029 | Research iterations emit structured graphEvents | Verify completed research iterations emit `graphEvents` with `question_node`, `finding_node`, and `source_node` coverage. | Validate the structured `graphEvents` contract for sk-deep-research. Confirm that graph-aware research convergence expects `graphEvents` in iteration records, and that the graph replay tests show research JSONL records carrying `question_node`, `finding_node`, and `source_node` entries, then return a concise operator-facing verdict. | 1. `bash: rg -n 'graphEvents|iteration records|graph-aware convergence' .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: rg -n 'graphEvents|question_node|finding_node' .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts` -> 3. `bash: rg -n 'graphEvents|researchNodeTypes|question_node|finding_node|source_node' .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-db.vitest.ts` | `graphEvents` used as iteration-record input; replay tests show `question_node` and `finding_node` entries; research node-type coverage includes `source_node`. | Capture the convergence reference lines that describe `graphEvents` in iteration records, a replay-test record with `graphEvents`, and the research node-type list that includes `source_node`. | PASS if the convergence reference and replay tests agree that completed research iterations emit `graphEvents` and that research graph node coverage includes `question_node`, `finding_node`, and `source_node`; FAIL if any of those pieces are missing or contradictory. | Privilege the convergence reference for the contract and the replay tests for concrete JSONL-shaped evidence. If the node-type list and replay examples diverge, treat the tests as implementation truth and flag doc drift. |
 
 ---
 
@@ -60,10 +63,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | File | Role |
 |---|---|
-| `.opencode/skill/sk-deep-research/references/state_format.md` | State format; graphEvents schema definition in iteration record |
-| `.opencode/agent/deep-research.md` | Agent instructions; Step 6 (Append State) must include graphEvents |
-| `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts` | Integration tests; parseGraphEvents function contract verification |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Workflow algorithm; graphEvents handling in dispatch and convergence steps |
+| `.opencode/skill/sk-deep-research/references/convergence.md` | Graph-aware research convergence contract; documents `graphEvents` as iteration-record input |
+| `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts` | Replay tests showing JSONL-shaped `graphEvents` examples with `question_node` and `finding_node` |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-db.vitest.ts` | Coverage-graph replay tests; research node-type coverage includes `source_node` |
 
 ---
 

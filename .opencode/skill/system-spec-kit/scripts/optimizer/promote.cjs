@@ -78,6 +78,9 @@ function checkPrerequisites(context) {
  * @returns {{ valid: boolean; violations: string[] }}
  */
 function checkManifestBoundary(candidate, manifest) {
+  if (!candidate || typeof candidate !== 'object' || !manifest || typeof manifest !== 'object') {
+    return { valid: false, violations: ['Candidate and manifest objects are required'] };
+  }
   const violations = [];
   const tunableFieldMap = new Map();
   for (const f of manifest.tunableFields || []) {
@@ -140,6 +143,17 @@ function checkManifestBoundary(candidate, manifest) {
  * @returns {{ decision: string; improved: boolean; regressions: string[]; improvements: string[]; manifestCheck: object|null; prerequisiteCheck: object; advisoryOnly: boolean }}
  */
 function evaluateCandidate(candidate, baselineScore, options) {
+  if (!candidate || typeof candidate !== 'object' || !candidate.score || !baselineScore || typeof baselineScore !== 'object') {
+    return {
+      decision: PROMOTION_DECISIONS.BLOCKED,
+      improved: false,
+      regressions: ['Candidate and baselineScore are required'],
+      improvements: [],
+      manifestCheck: null,
+      prerequisiteCheck: checkPrerequisites(),
+      advisoryOnly: true,
+    };
+  }
   const opts = options || {};
 
   // Always check prerequisites
@@ -235,6 +249,9 @@ function evaluateCandidate(candidate, baselineScore, options) {
  * @returns {object} A structured promotion report.
  */
 function generatePromotionReport(candidate, score, decision, options) {
+  if (!score || typeof score !== 'object') {
+    score = { composite: 0, perDimension: {}, unavailableDimensions: [] };
+  }
   const opts = options || {};
 
   const report = {
@@ -298,11 +315,15 @@ function generatePromotionReport(candidate, score, decision, options) {
  * @param {string} outputPath - File path for the output.
  */
 function savePromotionReport(report, outputPath) {
+  if (!report || typeof report !== 'object' || typeof outputPath !== 'string' || !outputPath) {
+    return false;
+  }
   const dir = path.dirname(outputPath);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
   fs.writeFileSync(outputPath, JSON.stringify(report, null, 2), 'utf8');
+  return true;
 }
 
 /* ---------------------------------------------------------------

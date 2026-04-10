@@ -2,6 +2,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // Mock core/db-state to prevent real DB operations (checkDatabaseUpdated throws
 // when the database directory cannot be resolved in the test environment).
@@ -31,7 +32,8 @@ import * as vectorIndex from '../lib/search/vector-index.js';
 import * as hybridSearch from '../lib/search/hybrid-search.js';
 import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion.js';
 
-const SERVER_ROOT = process.cwd();
+const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
+const SERVER_ROOT = path.resolve(TEST_DIR, '..');
 const MEMORY_SEARCH_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'handlers', 'memory-search.ts'), 'utf-8');
 const VECTOR_INDEX_QUERIES_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'vector-index-queries.ts'), 'utf-8');
 const HYBRID_SEARCH_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'hybrid-search.ts'), 'utf-8');

@@ -1,9 +1,9 @@
 ---
-title: "DRV-021 -- Graph convergence for review (dimensionCoverage, findingStability)"
-description: "Verify that graph convergence signals for review mode use dimensionCoverage and findingStability to prevent premature convergence when dimensions are uncovered or findings are still changing."
+title: "DRV-021 -- Review graph convergence signals participate in legal-stop gates"
+description: "Verify that graph-backed dimension coverage can block premature STOP in deep review."
 ---
 
-# DRV-021 -- Graph convergence for review (dimensionCoverage, findingStability)
+# DRV-021 -- Review graph convergence signals participate in legal-stop gates
 
 This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-021`.
 
@@ -11,11 +11,11 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates the graph convergence signals specific to review mode for `DRV-021`. The objective is to verify that the review convergence algorithm uses graph-structural signals (dimensionCoverage across all 4 review dimensions, findingStability reflecting P0/P1/P2 changes between iterations) alongside the Phase 1 composite stop score, and that these signals act as guards preventing premature convergence.
+This scenario validates graph-backed legal-stop behavior for `DRV-021`. The objective is to verify that when review stability signals nominate STOP but graph-backed dimension coverage remains below threshold, the legal-stop gates block premature STOP.
 
 ### WHY THIS MATTERS
 
-A code review loop could stop after only examining Correctness and Security, missing Traceability and Maintainability entirely. The graph convergence layer adds structural awareness: dimensionCoverage requires all 4 dimensions to have been explored in the coverage graph, and findingStability requires that findings have stabilized (no new P0 findings in recent iterations). Without these guards, the review could produce an incomplete release readiness verdict.
+Stable finding counts are not enough if the review graph still shows dimension gaps. Graph-backed dimension coverage protects against falsely concluding that a review is complete before all required review dimensions have meaningful coverage.
 
 ---
 
@@ -23,13 +23,16 @@ A code review loop could stop after only examining Correctness and Security, mis
 
 Operators should run this as a real orchestrator-led check rather than a synthetic command-matrix exercise. The scenario is only complete when the operator can explain the behavior back to a user in plain language.
 
-- Objective: Verify graph convergence signals (dimensionCoverage, findingStability) prevent premature review convergence.
-- Real user request: How does the review know it has covered all four dimensions? Can it stop before examining Maintainability?
-- Orchestrator prompt: Validate the review graph convergence contract for sk-deep-review. Confirm that the coverage graph tracks nodes by review dimension, that dimensionCoverage requires all 4 dimensions (Correctness, Security, Traceability, Maintainability) to have graph nodes, that findingStability reflects P0/P1/P2 delta trends, and that these signals integrate with the Phase 1 composite stop score, then return a concise operator-facing verdict.
-- Expected execution process: Inspect coverage-graph-convergence.cjs for review-specific convergence computation, then convergence.md for documentation, then the review YAML for enforcement, then the review strategy template for dimension tracking.
-- Desired user-facing outcome: The user understands that the review loop tracks which dimensions have been explored through the coverage graph, and that convergence requires all 4 dimensions to be covered with stable findings.
-- Expected signals: Graph nodes tagged by dimension; dimensionCoverage requires 4/4 dimensions in graph; findingStability checks P0/P1/P2 deltas; both integrate with compositeStop blending.
-- Pass/fail posture: PASS if dimensionCoverage and findingStability are defined, enforced, and integrated with compositeStop; FAIL if either signal is missing or the review can converge without full dimension coverage.
+- Title: Review graph convergence signals participate in legal-stop gates.
+- Given: A review session with dimension coverage below threshold in the graph.
+- When: Finding stability signals STOP.
+- Then: Graph convergence gates block premature STOP.
+- Real user request: If the review looks stable but the graph still shows missing dimension coverage, what keeps the loop from stopping too soon?
+- Orchestrator prompt: Validate the graph-backed legal-stop gate contract for sk-deep-review. Confirm that graph-aware review convergence tracks graph dimension coverage, and that when legal-stop evaluation fails dimension coverage the review persists blocked-stop state instead of stopping, then return a concise operator-facing verdict.
+- Expected execution process: Inspect the deep-review convergence reference for legal-stop gate behavior first, then the coverage-graph convergence handler for review `dimensionCoverage` thresholds, then fixture evidence for persisted `blocked_stop`.
+- Desired user-facing outcome: The user gets a clear explanation that graph-backed dimension coverage still has veto power after stability signals look ready to stop.
+- Expected signals: review convergence docs describe `blockedStop` when legal-stop gates fail; graph convergence handler enforces review `dimensionCoverage`; fixture evidence shows `blocked_stop` with `blockedBy: ["dimensionCoverage", ...]`.
+- Pass/fail posture: PASS if graph-backed review convergence, legal-stop failure, and blocked-stop persistence line up across the review convergence reference, graph convergence handler, and fixture evidence; FAIL if stable findings can terminate the loop despite dimension-coverage failure.
 
 ---
 
@@ -38,13 +41,13 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 ### RECOMMENDED ORCHESTRATION PROCESS
 
 1. Restate the user request in plain language before inspecting implementation details.
-2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
+2. Follow the listed command sequence in order so higher-level docs are checked before lower-level fixtures.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DRV-021 | Graph convergence for review | Verify dimensionCoverage and findingStability prevent premature review convergence. | Validate the review graph convergence contract for sk-deep-review. Confirm that dimensionCoverage requires all 4 dimensions in the coverage graph and findingStability checks P0/P1/P2 deltas, then return a concise operator-facing verdict. | 1. `bash: rg -n 'dimensionCoverage\|dimension_coverage\|findingStability\|finding_stability\|review.*convergence' .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs` -> 2. `bash: rg -n 'dimensionCoverage\|findingStability\|graph.*convergence\|STOP.block' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: rg -n 'graph.*convergence\|coverage.*graph\|dimensionCoverage' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 4. `bash: rg -n 'COVERS\|EVIDENCE_FOR\|IN_DIMENSION\|dimension' .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts` | Graph nodes tagged by dimension (IN_DIMENSION edges); dimensionCoverage requires 4/4; findingStability checks severity deltas; both blend with compositeStop. | Capture dimension tracking mechanism, coverage requirement, stability computation, and blending formula. | PASS if dimensionCoverage and findingStability are defined and enforced; FAIL if review can converge without full dimension coverage or unstable findings. | Check whether dimensionCoverage is graph-structural or document-structural; if graph-only, verify IN_DIMENSION edges are emitted by the review agent. |
+| DRV-021 | Review graph convergence signals participate in legal-stop gates | Verify graph-backed dimension coverage can veto STOP after stability points toward convergence. | Validate the graph-backed legal-stop gate contract for sk-deep-review. Confirm that graph-aware review convergence tracks graph dimension coverage, and that when legal-stop evaluation fails dimension coverage the review persists blocked-stop state instead of stopping, then return a concise operator-facing verdict. | 1. `bash: rg -n 'blockedStop|dimensionCoverage|buildReviewLegalStop|graphEvents|graph-aware review convergence' .opencode/skill/sk-deep-review/references/convergence.md` -> 2. `bash: rg -n 'dimensionCoverage|threshold|STOP_BLOCKED|blocking' .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts` -> 3. `bash: rg -n 'blocked_stop|blockedStop|dimensionCoverage' .opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl` | Legal-stop docs map failed gate evaluation to `blockedStop`; the graph convergence handler evaluates review `dimensionCoverage`; fixture evidence shows persisted `blocked_stop` blocked by `dimensionCoverage`. | Capture the review convergence legal-stop wording, the handler threshold/check for review `dimensionCoverage`, and the sample blocked-stop JSONL record naming `dimensionCoverage` in `blockedBy`. | PASS if the review docs, graph convergence handler, and blocked-stop fixture all agree that dimension-coverage failure prevents STOP even when other signals are favorable; FAIL if dimension-coverage failure is only advisory or not persisted. | Privilege `references/convergence.md` for the review stop contract and the fixture for concrete JSONL persistence. If the handler threshold and packet-level wording differ, flag threshold drift for follow-up. |
 
 ---
 
@@ -60,11 +63,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | File | Role |
 |---|---|
-| `.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs` | Graph convergence computation; review-specific signal integration |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts` | TS DB layer; VALID_RELATIONS.review includes IN_DIMENSION, EVIDENCE_FOR |
-| `.opencode/skill/sk-deep-research/references/convergence.md` | Shared convergence reference; graph guard documentation |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | Workflow algorithm; graph convergence check in step_check_convergence |
-| `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md` | Strategy template; dimension tracking in "Covered" list |
+| `.opencode/skill/sk-deep-review/references/convergence.md` | Canonical review legal-stop and graph-aware convergence contract |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts` | Graph convergence handler; review `dimensionCoverage` threshold and blocking behavior |
+| `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl` | Concrete blocked-stop fixture showing `dimensionCoverage` in `blockedBy` |
 
 ---
 

@@ -40,6 +40,7 @@ const DEFAULT_PARAM_SPACE = Object.freeze({
  * @returns {() => number} A function that returns the next random value in [0, 1).
  */
 function createRNG(seed) {
+  if (typeof seed !== 'number' || !Number.isFinite(seed)) seed = 42;
   let state = seed | 0;
   return function () {
     state = (state + 0x6D2B79F5) | 0;
@@ -57,6 +58,7 @@ function createRNG(seed) {
  * @returns {Record<string, number>}
  */
 function sampleConfig(paramSpace, rng) {
+  if (!paramSpace || typeof paramSpace !== 'object' || typeof rng !== 'function') return {};
   const config = {};
 
   for (const [name, bounds] of Object.entries(paramSpace)) {
@@ -79,6 +81,7 @@ function sampleConfig(paramSpace, rng) {
  * @returns {number}
  */
 function countDecimals(n) {
+  if (typeof n !== 'number' || !Number.isFinite(n)) return 0;
   const str = n.toString();
   const dotIndex = str.indexOf('.');
   return dotIndex < 0 ? 0 : str.length - dotIndex - 1;
@@ -100,6 +103,9 @@ function countDecimals(n) {
  * @returns {object} An audit record.
  */
 function recordCandidate(candidate, score, accepted, comparison, options) {
+  if (!score || typeof score !== 'object') {
+    score = { composite: 0, perDimension: {}, unavailableDimensions: [] };
+  }
   const opts = options || {};
   return {
     timestamp: opts.timestamp || new Date().toISOString(),
@@ -137,9 +143,18 @@ function recordCandidate(candidate, score, accepted, comparison, options) {
  * @returns {{ bestCandidate: object|null; bestScore: object|null; auditTrail: object[]; baselineScore: object|null; iterations: number }}
  */
 function randomSearch(corpus, rubric, paramSpace, iterations, options) {
+  if (!Array.isArray(corpus) || !rubric || typeof rubric !== 'object') {
+    return {
+      bestCandidate: null,
+      bestScore: null,
+      auditTrail: [],
+      baselineScore: null,
+      iterations: 0,
+    };
+  }
   const opts = options || {};
   const space = paramSpace || DEFAULT_PARAM_SPACE;
-  const maxIter = iterations || 20;
+  const maxIter = typeof iterations === 'number' && iterations > 0 ? iterations : 20;
   const seed = opts.seed ?? 42;
   const rng = createRNG(seed);
 
@@ -213,7 +228,7 @@ function randomSearch(corpus, rubric, paramSpace, iterations, options) {
  * @returns {object} Aggregated score result.
  */
 function evaluateConfig(corpus, config, rubric) {
-  if (!corpus || corpus.length === 0) {
+  if (!Array.isArray(corpus) || corpus.length === 0 || !config || typeof config !== 'object' || !rubric || typeof rubric !== 'object') {
     return { composite: 0, perDimension: {}, unavailableDimensions: [] };
   }
 
@@ -269,6 +284,9 @@ function evaluateConfig(corpus, config, rubric) {
  * @returns {{ improvements: string[]; regressions: string[] }}
  */
 function compareScores(baseline, candidate) {
+  if (!baseline || typeof baseline !== 'object' || !candidate || typeof candidate !== 'object') {
+    return { improvements: [], regressions: ['Missing baseline or candidate score'] };
+  }
   const improvements = [];
   const regressions = [];
 

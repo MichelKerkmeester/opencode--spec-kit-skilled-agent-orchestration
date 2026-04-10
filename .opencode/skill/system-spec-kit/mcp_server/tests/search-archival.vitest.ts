@@ -3,10 +3,12 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-const __dirname = path.resolve(process.cwd(), 'tests');
+import { fileURLToPath } from 'node:url';
+
+const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 
 // Source code paths for static analysis
-const SRC_ROOT = path.resolve(__dirname, '..');
+const SRC_ROOT = path.resolve(TEST_DIR, '..');
 const SRC_LIB_PATH = path.join(SRC_ROOT, 'lib');
 const SRC_HANDLERS_PATH = path.join(SRC_ROOT, 'handlers');
 const VECTOR_INDEX_QUERIES_SOURCE = fs.readFileSync(
@@ -85,7 +87,7 @@ describe('T206 - Source code contains is_archived filter', () => {
     } catch {
       // Try compiled JS fallback
       hsSource = fs.readFileSync(
-        path.join(__dirname, '..', 'lib', 'search', 'hybrid-search.js'),
+        path.join(SRC_LIB_PATH, 'search', 'hybrid-search.js'),
         'utf-8'
       );
     }

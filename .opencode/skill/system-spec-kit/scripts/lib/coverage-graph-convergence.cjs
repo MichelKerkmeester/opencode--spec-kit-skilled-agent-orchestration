@@ -11,6 +11,18 @@
 
 const { computeAllDepths, computeClusterMetrics } = require('./coverage-graph-signals.cjs');
 
+/**
+ * Check whether a value looks like an in-memory coverage graph.
+ * @param {unknown} graph
+ * @returns {boolean}
+ */
+function isValidGraph(graph) {
+  return !!graph &&
+    typeof graph === 'object' &&
+    graph.nodes instanceof Map &&
+    graph.edges instanceof Map;
+}
+
 /* ---------------------------------------------------------------
    1. THRESHOLDS
 ----------------------------------------------------------------*/
@@ -45,6 +57,7 @@ const EVIDENCE_DEPTH_THRESHOLD = 1.5;
  * @returns {number} Source diversity ratio in [0.0, 1.0]
  */
 function computeSourceDiversity(graph) {
+  if (!isValidGraph(graph)) return 0;
   if (graph.nodes.size === 0) return 0;
 
   const sources = new Set();
@@ -71,6 +84,7 @@ function computeSourceDiversity(graph) {
  * @returns {number} Average depth across all nodes
  */
 function computeEvidenceDepth(graph) {
+  if (!isValidGraph(graph)) return 0;
   if (graph.nodes.size === 0) return 0;
 
   const depths = computeAllDepths(graph);
@@ -98,6 +112,7 @@ function computeEvidenceDepth(graph) {
  * @returns {number} Coverage ratio in [0.0, 1.0]
  */
 function computeQuestionCoverage(graph) {
+  if (!isValidGraph(graph)) return 0;
   // Collect question nodes
   const questionIds = new Set();
   for (const [nodeId, node] of graph.nodes) {
@@ -139,6 +154,19 @@ function computeQuestionCoverage(graph) {
  * @returns {{ graphScore: number, blendedScore: number, components: object }}
  */
 function computeGraphConvergence(graph, signals) {
+  if (!isValidGraph(graph)) {
+    return {
+      graphScore: 0,
+      blendedScore: 0,
+      components: {
+        fragmentationScore: 0,
+        normalizedDepth: 0,
+        questionCoverage: 0,
+        sourceDiversity: 0,
+        compositeStop: null,
+      },
+    };
+  }
   if (!signals) signals = {};
 
   const cluster = computeClusterMetrics(graph);
@@ -201,6 +229,13 @@ function computeGraphConvergence(graph, signals) {
  * @returns {{ sourceDiversity: { pass: boolean, value: number, threshold: number }, evidenceDepth: { pass: boolean, value: number, threshold: number }, allPass: boolean }}
  */
 function evaluateGraphGates(graph) {
+  if (!isValidGraph(graph)) {
+    return {
+      sourceDiversity: { pass: false, value: 0, threshold: SOURCE_DIVERSITY_THRESHOLD },
+      evidenceDepth: { pass: false, value: 0, threshold: EVIDENCE_DEPTH_THRESHOLD },
+      allPass: false,
+    };
+  }
   const diversity = computeSourceDiversity(graph);
   const depth = computeEvidenceDepth(graph);
 

@@ -11,8 +11,12 @@ import path from 'path';
 const TEST_TIMEOUT_MS = 30_000; // 30s default, increase for CI if needed
 
 export default defineConfig({
+  root: path.resolve(import.meta.dirname, '..'),
   test: {
-    include: ['tests/**/*.{vitest,test}.ts'],
+    include: [
+      'mcp_server/tests/**/*.{vitest,test}.ts',
+      'scripts/tests/**/*.{vitest,test}.ts',
+    ],
     globals: true,
     environment: 'node',
     testTimeout: TEST_TIMEOUT_MS,

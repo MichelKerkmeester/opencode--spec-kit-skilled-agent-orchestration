@@ -13,6 +13,18 @@
 ----------------------------------------------------------------*/
 
 /**
+ * Check whether a value looks like an in-memory coverage graph.
+ * @param {unknown} graph
+ * @returns {boolean}
+ */
+function isValidGraph(graph) {
+  return !!graph &&
+    typeof graph === 'object' &&
+    graph.nodes instanceof Map &&
+    graph.edges instanceof Map;
+}
+
+/**
  * Compute the degree of a node (in-degree + out-degree).
  *
  * Adapted from graph-signals.ts getCurrentDegree():
@@ -24,6 +36,9 @@
  * @returns {{ inDegree: number, outDegree: number, total: number }}
  */
 function computeDegree(graph, nodeId) {
+  if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) {
+    return { inDegree: 0, outDegree: 0, total: 0 };
+  }
   let inDegree = 0;
   let outDegree = 0;
 
@@ -49,6 +64,9 @@ function computeDegree(graph, nodeId) {
  * @returns {{ adjacency: Map<string, string[]>, inDegree: Map<string, number> }}
  */
 function buildAdjacencyList(graph) {
+  if (!isValidGraph(graph)) {
+    return { adjacency: new Map(), inDegree: new Map() };
+  }
   const adjacency = new Map();
   const inDegree = new Map();
 
@@ -83,6 +101,7 @@ function buildAdjacencyList(graph) {
  * @returns {number} Longest path depth from any root to this node
  */
 function computeDepth(graph, nodeId) {
+  if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return 0;
   if (!graph.nodes.has(nodeId)) return 0;
 
   const { adjacency, inDegree } = buildAdjacencyList(graph);
@@ -130,6 +149,7 @@ function computeDepth(graph, nodeId) {
  * @returns {Map<string, number>} Map of nodeId -> depth
  */
 function computeAllDepths(graph) {
+  if (!isValidGraph(graph)) return new Map();
   const { adjacency, inDegree } = buildAdjacencyList(graph);
   const depths = new Map();
   const remaining = new Map(inDegree);
@@ -187,7 +207,11 @@ function computeAllDepths(graph) {
  * @returns {number} Count of edges involving this node within the window
  */
 function computeMomentum(graph, nodeId, windowSize) {
+  if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return 0;
   if (windowSize === undefined || windowSize === null) windowSize = 300000; // 5 min default
+  if (typeof windowSize !== 'number' || !Number.isFinite(windowSize) || windowSize < 0) {
+    windowSize = 300000;
+  }
 
   const cutoff = Date.now() - windowSize;
   let count = 0;
@@ -220,6 +244,9 @@ function computeMomentum(graph, nodeId, windowSize) {
  * @returns {{ componentCount: number, sizes: number[], largestSize: number, isolatedNodes: number }}
  */
 function computeClusterMetrics(graph) {
+  if (!isValidGraph(graph)) {
+    return { componentCount: 0, sizes: [], largestSize: 0, isolatedNodes: 0 };
+  }
   if (graph.nodes.size === 0) {
     return { componentCount: 0, sizes: [], largestSize: 0, isolatedNodes: 0 };
   }

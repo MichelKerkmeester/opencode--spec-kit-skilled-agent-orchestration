@@ -53,6 +53,18 @@ let nextEdgeId = 1;
 ----------------------------------------------------------------*/
 
 /**
+ * Check whether a value looks like an in-memory coverage graph.
+ * @param {unknown} graph
+ * @returns {boolean}
+ */
+function isValidGraph(graph) {
+  return !!graph &&
+    typeof graph === 'object' &&
+    graph.nodes instanceof Map &&
+    graph.edges instanceof Map;
+}
+
+/**
  * Clamp a weight value to the valid range [0.0, 2.0].
  * Returns null for non-finite inputs.
  * @param {number} weight
@@ -96,6 +108,10 @@ function createGraph() {
  * @returns {string|null} Edge ID if inserted, null if rejected
  */
 function insertEdge(graph, source, target, relation, weight, metadata) {
+  if (!isValidGraph(graph)) return null;
+  if (typeof source !== 'string' || typeof target !== 'string' || typeof relation !== 'string') {
+    return null;
+  }
   if (weight === undefined || weight === null) weight = 1.0;
   if (!metadata) metadata = {};
 
@@ -146,6 +162,7 @@ function insertEdge(graph, source, target, relation, weight, metadata) {
  * @returns {boolean} True if edge was found and updated
  */
 function updateEdge(graph, edgeId, updates) {
+  if (!isValidGraph(graph) || typeof edgeId !== 'string') return false;
   const edge = graph.edges.get(edgeId);
   if (!edge) return false;
 
@@ -183,6 +200,7 @@ function updateEdge(graph, edgeId, updates) {
  * @returns {boolean} True if edge was found and deleted
  */
 function deleteEdge(graph, edgeId) {
+  if (!isValidGraph(graph) || typeof edgeId !== 'string') return false;
   return graph.edges.delete(edgeId);
 }
 
@@ -205,7 +223,11 @@ function deleteEdge(graph, edgeId) {
  * @returns {Array<{ id: string, depth: number, relation: string, weight: number, path: string[] }>}
  */
 function traverseProvenance(graph, nodeId, maxDepth) {
+  if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return [];
   if (maxDepth === undefined || maxDepth === null) maxDepth = DEFAULT_MAX_DEPTH;
+  if (typeof maxDepth !== 'number' || !Number.isFinite(maxDepth) || maxDepth < 0) {
+    maxDepth = DEFAULT_MAX_DEPTH;
+  }
 
   const results = [];
   const visited = new Set();
@@ -257,6 +279,7 @@ function traverseProvenance(graph, nodeId, maxDepth) {
  * @returns {Array<object>} Edges from this node
  */
 function getEdgesFrom(graph, nodeId) {
+  if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return [];
   const results = [];
   for (const edge of graph.edges.values()) {
     if (edge.source === nodeId) results.push(edge);
@@ -272,6 +295,7 @@ function getEdgesFrom(graph, nodeId) {
  * @returns {Array<object>} Edges to this node
  */
 function getEdgesTo(graph, nodeId) {
+  if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return [];
   const results = [];
   for (const edge of graph.edges.values()) {
     if (edge.target === nodeId) results.push(edge);

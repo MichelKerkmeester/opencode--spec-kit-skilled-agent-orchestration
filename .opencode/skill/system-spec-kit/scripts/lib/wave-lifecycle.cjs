@@ -51,6 +51,15 @@ const SEGMENT_STATUSES = Object.freeze([
  */
 const MAX_PARALLEL_SEGMENTS = 8;
 
+/**
+ * Check whether a value is a non-empty string.
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
 /* ---------------------------------------------------------------
    2. FAN-OUT/JOIN PROOF
 ----------------------------------------------------------------*/
@@ -120,11 +129,9 @@ function canFanOut(workflowEngine) {
  * @returns {object} Wave context object
  */
 function createWaveContext(target, loopType, options) {
-  if (!target || typeof target !== 'string') {
-    throw new Error('Wave context requires a non-empty target string');
-  }
+  if (!isNonEmptyString(target)) return null;
   if (loopType !== 'review' && loopType !== 'research') {
-    throw new Error('loopType must be "review" or "research"');
+    return null;
   }
 
   const opts = options || {};
@@ -164,10 +171,10 @@ function createWaveContext(target, loopType, options) {
  */
 function dispatchWave(segments, config) {
   if (!Array.isArray(segments) || segments.length === 0) {
-    throw new Error('dispatchWave requires a non-empty segments array');
+    return null;
   }
-  if (!config || !config.sessionId || !config.waveNumber) {
-    throw new Error('dispatchWave requires config with sessionId and waveNumber');
+  if (!config || !isNonEmptyString(config.sessionId) || !config.waveNumber) {
+    return null;
   }
 
   const maxParallel = config.maxParallel || MAX_PARALLEL_SEGMENTS;
@@ -226,7 +233,7 @@ const MERGE_STRATEGIES = Object.freeze({
  */
 function joinWave(results, mergeStrategy) {
   if (!Array.isArray(results)) {
-    throw new Error('joinWave requires a results array');
+    return { merged: [], conflicts: [], stats: { totalResults: 0, mergedFindings: 0, conflicts: 0 } };
   }
 
   const strategy = mergeStrategy || MERGE_STRATEGIES.DEDUPE;
