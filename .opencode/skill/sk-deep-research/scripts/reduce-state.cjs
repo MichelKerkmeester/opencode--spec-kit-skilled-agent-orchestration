@@ -368,7 +368,10 @@ function updateStrategyContent(strategyContent, registry, iterationFiles) {
 
 function renderDashboard(config, registry, iterationRecords, iterationFiles) {
   const latestIteration = iterationRecords.at(-1);
-  const ratios = iterationRecords
+  // Exclude "thought" iterations from rolling average — they are analytical-only
+  // and produce no evidence, so including them would artificially lower the ratio.
+  const evidenceRecords = iterationRecords.filter((record) => record.status !== 'thought');
+  const ratios = evidenceRecords
     .map((record) => (typeof record.newInfoRatio === 'number' ? record.newInfoRatio : null))
     .filter((value) => value !== null);
   const lastThreeRatios = ratios.slice(-3).map((value) => value.toFixed(2)).join(' -> ') || 'N/A';
@@ -434,7 +437,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     '<!-- ANCHOR:trend -->',
     '## 5. TREND',
     `- Last 3 ratios: ${lastThreeRatios}`,
-    `- Stuck count: ${iterationRecords.filter((r) => r.status === 'stuck').length}`,
+    `- Stuck count: ${iterationRecords.filter((r) => r.status !== 'thought' && r.status !== 'insight' && (r.status === 'stuck' || (typeof r.newInfoRatio === 'number' && r.newInfoRatio === 0))).length}`,
     '- Guard violations: none recorded by the reducer pass',
     `- convergenceScore: ${Number(registry.metrics.convergenceScore || 0).toFixed(2)}`,
     `- coverageBySources: ${JSON.stringify(registry.metrics.coverageBySources)}`,

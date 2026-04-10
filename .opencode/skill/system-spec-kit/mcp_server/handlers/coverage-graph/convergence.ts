@@ -292,7 +292,7 @@ function evaluateReviewConvergence(
     value: signals.dimensionCoverage,
     threshold: t.dimensionCoverage,
     passed: signals.dimensionCoverage >= t.dimensionCoverage,
-    role: 'weighted',
+    role: 'blocking_guard',
   });
 
   trace.push({
@@ -337,14 +337,16 @@ function evaluateReviewConvergence(
     });
   }
 
-  // Check dimension coverage
+  // Check dimension coverage — blocking gate for review mode.
+  // Incomplete dimension coverage means the review is not yet comprehensive
+  // enough to stop, even if finding stability looks favorable.
   if (signals.dimensionCoverage < t.dimensionCoverage) {
     const gaps = findCoverageGaps(ns);
     blockers.push({
       type: 'uncovered_dimensions',
-      description: `Dimension coverage (${(signals.dimensionCoverage * 100).toFixed(0)}%) is below threshold. ${gaps.length} gap(s) found.`,
+      description: `Dimension coverage (${(signals.dimensionCoverage * 100).toFixed(0)}%) is below threshold (${(t.dimensionCoverage * 100).toFixed(0)}%). ${gaps.length} gap(s) found. STOP is blocked until all required dimensions have meaningful coverage.`,
       count: gaps.length,
-      severity: 'warning',
+      severity: 'blocking',
     });
   }
 
