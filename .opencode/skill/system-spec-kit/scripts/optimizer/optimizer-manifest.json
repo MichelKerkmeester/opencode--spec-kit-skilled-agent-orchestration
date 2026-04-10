@@ -1,0 +1,138 @@
+{
+  "$schema": "optimizer-manifest/v1",
+  "description": "Canonical manifest declaring which fields are tunable by the offline loop optimizer, which are locked runtime contracts, and which are deferred prompt-pack entrypoints.",
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-10",
+
+  "tunableFields": [
+    {
+      "name": "convergenceThreshold",
+      "type": "number",
+      "description": "General convergence sensitivity threshold. Lower values require more convergence before stopping.",
+      "range": { "min": 0.01, "max": 0.20 },
+      "products": ["deep-research", "deep-review"],
+      "configPaths": [
+        ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        ".opencode/skill/sk-deep-review/assets/deep_review_config.json"
+      ]
+    },
+    {
+      "name": "stuckThreshold",
+      "type": "integer",
+      "description": "Number of consecutive no-progress iterations before stuck recovery is triggered.",
+      "range": { "min": 1, "max": 5 },
+      "products": ["deep-research", "deep-review"],
+      "configPaths": [
+        ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        ".opencode/skill/sk-deep-review/assets/deep_review_config.json"
+      ]
+    },
+    {
+      "name": "maxIterations",
+      "type": "integer",
+      "description": "Hard ceiling on loop iterations. Controls maximum compute budget.",
+      "range": { "min": 3, "max": 20 },
+      "products": ["deep-research", "deep-review"],
+      "configPaths": [
+        ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        ".opencode/skill/sk-deep-review/assets/deep_review_config.json"
+      ]
+    },
+    {
+      "name": "noProgressThreshold",
+      "type": "number",
+      "description": "New-info ratio below which an iteration is classified as no-progress.",
+      "range": { "min": 0.01, "max": 0.15 },
+      "products": ["deep-research", "deep-review"],
+      "configPaths": []
+    },
+    {
+      "name": "compositeStopScore",
+      "type": "number",
+      "description": "Weighted stop score needed before guard evaluation passes.",
+      "range": { "min": 0.40, "max": 0.80 },
+      "products": ["deep-review"],
+      "configPaths": []
+    }
+  ],
+
+  "lockedFields": [
+    {
+      "name": "type",
+      "reason": "JSONL schema contract — record type discriminator must not change.",
+      "contract": "JSONL schema"
+    },
+    {
+      "name": "stopReason",
+      "reason": "Stop-reason enum is a runtime contract shared across all consumers.",
+      "contract": "convergence contract"
+    },
+    {
+      "name": "legalStop",
+      "reason": "Legal-stop record structure is a runtime contract used by reducers and dashboards.",
+      "contract": "convergence contract"
+    },
+    {
+      "name": "lineageMode",
+      "reason": "Lineage semantics (new/resume/fork/restart) are lifecycle contracts.",
+      "contract": "session lifecycle"
+    },
+    {
+      "name": "fileProtection",
+      "reason": "File protection policies are governance contracts, not tunable parameters.",
+      "contract": "file governance"
+    },
+    {
+      "name": "reducer",
+      "reason": "Reducer configuration defines the state-management contract.",
+      "contract": "reducer contract"
+    },
+    {
+      "name": "sessionId",
+      "reason": "Session identity is a lifecycle contract.",
+      "contract": "session lifecycle"
+    },
+    {
+      "name": "mode",
+      "reason": "Product mode (research/review) is an identity field, not a tunable.",
+      "contract": "product identity"
+    },
+    {
+      "name": "reviewDimensions",
+      "reason": "Review dimensions define the product scope, not numeric tuning surface.",
+      "contract": "product identity"
+    }
+  ],
+
+  "deferredPromptPackEntrypoints": [
+    {
+      "name": "iterationPromptPack",
+      "status": "DEFERRED",
+      "reason": "Phase 4b — requires behavioral test suite + 2+ corpus families before prompt optimization is safe.",
+      "prerequisite": "T008"
+    },
+    {
+      "name": "recoveryPromptPack",
+      "status": "DEFERRED",
+      "reason": "Phase 4b — recovery strategy prompts must be tested via behavioral suites before optimization.",
+      "prerequisite": "T008"
+    },
+    {
+      "name": "synthesisPromptPack",
+      "status": "DEFERRED",
+      "reason": "Phase 4b — synthesis prompt quality requires end-to-end behavioral validation.",
+      "prerequisite": "T008"
+    }
+  ],
+
+  "governance": {
+    "promotionMode": "advisory-only",
+    "autoPromotionAllowed": false,
+    "autoPromotionPrerequisites": [
+      "Phase 1 replay fixtures exist",
+      "Phase 3 behavioral suites exist and pass",
+      "At least 2 compatible corpus families available"
+    ],
+    "rollbackPolicy": "All promoted configs must be reversible via the prior baseline config stored in the audit trail."
+  }
+}

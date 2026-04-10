@@ -1,0 +1,7 @@
+{
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxIterations": 7,
+  "noProgressThreshold": 0.05,
+  "compositeStopScore": 0.60
+}
