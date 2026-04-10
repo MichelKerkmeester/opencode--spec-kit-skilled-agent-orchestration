@@ -82,6 +82,10 @@ Pause a running loop by creating `research/.deep-research-pause`. Delete that fi
 | Progressive synthesis | `research.md` can be updated incrementally and is finalized during synthesis. |
 | Negative knowledge | Ruled-out directions and dead ends are preserved as first-class outputs. |
 | Quality guards | Source diversity, focus alignment, and weak-source checks must pass before STOP is accepted. |
+| Graph-aware legal-stop checks | When `graphEvents` exist, structural graph signals add extra STOP-blocking evidence on top of the standard convergence math. |
+| Semantic coverage graph | Each iteration emits `graphEvents` (nodes + edges) in JSONL, building an in-memory coverage graph with relation types (ANSWERS, SUPPORTS, CONTRADICTS, SUPERSEDES, DERIVED_FROM, COVERS, CITES). |
+| Graph convergence guards | STOP-blocking guards: sourceDiversity (>= 0.4) and evidenceDepth (>= 1.5) must pass before convergence is accepted, preventing premature termination from single-source or shallow-evidence research. |
+| Question coverage tracking | Graph tracks which research questions have ANSWERS edges, computing an answerCoverage ratio that contributes to the convergence score. |
 <!-- /ANCHOR:features -->
 
 ---
@@ -204,7 +208,8 @@ A: Use `sk-deep-review` and `/spec_kit:deep-review`.
 | `SKILL.md` | Full protocol and rules |
 | `references/loop_protocol.md` | Detailed lifecycle and reducer sequencing |
 | `references/state_format.md` | Canonical config, JSONL, registry, and dashboard schemas |
-| `references/convergence.md` | Stop and recovery logic |
+| `references/convergence.md` | Stop and recovery logic, including graph-aware legal-stop behavior |
+| `manual_testing_playbook/04--convergence-and-recovery/031-graph-convergence-signals.md` | Operator test case for graph stop guards and blocked-stop behavior |
 | `references/capability_matrix.md` | Runtime parity source of truth |
 | `sk-deep-review` | Dedicated iterative code review skill |
 <!-- /ANCHOR:related-documents -->

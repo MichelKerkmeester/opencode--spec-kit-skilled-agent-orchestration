@@ -125,9 +125,17 @@ Three binary gates are evaluated after the convergence math votes STOP. All thre
 - **Scope gate:** Reviewed files, targets, and conclusions must stay inside the declared review scope.
 - **Coverage gate:** Required dimensions and required cross-reference protocols must be completed before STOP is allowed.
 
+### Graph-Aware Legal-Stop Checks
+
+When `graphEvents` are present in review iteration records, the convergence system can incorporate structural graph signals into legal-stop evaluation. This adds graph-backed dimension and evidence coverage to the existing review stop gates so a stable-looking review still cannot stop early if the graph shows unresolved coverage gaps.
+
 ### 9-Section Review Report with PASS/CONDITIONAL/FAIL Verdict
 
 Synthesis produces `{spec_folder}/review/review-report.md` with nine sections: executive summary, planning trigger, active finding registry, remediation workstreams, spec seed, plan seed, traceability status, deferred items, and audit appendix. The verdict logic is: FAIL when any active P0 exists, CONDITIONAL when active P1 exists with no P0, PASS when neither P0 nor P1 is active. A PASS verdict includes `hasAdvisories: true` when active P2 findings remain.
+
+### Semantic Coverage Graph
+
+Each review iteration emits `graphEvents` in its JSONL record, building a coverage graph with review-specific node types (DIMENSION, FILE, FINDING, EVIDENCE, REMEDIATION) and edge types (COVERS, EVIDENCE_FOR, IN_DIMENSION, IN_FILE, CONTRADICTS, RESOLVES, CONFIRMS). The graph provides structural awareness of which files and dimensions have been examined, enabling graph-based convergence guards that complement the Phase 1 composite stop score.
 
 ### Fresh Context Per Iteration
 
@@ -364,8 +372,9 @@ A: Raise `--max-iterations` above the number of completed iterations and re-invo
 | --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | Loop protocol   | `.opencode/skill/sk-deep-review/references/loop_protocol.md`   | 4-phase lifecycle plus lineage-aware review branches                     |
 | State format    | `.opencode/skill/sk-deep-review/references/state_format.md`    | Config, JSONL, reducer registry, strategy, dashboard, and report schemas |
-| Convergence     | `.opencode/skill/sk-deep-review/references/convergence.md`     | Stop algorithms, stuck recovery, signal math                             |
+| Convergence     | `.opencode/skill/sk-deep-review/references/convergence.md`     | Stop algorithms, stuck recovery, signal math, and graph-aware legal-stop checks |
 | Quick reference | `.opencode/skill/sk-deep-review/references/quick_reference.md` | One-page cheat sheet including lifecycle states and packet files         |
+| Graph playbook  | `.opencode/skill/sk-deep-review/manual_testing_playbook/04--convergence-and-recovery/021-graph-convergence-review.md` | Operator test case for graph-backed legal-stop behavior |
 
 ### Skill-Local References
 

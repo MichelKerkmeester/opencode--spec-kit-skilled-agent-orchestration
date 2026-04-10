@@ -63,6 +63,9 @@ Evaluator-first workflow for improving agents across their full integration surf
 | 5-dimension scoring | Measures structural integrity, rule coherence, integration consistency, output quality, and system fitness |
 | Fixture benchmarks | Output-based proof using target-specific fixture sets |
 | Dimensional tracking | Per-dimension progress in dashboard with plateau detection |
+| Mutation coverage graph | Tracks explored dimensions and tried mutation types via a coverage graph with `loop_type: "improvement"` namespace, preventing re-exploration of exhausted mutations |
+| Trade-off detection | Detects when a mutation improves one dimension at the cost of another, using Pareto-aware analysis with configurable thresholds and minimum 3 data points |
+| Candidate lineage | Maintains a directed graph of candidate proposals across iterations, tracking session-id, wave-index, spawning mutation type, and parent references |
 | Guarded promotion | Canonical mutation only after approval and passing evidence |
 | Rollback | Explicit restore with post-rollback dimensional verification |
 
