@@ -567,12 +567,6 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Returns structured Context Packages combining memory findings with codebase evidence
 - Uses both CocoIndex semantic search and the 5-channel memory system. Read-only.
 
-**Context-Prime**
-- Lightweight session bootstrap agent for fast startup or recovery after `/clear`
-- Loads memory context, checks code graph and CocoIndex health
-- Returns a compact Prime Package with spec folder, task status, system health and recommended next steps
-- Use at session start or after compaction instead of the heavier `@context` agent
-
 **Speckit**
 - The ONLY agent permitted to write `*.md` files inside spec folders
 - Template-first: copies from `templates/level_N/` - never creates from scratch

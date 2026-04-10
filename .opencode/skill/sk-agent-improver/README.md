@@ -40,7 +40,7 @@ Evaluator-first workflow for improving agents across their full integration surf
 | Primary mode | Proposal-only by default |
 | Evaluation | 5-dimension integration-aware scoring |
 | Target support | Any agent in `.opencode/agent/` (dynamic profiling) |
-| Static profiles | `handover` (promotion-eligible), `context-prime` (candidate-only) |
+| Static profiles | `handover` (promotion-eligible) |
 | Runtime area | `{spec_folder}/improvement/` |
 | Evidence style | Append-only JSONL ledger + reducer dashboard |
 
@@ -184,7 +184,7 @@ The scorer evaluates candidates across 5 weighted dimensions. All checks are det
 | Mode | Flag | Profiles | Use When |
 | --- | --- | --- | --- |
 | Dynamic | `--dynamic` | Any agent (generated on-the-fly) | Evaluating arbitrary agents, integration health checks |
-| Legacy | `--profile=ID` | handover, context-prime (hardcoded) | Promotion workflows with static fixture sets |
+| Legacy | `--profile=ID` | handover (hardcoded) | Promotion workflows with static fixture sets |
 
 ### Weighted Score
 
@@ -214,7 +214,6 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 |   |-- mirror_drift_policy.md        Mirror packaging policy
 |   |-- no_go_conditions.md           Stop and expansion blockers
 |   |-- target_onboarding.md          Adding new bounded targets
-|   |-- second_target_evaluation.md   Why context-prime was selected
 |   `-- integration_scanning.md       Integration scanner documentation
 |-- assets/
 |   |-- improvement_charter.md        Fixed policy charter template
@@ -224,10 +223,8 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 |   |-- target_manifest.jsonc         Surface classification manifest
 |   |-- target-profiles/
 |   |   |-- handover.json             Canonical handover profile
-|   |   `-- context-prime.json        Candidate-only profile
 |   `-- fixtures/
 |       |-- handover/                 Handover output fixtures
-|       `-- context-prime/            Context-prime output fixtures
 |-- scripts/
 |   |-- scan-integration.cjs          Integration surface scanner
 |   |-- generate-profile.cjs          Dynamic target profile generator
@@ -272,7 +269,6 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 | `assets/improvement_config_reference.md` | Field-level config documentation |
 | `assets/target_manifest.jsonc` | Target classification, mutability, and dynamic profile settings |
 | `assets/target-profiles/handover.json` | Canonical handover evaluation profile |
-| `assets/target-profiles/context-prime.json` | Candidate-only second-target profile |
 
 ### Key Configuration
 
@@ -407,7 +403,6 @@ Each dimension score (0-100) is multiplied by its weight, then summed: `structur
 ### Onboarding
 
 - [target_onboarding.md](./references/target_onboarding.md) — Adding new bounded targets
-- [second_target_evaluation.md](./references/second_target_evaluation.md) — Why context-prime was selected
 - [integration_scanning.md](./references/integration_scanning.md) — Integration scanner documentation
 - [improvement_config_reference.md](./assets/improvement_config_reference.md) — Config field documentation
 

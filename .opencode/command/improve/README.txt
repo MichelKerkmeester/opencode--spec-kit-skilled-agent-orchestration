@@ -167,7 +167,7 @@ Each mode maps to a YAML workflow file in `assets/`:
 | Mode | Flag | Profiles | Promotion |
 |------|------|----------|-----------|
 | **Dynamic** | `--dynamic` | Any agent (generated on-the-fly) | Assessment only |
-| **Static** | `--profile=ID` | handover, context-prime | handover is promotion-eligible |
+| **Static** | `--profile=ID` | handover | handover is promotion-eligible |
 
 <!-- /ANCHOR:execution-modes -->
 

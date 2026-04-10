@@ -102,7 +102,6 @@ This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with alig
 |-------|-------------|-------------|
 | `@orchestrate` | Task decomposition and multi-agent coordination | Complex requests needing delegation across multiple agents |
 | `@context` | Codebase exploration and context retrieval (read-only) | ALL file search, pattern discovery and context loading tasks |
-| `@context-prime` | Lightweight session bootstrap agent | Session start, after `/clear`, or after context compaction |
 | `@debug` | Fresh-perspective debugging (4-phase methodology) | After 3+ failed debug attempts, stuck issues |
 | `@deep-research` | Autonomous iterative research loop with externalized state | Deep multi-round investigation, evidence-based analysis |
 | `@deep-review` | Autonomous iterative review loop with findings convergence | Multi-round release and quality audits |
