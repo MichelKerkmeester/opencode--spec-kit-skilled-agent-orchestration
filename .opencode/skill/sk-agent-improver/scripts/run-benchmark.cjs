@@ -145,13 +145,19 @@ function aggregateFailureModes(fixtures) {
 function scoreIntegration(integrationReportPath) {
   const data = readJson(integrationReportPath);
 
+  // Normalize scanner output: scan-integration.cjs emits surfaces.mirrors/commands/skills
+  // while this function historically expects top-level mirrors/commandReferences/skillReferences.
+  const mirrors = data.mirrors || (data.surfaces && data.surfaces.mirrors) || [];
+  const commandRefs = data.commandReferences || (data.surfaces && data.surfaces.commands) || [];
+  const skillRefs = data.skillReferences || (data.surfaces && data.surfaces.skills) || [];
+
   // --- Mirror sync score (base 100, penalize diverged/missing) ---
-  const mirrors = data.mirrors || [];
   let mirrorScore = 100;
   for (const mirror of mirrors) {
-    if (mirror.status === 'missing') {
+    const mStatus = mirror.status || mirror.syncStatus;
+    if (mStatus === 'missing') {
       mirrorScore -= 30;
-    } else if (mirror.status === 'diverged') {
+    } else if (mStatus === 'diverged') {
       mirrorScore -= 20;
     }
   }
@@ -159,17 +165,15 @@ function scoreIntegration(integrationReportPath) {
   const mirrorStatus =
     mirrorScore === 100
       ? 'all-aligned'
-      : mirrors.some((entry) => entry.status === 'missing')
+      : mirrors.some((entry) => (entry.status || entry.syncStatus) === 'missing')
         ? 'has-missing'
         : 'has-divergence';
 
   // --- Command coverage (binary: at least 1 reference = 10 pts) ---
-  const commandRefs = data.commandReferences || [];
   const commandCount = commandRefs.length;
   const commandScore = commandCount >= 1 ? 100 : 0;
 
   // --- Skill coverage (binary: at least 1 reference = 10 pts) ---
-  const skillRefs = data.skillReferences || [];
   const skillCount = skillRefs.length;
   const skillScore = skillCount >= 1 ? 100 : 0;
 

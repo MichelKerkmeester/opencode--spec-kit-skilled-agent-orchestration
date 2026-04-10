@@ -89,15 +89,15 @@ function validateEvent(event) {
   }
 
   if (event.eventType === 'session_ended' || event.eventType === 'session_end') {
-    if (event.details && event.details.stopReason) {
-      if (!Object.values(STOP_REASONS).includes(event.details.stopReason)) {
-        errors.push(`Invalid stopReason: "${event.details.stopReason}". Valid reasons: ${Object.values(STOP_REASONS).join(', ')}`);
-      }
+    if (!event.details || !event.details.stopReason) {
+      errors.push('session_ended/session_end events MUST include details.stopReason');
+    } else if (!Object.values(STOP_REASONS).includes(event.details.stopReason)) {
+      errors.push(`Invalid stopReason: "${event.details.stopReason}". Valid reasons: ${Object.values(STOP_REASONS).join(', ')}`);
     }
-    if (event.details && event.details.sessionOutcome) {
-      if (!Object.values(SESSION_OUTCOMES).includes(event.details.sessionOutcome)) {
-        errors.push(`Invalid sessionOutcome: "${event.details.sessionOutcome}". Valid outcomes: ${Object.values(SESSION_OUTCOMES).join(', ')}`);
-      }
+    if (!event.details || !event.details.sessionOutcome) {
+      errors.push('session_ended/session_end events MUST include details.sessionOutcome');
+    } else if (!Object.values(SESSION_OUTCOMES).includes(event.details.sessionOutcome)) {
+      errors.push(`Invalid sessionOutcome: "${event.details.sessionOutcome}". Valid outcomes: ${Object.values(SESSION_OUTCOMES).join(', ')}`);
     }
   }
 
@@ -217,3 +217,61 @@ module.exports = {
   getLastIteration,
   getSessionResult,
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. CLI ENTRYPOINT
+// ─────────────────────────────────────────────────────────────────────────────
+
+if (require.main === module) {
+  const args = process.argv.slice(2);
+
+  function findArg(name) {
+    const prefix = `--${name}=`;
+    for (const arg of args) {
+      if (arg.startsWith(prefix)) {
+        return arg.slice(prefix.length);
+      }
+    }
+    const idx = args.indexOf(`--${name}`);
+    if (idx !== -1 && idx + 1 < args.length && !args[idx + 1].startsWith('--')) {
+      return args[idx + 1];
+    }
+    return undefined;
+  }
+
+  const readPath = findArg('read');
+  const emitType = findArg('emit');
+  const journalPath = findArg('journal');
+  const detailsRaw = findArg('details');
+
+  if (readPath) {
+    // --read <path>: Read and dump journal as JSON array
+    const events = readJournal(readPath);
+    process.stdout.write(JSON.stringify(events, null, 2) + '\n');
+  } else if (emitType && journalPath) {
+    // --emit <eventType> --journal <path> [--details <json>]
+    let details = {};
+    if (detailsRaw) {
+      try {
+        details = JSON.parse(detailsRaw);
+      } catch (err) {
+        process.stderr.write(`Failed to parse --details JSON: ${err.message}\n`);
+        process.exit(2);
+      }
+    }
+    const event = { eventType: emitType, details };
+    const result = emitEvent(journalPath, event);
+    if (!result.success) {
+      process.stderr.write(`Validation failed: ${result.errors.join(', ')}\n`);
+      process.exit(1);
+    }
+    process.stdout.write(JSON.stringify({ success: true, eventType: emitType }) + '\n');
+  } else {
+    process.stderr.write(
+      'Usage:\n' +
+      '  node improvement-journal.cjs --emit <eventType> --journal <path> [--details <json>]\n' +
+      '  node improvement-journal.cjs --read <path>\n'
+    );
+    process.exit(2);
+  }
+}

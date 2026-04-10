@@ -477,7 +477,10 @@ function scoreDimSystemFitness(profile, content) {
   return { score: maxPossible > 0 ? Math.round(100 * earned / maxPossible) : 100, details, maxPossible };
 }
 
-function scoreDynamic(candidateContent, agentName, profile) {
+function scoreDynamic(candidateContent, agentName, profile, weights) {
+  // Accept optional weights override; fall back to hardcoded defaults (ADR-005 backward compat)
+  const effectiveWeights = weights || DIMENSION_WEIGHTS;
+
   const structural = scoreDimStructural(profile, candidateContent);
   const ruleCoherence = scoreDimRuleCoherence(profile, candidateContent);
   const integration = scoreDimIntegration(agentName);
@@ -485,11 +488,11 @@ function scoreDynamic(candidateContent, agentName, profile) {
   const systemFitness = scoreDimSystemFitness(profile, candidateContent);
 
   const dimensions = [
-    { name: 'structural', score: structural.score, weight: DIMENSION_WEIGHTS.structural, details: structural.details },
-    { name: 'ruleCoherence', score: ruleCoherence.score, weight: DIMENSION_WEIGHTS.ruleCoherence, details: ruleCoherence.details },
-    { name: 'integration', score: integration.score, weight: DIMENSION_WEIGHTS.integration, details: integration.details },
-    { name: 'outputQuality', score: outputQuality.score, weight: DIMENSION_WEIGHTS.outputQuality, details: outputQuality.details },
-    { name: 'systemFitness', score: systemFitness.score, weight: DIMENSION_WEIGHTS.systemFitness, details: systemFitness.details },
+    { name: 'structural', score: structural.score, weight: effectiveWeights.structural, details: structural.details },
+    { name: 'ruleCoherence', score: ruleCoherence.score, weight: effectiveWeights.ruleCoherence, details: ruleCoherence.details },
+    { name: 'integration', score: integration.score, weight: effectiveWeights.integration, details: integration.details },
+    { name: 'outputQuality', score: outputQuality.score, weight: effectiveWeights.outputQuality, details: outputQuality.details },
+    { name: 'systemFitness', score: systemFitness.score, weight: effectiveWeights.systemFitness, details: systemFitness.details },
   ];
 
   const weightedScore = Math.round(
@@ -552,7 +555,16 @@ function main() {
       process.exit(1);
     }
     const agentName = profile.id;
-    const dynamicResult = scoreDynamic(candidateContent, agentName, profile);
+    // Accept optional --weights=<json> to override DIMENSION_WEIGHTS (ADR-005)
+    let weightsOverride = null;
+    if (args.weights) {
+      try {
+        weightsOverride = JSON.parse(args.weights);
+      } catch (_err) {
+        process.stderr.write('Warning: failed to parse --weights JSON, using defaults\n');
+      }
+    }
+    const dynamicResult = scoreDynamic(candidateContent, agentName, profile, weightsOverride);
 
     // Also run legacy scoring if profile matches a known profile
     let legacyScore = null;

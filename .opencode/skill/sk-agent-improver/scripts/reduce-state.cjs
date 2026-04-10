@@ -211,7 +211,7 @@ function buildRegistry(records) {
       bucket.metrics.acceptedCount += 1;
       globalMetrics.acceptedCount += 1;
       bucket.acceptedCandidates.push(record);
-    } else if (record.type === 'rejected' || record.recommendation === 'candidate-worse' || record.recommendation === 'candidate-rejected') {
+    } else if (record.type === 'rejected' || record.recommendation === 'candidate-worse' || record.recommendation === 'candidate-rejected' || record.recommendation === 'reject-candidate') {
       bucket.metrics.rejectedCount += 1;
       globalMetrics.rejectedCount += 1;
       bucket.rejectedCandidates.push(record);
