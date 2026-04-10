@@ -104,4 +104,47 @@ describe('deep-review contract parity', () => {
     const confirmContent = readWorkspaceFile(commandAssets[1]);
     expect(confirmContent).toContain('options: [resume, restart, fork, completed-continue]');
   });
+
+  it('uses the same canonical agent_file path in both auto and confirm YAMLs', () => {
+    const canonicalAgentPath = '.opencode/agent/deep-review.md';
+
+    for (const docPath of commandAssets) {
+      const content = readWorkspaceFile(docPath);
+      expect(content, `${docPath} should reference the canonical agent path`).toContain(
+        `agent_file: "${canonicalAgentPath}"`,
+      );
+      // Must NOT reference .claude/agents/ as the agent_file (that is a mirror, not canonical)
+      expect(content, `${docPath} should not use .claude/agents/ as agent_file`).not.toMatch(
+        /agent_file:\s*["']?\.claude\/agents\//,
+      );
+    }
+
+    // Both YAMLs must agree on the same path
+    const autoContent = readWorkspaceFile(commandAssets[0]);
+    const confirmContent = readWorkspaceFile(commandAssets[1]);
+    const autoMatch = autoContent.match(/agent_file:\s*"([^"]+)"/);
+    const confirmMatch = confirmContent.match(/agent_file:\s*"([^"]+)"/);
+    expect(autoMatch, 'auto YAML should have agent_file').not.toBeNull();
+    expect(confirmMatch, 'confirm YAML should have agent_file').not.toBeNull();
+    expect(autoMatch![1]).toBe(confirmMatch![1]);
+  });
+
+  it('command doc dimension list matches the supported dimension taxonomy', () => {
+    const canonicalDimensions = ['correctness', 'security', 'traceability', 'maintainability'];
+
+    for (const docPath of commandAssets) {
+      const content = readWorkspaceFile(docPath);
+      // The user_inputs section should list all 4 canonical dimensions
+      for (const dim of canonicalDimensions) {
+        expect(content, `${docPath} should mention dimension "${dim}"`).toContain(dim);
+      }
+      // The dimensionCoverage init in findings registry should track all 4
+      for (const dim of canonicalDimensions) {
+        expect(
+          content,
+          `${docPath} findings registry should track dimension "${dim}"`,
+        ).toContain(`"${dim}":false`);
+      }
+    }
+  });
 });

@@ -342,11 +342,28 @@ function segmentForReview(inventory, config) {
       return a.dir.localeCompare(b.dir);
     });
 
+  // Split any oversized directory groups into chunks of segmentSize
+  const expandedGroups = [];
+  for (const group of sortedDirs) {
+    if (group.files.length <= segmentSize) {
+      expandedGroups.push(group);
+    } else {
+      // Split oversized directory into segmentSize chunks
+      for (let i = 0; i < group.files.length; i += segmentSize) {
+        expandedGroups.push({
+          dir: group.dir,
+          files: group.files.slice(i, i + segmentSize),
+          totalScore: group.files.slice(i, i + segmentSize).reduce((s, f) => s + (f.hotspotScore || 0), 0),
+        });
+      }
+    }
+  }
+
   // Pack directories into segments up to segmentSize
   const segments = [];
   let currentSegment = { files: [], directories: [] };
 
-  for (const group of sortedDirs) {
+  for (const group of expandedGroups) {
     // If adding this directory would exceed segment size, finalize current
     if (currentSegment.files.length > 0 &&
         currentSegment.files.length + group.files.length > segmentSize) {
@@ -357,7 +374,9 @@ function segmentForReview(inventory, config) {
     }
 
     currentSegment.files.push(...group.files);
-    currentSegment.directories.push(group.dir);
+    if (!currentSegment.directories.includes(group.dir)) {
+      currentSegment.directories.push(group.dir);
+    }
 
     // If current segment is full, finalize
     if (currentSegment.files.length >= segmentSize) {
@@ -440,11 +459,27 @@ function segmentForResearch(domainLedger, config) {
       return a.cluster.localeCompare(b.cluster);
     });
 
+  // Split any oversized cluster groups into chunks of segmentSize
+  const expandedClusters = [];
+  for (const group of sortedClusters) {
+    if (group.domains.length <= segmentSize) {
+      expandedClusters.push(group);
+    } else {
+      for (let i = 0; i < group.domains.length; i += segmentSize) {
+        expandedClusters.push({
+          cluster: group.cluster,
+          domains: group.domains.slice(i, i + segmentSize),
+          totalAuthority: group.domains.slice(i, i + segmentSize).reduce((s, d) => s + (d.authority || 0), 0),
+        });
+      }
+    }
+  }
+
   // Pack clusters into segments up to segmentSize
   const segments = [];
   let currentSegment = { domains: [], clusters: [] };
 
-  for (const group of sortedClusters) {
+  for (const group of expandedClusters) {
     if (currentSegment.domains.length > 0 &&
         currentSegment.domains.length + group.domains.length > segmentSize) {
       segments.push(currentSegment);
@@ -454,7 +489,9 @@ function segmentForResearch(domainLedger, config) {
     }
 
     currentSegment.domains.push(...group.domains);
-    currentSegment.clusters.push(group.cluster);
+    if (!currentSegment.clusters.includes(group.cluster)) {
+      currentSegment.clusters.push(group.cluster);
+    }
 
     if (currentSegment.domains.length >= segmentSize) {
       segments.push(currentSegment);

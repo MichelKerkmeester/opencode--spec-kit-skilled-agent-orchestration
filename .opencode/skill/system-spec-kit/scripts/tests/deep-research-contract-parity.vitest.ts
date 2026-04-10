@@ -83,6 +83,30 @@ describe('deep-research contract parity', () => {
     }
   });
 
+  it('uses the same canonical agent_file path in both auto and confirm YAMLs', () => {
+    const canonicalAgentPath = '.opencode/agent/deep-research.md';
+
+    for (const docPath of commandAssets) {
+      const content = readWorkspaceFile(docPath);
+      expect(content, `${docPath} should reference the canonical agent path`).toContain(
+        `agent_file: "${canonicalAgentPath}"`,
+      );
+      // Must NOT reference .claude/agents/ as the agent_file (that is a mirror, not canonical)
+      expect(content, `${docPath} should not use .claude/agents/ as agent_file`).not.toMatch(
+        /agent_file:\s*["']?\.claude\/agents\//,
+      );
+    }
+
+    // Both YAMLs must agree on the same path
+    const autoContent = readWorkspaceFile(commandAssets[0]);
+    const confirmContent = readWorkspaceFile(commandAssets[1]);
+    const autoMatch = autoContent.match(/agent_file:\s*"([^"]+)"/);
+    const confirmMatch = confirmContent.match(/agent_file:\s*"([^"]+)"/);
+    expect(autoMatch, 'auto YAML should have agent_file').not.toBeNull();
+    expect(confirmMatch, 'confirm YAML should have agent_file').not.toBeNull();
+    expect(autoMatch![1]).toBe(confirmMatch![1]);
+  });
+
   it('exposes a machine-readable capability matrix for every supported runtime surface', () => {
     const runtimeIds = capabilityModule.listRuntimeCapabilityIds();
     expect(runtimeIds).toEqual(['opencode', 'claude', 'codex', 'gemini', 'agents']);

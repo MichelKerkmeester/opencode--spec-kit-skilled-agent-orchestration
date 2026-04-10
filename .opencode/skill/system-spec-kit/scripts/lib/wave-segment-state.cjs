@@ -124,10 +124,12 @@ function createJsonlRecord(data, segmentState) {
     type: data.type || 'finding',
     timestamp: data.timestamp || new Date().toISOString(),
     ...data,
-    // Re-assert keys after spread to prevent override
+    // Re-assert ALL 5 merge keys after spread to prevent override
     sessionId: segmentState.sessionId,
     generation: segmentState.generation,
     segment: segmentState.segmentId,
+    wave: segmentState.waveId || null,
+    findingId: data.findingId || null,
   };
 }
 
@@ -241,12 +243,14 @@ function mergeSegmentStates(states, mergeStrategy) {
     }
   }
 
-  // Sort merged records by explicit keys, not append order
+  // Sort merged records by all 5 merge keys, not append order
   allRecords.sort((a, b) => {
-    // Sort by generation, then segment, then wave, then timestamp
+    // Sort by sessionId, generation, segment, wave, findingId (then timestamp as tiebreaker)
+    if ((a.sessionId || '') !== (b.sessionId || '')) return (a.sessionId || '').localeCompare(b.sessionId || '');
     if ((a.generation || 0) !== (b.generation || 0)) return (a.generation || 0) - (b.generation || 0);
     if ((a.segment || '') !== (b.segment || '')) return (a.segment || '').localeCompare(b.segment || '');
     if ((a.wave || '') !== (b.wave || '')) return (a.wave || '').localeCompare(b.wave || '');
+    if ((a.findingId || '') !== (b.findingId || '')) return (a.findingId || '').localeCompare(b.findingId || '');
     return (a.timestamp || '').localeCompare(b.timestamp || '');
   });
 
