@@ -12,7 +12,7 @@ Research Ralph's fresh-agent-per-iteration pattern and git-as-memory architectur
 
 ### 4.1 System Description
 
-Ralph is a compact autonomous agent loop implemented primarily as a single Bash script. Every iteration launches a brand-new AI instance with clean context, so persistence is pushed out of the live session and into durable artifacts: `git` history, append-only `progress.txt`, structured `prd.json`, feature branch naming, and archive folders. The harness contract lives in `prompt.md` and `CLAUDE.md`, while `skills/ralph/` and `skills/prd/` define how work is decomposed into small, verifiable stories. The system's key bets are minimal dependencies, one-story-per-iteration discipline, AGENTS-style learning propagation, and mandatory feedback loops such as typecheck, tests, CI, and browser verification for UI work.
+Ralph is a compact autonomous agent loop implemented primarily as a single Bash script. Every iteration launches a brand-new AI instance with clean context, so persistence is pushed out of the live session and into durable artifacts: `git` history, append-only `progress.txt`, structured `prd.json`, feature branch naming, and archive folders. The harness contract lives in `external/prompt.md` and `external/CLAUDE.md`, while `external/skills/ralph/` and `external/skills/prd/` define how work is decomposed into small, verifiable stories. The system's key bets are minimal dependencies, one-story-per-iteration discipline, AGENTS-style learning propagation, and mandatory feedback loops such as typecheck, tests, CI, and browser verification for UI work.
 
 ### 4.2 Cross-Phase Awareness Table
 
@@ -35,23 +35,23 @@ Ralph is a compact autonomous agent loop implemented primarily as a single Bash 
 ## 5. Instructions
 
 1. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main` as the pre-approved phase folder. Skip Gate 3, keep all writes inside this phase folder, and treat everything under `external/` as read-only.
-2. Start with `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/external/ralph-main/ralph.sh` and read it line by line before anything else. It is the whole orchestrator in one file.
+2. Start with `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/external/ralph.sh` and read it line by line before anything else. It is the whole orchestrator in one file.
 3. Trace the exact control loop from `ralph.sh`: parse args -> validate tool -> inspect `prd.json`/branch -> archive prior run if branch changed -> initialize `progress.txt` -> spawn fresh AI instance -> check for `<promise>COMPLETE</promise>` -> continue or exit at max iterations.
-4. Read `external/ralph-main/prompt.md` and `external/ralph-main/CLAUDE.md` next. Treat them as harness templates encoding the same per-iteration contract for Amp and Claude Code.
+4. Read `external/prompt.md` and `external/CLAUDE.md` next. Treat them as harness templates encoding the same per-iteration contract for Amp and Claude Code.
 5. Extract the loop contract from those prompt files in order: read `prd.json`, read `progress.txt`, align to `branchName`, select the highest-priority story where `passes: false`, implement only that story, run checks, update reusable guidance files, commit, mark the story passed, append progress, then yield to the next fresh iteration.
-6. Inspect `external/ralph-main/skills/ralph/SKILL.md` after the prompt templates. Study one-story-per-iteration sizing, dependency-ordered priorities, verifiable acceptance criteria, browser-verification requirements, `branchName` generation, and archive awareness.
-7. Inspect `external/ralph-main/skills/prd/SKILL.md` after that. Study how clarifying questions, explicit scope boundaries, and small user stories create PRDs that Ralph can execute without long-context reasoning.
-8. Read `external/ralph-main/prd.json.example` and treat `project`, `branchName`, ordered `userStories`, and per-story `passes` as the minimum state machine Ralph needs.
-9. Read `external/ralph-main/README.md` only after the files above. Use it to confirm claims about fresh context, git-as-memory, `progress.txt`, AGENTS updates, browser verification, archiving, and stop conditions. Do not let README prose replace code evidence.
-10. Read the governing instruction files: repo-root `AGENTS.md` and `external/ralph-main/AGENTS.md`. Note that the Claude-specific harness uses nearby `CLAUDE.md` updates as a related propagation mechanism.
-11. Before any deep-research run, ensure this phase folder contains `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`. Use `@speckit` when supported; otherwise follow existing Spec Kit templates manually.
+6. Inspect `external/skills/ralph/SKILL.md` after the prompt templates. Study one-story-per-iteration sizing, dependency-ordered priorities, verifiable acceptance criteria, browser-verification requirements, `branchName` generation, and archive awareness.
+7. Inspect `external/skills/prd/SKILL.md` after that. Study how clarifying questions, explicit scope boundaries, and small user stories create PRDs that Ralph can execute without long-context reasoning.
+8. Read `external/prd.json.example` and treat `project`, `branchName`, ordered `userStories`, and per-story `passes` as the minimum state machine Ralph needs.
+9. Read `external/README.md` only after the files above. Use it to confirm claims about fresh context, git-as-memory, `progress.txt`, AGENTS updates, browser verification, archiving, and stop conditions. Do not let README prose replace code evidence.
+10. Read the governing instruction files: repo-root `AGENTS.md` and `external/AGENTS.md`. Note that the Claude-specific harness uses nearby `external/CLAUDE.md` updates as a related propagation mechanism.
+11. Before any deep-research run, ensure this phase folder contains `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`. Use `@speckit` when supported; otherwise follow existing Spec Kit templates manually.
 12. Validate the phase folder before deep research with:
     ```bash
     cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main" --strict
     ```
 13. After validation passes, run deep research against this same phase folder using this topic:
     ```text
-    Research Ralph at /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/external/ralph-main, focusing on fresh-agent-per-iteration execution, git-as-memory persistence, append-only progress learnings, PRD-to-JSON task decomposition, lightweight Bash orchestration, archive rotation, and validation-first loops that could improve Code_Environment/Public.
+    Research Ralph at /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/external, focusing on fresh-agent-per-iteration execution, git-as-memory persistence, append-only progress learnings, PRD-to-JSON task decomposition, lightweight Bash orchestration, archive rotation, and validation-first loops that could improve Code_Environment/Public.
     ```
 14. Compare Ralph directly against current `Code_Environment/Public` capabilities: Spec Kit Memory, handover documents, validation scripts, runtime prompts, and agent-routing surfaces. Address overlap with `002-babysitter-main` explicitly by separating minimal loop orchestration from deterministic event-sourced replay.
 15. Save all outputs inside this phase folder, especially under `research/`. Every meaningful finding must cite exact file paths, explain what Ralph does, why it matters here, whether to `adopt now`, `prototype later`, or `reject`, what Public subsystem it affects, and what migration or validation risk comes with it. When research is complete, update `checklist.md`, create `implementation-summary.md`, and save memory with:
@@ -78,7 +78,7 @@ Ralph is a compact autonomous agent loop implemented primarily as a single Bash 
 - Do trace how `progress.txt` is initialized, appended to, and reused as future-iteration context.
 - Do study the `prd.json` schema and story-order rules before making claims about orchestration behavior.
 - Do verify exactly how the loop detects completion, including the `<promise>COMPLETE</promise>` sentinel.
-- Do compare `prompt.md` and `CLAUDE.md` as two versions of the same loop contract.
+- Do compare `external/prompt.md` and `external/CLAUDE.md` as two versions of the same loop contract.
 - Do inspect how archive folders and `.last-branch` isolate prior runs when a new feature starts.
 - Do treat simplicity as the feature under analysis, not as evidence that the system is unsophisticated.
 
@@ -100,7 +100,7 @@ Ralph is a compact autonomous agent loop implemented primarily as a single Bash 
 
 ### Example B: Fresh-context iteration finding
 
-`prompt.md` and `CLAUDE.md` both instruct the agent to complete exactly one story, run checks, commit, mark the story passed, and append learnings before the next clean invocation. A strong finding would show how that pattern reduces context drift, where it increases setup overhead, and how it compares to this repo's existing memory and handover systems.
+`external/prompt.md` and `external/CLAUDE.md` both instruct the agent to complete exactly one story, run checks, commit, mark the story passed, and append learnings before the next clean invocation. A strong finding would show how that pattern reduces context drift, where it increases setup overhead, and how it compares to this repo's existing memory and handover systems.
 
 ## 10. Constraints
 
@@ -138,7 +138,7 @@ Rank findings in this order: context-drift reduction value, simplicity-to-impact
 
 ## 11. Deliverables
 
-- `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` present and valid in this phase folder before deep research starts
+- `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` present and valid in this phase folder before deep research starts
 - `research/research.md` as the canonical report with at least 5 evidence-backed findings
 - explicit comparison to current Public memory, handover, validation, and orchestration surfaces
 - `implementation-summary.md` created at the end

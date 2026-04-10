@@ -22,20 +22,37 @@
 | 018 | 2 | Pivot away from Level 1/2/3+ lifecycle? | high | rejected | KEEP | none; simplify exposure only |
 | 019 | 2 | Replace specialized deep loops with Relay workflow DSL? | high | rejected | KEEP | none; shared kernel only |
 | 020 | 2 | Generate machine-readable markdown mirrors from one source? | medium | should-have | SIMPLIFY | command/provider docs generation pipeline |
+| 021 | 3 | Merge visible plan/implement/complete lifecycle front door? | high | must-have | MERGE | spec_kit command/help surfaces |
+| 022 | 3 | Add unified context concierge across /memory and /spec_kit? | high | should-have | ADD | resume + memory onboarding surfaces |
+| 023 | 3 | Simplify template/level UX while keeping spec folders? | medium | nice-to-have | SIMPLIFY | template onboarding + validator messaging |
+| 024 | 3 | Merge context-prime/context/handover operator surface? | high | should-have | MERGE | orchestrate + context/handover surfaces |
+| 025 | 3 | Replace LEAF deep loops and explicit state files? | high | rejected | KEEP | architecture boundary only |
+| 026 | 3 | Merge visible sk-code skill family? | high | must-have | MERGE | skill onboarding + routing surfaces |
+| 027 | 3 | Demote explicit Gate 2 skill advisor ceremony? | high | must-have | SIMPLIFY | AGENTS/CLAUDE + routing prompts |
+| 028 | 3 | Redesign AGENTS/CLAUDE/hooks operator contract? | high | must-have | REDESIGN | top-level doctrine docs |
+| 029 | 3 | Rebuild feature workflow around lead mode plus escalation? | high | should-have | REDESIGN | top-level workflow docs/wrappers |
+| 030 | 3 | Merge per-command YAML assets into shared lifecycle engine? | high | should-have | MERGE | command asset layer + lifecycle engine |
 
 ## Convergence Signal
 - Iterations without new signal: 0
 - Stop rule triggered: no
-- Minimum Phase 2 refactor/pivot coverage met: yes (8 of 10 iterations included explicit refactor/pivot analysis)
+- Minimum Phase 3 angle coverage met: yes (all six required angles covered)
 
 ## Finding Totals
-- Must-have: 6
-- Should-have: 8
-- Nice-to-have: 3
-- Rejected: 3
+- Must-have: 10
+- Should-have: 12
+- Nice-to-have: 4
+- Rejected: 4
 
 ## Phase 2 Verdict Totals
 - REFACTOR: 3
 - PIVOT: 1
 - SIMPLIFY: 4
 - KEEP: 2
+
+## Phase 3 UX Verdict Totals
+- SIMPLIFY: 2
+- ADD: 1
+- MERGE: 4
+- KEEP: 1
+- REDESIGN: 2

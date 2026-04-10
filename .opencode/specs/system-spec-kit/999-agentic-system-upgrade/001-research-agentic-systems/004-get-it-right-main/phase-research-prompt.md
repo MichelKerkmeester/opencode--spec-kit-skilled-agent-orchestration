@@ -17,7 +17,7 @@ Research Get It Right's retry loop architecture and feedback bridge patterns to 
 
 Research target:
 - Phase folder: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main`
-- External repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/external/get-it-right-main`
+- External repo: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/external`
 
 Mission focus:
 - Extract how the loop actually works, not just how it is described
@@ -68,7 +68,7 @@ Treat Get It Right as a study in:
 
 ### What This Repo Already Has
 
-Code_Environment/Public has spec-kit validation (`checklist.md`, `validate.sh`), but no formal retry loop or feedback bridge between iterations.
+Code_Environment/Public has spec-kit validation checklists plus `validate.sh`, but no formal retry loop or feedback bridge between iterations.
 
 Relevant internal baseline:
 - Strong spec-folder workflow and validation rules
@@ -81,23 +81,23 @@ Relevant internal baseline:
 
 Read sources in this order:
 1. `workflow.yaml` - central executable definition
-2. `agents/implementer.md`, `agents/reviewer.md`, `agents/refactorer.md` - role contracts
-3. `docs/loop-explained.md`, `docs/thread-architecture.md`, `docs/when-to-use.md` - loop mechanics, thread model, adoption boundaries
+2. `external/agents/implementer.md`, `external/agents/reviewer.md`, `external/agents/refactorer.md` - role contracts
+3. `external/docs/loop-explained.md`, `external/docs/thread-architecture.md`, `external/docs/when-to-use.md` - loop mechanics, thread model, adoption boundaries
 4. `README.md` - framing, terminology, and public positioning
 
 ## 4. Instructions
 
 1. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main` as the approved phase folder and keep all writable artifacts inside it.
-2. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/external/get-it-right-main` as read-only source material.
+2. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/external` as read-only source material.
 3. Start with `workflow.yaml` and map the actual loop: entry node, loop condition, outputs, edge conditions, and retry budget.
 4. Trace the implement path first: identify exactly what the implement agent inherits, what is injected, what is not saved, and why the fresh-fork model matters.
 5. Trace the parallel verification stage: lint, test, and build runners; how `join_checks` works; and how failed checks short-circuit review.
 6. Trace the review stage carefully: distinguish `grade` from `strategy`, identify how `save_message` works, and explain why the reviewer is a strategy selector rather than a conventional code reviewer.
 7. Trace the refactor stage as a separate control path: identify when it runs, what data it receives, why it is undo-only, and how it prepares the workspace for the next attempt.
 8. Follow the full data flow for cross-iteration state: original request, injected messages, node references, saved review feedback, and any fallback strategy when review is skipped.
-9. Read `agents/implementer.md`, `agents/reviewer.md`, and `agents/refactorer.md` to verify prompt-level intent, not just YAML wiring.
-10. Read `docs/loop-explained.md` and `docs/thread-architecture.md` to confirm how context boundaries are enforced and how fork-per-iteration minimizes stale state.
-11. Read `docs/when-to-use.md` to capture adoption criteria, anti-fit scenarios, and operational tradeoffs between correctness and speed.
+9. Read `external/agents/implementer.md`, `external/agents/reviewer.md`, and `external/agents/refactorer.md` to verify prompt-level intent, not just YAML wiring.
+10. Read `external/docs/loop-explained.md` and `external/docs/thread-architecture.md` to confirm how context boundaries are enforced and how fork-per-iteration minimizes stale state.
+11. Read `external/docs/when-to-use.md` to capture adoption criteria, anti-fit scenarios, and operational tradeoffs between correctness and speed.
 12. Compare Get It Right against this repo's current workflow model: identify what already exists, what is missing, and where a retry-loop layer could integrate cleanly.
 13. Explicitly address overlap with phase `001-agent-lightning-main`: note where retry-loop feedback could later feed optimization systems, but keep this phase scoped to retry architecture and feedback transfer.
 14. Separate findings into `adopt now`, `prototype later`, and `reject`, with concrete reasons tied to this repo's agent workflows.
@@ -146,8 +146,8 @@ Read sources in this order:
 
 **Evidence**
 - `workflow.yaml`
-- `docs/thread-architecture.md`
-- `agents/reviewer.md`
+- `external/docs/thread-architecture.md`
+- `external/agents/reviewer.md`
 
 **Finding**
 - Get It Right keeps the main thread intentionally lean by saving only reviewer feedback back to the parent thread.

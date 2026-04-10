@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 001-agent-lightning-main Research Phase"
-description: "A 10-iteration deep-research loop that validates the phase docs first, maps the Agent Lightning repo, investigates narrow RL-oriented questions, records structured iteration state, and synthesizes actionable system-spec-kit recommendations."
+description: "A three-wave, 30-iteration deep-research loop that validates the phase docs, maps the Agent Lightning repo, investigates narrow RL and operator-surface questions, records structured iteration state, and synthesizes actionable system-spec-kit recommendations."
 trigger_phrases:
   - "001-agent-lightning-main research plan"
   - "agent lightning execution plan"
@@ -29,7 +29,7 @@ contextType: "plan"
 
 ### Overview
 
-This phase will run a disciplined 10-iteration deep-research loop against the bundled Agent Lightning repository. The work starts by creating and validating the required Level 3 phase docs, then mapping the external repo and the relevant Public comparison surfaces, then executing one narrow question per iteration with exact citations, and finally synthesizing the results into a canonical research report, dashboard, implementation summary, and saved memory artifact.
+This phase executes a disciplined three-wave, 30-iteration deep-research loop against the bundled Agent Lightning repository. The work starts by creating and validating the required Level 3 phase docs, then mapping the external repo and the relevant Public comparison surfaces, then executing one narrow question per iteration with exact citations, and finally synthesizing the results into a canonical research report, dashboard, implementation summary, and an auditable memory-save record.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -66,10 +66,10 @@ Read-only deep research with externalized state and synthesis-by-iteration.
 - **Agent Lightning source map**: targeted external repo reads across tracer, store, adapter, trainer, algorithm, examples, and docs.
 - **Public comparison set**: existing `system-spec-kit`, command, and agent files that each finding must influence.
 - **Iteration artifacts**: one markdown file per question plus a JSONL state row.
-- **Synthesis artifacts**: final report, dashboard, implementation summary, and memory save.
+- **Synthesis artifacts**: final report, dashboard, implementation summary, and a documented memory-save record.
 
 ### Data Flow
-`phase-research-prompt.md` -> Level 3 phase docs -> strict validation -> external repo mapping -> iteration question selection -> evidence capture with citations -> iteration markdown -> JSONL append -> convergence check -> final synthesis and closeout.
+`phase-research-prompt.md` -> Level 3 phase docs -> strict validation -> external repo mapping -> iteration question selection -> evidence capture with citations -> iteration markdown -> JSONL append -> convergence check per wave -> final merged synthesis and closeout.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -88,7 +88,7 @@ Read-only deep research with externalized state and synthesis-by-iteration.
 - [x] Define the first iteration question from real source evidence
 
 ### Phase 3: Iterative Research
-- [x] Execute iterations `001` through `010` unless convergence or insufficient evidence stops earlier
+- [x] Execute iterations `001` through `030` across the three completed waves unless convergence or insufficient evidence stops a wave early
 - [x] Append a JSONL state record after every iteration
 - [x] Review convergence after each iteration
 
@@ -97,7 +97,7 @@ Read-only deep research with externalized state and synthesis-by-iteration.
 - [x] Write `research/deep-research-dashboard.md`
 - [x] Update checklist and tasks with evidence
 - [x] Create `implementation-summary.md`
-- [x] Save memory and rerun strict validation
+- [x] Preserve the earlier memory-save record and rerun strict validation
 <!-- /ANCHOR:phases -->
 
 ---
@@ -196,9 +196,9 @@ Phase 1 (Docs + Validate) -> Phase 2 (Repo Map) -> Phase 3 (Iterations) -> Phase
 2. **Pass strict validation before research** - CRITICAL
 3. **Map the external repo and Public comparison seams** - CRITICAL
 4. **Run the bounded iteration loop with evidence capture** - CRITICAL
-5. **Synthesize, save memory, and revalidate** - CRITICAL
+5. **Synthesize, preserve memory-save continuity, and revalidate** - CRITICAL
 
-**Total Critical Path**: brief -> docs -> validation -> mapping -> iterations -> synthesis -> memory save -> final validation
+**Total Critical Path**: brief -> docs -> validation -> mapping -> iterations -> synthesis -> memory continuity -> final validation
 
 **Parallel Opportunities**:
 - External repo mapping and Public surface mapping can be gathered in parallel before iteration 001.
@@ -214,9 +214,9 @@ Phase 1 (Docs + Validate) -> Phase 2 (Repo Map) -> Phase 3 (Iterations) -> Phase
 |-----------|-------------|------------------|--------|
 | M1 | Phase docs ready | All required Level 3 docs exist | Phase 1 |
 | M2 | Validation gate cleared | `validate.sh --strict` passes | Phase 1 |
-| M3 | Research loop underway | At least 5 iterations completed with JSONL state | Phase 3 |
-| M4 | Full research set complete | 10 iterations complete or valid stop condition triggered | Phase 3 |
-| M5 | Phase closeout complete | Synthesis, dashboard, implementation summary, memory save, and validation done | Phase 4 |
+| M3 | Research loop underway | At least 5 iterations completed with JSONL state in each active wave | Phase 3 |
+| M4 | Full research set complete | 30 iterations complete across the three waves or a valid stop condition triggered for a wave | Phase 3 |
+| M5 | Phase closeout complete | Synthesis, dashboard, implementation summary, memory-save record, and validation done | Phase 4 |
 <!-- /ANCHOR:milestones -->
 
 ---

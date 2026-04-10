@@ -22,6 +22,16 @@
 | 018 | 2 | Optional capability groups versus 43-tool exposure? | high | should-have | refactor | command/tool exposure model |
 | 019 | 2 | Reflective CLI config generation for primary workflows? | high | rejected | keep explicit contracts | command-surface design |
 | 020 | 2 | Which differences should stay fundamental? | high | should-have | keep core architecture, simplify edges | product direction |
+| 021 | 3 | Replace slash commands with a single `agl`-style front door? | high | rejected | keep slash commands, fix discovery | operator entrypoint strategy |
+| 022 | 3 | Is `plan -> implement -> complete` plus YAML indirection too heavy? | high | must-have | redesign | `spec_kit` lifecycle front door |
+| 023 | 3 | Is the `/memory:*` surface too parallel to `/spec_kit:*`? | high | should-have | merge | everyday memory UX |
+| 024 | 3 | Are levels/templates/strict validation too internal-facing for operators? | high | nice-to-have | simplify | template and validator UX |
+| 025 | 3 | Should named agents collapse into capability bundles? | high | must-have | merge | agent taxonomy |
+| 026 | 3 | Should deep loops keep externalized JSONL state? | high | should-have | keep | deep-loop architecture |
+| 027 | 3 | Should skills consolidate into capability packs? | high | should-have | merge | skill packaging |
+| 028 | 3 | Should Gate 2 skill routing become implicit? | high | must-have | simplify | Gate 2 UX |
+| 029 | 3 | Are `CLAUDE.md`, hooks, and constitutional docs too exposed? | high | should-have | redesign | operator contract and runtime docs |
+| 030 | 3 | Should Public add oneclick-style workflow presets? | high | should-have | add | quickstart workflow presets |
 
 ## Convergence Signal
 - Iterations without new signal: 0
@@ -35,8 +45,15 @@
 - Rejected: 2
 - Refactor/pivot verdicts: REFACTOR=3, PIVOT=1, SIMPLIFY=2, KEEP=4
 
-## Combined Totals
+## Phase 3 Totals
 - Must-have: 3
-- Should-have: 10
-- Nice-to-have: 2
-- Rejected: 5
+- Should-have: 5
+- Nice-to-have: 1
+- Rejected: 1
+- UX verdicts: SIMPLIFY=2, ADD=1, MERGE=3, KEEP=2, REDESIGN=2
+
+## Combined Totals
+- Must-have: 6
+- Should-have: 15
+- Nice-to-have: 3
+- Rejected: 6

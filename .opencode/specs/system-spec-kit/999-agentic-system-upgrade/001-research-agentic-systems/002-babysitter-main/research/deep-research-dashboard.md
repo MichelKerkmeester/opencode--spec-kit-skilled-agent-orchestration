@@ -22,19 +22,41 @@
 | 2 | 018 | Does Babysitter's testing approach suggest a better test philosophy for workflow runtime behavior? | high | should-have | Deterministic workflow simulation |
 | 2 | 019 | Does Babysitter surface a lightweight timing safeguard that Spec Kit should add to unattended loops? | medium | nice-to-have | Timing guard |
 | 2 | 020 | Should Spec Kit adopt Babysitter's four-layer compression subsystem as a major architecture move? | medium | rejected | `KEEP` current boundary; reject wholesale import |
+| 3 | 021 | Is the `/spec_kit:plan` -> `/implement` -> `/complete` split the right lifecycle UX? | high | must-have | `MERGE` lifecycle surface |
+| 3 | 022 | Should routine `/memory:*` behavior disappear into the main lifecycle UX? | high | should-have | `MERGE` memory into lifecycle |
+| 3 | 023 | Is the Level 1/2/3+ spec-folder UX intuitive enough, or should artifact creation become lazy? | high | should-have | `REDESIGN` starter packet + lazy expansion |
+| 3 | 024 | Are `@context-prime` and `@context` both necessary public continuity concepts? | high | should-have | `MERGE` bootstrap into continuity |
+| 3 | 025 | Is the externalized iteration/dashboard/JSONL artifact model itself too heavy? | high | rejected | `KEEP` inspectable evidence layer |
+| 3 | 026 | Should resume, handover, and bootstrap merge into one continuity stack? | high | should-have | `MERGE` handover into continuity |
+| 3 | 027 | Is the public skill roster too fragmented for operators? | high | must-have | `MERGE` public skills |
+| 3 | 028 | Should mandatory `skill_advisor.py` routing become fallback-only? | high | must-have | `SIMPLIFY` Gate 2 routing |
+| 3 | 029 | Is the operator guidance surface too hand-maintained across docs, commands, and YAML? | high | must-have | `REDESIGN` generated operator guidance |
+| 3 | 030 | Does the end-to-end workflow need execution profiles to lower repeat friction? | medium | nice-to-have | `ADD` execution profiles |
 
 ## Convergence Signal
 - Phase 1 iterations without new signal at stop: 0
 - Phase 2 iterations without new signal at stop: 0
+- Phase 3 iterations without new signal at stop: 0
 - Stop rule triggered: yes (`max_iterations`)
 
 ## Totals
 - Phase 1: must-have 2 | should-have 6 | nice-to-have 1 | rejected 1
 - Phase 2: must-have 2 | should-have 6 | nice-to-have 1 | rejected 1
-- Combined: must-have 4 | should-have 12 | nice-to-have 2 | rejected 2
+- Phase 3: must-have 4 | should-have 4 | nice-to-have 1 | rejected 1
+- Combined: must-have 8 | should-have 16 | nice-to-have 3 | rejected 3
 
-## Refactor / Pivot Verdicts
+## Phase 3 UX Verdicts
+- `SIMPLIFY`: 1
+- `ADD`: 1
+- `MERGE`: 5
+- `KEEP`: 1
+- `REDESIGN`: 2
+
+## Combined Verdicts
 - `REFACTOR`: 1
 - `PIVOT`: 2
-- `SIMPLIFY`: 2
-- `KEEP`: 2
+- `SIMPLIFY`: 3
+- `MERGE`: 5
+- `ADD`: 1
+- `REDESIGN`: 2
+- `KEEP`: 3

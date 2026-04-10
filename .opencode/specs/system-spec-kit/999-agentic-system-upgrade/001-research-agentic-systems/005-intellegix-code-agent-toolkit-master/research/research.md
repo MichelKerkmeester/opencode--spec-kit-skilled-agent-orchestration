@@ -1,6 +1,6 @@
 ---
 title: "Deep Research Report — 005-intellegix-code-agent-toolkit-master"
-description: "20-iteration research of Intellegix Code Agent Toolkit patterns for system-spec-kit improvement, including Phase 2 refactor/pivot/simplification analysis. 16 actionable findings and 4 rejected recommendations."
+description: "30-iteration research of Intellegix Code Agent Toolkit patterns for system-spec-kit improvement. Includes Phase 1 adoption findings, Phase 2 refactor/pivot analysis, and Phase 3 UX, agent-system, command, and skill recommendations. 24 actionable findings and 6 rejected recommendations."
 importance_tier: "important"
 contextType: "research"
 ---
@@ -8,49 +8,36 @@ contextType: "research"
 # Deep Research Report — 005-intellegix-code-agent-toolkit-master
 
 ## 1. Executive Summary
-- External repo: Intellegix Code Agent Toolkit, a bundled control plane for autonomous loops, orchestrator/worker control, council-style multi-model querying, browser-backed evidence gathering, and portfolio governance.
-- Iterations executed: 20 of 20
+- External repo: Intellegix Code Agent Toolkit, a bundled control plane for orchestrator-driven autonomous loops, worktree-based multi-agent execution, technology research, and lightweight project governance.
+- Iterations executed: 30 of 30
 - Stop reason: max_iterations
-- Combined finding totals: Must-have 4 | Should-have 9 | Nice-to-have 3 | Rejected 4
-- Phase 2 added a second research lens: not just "what to adopt," but "what to refactor, pivot, simplify, or explicitly keep" inside `system-spec-kit`.
-- Highest-priority combined outcomes:
-  - Build a dedicated typed deep-loop controller and move runtime truth out of scattered docs and YAML.
-  - Pivot automation-heavy packet governance toward behavior-first tests, with validators serving packet integrity rather than runtime truth.
-  - Formalize a lighter research-packet profile and decouple loop completion from mandatory archival-memory export.
+- Combined finding totals: Must-have 6 | Should-have 14 | Nice-to-have 4 | Rejected 6
+- Phase 1 asked: what patterns are worth adopting?
+- Phase 2 asked: what should `system-spec-kit` refactor, pivot, simplify, or explicitly keep?
+- Phase 3 asked: how should the operator-facing UX, command surface, agent roster, skill system, and automation shell change?
+
+### Highest-Priority Combined Outcomes
+- Build a dedicated typed deep-loop controller and pair it with behavior-first runtime tests.
+- Replace operator-facing level and gate ceremony with named work profiles and a thinner runtime brief.
+- Merge the public lifecycle, memory, agent, and skill surfaces down to smaller operator entry points while keeping current internals where they solve real problems.
+- Add a fast path for bound continuation and small scoped changes.
 
 ## 2. Research Method Note
-- Phase 1 followed the original improvement-adoption brief and concentrated on loop runtime, stop reasons, tests, session continuity, and optional council/guard patterns.
-- Phase 2 re-read the Phase 1 artifacts first, then expanded into refactor/pivot/simplification questions across spec lifecycle, memory boundaries, gate UX, agent architecture, validation philosophy, and operator surface.
-- On 2026-04-10, `mcp__cocoindex_code__search` timed out for this phase checkout, so Phase 2 fell back to direct file reads, exact `rg` searches, and test inspection. The fallback did not block the packet because the target scope is file-bounded and richly test-backed.
+- Phase 1 concentrated on deep-loop runtime, stop reasons, session continuity, tests, orchestration guardrails, and optional council/browser capabilities.
+- Phase 2 re-read the Phase 1 artifacts first, then expanded into refactor, pivot, simplify, and keep decisions around runtime truth, memory boundaries, validation philosophy, gate UX, and orchestration shape.
+- Phase 3 re-read the existing iterations and synthesis, then focused on user-facing command ergonomics, template/spec-folder UX, sub-agent granularity, skill packaging, hooks and constitutional automation, and full workflow friction.
+- On 2026-04-10, `mcp__cocoindex_code__search` timed out for this phase checkout, so the Phase 2 and Phase 3 passes fell back to direct file reads and exact `rg` searches. The fallback was acceptable because the scope is doc-heavy and file-bounded.
 
 ## 3. External Repo Map
-- The external repo is organized around five operational centers:
-  - `automated-loop/`: typed runtime config, state persistence, budget enforcement, NDJSON parsing, research bridge, and tests.
-  - `commands/` and `agents/`: user-facing orchestration surfaces and specialist prompts.
-  - `hooks/`: runtime enforcement and session injection.
-  - `council-automation/` and `mcp-servers/browser-bridge/`: optional advanced evidence gathering and multi-model workflows.
-  - `portfolio/`: maturity-aware anti-overbuilding rules.
-- The most transferable Phase 1 ideas came from `automated-loop/` and `hooks/`.
-- The most valuable Phase 2 signals came from the absence of local-equivalent simplicity: the external repo keeps loop runtime, instruction UX, and enforcement narrower than `system-spec-kit` does.
-
-```text
-Intellegix Toolkit
-├── automated-loop
-│   ├── loop_driver.py
-│   ├── config.py
-│   ├── state_tracker.py
-│   ├── ndjson_parser.py
-│   └── tests/
-├── agents
-│   └── orchestrator*.md
-├── commands
-│   └── orchestrator*.md, research/council/handoff commands
-├── hooks
-│   └── orchestrator-guard.py, inject-time.py
-├── council-automation
-├── mcp-servers/browser-bridge
-└── portfolio
-```
+- The external repo clusters around five operating centers:
+  - `automated-loop/`: runtime config, state persistence, budget handling, NDJSON parsing, and tests
+  - `commands/`: orchestration, research, handoff, and project bootstrap surfaces
+  - `agents/`: orchestrator, research, and specialist execution roles
+  - `hooks/`: orchestration guardrails and time/context injection
+  - `portfolio/`, `council-automation/`, and browser tooling: optional higher-order governance and research support
+- The strongest Phase 1 imports came from loop runtime control, stop handling, and test posture.
+- The strongest Phase 2 imports came from the external repo's tighter runtime boundaries.
+- The strongest Phase 3 signal came from its flatter operator-facing surface, even though the local system still solves a broader problem.
 
 ## 4. Findings Registry
 
@@ -60,176 +47,265 @@ Intellegix Toolkit
 - Origin iteration: `iteration-001.md`
 - system-spec-kit target: `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`, `.opencode/command/spec_kit/deep-research.md`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`
 - Priority: must-have
-- Description: The external loop does not trust "done" claims; it validates completion against a machine-checkable gate and emits explicit terminal causes. `system-spec-kit` should keep its convergence model, but add a packet-level completion gate and a richer stop taxonomy.
-- Evidence: `[SOURCE: external/automated-loop/loop_driver.py:33-37]`, `[SOURCE: external/automated-loop/loop_driver.py:541-587]`, `[SOURCE: external/automated-loop/tests/test_loop_driver.py:2213-2272]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:147-155]`, `[SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-286]`
+- Description: Keep convergence-based research, but add a stronger packet-level completion gate and richer terminal reasons instead of relying on "done" claims and thin stop semantics.
 
 ### Finding F-002 — Add Optional Runtime Session Continuity Beside Lineage
 - Origin iteration: `iteration-002.md`
 - system-spec-kit target: `.opencode/skill/sk-deep-research/references/state_format.md`, `.opencode/skill/sk-deep-research/assets/deep_research_config.json`, `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
 - Priority: should-have
-- Description: The external repo records a resumable runtime session handle separately from higher-level lineage state. `system-spec-kit` should add an optional runtime-session seam without replacing artifact-based lineage continuity.
-- Evidence: `[SOURCE: external/automated-loop/state_tracker.py:65-76]`, `[SOURCE: external/automated-loop/loop_driver.py:265-289]`, `[SOURCE: external/automated-loop/tests/test_ndjson_parser.py:135-149]`, `[SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:55-81]`
+- Description: Add a resumable runtime-session seam without replacing the existing artifact-based lineage model.
 
 ### Finding F-003 — Introduce Operational Backoff, Cooldown, And Single-Step Fallback
 - Origin iteration: `iteration-003.md`
-- system-spec-kit target: `.opencode/skill/sk-deep-research/assets/deep_research_config.json`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`, `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+- system-spec-kit target: `.opencode/skill/sk-deep-research/assets/deep_research_config.json`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`
 - Priority: should-have
-- Description: The external loop turns repeated slowdowns and timeouts into bounded, testable operational behavior. `system-spec-kit` should add optional cooldown, retry shaping, and one-step fallback for long autonomous runs.
-- Evidence: `[SOURCE: external/automated-loop/config.py:36-71]`, `[SOURCE: external/automated-loop/loop_driver.py:367-449]`, `[SOURCE: external/automated-loop/tests/test_loop_driver.py:1183-1225]`, `[SOURCE: .opencode/skill/sk-deep-research/assets/deep_research_config.json:3-13]`
+- Description: Turn repeated stalls into explicit operational behavior through cooldowns, retry shaping, and bounded fallback steps.
 
 ### Finding F-004 — Add Session-Health Signals Before Declaring Stagnation
 - Origin iteration: `iteration-004.md`
-- system-spec-kit target: `.opencode/skill/sk-deep-research/references/convergence.md`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`, `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+- system-spec-kit target: `.opencode/skill/sk-deep-research/references/convergence.md`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`
 - Priority: should-have
-- Description: The external loop distinguishes research saturation from session fatigue and rotates runtime sessions before declaring stagnation. `system-spec-kit` should add an optional session-health layer rather than relying on novelty signals alone.
-- Evidence: `[SOURCE: external/automated-loop/loop_driver.py:1064-1143]`, `[SOURCE: external/automated-loop/tests/test_loop_driver.py:1231-1413]`, `[SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:41-48]`, `[SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:214-243]`
+- Description: Separate research saturation from session fatigue by adding optional session-health heuristics and rotation behavior.
 
 ### Finding F-005 — Add Sentinel-Based Orchestrator Enforcement
 - Origin iteration: `iteration-006.md`
 - system-spec-kit target: `.opencode/agent/orchestrate.md`, `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md`
 - Priority: should-have
-- Description: The external toolkit enforces orchestrator role boundaries with a sentinel and hook rather than relying only on prompt compliance. `system-spec-kit` should adopt a lightweight runtime-enforcement pattern for orchestrated workflows where the runtime supports it.
-- Evidence: `[SOURCE: external/commands/orchestrator.md:1-23]`, `[SOURCE: external/hooks/orchestrator-guard.py:130-250]`, `[SOURCE: .opencode/agent/orchestrate.md:36-37]`, `[SOURCE: .opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md:31-40]`
+- Description: Add lightweight runtime enforcement for orchestration role boundaries where supported, instead of relying only on prompt compliance.
 
 ### Finding F-006 — Offer An Optional Council-Style Synthesis Profile
 - Origin iteration: `iteration-007.md`
 - system-spec-kit target: `.opencode/command/spec_kit/deep-research.md`, `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md`, `.opencode/skill/system-spec-kit/templates/research.md`
 - Priority: nice-to-have
-- Description: The external council pipeline structures agreement, disagreement, and unique insights before synthesis. `system-spec-kit` should adopt the synthesis shape as an optional advanced mode, not as the default loop path.
-- Evidence: `[SOURCE: external/council-automation/council_query.py:1-18]`, `[SOURCE: external/council-automation/synthesis_prompt.md:12-21]`, `[SOURCE: .opencode/skill/cli-copilot/SKILL.md:189-220]`
+- Description: Import the external repo's agreement/disagreement synthesis shape as an optional advanced research mode, not as the default path.
 
 ### Finding F-007 — Add Advisory Anti-Overbuilding Guidance, Not A New Tier System
 - Origin iteration: `iteration-009.md`
 - system-spec-kit target: `.opencode/skill/system-spec-kit/templates/decision-record.md`, `.opencode/skill/system-spec-kit/references/validation/validation_rules.md`
 - Priority: nice-to-have
-- Description: The external portfolio tier model is the wrong abstraction to import directly, but its anti-overbuilding heuristics could become advisory planning prompts or decision-record guidance.
-- Evidence: `[SOURCE: external/portfolio/PORTFOLIO.md.example:29-50]`, `[SOURCE: external/portfolio/DECISIONS.md:16-33]`, `[SOURCE: .opencode/skill/system-spec-kit/references/structure/phase_definitions.md:8-19]`
+- Description: Adapt anti-overbuilding heuristics into advisory prompts rather than importing the external portfolio-tier model literally.
 
 ### Finding F-008 — Expand Tests From Parity Checks To Runtime Guarantees
 - Origin iteration: `iteration-010.md`
 - system-spec-kit target: `.opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts`, `.opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts`
 - Priority: must-have
-- Description: The external repo treats tests as executable runtime specification. `system-spec-kit` should expand deep-research testing so stop reasons, session continuity, guard behavior, and fallback boundaries are provable rather than only documented.
-- Evidence: `[SOURCE: external/automated-loop/tests/test_loop_driver.py:129-164]`, `[SOURCE: external/automated-loop/tests/test_loop_driver.py:2213-2468]`, `[SOURCE: external/automated-loop/tests/test_state_tracker.py:158-168]`, `[SOURCE: .opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts:24-57]`, `[SOURCE: .opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts:225-259]`
+- Description: Treat runtime tests as executable specification for stop reasons, session continuity, and fallback behavior.
 
 ### Phase 2 Findings
 
 ### Finding F-009 — Formalize A Research-Packet Minimal Profile
 - Origin iteration: `iteration-011.md`
-- system-spec-kit target: `.opencode/skill/system-spec-kit/references/templates/level_specifications.md`, `.opencode/skill/system-spec-kit/references/templates/template_guide.md`, `.opencode/skill/system-spec-kit/references/structure/phase_definitions.md`, `.opencode/skill/sk-deep-research/references/state_format.md`
+- system-spec-kit target: `.opencode/skill/system-spec-kit/references/templates/level_specifications.md`, `.opencode/skill/system-spec-kit/references/templates/template_guide.md`
 - Priority: should-have
 - Refactor verdict: SIMPLIFY
-- Description: `system-spec-kit` already behaves as if deep research uses a distinct packet type, but the core documentation model still frames all work through the general Level 1/2/3+ ladder. It should formalize a lighter research-packet profile instead of leaving that split implicit.
-- Evidence: `[SOURCE: external/commands/orchestrator.md:193-220]`, `[SOURCE: external/portfolio/PORTFOLIO.md.example:45-50]`, `[SOURCE: .opencode/skill/system-spec-kit/references/templates/level_specifications.md:51-57]`, `[SOURCE: .opencode/skill/system-spec-kit/references/templates/level_specifications.md:81-97]`, `[SOURCE: .opencode/skill/system-spec-kit/references/structure/phase_definitions.md:17-27]`, `[SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:15-27]`
+- Description: Deep research already behaves like a distinct packet class. Formalize that lighter packet profile instead of forcing it through the full general level ladder.
 
 ### Finding F-010 — Separate Loop Completion From Memory Export
 - Origin iteration: `iteration-012.md`
-- system-spec-kit target: `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/deep-review.md`, `.opencode/skill/system-spec-kit/references/memory/save_workflow.md`, `.opencode/skill/system-spec-kit/references/memory/memory_system.md`
+- system-spec-kit target: `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/deep-review.md`, `.opencode/skill/system-spec-kit/references/memory/save_workflow.md`
 - Priority: should-have
 - Refactor verdict: REFACTOR
-- Description: Packet-local research artifacts already form a complete operational record. `system-spec-kit` should keep archival memory, but stop treating memory export as part of the loop's core success contract.
-- Evidence: `[SOURCE: external/automated-loop/state_tracker.py:65-77]`, `[SOURCE: external/automated-loop/state_tracker.py:137-179]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:147-154]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:196-209]`, `[SOURCE: .opencode/skill/system-spec-kit/references/memory/memory_system.md:17-27]`, `[SOURCE: .opencode/skill/system-spec-kit/references/memory/save_workflow.md:17-39]`
+- Description: Keep archival memory, but stop treating memory export as part of the loop's core completion contract.
 
 ### Finding F-011 — Build A First-Class Deep-Loop Controller
 - Origin iteration: `iteration-013.md`
-- system-spec-kit target: `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`, `.opencode/skill/sk-deep-research/references/state_format.md`, `.opencode/skill/sk-deep-research/references/convergence.md`
+- system-spec-kit target: `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`, `.opencode/skill/sk-deep-research/references/loop_protocol.md`
 - Priority: must-have
 - Refactor verdict: REFACTOR
-- Description: The local runtime contract is spread across command docs, YAML, protocol references, state references, and convergence logic. `system-spec-kit` should centralize lifecycle truth in a typed loop engine shared by research and review.
-- Evidence: `[SOURCE: external/automated-loop/config.py:36-71]`, `[SOURCE: external/automated-loop/config.py:178-250]`, `[SOURCE: external/automated-loop/state_tracker.py:65-77]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:166-173]`, `[SOURCE: .opencode/skill/sk-deep-research/references/loop_protocol.md:15-16]`, `[SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:15-27]`, `[SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:21-39]`
+- Description: Move lifecycle truth out of scattered docs and YAML into a typed runtime controller shared by research and review.
 
 ### Finding F-012 — Replace Universal Gate Choreography With Operating Profiles
 - Origin iteration: `iteration-014.md`
 - system-spec-kit target: `AGENTS.md`, `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md`, `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md`
 - Priority: should-have
 - Refactor verdict: PIVOT
-- Description: The local gate system is safer than the external one in absolute terms, but it imposes too much conversational ceremony on already-bound continuation work. `system-spec-kit` should introduce profiles such as `new-work`, `bound-continuation`, and `read-only-review`.
-- Evidence: `[SOURCE: AGENTS.md:165-186]`, `[SOURCE: AGENTS.md:198-209]`, `[SOURCE: .opencode/skill/system-spec-kit/constitutional/gate-enforcement.md:62-69]`, `[SOURCE: external/commands/orchestrator.md:36-43]`, `[SOURCE: external/commands/orchestrator.md:83-97]`, `[SOURCE: external/hooks/orchestrator-guard.py:56-83]`, `[SOURCE: external/hooks/orchestrator-guard.py:130-175]`
+- Description: Keep strong safety, but stop making every workflow pay the same conversational setup tax. Introduce profiles such as `new-work`, `bound-continuation`, and `read-only-review`.
 
 ### Finding F-013 — Decompose The Orchestrator Into Prompt Plus Policy
 - Origin iteration: `iteration-015.md`
-- system-spec-kit target: `.opencode/agent/orchestrate.md`, `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md`, future orchestration policy manifests
+- system-spec-kit target: `.opencode/agent/orchestrate.md`, `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md`
 - Priority: should-have
 - Refactor verdict: REFACTOR
-- Description: The local orchestrator prompt currently acts as routing manual, budget policy, review checklist, and dispatch template. It should be reduced to a decision layer backed by smaller structured policy surfaces.
-- Evidence: `[SOURCE: .opencode/agent/orchestrate.md:24-36]`, `[SOURCE: .opencode/agent/orchestrate.md:49-60]`, `[SOURCE: .opencode/agent/orchestrate.md:93-118]`, `[SOURCE: .opencode/agent/orchestrate.md:158-166]`, `[SOURCE: external/agents/orchestrator.md:15-23]`, `[SOURCE: external/agents/orchestrator.md:52-67]`, `[SOURCE: external/commands/orchestrator.md:1-18]`, `[SOURCE: external/hooks/orchestrator-guard.py:130-175]`
-- Overlap: phase `003` because command and orchestration UX would change alongside runtime shape.
+- Description: Reduce the orchestrator prompt to a decision layer backed by smaller policy surfaces.
 
 ### Finding F-014 — Govern Automation Packets With Tests First
 - Origin iteration: `iteration-016.md`
-- system-spec-kit target: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`, deep-loop contract tests, future orchestration/runtime test suites
+- system-spec-kit target: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`, future runtime test suites
 - Priority: must-have
 - Refactor verdict: PIVOT
-- Description: Documentation validators should remain strong for packet integrity, but automation-heavy workflows should be governed primarily by executable contract tests. The current validation culture still leans too heavily on documentation as runtime authority.
-- Evidence: `[SOURCE: external/.github/workflows/ci.yml:13-40]`, `[SOURCE: external/automated-loop/tests/test_loop_driver.py:2213-2272]`, `[SOURCE: .opencode/skill/system-spec-kit/scripts/spec/validate.sh:81-99]`, `[SOURCE: .opencode/skill/system-spec-kit/scripts/spec/validate.sh:528-634]`, `[SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:716-729]`
+- Description: Keep validators for packet integrity, but move runtime truth for automation-heavy workflows into executable tests.
 
 ### Finding F-015 — Publish A Flatter Operator Surface Over Command Internals
 - Origin iteration: `iteration-017.md`
-- system-spec-kit target: `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/deep-review.md`, command README surfaces, future generated operator docs
+- system-spec-kit target: `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/deep-review.md`
 - Priority: nice-to-have
 - Refactor verdict: SIMPLIFY
-- Description: The modular layering of command docs, YAML assets, skills, and routing policy is good internally, but too much of it leaks into the operator experience. `system-spec-kit` should present flatter generated command surfaces for humans.
-- Evidence: `[SOURCE: external/README.md:11-17]`, `[SOURCE: external/commands/orchestrator.md:1-24]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:166-173]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:216-224]`, `[SOURCE: AGENTS.md:174-179]`
-- Overlap: phase `003` because this is partly a command-system UX problem rather than a pure loop-runtime problem.
+- Description: Keep modular command internals, but generate flatter operator-facing command surfaces.
 
 ### Finding F-016 — Add A Machine-Readable Runtime Summary Artifact
 - Origin iteration: `iteration-018.md`
-- system-spec-kit target: `.opencode/skill/sk-deep-research/references/state_format.md`, reducer/dashboard generation surfaces, future `research/deep-research-runtime.json`
+- system-spec-kit target: `.opencode/skill/sk-deep-research/references/state_format.md`
 - Priority: should-have
 - Refactor verdict: KEEP
-- Description: Keep the existing packet architecture, but add one derived machine-readable summary so later automation does not need to parse JSONL and markdown dashboards to assess loop health.
-- Evidence: `[SOURCE: external/automated-loop/state_tracker.py:52-60]`, `[SOURCE: external/automated-loop/state_tracker.py:239-260]`, `[SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:15-27]`, `[SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:469-499]`
+- Description: Add one derived machine-readable runtime summary so automation does not need to parse JSONL plus markdown dashboards.
 
-## 5. Refactor / Pivot Recommendations
-- **Dedicated deep-loop controller first.** Phase 2's clearest architectural conclusion is that runtime truth should move out of scattered docs and YAML into a typed controller that owns lifecycle, state writes, and stop reasons.
-- **Research packets need a lighter formal profile.** The system already behaves as if deep-loop packets are a distinct packet class; formalizing that class would reduce documentation friction without weakening implementation packets.
-- **Keep archival memory, but stop making it a loop primitive.** Packet-local research artifacts should define completion; memory export should be an explicit downstream action.
-- **Shift gate enforcement toward profiles and runtime sentinels.** New-work safety should stay strong, but bound continuation and read-only review should not pay the same conversational setup tax.
-- **Refactor the orchestrator prompt into prompt plus policy.** Routing tables, budget rules, and dispatch schema should become structured policy rather than remaining embedded in one large prompt.
-- **Treat automation semantics as test-owned.** Validators should keep packets clean, while executable tests become the primary source of truth for loop behavior.
-- **Flatten the operator surface.** Commands should feel simpler even if the internals remain modular.
-- **Add one machine-readable runtime summary.** This is a low-risk improvement that supports the larger controller/testing changes without forcing a redesign first.
+### Phase 3 Findings
+
+### Finding F-017 — Merge Lifecycle Commands Into One Profile-Driven Entry Surface
+- Origin iteration: `iteration-021.md`
+- system-spec-kit target: `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/implement.md`, `.opencode/command/spec_kit/complete.md`
+- Priority: should-have
+- UX verdict: MERGE
+- Description: Keep separate internal workflows if needed, but stop making `plan`, `implement`, and `complete` the primary public lifecycle split.
+
+### Finding F-018 — Simplify Memory Command Exposure And Hide YAML Internals
+- Origin iteration: `iteration-022.md`
+- system-spec-kit target: `.opencode/command/spec_kit/*.md`, `.opencode/command/memory/save.md`, `.opencode/command/memory/search.md`
+- Priority: should-have
+- UX verdict: SIMPLIFY
+- Description: Embed common context-load/save behavior into the lifecycle surface and keep YAML assets as an internal implementation detail.
+
+### Finding F-019 — Redesign Spec-Folder UX Around Named Profiles
+- Origin iteration: `iteration-023.md`
+- system-spec-kit target: `.opencode/skill/system-spec-kit/references/templates/level_specifications.md`, `.opencode/skill/system-spec-kit/references/templates/template_guide.md`, `CLAUDE.md`
+- Priority: must-have
+- UX verdict: REDESIGN
+- Description: Keep the current file sets and validators, but replace Level 1/2/3+ as the primary operator metaphor with named work profiles.
+
+### Finding F-020 — Merge The Default Agent Roster Down To A Smaller Core
+- Origin iteration: `iteration-024.md`
+- system-spec-kit target: `.opencode/agent/orchestrate.md`, `.opencode/agent/context.md`, `.opencode/agent/context-prime.md`, `.opencode/agent/handover.md`
+- Priority: should-have
+- UX verdict: MERGE
+- Description: Preserve truly distinct specialists, but collapse overlapping session-context roles into a smaller default roster.
+
+### Finding F-021 — Merge The Skill Family Into A Smaller Operator Entry Surface
+- Origin iteration: `iteration-026.md`
+- system-spec-kit target: `.opencode/skill/sk-code-opencode/SKILL.md`, `.opencode/skill/sk-code-web/SKILL.md`, `.opencode/skill/sk-code-full-stack/SKILL.md`, `.opencode/skill/sk-code-review/SKILL.md`
+- Priority: should-have
+- UX verdict: MERGE
+- Description: Extend the existing baseline-plus-overlay idea beyond review workflows so operators see one smaller code-workflow surface instead of many sibling skill identities.
+
+### Finding F-022 — Make Skill Routing Implicit And Demote Niche Skills To Opt-In
+- Origin iteration: `iteration-027.md`
+- system-spec-kit target: `AGENTS.md`, `.opencode/skill/scripts/skill_advisor.py`, `.opencode/skill/sk-prompt-improver/SKILL.md`, `.opencode/skill/sk-agent-improver/SKILL.md`
+- Priority: nice-to-have
+- UX verdict: SIMPLIFY
+- Description: Keep routing and niche specialist skills, but move them out of the everyday visible path.
+
+### Finding F-023 — Redesign The Gate And Hook Surface Into A Thin Operator Contract
+- Origin iteration: `iteration-028.md`
+- system-spec-kit target: `CLAUDE.md`, constitutional gate docs, startup/stop hooks
+- Priority: must-have
+- UX verdict: REDESIGN
+- Description: Keep the current automation and policy internals, but publish a much thinner operator brief over them.
+
+### Finding F-024 — Add A Fast Path For Bound Continuation And Small Changes
+- Origin iteration: `iteration-029.md`
+- system-spec-kit target: `AGENTS.md`, `.opencode/command/spec_kit/implement.md`, `.opencode/command/spec_kit/resume.md`
+- Priority: should-have
+- UX verdict: ADD
+- Description: Add a reduced-friction workflow for already-bound continuation and small deltas so the system stops re-asking and re-framing known state.
+
+## 5. Phase 3 — UX, Agentic System & Skills Analysis
+
+### Command UX
+- The core lifecycle is over-fragmented at the public boundary. Internally, `plan`, `implement`, and `complete` are reasonable phases. Externally, they read like three products.
+- `/memory:*` adds a second large public family beside `/spec_kit:*`, which makes the system feel bifurcated even though common context actions are part of normal lifecycle work.
+- YAML assets are useful internals and a weak public abstraction. Operators should not need to care that markdown owns setup and YAML owns execution.
+
+### Template And Spec-Folder UX
+- Spec folders remain valuable because they preserve traceability, scope, and handoff quality.
+- The Level 1/2/3+ numbering system is the wrong primary metaphor for operators. Named work profiles are easier to understand and easier to map to risk.
+- `validate.sh --strict` and the 14-rule system are strong maintainer tools, but they should be progressively revealed rather than sitting at the center of the everyday UX.
+
+### Sub-Agent Architecture
+- The LEAF iteration model for deep research and deep review still solves a real problem and should stay.
+- The default roster is too granular around session context handling. Bootstrap, retrieval, and continuation are over-separated compared with the value they provide as public identities.
+- The orchestrate-plus-policy stack should trend toward fewer named roles at the shell and more runtime modules under the hood.
+
+### Skills System
+- The review stack already shows the best pattern: one baseline plus one overlay. The rest of the skill family should learn from that.
+- Code-workflow skills are more fragmented than they need to be for operators.
+- `skill_advisor.py` is useful infrastructure, but visible routing ceremony should shrink.
+- Specialist skills such as prompt improvement and agent improvement are valid capabilities, but they are advanced tools, not core onboarding concepts.
+
+### Automation And Integration UX
+- Hooks, memory, code-graph state, and constitutional routing already form a strong hidden automation substrate.
+- The problem is not lack of automation. It is that the operator sees too much of the machinery instead of getting a concise shell over it.
+- `CLAUDE.md` in its current size and density is not a sustainable everyday interface for the value it is trying to carry.
+
+### End-To-End Workflow Friction
+- The current system asks too many setup questions on already-bound work and makes continuation feel more like a re-initialization than a resume.
+- A bound continuation fast path is the clearest UX addition from this phase.
+
+### Phase 3 Verdict Totals
+- SIMPLIFY: 2
+- ADD: 1
+- MERGE: 3
+- KEEP: 2
+- REDESIGN: 2
 
 ## 6. Rejected Recommendations
 
 ### Rejection R-001 — Do Not Import Multi-Agent File Locks Into The Current Deep-Research Loop
 - Origin iteration: `iteration-005.md`
 - Rationale: The external manifest-and-lock stack solves concurrent worker editing, while the current deep-research loop is intentionally leaf-only and serial.
-- Evidence: `[SOURCE: external/automated-loop/multi_agent.py:1-10]`, `[SOURCE: external/automated-loop/file_locking.py:95-169]`, `[SOURCE: .opencode/skill/sk-deep-research/references/loop_protocol.md:159-175]`
 
 ### Rejection R-002 — Do Not Make Browser Automation A Default Research Dependency
 - Origin iteration: `iteration-008.md`
-- Rationale: Browser-backed evidence gathering is valuable but belongs to an optional capability layer, not the baseline deep-research runtime.
-- Evidence: `[SOURCE: external/mcp-servers/browser-bridge/server.js:95-176]`, `[SOURCE: external/commands/frontend-e2e.md:34-45]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:196-209]`
+- Rationale: Browser-backed evidence gathering is useful but belongs to an optional capability layer, not the baseline deep-research runtime.
 
 ### Rejection R-003 — Do Not Replace Global Memory With `.workflow` Files And Handoffs Alone
 - Origin iteration: `iteration-019.md`
-- Rationale: The external repo's runtime state and handoffs are narrower than `system-spec-kit`'s cross-packet semantic memory problem. Keep the memory platform; only clean up the runtime boundary.
-- Evidence: `[SOURCE: external/automated-loop/state_tracker.py:65-77]`, `[SOURCE: external/handoffs/README.md:1-18]`, `[SOURCE: .opencode/skill/system-spec-kit/references/memory/memory_system.md:17-35]`, `[SOURCE: .opencode/skill/system-spec-kit/references/memory/memory_system.md:99-145]`
+- Rationale: The external repo's runtime state and handoffs are narrower than the local cross-packet semantic memory problem.
 
 ### Rejection R-004 — Do Not Replace Fresh-Context Research Loops With A Single-Loop Manager Model
 - Origin iteration: `iteration-020.md`
-- Rationale: The external single-loop orchestrator is a good abstraction for implementation supervision, but it is not a stronger abstraction for packet-local research evidence gathering.
-- Evidence: `[SOURCE: external/agents/orchestrator.md:15-23]`, `[SOURCE: external/agents/orchestrator.md:52-67]`, `[SOURCE: .opencode/command/spec_kit/deep-research.md:136-154]`, `[SOURCE: .opencode/skill/sk-deep-research/references/loop_protocol.md:159-175]`
+- Rationale: The external single-loop orchestrator is a strong implementation supervisor, not a better packet-local research abstraction.
 
-## 7. Priority Queue
-1. **Controller + tests together.** Pair Finding F-011 with Finding F-014 so the new runtime contract is executable from day one.
-2. **Formalize research-packet minimal mode.** Implement Finding F-009 early so later runtime/controller work is not forced through the wrong packet model.
-3. **Decouple loop completion from archival memory.** Apply Finding F-010 once the minimal research-packet profile exists.
-4. **Introduce gate profiles and orchestrator policy extraction.** Findings F-012 and F-013 are the next leverage point for operator UX and enforcement clarity.
-5. **Add machine-readable runtime summaries.** Finding F-016 is a low-risk enabler for later reporting and controller work.
-6. **Leave operator-surface consolidation until after phase `003` alignment work.** Finding F-015 is valuable but should not outrun command-system ownership.
+### Rejection R-005 — Do Not Replace LEAF Research And Review Loops With Generic Roles
+- Origin iteration: `iteration-025.md`
+- Rationale: The local LEAF iteration pattern solves packet-local evidence, reducer synchronization, and bounded write-scope problems that the external generic roles do not.
+
+### Rejection R-006 — Do Not Copy External Minimalism Literally By Deleting The Local Capability Core
+- Origin iteration: `iteration-030.md`
+- Rationale: The external repo is simpler because it solves a narrower problem. `system-spec-kit` should thin the shell, not delete hooks, memory, spec packets, and loop capabilities that still add value.
+
+## 7. Combined Recommendation Stack
+
+### Immediate Architecture And Runtime
+1. Pair Finding F-011 with Finding F-014 so the new deep-loop controller ships with runtime-first tests.
+2. Preserve the fresh-context LEAF model and the broader memory platform as hard constraints while refactoring the runtime around them.
+3. Add the machine-readable runtime summary once the controller boundary is stable.
+
+### Immediate UX And Operator Surface
+1. Treat Finding F-019 and Finding F-023 as the main shell redesign: named work profiles plus a thin operator contract.
+2. Use Findings F-017 and F-018 to collapse the lifecycle and memory surfaces into a smaller public entry set.
+3. Apply Finding F-024 early so bound continuation and small work can benefit immediately from shell simplification.
+
+### Next-Order System Cleanup
+1. Apply Finding F-020 to shrink the default agent roster without touching the specialized LEAF research and review roles.
+2. Apply Findings F-021 and F-022 so the skill system becomes smaller at the surface while keeping routing and overlays internally.
 
 ## 8. Cross-Phase Implications
-- **Phase `003` overlap:** Findings F-013 and F-015 touch command packaging, public workflow surfaces, and orchestration UX. They should be coordinated with the phase researching command-system ergonomics rather than implemented in isolation.
-- **Phase `001` overlap:** The strongest Phase 2 findings are less about agent optimization itself than about runtime control-plane shape, so overlap with phase `001` is limited.
-- **Sibling runtime packets:** Findings F-011, F-012, F-014, and F-016 all touch shared deep-loop runtime behavior and should be planned together enough to avoid documentation/runtime drift.
-- **Memory and validation packets:** Findings F-010 and F-014 both affect where the system draws the line between loop-state truth, archival memory, and packet governance.
+- Phase 1 proved that the deep-loop runtime wants stronger controller and test ownership.
+- Phase 2 proved that safety and validation need different operating profiles instead of universal choreography.
+- Phase 3 proved that most remaining pain is at the shell: commands, profiles, agent/skill naming, and visible gate machinery.
+- The correct roadmap is therefore "runtime contract first, shell simplification immediately after," not either one in isolation.
 
 ## 9. Recommended Next Step
-Open a follow-on implementation packet for a **shared deep-loop runtime contract** that combines:
-- F-011: typed controller extraction
-- F-014: behavior-first validation pivot
-- F-016: machine-readable runtime summary
+Open a follow-on implementation packet for a **profile-driven operator shell over the existing capability core** with this scope:
+- Named work profiles replacing direct Level 1/2/3+ language at the primary entry surface
+- A thin runtime brief replacing most operator-facing gate and policy exposition
+- Merged public lifecycle and memory entry surfaces
+- A fast continuation profile for already-bound work
 
-That packet should explicitly preserve the current fresh-context leaf model (R-004), preserve the global memory platform (R-003), and use F-009/F-010 as boundary constraints so the new controller is built against the right packet model from the start.
+That packet should explicitly preserve:
+- the typed deep-loop controller and behavior-first testing direction from Phase 2
+- the LEAF research/review iteration model
+- the broader memory and hook automation core
+
+The guiding principle after all 30 iterations is:
+
+> `system-spec-kit` should become simpler where users touch it, not simpler by becoming less capable.

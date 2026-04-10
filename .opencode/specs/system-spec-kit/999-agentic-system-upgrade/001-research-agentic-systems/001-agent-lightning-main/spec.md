@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 001-agent-lightning-main Research Phase"
-description: "Read-only 10-iteration deep research on the bundled Agent Lightning repository to extract RL-specific tracing, reward, store, adapter, and trainer patterns that could improve system-spec-kit without duplicating existing orchestration or memory capabilities."
+description: "Read-only three-wave, 30-iteration deep research on the bundled Agent Lightning repository to extract RL-specific tracing, UX, command, agent, skill, and workflow patterns that could improve system-spec-kit without duplicating its core governance or memory capabilities."
 trigger_phrases:
   - "001-agent-lightning-main research spec"
   - "agent lightning phase spec"
@@ -18,7 +18,7 @@ contextType: "spec"
 
 ## EXECUTIVE SUMMARY
 
-Phase `001-agent-lightning-main` is a read-only research packet that studies the bundled Agent Lightning repository as a source of RL-specific patterns for `system-spec-kit`. The research focuses on zero-code-change tracing, span lifecycle management, reward attachment, adapter pipelines, trainer and algorithm boundaries, and selective optimization of multi-agent traces, then maps each finding to a concrete `system-spec-kit` file, module, or concept.
+Phase `001-agent-lightning-main` is a read-only research packet that studies the bundled Agent Lightning repository as a source of RL-specific and operator-surface patterns for `system-spec-kit`. Across three ten-iteration waves, the research covers tracing, span lifecycle management, reward attachment, adapter pipelines, trainer and algorithm boundaries, command UX, template UX, agent topology, skill packaging, automation surfaces, and end-to-end workflow friction, then maps each finding to a concrete `system-spec-kit` file, module, or concept.
 
 **Key Decisions**: Keep all writes inside this phase folder; treat `external/` as read-only; prefer static source analysis over runtime reproduction; require exact file:line citations in every iteration artifact.
 
@@ -48,7 +48,7 @@ Phase `001-agent-lightning-main` is a read-only research packet that studies the
 
 ### Purpose
 
-Produce a 10-iteration evidence-backed research report that classifies Agent Lightning patterns as `adopt now`, `prototype later`, or `reject`, and ties every recommendation to a concrete `system-spec-kit` target file, module, or concept.
+Produce a three-wave, 30-iteration evidence-backed research report that classifies Agent Lightning patterns as `adopt now`, `prototype later`, or `reject`, and ties every recommendation to a concrete `system-spec-kit` target file, module, or concept.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -74,7 +74,7 @@ Produce a 10-iteration evidence-backed research report that classifies Agent Lig
   - `.opencode/command/spec_kit/`
   - `.opencode/command/memory/`
   - `.opencode/agent/`
-- Ten dated research iteration artifacts under `research/iterations/`
+- Thirty dated research iteration artifacts under `research/iterations/`
 - State tracking in `research/deep-research-state.jsonl`
 - Canonical synthesis in `research/research.md`
 - Dashboard summary in `research/deep-research-dashboard.md`
@@ -115,7 +115,7 @@ Produce a 10-iteration evidence-backed research report that classifies Agent Lig
 |----|-------------|---------------------|
 | REQ-001 | Read `phase-research-prompt.md` and use it as the governing phase brief | Plan and iteration scope explicitly reflect the phase brief's target questions and constraints |
 | REQ-002 | Validate Level 3 phase docs before deep research begins | `validate.sh <phase-path> --strict` passes before iteration 001 |
-| REQ-003 | Execute at least 5 meaningful iterations and target 10 unless convergence or insufficient evidence stops earlier | `research/iterations/` contains dated iteration files and `research/deep-research-state.jsonl` records each run |
+| REQ-003 | Execute at least 5 meaningful iterations per wave and target 10 unless convergence or insufficient evidence stops earlier | `research/iterations/` contains 30 dated iteration files across the three completed waves and `research/deep-research-state.jsonl` records each run |
 | REQ-004 | Each iteration investigates one narrow, falsifiable question tied to a concrete `system-spec-kit` target | Every iteration file includes a precise question, conclusion, adoption recommendation, and target path |
 | REQ-005 | Every finding is backed by real file:line citations from both Agent Lightning and Public when relevant | Iteration and synthesis files use `[SOURCE: file:line-line]` citations only for real lines |
 | REQ-006 | The synthesis must distinguish RL-specific value from generic orchestration overlap | `research/research.md` explicitly marks adopt, prototype, and reject recommendations with rationale |
@@ -129,7 +129,7 @@ Produce a 10-iteration evidence-backed research report that classifies Agent Lig
 | REQ-009 | Map at least three end-to-end Agent Lightning flows | Research covers span creation, span-to-training-data transformation, and trainer or store coordination |
 | REQ-010 | Cover tracer, store, adapter, trainer, algorithm, examples, and docs at least once across the loop | State log and report show subsystem coverage rather than repeating one narrow module |
 | REQ-011 | Produce a dashboard-style summary of iterations and finding totals | `research/deep-research-dashboard.md` exists and reflects the executed iterations |
-| REQ-012 | Produce a closeout summary plus memory save after research completes | `implementation-summary.md` exists and `generate-context.js` runs successfully |
+| REQ-012 | Produce a closeout summary plus an auditable memory-save record after research completes | `implementation-summary.md` exists and the earlier successful `generate-context.js` save remains documented |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -137,8 +137,8 @@ Produce a 10-iteration evidence-backed research report that classifies Agent Lig
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: 10 evidence-backed iterations complete unless convergence or insufficient evidence stops the loop earlier after at least 5 iterations.
-- **SC-002**: At least 5 actionable findings appear in `research/research.md`, each mapped to a concrete `system-spec-kit` file, module, or concept.
+- **SC-001**: 30 evidence-backed iterations across three waves complete unless a valid stop rule ends a wave after at least 5 iterations.
+- **SC-002**: At least 20 actionable findings appear in `research/research.md`, each mapped to a concrete `system-spec-kit` file, module, or concept.
 - **SC-003**: Every finding carries exact source citations and an explicit recommendation tier.
 - **SC-004**: The report clearly identifies which Agent Lightning patterns are RL-specific enough to matter for Public and which are redundant.
 - **SC-005**: `validate.sh --strict` passes before closing the phase.
@@ -192,7 +192,7 @@ Produce a 10-iteration evidence-backed research report that classifies Agent Lig
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | 10 iterations, multiple external subsystems, multiple Public comparison seams |
+| Scope | 22/25 | Three research waves, 30 iterations, multiple external subsystems, and multiple Public comparison seams |
 | Risk | 14/25 | Recommendation quality matters; direct code edits are out of scope |
 | Research | 18/20 | Static source analysis across tracer, store, adapter, trainer, algorithm, examples, and docs |
 | Multi-Agent | 0/15 | User explicitly disallowed sub-agents |

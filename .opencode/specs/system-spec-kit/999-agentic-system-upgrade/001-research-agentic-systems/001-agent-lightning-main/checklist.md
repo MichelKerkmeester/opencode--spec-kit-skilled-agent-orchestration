@@ -31,7 +31,7 @@ contextType: "checklist"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in `spec.md` [Evidence: scope, requirements, success criteria, and edge cases are defined in the completed phase spec]
-- [x] CHK-002 [P0] Technical approach defined in `plan.md` [Evidence: the plan records the 10-iteration loop, data flow, rollback, milestones, and closeout path]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` [Evidence: the plan records the three-wave, 30-iteration loop, data flow, rollback, milestones, and closeout path]
 - [x] CHK-003 [P1] Dependencies identified and available [Evidence: plan dependency table covers the phase brief, bundled `external/`, validator, and `generate-context.js`, and all were used successfully]
 <!-- /ANCHOR:pre-impl -->
 
@@ -51,8 +51,8 @@ contextType: "checklist"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Research questions answered or explicitly rejected with evidence [Evidence: all 10 iterations end in a confidence-tagged conclusion and adoption decision, including 3 explicit rejections]
-- [x] CHK-021 [P0] Iteration files complete and consistent with JSONL state [Evidence: `research/iterations/iteration-001.md` through `research/iterations/iteration-010.md` align with the 10 JSONL rows in `research/deep-research-state.jsonl`]
+- [x] CHK-020 [P0] Research questions answered or explicitly rejected with evidence [Evidence: all 30 iterations end in a confidence-tagged conclusion and adoption decision, including 6 explicit rejections]
+- [x] CHK-021 [P0] Iteration files complete and consistent with JSONL state [Evidence: `research/iterations/iteration-001.md` through `research/iterations/iteration-030.md` align with the 30 JSONL rows in `research/deep-research-state.jsonl`]
 - [x] CHK-022 [P1] Cross-phase overlap with phase 005 explicitly addressed [Evidence: `research/research.md` isolates RL-specific findings and rejects generic loop imports as phase-005 overlap]
 - [x] CHK-023 [P1] Convergence or stop reason documented honestly [Evidence: the report and dashboard both record `Stop reason: max_iterations` and `stop rule triggered: no`]
 <!-- /ANCHOR:testing -->
@@ -73,7 +73,7 @@ contextType: "checklist"
 ## Documentation
 
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `decision-record.md` stay synchronized [Evidence: packet metadata now reflects completion, and the plan and tasks are marked done]
-- [x] CHK-041 [P1] `research/research.md` reflects the executed iteration count and stop reason [Evidence: the executive summary records 10 of 10 iterations and `max_iterations`]
+- [x] CHK-041 [P1] `research/research.md` reflects the executed iteration count and stop reason [Evidence: the executive summary records 30 of 30 iterations and `max_iterations`]
 - [x] CHK-042 [P2] Rejected recommendations are documented, not silently dropped [Evidence: `research/research.md` has a dedicated rejected-recommendations section with 3 items]
 <!-- /ANCHOR:docs -->
 
@@ -129,7 +129,7 @@ contextType: "checklist"
 ## L3+: DEPLOYMENT READINESS
 
 - [x] CHK-120 [P0] Rollback procedure documented [Evidence: `plan.md` and `decision-record.md` both record a rollback path for invalid research artifacts or insufficient static analysis]
-- [x] CHK-121 [P0] Closeout names the next recommended packet or follow-on direction [Evidence: `research/research.md` recommends a first follow-on packet for richer deep-loop metrics and dashboards]
+- [x] CHK-121 [P0] Closeout names the next recommended packet or follow-on direction [Evidence: `research/research.md` recommends five follow-on packets, led by the lifecycle front-door packet]
 - [x] CHK-122 [P1] Final report identifies blast radius for each recommendation [Evidence: each iteration file records blast radius, and the synthesis preserves those recommendation boundaries]
 - [x] CHK-123 [P1] Memory save command executed successfully [Evidence: `generate-context.js --json ...` completed successfully and indexed the saved memory]
 - [x] CHK-124 [P2] Follow-up questions for later phases captured [Evidence: every iteration file ends with follow-up questions]
@@ -152,9 +152,9 @@ contextType: "checklist"
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-140 [P1] All phase docs synchronized with final outcomes [Evidence: spec, plan, tasks, checklist, report, dashboard, and implementation summary now reflect the completed phase]
-- [x] CHK-141 [P1] `implementation-summary.md` matches `research/research.md` [Evidence: both record 10 iterations, `max_iterations`, and the `1 / 5 / 1 / 3` finding split]
-- [x] CHK-142 [P2] Dashboard totals match the final report totals [Evidence: both artifacts report 1 must-have, 5 should-have, 1 nice-to-have, and 3 rejected]
-- [x] CHK-143 [P2] Memory save outcome is reflected honestly in closeout docs [Evidence: the closeout notes the initial deprecated direct-folder invocation and the successful JSON-primary recovery]
+- [x] CHK-141 [P1] `implementation-summary.md` matches `research/research.md` [Evidence: both record 30 iterations, `max_iterations`, and the `6 / 15 / 3 / 6` finding split]
+- [x] CHK-142 [P2] Dashboard totals match the final report totals [Evidence: both artifacts report 6 must-have, 15 should-have, 3 nice-to-have, and 6 rejected]
+- [x] CHK-143 [P2] Memory save outcome is reflected honestly in closeout docs [Evidence: the closeout preserves the earlier successful JSON-primary memory save and notes that this Phase 3 extension did not create a second memory artifact]
 <!-- /ANCHOR:docs-verify -->
 
 ---

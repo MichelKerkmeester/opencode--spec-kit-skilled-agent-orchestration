@@ -22,6 +22,16 @@
 | 2 | 018 | Command surface sprawl | high | should-have | `.opencode/command/spec_kit/README.txt` |
 | 2 | 019 | Deep-loop abstraction overhead | high | must-have | `.opencode/skill/sk-deep-research/references/state_format.md` |
 | 2 | 020 | Core versus extension boundary | high | should-have | `.opencode/command/spec_kit/README.txt` |
+| 3 | 021 | Command UX surface area | high | should-have | `.opencode/command/spec_kit/README.txt` |
+| 3 | 022 | Lifecycle split versus integrated flow | high | must-have | `.opencode/command/spec_kit/README.txt` |
+| 3 | 023 | Template and spec-folder bootstrap UX | high | should-have | `.opencode/skill/system-spec-kit/templates/README.md` |
+| 3 | 024 | Sub-agent granularity and public surface | high | should-have | `.opencode/agent/orchestrate.md` |
+| 3 | 025 | LEAF iteration pattern versus simpler state passing | high | rejected | `.opencode/agent/deep-research.md` |
+| 3 | 026 | Skills system packaging and overlap | high | should-have | `.opencode/skill/README.md` |
+| 3 | 027 | Gate 2 skill routing ceremony | high | must-have | `AGENTS.md` |
+| 3 | 028 | Gates, hooks, and constitutional surface UX | high | must-have | `CLAUDE.md` |
+| 3 | 029 | End-to-end workflow friction | high | should-have | `.opencode/command/spec_kit/README.txt` |
+| 3 | 030 | Memory surface boundaries in the UX redesign | high | rejected | `.opencode/command/memory/README.txt` |
 
 ## Convergence Signal
 - Iterations without new signal: 0
@@ -29,13 +39,20 @@
 - Stop reason: max_iterations
 
 ## Finding Totals
-- Must-have: 4
-- Should-have: 9
+- Must-have: 7
+- Should-have: 14
 - Nice-to-have: 1
-- Rejected: 6
+- Rejected: 8
 
 ## Phase 2 Verdict Totals
 - REFACTOR: 2
 - PIVOT: 2
 - SIMPLIFY: 3
 - KEEP: 3
+
+## Phase 3 UX Verdict Totals
+- SIMPLIFY: 2
+- ADD: 2
+- MERGE: 3
+- KEEP: 2
+- REDESIGN: 1

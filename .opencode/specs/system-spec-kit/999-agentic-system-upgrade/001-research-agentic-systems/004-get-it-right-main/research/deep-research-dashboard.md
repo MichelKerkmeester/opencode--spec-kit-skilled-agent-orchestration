@@ -22,6 +22,16 @@
 | 018 | 2 | Is system-spec-kit's validation philosophy too document-centric for implementation retries? | high | must-have | REFACTOR | `retry workflow + completion contracts` |
 | 019 | 2 | Does the external repo's minimal documentation posture justify replacing the durable spec-folder lifecycle? | high | rejected | KEEP | `spec lifecycle architecture` |
 | 020 | 2 | Should retry, deep-research, and deep-review share a generic loop kernel instead of each re-implementing orchestration? | high | should-have | REFACTOR | `loop orchestration architecture` |
+| 021 | 3 | Does the external repo's single entry workflow suggest that system-spec-kit's plan / implement / complete split is too fragmented for everyday operator use? | high | must-have | MERGE | `spec_kit lifecycle entry surface` |
+| 022 | 3 | Is the /memory:* command family too parallel to /spec_kit:*, creating a second operator surface that ordinary lifecycle work should not have to model directly? | high | must-have | MERGE | `memory + spec_kit surface integration` |
+| 023 | 3 | Does the external repo suggest that system-spec-kit's command UX is over-ceremonial because the operator-visible markdown commands and the hidden YAML assets repeat too much of the same lifecycle story? | high | should-have | SIMPLIFY | `shared setup/routing for command surfaces` |
+| 024 | 3 | Does the external repo's lighter artifact model imply that system-spec-kit's Level 1/2/3+ template architecture and strict validation UX are too cognitively expensive at the operator layer? | high | should-have | SIMPLIFY | `template routing + validator UX` |
+| 025 | 3 | Are @context-prime and @context materially distinct operator-facing agents, or are they two modes of one broader context capability that is currently over-exposed as separate roles? | high | should-have | MERGE | `context capability surface` |
+| 026 | 3 | Does the external repo's three-role model imply that system-spec-kit's 12-agent surface is too granular for operators, even if many of those specialists still make sense internally? | medium | should-have | MERGE | `public agent taxonomy` |
+| 027 | 3 | Is the current sk-code-opencode / sk-code-full-stack / sk-code-web / sk-code-review family too fragmented for operators compared with the external repo's simpler capability packaging? | high | must-have | MERGE | `sk-code family architecture` |
+| 028 | 3 | Are narrow skills like sk-prompt-improver and sk-agent-improver dead weight that should be removed, or are they valid specialist islands that only become a UX problem when the whole system routes too ceremonially by default? | medium | rejected | KEEP | `specialist improve-skill positioning` |
+| 029 | 3 | Does the external repo's lighter workflow framing imply that system-spec-kit exposes too much of its gate, hook, and constitutional machinery directly to operators? | high | must-have | REDESIGN | `gate + hook + constitutional operator surface` |
+| 030 | 3 | When compared end to end, does system-spec-kit ask the operator to traverse too many steps, files, and command surfaces to accomplish a normal feature workflow? | high | must-have | REDESIGN | `default feature workflow contract` |
 
 ## Convergence Signal
 - Iterations without new signal: 0
@@ -29,13 +39,22 @@
 - Stop rule triggered: yes
 
 ## Finding Totals
-- Must-have: 8
-- Should-have: 9
+- Must-have: 13
+- Should-have: 13
 - Nice-to-have: 0
-- Rejected: 3
+- Rejected: 4
 
-## Refactor / Pivot Verdict Totals
+## Phase 3 UX Verdict Totals
+- SIMPLIFY: 2
+- ADD: 0
+- MERGE: 5
+- KEEP: 1
+- REDESIGN: 2
+
+## Combined Verdict Totals
 - REFACTOR: 4
 - PIVOT: 1
-- SIMPLIFY: 3
-- KEEP: 2
+- SIMPLIFY: 5
+- KEEP: 3
+- MERGE: 5
+- REDESIGN: 2

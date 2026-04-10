@@ -1,6 +1,6 @@
 ---
 title: "Deep Research Report — 008-bmad-autonomous-development"
-description: "20-iteration research of BMad Autonomous Development for system-spec-kit improvement, refactor, and simplification opportunities. 14 actionable findings, 6 rejected."
+description: "30-iteration research of BMad Autonomous Development for system-spec-kit adoption, refactor, simplification, and UX redesign opportunities. 22 actionable findings, 8 rejected."
 importance_tier: "important"
 contextType: "research"
 ---
@@ -9,18 +9,19 @@ contextType: "research"
 
 ## 1. Executive Summary
 - External repo: BMad Autonomous Development (`bmad-bad`), a skill-packaged sprint execution orchestrator published at `https://github.com/stephenleo/bmad-autonomous-development`. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/.claude-plugin/marketplace.json:2-6]
-- Iterations executed: 20 of 20
-- Phase split: Phase 1 (`001`-`010`) established adoption opportunities; Phase 2 (`011`-`020`) expanded into refactor, pivot, simplification, architecture, and UX questions.
+- Iterations executed: 30 of 30
+- Phase split: Phase 1 (`001`-`010`) established adoption opportunities; Phase 2 (`011`-`020`) expanded into refactor, pivot, simplification, architecture, and UX questions; Phase 3 (`021`-`030`) focused on operator UX, command taxonomy, spec bootstrap, agent packaging, skill routing, and end-to-end workflow friction.
 - Stop reason: max_iterations
-- Total actionable findings: 14
-- Must-have: 4 | Should-have: 9 | Nice-to-have: 1 | Rejected: 6
+- Total actionable findings: 22
+- Must-have: 7 | Should-have: 14 | Nice-to-have: 1 | Rejected: 8
 - Phase 2 verdict mix: REFACTOR 2 | PIVOT 2 | SIMPLIFY 3 | KEEP 3
+- Phase 3 UX verdict mix: SIMPLIFY 2 | ADD 2 | MERGE 3 | KEEP 2 | REDESIGN 1
 - Top combined adoption opportunities for `system-spec-kit`:
-  - Add explicit staged execution contracts to autonomous implementation so long runs can pause/resume safely between create/build/review/PR-style checkpoints. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:189-205] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml:392-473]
-  - Introduce `model_standard` / `model_quality` tiering and move shared autonomous workflow settings into a workflow-profile layer instead of scattering them across YAML assets and env flags. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:51-64] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module.yaml:5-38] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:66-89]
-  - Refactor long-running loop recovery to use explicit runtime-aware continuation states such as compact, pause, manual resume, and continue-now. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/references/pre-continuation-checks.md:3-54] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:128-155]
-  - Simplify the live deep-loop contract by separating active behavior from reference-only or future-facing state concepts. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/references/pre-continuation-checks.md:3-15] [SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:65-183] [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:117-150]
-  - Keep future BAD-like sprint automation out of core `spec_kit` / `memory` contracts until it proves itself as an extension-level module on top of existing primitives. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:9-20] [SOURCE: .opencode/command/spec_kit/README.txt:43-76]
+  - Add an integrated, intent-first lifecycle surface so operators do not need to compose the common path from `plan`, `implement`, `complete`, and separate memory commands by hand. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:72-99] [SOURCE: .opencode/command/spec_kit/README.txt:43-76] [SOURCE: .opencode/command/memory/README.txt:308-320]
+  - Introduce a guided spec bootstrap that recommends the right Level 1/2/3+ shape instead of making users reason from template architecture first. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module-setup.md:40-93] [SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:67-186]
+  - Merge public agent and skill packaging toward domain facades, while keeping specialist decomposition internal where it improves execution quality. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/.claude-plugin/marketplace.json:22-31] [SOURCE: .opencode/agent/orchestrate.md:95-127] [SOURCE: .opencode/skill/README.md:42-59]
+  - Keep `skill_advisor.py`, gates, and governance machinery as substrate, but redesign the operator surface so routing and safeguards feel automatic instead of ceremonial. [SOURCE: AGENTS.md:165-218] [SOURCE: CLAUDE.md:107-176] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:35-78]
+  - Preserve the deeper substrate where it solves real problems: keep LEAF deep-loop architecture and keep advanced memory search/governance separate even as the common save/resume path becomes more implicit. [SOURCE: .opencode/agent/deep-research.md:24-32] [SOURCE: .opencode/agent/deep-research.md:167-212] [SOURCE: .opencode/command/memory/README.txt:248-320]
 
 ## 2. External Repo Map
 - The BAD snapshot is documentation-first: one `skills/bad/SKILL.md` coordinator contract, three phase references, setup assets, merge helpers, and plugin packaging metadata. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:80-93]
@@ -158,6 +159,64 @@ Planning artifacts + GitHub state
 - Description: BAD's biggest architecture lesson is boundary discipline. If `system-spec-kit` wants BAD-like sprint automation, it should build it as a domain extension on top of current primitives rather than pushing more specialized behavior into the core command and memory systems. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:9-20] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/.claude-plugin/marketplace.json:1-24]
 - Evidence: local core surfaces already cover planning, research, review, implementation, memory, and resume; fusing sprint automation into those contracts would import another domain's assumptions into an already broad substrate. [SOURCE: .opencode/command/spec_kit/README.txt:43-76] [SOURCE: .opencode/skill/system-spec-kit/references/memory/memory_system.md:99-145]
 
+### Phase 3 Findings
+
+#### Finding F-015 — Add An Intent-First Command Entry Surface
+- Origin iteration: `iteration-021.md`
+- system-spec-kit target: `.opencode/command/spec_kit/README.txt`
+- Priority: should-have
+- Description: BAD shows the value of a thinner operator surface even when the backend remains multi-stage. `system-spec-kit` should stop foregrounding the full command inventory and add intent-first entrypoints for common workflows. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:35-59] [SOURCE: .opencode/command/spec_kit/README.txt:43-63] [SOURCE: .opencode/command/spec_kit/README.txt:85-111]
+- Evidence: local docs currently expose 8 `spec_kit` commands, 4 `memory` commands, and enough lifecycle nuance to require FAQ clarification. [SOURCE: .opencode/command/spec_kit/README.txt:225-239] [SOURCE: .opencode/command/memory/README.txt:61-66]
+
+#### Finding F-016 — Merge The Common Lifecycle Path Into One Guided Surface
+- Origin iteration: `iteration-022.md`
+- system-spec-kit target: `.opencode/command/spec_kit/README.txt`
+- Priority: must-have
+- Description: The `plan -> implement -> complete` split is a sound internal decomposition, but it is too exposed as operator UX. The common lifecycle path should be merged into a guided surface that also absorbs default memory handoffs. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:72-99] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:212-336] [SOURCE: .opencode/command/spec_kit/README.txt:121-145] [SOURCE: .opencode/command/memory/README.txt:308-320]
+- Evidence: BAD hides phase progression inside one run loop, while local operators still compose lifecycle and memory surfaces manually. [SOURCE: .opencode/command/spec_kit/README.txt:85-111]
+
+#### Finding F-017 — Add A Guided Spec Bootstrap Wizard
+- Origin iteration: `iteration-023.md`
+- system-spec-kit target: `.opencode/skill/system-spec-kit/templates/README.md`
+- Priority: should-have
+- Description: The Level 1/2/3+ model should stay, but the bootstrap UX should become more guided. BAD's one-shot setup flow shows how `system-spec-kit` can ask a few scope questions, recommend a level, and scaffold the right files automatically. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module-setup.md:40-93] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module.yaml:7-40] [SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:67-186]
+- Evidence: strict validation is useful, but the first-run experience still expects operators to reason from template architecture and required-file contracts up front. [SOURCE: .opencode/skill/system-spec-kit/references/validation/validation_rules.md:39-55] [SOURCE: .opencode/skill/system-spec-kit/references/validation/validation_rules.md:65-204]
+
+#### Finding F-018 — Merge Public Agent UX Toward Domain Facades
+- Origin iteration: `iteration-024.md`
+- system-spec-kit target: `.opencode/agent/orchestrate.md`
+- Priority: should-have
+- Description: The local specialist roster is likely valuable internally, but it is too granular as a public design surface. `system-spec-kit` should present smaller domain-facing agent facades and treat most named specialists as implementation detail. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/.claude-plugin/marketplace.json:22-31] [SOURCE: .opencode/agent/orchestrate.md:95-127] [SOURCE: .opencode/command/spec_kit/README.txt:149-159]
+- Evidence: BAD packages its domain around one visible coordinator, while local docs expose a 10-agent priority roster and command-to-agent mapping. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:9-21]
+
+#### Finding F-019 — Merge Public Skill UX Toward A Few Facades
+- Origin iteration: `iteration-026.md`
+- system-spec-kit target: `.opencode/skill/README.md`
+- Priority: should-have
+- Description: The local skill system is strongest as substrate, not as a large operator-facing taxonomy. `system-spec-kit` should merge public skill UX toward a few domain facades, beginning with a unified coding entrypoint over the `sk-code-*` family. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/.claude-plugin/marketplace.json:22-31] [SOURCE: .opencode/skill/README.md:42-59] [SOURCE: .opencode/skill/sk-code-opencode/SKILL.md:21-28] [SOURCE: .opencode/skill/sk-code-web/SKILL.md:21-36] [SOURCE: .opencode/skill/sk-code-full-stack/SKILL.md:21-39]
+- Evidence: current skill docs list 20 skills and a formal routing sequence even for tasks that the system could route internally. [SOURCE: .opencode/skill/README.md:80-109] [SOURCE: .opencode/skill/README.md:133-176]
+
+#### Finding F-020 — Hide Most Gate 2 Ceremony From Operators
+- Origin iteration: `iteration-027.md`
+- system-spec-kit target: `AGENTS.md`
+- Priority: must-have
+- Description: Gate 2 is valuable infrastructure, but poor primary UX. `system-spec-kit` should keep `skill_advisor.py` internally while making specialist routing feel automatic unless the user explicitly wants visibility into the choice. [SOURCE: AGENTS.md:165-177] [SOURCE: CLAUDE.md:107-123] [SOURCE: .opencode/skill/README.md:80-109]
+- Evidence: BAD activates one skill without exposing a separate routing ritual, while local framework docs foreground Gate 2, confidence thresholds, and mandatory invocation. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:10-25]
+
+#### Finding F-021 — Redesign The Operator Surface Around Hidden Safeguards
+- Origin iteration: `iteration-028.md`
+- system-spec-kit target: `CLAUDE.md`
+- Priority: must-have
+- Description: The gate/hook/constitutional layer should remain, but its UX needs redesign. The operator surface should become shorter and more automatic, with procedural detail exposed only for genuine exception paths. [SOURCE: AGENTS.md:165-218] [SOURCE: CLAUDE.md:107-176] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:35-78]
+- Evidence: local quick-reference tables help, but they also reveal how much procedural framework literacy is currently required. [SOURCE: AGENTS.md:134-155] [SOURCE: CLAUDE.md:47-70]
+
+#### Finding F-022 — Add A Bundled End-To-End Workflow Entry Point
+- Origin iteration: `iteration-029.md`
+- system-spec-kit target: `.opencode/command/spec_kit/README.txt`
+- Priority: should-have
+- Description: The common feature workflow spans too many visible boundaries today. `system-spec-kit` should add one bundled entrypoint that binds the spec path, scaffolds the right level, and drives the standard lifecycle with sensible defaults. [SOURCE: AGENTS.md:165-218] [SOURCE: CLAUDE.md:181-197] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:35-59]
+- Evidence: BAD compresses the operator-visible journey into setup plus a run loop, while local feature work still spans gates, spec scaffolding, lifecycle commands, and explicit memory/handover transitions. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:212-391]
+
 ## 4. Rejected Recommendations
 
 ### Phase 1 Rejections
@@ -187,6 +246,16 @@ Planning artifacts + GitHub state
 #### Rejected R-006 — Do Not Tear Down Validation Because BAD Is Lighter
 - Origin iteration: `iteration-017.md`
 - Rationale: BAD's small bundle still drifted on its config contract, which is evidence for focused validation rather than against it. The simplification opportunity is presentation and targeting, not deleting the validation layer that catches multi-file drift. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:63-78] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module-setup.md:10-14] [SOURCE: .opencode/skill/system-spec-kit/references/templates/level_specifications.md:183-206]
+
+### Phase 3 Rejections / Keep Decisions
+
+#### Rejected R-007 — Do Not Replace The LEAF Deep-Loop Architecture
+- Origin iteration: `iteration-025.md`
+- Rationale: BAD's thinner visible coordinator loop does not carry an equivalent research/review artifact model. Local LEAF workers and externalized iteration state are still justified for deep research and deep review; the simplification target is adjacent bootstrap/handover surface, not the core loop. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:16-25] [SOURCE: .opencode/agent/deep-research.md:24-32] [SOURCE: .opencode/agent/deep-research.md:167-212] [SOURCE: .opencode/agent/deep-review.md:21-31]
+
+#### Rejected R-008 — Do Not Fully Collapse `/memory:*` Into `/spec_kit:*`
+- Origin iteration: `iteration-030.md`
+- Rationale: BAD omits semantic memory because it solves a narrower problem. Local memory search, governance, and learning are distinct capabilities that should remain explicit even if common save/resume behavior becomes more automatic inside the main lifecycle. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:63-78] [SOURCE: .opencode/command/memory/README.txt:61-66] [SOURCE: .opencode/command/memory/README.txt:248-320]
 
 ## 5. Refactor / Pivot Recommendations
 
@@ -233,19 +302,48 @@ Planning artifacts + GitHub state
 - `iteration-015` -> keep the packet-local-state plus global-memory split; BAD's local-state-only model is not solving the same problem.
 - `iteration-017` -> keep validation where it prevents multi-file drift; simplify operator presentation instead of deleting the safeguards.
 
-## 6. Cross-Phase Implications
+## 6. Phase 3 — UX, Agentic System & Skills Analysis
+
+### UX Verdict Totals
+- SIMPLIFY: 2
+- ADD: 2
+- MERGE: 3
+- KEEP: 2
+- REDESIGN: 1
+
+### Main UX Conclusions
+- The biggest new signal is not missing capability, but operator-visible fragmentation across commands, skills, agents, and gates. BAD repeatedly achieves lower friction by hiding internal decomposition behind a thinner domain-shaped surface. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:35-78] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:72-99]
+- The strongest deletion signal is "stop making operators learn the framework before they can use it." This applies to command inventories, Gate 2 ceremony, public agent/skill topology, and the way constitutional rules are surfaced. [SOURCE: .opencode/command/spec_kit/README.txt:43-111] [SOURCE: AGENTS.md:165-218] [SOURCE: .opencode/skill/README.md:80-109]
+- The strongest addition signal is guided entrypoints: a lifecycle wrapper, a bundled end-to-end workflow path, and a spec bootstrap wizard. These improve momentum without deleting the stronger underlying substrate. [SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:67-186] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module-setup.md:40-93]
+- The strongest merge signal is packaging, not raw capability. Public agent and skill surfaces should shrink toward a few domain facades, while specialist decomposition remains internal where it improves execution quality. [SOURCE: .opencode/agent/orchestrate.md:95-127] [SOURCE: .opencode/skill/README.md:42-59]
+- The strongest keep signal is substrate depth where BAD lacks an equivalent solution. The LEAF deep-loop architecture and advanced memory subsystem should stay, even as the common-path UX becomes thinner and more automatic. [SOURCE: .opencode/agent/deep-research.md:24-32] [SOURCE: .opencode/command/memory/README.txt:248-320]
+
+### Net Phase 3 Position
+`system-spec-kit` should move toward a thinner operator shell over the same deeper substrate: guided entrypoints, quieter routing/gates, and less visible internal topology. The next UX round should remove friction from the common path without deleting the governance, memory, and artifact rigor that make the framework broader than BAD.
+
+## 7. Cross-Phase Implications
 - Overlap with phase `003`: BAD's unverified guard/hook narrative is relevant to the hook-and-workflow packet, but phase `008` should keep ownership of the sprint-automation conclusion: the coordinator boundary is useful even when hard enforcement is missing. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module-setup.md:24-38] [SOURCE: .opencode/skill/system-spec-kit/constitutional/gate-enforcement.md:58-103]
 - Overlap with phase `005`: generalized multi-agent worktree architecture belongs partly there, but phase `008` owns the specific scheduler + stage-pipeline + batch-merge story because those behaviors only make sense together. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:72-99] [SOURCE: .opencode/skill/sk-git/references/worktree_workflows.md:43-57]
 - Overlap with future deep-loop work: Phase 2 sharpened that the most urgent loop change is not more features, but simplification of the active contract plus a clearer continuation model. [SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:65-183] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:116-197]
 - Overlap with command and UX cleanup: the biggest UX mismatch is now clearly operator entrypoint sprawl, not missing raw capability. [SOURCE: .opencode/command/spec_kit/README.txt:43-111] [SOURCE: .opencode/command/memory/README.txt:38-131]
+- Overlap with future framework cleanup: Phase 3 adds that public packaging is now the main simplification vector. Commands, skills, agents, and gates should all be redesigned as thinner shells over the existing substrate rather than expanded as separate visible systems. [SOURCE: .opencode/agent/orchestrate.md:95-127] [SOURCE: .opencode/skill/README.md:42-59] [SOURCE: AGENTS.md:165-218]
 
-## 7. Updated Priority Queue
-1. Create a shared autonomous workflow-profile layer that owns model tiers, tool budgets, runtime branching, and continuation defaults. This unlocks multiple Phase 1 and Phase 2 findings at once. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module.yaml:5-38] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:66-89]
-2. Apply that profile layer to model tiering and runtime-aware continuation in `deep-research`, then mirror the pattern to `deep-review`. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/references/pre-continuation-checks.md:3-54] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:51-64]
-3. Decompose autonomous implementation into explicit stage contracts with named outputs and resumable checkpoints. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:189-205] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml:392-473]
-4. Slim the canonical deep-loop contract so documentation and executable assets describe only what is truly live today. [SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:65-183] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:328-369]
-5. Add a thin operator UX layer on top of existing commands: one shared autonomous bootstrap/profile path plus a small set of common-intent aliases or presets. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/README.md:41-63] [SOURCE: .opencode/command/spec_kit/README.txt:43-111]
-6. Keep any future sprint runner out of core until it proves itself as an extension that consumes stable local primitives. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/.claude-plugin/marketplace.json:1-24] [SOURCE: .opencode/skill/system-spec-kit/references/memory/memory_system.md:99-145]
+## 8. Updated Priority Queue
+1. Add a bundled, intent-first lifecycle surface that owns the common path from spec binding and bootstrap through implementation, completion, and default save/resume behavior. This is the biggest Phase 3 UX win and directly addresses command-family fragmentation. [SOURCE: .opencode/command/spec_kit/README.txt:43-111] [SOURCE: .opencode/command/memory/README.txt:308-320]
+2. Redesign the operator shell so gates, skill routing, and internal role topology become quieter and more automatic. Keep the safeguards, but move most of their ceremony behind wrappers and internal constitutional material. [SOURCE: AGENTS.md:165-218] [SOURCE: CLAUDE.md:107-176] [SOURCE: .opencode/skill/README.md:80-109]
+3. Add a guided spec bootstrap wizard that recommends the right level and scaffolds required files. This is the cleanest way to keep the Level 1/2/3+ model while removing setup friction. [SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:67-186] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module-setup.md:40-93]
+4. Create a shared autonomous workflow-profile layer that owns model tiers, tool budgets, runtime branching, and continuation defaults. This remains the top Phase 1/2 substrate upgrade and should feed the thinner UX shell rather than compete with it. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module.yaml:5-38] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:66-89]
+5. Decompose autonomous implementation into explicit stage contracts with named outputs and resumable checkpoints, then pair that with the new lifecycle wrapper so the user sees one flow while the system keeps precise stage control. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:189-205] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml:392-473]
+6. Keep any future sprint runner out of core until it proves itself as an extension that consumes stable local primitives. BAD remains best viewed as a boundary and UX reference, not as a justification for pushing more specialized behavior into the core substrate. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/.claude-plugin/marketplace.json:1-24] [SOURCE: .opencode/skill/system-spec-kit/references/memory/memory_system.md:99-145]
 
-## 8. Recommended Next Step
-Do not start by building a full BAD-style sprint runner. First, carve out the shared autonomous workflow-profile layer and use it to land model tiering, runtime-aware continuation, and a slimmer deep-loop contract. Those changes improve today's core workflows immediately and also create the clean substrate an extension-level sprint runner would need later. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module.yaml:5-38] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/references/pre-continuation-checks.md:3-54] [SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:65-183]
+## 9. Recommended Next Step
+Do not start by building a full BAD-style sprint runner. First, prototype the thinner operator shell that Phase 3 points to: one bundled lifecycle entrypoint, one guided spec bootstrap, quieter routing/gate behavior, and less visible internal topology. Under that shell, keep driving the Phase 1/2 substrate work on workflow profiles, runtime-aware continuation, stage contracts, and a slimmer deep-loop contract. That sequence improves today's operator experience immediately while preserving the deeper architecture a future extension-level sprint runner would need. [SOURCE: .opencode/command/spec_kit/README.txt:43-111] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module-setup.md:40-93] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/assets/module.yaml:5-38] [SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:65-183]
+
+## 10. Phase 3 Completion Status
+DEEP RESEARCH PHASE 3 COMPLETE — phase=008-bmad-autonomous-development
+
+- Iterations: 10/10 (021-030) | Stop reason: max_iterations
+- New findings: must=3 should=5 nice=0 rejected=2
+- UX verdicts: SIMPLIFY=2 ADD=2 MERGE=3 KEEP=2 REDESIGN=1
+- Combined totals (Phase 1+2+3): must=7 should=14 nice=1 rejected=8
+- Output: `research/research.md` (updated)

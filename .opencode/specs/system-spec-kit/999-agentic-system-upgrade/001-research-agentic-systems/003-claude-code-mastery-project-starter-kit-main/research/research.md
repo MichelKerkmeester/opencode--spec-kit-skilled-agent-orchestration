@@ -1,209 +1,272 @@
 ---
-title: "Deep Research Report — 003-claude-code-mastery-project-starter-kit-main"
-description: "20-iteration research of the Claude Code Mastery Project Starter Kit for system-spec-kit improvement opportunities. 16 actionable findings, 4 rejected."
+title: "Deep Research Report - 003-claude-code-mastery-project-starter-kit-main"
+description: "30-iteration research of the Claude Code Mastery Project Starter Kit for system-spec-kit improvement opportunities. 25 actionable findings, 5 rejected."
 importance_tier: "important"
 contextType: "research"
 ---
 
-# Deep Research Report — 003-claude-code-mastery-project-starter-kit-main
+# Deep Research Report - 003-claude-code-mastery-project-starter-kit-main
 
 ## 1. Executive Summary
-- External repo: `claude-code-mastery-project-starter-kit-main`; a Claude-first starter kit centered on commands, hooks, working docs, and scaffold profiles rather than a deeply implemented runtime substrate. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/help.md:11-31] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/package.json:7-40]
-- Iterations executed: 20 of 20
+- External repo: `claude-code-mastery-project-starter-kit-main`; a Claude-first starter kit centered on guided commands, hooks, working docs, and lightweight operator ergonomics rather than a deep runtime substrate. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/README.md:39-77] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/help.md:31-107]
+- Iterations executed: 30 of 30
 - Stop reason: max_iterations
-- Phase 2 changed the story materially: the most valuable signals were no longer just adoptable features, but architectural warnings about where `system-spec-kit` appears overbuilt.
-- Total actionable findings: 16
-- Must-have: 3 | Should-have: 10 | Nice-to-have: 3 | Rejected: 4
-- Top 5 adoption opportunities for system-spec-kit:
-  - Split low-friction session continuity from promoted indexed memory so routine save flow stops paying the full durable-memory tax. Origin: iteration 013.
-  - Simplify validation around a smaller executable invariant core, with human-readable readiness views generated from those checks. Origin: iteration 016.
-  - Add Claude-only secret guardrails to `.claude/settings.local.json` and companion hooks. Origin: iteration 006.
-  - Move more deterministic Gate/CLAUDE policy into executable hook/config enforcement rather than prose alone. Origin: iteration 014.
-  - Pivot command packaging toward a manifest-driven architecture that can generate help, routing, and runtime-specific exposure. Origin: iteration 017. Overlap: phase `005`.
+- Total actionable findings: 25
+- Must-have: 5 | Should-have: 16 | Nice-to-have: 4 | Rejected: 5
+- Phase 1 surfaced adoptable workflow ideas. Phase 2 exposed places where `system-spec-kit` appears overbuilt. Phase 3 confirmed that the biggest remaining opportunity is operator-surface simplification across commands, continuity, skills, and gate ceremony.
+- Top 5 adoption opportunities for `system-spec-kit`:
+  - F-023 - redesign the operator surface by moving deterministic gate behavior into runtime enforcement and shrinking the prose ceremony. Origin: iteration 028.
+  - F-022 - keep skill routing, but hide the mandatory Gate 2 ceremony from most user-visible workflows. Origin: iteration 027.
+  - F-017 - merge the visible lifecycle commands behind one guided front door. Origin: iteration 021.
+  - F-018 - pull routine continuity actions back into the Spec Kit workflow surface instead of exposing memory as a parallel product. Origin: iteration 022.
+  - F-014 - simplify validation around a smaller executable invariant core with generated readiness views. Origin: iteration 016.
 
-## 2. Phase 2 Inflection
-- Phase 1 was mostly about adoptable improvements from the external repo.
-- Phase 2 found a stronger pattern: the external starter kit is most useful as a contrast that reveals where `system-spec-kit` has accumulated too much machinery for session capture, gate enforcement, validation, and loop state.
-- The external repo repeatedly wins on operator ergonomics because it keeps key surfaces flatter:
-  - universal vs project vs personal instruction layering
-  - one compact working brief before heavier process
-  - simple progress/readiness reporting
-  - metadata/profile-driven command presentation
-- The external repo does **not** justify copying its runtime/application architecture or replacing `system-spec-kit`'s governance model with starter-kit profiles.
+## 2. Cross-Phase Synthesis
+- The external repo is most valuable as an operator-UX reference, not as a runtime or application-architecture template.
+- The local repo usually wins on durability, continuity, and deep autonomous workflows.
+- The external repo usually wins on first-run clarity, fewer memorable entry points, and lower day-to-day cognitive load.
+- The strongest combined recommendation is not "copy the starter kit." It is:
+  - keep the strong local substrate
+  - delete visible ceremony where automation can safely enforce policy
+  - merge fragmented operator surfaces
+  - add guided entry and better live orientation
 
 ## 3. External Repo Reality Check
-- Core surfaces:
-  - `CLAUDE.md`, `CLAUDE.local.md`, and `global-claude-md/` establish a clearer universal/project/personal split than the local repo currently exposes. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/global-claude-md/CLAUDE.md:16-40] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/CLAUDE.local.md:1-71]
-  - `.claude/commands/` is metadata-driven enough for dynamic help and selective distribution. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/help.md:19-31]
-  - `.claude/settings.json` and `global-claude-md/settings.json` push deterministic policy into hooks and deny lists. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/settings.json:1-49] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/global-claude-md/settings.json:1-38]
-  - `.mdd/`, `progress`, `tests/CHECKLIST.md`, and `tests/ISSUES_FOUND.md` create highly readable working-state and readiness surfaces. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.mdd/docs/03-database-layer.md:1-30] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/progress.md:11-60]
-  - `claude-mastery-project.conf` and `/new-project` treat profiles as a first-class packaging/scaffolding control surface. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/claude-mastery-project.conf:47-116] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/new-project.md:63-103]
+- The external repo packages work around a few memorable commands, especially `/help`, `/mdd`, and `/progress`, backed by working docs and hooks. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/help.md:31-107] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/mdd.md:31-131] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/progress.md:11-60]
+- It relies on lighter instruction layering and more executable settings than the local repo currently exposes at the operator surface. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/CLAUDE.md:11-72] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/settings.json:1-64] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/global-claude-md/settings.json:1-39]
+- It is not strong evidence for rebuilding `system-spec-kit` around starter-kit runtime assumptions. The captured packet remains scaffold-oriented and relatively shallow on the implementation side. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/README.md:92-104]
 
-Architecture caution:
-- The external repo is not a good runtime-substrate template for `system-spec-kit`.
-- `package.json` expects a full app surface, but the captured `src/` tree only contains placeholder `.gitkeep` files. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/package.json:8-18] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/src/adapters/.gitkeep:1-1]
-- Treat this repo as an operator-UX and workflow reference, not as proof that `system-spec-kit` should collapse its MCP/memory/runtime architecture into a starter-kit shell.
+## 4. Findings Registry - Phases 1 and 2
 
-## 4. Findings Registry — Phase 1
-
-### Finding F-001 — Add A Claude-Only Quick Reference Layer
-- Origin iteration: `iteration-001.md`
-- system-spec-kit target: `.claude/CLAUDE.md`
+### F-001 - Add a Claude-only quick reference layer
+- Origin: `iteration-001.md`
 - Priority: should-have
-- Description: The external starter kit keeps Claude-facing instructions highly compressed inside one file, while the local repo keeps governance in a stronger root `CLAUDE.md` and uses `.claude/CLAUDE.md` only as a supplement. The local architecture should stay intact, but `.claude/CLAUDE.md` should become a sharper Claude-only operator surface that mirrors the most actionable recovery, tool-routing, and command-entry guidance from the root file. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/CLAUDE.md:11-31] [SOURCE: CLAUDE.md:34-56] [SOURCE: CLAUDE.md:72-81] [SOURCE: .claude/CLAUDE.md:5-14]
+- Target: `.claude/CLAUDE.md`
+- Summary: sharpen the Claude-only quick-reference surface without replacing the stronger root governance brief.
 
-### Finding F-002 — Add A Guided Doc-First Front Door Without Replacing Spec Kit
-- Origin iteration: `iteration-002.md`
-- system-spec-kit target: `.opencode/command/spec_kit/README.txt`
+### F-002 - Add a guided doc-first front door without replacing Spec Kit
+- Origin: `iteration-002.md`
 - Priority: should-have
-- Description: The external `/mdd` command is a memorable, guided entry point that asks consolidated questions, writes a working doc, generates tests, and presents a named-step plan before coding. Local Spec Kit is more robust but more fragmented from a new operator's perspective. A new front-door workflow or documented entry mode could route users into the existing research/plan/implement lifecycle with less cognitive overhead. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/mdd.md:44-71] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/mdd.md:71-131] [SOURCE: .opencode/command/spec_kit/README.txt:43-46] [SOURCE: .opencode/command/spec_kit/README.txt:121-159]
+- Target: `.opencode/command/spec_kit/README.txt`
+- Summary: introduce a memorable guided entry experience inspired by `/mdd`, but route into existing Spec Kit depth.
 
-### Finding F-003 — Add A Lightweight Compressed-Brief Pattern, Not A Token Slogan
-- Origin iteration: `iteration-003.md`
-- system-spec-kit target: `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md`
+### F-003 - Add a lightweight compressed-brief pattern
+- Origin: `iteration-003.md`
 - Priority: nice-to-have
-- Description: The external "20K -> 200" message is partly marketing, but the actual workflow primitives are real: concise structured briefs, periodic note-to-disk, and resumable recovery. `system-spec-kit` already has stronger state and compaction infrastructure, so the right adoption is a lightweight compressed-brief convention, not copied token claims. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/README.md:116-149] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/README.md:187-189] [SOURCE: .opencode/command/spec_kit/deep-research.md:196-205] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts:205-225]
+- Target: `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md`
+- Summary: adopt the external repo's concise brief habit, not its marketing claims.
 
-### Finding F-004 — Introduce A Lightweight Working-Brief Template
-- Origin iteration: `iteration-004.md`
-- system-spec-kit target: `.opencode/skill/system-spec-kit/templates/`
+### F-004 - Introduce a lightweight working-brief template
+- Origin: `iteration-004.md`
 - Priority: should-have
-- Description: The local repo already outclasses `.mdd/` on continuity because it combines research packets, handover, and autosave. What it lacks is a lighter artifact shape that is easy to scan mid-session. A small working-brief template would improve ergonomics without weakening packet durability. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.mdd/docs/03-database-layer.md:1-13] [SOURCE: .opencode/agent/deep-research.md:50-60] [SOURCE: .opencode/agent/handover.md:42-58] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:60-83]
+- Target: `.opencode/skill/system-spec-kit/templates/`
+- Summary: add a scan-friendly mid-session artifact that complements, not replaces, durable packets.
 
-### Finding F-005 — Keep Recovery Hooks, Add A Thin Enforcement Layer
-- Origin iteration: `iteration-005.md`
-- system-spec-kit target: `.claude/settings.local.json`
+### F-005 - Keep recovery hooks and add a thin enforcement layer
+- Origin: `iteration-005.md`
 - Priority: should-have
-- Description: The external hook system and the local hook system solve different problems. The external starter kit excels at deterministic enforcement during tool use; the local system excels at recovery, continuity, and token-aware context injection. The best local move is a hybrid configuration: retain the existing recovery hooks and add only a minimal set of Claude-only enforcement hooks on top. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/settings.json:2-64] [SOURCE: .claude/settings.local.json:7-42] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:111-173]
+- Target: `.claude/settings.local.json`
+- Summary: retain recovery-first hooks but add narrow deterministic enforcement where Claude supports it.
 
-### Finding F-006 — Adopt Secret Guardrails First
-- Origin iteration: `iteration-006.md`
-- system-spec-kit target: `.claude/settings.local.json`
+### F-006 - Adopt secret guardrails first
+- Origin: `iteration-006.md`
 - Priority: must-have
-- Description: The single best adopt-now finding is the external secret guardrail pair: block access to sensitive files before tool use, and scan staged files plus contents for secrets at stop time. Those two hooks are narrow, low-risk, and directly strengthen a repo that already carries powerful automation and memory tooling. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/hooks/block-secrets.py:13-29] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/hooks/block-secrets.py:49-64] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/hooks/verify-no-secrets.sh:42-77] [SOURCE: .claude/settings.local.json:7-42]
+- Target: `.claude/settings.local.json`
+- Summary: copy the external secret-blocking and secret-verification pattern as the clearest tactical safety win.
 
-### Finding F-007 — Add Command Audience And Distribution Metadata
-- Origin iteration: `iteration-008.md`
-- system-spec-kit target: `.opencode/command/README.txt`
+### F-007 - Add command audience and distribution metadata
+- Origin: `iteration-008.md`
 - Priority: should-have
-- Description: The external repo's most transferable command-system lesson is metadata-driven distribution. Its help and update flows trust command frontmatter more than static prose. Local commands are well grouped but still documented statically. Adding metadata for audience, distribution, or runtime scope would make help surfaces more adaptive and less drift-prone. Overlap: this belongs partly to phase `005` because it touches broader command-system packaging. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/help.md:11-25] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/update-project.md:90-98] [SOURCE: .opencode/command/README.txt:38-49] [SOURCE: .opencode/command/spec_kit/README.txt:54-63]
+- Target: `.opencode/command/README.txt`
+- Summary: start deriving command visibility and help from metadata instead of static taxonomy alone.
 
-### Finding F-008 — Expose Operator-Facing Observability
-- Origin iteration: `iteration-009.md`
-- system-spec-kit target: `.opencode/command/memory/manage.md`
+### F-008 - Expose operator-facing observability
+- Origin: `iteration-009.md`
 - Priority: nice-to-have
-- Description: The external repo turns AI monitoring into a user-visible workflow. The local repo already has pressure monitoring and other internal telemetry, but it does not present them as an operator-facing command surface. A read-only session-observability or telemetry-summary command would fill that gap without requiring RuleCatch itself. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/what-is-my-ai-doing.md:8-41] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/README.md:297-305] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/README.md:420-424] [SOURCE: .opencode/command/README.txt:40-49]
+- Target: `.opencode/command/memory/manage.md`
+- Summary: present AI activity and telemetry in a user-facing way rather than only as internal machinery.
 
-## 5. Findings Registry — Phase 2
-
-### Finding F-009 — Add An Explicit Personal-Preference Layer
-- Origin iteration: `iteration-011.md`
-- system-spec-kit target: `CLAUDE.md`, `.claude/CLAUDE.md`
+### F-009 - Add a first-class personal-preference layer
+- Origin: `iteration-011.md`
 - Priority: should-have
-- Description: The external repo cleanly separates universal policy, project rules, and personal preferences with `global-claude-md/CLAUDE.md`, checked-in `CLAUDE.md`, and gitignored `CLAUDE.local.md`. `system-spec-kit` should keep its authoritative root rulebook, but it should simplify UX by adding an explicit personal-override layer instead of forcing those concerns into the same conceptual space as repo governance. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/global-claude-md/CLAUDE.md:16-40] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/CLAUDE.local.md:1-71] [SOURCE: CLAUDE.md:107-175]
+- Target: `CLAUDE.md`, `.claude/CLAUDE.md`
+- Summary: separate universal repo policy from personal working-style overrides more clearly.
 
-### Finding F-010 — Add A First-Class Working-Brief Stage
-- Origin iteration: `iteration-012.md`
-- system-spec-kit target: `.opencode/skill/system-spec-kit/templates/`, `.opencode/command/spec_kit/README.txt`
+### F-010 - Add a sanctioned working-brief stage before full packet depth
+- Origin: `iteration-012.md`
 - Priority: should-have
-- Description: The external repo's MDD flow wins the earliest UX moment by starting with one compact working brief. `system-spec-kit` should keep its Level 1/2/3(+phase) governance model, but it should simplify entry by adding a sanctioned working-brief stage that can later be promoted into a full packet. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/mdd.md:42-131] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.mdd/docs/03-database-layer.md:1-30] [SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:77-127]
+- Target: `.opencode/skill/system-spec-kit/templates/`
+- Summary: allow a lighter starting artifact that can later promote into a full packet.
 
-### Finding F-011 — Split Session Digests From Promoted Memories
-- Origin iteration: `iteration-013.md`
-- system-spec-kit target: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`, memory-quality and retrieval surfaces
+### F-011 - Split session digests from promoted memories
+- Origin: `iteration-013.md`
 - Priority: must-have
-- Description: The local memory system currently asks one save path to satisfy both lightweight session continuity and high-integrity indexed memory. The external repo shows that cheap notes-to-disk already solve much of continuation pain. `system-spec-kit` should refactor into two lanes: lightweight session digests and promoted indexed memories. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/progress.md:11-60] [SOURCE: .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:71-124] [SOURCE: .opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts:23-176]
+- Target: memory save and retrieval surfaces
+- Summary: separate low-friction continuity capture from higher-integrity indexed memory promotion.
 
-### Finding F-012 — Move Deterministic Policy Out Of Prose Gates
-- Origin iteration: `iteration-014.md`
-- system-spec-kit target: `CLAUDE.md`, `.claude/settings.local.json`, hook packages under `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/`
+### F-012 - Move deterministic policy out of prose gates
+- Origin: `iteration-014.md`
 - Priority: should-have
-- Description: The external repo's hook/config surfaces perform more of the routine safety work directly. `system-spec-kit` should keep a constitutional rulebook, but more deterministic Gate and pre-flight behavior should move into executable policy layers where runtime support exists. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/global-claude-md/settings.json:1-38] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/settings.json:1-49] [SOURCE: CLAUDE.md:107-175]
+- Target: `CLAUDE.md`, `.claude/settings.local.json`, hook packages
+- Summary: move routine pre-flight behavior from instructions into executable policy.
 
-### Finding F-013 — Reduce Deep-Research Primary State Surfaces
-- Origin iteration: `iteration-015.md`
-- system-spec-kit target: `.opencode/agent/deep-research.md`, `.opencode/skill/sk-deep-research/SKILL.md`
+### F-013 - Reduce deep-research primary state surfaces
+- Origin: `iteration-015.md`
 - Priority: should-have
-- Description: The loop abstraction itself still looks right, but the number of synchronized primary artifacts looks broader than necessary. `system-spec-kit` should keep deep-research/deep-review loops while reducing the number of reducer-owned surfaces that must remain primary at all times. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/progress.md:11-60] [SOURCE: .opencode/agent/deep-research.md:159-213] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:215-244]
+- Target: deep-research agent and skill surfaces
+- Summary: keep the loop model but narrow the number of always-synchronized primary artifacts.
 
-### Finding F-014 — Simplify Validation Around Executable Invariants
-- Origin iteration: `iteration-016.md`
-- system-spec-kit target: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`, validation docs, derived checklist/reporting surfaces
+### F-014 - Simplify validation around executable invariants
+- Origin: `iteration-016.md`
 - Priority: must-have
-- Description: The external repo keeps its enforcement model concrete and executable, then layers human-readable status views on top. `system-spec-kit` likely needs richer guarantees, but its validation system should still collapse toward a smaller invariant core with generated readiness/checklist views rather than a sprawling operator-facing rule taxonomy. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/tests/STARTER-KIT-VERIFICATION.md:21-57] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/tests/unit/hooks.test.ts:1-100] [SOURCE: .opencode/skill/system-spec-kit/scripts/spec/validate.sh:80-100]
+- Target: `validate.sh`, readiness outputs
+- Summary: keep strong guarantees, but make the executable invariant core smaller and the human status layers derived.
 
-### Finding F-015 — Pivot To A Manifest-Driven Command Architecture
-- Origin iteration: `iteration-017.md`
-- system-spec-kit target: `.opencode/command/README.txt`, `.opencode/command/spec_kit/README.txt`, wrapper metadata
+### F-015 - Pivot to a manifest-driven command architecture
+- Origin: `iteration-017.md`
 - Priority: should-have
-- Description: Phase 1 identified a metadata gap. Phase 2 suggests the deeper move is architectural: command visibility, help, routing, and packaging should be derived from a machine-readable manifest rather than hand-maintained README taxonomy. Overlap: this belongs partly to phase `005`. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/help.md:19-31] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/claude-mastery-project.conf:47-116] [SOURCE: .opencode/command/README.txt:106-168]
+- Target: command inventory and help surfaces
+- Summary: use a machine-readable manifest as the source of truth for command exposure, help, and routing.
 
-### Finding F-016 — Add Human-Readable Readiness Projections
-- Origin iteration: `iteration-019.md`
-- system-spec-kit target: command/reporting surfaces for validation and research workflows
+### F-016 - Add human-readable readiness projections
+- Origin: `iteration-019.md`
 - Priority: nice-to-have
-- Description: The external repo is often easier to scan because it exposes progress, checklist, and issue surfaces in plain language. `system-spec-kit` already has richer underlying state; it should derive friendlier readiness/progress projections from that state rather than forcing users to stitch together specialized tool outputs. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/progress.md:11-60] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/tests/CHECKLIST.md:1-55] [SOURCE: .opencode/agent/deep-research.md:159-213]
+- Target: reporting and validation surfaces
+- Summary: generate friendlier progress and readiness views from the stronger local state.
 
-## 6. Rejected Recommendations
+## 5. Phase 3 - UX, Agentic System & Skills Analysis
+- Command UX:
+  - The local repo has more power, but its lifecycle is fragmented across several visible commands plus workflow assets.
+  - The external repo keeps more of the interview and routing logic behind a smaller memorable front door.
+- Template and spec-folder UX:
+  - The local Level 1/2/3 model remains strategically useful.
+  - The external repo demonstrates that governance depth should be introduced gradually, not made into the user's first classification task.
+- Sub-agent architecture:
+  - The local continuity surface is more fragmented than it needs to be.
+  - The deep-research and deep-review LEAF loops still look justified and should stay.
+- Skills system:
+  - The local skill substrate is strong but too visibly decomposed.
+  - Public capability packaging should be simpler, with more routing hidden from operators.
+- Automation and integration UX:
+  - The local gate system carries too much behavior in prose.
+  - The external repo shows a better split: short written guidance, more executable policy.
+- End-to-end workflow friction:
+  - A common feature flow in `system-spec-kit` currently asks the user to reason about gates, packet depth, command choice, memory boundaries, and completion semantics before momentum builds.
+  - The external repo gets to momentum faster through guided starts and dynamic progress help.
+- Phase 3 verdict distribution:
+  - SIMPLIFY: 2
+  - ADD: 2
+  - MERGE: 4
+  - KEEP: 1
+  - REDESIGN: 1
+- Phase 3 conclusion:
+  - The local system should not become smaller by discarding its strong substrate.
+  - It should become easier by hiding internal machinery, merging adjacent operator surfaces, and adding a guided front door plus better live orientation.
 
-### Rejection R-001 — Do Not Copy Branch, Port, And E2E Hooks Wholesale
-- Origin iteration: `iteration-007.md`
-- Rationale: These hooks assume starter-kit-generated app repos with fixed branch expectations, `tests/e2e` conventions, and known port maps. They do not transfer cleanly to `system-spec-kit`, which already has its own git/spec governance and is not a generated application template. Only the port-conflict concept may deserve a future repo-specific variant. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/hooks/check-branch.sh:56-76] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/hooks/check-e2e.sh:46-69] [SOURCE: CLAUDE.md:129-175]
+## 6. Findings Registry - Phase 3
 
-### Rejection R-002 — Do Not Import The External Mini-Agent Architecture
-- Origin iteration: `iteration-010.md`
-- Rationale: The local repo already has a richer agent system plus formal skill routing. Importing the external two-agent model would reduce capability rather than improve it. The worthwhile borrow is stylistic: concise role contracts and plain-language MCP install guidance. Overlap: the agent-contract portion belongs partly to phase `008`. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/agents/code-reviewer.md:1-6] [SOURCE: .opencode/agent/deep-research.md:22-32] [SOURCE: .opencode/skill/scripts/skill_advisor.py:7-16]
+### F-017 - Merge the visible lifecycle command front door
+- Origin: `iteration-021.md`
+- Priority: should-have
+- Target: `.opencode/command/spec_kit/README.txt`, lifecycle routing
+- Summary: keep plan, implement, complete, and resume internally, but stop making them equally visible primary entry points. [SOURCE: .opencode/command/spec_kit/README.txt:54-76] [SOURCE: .opencode/command/spec_kit/README.txt:121-178] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/mdd.md:31-131]
 
-### Rejection R-003 — Do Not Rebuild Around The External App Runtime Shape
-- Origin iteration: `iteration-018.md`
-- Rationale: The external repo is a strong operator shell, but the captured packet does not include the runtime depth implied by its package scripts. It is not strong evidence for rebuilding `system-spec-kit`'s MCP/runtime architecture around starter-kit application assumptions. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/package.json:8-18] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/src/handlers/.gitkeep:1-1]
+### F-018 - Pull routine memory UX back into Spec Kit
+- Origin: `iteration-022.md`
+- Priority: should-have
+- Target: `.opencode/command/memory/README.txt`, `.opencode/command/spec_kit/README.txt`
+- Summary: keep `/memory:*` for power users and admin work, but expose save, resume, and continuity-oriented search through the main workflow surface. [SOURCE: .opencode/command/memory/README.txt:36-52] [SOURCE: .opencode/command/memory/search.md:7-49] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml:113-210]
 
-### Rejection R-004 — Do Not Replace Governance Levels With Starter-Kit Profiles
-- Origin iteration: `iteration-020.md`
-- Rationale: External profiles solve scaffolding ergonomics for generated projects. Local levels and phases solve governance depth and coordination. Replacing the latter with the former would distort the core decision model of `system-spec-kit`. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/claude-mastery-project.conf:53-116] [SOURCE: .opencode/skill/system-spec-kit/references/structure/phase_definitions.md:82-141]
+### F-019 - Hide governance levels behind guided defaults
+- Origin: `iteration-023.md`
+- Priority: should-have
+- Target: template selection and packet bootstrap
+- Summary: preserve packet governance depth, but stop making Level 1 versus 2 versus 3 an up-front user burden. [SOURCE: .opencode/skill/system-spec-kit/references/templates/template_guide.md:15-33] [SOURCE: .opencode/skill/system-spec-kit/references/templates/level_specifications.md:15-47] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.mdd/docs/03-database-layer.md:1-30]
 
-## 7. Refactor / Pivot Recommendations
-- **REFACTOR:** Split memory into session digests versus promoted memories, preserving the current rich pipeline only for promoted/indexed artifacts. Origin: F-011.
-- **REFACTOR:** Keep a constitutional rulebook, but move deterministic safety and pre-flight behaviors from prose gates into executable hooks/config where runtimes support it. Origin: F-012.
-- **PIVOT:** Treat a machine-readable command manifest as the source of truth for command taxonomy, runtime visibility, and generated help/docs. Origin: F-015.
-- **SIMPLIFY:** Add a first-class personal-preference layer so repo governance stops carrying both universal rules and individual working-style concerns. Origin: F-009.
-- **SIMPLIFY:** Introduce a working-brief stage before full packet depth so session startup is lighter without weakening later governance. Origin: F-010.
-- **SIMPLIFY:** Reduce deep-research primary state to fewer always-synchronized artifacts, with dashboards/registries generated where possible. Origin: F-013.
-- **SIMPLIFY:** Collapse validation into a smaller executable invariant core and generate human-readable readiness views from those checks. Origin: F-014.
-- **KEEP:** Do not copy starter-kit runtime/application architecture, starter-kit profiles, or other scaffold-specific assumptions into `system-spec-kit`'s core model. Origin: R-003, R-004.
+### F-020 - Merge continuity surfaces around one operator concept
+- Origin: `iteration-024.md`
+- Priority: should-have
+- Target: continuity agents, resume docs, handover surfaces
+- Summary: collapse the visible distinction between `context`, `context-prime`, and `handover` into one continuity surface while keeping specialized internals if needed. [SOURCE: .opencode/agent/context.md:45-53] [SOURCE: .opencode/agent/context-prime.md:22-39] [SOURCE: .opencode/agent/handover.md:22-32]
+
+### F-021 - Consolidate the visible skill taxonomy
+- Origin: `iteration-026.md`
+- Priority: should-have
+- Target: skill discovery and public routing surfaces
+- Summary: keep internal modularity, but present fewer public capability buckets, especially across the overlapping `sk-code-*` family. [SOURCE: .opencode/skill/system-spec-kit/SKILL.md:18-60] [SOURCE: .opencode/skill/sk-code-opencode/SKILL.md:21-29] [SOURCE: .opencode/skill/sk-code-full-stack/SKILL.md:21-32]
+
+### F-022 - Remove mandatory explicit skill-routing ceremony
+- Origin: `iteration-027.md`
+- Priority: must-have
+- Target: Gate 2 policy and `skill_advisor.py` usage
+- Summary: keep routing as infrastructure, but make it implicit by default so users are not forced through an extra visible step on most substantial tasks. [SOURCE: CLAUDE.md:47-70] [SOURCE: .opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md:31-47] [SOURCE: .opencode/skill/scripts/skill_advisor.py:83-209]
+
+### F-023 - Redesign the operator surface around runtime enforcement
+- Origin: `iteration-028.md`
+- Priority: must-have
+- Target: `CLAUDE.md`, constitutional rule surfaces, hook/config policy
+- Summary: shrink the written ceremony to principles and exceptions, and move deterministic rules into executable runtime enforcement. [SOURCE: CLAUDE.md:107-165] [SOURCE: .opencode/skill/system-spec-kit/constitutional/gate-enforcement.md:51-102] [SOURCE: .claude/settings.local.json:1-52] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/settings.json:1-64]
+
+### F-024 - Add one guided work command
+- Origin: `iteration-029.md`
+- Priority: should-have
+- Target: `.opencode/command/spec_kit/`
+- Summary: add `/spec_kit:start` or `/spec_kit:work` as a guided entry point that creates or resumes the right packet state and dispatches internally. [SOURCE: .opencode/command/spec_kit/plan.md:31-120] [SOURCE: .opencode/command/spec_kit/implement.md:29-120] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/mdd.md:31-131]
+
+### F-025 - Add dynamic help, progress, and session-status surfaces
+- Origin: `iteration-030.md`
+- Priority: nice-to-have
+- Target: command metadata and reporting surfaces
+- Summary: make orientation live and state-aware so operators do not need to stitch together several static docs. [SOURCE: .opencode/command/README.txt:36-60] [SOURCE: .opencode/command/memory/manage.md:33-61] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/help.md:31-107] [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/external/.claude/commands/progress.md:11-60]
+
+## 7. Rejected Recommendations
+
+### R-001 - Do not copy branch, port, and E2E hooks wholesale
+- Origin: `iteration-007.md`
+- Rationale: those hooks assume starter-kit app conventions that do not map cleanly to `system-spec-kit`.
+
+### R-002 - Do not import the external mini-agent architecture
+- Origin: `iteration-010.md`
+- Rationale: the local repo needs richer specialization; only the concise role-contract style is worth borrowing.
+
+### R-003 - Do not rebuild around the external app runtime shape
+- Origin: `iteration-018.md`
+- Rationale: the external repo is an operator shell, not sufficient evidence for a runtime rewrite.
+
+### R-004 - Do not replace governance levels with starter-kit profiles
+- Origin: `iteration-020.md`
+- Rationale: profiles solve scaffolding ergonomics, not governance depth.
+
+### R-005 - Do not collapse LEAF deep-research and deep-review loops
+- Origin: `iteration-025.md`
+- Rationale: the external repo does not provide equivalent convergence-oriented iteration architecture.
 
 ## 8. Combined Priority Queue
-1. F-011 — Split session digests from promoted memories.
-2. F-014 — Simplify validation around executable invariants and generated readiness views.
-3. F-006 — Adopt Claude-only secret guardrails first.
-4. F-012 — Move deterministic gate policy into executable hooks/config where possible.
-5. F-015 — Pivot to a manifest-driven command architecture.
-6. F-013 — Reduce deep-research primary state surfaces.
-7. F-010 — Add a first-class working-brief stage before full packet depth.
-8. F-007 — Add command audience/distribution metadata as the first step toward the manifest pivot.
-9. F-005 — Add a thin enforcement layer on top of the current recovery-first hook stack.
-10. F-009 — Add an explicit personal-preference layer.
-11. F-002 — Add a guided doc-first front door into existing Spec Kit workflows.
-12. F-004 — Introduce a lightweight working-brief template for mid-session scanability.
-13. F-016 — Add human-readable readiness projections on top of existing validation and research state.
-14. F-008 — Expose operator-facing observability as a command/reporting surface.
-15. F-003 — Add a compressed-brief pattern without importing token-marketing claims.
-16. F-001 — Sharpen `.claude/CLAUDE.md` as a Claude-only quick-reference layer.
+1. F-023 - redesign the operator surface around runtime enforcement.
+2. F-022 - remove mandatory explicit skill-routing ceremony.
+3. F-011 - split session digests from promoted memories.
+4. F-014 - simplify validation around executable invariants.
+5. F-006 - adopt secret guardrails first.
+6. F-017 - merge the visible lifecycle command front door.
+7. F-018 - pull routine memory UX back into Spec Kit.
+8. F-020 - merge continuity surfaces around one operator concept.
+9. F-015 - pivot to a manifest-driven command architecture.
+10. F-024 - add one guided work command.
+11. F-021 - consolidate the visible skill taxonomy.
+12. F-019 - hide governance levels behind guided defaults.
 
 ## 9. Cross-Phase Implications
 - Phase `005` overlap:
-  - Finding F-007 is partly a command-system packaging problem because it concerns command metadata, dynamic help, and distribution semantics across command families.
-  - Finding F-015 expands that overlap into a larger architecture question: command manifests, runtime visibility, and generated help/docs likely belong in the same follow-on workstream.
-  - Any follow-on to expose operator-facing observability or readiness through commands may also intersect broader command taxonomy decisions.
-- Memory/validation/gate overlap:
-  - Findings F-011, F-012, and F-014 are not isolated polish items. Together they suggest a deeper simplification initiative across session capture, gate enforcement, and validation responsibilities.
-  - These three findings should probably be planned as one architecture pass rather than three unrelated tweaks.
+  - F-007, F-015, F-024, and F-025 all touch command discovery, generated help, or manifest-driven routing.
 - Phase `008` overlap:
-  - Rejection R-002 still leaves a useful follow-on for phase `008`: tighten agent contracts so local agent docs communicate tool budget, role, and output expectations as tersely as the external mini-agents.
-  - MCP install guidance packaging also overlaps phase `008` if it becomes part of skill or agent-adjacent workflow docs rather than command docs.
+  - F-020, F-021, F-022, and R-005 all touch agent contracts, skill packaging, routing visibility, or roster granularity.
+- Memory, gate, and validation overlap:
+  - F-011, F-014, F-018, F-022, and F-023 form one larger simplification program around continuity, policy, and workflow startup.
+- Template and UX overlap:
+  - F-004, F-010, F-019, and F-024 all point toward a guided starter experience that promotes into stronger governance instead of demanding it immediately.
 
 ## 10. Recommended Next Steps
-1. Plan a joint architecture follow-on for memory, gate, and validation simplification anchored around F-011, F-012, and F-014.
-2. Keep F-006 as the tactical adopt-now change because it is still the clearest low-risk safety upgrade.
-3. Use phase `005` to turn Phase 1 metadata work into the larger Phase 2 manifest-driven command-architecture proposal.
-4. Prototype the working-brief stage and readiness projections as generated/operator-facing layers, not as yet more mandatory primary artifacts.
+1. Plan a joint operator-surface redesign packet around F-017 through F-024, with F-023 as the anchor.
+2. Keep F-006 as the clearest tactical adopt-now change while the larger UX redesign is scoped.
+3. Use phase `005` to connect manifest-driven command architecture to the proposed help, progress, and guided-start surfaces.
+4. Use phase `008` to rationalize continuity roles and skill packaging without touching the justified LEAF loop core.

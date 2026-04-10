@@ -21,21 +21,21 @@ Treat the external Intellegix repo as a Claude Code control plane with these rel
 - Exit-code contract: `0 = complete`, `1 = max iterations`, `2 = budget exceeded`, `3 = stagnation`.
 - Orchestrator surface: `/orchestrator-new`, `/orchestrator`, `/orchestrator-multi`.
 - Command surface: `31` markdown slash commands covering research, planning, review, implementation, handoff, council, Perplexity, portfolio, and specialized workflows.
-- Council layer: `council-automation/` fans out to multiple frontier models and can synthesize with Opus via `synthesis_prompt.md`.
-- Browser layer: `mcp-servers/browser-bridge/` plus `frontend-e2e.md` imply seven-tier browser testing and bridge-based automation.
+- Council layer: `external/council-automation/` fans out to multiple frontier models and can synthesize with Opus via `external/council-automation/synthesis_prompt.md`.
+- Browser layer: `external/mcp-servers/browser-bridge/` plus `external/commands/frontend-e2e.md` imply seven-tier browser testing and bridge-based automation.
 - Governance layer: `portfolio/PORTFOLIO.md.example` constrains project effort by tier and phase.
 - Behavioral evidence: `automated-loop/tests/` contains `377` tests and must be treated as part of the spec, not as optional support code.
 
 Important source anchors:
 
-- `README.md`, `automated-loop/README.md`
+- `external/README.md`, `external/automated-loop/loop_driver.py`
 - `automated-loop/loop_driver.py`, `ndjson_parser.py`, `state_tracker.py`, `research_bridge.py`, `config.py`, `multi_agent.py`
 - `automated-loop/tests/`
-- `agents/orchestrator.md`, `agents/orchestrator-multi.md`
-- `commands/orchestrator-new.md`, `commands/orchestrator.md`, `commands/orchestrator-multi.md`
+- `external/agents/orchestrator.md`, `external/agents/orchestrator-multi.md`
+- `external/commands/orchestrator-new.md`, `external/commands/orchestrator.md`, `external/commands/orchestrator-multi.md`
 - `hooks/orchestrator-guard.py`
-- `council-automation/council_query.py`, `council-automation/synthesis_prompt.md`
-- `portfolio/PORTFOLIO.md.example`, `portfolio/DECISIONS.md`
+- `external/council-automation/council_query.py`, `external/council-automation/synthesis_prompt.md`
+- `external/portfolio/PORTFOLIO.md.example`, `external/portfolio/DECISIONS.md`
 
 ### 4.2 Cross-Phase Awareness Table
 
@@ -81,17 +81,17 @@ The research should therefore focus on control-plane deltas, not on capabilities
 
 1. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master` as the already-approved phase folder. Do not create a sibling packet and do not ask the spec-folder question again.
 2. Treat `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master/external/intellegix-code-agent-toolkit-master` as read-only.
-3. Read the repo root `AGENTS.md`, then external `README.md`, then `automated-loop/README.md` so the overview is anchored before code inspection.
+3. Read the repo root `AGENTS.md`, then `external/README.md`, then `external/automated-loop/loop_driver.py` so the overview is anchored before deeper code inspection.
 4. Start the deep technical read in `automated-loop/`: `loop_driver.py`, `ndjson_parser.py`, `state_tracker.py`, `research_bridge.py`, `config.py`, `multi_agent.py`. Do this before reading commands or hooks.
 5. Trace the full loop lifecycle: initialization and preflight -> Claude CLI NDJSON streaming -> event parsing -> state persistence -> budget checks -> research injection -> stagnation handling -> exit-code selection.
 6. Confirm session continuity by tracing `session_id`, `last_session_id`, `--resume`, `.workflow/state.json`, `trace.jsonl`, and any session-rotation thresholds.
 7. Inspect the budget and stagnation model in detail: per-iteration limits, total limits, timeout cooldowns, fallback model logic, completion markers, and exit codes `0`, `1`, `2`, `3`.
 8. Read `automated-loop/tests/`, especially tests covering completion detection, budgets, resume, NDJSON parsing, research fallback, state tracking, file locking, and multi-agent behavior.
-9. Only after the loop-runtime read is complete, move to `agents/orchestrator.md` and `agents/orchestrator-multi.md`. Keep loop runtime and supervising agents conceptually separate.
-10. Then read `commands/orchestrator-new.md`, `commands/orchestrator.md`, `commands/orchestrator-multi.md`, plus representative command files for research, council, handoff, and portfolio status. Compare the `31` commands against this repo's `.opencode/command/` and `.opencode/skill/` surfaces.
+9. Only after the loop-runtime read is complete, move to `external/agents/orchestrator.md` and `external/agents/orchestrator-multi.md`. Keep loop runtime and supervising agents conceptually separate.
+10. Then read `external/commands/orchestrator-new.md`, `external/commands/orchestrator.md`, `external/commands/orchestrator-multi.md`, plus representative command files for research, council, handoff, and portfolio status. Compare the `31` commands against this repo's `.opencode/command/` and `.opencode/skill/` surfaces.
 11. Read `hooks/orchestrator-guard.py` and `hooks/inject-time.py` after the commands. Focus on role boundaries, path safety, and orchestration mode enforcement.
-12. Read `council-automation/council_query.py`, `council_config.py`, and `council-automation/synthesis_prompt.md`. Focus on council workflow design, multi-model fan-out, fallback, and Opus synthesis rather than browser internals.
-13. Read `portfolio/PORTFOLIO.md.example` and `portfolio/DECISIONS.md` last. Capture how tier and phase restrictions constrain allowed work by project maturity.
+12. Read `external/council-automation/council_query.py`, `external/council-automation/council_config.py`, and `external/council-automation/synthesis_prompt.md`. Focus on council workflow design, multi-model fan-out, fallback, and Opus synthesis rather than browser internals.
+13. Read `external/portfolio/PORTFOLIO.md.example` and `external/portfolio/DECISIONS.md` last. Capture how tier and phase restrictions constrain allowed work by project maturity.
 14. Compare findings directly against `.opencode/agent/orchestrate.md`, `.opencode/skill/cli-copilot/`, `.opencode/command/`, `CLAUDE.md`, and `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`. Make every recommendation comparative, not standalone.
 15. Save outputs under this phase folder only. Use `research/research.md` as the canonical report, classify each finding as `adopt now`, `prototype later`, or `reject`, and explicitly tag overlap with phase `001` or phase `003` when appropriate.
 
@@ -149,7 +149,7 @@ Research Intellegix Code Agent Toolkit for Code_Environment/Public with focus on
 
 ### Example B - Worktree-native multi-agent supervision
 
-- **Evidence:** `agents/orchestrator-multi.md`, `commands/orchestrator-multi.md`, `automated-loop/multi_agent.py`, `hooks/orchestrator-guard.py`
+- **Evidence:** `external/agents/orchestrator-multi.md`, `external/commands/orchestrator-multi.md`, `external/automated-loop/multi_agent.py`, `external/hooks/orchestrator-guard.py`
 - **What it does:** Intellegix splits large work across isolated git worktrees, assigns explicit file territories, blocks orchestrator source edits via a guard hook, and merges agents sequentially.
 - **Why it matters here:** This repo has strong orchestration prompts, but not a first-class runtime for parallel isolated worker loops with merge-order semantics.
 - **Recommendation:** `prototype later`

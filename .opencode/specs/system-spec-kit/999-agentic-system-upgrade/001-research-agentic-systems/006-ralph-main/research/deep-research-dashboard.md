@@ -22,19 +22,31 @@
 | 018 | Should task sizing be defined as one strict context window, or as one independently verifiable unit sized to runtime handoff behavior? | high | should-have | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
 | 019 | Does Ralph's interactive flowchart suggest system-spec-kit needs a more visual lifecycle explanation for operators? | medium | nice-to-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
 | 020 | Should system-spec-kit expose an explicit lightweight workflow lane instead of making every operator path feel like the full governed stack? | medium | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+| 021 | Is system-spec-kit exposing too many operator-facing commands compared with Ralph's much smaller runtime surface? | high | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+| 022 | Does Ralph's compact lifecycle suggest that plan, implement, and complete are too ceremonial as separate front-door commands? | medium | should-have | `.opencode/command/spec_kit/plan.md` |
+| 023 | Is the /memory:* command family well-integrated with the /spec_kit:* lifecycle, or is it an awkward parallel surface? | high | must-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+| 024 | Should system-spec-kit replace spec folders and Level 1/2/3+ templates with a much smaller Ralph-style artifact model? | medium | rejected | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
+| 025 | Is system-spec-kit's 10+ agent roster the right granularity, or should several roles be merged or hidden? | medium | should-have | `.opencode/agent/orchestrate.md` |
+| 026 | Should deep research and deep review replace their LEAF architecture with Ralph's thinner shell loop? | high | rejected | `.opencode/agent/deep-research.md` |
+| 027 | Is the skill system too fragmented, and is Gate 2 plus skill_advisor.py adding too much ceremony? | medium | should-have | `.opencode/skill/scripts/skill_advisor.py` |
+| 028 | Should the sk-code-* family collapse behind a single coding front door with internal overlays? | medium | nice-to-have | `.opencode/skill/sk-code-opencode/SKILL.md` |
+| 029 | Should system-spec-kit redesign its operator-facing automation contract around a smaller visible gate surface? | high | must-have | `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md` |
+| 030 | What does end-to-end feature workflow friction reveal about the right front door for system-spec-kit? | high | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
 
 ## Convergence Signal
 - Iterations without new signal: 0
 - Stop rule triggered: no
-- Phase 2 stop rule used: max_iterations
+- Phase 3 stop rule used: max_iterations
 
 ## Finding Totals
 - Phase 1: must=2 | should=4 | nice=2 | rejected=2
 - Phase 2: must=2 | should=5 | nice=2 | rejected=1
-- Combined: must=4 | should=9 | nice=4 | rejected=3
+- Phase 3: must=2 | should=5 | nice=1 | rejected=2
+- Combined: must=6 | should=14 | nice=5 | rejected=5
 
-## Refactor / Pivot Verdicts
-- REFACTOR: 1
-- PIVOT: 1
-- SIMPLIFY: 3
+## UX Verdicts
+- SIMPLIFY: 2
+- ADD: 1
+- MERGE: 3
 - KEEP: 2
+- REDESIGN: 2

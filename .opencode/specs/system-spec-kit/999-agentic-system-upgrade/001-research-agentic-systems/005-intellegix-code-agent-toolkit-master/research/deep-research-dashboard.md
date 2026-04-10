@@ -22,27 +22,45 @@
 | 018 | 2 | Should system-spec-kit add a machine-readable runtime summary for deep loops, complementing the markdown dashboard with a compact operational snapshot? | high | should-have | KEEP | `.opencode/skill/sk-deep-research/references/state_format.md` |
 | 019 | 2 | Does the external repo's simpler `.workflow` state plus handoff model prove that system-spec-kit should replace its broader semantic memory platform? | high | rejected | KEEP | `.opencode/skill/system-spec-kit/references/memory/memory_system.md` |
 | 020 | 2 | Should system-spec-kit replace its fresh-context deep-research/deep-review loops with an external-style single-loop manager? | high | rejected | KEEP | `.opencode/command/spec_kit/deep-research.md` |
+| 021 | 3 | Does the external orchestration surface show that system-spec-kit should stop exposing separate `/spec_kit:plan`, `/spec_kit:implement`, and `/spec_kit:complete` commands as the primary lifecycle model? | high | should-have | MERGE | `.opencode/command/spec_kit/plan.md` |
+| 022 | 3 | Is the current `/memory:*` command family and YAML-asset exposure too parallel to `/spec_kit:*` compared with the external repo's flatter orchestration surface? | high | should-have | SIMPLIFY | `.opencode/command/memory/search.md` |
+| 023 | 3 | Is the current Level 1/2/3+ template and validation mental model intuitive enough for operators, or should system-spec-kit redesign that user-facing abstraction? | high | must-have | REDESIGN | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
+| 024 | 3 | Is the current 10+ agent roster the right default granularity for system-spec-kit, or should parts of it be merged to reduce operator and maintainer overhead? | high | should-have | MERGE | `.opencode/agent/orchestrate.md` |
+| 025 | 3 | Does the external repo show that system-spec-kit should replace its LEAF deep-research and deep-review iteration model with more generic research and orchestrator roles? | high | rejected | KEEP | `.opencode/agent/deep-research.md` |
+| 026 | 3 | Is the current skill system too fragmented for operators, especially across `system-spec-kit`, `sk-code-*`, `sk-doc`, and related workflow skills? | high | should-have | MERGE | `.opencode/skill/sk-code-opencode/SKILL.md` |
+| 027 | 3 | Is Gate 2 skill routing too ceremonial for common work, and are niche skills like `sk-prompt-improver` and `sk-agent-improver` too visible by default? | high | nice-to-have | SIMPLIFY | `.opencode/skill/scripts/skill_advisor.py` |
+| 028 | 3 | Does the external repo achieve usable autonomy with less gate and rule machinery, and does that mean system-spec-kit should redesign how its gate, hook, and `CLAUDE.md` system is exposed? | high | must-have | REDESIGN | `CLAUDE.md` |
+| 029 | 3 | How much end-to-end workflow friction does system-spec-kit impose for a normal feature or continuation flow compared with the external repo, and what is the highest-leverage UX addition? | high | should-have | ADD | `.opencode/command/spec_kit/resume.md` |
+| 030 | 3 | Should system-spec-kit broadly delete hooks, memory integration, and spec artifacts just to mimic the external repo's simpler operator surface? | high | rejected | KEEP | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` |
 
 ## Convergence Signal
 - Iterations without new signal: 0
 - Early-stop rule triggered: no
 - Final stop reason: max_iterations
-- Phase 2 semantic-search note: `mcp__cocoindex_code__search` timed out during this run, so direct file reads and exact `rg` searches were used for the external repo pass.
+- Semantic-search note: `mcp__cocoindex_code__search` timed out during this phase train, so direct file reads and exact `rg` searches were used for the UX/system pass.
 
 ## Finding Totals
 - Phase 1 only: Must-have 2 | Should-have 4 | Nice-to-have 2 | Rejected 2
 - Phase 2 only: Must-have 2 | Should-have 5 | Nice-to-have 1 | Rejected 2
-- Combined: Must-have 4 | Should-have 9 | Nice-to-have 3 | Rejected 4
+- Phase 3 only: Must-have 2 | Should-have 5 | Nice-to-have 1 | Rejected 2
+- Combined: Must-have 6 | Should-have 14 | Nice-to-have 4 | Rejected 6
 
-## Refactor / Pivot Verdicts
+## Phase 2 Refactor / Pivot Verdicts
 - REFACTOR: 3
 - PIVOT: 2
 - SIMPLIFY: 2
 - KEEP: 3
 
+## Phase 3 UX Verdicts
+- SIMPLIFY: 2
+- ADD: 1
+- MERGE: 3
+- KEEP: 2
+- REDESIGN: 2
+
 ## Priority Queue
-1. Build a typed deep-loop controller and pair it immediately with behavior-first contract tests.
-2. Formalize the lighter research-packet profile and make packet-local research artifacts the canonical completion boundary.
-3. Introduce gate profiles and extract orchestration policy out of the monolithic orchestrator prompt.
-4. Add a machine-readable runtime summary after the controller contract is stable.
-5. Leave operator-surface flattening until command-system ownership in phase `003` is ready to absorb it.
+1. Redesign the operator shell around named work profiles and a thin gate/hook contract.
+2. Merge the public lifecycle and memory surfaces into a smaller profile-driven entry experience.
+3. Shrink the default agent and skill roster into core surfaces with internal overlays.
+4. Add a fast continuation path once profile boundaries and safety criteria are defined.
+5. Preserve the hidden automation core and LEAF evidence loops while simplifying only the shell.
