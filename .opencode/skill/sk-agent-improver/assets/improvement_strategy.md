@@ -100,6 +100,40 @@ Copy this file into the runtime area, fill the operator-owned fields before the 
 ### Packaging Follow-Up
 
 [Reducer records downstream mirror-sync or parity debt separately]
+
+### Mutation Coverage
+
+| Dimension | Tried | Exhausted | Remaining |
+| --- | --- | --- | --- |
+| Structural | - | - | - |
+| Rule Coherence | - | - | - |
+| Integration | - | - | - |
+| Output Quality | - | - | - |
+| System Fitness | - | - | - |
+
+[Reducer populates from mutation-coverage.json after each iteration]
+
+### Convergence Eligibility
+
+- **Data Points**: [count] / 3 minimum required
+- **Stability**: [all dimensions within +/-2 across last 3 points?]
+- **Exhaustion**: [any dimensions fully exhausted?]
+- **Verdict**: [eligible / not eligible / insufficient data]
+
+[Reducer updates after each trajectory recording]
+
+### Trade-Off Detection
+
+| Iteration | Improving | Regressing | Action |
+| --- | --- | --- | --- |
+| - | - | - | - |
+
+[Reducer populates when trade-off-detector.cjs flags a Pareto trade-off]
+
+**Trade-Off Resolution Guidance:**
+- If hard dimension regresses (structural, integration, systemFitness): BLOCK promotion, revert mutation
+- If soft dimension regresses (ruleCoherence, outputQuality): WARN operator, allow with explicit approval
+- If Pareto-dominated: REJECT candidate regardless of weighted score improvement
 <!-- MACHINE-OWNED: END -->
 
 ---

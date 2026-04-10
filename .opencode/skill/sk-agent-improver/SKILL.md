@@ -238,6 +238,92 @@ Dynamic profiles are generated on the fly from any agent file via `scripts/gener
 ---
 
 <!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:runtime-truth -->
+## 4B. RUNTIME TRUTH CONTRACTS (Phase 005)
+
+### Stop-Reason Taxonomy
+
+Every improvement session termination MUST produce both a `stopReason` (why) and a `sessionOutcome` (what happened).
+
+**stopReason** (WHY the session ended):
+
+| Reason | Trigger Condition |
+| --- | --- |
+| `converged` | All legal-stop gate bundles pass and dimension trajectory is stable |
+| `maxIterationsReached` | Iteration counter equals `maxIterations` config |
+| `blockedStop` | One or more legal-stop gate bundles fail when convergence math would otherwise trigger stop |
+| `manualStop` | Operator cancels the session |
+| `error` | Infra failure, script crash, or unrecoverable condition |
+| `stuckRecovery` | Session detected stuck state and exhausted recovery options |
+
+**sessionOutcome** (WHAT happened to the candidate):
+
+| Outcome | When Used |
+| --- | --- |
+| `keptBaseline` | Baseline was retained because candidate did not improve |
+| `promoted` | Candidate was promoted to canonical target |
+| `rolledBack` | Promoted candidate was rolled back to prior state |
+| `advisoryOnly` | Session completed for assessment only; no mutation attempted |
+
+### Audit Journal Protocol
+
+All journal emission is orchestrator-only (ADR-001). The journal (`improvement-journal.jsonl`) is an append-only JSONL file capturing lifecycle events. Separate from the existing `agent-improvement-state.jsonl` which tracks proposal/evaluation data.
+
+**Script**: `scripts/improvement-journal.cjs`
+
+Event types: `session_start`, `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `gate_evaluation`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempt`, `promotion_result`, `rollback`, `rollback_result`, `trade_off_detected`, `mutation_proposed`, `mutation_outcome`, `session_ended`, `session_end`
+
+### Legal-Stop Gate Bundles
+
+A session may NOT claim `converged` unless ALL gate bundles pass:
+
+| Gate Bundle | Conditions |
+| --- | --- |
+| `contractGate` | structural >= 90 AND systemFitness >= 90 |
+| `behaviorGate` | ruleCoherence >= 85 AND outputQuality >= 85 |
+| `integrationGate` | integration >= 90 AND no drift ambiguity |
+| `evidenceGate` | benchmark pass AND repeatability pass |
+| `improvementGate` | weighted delta >= `scoring.thresholdDelta` |
+
+Failed gates persist `blockedStop` with full gate results in the journal.
+
+### Resume/Continuation Semantics
+
+Sessions support the following lineage modes: `new`, `resume`, `restart`, `fork`, `completed-continue`.
+
+On resume, the orchestrator replays the journal + coverage graph + registry before dispatch. The `continuedFromIteration` field tracks where the prior session left off.
+
+### Mutation Coverage Graph
+
+**Script**: `scripts/mutation-coverage.cjs`
+
+Tracks explored dimensions, tried mutation types per dimension, and exhausted mutation sets using `loop_type: "improvement"` namespace isolation (ADR-002). The orchestrator skips mutation types already in the exhausted log.
+
+### Dimension Trajectory
+
+Trajectory data records per-iteration dimension scores. Convergence requires minimum 3 data points (ADR-003) with all dimension deltas within +/-2 across the last 3 points.
+
+### Trade-Off Detection
+
+**Script**: `scripts/trade-off-detector.cjs`
+
+Detects Pareto trade-offs: flags when improvement > +3 in one dimension causes regression < -3 in hard dimensions (structural, integration, systemFitness) or < -5 in soft dimensions (ruleCoherence, outputQuality). Blocks promotion for Pareto-dominated candidates.
+
+### Parallel Candidate Waves (Optional)
+
+**Script**: `scripts/candidate-lineage.cjs`
+
+Disabled by default (`parallelWaves.enabled: false` in config, ADR-004). When enabled, spawns 2-3 candidates with different mutation strategies. Activation requires: exploration-breadth score above threshold, 3+ unresolved mutation families, and 2 consecutive tie/plateau iterations.
+
+### Weight Optimizer (Advisory Only)
+
+**Script**: `scripts/benchmark-stability.cjs`
+
+Reads historical session data and emits a weight-recommendation report. Recommendations do NOT auto-apply (ADR-005). Requires minimum session count threshold before producing recommendations.
+
+---
+
+<!-- /ANCHOR:runtime-truth -->
 <!-- ANCHOR:rules -->
 ## 5. RULES
 
@@ -299,6 +385,11 @@ Dynamic profiles are generated on the fly from any agent file via `scripts/gener
 | `scripts/scan-integration.cjs` | Full integration surface scanner |
 | `scripts/generate-profile.cjs` | Dynamic target profile generator |
 | `scripts/check-mirror-drift.cjs` | Derived-surface drift report helper |
+| `scripts/improvement-journal.cjs` | Append-only JSONL event emitter for improvement session audit journals |
+| `scripts/mutation-coverage.cjs` | Coverage graph reader/writer for explored dimensions and mutation tracking |
+| `scripts/trade-off-detector.cjs` | Cross-dimension regression detector using trajectory and Pareto analysis |
+| `scripts/candidate-lineage.cjs` | Lineage graph for optional parallel candidate wave sessions |
+| `scripts/benchmark-stability.cjs` | Benchmark replay stability measurement and advisory weight optimization |
 | `references/integration_scanning.md` | Integration scanner documentation |
 
 ---

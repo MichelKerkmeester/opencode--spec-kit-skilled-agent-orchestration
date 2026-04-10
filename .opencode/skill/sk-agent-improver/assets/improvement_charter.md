@@ -72,8 +72,47 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 ---
 
 <!-- /ANCHOR:keep-discard -->
+<!-- ANCHOR:audit-trail -->
+## 6. AUDIT TRAIL OBLIGATIONS
+
+### Journal Emission Protocol (ADR-001)
+
+The orchestrator MUST emit journal events at each lifecycle boundary. The proposal-only agent MUST NOT write to the journal.
+
+| Lifecycle Boundary | Journal Event Type | Required Fields |
+| --- | --- | --- |
+| Session initialization | `session_initialized` | sessionId, target, profile, config snapshot |
+| Integration scan | `integration_scanned` | integrationReportHash, surface counts |
+| Candidate generation | `candidate_generated` | candidateId, iteration, mutationType |
+| Candidate scoring | `candidate_scored` | candidateId, dimensions[], weightedScore |
+| Benchmark completion | `benchmark_completed` | candidateId, aggregateScore, fixtureResults |
+| Legal-stop evaluation | `legal_stop_evaluated` | gateResults (contractGate, behaviorGate, integrationGate, evidenceGate, improvementGate) |
+| Blocked stop | `blocked_stop` | failedGates[], reason |
+| Trade-off detected | `trade_off_detected` | improving, regressing, deltas |
+| Session end | `session_ended` | stopReason, sessionOutcome, finalIteration |
+
+### Stop-Reason Contract
+
+- **stopReason** (WHY session ended): `converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`
+- **sessionOutcome** (WHAT happened): `keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`
+
+### Legal-Stop Gate Bundles
+
+A session may NOT claim `converged` unless ALL gate bundles pass:
+
+- **contractGate**: structural >= 90 AND systemFitness >= 90
+- **behaviorGate**: ruleCoherence >= 85 AND outputQuality >= 85
+- **integrationGate**: integration >= 90 AND no drift ambiguity
+- **evidenceGate**: benchmark pass AND repeatability pass
+- **improvementGate**: weighted delta >= configured threshold
+
+Failed gates persist `blockedStop` with full gate results.
+
+---
+
+<!-- /ANCHOR:audit-trail -->
 <!-- ANCHOR:out-of-scope -->
-## 6. OUT OF SCOPE
+## 7. OUT OF SCOPE
 
 - multi-canonical promotion
 - runtime-mirror mutation as experiment evidence
@@ -84,7 +123,7 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 
 <!-- /ANCHOR:out-of-scope -->
 <!-- ANCHOR:related-resources -->
-## 7. RELATED RESOURCES
+## 8. RELATED RESOURCES
 
 - `../references/promotion_rules.md`
 - `../references/no_go_conditions.md`

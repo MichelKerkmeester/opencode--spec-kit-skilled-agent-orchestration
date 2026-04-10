@@ -31,7 +31,14 @@ contextType: "planning"
 
 ### Overview
 
-This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-agent-improver skill across four sub-phases. Sub-phase 5a delivers the core runtime contracts (stop-reason taxonomy, legal-stop gates, audit journal, hypothesis ledger). Sub-phase 5b adds improvement intelligence (mutation coverage graph, dimension trajectory, trade-off detection, exhausted-mutations log). Sub-phase 5c adds optional parallel candidate waves and candidate lineage. Sub-phase 5d adds scoring weight optimization and benchmark replay stability. All new config fields are optional with defaults, preserving backward compatibility.
+This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-agent-improver skill across four sub-phases. Sub-phase ordering matches research priority (P0 first, then P1, P2):
+
+- **Sub-phase 5a (P0)**: Core runtime truth — typed stop contract with separate stopReason/sessionOutcome, resume classifier, audit journal separated from mutation ledger. Research finding: formalize runtime truth before adding intelligence.
+- **Sub-phase 5b (P1)**: Improvement intelligence — mutation coverage, dimension trajectories, trade-off detection with Pareto awareness, exhausted-mutations log. Research finding: make the loop explainable and replayable.
+- **Sub-phase 5c (P2)**: Optional parallel candidate waves and candidate lineage. Research finding: keep advanced features advisory and gated, off by default.
+- **Sub-phase 5d (P2)**: Scoring weight optimization and benchmark replay stability. Research finding: advisory-only, refuse auto-apply until sufficient run history.
+
+All new config fields are optional with defaults, preserving backward compatibility (ADR-005).
 <!-- /ANCHOR:summary -->
 
 ---

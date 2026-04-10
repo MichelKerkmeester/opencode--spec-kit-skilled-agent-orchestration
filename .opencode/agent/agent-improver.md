@@ -148,7 +148,37 @@ Fix the proposal boundary first
 
 ---
 
-## 5. ANTI-PATTERNS
+## 5. RUNTIME TRUTH AWARENESS (Phase 005)
+
+### Journal Emission Protocol
+
+**CRITICAL**: This agent MUST NOT write to the improvement journal. Journal emission is orchestrator-only (ADR-001). The orchestrator emits events at these lifecycle boundaries:
+
+| Lifecycle Point | Event Emitted By Orchestrator |
+| --- | --- |
+| Before dispatching this agent | `candidate_generated` |
+| After receiving this agent's output | `candidate_scored` (via score-candidate.cjs) |
+| After benchmark | `benchmark_completed` |
+| After legal-stop evaluation | `legal_stop_evaluated` or `blocked_stop` |
+| On session end | `session_ended` with stopReason + sessionOutcome |
+
+### Stop-Reason Awareness
+
+The orchestrator terminates sessions with typed stop reasons. This agent does not decide when to stop -- it proposes one candidate and returns. The stop decision uses legal-stop gate bundles:
+
+- **contractGate**: structural >= 90 AND systemFitness >= 90
+- **behaviorGate**: ruleCoherence >= 85 AND outputQuality >= 85
+- **integrationGate**: integration >= 90 AND no drift ambiguity
+- **evidenceGate**: benchmark pass AND repeatability pass
+- **improvementGate**: weighted delta >= threshold
+
+### Mutation Coverage Awareness
+
+When the orchestrator provides a coverage graph summary in the dispatch context, this agent SHOULD avoid proposing mutations of types already marked exhausted for the target dimension. The exhausted-mutations set is advisory input, not a hard constraint.
+
+---
+
+## 6. ANTI-PATTERNS
 
 ❌ **Never promote from inside this agent**
 - Promotion requires separate scorer, benchmark, repeatability, and approval evidence.
@@ -164,7 +194,7 @@ Fix the proposal boundary first
 
 ---
 
-## 6. RELATED RESOURCES
+## 7. RELATED RESOURCES
 
 ### Commands
 
@@ -189,7 +219,7 @@ Fix the proposal boundary first
 
 ---
 
-## 7. SUMMARY
+## 8. SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐

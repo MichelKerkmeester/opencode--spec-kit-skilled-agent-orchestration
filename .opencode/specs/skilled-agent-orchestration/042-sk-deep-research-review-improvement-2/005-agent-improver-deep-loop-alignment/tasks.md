@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Agent-Improver Deep-Loop Alignment [005]"
-description: "24 tasks across 4 sub-phases mapping 13 requirements to concrete implementation steps for the sk-agent-improver runtime truth alignment."
+description: "28 tasks across 4 sub-phases mapping 13 requirements to concrete implementation steps for the sk-agent-improver runtime truth alignment."
 trigger_phrases:
   - "005"
   - "agent improver tasks"
@@ -28,20 +28,20 @@ contextType: "planning"
 
 **Task Format**: `T### [P?] Description (file path)` — REQ reference in parentheses indicates the requirement satisfied.
 
-**Sub-phase prefix**: Tasks are grouped by sub-phase (5a/5b/5c/5d). Within a sub-phase, tasks are ordered by dependency.
+**Sub-phase structure**: Phase 1 (Setup/5a) establishes the core runtime contracts. Phase 2 (Implementation/5b+5c) delivers improvement intelligence and parallel candidates. Phase 3 (Verification/5d) adds scoring optimization and verifies all work.
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Sub-Phase 5a: Runtime Truth Alignment
+## Phase 1: Setup
 
-*Delivers: stop-reason taxonomy, legal-stop gates, resume semantics, audit journal, hypothesis verification ledger.*
+*Sub-phase 5a: Runtime Truth Alignment (P0 — research priority: formalize runtime truth first) — typed stop contract with separate stopReason/sessionOutcome, legal-stop gate bundles, resume classifier, audit journal separated from mutation ledger.*
 
-- [ ] T001 Read existing sk-agent-improver SKILL.md, improvement_config.json, improvement_charter.md, improvement_strategy.md and agent-improver.md to understand current state before modifying (all skill files)
+- [ ] T001 Read existing sk-agent-improver SKILL.md, improvement_config.json, improvement_charter.md, improvement_strategy.md, and agent-improver.md to understand current state before modifying (REQ-AI-001 through REQ-AI-005)
 - [ ] T002 Read 042 Phase 1 journal schema from `../001-runtime-truth-foundation/` to confirm event type contract before writing journal script
-- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `converged`, `promoted`, `rolledBack`, `maxIterationsReached`, `regressionDetected`, `manualStop`, `error` with trigger conditions (`.opencode/skill/sk-agent-improver/SKILL.md`) (REQ-AI-001)
-- [ ] T004 Add legal-stop gate protocol to agent-improver.md orchestrator section: gate conditions for `converged` and `promoted` using 5-dimension stability + no regression + promotion criteria (`.opencode/agent/agent-improver.md`) (REQ-AI-002)
+- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `stopReason` enum (`converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`) and `sessionOutcome` enum (`keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`) per research finding (`.opencode/skill/sk-agent-improver/SKILL.md`) (REQ-AI-001)
+- [ ] T004 Add legal-stop gate protocol to agent-improver.md: gate bundles (contractGate, behaviorGate, integrationGate, evidenceGate, improvementGate) per research finding; failed gates persist blockedStop (`.opencode/agent/agent-improver.md`) (REQ-AI-002)
 - [ ] T005 Add resume/continuation semantics to agent.md command: session-id parameter, journal replay on resume, iteration counter carry-over (`.opencode/command/improve/agent.md`) (REQ-AI-003)
 - [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-004)
 - [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-005)
@@ -53,10 +53,13 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Sub-Phase 5b: Improvement Intelligence
+## Phase 2: Implementation
 
-*Delivers: mutation coverage graph, dimension trajectory tracking, trade-off detection, exhausted-mutations log.*
-*Depends on: T006 (journal emit for trade-off events).*
+*Sub-phase 5b: Improvement Intelligence (P1 — research priority: make loop explainable) — mutation coverage graph, dimension trajectories, trade-off detection with Pareto awareness, exhausted-mutations log.*
+*Sub-phase 5c: Parallel Candidates (P2 — research priority: keep advanced features advisory) — optional parallel candidate waves, candidate lineage graph.*
+*Depends on: Phase 1 complete (T006 journal emit required for trade-off events and wave events).*
+
+### Sub-phase 5b: Improvement Intelligence
 
 - [ ] T011 [P] Read 042 Phase 2 coverage graph API from `../002-semantic-coverage-graph/` to confirm `loop_type` namespace parameter support before implementing mutation-coverage.cjs
 - [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-agent-improver/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
@@ -66,48 +69,50 @@ contextType: "planning"
 - [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
 - [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-agent-improver/scripts/tests/mutation-coverage.vitest.ts`)
 - [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-agent-improver/scripts/tests/trade-off-detector.vitest.ts`)
-<!-- /ANCHOR:phase-2 -->
 
----
+### Sub-phase 5c: Parallel Candidates
 
-<!-- ANCHOR:phase-3 -->
-## Sub-Phase 5c: Parallel Candidates
-
-*Delivers: optional parallel candidate waves with exploration-breadth gate, candidate lineage graph.*
-*Depends on: T006 (journal emit); T003 (SKILL.md updated).*
-*Can run in parallel with Sub-Phase 5b after 5a completes.*
+*Can begin after Phase 1 completes, in parallel with 5b.*
 
 - [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-agent-improver/scripts/candidate-lineage.cjs`) (REQ-AI-011)
 - [ ] T020 [P] Add parallel wave orchestration branch to agent-improver.md: activation check against `parallelWaves.enabled` and `explorationBreadthScore >= activationThreshold`; spawn 2-3 candidates with different strategies; merge results by selecting highest non-regressive score (`.opencode/agent/agent-improver.md`) (REQ-AI-010)
 - [ ] T021 Update improvement_config.json: add `parallelWaves` config block with `enabled: false`, `activationThreshold`, `maxCandidates` fields and JSDoc comments (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
 - [ ] T022 Write `candidate-lineage.vitest.ts`: test node creation, parent-child linkage, root-to-leaf traversal, wave-index assignment, session-id isolation (`.opencode/skill/sk-agent-improver/scripts/tests/candidate-lineage.vitest.ts`)
 - [ ] T023 [P] Manual verification: run an improvement session with `parallelWaves.enabled: false` (default) and confirm single-wave behavior is unchanged; confirm no lineage graph is written when parallel mode is off
-<!-- /ANCHOR:phase-3 -->
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Sub-Phase 5d: Scoring Optimization
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-*Delivers: scoring weight optimizer (recommendation only), benchmark replay stability measurement.*
-*Depends on: T006 (journal history), T013 (trajectory data).*
+*Sub-phase 5d: Scoring Optimization (P2 — research priority: advisory-only, refuse auto-apply) — weight optimizer (recommendation only), benchmark replay stability.*
+*Cross-phase verification: backward compatibility, integration tests, checklist completion.*
+*Depends on: Phase 1 (journal history), Phase 2 5b (trajectory data).*
+
+### Sub-phase 5d: Scoring Optimization
 
 - [ ] T024 Create `benchmark-stability.cjs`: accepts array of benchmark result sets from identical replays, computes per-dimension stability coefficient (1 - stddev/mean), emits stability report JSON, appends `stabilityWarning` to journal if any coefficient is below configured threshold (`.opencode/skill/sk-agent-improver/scripts/benchmark-stability.cjs`) (REQ-AI-013)
 - [ ] T025 Implement weight optimizer logic in `benchmark-stability.cjs` or co-located module: reads historical journal files after session count threshold, computes per-dimension performance patterns, emits weight-recommendation report file (not auto-applied) (REQ-AI-012)
 - [ ] T026 Update SKILL.md: add weight optimizer invocation guidance (when to run, what the report contains, how to apply recommendations manually), benchmark stability interpretation guide (`.opencode/skill/sk-agent-improver/SKILL.md`)
 - [ ] T027 Update improvement_config.json: add `weightOptimizer.sessionCountThreshold`, `weightOptimizer.reportPath`, `benchmarkStability.replayCount`, `benchmarkStability.warningThreshold` optional config fields (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
 - [ ] T028 Write `benchmark-stability.vitest.ts`: test stability coefficient math (perfect stability = 1.0, high variance = low coefficient), stability warning threshold triggering, weight recommendation report format, multi-session history aggregation (`.opencode/skill/sk-agent-improver/scripts/tests/benchmark-stability.vitest.ts`)
-<!-- /ANCHOR:phase-4 -->
+
+### Cross-Phase Verification
+
+- [ ] T029 Backward compatibility test: run a complete improvement session using pre-phase config (no new fields); confirm behavior is identical to pre-phase (SC-009)
+- [ ] T030 Manual integration test: run a 3-iteration session and confirm journal contains all 5 event types, coverage graph is updated, stop-reason is emitted on termination
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks T001-T028 marked `[x]` (or explicitly deferred with user approval for P2 items)
+- [ ] All tasks T001-T030 marked `[x]` (or explicitly deferred with user approval for P2 items)
 - [ ] No `[B]` blocked tasks remaining
 - [ ] All 5 Vitest suites (`improvement-journal`, `mutation-coverage`, `trade-off-detector`, `candidate-lineage`, `benchmark-stability`) pass with zero failures across 3 consecutive runs
-- [ ] Backward compatibility verified: improvement session run without any new config fields produces identical output to pre-phase behavior
+- [ ] Backward compatibility verified: improvement session run without any new config fields produces identical output to pre-phase behavior (T029)
 - [ ] SKILL.md, all 4 asset files, agent-improver.md, and agent.md updated and synchronized with spec.md requirements
 - [ ] checklist.md verification complete with evidence for all P0 and P1 items
 <!-- /ANCHOR:completion -->
@@ -123,8 +128,30 @@ contextType: "planning"
 | `plan.md` | Sub-phase architecture, effort estimates, dependency graph, and milestones |
 | `checklist.md` | Verification gate items (CHK-* series) to mark as evidence accrues |
 | `decision-record.md` | ADR-001 through ADR-005 with full rationale and alternatives |
-| `../001-runtime-truth-foundation/` | 042 Phase 1 journal schema — primary dependency for Sub-Phase 5a |
-| `../002-semantic-coverage-graph/` | 042 Phase 2 coverage graph API — primary dependency for Sub-Phase 5b |
-| `../003-wave-executor/` | 042 Phase 3 wave executor — reference for Sub-Phase 5c parallel candidate gate |
-| `../004-offline-loop-optimizer/` | 042 Phase 4 optimizer patterns — reference for Sub-Phase 5d |
+
+### AI Execution Protocol
+
+#### Pre-Task Checklist
+
+- [ ] Read target files before editing (never modify without reading first)
+- [ ] Verify task is in scope for the current sub-phase
+- [ ] Confirm proposal-only constraint: no journal writes inside agent body
+- [ ] Confirm Phase 1 journal schema read before implementing Phase 2 scripts
+
+#### Execution Rules
+
+| Rule | Description |
+|------|-------------|
+| TASK-SEQ | Execute tasks in listed order unless marked `[P]` (parallelizable) |
+| TASK-SCOPE | Only modify files listed in scope section of spec.md |
+| TASK-JOURNAL | All journal emit calls go in orchestrator, never in agent body |
+| TASK-CONFIG | All new config fields must be optional with documented defaults |
+
+#### Status Reporting Format
+
+Report after each sub-phase: `Sub-phase [5a/5b/5c/5d] [COMPLETE/BLOCKED] — T### list, REQs satisfied, test status`
+
+#### Blocked Task Protocol
+
+If a task is `[B]` blocked: document the specific blocker, propose a resolution path, do not proceed to dependent tasks until resolved or explicitly deferred with user approval.
 <!-- /ANCHOR:cross-refs -->

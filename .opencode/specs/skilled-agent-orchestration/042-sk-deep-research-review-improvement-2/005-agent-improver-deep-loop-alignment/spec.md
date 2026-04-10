@@ -117,10 +117,10 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-AI-001 | Stop-reason taxonomy: `converged`, `promoted`, `rolledBack`, `maxIterationsReached`, `regressionDetected`, `manualStop`, `error` | Every session termination emits exactly one stop-reason matching the taxonomy; no session ends without a logged stop-reason |
-| REQ-AI-002 | Legal-stop gates using 5-dimension stability + no regression + promotion criteria | A session may not claim `converged` or `promoted` unless all gate conditions pass; violations emit `regressionDetected` or continue the loop |
-| REQ-AI-003 | Resume/continuation semantics for improvement sessions | A session started with a prior session-id replays journal state and resumes from the last checkpoint without repeating completed iterations |
-| REQ-AI-004 | Audit journal (`improvement-journal.jsonl`) capturing all events (iteration-started, candidate-proposed, candidate-evaluated, promotion-gate-checked, session-ended) | All five event types appear in the journal for every completed session; file is append-only and survives process restart |
+| REQ-AI-001 | Stop-reason taxonomy: `converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`. Separate `sessionOutcome`: `keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`. Research finding: do not overload stopReason with outcome semantics (P0). | Every session termination emits exactly one stop-reason matching the taxonomy plus one session outcome; no session ends without both logged |
+| REQ-AI-002 | Legal-stop gates organized as gate bundles: `contractGate` (structural >= 90, systemFitness >= 90), `behaviorGate` (ruleCoherence >= 85, outputQuality >= 85), `integrationGate` (integration >= 90, no drift), `evidenceGate` (benchmark+repeatability pass), `improvementGate` (weighted delta >= threshold). Research finding: map dimensions into gate bundles, not one-gate-per-score (P0). | A session may not claim `converged` unless all gate bundles pass; failed gates persist `blockedStop` with gate results rather than inventing new stop labels |
+| REQ-AI-003 | Resume/continuation semantics with classifier: `new`, `resume`, `restart`, `fork`, `completed-continue`. Add `continuedFromIteration` field. Research finding: port Phase 001's classifier directly; archive old runtime on restart; replay journal + coverage graph + registry before dispatch (P0). | A session started with a prior session-id replays journal state and resumes from the last checkpoint without repeating completed iterations |
+| REQ-AI-004 | Audit journal (`improvement-journal.jsonl`) separated from mutation ledger. Journal captures lifecycle events: `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempted`, `promotion_result`, `rollback_result`, `session_ended`. Research finding: today's state log mixes baseline/candidate/benchmark records; split into journal (lifecycle+stop) vs ledger (proposal/evaluation outcomes) (P0). | All lifecycle event types appear in the journal for every completed session; file is append-only and survives process restart |
 | REQ-AI-005 | Hypothesis verification ledger tracking mutation outcomes (proposed, accepted, rejected with reason) | Every candidate proposal appears in the ledger with its final outcome and the scored dimensions |
 
 ### Tier 2: Improvement Intelligence (from 042 Phase 2 + unique)
@@ -129,7 +129,7 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 |----|-------------|---------------------|
 | REQ-AI-006 | Mutation coverage graph tracking explored dimensions, tried mutations, and integration surfaces using `loop_type: "improvement"` namespace | After each iteration the coverage graph is updated; querying it returns accurate explored/remaining sets per dimension |
 | REQ-AI-007 | Dimension trajectory tracking (per-dimension score history across iterations) | For each active session the trajectory file contains a time-ordered score vector per dimension; minimum 3 data points before convergence can be claimed |
-| REQ-AI-008 | Trade-off detection flagging when dimension A improves by >threshold while dimension B regresses by >threshold | The detector emits a `trade-off-detected` event to the journal whenever thresholds are crossed; thresholds are configurable |
+| REQ-AI-008 | Trade-off detection with Pareto awareness: flag when improvement > +3 in one dimension causes regression < -3 in hard dimensions (structural, integration, systemFitness) or < -5 in soft dimensions. Research finding: weighted totals hide dominated candidates; block promotion for Pareto-dominated candidates even when weighted sum increases (P1). | The detector emits a `trade-off-detected` event to the journal whenever thresholds are crossed; thresholds are configurable with separate hard/soft dimension defaults |
 | REQ-AI-009 | Exhausted-mutations log preventing redundant exploration | The coverage graph writer records exhausted mutation types per dimension; the orchestrator skips mutation types already in the exhausted log |
 
 ### Tier 3: Parallel Experimentation (from 042 Phase 3, adapted)
@@ -143,7 +143,7 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-AI-012 | Scoring weight optimizer using historical session data to recommend per-dimension weight adjustments | After a configurable number of sessions the optimizer reads the journal history and emits a weight-recommendation report; recommendations do not auto-apply without explicit approval |
+| REQ-AI-012 | Scoring weight optimizer using historical session data to recommend per-dimension weight adjustments. Research finding: real data exists in 041 artifacts but is sparse; follow Phase 004's advisory-only model, refuse auto-apply until 2+ compatible target families and sufficient run history (P2). | After a configurable number of sessions the optimizer reads the journal history and emits a weight-recommendation report; recommendations do not auto-apply without explicit approval |
 | REQ-AI-013 | Benchmark replay stability measurement confirming consistent scores across identical replays | The benchmark-stability script reports a stability coefficient for each dimension; sessions with coefficient below threshold emit a `stabilityWarning` to the journal |
 <!-- /ANCHOR:requirements -->
 
@@ -161,6 +161,16 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 - **SC-007**: The scoring weight optimizer produces a recommendation report after the configured session count threshold is reached.
 - **SC-008**: All 5 new scripts have passing Vitest suites with zero flaky tests across 3 consecutive runs.
 - **SC-009**: Backward compatibility is maintained: existing improvement sessions with no new config fields behave identically to pre-phase behavior.
+
+### Acceptance Scenarios
+
+1. **Given** a completed improvement session, **When** I read the journal file, **Then** it contains exactly one `session-ended` event with a stop-reason matching the approved taxonomy and at least one event per completed iteration.
+2. **Given** a session where convergence math would trigger `converged` but a 5-dimension stability check fails, **When** the legal-stop gate evaluates, **Then** the gate blocks the stop and the session continues rather than terminating prematurely.
+3. **Given** a prior session-id from an interrupted improvement session, **When** I start a new session with that id, **Then** the orchestrator replays journal state and the iteration counter starts where the prior run left off without duplicating already-completed events.
+4. **Given** an improvement session where dimension clarity improves by 0.15 and dimension integration regresses by 0.12 (above default threshold), **When** the trade-off detector runs, **Then** a `trade-off-detected` event appears in the journal within the same iteration.
+5. **Given** `parallelWaves.enabled: false` in improvement_config.json (the default), **When** an improvement session runs, **Then** no parallel wave is spawned and no candidate lineage graph is written.
+6. **Given** all mutation types for a dimension are marked exhausted, **When** the orchestrator selects the next mutation, **Then** it skips exhausted types and annotates the journal with the exhausted-mutations set rather than looping on spent strategies.
+7. **Given** a normal improvement session run without any new config fields present, **When** the session completes, **Then** behavior is identical to the pre-phase baseline and no errors are thrown for missing config blocks.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -318,6 +328,74 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 - What is the correct exploration-breadth score formula for the parallel wave activation gate? The 042 Phase 3 wave executor provides a reference; align or adapt?
 - Should the weight optimizer write its recommendations into the journal or into a separate report file? Separate file is cleaner for human review; journal entry for machine auditability.
 <!-- /ANCHOR:questions -->
+
+---
+
+## RESEARCH FINDINGS (codex-gpt54-deep-research)
+
+Research source: `scratch/codex-gpt54-deep-research.md` (10-iteration deep research pass, 167K tokens)
+
+### P0: Formalize Runtime Truth First
+
+1. **Typed stop contract**: Split current implicit stops into `stopReason` (converged, maxIterationsReached, blockedStop, manualStop, error, stuckRecovery) and `sessionOutcome` (keptBaseline, promoted, rolledBack, advisoryOnly). Pattern: `const STOP_REASONS = Object.freeze({...})`.
+2. **Resume classifier**: Port Phase 001's classifier directly — `new | resume | restart | fork | completed-continue` with `continuedFromIteration` field. Archive old runtime on restart. Replay journal + coverage graph + registry before dispatch.
+3. **Separate journal vs mutation ledger**: Today's state log mixes baseline/candidate/benchmark records. Split into `improvement-journal.jsonl` (lifecycle events + stop decisions) and mutation outcomes tracked per-candidate in the journal itself.
+
+### P1: Make Loop Explainable
+
+4. **Mutation coverage**: Reuse Phase 002 namespace model (`spec_folder + loop_type + session_id`). Improvement-specific nodes: TARGET, CANDIDATE, MUTATION, DIMENSION, INTEGRATION_SURFACE, BENCHMARK_FIXTURE, FAILURE_MODE, HYPOTHESIS.
+5. **Dimension trajectories**: Full per-iteration vectors, weighted score, benchmark aggregate, and gate outcomes. "Stable" = 3+ scored iterations with all dimension deltas within +/-2.
+6. **Trade-off detection**: Pareto awareness — flag when improvement > +3 in one dimension causes regression < -3 in hard dimensions or < -5 in soft ones. Block promotion for dominated candidates.
+7. **Integration-scan constraints**: Pin `integrationReportHash` into score/benchmark/journal events. Require rescan before scoring if candidate changes routing. Treat missing coverage as promotion block.
+
+### P2: Keep Advanced Features Advisory
+
+8. **Parallel candidates**: Off by default. Activation gate: 3+ unresolved mutation families, 2 consecutive tie/plateau iterations, wide integration surface. Persist reducer-owned `candidate-board.json`.
+9. **Weight optimization**: Advisory-only, following Phase 004 model. Refuse auto-apply until 2+ compatible target families and materially larger run history.
+
+### Implementation Order (research-recommended)
+
+`stop contract -> resume/journal split -> coverage/trajectory/trade-off -> integration-hash gating -> optional parallel board -> advisory optimizer`
+
+---
+
+## AI EXECUTION PROTOCOL
+
+### Pre-Task Checklist
+
+Before beginning any implementation task in this phase:
+
+- [ ] Read the target file before modifying it (CLAUDE.md Gate 1)
+- [ ] Confirm the spec folder is `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/`
+- [ ] Verify the proposal-only constraint: agent-improver.md agent section must not write state
+- [ ] Confirm 042 Phase 1 journal schema is read before writing improvement-journal.cjs
+- [ ] Confirm 042 Phase 2 coverage graph API is read before writing mutation-coverage.cjs
+
+### Execution Rules
+
+| Rule | Requirement |
+|------|------------|
+| Journal emit | Orchestrator only; no emit calls inside agent-improver agent body |
+| Config fields | All new fields optional with defaults; no required fields added |
+| Scripts | CJS module pattern; no auto-import into existing skill code paths |
+| Parallel waves | `enabled: false` default; only activate when gate condition met |
+| Weight optimizer | Emit recommendation report only; no auto-apply code path |
+
+### Status Reporting Format
+
+After completing each sub-phase, report:
+- Tasks completed (T### list)
+- REQs satisfied
+- Test suite status (pass/fail counts)
+- Any deferred items with justification
+
+### Blocked Task Protocol
+
+If a task is blocked (e.g., Phase 2 API does not support `loop_type`):
+1. Mark the task `[B]` in tasks.md
+2. Document the blocker with specific detail
+3. Propose a resolution path (e.g., thin wrapper instead of direct API call)
+4. Do not proceed to dependent tasks until blocker is resolved or explicitly deferred
 
 ---
 

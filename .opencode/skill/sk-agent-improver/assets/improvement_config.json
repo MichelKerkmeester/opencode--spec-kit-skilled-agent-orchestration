@@ -77,9 +77,56 @@
     "stopOnDimensionPlateau": true,
     "plateauWindow": 3
   },
+  "journal": {
+    "enabled": true,
+    "path": "improvement/improvement-journal.jsonl",
+    "sessionId": "",
+    "emitLifecycleEvents": true
+  },
+  "sessionResume": {
+    "enabled": false,
+    "continuedFromIteration": null,
+    "parentSessionId": null,
+    "resumeMode": "new"
+  },
+  "coverageGraph": {
+    "enabled": true,
+    "path": "improvement/mutation-coverage.json"
+  },
+  "trajectory": {
+    "minDataPoints": 3,
+    "stabilityDelta": 2
+  },
+  "tradeOff": {
+    "enabled": true,
+    "improvementThreshold": 3,
+    "regressionThresholds": {
+      "hard": -3,
+      "soft": -5
+    }
+  },
+  "parallelWaves": {
+    "enabled": false,
+    "activationThreshold": 0.7,
+    "maxCandidates": 3,
+    "lineagePath": "improvement/candidate-lineage.json"
+  },
+  "weightOptimizer": {
+    "enabled": false,
+    "sessionCountThreshold": 5,
+    "reportPath": "improvement/weight-recommendation.md",
+    "autoApply": false
+  },
+  "benchmarkStability": {
+    "replayCount": 3,
+    "warningThreshold": 0.95
+  },
   "fileProtection": {
     "agent-improvement-config.json": "immutable",
     "agent-improvement-state.jsonl": "append-only",
+    "improvement-journal.jsonl": "append-only",
+    "mutation-coverage.json": "mutable",
+    "candidate-lineage.json": "mutable",
     "agent-improvement-strategy.md": "mutable",
     "agent-improvement-dashboard.md": "auto-generated",
     "experiment-registry.json": "auto-generated",

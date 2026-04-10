@@ -291,6 +291,53 @@ After loop exits, present:
 - `{spec_folder}/improvement/experiment-registry.json` — per-profile metrics + best-known state
 - Recommendation: continue, promote (if eligible), or stop
 
+### Step 6B: Journal Emission (Phase 005)
+
+At each iteration boundary, the orchestrator MUST emit journal events via `improvement-journal.cjs`:
+
+```bash
+# At session start:
+node .opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs --emit --journal={spec_folder}/improvement/improvement-journal.jsonl --event=session_initialized
+
+# After each candidate is scored:
+# (programmatic: emitEvent(journalPath, { eventType: 'candidate_scored', iteration, candidateId, details: { dimensions, weightedScore } }))
+
+# After legal-stop gate evaluation:
+# (programmatic: emitEvent(journalPath, { eventType: 'legal_stop_evaluated', iteration, details: { gateResults } }))
+
+# At session end:
+# (programmatic: emitEvent(journalPath, { eventType: 'session_ended', details: { stopReason, sessionOutcome } }))
+```
+
+### Step 6C: Stop-Reason Reporting (Phase 005)
+
+After loop exits, classify the termination:
+
+**stopReason** (WHY):
+- `converged` — All legal-stop gate bundles passed
+- `maxIterationsReached` — Hit `max_iterations` limit
+- `blockedStop` — Convergence math triggered but gate bundles failed
+- `manualStop` — User cancelled
+- `error` — Script or infra failure
+- `stuckRecovery` — Stuck detection triggered and recovery exhausted
+
+**sessionOutcome** (WHAT):
+- `keptBaseline` — Baseline retained
+- `promoted` — Candidate promoted to canonical target
+- `rolledBack` — Promotion reversed
+- `advisoryOnly` — Assessment only, no mutation
+
+### Step 6D: Resume Semantics (Phase 005)
+
+When `--session-id=<prior-id>` is provided:
+
+1. Read the prior journal from `{spec_folder}/improvement/improvement-journal.jsonl`
+2. Replay journal state to determine `continuedFromIteration`
+3. Resume the iteration counter from that point
+4. Do NOT repeat already-completed iterations
+
+Supported lineage modes: `new`, `resume`, `restart`, `fork`, `completed-continue`
+
 ### Step 7: Return Status
 
 - Completed normally: `STATUS=OK ITERATIONS={N} BEST_SCORE={score}`
