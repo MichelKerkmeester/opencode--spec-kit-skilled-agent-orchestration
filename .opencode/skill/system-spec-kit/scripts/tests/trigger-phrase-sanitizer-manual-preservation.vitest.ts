@@ -36,4 +36,13 @@ describe('manual trigger phrase preservation', () => {
       reason: 'contamination',
     });
   });
+
+  it('still rejects manual phrases that contain file-path fragments', () => {
+    expect(
+      sanitizeTriggerPhrase('/Users/michel/Documents/file.ts', { source: 'manual' }),
+    ).toEqual({
+      keep: false,
+      reason: 'path_fragment',
+    });
+  });
 });

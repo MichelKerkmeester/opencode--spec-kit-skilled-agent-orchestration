@@ -30,7 +30,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Packet `010-memory-save-heuristic-calibration` closed the remaining memory-save defects that survived the earlier 026 memory-quality work. The shipped runtime now accepts authored `title`, `description`, and `causalLinks` in structured saves; preserves manual DR trigger phrases through the runtime pipeline; narrows V8 false positives; normalizes V12 slug/prose topical matching; aligns D5 continuation behavior across linker and reviewer; and finishes the decision-extractor truncation-helper migration. The packet also updated the `003-memory-quality-issues` phase map to ten child phases and added the new phase to the parent implementation summary.
+Packet `010-memory-save-heuristic-calibration` closed the remaining memory-save defects that survived the earlier 026 memory-quality work. The shipped runtime now accepts authored `title`, `description`, and `causalLinks` in structured saves; preserves manual DR trigger phrases through the runtime pipeline; narrows V8 false positives; normalizes V12 slug/prose topical matching; aligns D5 continuation behavior across linker and reviewer; and finishes the decision-extractor truncation-helper migration. The packet also updated the `003-memory-quality-issues` phase map to ten child phases and added the new phase to the parent implementation summary. Packet closeout uses a 7-lane model: six runtime lanes plus one parent-sync documentation lane.
 
 ### Lane-by-Lane Summary
 
@@ -42,7 +42,7 @@ Packet `010-memory-save-heuristic-calibration` closed the remaining memory-save 
 | Lane 4 | V12 accepts slug and prose trigger variants and the workflow passes `filePath` | `validate-memory-quality.ts`, `workflow.ts`, `validate-memory-quality-v12-normalization.vitest.ts` |
 | Lane 5 | Explicit `causalLinks` pass through and D5 uses one shared continuation contract | `input-normalizer.ts`, `find-predecessor-memory.ts`, `post-save-review.ts`, `memory-save-d5-continuation-and-causal-links.vitest.ts` |
 | Lane 6 | Remaining raw decision-extractor truncation calls use `truncateOnWordBoundary()` | `decision-extractor.ts`, `memory-quality-phase1.vitest.ts` |
-| Lane 9 | Parent packet phase count and phase-summary surfaces reflect the new phase | `../spec.md`, `../implementation-summary.md` |
+| Lane 7 | Parent packet phase count and phase-summary surfaces reflect the new phase | `../spec.md`, `../implementation-summary.md` |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -50,7 +50,7 @@ Packet `010-memory-save-heuristic-calibration` closed the remaining memory-save 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The packet moved in one bounded sequence. First, the runtime schema and metadata path was widened so authored payload fields could survive normalization and workflow merge. Second, the trigger sanitizer and workflow filter were made source-aware so manual phrases stayed authoritative while extracted junk continued to filter. Third, validator and continuation logic were calibrated together so V8, V12, and D5 behaved consistently on both fixtures and the live save path. Fourth, focused regression tests were added for every lane, `scripts/dist` was rebuilt, and the full `scripts` suite was driven to green. Finally, the packet was verified through a real compiled-dist save against the `026-graph-and-context-optimization` parent folder and the packet docs were rewritten from the actual command outputs.
+The packet moved in one bounded sequence. First, the runtime schema and metadata path was widened so authored payload fields could survive normalization and workflow merge. Second, the trigger sanitizer and workflow filter were made source-aware so manual phrases stayed authoritative while extracted junk continued to filter. Third, validator and continuation logic were calibrated together so V8, V12, and D5 behaved consistently on both fixtures and the live save path. Fourth, focused regression tests were added for every runtime lane, `scripts/dist` was rebuilt, and the full `scripts` suite was driven to green. Finally, the parent-sync lane was applied in the phase map and parent implementation summary, and the packet was verified through a real compiled-dist save against the `026-graph-and-context-optimization` parent folder.
 <!-- /ANCHOR:how-delivered -->
 
 ---

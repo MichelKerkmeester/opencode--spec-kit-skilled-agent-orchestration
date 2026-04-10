@@ -140,6 +140,10 @@ export function sanitizeTriggerPhrase(
     return { keep: false, reason: 'contamination' };
   }
 
+  if (PATH_FRAGMENT_PATTERN.test(normalized) || PATH_LIKE_SLUG_PATTERN.test(normalized)) {
+    return { keep: false, reason: 'path_fragment' };
+  }
+
   if (
     source === 'manual'
     && MANUAL_FINDING_ID_PREFIX_PATTERN.test(unicodeNormalized.trim())
@@ -149,10 +153,6 @@ export function sanitizeTriggerPhrase(
 
   if (source === 'manual') {
     return { keep: true };
-  }
-
-  if (PATH_FRAGMENT_PATTERN.test(normalized) || PATH_LIKE_SLUG_PATTERN.test(normalized)) {
-    return { keep: false, reason: 'path_fragment' };
   }
 
   if (source === 'extracted' && SUSPICIOUS_PREFIX_PATTERN.test(normalized)) {

@@ -20,7 +20,7 @@ contextType: "implementation"
 
 Packet `010-memory-save-heuristic-calibration` closes the defects that remained after `009-post-save-render-fixes`: structured JSON saves still reject explicit `title`, `description`, and `causalLinks`; manual DR finding IDs can still be dropped by the trigger sanitizer; V8 and V12 validators still misclassify real saves; D5 continuation logic still drifts between linker and reviewer; and `decision-extractor.ts` still contains raw truncation callsites that research marked for shared-helper migration. The packet owns the full end-to-end remediation: runtime source, regression tests, `dist/` rebuild, strict packet validation, and a real wild save against the `026-graph-and-context-optimization` parent folder. [SOURCE: ../../scratch/codex-root-cause-memory-quality-gates.md:5-18] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:25-41] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:69-136]
 
-**Key Decisions**: Treat the RCA issues and skipped research recommendations as one implementation bundle, because they fail on the same live save path; keep the fixes inside the memory-save pipeline and the new packet docs only; and require one focused regression per lane plus a real `generate-context.js` verification run before closeout. [SOURCE: ../../scratch/codex-root-cause-memory-quality-gates.md:45-208] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:169-195]
+**Key Decisions**: Treat the RCA issues and skipped research recommendations as one implementation bundle, because they fail on the same live save path; keep the fixes inside the memory-save pipeline and the new packet docs only; and require one focused regression per runtime lane plus a real `generate-context.js` verification run before closeout. [SOURCE: ../../scratch/codex-root-cause-memory-quality-gates.md:45-208] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:169-195]
 
 **Critical Dependencies**: `009-post-save-render-fixes` is a soft predecessor because it already made JSON overrides authoritative at merge time and set the acceptance bar of "real wild save plus rebuilt dist". The new packet extends that work into the schema, validator, and continuation-linker surfaces that `009` explicitly left out of scope. [SOURCE: ../009-post-save-render-fixes/spec.md:21-25] [SOURCE: ../../scratch/codex-root-cause-memory-quality-gates.md:21-44]
 
@@ -104,7 +104,7 @@ Ship the remaining heuristic and schema repairs in one bounded packet so the liv
 
 ### Phase Documentation Map
 
-This packet is the Phase 10 follow-on for the `003-memory-quality-issues` train. It picks up the save-path heuristics and skipped research recommendations that Phase 9 surfaced but explicitly did not own.
+This packet is the Phase 10 follow-on for the `003-memory-quality-issues` train. It picks up the save-path heuristics and skipped research recommendations that Phase 9 surfaced but explicitly did not own. The shipped closeout uses a 7-lane model: Lanes 1-6 are runtime implementation lanes, and Lane 7 is the parent-sync documentation lane.
 
 | Lane | Owner Surface | Defects / Recommendations |
 |------|---------------|---------------------------|
@@ -114,8 +114,7 @@ This packet is the Phase 10 follow-on for the `003-memory-quality-issues` train.
 | 4 | V12 topical validator + workflow call site | Issue 4 |
 | 5 | D5 linker/reviewer + causal-links schema | Issue 5, REC-008, REC-018 |
 | 6 | Decision extractor truncation helper | REC-003 |
-| 7 | Parent packet sync | Lane 9 from user contract |
-| 8 | Verification | Dist rebuild, full tests, strict packet validation, wild save |
+| 7 | Parent packet sync | Parent phase-map and parent implementation-summary updates |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -130,7 +129,7 @@ This packet is the Phase 10 follow-on for the `003-memory-quality-issues` train.
 | REQ-001 | Structured JSON payloads must accept `title`, `description`, and `causalLinks` without unknown-field warnings. | File-mode saves render explicit title/description and preserve supplied causal links verbatim. |
 | REQ-002 | Manual trigger phrases must survive sanitizer filtering unless they are true contamination. | DR finding IDs and manual singleton anchors survive; auto-extracted junk still filters. |
 | REQ-003 | V8, V12, and D5 must stop failing on the real 026 save path while still rejecting adversarial cases. | Regression tests and the wild save prove good-path passes and bad-path failures. |
-| REQ-004 | Every runtime change must have a failing-before, passing-after regression guard. | New or extended tests cover each lane. |
+| REQ-004 | Every runtime change must have a failing-before, passing-after regression guard. | New or extended tests cover runtime Lanes 1-6, and Lane 7 is proven by the parent-doc sync surfaces. |
 | REQ-005 | The compiled CLI must match the TypeScript source. | `npm run build` completes and the wild save uses `scripts/dist/`. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -191,7 +190,7 @@ This packet is the Phase 10 follow-on for the `003-memory-quality-issues` train.
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All ten child phases are represented accurately in the parent phase map, including `010-memory-save-heuristic-calibration`.
-- **SC-002**: The new regression suite covers each shipped lane with clear failure attribution.
+- **SC-002**: The new regression suite covers each shipped runtime lane with clear failure attribution.
 - **SC-003**: `scripts/dist/` is rebuilt and both `mcp_server` and `scripts` test suites pass without regressions.
 - **SC-004**: `validate.sh --strict` passes on this packet folder.
 - **SC-005**: A real save against `026-graph-and-context-optimization` completes with zero V1-V14 failures, zero `PSR-2` missing-manual-phrase warnings, zero D5 warnings, and semantic indexing enabled.

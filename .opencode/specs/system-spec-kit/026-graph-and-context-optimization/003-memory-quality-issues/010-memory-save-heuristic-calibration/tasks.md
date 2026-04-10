@@ -46,7 +46,7 @@ contextType: "tasks"
 - [x] T013 Fix Lane 4: normalize V12 slug-vs-prose matching and pass `filePath`.
 - [x] T014 Fix Lane 5: accept explicit `causalLinks` and align D5 linker/reviewer behavior.
 - [x] T015 Fix Lane 6: migrate remaining `decision-extractor.ts` truncation callsites.
-- [x] T016 Fix packet-closeout support surfaces, including parent packet summary sync and packet-doc updates.
+- [x] T016 Fix Lane 7: sync the parent packet phase-map and parent implementation-summary surfaces.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -54,7 +54,7 @@ contextType: "tasks"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T020 Add or extend regression coverage for every shipped lane.
+- [x] T020 Add or extend regression coverage for every shipped runtime lane.
 - [x] T021 Rebuild `scripts/dist`.
 - [x] T022 Run `cd .opencode/skill/system-spec-kit/scripts && npm test`.
 - [x] T023 Run `cd .opencode/skill/system-spec-kit/mcp_server && npm test` and classify unrelated pre-existing failures.
@@ -69,7 +69,7 @@ contextType: "tasks"
 ## Completion Criteria
 
 - [x] All tasks `T001-T026` are complete.
-- [x] Every shipped lane has regression coverage.
+- [x] Every shipped runtime lane has regression coverage.
 - [x] The real save is quality-gate clean and semantically indexed.
 - [x] Packet docs and parent sync reflect the shipped implementation and verification state.
 <!-- /ANCHOR:completion -->

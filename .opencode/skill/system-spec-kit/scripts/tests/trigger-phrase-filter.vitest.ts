@@ -38,6 +38,15 @@ describe('filterTriggerPhrases', () => {
       expect(result).toEqual(['022 hybrid rag fusion', 'memory pipeline']);
     });
 
+    it('still rejects path-like manual phrases', () => {
+      const manualKey = '/Users/michel/Documents/file.ts';
+      const result = filterTriggerPhrases(
+        ['/Users/michel/Documents/file.ts', 'memory pipeline'],
+        new Set([manualKey]),
+      );
+      expect(result).toEqual(['memory pipeline']);
+    });
+
     it('retains phrases without path separators', () => {
       const input = ['memory pipeline', 'quality scorer'];
       const result = filterTriggerPhrases(input);

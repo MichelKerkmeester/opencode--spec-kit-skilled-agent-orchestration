@@ -44,7 +44,7 @@ contextType: "verification"
 - [x] CHK-013 [P0] Lane 4 passes slug-form and prose-form topical matches and uses workflow `filePath` propagation. [EVIDENCE: .opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts; .opencode/skill/system-spec-kit/scripts/core/workflow.ts; .opencode/skill/system-spec-kit/scripts/tests/validate-memory-quality-v12-normalization.vitest.ts]
 - [x] CHK-014 [P0] Lane 5 aligns D5 linker/reviewer behavior and preserves explicit or inferred `supersedes` data when valid. [EVIDENCE: .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts; .opencode/skill/system-spec-kit/scripts/core/find-predecessor-memory.ts; .opencode/skill/system-spec-kit/scripts/core/post-save-review.ts; .opencode/skill/system-spec-kit/scripts/tests/memory-save-d5-continuation-and-causal-links.vitest.ts]
 - [x] CHK-015 [P1] Lane 6 finishes the shared truncation-helper migration in `decision-extractor.ts`. [EVIDENCE: .opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts; .opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts]
-- [x] CHK-016 [P1] Parent packet docs reflect the new Phase 10 child packet and updated counts. [EVIDENCE: ../spec.md; ../implementation-summary.md]
+- [x] CHK-016 [P1] Lane 7 parent-sync docs reflect the new Phase 10 child packet and updated counts. [EVIDENCE: ../spec.md; ../implementation-summary.md]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -52,7 +52,7 @@ contextType: "verification"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Every shipped lane has a focused regression test. [EVIDENCE: .opencode/skill/system-spec-kit/scripts/tests/memory-save-title-description-override.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/trigger-phrase-sanitizer-manual-preservation.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/validate-memory-quality-v8-regex-narrow.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/validate-memory-quality-v12-normalization.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/memory-save-d5-continuation-and-causal-links.vitest.ts]
+- [x] CHK-020 [P0] Every shipped runtime lane has a focused regression test. [EVIDENCE: .opencode/skill/system-spec-kit/scripts/tests/memory-save-title-description-override.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/trigger-phrase-sanitizer-manual-preservation.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/validate-memory-quality-v8-regex-narrow.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/validate-memory-quality-v12-normalization.vitest.ts; .opencode/skill/system-spec-kit/scripts/tests/memory-save-d5-continuation-and-causal-links.vitest.ts]
 - [x] CHK-021 [P0] `cd .opencode/skill/system-spec-kit/mcp_server && npm test` was run and the remaining failures were classified as unrelated pre-existing issues outside this packet’s scope. [EVIDENCE: 2026-04-09 `npm test` output showing failures in `hybrid-search.vitest.ts`, `content-hash-dedup.vitest.ts`, `modularization.vitest.ts`, `memory-save-ux-regressions.vitest.ts`, `session-bootstrap.vitest.ts`, `shadow-evaluation-runtime.vitest.ts`, and `stdio-logging-safety.vitest.ts`]
 - [x] CHK-022 [P0] `cd .opencode/skill/system-spec-kit/scripts && npm test` passes. [EVIDENCE: 2026-04-09 `npm test` exited 0 after vitest plus legacy extractors/loaders suite]
 - [x] CHK-023 [P0] `cd .opencode/skill/system-spec-kit/scripts && npm run build` succeeds and updates `dist/`. [EVIDENCE: 2026-04-09 `npm run build` exited 0]

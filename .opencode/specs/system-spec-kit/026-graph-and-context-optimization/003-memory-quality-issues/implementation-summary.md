@@ -37,7 +37,7 @@ The later memory-redundancy research does not reopen Phases 1-5. Instead, it nar
 
 ### Phase 10 — Memory save heuristic calibration
 
-Phase 10 closes the remaining live-save defects that survived the earlier train: explicit `title`, `description`, and `causalLinks` now survive structured saves; manual trigger phrases stay authoritative through the runtime path; V8 and V12 validator behavior is calibrated; D5 linker and reviewer logic share one continuation contract; and the packet proves the fix with a rebuilt dist entrypoint plus a real parent-folder save. This phase is the follow-on cleanup lane for the remaining post-`009` save-path defects, not a reopening of the earlier PR-1 through PR-11 closure work.
+Phase 10 is implemented and closes the remaining live-save defects that survived the earlier train: explicit `title`, `description`, and `causalLinks` now survive structured saves; manual trigger phrases stay authoritative through the runtime path; V8 and V12 validator behavior is calibrated; D5 linker and reviewer logic share one continuation contract; and the packet proves the fix with a rebuilt dist entrypoint plus a real parent-folder save. This phase is the follow-on cleanup lane for the remaining post-`009` save-path defects, not a reopening of the earlier PR-1 through PR-11 closure work.
 
 ### Phase 1 — PR-1 and PR-2
 

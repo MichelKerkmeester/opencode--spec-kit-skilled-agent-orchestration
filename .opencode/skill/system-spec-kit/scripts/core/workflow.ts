@@ -143,10 +143,10 @@ function filterTriggerPhrases(
   let filtered = phrases.filter(p => {
     const trimmed = p.trim();
     const comparisonKey = normalizeWorkflowTriggerKey(trimmed);
+    if (trimmed.includes('/') || trimmed.includes('\\')) return false;
     if (manualPhraseKeys.has(comparisonKey)) {
       return true;
     }
-    if (trimmed.includes('/') || trimmed.includes('\\')) return false;
     if (/^\d{1,3}\s/.test(trimmed)) {
       return false;
     }
