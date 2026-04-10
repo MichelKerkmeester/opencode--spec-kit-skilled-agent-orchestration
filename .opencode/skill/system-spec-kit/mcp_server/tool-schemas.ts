@@ -775,6 +775,99 @@ const sessionBootstrap: ToolDefinition = {
   },
 };
 
+// L9: Coverage Graph - Deep loop coverage analysis tools
+const deepLoopGraphUpsert: ToolDefinition = {
+  name: 'deep_loop_graph_upsert',
+  description: '[L9:CoverageGraph] Idempotent upsert for coverage graph nodes and edges. Reducer writes graph deltas after each deep-loop iteration. Rejects self-loops, clamps weights to [0.0, 2.0], and merges metadata updates on repeated IDs. Requires specFolder, loopType, and sessionId for namespace isolation.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      specFolder: { type: 'string', minLength: 1, description: 'Spec folder for namespace isolation (required)' },
+      loopType: { type: 'string', enum: ['research', 'review'], description: 'Loop type: research or review (required)' },
+      sessionId: { type: 'string', minLength: 1, description: 'Session identifier for namespace isolation (required)' },
+      nodes: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', minLength: 1, description: 'Unique node identifier' },
+            kind: { type: 'string', description: 'Node kind. Research: QUESTION, FINDING, CLAIM, SOURCE. Review: DIMENSION, FILE, FINDING, EVIDENCE, REMEDIATION' },
+            name: { type: 'string', minLength: 1, description: 'Human-readable node label' },
+            contentHash: { type: 'string', description: 'Optional content hash for deduplication' },
+            iteration: { type: 'number', description: 'Iteration number when node was introduced' },
+            metadata: { type: 'object', description: 'Kind-specific metadata (JSON)' },
+          },
+          required: ['id', 'kind', 'name'],
+        },
+        description: 'Nodes to upsert',
+      },
+      edges: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', minLength: 1, description: 'Unique edge identifier' },
+            sourceId: { type: 'string', minLength: 1, description: 'Source node ID' },
+            targetId: { type: 'string', minLength: 1, description: 'Target node ID (must differ from sourceId)' },
+            relation: { type: 'string', description: 'Edge relation type. Research: ANSWERS, SUPPORTS, CONTRADICTS, SUPERSEDES, DERIVED_FROM, COVERS, CITES. Review: COVERS, EVIDENCE_FOR, CONTRADICTS, RESOLVES, CONFIRMS, ESCALATES, IN_DIMENSION, IN_FILE' },
+            weight: { type: 'number', minimum: 0.0, maximum: 2.0, default: 1.0, description: 'Edge weight (clamped to [0.0, 2.0])' },
+            metadata: { type: 'object', description: 'Edge-specific metadata (JSON)' },
+          },
+          required: ['id', 'sourceId', 'targetId', 'relation'],
+        },
+        description: 'Edges to upsert (self-loops are rejected)',
+      },
+    },
+    required: ['specFolder', 'loopType', 'sessionId'],
+  },
+};
+
+const deepLoopGraphQuery: ToolDefinition = {
+  name: 'deep_loop_graph_query',
+  description: '[L9:CoverageGraph] Structured analysis of deep-loop coverage graph state. Supports query types: uncovered_questions (questions with no coverage), unverified_claims (claims without verification), contradictions (CONTRADICTS edge pairs), provenance_chain (BFS from a node following citation/evidence edges), coverage_gaps (nodes missing incoming coverage edges), and hot_nodes (most connected nodes by edge count + weight).',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      specFolder: { type: 'string', minLength: 1, description: 'Spec folder for namespace (required)' },
+      loopType: { type: 'string', enum: ['research', 'review'], description: 'Loop type (required)' },
+      queryType: { type: 'string', enum: ['uncovered_questions', 'unverified_claims', 'contradictions', 'provenance_chain', 'coverage_gaps', 'hot_nodes'], description: 'Type of query to execute (required)' },
+      nodeId: { type: 'string', description: 'Node ID (required for provenance_chain)' },
+      sessionId: { type: 'string', description: 'Optional session filter' },
+      limit: { type: 'number', minimum: 1, maximum: 200, default: 50, description: 'Max results to return' },
+      maxDepth: { type: 'number', minimum: 1, maximum: 20, default: 10, description: 'Max traversal depth for provenance_chain' },
+    },
+    required: ['specFolder', 'loopType', 'queryType'],
+  },
+};
+
+const deepLoopGraphStatus: ToolDefinition = {
+  name: 'deep_loop_graph_status',
+  description: '[L9:CoverageGraph] Report deep-loop coverage graph health: node/edge counts grouped by kind and relation, current convergence signal values, momentum (signal deltas between snapshots), last iteration, schema version, and DB file size. Suitable for dashboards and synthesis surfaces.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      specFolder: { type: 'string', minLength: 1, description: 'Spec folder for namespace (required)' },
+      loopType: { type: 'string', enum: ['research', 'review'], description: 'Loop type (required)' },
+    },
+    required: ['specFolder', 'loopType'],
+  },
+};
+
+const deepLoopGraphConvergence: ToolDefinition = {
+  name: 'deep_loop_graph_convergence',
+  description: '[L9:CoverageGraph] Composite convergence assessment for deep-loop coverage graph. Returns a typed decision (CONTINUE, STOP_ALLOWED, STOP_BLOCKED), signal values, blockers with severity levels, and a typed trace explaining each signal threshold evaluation. For research: evaluates questionCoverage, claimVerificationRate, contradictionDensity, plus blocking guards sourceDiversity and evidenceDepth. For review: evaluates dimensionCoverage, findingStability, p0ResolutionRate, evidenceDensity, hotspotSaturation. Extends Phase 001 stop logic without replacing newInfoRatio.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      specFolder: { type: 'string', minLength: 1, description: 'Spec folder for namespace (required)' },
+      loopType: { type: 'string', enum: ['research', 'review'], description: 'Loop type (required)' },
+      iteration: { type: 'number', description: 'Current iteration number (used for snapshot persistence)' },
+      persistSnapshot: { type: 'boolean', default: false, description: 'When true, persist a signal snapshot for this iteration' },
+    },
+    required: ['specFolder', 'loopType'],
+  },
+};
+
 // ───────────────────────────────────────────────────────────────
 // 3. AGGREGATED DEFINITIONS
 
@@ -835,4 +928,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   cccStatus,
   cccReindex,
   cccFeedback,
+  // L9: Coverage Graph
+  deepLoopGraphUpsert,
+  deepLoopGraphQuery,
+  deepLoopGraphStatus,
+  deepLoopGraphConvergence,
 ];
