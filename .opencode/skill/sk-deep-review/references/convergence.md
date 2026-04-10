@@ -39,6 +39,53 @@ Release-readiness states are derived alongside convergence:
 | `minStabilizationPasses` | 1 | Coverage signal requires at least one stabilization pass |
 | `compositeStopScore` | 0.60 | Weighted stop-score needed before guard evaluation |
 
+### Shared Stop Contract
+
+Every terminal stop and every blocked-stop vote MUST emit the shared stop contract from REQ-001: a named `stopReason` enum plus a typed `legalStop` record.
+
+#### stopReason Enum
+
+| `stopReason` | Meaning |
+|--------------|---------|
+| `converged` | All convergence signals met and legal-stop gates passed. |
+| `maxIterationsReached` | Iteration limit hit before convergence. |
+| `userPaused` | User requested pause via sentinel. |
+| `blockedStop` | Convergence math voted stop but legal-stop gates failed. |
+| `stuckRecovery` | Stuck detection triggered recovery. |
+| `error` | Unrecoverable error during iteration or reducer flow. |
+| `manualStop` | Operator explicitly halted outside the pause sentinel path. |
+
+#### legalStop Record
+
+```json
+{
+  "blockedBy": ["dimensionCoverage", "p0Resolution"],
+  "gateResults": {
+    "findingStability": { "pass": true, "detail": "Rolling average, MAD noise floor, and novelty ratio all voted STOP." },
+    "dimensionCoverage": { "pass": false, "detail": "Maintainability has not been examined yet and required review coverage is incomplete." },
+    "p0Resolution": { "pass": false, "detail": "1 unresolved P0 finding remains active." },
+    "evidenceDensity": { "pass": true, "detail": "Evidence density met the configured threshold across active findings." },
+    "hotspotSaturation": { "pass": true, "detail": "Priority hotspots were revisited enough times to satisfy saturation." }
+  },
+  "replayInputs": {
+    "iterationCount": 5,
+    "maxIterations": 7,
+    "newFindingsRatio": 0.04,
+    "noveltyRatio": 0.03,
+    "activeFindings": { "P0": 1, "P1": 0, "P2": 2 },
+    "dimensionsExamined": ["correctness", "security", "traceability"],
+    "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+    "hotspotCoverage": { "saturated": 2, "required": 2 },
+    "signals": ["rollingAvg", "madScore", "noveltyRatio"]
+  }
+}
+```
+
+- `blockedBy`: Array of gate names that failed. Empty when STOP is legal.
+- `gateResults`: Map of review-specific gate name to pass/fail plus detail. Deep review records `findingStability`, `dimensionCoverage`, `p0Resolution`, `evidenceDensity`, and `hotspotSaturation`.
+- `replayInputs`: Snapshot of the concrete inputs used to replay the stop decision.
+- Blocked-stop events also persist a top-level `recoveryStrategy` describing what the next iteration should do before another stop attempt.
+
 ### Decision Priority
 
 Checks are evaluated in this order (first match wins):
@@ -47,7 +94,7 @@ Checks are evaluated in this order (first match wins):
 2. **All dimensions covered + clean** -- all 4 dimensions covered, no active P0/P1, stabilization passed, gates passed.
 3. **Stuck detection** -- 2+ consecutive no-progress iterations.
 4. **Composite convergence** -- 3-signal weighted vote with threshold 0.60.
-5. **Quality guards** -- binary checks; if composite says STOP but guards fail, override to CONTINUE.
+5. **Legal-stop gate bundle** -- review-specific stop gates; if a stop vote fails any gate, persist `stopReason=blockedStop` and continue.
 6. **Default CONTINUE** -- none of the above triggered.
 
 ---
@@ -62,7 +109,7 @@ Hard stops are evaluated first and override all other signals.
 
 ```
 if len(iterations) >= config.maxIterations:       // default 7
-  return { action: "STOP", reason: "max_iterations_reached" }
+  return { action: "STOP", stopReason: "maxIterationsReached" }
 ```
 
 The loop stops unconditionally. Synthesis runs with whatever findings exist.
@@ -72,11 +119,11 @@ The loop stops unconditionally. Synthesis runs with whatever findings exist.
 ```
 if coverage.dimensionCoverage == 1.0 and activeP0 == 0 and activeP1 == 0:
   if stabilizationPasses >= config.coverageAge.minStabilizationPasses:
-    if checkReviewQualityGates(state, config, coverage).passed:
-      return { action: "STOP", reason: "all_dimensions_clean" }
+    if buildReviewLegalStop(state, config, coverage).passed:
+      return { action: "STOP", stopReason: "converged" }
 ```
 
-Triggers when all 4 dimensions (correctness, security, traceability, maintainability) are covered, no active P0/P1 remains, at least 1 stabilization pass has occurred, and all 3 quality gates pass. If gates fail, the loop continues despite full coverage.
+Triggers when all 4 dimensions (correctness, security, traceability, maintainability) are covered, no active P0/P1 remains, at least 1 stabilization pass has occurred, and the 5-gate legal-stop bundle passes. If gates fail, the loop records `stopReason=blockedStop` and continues despite full coverage.
 
 ---
 
@@ -107,6 +154,8 @@ function countConsecutiveStuck_review(evidenceIterations, noProgressThreshold):
 
 When `stuckCount >= stuckThreshold`, the orchestrator invokes the recovery protocol (Section 8) before deciding whether to continue or stop.
 
+The recovery entry uses `stopReason=stuckRecovery` while the loop is in recovery. If recovery later terminates the run, the terminal record keeps the same shared enum value instead of minting a review-only label.
+
 ---
 
 <!-- /ANCHOR:stuck-detection -->
@@ -119,7 +168,7 @@ Three independent signals each cast a stop/continue vote. Stop when the weighted
 |--------|--------|---------------|----------|
 | Rolling Average | 0.30 | 2 | Recent severity-weighted finding yield |
 | MAD Noise Floor | 0.25 | 3 | Signal vs noise in newFindingsRatio |
-| Dimension Coverage | 0.45 | 1 | Dimension completion + protocol coverage stability |
+| Novelty Ratio | 0.45 | 1 | Latest severity-weighted novelty ratio against `convergenceThreshold` |
 
 ### Signal 1: Rolling Average (weight 0.30)
 
@@ -145,16 +194,12 @@ if len(evidenceIterations) >= 3:
   madStop = evidenceIterations[-1].newFindingsRatio <= noiseFloor
 ```
 
-### Signal 3: Dimension Coverage (weight 0.45)
+### Signal 3: Novelty Ratio (weight 0.45)
 
-Highest-weight signal. Votes STOP only when all three conditions are true: full dimension coverage (1.0), required traceability protocols covered, and at least 1 stabilization pass.
+Highest-weight signal. Votes STOP when the latest severity-weighted novelty ratio falls at or below `convergenceThreshold` (default 0.10).
 
 ```
-coverageStop = (
-  coverage.dimensionCoverage == 1.0 and
-  coverage.requiredProtocolsCovered and
-  stabilizationPasses >= 1
-)
+noveltyStop = latestRatio <= config.convergenceThreshold
 ```
 
 ### Weighted Vote
@@ -166,13 +211,104 @@ if stopScore >= 0.60:   // proceed to quality gate evaluation
 
 Weights are redistributed across active signals only. If only 2 signals have enough data, their weights are normalized to sum to 1.0.
 
+### Semantic Convergence Signals
+
+Two additional signals provide deeper semantic analysis of review iteration quality. These signals are ADDITIONAL to the 3-signal composite vote above and participate in the legal-stop gate evaluation rather than the composite stop-score.
+
+#### semanticNovelty (0.0-1.0)
+
+Measures how much genuinely new review insight each iteration contributes beyond surface-level overlap with prior findings. Unlike `newFindingsRatio` (which is severity-weighted), `semanticNovelty` evaluates the conceptual novelty of findings independent of severity weighting.
+
+| Value | Meaning |
+|-------|---------|
+| 0.8-1.0 | Iteration uncovered substantially new defect patterns, architectural concerns, or review angles |
+| 0.4-0.7 | Mix of new review insights and restatements of prior findings |
+| 0.1-0.3 | Mostly refinements or rewordings of previously identified issues |
+| 0.0 | No semantically novel findings detected |
+
+Computation:
+```
+function computeSemanticNovelty_review(currentFindings, priorCumulativeFindings):
+  newPatterns = extractDefectPatterns(currentFindings) - extractDefectPatterns(priorCumulativeFindings)
+  totalPatterns = extractDefectPatterns(currentFindings)
+  if len(totalPatterns) == 0: return 0.0
+  return len(newPatterns) / len(totalPatterns)
+```
+
+When `semanticNovelty` drops below 0.15 for 2+ consecutive evidence iterations, it provides strong supporting evidence for a legal STOP decision. This signal catches cases where `newFindingsRatio` stays moderate (due to severity weighting of refinements) but the review has exhausted genuinely new defect categories.
+
+#### findingStability (0.0-1.0)
+
+Measures how stable the cumulative finding set is across iterations. A high stability score means the finding registry is not materially changing between iterations -- findings are not being added, upgraded, downgraded, or invalidated at a significant rate.
+
+| Value | Meaning |
+|-------|---------|
+| 0.9-1.0 | Finding set is highly stable; minimal churn between iterations |
+| 0.6-0.8 | Moderate stability; some findings still evolving |
+| 0.3-0.5 | Active churn; findings being added, merged, or reclassified frequently |
+| 0.0-0.2 | Highly unstable; the review is still in early discovery |
+
+Computation:
+```
+function computeFindingStability(currentRegistry, priorRegistry):
+  if priorRegistry is null: return 0.0  // first iteration
+  unchangedFindings = count(f for f in currentRegistry
+    if f.id in priorRegistry and f.severity == priorRegistry[f.id].severity
+    and f.status == priorRegistry[f.id].status)
+  totalFindings = max(len(currentRegistry), len(priorRegistry))
+  if totalFindings == 0: return 1.0
+  return unchangedFindings / totalFindings
+```
+
+Convergence behavior:
+- `findingStability >= 0.85` supports STOP: the finding set has stabilized and further iterations are unlikely to materially change the review outcome.
+- `findingStability < 0.50` prevents STOP: the finding set is still in flux and the review has not reached a stable assessment.
+
+#### Integration with Legal-Stop Gate Bundle
+
+The two semantic signals integrate with the existing 5-gate legal-stop bundle (Section 6):
+
+1. **findingStability gate** (existing): The existing `findingStability` gate already evaluates rolling average, MAD noise floor, and novelty ratio. The new `semanticNovelty` signal adds a sub-check:
+   - `semanticNoveltyPlateau`: `semanticNovelty < 0.15` for 2+ consecutive evidence iterations
+   - When this sub-check fails while the existing churn signals pass, the gate records the mismatch as a diagnostic note but does not independently block STOP.
+
+2. **findingStability signal** (new): The `findingStability` metric (0.0-1.0) is surfaced alongside the existing convergence signals. It supports the `findingStability` gate evaluation by providing a registry-level stability measure that complements the ratio-based churn signals.
+
+The gate passes only when both the existing churn-based checks AND the semantic stability checks agree. When a semantic check fails, the `legalStop.gateResults.findingStability` detail string includes the semantic signal values.
+
+#### Stop-Decision Trace
+
+The stop-decision event includes which semantic signals supported or prevented STOP:
+
+```json
+{
+  "type": "event",
+  "event": "stop_decision",
+  "semanticSignals": {
+    "semanticNovelty": { "value": 0.06, "consecutiveLow": 3, "supportsStop": true },
+    "findingStability": { "value": 0.92, "supportsStop": true }
+  },
+  "semanticVerdict": "all_support_stop",
+  ...
+}
+```
+
+| `semanticVerdict` | Meaning |
+|-------------------|---------|
+| `all_support_stop` | Both semantic signals support stopping |
+| `mixed` | One signal supports stop, the other does not |
+| `all_prevent_stop` | Both semantic signals indicate more work is needed |
+| `insufficient_data` | Not enough iterations to compute semantic signals |
+
 ### Graceful Degradation
 
 | Iterations Completed | Active Signals | Behavior |
 |---------------------|----------------|----------|
-| 1 | Coverage only (weight 1.0) | Very unlikely to stop (needs full coverage + stabilization) |
-| 2 | Rolling avg + coverage | Two-signal vote, reweighted |
+| 1 | Novelty ratio only (weight 1.0) | Very unlikely to stop without later confirmation from rolling churn signals |
+| 2 | Rolling avg + novelty ratio | Two-signal vote, reweighted |
 | 3+ | All three signals | Full composite, most reliable |
+
+Semantic convergence signals (`semanticNovelty`, `findingStability`) require at least 2 evidence iterations to produce meaningful values. They are omitted from legal-stop evaluation when insufficient data exists.
 
 ---
 
@@ -223,45 +359,85 @@ A new critical finding always signals significant remaining work. The 0.50 floor
 
 <!-- /ANCHOR:severity-weighted-ratio -->
 <!-- ANCHOR:quality-guards -->
-## 6. QUALITY GUARDS
+## 6. LEGAL-STOP GATE BUNDLE
 
-Three binary gates must ALL pass before a STOP decision is finalized. If any gate fails, the STOP is overridden to CONTINUE and violations are logged to JSONL.
+Deep review treats STOP as legal only when the full review-specific gate bundle passes together. Convergence math may request STOP, but the workflow must still evaluate these 5 gates and persist a blocked-stop event when any gate fails.
 
 | Gate | Rule | Fail Action |
 |------|------|-------------|
-| **Evidence** | Every active finding has concrete `file:line` evidence; no inference-only findings | Block STOP, log `guard_violation` |
-| **Scope** | Findings and reviewed files stay within the declared review scope | Block STOP, log `guard_violation` |
-| **Coverage** | All configured dimensions + required traceability protocols covered | Block STOP, log `guard_violation` |
+| **findingStability** | Rolling average, MAD noise floor, and novelty ratio must all indicate low-yield review churn | Block STOP, persist `blockedStop` |
+| **dimensionCoverage** | Every configured review dimension must have been examined at least once, with required traceability coverage stabilized | Block STOP, persist `blockedStop` |
+| **p0Resolution** | No unresolved P0 findings may remain active at stop time | Block STOP, persist `blockedStop` |
+| **evidenceDensity** | Evidence density across active findings must meet the configured threshold | Block STOP, persist `blockedStop` |
+| **hotspotSaturation** | Review hotspots must be revisited enough times to satisfy the saturation heuristic | Block STOP, persist `blockedStop` |
 
 ### Gate Evaluation
 
 ```
-function checkReviewQualityGates(state, config, coverage):
-  violations = []
+function buildReviewLegalStop(state, config, coverage):
+  gateResults = {
+    findingStability: {
+      pass: rollingStop and madStop and state.latestNoveltyRatio <= config.convergenceThreshold,
+      detail: "Rolling average, MAD noise floor, and novelty ratio are all below stop thresholds."
+    },
+    dimensionCoverage: {
+      pass: everyConfiguredDimensionExaminedAtLeastOnce(coverage, config.reviewDimensions) and
+            coverage.requiredProtocolsCovered and
+            coverage.stabilizationPasses >= 1,
+      detail: "All configured review dimensions have been examined, required traceability protocols are covered, and stabilization has aged enough to stop."
+    },
+    p0Resolution: {
+      pass: countActiveFindings(state, ["P0"]) == 0 and state.claimAdjudicationPassed != false,
+      detail: "No unresolved P0 findings remain and blocker adjudication is complete."
+    },
+    evidenceDensity: {
+      pass: computeEvidenceDensity(state.activeFindings) >= config.evidenceDensityThreshold,
+      detail: "Evidence density meets the configured threshold for active findings."
+    },
+    hotspotSaturation: {
+      pass: computeHotspotSaturation(state.hotspots) >= config.hotspotSaturationThreshold,
+      detail: "Priority hotspots received enough revisits to satisfy saturation."
+    }
+  }
 
-  // Evidence gate
-  for f in state.findings where f.status == "active":
-    if not f.hasFileLineCitation or f.evidenceType == "inference-only":
-      violations.push({ gate: "evidence", findingId: f.id })
-
-  // Scope gate
-  reviewScope = resolveReviewScope(config.reviewTarget, config.reviewTargetType)
-  for f in state.findings where f.status == "active":
-    if f.filePath not in reviewScope:
-      violations.push({ gate: "scope", findingId: f.id })
-
-  // Coverage gate
-  if coverage.dimensionCoverage < 1.0:
-    violations.push({ gate: "coverage", detail: "dimensions incomplete" })
-  if not coverage.requiredProtocolsCovered:
-    violations.push({ gate: "coverage", detail: "protocols incomplete" })
-
-  if len(violations) > 0:
-    return { passed: false, violations }
-  return { passed: true }
+  blockedBy = [name for name, result in gateResults.items() if not result.pass]
+  return {
+    pass: len(blockedBy) == 0,
+    blockedBy,
+    gateResults
+  }
 ```
 
-When composite convergence returns STOP, invoke `checkReviewQualityGates()`. If it returns `passed: false`, override the action to CONTINUE and log each violation as a `guard_violation` event in JSONL. The orchestrator targets the violated areas in the next iteration.
+When convergence math returns STOP, invoke `buildReviewLegalStop()`. If it returns `pass: false`, persist a first-class blocked-stop decision with `stopReason=blockedStop`, populate `legalStop.blockedBy` from the failing gates, copy the full `gateResults`, snapshot the replay inputs, and attach a `recoveryStrategy` describing the next review action before overriding the decision to CONTINUE.
+
+### Blocked-Stop Recovery Strategy
+
+| Failed Gate | Recovery Strategy |
+|-------------|-------------------|
+| `findingStability` | Revisit the noisiest recent dimension and reduce novelty by closing obvious follow-up loops before re-checking STOP. |
+| `dimensionCoverage` | Schedule the next uncovered review dimension immediately. |
+| `p0Resolution` | Re-open the active blocker path and verify whether the P0 is real, downgraded, or still unresolved. |
+| `evidenceDensity` | Re-read weakly supported findings and add concrete `file:line` citations before they count toward a stop decision. |
+| `hotspotSaturation` | Revisit undersampled hotspots or adjacent call sites until the saturation heuristic passes. |
+
+### Legacy Stop-Reason Mapping
+
+Use this table when replaying old packets or translating older prose/docs into the shared stop contract.
+
+| Legacy label | New `stopReason` | Mapping note |
+|--------------|------------------|--------------|
+| `all_dimensions_clean` | `converged` | Legacy review-specific terminal label; now expressed by the shared enum. |
+| `composite_converged` | `converged` | Legacy convergence-math wording now rolls into shared terminal success. |
+| `all dimensions clean` | `converged` | Old operator-facing prose for the same successful stop. |
+| `max_iterations_reached` | `maxIterationsReached` | Legacy machine label for the hard iteration cap. |
+| `max iterations` | `maxIterationsReached` | Old operator-facing hard-stop wording. |
+| `pause sentinel detected` | `userPaused` | Sentinel pause is now a shared user-directed stop reason. |
+| `guard_override` | `blockedStop` | Legacy continue override when a stop vote failed legal gates. |
+| `quality guard failed` | `blockedStop` | Older prose for the same blocked-stop outcome. |
+| `P0 override blocks convergence` | `blockedStop` | Legacy review wording for a stop attempt that was not legal to finalize. |
+| `stuck_detected` | `stuckRecovery` | Legacy recovery trigger label. |
+| `stuck_unrecoverable` | `stuckRecovery` | Legacy terminal wording for the same recovery path family. |
+| `manual halt` | `manualStop` | Operator-directed halt outside normal pause sentinel flow. |
 
 ---
 
@@ -273,7 +449,7 @@ The provisional verdict is determined from active findings at the time the loop 
 
 | Verdict | Condition | Meaning |
 |---------|-----------|---------|
-| **FAIL** | `activeP0 > 0` OR any quality gate fails | Does not meet quality standards. Blocks release. |
+| **FAIL** | `activeP0 > 0` OR any legal-stop gate fails at terminal stop time | Does not meet quality standards. Blocks release. |
 | **CONDITIONAL** | `activeP0 == 0` AND `activeP1 > 0` | Meets threshold but has required fixes before release. |
 | **PASS** | `activeP0 == 0` AND `activeP1 == 0` | Shippable. Set `hasAdvisories: true` when `activeP2 > 0`. |
 
@@ -371,7 +547,7 @@ When the loop stops, the orchestrator generates a convergence report embedded in
 ```
 CONVERGENCE REPORT
 ------------------
-Stop reason: [composite_converged | max_iterations | all_dimensions_clean | stuck_unrecoverable]
+Stop reason: [converged | maxIterationsReached | userPaused | blockedStop | stuckRecovery | error | manualStop]
 Total iterations: N
 Provisional verdict: [PASS | CONDITIONAL | FAIL]
 hasAdvisories: [true | false]
@@ -391,12 +567,26 @@ Stabilization passes: N
 Composite Convergence Score: 0.XX / 0.60 threshold
   Signal 1 - Rolling Avg (w=0.30):        0.XX [STOP|CONTINUE]
   Signal 2 - MAD Noise (w=0.25):          0.XX [STOP|CONTINUE] (floor: 0.XX)
-  Signal 3 - Dimension Coverage (w=0.45): 0.XX [STOP|CONTINUE] (stabilization: N)
+  Signal 3 - Novelty Ratio (w=0.45):      0.XX [STOP|CONTINUE] (threshold: 0.10)
 
-Quality gates:
-  Evidence: [PASS | FAIL (N violations)]
-  Scope:    [PASS | FAIL (N violations)]
-  Coverage: [PASS | FAIL (N violations)]
+Legal-stop gates:
+  findingStability: [PASS | FAIL]
+  dimensionCoverage: [PASS | FAIL]
+  p0Resolution: [PASS | FAIL]
+  evidenceDensity: [PASS | FAIL]
+  hotspotSaturation: [PASS | FAIL]
+
+Semantic Convergence Signals:
+  semanticNovelty:    0.XX (consecutive low: N) [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+  findingStability:   0.XX [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+  semanticVerdict:    [all_support_stop|mixed|all_prevent_stop|insufficient_data]
+
+legalStop:
+  blockedBy: [gate names]
+  gateResults: [pass/fail map with detail]
+  replayInputs: [snapshot of ratios, coverage, and gate inputs]
+
+Blocked-stop recovery strategy: [what the next iteration must do before STOP can be retried]
 
 Stuck recovery attempts: N (recovered: N, failed: N)
 ```
@@ -407,7 +597,25 @@ Stuck recovery attempts: N (recovered: N, failed: N)
 {
   "type": "event",
   "event": "synthesis",
-  "stopReason": "composite_converged",
+  "stopReason": "converged",
+  "legalStop": {
+    "blockedBy": [],
+    "gateResults": {
+      "findingStability": { "pass": true, "detail": "Rolling average, MAD noise floor, and novelty ratio all voted STOP." },
+      "dimensionCoverage": { "pass": true, "detail": "All configured review dimensions were examined, required traceability coverage passed, and stabilization aged enough to stop." },
+      "p0Resolution": { "pass": true, "detail": "No unresolved P0 findings remained." },
+      "evidenceDensity": { "pass": true, "detail": "Evidence density stayed above the configured threshold." },
+      "hotspotSaturation": { "pass": true, "detail": "Priority hotspots were revisited enough times to satisfy saturation." }
+    },
+    "replayInputs": {
+      "iterationCount": 5,
+      "newFindingsRatio": 0.04,
+      "noveltyRatio": 0.03,
+      "dimensionsExamined": ["correctness", "security", "traceability", "maintainability"],
+      "hotspotCoverage": { "saturated": 3, "required": 3 },
+      "stopScore": 0.70
+    }
+  },
   "totalIterations": 5,
   "verdict": "CONDITIONAL",
   "hasAdvisories": false,
@@ -421,7 +629,7 @@ Stuck recovery attempts: N (recovered: N, failed: N)
   "signals": [
     { "name": "rollingAvg", "value": 0.04, "stop": true, "weight": 0.30 },
     { "name": "madScore", "value": 0.06, "stop": true, "weight": 0.25 },
-    { "name": "dimensionCoverage", "value": 1.0, "stop": true, "weight": 0.45 }
+    { "name": "noveltyRatio", "value": 0.03, "stop": true, "weight": 0.45 }
   ],
   "gatesPassed": true,
   "stuckRecoveryAttempts": 0
@@ -431,3 +639,84 @@ Stuck recovery attempts: N (recovered: N, failed: N)
 ---
 
 <!-- /ANCHOR:convergence-report -->
+
+<!-- ANCHOR:graph-aware-convergence -->
+## 10. GRAPH-AWARE REVIEW CONVERGENCE
+
+When `graphEvents` are present in review iteration records, the reducer builds an in-memory coverage graph and derives structural convergence signals that complement the existing statistical signals.
+
+### Graph Convergence Signals (Review)
+
+| Signal | Type | Description | Stop Support |
+|--------|------|-------------|-------------|
+| `graphDimensionCoverage` | number (0.0-1.0) | Fraction of dimension nodes with at least one COVERS edge to a file node | Above 0.85 supports stop |
+| `graphFindingConnectivity` | number (0.0-1.0) | Fraction of finding nodes with at least one EVIDENCES edge | Above 0.90 supports stop (all findings backed by evidence) |
+| `graphRemediationRatio` | number (0.0-1.0) | Fraction of P0/P1 findings with at least one REMEDIATES edge | Rising ratio supports stop (findings being resolved) |
+| `graphIsolatedFindings` | number | Finding nodes with no edges | Above 0 prevents stop (unconnected findings need evidence) |
+
+### Integration with Legal-Stop Gates
+
+Graph signals participate in the existing `findingStability` gate as additional sub-checks:
+
+```
+findingStability.checks.graphEvidence = {
+  pass: graphFindingConnectivity >= 0.90 AND graphIsolatedFindings == 0,
+  detail: "Graph shows N/M findings connected with K isolated"
+}
+```
+
+When `graphEvents` are absent (no graph data), the `graphEvidence` sub-check is omitted from the findingStability gate evaluation. The gate passes or fails based on existing sub-checks alone.
+
+### Convergence Report Extension
+
+When graph signals are available, the convergence report (Section 9) includes an additional block:
+
+```
+Graph Convergence Signals:
+  graphDimensionCoverage:    0.XX [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+  graphFindingConnectivity:  0.XX [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+  graphRemediationRatio:     0.XX [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+  graphIsolatedFindings:     N    [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+```
+
+### Graceful Degradation
+
+| Condition | Behavior |
+|-----------|----------|
+| No `graphEvents` in any iteration | Graph signals omitted from legal-stop evaluation |
+| Fewer than 2 iterations with `graphEvents` | Graph signals marked `insufficient_data` |
+| Graph has zero edges | `graphDimensionCoverage` = 0.0, sub-check skipped |
+
+---
+
+<!-- /ANCHOR:graph-aware-convergence -->
+
+<!-- ANCHOR:optimizer-tunable-fields -->
+## OPTIMIZER-TUNABLE THRESHOLDS
+
+The following convergence thresholds are managed by the offline loop optimizer (042.004). Changes to these fields are proposed through the optimizer's advisory-only promotion gate and reviewed by humans before adoption.
+
+### Tunable Fields (Optimizer-Managed)
+
+| Field | Default | Range | Description |
+|-------|---------|-------|-------------|
+| `convergenceThreshold` | 0.10 | 0.01-0.20 | General convergence sensitivity |
+| `stuckThreshold` | 2 | 1-5 | Consecutive no-progress iterations before recovery |
+| `maxIterations` | 7 | 3-20 | Hard iteration ceiling |
+| `compositeStopScore` | 0.60 | 0.40-0.80 | Weighted stop score needed before guard evaluation |
+
+### Locked Fields (Not Optimizer-Tunable)
+
+The following fields are runtime contracts and MUST NOT be modified by the optimizer:
+
+- `stopReason` enum values and semantics
+- `legalStop` record structure and gate names
+- Lineage fields (`sessionId`, `lineageMode`, `generation`)
+- Reducer configuration and file protection policies
+- Review dimensions (`reviewDimensions`) and product mode (`mode`)
+
+### Canonical Manifest
+
+The authoritative registry of tunable vs locked fields is maintained at:
+`.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`
+<!-- /ANCHOR:optimizer-tunable-fields -->

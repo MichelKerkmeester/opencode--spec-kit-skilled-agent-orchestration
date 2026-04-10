@@ -334,3 +334,19 @@ Key references:
 
 **Review path (findings):** `/spec_kit:deep-review` -> (if FAIL/CONDITIONAL) `/spec_kit:plan` -> `/spec_kit:implement`
 **Review path (clean):** `/spec_kit:deep-review` -> (if PASS) `/create:changelog`
+
+---
+
+## 16. OFFLINE OPTIMIZATION
+
+Convergence thresholds and recovery settings used by this command are a governed maintenance surface managed by the offline loop optimizer (042.004). The optimizer tunes deterministic numeric thresholds offline against real run traces and emits advisory-only candidate patches.
+
+**Key constraints:**
+- Optimization is offline only -- it does not run during live review sessions
+- Promotion is advisory-only until replay fixtures and behavioral suites exist
+- Prompt optimization is deferred future work (Phase 4b) and will use generated prompt packs, never direct agent markdown mutation
+
+**References:**
+- Optimizer manifest: `.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`
+- Tunable thresholds: `convergenceThreshold`, `stuckThreshold`, `maxIterations`, `compositeStopScore`
+- Convergence reference: `.opencode/skill/sk-deep-review/references/convergence.md`

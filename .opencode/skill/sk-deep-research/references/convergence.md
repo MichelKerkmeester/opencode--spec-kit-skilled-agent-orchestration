@@ -14,6 +14,84 @@ Algorithms and protocols for determining when the deep research loop should stop
 
 Convergence detection prevents infinite loops and stops research when additional iterations yield diminishing returns. The algorithm evaluates multiple signals to make a stop/continue/recovery decision, while the reducer publishes the resulting `convergenceScore` and `coverageBySources` into the dashboard and findings registry after every iteration.
 
+### Shared Stop Contract
+
+Both deep-loop products normalize their terminal and blocked-stop outcomes through the same completion-gate contract before any stop decision is persisted to JSONL, dashboards, or synthesis output.
+
+#### `stopReason` enum
+
+| Value | When It Is Used |
+|-------|-----------------|
+| `converged` | The legal-stop bundle passed and the loop may exit normally |
+| `maxIterationsReached` | The loop hit its configured iteration cap before legal convergence |
+| `userPaused` | A user-facing pause sentinel or equivalent user pause request halted execution |
+| `blockedStop` | Convergence or coverage wanted to stop, but one or more legal-stop gates failed |
+| `stuckRecovery` | Stuck detection triggered recovery, or recovery became the terminal outcome |
+| `error` | An unrecoverable runtime or iteration error terminated the loop |
+| `manualStop` | An operator explicitly halted the loop outside automatic convergence |
+
+#### `legalStop` record
+
+```ts
+type GateResult = {
+  pass: boolean;
+  detail: string;
+  checks?: Record<string, GateResult>;
+  recoveryHint?: string;
+};
+
+type LegalStop = {
+  blockedBy: string[];
+  gateResults: {
+    convergenceGate: GateResult;
+    coverageGate: GateResult;
+    qualityGate: GateResult;
+  };
+  replayInputs: {
+    iterationCount: number;
+    answeredCount: number;
+    totalQuestions: number;
+    weightedStopScore?: number;
+    activeSignals?: Array<{ name: string; value: number; stop: boolean; weight: number }>;
+    stuckCount?: number;
+    source:
+      | "question_coverage"
+      | "composite_convergence"
+      | "iteration_cap"
+      | "pause_sentinel"
+      | "recovery"
+      | "error"
+      | "manual_override";
+  };
+}
+```
+
+- `blockedBy` lists the gate names that prevented a legal STOP. Use an empty array when STOP is legal.
+- `gateResults` is the replayable legal-stop bundle. Canonical research gates are `convergenceGate`, `coverageGate`, and `qualityGate`; the `qualityGate.checks` map carries the subordinate `sourceDiversity`, `focusAlignment`, and `singleWeakSourceDominance` results.
+- `replayInputs` snapshots the exact stop-decision inputs so the reducer and dashboards can replay the outcome from packet-local artifacts only.
+
+#### Legacy Stop-Reason Mapping
+
+Normalize older labels into the shared contract instead of persisting them directly:
+
+| Legacy label or phrase | New `stopReason` | Normalization note |
+|------------------------|------------------|--------------------|
+| `composite_converged` | `converged` | Weighted convergence vote passed and legal-stop gates passed |
+| `novelty below threshold` | `converged` | Legacy prose alias for the rolling-average or composite stop path |
+| `all_questions_answered` | `converged` | Coverage-driven stop becomes `blockedStop` instead if legal-stop gates fail |
+| `max_iterations` | `maxIterationsReached` | Older shorthand label |
+| `max_iterations_reached` | `maxIterationsReached` | Current legacy machine label |
+| `paused` | `userPaused` | Pause sentinel or equivalent user-driven halt |
+| `sentinel file detected` | `userPaused` | Human-readable pause explanation |
+| `guard_override` | `blockedStop` | STOP candidate was vetoed by legal-stop gates |
+| `guard_violation` | `blockedStop` | Guard failure record that blocks legal STOP |
+| `stuck_detected` | `stuckRecovery` | Recovery path was activated |
+| `stuck_unrecoverable` | `stuckRecovery` | Recovery became the final outcome |
+| `manual_stop` | `manualStop` | Operator halted the loop |
+| `unrecoverable_error` | `error` | Runtime terminated due to unrecoverable failure |
+
+Deep review uses the same `stopReason` enum and `legalStop` record, even though its convergence signals differ.
+
 ---
 
 <!-- /ANCHOR:overview -->
@@ -30,12 +108,20 @@ function shouldContinue(state, config):
 
   // Hard stop: max iterations
   if len(iterations) >= config.maxIterations:
-    return { action: "STOP", reason: "max_iterations_reached" }
+    return {
+      action: "STOP",
+      stopReason: "maxIterationsReached",
+      legacyStopLabel: "max_iterations_reached"
+    }
 
   // Hard stop: all questions answered
   unanswered = countUnanswered(state.strategy.keyQuestions)
   if unanswered == 0:
-    return { action: "STOP", reason: "all_questions_answered" }
+    return {
+      action: "STOP",
+      stopReason: "converged",
+      legacyStopLabel: "all_questions_answered"
+    }
 ```
 
 ### 2.2 Stuck Detection
@@ -44,7 +130,12 @@ function shouldContinue(state, config):
   // Stuck detection: consecutive no-progress
   stuckCount = countConsecutiveStuck(iterations)
   if stuckCount >= config.stuckThreshold:
-    return { action: "STUCK_RECOVERY", reason: "stuck_detected", stuckCount }
+    return {
+      action: "STUCK_RECOVERY",
+      stopReason: "stuckRecovery",
+      legacyStopLabel: "stuck_detected",
+      stuckCount
+    }
 ```
 
 ### 2.3 Composite Convergence (3-Signal Weighted Vote)
@@ -106,48 +197,126 @@ Reducer-owned metrics derived from these signals:
     // Redistribute weights to active signals
     stopScore = sum(s.weight * (1 if s.stop else 0) for s in signals) / totalWeight
     if stopScore > 0.60:
-      return { action: "STOP", reason: "composite_converged", stopScore, signals }
+      return {
+        action: "STOP",
+        stopReason: "converged",
+        legacyStopLabel: "composite_converged",
+        stopScore,
+        signals
+      }
 
   // Default: continue
   return { action: "CONTINUE", unansweredCount: unanswered, signals }
 ```
 
-### 2.4 Quality Guard Protocol
+### 2.4 Legal-Stop Gate Bundle
 
-After composite convergence votes STOP but before the decision is finalized, three binary guards must pass. If any guard fails, the STOP is overridden to CONTINUE and violations are logged.
+After composite convergence or full-question coverage nominates STOP, the loop MUST evaluate the full legal-stop bundle before STOP becomes final. STOP is never legal on novelty math alone. The replayable `legalStop.gateResults` bundle for deep research is:
 
-| Guard | Rule | Fail Action |
-|-------|------|-------------|
-| Source Diversity | Every answered question must cite >= 2 independent sources | Block STOP, log `guard_violation` |
-| Focus Alignment | Answered questions must map to original key questions from initialization | Block STOP, log `guard_violation` |
-| No Single-Weak-Source | No answered question can rely solely on one source with `sourceStrength == "tentative"` | Block STOP, log `guard_violation` |
+| Gate | Rule | Fail Action |
+|------|------|-------------|
+| Convergence Gate | The novelty score stays below `convergenceThreshold` for N consecutive evidence iterations | Block STOP, persist `blocked_stop`, continue |
+| Coverage Gate | Every key question has at least one evidence-backed answer | Block STOP, persist `blocked_stop`, continue |
+| Quality Gate | Source diversity, focus alignment, and no single weak-source dominance all pass | Block STOP, persist `blocked_stop`, continue |
+
+`N` comes from the reducer-or-workflow legal-stop policy (default 2 consecutive evidence iterations unless a packet config raises it). The bundle is evaluated together; no single gate can authorize STOP by itself.
+
+```
+function evaluateLegalStop(state, strategy, config, stopCandidate):
+  requiredConsecutive = config.requiredConsecutiveLowNovelty ?? 2
+  evidenceIterations = [i for i in state.iterations if i.status != "thought"]
+  recentEvidence = evidenceIterations[-requiredConsecutive:]
+  missingQuestions = getQuestionsWithoutEvidence(strategy)
+
+  convergenceGate = {
+    pass: len(recentEvidence) == requiredConsecutive &&
+      all(i.newInfoRatio < config.convergenceThreshold for i in recentEvidence),
+    detail: f"{countPassing(recentEvidence)}/{requiredConsecutive} recent evidence iterations remained below threshold",
+    recoveryHint: "Run another evidence iteration if novelty has not stayed low long enough"
+  }
+
+  coverageGate = {
+    pass: len(missingQuestions) == 0,
+    detail: len(missingQuestions) == 0 ?
+      "Every key question has an evidence-backed answer" :
+      f"Missing evidence-backed answers for: {join(missingQuestions, ', ')}",
+    recoveryHint: "Target unanswered or weakly answered key questions next"
+  }
+
+  sourceDiversity = checkSourceDiversity(state, strategy)
+  focusAlignment = checkFocusAlignment(strategy)
+  singleWeakSourceDominance = checkWeakSourceDominance(state, strategy)
+
+  qualityGate = {
+    pass: sourceDiversity.pass && focusAlignment.pass && singleWeakSourceDominance.pass,
+    detail: sourceDiversity.pass && focusAlignment.pass && singleWeakSourceDominance.pass ?
+      "All quality sub-gates passed" :
+      "One or more quality sub-gates failed",
+    checks: {
+      sourceDiversity,
+      focusAlignment,
+      singleWeakSourceDominance,
+    },
+    recoveryHint: chooseQualityRecovery(sourceDiversity, focusAlignment, singleWeakSourceDominance)
+  }
+
+  blockedBy = []
+  for gateName, gateResult in {
+    convergenceGate,
+    coverageGate,
+    qualityGate,
+  }.items():
+    if not gateResult.pass:
+      blockedBy.push(gateName)
+
+  legalStop = {
+    blockedBy,
+    gateResults: { convergenceGate, coverageGate, qualityGate },
+    replayInputs: buildReplayInputs(state, stopCandidate)
+  }
+
+  if len(blockedBy) == 0:
+    return {
+      decision: "STOP",
+      stopReason: "converged",
+      candidateStopReason: stopCandidate.stopReason,
+      legalStop
+    }
+
+  return {
+    decision: "CONTINUE",
+    stopReason: "blockedStop",
+    candidateStopReason: stopCandidate.stopReason,
+    legalStop,
+    recoveryStrategy: chooseBlockedStopRecovery(legalStop, strategy)
+  }
+```
 
 **Checks:**
 
-- **Source Diversity**: For each question marked answered in strategy.md, count distinct sources from iteration JSONL records. Require >= 2.
-- **Focus Alignment**: Compare answered question labels against the initial key questions stored in strategy.md at initialization. Flag any answered question not in the original set.
-- **No Single-Weak-Source**: For questions answered by exactly one source, verify that source's strength is not `"tentative"`.
+- **Convergence Gate**: Re-read the most recent N evidence iterations only. Every one of them must remain below the configured novelty threshold.
+- **Coverage Gate**: Every initialized key question must have at least one answer backed by evidence from the iteration artifacts.
+- **Source Diversity**: For each answered question, count distinct independent sources. Require the configured minimum (default 2).
+- **Focus Alignment**: Compare answered question labels against the initialized key-question set. Flag any answer outside the declared scope.
+- **No Single-Weak-Source**: No answered question may depend entirely on a single tentative or otherwise weak source.
 
-```
-function checkQualityGuards(state, strategy):
-  violations = []
-  for q in strategy.answeredQuestions:
-    sources = collectSources(state.iterations, q)
-    if len(sources) < 2:
-      violations.push({ guard: "source_diversity", question: q })
-    if q not in strategy.originalKeyQuestions:
-      violations.push({ guard: "focus_alignment", question: q })
-    if len(sources) == 1 and sources[0].strength == "tentative":
-      violations.push({ guard: "single_weak_source", question: q })
+`qualityGate.checks` is the replayable quality bundle. Reducers and dashboards must be able to explain a quality pass or failure from packet-local artifacts only.
 
-  if len(violations) > 0:
-    for v in violations:
-      appendToJSONL({ type: "event", event: "guard_violation", ...v })
-    return { passed: false, violations }
-  return { passed: true }
-```
+When any gate fails:
 
-When the composite convergence returns STOP, invoke `checkQualityGuards()`. If it returns `passed: false`, override the action to CONTINUE and resume the loop. The orchestrator should target the violated questions in the next iteration's focus area.
+1. Append a `stop_decision` snapshot with the attempted stop bundle.
+2. Append a first-class `blocked_stop` event with `stopReason: "blockedStop"`, `legalStop.blockedBy`, the full `legalStop.gateResults`, and a concrete `recoveryStrategy`.
+3. Continue the loop using that `recoveryStrategy` as the next focus directive.
+4. Replay reducers and dashboards from packet-local artifacts only; no hidden runtime memory is required.
+
+Recommended blocked-stop recovery mapping:
+
+| Failed Gate | Preferred Recovery |
+|-------------|--------------------|
+| `convergenceGate` | `widenFocus` to gather another evidence iteration before retrying STOP |
+| `coverageGate` | `answerMissingQuestions` for unanswered or tentative-only questions |
+| `qualityGate` with weak-source failure | `seekMoreSources` to replace weak or single-source evidence |
+| `qualityGate` with focus drift | `repairAlignment` to bring answers back inside initialized scope |
 
 ### Dead-End Coverage Signal (REFERENCE-ONLY)
 
@@ -165,6 +334,118 @@ deadEndCoverage = (validated + eliminated) / totalIdentifiedApproaches
 
 A threshold of 0.80 would mean 80% of known avenues have been resolved one way or another. This signal could complement the existing composite vote but is not currently wired into `shouldContinue()`.
 
+### Semantic Convergence Signals
+
+Three additional signals provide deeper semantic analysis of iteration quality. These signals are ADDITIONAL to the 3-signal composite vote above and participate in the legal-stop gate evaluation rather than the composite stop-score.
+
+#### semanticNovelty (0.0-1.0)
+
+Measures how much genuinely new information each iteration contributes beyond surface-level keyword overlap. Unlike `newInfoRatio` (which the agent self-assesses), `semanticNovelty` is computed by comparing the semantic content of the current iteration's findings against the cumulative knowledge base from all prior iterations.
+
+| Value | Meaning |
+|-------|---------|
+| 0.8-1.0 | Iteration introduced substantially new concepts, frameworks, or evidence |
+| 0.4-0.7 | Mix of new angles and restatements of prior knowledge |
+| 0.1-0.3 | Mostly rephrasing or minor extensions of existing findings |
+| 0.0 | No semantically novel content detected |
+
+Computation:
+```
+function computeSemanticNovelty(currentFindings, priorCumulativeFindings):
+  newConcepts = extractConcepts(currentFindings) - extractConcepts(priorCumulativeFindings)
+  totalConcepts = extractConcepts(currentFindings)
+  if len(totalConcepts) == 0: return 0.0
+  return len(newConcepts) / len(totalConcepts)
+```
+
+When `semanticNovelty` drops below 0.15 for 2+ consecutive evidence iterations, it provides strong supporting evidence for a legal STOP decision. This signal catches cases where `newInfoRatio` remains moderate (due to different phrasing) but the underlying knowledge has plateaued.
+
+#### contradictionDensity (0.0-1.0)
+
+Ratio of contradicted claims to total claims across the cumulative finding set. Tracks how the research evidence graph resolves internal conflicts over time.
+
+| Value | Meaning |
+|-------|---------|
+| 0.0 | No contradictions in the finding set |
+| 0.01-0.10 | Normal level of resolved contradictions |
+| 0.11-0.25 | Elevated contradictions; may need targeted reconciliation |
+| 0.26+ | High contradiction density; research may be stuck on conflicting sources |
+
+Computation:
+```
+function computeContradictionDensity(cumulativeFindings):
+  contradicted = count(f for f in cumulativeFindings if f.contradictedBy != null)
+  total = len(cumulativeFindings)
+  if total == 0: return 0.0
+  return contradicted / total
+```
+
+Convergence behavior:
+- `contradictionDensity <= 0.10` supports STOP: the finding set is internally consistent.
+- `contradictionDensity > 0.25` blocks STOP: unresolved contradictions suggest the research space is not yet stable. The legal-stop gate records this as a `qualityGate` sub-check failure.
+- The stuck recovery protocol (Section 4, Step 1.5) should use "Contradictory evidence" failure mode when `contradictionDensity > 0.25`.
+
+#### citationOverlap (0.0-1.0)
+
+Measures how much the current iteration's citations overlap with the existing citation graph. A high overlap means the iteration consulted mostly the same sources; a low overlap means new sources were discovered.
+
+| Value | Meaning |
+|-------|---------|
+| 0.0 | Entirely new sources not seen in prior iterations |
+| 0.1-0.4 | Mostly new sources with some reuse |
+| 0.5-0.7 | Balanced mix of new and previously cited sources |
+| 0.8-1.0 | Almost entirely citing previously consulted sources |
+
+Computation:
+```
+function computeCitationOverlap(currentSources, priorSourceGraph):
+  if len(currentSources) == 0: return 1.0  // no new sources = full overlap
+  overlap = currentSources & priorSourceGraph
+  return len(overlap) / len(currentSources)
+```
+
+Convergence behavior:
+- `citationOverlap >= 0.85` for 2+ consecutive iterations supports STOP: the source space is exhausted.
+- `citationOverlap < 0.30` prevents STOP: the iteration discovered substantially new sources that may yield fresh findings.
+
+#### Integration with Legal-Stop Gate Bundle
+
+The three semantic signals combine with the existing legal-stop gates as follows:
+
+1. **Convergence Gate** (existing): Novelty score below threshold for N consecutive iterations. Semantic signals provide corroborating evidence.
+2. **Coverage Gate** (existing): Key questions answered with evidence.
+3. **Quality Gate** (existing): Source diversity, focus alignment, single-weak-source. The semantic signals add three sub-checks:
+   - `semanticNoveltyPlateau`: `semanticNovelty < 0.15` for 2+ consecutive evidence iterations
+   - `contradictionResolution`: `contradictionDensity <= 0.10`
+   - `sourceExhaustion`: `citationOverlap >= 0.85` for 2+ consecutive iterations OR `citationOverlap < 0.30` does not block
+
+The quality gate passes only when ALL sub-checks pass (existing + semantic). When a semantic sub-check fails, the `legalStop.gateResults.qualityGate.checks` map includes the failing semantic sub-check with its detail and recovery hint.
+
+#### Stop-Decision Trace
+
+The stop-decision event (`stop_decision` and `blocked_stop` JSONL records) includes which semantic signals supported or prevented STOP:
+
+```json
+{
+  "type": "event",
+  "event": "stop_decision",
+  "semanticSignals": {
+    "semanticNovelty": { "value": 0.08, "consecutiveLow": 3, "supportsStop": true },
+    "contradictionDensity": { "value": 0.04, "supportsStop": true },
+    "citationOverlap": { "value": 0.91, "consecutiveHigh": 2, "supportsStop": true }
+  },
+  "semanticVerdict": "all_support_stop",
+  ...
+}
+```
+
+| `semanticVerdict` | Meaning |
+|-------------------|---------|
+| `all_support_stop` | All 3 semantic signals support stopping |
+| `mixed` | Some signals support stop, others do not |
+| `all_prevent_stop` | All 3 semantic signals indicate more work is needed |
+| `insufficient_data` | Not enough iterations to compute semantic signals |
+
 ### Graceful Degradation
 
 | Iterations Completed | Active Signals | Behavior |
@@ -173,15 +454,18 @@ A threshold of 0.80 would mean 80% of known avenues have been resolved one way o
 | 3 | Rolling avg + entropy | Two-signal vote, reweighted |
 | 4+ | All three signals | Full composite, most reliable |
 
+Semantic convergence signals (`semanticNovelty`, `contradictionDensity`, `citationOverlap`) require at least 2 evidence iterations to produce meaningful values. They are omitted from legal-stop evaluation when insufficient data exists.
+
 ### Decision Priority
 
 Checks are evaluated in this order (first match wins):
 
 1. **Max iterations** (hard cap, always checked first)
-2. **All questions answered** (hard stop)
+2. **All questions answered** (coverage-driven stop candidate)
 3. **Stuck detection** (3+ consecutive no-progress)
 4. **Composite convergence** (3-signal weighted vote, threshold 0.60)
-4.5. **Quality guards** (binary checks — if composite says STOP but guards fail, override to CONTINUE)
+4.5. **Legal-stop gate bundle** (`convergenceGate` + `coverageGate` + `qualityGate` must all pass together)
+4.6. **Blocked-stop persistence** (if any legal-stop gate fails, persist `blocked_stop` with recovery strategy and continue)
 5. **Default continue** (none of the above triggered)
 
 ---
@@ -603,9 +887,12 @@ When the loop stops, the YAML workflow generates a convergence report:
 ```
 CONVERGENCE REPORT
 ------------------
-Stop reason: [composite_converged | max_iterations | all_questions_answered | stuck_unrecoverable]
+Stop reason: [converged | maxIterationsReached | userPaused | blockedStop | stuckRecovery | error | manualStop]
+Legacy label: [optional replay-only alias such as composite_converged]
 Total iterations: N (segment: S)
 Questions answered: X / Y (Z%)
+Legal stop blockers: [none | comma-separated gate names]
+Recovery strategy (if blocked): [widen focus | seek more sources | repair focus alignment | answer missing questions]
 
 Composite Convergence Score: 0.XX / 0.60 threshold
   Signal 1 - Rolling Avg (w=0.30): 0.XX [STOP|CONTINUE]
@@ -613,6 +900,13 @@ Composite Convergence Score: 0.XX / 0.60 threshold
   Signal 3 - Entropy (w=0.35):     0.XX [STOP|CONTINUE] (coverage: X/Y)
 
 Noise Floor: 0.XX (last ratio: 0.XX [ABOVE|WITHIN])
+
+Semantic Convergence Signals:
+  semanticNovelty:        0.XX (consecutive low: N) [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+  contradictionDensity:   0.XX [SUPPORTS_STOP|PREVENTS_STOP]
+  citationOverlap:        0.XX (consecutive high: N) [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
+  semanticVerdict:        [all_support_stop|mixed|all_prevent_stop|insufficient_data]
+
 Stuck recovery attempts: N (recovered: N, failed: N)
 Error recovery tiers used: [list or "none"]
 ```
@@ -679,7 +973,11 @@ function shouldContinue_review(state, config):
   evidenceIterations = [i for i in iterations if i.status != "thought"]
 
   if len(iterations) >= config.maxIterations:
-    return { action: "STOP", reason: "max_iterations_reached" }
+    return {
+      action: "STOP",
+      stopReason: "maxIterationsReached",
+      legacyStopLabel: "max_iterations_reached"
+    }
 
   activeP0 = countActiveFindings(state, ["P0"])
   activeP1 = countActiveFindings(state, ["P1"])
@@ -690,11 +988,22 @@ function shouldContinue_review(state, config):
     if stabilizationPasses >= config.coverageAge.minStabilizationPasses:
       gateResult = checkReviewQualityGates(state, config, coverage)
       if gateResult.passed:
-        return { action: "STOP", reason: "all_dimensions_clean", coverage, stabilizationPasses }
+        return {
+          action: "STOP",
+          stopReason: "converged",
+          legacyStopLabel: "all_dimensions_clean",
+          coverage,
+          stabilizationPasses
+        }
 
   stuckCount = countConsecutiveStuck_review(evidenceIterations, config.thresholds.noProgressThreshold)
   if stuckCount >= config.stuckThreshold:
-    return { action: "STUCK_RECOVERY", reason: "stuck_detected", stuckCount }
+    return {
+      action: "STUCK_RECOVERY",
+      stopReason: "stuckRecovery",
+      legacyStopLabel: "stuck_detected",
+      stuckCount
+    }
 
   signals = []
   totalWeight = 0
@@ -738,10 +1047,22 @@ function shouldContinue_review(state, config):
     if stopScore >= config.thresholds.compositeStopScore:
       gateResult = checkReviewQualityGates(state, config, coverage)
       if gateResult.passed:
-        return { action: "STOP", reason: "composite_converged", stopScore, signals }
+        return {
+          action: "STOP",
+          stopReason: "converged",
+          legacyStopLabel: "composite_converged",
+          stopScore,
+          signals
+        }
       for violation in gateResult.violations:
         appendToJSONL({ type: "event", event: "guard_violation", ...violation })
-      return { action: "CONTINUE", reason: "guard_override", violations: gateResult.violations, signals }
+      return {
+        action: "CONTINUE",
+        stopReason: "blockedStop",
+        legacyStopLabel: "guard_override",
+        violations: gateResult.violations,
+        signals
+      }
 
   return { action: "CONTINUE", coverage, stabilizationPasses, signals }
 ```
@@ -855,3 +1176,89 @@ When convergence signals fire but review is incomplete:
 ---
 
 <!-- /ANCHOR:review-mode-convergence -->
+
+<!-- ANCHOR:graph-aware-convergence -->
+## 11. GRAPH-AWARE CONVERGENCE MODEL
+
+Coverage graph signals provide structural convergence evidence that complements the existing statistical signals. When `graphEvents` are present in iteration records, the reducer builds an in-memory coverage graph and derives additional signals for the legal-stop gate evaluation.
+
+### Graph Convergence Signals
+
+| Signal | Type | Description | Stop Support |
+|--------|------|-------------|-------------|
+| `graphComponentCount` | number | Number of connected components in the coverage graph | Decreasing count supports stop (graph is consolidating) |
+| `graphIsolatedNodes` | number | Nodes with no edges | Increasing count prevents stop (unconnected findings) |
+| `graphEdgeDensity` | number (0.0-1.0) | Ratio of actual edges to possible edges | Above 0.3 supports stop |
+| `graphAnswerCoverage` | number (0.0-1.0) | Fraction of question nodes with at least one ANSWERS edge | Above 0.85 supports stop |
+
+### Integration with Legal-Stop Gates
+
+Graph signals participate in the existing quality gate as additional sub-checks:
+
+```
+qualityGate.checks.graphCoverage = {
+  pass: graphAnswerCoverage >= 0.85 AND graphIsolatedNodes <= 2,
+  detail: "Graph coverage shows N/M questions answered with K isolated nodes"
+}
+```
+
+When `graphEvents` are absent (no graph data), the `graphCoverage` sub-check is omitted from the quality gate evaluation. The gate passes or fails based on existing sub-checks alone.
+
+### Weight Calibration Guidance
+
+The relation weights in `coverage-graph-core.cjs` are inherited from the memory graph and carry CALIBRATION-TODO markers. Calibration recommendations:
+
+| Relation | Current Weight | Calibration Notes |
+|----------|---------------|-------------------|
+| ANSWERS | 1.3 | Appropriate for research; answers are the primary convergence driver |
+| CONTRADICTS | 0.8 | Consider lowering to 0.6 if contradiction edges produce false convergence signals |
+| CITES | 1.0 | Neutral weight is correct for citation links |
+| EXTENDS | 1.1 | Appropriate; extensions add incremental value |
+| SUPERSEDES | 1.2 | Appropriate; supersession indicates convergence toward a canonical finding |
+| COVERS | 1.3 | Review-specific; appropriate for dimension coverage tracking |
+| EVIDENCES | 1.0 | Review-specific; neutral weight for evidence links |
+| REMEDIATES | 1.1 | Review-specific; remediation indicates progress toward resolution |
+| DEPENDS_ON | 0.9 | Review-specific; slight dampening for dependency chains |
+
+**Tuning protocol**: After 5+ real research sessions with graph events enabled, compare graph-based convergence decisions against statistical-only convergence decisions. If graph signals cause premature or delayed stops relative to the statistical baseline, adjust weights in 0.1 increments and re-evaluate.
+
+### Graceful Degradation
+
+| Condition | Behavior |
+|-----------|----------|
+| No `graphEvents` in any iteration | Graph signals omitted from legal-stop evaluation |
+| MCP unavailable | Reducer rebuilds graph from JSONL; convergence unaffected |
+| Fewer than 2 iterations with `graphEvents` | Graph signals marked `insufficient_data` |
+| Graph has zero edges | `graphEdgeDensity` = 0.0, `graphCoverage` sub-check skipped |
+
+---
+
+<!-- /ANCHOR:graph-aware-convergence -->
+
+<!-- ANCHOR:optimizer-tunable-fields -->
+## OPTIMIZER-TUNABLE THRESHOLDS
+
+The following convergence thresholds are managed by the offline loop optimizer (042.004). Changes to these fields are proposed through the optimizer's advisory-only promotion gate and reviewed by humans before adoption.
+
+### Tunable Fields (Optimizer-Managed)
+
+| Field | Default | Range | Description |
+|-------|---------|-------|-------------|
+| `convergenceThreshold` | 0.05 | 0.01-0.20 | General convergence sensitivity |
+| `stuckThreshold` | 3 | 1-5 | Consecutive no-progress iterations before recovery |
+| `maxIterations` | 10 | 3-20 | Hard iteration ceiling |
+
+### Locked Fields (Not Optimizer-Tunable)
+
+The following fields are runtime contracts and MUST NOT be modified by the optimizer:
+
+- `stopReason` enum values and semantics
+- `legalStop` record structure
+- Lineage fields (`sessionId`, `lineageMode`, `generation`)
+- Reducer configuration and file protection policies
+
+### Canonical Manifest
+
+The authoritative registry of tunable vs locked fields is maintained at:
+`.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`
+<!-- /ANCHOR:optimizer-tunable-fields -->
