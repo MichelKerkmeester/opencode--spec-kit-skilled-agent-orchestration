@@ -82,8 +82,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      D) track -- All child spec folders in a feature track
      E) files -- Arbitrary file paths or globs
 
-   Q_dims. Which review dimensions? (default: all 7)
-     All: correctness, security, traceability, maintainability, performance, reliability, completeness
+   Q_dims. Which review dimensions? (default: all 4)
+     All: correctness, security, traceability, maintainability
      Or specify a subset (e.g., "correctness, security")
 
    Q1. Spec Folder (required):

@@ -65,7 +65,7 @@ skill_reference:
 # ─────────────────────────────────────────────────────────────────
 agent_config:
   agent: deep-research
-  agent_file: ".claude/agents/deep-research.md"
+  agent_file: ".opencode/agent/deep-research.md"
   # Runtime-agnostic: resolve agent from active runtime directory (see AGENTS.md). Default shown is Claude runtime.
   model: opus
   leaf_only: true

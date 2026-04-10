@@ -25,7 +25,7 @@ const DEFAULT_PARAM_SPACE = Object.freeze({
   stuckThreshold: { min: 1, max: 5, step: 1 },
   noProgressThreshold: { min: 0.01, max: 0.15, step: 0.01 },
   compositeStopScore: { min: 0.40, max: 0.80, step: 0.05 },
-  maxIterations: { min: 5, max: 30, step: 1 },
+  maxIterations: { min: 3, max: 20, step: 1 },
 });
 
 /* ---------------------------------------------------------------
@@ -152,6 +152,9 @@ function randomSearch(corpus, rubric, paramSpace, iterations, options) {
   if (opts.baselineConfig) {
     const baselineResults = evaluateConfig(corpus, opts.baselineConfig, rubric);
     baselineScore = baselineResults;
+    // Initialize best to baseline so first candidate must beat it
+    bestScore = baselineResults;
+    bestCandidate = opts.baselineConfig;
   }
 
   for (let i = 0; i < maxIter; i++) {
@@ -162,7 +165,7 @@ function randomSearch(corpus, rubric, paramSpace, iterations, options) {
     let comparison = null;
 
     if (bestScore === null) {
-      // First candidate is always accepted as initial best
+      // First candidate is accepted as initial best only when no baseline was provided
       accepted = true;
       bestCandidate = candidateConfig;
       bestScore = candidateResults;
@@ -187,7 +190,7 @@ function randomSearch(corpus, rubric, paramSpace, iterations, options) {
     }
 
     auditTrail.push(
-      recordCandidate(candidateConfig, candidateResults, accepted, comparison),
+      recordCandidate(candidateConfig, candidateResults, accepted, comparison, { timestamp: opts.timestamp }),
     );
   }
 

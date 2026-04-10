@@ -355,16 +355,17 @@ function renderDashboard(board) {
 
 /**
  * Generate a deterministic finding ID from finding content.
+ * ID is segment-independent so cross-segment dedup works correctly.
  * @param {object} finding
- * @param {string} segmentId
+ * @param {string} _segmentId - Unused, kept for API compatibility
  * @returns {string}
  */
-function generateFindingId(finding, segmentId) {
+function generateFindingId(finding, _segmentId) {
   const file = finding.file || finding.filePath || '';
   const line = finding.line || finding.lineNumber || 0;
   const title = finding.title || finding.summary || '';
   const hash = simpleHash(`${file}:${line}::${title}`);
-  return `f-${segmentId}-${hash}`;
+  return `f-${hash}`;
 }
 
 /**

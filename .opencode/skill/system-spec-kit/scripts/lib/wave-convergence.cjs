@@ -77,14 +77,23 @@ function evaluateWaveConvergence(board, signals, threshold) {
   const blockedBy = [];
   const signalResults = {};
 
+  // Gate: All board segments must be in terminal status before convergence is possible
+  const TERMINAL_STATUSES = new Set(['completed', 'pruned', 'failed']);
+  if (board.segments && board.segments.length > 0) {
+    const nonTerminal = board.segments.filter(s => !TERMINAL_STATUSES.has(s.status));
+    if (nonTerminal.length > 0) {
+      blockedBy.push(`${nonTerminal.length} segments not in terminal status`);
+    }
+  }
+
   // Signal 1: Segment convergence (per-segment scores)
   let segmentConvergenceScore = 0;
   if (segmentStates.length > 0) {
     const convergenceScores = segmentStates.map(s => s.convergenceScore || 0);
     segmentConvergenceScore = convergenceScores.reduce((a, b) => a + b, 0) / convergenceScores.length;
 
-    // Check if any segment has not converged
-    const unconverged = segmentStates.filter(s => (s.convergenceScore || 0) < thresh);
+    // Check if any segment has not converged (score must reach >= 1-threshold, e.g. >= 0.95 for threshold 0.05)
+    const unconverged = segmentStates.filter(s => (s.convergenceScore || 0) < (1.0 - thresh));
     if (unconverged.length > 0) {
       blockedBy.push(`${unconverged.length} segments not converged`);
     }
