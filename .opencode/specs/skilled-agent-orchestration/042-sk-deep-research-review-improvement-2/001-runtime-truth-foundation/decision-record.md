@@ -24,7 +24,7 @@ contextType: "planning"
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -97,7 +97,7 @@ We need a runtime answer to "why did this loop stop?" that works across both dee
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -169,7 +169,7 @@ Research packets need a durable way to show whether major claims were verified, 
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -241,7 +241,7 @@ The dashboards need richer runtime truth, but the repo already uses markdown das
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -313,7 +313,7 @@ The research corpus suggests council-style synthesis for ambiguous cases, but it
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -385,7 +385,7 @@ Large multi-phase research runs need a coordination surface, but `CF-030` is exp
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -456,7 +456,7 @@ The research pass found that deep-research still reparses full iteration markdow
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -527,7 +527,7 @@ The original packet placed behavior-first testing after most runtime changes. Th
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -598,7 +598,7 @@ Current convergence is stronger than threshold-only math, but it is still mostly
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -670,7 +670,7 @@ Recovery behavior exists in both loops, but it is still relatively shallow and u
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 

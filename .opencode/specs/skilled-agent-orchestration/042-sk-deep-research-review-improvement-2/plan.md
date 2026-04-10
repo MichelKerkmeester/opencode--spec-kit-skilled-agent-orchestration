@@ -131,10 +131,10 @@ Phase 1: Runtime Truth Foundation
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Consolidated research packet | Internal | Green | Parent rationale and phase scoping lose their evidence basis |
-| Phase 1 contract lock | Internal | Green | Blocks every downstream phase |
-| Phase 2 coverage graph readiness | Internal | Yellow | Blocks graph-enhanced wave behavior |
-| Fan-out/join proof on current workflow engine | Internal | Red | Blocks Phase 3 implementation beyond planning |
-| Replay fixtures + behavioral suites for optimizer graduation | Internal | Red | Keeps Phase 4b blocked and Phase 4a advisory-only |
+| Phase 1 contract lock | Internal | Green (complete) | Blocks every downstream phase |
+| Phase 2 coverage graph readiness | Internal | Green (complete) | Blocks graph-enhanced wave behavior |
+| Fan-out/join proof on current workflow engine | Internal | Green (proven) | Blocks Phase 3 implementation beyond planning |
+| Replay fixtures + behavioral suites for optimizer graduation | Internal | Yellow | Keeps Phase 4b blocked and Phase 4a advisory-only |
 <!-- /ANCHOR:dependencies -->
 
 ---

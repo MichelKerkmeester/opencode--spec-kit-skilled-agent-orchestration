@@ -30,7 +30,7 @@ The design target is explicit reuse, not greenfield invention. Research findings
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-04-10 |
 | **Branch** | `042-sk-deep-research-review-improvement-2` |
 | **Parent Packet** | `../spec.md` |

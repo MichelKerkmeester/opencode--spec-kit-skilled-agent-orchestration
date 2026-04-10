@@ -73,13 +73,13 @@ contextType: "planning"
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
-| T001 | Pending | REQ-001, REQ-002 | `.opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts` |
-| T002 | Pending | REQ-003 | `.opencode/skill/system-spec-kit/scripts/optimizer/rubric.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-rubric.vitest.ts` |
-| T003 | Pending | REQ-004 | `.opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts` |
+| T001 | Completed | REQ-001, REQ-002 | `.opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts` |
+| T002 | Completed | REQ-003 | `.opencode/skill/system-spec-kit/scripts/optimizer/rubric.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-rubric.vitest.ts` |
+| T003 | Completed | REQ-004 | `.opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts` |
 
-- [ ] T001 Build the `040` replay corpus extractor, with optional compatibility-graded `028` holdout support and explicit exclusion of `042` until traces exist.
-- [ ] T002 Define the quality rubric for convergence efficiency, recovery success rate, finding accuracy, and synthesis quality.
-- [ ] T003 Build the deterministic replay runner against baseline and candidate configs.
+- [x] T001 Build the `040` replay corpus extractor, with optional compatibility-graded `028` holdout support and explicit exclusion of `042` until traces exist.
+- [x] T002 Define the quality rubric for convergence efficiency, recovery success rate, finding accuracy, and synthesis quality.
+- [x] T003 Build the deterministic replay runner against baseline and candidate configs.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -91,13 +91,13 @@ contextType: "planning"
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
-| T004 | Pending | REQ-007 | `.opencode/skill/system-spec-kit/scripts/optimizer/search.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts` |
-| T005 | Pending | REQ-008 | `.opencode/skill/system-spec-kit/scripts/optimizer/search.cjs`; `.opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts` |
-| T006 | Pending | REQ-005, REQ-007 | `.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`; `.opencode/skill/sk-deep-research/assets/deep_research_config.json`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json`; `.opencode/skill/sk-deep-research/references/convergence.md`; `.opencode/skill/sk-deep-review/references/convergence.md` |
+| T004 | Completed | REQ-007 | `.opencode/skill/system-spec-kit/scripts/optimizer/search.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts` |
+| T005 | Completed | REQ-008 | `.opencode/skill/system-spec-kit/scripts/optimizer/search.cjs`; `.opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts` |
+| T006 | Completed | REQ-005, REQ-007 | `.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`; `.opencode/skill/sk-deep-research/assets/deep_research_config.json`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json`; `.opencode/skill/sk-deep-research/references/convergence.md`; `.opencode/skill/sk-deep-review/references/convergence.md` |
 
-- [ ] T004 Implement the random-search config optimizer for bounded deterministic numeric fields.
-- [ ] T005 Build the audit trail for optimization runs, including rejected candidates and advisory patch outputs.
-- [ ] T006 Create the optimizer manifest that separates tunable fields, locked contract fields, and future prompt-pack entrypoints.
+- [x] T004 Implement the random-search config optimizer for bounded deterministic numeric fields.
+- [x] T005 Build the audit trail for optimization runs, including rejected candidates and advisory patch outputs.
+- [x] T006 Create the optimizer manifest that separates tunable fields, locked contract fields, and future prompt-pack entrypoints.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -109,9 +109,9 @@ contextType: "planning"
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
-| T007 | Pending | REQ-006, REQ-008 | `.opencode/skill/system-spec-kit/scripts/optimizer/promote.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-promote.vitest.ts`; `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/deep-review.md` |
+| T007 | Completed | REQ-006, REQ-008 | `.opencode/skill/system-spec-kit/scripts/optimizer/promote.cjs`; `.opencode/skill/system-spec-kit/scripts/tests/optimizer-promote.vitest.ts`; `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/deep-review.md` |
 
-- [ ] T007 Implement the advisory-only promotion gate that refuses production mutation until replay fixtures and behavioral suites exist.
+- [x] T007 Implement the advisory-only promotion gate that refuses production mutation until replay fixtures and behavioral suites exist.
 
 ### Phase 4b: Deferred Work
 
@@ -133,11 +133,11 @@ contextType: "planning"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] Every task remains mapped to an optimizer requirement and concrete file set.
-- [ ] Replay determinism is verified before any promotion logic is considered complete.
-- [ ] Promotion remains advisory-only unless baseline improvement and prerequisite replay plus behavioral gates both exist and pass.
-- [ ] Optimizer-managed config boundaries stay explicit and rollback-friendly.
-- [ ] All Phase 4b tasks remain blocked until the behavioral suite and 2+ compatible corpus families exist.
+- [x] Every task remains mapped to an optimizer requirement and concrete file set.
+- [x] Replay determinism is verified before any promotion logic is considered complete.
+- [x] Promotion remains advisory-only unless baseline improvement and prerequisite replay plus behavioral gates both exist and pass.
+- [x] Optimizer-managed config boundaries stay explicit and rollback-friendly.
+- [x] All Phase 4b tasks remain blocked until the behavioral suite and 2+ compatible corpus families exist.
 <!-- /ANCHOR:completion -->
 
 ---

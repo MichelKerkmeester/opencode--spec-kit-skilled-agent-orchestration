@@ -51,15 +51,15 @@ The ordering is deliberate. Optional orchestration features should not land unti
 
 ### Definition of Done
 
-- [ ] Stop-reason taxonomy and legal done-gate design are applied consistently to both deep-loop products.
-- [ ] Agent instruction field names, reducer ownership boundaries, and strategy-edit expectations are normalized before broader runtime work begins.
-- [ ] Resume/start-from-run semantics are documented across commands, workflows, state contracts, and agents.
-- [ ] Journals, dashboards, observability surfaces, and claim-ledger artifacts are defined and behavior-tested where applicable.
-- [ ] Snapshot/compaction, replay validation, and large-target decomposition rules are designed before optional advanced modes begin.
-- [ ] Semantic convergence and reducer-owned machine-section boundaries are documented across both loop products.
-- [ ] Research-quality add-ons are designed without bloating default execution.
-- [ ] Council synthesis and coordination-board features remain explicit opt-ins.
-- [ ] Contract, reducer, and behavior test plans are updated with concrete file-level targets.
+- [x] Stop-reason taxonomy and legal done-gate design are applied consistently to both deep-loop products.
+- [x] Agent instruction field names, reducer ownership boundaries, and strategy-edit expectations are normalized before broader runtime work begins.
+- [x] Resume/start-from-run semantics are documented across commands, workflows, state contracts, and agents.
+- [x] Journals, dashboards, observability surfaces, and claim-ledger artifacts are defined and behavior-tested where applicable.
+- [x] Snapshot/compaction, replay validation, and large-target decomposition rules are designed before optional advanced modes begin.
+- [x] Semantic convergence and reducer-owned machine-section boundaries are documented across both loop products.
+- [x] Research-quality add-ons are designed without bloating default execution.
+- [x] Council synthesis and coordination-board features remain explicit opt-ins.
+- [x] Contract, reducer, and behavior test plans are updated with concrete file-level targets.
 
 <!-- /ANCHOR:quality-gates -->
 ---

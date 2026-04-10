@@ -34,12 +34,12 @@ This parent packet now serves as the coordination overview for four child implem
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Phased planning complete; implementation not started |
+| **Status** | Implemented |
 | **Created** | 2026-04-10 |
 | **Branch** | `042-sk-deep-research-review-improvement-2` |
 | **Dependencies** | Consolidated research packet; child phase folders `001`-`004`; existing deep-loop assets, YAML workflows, reducers, and tests |
 | **Predecessor** | Related background packets: `028-auto-deep-research-review-improvement`, `040-sk-auto-deep-research-review-improvement` |
-| **Successor** | Implementation proceeds through child phases `001` -> `004` |
+| **Successor** | All child phases `001` -> `004` implemented; Phase 4b deferred |
 
 ---
 
@@ -86,10 +86,10 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 
 | Phase | Folder | Focus | Status | Primary Dependency |
 |-------|--------|-------|--------|--------------------|
-| **1** | [./001-runtime-truth-foundation/](./001-runtime-truth-foundation/) | Stop reasons, legal stop, blocked-stop persistence, resume lineage, journals, observability, parity/test groundwork | Draft / Pending | None |
-| **2** | [./002-semantic-coverage-graph/](./002-semantic-coverage-graph/) | Coverage graph reuse, dedicated SQLite store, MCP tools, reducer/MCP seam, graph-aware convergence | Draft / Pending | Phase 1 |
-| **3** | [./003-wave-executor/](./003-wave-executor/) | Fan-out/join proof, deterministic segmentation, activation gates, reducer-owned board, keyed merge | Draft / Pending | Phases 1-2 |
-| **4** | [./004-offline-loop-optimizer/](./004-offline-loop-optimizer/) | `4a` deterministic config optimizer now; `4b` prompt/meta optimizer deferred | Draft / Pending | Phases 1-3 |
+| **1** | [./001-runtime-truth-foundation/](./001-runtime-truth-foundation/) | Stop reasons, legal stop, blocked-stop persistence, resume lineage, journals, observability, parity/test groundwork | Implemented | None |
+| **2** | [./002-semantic-coverage-graph/](./002-semantic-coverage-graph/) | Coverage graph reuse, dedicated SQLite store, MCP tools, reducer/MCP seam, graph-aware convergence | Implemented | Phase 1 |
+| **3** | [./003-wave-executor/](./003-wave-executor/) | Fan-out/join proof, deterministic segmentation, activation gates, reducer-owned board, keyed merge | Implemented | Phases 1-2 |
+| **4** | [./004-offline-loop-optimizer/](./004-offline-loop-optimizer/) | `4a` deterministic config optimizer now; `4b` prompt/meta optimizer deferred | Implemented (4a); Deferred (4b) | Phases 1-3 |
 <!-- /ANCHOR:scope -->
 
 ---

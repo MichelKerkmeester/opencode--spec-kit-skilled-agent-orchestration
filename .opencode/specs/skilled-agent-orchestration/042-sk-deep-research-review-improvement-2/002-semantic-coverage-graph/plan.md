@@ -59,14 +59,14 @@ This phase is a concrete build plan, not a moonshot placeholder. We already know
 
 ### Definition of Done
 
-- [ ] Shared coverage-graph helper files exist and clearly own the reused graph behavior.
-- [ ] `deep-loop-graph.sqlite` schema and snapshot persistence are implemented through the named MCP server files.
-- [ ] All four phase-critical `deep_loop_graph_*` tools are wired through handlers and `tool-schemas.ts`.
-- [ ] The reducer/MCP contract is defined explicitly, including payload shape, authority order, latency budget, and replay behavior.
-- [ ] `reduce-state.cjs` ingests `graphEvents`, performs MCP upsert/convergence when available, recalibrates inherited weights for coverage semantics, and preserves local fallback behavior.
-- [ ] Deep-research and deep-review references and agent prompts document graph event emission and graph-aware convergence.
-- [ ] The five named test files cover core logic, signals, convergence, DB behavior, and tool behavior.
-- [ ] `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <phase-path> --strict` passes for the phase folder.
+- [x] Shared coverage-graph helper files exist and clearly own the reused graph behavior.
+- [x] `deep-loop-graph.sqlite` schema and snapshot persistence are implemented through the named MCP server files.
+- [x] All four phase-critical `deep_loop_graph_*` tools are wired through handlers and `tool-schemas.ts`.
+- [x] The reducer/MCP contract is defined explicitly, including payload shape, authority order, latency budget, and replay behavior.
+- [x] `reduce-state.cjs` ingests `graphEvents`, performs MCP upsert/convergence when available, recalibrates inherited weights for coverage semantics, and preserves local fallback behavior.
+- [x] Deep-research and deep-review references and agent prompts document graph event emission and graph-aware convergence.
+- [x] The five named test files cover core logic, signals, convergence, DB behavior, and tool behavior.
+- [x] `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <phase-path> --strict` passes for the phase folder.
 <!-- /ANCHOR:quality-gates -->
 
 ---

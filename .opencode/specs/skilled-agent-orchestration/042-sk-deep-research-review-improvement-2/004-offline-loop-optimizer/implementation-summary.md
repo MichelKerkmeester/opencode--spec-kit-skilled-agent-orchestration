@@ -1,19 +1,19 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: Offline Loop Optimizer [042.004]"
+description: "Phase 4a: offline replay optimizer with deterministic config tuning, advisory promotion gate, and full audit trail. Phase 4b prompt/meta optimization remains deferred."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "042.004"
+  - "implementation summary"
+  - "offline loop optimizer"
+  - "replay corpus"
+  - "advisory promotion"
+importance_tier: "important"
+contextType: "planning"
 ---
-# Implementation Summary
+# Implementation Summary: Offline Loop Optimizer
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,9 +22,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer |
+| **Completed** | 2026-04-10 (Phase 4a); Phase 4b deferred |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,28 +32,31 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+Deep-loop configs can now be tuned offline against real packet traces without experimenting live in production. Phase 4a delivers a complete compile/evaluate loop: harvest traces, score them with a rubric, search bounded deterministic config space, replay candidates, and emit advisory candidate patches with a full audit trail.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Replay Corpus
 
-### [Feature Name]
+The `040` replay corpus extractor harvests real traces from packet family `040` as the required corpus. Packet family `028` is supported as an optional compatibility-graded holdout. Packet family `042` is explicitly excluded until implementation traces exist. The corpus includes structured JSONL artifacts with iteration metadata, convergence signals, and stop decisions.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Quality Rubric
 
-### Files Changed
+A multi-dimensional rubric scores convergence efficiency, recovery success rate, finding accuracy, and synthesis quality. Each dimension produces a normalized score that feeds into the search and promotion stages.
 
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
+### Deterministic Replay Runner
 
-| File | Action | Purpose |
-|------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+The replay runner executes baseline and candidate configs against the same corpus traces deterministically. Replay results are comparable across runs because the runner controls all non-deterministic inputs.
+
+### Random-Search Config Optimizer
+
+The search module generates candidate configs by perturbing bounded deterministic numeric fields within the optimizer-managed config surface. Only fields declared tunable in the optimizer manifest are eligible for mutation. Locked contract fields and future prompt-pack entrypoints are explicitly excluded.
+
+### Audit Trail
+
+Every optimization run produces durable audit output covering both accepted and rejected candidates. Advisory patch artifacts include the candidate config diff, rubric scores, replay comparison, and a human-readable recommendation. Rejected candidates are preserved with the same audit detail.
+
+### Advisory-Only Promotion Gate
+
+The promotion gate refuses production mutation until replay fixtures and behavioral suites exist. All current outputs are advisory-only candidate patches that require human review before any canonical config is changed.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +64,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+Implementation proceeded through 3 sub-phases: corpus/rubric/replay foundation, search/audit/manifest, and advisory promotion gate. 20 files were touched (14 new), adding approximately 3,800 lines. 91 tests cover corpus extraction, rubric scoring, replay determinism, search boundaries, audit persistence, and promotion gate behavior.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +72,13 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Deterministic `4a` now, `4b` deferred | Safe near-term scope is narrower than originally drafted; prompt/meta optimization needs replay fixtures and behavioral suites first |
+| Advisory-only promotion until prerequisites exist | Prevents unsafe live mutation from an optimizer that lacks production-grade replay validation |
+| Optimizer manifest separates tunable vs locked fields | Config governance prevents optimizer from mutating runtime contracts or non-numeric surfaces |
+| `040` as required corpus, `028` as optional holdout | `040` has real implementation traces; `028` has older compatibility-graded data |
+| Prompt work via packs/patches, not direct agent markdown edits | Keeps prompt changes replayable, rollback-safe, and auditable |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +86,15 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| Replay corpus extraction from `040` traces | PASS (91 tests) |
+| Quality rubric multi-dimensional scoring | PASS |
+| Deterministic replay produces comparable results | PASS |
+| Search stays within optimizer-managed config boundaries | PASS |
+| Audit trail preserves accepted and rejected candidates | PASS |
+| Advisory-only promotion gate refuses production mutation | PASS |
+| Phase 4b tasks remain blocked with explicit prerequisites | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +102,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **Phase 4b is deferred.** Prompt-pack generation, cross-packet meta-learning, and automatic promotion remain blocked until behavioral test suites and 2+ compatible corpus families exist.
+2. **Advisory-only outputs require human review.** No candidate config change is applied to production without manual approval.
+3. **Corpus is limited to `040` family.** Broader corpus coverage from additional packet families will improve optimizer confidence.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

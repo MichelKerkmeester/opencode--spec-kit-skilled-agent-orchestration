@@ -41,7 +41,7 @@ This phase scales deep research and deep review by adding orchestrator-managed w
 
 ### Definition of Ready
 
-- [ ] Workflow fan-out/join capability is proven or an engine-extension path is chosen.
+- [x] Workflow fan-out/join capability is proven or an engine-extension path is chosen.
 - [x] Phase 002 graph convergence is identified as the convergence authority for segments.
 - [x] The LEAF-worker rule is fixed and non-negotiable.
 - [x] Large-target triggers are defined for review and research.
@@ -49,13 +49,13 @@ This phase scales deep research and deep review by adding orchestrator-managed w
 
 ### Definition of Done
 
-- [ ] Deterministic segment planning exists for both review files and research domains.
-- [ ] `hotspot-inventory.json` and `domain-ledger.json` are defined as mandatory prepass artifacts.
-- [ ] Wave lifecycle ownership is explicit at the orchestrator or workflow layer.
-- [ ] Coordination-board state is documented as reducer-owned `board.json` with derived `dashboard.md`.
-- [ ] Merge behavior preserves provenance, conflict metadata, and explicit keyed identity.
-- [ ] Wave mode remains bounded to large targets and does not replace the default path.
-- [ ] Tests prove planner determinism, lifecycle correctness, merge idempotence, and resume behavior.
+- [x] Deterministic segment planning exists for both review files and research domains.
+- [x] `hotspot-inventory.json` and `domain-ledger.json` are defined as mandatory prepass artifacts.
+- [x] Wave lifecycle ownership is explicit at the orchestrator or workflow layer.
+- [x] Coordination-board state is documented as reducer-owned `board.json` with derived `dashboard.md`.
+- [x] Merge behavior preserves provenance, conflict metadata, and explicit keyed identity.
+- [x] Wave mode remains bounded to large targets and does not replace the default path.
+- [x] Tests prove planner determinism, lifecycle correctness, merge idempotence, and resume behavior.
 <!-- /ANCHOR:quality-gates -->
 
 ---

@@ -23,7 +23,7 @@ contextType: "planning"
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-10 |
 | **Deciders** | Packet 042 planning author |
 
@@ -45,16 +45,16 @@ Use the parent `decision-record.md` as an index. Detailed ADR prose stays in the
 
 | ADR | Title | Status | Phase Folder | Source |
 |-----|-------|--------|--------------|--------|
-| **ADR-001** | Shared Stop-Reason Taxonomy and Legal Done Gate | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-002** | Claim-Verification Ledger Uses JSONL Canonical Storage With Rendered Summaries | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-003** | Dashboards Stay Generated Markdown, Backed by Structured Metrics | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-004** | Council Synthesis Is Opt-In and Lives Inside Deep Research | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-005** | Coordination Board State Is Packet-Local and Structured | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-006** | Reducer Snapshot and Compaction Strategy | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-007** | Behavioral Testing Moves Forward in the Delivery Order | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-008** | Semantic Convergence Uses a Typed Decision Trace | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-009** | Recovery Uses a Five-Tier Ladder With Provenance | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
-| **ADR-010** | Journals and Ledgers Stay Separate Packet-Local Append-Only Artifacts | Proposed | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-001** | Shared Stop-Reason Taxonomy and Legal Done Gate | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-002** | Claim-Verification Ledger Uses JSONL Canonical Storage With Rendered Summaries | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-003** | Dashboards Stay Generated Markdown, Backed by Structured Metrics | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-004** | Council Synthesis Is Opt-In and Lives Inside Deep Research | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-005** | Coordination Board State Is Packet-Local and Structured | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-006** | Reducer Snapshot and Compaction Strategy | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-007** | Behavioral Testing Moves Forward in the Delivery Order | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-008** | Semantic Convergence Uses a Typed Decision Trace | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-009** | Recovery Uses a Five-Tier Ladder With Provenance | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
+| **ADR-010** | Journals and Ledgers Stay Separate Packet-Local Append-Only Artifacts | Accepted | `001-runtime-truth-foundation` | [./001-runtime-truth-foundation/decision-record.md](./001-runtime-truth-foundation/decision-record.md) |
 
 ### Inline Architecture Decisions By Phase
 

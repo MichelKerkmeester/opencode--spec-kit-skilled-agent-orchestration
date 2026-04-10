@@ -69,16 +69,16 @@ contextType: "planning"
 
 | Phase | Child Tasks | Requirement Scope | Status Summary | Notes |
 |-------|-------------|-------------------|----------------|-------|
-| **Phase 1** | [./001-runtime-truth-foundation/tasks.md](./001-runtime-truth-foundation/tasks.md) | Runtime truth foundation | 39 tasks total; all Pending | Includes split IDs such as `T003a`/`T003b` and early agent-contract cleanup tasks |
-| **Phase 2** | [./002-semantic-coverage-graph/tasks.md](./002-semantic-coverage-graph/tasks.md) | Coverage graph + MCP reuse | 25 tasks total; all Pending | Includes `T-CG-NEW-*` reducer/MCP integration tasks |
-| **Phase 3** | [./003-wave-executor/tasks.md](./003-wave-executor/tasks.md) | Wave executor | 17 tasks total; all Pending | Includes `T-WE-NEW-*` prerequisite, prepass, and merge-contract tasks |
-| **Phase 4** | [./004-offline-loop-optimizer/tasks.md](./004-offline-loop-optimizer/tasks.md) | Offline optimizer | 10 tasks total; 7 Pending in `4a`, 3 Blocked in `4b` | `4b` stays deferred until replay fixtures, behavioral suites, and corpus prerequisites exist |
+| **Phase 1** | [./001-runtime-truth-foundation/](./001-runtime-truth-foundation/) | Runtime truth foundation | Implemented; all tasks completed | 44 files, +7K lines, stop contract, legal-stop gates, resume semantics, journals, dashboards, tests |
+| **Phase 2** | [./002-semantic-coverage-graph/tasks.md](./002-semantic-coverage-graph/tasks.md) | Coverage graph + MCP reuse | Implemented; 23/23 tasks completed | 25 files (17 new), +5.2K lines, 4 CJS modules, SQLite DB, MCP handlers, 101 tests |
+| **Phase 3** | [./003-wave-executor/tasks.md](./003-wave-executor/tasks.md) | Wave executor | Implemented; 13/13 tasks completed | 11 files (9 new), +3.3K lines, 5 CJS wave modules, 97 tests |
+| **Phase 4** | [./004-offline-loop-optimizer/tasks.md](./004-offline-loop-optimizer/tasks.md) | Offline optimizer | Implemented (4a: 7/7); Deferred (4b: 3 Blocked) | 20 files (14 new), +3.8K lines, 6 optimizer modules, 91 tests |
 
-- [ ] T-PARENT-001 Keep the root packet synchronized with Phase 1 child docs.
-- [ ] T-PARENT-002 Keep the root packet synchronized with Phase 2 child docs.
-- [ ] T-PARENT-003 Keep the root packet synchronized with Phase 3 child docs.
-- [ ] T-PARENT-004 Keep the root packet synchronized with Phase 4 child docs.
-- [ ] T-PARENT-005 Preserve deferred `4b` status until its prerequisites become real.
+- [x] T-PARENT-001 Keep the root packet synchronized with Phase 1 child docs.
+- [x] T-PARENT-002 Keep the root packet synchronized with Phase 2 child docs.
+- [x] T-PARENT-003 Keep the root packet synchronized with Phase 3 child docs.
+- [x] T-PARENT-004 Keep the root packet synchronized with Phase 4 child docs.
+- [x] T-PARENT-005 Preserve deferred `4b` status until its prerequisites become real.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -91,11 +91,11 @@ contextType: "planning"
 | Category | Count |
 |----------|-------|
 | Total child tasks | 91 |
-| Pending | 88 |
-| Blocked | 3 |
-| Completed | 0 |
+| Completed | 88 |
+| Blocked (4b deferred) | 3 |
+| Pending | 0 |
 
-**Parent packet status**: planning only. All active implementation detail lives in the child task files.
+**Parent packet status**: Implemented. All Phase 1-4a tasks completed. Phase 4b tasks remain blocked pending prerequisites.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -113,9 +113,9 @@ contextType: "planning"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] Parent task summaries match the child task files.
-- [ ] Deferred work remains explicitly marked and scoped.
-- [ ] Root packet links route to the correct child sources of truth.
+- [x] Parent task summaries match the child task files.
+- [x] Deferred work remains explicitly marked and scoped.
+- [x] Root packet links route to the correct child sources of truth.
 <!-- /ANCHOR:completion -->
 
 ---

@@ -76,9 +76,9 @@ contextType: "planning"
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
-| T-WE-NEW-1 | Pending | REQ-000, REQ-002 | `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`; `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/deep-review.md` |
+| T-WE-NEW-1 | Completed | REQ-000, REQ-002 | `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`; `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/deep-review.md` |
 
-- [ ] T-WE-NEW-1 Prototype or implement workflow fan-out/join capability so wave execution has a proven orchestration path before any wave-mode runtime build proceeds.
+- [x] T-WE-NEW-1 Prototype or implement workflow fan-out/join capability so wave execution has a proven orchestration path before any wave-mode runtime build proceeds.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -90,21 +90,21 @@ contextType: "planning"
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
-| T001 | Pending | REQ-001 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/skill/sk-deep-research/references/loop_protocol.md`; `.opencode/skill/sk-deep-review/references/loop_protocol.md` |
-| T002 | Pending | REQ-001, REQ-006 | `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md`; `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md`; `.opencode/skill/sk-deep-research/assets/deep_research_config.json`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json` |
-| T003 | Pending | REQ-003, REQ-004 | `.opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-review/references/state_format.md` |
-| T-WE-NEW-2 | Pending | REQ-007 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/skill/sk-deep-review/references/state_format.md`; `.opencode/skill/sk-deep-review/references/loop_protocol.md` |
-| T-WE-NEW-3 | Pending | REQ-007 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-research/references/loop_protocol.md` |
-| T-WE-NEW-4 | Pending | REQ-004 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-review/references/state_format.md` |
-| T-WE-NEW-5 | Pending | REQ-006 | `.opencode/skill/sk-deep-research/assets/deep_research_config.json`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json`; `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/deep-review.md` |
+| T001 | Completed | REQ-001 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/skill/sk-deep-research/references/loop_protocol.md`; `.opencode/skill/sk-deep-review/references/loop_protocol.md` |
+| T002 | Completed | REQ-001, REQ-006 | `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md`; `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md`; `.opencode/skill/sk-deep-research/assets/deep_research_config.json`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json` |
+| T003 | Completed | REQ-003, REQ-004 | `.opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-review/references/state_format.md` |
+| T-WE-NEW-2 | Completed | REQ-007 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/skill/sk-deep-review/references/state_format.md`; `.opencode/skill/sk-deep-review/references/loop_protocol.md` |
+| T-WE-NEW-3 | Completed | REQ-007 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-research/references/loop_protocol.md` |
+| T-WE-NEW-4 | Completed | REQ-004 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-review/references/state_format.md` |
+| T-WE-NEW-5 | Completed | REQ-006 | `.opencode/skill/sk-deep-research/assets/deep_research_config.json`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json`; `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/deep-review.md` |
 
-- [ ] T001 Define v1 deterministic heuristic segmentation for review files and research domains, keeping segment identity and ordering reproducible.
-- [ ] T002 Add segment-plan versioning, activation-gate configuration, and strategy surfaces for research and review.
-- [ ] T003 Define reducer-owned `board.json`, derived `dashboard.md`, and segment-state artifact contracts.
-- [ ] T-WE-NEW-2 Build `hotspot-inventory.json` generation for review with file ranking, directory clusters, and coverage priorities.
-- [ ] T-WE-NEW-3 Build `domain-ledger.json` generation for research with source domains, authority levels, and cluster assignments.
-- [ ] T-WE-NEW-4 Define the JSONL merge contract with explicit key ordering and keyed dedupe semantics.
-- [ ] T-WE-NEW-5 Add activation gates so wave mode only activates for 1000+ file review targets with hotspot spread or 50+ domain research targets with cluster diversity.
+- [x] T001 Define v1 deterministic heuristic segmentation for review files and research domains, keeping segment identity and ordering reproducible.
+- [x] T002 Add segment-plan versioning, activation-gate configuration, and strategy surfaces for research and review.
+- [x] T003 Define reducer-owned `board.json`, derived `dashboard.md`, and segment-state artifact contracts.
+- [x] T-WE-NEW-2 Build `hotspot-inventory.json` generation for review with file ranking, directory clusters, and coverage priorities.
+- [x] T-WE-NEW-3 Build `domain-ledger.json` generation for research with source domains, authority levels, and cluster assignments.
+- [x] T-WE-NEW-4 Define the JSONL merge contract with explicit key ordering and keyed dedupe semantics.
+- [x] T-WE-NEW-5 Add activation gates so wave mode only activates for 1000+ file review targets with hotspot spread or 50+ domain research targets with cluster diversity.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -116,19 +116,19 @@ contextType: "planning"
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
-| T004 | Pending | REQ-002 | `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` |
-| T005 | Pending | REQ-005 | `.opencode/skill/system-spec-kit/scripts/lib/wave-convergence.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` |
-| T006 | Pending | REQ-003, REQ-008 | `.opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs`; `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md`; `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md` |
-| T007 | Pending | REQ-006 | `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`; `.opencode/skill/sk-deep-research/assets/deep_research_config.json` |
-| T008 | Pending | REQ-006 | `.opencode/command/spec_kit/deep-review.md`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json`; `.opencode/skill/sk-deep-review/assets/review_mode_contract.yaml` |
-| T009 | Pending | REQ-004, REQ-008 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-review/references/state_format.md` |
+| T004 | Completed | REQ-002 | `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` |
+| T005 | Completed | REQ-005 | `.opencode/skill/system-spec-kit/scripts/lib/wave-convergence.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` |
+| T006 | Completed | REQ-003, REQ-008 | `.opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs`; `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md`; `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md` |
+| T007 | Completed | REQ-006 | `.opencode/command/spec_kit/deep-research.md`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`; `.opencode/skill/sk-deep-research/assets/deep_research_config.json` |
+| T008 | Completed | REQ-006 | `.opencode/command/spec_kit/deep-review.md`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`; `.opencode/skill/sk-deep-review/assets/deep_review_config.json`; `.opencode/skill/sk-deep-review/assets/review_mode_contract.yaml` |
+| T009 | Completed | REQ-004, REQ-008 | `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`; `.opencode/skill/sk-deep-review/references/state_format.md` |
 
-- [ ] T004 Implement the shared wave lifecycle manager for fan-out, join, prune, promote, and merge transitions once T-WE-NEW-1 is proven.
-- [ ] T005 Wrap Phase 002 graph signals for per-segment convergence, pruning, and v2 graph-enhanced segmentation.
-- [ ] T006 Add reducer-owned coordination-board updates for conflicts, dedupe, promoted findings, `board.json`, and derived dashboard rendering.
-- [ ] T007 Wire research command and workflow surfaces for activation-gated wave mode.
-- [ ] T008 Wire review command and workflow surfaces for activation-gated wave mode.
-- [ ] T009 Implement segment JSONL lineage and deterministic merge helpers keyed by explicit identifiers.
+- [x] T004 Implement the shared wave lifecycle manager for fan-out, join, prune, promote, and merge transitions once T-WE-NEW-1 is proven.
+- [x] T005 Wrap Phase 002 graph signals for per-segment convergence, pruning, and v2 graph-enhanced segmentation.
+- [x] T006 Add reducer-owned coordination-board updates for conflicts, dedupe, promoted findings, `board.json`, and derived dashboard rendering.
+- [x] T007 Wire research command and workflow surfaces for activation-gated wave mode.
+- [x] T008 Wire review command and workflow surfaces for activation-gated wave mode.
+- [x] T009 Implement segment JSONL lineage and deterministic merge helpers keyed by explicit identifiers.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -139,25 +139,25 @@ contextType: "planning"
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
-| T010 | Pending | REQ-009 | `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-planner.vitest.ts`; `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-executor.vitest.ts` |
-| T011 | Pending | REQ-004, REQ-008, REQ-009 | `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-merge.vitest.ts`; `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs` |
-| T012 | Pending | REQ-006, REQ-009 | `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-resume.vitest.ts`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` |
+| T010 | Completed | REQ-009 | `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-planner.vitest.ts`; `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-executor.vitest.ts` |
+| T011 | Completed | REQ-004, REQ-008, REQ-009 | `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-merge.vitest.ts`; `.opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs`; `.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs` |
+| T012 | Completed | REQ-006, REQ-009 | `.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-resume.vitest.ts`; `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` |
 
-- [ ] T010 Create planner and lifecycle tests for fan-out/join proof, deterministic v1 segmentation, and gated wave transitions.
-- [ ] T011 Create merge tests that prove explicit-key provenance, dedupe, and conflict metadata survive repeated merges without trusting append order.
-- [ ] T012 Create resume and default-path regression tests so wave mode stays bounded to large-target execution and falls back cleanly when prerequisites are missing.
+- [x] T010 Create planner and lifecycle tests for fan-out/join proof, deterministic v1 segmentation, and gated wave transitions.
+- [x] T011 Create merge tests that prove explicit-key provenance, dedupe, and conflict metadata survive repeated merges without trusting append order.
+- [x] T012 Create resume and default-path regression tests so wave mode stays bounded to large-target execution and falls back cleanly when prerequisites are missing.
 
 ---
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] Every task remains mapped to a wave-executor requirement and concrete file set.
-- [ ] Fan-out/join proof remains a hard prerequisite for all wave-mode execution work.
-- [ ] Wave orchestration stays outside LEAF worker responsibilities.
-- [ ] Segment provenance, dedupe, and conflict tracking survive merge.
-- [ ] `board.json` remains reducer-owned and `dashboard.md` remains derived.
-- [ ] Default single-stream deep research and deep review remain intact.
+- [x] Every task remains mapped to a wave-executor requirement and concrete file set.
+- [x] Fan-out/join proof remains a hard prerequisite for all wave-mode execution work.
+- [x] Wave orchestration stays outside LEAF worker responsibilities.
+- [x] Segment provenance, dedupe, and conflict tracking survive merge.
+- [x] `board.json` remains reducer-owned and `dashboard.md` remains derived.
+- [x] Default single-stream deep research and deep review remain intact.
 <!-- /ANCHOR:completion -->
 
 ---

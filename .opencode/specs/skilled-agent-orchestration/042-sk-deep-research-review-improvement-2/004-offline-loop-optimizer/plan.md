@@ -45,19 +45,19 @@ This phase now splits into two tracks. Phase 4a is the realistic near-term work:
 - [x] Packet family `040` is identified as the required real replay corpus.
 - [x] Packet family `028` is understood as an optional older holdout, not a required corpus family.
 - [x] Packet family `042` is planning-only and has no implementation traces yet.
-- [ ] Phase 001 replay fixtures exist for production-grade replay gating.
-- [ ] Phase 003 behavioral suites exist for non-advisory promotion.
+- [x] Phase 001 replay fixtures exist for production-grade replay gating.
+- [x] Phase 003 behavioral suites exist for non-advisory promotion.
 - [x] Optimizer-managed fields are treated as bounded config surfaces, not free-form mutation targets.
 
 ### Definition of Done
 
-- [ ] Replay corpus extraction is deterministic and traceable to source runs.
-- [ ] Rubric scoring exposes per-dimension outputs and clear weighting.
-- [ ] Search space is bounded, auditable, and mapped to named deterministic parameter families.
-- [ ] Replay runner can compare baseline and candidate configs without live execution.
-- [ ] Audit output exists for accepted and rejected candidates.
-- [ ] Optimizer manifest exists and clearly separates tunable fields, locked contract fields, and future prompt-pack entrypoints.
-- [ ] Promotion gate emits advisory-only outputs until replay fixtures and behavioral suites exist.
+- [x] Replay corpus extraction is deterministic and traceable to source runs.
+- [x] Rubric scoring exposes per-dimension outputs and clear weighting.
+- [x] Search space is bounded, auditable, and mapped to named deterministic parameter families.
+- [x] Replay runner can compare baseline and candidate configs without live execution.
+- [x] Audit output exists for accepted and rejected candidates.
+- [x] Optimizer manifest exists and clearly separates tunable fields, locked contract fields, and future prompt-pack entrypoints.
+- [x] Promotion gate emits advisory-only outputs until replay fixtures and behavioral suites exist.
 <!-- /ANCHOR:quality-gates -->
 
 ---
