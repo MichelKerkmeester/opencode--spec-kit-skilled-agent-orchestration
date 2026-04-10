@@ -1,6 +1,6 @@
 ---
 title: "Consolidated Cross-Phase Research Report — 999 Agentic System Upgrade"
-description: "Synthesis of 9 parallel deep-research phases (10 iterations each) investigating external agentic systems for system-spec-kit improvement opportunities. 19 must-have, 38 should-have, 14 nice-to-have findings aggregated after deduplicating 2 cross-phase overlaps."
+description: "Synthesis of 9 parallel deep-research phases (20 iterations each) investigating external agentic systems for system-spec-kit improvement opportunities. 145 raw actionable findings were consolidated into 71 deduplicated findings: 19 must-have, 38 should-have, and 14 nice-to-have."
 importance_tier: "critical"
 contextType: "research"
 ---
@@ -10,7 +10,7 @@ contextType: "research"
 ## 1. Executive Summary
 
 - Phases surveyed: 9 / 9
-- Total iterations executed: 90
+- Total iterations executed: 180
 - External repos researched:
   - `001-agent-lightning-main` — Microsoft Research agent-optimization framework centered on tracing, rewards, adapters, and trainer/store orchestration. [SOURCE: 001-agent-lightning-main/research/research.md:10-21]
   - `002-babysitter-main` — TypeScript process-as-code runtime with append-only journals, replay, harness discovery, and lifecycle hooks. [SOURCE: 002-babysitter-main/research/research.md:10-27]
@@ -21,16 +21,16 @@ contextType: "research"
   - `007-relay-main` — transport-first agent messaging system for multi-provider spawning, routing, readiness, and delivery semantics. [SOURCE: 007-relay-main/research/research.md:10-43]
   - `008-bmad-autonomous-development` — skill-packaged sprint/story orchestrator with staged execution, model tiering, and optional PR/CI follow-through. [SOURCE: 008-bmad-autonomous-development/research/research.md:10-46]
   - `009-xethryon` — OpenCode fork adding memory lifecycle hooks, reflection, git-aware continuity, autonomy toggles, and file-backed swarm artifacts. [SOURCE: 009-xethryon/research/research.md:10-33]
-- Total actionable findings before deduplication: 73
-  - Must-have: 19
-  - Should-have: 40
-  - Nice-to-have: 14
+- Total actionable findings before deduplication: 145
+  - Must-have: 38
+  - Should-have: 84
+  - Nice-to-have: 23
 - Total actionable findings after deduplication: 71
-  - Cross-phase duplicates merged: 2
-  - Merged overlaps:
-    - `004-F-003` + `006-F-003` into `CF-007`
-    - `005-F-008` + `008-F-007` into `CF-019`
-- Total rejected recommendations: 17
+  - Must-have: 19
+  - Should-have: 38
+  - Nice-to-have: 14
+  - Cross-phase overlaps merged: 74
+- Total rejected recommendations: 35 raw / 17 deduplicated
 - Total tokens consumed: ~2.4M
 - Synthesis note: blast radius, bundle boundaries, and adoption ordering below are synthesis judgments inferred from the phase reports plus current target-file verification in `.opencode/command/spec_kit/`, `.opencode/agent/`, `.opencode/skill/system-spec-kit/`, and sibling skill surfaces.
 
@@ -57,17 +57,101 @@ contextType: "research"
 
 | Phase | External repo | Iterations | Must | Should | Nice | Rejected | Headline finding |
 |-------|---------------|------------|------|--------|------|----------|------------------|
-| 001 | Agent Lightning | 10 | 1 | 5 | 1 | 3 | Deep-research and deep-review loops need richer operational metrics before more ambitious RL-style ideas. |
-| 002 | Babysitter | 10 | 2 | 6 | 1 | 1 | A runtime manifest plus machine-readable gate states is the clearest orchestration upgrade. |
-| 003 | Claude Code Mastery Starter Kit | 10 | 1 | 5 | 2 | 2 | Narrow Claude-only secret guardrails are a low-risk, high-value hook-layer addition. |
-| 004 | Get It Right | 10 | 5 | 4 | 0 | 1 | An opt-in retry controller should validate objectively before review and stay phase-scoped. |
-| 005 | Intellegix Code Agent Toolkit | 10 | 2 | 4 | 2 | 2 | Deep research needs a real completion gate, explicit stop taxonomy, and runtime-level tests. |
-| 006 | Ralph | 10 | 2 | 4 | 2 | 2 | Reliability improves upstream when tasks are one-window-sized and one-task-per-run is enforced. |
-| 007 | Relay | 10 | 3 | 4 | 2 | 1 | Delegation docs need shared event, provider, and coordination vocabularies before any live broker work. |
-| 008 | BMad Autonomous Development | 10 | 2 | 4 | 1 | 3 | Autonomous implementation should become a staged pipeline, and model tiers should stop treating every step as premium. |
-| 009 | Xethryon | 10 | 1 | 4 | 3 | 2 | Deep research should explicitly record whether external claims were verified, contradicted, or unresolved. |
+| 001 | Agent Lightning | 20 | 3 | 10 | 2 | 5 | Keep core governance, but simplify gate ceremony, validation structure, operator exposure, and deep-loop runtime state. |
+| 002 | Babysitter | 20 | 4 | 12 | 2 | 2 | Put workflow authority in executable runtime state: manifests, policy checkpoints, lighter session continuity, and one iteration engine. |
+| 003 | Claude Code Mastery Starter Kit | 20 | 3 | 10 | 3 | 4 | Split session digests from promoted memory, collapse validation toward executable invariants, and add thin Claude guardrails plus manifest-driven command packaging. |
+| 004 | Get It Right | 20 | 8 | 9 | 0 | 3 | Build an opt-in retry controller with fixed packet shape, objective attempt gates, and a shared loop kernel instead of extending `/spec_kit:implement` in place. |
+| 005 | Intellegix Code Agent Toolkit | 20 | 4 | 9 | 3 | 4 | Extract a first-class deep-loop controller, move automation truth into tests, and stop treating memory export as a loop primitive. |
+| 006 | Ralph | 20 | 4 | 9 | 4 | 3 | Separate execution-bridge continuity from archival memory and expose a lightweight workflow lane for narrow, one-task-at-a-time execution. |
+| 007 | Relay | 20 | 6 | 8 | 3 | 3 | Unify loop kernels, separate lightweight continuity from durable memory, and generate provider/delegation surfaces from canonical registries. |
+| 008 | BMad Autonomous Development | 20 | 4 | 9 | 1 | 6 | Introduce shared workflow profiles, staged autonomous implementation contracts, runtime-aware continuation, and a slimmer live deep-loop contract. |
+| 009 | Xethryon | 20 | 2 | 8 | 5 | 5 | Strengthen deep-research evidence discipline and bootstrap UX while keeping file-mediated loops and durable memory authority intact. |
 
-## 3. Aggregated Must-Have Findings
+## 3. Refactor / Pivot / Simplify Recommendations
+
+This is the highest-leverage synthesis section in the report. The cross-phase pattern is not "add every feature the external repos had." It is "keep the core governance substrate, but simplify the operator path and refactor which subsystems currently carry too much responsibility."
+
+### RPS-001 — Gate System And Operator Ceremony
+- **Combined verdict**: `PIVOT` the implementation model; `SIMPLIFY` the operator surface.
+- **Subsystem**: gate model, front-door command UX, operator setup flow.
+- **Phases converging**: `001`, `002`, `003`, `005`, `007`, `009`.
+- **Keep**: explicit scope binding, packet binding, and hard-stop safety semantics. [SOURCE: 001-agent-lightning-main/research/research.md:170-176] [SOURCE: 008-bmad-autonomous-development/research/research.md:177-189]
+- **Change**: store defaults once, expose simpler user modes or profiles, and move deterministic gate logic into manifests, runtime state, hooks, or sentinels where the runtime can actually enforce it. [SOURCE: 001-agent-lightning-main/research/research.md:142-148] [SOURCE: 002-babysitter-main/research/research.md:122-145] [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:141-164] [SOURCE: 007-relay-main/research/research.md:138-154]
+- **Synthesis**: The evidence does not support deleting Gate 3 or abandoning governance. It does support stopping the practice of teaching the full gate doctrine as the primary user-facing interface. The winning shape is runtime-owned policy plus a smaller mode/profile vocabulary.
+
+### RPS-002 — Memory System Boundary
+- **Combined verdict**: `REFACTOR`; do not `PIVOT` memory authority away from Spec Kit Memory.
+- **Subsystem**: session continuity, handover, durable memory save/index, reconsolidation.
+- **Phases converging**: `002`, `003`, `004`, `005`, `006`, `007`, `008`, `009`.
+- **Keep**: file-first, governed, durable semantic memory as the long-lived recall/audit substrate. [SOURCE: 001-agent-lightning-main/research/research.md:191-197] [SOURCE: 006-ralph-main/research/research.md:171-183] [SOURCE: 009-xethryon/research/research.md:225-235]
+- **Change**: split operational continuity from promoted memory, keep retry and loop-local state packet-local, and add lighter bridge artifacts for the next run or resume path. [SOURCE: 002-babysitter-main/research/research.md:128-139] [SOURCE: 003-claude-code-mastery-project-starter-kit-main/research/research.md:111-121] [SOURCE: 004-get-it-right-main/research/research.md:134-140] [SOURCE: 006-ralph-main/research/research.md:115-121] [SOURCE: 007-relay-main/research/research.md:126-136]
+- **Synthesis**: The cross-phase answer is not "replace memory." It is "stop asking the archival-memory pipeline to serve as a lightweight operational bridge." The memory platform stays; the continuity lane gets lighter and more explicit.
+
+### RPS-003 — Validation Pipeline
+- **Combined verdict**: `REFACTOR` and `SIMPLIFY`.
+- **Subsystem**: `validate.sh`, completion checks, workflow-level quality gates, automation test ownership.
+- **Phases converging**: `001`, `002`, `003`, `004`, `005`, `006`, `007`, `008`, `009`.
+- **Keep**: validation as an integrity and drift-prevention layer. [SOURCE: 008-bmad-autonomous-development/research/research.md:187-189] [SOURCE: 009-xethryon/research/research.md:233-235]
+- **Change**: break monolithic validation into narrower validator categories, shrink human-facing rule sprawl, move automation semantics into executable scenario/contract tests, and make objective task evidence the first-class proof for execution workflows. [SOURCE: 001-agent-lightning-main/research/research.md:128-140] [SOURCE: 002-babysitter-main/research/research.md:140-145] [SOURCE: 003-claude-code-mastery-project-starter-kit-main/research/research.md:129-145] [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:158-165] [SOURCE: 006-ralph-main/research/research.md:129-135] [SOURCE: 007-relay-main/research/research.md:144-149]
+- **Synthesis**: The research consistently rejects deleting validation, but it also consistently rejects leaving it as one expanding shell-centered authority. The stable target is a smaller invariant core, workflow-owned gates above it, and heavier use of behavior-first tests.
+
+### RPS-004 — Deep-Loop Infrastructure
+- **Combined verdict**: `REFACTOR`.
+- **Subsystem**: deep research, deep review, loop controllers, state/reducer contracts, continuation states.
+- **Phases converging**: `001`, `002`, `004`, `005`, `007`, `008`, `009`.
+- **Keep**: file-mediated, reducer-visible, fresh-context autonomous loops. [SOURCE: 004-get-it-right-main/research/research.md:162-167] [SOURCE: 009-xethryon/research/research.md:194-199]
+- **Change**: extract one shared loop kernel/controller, formalize stop reasons and resume/start-from semantics, add runtime-aware continuation states, and shrink the always-live contract to what is truly executable today. [SOURCE: 001-agent-lightning-main/research/research.md:135-140] [SOURCE: 002-babysitter-main/research/research.md:134-145] [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:133-140] [SOURCE: 007-relay-main/research/research.md:120-136] [SOURCE: 008-bmad-autonomous-development/research/research.md:119-131] [SOURCE: 008-bmad-autonomous-development/research/research.md:147-159]
+- **Synthesis**: Multiple phases reached the same conclusion independently: deep research and deep review should remain separate products, but they should stop behaving like separately owned lifecycle engines.
+
+### RPS-005 — Autonomous Implementation Flow
+- **Combined verdict**: `REFACTOR`; add a new narrow controller rather than inflating existing implementation flow.
+- **Subsystem**: `/spec_kit:implement`, retry/review loop, objective checks, staged execution.
+- **Phases converging**: `004`, `006`, `008`.
+- **Keep**: `/spec_kit:implement` as the general implementation workflow; durable packet docs at feature scope. [SOURCE: 004-get-it-right-main/research/research.md:194-196] [SOURCE: 004-get-it-right-main/research/research.md:220-220]
+- **Change**: add an opt-in retry controller or narrow execution lane, enforce one-task-sized work, gate retries on objective checks before semantic review, and introduce explicit stage contracts and resume points. [SOURCE: 004-get-it-right-main/research/research.md:113-140] [SOURCE: 006-ralph-main/research/research.md:50-63] [SOURCE: 008-bmad-autonomous-development/research/research.md:82-101]
+- **Synthesis**: The combined answer is not "make implement more general." It is "create a smaller, more controller-like execution mode for the cases where iterative autonomy actually helps."
+
+### RPS-006 — Spec-Folder Lifecycle And Levels
+- **Combined verdict**: mostly `KEEP`, with targeted `SIMPLIFY`.
+- **Subsystem**: Level 1/2/3+, phases, research packet shape, retry packet shape, lightweight working briefs.
+- **Phases converging**: `001`, `002`, `003`, `004`, `005`, `006`, `007`, `008`, `009`.
+- **Keep**: Level 1/2/3+ and phase overlay as the durable planning/governance model. [SOURCE: 001-agent-lightning-main/research/research.md:149-155] [SOURCE: 003-claude-code-mastery-project-starter-kit-main/research/research.md:161-163] [SOURCE: 007-relay-main/research/research.md:174-180] [SOURCE: 008-bmad-autonomous-development/research/research.md:179-181]
+- **Change**: formalize lighter packet profiles where the repo already behaves that way in practice, such as research-minimal or retry-fixed artifact sets, and add a sanctioned working-brief stage before full packet depth when appropriate. [SOURCE: 002-babysitter-main/research/research.md:116-121] [SOURCE: 003-claude-code-mastery-project-starter-kit-main/research/research.md:105-110] [SOURCE: 004-get-it-right-main/research/research.md:120-126] [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:117-123]
+- **Synthesis**: The phases repeatedly rejected replacing the level system. The actual recommendation is to stop forcing every workflow through the same apparent front-door abstraction even when the underlying governance model stays intact.
+
+### RPS-007 — Agent Architecture And Orchestration Policy
+- **Combined verdict**: `SIMPLIFY` and selective `REFACTOR`.
+- **Subsystem**: agent roster, orchestrator prompt, role-transition rules, workflow-local roles.
+- **Phases converging**: `001`, `002`, `004`, `005`, `006`, `007`, `008`, `009`.
+- **Keep**: specialist agents where they encode real domain contracts, especially research, review, docs, handover, and debug surfaces. [SOURCE: 002-babysitter-main/research/research.md:146-151] [SOURCE: 004-get-it-right-main/research/research.md:190-193]
+- **Change**: reduce exposed roster complexity for operators, move workflow-local protocol out of long-lived role taxonomy where possible, and split large orchestration prompts into prompt-plus-policy structures. [SOURCE: 001-agent-lightning-main/research/research.md:156-168] [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:149-156] [SOURCE: 006-ralph-main/research/research.md:122-128] [SOURCE: 008-bmad-autonomous-development/research/research.md:133-145] [SOURCE: 009-xethryon/research/research.md:138-143]
+- **Synthesis**: The stable pattern is "keep domain specialists, but stop exposing workflow history as permanent topology." A smaller reusable runtime core can coexist with a richer public specialist catalog.
+
+### RPS-008 — Command Surface, Docs, And Operator Front Door
+- **Combined verdict**: `SIMPLIFY`.
+- **Subsystem**: command README surfaces, provider docs, aliases/presets, generated docs, operator-facing bootstrap.
+- **Phases converging**: `001`, `003`, `005`, `006`, `007`, `008`, `009`.
+- **Keep**: modular internals and explicit command families as the maintainable source structure. [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:166-181] [SOURCE: 007-relay-main/research/research.md:156-166]
+- **Change**: generate more shared surfaces from canonical registries/manifests, present flatter mode/profile entrypoints, and reduce the amount of internal topology that leaks into human-facing docs. [SOURCE: 001-agent-lightning-main/research/research.md:121-126] [SOURCE: 003-claude-code-mastery-project-starter-kit-main/research/research.md:135-145] [SOURCE: 007-relay-main/research/research.md:150-166] [SOURCE: 008-bmad-autonomous-development/research/research.md:140-159] [SOURCE: 009-xethryon/research/research.md:201-213]
+- **Synthesis**: The user-facing story should become simpler even if the internals stay modular. Several phases independently concluded that the real problem is exposure and duplication, not missing commands.
+
+### RPS-009 — Research Schema And Evidence Discipline
+- **Combined verdict**: `REFACTOR`.
+- **Subsystem**: deep-research packet schema, publication criteria, evidence mapping, runtime-surface inventory.
+- **Phases converging**: `005`, `007`, `009`.
+- **Keep**: externalized-state deep research and evidence-backed research reports. [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:229-235] [SOURCE: 009-xethryon/research/research.md:194-199]
+- **Change**: require claim-status ledgers, verification-evidence maps, runtime-surface inventories, and explicit publication critique before synthesis is considered complete. [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:59-64] [SOURCE: 007-relay-main/research/research.md:100-105] [SOURCE: 009-xethryon/research/research.md:166-179]
+- **Synthesis**: This is one of the cleanest refactors in the wave because it improves research quality immediately without forcing broader runtime redesign.
+
+### RPS-010 — Extension Boundary And Future Domain Automation
+- **Combined verdict**: `PIVOT` new specialized automation out of core.
+- **Subsystem**: future sprint runners, batch schedulers, extension-specific coordinators.
+- **Phases converging**: `008`, with support from `004` and `007`.
+- **Keep**: `spec_kit` and `memory` as the stable substrate. [SOURCE: 008-bmad-autonomous-development/research/research.md:154-159]
+- **Change**: ship future BAD-like sprint automation, backlog scheduling, or domain coordinators as extension-layer modules that consume core primitives rather than expanding the core command/memory contracts again. [SOURCE: 004-get-it-right-main/research/research.md:104-110] [SOURCE: 008-bmad-autonomous-development/research/research.md:154-159] [SOURCE: 008-bmad-autonomous-development/research/research.md:250-251]
+- **Synthesis**: The cross-phase lesson is boundary discipline. Core Spec Kit should get cleaner and more stable; specialized orchestration should move outward, not inward.
+
+## 4. Aggregated Must-Have Findings
 
 ### CF-001 — Runtime Manifest And Resolver For Autonomous Workflows
 - **Origin phase(s)**: `002-F-007` (`iteration-007`)
@@ -278,7 +362,7 @@ contextType: "research"
 - **Evidence**: [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:101-106] [SOURCE: 008-bmad-autonomous-development/research/research.md:92-97]
 - **Risk / dependencies**: Best done alongside `CF-004` so new stop states and gates land with matching test coverage from day one.
 
-## 4. Aggregated Should-Have Findings
+## 5. Aggregated Should-Have Findings
 
 ### Convergence Theme S-001 — Loop Runtime Resilience And Auditability
 
@@ -656,7 +740,7 @@ contextType: "research"
 ### CF-042 — Append-Only Progress Artifact
 - **Origin phase(s)**: `006-F-005` (`iteration-004`)
 - **External source**: [SOURCE: 006-ralph-main/external/prompt.md:18-48]
-- **system-spec-kit target**: new template such as `.opencode/skill/system-spec-kit/templates/progress-log.md`
+- **system-spec-kit target**: new append-only progress-log template under `.opencode/skill/system-spec-kit/templates/`
 - **Change type**: new module
 - **Blast radius**: small
 - **Cross-phase convergence**: related to `CF-034` working briefs and `CF-020` event journaling, but scoped to human-readable progress continuity.
@@ -708,24 +792,24 @@ contextType: "research"
 - **Evidence**: [SOURCE: 009-xethryon/research/research.md:78-83] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:174-188]
 - **Risk / dependencies**: Needs a consistent producer contract so resumes do not mix incomparable synopsis formats.
 
-## 5. Nice-to-Have Findings (brief)
+## 6. Nice-to-Have Findings (brief)
 
 - `CF-058` / `001-F-005` — Keep a future-facing component registry idea in reserve for deep-loop drivers, but only if multiple reducers or evaluator backends actually appear. Target: `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`. [SOURCE: 001-agent-lightning-main/research/research.md:102-109]
 - `CF-059` / `002-F-006` — Pilot executable methodology packs for a few repeatable workflows after runtime enforcement work stabilizes. Target: `.opencode/skill/system-spec-kit/references/workflows/` plus future workflow-pack modules. [SOURCE: 002-babysitter-main/research/research.md:85-90]
 - `CF-060` / `003-F-003` — Add a compressed-brief convention, not token-marketing claims, to the quick-reference workflow surface. Target: `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md`. [SOURCE: 003-claude-code-mastery-project-starter-kit-main/research/research.md:64-68]
 - `CF-061` / `003-F-008` — Expose operator-facing observability as a read-only command surface instead of keeping telemetry mostly internal. Target: `.opencode/command/memory/manage.md`. [SOURCE: 003-claude-code-mastery-project-starter-kit-main/research/research.md:94-98]
-- `CF-062` / `005-F-006` — Offer an optional council-style synthesis profile when multiple model families are available, but keep it advanced-only. Target: `.opencode/command/spec_kit/deep-research.md`, `deep_research_strategy.md`, `templates/research.md`. [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:87-92]
+- `CF-062` / `005-F-006` — Offer an optional council-style synthesis profile when multiple model families are available, but keep it advanced-only. Target: `.opencode/command/spec_kit/deep-research.md`, `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md`, `.opencode/skill/system-spec-kit/templates/research.md`. [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:87-92]
 - `CF-063` / `005-F-007` — Adapt anti-overbuilding heuristics into planning or decision-record guidance without importing product-tier portfolio semantics. Target: new decision-record template guidance. [SOURCE: 005-intellegix-code-agent-toolkit-master/research/research.md:94-99]
 - `CF-064` / `006-F-007` — Prototype only a thin shell wrapper over existing validated commands; do not create a second runtime. Target: new `scripts/spec/fresh-loop.sh` prototype. [SOURCE: 006-ralph-main/research/research.md:92-97]
 - `CF-065` / `006-F-008` — Document Ralph-style execution as a complementary overlay, not a replacement for Spec Kit memory and lifecycle governance. Target: `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md`. [SOURCE: 006-ralph-main/research/research.md:99-104]
-- `CF-066` / `007-F-004` — If live coordination is ever prototyped, default it to the active spec/session boundary before allowing wider routing. Target: `resume.md`, `context-prime.md`, and future coordination modules. [SOURCE: 007-relay-main/research/research.md:65-69]
+- `CF-066` / `007-F-004` — If live coordination is ever prototyped, default it to the active spec/session boundary before allowing wider routing. Target: `.opencode/command/spec_kit/resume.md`, `.opencode/agent/context-prime.md`, and future coordination modules. [SOURCE: 007-relay-main/research/research.md:65-69]
 - `CF-067` / `007-F-008` — Keep delivery-state and idle-state tracking on the roadmap, but only after glossary, readiness, and evidence rules exist. Target: future coordination modules. [SOURCE: 007-relay-main/research/research.md:89-93]
 - `CF-068` / `008-F-003` — Defer backlog-wide queue scheduling until a true sprint runner exists; it is above today’s implement responsibilities. Target: `.opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml`. [SOURCE: 008-bmad-autonomous-development/research/research.md:64-69]
 - `CF-069` / `009-F-006` — Prototype an additive project-orientation surface derived from packet artifacts, not a free-form repo-global memory replacement. Target: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`. [SOURCE: 009-xethryon/research/research.md:92-97]
 - `CF-070` / `009-F-007` — Add a small git snapshot to bootstrap/resume output so continuation choices are safer without always-on git prompt injection. Target: `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`. [SOURCE: 009-xethryon/research/research.md:99-104]
 - `CF-071` / `009-F-008` — Consider a reducer-owned packet-local coordination board for unusually high-scale agentic work instead of live mailbox IPC. Target: `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`. [SOURCE: 009-xethryon/research/research.md:106-111]
 
-## 6. Rejected Recommendations (brief)
+## 7. Rejected Recommendations (brief)
 
 - `001-R-001` — Do not merge live execution wrappers into the current hook system; the hook layer stays valuable by remaining focused on recovery and continuity. [SOURCE: 001-agent-lightning-main/research/research.md:131-135]
 - `001-R-002` — Do not turn canonical templates into runtime resource snapshots; template contracts are not RL-tunable resources. [SOURCE: 001-agent-lightning-main/research/research.md:137-141]
@@ -745,7 +829,7 @@ contextType: "research"
 - `009-R-001` — Do not port Xethryon’s default retrieval engine; Spec Kit Memory is already stronger and more governed. [SOURCE: 009-xethryon/research/research.md:115-117]
 - `009-R-002` — Do not add autonomous skill execution; it bypasses the explicit packet-binding and gate steps Spec Kit is designed to enforce. [SOURCE: 009-xethryon/research/research.md:119-121]
 
-## 7. Cross-Phase Themes
+## 8. Cross-Phase Themes
 
 ### Theme T-001 — Deterministic Loop Governance Beats Prompt-Only Governance
 - **Phases converging**: `002`, `003`, `005`, `009`
@@ -772,7 +856,7 @@ contextType: "research"
 - **Core insight**: some high-value guardrails are worth adding in one runtime first if the scope is clear and the user benefit is immediate.
 - **Combined adoption story**: `CF-006`, `CF-032`, `CF-035`, `CF-036`, and `CF-046` support a pragmatic pattern: land narrow runtime-specific safety and clarity improvements now, but do not mislabel them as universal enforcement until the cross-runtime manifest/gate work exists.
 
-## 8. Adoption Priority Queue
+## 9. Adoption Priority Queue
 
 ### Bundle B-001 — Runtime Manifest And Gate State Core
 - **Proposed packet name**: `002-runtime-manifest-and-gates`
@@ -830,7 +914,7 @@ contextType: "research"
 - **Estimated complexity**: Level 2
 - **First-step suggestion**: start in `.claude/settings.local.json`
 
-## 9. What the Research Did NOT Cover
+## 10. What the Research Did NOT Cover
 
 - **Out of scope in the research**:
   - non-Claude secret-guardrail implementations for Codex, Gemini, or Copilot runtimes
@@ -852,6 +936,6 @@ contextType: "research"
   - phases `005` and `009` both touch deep-research runtime quality; `005` should own loop-closeout/runtime-test semantics while `009` owns claim verification and memory-lifecycle critique.
   - phases `003`, `007`, and `005` all touch metadata-driven docs; the team should decide whether audience/provider metadata lives in command frontmatter, delegation references, or a shared registry.
 
-## 10. Recommended Next Step
+## 11. Recommended Next Step
 
 Plan `B-002` first, but start with only `CF-003` as the first implementation slice: add the claim-verification ledger to `.opencode/agent/deep-research.md`, then mirror it into the deep-research synthesis expectations. It is the smallest blast-radius must-have in the highest-value research-quality bundle, it directly reduces future external-research hallucination/drift risk, and it does not depend on runtime manifest or orchestration refactors before becoming useful.
