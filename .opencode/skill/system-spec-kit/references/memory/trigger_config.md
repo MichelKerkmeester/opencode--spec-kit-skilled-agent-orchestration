@@ -157,6 +157,24 @@ Beyond the default trigger phrases, the system recognizes expanded signal types 
 
 These signals are detected during `memory_match_triggers()` processing and influence save-time arbitration (prediction-error scoring) and correction tracking.
 
+### Trigger Sanitization (026 Remediation)
+
+Save-time trigger validation now applies sanitization rules to prevent low-quality triggers from degrading retrieval precision:
+
+| Rule | Behavior |
+|------|----------|
+| **Single-word filter** | Overly generic single-word triggers (e.g., "code", "fix", "error") are stripped during save-time validation to reduce false-positive surfacing |
+| **Duplicate detection** | Triggers that duplicate existing constitutional or high-importance memory triggers are flagged and removed |
+| **Length minimum** | Trigger phrases shorter than 3 characters are rejected |
+| **Stopword filter** | Common stopwords used alone as triggers are rejected |
+
+**Post-save quality review** checks trigger_phrases in the saved memory and reports HIGH-severity issues when triggers are overly broad or likely to cause false matches. The AI must patch these manually via Edit tool when flagged.
+
+**Filter behavior changes (026):**
+- `memory_match_triggers()` now applies a relevance threshold before returning matches, reducing noise from weak partial matches
+- Trigger matching respects importance tier: constitutional triggers always match, while normal-tier triggers require higher confidence scores
+- When multiple memories match the same trigger, results are deduplicated by content similarity (>=0.88 threshold)
+
 ---
 
 <!-- /ANCHOR:trigger-phrases -->

@@ -349,7 +349,7 @@ sed 's|//.*||' config.jsonc | python -m json.tool
 - [universal_checklist.md](./universal_checklist.md) - Language-agnostic checks
 
 ### Style Guide
-- [Config Style Guide](../config/style_guide.md)
+- [Config Style Guide](../../references/config/style_guide.md)
 
 ### External Resources
 - [JSON Specification](https://www.json.org/)

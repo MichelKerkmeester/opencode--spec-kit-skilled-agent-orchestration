@@ -1,13 +1,13 @@
 ---
 title: "Feature Specification: Deep Research and Deep Review Runtime Improvement Bundle [042]"
-description: "Plan the next improvement wave for sk-deep-research and sk-deep-review by turning the consolidated research findings into an implementation-ready Level 3 packet."
+description: "Parent overview for the phased implementation bundle that coordinates runtime truth, semantic coverage, wave execution, and offline optimization across child phases 001-004."
 trigger_phrases:
   - "042"
   - "deep research"
   - "deep review"
   - "runtime improvement"
-  - "claim verification ledger"
-  - "coordination board"
+  - "phase overview"
+  - "parent packet"
 importance_tier: "important"
 contextType: "planning"
 ---
@@ -20,11 +20,11 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-This packet converts the consolidated agentic-systems research into one implementation plan for the two autonomous deep-loop products: `sk-deep-research` and `sk-deep-review`. The work is centered on runtime truth, not feature sprawl: real stop reasons, legal completion gates, resume-from-run semantics, auditability, claim verification, behavior-first tests, and richer dashboards that make loop state easier to trust and resume.
+This parent packet now serves as the coordination overview for four child implementation phases. The bundle keeps the same core goal as the original packet: make `sk-deep-research` and `sk-deep-review` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown now live in dedicated child folders, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.
 
-**Key Decisions**: keep research and review as explicit products instead of collapsing them into a generic workflow DSL; make council synthesis and coordination-board support opt-in instead of default; treat journals, ledgers, and behavior tests as first-class runtime artifacts.
+**Key decisions**: keep runtime truth first, reuse existing graph infrastructure instead of building a separate platform, keep wave execution at the orchestrator layer instead of inside LEAF agents, and split the optimizer into active Phase 4a work plus deferred Phase 4b work.
 
-**Critical Dependencies**: consolidated research findings `CF-004`, `CF-010`, `CF-014`, `CF-021`, `CF-027`, and `CF-030`; existing deep-loop reducer and parity tests; packet-local, append-only state discipline.
+**Critical dependencies**: consolidated research findings `CF-004`, `CF-010`, `CF-014`, `CF-021`, `CF-027`, and `CF-030`; existing deep-loop reducer/parity surfaces; packet-local append-only state; the child phase plans under this packet.
 
 ---
 
@@ -34,12 +34,12 @@ This packet converts the consolidated agentic-systems research into one implemen
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Phased planning complete; implementation not started |
 | **Created** | 2026-04-10 |
 | **Branch** | `042-sk-deep-research-review-improvement-2` |
-| **Dependencies** | `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md`; current deep-loop assets, YAML workflows, reducer/tests |
+| **Dependencies** | Consolidated research packet; child phase folders `001`-`004`; existing deep-loop assets, YAML workflows, reducers, and tests |
 | **Predecessor** | Related background packets: `028-auto-deep-research-review-improvement`, `040-sk-auto-deep-research-review-improvement` |
-| **Successor** | Follow-on implementation phases to be created from this packet after planning approval |
+| **Successor** | Implementation proceeds through child phases `001` -> `004` |
 
 ---
 
@@ -48,15 +48,13 @@ This packet converts the consolidated agentic-systems research into one implemen
 
 ### Problem Statement
 
-The current deep-loop stack is functional, but it still treats "converged" as a mostly inferred state instead of a strongly explained runtime truth. Deep research and deep review already have JSONL state, dashboards, and reducer/parity coverage, yet the consolidated research shows clear gaps around stop-reason taxonomy, legal done gates, resume/start-from behavior, research claim verification, audit trails, richer dashboards, behavior-first test coverage, and large-run coordination.
-
-Those gaps matter because the two deep-loop products are long-running, artifact-heavy workflows. When they stop, resume, or synthesize, operators need to know exactly why the system behaved that way and which evidence backs the outcome. Without that, the runtime remains auditable only for people willing to reverse-engineer JSONL logs and reducer behavior by hand.
+The deep-loop stack still needs stronger runtime truth, better semantic coverage signals, bounded large-target orchestration, and safer offline tuning. The original parent packet described all of that in one place, but it is now stale because the work has been decomposed into four execution-ready child phases with their own specs, plans, and tasks.
 
 ### Purpose
 
-Define an implementation-ready plan that upgrades deep research and deep review into better-audited, better-tested, and easier-to-resume loop products while keeping their explicit LEAF-worker architecture and packet-local artifact model intact.
-
+Define the parent coordination layer for Packet 042: summarize the four-phase scope, show where detail now lives, and keep cross-phase requirements, milestones, risks, and open questions visible without duplicating the child packet contents.
 <!-- /ANCHOR:problem -->
+
 ---
 
 <!-- ANCHOR:scope -->
@@ -64,140 +62,76 @@ Define an implementation-ready plan that upgrades deep research and deep review 
 
 ### In Scope
 
-- Real completion-gate planning for both deep-loop products, including named stop reasons, binary done checks, and resume-from-run semantics.
-- Research-quality runtime artifacts: claim-verification ledger, publication critique, runtime-surface inventory, and promotion checkpoints.
-- Dashboard upgrades for both loops: liveness, convergence trends, timing/token visibility, coverage depth, and severity trends.
-- Append-only audit-journal planning for both loops.
-- Behavior-first automated verification planning for reducers, workflows, and loop outputs.
-- Optional, explicit advanced modes: council-style synthesis and packet-level coordination boards for large multi-phase research.
-- Shared loop-runtime surfaces under `scripts/` and current contract/parity tests that must move with these runtime changes.
+- Coordinate the four child phases that together deliver the runtime-improvement bundle.
+- Keep the parent packet focused on cross-phase scope, dependencies, milestones, and handoff criteria.
+- Provide a requirement-to-phase map so operators know where detailed implementation work lives.
+- Keep parent-level references to verification, ADRs, and task counts synchronized with the child folders.
 
 ### Out of Scope
 
-- Direct implementation of any skill, command, agent, reducer, or test changes.
-- Changes outside the deep-research/deep-review skill families, their commands, their agents, and shared loop runtime/test infrastructure.
-- Replacing research/review with a generic hidden workflow DSL. The consolidated report explicitly rejects that direction.
-- Broader operator-shell compression, guided bootstrap, or memory-platform redesign work from other research bundles unless it is directly required by the eight improvements in this packet.
-- A new `mcp_server/` implementation. No current `mcp_server/` surface was identified for these deep-loop products during packet discovery.
+- Repeating detailed per-file implementation plans already documented in the child folders.
+- Repeating child-level edge cases, acceptance scenarios, or task prose in the parent docs.
+- Introducing new implementation scope beyond the four existing child phases.
 
-### Files to Change
+### Files to Change Summary
 
-#### Skills and Shared Runtime
+| Phase | Focus | Primary File Families |
+|-------|-------|-----------------------|
+| **Phase 1** | Runtime truth foundation | Deep-loop skills, references, commands, workflow YAML, agents, reducer/parity/behavior tests |
+| **Phase 2** | Semantic coverage graph | Shared graph libraries, Spec Kit Memory MCP server, reducer integration, graph tests, agent/reference updates |
+| **Phase 3** | Wave executor | Orchestration helpers, wave-aware contracts, workflow updates, merge/resume tests |
+| **Phase 4** | Offline optimizer | Optimizer scripts, replay fixtures, config boundaries, promotion gate, offline maintenance docs |
 
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.opencode/skill/sk-deep-research/SKILL.md` | Modify | Add the new completion-gate contract, ledger/journal behavior, optional council mode, and updated testing/runtime expectations. |
-| `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Modify | Document legal stop flow, blocked-stop behavior, journal writes, and resume-from-run lifecycle steps. |
-| `.opencode/skill/sk-deep-research/references/convergence.md` | Modify | Define stop-reason taxonomy, binary done gate, liveness, and blocked-stop handling. |
-| `.opencode/skill/sk-deep-research/references/state_format.md` | Modify | Add fields and artifact contracts for stop reasons, journals, ledgers, time/token metrics, and coordination board data. |
-| `.opencode/skill/sk-deep-research/references/quick_reference.md` | Modify | Keep operator-facing guidance aligned with the new defaults and opt-in modes. |
-| `.opencode/skill/sk-deep-research/assets/deep_research_config.json` | Modify | Add lifecycle, journal, dashboard, and optional-mode configuration keys. |
-| `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md` | Modify | Add coverage/depth, promotion checkpoints, and council/coordination planning sections. |
-| `.opencode/skill/sk-deep-research/assets/deep_research_dashboard.md` | Modify | Expand dashboard sections for liveness, rolling convergence, timing/tokens, stop reason, and coverage depth. |
-| `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Modify | Extend reducer outputs for dashboard metrics, ledger rollups, journal rollups, and resume/stop metadata. |
-| `.opencode/skill/sk-deep-review/SKILL.md` | Modify | Add the real done-gate contract, journal behavior, richer dashboard expectations, and behavior-test posture. |
-| `.opencode/skill/sk-deep-review/references/loop_protocol.md` | Modify | Document legal stop flow, blocked-stop behavior, journal writes, and start-from-run semantics. |
-| `.opencode/skill/sk-deep-review/references/convergence.md` | Modify | Define stop-reason taxonomy, all-dimensions-clean semantics, liveness, and blocked-stop handling. |
-| `.opencode/skill/sk-deep-review/references/state_format.md` | Modify | Add fields and artifact contracts for stop reasons, journals, time/token metrics, and coverage depth. |
-| `.opencode/skill/sk-deep-review/references/quick_reference.md` | Modify | Keep operator-facing review guidance aligned with the new defaults and optional modes. |
-| `.opencode/skill/sk-deep-review/assets/review_mode_contract.yaml` | Modify | Make stop reasons, done-gate conditions, dashboard metrics, and audit-journal outputs canonical. |
-| `.opencode/skill/sk-deep-review/assets/deep_review_config.json` | Modify | Add lifecycle, journal, dashboard, and resume cursor fields. |
-| `.opencode/skill/sk-deep-review/assets/deep_review_strategy.md` | Modify | Add coverage-depth and journal-aware planning sections. |
-| `.opencode/skill/sk-deep-review/assets/deep_review_dashboard.md` | Modify | Expand dashboard sections for liveness, rolling severity trends, timing/tokens, stop reason, and coverage depth. |
+### Phase Documentation Map
 
-#### Commands and Workflow Assets
-
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.opencode/command/spec_kit/deep-research.md` | Modify | Update command contract, outputs, and mode descriptions to match the new runtime truths. |
-| `.opencode/command/spec_kit/deep-review.md` | Modify | Update command contract, outputs, and mode descriptions to match the new runtime truths. |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Modify | Add stop-gate, journal, ledger, dashboard, and resume-from-run workflow steps. |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Modify | Keep confirm-mode workflow aligned with the same runtime artifacts and optional advanced modes. |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | Modify | Add stop-gate, journal, dashboard, and resume-from-run workflow steps. |
-| `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | Modify | Keep confirm-mode workflow aligned with the same runtime artifacts and optional advanced modes. |
-
-#### Agents and Runtime Mirrors
-
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.opencode/agent/deep-research.md` | Modify | Update iteration instructions to emit the new journal, ledger, critique, inventory, and promotion-checkpoint data. |
-| `.opencode/agent/deep-review.md` | Modify | Update iteration instructions to emit the new journal, stop-reason, coverage-depth, and timing/tokens data. |
-| `.claude/agents/deep-research.md` | Modify | Runtime mirror parity if hand-authored mirrors remain the implementation mechanism. |
-| `.gemini/agents/deep-research.md` | Modify | Runtime mirror parity if hand-authored mirrors remain the implementation mechanism. |
-| `.codex/agents/deep-research.toml` | Modify | Runtime mirror parity if hand-authored mirrors remain the implementation mechanism. |
-| `.agents/agents/deep-research.md` | Modify | Runtime mirror parity if hand-authored mirrors remain the implementation mechanism. |
-| `.claude/agents/deep-review.md` | Modify | Runtime mirror parity if hand-authored mirrors remain the implementation mechanism. |
-| `.gemini/agents/deep-review.md` | Modify | Runtime mirror parity if hand-authored mirrors remain the implementation mechanism. |
-| `.codex/agents/deep-review.toml` | Modify | Runtime mirror parity if hand-authored mirrors remain the implementation mechanism. |
-
-#### Tests
-
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts` | Modify | Extend reducer coverage for journal, ledger, stop-reason, and dashboard metrics. |
-| `.opencode/skill/system-spec-kit/scripts/tests/deep-review-reducer-schema.vitest.ts` | Modify | Extend schema/contract coverage for stop reasons, journals, dashboard metrics, and resume cursor fields. |
-| `.opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts` | Modify | Keep docs, assets, reducers, and mirrors aligned on the new runtime artifacts and modes. |
-| `.opencode/skill/system-spec-kit/scripts/tests/deep-review-contract-parity.vitest.ts` | Modify | Keep docs, assets, reducers, and mirrors aligned on the new runtime artifacts and modes. |
-| `.opencode/skill/system-spec-kit/scripts/tests/deep-research-behavioral.vitest.ts` | Create | Add behavior-first tests for falsifiable focus, citations, conclusion confidence, convergence stop, and stop-reason persistence. |
-| `.opencode/skill/system-spec-kit/scripts/tests/deep-review-behavioral.vitest.ts` | Create | Add behavior-first tests for dimension rotation, citations, claim-adjudication gates, convergence stop, and stop-reason persistence. |
-
+| Phase | Folder | Focus | Status | Primary Dependency |
+|-------|--------|-------|--------|--------------------|
+| **1** | [./001-runtime-truth-foundation/](./001-runtime-truth-foundation/) | Stop reasons, legal stop, blocked-stop persistence, resume lineage, journals, observability, parity/test groundwork | Draft / Pending | None |
+| **2** | [./002-semantic-coverage-graph/](./002-semantic-coverage-graph/) | Coverage graph reuse, dedicated SQLite store, MCP tools, reducer/MCP seam, graph-aware convergence | Draft / Pending | Phase 1 |
+| **3** | [./003-wave-executor/](./003-wave-executor/) | Fan-out/join proof, deterministic segmentation, activation gates, reducer-owned board, keyed merge | Draft / Pending | Phases 1-2 |
+| **4** | [./004-offline-loop-optimizer/](./004-offline-loop-optimizer/) | `4a` deterministic config optimizer now; `4b` prompt/meta optimizer deferred | Draft / Pending | Phases 1-3 |
 <!-- /ANCHOR:scope -->
+
 ---
 
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-### P0 - Blockers (MUST complete)
-
-| ID | Requirement | Acceptance Criteria | Research Basis |
-|----|-------------|---------------------|----------------|
-| REQ-001 | Both deep-loop products MUST use a shared named stop-reason taxonomy: `max_iterations`, `converged`, `all_dimensions_clean`, `insufficient_evidence`, `user_stopped`, and `error_budget_exhausted`. | Deep research and deep review state docs, YAML workflows, dashboards, and synthesis outputs all expose `stopReason` from the shared taxonomy; any legacy stop labels are either removed or mapped into this taxonomy. | `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`] |
-| REQ-002 | Deep research and deep review MUST only stop when convergence math, coverage expectations, and binary quality gates all pass together. | If convergence math votes STOP but coverage or quality gates fail, the workflow records a blocked-stop event, leaves `status` non-terminal, and continues or requests recovery; STOP is never treated as legal based on novelty math alone. | `CF-004` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:102-111`], `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`] |
-| REQ-003 | Both loops MUST support resume semantics that can continue from an existing lineage and start at a specific iteration/run boundary instead of reinitializing from run 1. | Config/state/workflow contracts define and preserve resume cursor data such as `continuedFromRun` or equivalent; command surfaces describe how resume, restart, fork, and completed-continue interact with start-from-run behavior. | `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`] |
-| REQ-004 | Both loops MUST produce append-only audit journals that capture file reads, searches, evidence extraction, focus/dimension rotation decisions, and convergence-calculation inputs. | Runtime artifacts include a canonical journal file per session, it is append-only, reducer/dashboard flows can summarize it, and stop/recovery analysis can be reproduced from packet artifacts without hidden state. | `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`] |
-| REQ-005 | Deep research MUST create a claim-verification ledger for major claims with quoted claim text, evidence references, verification status, and verification method/actor. | Research packets define a canonical ledger artifact, synthesis references it, and claims can be marked `verified`, `contradicted`, or `unresolved` with file/line evidence or explicit unresolved status. | `CF-014` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:212-221`] |
-| REQ-006 | The implementation plan MUST shift loop confidence from structure-only checks to behavior-first tests that exercise narrow questions, evidence citations, conclusion confidence, convergence, and stop-reason persistence. | The planned test stack includes dedicated behavioral suites for deep research and deep review plus extensions to reducer/parity tests; passing behavior tests becomes part of the done gate for these runtime changes. | `CF-004` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:102-111`], `Theme T-005` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:404-406`] |
-
-### P1 - Required (complete OR user-approved deferral)
-
-| ID | Requirement | Acceptance Criteria | Research Basis |
-|----|-------------|---------------------|----------------|
-| REQ-007 | Both loop dashboards MUST expose richer runtime truth: liveness, rolling convergence visualization, wall-clock and token cost per iteration, coverage depth, severity trends, and final stop reason. | Research and review dashboard assets, reducers, and workflow outputs define these sections explicitly; dashboard content is generated, not manually maintained; trend and liveness rules are consistent with state schema. | `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`] |
-| REQ-008 | Deep research MUST support publication critique annotations so synthesis distinguishes verified runtime code, README claims, marketing copy, and other weaker evidence classes. | Research iteration/synthesis surfaces include an explicit evidence-quality or publication-critique field that can be summarized in the dashboard or final research output without becoming mandatory for every minor observation. | `CF-021` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:291-300`] |
-| REQ-009 | Deep research MUST support runtime-inventory and promotion-checkpoint artifacts so recommendations do not move to "adopt" without explicit evidence thresholds. | Research packet design includes runtime-surface inventory capture plus checkpoint criteria for moving a finding from interesting to recommended; the promotion threshold is visible in synthesis and the ledger/journal context. | `CF-021` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:291-300`] |
-| REQ-010 | Council-style synthesis MUST be supported as an explicit opt-in profile for ambiguous research or architecture questions. | The plan defines named perspective iterations and a synthesis reconciliation iteration; default deep-research behavior remains unchanged unless the user or workflow explicitly selects council mode. | `CF-027` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:359-359`] |
-| REQ-011 | Large multi-phase research runs MUST have an optional packet-local coordination board that tracks phase status, headline findings, conflicts, duplicate signals, and resource-allocation suggestions. | The plan defines a packet-local coordination artifact with explicit fields for state, conflicts, dedupe, and resource recommendations; default single-packet research remains unaffected when the board is unused. | `CF-030` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:362-362`] |
-| REQ-012 | Command docs and YAML assets MUST surface the new lifecycle and optional-mode behavior without bloating the default operator path. | Default command examples remain compact; advanced behaviors are discoverable but explicitly marked as optional; confirm and auto workflows stay contract-compatible. | `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`], `Theme T-006` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:408-411`] |
-| REQ-013 | Canonical skill/command/agent contracts and runtime parity tests MUST move together so new stop/journal/ledger/dashboard behavior cannot drift by runtime or doc surface. | Planned work updates the canonical `.opencode` files plus the parity-test surfaces that enforce mirror alignment; implementation does not rely on untested doc-only parity. | `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`], `Theme T-006` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:408-411`] |
-| REQ-014 | Shared loop-runtime changes MUST preserve packet-local, explicit deep-loop products and avoid introducing a hidden generic DSL or non-auditable state channel. | The implementation plan keeps reducers, journals, ledgers, and dashboards explicit inside the research/review packets; shared helpers may be extracted, but domain-specific artifacts and LEAF semantics remain visible and testable. | `CF-010` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:168-177`], `Theme T-006` [SOURCE: `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md:467-471`] |
-
+| ID | Parent Requirement | Phase Mapping |
+|----|--------------------|---------------|
+| REQ-001 | Phase 1 remains the source of truth for runtime stop legality, blocked-stop persistence, continuation lineage, and reducer ownership. | [./001-runtime-truth-foundation/spec.md](./001-runtime-truth-foundation/spec.md) |
+| REQ-002 | Phase 2 remains the source of truth for semantic coverage graph reuse, storage, tooling, and reducer/MCP graph integration. | [./002-semantic-coverage-graph/spec.md](./002-semantic-coverage-graph/spec.md) |
+| REQ-003 | Phase 3 remains the source of truth for wave-mode fan-out/join, deterministic segmentation, activation gates, and keyed merge behavior. | [./003-wave-executor/spec.md](./003-wave-executor/spec.md) |
+| REQ-004 | Phase 4a remains the source of truth for active deterministic replay/config optimization work. | [./004-offline-loop-optimizer/spec.md](./004-offline-loop-optimizer/spec.md) |
+| REQ-005 | Phase 4b must remain explicitly deferred until replay fixtures, behavioral suites, and corpus prerequisites exist. | [./004-offline-loop-optimizer/spec.md](./004-offline-loop-optimizer/spec.md) |
+| REQ-006 | The parent packet must map every major requirement cluster to the correct child phase instead of duplicating child detail. | This file plus child packet links |
+| REQ-007 | Parent milestones and handoff criteria must reflect the child phase dependency order `001 -> 002 -> 003 -> 004`. | [./plan.md](./plan.md) |
+| REQ-008 | Parent verification and ADR indexes must point to the child sources of truth that actually own those details. | [./checklist.md](./checklist.md), [./decision-record.md](./decision-record.md) |
 <!-- /ANCHOR:requirements -->
+
 ---
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: The packet defines a single shared stop-reason taxonomy and legal done-gate model for both deep research and deep review.
-- **SC-002**: The packet separates foundational runtime work from optional advanced modes, with council synthesis and coordination boards explicitly marked opt-in.
-- **SC-003**: The packet lists all core implementation files, shared runtime surfaces, and verification files required to ship the eight improvements.
-- **SC-004**: Every requirement maps to research evidence from the consolidated report and can be traced to at least one concrete file set.
-- **SC-005**: The plan includes a dependency-ordered delivery path that ships runtime-truth foundations before optional orchestration features.
-- **SC-006**: The task breakdown assigns concrete file targets and parent requirements for each planned change, with all tasks starting in `Pending`.
-- **SC-007**: The checklist provides one verification item per requirement, with evidence format and test references.
-- **SC-008**: The decision record captures the five requested architecture choices with rationale, alternatives, and rollback thinking.
-- **SC-009**: `implementation-summary.md` exists as a placeholder only and does not over-claim implementation work.
-- **SC-010**: `validate.sh --strict` passes for this packet after the planning documents are written.
+- **SC-001**: Phase 1 is complete and validated, making runtime truth, stop legality, continuation lineage, and reducer ownership explicit.
+- **SC-002**: Phase 2 is complete and validated, making semantic coverage graph signals available through shared libraries plus MCP tooling.
+- **SC-003**: Phase 3 is complete and validated, proving bounded large-target orchestration without moving sub-agent management into LEAF workers.
+- **SC-004**: Phase 4a is complete and validated, producing deterministic replay-based advisory tuning without unsafe live mutation.
+- **SC-005**: Phase 4b remains explicitly deferred until its stated prerequisites exist; no parent document implies it is active work today.
+- **SC-006**: The parent packet remains concise and points readers to child-phase detail instead of duplicating it.
+- **SC-007**: Root-level overview docs and child-phase docs stay linkable and validation-clean.
 
 ### Acceptance Scenarios
 
-1. **Given** either loop finishes, **When** an operator opens the dashboard or synthesis output, **Then** the packet shows a named stop reason from the shared taxonomy.
-2. **Given** convergence math votes STOP but a quality gate fails, **When** the workflow evaluates completion, **Then** it records a blocked-stop event and does not terminate as complete.
-3. **Given** a valid prior packet state, **When** resume is selected, **Then** the workflow continues from a named run boundary instead of starting from run 1.
-4. **Given** a major research claim, **When** the packet is synthesized, **Then** the claim appears with `verified`, `contradicted`, or `unresolved` status plus evidence refs.
-5. **Given** a recommendation derived from mixed source quality, **When** the packet records it, **Then** publication critique, runtime inventory, and promotion-checkpoint context remain visible.
-6. **Given** a normal loop run, **When** council synthesis or a coordination board is not explicitly requested, **Then** no advanced-mode artifacts are created.
-
+1. **Given** a reader starts at the parent spec, **when** they need runtime-truth detail, **then** Phase 1 is clearly identified as the source of truth.
+2. **Given** a reader needs graph-convergence detail, **when** they use the parent spec, **then** Phase 2 is clearly identified as the source of truth.
+3. **Given** a reader needs large-target orchestration detail, **when** they use the parent spec, **then** Phase 3 is clearly identified as the source of truth.
+4. **Given** a reader needs optimizer detail, **when** they use the parent spec, **then** Phase 4a is clearly identified as active and Phase 4b as deferred.
+5. **Given** a maintainer checks progress, **when** they inspect the parent docs, **then** milestones align with the child phase order and handoffs.
+6. **Given** a maintainer needs verification or ADR detail, **when** they inspect the parent docs, **then** the child checklist/ADR sources are linked rather than re-stated.
 <!-- /ANCHOR:success-criteria -->
+
 ---
 
 <!-- ANCHOR:risks -->
@@ -205,54 +139,41 @@ Define an implementation-ready plan that upgrades deep research and deep review 
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Consolidated report remains the source of truth for the eight improvements | Mis-scoped implementation if packet drifts from research | Every requirement cites the consolidated report directly. |
-| Dependency | Existing reducer/parity tests are the current runtime safety net | Behavior changes could drift from contracts | Plan behavior-first tests and parity updates in the same implementation wave. |
-| Risk | Stop-gate logic becomes too complicated for operators | Medium | Keep default operator UX small and move advanced detail into generated artifacts and optional modes. |
-| Risk | Journals and ledgers create maintenance overhead without adoption | Medium | Make journals canonical but reducer-driven; keep publication critique and promotion checkpoints lightweight. |
-| Risk | Council mode or coordination board becomes a default-path distraction | Medium | Mark both features explicitly opt-in and put them in the last delivery phase. |
-| Risk | Runtime mirror parity balloons the implementation scope | Medium | Keep `.opencode` files canonical and use parity tests to decide whether hand-authored mirrors still need edits. |
-| Risk | Token/time tracking is inconsistently available across runtimes | Low | Plan for exact metrics when available and documented approximations otherwise. |
-
+| Dependency | Phase 1 is the contract foundation for every later phase | High | Treat Phase 1 completion as the first milestone and handoff gate. |
+| Dependency | Phase 2 graph tooling must exist before graph-enhanced segmentation is trustworthy | High | Keep Phase 3 graph-aware work blocked until Phase 2 is operational. |
+| Dependency | Fan-out/join capability is not yet proven on the current YAML engine | High | Keep Phase 3 wave execution gated behind an explicit prerequisite proof. |
+| Dependency | Replay fixtures and behavioral suites are prerequisites for non-advisory optimization | High | Keep Phase 4a advisory-only and Phase 4b deferred until those prerequisites exist. |
+| Risk | Parent docs drift back into duplicated child detail | Medium | Keep the root packet as an index/overview and push implementation detail into child folders only. |
+| Risk | Optional modes are mistaken for baseline requirements | Medium | Keep council mode, coordination-board work, and Phase 4b explicitly marked opt-in or deferred. |
+| Risk | Cross-surface parity drifts across commands, skills, agents, reducers, and mirrors | Medium | Use child-phase parity/test gates and keep the parent focused on sequencing and dependency visibility. |
 <!-- /ANCHOR:risks -->
+
 ---
 
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 
-- **NFR-P01**: Default deep-research and deep-review iterations should not require extra manual review steps compared with current `:auto` flows.
-- **NFR-P02**: Added runtime artifacts should remain reducer-friendly and packet-local, avoiding large per-iteration re-render costs beyond current dashboard regeneration.
+- Parent docs should stay concise enough to scan faster than the child packets.
+- Parent milestone and requirement mapping should not require child-packet duplication to stay understandable.
 
 ### Reliability
 
-- **NFR-R01**: New journal and ledger artifacts must remain append-only or reducer-rebuildable from canonical packet state.
-- **NFR-R02**: Resume and completed-continue flows must remain recoverable after interruption without needing hidden context or manual reconstruction.
+- Parent links must continue to point to the correct child sources of truth.
+- Deferred work must remain clearly marked so later readers do not treat it as active delivery.
 
 ### Maintainability
 
-- **NFR-M01**: Shared runtime improvements must be documented once in canonical assets and enforced through parity/behavior tests rather than repeated prose-only edits.
-- **NFR-M02**: Optional advanced features must not make the default workflow harder to understand or validate.
+- The root packet should summarize and route, not compete with child docs.
+- Cross-phase sequencing should be changeable in one place at the root without rewriting child packets.
 
 ---
 
 ## 8. EDGE CASES
 
-### Lifecycle and Stop-State Boundaries
-
-- Convergence math says STOP, but quality gates fail: record blocked-stop event, surface reason in dashboard/journal, continue loop or recovery path.
-- User explicitly stops a run mid-iteration: persist `user_stopped`, flush journal/ledger state safely, and keep resume cursor intact.
-- Resume starts from a run whose ledger or journal is partially present: classify as recoverable only if canonical state can be reconciled from packet artifacts.
-
-### Research Quality Boundaries
-
-- Claim has contradictory evidence across README and runtime code: ledger must mark `contradicted`, not silently promote the stronger claim.
-- Source type is marketing copy or a thin README: publication critique must make the evidence class explicit before promotion.
-- Promotion checkpoint fails minimum evidence threshold: recommendation stays informative, not adoptive.
-
-### Optional Mode Boundaries
-
-- Council mode perspectives disagree irreconcilably: synthesis iteration must surface unresolved conflict instead of forcing a false consensus.
-- Coordination board is enabled for a small packet: implementation should degrade gracefully to a minimal board rather than forcing enterprise-scale fields.
+- Phase 3 planning advances before fan-out/join is proven: keep wave execution blocked until the proof path exists.
+- Phase 4b is mistaken for active scope: keep it labeled deferred in every parent overview surface.
+- A child phase changes counts or status: update the parent index instead of re-copying child prose.
 
 ---
 
@@ -260,12 +181,12 @@ Define an implementation-ready plan that upgrades deep research and deep review 
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Two loop products, shared runtime substrate, multiple assets, YAML workflows, reducer/tests |
-| Risk | 19/25 | Runtime-stop behavior, resume semantics, trust surfaces, opt-in advanced modes |
-| Research | 15/20 | Consolidated research is available, but implementation choices still require ADRs |
-| Multi-Agent | 0/15 | This planning packet does not require parallel agent work |
-| Coordination | 10/15 | Multiple file families must move together; optional coordination-board mode adds design complexity |
-| **Total** | **64/100** | **Level 3** |
+| Scope | 24/25 | Four coordinated child phases across runtime contracts, graph infrastructure, orchestration, and offline optimization |
+| Risk | 22/25 | Stop legality, graph truth, merge correctness, replay fidelity, and deferred optimizer guardrails |
+| Research | 17/20 | Strong evidence base exists, but several cross-phase handoff choices still matter |
+| Multi-Agent | 0/15 | Planning only; execution strategy is phase-based rather than multi-agent at the parent level |
+| Coordination | 16/15 | Parent packet coordination, child handoffs, deferred-track governance, and cross-surface parity pressure |
+| **Total** | **79/100** | **Level 3** |
 
 ---
 
@@ -273,62 +194,47 @@ Define an implementation-ready plan that upgrades deep research and deep review 
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | Shared stop taxonomy drifts between research and review | High | Medium | Keep taxonomy canonical in shared planning and enforce via contract/parity tests. |
-| R-002 | Journals and ledgers become write-heavy but not read-useful | Medium | Medium | Tie them to dashboards, synthesis, and troubleshooting paths from day one. |
-| R-003 | Optional advanced modes are treated as default requirements | Medium | Medium | Phase them last and document them as explicit opt-ins only. |
-| R-004 | Runtime mirrors drift from canonical `.opencode` agent contracts | Medium | High | Update or regenerate mirrors in the same delivery wave and keep parity tests authoritative. |
-| R-005 | Behavior-first tests become brittle if they overfit wording instead of contract signals | Medium | Medium | Prefer structure-plus-semantics assertions over exact-string snapshots when feasible. |
+| R-001 | Phase 1 completion slips and blocks every later phase | High | Medium | Keep Phase 1 as the first milestone and handoff gate |
+| R-002 | Parent docs drift from child packet status/counts | Medium | Medium | Treat child files as the source of truth and refresh the parent index from them |
+| R-003 | Wave execution is treated as buildable before fan-out/join proof exists | High | Medium | Keep the Phase 3 prerequisite explicit in every parent surface |
+| R-004 | Phase 4b is mistaken for active scope | Medium | Medium | Mark `4b` as deferred in spec, plan, tasks, and checklist indexes |
 
 ---
 
 ## 11. USER STORIES
 
-### US-001: Trust The Stop Condition (Priority: P0)
+### US-001: Find The Right Phase
 
-**As an** operator running autonomous deep research or deep review, **I want** the packet to explain exactly why a loop stopped and whether STOP was legally earned, **so that** I can trust the result without reverse-engineering the raw JSONL.
+**As a** maintainer, **I want** the parent spec to route me to the correct child phase quickly, **so that** I do not have to read stale duplicate detail.
 
-**Acceptance Criteria**:
-1. Given a completed loop, when I inspect the dashboard or synthesis output, then I can see the named stop reason and the gate status that allowed STOP.
-2. Given a blocked-stop case, when convergence math says stop but gates fail, then the loop records that state explicitly and continues or recovers instead of silently terminating.
+### US-002: Understand Delivery Order
 
-### US-002: Resume Without Reinitializing (Priority: P0)
+**As a** coordinator, **I want** the parent spec to summarize the phase sequence and handoffs, **so that** I can track progress across the bundle.
 
-**As a** maintainer resuming a long-running research or review session, **I want** the workflow to continue from a known run boundary, **so that** I do not lose lineage or pay re-initialization overhead for already-completed work.
+### US-003: Distinguish Active vs Deferred Work
 
-**Acceptance Criteria**:
-1. Given a valid existing packet, when resume is selected, then the workflow continues from a specific prior run or segment instead of starting from run 1.
-
-### US-003: Trust Research Claims (Priority: P1)
-
-**As a** reader of deep-research outputs, **I want** large claims to carry verification status, evidence quality, and promotion thresholds, **so that** I can separate verified runtime truths from weaker source claims.
-
-**Acceptance Criteria**:
-1. Given a major adoption recommendation, when I inspect the packet, then I can see whether the claim was verified, contradicted, or unresolved and what evidence class supports it.
-
-### US-004: Scale Up Deliberately (Priority: P1)
-
-**As a** coordinator of ambiguous or large multi-phase research, **I want** optional council synthesis and coordination-board support, **so that** I can use them only when the packet genuinely needs the extra cost.
-
-**Acceptance Criteria**:
-1. Given a normal research packet, when I run the default mode, then neither council synthesis nor the coordination board is required.
-2. Given an ambiguous or multi-phase packet, when I explicitly enable the advanced mode, then the added artifacts are created and tracked as packet-local state.
+**As a** reviewer, **I want** the parent spec to keep Phase 4a and 4b clearly separated, **so that** deferred optimizer work is not treated as current scope.
 
 ---
 
 <!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
-- Q1: Should review token-consumption metrics be sourced from runtime envelopes only, or may the implementation ship an explicit "unknown/estimated" fallback field?
-- Q2: Should the coordination board live under `research/` as a large-run overlay or at the packet root as a cross-phase artifact?
-- Q3: If runtime mirrors remain hand-authored, do we want this packet to update them directly or to treat generated mirrors as a prerequisite follow-on?
-
+- Q1: Should Phase 3 fan-out/join ship as helper-module orchestration, a YAML engine extension, or a hybrid proof path?
+- Q2: What final authority order should Phase 2 use between JSONL truth, local JSON fallback, and SQLite projection state?
+- Q3: Which compaction trigger should Phase 1 ultimately prefer for long packets: run count, JSONL size, wall-clock age, or a blended threshold?
+- Q4: What concrete prerequisite bar should unlock Phase 4b beyond today's deferment: replay fidelity threshold, corpus-family count, and behavioral-suite coverage?
 <!-- /ANCHOR:questions -->
+
 ---
 
 ## RELATED DOCUMENTS
 
-- **Implementation Plan**: See `plan.md`
-- **Task Breakdown**: See `tasks.md`
-- **Verification Checklist**: See `checklist.md`
-- **Decision Records**: See `decision-record.md`
-- **Research Basis**: `./../../system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md`
+- **Parent Plan**: See [./plan.md](./plan.md)
+- **Parent Task Index**: See [./tasks.md](./tasks.md)
+- **Parent Verification Index**: See [./checklist.md](./checklist.md)
+- **Parent ADR Index**: See [./decision-record.md](./decision-record.md)
+- **Phase 1**: See [./001-runtime-truth-foundation/spec.md](./001-runtime-truth-foundation/spec.md)
+- **Phase 2**: See [./002-semantic-coverage-graph/spec.md](./002-semantic-coverage-graph/spec.md)
+- **Phase 3**: See [./003-wave-executor/spec.md](./003-wave-executor/spec.md)
+- **Phase 4**: See [./004-offline-loop-optimizer/spec.md](./004-offline-loop-optimizer/spec.md)

@@ -662,5 +662,5 @@ After completing validation, document the results.
 
 ### Parent Skill
 
-- [SKILL.md](../../SKILL.md) - sk-code-web skill (Phase 1.5: Code Quality Gate)
+- [SKILL.md](../../../../SKILL.md) - sk-code-web skill (Phase 1.5: Code Quality Gate)
 <!-- /ANCHOR:related-resources -->

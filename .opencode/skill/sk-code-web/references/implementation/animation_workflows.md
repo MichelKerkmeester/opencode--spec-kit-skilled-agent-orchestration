@@ -848,8 +848,8 @@ function init_animation() {
 
 ### Reference Files
 - [implementation_workflows.md](./implementation_workflows.md) - Implementation phase guidance
-- [debugging_workflows.md](./debugging_workflows.md) - Animation debugging techniques
-- [verification_workflows.md](./verification_workflows.md) - Animation verification procedures
+- [debugging_workflows.md](../debugging/debugging_workflows.md) - Animation debugging techniques
+- [verification_workflows.md](../verification/verification_workflows.md) - Animation verification procedures
 - [code_quality_standards.md](../standards/code_quality_standards.md) - CDN-safe initialization patterns
 
 ### Related Skills

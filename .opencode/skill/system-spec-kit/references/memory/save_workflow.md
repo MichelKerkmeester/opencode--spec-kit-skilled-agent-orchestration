@@ -556,6 +556,43 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 ---
 
 <!-- /ANCHOR:validation-checklists -->
+<!-- ANCHOR:post-save-quality-review -->
+## 10.5. POST-SAVE QUALITY REVIEW (026 Calibration)
+
+After `generate-context.js` completes, it emits a **POST-SAVE QUALITY REVIEW** block. This review checks the saved memory file for common issues that degrade retrieval quality.
+
+### Issue Severities
+
+| Severity | Action Required |
+|----------|----------------|
+| **HIGH** | MUST manually patch via Edit tool (fix title, trigger_phrases, importance_tier) |
+| **MEDIUM** | Patch when practical |
+| **PASSED/SKIPPED** | No action needed |
+
+### Common HIGH Issues
+
+- Generic or missing `title` in frontmatter (degrades search ranking)
+- Overly broad `trigger_phrases` that cause false-positive surfacing
+- Incorrect `importance_tier` assignment (e.g., normal when constitutional is warranted)
+
+### 026 Heuristic Calibration
+
+- Save quality gate threshold calibrated to 0.4 signal density
+- Short decision-type memories bypass content-length gate when `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true` and at least two structural signals (title, specFolder, or anchor) are present
+- Trigger phrase sanitization strips overly generic single-word triggers during save-time validation
+- Lineage handling preserves parent-child spec folder relationships in metadata when saving to nested packet paths
+
+### Context Template Expectations
+
+The context template (`templates/context_template.md`) defines the expected output structure. The post-save quality review validates against this template, checking for:
+- Required ANCHOR pairs (opening and closing)
+- PROJECT STATE SNAPSHOT section presence
+- Proper frontmatter fields (title, specFolder, importance_tier)
+- Minimum content density per section
+
+---
+
+<!-- /ANCHOR:post-save-quality-review -->
 <!-- ANCHOR:troubleshooting -->
 ## 11. TROUBLESHOOTING
 

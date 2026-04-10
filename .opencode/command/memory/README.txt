@@ -248,7 +248,9 @@ The `/memory:manage` command accepts these subcommands:
 <!-- ANCHOR:tool-coverage -->
 ## 6. TOOL COVERAGE MATRIX
 
-All 33 MCP tools mapped to their primary command home:
+All 43 MCP tools mapped to their primary command home:
+
+> **026 Note:** Tool count increased from 33 to 43 with the addition of session management tools (`session_bootstrap`, `session_health`, `session_resume`), code graph tools (`code_graph_query`, `code_graph_scan`, `code_graph_status`, `code_graph_context`), and CCC tools (`ccc_status`, `ccc_feedback`, `ccc_reindex`). Graph-first retrieval routing (026) means `code_graph_query` is now the preferred first channel for structural code search before semantic/vector or FTS5/BM25 fallback.
 
 | # | Tool | Layer | Primary Command |
 |---|------|-------|-----------------|
@@ -285,16 +287,27 @@ All 33 MCP tools mapped to their primary command home:
 | 31 | `memory_ingest_start` | L7 | `/memory:manage ingest` |
 | 32 | `memory_ingest_status` | L7 | `/memory:manage ingest` |
 | 33 | `memory_ingest_cancel` | L7 | `/memory:manage ingest` |
+| 34 | `session_bootstrap` | L1 | `/spec_kit:resume` |
+| 35 | `session_health` | L3 | `/memory:manage` |
+| 36 | `session_resume` | L1 | `/spec_kit:resume` |
+| 37 | `code_graph_query` | L2 | `/memory:search` |
+| 38 | `code_graph_scan` | L7 | `/memory:manage` |
+| 39 | `code_graph_status` | L3 | `/memory:manage` |
+| 40 | `code_graph_context` | L2 | `/memory:search` |
+| 41 | `ccc_status` | L3 | `/memory:manage` |
+| 42 | `ccc_feedback` | L4 | `/memory:manage` |
+| 43 | `ccc_reindex` | L7 | `/memory:manage` |
 
 ### Coverage by Command
 
 | Command | Tools Owned | Helper Tools | Layers |
 |---------|-------------|--------------|--------|
-| `/memory:search` | 13 | (none) | L1, L2, L6, L7 |
+| `/memory:search` | 15 | (none) | L1, L2, L6, L7 |
 | `/memory:save` | 1 | 3 (index_scan, stats, update) | L2 |
-| `/memory:manage` | 19 | 1 (search) | L3, L4, L5, L7 |
+| `/memory:manage` | 24 | 1 (search) | L3, L4, L5, L7 |
 | `/memory:learn` | 0 | uses manage/save tools | (none) |
-| **Total** | **33** | | **L1-L7** |
+| `/spec_kit:resume` | 3 | uses search/manage tools | L1 |
+| **Total** | **43** | | **L1-L7** |
 
 > **Note:** Commands may include helper tools in their `allowed-tools` frontmatter beyond their primary ownership. Helper tools are borrowed from other command scopes for operational needs (e.g., `/memory:save` uses `memory_index_scan` from `/memory:manage` for post-save indexing). The coverage matrix above shows primary ownership. Each command file's `allowed-tools` shows the full operational set.
 
@@ -356,7 +369,7 @@ The scan re-indexes all memory files regardless of whether their content has cha
 | [Parent: OpenCode Commands](../README.md) | Overview of all command groups |
 | [system-spec-kit SKILL.md](../../skill/system-spec-kit/SKILL.md) | Memory system architecture and spec folder workflow |
 | [Spec Kit Memory MCP](../../skill/system-spec-kit/mcp_server/) | MCP server implementation for memory operations |
-| [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 33-tool inventory and property definitions |
+| [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 43-tool inventory and property definitions |
 | [Tool Input Schemas](../../skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts) | Zod validation schemas and ALLOWED_PARAMETERS |
 
 <!-- /ANCHOR:related-documents -->

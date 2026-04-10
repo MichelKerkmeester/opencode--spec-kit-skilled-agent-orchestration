@@ -439,7 +439,7 @@ All placeholders used across templates in this file:
 
 - [cli_reference.md](../references/cli_reference.md) - Complete CLI flag and command reference
 - [integration_patterns.md](../references/integration_patterns.md) - Cross-AI orchestration patterns
-- [claude_code_features.md](../references/claude_code_features.md) - Built-in tools, agents, and permission modes
+- [claude_tools.md](../references/claude_tools.md) - Built-in tools, agents, and permission modes
 
 <!-- /ANCHOR:related_resources -->
 

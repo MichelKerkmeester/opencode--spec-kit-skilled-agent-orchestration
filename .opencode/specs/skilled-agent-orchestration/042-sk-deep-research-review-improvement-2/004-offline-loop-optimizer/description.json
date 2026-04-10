@@ -1,0 +1,20 @@
+{
+  "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer",
+  "description": "Feature Specification: Offline Loop Optimizer",
+  "keywords": [
+    "feature",
+    "specification",
+    "offline",
+    "loop",
+    "optimizer"
+  ],
+  "lastUpdated": "2026-04-10T14:45:38.276Z",
+  "specId": "004",
+  "folderSlug": "offline-loop-optimizer",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "042-sk-deep-research-review-improvement-2"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

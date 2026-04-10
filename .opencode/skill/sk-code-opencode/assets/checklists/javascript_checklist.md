@@ -330,6 +330,6 @@ grep -n "^export " file.js              # Find ES module exports
 - [universal_checklist.md](./universal_checklist.md) - Language-agnostic checks
 
 ### Style Guide
-- [JavaScript Style Guide](../javascript/style_guide.md)
-- [JavaScript Quality Standards](../javascript/quality_standards.md)
+- [JavaScript Style Guide](../../references/javascript/style_guide.md)
+- [JavaScript Quality Standards](../../references/javascript/quality_standards.md)
 <!-- /ANCHOR:related-resources -->

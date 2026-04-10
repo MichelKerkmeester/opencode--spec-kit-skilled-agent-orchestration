@@ -27,6 +27,16 @@
         "_NOTE_8_GRAPH": "Skill graph active by default. Set SPECKIT_GRAPH_UNIFIED=false to disable"
       }
     },
+    "cocoindex_code": {
+      "command": ".opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc",
+      "args": ["mcp"],
+      "env": {
+        "COCOINDEX_CODE_ROOT_PATH": ".",
+        "_NOTE_1": "Install: bash .opencode/skill/mcp-coco-index/scripts/install.sh",
+        "_NOTE_2": "Default embedding: all-MiniLM-L6-v2 (local, no API key needed)",
+        "_NOTE_3": "Index stored in .cocoindex_code/ (gitignored)"
+      }
+    },
     "code_mode": {
       "command": "node",
       "args": [

@@ -1,14 +1,20 @@
 {
-  "specFolder": "003-memory-quality-issues/001-foundation-templates-truncation",
-  "description": "Phase 1: foundation-templates-truncation",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation",
+  "description": "Feature Specification: Phase 1: Foundation (Templates & Truncation)",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
-    "foundation-templates-truncation"
+    "foundation",
+    "templates",
+    "truncation"
   ],
-  "lastUpdated": "2026-04-07T11:14:04.348Z",
+  "lastUpdated": "2026-04-10T12:04:52.887Z",
   "specId": "001",
   "folderSlug": "foundation-templates-truncation",
   "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
     "003-memory-quality-issues"
   ],
   "memorySequence": 5,

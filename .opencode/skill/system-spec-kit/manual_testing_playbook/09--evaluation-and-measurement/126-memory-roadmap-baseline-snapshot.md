@@ -33,7 +33,7 @@ Operators run the exact prompt and command sequence for `126` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
-- Feature catalog: [09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md](../../feature_catalog/09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md)
+- Feature catalog: [09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md](../../feature_catalog/09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md)
 
 ---
 

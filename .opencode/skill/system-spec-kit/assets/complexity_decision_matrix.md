@@ -251,7 +251,7 @@ This decision matrix addresses the following spec requirements:
 
 ### Reference Files
 - [level_specifications.md](../references/templates/level_specifications.md) - Complete Level 1-3+ requirements
-- [template_guide.md](../references/template_guide.md) - Template selection and quality standards
+- [template_guide.md](../references/templates/template_guide.md) - Template selection and quality standards
 
 ### Scripts
 - [compose.sh](../scripts/templates/compose.sh) - Template composition from core + addendum

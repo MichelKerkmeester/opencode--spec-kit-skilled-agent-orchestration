@@ -1010,7 +1010,7 @@ You now have [TOOL_NAME] installed and configured. [BRIEF_USAGE_INSTRUCTION]
 ## 14. RELATED RESOURCES
 
 ### Templates
-- [skill_asset_template.md](../opencode/skill_asset_template.md) - Pattern reference for this document
+- [skill_asset_template.md](../skill/skill_asset_template.md) - Pattern reference for this document
 - [frontmatter_templates.md](./frontmatter_templates.md) - YAML frontmatter examples
 
 ### Standards

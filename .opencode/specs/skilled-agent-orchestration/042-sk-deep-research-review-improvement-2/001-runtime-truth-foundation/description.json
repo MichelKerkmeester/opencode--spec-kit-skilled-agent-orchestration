@@ -1,0 +1,23 @@
+{
+  "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation",
+  "description": "Feature Specification: Deep Research and Deep Review Runtime Improvement Bundle",
+  "keywords": [
+    "feature",
+    "specification",
+    "deep",
+    "research",
+    "review",
+    "runtime",
+    "improvement",
+    "bundle"
+  ],
+  "lastUpdated": "2026-04-10T14:45:38.252Z",
+  "specId": "001",
+  "folderSlug": "runtime-truth-foundation",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "042-sk-deep-research-review-improvement-2"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

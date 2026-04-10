@@ -42,7 +42,7 @@ This directory serves as the configuration backbone of the OpenCode AI Assistant
 
 The framework is built on two core systems:
 
-1. **Memory Engine**: 33 memory MCP tools across 7 layers, with 3-source indexing, 7-intent retrieval routing, schema v15 metadata (`document_type`, `spec_level`), document-type scoring, causal lineage tracking, typed-weighted degree channel, persistent embedding cache, query complexity routing, RSF fusion and confidence truncation
+1. **Memory Engine**: 43 MCP tools across 7 layers, with graph-first structural routing (Code Graph before semantic), 3-tier FTS fallback, 3-source indexing, 7-intent retrieval routing, schema v15 metadata (`document_type`, `spec_level`), document-type scoring, causal lineage tracking, typed-weighted degree channel, persistent embedding cache, query complexity routing, RSF fusion, confidence truncation, post-save quality gates with heuristic calibration, and CocoIndex semantic code search bridge
 2. **Spec Kit Documentation Framework**: Structured documentation with 83 templates, 13 validation rules and Level 1-3+ CORE + ADDENDUM architecture
 
 Together, these systems enable context-aware development with traceability, hardened retrieval behavior and session continuity through quality gates.
@@ -52,7 +52,7 @@ Together, these systems enable context-aware development with traceability, hard
 | Category | Count | Details |
 |---|---:|---|
 | MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
-| MCP Tools | 40 | 33 memory + 7 code mode tools |
+| MCP Tools | 52 | 43 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
 | Agents | 12 | Base agent definitions in `.opencode/agent/*.md` |
 | Skills | 20 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
 | Commands | 21 | Markdown command entry points in `.opencode/command/` (8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility) |
@@ -245,11 +245,11 @@ The Spec Kit Memory MCP provides persistent context across sessions:
 
 - **Storage:** Memory files in `specs/[###-name]/memory/` using ANCHOR format for structured retrieval
 - **Engine:** SQLite + `sqlite-vec` with provider auto-detection (Voyage, OpenAI, HF Local)
-- **Retrieval:** Hybrid search across vector, BM25, trigger matching and typed-weighted degree channels with RRF + RSF (Reciprocal Similarity Fusion) fusion, cross-encoder reranking, query complexity routing (simple/moderate/complex), confidence truncation (2x median gap), persistent embedding cache and interference scoring
+- **Retrieval:** Graph-first routing (structural Code Graph before semantic CocoIndex), hybrid search across vector, BM25, FTS5, trigger matching and typed-weighted degree channels with RRF + RSF (Reciprocal Similarity Fusion) fusion, 3-tier FTS fallback (vector-only -> vector+BM25 -> all channels), cross-encoder reranking, query complexity routing (simple/moderate/complex), confidence truncation (2x median gap), persistent embedding cache and interference scoring
 - **Architecture:** 7-layer tool hierarchy (L1 Orchestration to L7 Maintenance)
 - **Indexing:** 3 sources (spec memories, constitutional files, spec documents) with `includeSpecDocs: true` default
 - **Schema:** v15 adds `document_type` and `spec_level` columns for document-type scoring and filtering
-- **Features:** Constitutional tier, session deduplication, causal lineage tracking, temporal decay, learning analytics, typed retrieval contracts, artifact-class routing, adaptive fusion, append-only mutation ledger, extended retrieval telemetry, session-cognitive automation (attention-based decay, tiered content injection, co-activation of related memories), persistent embedding cache (SQLite `embedding_cache` table), interference scoring (TM-01 penalty), classification-based decay (TM-03 context-type + importance-tier multipliers), query complexity routing (simple/moderate/complex tier dispatch), RSF fusion (single-pair, multi-list, cross-variant alternatives to RRF), channel min-representation (QUALITY_FLOOR=0.2), confidence truncation (2x median gap, min 3 results), dynamic token budget (1500/2500/4000 by tier), cold-start N4 boost, min-max score normalization, co-activation fan-effect (sqrt divisor), CORRECTION/PREFERENCE signal categories, pre-flight token budget estimation, verify-fix-verify quality loop, spec folder description discovery and ~14 `SPECKIT_*` feature flags
+- **Features:** Constitutional tier, session deduplication, causal lineage tracking, temporal decay, learning analytics, typed retrieval contracts, artifact-class routing, adaptive fusion, append-only mutation ledger, extended retrieval telemetry, session-cognitive automation (attention-based decay, tiered content injection, co-activation of related memories), persistent embedding cache (SQLite `embedding_cache` table), interference scoring (TM-01 penalty), classification-based decay (TM-03 context-type + importance-tier multipliers), query complexity routing (simple/moderate/complex tier dispatch), RSF fusion (single-pair, multi-list, cross-variant alternatives to RRF), channel min-representation (QUALITY_FLOOR=0.2), confidence truncation (2x median gap, min 3 results), dynamic token budget (1500/2500/4000 by tier), cold-start N4 boost, min-max score normalization, co-activation fan-effect (sqrt divisor), CORRECTION/PREFERENCE signal categories, pre-flight token budget estimation, verify-fix-verify quality loop, spec folder description discovery, post-save quality gates (structure/semantic/duplicate with heuristic calibration and trigger sanitization), graph-first structural routing (Code Graph -> CocoIndex -> Memory), 3-tier FTS fallback chain (PI-A2), CocoIndex semantic code search bridge, and ~14 `SPECKIT_*` feature flags
 - **Hardening (Spec126):** import-path fixes, `specFolder` filtering, metadata preservation, vector metadata plumbing and stable causal edge semantics
 
 **Spec Kit workflow features:** `upgrade-level.sh`, auto-populate workflow, `check-placeholders.sh` and anchor tags.

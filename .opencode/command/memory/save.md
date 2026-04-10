@@ -306,6 +306,8 @@ Content...
 
 > **Why JSON mode:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs.
 
+> **026 Memory Quality (Post-Save Review):** After `generate-context.js` completes, it outputs a POST-SAVE QUALITY REVIEW. HIGH-severity issues (stale titles, weak trigger phrases, wrong importance tier) MUST be patched via Edit tool immediately. MEDIUM issues should be patched when practical. Trigger phrases are sanitized: generic phrases (e.g., "context", "session") are flagged for replacement with domain-specific terms per 026-003-009/010 trigger sanitization rules.
+
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 
 > SECURITY: When using heredoc or --stdin, ensure JSON content is properly escaped. Prefer --json flag with single-quoted inline JSON or write to /tmp/save-context-data.json via Write tool first (exception to the Write tool exclusion: writing the intermediate JSON data file is permitted).
@@ -548,6 +550,8 @@ When MCP is unavailable or embedding fails, the system uses deferred indexing:
 3. On failure: file remains on disk, auto-indexed on next MCP restart
 4. File includes `indexing_status: deferred` metadata for tracking
 
+> **026 Note:** Deferred-indexed files are discoverable by the FTS5/BM25 lexical channel immediately after disk write (since FTS5 indexes markdown content directly). However, graph-based retrieval channels (`code_graph_query`) and vector/semantic channels require full MCP indexing to surface the file. Run `memory_index_scan` after MCP recovery to ensure all three retrieval channels can find the file.
+
 **Manual Retry:**
 ```javascript
 // Single file
@@ -566,7 +570,7 @@ Note: `filePath` should be specified relative to the repository root (e.g., `.op
 
 | Issue                  | Recovery                                                                                                                       |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| MCP server unreachable | Restart OpenCode to restart MCP server                                                                                         |
+| MCP server unreachable | Restart OpenCode to restart MCP server. Post-026: run `memory_health()` after restart to verify all retrieval channels (graph, vector, FTS5) are operational |
 | Embedding timeout      | Use `memory_index_scan` with smaller batch                                                                                     |
 | Corrupted file         | Read file, verify ANCHOR tags, re-save with corrections                                                                        |
 | Database locked        | For database recovery, use `/memory:manage health` to diagnose issues and `/memory:manage checkpoint restore` to recover from a known-good state. Avoid manual file deletion. |
@@ -638,6 +642,8 @@ Fallback triggers if Task tool returns error, times out, or sub-agent returns `s
 Prevents redundant saves of the same conversation content (accidental duplicates, post-compaction saves, database bloat).
 
 **Detection:** Generate SHA-256 fingerprint of (topic + files + timeframe), compare against most recent memory in target folder. If match AND time delta < 1 hour → DUPLICATE DETECTED. Delta 1-4h → suggest review. Delta > 4h → proceed normally.
+
+> **026 Compaction Note:** Post-026 context compaction uses bootstrap hardening (`session_bootstrap()`) rather than the removed `context-prime` agent. When a compaction event triggers a save, the dedup check uses the compacted session's fingerprint. If the pre-compaction session already saved context to the same folder within 1 hour, the duplicate detection fires as expected.
 
 **User Options on Duplicate:**
 

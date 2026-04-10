@@ -1485,7 +1485,7 @@ Start by asking your AI assistant:
 Get information about my Figma file at [your-file-key]
 ```
 
-For more information, see the [Figma MCP Skill](./../skill/mcp-figma/SKILL.md) documentation.
+For more information, see the [Figma MCP Skill](./SKILL.md) documentation.
 
 ---
 

@@ -1,0 +1,19 @@
+{
+  "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor",
+  "description": "Feature Specification: Wave Executor",
+  "keywords": [
+    "feature",
+    "specification",
+    "wave",
+    "executor"
+  ],
+  "lastUpdated": "2026-04-10T14:45:38.268Z",
+  "specId": "003",
+  "folderSlug": "wave-executor",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "042-sk-deep-research-review-improvement-2"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

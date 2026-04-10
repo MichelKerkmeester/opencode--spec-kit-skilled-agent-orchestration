@@ -328,7 +328,7 @@ All placeholders used across templates in this file:
 
 - [cli_reference.md](../references/cli_reference.md) - Complete CLI flag and command reference
 - [integration_patterns.md](../references/integration_patterns.md) - Cross-AI orchestration patterns
-- [copilot_features.md](../references/copilot_features.md) - Built-in tools, multi-model routing, and plan mode
+- [copilot_tools.md](../references/copilot_tools.md) - Built-in tools, multi-model routing, and plan mode
 
 <!-- /ANCHOR:related_resources -->
 <!-- ANCHOR:memory_epilogue -->

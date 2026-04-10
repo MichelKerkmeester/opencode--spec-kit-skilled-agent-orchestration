@@ -357,5 +357,5 @@ Use when errors occur deep in call stack:
 
 ### Parent Skill
 
-- [SKILL.md](../../SKILL.md) - sk-code-web skill (Phase 2: Debugging)
+- [SKILL.md](../../../../SKILL.md) - sk-code-web skill (Phase 2: Debugging)
 <!-- /ANCHOR:related-resources -->

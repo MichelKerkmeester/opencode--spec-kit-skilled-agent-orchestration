@@ -67,8 +67,10 @@ session_detection:
 # CONTEXT LOADING
 # ─────────────────────────────────────────────────────────────────
 context_loading_priority:
+  # 026: session_bootstrap() is preferred over plain memory_context() for interrupted-session recovery
+  # It provides graph-aware context injection and replaces the removed context-prime agent
   order: ["Primary: handover.md (<24h old)", "Primary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
-  note: "Try the primary recovery chain first, then let the user choose whether extra memory context is needed"
+  note: "Try session_bootstrap() for graph-aware recovery first, then let the user choose whether extra memory context is needed"
 
 memory_loading:
   mode: interactive
@@ -207,6 +209,8 @@ workflow:
 stale_session:
   threshold_days: 7
   detection: { check: "last_modified > 7 days", action: "Present warning and options" }
+  # 026: stale sessions score low on the confidence framework (session_recency weight = 0.40)
+  # Apply dual-threshold check: if confidence < 0.70 OR uncertainty > 0.35, present options
   interactive_behavior:
     options:
       - { label: "Resume anyway", description: "Load context and continue" }

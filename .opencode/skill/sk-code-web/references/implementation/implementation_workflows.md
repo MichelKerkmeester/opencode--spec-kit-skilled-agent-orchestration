@@ -580,9 +580,9 @@ function sanitizeText(text) {
 ## 6. RELATED RESOURCES
 
 ### Reference Files
-- [debugging_workflows.md](./debugging_workflows.md) - Debug timing and validation issues with systematic approach
-- [verification_workflows.md](./verification_workflows.md) - Verify implementations work correctly across browsers and viewports
-- [shared_patterns.md](./shared_patterns.md) - Common DevTools and logging patterns for all workflows
+- [debugging_workflows.md](../debugging/debugging_workflows.md) - Debug timing and validation issues with systematic approach
+- [verification_workflows.md](../verification/verification_workflows.md) - Verify implementations work correctly across browsers and viewports
+- [shared_patterns.md](../standards/shared_patterns.md) - Common DevTools and logging patterns for all workflows
 - [animation_workflows.md](./animation_workflows.md) - Complete animation implementation guide including waitForTransitionEnd pattern
 - [code_quality_standards.md](../standards/code_quality_standards.md) - CDN-safe initialization pattern and naming conventions
 

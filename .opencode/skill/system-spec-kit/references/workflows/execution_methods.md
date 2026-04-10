@@ -268,6 +268,18 @@ The workflow calculates a quality score (0-100) based on:
 
 Low quality sessions (<20 score) receive a warning header in the output.
 
+### Post-Save Quality Review
+
+After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This review checks the saved memory file and reports issues at three severity levels:
+
+| Severity | Action |
+|----------|--------|
+| **HIGH** | MUST manually patch via Edit tool (fix title, trigger_phrases, importance_tier) |
+| **MEDIUM** | Patch when practical |
+| **PASSED** | No action needed |
+
+**Save quality gate exceptions:** Short decision-type memories may bypass the content-length gate when `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true` and at least two structural signals (title, specFolder, or anchor) are present. This prevents legitimate short decisions from being rejected by the 0.4 signal density threshold.
+
 ---
 
 <!-- /ANCHOR:memory-workflow-12-steps -->

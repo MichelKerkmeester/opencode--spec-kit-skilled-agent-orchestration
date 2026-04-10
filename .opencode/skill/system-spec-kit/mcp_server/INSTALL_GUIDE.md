@@ -78,17 +78,21 @@ Spec Kit Memory is an MCP (Model Context Protocol) server that gives AI assistan
 │  Causal lineage      Adaptive fusion    Extended telemetry      │
 │                                                                 │
 │  SQLite + sqlite-vec for vector storage                         │
-│  Canonical DB: mcp_server/database/context-index.sqlite         │
+│  Canonical DBs:                                                 │
+│    mcp_server/database/context-index.sqlite (memory)            │
+│    mcp_server/database/code-graph.sqlite   (structural graph)   │
 └────────────────────┬────────────────────────────────────────────┘
                      │
-          ┌──────────┴──────────┐
-          ▼                     ▼
-┌─────────────────┐   ┌────────────────────────────────┐
-│ Markdown Docs   │   │ Causal Graph (memory lineage)   │
-│ specs/**/memory │   │ Decision-chain relationships     │
-│ Constitutional  │   │ Graph-aware reranking signals   │
-│ Spec documents  │   │ Runtime graph cache + telemetry │
-└─────────────────┘   └────────────────────────────────┘
+          ┌──────────┼──────────┐
+          ▼          ▼          ▼
+┌──────────────┐ ┌──────────────────┐ ┌────────────────────────────┐
+│ Markdown     │ │ Causal Graph     │ │ Code Graph (structural)    │
+│ Docs         │ │ (memory lineage) │ │ code-graph.sqlite          │
+│ specs/**     │ │ Decision-chain   │ │ Tree-sitter AST indexing   │
+│ memory       │ │ relationships    │ │ Graph-first routing        │
+│ Constitutional│ │ Graph-aware     │ │ Callers, imports, hierarchy│
+│ Spec docs    │ │ reranking       │ │ web-tree-sitter (WASM)     │
+└──────────────┘ └──────────────────┘ └────────────────────────────┘
 ```
 
 ### What This Guide Covers
@@ -130,7 +134,7 @@ The repo contains checked-in MCP wiring for OpenCode, Claude Code, Codex, Gemini
 |---|---|---|
 | OpenCode | `opencode.json` | MCP wiring is checked in. A plugin-based startup digest implementation exists under `.opencode/plugins/`, but repo registration of that plugin is runtime-dependent and not shown in `opencode.json`. |
 | Claude Code | `.claude/mcp.json` | Checked-in SessionStart / PreCompact / Stop hooks in `.claude/settings.local.json`. |
-| Codex | `.codex/config.toml` | Checked-in MCP config plus bootstrap parity through `.codex/agents/context-prime.toml`, not a native SessionStart hook. |
+| Codex | `.codex/config.toml` | Checked-in MCP config. Bootstrap parity via `session_bootstrap` MCP tool, not a native SessionStart hook. |
 | Gemini | `.gemini/settings.json` | Checked-in MCP config plus SessionStart / PreCompress / BeforeAgent / SessionEnd hook wiring. |
 | Copilot | `.vscode/mcp.json` | Checked-in MCP wrapper config. Startup banner code and wrapper scripts exist, but tracked `.github/hooks/superset-notify.json` still points at the Superset hook path, so local startup-hook behavior must be verified per environment. |
 
@@ -160,7 +164,7 @@ Phase 1 verifies the required software on your machine.
 
 `Claude Desktop` is also shown below as a generic MCP configuration example.
 
-No additional system dependencies are required beyond Node.js and npm.
+No additional system dependencies are required beyond Node.js and npm. The Code Graph structural indexer uses `web-tree-sitter` (WASM-based tree-sitter) which is bundled as an npm dependency and does not require a native tree-sitter installation.
 
 ### Validation: `phase_1_complete`
 

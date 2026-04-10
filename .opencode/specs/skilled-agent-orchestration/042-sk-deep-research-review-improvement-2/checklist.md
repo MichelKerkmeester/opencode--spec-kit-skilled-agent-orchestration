@@ -1,11 +1,11 @@
 ---
 title: "Verification Checklist: Deep Research and Deep Review Runtime Improvement Bundle [042]"
-description: "Verification Date: 2026-04-10"
+description: "Parent verification index for child phases 001-004."
 trigger_phrases:
   - "042"
   - "verification checklist"
-  - "deep research"
-  - "deep review"
+  - "phase verification"
+  - "parent packet"
 importance_tier: "important"
 contextType: "planning"
 ---
@@ -21,9 +21,9 @@ contextType: "planning"
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
-| **[P0]** | HARD BLOCKER | Cannot claim runtime-truth completion until verified |
-| **[P1]** | Required | Must complete or be explicitly deferred |
-| **[P2]** | Optional | Not used in this planning packet |
+| **[P0]** | Hard blocker | Blocks the linked phase from being treated as complete |
+| **[P1]** | Required | Must be completed or explicitly deferred in the linked child phase |
+| **[P2]** | Optional | Not used at the parent overview level |
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -31,10 +31,12 @@ contextType: "planning"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] REQ-001 stop-reason taxonomy is documented consistently across both loop products [EVIDENCE: exact artifact paths and JSON field names for `stopReason`] [TESTS: `deep-research-contract-parity.vitest.ts`; `deep-review-contract-parity.vitest.ts`]
-- [ ] CHK-002 [P0] REQ-002 legal done-gate behavior is defined for blocked-stop cases [EVIDENCE: workflow steps and fixture outputs showing blocked STOP rather than silent termination] [TESTS: `deep-research-behavioral.vitest.ts`; `deep-review-behavioral.vitest.ts`]
-- [ ] CHK-003 [P0] REQ-003 resume/start-from-run semantics are defined in command, state, and workflow contracts [EVIDENCE: command/state excerpts naming `continuedFromRun` or equivalent cursor fields] [TESTS: `deep-research-contract-parity.vitest.ts`; `deep-review-contract-parity.vitest.ts`]
-- [ ] CHK-004 [P1] Required Level 3 packet files exist and remain synchronized [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md`] [TESTS: strict validator]
+| Phase | Verification Source | Gate Summary | Status |
+|-------|---------------------|--------------|--------|
+| **Phase 1** | [./001-runtime-truth-foundation/checklist.md](./001-runtime-truth-foundation/checklist.md) | Stop contract, legal STOP, blocked-stop persistence, continuation lineage, journals, observability, semantic convergence, parity, and packet validation | Child checklist exists; all items pending |
+| **Phase 2** | [./002-semantic-coverage-graph/](./002-semantic-coverage-graph/) | Coverage graph extraction, DB/tool behavior, reducer/MCP seam, graph event docs, strict phase validation | No child checklist yet; use child `plan.md` and `tasks.md` gates |
+| **Phase 3** | [./003-wave-executor/](./003-wave-executor/) | Fan-out/join proof, deterministic segmentation, activation gates, keyed merge, resume safety, strict phase validation | No child checklist yet; use child `plan.md` and `tasks.md` gates |
+| **Phase 4** | [./004-offline-loop-optimizer/](./004-offline-loop-optimizer/) | Deterministic replay, bounded search, advisory-only promotion, deferred `4b` guardrails, strict phase validation | No child checklist yet; use child `plan.md` and `tasks.md` gates |
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -42,9 +44,8 @@ contextType: "planning"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] REQ-004 audit journals are packet-local and append-only in both loop contracts [EVIDENCE: journal path, append-only rules, and reducer/dashboard references] [TESTS: `deep-research-reducer.vitest.ts`; `deep-review-reducer-schema.vitest.ts`]
-- [ ] CHK-011 [P0] REQ-005 claim-verification ledger is defined with `verified`, `contradicted`, and `unresolved` statuses [EVIDENCE: ledger schema/path and synthesis references] [TESTS: `deep-research-behavioral.vitest.ts`; `deep-research-reducer.vitest.ts`]
-- [ ] CHK-012 [P1] REQ-013 parity alignment is enforced by contract tests and does not depend on manual memory of the change set [EVIDENCE: parity assertions referencing the new artifact paths and lifecycle fields] [TESTS: `deep-research-contract-parity.vitest.ts`; `deep-review-contract-parity.vitest.ts`]
+- [ ] CHK-PARENT-010 [P1] Phase 2 root routing points to graph extraction, MCP tooling, and reducer/MCP seam sources in the child packet.
+- [ ] CHK-PARENT-011 [P1] Phase 3 root routing points to fan-out/join proof, keyed merge, and reducer-owned board sources in the child packet.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -52,10 +53,8 @@ contextType: "planning"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] REQ-006 behavior-first tests exist for deep research and deep review [EVIDENCE: new behavioral test file paths and scenario coverage] [TESTS: `deep-research-behavioral.vitest.ts`; `deep-review-behavioral.vitest.ts`]
-- [ ] CHK-021 [P1] REQ-007 richer dashboard metrics are validated in reducer/schema coverage [EVIDENCE: dashboard sections and reducer-metric references] [TESTS: `deep-research-reducer.vitest.ts`; `deep-review-reducer-schema.vitest.ts`]
-- [ ] CHK-022 [P1] REQ-010 council-style synthesis remains opt-in and does not alter default flows [EVIDENCE: command/profile docs and optional-mode fixture output] [TESTS: `deep-research-behavioral.vitest.ts`; `deep-research-contract-parity.vitest.ts`]
-- [ ] CHK-023 [P1] REQ-011 coordination board remains packet-local and optional [EVIDENCE: board schema/strategy sections and fixture output] [TESTS: `deep-research-behavioral.vitest.ts`]
+- [ ] CHK-PARENT-020 [P1] Phase 3 verification references remain aligned with wave planner, merge, and resume test surfaces.
+- [ ] CHK-PARENT-021 [P1] Phase 4 verification references continue to show advisory-only promotion and deferred `4b` prerequisites.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -63,9 +62,7 @@ contextType: "planning"
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-030 [P0] REQ-002 and REQ-014 keep STOP legality and state truth explicit enough to avoid hidden runtime state or non-auditable termination behavior [EVIDENCE: explicit stop-gate and packet-local artifact rules] [TESTS: behavior and parity suites]
-- [ ] CHK-031 [P1] REQ-008 publication critique keeps weaker evidence classes visible instead of silently promoting them [EVIDENCE: evidence-class or critique fields in research contracts] [TESTS: `deep-research-behavioral.vitest.ts`]
-- [ ] CHK-032 [P1] REQ-009 promotion checkpoints prevent low-evidence findings from being treated as adoption-ready [EVIDENCE: checkpoint threshold fields and synthesis references] [TESTS: `deep-research-behavioral.vitest.ts`; `deep-research-contract-parity.vitest.ts`]
+- [ ] CHK-PARENT-030 [P1] Parent docs continue to mark Phase 4b as blocked until replay fixtures, behavioral suites, and corpus prerequisites exist.
 <!-- /ANCHOR:security -->
 
 ---
@@ -73,9 +70,9 @@ contextType: "planning"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P1] REQ-012 keeps default command guidance compact while advanced modes remain discoverable [EVIDENCE: quick-reference and command examples] [TESTS: `deep-research-contract-parity.vitest.ts`; `deep-review-contract-parity.vitest.ts`]
-- [ ] CHK-041 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` remain synchronized after implementation planning updates [EVIDENCE: manual doc cross-check] [TESTS: strict validator]
-- [ ] CHK-042 [P1] `implementation-summary.md` remains a placeholder only until implementation finishes [EVIDENCE: placeholder-only content review] [TESTS: strict validator]
+- [ ] CHK-PARENT-040 [P1] Parent overview docs summarize the child phases without duplicating child implementation detail.
+- [ ] CHK-PARENT-041 [P1] Phase 1 child checklist remains the verification source of truth and is linked correctly.
+- [ ] CHK-PARENT-042 [P1] Phases 2-4 are clearly marked as having no child checklist files yet.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -83,9 +80,8 @@ contextType: "planning"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P1] Planned runtime artifacts stay inside existing `research/` or `review/` packet boundaries unless the packet explicitly creates an optional advanced-mode artifact there [EVIDENCE: file-path review in spec/tasks] [TESTS: parity suites]
-- [ ] CHK-051 [P1] New behavior-test files remain under `.opencode/skill/system-spec-kit/scripts/tests/` as planned [EVIDENCE: test file paths present in repo and referenced in docs] [TESTS: `rg --files` plus `pnpm vitest`]
-- [ ] CHK-052 [P1] Strict packet validation passes after the documentation and implementation work are complete [EVIDENCE: validator PASS output] [TESTS: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 --strict`]
+- [ ] CHK-PARENT-050 [P1] Root packet links resolve to the intended child folders and parent summary files.
+- [ ] CHK-PARENT-051 [P1] Parent packet status/count summaries match the child task sources they summarize.
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -93,11 +89,9 @@ contextType: "planning"
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
-| Category | Total | Planned |
-|----------|-------|---------|
-| P0 Items | 7 | 7 |
-| P1 Items | 10 | 10 |
-
-**Verification Date**: 2026-04-10
-**Packet Status**: Planning only. Checklist items remain pending until implementation work begins.
+| Category | Total | Notes |
+|----------|-------|-------|
+| Child checklists present | 1 | Phase 1 only |
+| Child phases without checklist files yet | 3 | Phases 2-4 |
+| Parent packet status | Planning overview only | Root file tracks verification entrypoints, not implementation evidence |
 <!-- /ANCHOR:summary -->

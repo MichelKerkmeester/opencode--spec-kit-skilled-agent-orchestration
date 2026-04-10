@@ -53,8 +53,8 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 | What | Count | Details |
 |------|-------|---------|
 | **MCP tools** | 43 | Organized across core memory layers plus dedicated code-graph and CocoIndex dispatch groups |
-| **Search channels** | 5 | Vector, FTS5, BM25, Causal Graph, Degree |
-| **Pipeline stages** | 4 | Gather, Score, Rerank, Filter |
+| **Search channels** | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree (+ CocoIndex semantic code search as external bridge) |
+| **Pipeline stages** | 4 | Gather (graph-first routing), Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
 | **Memory states** | 5 | HOT, WARM, COLD, DORMANT, ARCHIVED |
 | **Intent types** | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
@@ -66,9 +66,10 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 | Capability | Basic RAG | Spec Kit Memory |
 |------------|-----------|-----------------|
-| **Search** | Vector similarity only | 5 channels fused with Reciprocal Rank Fusion (K tuned per intent) |
+| **Search** | Vector similarity only | 5 core channels + CocoIndex bridge, fused with Reciprocal Rank Fusion (K tuned per intent) |
+| **Routing** | No routing | Graph-first structural routing: Code Graph -> CocoIndex -> Memory; 3-tier FTS fallback when graph/semantic miss |
 | **"Why" queries** | Not possible | Causal graph with 6 relationship types, community detection and depth signals |
-| **Forgetting curve** | None or exponential | FSRS power-law decay with 2D matrix (context type x importance tier) |
+| **Forgetting curve** | None or exponential | FSRS power-law decay with classification-aware 2D matrix (context type x importance tier) |
 | **Query understanding** | Keyword match | Intent classification (7 types), complexity routing, query decomposition |
 | **Sessions** | Stateless | Working memory with attention decay, ~50% token savings via deduplication |
 | **Section retrieval** | Returns full documents | ANCHOR-based chunking with ~93% token savings |
@@ -223,7 +224,7 @@ This section explains the main ideas behind the memory system in plain language.
 
 When you search for something, the system checks several sources at once. Think of a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet and the recommendation board all at the same time.
 
-**Five search channels** work together:
+**Five core search channels** work together, with **CocoIndex** available as an external semantic code search bridge:
 
 | Channel | How It Works | Good For |
 |---------|-------------|----------|
@@ -232,6 +233,9 @@ When you search for something, the system checks several sources at once. Think 
 | **BM25** | Keyword relevance scoring (like a search engine) | Ranking results when you know roughly what you want |
 | **Causal Graph** | Follows causal links between memories | "Why did we choose this?" questions |
 | **Degree** | Scores memories by graph connectivity, weighted by edge type (`caused`=1.0, `enabled`=0.75, `supports`=0.5) | Finding important hub memories (capped to prevent over-influence) |
+| **CocoIndex** *(bridge)* | Semantic code search via vector embeddings across source files | Finding code implementations when memory channels miss; concept-first code discovery |
+
+**Graph-first routing** determines query dispatch order: structural queries route to the Code Graph first, then CocoIndex for semantic code discovery, then the 5-channel memory pipeline. This avoids forcing one search system to handle both structural relationships and semantic similarity.
 
 **Reciprocal Rank Fusion (RRF)** combines all channel results using the formula `1/(K + rank)`. The K parameter is tuned per query intent through sensitivity analysis across K values {10, 20, 40, 60, 80, 100, 120}. A memory that scores well in multiple channels rises to the top because RRF gives exponential weight to high-ranking items while still including lower-ranked contributions.
 
@@ -259,7 +263,7 @@ When you search for something, the system checks several sources at once. Think 
 
 Every search goes through four stages. Each stage has one clear job and cannot change results from earlier stages.
 
-**Stage 1 -- Gather candidates** from active channels in parallel. Constitutional-tier memories are always injected regardless of score.
+**Stage 1 -- Gather candidates** using graph-first routing: structural queries dispatch to Code Graph first, then CocoIndex for semantic code discovery, then the memory pipeline's active channels in parallel. Constitutional-tier memories are always injected regardless of score.
 
 **Stage 2 -- Score and fuse** using RRF plus eight post-fusion scoring signals:
 

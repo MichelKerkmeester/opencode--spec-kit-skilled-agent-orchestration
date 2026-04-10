@@ -1180,7 +1180,7 @@ A: [Answer with code if applicable.]
 ## 15. RELATED RESOURCES
 
 ### Templates
-- [skill_asset_template.md](../opencode/skill_asset_template.md) - Pattern reference for this document
+- [skill_asset_template.md](../skill/skill_asset_template.md) - Pattern reference for this document
 - [install_guide_template.md](./install_guide_template.md) - For installation documentation
 - [frontmatter_templates.md](./frontmatter_templates.md) - YAML frontmatter examples
 
@@ -1192,8 +1192,8 @@ A: [Answer with code if applicable.]
 ### Examples
 - Project READMEs in `/specs/` folders
 - Skill READMEs in `.opencode/skill/` folders
-- [Spec Kit Memory MCP Server README](../../system-spec-kit/mcp_server/README.md) - Reference implementation of two-tier voice, numbered Feature subsections, comparison tables and analogy patterns
-- [Feature Catalog in Simple Terms](../../system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md) - Voice and tone calibration reference for plain-language technical writing
+- [Spec Kit Memory MCP Server README](../../../system-spec-kit/mcp_server/README.md) - Reference implementation of two-tier voice, numbered Feature subsections, comparison tables and analogy patterns
+- [Feature Catalog in Simple Terms](../../../system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md) - Voice and tone calibration reference for plain-language technical writing
 
 ### Skill Reference
 - [sk-doc SKILL.md](../../SKILL.md) - Parent skill documentation

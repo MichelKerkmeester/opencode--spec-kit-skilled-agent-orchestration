@@ -1,10 +1,11 @@
 ---
 title: "Implementation Summary: Deep Research and Deep Review Runtime Improvement Bundle [042]"
-description: "Post-implementation summary placeholder for packet 042. This file intentionally remains unfilled until implementation work is complete."
+description: "Placeholder summary for Packet 042. Implementation has not started; work is planned across child phases 001-004."
 trigger_phrases:
   - "042"
   - "implementation summary"
   - "placeholder"
+  - "phase overview"
 importance_tier: "important"
 contextType: "planning"
 ---
@@ -21,8 +22,9 @@ contextType: "planning"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 042-sk-deep-research-review-improvement-2 |
-| **Completed** | [To be completed after implementation] |
+| **Completed** | Not started |
 | **Level** | 3 |
+| **Execution Model** | Four child phases with Phase 4 split into active `4a` and deferred `4b` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -30,11 +32,14 @@ contextType: "planning"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-[To be completed after implementation]
+Implementation has not started.
 
-### Feature Summary
+### Planned Delivery Shape
 
-[To be completed after implementation]
+- Phase 1: [./001-runtime-truth-foundation/](./001-runtime-truth-foundation/)
+- Phase 2: [./002-semantic-coverage-graph/](./002-semantic-coverage-graph/)
+- Phase 3: [./003-wave-executor/](./003-wave-executor/)
+- Phase 4: [./004-offline-loop-optimizer/](./004-offline-loop-optimizer/)
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -42,7 +47,7 @@ contextType: "planning"
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-[To be completed after implementation]
+This file remains a placeholder until one or more child phases complete implementation and validation.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -52,7 +57,8 @@ contextType: "planning"
 
 | Decision | Why |
 |----------|-----|
-| [To be completed after implementation] | [To be completed after implementation] |
+| Phase the work into four child packets | Keep the root packet concise and make each implementation area independently executable |
+| Split Phase 4 into active `4a` and deferred `4b` | Keep deterministic optimizer work in scope now and postpone unsafe prompt/meta optimization |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -62,7 +68,8 @@ contextType: "planning"
 
 | Check | Result |
 |-------|--------|
-| [To be completed after implementation] | [To be completed after implementation] |
+| Root packet rewritten as parent overview | Pending confirmation during validation |
+| Implementation complete | Not started |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -70,5 +77,6 @@ contextType: "planning"
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **[To be completed after implementation]** [To be completed after implementation]
+1. **Implementation has not started.** This summary intentionally references planning state only.
+2. **Phase 4b is deferred.** Prompt/meta optimizer work remains blocked until replay fixtures, behavioral suites, and corpus prerequisites exist.
 <!-- /ANCHOR:limitations -->

@@ -55,5 +55,5 @@ Overlay portability: apply this baseline with `sk-code-opencode`, `sk-code-web`,
 ## 4. RELATED RESOURCES
 
 - [SKILL.md](../SKILL.md) - Parent skill definition with activation triggers and resource loading rules
-- [review_mode_contract.yaml](../../sk-deep-research/assets/review_mode_contract.yaml) - Canonical review-mode contract manifest (source of truth for deep review taxonomy)
+- [review_mode_contract.yaml](../../sk-deep-review/assets/review_mode_contract.yaml) - Canonical review-mode contract manifest (source of truth for deep review taxonomy)
 <!-- /ANCHOR:related-resources -->

@@ -356,6 +356,6 @@ python -m flake8 file.py && python -m mypy file.py && python -m black --check fi
 - [universal_checklist.md](./universal_checklist.md) - Language-agnostic checks
 
 ### Style Guide
-- [Python Style Guide](../python/style_guide.md)
-- [Python Quality Standards](../python/quality_standards.md)
+- [Python Style Guide](../../references/python/style_guide.md)
+- [Python Quality Standards](../../references/python/quality_standards.md)
 <!-- /ANCHOR:related-resources -->

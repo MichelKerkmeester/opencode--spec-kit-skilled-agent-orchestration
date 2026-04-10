@@ -38,7 +38,7 @@ Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database
 - `generate-context.ts` - generate memory output from spec folder or JSON input with content-aware candidate selection
 - `rank-memories.ts` - rank memory candidates by scoring rules
 - `cleanup-orphaned-vectors.ts` - remove stale vector rows not linked to active memories
-- `validate-memory-quality.ts` - validates post-render memory quality against scoring thresholds before indexing/reporting
+- `validate-memory-quality.ts` - validates post-render memory quality against scoring thresholds before indexing/reporting; includes post-save quality gates (structure, semantic sufficiency, duplicate detection), heuristic calibration, and trigger sanitization
 - `reindex-embeddings.ts` - force full embedding reindex across memory/spec documents
 - `ast-parser.ts` - parse markdown into heading/code/table-aware sections
 - `backfill-frontmatter.ts` - bulk frontmatter normalization for templates, spec docs, and memory files
@@ -94,7 +94,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js
 - Uses content-aware candidate selection so task/session evidence beats generic folder fallback when valid.
 - Derives `MEMORY_TITLE` from the content slug via `slugToTitle(contentSlug)` and writes it into the H1 heading. A blank line separates the frontmatter close `---` from the `# H1`.
 - Writes `MEMORY_DASHBOARD_TITLE` into context template frontmatter so dashboard titles stay disambiguated.
-- Runs post-render memory quality validation so contaminated headings or fallback-decision leaks are caught after template population.
+- Runs post-render memory quality validation so contaminated headings or fallback-decision leaks are caught after template population. The post-save quality pipeline includes 3-layer gates (structure, semantic sufficiency, duplicate detection), heuristic calibration for scoring thresholds, and trigger sanitization to prevent noisy or over-broad trigger phrases from persisting in the index.
 - Retroactive title refresh for existing memories: run `memory_index_scan({ force: true })` after parser/template updates.
 <!-- /ANCHOR:workflow-alignment -->
 
