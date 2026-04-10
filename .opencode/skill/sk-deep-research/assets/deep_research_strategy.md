@@ -125,7 +125,7 @@ Serves as the "persistent brain" for a deep research session. Records what to in
 - Progressive synthesis: true (default)
 - research/research.md ownership: workflow-owned canonical synthesis output
 - Lifecycle branches: `resume`, `restart`, `fork`, `completed-continue`
-- Machine-owned sections: reducer controls Sections 7-11
+- Machine-owned sections: reducer controls Sections 3, 6, 7-11
 - Canonical pause sentinel: `research/.deep-research-pause`
 - Capability matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
 - Capability matrix doc: `.opencode/skill/sk-deep-research/references/capability_matrix.md`

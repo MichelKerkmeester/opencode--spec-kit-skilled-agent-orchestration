@@ -24,7 +24,8 @@ const search = require(path.join(
     score: { composite: number; perDimension: object; unavailableDimensions: string[] },
     accepted: boolean,
     comparison?: object,
-  ) => object;
+    options?: { timestamp?: string },
+  ) => Record<string, any>;
   randomSearch: (
     corpus: object[],
     rubric: object,
@@ -304,6 +305,51 @@ describe('Random Search Optimizer (T004)', () => {
 
       const result = search.compareScores(baseline, candidate);
       expect(result.regressions.some((r: string) => r.includes('findingAccuracy'))).toBe(true);
+    });
+  });
+
+  describe('P1-1: deterministic timestamps in recordCandidate', () => {
+    it('should use provided timestamp for deterministic replay', () => {
+      const fixedTime = '2026-01-01T00:00:00.000Z';
+      const record = search.recordCandidate(
+        { convergenceThreshold: 0.05 },
+        { composite: 0.8, perDimension: {}, unavailableDimensions: [] },
+        true,
+        undefined,
+        { timestamp: fixedTime },
+      );
+
+      expect(record.timestamp).toBe(fixedTime);
+    });
+
+    it('should default to current time when no timestamp override', () => {
+      const before = new Date().toISOString();
+      const record = search.recordCandidate(
+        { convergenceThreshold: 0.05 },
+        { composite: 0.8, perDimension: {}, unavailableDimensions: [] },
+        true,
+      );
+      const after = new Date().toISOString();
+
+      expect(record.timestamp >= before).toBe(true);
+      expect(record.timestamp <= after).toBe(true);
+    });
+  });
+
+  describe('P2-1: maxIterations in default param space', () => {
+    it('should include maxIterations in DEFAULT_PARAM_SPACE', () => {
+      expect(search.DEFAULT_PARAM_SPACE.maxIterations).toBeDefined();
+      expect(search.DEFAULT_PARAM_SPACE.maxIterations.min).toBe(5);
+      expect(search.DEFAULT_PARAM_SPACE.maxIterations.max).toBe(30);
+      expect(search.DEFAULT_PARAM_SPACE.maxIterations.step).toBe(1);
+    });
+
+    it('should sample maxIterations within bounds', () => {
+      const rng = search.createRNG(42);
+      const config = search.sampleConfig(search.DEFAULT_PARAM_SPACE, rng);
+      expect(config.maxIterations).toBeGreaterThanOrEqual(5);
+      expect(config.maxIterations).toBeLessThanOrEqual(30);
+      expect(Number.isInteger(config.maxIterations)).toBe(true);
     });
   });
 });

@@ -434,7 +434,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     '<!-- ANCHOR:trend -->',
     '## 5. TREND',
     `- Last 3 ratios: ${lastThreeRatios}`,
-    `- Stuck count: ${latestIteration?.status === 'stuck' ? 1 : 0}`,
+    `- Stuck count: ${iterationRecords.filter((r) => r.status === 'stuck').length}`,
     '- Guard violations: none recorded by the reducer pass',
     `- convergenceScore: ${Number(registry.metrics.convergenceScore || 0).toFixed(2)}`,
     `- coverageBySources: ${JSON.stringify(registry.metrics.coverageBySources)}`,

@@ -70,7 +70,8 @@ function checkPrerequisites(context) {
 
 /**
  * Check whether a candidate config only touches tunable fields
- * (not locked contract fields).
+ * (not locked contract fields), and validate value types and ranges
+ * against the manifest definitions.
  *
  * @param {object} candidate - The candidate config.
  * @param {object} manifest - The optimizer manifest.
@@ -78,18 +79,42 @@ function checkPrerequisites(context) {
  */
 function checkManifestBoundary(candidate, manifest) {
   const violations = [];
-  const tunableFields = new Set(
-    (manifest.tunableFields || []).map((f) => f.name || f),
-  );
+  const tunableFieldMap = new Map();
+  for (const f of manifest.tunableFields || []) {
+    const name = f.name || f;
+    tunableFieldMap.set(name, f);
+  }
   const lockedFields = new Set(
     (manifest.lockedFields || []).map((f) => f.name || f),
   );
 
-  for (const field of Object.keys(candidate)) {
+  for (const [field, value] of Object.entries(candidate)) {
     if (lockedFields.has(field)) {
       violations.push(`Field "${field}" is a locked contract field and cannot be modified by the optimizer`);
-    } else if (!tunableFields.has(field)) {
+    } else if (!tunableFieldMap.has(field)) {
       violations.push(`Field "${field}" is not listed as tunable in the optimizer manifest`);
+    } else {
+      // Validate type and range against manifest definition
+      const def = tunableFieldMap.get(field);
+      if (def && typeof def === 'object') {
+        // Type validation
+        if (def.type === 'number' || def.type === 'integer') {
+          if (typeof value !== 'number') {
+            violations.push(`Field "${field}" must be a ${def.type}, got ${typeof value}`);
+          } else if (def.type === 'integer' && !Number.isInteger(value)) {
+            violations.push(`Field "${field}" must be an integer, got ${value}`);
+          }
+        }
+        // Range validation
+        if (def.range && typeof value === 'number') {
+          if (def.range.min !== undefined && value < def.range.min) {
+            violations.push(`Field "${field}" value ${value} is below manifest minimum ${def.range.min}`);
+          }
+          if (def.range.max !== undefined && value > def.range.max) {
+            violations.push(`Field "${field}" value ${value} is above manifest maximum ${def.range.max}`);
+          }
+        }
+      }
     }
   }
 
@@ -119,7 +144,9 @@ function evaluateCandidate(candidate, baselineScore, options) {
 
   // Always check prerequisites
   const prerequisiteCheck = checkPrerequisites(opts.prerequisites || {});
-  const advisoryOnly = !prerequisiteCheck.allMet;
+  // Manifest governance: promotionMode is advisory-only and autoPromotionAllowed is false.
+  // advisoryOnly is ALWAYS true regardless of prerequisite state.
+  const advisoryOnly = true;
 
   // Check manifest boundaries if manifest provided
   let manifestCheck = null;

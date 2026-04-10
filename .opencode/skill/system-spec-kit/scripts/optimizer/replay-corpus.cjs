@@ -106,25 +106,33 @@ function validateCorpusEntry(entry) {
 
 /**
  * Parse JSONL content into an array of records.
+ * Tracks skipped/malformed lines for diagnostics.
  *
  * @param {string} content - Raw JSONL string.
- * @returns {object[]} Parsed records.
+ * @returns {{ records: object[]; skippedLines: Array<{ lineNumber: number; content: string; error: string }>; totalLines: number }} Parsed records with skip metadata.
  */
 function parseJSONL(content) {
   const lines = content.trim().split('\n');
   const records = [];
+  const skippedLines = [];
+  let nonBlankCount = 0;
 
-  for (const line of lines) {
-    const trimmed = line.trim();
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
     if (!trimmed) continue;
+    nonBlankCount++;
     try {
       records.push(JSON.parse(trimmed));
-    } catch (_err) {
-      // Skip malformed lines
+    } catch (err) {
+      skippedLines.push({
+        lineNumber: i + 1,
+        content: trimmed.length > 200 ? trimmed.slice(0, 200) + '...' : trimmed,
+        error: err instanceof Error ? err.message : String(err),
+      });
     }
   }
 
-  return records;
+  return { records, skippedLines, totalLines: nonBlankCount };
 }
 
 /* ---------------------------------------------------------------
@@ -137,20 +145,30 @@ function parseJSONL(content) {
  * @param {object[]} records - Parsed JSONL records from a single run.
  * @param {string} packetFamily - The packet family identifier (e.g., '040').
  * @param {string} sourceRunId - Identifier for the source run.
+ * @param {object} [options={}] - Extraction options.
+ * @param {string} [options.timestamp] - Override timestamp for deterministic replay. Defaults to current time.
  * @returns {object} A corpus entry.
  */
-function extractCorpusEntry(records, packetFamily, sourceRunId) {
+function extractCorpusEntry(records, packetFamily, sourceRunId, options) {
+  const opts = options || {};
+  const extractedAt = opts.timestamp || new Date().toISOString();
   const configRecord = records.find((r) => r.type === 'config') || {};
   const iterations = records.filter((r) => ITERATION_TYPES.has(r.type));
   const events = records.filter((r) => EVENT_TYPES.has(r.type));
 
-  // Find the terminal event (synthesis_complete, stop_decision, etc.)
-  const stopEvent = events.find(
-    (e) =>
+  // Find the LAST terminal event (synthesis_complete, stop_decision, etc.)
+  // An intermediate stop_decision before the real synthesis_complete must not
+  // freeze stopOutcome — iterate all events and keep the final match.
+  let stopEvent = null;
+  for (const e of events) {
+    if (
       e.event === 'synthesis_complete' ||
       e.event === 'stop_decision' ||
-      e.event === 'stopped',
-  );
+      e.event === 'stopped'
+    ) {
+      stopEvent = e;
+    }
+  }
 
   const familyInfo = PACKET_FAMILIES[packetFamily] || {
     role: 'unknown',
@@ -195,7 +213,7 @@ function extractCorpusEntry(records, packetFamily, sourceRunId) {
           verdict: null,
         },
     metadata: {
-      extractedAt: new Date().toISOString(),
+      extractedAt,
       sourceRecordCount: records.length,
       hasGraphMetrics: iterations.some(
         (i) => i.convergenceSignals && i.convergenceSignals.graphCoverage !== undefined,
@@ -217,6 +235,7 @@ function extractCorpusEntry(records, packetFamily, sourceRunId) {
  * @param {string} [options.fixturesDir] - Path to the fixtures directory.
  * @param {string} [options.jsonlContent] - Raw JSONL content (alternative to reading from disk).
  * @param {string} [options.sourceRunId] - Run identifier for the corpus entry.
+ * @param {string} [options.timestamp] - Override timestamp for deterministic replay.
  * @returns {{ corpus: object[]; errors: string[]; warnings: string[]; familyInfo: object }}
  */
 function buildCorpus(packetFamily, options = {}) {
@@ -246,10 +265,10 @@ function buildCorpus(packetFamily, options = {}) {
     );
   }
 
-  let records;
+  let parsed;
 
   if (options.jsonlContent) {
-    records = parseJSONL(options.jsonlContent);
+    parsed = parseJSONL(options.jsonlContent);
   } else if (options.fixturesDir) {
     const jsonlPath = path.join(
       options.fixturesDir,
@@ -261,10 +280,26 @@ function buildCorpus(packetFamily, options = {}) {
       return { corpus, errors, warnings, familyInfo };
     }
     const content = fs.readFileSync(jsonlPath, 'utf8');
-    records = parseJSONL(content);
+    parsed = parseJSONL(content);
   } else {
     errors.push('Either fixturesDir or jsonlContent must be provided');
     return { corpus, errors, warnings, familyInfo };
+  }
+
+  const { records, skippedLines, totalLines } = parsed;
+
+  // P1-4: Reject traces where >20% of non-blank lines are malformed
+  if (totalLines > 0 && skippedLines.length / totalLines > 0.20) {
+    errors.push(
+      `Too many malformed JSONL lines: ${skippedLines.length}/${totalLines} (${(skippedLines.length / totalLines * 100).toFixed(1)}%) exceeds 20% threshold`,
+    );
+    return { corpus, errors, warnings, familyInfo };
+  }
+
+  if (skippedLines.length > 0) {
+    warnings.push(
+      `Skipped ${skippedLines.length} malformed JSONL line(s) out of ${totalLines}`,
+    );
   }
 
   if (records.length === 0) {
@@ -277,11 +312,21 @@ function buildCorpus(packetFamily, options = {}) {
     (records.find((r) => r.sessionId) || {}).sessionId ||
     `${packetFamily}-run-1`;
 
-  const entry = extractCorpusEntry(records, packetFamily, sourceRunId);
+  const entry = extractCorpusEntry(records, packetFamily, sourceRunId, {
+    timestamp: options.timestamp,
+  });
+
+  // Attach skip/validation metadata to the corpus entry
+  if (skippedLines.length > 0) {
+    entry.metadata.skippedLines = skippedLines;
+  }
+  entry.metadata.validationErrors = [];
+
   const validation = validateCorpusEntry(entry);
 
   if (!validation.valid) {
     errors.push(...validation.errors);
+    entry.metadata.validationErrors = validation.errors;
   } else {
     corpus.push(entry);
   }

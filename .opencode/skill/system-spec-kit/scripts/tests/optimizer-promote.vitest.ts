@@ -219,6 +219,30 @@ describe('Advisory Promotion Gate (T007)', () => {
 
       expect(result.decision).toMatch(/^advisory-/);
     });
+
+    it('P1-2: advisoryOnly MUST be true even when all prerequisites are met', () => {
+      const candidate = {
+        config: { convergenceThreshold: 0.05 },
+        score: {
+          composite: 0.9,
+          perDimension: {
+            convergenceEfficiency: { score: 0.9, weight: 0.3, weighted: 0.27, available: true },
+            findingAccuracy: { score: 0.9, weight: 0.3, weighted: 0.27, available: true },
+          },
+        },
+      };
+
+      const result = promote.evaluateCandidate(candidate, baselineScore, {
+        manifest,
+        prerequisites: {
+          replayFixturesExist: true,
+          behavioralSuitesExist: true,
+        },
+      });
+
+      // This is the core P1-2 assertion: advisoryOnly must NEVER flip to false
+      expect(result.advisoryOnly).toBe(true);
+    });
   });
 
   describe('generatePromotionReport', () => {
@@ -273,6 +297,53 @@ describe('Advisory Promotion Gate (T007)', () => {
       expect(
         report.nextSteps.some((s: string) => s.includes('prerequisite')),
       ).toBe(true);
+    });
+  });
+
+  describe('P1-2: checkManifestBoundary range/type validation', () => {
+    it('should reject values below manifest minimum', () => {
+      const result = promote.checkManifestBoundary(
+        { convergenceThreshold: 0.001 },
+        manifest,
+      );
+      expect(result.valid).toBe(false);
+      expect(result.violations.some((v: string) => v.includes('below manifest minimum'))).toBe(true);
+    });
+
+    it('should reject values above manifest maximum', () => {
+      const result = promote.checkManifestBoundary(
+        { convergenceThreshold: 0.99 },
+        manifest,
+      );
+      expect(result.valid).toBe(false);
+      expect(result.violations.some((v: string) => v.includes('above manifest maximum'))).toBe(true);
+    });
+
+    it('should reject non-integer for integer type fields', () => {
+      const result = promote.checkManifestBoundary(
+        { stuckThreshold: 2.5 },
+        manifest,
+      );
+      expect(result.valid).toBe(false);
+      expect(result.violations.some((v: string) => v.includes('integer'))).toBe(true);
+    });
+
+    it('should reject non-number for numeric fields', () => {
+      const result = promote.checkManifestBoundary(
+        { convergenceThreshold: 'not-a-number' },
+        manifest,
+      );
+      expect(result.valid).toBe(false);
+      expect(result.violations.some((v: string) => v.includes('must be a number'))).toBe(true);
+    });
+
+    it('should accept values within manifest range', () => {
+      const result = promote.checkManifestBoundary(
+        { convergenceThreshold: 0.10, stuckThreshold: 3 },
+        manifest,
+      );
+      expect(result.valid).toBe(true);
+      expect(result.violations).toHaveLength(0);
     });
   });
 

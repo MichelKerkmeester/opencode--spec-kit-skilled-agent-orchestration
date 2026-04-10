@@ -25,6 +25,7 @@ const DEFAULT_PARAM_SPACE = Object.freeze({
   stuckThreshold: { min: 1, max: 5, step: 1 },
   noProgressThreshold: { min: 0.01, max: 0.15, step: 0.01 },
   compositeStopScore: { min: 0.40, max: 0.80, step: 0.05 },
+  maxIterations: { min: 5, max: 30, step: 1 },
 });
 
 /* ---------------------------------------------------------------
@@ -94,11 +95,14 @@ function countDecimals(n) {
  * @param {object} score - The rubric score result.
  * @param {boolean} accepted - Whether the candidate was accepted.
  * @param {object} [comparison] - Optional comparison details.
+ * @param {object} [options] - Additional options.
+ * @param {string} [options.timestamp] - Override timestamp for deterministic replay. Defaults to current time.
  * @returns {object} An audit record.
  */
-function recordCandidate(candidate, score, accepted, comparison) {
+function recordCandidate(candidate, score, accepted, comparison, options) {
+  const opts = options || {};
   return {
-    timestamp: new Date().toISOString(),
+    timestamp: opts.timestamp || new Date().toISOString(),
     candidate,
     score: {
       composite: score.composite,

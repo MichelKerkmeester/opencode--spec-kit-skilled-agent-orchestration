@@ -32,8 +32,11 @@
     "dashboardFile": "research/deep-research-dashboard.md",
     "strategyFile": "research/deep-research-strategy.md",
     "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
       "what-worked",
       "what-failed",
+      "exhausted-approaches",
       "ruled-out-directions",
       "next-focus"
     ]

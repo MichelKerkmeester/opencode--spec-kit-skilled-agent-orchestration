@@ -17,11 +17,11 @@ const replayCorpus = require(path.join(
   REQUIRED_ENTRY_FIELDS: readonly string[];
   buildCorpus: (
     packetFamily: string,
-    options?: { fixturesDir?: string; jsonlContent?: string; sourceRunId?: string },
-  ) => { corpus: object[]; errors: string[]; warnings: string[]; familyInfo: object | null };
+    options?: { fixturesDir?: string; jsonlContent?: string; sourceRunId?: string; timestamp?: string },
+  ) => { corpus: Array<Record<string, any>>; errors: string[]; warnings: string[]; familyInfo: object | null };
   validateCorpusEntry: (entry: object) => { valid: boolean; errors: string[] };
-  extractCorpusEntry: (records: object[], packetFamily: string, sourceRunId: string) => object;
-  parseJSONL: (content: string) => object[];
+  extractCorpusEntry: (records: object[], packetFamily: string, sourceRunId: string, options?: { timestamp?: string }) => Record<string, any>;
+  parseJSONL: (content: string) => { records: object[]; skippedLines: Array<{ lineNumber: number; content: string; error: string }>; totalLines: number };
   saveCorpus: (corpus: object[], outputPath: string) => void;
   loadCorpus: (corpusPath: string) => object[];
 };
@@ -59,22 +59,38 @@ describe('Replay Corpus Builder (T001)', () => {
   describe('parseJSONL', () => {
     it('should parse valid JSONL content', () => {
       const content = '{"type":"config","topic":"test"}\n{"type":"iteration","run":1}\n';
-      const records = replayCorpus.parseJSONL(content);
-      expect(records).toHaveLength(2);
-      expect(records[0]).toEqual({ type: 'config', topic: 'test' });
-      expect(records[1]).toEqual({ type: 'iteration', run: 1 });
+      const result = replayCorpus.parseJSONL(content);
+      expect(result.records).toHaveLength(2);
+      expect(result.records[0]).toEqual({ type: 'config', topic: 'test' });
+      expect(result.records[1]).toEqual({ type: 'iteration', run: 1 });
+      expect(result.skippedLines).toHaveLength(0);
+      expect(result.totalLines).toBe(2);
     });
 
     it('should skip blank lines', () => {
       const content = '{"type":"config"}\n\n{"type":"iteration"}\n\n';
-      const records = replayCorpus.parseJSONL(content);
-      expect(records).toHaveLength(2);
+      const result = replayCorpus.parseJSONL(content);
+      expect(result.records).toHaveLength(2);
+      expect(result.totalLines).toBe(2);
     });
 
-    it('should skip malformed lines', () => {
+    it('should track malformed lines with metadata (P1-4)', () => {
       const content = '{"type":"config"}\nnot-json\n{"type":"iteration"}\n';
-      const records = replayCorpus.parseJSONL(content);
-      expect(records).toHaveLength(2);
+      const result = replayCorpus.parseJSONL(content);
+      expect(result.records).toHaveLength(2);
+      expect(result.skippedLines).toHaveLength(1);
+      expect(result.skippedLines[0].lineNumber).toBe(2);
+      expect(result.skippedLines[0].content).toBe('not-json');
+      expect(result.skippedLines[0].error).toBeDefined();
+      expect(result.totalLines).toBe(3);
+    });
+
+    it('should truncate long malformed line content to 200 chars (P1-4)', () => {
+      const longLine = 'x'.repeat(300);
+      const content = `{"type":"config"}\n${longLine}\n`;
+      const result = replayCorpus.parseJSONL(content);
+      expect(result.skippedLines).toHaveLength(1);
+      expect(result.skippedLines[0].content.length).toBeLessThanOrEqual(203); // 200 + '...'
     });
   });
 
@@ -236,6 +252,123 @@ describe('Replay Corpus Builder (T001)', () => {
 
     it('should throw on missing corpus file', () => {
       expect(() => replayCorpus.loadCorpus('/nonexistent/path.json')).toThrow();
+    });
+  });
+
+  describe('P1-1: deterministic timestamps', () => {
+    it('should use provided timestamp in extractCorpusEntry', () => {
+      const records = [
+        { type: 'config', maxIterations: 7 },
+        { type: 'iteration', run: 1, status: 'complete' },
+        { type: 'event', event: 'synthesis_complete', stopReason: 'converged', totalIterations: 1 },
+      ];
+      const fixedTime = '2026-01-01T00:00:00.000Z';
+      const entry = replayCorpus.extractCorpusEntry(records, '040', 'run-1', { timestamp: fixedTime });
+      expect(entry.metadata.extractedAt).toBe(fixedTime);
+    });
+
+    it('should default to current time when no timestamp override', () => {
+      const records = [
+        { type: 'config', maxIterations: 7 },
+        { type: 'iteration', run: 1, status: 'complete' },
+        { type: 'event', event: 'synthesis_complete', stopReason: 'converged', totalIterations: 1 },
+      ];
+      const before = new Date().toISOString();
+      const entry = replayCorpus.extractCorpusEntry(records, '040', 'run-1');
+      const after = new Date().toISOString();
+      expect(entry.metadata.extractedAt >= before).toBe(true);
+      expect(entry.metadata.extractedAt <= after).toBe(true);
+    });
+
+    it('should pass timestamp through buildCorpus to extractCorpusEntry', () => {
+      const content = '{"type":"config","maxIterations":7}\n{"type":"iteration","run":1,"status":"complete"}\n{"type":"event","event":"synthesis_complete","stopReason":"converged","totalIterations":1}\n';
+      const fixedTime = '2025-06-15T12:00:00.000Z';
+      const result = replayCorpus.buildCorpus('040', {
+        jsonlContent: content,
+        sourceRunId: 'ts-test',
+        timestamp: fixedTime,
+      });
+      expect(result.errors).toHaveLength(0);
+      expect(result.corpus).toHaveLength(1);
+      expect(result.corpus[0].metadata.extractedAt).toBe(fixedTime);
+    });
+  });
+
+  describe('P1-3: last terminal event wins', () => {
+    it('should use the LAST terminal event, not the first', () => {
+      const records = [
+        { type: 'config', maxIterations: 10 },
+        { type: 'iteration', run: 1, status: 'complete' },
+        { type: 'event', event: 'stop_decision', stopReason: 'early_stop', totalIterations: 1 },
+        { type: 'iteration', run: 2, status: 'complete' },
+        { type: 'event', event: 'synthesis_complete', stopReason: 'converged', totalIterations: 2, verdict: 'complete' },
+      ];
+      const entry = replayCorpus.extractCorpusEntry(records, '040', 'run-multi');
+      expect(entry.stopOutcome.stopReason).toBe('converged');
+      expect(entry.stopOutcome.verdict).toBe('complete');
+      expect(entry.stopOutcome.totalIterations).toBe(2);
+    });
+
+    it('should not pick an intermediate stop_decision over a later synthesis_complete', () => {
+      const records = [
+        { type: 'config' },
+        { type: 'iteration', run: 1, status: 'running' },
+        { type: 'event', event: 'stop_decision', stopReason: 'stuck', totalIterations: 1, verdict: null },
+        { type: 'iteration', run: 2, status: 'running' },
+        { type: 'iteration', run: 3, status: 'running' },
+        { type: 'event', event: 'synthesis_complete', stopReason: 'natural', totalIterations: 3, verdict: 'synthesized' },
+      ];
+      const entry = replayCorpus.extractCorpusEntry(records, '040', 'run-fix');
+      expect(entry.stopOutcome.stopReason).toBe('natural');
+      expect(entry.stopOutcome.verdict).toBe('synthesized');
+    });
+  });
+
+  describe('P1-4: corrupted JSONL rejection', () => {
+    it('should reject traces where >20% of lines are malformed', () => {
+      // 5 lines total, 2 valid, 3 malformed = 60% malformed
+      const content = '{"type":"config"}\nBAD1\nBAD2\nBAD3\n{"type":"iteration","run":1}\n';
+      const result = replayCorpus.buildCorpus('040', {
+        jsonlContent: content,
+        sourceRunId: 'bad-trace',
+      });
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(result.errors.some((e: string) => e.includes('malformed') && e.includes('20%'))).toBe(true);
+      expect(result.corpus).toHaveLength(0);
+    });
+
+    it('should accept traces with malformed lines under 20% threshold', () => {
+      // 10 lines, 1 malformed = 10%
+      const lines = [
+        '{"type":"config","maxIterations":7}',
+        '{"type":"iteration","run":1,"status":"complete"}',
+        '{"type":"iteration","run":2,"status":"complete"}',
+        '{"type":"iteration","run":3,"status":"complete"}',
+        '{"type":"iteration","run":4,"status":"complete"}',
+        '{"type":"iteration","run":5,"status":"complete"}',
+        '{"type":"iteration","run":6,"status":"complete"}',
+        '{"type":"iteration","run":7,"status":"complete"}',
+        'MALFORMED_LINE',
+        '{"type":"event","event":"synthesis_complete","stopReason":"converged","totalIterations":7}',
+      ];
+      const result = replayCorpus.buildCorpus('040', {
+        jsonlContent: lines.join('\n'),
+        sourceRunId: 'ok-trace',
+      });
+      expect(result.errors).toHaveLength(0);
+      expect(result.corpus).toHaveLength(1);
+      expect(result.warnings.some((w: string) => w.includes('Skipped 1 malformed'))).toBe(true);
+      expect(result.corpus[0].metadata.skippedLines).toHaveLength(1);
+    });
+
+    it('should include validationErrors array in corpus entry metadata', () => {
+      const content = '{"type":"config","maxIterations":7}\n{"type":"iteration","run":1,"status":"complete"}\n{"type":"event","event":"synthesis_complete","stopReason":"converged","totalIterations":1}\n';
+      const result = replayCorpus.buildCorpus('040', {
+        jsonlContent: content,
+        sourceRunId: 'valid-trace',
+      });
+      expect(result.corpus).toHaveLength(1);
+      expect(result.corpus[0].metadata.validationErrors).toEqual([]);
     });
   });
 });

@@ -149,7 +149,7 @@ Run an iterative loop for deep research: Initialize state, dispatch `@deep-resea
 | Phase | Name | Purpose | Outputs |
 |-------|------|---------|---------|
 | Init | Initialize | Create config, strategy (with research charter), state files | State files in `research/` |
-| Loop | Iterate | Dispatch @deep-research agent, evaluate convergence + quality guards, generate dashboard | iteration-NNN.md files, dashboard.md |
+| Loop | Iterate | Dispatch @deep-research agent, evaluate convergence + quality guards, generate dashboard | iteration-NNN.md files, deep-research-dashboard.md |
 | Synth | Synthesize | Compile final research/research.md | research/research.md (17 sections) |
 | Save | Preserve | Save memory context | memory/*.md |
 
