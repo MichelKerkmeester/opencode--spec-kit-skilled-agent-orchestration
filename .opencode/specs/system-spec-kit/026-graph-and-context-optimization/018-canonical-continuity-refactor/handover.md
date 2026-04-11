@@ -1,7 +1,7 @@
 ---
 title: "Phase 018 Autonomous Execution — Live Handover"
 purpose: "Resume document for the orchestrator session running Gates A→F via cli-codex gpt-5.4 high fast. Updated after each gate close. Read this first if context was compacted."
-last_updated: 2026-04-11T22:42:00Z
+last_updated: 2026-04-11T22:58:00Z
 session_role: orchestrator (claude-opus-4-6 in Claude Code)
 worker: cli-codex gpt-5.4 high fast (primary), cli-copilot gpt-5.4 high (fallback after 3 codex failures)
 branch: system-speckit/026-graph-and-context-optimization
@@ -26,7 +26,7 @@ directives:
 |:-:|---|---|---|---|
 | A — Pre-work | ✅ DONE | `bm7rb2730` | `d35fc6e9a` + `63e5a0635` | template anchor fixes, validator exclusion, backup, status flip follow-up |
 | B — Foundation | ✅ DONE | `b8bwxd5tk` (v2) | `b69b44bec` | schema migration (causal_edges anchor cols + 2 indexes), archive flip 183→184, 199 tests passing. **Note: ranking ×0.3 + archived_hit_rate metric will be removed in B-cleanup.** |
-| B-cleanup — Delete legacy memory rows + files | ⏳ queued | — | — | DELETE the 184 archived rows + rm the .md files + remove ranking penalty + remove archived_hit_rate metric. Prompt at /tmp/execute-gate-b-cleanup.prompt |
+| B-cleanup — Code-side cleanup (data side already done) | ✅ DONE | `b7iy4sc77` | `4c6c7e904` | Removed Stage 2 ×0.3 ranking penalty, archived_hit_rate metric, and is_archived branching across 19 source files. Marked is_archived column DEPRECATED (Option B). Updated 6 Gate B packet docs. Deleted 7 straggler memory files + 3 companions. 6 vitest files / 141 tests passed, validate.sh --strict 0/0. 33 files / -4385 LOC. |
 | C — Writer Ready (Part 1) | ✅ DONE PARTIAL | `bnvwpmjwt` | `e802a9072` | rollout control plane + shadow telemetry (`canonical-continuity-shadow.ts`) + save-path integration. 14 tests + 103 prior tests passed. ~1925 LOC across 10 files. |
 | C — Writer Ready (continuation) | ✅ DONE PARTIAL | `bdkt0rwna` | `7b9e5dd4d` | anchor merge engine + atomic-index helper + helper adapt (create-record, dedup) + tool-input-schemas + packet docs. 4 vitest files / 125 tests passed, 4 skipped (TODOs in-line for deep-review). Pre-existing typecheck fixes (causal-edges, reconsolidation, tsconfig include). 19 files / +1167 LOC. **Still deferred to a future Gate C round OR deep-review:** 243-test catalog, post-insert/causal-links-processor/save-quality-gate adapt, template _memory.continuity rollout, spec-doc-structure validator, golden-set parity, validate.sh --strict pass. |
 | D — Reader Ready | ⏳ ready | — | — | 6 reader handlers + 3-level resumeLadder (no archived fallback) + 13-feature regression + perf benchmarks. NO D0 observation. |
@@ -36,9 +36,9 @@ directives:
 | H — Feature Catalog + Manual Testing Playbook Audit | ⏳ ready | — | — | NEW. Audit + update `feature_catalog/` (606 .md files across 22 categories) and `manual_testing_playbook/` for post-018 relevance. KEEP / PATCH / REWORK / DEPRECATE / NEW per entry. 22 parallel sub-agents (one per category) + 1 master-index pass. Prompt at `/tmp/execute-gate-h-feature-catalog-playbook.prompt`. |
 | I — Manual Playbook Execution + Full Automated Suite | ⏳ ready | — | — | NEW. Build `scripts/tests/manual-playbook-runner.ts` that drives every manual scenario through the actual handlers with a deterministic fixture, plus run the full vitest suite across `mcp_server` + `scripts` workspaces. Acceptance bar: ≥95% manual scenario PASS, ≥98% automated PASS. Prompt at `/tmp/execute-gate-i-playbook-execution.prompt`. |
 
-**Pipeline order**: Gate A ✅ → Gate B ✅ → Gate C Part 1 ✅ → Gate C-continuation ✅ → **Gate B-cleanup 🟡** → Gate D → Gate E → Gate F-cleanup → Gate G → Gate H → Gate I → deep-review × 7 per gate × 9 gates = 63 iterations → fix findings → final completion marking
+**Pipeline order**: Gate A ✅ → Gate B ✅ → Gate C Part 1 ✅ → Gate C-continuation ✅ → Gate B-cleanup ✅ → **Gate D 🟡** → Gate E → Gate F-cleanup → Gate G → Gate H → Gate I → deep-review × 7 per gate × 9 gates = 63 iterations → fix findings → final completion marking
 
-**Next action**: Launch `/tmp/execute-gate-b-cleanup.prompt` via cli-codex. After it lands, commit + push, then Gate D.
+**Next action**: Launch `/tmp/execute-gate-d.prompt` via cli-codex. After it lands, commit + push, then Gate E.
 
 ---
 
