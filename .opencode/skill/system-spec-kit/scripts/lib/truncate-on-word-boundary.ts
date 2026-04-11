@@ -1,3 +1,11 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Truncate On Word Boundary
+// ───────────────────────────────────────────────────────────────
+// Code-point-safe string truncation that prefers whitespace-aligned
+// word boundaries and falls back to a grapheme-aware cut for inputs
+// without any whitespace. Used by summary rendering and dashboard
+// snippets to keep ellipsized output readable across scripts.
+
 export interface TruncateOptions {
   ellipsis?: string;
   minBoundary?: number;
