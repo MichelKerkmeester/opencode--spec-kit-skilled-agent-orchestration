@@ -216,6 +216,61 @@ Append-only JSON Lines file. One JSON object per line.
 
 **Severity math:** `refinementMultiplier: 0.5`, `p0OverrideMinRatio: 0.50`, `noFindingsRatio: 0.0`
 
+### Graph Events
+
+The optional `graphEvents` array records coverage graph mutations emitted by a review iteration. The MCP coverage graph handlers (`mcp_server/handlers/coverage-graph/upsert.ts`) consume these events and persist them into `deep-loop-graph.sqlite`, where they become the source of truth for graph-assisted convergence, hotspot saturation, and blocked-stop evidence.
+
+```json
+{
+  "type": "iteration", "mode": "review", "run": 4, "status": "complete",
+  "focus": "correctness",
+  "dimensions": ["correctness"],
+  "filesReviewed": ["src/api/session.ts"],
+  "findingsSummary": { "P0": 0, "P1": 1, "P2": 0 },
+  "findingsNew": { "P0": 0, "P1": 1, "P2": 0 },
+  "newFindingsRatio": 0.18,
+  "sessionId": "rvw-2026-03-24T10-00-00Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "graphEvents": [
+    { "type": "dimension", "id": "d-correctness", "label": "correctness" },
+    { "type": "file", "id": "file-session-ts", "label": "src/api/session.ts" },
+    { "type": "finding", "id": "f-001", "label": "Missing CSRF token check on session POST" },
+    { "type": "evidence", "id": "ev-001", "label": "src/api/session.ts:42" },
+    { "type": "edge", "id": "e-in-dim-f-001", "relation": "IN_DIMENSION", "source": "f-001", "target": "d-correctness" },
+    { "type": "edge", "id": "e-in-file-f-001", "relation": "IN_FILE", "source": "f-001", "target": "file-session-ts" },
+    { "type": "edge", "id": "e-evidence-f-001", "relation": "EVIDENCE_FOR", "source": "ev-001", "target": "f-001" }
+  ],
+  "timestamp": "2026-03-24T10:12:00Z",
+  "durationMs": 51000
+}
+```
+
+#### Event payload shape
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| type | `"dimension"` \| `"file"` \| `"finding"` \| `"evidence"` \| `"remediation"` \| `"edge"` | Yes | Review-loop node kind or the literal `"edge"` for relation rows |
+| id | string | Yes | Caller-chosen logical id. Must be unique **within** a single `(specFolder, loopType, sessionId)` namespace; see Namespace Rules below |
+| label | string | Yes | Human-readable name/caption (dimension, path, finding title, evidence anchor, etc.) |
+| relation | `"COVERS"` \| `"EVIDENCE_FOR"` \| `"CONTRADICTS"` \| `"RESOLVES"` \| `"CONFIRMS"` \| `"ESCALATES"` \| `"IN_DIMENSION"` \| `"IN_FILE"` | edges only | Review relation type. Required when `type == "edge"` |
+| source | string | edges only | `id` of the source node inside the current namespace |
+| target | string | edges only | `id` of the target node inside the current namespace. Self-loops are rejected by the upsert handler |
+| metadata | object | No | Optional free-form metadata persisted alongside the row (e.g. `{ "hotspot_score": 2 }`) |
+
+#### Namespace Rules (REQ-028, REQ-029)
+
+`graphEvents` entries are scoped by the session that emits them. The coverage graph DB uses a composite primary key of `(spec_folder, loop_type, session_id, id)`, so two independent review sessions in the same spec folder MAY reuse the same logical `id` without collision — each session gets its own row.
+
+Concrete obligations for producers:
+
+1. **Session-local uniqueness**: within one session, an `id` must resolve to exactly one node (or edge) for its entire lifetime. Re-emitting the same `id` is an upsert against the existing row in that session only.
+2. **No cross-session global uniqueness requirement**: callers MUST NOT prefix ids with the session id or random salt to "avoid collisions". The DB layer handles namespace isolation; salting ids only makes provenance harder to read.
+3. **Edge source/target locality**: `source` and `target` in an edge event must name nodes already present in the same namespace. Cross-session edges are not a supported shape.
+4. **Persistence gate**: the reducer refuses to roll graph events forward when a record is missing `sessionId` on the surrounding iteration record, because the DB cannot route the write.
+
+The collision regression in `.opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts` ("shared-ID collisions" block) exercises this contract directly: two sessions upsert identical node and edge ids, and both rows must survive independently.
+
 ### Synthesis Event
 
 ```json

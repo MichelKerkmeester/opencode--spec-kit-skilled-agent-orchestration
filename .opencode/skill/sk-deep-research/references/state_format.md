@@ -150,6 +150,7 @@ Append-only JSON Lines file. One JSON object per line.
 | noveltyJustification | string | No | Human-readable explanation of what newInfoRatio represents (see below) |
 | focusTrack | string | No | Post-hoc grouping label, e.g. `"browser-support"`. Not used for orchestration |
 | sourceStrength | string | No | Overall evidence quality class for this iteration: `"strong"`, `"moderate"`, or `"weak"`. Used by the weak-source guard to detect single-weak-source dependence without implicit JSONL analysis |
+| graphEvents | array | No | Coverage graph mutations emitted during the iteration. See Graph Events below for the typed payload, namespace rules, and collision regression reference |
 
 ### Convergence Signal Fields
 
@@ -215,6 +216,39 @@ Iteration files may annotate individual findings with a `sourceStrength` classif
 | `tentative` | Single source, unverified | Does NOT count toward question coverage |
 
 In iteration file findings sections, annotate inline: `[Finding text] (sourceStrength: primary)`. In JSONL records, source strength is tracked implicitly through the `newInfoRatio` -- tentative findings contribute less to the ratio. The convergence algorithm excludes tentative-only findings when computing `entropyCoverage`.
+
+### Graph Events
+
+The optional `graphEvents` array records the coverage graph mutations an iteration emits. The MCP coverage graph handlers (`mcp_server/handlers/coverage-graph/upsert.ts`) consume these events and persist them into `deep-loop-graph.sqlite` where they become the source of truth for graph-assisted convergence.
+
+```json
+{"type":"iteration","run":4,"status":"complete","focus":"Reconnection strategies","findingsCount":3,"newInfoRatio":0.55,"graphEvents":[{"type":"question","id":"q-reconnect","label":"How should the client retry after a disconnect?"},{"type":"finding","id":"f-backoff","label":"Exponential backoff converges under jitter"},{"type":"edge","id":"e-answers-reconnect","relation":"ANSWERS","source":"f-backoff","target":"q-reconnect"}],"keyQuestions":["How should the client retry after a disconnect?"],"answeredQuestions":[],"timestamp":"2026-03-18T10:15:00Z","durationMs":48000}
+```
+
+#### Event payload shape
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| type | `"question"` \| `"finding"` \| `"claim"` \| `"source"` \| `"edge"` | Yes | Research-loop node kind or the literal `"edge"` for relation rows |
+| id | string | Yes | Caller-chosen logical id. Must be unique **within** a single `(specFolder, loopType, sessionId)` namespace; see Namespace Rules below |
+| label | string | Yes | Human-readable name/caption for dashboards and synthesis |
+| relation | `"ANSWERS"` \| `"SUPPORTS"` \| `"CONTRADICTS"` \| `"SUPERSEDES"` \| `"DERIVED_FROM"` \| `"COVERS"` \| `"CITES"` | edges only | Research relation type. Required when `type == "edge"` |
+| source | string | edges only | `id` of the source node inside the current namespace |
+| target | string | edges only | `id` of the target node inside the current namespace. Self-loops are rejected by the upsert handler |
+| metadata | object | No | Optional free-form metadata persisted alongside the row |
+
+#### Namespace Rules (REQ-028, REQ-029)
+
+`graphEvents` entries are scoped by the session that emits them. The coverage graph DB uses a composite primary key of `(spec_folder, loop_type, session_id, id)`, so two independent sessions in the same spec folder MAY reuse the same logical `id` without collision — each session gets an independent row.
+
+Concrete obligations for producers:
+
+1. **Session-local uniqueness**: within one session, an `id` must resolve to exactly one node (or edge) for its entire lifetime. Re-emitting the same `id` is an upsert against the existing row in that session only.
+2. **No cross-session global uniqueness requirement**: callers MUST NOT prefix ids with the session id or random salt to "avoid collisions". The DB layer handles namespace isolation; salting ids only makes provenance harder to read.
+3. **Edge source/target locality**: `source` and `target` in an edge event must name nodes already present in the same namespace. Cross-session edges are not a supported shape.
+4. **Persistence gate**: the reducer refuses to roll graph events forward when a record is missing `sessionId` on the surrounding iteration record, because the DB cannot route the write.
+
+The collision regression in `.opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts` ("shared-ID collisions" block) exercises this contract directly: two sessions upsert identical node and edge ids, and both rows must survive independently.
 
 ### Extended Status Values
 

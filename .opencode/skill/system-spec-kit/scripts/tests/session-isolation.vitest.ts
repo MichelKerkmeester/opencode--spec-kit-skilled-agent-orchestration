@@ -5,7 +5,10 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import {
   closeDb,
+  getEdge,
   getEdges,
+  getEdgesFrom,
+  getNode,
   getNodes,
   initDb,
   upsertEdge,
@@ -191,5 +194,129 @@ describe('coverage graph session isolation', () => {
     expect(aggregateData.nodeCount).toBe(7);
     expect(aggregateData.edgeCount).toBe(5);
     expect(aggregateData.signals.questionCoverage).toBe(0.5);
+  });
+});
+
+// ───────────────────────────────────────────────────────────────
+// REQ-028 (F004, F005 in the 042 closing audit): shared-ID
+// collision regression. Two sessions intentionally reuse the same
+// logical node and edge IDs, upsert independently, and the DB must
+// keep them as disjoint rows — an upsert in session B must never
+// overwrite the matching row in session A. The earlier suite only
+// exercised filtered reads over disjoint fixtures, so it would have
+// passed against the broken v1 schema too. This suite fails before
+// the composite-key migration and passes after.
+// ───────────────────────────────────────────────────────────────
+describe('coverage graph session isolation — shared-ID collisions', () => {
+  const SHARED_SPEC = 'specs/042-session-collision';
+  const SHARED_LOOP_TYPE: CoverageNode['loopType'] = 'research';
+  const SESSION_X = 'session-x';
+  const SESSION_Y = 'session-y';
+
+  const nsX = { specFolder: SHARED_SPEC, loopType: SHARED_LOOP_TYPE, sessionId: SESSION_X };
+  const nsY = { specFolder: SHARED_SPEC, loopType: SHARED_LOOP_TYPE, sessionId: SESSION_Y };
+
+  function collisionNode(sessionId: string, id: string, name: string): CoverageNode {
+    return {
+      id,
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId,
+      kind: 'QUESTION',
+      name,
+    };
+  }
+
+  function collisionEdge(sessionId: string, id: string, sourceId: string, targetId: string): CoverageEdge {
+    return {
+      id,
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId,
+      sourceId,
+      targetId,
+      relation: 'ANSWERS',
+      weight: 1,
+    };
+  }
+
+  let tempDir = '';
+
+  beforeEach(() => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'coverage-graph-collision-'));
+    initDb(tempDir);
+  });
+
+  afterEach(() => {
+    try {
+      closeDb();
+    } catch {
+      // best effort cleanup
+    }
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  it('keeps session rows disjoint when two sessions upsert the same node id', () => {
+    // Session X writes "q-shared" first with one name.
+    upsertNode(collisionNode(SESSION_X, 'q-shared', 'Question X text'));
+    expect(getNode(nsX, 'q-shared')?.name).toBe('Question X text');
+    expect(getNode(nsY, 'q-shared')).toBeNull();
+
+    // Session Y upserts the same logical id with a different name.
+    // Under the v1 bare-`id` primary key this overwrote session X's row;
+    // under v2 it must create an independent session-Y row.
+    upsertNode(collisionNode(SESSION_Y, 'q-shared', 'Question Y text'));
+
+    expect(getNode(nsX, 'q-shared')?.name).toBe('Question X text');
+    expect(getNode(nsY, 'q-shared')?.name).toBe('Question Y text');
+
+    const allSessionX = getNodes(nsX).map((n) => n.id);
+    const allSessionY = getNodes(nsY).map((n) => n.id);
+    expect(allSessionX).toEqual(['q-shared']);
+    expect(allSessionY).toEqual(['q-shared']);
+
+    const aggregate = getNodes({ specFolder: SHARED_SPEC, loopType: SHARED_LOOP_TYPE });
+    // Two distinct rows even though the logical id is identical.
+    expect(aggregate.length).toBe(2);
+  });
+
+  it('keeps session rows disjoint when two sessions upsert the same edge id', () => {
+    upsertNode(collisionNode(SESSION_X, 'q-shared', 'Question X'));
+    upsertNode(collisionNode(SESSION_X, 'f-shared', 'Finding X'));
+    upsertNode(collisionNode(SESSION_Y, 'q-shared', 'Question Y'));
+    upsertNode(collisionNode(SESSION_Y, 'f-shared', 'Finding Y'));
+
+    upsertEdge(collisionEdge(SESSION_X, 'answers-shared', 'f-shared', 'q-shared'));
+    expect(getEdge(nsX, 'answers-shared')).toBeTruthy();
+    expect(getEdge(nsY, 'answers-shared')).toBeNull();
+
+    // The same logical edge id in session Y must not overwrite session X.
+    upsertEdge(collisionEdge(SESSION_Y, 'answers-shared', 'f-shared', 'q-shared'));
+
+    const edgeX = getEdge(nsX, 'answers-shared');
+    const edgeY = getEdge(nsY, 'answers-shared');
+    expect(edgeX).toBeTruthy();
+    expect(edgeY).toBeTruthy();
+    expect(edgeX?.sessionId).toBe(SESSION_X);
+    expect(edgeY?.sessionId).toBe(SESSION_Y);
+
+    const aggregate = getEdges({ specFolder: SHARED_SPEC, loopType: SHARED_LOOP_TYPE });
+    // Two independent edge rows.
+    expect(aggregate.length).toBe(2);
+
+    // Namespace-scoped traversal reflects the same isolation.
+    expect(getEdgesFrom(nsX, 'f-shared').map((e) => e.id)).toEqual(['answers-shared']);
+    expect(getEdgesFrom(nsY, 'f-shared').map((e) => e.id)).toEqual(['answers-shared']);
+  });
+
+  it('updating a collided node in one session leaves the other session untouched', () => {
+    upsertNode(collisionNode(SESSION_X, 'q-shared', 'Question X v1'));
+    upsertNode(collisionNode(SESSION_Y, 'q-shared', 'Question Y v1'));
+
+    // Upsert-update in session X.
+    upsertNode(collisionNode(SESSION_X, 'q-shared', 'Question X v2'));
+
+    expect(getNode(nsX, 'q-shared')?.name).toBe('Question X v2');
+    expect(getNode(nsY, 'q-shared')?.name).toBe('Question Y v1');
   });
 });

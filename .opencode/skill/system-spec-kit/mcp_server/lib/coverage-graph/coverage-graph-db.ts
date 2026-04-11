@@ -102,7 +102,7 @@ export interface Namespace {
 // 2. CONSTANTS
 // ───────────────────────────────────────────────────────────────
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 const DB_FILENAME = 'deep-loop-graph.sqlite';
 
@@ -149,33 +149,43 @@ export const VALID_RELATIONS: Record<LoopType, readonly string[]> = {
 // 3. SCHEMA
 // ───────────────────────────────────────────────────────────────
 
+// Schema v2 (REQ-028): primary keys are composite
+// `(spec_folder, loop_type, session_id, id)` so two sessions can reuse the
+// same logical node/edge ID without overwriting each other's rows. Every
+// read, write, update, and delete must scope the bare id by namespace.
 const SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS coverage_nodes (
-    id TEXT PRIMARY KEY,
     spec_folder TEXT NOT NULL,
     loop_type TEXT NOT NULL CHECK(loop_type IN ('research', 'review')),
     session_id TEXT NOT NULL,
+    id TEXT NOT NULL,
     kind TEXT NOT NULL,
     name TEXT NOT NULL,
     content_hash TEXT,
     iteration INTEGER,
     metadata TEXT,
     created_at TEXT DEFAULT (datetime('now')),
-    updated_at TEXT DEFAULT (datetime('now'))
+    updated_at TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (spec_folder, loop_type, session_id, id)
   );
 
   CREATE TABLE IF NOT EXISTS coverage_edges (
-    id TEXT PRIMARY KEY,
     spec_folder TEXT NOT NULL,
     loop_type TEXT NOT NULL,
     session_id TEXT NOT NULL,
-    source_id TEXT NOT NULL REFERENCES coverage_nodes(id),
-    target_id TEXT NOT NULL REFERENCES coverage_nodes(id),
+    id TEXT NOT NULL,
+    source_id TEXT NOT NULL,
+    target_id TEXT NOT NULL,
     relation TEXT NOT NULL,
     weight REAL DEFAULT 1.0 CHECK(weight >= 0.0 AND weight <= 2.0),
     metadata TEXT,
     created_at TEXT DEFAULT (datetime('now')),
-    CHECK(source_id != target_id)
+    CHECK(source_id != target_id),
+    PRIMARY KEY (spec_folder, loop_type, session_id, id),
+    FOREIGN KEY (spec_folder, loop_type, session_id, source_id)
+      REFERENCES coverage_nodes (spec_folder, loop_type, session_id, id),
+    FOREIGN KEY (spec_folder, loop_type, session_id, target_id)
+      REFERENCES coverage_nodes (spec_folder, loop_type, session_id, id)
   );
 
   CREATE TABLE IF NOT EXISTS coverage_snapshots (
@@ -197,13 +207,13 @@ const SCHEMA_SQL = `
 
   CREATE INDEX IF NOT EXISTS idx_coverage_folder_type ON coverage_nodes(spec_folder, loop_type);
   CREATE INDEX IF NOT EXISTS idx_coverage_kind ON coverage_nodes(kind);
-  CREATE INDEX IF NOT EXISTS idx_coverage_session ON coverage_nodes(session_id);
+  CREATE INDEX IF NOT EXISTS idx_coverage_session ON coverage_nodes(spec_folder, loop_type, session_id);
   CREATE INDEX IF NOT EXISTS idx_coverage_iteration ON coverage_nodes(iteration);
-  CREATE INDEX IF NOT EXISTS idx_coverage_edge_source ON coverage_edges(source_id);
-  CREATE INDEX IF NOT EXISTS idx_coverage_edge_target ON coverage_edges(target_id);
+  CREATE INDEX IF NOT EXISTS idx_coverage_edge_source ON coverage_edges(spec_folder, loop_type, session_id, source_id);
+  CREATE INDEX IF NOT EXISTS idx_coverage_edge_target ON coverage_edges(spec_folder, loop_type, session_id, target_id);
   CREATE INDEX IF NOT EXISTS idx_coverage_edge_relation ON coverage_edges(relation);
   CREATE INDEX IF NOT EXISTS idx_coverage_edge_folder_type ON coverage_edges(spec_folder, loop_type);
-  CREATE INDEX IF NOT EXISTS idx_coverage_edge_session ON coverage_edges(session_id);
+  CREATE INDEX IF NOT EXISTS idx_coverage_edge_session ON coverage_edges(spec_folder, loop_type, session_id);
   CREATE INDEX IF NOT EXISTS idx_coverage_snapshot_session ON coverage_snapshots(session_id);
 `;
 
@@ -223,6 +233,37 @@ export function initDb(dbDir: string): Database.Database {
     db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
+
+    // Schema migration: v1 used a single `id TEXT PRIMARY KEY`, which let
+    // two sessions with the same logical node/edge id overwrite each other
+    // (REQ-028 / F004 in the 042 closing audit). v2 switches to a composite
+    // primary key of (spec_folder, loop_type, session_id, id). Live upgrades
+    // drop the v1 tables before creating the v2 schema — this is a dev-only
+    // coverage cache, not durable state, so a drop is safe and idempotent.
+    const schemaTableExists = db.prepare(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='schema_version'",
+    ).get() as { name: string } | undefined;
+    if (schemaTableExists) {
+      const existing = db.prepare('SELECT version FROM schema_version LIMIT 1').get() as { version: number } | undefined;
+      if (existing && existing.version < SCHEMA_VERSION) {
+        db.exec(`
+          DROP INDEX IF EXISTS idx_coverage_folder_type;
+          DROP INDEX IF EXISTS idx_coverage_kind;
+          DROP INDEX IF EXISTS idx_coverage_session;
+          DROP INDEX IF EXISTS idx_coverage_iteration;
+          DROP INDEX IF EXISTS idx_coverage_edge_source;
+          DROP INDEX IF EXISTS idx_coverage_edge_target;
+          DROP INDEX IF EXISTS idx_coverage_edge_relation;
+          DROP INDEX IF EXISTS idx_coverage_edge_folder_type;
+          DROP INDEX IF EXISTS idx_coverage_edge_session;
+          DROP INDEX IF EXISTS idx_coverage_snapshot_session;
+          DROP TABLE IF EXISTS coverage_edges;
+          DROP TABLE IF EXISTS coverage_nodes;
+          DROP TABLE IF EXISTS coverage_snapshots;
+        `);
+      }
+    }
+
     db.exec(SCHEMA_SQL);
 
     const versionRow = db.prepare('SELECT version FROM schema_version LIMIT 1').get() as { version: number } | undefined;
@@ -283,44 +324,54 @@ export function clampWeight(weight: number): number {
 // 6. NODE OPERATIONS
 // ───────────────────────────────────────────────────────────────
 
-/** Insert or update a node. Returns the node ID. */
+/**
+ * Insert or update a node scoped to `(specFolder, loopType, sessionId, id)`.
+ * Returns the node ID. Every existence check is namespace-qualified so two
+ * sessions reusing the same logical id cannot collide (REQ-028).
+ */
 export function upsertNode(node: CoverageNode): string {
   const d = getDb();
   const now = new Date().toISOString();
   const metadataStr = node.metadata ? JSON.stringify(node.metadata) : null;
 
-  const existing = d.prepare('SELECT id FROM coverage_nodes WHERE id = ?').get(node.id) as { id: string } | undefined;
+  const existing = d.prepare(
+    'SELECT id FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+  ).get(node.specFolder, node.loopType, node.sessionId, node.id) as { id: string } | undefined;
   if (existing) {
     d.prepare(`
       UPDATE coverage_nodes SET
         kind = ?, name = ?, content_hash = ?, iteration = ?,
         metadata = ?, updated_at = ?
-      WHERE id = ?
+      WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?
     `).run(
       node.kind, node.name, node.contentHash ?? null, node.iteration ?? null,
-      metadataStr, now, node.id,
+      metadataStr, now,
+      node.specFolder, node.loopType, node.sessionId, node.id,
     );
     return node.id;
   }
 
   d.prepare(`
     INSERT INTO coverage_nodes (
-      id, spec_folder, loop_type, session_id, kind, name,
+      spec_folder, loop_type, session_id, id, kind, name,
       content_hash, iteration, metadata, created_at, updated_at
     )
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
-    node.id, node.specFolder, node.loopType, node.sessionId,
+    node.specFolder, node.loopType, node.sessionId, node.id,
     node.kind, node.name, node.contentHash ?? null,
     node.iteration ?? null, metadataStr, now, now,
   );
   return node.id;
 }
 
-/** Get a node by ID */
-export function getNode(id: string): CoverageNode | null {
+/** Get a node by ID inside a namespace. */
+export function getNode(ns: Namespace, id: string): CoverageNode | null {
+  if (!ns.sessionId) return null;
   const d = getDb();
-  const row = d.prepare('SELECT * FROM coverage_nodes WHERE id = ?').get(id) as Record<string, unknown> | undefined;
+  const row = d.prepare(
+    'SELECT * FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+  ).get(ns.specFolder, ns.loopType, ns.sessionId, id) as Record<string, unknown> | undefined;
   return row ? rowToNode(row) : null;
 }
 
@@ -340,12 +391,17 @@ export function getNodesByKind(ns: Namespace, kind: NodeKind): CoverageNode[] {
   return rows.map(rowToNode);
 }
 
-/** Delete a node and its connected edges */
-export function deleteNode(id: string): boolean {
+/** Delete a node and its connected edges inside a namespace. */
+export function deleteNode(ns: Namespace, id: string): boolean {
+  if (!ns.sessionId) return false;
   const d = getDb();
   const tx = d.transaction(() => {
-    d.prepare('DELETE FROM coverage_edges WHERE source_id = ? OR target_id = ?').run(id, id);
-    const result = d.prepare('DELETE FROM coverage_nodes WHERE id = ?').run(id);
+    d.prepare(
+      'DELETE FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND (source_id = ? OR target_id = ?)',
+    ).run(ns.specFolder, ns.loopType, ns.sessionId, id, id);
+    const result = d.prepare(
+      'DELETE FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+    ).run(ns.specFolder, ns.loopType, ns.sessionId, id);
     return result.changes > 0;
   });
   return tx();
@@ -355,7 +411,12 @@ export function deleteNode(id: string): boolean {
 // 7. EDGE OPERATIONS
 // ───────────────────────────────────────────────────────────────
 
-/** Insert or update an edge. Rejects self-loops and clamps weights. Returns the edge ID or null if rejected. */
+/**
+ * Insert or update an edge scoped to `(specFolder, loopType, sessionId, id)`.
+ * Rejects self-loops and clamps weights. Returns the edge ID or null if
+ * rejected. Namespace scoping is load-bearing: two sessions that both emit
+ * an edge with the same logical id get independent rows (REQ-028).
+ */
 export function upsertEdge(edge: CoverageEdge): string | null {
   // Self-loop rejection
   if (edge.sourceId === edge.targetId) {
@@ -367,34 +428,42 @@ export function upsertEdge(edge: CoverageEdge): string | null {
   const now = new Date().toISOString();
   const metadataStr = edge.metadata ? JSON.stringify(edge.metadata) : null;
 
-  const existing = d.prepare('SELECT id FROM coverage_edges WHERE id = ?').get(edge.id) as { id: string } | undefined;
+  const existing = d.prepare(
+    'SELECT id FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+  ).get(edge.specFolder, edge.loopType, edge.sessionId, edge.id) as { id: string } | undefined;
   if (existing) {
     d.prepare(`
       UPDATE coverage_edges SET
         relation = ?, weight = ?, metadata = ?
-      WHERE id = ?
-    `).run(edge.relation, weight, metadataStr, edge.id);
+      WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?
+    `).run(
+      edge.relation, weight, metadataStr,
+      edge.specFolder, edge.loopType, edge.sessionId, edge.id,
+    );
     return edge.id;
   }
 
   d.prepare(`
     INSERT INTO coverage_edges (
-      id, spec_folder, loop_type, session_id, source_id, target_id,
+      spec_folder, loop_type, session_id, id, source_id, target_id,
       relation, weight, metadata, created_at
     )
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
-    edge.id, edge.specFolder, edge.loopType, edge.sessionId,
+    edge.specFolder, edge.loopType, edge.sessionId, edge.id,
     edge.sourceId, edge.targetId,
     edge.relation, weight, metadataStr, now,
   );
   return edge.id;
 }
 
-/** Get an edge by ID */
-export function getEdge(id: string): CoverageEdge | null {
+/** Get an edge by ID inside a namespace. */
+export function getEdge(ns: Namespace, id: string): CoverageEdge | null {
+  if (!ns.sessionId) return null;
   const d = getDb();
-  const row = d.prepare('SELECT * FROM coverage_edges WHERE id = ?').get(id) as Record<string, unknown> | undefined;
+  const row = d.prepare(
+    'SELECT * FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+  ).get(ns.specFolder, ns.loopType, ns.sessionId, id) as Record<string, unknown> | undefined;
   return row ? rowToEdge(row) : null;
 }
 
@@ -406,37 +475,55 @@ export function getEdges(ns: Namespace): CoverageEdge[] {
   return rows.map(rowToEdge);
 }
 
-/** Get edges from a source node */
-export function getEdgesFrom(sourceId: string): CoverageEdge[] {
+/** Get edges from a source node inside a namespace. */
+export function getEdgesFrom(ns: Namespace, sourceId: string): CoverageEdge[] {
+  if (!ns.sessionId) return [];
   const d = getDb();
-  const rows = d.prepare('SELECT * FROM coverage_edges WHERE source_id = ?').all(sourceId) as Record<string, unknown>[];
+  const rows = d.prepare(
+    'SELECT * FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND source_id = ?',
+  ).all(ns.specFolder, ns.loopType, ns.sessionId, sourceId) as Record<string, unknown>[];
   return rows.map(rowToEdge);
 }
 
-/** Get edges to a target node */
-export function getEdgesTo(targetId: string): CoverageEdge[] {
+/** Get edges to a target node inside a namespace. */
+export function getEdgesTo(ns: Namespace, targetId: string): CoverageEdge[] {
+  if (!ns.sessionId) return [];
   const d = getDb();
-  const rows = d.prepare('SELECT * FROM coverage_edges WHERE target_id = ?').all(targetId) as Record<string, unknown>[];
+  const rows = d.prepare(
+    'SELECT * FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND target_id = ?',
+  ).all(ns.specFolder, ns.loopType, ns.sessionId, targetId) as Record<string, unknown>[];
   return rows.map(rowToEdge);
 }
 
-/** Update an edge's weight and/or metadata */
-export function updateEdge(id: string, updates: { weight?: number; metadata?: Record<string, unknown> }): boolean {
+/** Update an edge's weight and/or metadata inside a namespace. */
+export function updateEdge(
+  ns: Namespace,
+  id: string,
+  updates: { weight?: number; metadata?: Record<string, unknown> },
+): boolean {
+  if (!ns.sessionId) return false;
   const d = getDb();
-  const existing = d.prepare('SELECT * FROM coverage_edges WHERE id = ?').get(id) as Record<string, unknown> | undefined;
+  const existing = d.prepare(
+    'SELECT * FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+  ).get(ns.specFolder, ns.loopType, ns.sessionId, id) as Record<string, unknown> | undefined;
   if (!existing) return false;
 
   const weight = updates.weight !== undefined ? clampWeight(updates.weight) : existing.weight as number;
   const metadataStr = updates.metadata ? JSON.stringify(updates.metadata) : existing.metadata as string | null;
 
-  d.prepare('UPDATE coverage_edges SET weight = ?, metadata = ? WHERE id = ?').run(weight, metadataStr, id);
+  d.prepare(
+    'UPDATE coverage_edges SET weight = ?, metadata = ? WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+  ).run(weight, metadataStr, ns.specFolder, ns.loopType, ns.sessionId, id);
   return true;
 }
 
-/** Delete an edge by ID */
-export function deleteEdge(id: string): boolean {
+/** Delete an edge by ID inside a namespace. */
+export function deleteEdge(ns: Namespace, id: string): boolean {
+  if (!ns.sessionId) return false;
   const d = getDb();
-  const result = d.prepare('DELETE FROM coverage_edges WHERE id = ?').run(id);
+  const result = d.prepare(
+    'DELETE FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND session_id = ? AND id = ?',
+  ).run(ns.specFolder, ns.loopType, ns.sessionId, id);
   return result.changes > 0;
 }
 

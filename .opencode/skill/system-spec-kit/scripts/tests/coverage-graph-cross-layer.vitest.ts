@@ -173,7 +173,10 @@ describe('coverage-graph cross-layer integration', () => {
     }));
 
     expect(edgeId).toBe('edge-clamp');
-    expect(getEdge('edge-clamp')?.weight).toBe(2.0);
+    expect(getEdge(
+      { specFolder: 'spec-clamp', loopType: 'research', sessionId: 'session-clamp' },
+      'edge-clamp',
+    )?.weight).toBe(2.0);
   });
 
   it('handles empty graphs without errors in both layers', () => {
