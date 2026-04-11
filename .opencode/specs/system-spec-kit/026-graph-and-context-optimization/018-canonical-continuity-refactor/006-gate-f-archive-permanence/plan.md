@@ -59,7 +59,7 @@ Statistical decision gate with conditional retirement branch
 ### Key Components
 - **Daily metric extraction**: pulls the 180-day `archived_hit_rate` series and eligibility metadata.
 - **Trend normalizer**: applies weekly seasonality correction, EWMA `alpha=0.1`, variance bounds, and slope checks.
-- **Decision ladder**: classifies RETIRE, KEEP, INVESTIGATE, or ESCALATE using iter 036 section 6.
+- **Decision ladder**: classifies RETIRE, KEEP, INVESTIGATE, or ESCALATE using iter 036 section 6: `<0.005` RETIRE, `[0.005, 0.020)` KEEP, `>=0.020` INVESTIGATE, with ESCALATE reserved for guardrail failures or missing evidence.
 - **Evidence package**: captures the 90-day trend view, slice breakdowns, top 20 archive-only queries, fresh-doc comparisons, and cost notes.
 
 ### Data Flow
@@ -106,8 +106,8 @@ Gate B telemetry feeds the daily series, iter 036 transforms it into an auditabl
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `research/iterations/iteration-036.md` | Internal | Green | Without it, "stable" is too vague to automate safely. |
-| `resource-map.md` Gate F overlap note | Internal | Green | Missing it would wrongly restart the observation clock. |
+| `../research/iterations/iteration-036.md` | Internal | Green | Without it, "stable" is too vague to automate safely. |
+| `../resource-map.md` Gate F overlap note | Internal | Green | Missing it would wrongly restart the observation clock. |
 | `archived_hit_rate` daily metric source | Internal | Yellow | Missing data forces ESCALATE and blocks retirement. |
 | Phase 021 Option F sibling packet | Internal | Yellow | Needed only if RETIRE is supported and approved. |
 <!-- /ANCHOR:dependencies -->
@@ -119,6 +119,7 @@ Gate B telemetry feeds the daily series, iter 036 transforms it into an auditabl
 
 - **Trigger**: RETIRE was chosen, but post-decision replay or human review finds archive dependence or snapshot gaps.
 - **Procedure**: Re-enable archived candidate generation, restore the `0.3x` archive weighting model, and recover archived rows from the cold snapshot before restarting a shorter observation cycle.
+- **Irreversibility boundary**: Physical delete of archived rows is irreversible once snapshot retention expires; the retention bake period is the last reversible point.
 <!-- /ANCHOR:rollback -->
 
 ---

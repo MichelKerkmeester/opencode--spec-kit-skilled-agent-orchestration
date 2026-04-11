@@ -75,7 +75,7 @@ contextType: "verification"
 ## Documentation
 
 - [ ] CHK-040 [P1] Spec, plan, tasks, checklist, and decision record cite the same Gate D scope, metrics, and thresholds.
-- [ ] CHK-041 [P1] `implementation-summary.md` remains an honest placeholder until runtime work is complete.
+- [ ] CHK-041 [P1] `implementation-summary.md` remains an honest placeholder until runtime work is complete; validator placeholder warnings for this file are expected during the planning phase and can be ignored until Gate D execution closes.
 - [ ] CHK-042 [P2] Packet-local evidence references the grounding set: implementation design, handler map, and iterations 013/017/018/025/027/029/036/039.
 <!-- /ANCHOR:docs -->
 
@@ -160,7 +160,7 @@ contextType: "verification"
 - [ ] CHK-140 [P1] All Gate D packet docs are synchronized.
 - [ ] CHK-141 [P1] Grounding references are consistent across spec, plan, tasks, and ADRs.
 - [ ] CHK-142 [P2] Gate E handoff notes are clear once implementation lands.
-- [ ] CHK-143 [P2] Implementation summary is replaced with execution evidence after Gate D work completes.
+- [ ] CHK-143 [P2] Implementation summary is replaced with execution evidence after Gate D work completes, which is when any earlier expected placeholder warning must disappear.
 <!-- /ANCHOR:docs-verify -->
 
 ---

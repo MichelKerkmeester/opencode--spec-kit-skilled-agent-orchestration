@@ -26,7 +26,7 @@ parent: "018-canonical-continuity-refactor"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `003-gate-c-writer-ready` |
+| **Spec Folder** | 003-gate-c-writer-ready |
 | **Completed** | TBD after implementation |
 | **Level** | 3+ |
 <!-- /ANCHOR:metadata -->

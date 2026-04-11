@@ -15,10 +15,9 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "verification"
 ---
-# Verification Checklist: Gate A — Pre-work
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+# Verification Checklist: Gate A — Pre-work
 
 ---
 
@@ -40,7 +39,7 @@ Checklist priorities follow iteration 020 Gate A close criteria, iteration 022's
 ## Pre-Implementation
 
 - [ ] CHK-001 [P0] `spec.md` states Gate A as blocker-removal only and keeps Gate B/C/D/E work out of scope.
-- [ ] CHK-002 [P0] `plan.md` follows the same Gate A order described in `resource-map.md` §4 and iteration 028.
+- [ ] CHK-002 [P0] `plan.md` follows the same Gate A order described in `../resource-map.md` §4 and iteration 028.
 - [ ] CHK-003 [P1] The packet records the M4 prerequisite from iteration 016: root-packet backfill must close before archive-state migration.
 - [ ] CHK-004 [P1] The packet records the default exemption boundary for `changelog/*` and `sharded/*`.
 <!-- /ANCHOR:pre-impl -->
@@ -51,7 +50,7 @@ Checklist priorities follow iteration 020 Gate A close criteria, iteration 022's
 ## Code Quality
 
 - [ ] CHK-010 [P0] Template repairs eliminate the known orphan `metadata` anchor defects in Level 3 and Level 3+ spec templates.
-- [ ] CHK-011 [P0] `handover.md`, `research.md`, and `debug-delegation.md` have baseline anchors before merge-time writes are allowed.
+- [ ] CHK-011 [P0] `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md` have baseline anchors before merge-time writes are allowed.
 - [ ] CHK-012 [P1] Validator behavior or validator policy documentation clearly keeps anchorless changelog/sharded templates outside merge-target legality by default.
 - [ ] CHK-013 [P1] Gate A changes stay bounded to template, validator, root-packet backfill, and recovery-proof surfaces only.
 <!-- /ANCHOR:code-quality -->
@@ -86,7 +85,7 @@ Checklist priorities follow iteration 020 Gate A close criteria, iteration 022's
 
 - [ ] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` cite the same grounding sources and tell the same Gate A story.
 - [ ] CHK-041 [P1] `implementation-summary.md` stays honest about being a planned closeout shape, with post-implementation facts left as `TBD after Gate A implementation closes`.
-- [ ] CHK-042 [P2] Follow-on work such as the 19 memory-relevant sub-README rewrites from `resource-map.md` §8.5 is tracked as deferred rather than silently omitted.
+- [ ] CHK-042 [P2] Follow-on work such as the 19 memory-relevant sub-README rewrites from `../resource-map.md` §8.5 is tracked as deferred rather than silently omitted.
 <!-- /ANCHOR:docs -->
 
 ---

@@ -107,9 +107,10 @@ Layered handler retarget on top of the existing retrieval and bootstrap architec
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Reader Contract Lock
+### Phase 1: Reader Contract Lock and D0 Kickoff
 - [ ] Confirm Gate C stability, canonical fixture coverage, and D0 telemetry prerequisites.
-- [ ] Decide helper placement for `resumeLadder` and align `session-resume.ts` / `session-bootstrap.ts` responsibilities.
+- [ ] Lock ADR-001 helper placement at `mcp_server/lib/resume/resume-ladder.ts` and align `session-resume.ts` / `session-bootstrap.ts` responsibilities.
+- [ ] Start D0 archived observation as soon as Gate C stability is confirmed; the observation lane runs in parallel with Phases 2 and 3.
 - [ ] Retarget discovery and trigger-source assumptions before touching user-facing resume flow.
 
 ### Phase 2: Core Reader Refactor
@@ -117,10 +118,10 @@ Layered handler retarget on top of the existing retrieval and bootstrap architec
 - [ ] Restructure `memory-context.ts` resume mode and rewrite `session-resume.ts` around the ladder.
 - [ ] Update `session-bootstrap.ts`, `memory-index-discovery.ts`, and `memory-triggers.ts` to consume the new canonical source contract.
 
-### Phase 3: Verification and D0 Start
+### Phase 3: Verification
 - [ ] Run the 10 resume tests, 25 integration tests, and 13 feature regressions from iteration 029.
 - [ ] Benchmark resume, search, and trigger p95 budgets from iteration 027.
-- [ ] Start D0 archived observation and document any archive-dependence or fallback churn before gate sign-off.
+- [ ] Review the active D0 archived observation lane and document any archive-dependence or fallback churn before gate sign-off.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -168,17 +169,18 @@ Layered handler retarget on top of the existing retrieval and bootstrap architec
 ## L2: PHASE DEPENDENCIES
 
 ```
-Gate C stability ----┐
-                     ├──> Handler retarget ----> Regression/perf proof ----> D0 observation start
-Fixture + telemetry -┘
+Gate C stability ----┬----> D0 observation lane --------------------┐
+                     │                                              │
+                     └----> Handler retarget ----> Regression/perf proof ----> Gate D close
+Fixture + telemetry -------------------------------------------------┘
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Contract Lock | Gate C, fixtures, telemetry | Core Refactor |
-| Core Refactor | Contract Lock | Verification |
+| Contract Lock and D0 Kickoff | Gate C, fixtures, telemetry | Core Refactor and D0 observation lane |
+| Core Refactor | Contract Lock and D0 Kickoff | Verification |
 | Verification | Core Refactor | Gate D close |
-| D0 Observation Start | Verification evidence | Runtime rollout confidence |
+| D0 Observation Lane | Contract Lock and D0 Kickoff | Runtime rollout confidence and Gate D close |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -188,9 +190,9 @@ Fixture + telemetry -┘
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Contract Lock | Medium | 2-3 days |
+| Contract Lock and D0 Kickoff | Medium | 2-3 days |
 | Core Refactor | High | 6-7 days |
-| Verification and D0 Start | High | 3-4 days |
+| Verification and D0 Review | High | 3-4 days |
 | **Total** | | **~2 weeks** |
 <!-- /ANCHOR:effort -->
 
@@ -226,8 +228,13 @@ Fixture + telemetry -┘
 ```
 ┌───────────────────────┐
 │ Gate C writer stable  │
-└──────────┬────────────┘
-           ▼
+└──────┬────────┬───────┘
+       │        │
+       │        ▼
+       │   ┌───────────────────────┐
+       │   │ D0 observation lane   │
+       │   └──────────┬────────────┘
+       ▼              │
 ┌───────────────────────┐
 │ resumeLadder contract │
 └──────┬─────────┬──────┘
@@ -239,17 +246,20 @@ Fixture + telemetry -┘
   bootstrap/discovery/triggers
             │
             ▼
-   tests + perf + D0 start
+    tests + perf review
+            │
+            └──────────────► D0 sign-off
 ```
 
 ### Dependency Matrix
 
 | Component | Depends On | Produces | Blocks |
 |-----------|------------|----------|--------|
-| `resumeLadder` contract | Gate C stability, iterations 013/029 | Recovery ordering, source telemetry | Resume and bootstrap refactor |
+| `resumeLadder` contract | Gate C stability, iteration 013 resume journey, iteration 029 test catalog | Recovery ordering, source telemetry | Resume and bootstrap refactor |
 | Search/context retarget | Canonical doc substrate | Doc-first retrieval behavior | Regression and perf proof |
 | Discovery/trigger retarget | Canonical frontmatter | Canonical metadata provenance | Trigger regressions and D0 trust |
-| Verification lane | All handler work | Gate D close evidence | Gate E runtime rollout |
+| D0 observation lane | Gate C stability, archive telemetry, handler telemetry | Archive-dependence evidence | Gate D close and Gate E runtime rollout |
+| Verification lane | All handler work, active D0 observation lane | Gate D close evidence | Gate E runtime rollout |
 <!-- /ANCHOR:dependency-graph -->
 
 ---

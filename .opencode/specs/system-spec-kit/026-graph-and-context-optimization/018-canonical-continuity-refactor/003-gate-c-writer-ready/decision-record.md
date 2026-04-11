@@ -37,7 +37,7 @@ parent: "018-canonical-continuity-refactor"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-`memory-save.ts` is already the only XL file in the packet (resource-map F-4, row B1). If Gate C pushes router, merge, continuity, and atomic index logic back into that file, the refactor becomes unreviewable and the pass-through/adapt/rewrite model from `02-handlers.md` collapses.
+`memory-save.ts` is already the only XL file in the packet (resource-map F-4, row B1). If Gate C pushes router, merge, continuity, and atomic index logic back into that file, the refactor becomes unreviewable and the pass-through/adapt/rewrite model from `../scratch/resource-map/02-handlers.md` collapses.
 
 ### Constraints
 
@@ -150,6 +150,7 @@ Tier 1 rules and Tier 2 prototypes cover most chunks, but iteration 031 shows a 
 **We chose**: a `gpt-5.4` low-reasoning, `temperature: 0`, strict-JSON classifier with `max_output_tokens: 200` and `timeout_ms: 2000`.
 
 **How it works**: Tier 3 sees one normalized chunk plus Tier 1/Tier 2 evidence, returns one of the eight categories, and refuses below `0.50` confidence. Fallback is Tier 2 top-1 with a penalty, not uncontrolled guessing.
+See `../research/iterations/iteration-031.md` section 3 "Prompt template" and section 4 "Response schema" for the frozen prompt text and JSON output shape.
 <!-- /ANCHOR:adr-002-decision -->
 
 ---

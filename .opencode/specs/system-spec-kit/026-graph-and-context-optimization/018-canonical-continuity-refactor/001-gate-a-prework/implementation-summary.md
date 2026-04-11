@@ -15,11 +15,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "planning"
 ---
-# Implementation Summary
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+# Implementation Summary
 
 ---
 
@@ -28,7 +27,7 @@ contextType: "planning"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `001-gate-a-prework` |
+| **Spec Folder** | 001-gate-a-prework |
 | **Completed** | TBD after Gate A implementation closes |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -38,14 +37,14 @@ contextType: "planning"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Gate A is expected to remove the blockers that would otherwise make phase 018 unsafe to start. The planned deliverable is a clean launch surface: repaired template anchors, legal special-template merge targets, canonical root-packet summaries in place before any archive flip, and a proven backup/restore/rollback path for the SQLite store. That shape comes directly from `implementation-design.md` "Migration Strategy (M4)", `resource-map.md` §4 Gate A, and iteration 020 "Phase 018.0 — Pre-work".
+Gate A is expected to remove the blockers that would otherwise make phase 018 unsafe to start. The planned deliverable is a clean launch surface: repaired template anchors, legal special-template merge targets, canonical root-packet summaries in place before any archive flip, and a proven backup/restore/rollback path for the SQLite store. That shape comes directly from `../implementation-design.md` "Migration Strategy (M4)", `../resource-map.md` §4 Gate A, and iteration 020 "Phase 018.0 — Pre-work".
 
 ### Planned Gate A deliverables
 
 When Gate A closes, you should be able to point to a short list of tangible outcomes instead of research intent:
 
 1. Level 3 and Level 3+ spec templates no longer fail on orphan `metadata` anchors.
-2. `handover.md`, `research.md`, and `debug-delegation.md` expose explicit anchors before save-path routing begins.
+2. `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md` expose explicit anchors before save-path routing begins.
 3. Root packets that still depended on memory files now have canonical `implementation-summary.md`.
 4. A named SQLite backup exists, restore-on-copy passes, rollback-on-copy passes, and resume warmup is under five seconds.
 
@@ -74,7 +73,7 @@ Planned delivery story:
 - Start with the audit and boundary freeze from iteration 028 so later work stays inside the Gate A blocker set.
 - Implement the template and validator-scope fixes first, because iteration 022 makes `ANCHORS_VALID` and `MERGE_LEGALITY` the structural prerequisite for safe writes.
 - Close the root-packet backfill prerequisite from iteration 016 before any archive-state change is allowed.
-- Finish with backup, restore, rollback, and warmup proof from iteration 020 and `implementation-design.md`.
+- Finish with backup, restore, rollback, and warmup proof from iteration 020, the master plan, iteration 028, and `../implementation-design.md`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -84,10 +83,10 @@ Planned delivery story:
 
 | Decision | Why |
 |----------|-----|
-| Fix template anchor debt before any phase 018 writer work | `resource-map.md` F-3 and iteration 022 both treat orphan or missing anchors as fail-closed blockers for merge legality. |
+| Fix template anchor debt before any phase 018 writer work | `../resource-map.md` F-3 and iteration 022 both treat orphan or missing anchors as fail-closed blockers for merge legality. |
 | Exempt `changelog/*` and `sharded/*` from merge-target validation by default | The current templates are intentionally anchorless, and Gate A needs a narrow blocker-removal decision instead of a surprise expansion into new merge contracts. |
 | Backfill missing root-packet summaries before archive migration | Iteration 016 makes that the sole prerequisite for M4 so phase 018 does not archive the only durable packet narrative. |
-| Prove backup and rollback on a copy before any schema change | Iteration 020 and iteration 028 both treat recovery proof as part of Gate A close, not a later convenience task. |
+| Prove backup and rollback on a copy before any schema change | The master plan plus iteration 028 treat rollback proof as part of Gate A close, not a later convenience task. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -112,7 +111,7 @@ Planned delivery story:
 
 1. **This is a planned closeout shell, not a factual post-implementation record.** Post-implementation facts stay intentionally stubbed until Gate A actually lands.
 2. **The exact root-packet backfill list is still unresolved.** Iteration 016 defines the prerequisite, but the current research packet does not enumerate the packet paths.
-3. **Migration-file ownership is not yet locked.** `resource-map.md` §8.6 presents `mcp_server/database/migrations/` as an optional convention, so Gate A still needs to settle whether that directory is created or inline migration ownership is documented instead.
+3. **Migration-file ownership is not yet locked.** `../resource-map.md` §8.6 presents `mcp_server/database/migrations/` as an optional convention, so Gate A still needs to settle whether that directory is created or inline migration ownership is documented instead.
 <!-- /ANCHOR:limitations -->
 
 ---

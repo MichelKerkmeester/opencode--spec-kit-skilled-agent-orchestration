@@ -42,7 +42,6 @@ The grounding corrects one early research assumption: `memory_index.is_archived`
 | **Status** | Planned |
 | **Created** | 2026-04-11 |
 | **Branch** | `[UNCERTAIN: branch not assigned for Gate B implementation]` |
-<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -68,7 +67,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 - Apply the approved Gate B schema delta in `mcp_server/lib/search/vector-index-schema.ts`: add `source_anchor TEXT` and `target_anchor TEXT` to `causal_edges`, plus the anchor indexes required for mixed pre/post migration traversal.
 - Thread the new causal-edge fields through `mcp_server/lib/storage/causal-edges.ts`, `mcp_server/lib/storage/checkpoints.ts`, and `mcp_server/lib/storage/reconsolidation.ts`.
 - Execute the Day 0 archive flip so `UPDATE memory_index SET is_archived=1 WHERE source_path LIKE '%/memory/%.md'` marks exactly 155 legacy memory rows as archived.
-- Update ranking in `mcp_server/lib/search/stage2-fusion.ts` or the equivalent fusion surface so archived rows score at `x0.3`, and expose `archived_hit_rate` in the `memory_stats` reporting surface using the presented-slot definition from iterations 027 and 036.
+- Update ranking in `mcp_server/lib/search/pipeline/stage2-fusion.ts` or the equivalent fusion surface so archived rows score at `x0.3`, and expose `archived_hit_rate` in `mcp_server/handlers/memory-crud-stats.ts` using the presented-slot definition from iterations 027 and 036.
 - Verify whether `mcp_server/lib/storage/schema-downgrade.ts` needs a matching update or an explicit exclusion note for the narrowed Gate B schema delta.
 
 ### Out of Scope
@@ -85,10 +84,10 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` | Modify | Thread `source_anchor` and `target_anchor` through create, update, and read logic. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts` | Modify | Preserve the new causal-edge fields across snapshot and restore. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts` | Modify | Populate anchor-aware supersede edges during archive and replacement flows. |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/search/stage2-fusion.ts` | Modify | Apply the archived-row ranking multiplier and keep fallback behavior aligned with Gate B. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts` | Modify | Apply the archived-row ranking multiplier and keep fallback behavior aligned with Gate B. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/schema-downgrade.ts` | Verify or document | Confirm whether the narrowed migration needs downgrade handling or record why it does not. |
 | `.opencode/skill/system-spec-kit/scripts/memory/archive-flip-018.sh` | Create | Run the bounded `is_archived=1` flip for the 155 legacy memory rows. |
-| `[UNCERTAIN: exact memory_stats implementation file under mcp_server/handlers or lib]` | Modify | Surface `archived_hit_rate` so dashboard and stats tooling can observe the Gate B transition. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts` | Modify | Surface `archived_hit_rate` so dashboard and stats tooling can observe the Gate B transition. |
 | `[UNCERTAIN: optional standalone SQL file at mcp_server/database/migrations/018-002-add-causal-edges-anchor-columns.sql]` | Create only if ADR-001 chooses standalone packaging | Provide operator-visible SQL while keeping the canonical migration source of truth explicit. |
 <!-- /ANCHOR:scope -->
 
@@ -139,7 +138,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Gate A close criteria | Gate B starts without backup, rollback discipline, or packet-prep closure | Treat Gate A closure as a hard prerequisite, matching `implementation-design.md` and iteration 028. |
+| Dependency | Gate A close criteria | Gate B starts without backup, rollback discipline, or packet-prep closure | Treat Gate A closure as a hard prerequisite, matching `../implementation-design.md` and iteration 028. |
 | Dependency | `../resource-map.md` F-1/F-2 and `../scratch/resource-map/01-schema.md` | The packet could implement the wrong schema scope | Keep the docs explicit that `is_archived` already exists and only the causal-edge anchor delta is new. |
 | Dependency | Iteration 037 rehearsal contract | Production migration lacks operator-grade evidence | Require JSON evidence plus rerun and hard rollback proof before the maintenance window. |
 | Risk | Early iteration 035 sketches a wider tuple migration | Team may implement a broader schema change than the approved Gate B scope | Freeze Gate B to the critical-file list from the prompt and mark the broader tuple plan as `[UNCERTAIN: deferred or superseded for this gate]`. |
@@ -213,9 +212,9 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 **As a** runtime operator, **I want** the Gate B migration rehearsed on a copy with rollback evidence, **so that** I can execute the maintenance window without guessing whether recovery works.
 
 **Acceptance Criteria**:
-1. Given the Gate B rehearsal package, When I review it before production, Then I can see row-count, schema, search-equivalence, and rollback results in one JSON evidence artifact.
-2. Given a failed production-like rehearsal, When I compare the candidate copy to baseline, Then the packet tells me to block promotion and keep the failed copy for forensics.
-3. Given a rollback mismatch, When the hard rollback path fails logical baseline equivalence, Then Gate B stays in `NO_GO` state and the production window does not open.
+1. **Given** the Gate B rehearsal package, **When** I review it before production, **Then** I can see row-count, schema, search-equivalence, and rollback results in one JSON evidence artifact.
+2. **Given** a failed production-like rehearsal, **When** I compare the candidate copy to baseline, **Then** the packet tells me to block promotion and keep the failed copy for forensics.
+3. **Given** a rollback mismatch, **When** the hard rollback path fails logical baseline equivalence, **Then** Gate B stays in `NO_GO` state and the production window does not open.
 
 ---
 
@@ -224,9 +223,9 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 **As a** retrieval maintainer, **I want** archived rows demoted but still measurable, **so that** fresh spec docs become the default while long-tail legacy memory remains available when needed.
 
 **Acceptance Criteria**:
-1. Given a mixed search result set, When comparable fresh spec-doc and archived rows compete, Then fresh spec-doc rows rank higher because archived rows are multiplied by `0.3`.
-2. Given post-Gate-B telemetry, When I inspect the stats surface, Then I can see `archived_hit_rate` without redefining the metric in a later phase.
-3. Given a query that fresh spec docs do not cover yet, When archive fallback activates, Then archived results can still surface and remain measurable instead of disappearing silently.
+1. **Given** a mixed search result set, **When** comparable fresh spec-doc and archived rows compete, **Then** fresh spec-doc rows rank higher because archived rows are multiplied by `0.3`.
+2. **Given** post-Gate-B telemetry, **When** I inspect the stats surface, **Then** I can see `archived_hit_rate` without redefining the metric in a later phase.
+3. **Given** a query that fresh spec docs do not cover yet, **When** archive fallback activates, **Then** archived results can still surface and remain measurable instead of disappearing silently.
 
 ---
 

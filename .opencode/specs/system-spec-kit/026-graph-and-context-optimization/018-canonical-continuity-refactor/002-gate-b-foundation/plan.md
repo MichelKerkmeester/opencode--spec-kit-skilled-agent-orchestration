@@ -60,7 +60,7 @@ The delivery strategy is evidence-first. Tests get the exact DDL, row-count expe
 
 ---
 
-## AI EXECUTION PROTOCOL
+**AI Execution Protocol**
 
 ### Pre-Task Checklist
 - [ ] Gate A is closed and the maintenance window is still valid for Gate B.
@@ -97,7 +97,7 @@ Copy-first additive migration with hard rollback certification, followed by boun
 - **Rehearsal wrapper**: the iteration 037 dual-fork flow (`S0`, `fork-A-pre`, `fork-B-post`) plus JSON evidence packaging.
 - **Schema owner**: `mcp_server/lib/search/vector-index-schema.ts`, which remains the canonical bootstrap and migration source of truth.
 - **Storage-threading lane**: `causal-edges.ts`, `checkpoints.ts`, and `reconsolidation.ts`, which must preserve the new anchor fields end-to-end.
-- **Archive and ranking lane**: the bounded `archive-flip-018.sh` script plus the stage-2 fusion weighting update.
+- **Archive and ranking lane**: the bounded `archive-flip-018.sh` script plus the `mcp_server/lib/search/pipeline/stage2-fusion.ts` weighting update.
 - **Observability lane**: the `memory_stats` or dashboard surface that reports `archived_hit_rate` using the presented-slot share definition.
 
 ### Data Flow
@@ -110,7 +110,7 @@ The gate starts from an immutable production snapshot. That snapshot forks into 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Rehearsal and sign-off prep
-- [ ] Freeze the Gate B DDL and expected row counts from `resource-map.md` F-1/F-2, `01-schema.md`, and the narrowed critical-file list.
+- [ ] Freeze the Gate B DDL and expected row counts from `../resource-map.md` F-1/F-2, `../scratch/resource-map/01-schema.md`, and the narrowed critical-file list.
 - [ ] Capture the immutable snapshot and create `fork-A-pre` and `fork-B-post`.
 - [ ] Run the migration on `fork-B-post`, capture Q1-Q10 style evidence adapted to the corrected Gate B scope, rerun for idempotence, and record the JSON report.
 - [ ] Run the hard rollback drill on `fork-B-post` and compare logical baseline equivalence against `fork-A-pre`.
@@ -123,7 +123,7 @@ The gate starts from an immutable production snapshot. That snapshot forks into 
 - [ ] Execute the production archive flip so legacy memory-file rows become `is_archived=1`.
 
 ### Phase 3: Retrieval validation and gate close
-- [ ] Update the archived-row multiplier in `stage2-fusion.ts` or the equivalent fusion surface.
+- [ ] Update the archived-row multiplier in `mcp_server/lib/search/pipeline/stage2-fusion.ts` or the equivalent fusion surface.
 - [ ] Validate sample searches so fresh spec-doc results outrank archived peers when relevance is similar.
 - [ ] Expose `archived_hit_rate` in the stats/dashboard surface and confirm the metric definition matches iterations 027 and 036.
 - [ ] Reconcile the packet docs, checklist, and implementation-summary placeholder so Gate B is ready to hand off into Gate C.
@@ -153,7 +153,7 @@ The test mix is intentionally aligned to iteration 037's promotion rules and ite
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Gate A close | Internal | Green | Gate B cannot open safely without prior backup and rollback discipline. |
-| `resource-map.md` F-1/F-2 and `01-schema.md` | Internal | Green | They define the corrected schema scope and prevent duplicate `is_archived` work. |
+| `../resource-map.md` F-1/F-2 and `../scratch/resource-map/01-schema.md` | Internal | Green | They define the corrected schema scope and prevent duplicate `is_archived` work. |
 | Iteration 028 | Internal | Green | Supplies the gate sequencing, handoffs, and "cannot slip" list for Gate B. |
 | Iteration 037 | Internal | Green | Supplies the dual-fork rehearsal model, JSON evidence contract, and hard rollback requirement. |
 | Iteration 027 and iteration 036 | Internal | Green | Supply the latency and metric framing for `archived_hit_rate` visibility. |
@@ -205,7 +205,7 @@ Gate A close ──► Phase 1 (Rehearsal) ──► Phase 2 (Prod cutover) ─�
 | Buffer / investigation headroom | Medium | 1-2 days |
 | **Total** | | **~2 weeks** |
 
-This matches the Gate B envelope in `implementation-design.md`, `resource-map.md`, and iteration 028.
+This matches the Gate B envelope in `../implementation-design.md`, `../resource-map.md`, and iteration 028.
 <!-- /ANCHOR:effort -->
 
 ---

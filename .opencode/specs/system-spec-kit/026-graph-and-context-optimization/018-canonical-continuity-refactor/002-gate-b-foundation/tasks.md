@@ -68,7 +68,7 @@ Task ordering follows `../resource-map.md` Section 4 and iteration 028: rehearse
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T014 Update archived-row ranking in `.opencode/skill/system-spec-kit/mcp_server/lib/search/stage2-fusion.ts` or the equivalent fusion surface so archived rows score at `x0.3`.
+- [ ] T014 Update archived-row ranking in `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts` or the equivalent fusion surface so archived rows score at `x0.3`.
 - [ ] T015 Validate sample searches and confirm fresh spec-doc results outrank archived peers when relevance is comparable.
 - [ ] T016 Expose `archived_hit_rate` in the `memory_stats` reporting surface using the presented-slot definition from iterations 027 and 036.
 - [ ] T017 Verify 2-hop causal BFS still works on mixed pre/post migration edges.

@@ -21,7 +21,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `018-canonical-continuity-refactor/006-gate-f-archive-permanence` |
+| **Spec Folder** | 006-gate-f-archive-permanence |
 | **Completed** | Pending Gate F execution |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -75,7 +75,7 @@ Fill this section with the required proof bundle:
      For Level 1: a single sentence is enough.
      For Level 3+: describe stages (testing, rollout, verification). -->
 
-This population pass was grounded in `implementation-design.md`, the Gate F execution order in `resource-map.md`, and the permanence criteria from iterations 016, 020, 036, and 040. No runtime code or live metrics were executed in this documentation step, so the sections above remain a structured shell until the real 180-day evidence is pulled.
+This population pass was grounded in `../implementation-design.md`, the Gate F execution order in `../resource-map.md`, and the permanence criteria from iterations 016, 020, 036, and 040. No runtime code or live metrics were executed in this documentation step, so the sections above remain a structured shell until the real 180-day evidence is pulled.
 <!-- /ANCHOR:how-delivered -->
 
 ---

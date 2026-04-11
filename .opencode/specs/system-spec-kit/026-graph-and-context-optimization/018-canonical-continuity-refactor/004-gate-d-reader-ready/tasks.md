@@ -36,7 +36,8 @@ contextType: "implementation"
 ## Phase 1: Setup
 
 - [ ] T001 Confirm Gate C is closed, dual-write shadow is stable, and D0 can start in parallel.
-- [ ] T002 Decide `resumeLadder` placement and lock the shared recovery contract (`session-resume.ts` or `mcp_server/lib/resume/resume-ladder.ts`).
+- [ ] T002 Create the shared `resumeLadder` helper at `mcp_server/lib/resume/resume-ladder.ts` per ADR-001 and lock the shared recovery contract with `session-resume.ts` and `session-bootstrap.ts`.
+- [ ] T014 Start the overlapping D0 2-week archived observation window as soon as Gate C stability is confirmed; this runs in parallel with T002-T013 and confirms short-window `archived_hit_rate <15%`.
 - [ ] T003 Retarget canonical discovery and trigger-source assumptions before user-facing resume changes (`memory-index-discovery.ts`, `memory-triggers.ts`).
 <!-- /ANCHOR:phase-1 -->
 
@@ -62,7 +63,6 @@ contextType: "implementation"
 - [ ] T011 Implement or align the 10 resume tests and 25 integration scenarios named in iteration 029.
 - [ ] T012 Run the 13 merge-blocking regression scenarios from iteration 025.
 - [ ] T013 Run perf benchmarks and verify `resume <500ms`, `search <300ms`, `trigger <10ms` p95 targets from iteration 027.
-- [ ] T014 Start the overlapping D0 2-week archived observation window and confirm short-window `archived_hit_rate <15%`.
 - [ ] T015 Sync `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` with the final evidence.
 <!-- /ANCHOR:phase-3 -->
 
@@ -83,7 +83,7 @@ contextType: "implementation"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Grounding**: [`../resource-map.md`](../resource-map.md) section 4, [`../scratch/resource-map/02-handlers.md`](../scratch/resource-map/02-handlers.md), and iterations 013, 017, 018, 025, 027, 029, 036, 039
+- **Grounding**: [`../resource-map.md`](../resource-map.md) section 4, [`../scratch/resource-map/02-handlers.md`](../scratch/resource-map/02-handlers.md), iteration 013 (resume journey), iteration 017, iteration 018, iteration 025, iteration 027, iteration 029 (resume/test catalog), iteration 036, and iteration 039
 <!-- /ANCHOR:cross-refs -->
 
 ---

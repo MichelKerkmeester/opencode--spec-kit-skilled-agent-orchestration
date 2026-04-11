@@ -35,6 +35,8 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
+State inventory for Gate E sequencing, per iteration 034 section 2: `S0 disabled` is the fallback and off state, `S1 shadow_only` mirrors traffic without serving it, `S2 dual_write_10pct`, `S3 dual_write_50pct`, and `S4 dual_write_100pct` are the proving buckets, `S5 canonical` is the default-serving state, `S6 legacy_cleanup` stays optional and belongs after Gate F permanence approval, and `S7 rolled_back` is the transient safety latch that resolves to a named fallback target.
+
 - [ ] T001 Confirm entry-gate evidence: Gates A-D closed, dual-write shadow stable for at least 7 days, and the impact-analysis artifact is available (`../implementation-design.md`, `../resource-map.md`, `../research/iterations/iteration-040.md`)
 - [ ] T002 Promote `shadow_only -> dual_write_10pct` and record the transition, hold window, and dashboards (`../research/iterations/iteration-034.md`)
 - [ ] T003 Observe 24h at `dual_write_10pct`; halt if divergence, correctness-loss, or blackout-window rules fire (`../research/iterations/iteration-034.md`)
@@ -59,8 +61,9 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T011 Finish all 160-plus mapped surface updates and resolve any remaining terminology drift against the file matrix (`../resource-map.md`, sections 8.1, 8.2, 8.5)
+- [ ] T011 Finish all 160-plus mapped surface updates and resolve any remaining terminology drift against the file matrix (`../resource-map.md`, sections 8.1, 8.2, 8.5); keep the raw fan-out traceable as 50 command and agent surfaces + 71 skill rows + 19 memory-relevant READMEs + 92 doc-parity README touches, or about 232 raw candidates compressed to about 160 actionable edits after overlap and no-change exclusions
 - [ ] T012 Update the 8 CLI handback files in one lockstep batch: each `cli-*` skill doc plus prompt-template asset, aligned to the shipped `generate-context.js` contract
+- [ ] T012b Re-verify the 8-file CLI handback batch against the frozen `generate-context.js` schema hash before closeout so the Gate C contract stayed stable through the final parity pass
 - [ ] T013 Rewrite the 19 memory-relevant sub-READMEs and touch the 92 doc-parity README surfaces where terminology changed (`../scratch/resource-map/07-sub-readmes.md`)
 - [ ] T014 Hold `canonical` for at least 7 days, verify all alert thresholds remain quiet, and capture week-2/week-4 archive-review checkpoints (`../research/iterations/iteration-034.md`, `../research/iterations/iteration-040.md`)
 - [ ] T015 Prepare the optional `legacy_cleanup` handoff only if Gate F permanence conditions are already satisfied; otherwise close Gate E in `canonical`

@@ -55,9 +55,11 @@ Make `canonical` the default continuity mode, keep rollback and telemetry armed 
 ## 3. SCOPE
 
 ### In Scope
+- Gate E uses the full 8-state inventory from iteration 034 section 2: `S0 disabled` (fallback/off), `S1 shadow_only` (mirror-only compare mode), `S2 dual_write_10pct` (10 percent proving), `S3 dual_write_50pct` (50 percent proving), `S4 dual_write_100pct` (full dual-write proof), `S5 canonical` (default-serving), `S6 legacy_cleanup` (post-Gate-F permanence cleanup), and `S7 rolled_back` (transient safety latch that resolves to a named fallback target).
 - Advance `canonical_continuity_rollout` through `dual_write_10pct`, `dual_write_50pct`, `dual_write_100pct`, and `canonical` using the holds, cool-down windows, and rollback rules from iteration 034.
 - Update the full Gate E surface inventory: commands, agents, workflow YAMLs, top-level docs, 19 memory-relevant sub-READMEs, and 92 doc-parity README surfaces tracked in the resource map.
 - Synchronize the 8 CLI handback files with the final `generate-context.js` JSON contract before the broad documentation batch lands.
+- Resource-map arithmetic remains traceable: 50 command and agent surfaces plus 71 skill-surface rows plus 19 memory-relevant READMEs plus 92 doc-parity README touches yield about 232 raw candidates, which collapse to about 160 actionable Gate E edits after overlap and no-change exclusions are applied.
 
 ### Out of Scope
 - Re-opening writer or reader architecture from Gates C-D. Gate E consumes those contracts; it does not redesign them.
@@ -129,7 +131,7 @@ Make `canonical` the default continuity mode, keep rollback and telemetry armed 
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Gate E must not trigger the iteration-034 `resume.path.total`, `search.total`, or save-latency rollback thresholds while `canonical` is active.
+- **NFR-P01**: While `S5 canonical` is active, Gate E must stay below the exact iteration-034 section 4 post-flip rollback thresholds: `resume.path.total p95 <= 1000ms` unless it also remains within the allowed `<=2x` 7-run baseline guard, `validator.rollback.fingerprint rate = 0`, and `search.shadow.diff divergence rate <= 3%` with no correctness-loss mismatch. Any breach demotes `S5 -> S4`, except a global post-flip fingerprint failure which may demote `S5 -> S1`.
 
 ### Security
 - **NFR-S01**: Every promotion, freeze, rollback, or override must remain audit-logged with actor, reason, and incident or ticket reference.

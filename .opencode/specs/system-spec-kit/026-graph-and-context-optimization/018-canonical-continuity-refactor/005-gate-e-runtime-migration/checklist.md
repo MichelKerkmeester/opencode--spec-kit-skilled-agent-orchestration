@@ -42,7 +42,7 @@ contextType: "implementation"
 ## Code Quality
 
 - [ ] CHK-010 [P0] Feature flag reached `canonical` through the approved 10/50/100 progression
-- [ ] CHK-011 [P0] All auto-rollback rules stayed quiet during the proving window
+- [ ] CHK-011 [P0] All iteration-034 section 4 post-flip auto-rollback rules stayed quiet during the proving window: `resume.path.total p95` never exceeded `1000ms` once or `2x` the 7-run baseline on 2 runs, `validator.rollback.fingerprint rate` stayed at zero, and `search.shadow.diff divergence rate` never exceeded `3%` or produced a correctness-loss mismatch; otherwise the incident is recorded as `S5 -> S4`, or `S5 -> S1` for the documented global fingerprint-failure exception
 - [ ] CHK-012 [P1] Blackout and cool-down windows were respected for every promotion
 - [ ] CHK-013 [P1] Legacy path remained available as verification substrate until Gate E closeout
 <!-- /ANCHOR:code-quality -->
@@ -64,7 +64,7 @@ contextType: "implementation"
 ## Security
 
 - [ ] CHK-030 [P0] Every promotion, freeze, or rollback has an audit record with actor and reason
-- [ ] CHK-031 [P0] No correctness-loss or fingerprint rollback incident remains unresolved
+- [ ] CHK-031 [P0] No correctness-loss or fingerprint rollback incident remains unresolved; any non-zero post-flip `validator.rollback.fingerprint rate` or correctness-loss mismatch is traced to the exact iteration-034 section 4 demotion target (`S5 -> S4`, or `S5 -> S1` for the documented global-failure exception)
 - [ ] CHK-032 [P1] CLI handback contract matches the shipped `generate-context.js` schema
 <!-- /ANCHOR:security -->
 
@@ -122,7 +122,7 @@ contextType: "implementation"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [ ] CHK-110 [P1] `resume.path.total`, save latency, and search latency stay inside the iteration-034 thresholds
+- [ ] CHK-110 [P1] The Gate E post-flip thresholds from iteration-034 section 4 are verified literally: `resume.path.total p95 <= 1000ms` unless the allowed `<=2x` 7-run baseline guard applies, `validator.rollback.fingerprint rate = 0`, and `search.shadow.diff divergence rate <= 3%` with no correctness-loss mismatch; any breach is documented with the required demotion target (`S5 -> S4` or `S5 -> S1` for the global fingerprint-failure exception)
 - [ ] CHK-111 [P1] `archived_hit_rate` remains within the acceptable Gate E range
 - [ ] CHK-112 [P2] Additional load or soak evidence is captured if week-3 anomalies appear
 - [ ] CHK-113 [P2] Benchmark deltas are attached to the Gate E closeout notes

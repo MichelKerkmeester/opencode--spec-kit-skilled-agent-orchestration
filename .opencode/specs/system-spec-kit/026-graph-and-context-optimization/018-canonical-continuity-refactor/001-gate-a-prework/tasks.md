@@ -15,10 +15,9 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "planning"
 ---
-# Tasks: Gate A — Pre-work
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+# Tasks: Gate A — Pre-work
 
 ---
 
@@ -34,16 +33,16 @@ contextType: "planning"
 
 **Task Format**: `T### [P?] Description (file path or surface)`
 
-Task ordering follows `resource-map.md` §4 Gate A and iteration 028's Gate A DAG: audit first, then remediation/backfill, then safety verification.
+Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A DAG: audit first, then remediation/backfill, then safety verification.
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Audit and boundary freeze
+## Phase 1: Setup
 
-- [ ] T001 Confirm the Gate A target set from `resource-map.md` F-3, `resource-map.md` §4, and `scratch/resource-map/04-templates.md`.
-- [ ] T002 Audit all Level 1/2/3/3+ templates for anchor integrity and record the defects that block `ANCHORS_VALID` or `MERGE_LEGALITY`.
+- [ ] T001 Confirm the Gate A target set from `../resource-map.md` F-3, `../resource-map.md` §4, and `../scratch/resource-map/04-templates.md`.
+- [ ] T002 Audit all Level 1/2/3/3+ templates for anchor integrity in a read-only scan, then limit remediation to Level 3, Level 3+, and `.opencode/skill/system-spec-kit/templates/{handover.md,research.md,debug-delegation.md}`.
 - [ ] T003 Identify the root packets missing canonical `implementation-summary.md`, using iteration 016's M4 prerequisite as the audit rubric.
 - [ ] T004 Freeze the default validator scope decision: `changelog/*` and `sharded/*` are exempt from merge-target validation unless a later phase expands their contract.
 - [ ] T005 Decide whether Gate A will create an empty `mcp_server/database/migrations/` convention or record inline migration ownership in `vector-index-schema.ts`.
@@ -88,8 +87,8 @@ Task ordering follows `resource-map.md` §4 Gate A and iteration 028's Gate A DA
 
 - [ ] All P0 Gate A blockers from `spec.md` REQ-001 through REQ-006 are marked complete.
 - [ ] No `[B]` task remains on template anchors, root-packet backfill, SQLite recovery proof, or warmup health.
-- [ ] Gate A exit criteria from iteration 020 and `implementation-design.md` are all satisfied.
-- [ ] Follow-on work such as the 19 sub-README rewrites from `resource-map.md` §8.5 is explicitly deferred instead of silently absorbed.
+- [ ] Gate A exit criteria from iteration 020 and `../implementation-design.md` are all satisfied.
+- [ ] Follow-on work such as the 19 sub-README rewrites from `../resource-map.md` §8.5 is explicitly deferred instead of silently absorbed.
 <!-- /ANCHOR:completion -->
 
 ---

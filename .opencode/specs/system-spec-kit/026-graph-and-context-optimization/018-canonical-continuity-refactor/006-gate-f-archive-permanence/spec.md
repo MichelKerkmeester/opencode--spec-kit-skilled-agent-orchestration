@@ -68,7 +68,7 @@ Use iter 036's EWMA and stability rules to classify the archived tier as RETIRE,
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/006-gate-f-archive-permanence/implementation-summary.md` | Modify | Pre-build the decision evidence shell to fill after evaluation. |
 | `mcp_server/lib/search/stage1-candidate-gen.ts` | Modify if RETIRE | Remove archived rows from live candidate generation. |
 | `mcp_server/lib/storage/incremental-index.ts` | Modify if RETIRE | Stop reindexing archived rows into the live tier. |
-| `scripts/memory/retirement-018.ts` | Create if RETIRE | Snapshot archived rows into a read-only recovery artifact. |
+| `scripts/memory/018-006-gate-f-retirement.ts` | Create if RETIRE | Snapshot archived rows into a read-only recovery artifact. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -80,7 +80,7 @@ Use iter 036's EWMA and stability rules to classify the archived tier as RETIRE,
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Gate F uses iter 036 as the authoritative permanence rulebook. | Decision logic references daily slot-share `archived_hit_rate`, EWMA `alpha=0.1`, weekly seasonality correction, eligible-day floors, and the retire/keep/investigate ladder. |
+| REQ-001 | Gate F uses iter 036 as the authoritative permanence rulebook. | Decision logic references daily slot-share `archived_hit_rate`, EWMA `alpha=0.1`, weekly seasonality correction, eligible-day floors, and the retire/keep/investigate ladder: `<0.005` RETIRE, `[0.005, 0.020)` KEEP, `>=0.020` INVESTIGATE. |
 | REQ-002 | Stability is defined, not inferred. | The evaluation checks 30 consecutive eligible days, rolling 30-day standard deviation, max raw-rate spike guard, 14-day EWMA slope, and anomaly-day handling before any decision is recorded. |
 | REQ-003 | Ambiguous or unsafe outcomes stop automation. | Any missing telemetry, mixed-band streak, or intent-slice dependence above the iter 036 guardrails produces an escalation package instead of a silent auto-decision. |
 
@@ -88,8 +88,8 @@ Use iter 036's EWMA and stability rules to classify the archived tier as RETIRE,
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | The evidence package is complete enough for human review. | `implementation-summary.md` captures trend data, query-class breakdown, top 20 archive-only queries, fresh-doc comparisons, and keep-vs-retire cost notes. |
-| REQ-005 | Retirement work stays conditional and small. | Runtime code edits are scoped only to `stage1-candidate-gen.ts`, `incremental-index.ts`, and `scripts/memory/retirement-018.ts`, and only after RETIRE is justified. |
+| REQ-004 | The evidence package is complete enough for human review. | `implementation-summary.md` captures a 90-day trend chart with threshold lines at 0.5% and 2.0%, a `+/-1 sigma` band, anomaly-day shading, query-class breakdown, top 20 archive-only queries, fresh-doc comparisons, and keep-vs-retire cost notes. |
+| REQ-005 | Retirement work stays conditional and small. | Runtime code edits are scoped only to `stage1-candidate-gen.ts`, `incremental-index.ts`, and `scripts/memory/018-006-gate-f-retirement.ts`, and only after RETIRE is justified. |
 | REQ-006 | Non-retire outcomes produce the right follow-up artifact. | KEEP closes with documented rationale and no code changes; INVESTIGATE or ESCALATE opens a routing-refinement or human-review follow-up instead of retiring the tier. |
 <!-- /ANCHOR:requirements -->
 
@@ -110,9 +110,9 @@ Use iter 036's EWMA and stability rules to classify the archived tier as RETIRE,
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `research/iterations/iteration-036.md` | Gate F has no defensible stability definition without it. | Treat iter 036 as the binding rulebook and cite it throughout the decision package. |
+| Dependency | `../research/iterations/iteration-036.md` | Gate F has no defensible stability definition without it. | Treat iter 036 as the binding rulebook and cite it throughout the decision package. |
 | Dependency | `memory_stats` `archived_hit_rate` daily series from Gate B onward | No metric series means no permanence decision. | Halt at ESCALATE and package the telemetry gap instead of substituting approximate data. |
-| Dependency | `resource-map.md` Gate F execution order | Missing the overlap note would incorrectly restart the observation window. | Preserve the parent note that the 180-day window started at Gate B, not at Gate F kickoff. |
+| Dependency | `../resource-map.md` Gate F execution order | Missing the overlap note would incorrectly restart the observation window. | Preserve the parent note that the 180-day window started at Gate B, not at Gate F kickoff. |
 | Risk | Global averages look calm while one intent slice still depends on archive hits. | High | Break down the metric by intent and spec-family, and escalate if any slice exceeds iter 036's investigate guardrail. |
 | Risk | A short holiday dip or outage creates a false retirement streak. | Medium | Exclude ineligible and anomaly days from the 30-day streak, and show them in the evidence package. |
 | Risk | Retirement is treated as hard deletion instead of logical removal. | High | Require snapshot readiness, restore rehearsal, and Option F phase 021 follow-up before any irreversible cleanup. |
@@ -159,6 +159,12 @@ Use iter 036's EWMA and stability rules to classify the archived tier as RETIRE,
 - RETIRE: logical removal first, snapshot preserved, then phase 021 Option F follow-up opens.
 - KEEP: retain the thin archive layer permanently and close without code edits.
 - INVESTIGATE: keep the archive live, file routing refinement work, and avoid retirement changes.
+
+### Acceptance Scenarios
+- **Given** 30 consecutive eligible days, a seasonality-corrected EWMA below `0.005`, no disqualifying spike, and a flat-to-falling 14-day slope, **when** Gate F evaluates the ladder, **then** the packet records `RETIRE` and prepares only the minimal retirement branch.
+- **Given** 30 consecutive eligible days with corrected EWMA inside `[0.005, 0.020)`, acceptable variance, and no intent-slice guardrail breach, **when** Gate F evaluates the ladder, **then** the packet records `KEEP` and closes with no runtime edits.
+- **Given** a corrected EWMA at or above `0.020` or a still-dependent intent/spec-family slice above the investigate guardrail, **when** Gate F evaluates the ladder, **then** the packet records `INVESTIGATE` and opens routing-refinement follow-up instead of retiring the archive.
+- **Given** missing telemetry, mixed-band streak behavior, or anomaly/ineligible-day pressure that breaks the stability contract, **when** Gate F evaluates the ladder, **then** the packet records `ESCALATE` and ships the full evidence package to human review instead of auto-deciding.
 <!-- /ANCHOR:edge-cases -->
 
 ---

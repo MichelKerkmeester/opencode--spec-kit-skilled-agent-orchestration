@@ -70,6 +70,29 @@ Strangler-style refactor inside the existing save pipeline.
 
 ### Data Flow
 `/memory:save` enters `generate-context.ts`, normalizes payloads, and hands them to the new writer path. `contentRouter` classifies chunks, `anchorMergeOperation` mutates only the legal target region, `atomicIndexMemory` persists the resulting canonical payload, and post-insert/shadow telemetry emit parity evidence without changing reader behavior yet.
+
+### Save Pipeline Stage Matrix
+
+| Stage | Stage name | Current carrier file | Disposition | Notes |
+|-------|------------|----------------------|-------------|-------|
+| 1 | Governance validation | `memory-save.ts` | `pass-through` | Keeps scope, provenance, retention, and shared-space checks unchanged before any write. |
+| 2 | Preflight validation | `memory-save.ts` + parser/validator | `adapt` | Swaps memory-file parsing assumptions for routed spec-doc validation inputs. |
+| 3 | Template contract | `memory-save.ts` + template contract helpers | `rewrite` | Replaces memory-template enforcement with spec-doc anchor and continuity contract checks. |
+| 4 | Spec-doc health check | `memory-save.ts` | `pass-through` | Preserves spec-doc health scoring and annotation behavior. |
+| 5 | Sufficiency gating | `memory-save.ts` | `adapt` | Reframes thin-save rejection around durable canonical context instead of standalone memory files. |
+| 6 | Dedup | `save/dedup.ts` | `adapt` | Re-keys duplicate checks around doc-anchor or continuity identity, not one file per memory. |
+| 7 | Embedding generation | `save/embedding-pipeline.ts` | `pass-through` | Reuses cached embedding flow; only the routed content unit changes. |
+| 8 | Quality gate | `lib/validation/save-quality-gate.ts` | `adapt` | Keeps warn-only rollout logic while checking continuity and anchor structure instead of memory templates. |
+| 9 | Prediction-error arbitration | `save/pe-orchestration.ts` | `pass-through` | Leaves create/reinforce/update/supersede arbitration intact. |
+| 10 | Atomic save envelope | `memory-save.ts` under `withSpecFolderLock()` | `rewrite` | Replaces `atomicSaveMemory()` with anchor/doc-targeted `atomicIndexMemory()`. |
+| 11 | Record creation | `save/create-record.ts` | `adapt` | Preserves index-row creation while shifting identity to doc-anchor or continuity-record keys. |
+| 12 | Chunking | `chunking-orchestrator.ts` | `pass-through` | Keeps parent/child chunking behavior unchanged for oversized content. |
+| 13 | Post-insert metadata | `save/db-helpers.ts` + `post-insert-metadata` | `pass-through` | Retains content hash, context type, quality, scope, and governance metadata persistence. |
+| 14 | Reconsolidation | `save/reconsolidation-bridge.ts` | `pass-through` | Leaves assistive reconsolidation flow intact because it already works on indexed content. |
+| 15 | Post-insert enrichment | `save/post-insert.ts` | `adapt` | Updates causal-link and body-derived enrichers to consume routed anchors and continuity metadata. |
+| 16 | Response build | `save/response-builder.ts` | `pass-through` | Preserves final MCP envelope assembly while reporting doc-anchor continuity writes. |
+
+Source: `../scratch/resource-map/02-handlers.md`, "Save Pipeline Stage Matrix".
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -96,6 +119,30 @@ Strangler-style refactor inside the existing save pipeline.
 - [ ] Run the 243-test catalog, golden-set parity, and routing-audit reducers.
 - [ ] Hold the proving window long enough to clear Gate C exit criteria and hand off cleanly to Gate D.
 <!-- /ANCHOR:phases -->
+
+---
+
+## AI EXECUTION PROTOCOL
+
+### Pre-Task Checklist
+- [ ] Re-read `spec.md`, this plan, and `decision-record.md` before touching any Gate C runtime file.
+- [ ] Confirm the workstream stays inside Gate C writer scope and does not reopen Gate B storage or Gate D reader behavior.
+- [ ] Recheck `../scratch/resource-map/02-handlers.md`, `../scratch/resource-map/03-scripts.md`, and `../scratch/resource-map/04-templates.md` before changing the routed save, generator, or template surfaces.
+
+### Execution Rules
+
+| Rule | Description |
+|------|-------------|
+| TASK-SEQ | Freeze validator and schema contracts before rewriting `memory-save.ts` or `generate-context.ts`. |
+| TASK-SCOPE | Limit implementation to Gate C writer-critical files, template surfaces, and proving artifacts named in `spec.md`. |
+| TASK-PARITY | Preserve the documented 16-stage save pipeline split: 8 pass-through, 6 adapt, 2 rewrite. |
+| TASK-VERIFY | Run targeted tests plus `validate.sh --strict` before claiming any Gate C closeout step is complete. |
+
+### Status Reporting Format
+Report progress as `Gate C [STATUS] - workstream - evidence`, for example `Gate C DONE - validator bridge - fixtures + strict validate clean`.
+
+### Blocked Task Protocol
+If a blocker appears, stop the affected workstream, record the exact file/rule/test causing it, keep other Gate C streams read-only until the blocker is resolved, and escalate with the smallest viable next action.
 
 ---
 

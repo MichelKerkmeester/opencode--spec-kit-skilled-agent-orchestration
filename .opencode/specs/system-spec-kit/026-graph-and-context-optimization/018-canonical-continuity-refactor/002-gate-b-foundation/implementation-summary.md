@@ -90,7 +90,7 @@ Planned delivery story:
 ## Known Limitations
 
 1. **This is a planned closeout shell, not a factual post-implementation record.** Post-implementation facts stay intentionally stubbed until Gate B actually lands.
-2. **The exact `memory_stats` implementation file is not pinned in the grounding.** The packet knows the behavior that must land, but not the final code path name.
+2. **The Gate B stats hook still needs implementation work.** The target reporting surface is `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts`, but this packet remains a planned closeout shell until the runtime change actually lands.
 3. **The broader tuple-column proposal from iteration 035 remains unresolved for this gate.** Gate B is scoped to the prompt's narrower anchor-column plan unless a later decision widens it explicitly.
 <!-- /ANCHOR:limitations -->
 

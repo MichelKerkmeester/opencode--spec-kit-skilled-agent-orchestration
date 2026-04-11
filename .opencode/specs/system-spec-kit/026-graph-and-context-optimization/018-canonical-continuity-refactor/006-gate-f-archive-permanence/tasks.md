@@ -31,7 +31,9 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Evidence Collection
+## Phase 1: Setup
+
+Evidence collection setup for the Gate F classification pass.
 
 - [ ] T001 Confirm Gate E is closed and the 180-day window is measured from the Gate B archive flip (`spec.md`, `plan.md`)
 - [ ] T002 Pull 180 days of daily `archived_hit_rate`, eligibility floors, and anomaly markers from the metrics source (`implementation-summary.md`)
@@ -41,20 +43,24 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Decision Classification
+## Phase 2: Implementation
+
+Run the permanence ladder and capture the packet evidence bundle.
 
 - [ ] T004 Apply iter 036 weekly seasonality correction and compute EWMA with `alpha=0.1` (`implementation-summary.md`)
 - [ ] T005 Check 30-day stability using rolling stddev, max raw-rate spike, and 14-day slope guards (`implementation-summary.md`)
-- [ ] T006 Evaluate the section 6 ladder and classify RETIRE, KEEP, INVESTIGATE, or ESCALATE (`implementation-summary.md`)
+- [ ] T006 Evaluate the section 6 ladder with explicit bands and classify RETIRE, KEEP, INVESTIGATE, or ESCALATE: `<0.005` RETIRE, `[0.005, 0.020)` KEEP, `>=0.020` INVESTIGATE (`implementation-summary.md`)
 - [ ] T007 Write the full evidence package: trend data, slice breakdown, top 20 archive-only queries, fresh-doc comparisons, and cost estimate (`implementation-summary.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Conditional Follow-up
+## Phase 3: Verification
 
-- [ ] T008 If RETIRE, implement `scripts/memory/retirement-018.ts` and update `mcp_server/lib/search/stage1-candidate-gen.ts` plus `mcp_server/lib/storage/incremental-index.ts`
+Finish the packet with the outcome-specific follow-up and closure path.
+
+- [ ] T008 If RETIRE, implement `scripts/memory/018-006-gate-f-retirement.ts` and update `mcp_server/lib/search/stage1-candidate-gen.ts` plus `mcp_server/lib/storage/incremental-index.ts`
 - [ ] T009 If KEEP, document the permanent thin-layer rationale and close Gate F with no runtime code changes (`implementation-summary.md`)
 - [ ] T010 If INVESTIGATE or ESCALATE, file the required follow-up spec and stop archive retirement work (`implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->

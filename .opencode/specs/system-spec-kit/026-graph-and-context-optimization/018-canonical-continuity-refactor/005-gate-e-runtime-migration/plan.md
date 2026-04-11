@@ -31,6 +31,8 @@ contextType: "implementation"
 
 ### Overview
 Gate E follows the rollout control-plane defined in `../research/iterations/iteration-034.md` and the SLA handover in `../research/iterations/iteration-040.md`. Week 1 proves `dual_write_10pct` and `dual_write_50pct`, week 2 proves `dual_write_100pct` and enters `canonical`, and week 3 finishes the broad surface rewrite plus the 7-day canonical observation while keeping rollback, blackout, and archive-review rules active.
+
+Post-flip rollback remains literal to iteration 034 section 4: while `S5 canonical` is active, `resume.path.total p95 > 1000ms` once or `>2x` the 7-run baseline on 2 runs demotes `S5 -> S4`; any non-zero `validator.rollback.fingerprint rate` demotes `S5 -> S4`, with the documented exception to `S1` when the failure is global; and `search.shadow.diff divergence rate > 3%` or any correctness-loss mismatch demotes `S5 -> S4`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -120,7 +122,7 @@ Runtime evidence enters through the rollout state machine and telemetry spans, p
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Any correctness-loss breach, severe latency regression, fingerprint rollback event, or blackout-window violation defined in iteration 034.
-- **Procedure**: Move the feature flag back to the last safe bucket, pause promotions for the required freeze window, keep the legacy verification path available, and defer any unfinished parity batch until the incident evidence is reviewed.
+- **Procedure**: For the `S5 canonical` window, follow the exact iteration-034 section 4 demotions: `resume.path.total p95 > 1000ms` once or `>2x` the 7-run baseline on 2 runs rolls back `S5 -> S4`; any non-zero `validator.rollback.fingerprint rate` rolls back `S5 -> S4`, or `S5 -> S1` if the failure is global; and `search.shadow.diff divergence rate > 3%` or any correctness-loss mismatch rolls back `S5 -> S4`. Pause promotions for the required freeze window, keep the legacy verification path available, and defer any unfinished parity batch until the incident evidence is reviewed.
 <!-- /ANCHOR:rollback -->
 
 ---
