@@ -5,6 +5,7 @@
 // research and review convergence metrics.
 // Follows graph-signals.ts patterns for degree, depth, and momentum.
 
+import Database from 'better-sqlite3';
 import {
   getDb,
   getNodes,
@@ -523,10 +524,14 @@ export function createSignalSnapshot(ns: Namespace, iteration: number): SignalSn
     edgeCount: stats.totalEdges,
   };
 
-  // Persist to database
+  // Persist to database. CoverageSnapshot requires a concrete sessionId; the
+  // Namespace may still carry undefined in bootstrap/debug contexts, so fall
+  // back to a 'legacy' sentinel so pre-ADR-001 aggregations still persist
+  // without violating the type.
   createSnapshot({
     specFolder: ns.specFolder,
     loopType: ns.loopType,
+    sessionId: ns.sessionId ?? 'legacy',
     iteration,
     metrics: {
       ...signals,

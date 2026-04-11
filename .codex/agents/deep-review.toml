@@ -1,5 +1,11 @@
 # Agent: deep-review
 # Converted from: .opencode/agent/deep-review.md
+#
+# Phase 008 ADR-003: structural graph routing is provisioned via the shared
+# MCP server tool registration (see .opencode/skill/system-spec-kit/mcp_server/
+# tool-schemas.ts). Codex CLI receives `code_graph_query` and
+# `code_graph_context` through the same MCP channel as other deep-loop tools;
+# no explicit TOML tool whitelist is required for availability.
 name = "deep-review"
 description = "LEAF review agent for sk-deep-review. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL."
 sandbox_mode = "workspace-write"

@@ -144,6 +144,7 @@ export async function handleCoverageGraphUpsert(
         id: e.id,
         specFolder: args.specFolder,
         loopType: args.loopType,
+        sessionId: args.sessionId,
         sourceId: e.sourceId,
         targetId: e.targetId,
         relation: e.relation as Relation,

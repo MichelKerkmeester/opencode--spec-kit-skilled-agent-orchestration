@@ -49,15 +49,35 @@ function escapeRegExp(value) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Parse JSONL content into an array of records, skipping malformed lines.
+ * Parse JSONL content into an array of records. Backward-compatible array
+ * return; corrupt lines are silently dropped. For fail-closed behavior use
+ * parseJsonlDetailed().
  *
  * @param {string} jsonlContent - Newline-delimited JSON string
  * @returns {Array<Object>} Parsed records
  */
 function parseJsonl(jsonlContent) {
+  return parseJsonlDetailed(jsonlContent).records;
+}
+
+/**
+ * Parse JSONL content and report malformed lines (fail-closed pathway, phase 008
+ * research reducer parity with sk-deep-review Part C).
+ *
+ * The reducer exit code is non-zero when corruption warnings are present
+ * unless `--lenient` is passed to the CLI (or `lenient:true` to
+ * reduceResearchState).
+ *
+ * @param {string} jsonlContent - Newline-delimited JSON string
+ * @returns {{records: Array<Object>, corruptionWarnings: Array<{line: number, raw: string, error: string}>}}
+ */
+function parseJsonlDetailed(jsonlContent) {
   const records = [];
+  const corruptionWarnings = [];
+  let lineNumber = 0;
 
   for (const rawLine of jsonlContent.split('\n')) {
+    lineNumber += 1;
     const line = rawLine.trim();
     if (!line) {
       continue;
@@ -65,12 +85,16 @@ function parseJsonl(jsonlContent) {
 
     try {
       records.push(JSON.parse(line));
-    } catch (_error) {
-      continue;
+    } catch (error) {
+      corruptionWarnings.push({
+        line: lineNumber,
+        raw: rawLine.length > 200 ? `${rawLine.slice(0, 200)}...` : rawLine,
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 
-  return records;
+  return { records, corruptionWarnings };
 }
 
 function extractSection(markdown, heading) {
@@ -630,6 +654,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
  */
 function reduceResearchState(specFolder, options = {}) {
   const write = options.write !== false;
+  const lenient = Boolean(options.lenient);
   const resolvedSpecFolder = path.resolve(specFolder);
   const researchDir = path.join(resolvedSpecFolder, 'research');
   const configPath = path.join(researchDir, 'deep-research-config.json');
@@ -640,7 +665,7 @@ function reduceResearchState(specFolder, options = {}) {
   const iterationDir = path.join(researchDir, 'iterations');
 
   const config = readJson(configPath);
-  const parsedRecords = parseJsonl(readUtf8(stateLogPath));
+  const { records: parsedRecords, corruptionWarnings } = parseJsonlDetailed(readUtf8(stateLogPath));
   const records = parsedRecords.filter((record) => record.type === 'iteration');
   const events = parsedRecords.filter((record) => record.type === 'event');
   const strategyContent = readUtf8(strategyPath);
@@ -653,6 +678,9 @@ function reduceResearchState(specFolder, options = {}) {
     : [];
 
   const registry = buildRegistry(strategyQuestions, iterationFiles, records, events);
+  // Expose corruptionWarnings as a top-level registry field for parity with
+  // sk-deep-review (phase 008 REQ-015 research-side follow-up).
+  registry.corruptionWarnings = corruptionWarnings;
   const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 
@@ -660,6 +688,18 @@ function reduceResearchState(specFolder, options = {}) {
     writeUtf8(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
     writeUtf8(strategyPath, strategy.endsWith('\n') ? strategy : `${strategy}\n`);
     writeUtf8(dashboardPath, dashboard);
+  }
+
+  // Fail-closed on corruption unless --lenient.
+  if (corruptionWarnings.length > 0 && !lenient) {
+    const preview = corruptionWarnings
+      .slice(0, 3)
+      .map((w) => `  - line ${w.line}: ${w.error}`)
+      .join('\n');
+    process.stderr.write(
+      `[sk-deep-research] parseJsonl detected ${corruptionWarnings.length} corrupt line(s) in ${stateLogPath}:\n${preview}\n`
+      + 'Pass --lenient to the reducer CLI (or lenient:true to reduceResearchState) to ignore corruption.\n',
+    );
   }
 
   return {
@@ -671,6 +711,8 @@ function reduceResearchState(specFolder, options = {}) {
     registry,
     strategy,
     dashboard,
+    corruptionWarnings,
+    hasCorruption: corruptionWarnings.length > 0,
   };
 }
 
@@ -679,25 +721,41 @@ function reduceResearchState(specFolder, options = {}) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 if (require.main === module) {
-  const specFolder = process.argv[2];
+  const args = process.argv.slice(2);
+  const lenient = args.includes('--lenient');
+  const positional = args.filter((arg) => !arg.startsWith('--'));
+  const specFolder = positional[0];
+
   if (!specFolder) {
-    process.stderr.write('Usage: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs <spec-folder>\n');
+    process.stderr.write(
+      'Usage: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs <spec-folder> [--lenient]\n',
+    );
     process.exit(1);
   }
 
-  const result = reduceResearchState(specFolder, { write: true });
-  process.stdout.write(
-    `${JSON.stringify(
-      {
-        registryPath: result.registryPath,
-        dashboardPath: result.dashboardPath,
-        strategyPath: result.strategyPath,
-        iterationsCompleted: result.registry.metrics.iterationsCompleted,
-      },
-      null,
-      2,
-    )}\n`,
-  );
+  try {
+    const result = reduceResearchState(specFolder, { write: true, lenient });
+    process.stdout.write(
+      `${JSON.stringify(
+        {
+          registryPath: result.registryPath,
+          dashboardPath: result.dashboardPath,
+          strategyPath: result.strategyPath,
+          iterationsCompleted: result.registry.metrics.iterationsCompleted,
+          corruptionCount: result.corruptionWarnings.length,
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    // Fail-closed exit semantics matching sk-deep-review (phase 008 REQ-015 parity).
+    if (result.hasCorruption && !lenient) {
+      process.exit(2);
+    }
+  } catch (error) {
+    process.stderr.write(`[sk-deep-research] reducer failed: ${error instanceof Error ? error.message : String(error)}\n`);
+    process.exit(3);
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -708,5 +766,6 @@ module.exports = {
   buildGraphConvergenceRollup,
   parseIterationFile,
   parseJsonl,
+  parseJsonlDetailed,
   reduceResearchState,
 };

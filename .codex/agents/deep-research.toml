@@ -1,5 +1,11 @@
 # Agent: deep-research
 # Converted from: .opencode/agent/deep-research.md
+#
+# Phase 008 ADR-003: structural graph routing is provisioned via the shared
+# MCP server tool registration (see .opencode/skill/system-spec-kit/mcp_server/
+# tool-schemas.ts). Codex CLI receives `code_graph_query` and
+# `code_graph_context` through the same MCP channel as other deep-loop tools;
+# no explicit TOML tool whitelist is required for availability.
 name = "deep-research"
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"

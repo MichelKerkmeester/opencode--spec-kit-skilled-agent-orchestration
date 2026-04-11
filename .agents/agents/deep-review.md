@@ -13,6 +13,10 @@ tools:
   - run_shell_command
   - grep_search
   - list_directory
+# Phase 008 ADR-003: structural graph routing (`code_graph_query`,
+# `code_graph_context`) is exposed via the shared MCP server. Gemini agents
+# invoke the tools through `run_shell_command` calling the MCP bridge CLI.
+# No native Gemini tool entry is needed for availability.
 ---
 
 # The Deep Reviewer: Iterative Code Quality Agent
