@@ -22,7 +22,7 @@ contextType: "general"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | Markdown packet docs, JSON evidence, Node.js verification scripts |
-| **Framework** | `sk-agent-improver` + `sk-doc` + system-spec-kit validation |
+| **Framework** | `sk-improve-agent` + `sk-doc` + system-spec-kit validation |
 | **Storage** | Phase-local `improvement/` evidence plus root packet docs |
 | **Testing** | `score-candidate.cjs`, `run-benchmark.cjs`, `promote-candidate.cjs`, `rollback-candidate.cjs`, `validate_document.py`, `validate.sh --strict` |
 
@@ -72,7 +72,7 @@ Create a phase-local runtime, score a stronger handover candidate against the cu
 
 ### Phase 1: Setup
 
-- [x] Create the new `004-sk-agent-improver-promotion-verification/` phase folder
+- [x] Create the new `004-sk-improve-agent-promotion-verification/` phase folder
 - [x] Create a phase-local `improvement/` runtime rooted in this phase
 - [x] Copy the needed manifest, charter, strategy, and baseline benchmark outputs into the phase-local runtime
 
@@ -103,8 +103,8 @@ Create a phase-local runtime, score a stronger handover candidate against the cu
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Prompt scoring | Handover candidate vs canonical baseline | `node .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs` |
-| Benchmark repeatability | Handover and context-prime baseline outputs | `node .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs` plus repeatability JSON generation |
+| Prompt scoring | Handover candidate vs canonical baseline | `node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs` |
+| Benchmark repeatability | Handover and context-prime baseline outputs | `node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs` plus repeatability JSON generation |
 | Promotion path | Canonical handover target | `promote-candidate.cjs` and `rollback-candidate.cjs` |
 | Validation | Promoted handover file and candidate file | `validate_document.py --type agent` |
 | Packet Validation | Root `041` and phase `004` | `validate.sh --strict` |
@@ -131,7 +131,7 @@ Create a phase-local runtime, score a stronger handover candidate against the cu
 - **Trigger**: Promotion succeeds but rollback proof fails, or the canonical target cannot be shown to match the backup.
 - **Procedure**: Restore from the archived backup immediately, compare the restored file directly to the backup, and keep the phase open until the no-net-drift proof is captured.
 
-Future agent-improver work should continue as `005-*` and later child phases under `041-sk-agent-improver-loop/`.
+Future agent-improver work should continue as `005-*` and later child phases under `041-sk-improve-agent-loop/`.
 <!-- /ANCHOR:rollback -->
 
 ---

@@ -15,7 +15,7 @@
   "fixtures": [
     {
       "id": "completion-ready",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/completion-ready.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/completion-ready.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -26,7 +26,7 @@
     },
     {
       "id": "implementation-progress",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/implementation-progress.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/implementation-progress.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -37,7 +37,7 @@
     },
     {
       "id": "verification-blocker",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/verification-blocker.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/verification-blocker.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,

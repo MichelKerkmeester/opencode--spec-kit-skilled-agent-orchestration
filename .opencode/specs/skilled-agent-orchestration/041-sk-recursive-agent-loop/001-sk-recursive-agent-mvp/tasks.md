@@ -1,9 +1,9 @@
 ---
-title: "Task Breakdown: Agent Improvement Loop [skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/tasks]"
-description: "Ordered task list for the evaluator-first sk-agent-improver MVP and later rollout phases."
+title: "Task Breakdown: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/tasks]"
+description: "Ordered task list for the evaluator-first sk-improve-agent MVP and later rollout phases."
 trigger_phrases:
   - "agent improvement tasks"
-  - "sk-agent-improver tasks"
+  - "sk-improve-agent tasks"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -55,11 +55,11 @@ contextType: "general"
 
 ### Skill and State Skeleton
 
-- [x] T-020: Create the `sk-agent-improver` skill entrypoint
-- [x] T-021: Create the `sk-agent-improver` README surface
+- [x] T-020: Create the `sk-improve-agent` skill entrypoint
+- [x] T-021: Create the `sk-improve-agent` README surface
 - [x] T-022: Create the loop protocol, promotion rules, and quick reference docs
 - [x] T-023: Create `assets/improvement_config.json` and the improvement strategy asset
-- [x] T-024: Create reducer and scorer script entrypoints under `.opencode/skill/sk-agent-improver/scripts/`
+- [x] T-024: Create reducer and scorer script entrypoints under `.opencode/skill/sk-improve-agent/scripts/`
 
 ### Agent and Scorer
 

@@ -39,9 +39,9 @@ Expanded the evaluator from single-target scoring to a multi-target benchmark ru
 
 | File | What changed |
 | --- | --- |
-| `sk-agent-improver/scripts/run-benchmark.cjs` | New fixture benchmark runner with profile-based scoring. |
-| `sk-agent-improver/scripts/reduce-state.cjs` | Extended with cross-target reporting and repeatability gating. |
-| `sk-agent-improver/assets/` | Target profiles and fixture catalogs for handover and context-prime. |
+| `sk-improve-agent/scripts/run-benchmark.cjs` | New fixture benchmark runner with profile-based scoring. |
+| `sk-improve-agent/scripts/reduce-state.cjs` | Extended with cross-target reporting and repeatability gating. |
+| `sk-improve-agent/assets/` | Target profiles and fixture catalogs for handover and context-prime. |
 
 </details>
 

@@ -5,13 +5,13 @@
 | Status | Complete |
 | Priority | P1 |
 | Level | 3 |
-| Parent | 041-sk-agent-improver-loop |
+| Parent | 041-sk-improve-agent-loop |
 | Phase | 008 |
 | Estimated LOC | 800-1000 |
 
 ## Problem
 
-The sk-agent-improver skill evaluates agents by checking **keyword presence in markdown** (~15-20% of what a true agent improvement system needs). The scorer tests "does the file mention `spec.md`?" rather than "does the agent understand spec folders?". The benchmark tests "does output have required headings?" rather than "is the output correct and useful?".
+The sk-improve-agent skill evaluates agents by checking **keyword presence in markdown** (~15-20% of what a true agent improvement system needs). The scorer tests "does the file mention `spec.md`?" rather than "does the agent understand spec folders?". The benchmark tests "does output have required headings?" rather than "is the output correct and useful?".
 
 This means:
 - A structurally perfect but behaviorally broken candidate can pass all checks

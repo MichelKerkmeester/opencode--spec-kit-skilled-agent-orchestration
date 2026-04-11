@@ -8,7 +8,7 @@
 
 Fixed 5 issues discovered during the Phase 009 self-test and promoted 6 candidate improvements from that test into the canonical agent file. Added a configurable plateau window setting to close the observation about plateau detector behavior.
 
-> Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes/`
+> Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-improve-agent-self-test-fixes/`
 
 ---
 
@@ -72,8 +72,8 @@ Fixed 5 issues discovered during the Phase 009 self-test and promoted 6 candidat
 | File | What changed |
 | --- | --- |
 | `.opencode/agent/agent-improver.md` | Command path fix, 6 promoted improvements merged in. |
-| `sk-agent-improver/scripts/reduce-state.cjs` | Family inference fix, accepted count fix. |
-| `sk-agent-improver/references/improvement_config_reference.md` | New `plateauWindow` field documented. |
+| `sk-improve-agent/scripts/reduce-state.cjs` | Family inference fix, accepted count fix. |
+| `sk-improve-agent/references/improvement_config_reference.md` | New `plateauWindow` field documented. |
 | `.gemini/agents/agent-improver.md` | Mirror path corrected. |
 | `.codex/agents/agent-improver.toml` | Wording standardized to "leaf mutator". |
 | `.agents/agents/agent-improver.md` | Mirror synced with canonical updates. |

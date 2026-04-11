@@ -1,5 +1,5 @@
 ---
-description: Create or improve AI prompts using proven frameworks, DEPTH thinking, and CLEAR scoring via sk-prompt-improver - supports :auto and :confirm modes
+description: Create or improve AI prompts using proven frameworks, DEPTH thinking, and CLEAR scoring via sk-improve-prompt - supports :auto and :confirm modes
 argument-hint: "<prompt_or_topic> [$mode] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, mcp__cocoindex_code__search
 ---
@@ -43,7 +43,7 @@ SELF-CHECK: Are you operating as the @general agent?
     │   ┌────────────────────────────────────────────────────────────┐
     │   │ ⛔ GENERAL AGENT REQUIRED                                  │
     │   │                                                            │
-    │   │ This command orchestrates sk-prompt-improver skill         │
+    │   │ This command orchestrates sk-improve-prompt skill         │
     │   │ invocation and does not require @write routing.            │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
@@ -193,13 +193,13 @@ After Phase 0 and Setup Phase pass, execute the following workflow steps:
 
 # Create Prompt
 
-Create or improve AI prompts by invoking the **sk-prompt-improver** skill. Transforms vague requests into structured, scored prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, and CLEAR quality scoring.
+Create or improve AI prompts by invoking the **sk-improve-prompt** skill. Transforms vague requests into structured, scored prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, and CLEAR quality scoring.
 
 ---
 
 ## 1. PURPOSE
 
-This command provides a streamlined entry point for prompt engineering via the `sk-prompt-improver` skill. Instead of manually loading the skill and navigating its pipeline, users invoke `/create:prompt` with their text and receive an enhanced, framework-structured, CLEAR-scored prompt — with the option to save it to a spec folder's `prompts/` directory.
+This command provides a streamlined entry point for prompt engineering via the `sk-improve-prompt` skill. Instead of manually loading the skill and navigating its pipeline, users invoke `/create:prompt` with their text and receive an enhanced, framework-structured, CLEAR-scored prompt — with the option to save it to a spec folder's `prompts/` directory.
 
 **When to use:**
 - Enhancing a vague or basic AI prompt
@@ -261,11 +261,11 @@ enhancement_mode (from Setup Phase)
 
 ## 4. WORKFLOW STEPS
 
-### Step 1: Load sk-prompt-improver Skill
+### Step 1: Load sk-improve-prompt Skill
 
 - Read the skill definition:
   ```
-  Read(".opencode/skill/sk-prompt-improver/SKILL.md")
+  Read(".opencode/skill/sk-improve-prompt/SKILL.md")
   ```
 
 - Based on `enhancement_mode`, load conditional references:
@@ -341,7 +341,7 @@ Your preference? (A or B)
 
 ### Step 2: Execute Enhancement Pipeline
 
-Follow the sk-prompt-improver pipeline for the resolved mode:
+Follow the sk-improve-prompt pipeline for the resolved mode:
 
 **For Standard/Deep energy levels (TEXT, IMPROVE, REFINE, INTERACTIVE):**
 1. **Discover**: Analyze prompt from 3-5 perspectives, audit assumptions, select framework
@@ -437,7 +437,7 @@ created: [YYYY-MM-DD]
 - If completed without save: `STATUS=OK SCORE=[N]/50 FRAMEWORK=[NAME]`
 - If prompt saved: `STATUS=OK SCORE=[N]/50 FRAMEWORK=[NAME] SAVED=[path]`
 - If user cancels: `STATUS=CANCELLED`
-- If skill not found: `STATUS=FAIL ERROR="sk-prompt-improver skill not found at .opencode/skill/sk-prompt-improver/SKILL.md"`
+- If skill not found: `STATUS=FAIL ERROR="sk-improve-prompt skill not found at .opencode/skill/sk-improve-prompt/SKILL.md"`
 - If CLEAR score fails after max iterations: `STATUS=FAIL ERROR="CLEAR score below threshold after 3 iterations: [SCORE]/50"`
 
 ---
@@ -535,7 +535,7 @@ STATUS=OK SCORE=44/50 FRAMEWORK=RCAF SAVED=specs/012-onboarding/prompts/api-auth
 
 ## 7. NOTES
 
-- **Skill dependency**: Requires `sk-prompt-improver` at `.opencode/skill/sk-prompt-improver/`
+- **Skill dependency**: Requires `sk-improve-prompt` at `.opencode/skill/sk-improve-prompt/`
 - **Prompt saving**: Setup Phase Q2 determines save behavior upfront. Saved prompts include frontmatter with framework, mode, and CLEAR score metadata.
 - **Prompts directory**: Saved prompts go to `specs/[folder]/prompts/[descriptive-name].md`. The `prompts/` directory is created automatically if it doesn't exist.
 - **Framework selection**: RCAF is the default (92% success rate). For complex prompts (7+ complexity), CRAFT or TIDD-EC is auto-selected.
@@ -569,7 +569,7 @@ STATUS=OK SCORE=44/50 FRAMEWORK=RCAF SAVED=specs/012-onboarding/prompts/api-auth
 **Workflow Violations (Steps 1-6):**
 - Skipped DEPTH processing (unless $raw mode)
 - Delivered without CLEAR scoring (unless $raw mode)
-- Failed to load sk-prompt-improver SKILL.md before enhancement
+- Failed to load sk-improve-prompt SKILL.md before enhancement
 - Saved to a spec folder when user selected Q2=D (skip)
 - Did not save when user selected Q2=A/B/C
 

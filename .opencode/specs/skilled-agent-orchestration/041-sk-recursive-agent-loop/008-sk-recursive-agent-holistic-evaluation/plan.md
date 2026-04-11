@@ -74,4 +74,4 @@ D6-D8 ←── D12 (mirrors sync from canonical)
 3. `node scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --dynamic` → 5-dimension scores
 4. `node scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --profile=handover` → backward-compatible
 5. `node scripts/run-benchmark.cjs --profile=handover` → existing fixtures pass
-6. `python3 .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/sk-agent-improver/ --check` → PASS
+6. `python3 .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/sk-improve-agent/ --check` → PASS

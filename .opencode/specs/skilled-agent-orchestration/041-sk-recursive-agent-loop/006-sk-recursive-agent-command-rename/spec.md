@@ -26,8 +26,8 @@ contextType: "general"
 | **Created** | 2026-04-03 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Predecessor** | [../005-sk-agent-improver-package-runtime-alignment/](../005-sk-agent-improver-package-runtime-alignment/) |
-| **Successor** | [../007-sk-agent-improver-wording-alignment/](../007-sk-agent-improver-wording-alignment/) |
+| **Predecessor** | [../005-sk-improve-agent-package-runtime-alignment/](../005-sk-improve-agent-package-runtime-alignment/) |
+| **Successor** | [../007-sk-improve-agent-wording-alignment/](../007-sk-improve-agent-wording-alignment/) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -56,7 +56,7 @@ Rename the command entrypoint itself to `/improve:agent-improver`, rename the co
 
 ### Out of Scope
 - changing agent-improver benchmark logic, scoring thresholds, or promotion scope
-- renaming the `sk-agent-improver` skill itself
+- renaming the `sk-improve-agent` skill itself
 - reopening deep-research history artifacts that intentionally preserve the original concept naming
 
 ### Files to Change
@@ -66,7 +66,7 @@ Rename the command entrypoint itself to `/improve:agent-improver`, rename the co
 - `.agents/commands/spec_kit/agent-improver.toml`
 - `.gemini/commands/spec_kit/agent-improver.toml`
 - runtime docs that reference the command surface
-- active packet docs under `041-sk-agent-improver-loop/`
+- active packet docs under `041-sk-improve-agent-loop/`
 - `.opencode/specs/descriptions.json`
 <!-- /ANCHOR:scope -->
 

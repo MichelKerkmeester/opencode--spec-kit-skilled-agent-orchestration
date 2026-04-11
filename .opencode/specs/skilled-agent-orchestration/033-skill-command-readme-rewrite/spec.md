@@ -71,7 +71,7 @@ Rewrite all 23 READMEs from scratch to match the quality demonstrated by `.openc
 | 16 | sk-deep-research | `.opencode/skill/sk-deep-research/README.md` |
 | 17 | sk-doc | `.opencode/skill/sk-doc/README.md` |
 | 18 | sk-git | `.opencode/skill/sk-git/README.md` |
-| 19 | sk-prompt-improver | `.opencode/skill/sk-prompt-improver/README.md` |
+| 19 | sk-improve-prompt | `.opencode/skill/sk-improve-prompt/README.md` |
 
 **4 Command README sources** (rewrite from scratch, with markdown conversion tracked from the current committed `.txt` files):
 

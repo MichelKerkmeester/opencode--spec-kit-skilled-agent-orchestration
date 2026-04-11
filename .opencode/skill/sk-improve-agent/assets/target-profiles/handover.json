@@ -1,0 +1,13 @@
+{
+  "id": "handover",
+  "family": "session-handover",
+  "targetPath": ".opencode/agent/handover.md",
+  "outputKind": "markdown",
+  "promotionEligible": true,
+  "benchmark": {
+    "fixtureDir": ".opencode/skill/sk-improve-agent/assets/fixtures/handover",
+    "requiredAggregateScore": 85,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0
+  }
+}

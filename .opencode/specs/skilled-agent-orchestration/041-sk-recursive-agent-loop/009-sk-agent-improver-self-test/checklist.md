@@ -26,7 +26,7 @@
 - [x] Scanner discovers canonical `.opencode/agent/agent-improver.md`
 - [x] Scanner discovers mirrors in `.claude/agents/`, `.agents/agents/`, `.codex/agents/`
 - [x] Scanner discovers command references in `improve/agent.md`
-- [x] Scanner discovers skill references in `sk-agent-improver/SKILL.md`
+- [x] Scanner discovers skill references in `sk-improve-agent/SKILL.md`
 - [x] Scanner discovers YAML workflow references
 
 ### Profile Generator Observations

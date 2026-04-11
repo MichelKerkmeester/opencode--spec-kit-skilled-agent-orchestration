@@ -43,7 +43,7 @@ contextType: "implementation"
 
 - [x] T001 Create command file with frontmatter (`.opencode/command/create/prompt.md`)
 - [x] T002 Implement mandatory gate pattern — blocks on empty $ARGUMENTS
-- [x] T003 Write PURPOSE section — describe command's role as sk-prompt-improver wrapper
+- [x] T003 Write PURPOSE section — describe command's role as sk-improve-prompt wrapper
 - [x] T004 Write CONTRACT section — define inputs ($ARGUMENTS) and outputs (STATUS)
 
 ---

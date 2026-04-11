@@ -95,5 +95,5 @@ Guarded promotion is available only when:
 - only for the single manifest-backed canonical target `.opencode/agent/handover.md`
 - `context-prime` is a candidate-only target in this packet
 
-Primary skill: `.opencode/skill/sk-agent-improver/SKILL.md`
+Primary skill: `.opencode/skill/sk-improve-agent/SKILL.md`
 '''

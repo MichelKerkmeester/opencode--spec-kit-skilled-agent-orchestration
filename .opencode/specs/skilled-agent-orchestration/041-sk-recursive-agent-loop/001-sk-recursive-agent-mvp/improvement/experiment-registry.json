@@ -1,13 +1,13 @@
 {
   "baseline": {
     "type": "baseline",
-    "path": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/archive/handover.md.2026-04-03T13-41-06.898Z.bak",
+    "path": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/archive/handover.md.2026-04-03T13-41-06.898Z.bak",
     "score": 95,
     "recommendation": "baseline-reference"
   },
   "bestCandidate": {
     "type": "accepted",
-    "path": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-003.md",
+    "path": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/candidates/candidate-003.md",
     "score": 100,
     "recommendation": "candidate-better",
     "delta": 5,
@@ -16,7 +16,7 @@
   "acceptedCandidates": [
     {
       "type": "accepted",
-      "path": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-003.md",
+      "path": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/candidates/candidate-003.md",
       "score": 100,
       "recommendation": "candidate-better",
       "delta": 5,
@@ -26,7 +26,7 @@
   "rejectedCandidates": [
     {
       "type": "rejected",
-      "path": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-002.md",
+      "path": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/candidates/candidate-002.md",
       "score": 0,
       "recommendation": "reject-candidate",
       "delta": -100
@@ -35,9 +35,9 @@
   "infraFailures": [
     {
       "type": "infra_failure",
-      "path": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-003.md",
+      "path": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/candidates/candidate-003.md",
       "recommendation": "infra_failure",
-      "error": "ENOENT: no such file or directory, open '.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/missing-manifest.jsonc'",
+      "error": "ENOENT: no such file or directory, open '.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/missing-manifest.jsonc'",
       "score": null
     }
   ],

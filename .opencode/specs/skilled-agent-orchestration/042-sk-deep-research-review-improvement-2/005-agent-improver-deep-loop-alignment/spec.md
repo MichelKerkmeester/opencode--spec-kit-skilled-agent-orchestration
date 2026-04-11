@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Agent-Improver Deep-Loop Alignment [005]"
-description: "Transfer the proven deep-loop runtime truth contracts from 042 Phases 1-4 to the sk-agent-improver skill, adding stop-reason taxonomy, audit journaling, mutation coverage tracking, trade-off detection, optional parallel candidates, and scoring weight optimization."
+description: "Transfer the proven deep-loop runtime truth contracts from 042 Phases 1-4 to the sk-improve-agent skill, adding stop-reason taxonomy, audit journaling, mutation coverage tracking, trade-off detection, optional parallel candidates, and scoring weight optimization."
 trigger_phrases:
   - "005"
   - "agent improver"
@@ -21,11 +21,11 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-The sk-agent-improver skill runs bounded improvement loops over agent packets, but it currently lacks the runtime truth infrastructure proven in 042 Phases 1-4 for deep-research and deep-review. This phase ports those contracts into agent-improver: a well-formed stop-reason taxonomy, legal-stop gates, audit journaling, mutation coverage tracking, dimension trajectory analysis, trade-off detection, optional parallel candidate waves, and scoring weight optimization based on session history.
+The sk-improve-agent skill runs bounded improvement loops over agent packets, but it currently lacks the runtime truth infrastructure proven in 042 Phases 1-4 for deep-research and deep-review. This phase ports those contracts into agent-improver: a well-formed stop-reason taxonomy, legal-stop gates, audit journaling, mutation coverage tracking, dimension trajectory analysis, trade-off detection, optional parallel candidate waves, and scoring weight optimization based on session history.
 
 **Key Decisions**: emit journal events in the orchestrator (not in the proposal-only agent); reuse the existing coverage graph infrastructure with an improvement-specific namespace; treat dimension trajectory as a first-class convergence signal; keep parallel candidate waves opt-in behind an exploration-breadth gate.
 
-**Critical Dependencies**: 042 Phase 1 runtime truth foundation (stop-reason taxonomy, event journal schema); 042 Phase 2 semantic coverage graph (reused with `loop_type: "improvement"`); existing sk-agent-improver 5-dimension scoring and packet-local candidate generation discipline.
+**Critical Dependencies**: 042 Phase 1 runtime truth foundation (stop-reason taxonomy, event journal schema); 042 Phase 2 semantic coverage graph (reused with `loop_type: "improvement"`); existing sk-improve-agent 5-dimension scoring and packet-local candidate generation discipline.
 
 ---
 
@@ -41,7 +41,7 @@ The sk-agent-improver skill runs bounded improvement loops over agent packets, b
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
 | **Parent Packet** | `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/` |
 | **Predecessor Phases** | `001-runtime-truth-foundation`, `002-semantic-coverage-graph`, `003-wave-executor`, `004-offline-loop-optimizer` |
-| **Skill Target** | `.opencode/skill/sk-agent-improver/` |
+| **Skill Target** | `.opencode/skill/sk-improve-agent/` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -51,7 +51,7 @@ The sk-agent-improver skill runs bounded improvement loops over agent packets, b
 
 ### Problem Statement
 
-The sk-agent-improver skill runs bounded improvement loops that surface no reliable stop-reason, leave no audit trail, do not track which mutation dimensions have been explored, and cannot detect when one dimension improves at the cost of another. Sessions are opaque, non-resumable, and produce no data that could inform future scoring weight calibration. The 042 bundle already solved these problems for deep-research and deep-review, but agent-improver was left behind.
+The sk-improve-agent skill runs bounded improvement loops that surface no reliable stop-reason, leave no audit trail, do not track which mutation dimensions have been explored, and cannot detect when one dimension improves at the cost of another. Sessions are opaque, non-resumable, and produce no data that could inform future scoring weight calibration. The 042 bundle already solved these problems for deep-research and deep-review, but agent-improver was left behind.
 
 ### Purpose
 
@@ -90,22 +90,22 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/sk-agent-improver/SKILL.md` | Modify | Add stop-reason taxonomy, journal protocol, coverage graph, trajectory, trade-off, parallel wave, and weight-optimizer sections |
-| `.opencode/skill/sk-agent-improver/assets/improvement_config.json` | Modify | Add config fields for journal path, coverage graph path, wave activation gate, weight optimizer settings (all optional with defaults) |
-| `.opencode/skill/sk-agent-improver/assets/improvement_strategy.md` | Modify | Add mutation exhaustion guidance, trajectory-based convergence criteria, trade-off resolution guidance |
-| `.opencode/skill/sk-agent-improver/assets/improvement_charter.md` | Modify | Add audit trail requirements, legal-stop gate obligations |
+| `.opencode/skill/sk-improve-agent/SKILL.md` | Modify | Add stop-reason taxonomy, journal protocol, coverage graph, trajectory, trade-off, parallel wave, and weight-optimizer sections |
+| `.opencode/skill/sk-improve-agent/assets/improvement_config.json` | Modify | Add config fields for journal path, coverage graph path, wave activation gate, weight optimizer settings (all optional with defaults) |
+| `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md` | Modify | Add mutation exhaustion guidance, trajectory-based convergence criteria, trade-off resolution guidance |
+| `.opencode/skill/sk-improve-agent/assets/improvement_charter.md` | Modify | Add audit trail requirements, legal-stop gate obligations |
 | `.opencode/agent/agent-improver.md` | Modify | Add journal emission protocol, legal-stop gate checks, coverage graph update calls |
 | `.opencode/command/improve/agent.md` | Modify | Add resume semantics, session-id propagation, weight optimizer invocation |
-| `.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs` | Create | Append-only JSONL event emitter for improvement session events |
-| `.opencode/skill/sk-agent-improver/scripts/mutation-coverage.cjs` | Create | Coverage graph reader/writer for explored dimensions and tried mutations |
-| `.opencode/skill/sk-agent-improver/scripts/trade-off-detector.cjs` | Create | Cross-dimension regression detector using trajectory data |
-| `.opencode/skill/sk-agent-improver/scripts/candidate-lineage.cjs` | Create | Lineage graph for parallel candidate waves |
-| `.opencode/skill/sk-agent-improver/scripts/benchmark-stability.cjs` | Create | Benchmark replay stability measurement and reporting |
-| `.opencode/skill/sk-agent-improver/scripts/tests/improvement-journal.vitest.ts` | Create | Tests for journal emit, append-only enforcement, event schema |
-| `.opencode/skill/sk-agent-improver/scripts/tests/mutation-coverage.vitest.ts` | Create | Tests for coverage graph read/write and namespace isolation |
-| `.opencode/skill/sk-agent-improver/scripts/tests/trade-off-detector.vitest.ts` | Create | Tests for regression detection and threshold configuration |
-| `.opencode/skill/sk-agent-improver/scripts/tests/candidate-lineage.vitest.ts` | Create | Tests for lineage graph construction and parent-child linkage |
-| `.opencode/skill/sk-agent-improver/scripts/tests/benchmark-stability.vitest.ts` | Create | Tests for stability scoring and replay consistency |
+| `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs` | Create | Append-only JSONL event emitter for improvement session events |
+| `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs` | Create | Coverage graph reader/writer for explored dimensions and tried mutations |
+| `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs` | Create | Cross-dimension regression detector using trajectory data |
+| `.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs` | Create | Lineage graph for parallel candidate waves |
+| `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs` | Create | Benchmark replay stability measurement and reporting |
+| `.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts` | Create | Tests for journal emit, append-only enforcement, event schema |
+| `.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts` | Create | Tests for coverage graph read/write and namespace isolation |
+| `.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts` | Create | Tests for regression detection and threshold configuration |
+| `.opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts` | Create | Tests for lineage graph construction and parent-child linkage |
+| `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts` | Create | Tests for stability scoring and replay consistency |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -182,7 +182,7 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 |------|------|--------|------------|
 | Dependency | 042 Phase 1 journal schema | Journal emit contract must be compatible | Use same event schema from Phase 1; document any improvement-specific extensions |
 | Dependency | 042 Phase 2 coverage graph | Coverage graph namespace and API must support `loop_type: "improvement"` | Add namespace field to existing graph writers; verify no breaking change to deep-research/review paths |
-| Dependency | sk-agent-improver proposal-only constraint | Orchestrator must own journal emission; agent must not write state | ADR-001 enforces this; enforce via code review gate |
+| Dependency | sk-improve-agent proposal-only constraint | Orchestrator must own journal emission; agent must not write state | ADR-001 enforces this; enforce via code review gate |
 | Risk | Trajectory-based convergence false positives | Session terminates too early on noisy score data | Require minimum 3 trajectory data points before convergence claim (REQ-AI-007) |
 | Risk | Parallel wave complexity overloading LLM context | Parallel waves increase context length per session | Keep parallel waves strictly opt-in; default config disables them |
 | Risk | Weight optimizer recommendations applied without review | Auto-applied weight changes could degrade scoring over time | REQ-AI-012 explicitly blocks auto-apply; require explicit approval |
@@ -238,7 +238,7 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Files: 16, LOC estimate: ~700, Systems: sk-agent-improver + coverage graph + journal |
+| Scope | 20/25 | Files: 16, LOC estimate: ~700, Systems: sk-improve-agent + coverage graph + journal |
 | Risk | 15/25 | No auth/API risk; breaking: medium (proposal-only constraint must hold) |
 | Research | 12/20 | 042 Phases 1-4 provide proven patterns; adaptation needed, not invention |
 | Multi-Agent | 10/15 | Orchestrator + proposal-only agent + journal emit separation |

@@ -39,9 +39,9 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] `sk-agent-improver` source package passes `package_skill.py --check` (verified)
-- [x] CHK-011 [P0] `.opencode/skill/sk-agent-improver/SKILL.md` validates as a skill document (verified)
-- [x] CHK-012 [P0] `.opencode/skill/sk-agent-improver/README.md` validates as a README (verified)
+- [x] CHK-010 [P0] `sk-improve-agent` source package passes `package_skill.py --check` (verified)
+- [x] CHK-011 [P0] `.opencode/skill/sk-improve-agent/SKILL.md` validates as a skill document (verified)
+- [x] CHK-012 [P0] `.opencode/skill/sk-improve-agent/README.md` validates as a README (verified)
 - [x] CHK-013 [P0] All agent-improver references and markdown assets validate against the proper document types (verified)
 - [x] CHK-014 [P1] The renamed `agent-improver` validates as an agent document (verified)
 - [x] CHK-015 [P1] The canonical command validates as a command document (verified)
@@ -54,7 +54,7 @@ contextType: "general"
 
 - [x] CHK-020 [P0] YAML workflows dispatch `@agent-improver` (verified)
 - [x] CHK-021 [P0] Runtime agent mirrors use the renamed mutator path (verified)
-- [x] CHK-022 [P0] `.agents/skills/sk-agent-improver/` is resynchronized to the source package (verified)
+- [x] CHK-022 [P0] `.agents/skills/sk-improve-agent/` is resynchronized to the source package (verified)
 - [x] CHK-023 [P0] Recursive-agent scripts parse cleanly with `node --check` (verified)
 - [x] CHK-024 [P0] Root `041/` strict validation passes (verified)
 - [x] CHK-025 [P0] Phase `005` strict validation passes (verified)

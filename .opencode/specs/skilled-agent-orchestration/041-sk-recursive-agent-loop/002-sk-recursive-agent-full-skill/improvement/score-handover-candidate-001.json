@@ -4,7 +4,7 @@
   "family": "session-handover",
   "evaluationMode": "prompt-surface",
   "target": ".opencode/agent/handover.md",
-  "candidate": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/candidates/handover-candidate-001.md",
+  "candidate": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/candidates/handover-candidate-001.md",
   "baseline": ".opencode/agent/handover.md",
   "score": 50,
   "totals": {

@@ -6,9 +6,9 @@
 
 ## 011-advisor-readme-sync — 2026-04-04
 
-Updated the skill advisor routing tables and root README to make Phase 008+ capabilities discoverable. Added intent boosters, phrase intent boosters, and command bridges so the advisor correctly routes queries about 5-dimension evaluation, dynamic profiling, and integration scanning to sk-agent-improver. Bumped the skill version to 1.0.0.0.
+Updated the skill advisor routing tables and root README to make Phase 008+ capabilities discoverable. Added intent boosters, phrase intent boosters, and command bridges so the advisor correctly routes queries about 5-dimension evaluation, dynamic profiling, and integration scanning to sk-improve-agent. Bumped the skill version to 1.0.0.0.
 
-> Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync/`
+> Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-improve-agent-advisor-readme-sync/`
 
 ---
 
@@ -16,7 +16,7 @@ Updated the skill advisor routing tables and root README to make Phase 008+ capa
 
 ### Skill advisor routing (Public)
 
-**Problem:** The skill advisor had no awareness of Phase 008+ capabilities. Queries about 5-dimension evaluation, dynamic profiling, or integration scanning would not route to sk-agent-improver.
+**Problem:** The skill advisor had no awareness of Phase 008+ capabilities. Queries about 5-dimension evaluation, dynamic profiling, or integration scanning would not route to sk-improve-agent.
 
 **Fix:** Added 7 INTENT_BOOSTERS, 13 PHRASE_INTENT_BOOSTERS, and 8 COMMAND_BRIDGES covering the full Phase 008+ surface.
 
@@ -57,7 +57,7 @@ Updated the skill advisor routing tables and root README to make Phase 008+ capa
 | --- | --- |
 | `.opencode/skill/scripts/skill_advisor.py` | 7 intent boosters, 13 phrase intent boosters, 8 command bridges (Public). |
 | `.opencode/skill/scripts/skill_advisor.py` (Barter) | 7 command bridges, 2 phrase intent boosters. |
-| `sk-agent-improver/README.md` | Version 0.1.0.0 to 1.0.0.0, updated description. |
+| `sk-improve-agent/README.md` | Version 0.1.0.0 to 1.0.0.0, updated description. |
 | `README.md` (root) | Agent Network section and Improve Agent description updated. |
 | `.opencode/command/*/README.txt` | 5 command README.txt files updated across runtimes. |
 

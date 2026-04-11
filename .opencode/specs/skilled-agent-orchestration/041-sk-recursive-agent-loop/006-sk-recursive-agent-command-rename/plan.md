@@ -72,7 +72,7 @@ Rename the canonical command files first, update all command references second, 
 
 ### Phase 1: Setup
 
-- [x] Create the new `006-sk-agent-improver-command-rename/` phase packet
+- [x] Create the new `006-sk-improve-agent-command-rename/` phase packet
 - [x] Identify all active command-name and command-path references before editing
 - [x] Confirm the rename remains bounded to command surfaces and packet history
 
@@ -124,7 +124,7 @@ Rename the canonical command files first, update all command references second, 
 - **Trigger**: Renamed command files break wrapper parsing, validation, or packet integrity.
 - **Procedure**: Restore the prior command filenames and wrapper names, then replay the rename in the order command markdown -> YAML assets -> wrappers -> references -> packet docs.
 
-Future agent-improver work must continue as `007-*` and later child phases under `041-sk-agent-improver-loop/`.
+Future agent-improver work must continue as `007-*` and later child phases under `041-sk-improve-agent-loop/`.
 <!-- /ANCHOR:rollback -->
 
 ---

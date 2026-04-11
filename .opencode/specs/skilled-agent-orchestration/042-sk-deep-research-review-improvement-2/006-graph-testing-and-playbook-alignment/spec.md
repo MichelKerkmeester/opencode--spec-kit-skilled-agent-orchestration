@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Graph Testing and Playbook Alignment [006]"
-description: "Rigorous integration and stress testing for the coverage graph solution spanning CJS and TS/MCP layers, plus manual testing playbook updates for graph capabilities in sk-deep-research, sk-deep-review, and sk-agent-improver."
+description: "Rigorous integration and stress testing for the coverage graph solution spanning CJS and TS/MCP layers, plus manual testing playbook updates for graph capabilities in sk-deep-research, sk-deep-review, and sk-improve-agent."
 trigger_phrases:
   - "006"
   - "graph testing"
@@ -23,7 +23,7 @@ The coverage graph solution built in 042 Phase 2 spans CJS modules (core, signal
 
 **Key Decisions**: Integration tests use Vitest and import both CJS and TS modules to verify contract alignment at the type and value level. Stress tests target 1000+ nodes to validate performance boundaries. Playbook test cases follow the existing Given/When/Then format established in each skill's playbook.
 
-**Critical Dependencies**: 042 Phase 2 coverage graph modules (coverage-graph-core.cjs, coverage-graph-signals.cjs, coverage-graph-convergence.cjs, coverage-graph-contradictions.cjs); 042 Phase 2 TS layer (coverage-graph-db.ts); existing manual testing playbooks in sk-deep-research, sk-deep-review, and sk-agent-improver.
+**Critical Dependencies**: 042 Phase 2 coverage graph modules (coverage-graph-core.cjs, coverage-graph-signals.cjs, coverage-graph-convergence.cjs, coverage-graph-contradictions.cjs); 042 Phase 2 TS layer (coverage-graph-db.ts); existing manual testing playbooks in sk-deep-research, sk-deep-review, and sk-improve-agent.
 
 ---
 
@@ -93,7 +93,7 @@ The coverage graph solution has unit tests for each layer (CJS core, CJS signals
 - Stress test file: `coverage-graph-stress.vitest.ts`
 - 4 new manual testing playbook files (research: 2, review: 2)
 - 3 new manual testing playbook files (agent-improver)
-- README updates for sk-deep-research, sk-deep-review, sk-agent-improver
+- README updates for sk-deep-research, sk-deep-review, sk-improve-agent
 
 ### Out of Scope
 

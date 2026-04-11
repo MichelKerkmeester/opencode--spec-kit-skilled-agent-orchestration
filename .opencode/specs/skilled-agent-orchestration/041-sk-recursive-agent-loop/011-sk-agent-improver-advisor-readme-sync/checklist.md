@@ -2,9 +2,9 @@
 
 ## P0 — Hard Blockers
 
-- [x] skill/README.md shows sk-agent-improver at version 1.0.0.0
-- [x] skill_advisor.py routes "5-dimension" queries to sk-agent-improver
-- [x] skill_advisor.py routes "/improve:agent" to sk-agent-improver
+- [x] skill/README.md shows sk-improve-agent at version 1.0.0.0
+- [x] skill_advisor.py routes "5-dimension" queries to sk-improve-agent
+- [x] skill_advisor.py routes "/improve:agent" to sk-improve-agent
 - [x] COMMAND_BRIDGES include all /improve: and /create: commands
 - [x] All routing tests pass with threshold 0.8
 

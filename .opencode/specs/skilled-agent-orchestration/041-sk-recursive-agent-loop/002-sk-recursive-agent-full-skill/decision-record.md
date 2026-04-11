@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/decision-record]"
+title: "Decision Record: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/decision-record]"
 description: "Architecture decisions for phase 002 of the full-skill expansion after the phase 001 MVP."
 trigger_phrases:
   - "agent improvement full skill decisions"
@@ -121,7 +121,7 @@ Accepted
 We needed reusable fixture definitions for the skill and packet-local output evidence for verification.
 
 ### Decision
-Store reusable fixture definitions under `.opencode/skill/sk-agent-improver/assets/fixtures/` and store actual benchmark outputs and reports under this packet's `improvement/benchmark-runs/`.
+Store reusable fixture definitions under `.opencode/skill/sk-improve-agent/assets/fixtures/` and store actual benchmark outputs and reports under this packet's `improvement/benchmark-runs/`.
 
 ### Alternatives Considered
 

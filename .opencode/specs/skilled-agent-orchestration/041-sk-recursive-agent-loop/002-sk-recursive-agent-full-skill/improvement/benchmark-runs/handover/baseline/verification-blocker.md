@@ -28,7 +28,7 @@
 ## 3. For Next Session
 
 ### 3.1 Recommended Starting Point
-- **File:** `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/checklist.md:20`
+- **File:** `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/checklist.md:20`
 - **Context:** finish benchmark evidence before marking packet done
 
 ### 3.2 Priority Tasks Remaining

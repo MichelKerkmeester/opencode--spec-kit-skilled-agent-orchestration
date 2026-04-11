@@ -23,10 +23,10 @@
 | Code Mode + Figma bridge | 29 | Generic MCP execution layer plus design-file/image export access | `mcp-code-mode/SKILL.md`, `mcp-figma/README.md` |
 | CocoIndex semantic search | 48 | Semantic code search docs, scripts, tests, and manual playbook | `mcp-coco-index/README.md`, `mcp-coco-index/manual_testing_playbook/manual_testing_playbook.md` |
 | Skill routing scripts | 9 | Advisor, benchmark, and regression tooling for skill selection | `scripts/README.md` |
-| Agent improver | 55 | Evaluator-first bounded improvement loop for agent mutation and scoring | `sk-agent-improver/SKILL.md` |
+| Agent improver | 55 | Evaluator-first bounded improvement loop for agent mutation and scoring | `sk-improve-agent/SKILL.md` |
 | Code workflow bundles | 164 | Full-stack, OpenCode standards, review, and web implementation overlays | `sk-code-full-stack/SKILL.md`, `sk-code-opencode/SKILL.md`, `sk-code-review/SKILL.md`, `sk-code-web/SKILL.md` |
 | Research + review loops | 83 | Autonomous deep-research and deep-review protocols with externalized state | `sk-deep-research/SKILL.md`, `sk-deep-review/SKILL.md` |
-| Docs + git + prompt ops | 76 | Documentation, git workflow, and prompt-improvement specialist skills | `sk-doc/SKILL.md`, `sk-git/SKILL.md`, `sk-prompt-improver/SKILL.md` |
+| Docs + git + prompt ops | 76 | Documentation, git workflow, and prompt-improvement specialist skills | `sk-doc/SKILL.md`, `sk-git/SKILL.md`, `sk-improve-prompt/SKILL.md` |
 | System Spec Kit platform | 2178 | Public's main documentation, memory, graph, validation, and workflow platform | `system-spec-kit/README.md`, `system-spec-kit/SKILL.md`, `system-spec-kit/mcp_server/README.md` |
 
 ### .opencode/skill/system-spec-kit/

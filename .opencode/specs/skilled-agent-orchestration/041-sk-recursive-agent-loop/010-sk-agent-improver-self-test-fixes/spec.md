@@ -5,7 +5,7 @@
 | Status | Complete |
 | Priority | P1 |
 | Level | 2 |
-| Parent | 041-sk-agent-improver-loop |
+| Parent | 041-sk-improve-agent-loop |
 | Phase | 010 |
 | Estimated LOC | 80-120 |
 

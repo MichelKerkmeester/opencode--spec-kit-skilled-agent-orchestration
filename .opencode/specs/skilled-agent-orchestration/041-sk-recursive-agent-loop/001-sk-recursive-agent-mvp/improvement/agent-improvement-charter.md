@@ -1,6 +1,6 @@
 ---
 title: Agent Improvement Charter
-description: Fixed MVP charter for sk-agent-improver.
+description: Fixed MVP charter for sk-improve-agent.
 ---
 
 # Agent Improvement Charter

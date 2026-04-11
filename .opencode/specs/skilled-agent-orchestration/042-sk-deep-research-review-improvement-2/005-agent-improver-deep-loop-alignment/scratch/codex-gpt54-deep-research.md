@@ -16,13 +16,13 @@ CRITICAL: Do NOT ask about spec folders. Do NOT follow CLAUDE.md gate instructio
 Run 10 iterations of deep research on Phase 005 (Agent Improver Deep Loop Alignment). The spec is at:
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/
 
-Research question: How can the sk-agent-improver skill be optimized, refined, and upgraded by applying the deep-loop runtime truth contracts from 042 Phases 1-4?
+Research question: How can the sk-improve-agent skill be optimized, refined, and upgraded by applying the deep-loop runtime truth contracts from 042 Phases 1-4?
 
 Read these files for context:
 - The Phase 005 spec.md, plan.md, tasks.md
-- .opencode/skill/sk-agent-improver/SKILL.md (the current skill)
-- .opencode/skill/sk-agent-improver/assets/ (config, strategy, charter)
-- .opencode/skill/sk-agent-improver/scripts/ (existing scripts)
+- .opencode/skill/sk-improve-agent/SKILL.md (the current skill)
+- .opencode/skill/sk-improve-agent/assets/ (config, strategy, charter)
+- .opencode/skill/sk-improve-agent/scripts/ (existing scripts)
 - .opencode/agent/agent-improver.md (the LEAF agent)
 - .opencode/command/improve/agent.md (the orchestrator command)
 
@@ -45,7 +45,7 @@ hook: SessionStart Completed
 hook: UserPromptSubmit
 hook: UserPromptSubmit Completed
 codex
-I’m treating this as a read-only research pass on Phase 005, using `sk-deep-research` for the iteration structure and a light memory pass for prior 042 context. First I’m pulling the phase docs, current `sk-agent-improver` surfaces, and any nearby guidance that already captured runtime-truth lessons from Phases 1-4.
+I’m treating this as a read-only research pass on Phase 005, using `sk-deep-research` for the iteration structure and a light memory pass for prior 042 context. First I’m pulling the phase docs, current `sk-improve-agent` surfaces, and any nearby guidance that already captured runtime-truth lessons from Phases 1-4.
 exec
 /bin/zsh -lc 'rg -n "042|agent-improver|deep-loop|deep research|runtime truth|Phase 005|Phases 1-4" /Users/michelkerkmeester/.codex/memories/MEMORY.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
@@ -308,7 +308,7 @@ exec
 ../Public/AGENTS.md
 
 codex
-I’ve got the deep-research protocol in view now, and I’m checking whether any deeper `AGENTS.md` files narrow the rules for the exact Phase 005 and skill paths before I read the target materials. After that I’ll map the phase docs against the current `sk-agent-improver` runtime surfaces and lock in the 10-iteration structure.
+I’ve got the deep-research protocol in view now, and I’m checking whether any deeper `AGENTS.md` files narrow the rules for the exact Phase 005 and skill paths before I read the target materials. After that I’ll map the phase docs against the current `sk-improve-agent` runtime surfaces and lock in the 10-iteration structure.
 codex
 The first memory pass suggests one important prior lesson: in this repo’s 042 train, the expected order was “Level 3 docs first, then strict validate, then deep research,” which matches your Phase 005 folder already existing. I’m moving into the concrete sources now: phase docs, the current skill assets/scripts, and the agent/command pair that drive the loop.
 exec
@@ -383,7 +383,7 @@ exec
 --- spec.md ---
 ---
 title: "Feature Specification: Agent-Improver Deep-Loop Alignment [005]"
-description: "Transfer the proven deep-loop runtime truth contracts from 042 Phases 1-4 to the sk-agent-improver skill, adding stop-reason taxonomy, audit journaling, mutation coverage tracking, trade-off detection, optional parallel candidates, and scoring weight optimization."
+description: "Transfer the proven deep-loop runtime truth contracts from 042 Phases 1-4 to the sk-improve-agent skill, adding stop-reason taxonomy, audit journaling, mutation coverage tracking, trade-off detection, optional parallel candidates, and scoring weight optimization."
 trigger_phrases:
   - "005"
   - "agent improver"
@@ -404,11 +404,11 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-The sk-agent-improver skill runs bounded improvement loops over agent packets, but it currently lacks the runtime truth infrastructure proven in 042 Phases 1-4 for deep-research and deep-review. This phase ports those contracts into agent-improver: a well-formed stop-reason taxonomy, legal-stop gates, audit journaling, mutation coverage tracking, dimension trajectory analysis, trade-off detection, optional parallel candidate waves, and scoring weight optimization based on session history.
+The sk-improve-agent skill runs bounded improvement loops over agent packets, but it currently lacks the runtime truth infrastructure proven in 042 Phases 1-4 for deep-research and deep-review. This phase ports those contracts into agent-improver: a well-formed stop-reason taxonomy, legal-stop gates, audit journaling, mutation coverage tracking, dimension trajectory analysis, trade-off detection, optional parallel candidate waves, and scoring weight optimization based on session history.
 
 **Key Decisions**: emit journal events in the orchestrator (not in the proposal-only agent); reuse the existing coverage graph infrastructure with an improvement-specific namespace; treat dimension trajectory as a first-class convergence signal; keep parallel candidate waves opt-in behind an exploration-breadth gate.
 
-**Critical Dependencies**: 042 Phase 1 runtime truth foundation (stop-reason taxonomy, event journal schema); 042 Phase 2 semantic coverage graph (reused with `loop_type: "improvement"`); existing sk-agent-improver 5-dimension scoring and packet-local candidate generation discipline.
+**Critical Dependencies**: 042 Phase 1 runtime truth foundation (stop-reason taxonomy, event journal schema); 042 Phase 2 semantic coverage graph (reused with `loop_type: "improvement"`); existing sk-improve-agent 5-dimension scoring and packet-local candidate generation discipline.
 
 ---
 
@@ -424,7 +424,7 @@ The sk-agent-improver skill runs bounded improvement loops over agent packets, b
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
 | **Parent Packet** | `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/` |
 | **Predecessor Phases** | `001-runtime-truth-foundation`, `002-semantic-coverage-graph`, `003-wave-executor`, `004-offline-loop-optimizer` |
-| **Skill Target** | `.opencode/skill/sk-agent-improver/` |
+| **Skill Target** | `.opencode/skill/sk-improve-agent/` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -434,7 +434,7 @@ The sk-agent-improver skill runs bounded improvement loops over agent packets, b
 
 ### Problem Statement
 
-The sk-agent-improver skill runs bounded improvement loops that surface no reliable stop-reason, leave no audit trail, do not track which mutation dimensions have been explored, and cannot detect when one dimension improves at the cost of another. Sessions are opaque, non-resumable, and produce no data that could inform future scoring weight calibration. The 042 bundle already solved these problems for deep-research and deep-review, but agent-improver was left behind.
+The sk-improve-agent skill runs bounded improvement loops that surface no reliable stop-reason, leave no audit trail, do not track which mutation dimensions have been explored, and cannot detect when one dimension improves at the cost of another. Sessions are opaque, non-resumable, and produce no data that could inform future scoring weight calibration. The 042 bundle already solved these problems for deep-research and deep-review, but agent-improver was left behind.
 
 ### Purpose
 
@@ -473,22 +473,22 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/sk-agent-improver/SKILL.md` | Modify | Add stop-reason taxonomy, journal protocol, coverage graph, trajectory, trade-off, parallel wave, and weight-optimizer sections |
-| `.opencode/skill/sk-agent-improver/assets/improvement_config.json` | Modify | Add config fields for journal path, coverage graph path, wave activation gate, weight optimizer settings (all optional with defaults) |
-| `.opencode/skill/sk-agent-improver/assets/improvement_strategy.md` | Modify | Add mutation exhaustion guidance, trajectory-based convergence criteria, trade-off resolution guidance |
-| `.opencode/skill/sk-agent-improver/assets/improvement_charter.md` | Modify | Add audit trail requirements, legal-stop gate obligations |
+| `.opencode/skill/sk-improve-agent/SKILL.md` | Modify | Add stop-reason taxonomy, journal protocol, coverage graph, trajectory, trade-off, parallel wave, and weight-optimizer sections |
+| `.opencode/skill/sk-improve-agent/assets/improvement_config.json` | Modify | Add config fields for journal path, coverage graph path, wave activation gate, weight optimizer settings (all optional with defaults) |
+| `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md` | Modify | Add mutation exhaustion guidance, trajectory-based convergence criteria, trade-off resolution guidance |
+| `.opencode/skill/sk-improve-agent/assets/improvement_charter.md` | Modify | Add audit trail requirements, legal-stop gate obligations |
 | `.opencode/agent/agent-improver.md` | Modify | Add journal emission protocol, legal-stop gate checks, coverage graph update calls |
 | `.opencode/command/improve/agent.md` | Modify | Add resume semantics, session-id propagation, weight optimizer invocation |
-| `.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs` | Create | Append-only JSONL event emitter for improvement session events |
-| `.opencode/skill/sk-agent-improver/scripts/mutation-coverage.cjs` | Create | Coverage graph reader/writer for explored dimensions and tried mutations |
-| `.opencode/skill/sk-agent-improver/scripts/trade-off-detector.cjs` | Create | Cross-dimension regression detector using trajectory data |
-| `.opencode/skill/sk-agent-improver/scripts/candidate-lineage.cjs` | Create | Lineage graph for parallel candidate waves |
-| `.opencode/skill/sk-agent-improver/scripts/benchmark-stability.cjs` | Create | Benchmark replay stability measurement and reporting |
-| `.opencode/skill/sk-agent-improver/scripts/tests/improvement-journal.vitest.ts` | Create | Tests for journal emit, append-only enforcement, event schema |
-| `.opencode/skill/sk-agent-improver/scripts/tests/mutation-coverage.vitest.ts` | Create | Tests for coverage graph read/write and namespace isolation |
-| `.opencode/skill/sk-agent-improver/scripts/tests/trade-off-detector.vitest.ts` | Create | Tests for regression detection and threshold configuration |
-| `.opencode/skill/sk-agent-improver/scripts/tests/candidate-lineage.vitest.ts` | Create | Tests for lineage graph construction and parent-child linkage |
-| `.opencode/skill/sk-agent-improver/scripts/tests/benchmark-stability.vitest.ts` | Create | Tests for stability scoring and replay consistency |
+| `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs` | Create | Append-only JSONL event emitter for improvement session events |
+| `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs` | Create | Coverage graph reader/writer for explored dimensions and tried mutations |
+| `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs` | Create | Cross-dimension regression detector using trajectory data |
+| `.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs` | Create | Lineage graph for parallel candidate waves |
+| `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs` | Create | Benchmark replay stability measurement and reporting |
+| `.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts` | Create | Tests for journal emit, append-only enforcement, event schema |
+| `.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts` | Create | Tests for coverage graph read/write and namespace isolation |
+| `.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts` | Create | Tests for regression detection and threshold configuration |
+| `.opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts` | Create | Tests for lineage graph construction and parent-child linkage |
+| `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts` | Create | Tests for stability scoring and replay consistency |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -555,7 +555,7 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 |------|------|--------|------------|
 | Dependency | 042 Phase 1 journal schema | Journal emit contract must be compatible | Use same event schema from Phase 1; document any improvement-specific extensions |
 | Dependency | 042 Phase 2 coverage graph | Coverage graph namespace and API must support `loop_type: "improvement"` | Add namespace field to existing graph writers; verify no breaking change to deep-research/review paths |
-| Dependency | sk-agent-improver proposal-only constraint | Orchestrator must own journal emission; agent must not write state | ADR-001 enforces this; enforce via code review gate |
+| Dependency | sk-improve-agent proposal-only constraint | Orchestrator must own journal emission; agent must not write state | ADR-001 enforces this; enforce via code review gate |
 | Risk | Trajectory-based convergence false positives | Session terminates too early on noisy score data | Require minimum 3 trajectory data points before convergence claim (REQ-AI-007) |
 | Risk | Parallel wave complexity overloading LLM context | Parallel waves increase context length per session | Keep parallel waves strictly opt-in; default config disables them |
 | Risk | Weight optimizer recommendations applied without review | Auto-applied weight changes could degrade scoring over time | REQ-AI-012 explicitly blocks auto-apply; require explicit approval |
@@ -605,7 +605,7 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 --- plan.md ---
 ---
 title: "Implementation Plan: Agent-Improver Deep-Loop Alignment [005]"
-description: "4-sub-phase plan porting 042 runtime truth contracts to sk-agent-improver: stop-reason taxonomy, audit journal, mutation coverage graph, trade-off detection, optional parallel candidate waves, and scoring weight optimization."
+description: "4-sub-phase plan porting 042 runtime truth contracts to sk-improve-agent: stop-reason taxonomy, audit journal, mutation coverage graph, trade-off detection, optional parallel candidate waves, and scoring weight optimization."
 trigger_phrases:
   - "005"
   - "agent improver plan"
@@ -630,13 +630,13 @@ contextType: "planning"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | Node.js CJS (scripts), TypeScript (tests), Markdown (skill/agent docs) |
-| **Framework** | Vitest (tests), existing sk-agent-improver runtime |
+| **Framework** | Vitest (tests), existing sk-improve-agent runtime |
 | **Storage** | JSONL files (journal, ledger), JSON files (coverage graph, lineage, trajectory) |
 | **Testing** | Vitest with 5 test suites; manual integration verification |
 
 ### Overview
 
-This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-agent-improver skill across four sub-phases. Sub-phase 5a delivers the core runtime contracts (stop-reason taxonomy, legal-stop gates, audit journal, hypothesis ledger). Sub-phase 5b adds improvement intelligence (mutation coverage graph, dimension trajectory, trade-off detection, exhausted-mutations log). Sub-phase 5c adds optional parallel candidate waves and candidate lineage. Sub-phase 5d adds scoring weight optimization and benchmark replay stability. All new config fields are optional with defaults, preserving backward compatibility.
+This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-improve-agent skill across four sub-phases. Sub-phase 5a delivers the core runtime contracts (stop-reason taxonomy, legal-stop gates, audit journal, hypothesis ledger). Sub-phase 5b adds improvement intelligence (mutation coverage graph, dimension trajectory, trade-off detection, exhausted-mutations log). Sub-phase 5c adds optional parallel candidate waves and candidate lineage. Sub-phase 5d adds scoring weight optimization and benchmark replay stability. All new config fields are optional with defaults, preserving backward compatibility.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -648,7 +648,7 @@ This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into t
 
 - [ ] 042 Phase 1 journal schema confirmed and compatible with improvement events
 - [ ] 042 Phase 2 coverage graph API confirmed to support `loop_type` namespace parameter
-- [ ] Existing sk-agent-improver SKILL.md and improvement_config.json read and understood
+- [ ] Existing sk-improve-agent SKILL.md and improvement_config.json read and understood
 - [ ] All 13 requirements documented in spec.md with measurable acceptance criteria
 
 ### Definition of Done
@@ -760,9 +760,9 @@ Add scoring weight optimizer using historical session data and benchmark replay 
 |------------|------|--------|-------------------|
 | 042 Phase 1 journal schema | Internal | Green | Cannot finalize journal event types without schema contract |
 | 042 Phase 2 coverage graph API | Internal | Green | Must confirm `loop_type` param support before mutation-coverage.cjs |
-| sk-agent-improver SKILL.md current state | Internal | Green | Must read before modifying |
+| sk-improve-agent SKILL.md current state | Internal | Green | Must read before modifying |
 | Vitest (test runner) | External | Green | Required for 5 test suites; already used in project |
-| Node.js CJS module conventions | Internal | Green | All new scripts follow existing sk-agent-improver script patterns |
+| Node.js CJS module conventions | Internal | Green | All new scripts follow existing sk-improve-agent script patterns |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -822,7 +822,7 @@ Add scoring weight optimizer using historical session data and benchmark replay 
 ### Rollback Procedure
 
 1. Revert SKILL.md, improvement_config.json, improvement_strategy.md, improvement_charter.md, agent-improver.md, and agent.md to pre-phase state using git revert or file restore
-2. Remove new scripts from `.opencode/skill/sk-agent-improver/scripts/` (they are not imported by existing code)
+2. Remove new scripts from `.opencode/skill/sk-improve-agent/scripts/` (they are not imported by existing code)
 3. Remove new test files from `scripts/tests/`
 4. Verify an existing improvement session runs without error
 
@@ -867,7 +867,7 @@ Add scoring weight optimizer using historical session data and benchmark replay 
 --- tasks.md ---
 ---
 title: "Tasks: Agent-Improver Deep-Loop Alignment [005]"
-description: "24 tasks across 4 sub-phases mapping 13 requirements to concrete implementation steps for the sk-agent-improver runtime truth alignment."
+description: "24 tasks across 4 sub-phases mapping 13 requirements to concrete implementation steps for the sk-improve-agent runtime truth alignment."
 trigger_phrases:
   - "005"
   - "agent improver tasks"
@@ -905,16 +905,16 @@ contextType: "planning"
 
 *Delivers: stop-reason taxonomy, legal-stop gates, resume semantics, audit journal, hypothesis verification ledger.*
 
-- [ ] T001 Read existing sk-agent-improver SKILL.md, improvement_config.json, improvement_charter.md, improvement_strategy.md and agent-improver.md to understand current state before modifying (all skill files)
+- [ ] T001 Read existing sk-improve-agent SKILL.md, improvement_config.json, improvement_charter.md, improvement_strategy.md and agent-improver.md to understand current state before modifying (all skill files)
 - [ ] T002 Read 042 Phase 1 journal schema from `../001-runtime-truth-foundation/` to confirm event type contract before writing journal script
-- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `converged`, `promoted`, `rolledBack`, `maxIterationsReached`, `regressionDetected`, `manualStop`, `error` with trigger conditions (`.opencode/skill/sk-agent-improver/SKILL.md`) (REQ-AI-001)
+- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `converged`, `promoted`, `rolledBack`, `maxIterationsReached`, `regressionDetected`, `manualStop`, `error` with trigger conditions (`.opencode/skill/sk-improve-agent/SKILL.md`) (REQ-AI-001)
 - [ ] T004 Add legal-stop gate protocol to agent-improver.md orchestrator section: gate conditions for `converged` and `promoted` using 5-dimension stability + no regression + promotion criteria (`.opencode/agent/agent-improver.md`) (REQ-AI-002)
 - [ ] T005 Add resume/continuation semantics to agent.md command: session-id parameter, journal replay on resume, iteration counter carry-over (`.opencode/command/improve/agent.md`) (REQ-AI-003)
-- [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-004)
-- [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-005)
-- [ ] T008 Update improvement_charter.md: add audit trail obligations section specifying that the orchestrator must emit journal events at each iteration boundary (`.opencode/skill/sk-agent-improver/assets/improvement_charter.md`)
-- [ ] T009 Update improvement_config.json: add optional `journal.path`, `journal.sessionId`, `sessionResume.enabled` fields with documented defaults (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T010 Write `improvement-journal.vitest.ts`: test event emit, append-only enforcement (second write appends not overwrites), invalid event type rejection, resume journal read, session-ended event schema (`.opencode/skill/sk-agent-improver/scripts/tests/improvement-journal.vitest.ts`)
+- [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-004)
+- [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-005)
+- [ ] T008 Update improvement_charter.md: add audit trail obligations section specifying that the orchestrator must emit journal events at each iteration boundary (`.opencode/skill/sk-improve-agent/assets/improvement_charter.md`)
+- [ ] T009 Update improvement_config.json: add optional `journal.path`, `journal.sessionId`, `sessionResume.enabled` fields with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T010 Write `improvement-journal.vitest.ts`: test event emit, append-only enforcement (second write appends not overwrites), invalid event type rejection, resume journal read, session-ended event schema (`.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -926,13 +926,13 @@ contextType: "planning"
 *Depends on: T006 (journal emit for trade-off events).*
 
 - [ ] T011 [P] Read 042 Phase 2 coverage graph API from `../002-semantic-coverage-graph/` to confirm `loop_type` namespace parameter support before implementing mutation-coverage.cjs
-- [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-agent-improver/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
+- [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
 - [ ] T013 Add dimension trajectory writer to `mutation-coverage.cjs` or as a co-located module: time-ordered score vector per dimension, enforces minimum 3 data points before convergence claim (REQ-AI-007)
-- [ ] T014 Create `trade-off-detector.cjs`: reads current trajectory, computes per-dimension deltas, compares against configurable thresholds, returns structured trade-off report (`.opencode/skill/sk-agent-improver/scripts/trade-off-detector.cjs`) (REQ-AI-008)
-- [ ] T015 Update improvement_strategy.md: add trajectory-based convergence criteria (minimum 3 data points, stabilization threshold), mutation exhaustion guidance (skip exhausted types, annotate journal), trade-off resolution guidance (`.opencode/skill/sk-agent-improver/assets/improvement_strategy.md`)
-- [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-agent-improver/scripts/tests/mutation-coverage.vitest.ts`)
-- [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-agent-improver/scripts/tests/trade-off-detector.vitest.ts`)
+- [ ] T014 Create `trade-off-detector.cjs`: reads current trajectory, computes per-dimension deltas, compares against configurable thresholds, returns structured trade-off report (`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs`) (REQ-AI-008)
+- [ ] T015 Update improvement_strategy.md: add trajectory-based convergence criteria (minimum 3 data points, stabilization threshold), mutation exhaustion guidance (skip exhausted types, annotate journal), trade-off resolution guidance (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md`)
+- [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts`)
+- [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -944,10 +944,10 @@ contextType: "planning"
 *Depends on: T006 (journal emit); T003 (SKILL.md updated).*
 *Can run in parallel with Sub-Phase 5b after 5a completes.*
 
-- [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-agent-improver/scripts/candidate-lineage.cjs`) (REQ-AI-011)
+- [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs`) (REQ-AI-011)
 - [ ] T020 [P] Add parallel wave orchestration branch to agent-improver.md: activation check against `parallelWaves.enabled` and `explorationBreadthScore >= activationThreshold`; spawn 2-3 candidates with different strategies; merge results by selecting highest non-regressive score (`.opencode/agent/agent-improver.md`) (REQ-AI-010)
-- [ ] T021 Update improvement_config.json: add `parallelWaves` config block with `enabled: false`, `activationThreshold`, `maxCandidates` fields and JSDoc comments (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T022 Write `candidate-lineage.vitest.ts`: test node creation, parent-child linkage, root-to-leaf traversal, wave-index assignment, session-id isolation (`.opencode/skill/sk-agent-improver/scripts/tests/candidate-lineage.vitest.ts`)
+- [ ] T021 Update improvement_config.json: add `parallelWaves` config block with `enabled: false`, `activationThreshold`, `maxCandidates` fields and JSDoc comments (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T022 Write `candidate-lineage.vitest.ts`: test node creation, parent-child linkage, root-to-leaf traversal, wave-index assignment, session-id isolation (`.opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts`)
 - [ ] T023 [P] Manual verification: run an improvement session with `parallelWaves.enabled: false` (default) and confirm single-wave behavior is unchanged; confirm no lineage graph is written when parallel mode is off
 <!-- /ANCHOR:phase-3 -->
 
@@ -959,11 +959,11 @@ contextType: "planning"
 *Delivers: scoring weight optimizer (recommendation only), benchmark replay stability measurement.*
 *Depends on: T006 (journal history), T013 (trajectory data).*
 
-- [ ] T024 Create `benchmark-stability.cjs`: accepts array of benchmark result sets from identical replays, computes per-dimension stability coefficient (1 - stddev/mean), emits stability report JSON, appends `stabilityWarning` to journal if any coefficient is below configured threshold (`.opencode/skill/sk-agent-improver/scripts/benchmark-stability.cjs`) (REQ-AI-013)
+- [ ] T024 Create `benchmark-stability.cjs`: accepts array of benchmark result sets from identical replays, computes per-dimension stability coefficient (1 - stddev/mean), emits stability report JSON, appends `stabilityWarning` to journal if any coefficient is below configured threshold (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs`) (REQ-AI-013)
 - [ ] T025 Implement weight optimizer logic in `benchmark-stability.cjs` or co-located module: reads historical journal files after session count threshold, computes per-dimension performance patterns, emits weight-recommendation report file (not auto-applied) (REQ-AI-012)
-- [ ] T026 Update SKILL.md: add weight optimizer invocation guidance (when to run, what the report contains, how to apply recommendations manually), benchmark stability interpretation guide (`.opencode/skill/sk-agent-improver/SKILL.md`)
-- [ ] T027 Update improvement_config.json: add `weightOptimizer.sessionCountThreshold`, `weightOptimizer.reportPath`, `benchmarkStability.replayCount`, `benchmarkStability.warningThreshold` optional config fields (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T028 Write `benchmark-stability.vitest.ts`: test stability coefficient math (perfect stability = 1.0, high variance = low coefficient), stability warning threshold triggering, weight recommendation report format, multi-session history aggregation (`.opencode/skill/sk-agent-improver/scripts/tests/benchmark-stability.vitest.ts`)
+- [ ] T026 Update SKILL.md: add weight optimizer invocation guidance (when to run, what the report contains, how to apply recommendations manually), benchmark stability interpretation guide (`.opencode/skill/sk-improve-agent/SKILL.md`)
+- [ ] T027 Update improvement_config.json: add `weightOptimizer.sessionCountThreshold`, `weightOptimizer.reportPath`, `benchmarkStability.replayCount`, `benchmarkStability.warningThreshold` optional config fields (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T028 Write `benchmark-stability.vitest.ts`: test stability coefficient math (perfect stability = 1.0, high variance = low coefficient), stability warning threshold triggering, weight recommendation report format, multi-session history aggregation (`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts`)
 <!-- /ANCHOR:phase-4 -->
 
 ---
@@ -1046,61 +1046,61 @@ exec
 ../Public/.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/002-babysitter-main/external/plugins/babysitter-omp/AGENTS.md
 
 codex
-The Phase 005 packet is explicit about the intended port: it wants Phase 1 journaling/stop contracts, Phase 2 coverage semantics, Phase 3 wave gating, and Phase 4 optimizer logic applied to `sk-agent-improver`. I’m now reading the current runtime surfaces to separate “already implicit today” from “missing and should be formalized,” which will make the 10 iteration recommendations concrete instead of theoretical.
+The Phase 005 packet is explicit about the intended port: it wants Phase 1 journaling/stop contracts, Phase 2 coverage semantics, Phase 3 wave gating, and Phase 4 optimizer logic applied to `sk-improve-agent`. I’m now reading the current runtime surfaces to separate “already implicit today” from “missing and should be formalized,” which will make the 10 iteration recommendations concrete instead of theoretical.
 exec
-/bin/zsh -lc "printf '--- skill tree ---\\n'; find .opencode/skill/sk-agent-improver -maxdepth 3 -type f | sort; printf '\\n--- phase dirs ---\\n'; find .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 -maxdepth 2 -mindepth 1 -type d | sort" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc "printf '--- skill tree ---\\n'; find .opencode/skill/sk-improve-agent -maxdepth 3 -type f | sort; printf '\\n--- phase dirs ---\\n'; find .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 -maxdepth 2 -mindepth 1 -type d | sort" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 --- skill tree ---
-.opencode/skill/sk-agent-improver/README.md
-.opencode/skill/sk-agent-improver/SKILL.md
-.opencode/skill/sk-agent-improver/assets/improvement_charter.md
-.opencode/skill/sk-agent-improver/assets/improvement_config.json
-.opencode/skill/sk-agent-improver/assets/improvement_config_reference.md
-.opencode/skill/sk-agent-improver/assets/improvement_strategy.md
-.opencode/skill/sk-agent-improver/assets/target-profiles/context-prime.json
-.opencode/skill/sk-agent-improver/assets/target-profiles/handover.json
-.opencode/skill/sk-agent-improver/assets/target_manifest.jsonc
-.opencode/skill/sk-agent-improver/manual_testing_playbook/01--integration-scanner/001-scan-known-agent.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/01--integration-scanner/002-scan-missing-agent.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/01--integration-scanner/003-scan-diverse-agent.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/01--integration-scanner/004-json-output-file.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/02--profile-generator/005-rules-extraction.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/02--profile-generator/006-output-checks.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/02--profile-generator/007-inline-rules-fallback.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/02--profile-generator/008-file-output.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/03--5d-scorer/009-dynamic-handover.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/03--5d-scorer/010-dynamic-arbitrary.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/03--5d-scorer/011-legacy-unchanged.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/03--5d-scorer/012-dimension-details.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/03--5d-scorer/013-missing-candidate.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/04--benchmark-integration/014-without-integration.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/04--benchmark-integration/015-with-integration.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/04--benchmark-integration/016-fixture-regression.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/05--reducer-dimensions/017-no-dimensions.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/05--reducer-dimensions/018-with-dimensions.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/05--reducer-dimensions/019-plateau-detection.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/06--end-to-end-loop/020-full-pipeline.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/06--end-to-end-loop/021-any-agent.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/manual_testing_playbook.md
-.opencode/skill/sk-agent-improver/references/benchmark_operator_guide.md
-.opencode/skill/sk-agent-improver/references/evaluator_contract.md
-.opencode/skill/sk-agent-improver/references/integration_scanning.md
-.opencode/skill/sk-agent-improver/references/loop_protocol.md
-.opencode/skill/sk-agent-improver/references/mirror_drift_policy.md
-.opencode/skill/sk-agent-improver/references/no_go_conditions.md
-.opencode/skill/sk-agent-improver/references/promotion_rules.md
-.opencode/skill/sk-agent-improver/references/quick_reference.md
-.opencode/skill/sk-agent-improver/references/rollback_runbook.md
-.opencode/skill/sk-agent-improver/references/second_target_evaluation.md
-.opencode/skill/sk-agent-improver/references/target_onboarding.md
-.opencode/skill/sk-agent-improver/scripts/check-mirror-drift.cjs
-.opencode/skill/sk-agent-improver/scripts/generate-profile.cjs
-.opencode/skill/sk-agent-improver/scripts/promote-candidate.cjs
-.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs
-.opencode/skill/sk-agent-improver/scripts/rollback-candidate.cjs
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs
-.opencode/skill/sk-agent-improver/scripts/scan-integration.cjs
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs
+.opencode/skill/sk-improve-agent/README.md
+.opencode/skill/sk-improve-agent/SKILL.md
+.opencode/skill/sk-improve-agent/assets/improvement_charter.md
+.opencode/skill/sk-improve-agent/assets/improvement_config.json
+.opencode/skill/sk-improve-agent/assets/improvement_config_reference.md
+.opencode/skill/sk-improve-agent/assets/improvement_strategy.md
+.opencode/skill/sk-improve-agent/assets/target-profiles/context-prime.json
+.opencode/skill/sk-improve-agent/assets/target-profiles/handover.json
+.opencode/skill/sk-improve-agent/assets/target_manifest.jsonc
+.opencode/skill/sk-improve-agent/manual_testing_playbook/01--integration-scanner/001-scan-known-agent.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/01--integration-scanner/002-scan-missing-agent.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/01--integration-scanner/003-scan-diverse-agent.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/01--integration-scanner/004-json-output-file.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/02--profile-generator/005-rules-extraction.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/02--profile-generator/006-output-checks.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/02--profile-generator/007-inline-rules-fallback.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/02--profile-generator/008-file-output.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/03--5d-scorer/009-dynamic-handover.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/03--5d-scorer/010-dynamic-arbitrary.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/03--5d-scorer/011-legacy-unchanged.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/03--5d-scorer/012-dimension-details.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/03--5d-scorer/013-missing-candidate.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/04--benchmark-integration/014-without-integration.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/04--benchmark-integration/015-with-integration.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/04--benchmark-integration/016-fixture-regression.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensions/017-no-dimensions.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensions/018-with-dimensions.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensions/019-plateau-detection.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/020-full-pipeline.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/021-any-agent.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_playbook.md
+.opencode/skill/sk-improve-agent/references/benchmark_operator_guide.md
+.opencode/skill/sk-improve-agent/references/evaluator_contract.md
+.opencode/skill/sk-improve-agent/references/integration_scanning.md
+.opencode/skill/sk-improve-agent/references/loop_protocol.md
+.opencode/skill/sk-improve-agent/references/mirror_drift_policy.md
+.opencode/skill/sk-improve-agent/references/no_go_conditions.md
+.opencode/skill/sk-improve-agent/references/promotion_rules.md
+.opencode/skill/sk-improve-agent/references/quick_reference.md
+.opencode/skill/sk-improve-agent/references/rollback_runbook.md
+.opencode/skill/sk-improve-agent/references/second_target_evaluation.md
+.opencode/skill/sk-improve-agent/references/target_onboarding.md
+.opencode/skill/sk-improve-agent/scripts/check-mirror-drift.cjs
+.opencode/skill/sk-improve-agent/scripts/generate-profile.cjs
+.opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs
+.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+.opencode/skill/sk-improve-agent/scripts/rollback-candidate.cjs
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
 
 --- phase dirs ---
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation
@@ -1175,7 +1175,7 @@ Proposal-only mutator for bounded agent-improver experiments. This agent writes 
 
 | Skill | Domain | Use When | Key Features |
 | ----- | ------ | -------- | ------------ |
-| `sk-agent-improver` | Improvement loop protocol | Always | Charter, manifest, target-profile, evaluator, and promotion guidance |
+| `sk-improve-agent` | Improvement loop protocol | Always | Charter, manifest, target-profile, evaluator, and promotion guidance |
 | `sk-doc` | Documentation quality | When candidate language must stay crisp and explicit | Template alignment and validator-backed clarity |
 | `system-spec-kit` | Packet discipline | When operating inside a spec folder | Phase-aware evidence handling and validation rules |
 
@@ -1302,7 +1302,7 @@ Fix the proposal boundary first
 
 | Skill | Purpose |
 | ----- | ------- |
-| `sk-agent-improver` | Main loop protocol, routing, references, and assets |
+| `sk-improve-agent` | Main loop protocol, routing, references, and assets |
 | `sk-doc` | Documentation-shape guidance for prompt and package clarity |
 | `system-spec-kit` | Packet workflow, validation, and evidence discipline |
 
@@ -1386,7 +1386,7 @@ SELF-CHECK: Are you operating as the @general agent?
     │   ┌────────────────────────────────────────────────────────────┐
     │   │ ⛔ GENERAL AGENT REQUIRED                                  │
     │   │                                                            │
-    │   │ This command orchestrates sk-agent-improver skill          │
+    │   │ This command orchestrates sk-improve-agent skill          │
     │   │ invocation and does not require @write routing.            │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
@@ -1580,16 +1580,16 @@ $ARGUMENTS
 
 ## 4. WORKFLOW STEPS
 
-### Step 1: Load sk-agent-improver Skill
+### Step 1: Load sk-improve-agent Skill
 
 ```
-Read(".opencode/skill/sk-agent-improver/SKILL.md")
+Read(".opencode/skill/sk-improve-agent/SKILL.md")
 ```
 
 ### Step 2: Run Integration Scan
 
 ```bash
-node .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs --agent={agent_name} --output={spec_folder}/improvement/integration-report.json
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={agent_name} --output={spec_folder}/improvement/integration-report.json
 ```
 
 Review the integration report: mirror sync status, command coverage, skill references.
@@ -1598,22 +1598,22 @@ Review the integration report: mirror sync status, command coverage, skill refer
 
 **Dynamic mode (scoring_mode = dynamic):**
 ```bash
-node .opencode/skill/sk-agent-improver/scripts/generate-profile.cjs --agent={target_path} --output={spec_folder}/improvement/dynamic-profile.json
+node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent={target_path} --output={spec_folder}/improvement/dynamic-profile.json
 ```
 
 
 exec
-/bin/zsh -lc "printf '\\n--- SKILL.md ---\\n'; sed -n '1,260p' .opencode/skill/sk-agent-improver/SKILL.md; printf '\\n--- improvement_config.json ---\\n'; sed -n '1,260p' .opencode/skill/sk-agent-improver/assets/improvement_config.json; printf '\\n--- improvement_strategy.md ---\\n'; sed -n '1,260p' .opencode/skill/sk-agent-improver/assets/improvement_strategy.md; printf '\\n--- improvement_charter.md ---\\n'; sed -n '1,260p' .opencode/skill/sk-agent-improver/assets/improvement_charter.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc "printf '\\n--- SKILL.md ---\\n'; sed -n '1,260p' .opencode/skill/sk-improve-agent/SKILL.md; printf '\\n--- improvement_config.json ---\\n'; sed -n '1,260p' .opencode/skill/sk-improve-agent/assets/improvement_config.json; printf '\\n--- improvement_strategy.md ---\\n'; sed -n '1,260p' .opencode/skill/sk-improve-agent/assets/improvement_strategy.md; printf '\\n--- improvement_charter.md ---\\n'; sed -n '1,260p' .opencode/skill/sk-improve-agent/assets/improvement_charter.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 
 --- SKILL.md ---
 ---
-name: sk-agent-improver
+name: sk-improve-agent
 description: "Evaluator-first skill for bounded agent improvement with 5-dimension integration-aware scoring, dynamic profiling, packet-local candidates, and guarded promotion or rollback."
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 version: 1.0.0
 triggers:
-  - sk-agent-improver
+  - sk-improve-agent
   - agent improvement loop
   - bounded agent improvement
   - 5-dimension scoring
@@ -1621,7 +1621,7 @@ triggers:
   - dynamic profiling
 ---
 
-<!-- Keywords: sk-agent-improver, agent-improver, agent-improvement, benchmark-harness, score-candidate, promote-candidate, rollback-candidate -->
+<!-- Keywords: sk-improve-agent, agent-improver, agent-improvement, benchmark-harness, score-candidate, promote-candidate, rollback-candidate -->
 
 # Recursive Agent: Evaluator-First Improvement Orchestrator
 
@@ -1904,8 +1904,8 @@ Dynamic profiles are generated on the fly from any agent file via `scripts/gener
     "manifest": "improvement/target-manifest.jsonc",
     "candidates": "improvement/candidates",
     "benchmarkRoot": "improvement/benchmark-runs",
-    "targetProfiles": ".opencode/skill/sk-agent-improver/assets/target-profiles",
-    "fixtureCatalog": ".opencode/skill/sk-agent-improver/assets/fixtures"
+    "targetProfiles": ".opencode/skill/sk-improve-agent/assets/target-profiles",
+    "fixtureCatalog": ".opencode/skill/sk-improve-agent/assets/fixtures"
   },
   "targets": {
     "activeProfile": "handover",
@@ -2174,7 +2174,7 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 <!-- /ANCHOR:related-resources -->
 
 codex
-I’ve confirmed the current `sk-agent-improver` runtime already has some implicit loop semantics: lineage modes, plateau stopping, append-only state, 5 weighted dimensions, and a reducer-driven “best known state.” What it does not yet have is the explicit truth-contract layer the Phase 005 spec is asking for, so the next pass is into the earlier 042 phases and any live code/docs where those contracts already exist in deep-research or deep-review.
+I’ve confirmed the current `sk-improve-agent` runtime already has some implicit loop semantics: lineage modes, plateau stopping, append-only state, 5 weighted dimensions, and a reducer-driven “best known state.” What it does not yet have is the explicit truth-contract layer the Phase 005 spec is asking for, so the next pass is into the earlier 042 phases and any live code/docs where those contracts already exist in deep-research or deep-review.
 mcp: cocoindex_code/search started
 mcp: cocoindex_code/search (failed)
 user cancelled MCP tool call
@@ -2289,7 +2289,7 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7581:.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/plan.md:306:| Review all-dimensions-clean path | Prove review can stop only after dimension coverage and quality gates pass | JSONL stop reason, dashboard coverage section, behavior test fixture |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7583:.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/plan.md:309:| Audit-journal path | Prove reads/searches/evidence extraction and convergence math are recorded append-only | Journal artifact plus reducer summary |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7593:.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/plan.md:341:  2. Roll back stop/journal/ledger changes by feature group, not as a single monolith, so trusted baseline behavior can be restored incrementally.
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7643:.opencode/skill/sk-agent-improver/manual_testing_playbook/05--reducer-dimensions/019-plateau-detection.md
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7643:.opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensions/019-plateau-detection.md
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7754:    41	      expect(content, `${docPath} should mention the canonical state log`).toContain('deep-review-state.jsonl');
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7766:    53	      expect(content, `${docPath} should read the canonical state log`).toContain('review/deep-review-state.jsonl');
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/scratch/codex-gpt54-deep-research.md:7775:    62	        'review/deep-research-state.jsonl',
@@ -2415,28 +2415,28 @@ exec
 .opencode/skill/cli-claude-code/assets/prompt_templates.md:153:claude -p "Analyze trade-offs between [option A] and [option B] for [context]. Evaluate across: [dimensions]. Recommend with confidence level and reasoning." \
 .opencode/skill/cli-claude-code/assets/prompt_templates.md:160:claude -p "Analyze trade-offs between microservices and modular monolith for our e-commerce platform. Evaluate across: scalability, team autonomy, operational complexity, data consistency, deployment speed, debugging difficulty. Recommend with confidence level and reasoning." \
 .opencode/skill/cli-claude-code/references/integration_patterns.md:88:claude -p "We need to choose between event sourcing and CRUD for order management. Analyze trade-offs across: data consistency, query performance, team learning curve, operational complexity, and future scalability. Recommend with confidence level." \
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:3:description: "Transfer the proven deep-loop runtime truth contracts from 042 Phases 1-4 to the sk-agent-improver skill, adding stop-reason taxonomy, audit journaling, mutation coverage tracking, trade-off detection, optional parallel candidates, and scoring weight optimization."
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:3:description: "Transfer the proven deep-loop runtime truth contracts from 042 Phases 1-4 to the sk-improve-agent skill, adding stop-reason taxonomy, audit journaling, mutation coverage tracking, trade-off detection, optional parallel candidates, and scoring weight optimization."
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:8:  - "improvement journal"
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:10:  - "trade-off detection"
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:24:The sk-agent-improver skill runs bounded improvement loops over agent packets, but it currently lacks the runtime truth infrastructure proven in 042 Phases 1-4 for deep-research and deep-review. This phase ports those contracts into agent-improver: a well-formed stop-reason taxonomy, legal-stop gates, audit journaling, mutation coverage tracking, dimension trajectory analysis, trade-off detection, optional parallel candidate waves, and scoring weight optimization based on session history.
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:24:The sk-improve-agent skill runs bounded improvement loops over agent packets, but it currently lacks the runtime truth infrastructure proven in 042 Phases 1-4 for deep-research and deep-review. This phase ports those contracts into agent-improver: a well-formed stop-reason taxonomy, legal-stop gates, audit journaling, mutation coverage tracking, dimension trajectory analysis, trade-off detection, optional parallel candidate waves, and scoring weight optimization based on session history.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:26:**Key Decisions**: emit journal events in the orchestrator (not in the proposal-only agent); reuse the existing coverage graph infrastructure with an improvement-specific namespace; treat dimension trajectory as a first-class convergence signal; keep parallel candidate waves opt-in behind an exploration-breadth gate.
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:28:**Critical Dependencies**: 042 Phase 1 runtime truth foundation (stop-reason taxonomy, event journal schema); 042 Phase 2 semantic coverage graph (reused with `loop_type: "improvement"`); existing sk-agent-improver 5-dimension scoring and packet-local candidate generation discipline.
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:54:The sk-agent-improver skill runs bounded improvement loops that surface no reliable stop-reason, leave no audit trail, do not track which mutation dimensions have been explored, and cannot detect when one dimension improves at the cost of another. Sessions are opaque, non-resumable, and produce no data that could inform future scoring weight calibration. The 042 bundle already solved these problems for deep-research and deep-review, but agent-improver was left behind.
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:28:**Critical Dependencies**: 042 Phase 1 runtime truth foundation (stop-reason taxonomy, event journal schema); 042 Phase 2 semantic coverage graph (reused with `loop_type: "improvement"`); existing sk-improve-agent 5-dimension scoring and packet-local candidate generation discipline.
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:54:The sk-improve-agent skill runs bounded improvement loops that surface no reliable stop-reason, leave no audit trail, do not track which mutation dimensions have been explored, and cannot detect when one dimension improves at the cost of another. Sessions are opaque, non-resumable, and produce no data that could inform future scoring weight calibration. The 042 bundle already solved these problems for deep-research and deep-review, but agent-improver was left behind.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:69:- Audit journal (`improvement-journal.jsonl`) capturing all session events
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:71:- Mutation coverage graph tracking explored dimensions, tried mutations, and integration surfaces
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:72:- Dimension trajectory tracking (per-dimension score trends across iterations)
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:76:- Candidate lineage graph for parallel waves
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:77:- Scoring weight optimizer using historical session data
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:93:| `.opencode/skill/sk-agent-improver/SKILL.md` | Modify | Add stop-reason taxonomy, journal protocol, coverage graph, trajectory, trade-off, parallel wave, and weight-optimizer sections |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:94:| `.opencode/skill/sk-agent-improver/assets/improvement_config.json` | Modify | Add config fields for journal path, coverage graph path, wave activation gate, weight optimizer settings (all optional with defaults) |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:95:| `.opencode/skill/sk-agent-improver/assets/improvement_strategy.md` | Modify | Add mutation exhaustion guidance, trajectory-based convergence criteria, trade-off resolution guidance |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:93:| `.opencode/skill/sk-improve-agent/SKILL.md` | Modify | Add stop-reason taxonomy, journal protocol, coverage graph, trajectory, trade-off, parallel wave, and weight-optimizer sections |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:94:| `.opencode/skill/sk-improve-agent/assets/improvement_config.json` | Modify | Add config fields for journal path, coverage graph path, wave activation gate, weight optimizer settings (all optional with defaults) |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:95:| `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md` | Modify | Add mutation exhaustion guidance, trajectory-based convergence criteria, trade-off resolution guidance |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:97:| `.opencode/agent/agent-improver.md` | Modify | Add journal emission protocol, legal-stop gate checks, coverage graph update calls |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:98:| `.opencode/command/improve/agent.md` | Modify | Add resume semantics, session-id propagation, weight optimizer invocation |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:99:| `.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs` | Create | Append-only JSONL event emitter for improvement session events |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:101:| `.opencode/skill/sk-agent-improver/scripts/trade-off-detector.cjs` | Create | Cross-dimension regression detector using trajectory data |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:104:| `.opencode/skill/sk-agent-improver/scripts/tests/improvement-journal.vitest.ts` | Create | Tests for journal emit, append-only enforcement, event schema |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:105:| `.opencode/skill/sk-agent-improver/scripts/tests/mutation-coverage.vitest.ts` | Create | Tests for coverage graph read/write and namespace isolation |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:106:| `.opencode/skill/sk-agent-improver/scripts/tests/trade-off-detector.vitest.ts` | Create | Tests for regression detection and threshold configuration |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:99:| `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs` | Create | Append-only JSONL event emitter for improvement session events |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:101:| `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs` | Create | Cross-dimension regression detector using trajectory data |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:104:| `.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts` | Create | Tests for journal emit, append-only enforcement, event schema |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:105:| `.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts` | Create | Tests for coverage graph read/write and namespace isolation |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:106:| `.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts` | Create | Tests for regression detection and threshold configuration |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:120:| REQ-AI-001 | Stop-reason taxonomy: `converged`, `promoted`, `rolledBack`, `maxIterationsReached`, `regressionDetected`, `manualStop`, `error` | Every session termination emits exactly one stop-reason matching the taxonomy; no session ends without a logged stop-reason |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:122:| REQ-AI-003 | Resume/continuation semantics for improvement sessions | A session started with a prior session-id replays journal state and resumes from the last checkpoint without repeating completed iterations |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:123:| REQ-AI-004 | Audit journal (`improvement-journal.jsonl`) capturing all events (iteration-started, candidate-proposed, candidate-evaluated, promotion-gate-checked, session-ended) | All five event types appear in the journal for every completed session; file is append-only and survives process restart |
@@ -2451,7 +2451,7 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:161:- **SC-007**: The scoring weight optimizer produces a recommendation report after the configured session count threshold is reached.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:173:| Dependency | 042 Phase 1 journal schema | Journal emit contract must be compatible | Use same event schema from Phase 1; document any improvement-specific extensions |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:174:| Dependency | 042 Phase 2 coverage graph | Coverage graph namespace and API must support `loop_type: "improvement"` | Add namespace field to existing graph writers; verify no breaking change to deep-research/review paths |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:175:| Dependency | sk-agent-improver proposal-only constraint | Orchestrator must own journal emission; agent must not write state | ADR-001 enforces this; enforce via code review gate |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:175:| Dependency | sk-improve-agent proposal-only constraint | Orchestrator must own journal emission; agent must not write state | ADR-001 enforces this; enforce via code review gate |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:176:| Risk | Trajectory-based convergence false positives | Session terminates too early on noisy score data | Require minimum 3 trajectory data points before convergence claim (REQ-AI-007) |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:177:| Risk | Parallel wave complexity overloading LLM context | Parallel waves increase context length per session | Keep parallel waves strictly opt-in; default config disables them |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:207:- Session with zero completed iterations hitting `maxIterationsReached`: emit stop-reason with 0-iteration count and empty trajectory.
@@ -2459,7 +2459,7 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:218:- Threshold set to 0.0: every score change triggers trade-off detection; document this footgun in config comments.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:222:- Parallel wave with 2 candidates where both produce regressions: select the least-regressive candidate; emit `regressionDetected` stop-reason if neither exceeds baseline.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:223:- Wave executor unavailable: fall back to single-wave behavior silently; emit a `parallelWaveFallback` journal event.
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:231:| Scope | 20/25 | Files: 16, LOC estimate: ~700, Systems: sk-agent-improver + coverage graph + journal |
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:231:| Scope | 20/25 | Files: 16, LOC estimate: ~700, Systems: sk-improve-agent + coverage graph + journal |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:234:| Multi-Agent | 10/15 | Orchestrator + proposal-only agent + journal emit separation |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:235:| Coordination | 10/15 | Dependencies on 042 Phase 1 journal schema and Phase 2 graph API |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/spec.md:244:| R-001 | Proposal-only constraint violated if journal emit moves into agent | High | Low | ADR-001; orchestrator-only journal write enforced via code review |
@@ -2484,10 +2484,10 @@ exec
 .opencode/skill/cli-claude-code/references/claude_tools.md:43:- Complex trade-off analysis across multiple dimensions
 .opencode/skill/cli-claude-code/references/claude_tools.md:56:claude -p "Analyze the trade-offs of our current caching strategy" \
 .opencode/skill/cli-claude-code/references/claude_tools.md:66:**Compared to other CLIs:** Gemini CLI and Codex CLI have reasoning capabilities, but Claude's extended thinking produces explicit, visible chain-of-thought that is especially strong for multi-dimensional trade-off analysis.
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:3:description: "4-sub-phase plan porting 042 runtime truth contracts to sk-agent-improver: stop-reason taxonomy, audit journal, mutation coverage graph, trade-off detection, optional parallel candidate waves, and scoring weight optimization."
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:3:description: "4-sub-phase plan porting 042 runtime truth contracts to sk-improve-agent: stop-reason taxonomy, audit journal, mutation coverage graph, trade-off detection, optional parallel candidate waves, and scoring weight optimization."
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:7:  - "improvement journal implementation"
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:29:| **Storage** | JSONL files (journal, ledger), JSON files (coverage graph, lineage, trajectory) |
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:34:This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-agent-improver skill across four sub-phases. Sub-phase 5a delivers the core runtime contracts (stop-reason taxonomy, legal-stop gates, audit journal, hypothesis ledger). Sub-phase 5b adds improvement intelligence (mutation coverage graph, dimension trajectory, trade-off detection, exhausted-mutations log). Sub-phase 5c adds optional parallel candidate waves and candidate lineage. Sub-phase 5d adds scoring weight optimization and benchmark replay stability. All new config fields are optional with defaults, preserving backward compatibility.
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:34:This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-improve-agent skill across four sub-phases. Sub-phase 5a delivers the core runtime contracts (stop-reason taxonomy, legal-stop gates, audit journal, hypothesis ledger). Sub-phase 5b adds improvement intelligence (mutation coverage graph, dimension trajectory, trade-off detection, exhausted-mutations log). Sub-phase 5c adds optional parallel candidate waves and candidate lineage. Sub-phase 5d adds scoring weight optimization and benchmark replay stability. All new config fields are optional with defaults, preserving backward compatibility.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:44:- [ ] 042 Phase 1 journal schema confirmed and compatible with improvement events
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:45:- [ ] 042 Phase 2 coverage graph API confirmed to support `loop_type` namespace parameter
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:66:Event-sourced improvement loop with packet-local append-only state. The orchestrator owns all state writes; the proposal-only agent remains read-only relative to journals and graphs.
@@ -2541,7 +2541,7 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/plan.md:314:**Decision**: Treat dimension trajectory (per-dimension score history) as a first-class convergence signal, requiring minimum 3 data points before convergence can be claimed.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/checklist.md:38:- [ ] CHK-003 [P0] 042 Phase 1 journal schema read and confirmed compatible with improvement events
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/checklist.md:39:- [ ] CHK-004 [P0] 042 Phase 2 coverage graph API confirmed to support `loop_type` namespace parameter
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/checklist.md:49:- [ ] CHK-010 [P0] All 5 new CJS scripts (`improvement-journal.cjs`, `mutation-coverage.cjs`, `trade-off-detector.cjs`, `candidate-lineage.cjs`, `benchmark-stability.cjs`) follow existing sk-agent-improver script module pattern
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/checklist.md:49:- [ ] CHK-010 [P0] All 5 new CJS scripts (`improvement-journal.cjs`, `mutation-coverage.cjs`, `trade-off-detector.cjs`, `candidate-lineage.cjs`, `benchmark-stability.cjs`) follow existing sk-improve-agent script module pattern
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/checklist.md:51:- [ ] CHK-012 [P0] Journal emitter enforces append-only discipline: no overwrite code path exists in improvement-journal.cjs
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/checklist.md:54:- [ ] CHK-015 [P1] Coverage graph writer uses `loop_type: "improvement"` namespace on all write operations; no cross-contamination with deep-research/review namespaces
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/checklist.md:63:- [ ] CHK-020 [P0] `improvement-journal.vitest.ts` passes: event emit, append-only enforcement, invalid event rejection, resume journal read, session-ended schema
@@ -2562,31 +2562,31 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:7:  - "improvement journal tasks"
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:39:*Delivers: stop-reason taxonomy, legal-stop gates, resume semantics, audit journal, hypothesis verification ledger.*
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:42:- [ ] T002 Read 042 Phase 1 journal schema from `../001-runtime-truth-foundation/` to confirm event type contract before writing journal script
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:43:- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `converged`, `promoted`, `rolledBack`, `maxIterationsReached`, `regressionDetected`, `manualStop`, `error` with trigger conditions (`.opencode/skill/sk-agent-improver/SKILL.md`) (REQ-AI-001)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:43:- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `converged`, `promoted`, `rolledBack`, `maxIterationsReached`, `regressionDetected`, `manualStop`, `error` with trigger conditions (`.opencode/skill/sk-improve-agent/SKILL.md`) (REQ-AI-001)
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:45:- [ ] T005 Add resume/continuation semantics to agent.md command: session-id parameter, journal replay on resume, iteration counter carry-over (`.opencode/command/improve/agent.md`) (REQ-AI-003)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:46:- [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-004)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:47:- [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-005)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:48:- [ ] T008 Update improvement_charter.md: add audit trail obligations section specifying that the orchestrator must emit journal events at each iteration boundary (`.opencode/skill/sk-agent-improver/assets/improvement_charter.md`)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:49:- [ ] T009 Update improvement_config.json: add optional `journal.path`, `journal.sessionId`, `sessionResume.enabled` fields with documented defaults (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:50:- [ ] T010 Write `improvement-journal.vitest.ts`: test event emit, append-only enforcement (second write appends not overwrites), invalid event type rejection, resume journal read, session-ended event schema (`.opencode/skill/sk-agent-improver/scripts/tests/improvement-journal.vitest.ts`)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:46:- [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-004)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:47:- [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-005)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:48:- [ ] T008 Update improvement_charter.md: add audit trail obligations section specifying that the orchestrator must emit journal events at each iteration boundary (`.opencode/skill/sk-improve-agent/assets/improvement_charter.md`)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:49:- [ ] T009 Update improvement_config.json: add optional `journal.path`, `journal.sessionId`, `sessionResume.enabled` fields with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:50:- [ ] T010 Write `improvement-journal.vitest.ts`: test event emit, append-only enforcement (second write appends not overwrites), invalid event type rejection, resume journal read, session-ended event schema (`.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts`)
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:58:*Delivers: mutation coverage graph, dimension trajectory tracking, trade-off detection, exhausted-mutations log.*
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:59:*Depends on: T006 (journal emit for trade-off events).*
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:61:- [ ] T011 [P] Read 042 Phase 2 coverage graph API from `../002-semantic-coverage-graph/` to confirm `loop_type` namespace parameter support before implementing mutation-coverage.cjs
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:62:- [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-agent-improver/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:62:- [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:63:- [ ] T013 Add dimension trajectory writer to `mutation-coverage.cjs` or as a co-located module: time-ordered score vector per dimension, enforces minimum 3 data points before convergence claim (REQ-AI-007)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:64:- [ ] T014 Create `trade-off-detector.cjs`: reads current trajectory, computes per-dimension deltas, compares against configurable thresholds, returns structured trade-off report (`.opencode/skill/sk-agent-improver/scripts/trade-off-detector.cjs`) (REQ-AI-008)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:65:- [ ] T015 Update improvement_strategy.md: add trajectory-based convergence criteria (minimum 3 data points, stabilization threshold), mutation exhaustion guidance (skip exhausted types, annotate journal), trade-off resolution guidance (`.opencode/skill/sk-agent-improver/assets/improvement_strategy.md`)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:66:- [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:67:- [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-agent-improver/scripts/tests/mutation-coverage.vitest.ts`)
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:68:- [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-agent-improver/scripts/tests/trade-off-detector.vitest.ts`)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:64:- [ ] T014 Create `trade-off-detector.cjs`: reads current trajectory, computes per-dimension deltas, compares against configurable thresholds, returns structured trade-off report (`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs`) (REQ-AI-008)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:65:- [ ] T015 Update improvement_strategy.md: add trajectory-based convergence criteria (minimum 3 data points, stabilization threshold), mutation exhaustion guidance (skip exhausted types, annotate journal), trade-off resolution guidance (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md`)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:66:- [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:67:- [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts`)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:68:- [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts`)
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:77:*Depends on: T006 (journal emit); T003 (SKILL.md updated).*
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:80:- [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-agent-improver/scripts/candidate-lineage.cjs`) (REQ-AI-011)
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:80:- [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs`) (REQ-AI-011)
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:81:- [ ] T020 [P] Add parallel wave orchestration branch to agent-improver.md: activation check against `parallelWaves.enabled` and `explorationBreadthScore >= activationThreshold`; spawn 2-3 candidates with different strategies; merge results by selecting highest non-regressive score (`.opencode/agent/agent-improver.md`) (REQ-AI-010)
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:92:*Delivers: scoring weight optimizer (recommendation only), benchmark replay stability measurement.*
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks.md:93:*Depends on: T006 (journal history), T013 (trajectory data).*
 
 Research-only pass for Phase 005. I’m structuring this like a 10-iteration deep-research run: current-state extraction, predecessor-contract extraction, then per-aspect synthesis and final prioritization.
-  ✓ Read current sk-agent-improver runtime docs and scripts to extract implicit loop behavior
+  ✓ Read current sk-improve-agent runtime docs and scripts to extract implicit loop behavior
   → Read 042 Phases 1-4 contracts and live deep-research/deep-review runtime surfaces
   • Map findings into 10 iteration topics with concrete file-level recommendations
   • Cross-check recommendations against current agent-improver constraints and existing code patterns
@@ -3928,7 +3928,7 @@ exec
  succeeded in 0ms:
 
 **Static mode (scoring_mode = static):**
-Load profile from `.opencode/skill/sk-agent-improver/assets/target-profiles/{target_profile}.json`
+Load profile from `.opencode/skill/sk-improve-agent/assets/target-profiles/{target_profile}.json`
 
 ### Step 4: Initialize Runtime
 
@@ -4032,7 +4032,7 @@ STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="all_dimensions_plateaued"
 
 ## 7. NOTES
 
-- **Skill dependency**: Requires `sk-agent-improver` at `.opencode/skill/sk-agent-improver/`
+- **Skill dependency**: Requires `sk-improve-agent` at `.opencode/skill/sk-improve-agent/`
 - **Promotion**: Only handover target with static profile is promotion-eligible. Dynamic profiles produce assessment only.
 - **Scoring**: All 5 dimensions are deterministic (regex, string matching, file existence). No LLM-as-judge.
 - **Stop rules**: Loop stops on dimension plateau (3+ identical scores), max iterations, or infra failure threshold.
@@ -4089,12 +4089,12 @@ FOR WORKFLOW VIOLATIONS:
 **If ANY violation:** STOP -> State violation -> Return to correct step -> Complete properly
 
 exec
-/bin/zsh -lc "printf '===== improver scripts =====\\n'; for f in .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs .opencode/skill/sk-agent-improver/scripts/generate-profile.cjs .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs .opencode/skill/sk-agent-improver/scripts/reduce-state.cjs .opencode/skill/sk-agent-improver/scripts/promote-candidate.cjs .opencode/skill/sk-agent-improver/scripts/rollback-candidate.cjs; do echo \"--- "'$f ---"; sed -n '"'1,260p' \""'$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc "printf '===== improver scripts =====\\n'; for f in .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs .opencode/skill/sk-improve-agent/scripts/rollback-candidate.cjs; do echo \"--- "'$f ---"; sed -n '"'1,260p' \""'$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 ===== improver scripts =====
---- .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs ---
+--- .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs ---
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║ Integration Surface Scanner for sk-agent-improver                      ║
+// ║ Integration Surface Scanner for sk-improve-agent                      ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 'use strict';
 
@@ -4334,7 +4334,7 @@ function main() {
 
 main();
 
---- .opencode/skill/sk-agent-improver/scripts/generate-profile.cjs ---
+--- .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs ---
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Dynamic Target Profile Generator                                         ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -4596,7 +4596,7 @@ function main() {
 
 main();
 
---- .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs ---
+--- .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs ---
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Candidate Scorer — 5-Dimension Evaluation Framework                     ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -4858,7 +4858,7 @@ function createContextPrimeChecks() {
         key: 'bootstrap-fallback',
         weight: 5,
 
---- .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs ---
+--- .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs ---
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Benchmark Runner — Fixture and Integration Scoring                       ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -5063,7 +5063,7 @@ function main() {
   const outputPath = args.output;
   const stateLogPath = args['state-log'];
   const label = args.label || `${profileId}-benchmark`;
-  const profilesDir = args['profiles-dir'] || '.opencode/skill/sk-agent-improver/assets/target-profiles';
+  const profilesDir = args['profiles-dir'] || '.opencode/skill/sk-improve-agent/assets/target-profiles';
   const integrationReportPath = args['integration-report'] || null;
 
   if (!profileId || !outputsDir || !outputPath) {
@@ -5120,7 +5120,7 @@ function main() {
         label,
         outputDir: outputsDir,
 
---- .opencode/skill/sk-agent-improver/scripts/reduce-state.cjs ---
+--- .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs ---
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Ledger Reducer — Dashboard and Registry Generator                        ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -5382,7 +5382,7 @@ function detectDriftAmbiguity(mirrorDriftReport) {
 function evaluateStopStatus(registry, config, mirrorDriftReport) {
   const stopRules = config?.stopRules || {};
 
---- .opencode/skill/sk-agent-improver/scripts/promote-candidate.cjs ---
+--- .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs ---
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Guarded Canonical Promotion Helper                                       ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -5572,7 +5572,7 @@ function main() {
 
 main();
 
---- .opencode/skill/sk-agent-improver/scripts/rollback-candidate.cjs ---
+--- .opencode/skill/sk-improve-agent/scripts/rollback-candidate.cjs ---
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Canonical Rollback Helper                                                ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -5658,10 +5658,10 @@ main();
 
 
 exec
-/bin/zsh -lc "printf '===== improver references =====\\n'; for f in .opencode/skill/sk-agent-improver/references/loop_protocol.md .opencode/skill/sk-agent-improver/references/evaluator_contract.md .opencode/skill/sk-agent-improver/references/integration_scanning.md .opencode/skill/sk-agent-improver/references/no_go_conditions.md .opencode/skill/sk-agent-improver/references/promotion_rules.md .opencode/skill/sk-agent-improver/references/benchmark_operator_guide.md; do echo \"--- "'$f ---"; rg -n "stop|plateau|tie|benchmark|promot|rollback|session|lineage|resume|state|append|registry|dashboard|dimension|integration|weak|failure|candidate|score" "$f" | head -n 120; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc "printf '===== improver references =====\\n'; for f in .opencode/skill/sk-improve-agent/references/loop_protocol.md .opencode/skill/sk-improve-agent/references/evaluator_contract.md .opencode/skill/sk-improve-agent/references/integration_scanning.md .opencode/skill/sk-improve-agent/references/no_go_conditions.md .opencode/skill/sk-improve-agent/references/promotion_rules.md .opencode/skill/sk-improve-agent/references/benchmark_operator_guide.md; do echo \"--- "'$f ---"; rg -n "stop|plateau|tie|benchmark|promot|rollback|session|lineage|resume|state|append|registry|dashboard|dimension|integration|weak|failure|candidate|score" "$f" | head -n 120; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 ===== improver references =====
---- .opencode/skill/sk-agent-improver/references/loop_protocol.md ---
+--- .opencode/skill/sk-improve-agent/references/loop_protocol.md ---
 3:description: End-to-end agent-improver workflow from initialization through guarded promotion or stop decisions.
 8:End-to-end operator view of how the agent-improver command, mutator, scorer, benchmark runner, reducer, and approval gates fit together. Use it when you need the full lifecycle, not just a quick command reminder.
 17:Describes the normal agent-improver loop from packet initialization through reduction, stop decisions, and guarded promotion.
@@ -5696,9 +5696,9 @@ exec
 104:- `benchmark_operator_guide.md`
 105:- `rollback_runbook.md`
 
---- .opencode/skill/sk-agent-improver/references/evaluator_contract.md ---
+--- .opencode/skill/sk-improve-agent/references/evaluator_contract.md ---
 3:description: Deterministic scoring and benchmark contract for target-profiled agent-improver experiments.
-8:Contract for how `sk-agent-improver` scores candidates and benchmarks packet-local outputs. Use it when you need the exact evaluator inputs, outputs, rubric dimensions, and hard rejection behavior.
+8:Contract for how `sk-improve-agent` scores candidates and benchmarks packet-local outputs. Use it when you need the exact evaluator inputs, outputs, rubric dimensions, and hard rejection behavior.
 17:Defines the input and output contract for the prompt-surface scorer and the output benchmark runner so agent-improver runs remain deterministic enough for bounded local experimentation.
 22:- Updating scoring logic or benchmark rules
 23:- Explaining why a candidate was kept, rejected, or marked infra-failure
@@ -5733,7 +5733,7 @@ exec
 173:- `../scripts/score-candidate.cjs`
 174:- `../scripts/scan-integration.cjs`
 
---- .opencode/skill/sk-agent-improver/references/integration_scanning.md ---
+--- .opencode/skill/sk-improve-agent/references/integration_scanning.md ---
 3:description: How the integration scanner discovers all surfaces an agent touches across the repo.
 8:How `scan-integration.cjs` discovers the full integration surface of any agent across the repository.
 17:Provides a complete inventory of every file and surface that references or depends on a given agent, so the evaluator can measure integration consistency rather than just prompt-file quality.
@@ -5742,7 +5742,7 @@ exec
 106:- `evaluator_contract.md` for the 5-dimension scoring rubric
 107:- `../scripts/scan-integration.cjs` for the implementation
 
---- .opencode/skill/sk-agent-improver/references/no_go_conditions.md ---
+--- .opencode/skill/sk-improve-agent/references/no_go_conditions.md ---
 8:Safety-brake reference for deciding when agent-improver must stop or refuse broader rollout. Use it when a packet is accumulating weak evidence, unstable repeatability, or blurred boundaries.
 17:Defines the conditions that force the loop to stop or refuse broader rollout.
 22:- checking reducer stop rules
@@ -5758,7 +5758,7 @@ exec
 58:- `promotion_rules.md`
 60:- `../scripts/reduce-state.cjs`
 
---- .opencode/skill/sk-agent-improver/references/promotion_rules.md ---
+--- .opencode/skill/sk-improve-agent/references/promotion_rules.md ---
 3:description: Keep, reject, and guarded promotion rules for agent-improver candidates.
 8:Policy reference for deciding whether a agent-improver candidate stays baseline-only, is rejected, or becomes promotion-eligible. Use it when score and benchmark evidence exist and you need the decision rule, not just the raw metrics.
 17:Defines the difference between an interesting candidate, an acceptable candidate, and a promotable candidate.
@@ -5787,13 +5787,13 @@ exec
 101:- `rollback_runbook.md`
 103:- `../scripts/promote-candidate.cjs`
 
---- .opencode/skill/sk-agent-improver/references/benchmark_operator_guide.md ---
-3:description: Step-by-step guide for running repeatable fixture benchmarks for sk-agent-improver target profiles.
+--- .opencode/skill/sk-improve-agent/references/benchmark_operator_guide.md ---
+3:description: Step-by-step guide for running repeatable fixture benchmarks for sk-improve-agent target profiles.
 8:Operational guide for running agent-improver benchmarks against packet-local outputs. Use it when you need deterministic evidence that a target profile still behaves consistently across repeated runs.
 17:Explains how to run deterministic fixture benchmarks, where to store the resulting evidence, and how to interpret repeatability.
 22:- Running the benchmark runner for `handover` or `context-prime`
 23:- Building repeatability evidence for a promotion gate
-39:node .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs \
+39:node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
 41:  --outputs-dir={spec_folder}/improvement/benchmark-runs/handover/baseline \
 42:  --output={spec_folder}/improvement/benchmark-runs/handover/run-001.json \
 43:  --state-log={spec_folder}/improvement/agent-improvement-state.jsonl \
@@ -5816,9 +5816,9 @@ exec
 codex
 The improver loop is more mature than its top-level docs suggest: there is already a reducer that tracks per-dimension histories and derives stop conditions, but the command/skill surface still exposes those as informal reasons like plateau, weak benchmarks, or infra failure instead of a typed contract. I’m drilling into those reducer branches now, because that’s where the “implicit taxonomy” and legal gate mapping really live.
 exec
-/bin/zsh -lc "sed -n '260,520p' .opencode/skill/sk-agent-improver/scripts/reduce-state.cjs" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc "sed -n '260,520p' .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'rg -n "evaluateStopStatus|shouldStop|plateau|weakBenchmark|infraFailure|maxIterations|reason|dimensionTrends|stopRules|tie" .opencode/skill/sk-agent-improver/scripts/reduce-state.cjs' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'rg -n "evaluateStopStatus|shouldStop|plateau|weakBenchmark|infraFailure|maxIterations|reason|dimensionTrends|stopRules|tie" .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 87:    infraFailures: [],
 97:      tieCount: 0,
@@ -6129,45 +6129,45 @@ function main() {
 main();
 
 exec
-/bin/zsh -lc 'rg -n "recommendation|candidate-better|candidate-acceptable|candidate-worse|candidate-rejected|delta|dimensions|integrationScore|benchmark-pass|benchmark-fail|infra_failure|appendJsonl|type:" .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'rg -n "recommendation|candidate-better|candidate-acceptable|candidate-worse|candidate-rejected|delta|dimensions|integrationScore|benchmark-pass|benchmark-fail|infra_failure|appendJsonl|type:" .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:38:function appendJsonl(filePath, value) {
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:177:  const integrationScore = Math.round(
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:182:    integrationScore,
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:223:    const recommendation =
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:225:        ? 'benchmark-pass'
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:226:        : 'benchmark-fail';
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:235:      recommendation,
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:247:      report.integrationScore = integration.integrationScore;
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:254:      appendJsonl(stateLogPath, {
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:255:        type: 'benchmark_run',
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:263:        recommendation,
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:269:      status: 'infra_failure',
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:279:      appendJsonl(stateLogPath, {
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:280:        type: 'infra_failure',
-.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs:283:        recommendation: 'infra_failure',
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:380:    details.push({ id: rule.id, type: rule.type, rule: rule.rule, pass, matchRatio: keywords.length > 0 ? matchCount / keywords.length : 0 });
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:487:  const dimensions = [
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:496:    dimensions.reduce((sum, d) => sum + d.score * d.weight, 0),
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:499:  return { weightedScore, dimensions };
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:522:      status: 'infra_failure',
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:544:        status: 'infra_failure',
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:571:      dimensions: dynamicResult.dimensions,
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:573:      recommendation: dynamicResult.weightedScore >= 70 ? 'candidate-acceptable' : 'needs-improvement',
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:574:      failureModes: dynamicResult.dimensions
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:587:      status: 'infra_failure',
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:616:  const delta = baselineTotal === null ? null : candidateTotal - baselineTotal;
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:618:  let recommendation = 'candidate-better';
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:620:    recommendation = 'reject-candidate';
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:621:  } else if (baselineTotal !== null && delta < 0) {
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:622:    recommendation = 'keep-baseline';
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:623:  } else if (baselineTotal !== null && delta === 0) {
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:624:    recommendation = 'tie';
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:640:    delta,
-.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs:641:    recommendation,
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:38:function appendJsonl(filePath, value) {
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:177:  const integrationScore = Math.round(
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:182:    integrationScore,
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:223:    const recommendation =
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:225:        ? 'benchmark-pass'
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:226:        : 'benchmark-fail';
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:235:      recommendation,
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:247:      report.integrationScore = integration.integrationScore;
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:254:      appendJsonl(stateLogPath, {
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:255:        type: 'benchmark_run',
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:263:        recommendation,
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:269:      status: 'infra_failure',
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:279:      appendJsonl(stateLogPath, {
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:280:        type: 'infra_failure',
+.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs:283:        recommendation: 'infra_failure',
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:380:    details.push({ id: rule.id, type: rule.type, rule: rule.rule, pass, matchRatio: keywords.length > 0 ? matchCount / keywords.length : 0 });
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:487:  const dimensions = [
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:496:    dimensions.reduce((sum, d) => sum + d.score * d.weight, 0),
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:499:  return { weightedScore, dimensions };
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:522:      status: 'infra_failure',
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:544:        status: 'infra_failure',
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:571:      dimensions: dynamicResult.dimensions,
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:573:      recommendation: dynamicResult.weightedScore >= 70 ? 'candidate-acceptable' : 'needs-improvement',
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:574:      failureModes: dynamicResult.dimensions
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:587:      status: 'infra_failure',
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:616:  const delta = baselineTotal === null ? null : candidateTotal - baselineTotal;
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:618:  let recommendation = 'candidate-better';
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:620:    recommendation = 'reject-candidate';
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:621:  } else if (baselineTotal !== null && delta < 0) {
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:622:    recommendation = 'keep-baseline';
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:623:  } else if (baselineTotal !== null && delta === 0) {
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:624:    recommendation = 'tie';
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:640:    delta,
+.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs:641:    recommendation,
 
 exec
-/bin/zsh -lc "sed -n '470,660p' .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc "sed -n '470,660p' .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
   const hasName = /^name:\s+\S/m.test(content);
   const hasMode = /^mode:\s+\S/m.test(content);
@@ -6362,7 +6362,7 @@ function main() {
 main();
 
 exec
-/bin/zsh -lc "sed -n '150,320p' .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc "sed -n '150,320p' .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
   let mirrorScore = 100;
   for (const mirror of mirrors) {
@@ -6419,7 +6419,7 @@ function main() {
   const outputPath = args.output;
   const stateLogPath = args['state-log'];
   const label = args.label || `${profileId}-benchmark`;
-  const profilesDir = args['profiles-dir'] || '.opencode/skill/sk-agent-improver/assets/target-profiles';
+  const profilesDir = args['profiles-dir'] || '.opencode/skill/sk-improve-agent/assets/target-profiles';
   const integrationReportPath = args['integration-report'] || null;
 
   if (!profileId || !outputsDir || !outputPath) {
@@ -6727,7 +6727,7 @@ I’ve now got the Phase 1-4 implementation summaries alongside the live deep-re
 exec
 /bin/zsh -lc 'for f in .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation/implementation-summary.md .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation/decision-record.md .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/implementation-summary.md; do echo "--- $f ---"; rg -n "stopReason|legalStop|blockedStop|continuedFromRun|journal|ledger|snapshot|compaction|semantic convergence|optimizer|tunable|locked|advisory|replay corpus|rubric|audit trail" "$f" | head -n 120; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'for f in .opencode/skill/sk-agent-improver/assets/improvement_config_reference.md .opencode/skill/sk-agent-improver/README.md .opencode/skill/sk-agent-improver/manual_testing_playbook/manual_testing_playbook.md; do echo "--- $f ---"; sed -n '"'1,240p' \""'$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'for f in .opencode/skill/sk-improve-agent/assets/improvement_config_reference.md .opencode/skill/sk-improve-agent/README.md .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_playbook.md; do echo "--- $f ---"; sed -n '"'1,240p' \""'$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 --- .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation/implementation-summary.md ---
 3:description: "Deep-loop runtime contracts, stop-reason taxonomy, legal-stop gates, resume semantics, journals, dashboards, and behavior-first test coverage for sk-deep-research and sk-deep-review."
@@ -6814,7 +6814,7 @@ exec
 
 
  succeeded in 0ms:
---- .opencode/skill/sk-agent-improver/assets/improvement_config_reference.md ---
+--- .opencode/skill/sk-improve-agent/assets/improvement_config_reference.md ---
 ---
 title: Improvement Config Reference
 description: Field-level documentation for improvement_config.json runtime configuration.
@@ -6886,12 +6886,12 @@ Use this reference when:
 - `../references/evaluator_contract.md` — scoring rubric details
 - `../references/no_go_conditions.md` — stop condition reference
 
---- .opencode/skill/sk-agent-improver/README.md ---
+--- .opencode/skill/sk-improve-agent/README.md ---
 ---
-title: "sk-agent-improver"
+title: "sk-improve-agent"
 description: "Evaluator-first skill for bounded agent improvement with 5-dimension integration-aware scoring, dynamic profiling, packet-local candidates, and guarded promotion or rollback."
 trigger_phrases:
-  - "sk-agent-improver"
+  - "sk-improve-agent"
   - "recursive agent"
   - "agent improvement loop"
   - "bounded agent improvement"
@@ -6899,7 +6899,7 @@ trigger_phrases:
   - "integration scanner"
 ---
 
-# sk-agent-improver
+# sk-improve-agent
 
 Evaluator-first workflow for improving agents across their full integration surface. Instead of editing the canonical target first, it scans all surfaces an agent touches, derives a scoring profile from the agent's own rules, writes packet-local candidates, scores them across 5 deterministic dimensions, and only allows promotion when evidence and approval gates are both satisfied.
 
@@ -6922,7 +6922,7 @@ Evaluator-first workflow for improving agents across their full integration surf
 
 ## 1. OVERVIEW
 
-`sk-agent-improver` helps operators improve agent surfaces safely by proving improvement before mutation. It treats agent improvement as a measurable optimization problem — not ad-hoc prompt tweaking — by scanning integration surfaces, deriving scoring profiles, and maintaining an append-only evidence trail.
+`sk-improve-agent` helps operators improve agent surfaces safely by proving improvement before mutation. It treats agent improvement as a measurable optimization problem — not ad-hoc prompt tweaking — by scanning integration surfaces, deriving scoring profiles, and maintaining an append-only evidence trail.
 
 | Item | Value |
 | --- | --- |
@@ -6935,7 +6935,7 @@ Evaluator-first workflow for improving agents across their full integration surf
 
 ### What Changes With This Skill
 
-| Without sk-agent-improver | With sk-agent-improver |
+| Without sk-improve-agent | With sk-improve-agent |
 | --- | --- |
 | Prompt edits are ad hoc and untracked | Every candidate is packet-local and evidence-backed |
 | Quality is judged by reading the prompt file | Quality is scored across 5 deterministic dimensions |
@@ -6986,16 +6986,16 @@ Run individual scripts without the full loop:
 
 ```text
 # Scan integration surfaces
-node .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs --agent=handover
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=handover
 
 # Generate dynamic profile from any agent
-node .opencode/skill/sk-agent-improver/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
+node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
 
 # Score with 5 dimensions
-node .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --dynamic
+node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --dynamic
 
 # Score with legacy profile (backward compatible)
-node .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --profile=handover --target=.opencode/agent/handover.md
+node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --profile=handover --target=.opencode/agent/handover.md
 ```
 
 ### Verify the Runtime Area
@@ -7090,7 +7090,7 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 ## 5. STRUCTURE
 
 ```text
-.opencode/skill/sk-agent-improver/
+.opencode/skill/sk-improve-agent/
 |-- SKILL.md                          Skill router and core instructions
 |-- README.md                         Human-facing overview (this file)
 |-- references/
@@ -7128,14 +7128,14 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
     |-- 01--integration-scanner/       Scanner test scenarios
     |-- 02--profile-generator/         Profile generator tests
 
---- .opencode/skill/sk-agent-improver/manual_testing_playbook/manual_testing_playbook.md ---
+--- .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_playbook.md ---
 ---
-title: sk-agent-improver Manual Testing Playbook
-description: Operator-facing validation matrix for the sk-agent-improver skill covering integration scanning, dynamic profiling, 5-dimension scoring, benchmark integration, reducer dimensions, and end-to-end loop execution.
+title: sk-improve-agent Manual Testing Playbook
+description: Operator-facing validation matrix for the sk-improve-agent skill covering integration scanning, dynamic profiling, 5-dimension scoring, benchmark integration, reducer dimensions, and end-to-end loop execution.
 version: 1.0.0
 ---
 
-# sk-agent-improver Manual Testing Playbook
+# sk-improve-agent Manual Testing Playbook
 
 Manual validation matrix for the holistic agent evaluation framework. Each scenario has an exact command, expected output signals, and pass/fail criteria.
 
@@ -7145,7 +7145,7 @@ Manual validation matrix for the holistic agent evaluation framework. Each scena
 
 ### Purpose
 
-Validates that the sk-agent-improver skill correctly discovers integration surfaces, generates dynamic profiles, scores agents across 5 dimensions, integrates with benchmarks, tracks dimensional progress, and runs end-to-end loops.
+Validates that the sk-improve-agent skill correctly discovers integration surfaces, generates dynamic profiles, scores agents across 5 dimensions, integrates with benchmarks, tracks dimensional progress, and runs end-to-end loops.
 
 ### Scope
 
@@ -7162,8 +7162,8 @@ Validates that the sk-agent-improver skill correctly discovers integration surfa
 
 - Node.js available (v18+)
 - Working directory is the repo root
-- All 8 `.cjs` scripts in `.opencode/skill/sk-agent-improver/scripts/` parse without errors
-- `package_skill.py --check` passes for sk-agent-improver
+- All 8 `.cjs` scripts in `.opencode/skill/sk-improve-agent/scripts/` parse without errors
+- `package_skill.py --check` passes for sk-improve-agent
 
 ### How to Execute
 
@@ -7297,14 +7297,14 @@ exec
 ./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification/improvement/benchmark-runs/handover/repeatability.json
 ./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification/improvement/benchmark-runs/handover/run-001.json
 ./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification/improvement/benchmark-runs/handover/run-002.json
-./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-dashboard.md
-./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl
-./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/experiment-registry.json
+./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-dashboard.md
+./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-state.jsonl
+./.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/experiment-registry.json
 
 codex
 There is useful real data for Phase 10 after all: prior `041` packets already contain improver runtime artifacts, including state logs, registries, dashboards, and benchmark runs. I’m sampling those now so the optimizer recommendations are based on actual historical fields and not just what the current config reference says should exist.
 exec
-/bin/zsh -lc 'for f in .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/experiment-registry.json .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/experiment-registry.json; do echo "--- $f ---"; nl -ba "$f" | sed -n '"'1,120p'; echo; done" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'for f in .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/experiment-registry.json .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-state.jsonl .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/experiment-registry.json; do echo "--- $f ---"; nl -ba "$f" | sed -n '"'1,120p'; echo; done" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 --- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl ---
      1	{"type":"benchmark_run","profileId":"handover","family":"session-handover","target":".opencode/agent/handover.md","label":"handover-baseline-run-001","outputDir":".opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/benchmark-runs/handover/baseline","report":".opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/benchmark-runs/handover/run-001.json","aggregateScore":100,"recommendation":"benchmark-pass","failureModes":[]}
@@ -7341,7 +7341,7 @@ exec
     21	        "profileId": "handover",
     22	        "family": "session-handover",
     23	        "target": ".opencode/agent/handover.md",
-    24	        "path": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/candidates/handover-candidate-001.md",
+    24	        "path": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/candidates/handover-candidate-001.md",
     25	        "score": 50,
     26	        "delta": -50,
     27	        "recommendation": "keep-baseline",
@@ -7370,8 +7370,8 @@ exec
     50	        "family": "session-handover",
     51	        "target": ".opencode/agent/handover.md",
     52	        "label": "handover-baseline-run-001",
-    53	        "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline",
-    54	        "report": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/run-001.json",
+    53	        "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline",
+    54	        "report": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/run-001.json",
     55	        "aggregateScore": 100,
     56	        "recommendation": "benchmark-pass",
     57	        "failureModes": []
@@ -7385,8 +7385,8 @@ exec
     65	          "family": "session-handover",
     66	          "target": ".opencode/agent/handover.md",
     67	          "label": "handover-baseline-run-001",
-    68	          "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline",
-    69	          "report": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/run-001.json",
+    68	          "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline",
+    69	          "report": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/run-001.json",
     70	          "aggregateScore": 100,
     71	          "recommendation": "benchmark-pass",
     72	          "failureModes": []
@@ -7397,8 +7397,8 @@ exec
     77	          "family": "session-handover",
     78	          "target": ".opencode/agent/handover.md",
     79	          "label": "handover-baseline-run-002",
-    80	          "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline",
-    81	          "report": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/run-002.json",
+    80	          "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline",
+    81	          "report": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/run-002.json",
     82	          "aggregateScore": 100,
     83	          "recommendation": "benchmark-pass",
     84	          "failureModes": []
@@ -7409,8 +7409,8 @@ exec
     89	          "family": "session-handover",
     90	          "target": ".opencode/agent/handover.md",
     91	          "label": "handover-candidate-weak",
-    92	          "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/candidate-weak",
-    93	          "report": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/run-candidate-weak.json",
+    92	          "outputDir": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/candidate-weak",
+    93	          "report": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/run-candidate-weak.json",
     94	          "aggregateScore": 69,
     95	          "recommendation": "benchmark-fail",
     96	          "failureModes": [
@@ -7439,12 +7439,12 @@ exec
    119	        "path-convention": 1,
    120	        "structured-output": 1,
 
---- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl ---
+--- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-state.jsonl ---
      1	{"iteration":1,"candidateFile":"candidates/candidate-001.md","score":99,"recommendation":"candidate-acceptable","profileId":"agent-improver","evaluationMode":"dynamic-5d","dimensions":[{"name":"structural","score":100,"weight":0.2},{"name":"ruleCoherence","score":100,"weight":0.25},{"name":"integration","score":100,"weight":0.25},{"name":"outputQuality","score":100,"weight":0.15},{"name":"systemFitness","score":93,"weight":0.15}],"timestamp":"2026-04-04T11:25:00Z"}
      2	{"iteration":2,"candidateFile":"candidates/candidate-002.md","score":100,"recommendation":"candidate-acceptable","profileId":"agent-improver","evaluationMode":"dynamic-5d","dimensions":[{"name":"structural","score":100,"weight":0.2},{"name":"ruleCoherence","score":100,"weight":0.25},{"name":"integration","score":100,"weight":0.25},{"name":"outputQuality","score":100,"weight":0.15},{"name":"systemFitness","score":100,"weight":0.15}],"timestamp":"2026-04-04T11:30:00Z"}
      3	{"iteration":3,"candidateFile":"candidates/candidate-003.md","score":100,"recommendation":"candidate-acceptable","profileId":"agent-improver","evaluationMode":"dynamic-5d","dimensions":[{"name":"structural","score":100,"weight":0.2},{"name":"ruleCoherence","score":100,"weight":0.25},{"name":"integration","score":100,"weight":0.25},{"name":"outputQuality","score":100,"weight":0.15},{"name":"systemFitness","score":100,"weight":0.15}],"timestamp":"2026-04-04T11:35:00Z"}
 
---- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/experiment-registry.json ---
+--- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/experiment-registry.json ---
      1	{
      2	  "globalMetrics": {
      3	    "totalRecords": 3,
@@ -7568,7 +7568,7 @@ exec
 
 
 exec
-/bin/zsh -lc 'for f in .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-dashboard.md .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-dashboard.md; do echo "--- $f ---"; sed -n '"'1,220p' \""'$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'for f in .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-dashboard.md .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-dashboard.md; do echo "--- $f ---"; sed -n '"'1,220p' \""'$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
 --- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-dashboard.md ---
 # Agent Improvement Dashboard
@@ -7650,7 +7650,7 @@ exec
 
 Fix repeated benchmark failures before broadening scope or promoting any target.
 
---- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-dashboard.md ---
+--- .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-dashboard.md ---
 # Agent Improvement Dashboard
 
 ## Global Summary
@@ -7736,7 +7736,7 @@ exec
   "fixtures": [
     {
       "id": "completion-ready",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/completion-ready.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/completion-ready.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -7747,7 +7747,7 @@ exec
     },
     {
       "id": "implementation-progress",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/implementation-progress.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/implementation-progress.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -7758,7 +7758,7 @@ exec
     },
     {
       "id": "verification-blocker",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/verification-blocker.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/verification-blocker.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -7789,7 +7789,7 @@ exec
   "fixtures": [
     {
       "id": "completion-ready",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/completion-ready.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/completion-ready.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -7800,7 +7800,7 @@ exec
     },
     {
       "id": "implementation-progress",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/implementation-progress.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/implementation-progress.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -7811,7 +7811,7 @@ exec
     },
     {
       "id": "verification-blocker",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/benchmark-runs/handover/baseline/verification-blocker.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/benchmark-runs/handover/baseline/verification-blocker.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -8600,7 +8600,7 @@ exec
 import json, pathlib
 files = [
 '.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl',
-'.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl'
+'.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-state.jsonl'
 ]
 for fp in files:
     path = pathlib.Path(fp)
@@ -8626,15 +8626,15 @@ types ['baseline', 'benchmark_run', 'candidate', 'rejected']
 profiles ['context-prime', 'handover']
 dimension_samples []
 
-FILE .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl
+FILE .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-state.jsonl
 count 3
 types ['<none>']
 profiles ['agent-improver']
 dimension_samples [(1, 'structural', 100), (1, 'ruleCoherence', 100), (1, 'integration', 100), (1, 'outputQuality', 100), (1, 'systemFitness', 93), (2, 'structural', 100), (2, 'ruleCoherence', 100), (2, 'integration', 100), (2, 'outputQuality', 100), (2, 'systemFitness', 100)]
 
 
-Research pass is complete. I read the Phase 005 packet, current sk-agent-improver surfaces, Phase 1-4 contract docs, live deep-research/deep-review runtime references, and historical 041 improvement artifacts to ground the recommendations.
-  ✓ Read current sk-agent-improver runtime docs and scripts to extract implicit loop behavior
+Research pass is complete. I read the Phase 005 packet, current sk-improve-agent surfaces, Phase 1-4 contract docs, live deep-research/deep-review runtime references, and historical 041 improvement artifacts to ground the recommendations.
+  ✓ Read current sk-improve-agent runtime docs and scripts to extract implicit loop behavior
   ✓ Read 042 Phases 1-4 contracts and live deep-research/deep-review runtime surfaces
   ✓ Map findings into 10 iteration topics with concrete file-level recommendations
   ✓ Cross-check recommendations against current agent-improver constraints and existing code patterns
@@ -8642,33 +8642,33 @@ Research pass is complete. I read the Phase 005 packet, current sk-agent-improve
 codex
 **Priority**
 
-P0: formalize runtime truth before adding new intelligence. That means a typed stop contract, a real resume classifier, and separate journal vs mutation ledger in [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/SKILL.md), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json), [agent-improver.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/agent/agent-improver.md), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md).
+P0: formalize runtime truth before adding new intelligence. That means a typed stop contract, a real resume classifier, and separate journal vs mutation ledger in [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/SKILL.md), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json), [agent-improver.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/agent/agent-improver.md), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md).
 
-P1: make the loop explainable and replayable. Add mutation coverage, full dimension trajectories, trade-off detection, and integration-scan constraints via [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs), [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/scan-integration.cjs), and the new scripts Phase 005 already names.
+P1: make the loop explainable and replayable. Add mutation coverage, full dimension trajectories, trade-off detection, and integration-scan constraints via [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs), [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs), and the new scripts Phase 005 already names.
 
 P2: keep advanced exploration advisory and gated. Parallel candidates and weight optimization should stay off by default, reuse Phase 003/004 patterns, and never auto-promote.
 
 **10 Iterations**
 
-1. Stop-reason taxonomy. Current implicit stops are in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md): trailing ties, infra failures, weak benchmarks, drift ambiguity, plateau, max iterations, cancel, error. I would not use `promoted` or `rolledBack` as `stopReason`; split this into `stopReason = converged | maxIterationsReached | blockedStop | manualStop | error | stuckRecovery` and `sessionOutcome = keptBaseline | promoted | rolledBack | advisoryOnly`. Pattern: `const STOP_REASONS = Object.freeze({...})` plus `const SESSION_OUTCOMES = Object.freeze({...})`.
+1. Stop-reason taxonomy. Current implicit stops are in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md): trailing ties, infra failures, weak benchmarks, drift ambiguity, plateau, max iterations, cancel, error. I would not use `promoted` or `rolledBack` as `stopReason`; split this into `stopReason = converged | maxIterationsReached | blockedStop | manualStop | error | stuckRecovery` and `sessionOutcome = keptBaseline | promoted | rolledBack | advisoryOnly`. Pattern: `const STOP_REASONS = Object.freeze({...})` plus `const SESSION_OUTCOMES = Object.freeze({...})`.
 
-2. Legal-stop gates. Do not map one gate per score; map dimensions into gate bundles. Recommended promote gate: `contractGate` (`structural >= 90 && systemFitness >= 90`), `behaviorGate` (`ruleCoherence >= 85 && outputQuality >= 85`), `integrationGate` (`integration >= 90 && no drift ambiguity`), `evidenceGate` (`benchmark-pass && repeatability-pass`), and `improvementGate` (`weighted delta >= 2` from [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json)); any failed gate should persist `blockedStop`, not invent a new stop label.
+2. Legal-stop gates. Do not map one gate per score; map dimensions into gate bundles. Recommended promote gate: `contractGate` (`structural >= 90 && systemFitness >= 90`), `behaviorGate` (`ruleCoherence >= 85 && outputQuality >= 85`), `integrationGate` (`integration >= 90 && no drift ambiguity`), `evidenceGate` (`benchmark-pass && repeatability-pass`), and `improvementGate` (`weighted delta >= 2` from [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json)); any failed gate should persist `blockedStop`, not invent a new stop label.
 
-3. Resume semantics. The lineage block already exists in [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json), but the command still behaves like a fresh-start workflow in [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md). Port Phase 001’s classifier directly: `new | resume | restart | fork | completed-continue`, add `continuedFromRun` or `continuedFromIteration`, archive old runtime on restart, and replay journal + mutation ledger + coverage graph + registry before dispatch.
+3. Resume semantics. The lineage block already exists in [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json), but the command still behaves like a fresh-start workflow in [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md). Port Phase 001’s classifier directly: `new | resume | restart | fork | completed-continue`, add `continuedFromRun` or `continuedFromIteration`, archive old runtime on restart, and replay journal + mutation ledger + coverage graph + registry before dispatch.
 
-4. Audit journal. Today the improver mixes baseline, candidate, rejected, and benchmark records into one state log; that is too coarse for runtime truth. Add `improvement-journal.jsonl` for lifecycle and stop decisions, plus `mutation-ledger.jsonl` for proposal/evaluation outcomes in [scripts/](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts); journal events should include `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempted`, `promotion_result`, `rollback_result`, and `session_ended`.
+4. Audit journal. Today the improver mixes baseline, candidate, rejected, and benchmark records into one state log; that is too coarse for runtime truth. Add `improvement-journal.jsonl` for lifecycle and stop decisions, plus `mutation-ledger.jsonl` for proposal/evaluation outcomes in [scripts/](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts); journal events should include `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempted`, `promotion_result`, `rollback_result`, and `session_ended`.
 
 5. Mutation coverage graph. Reuse the Phase 002 namespace model from [042.002 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/spec.md): `spec_folder + loop_type + session_id`. For improver, use nodes like `TARGET`, `CANDIDATE`, `MUTATION`, `DIMENSION`, `INTEGRATION_SURFACE`, `BENCHMARK_FIXTURE`, `FAILURE_MODE`, and `HYPOTHESIS`, with edges like `MUTATES`, `TOUCHES`, `IMPROVES`, `REGRESSES`, `VALIDATES`, `BLOCKED_BY`, `DERIVED_FROM`, and `EXHAUSTS`; this graph is about mutation-space coverage, not research/review epistemic coverage.
 
-6. Dimension trajectory. Current reducer only renders latest/best/trend arrows in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs). Add full per-iteration vectors, weighted score, benchmark aggregate, and gate outcomes to a trajectory artifact, and define “stable” as at least 3 scored evidence iterations with all dimension deltas within `±2`, repeatability variance within tolerance, and no unexplored high-value mutation family remaining.
+6. Dimension trajectory. Current reducer only renders latest/best/trend arrows in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs). Add full per-iteration vectors, weighted score, benchmark aggregate, and gate outcomes to a trajectory artifact, and define “stable” as at least 3 scored evidence iterations with all dimension deltas within `±2`, repeatability variance within tolerance, and no unexplored high-value mutation family remaining.
 
 7. Trade-off detection. Weighted totals are not enough; agent-improver needs Pareto awareness. Add `trade-off-detector.cjs` that compares candidate vectors and emits `tradeoff_detected` when an improvement of `> +3` in one dimension causes a regression of `< -3` in hard dimensions (`structural`, `integration`, `systemFitness`) or `< -5` in soft ones, and block promotion for dominated candidates even if the weighted sum went up.
 
-8. Parallel candidates. Keep the agent LEAF-only and put branching in orchestration, following the Phase 003 pattern from [042.003 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor/spec.md). Recommended activation gate: only enable 2-3 candidates when there are 3+ unresolved mutation families, 2 consecutive tie/plateau iterations, and a wide integration surface from [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/scan-integration.cjs); persist a reducer-owned `candidate-board.json`, not ad hoc branch notes.
+8. Parallel candidates. Keep the agent LEAF-only and put branching in orchestration, following the Phase 003 pattern from [042.003 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor/spec.md). Recommended activation gate: only enable 2-3 candidates when there are 3+ unresolved mutation families, 2 consecutive tie/plateau iterations, and a wide integration surface from [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs); persist a reducer-owned `candidate-board.json`, not ad hoc branch notes.
 
-9. Integration surface constraints. The scan already finds canonical, mirrors, commands, YAML, skills, global docs, and skill-advisor references in [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/scan-integration.cjs). Use that output as a mutation allowlist and risk map: pin an `integrationReportHash` into score/benchmark/journal events, require rescan before scoring if the candidate changes routing or command-facing instructions, and treat missing coverage as a promotion block rather than benchmark truth.
+9. Integration surface constraints. The scan already finds canonical, mirrors, commands, YAML, skills, global docs, and skill-advisor references in [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs). Use that output as a mutation allowlist and risk map: pin an `integrationReportHash` into score/benchmark/journal events, require rescan before scoring if the candidate changes routing or command-facing instructions, and treat missing coverage as a promotion block rather than benchmark truth.
 
-10. Scoring weight optimization. Real historical data exists in `041` improvement artifacts like [002 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl), [009 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl), and the corresponding registries and benchmark runs, but it is sparse and inconsistent today. Follow Phase 004’s advisory-only optimizer model from [042.004 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/spec.md): keep `dimensionWeights` tunable, keep stop contract fields locked, build a replayable corpus first, and refuse auto-apply until there are at least 2 compatible target families and a materially larger run history.
+10. Scoring weight optimization. Real historical data exists in `041` improvement artifacts like [002 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl), [009 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-state.jsonl), and the corresponding registries and benchmark runs, but it is sparse and inconsistent today. Follow Phase 004’s advisory-only optimizer model from [042.004 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/spec.md): keep `dimensionWeights` tunable, keep stop contract fields locked, build a replayable corpus first, and refuse auto-apply until there are at least 2 compatible target families and a materially larger run history.
 
 Read-only conclusion: the best upgrade is not “add five new scripts” in isolation, but “turn improver into a typed deep-loop product.” The cleanest implementation order is `stop contract -> resume/journal split -> coverage/trajectory/trade-off -> integration-hash gating -> optional parallel board -> advisory optimizer`. No files were changed, and I did not run the loop or tests in this pass.
 
@@ -8679,33 +8679,33 @@ tokens used
 167,721
 **Priority**
 
-P0: formalize runtime truth before adding new intelligence. That means a typed stop contract, a real resume classifier, and separate journal vs mutation ledger in [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/SKILL.md), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json), [agent-improver.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/agent/agent-improver.md), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md).
+P0: formalize runtime truth before adding new intelligence. That means a typed stop contract, a real resume classifier, and separate journal vs mutation ledger in [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/SKILL.md), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json), [agent-improver.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/agent/agent-improver.md), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md).
 
-P1: make the loop explainable and replayable. Add mutation coverage, full dimension trajectories, trade-off detection, and integration-scan constraints via [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs), [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/scan-integration.cjs), and the new scripts Phase 005 already names.
+P1: make the loop explainable and replayable. Add mutation coverage, full dimension trajectories, trade-off detection, and integration-scan constraints via [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs), [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs), and the new scripts Phase 005 already names.
 
 P2: keep advanced exploration advisory and gated. Parallel candidates and weight optimization should stay off by default, reuse Phase 003/004 patterns, and never auto-promote.
 
 **10 Iterations**
 
-1. Stop-reason taxonomy. Current implicit stops are in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md): trailing ties, infra failures, weak benchmarks, drift ambiguity, plateau, max iterations, cancel, error. I would not use `promoted` or `rolledBack` as `stopReason`; split this into `stopReason = converged | maxIterationsReached | blockedStop | manualStop | error | stuckRecovery` and `sessionOutcome = keptBaseline | promoted | rolledBack | advisoryOnly`. Pattern: `const STOP_REASONS = Object.freeze({...})` plus `const SESSION_OUTCOMES = Object.freeze({...})`.
+1. Stop-reason taxonomy. Current implicit stops are in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs), [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json), and [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md): trailing ties, infra failures, weak benchmarks, drift ambiguity, plateau, max iterations, cancel, error. I would not use `promoted` or `rolledBack` as `stopReason`; split this into `stopReason = converged | maxIterationsReached | blockedStop | manualStop | error | stuckRecovery` and `sessionOutcome = keptBaseline | promoted | rolledBack | advisoryOnly`. Pattern: `const STOP_REASONS = Object.freeze({...})` plus `const SESSION_OUTCOMES = Object.freeze({...})`.
 
-2. Legal-stop gates. Do not map one gate per score; map dimensions into gate bundles. Recommended promote gate: `contractGate` (`structural >= 90 && systemFitness >= 90`), `behaviorGate` (`ruleCoherence >= 85 && outputQuality >= 85`), `integrationGate` (`integration >= 90 && no drift ambiguity`), `evidenceGate` (`benchmark-pass && repeatability-pass`), and `improvementGate` (`weighted delta >= 2` from [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json)); any failed gate should persist `blockedStop`, not invent a new stop label.
+2. Legal-stop gates. Do not map one gate per score; map dimensions into gate bundles. Recommended promote gate: `contractGate` (`structural >= 90 && systemFitness >= 90`), `behaviorGate` (`ruleCoherence >= 85 && outputQuality >= 85`), `integrationGate` (`integration >= 90 && no drift ambiguity`), `evidenceGate` (`benchmark-pass && repeatability-pass`), and `improvementGate` (`weighted delta >= 2` from [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json)); any failed gate should persist `blockedStop`, not invent a new stop label.
 
-3. Resume semantics. The lineage block already exists in [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/assets/improvement_config.json), but the command still behaves like a fresh-start workflow in [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md). Port Phase 001’s classifier directly: `new | resume | restart | fork | completed-continue`, add `continuedFromRun` or `continuedFromIteration`, archive old runtime on restart, and replay journal + mutation ledger + coverage graph + registry before dispatch.
+3. Resume semantics. The lineage block already exists in [improvement_config.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/assets/improvement_config.json), but the command still behaves like a fresh-start workflow in [agent.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/command/improve/agent.md). Port Phase 001’s classifier directly: `new | resume | restart | fork | completed-continue`, add `continuedFromRun` or `continuedFromIteration`, archive old runtime on restart, and replay journal + mutation ledger + coverage graph + registry before dispatch.
 
-4. Audit journal. Today the improver mixes baseline, candidate, rejected, and benchmark records into one state log; that is too coarse for runtime truth. Add `improvement-journal.jsonl` for lifecycle and stop decisions, plus `mutation-ledger.jsonl` for proposal/evaluation outcomes in [scripts/](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts); journal events should include `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempted`, `promotion_result`, `rollback_result`, and `session_ended`.
+4. Audit journal. Today the improver mixes baseline, candidate, rejected, and benchmark records into one state log; that is too coarse for runtime truth. Add `improvement-journal.jsonl` for lifecycle and stop decisions, plus `mutation-ledger.jsonl` for proposal/evaluation outcomes in [scripts/](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts); journal events should include `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempted`, `promotion_result`, `rollback_result`, and `session_ended`.
 
 5. Mutation coverage graph. Reuse the Phase 002 namespace model from [042.002 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/spec.md): `spec_folder + loop_type + session_id`. For improver, use nodes like `TARGET`, `CANDIDATE`, `MUTATION`, `DIMENSION`, `INTEGRATION_SURFACE`, `BENCHMARK_FIXTURE`, `FAILURE_MODE`, and `HYPOTHESIS`, with edges like `MUTATES`, `TOUCHES`, `IMPROVES`, `REGRESSES`, `VALIDATES`, `BLOCKED_BY`, `DERIVED_FROM`, and `EXHAUSTS`; this graph is about mutation-space coverage, not research/review epistemic coverage.
 
-6. Dimension trajectory. Current reducer only renders latest/best/trend arrows in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs). Add full per-iteration vectors, weighted score, benchmark aggregate, and gate outcomes to a trajectory artifact, and define “stable” as at least 3 scored evidence iterations with all dimension deltas within `±2`, repeatability variance within tolerance, and no unexplored high-value mutation family remaining.
+6. Dimension trajectory. Current reducer only renders latest/best/trend arrows in [reduce-state.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs). Add full per-iteration vectors, weighted score, benchmark aggregate, and gate outcomes to a trajectory artifact, and define “stable” as at least 3 scored evidence iterations with all dimension deltas within `±2`, repeatability variance within tolerance, and no unexplored high-value mutation family remaining.
 
 7. Trade-off detection. Weighted totals are not enough; agent-improver needs Pareto awareness. Add `trade-off-detector.cjs` that compares candidate vectors and emits `tradeoff_detected` when an improvement of `> +3` in one dimension causes a regression of `< -3` in hard dimensions (`structural`, `integration`, `systemFitness`) or `< -5` in soft ones, and block promotion for dominated candidates even if the weighted sum went up.
 
-8. Parallel candidates. Keep the agent LEAF-only and put branching in orchestration, following the Phase 003 pattern from [042.003 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor/spec.md). Recommended activation gate: only enable 2-3 candidates when there are 3+ unresolved mutation families, 2 consecutive tie/plateau iterations, and a wide integration surface from [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/scan-integration.cjs); persist a reducer-owned `candidate-board.json`, not ad hoc branch notes.
+8. Parallel candidates. Keep the agent LEAF-only and put branching in orchestration, following the Phase 003 pattern from [042.003 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor/spec.md). Recommended activation gate: only enable 2-3 candidates when there are 3+ unresolved mutation families, 2 consecutive tie/plateau iterations, and a wide integration surface from [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs); persist a reducer-owned `candidate-board.json`, not ad hoc branch notes.
 
-9. Integration surface constraints. The scan already finds canonical, mirrors, commands, YAML, skills, global docs, and skill-advisor references in [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-agent-improver/scripts/scan-integration.cjs). Use that output as a mutation allowlist and risk map: pin an `integrationReportHash` into score/benchmark/journal events, require rescan before scoring if the candidate changes routing or command-facing instructions, and treat missing coverage as a promotion block rather than benchmark truth.
+9. Integration surface constraints. The scan already finds canonical, mirrors, commands, YAML, skills, global docs, and skill-advisor references in [scan-integration.cjs](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs). Use that output as a mutation allowlist and risk map: pin an `integrationReportHash` into score/benchmark/journal events, require rescan before scoring if the candidate changes routing or command-facing instructions, and treat missing coverage as a promotion block rather than benchmark truth.
 
-10. Scoring weight optimization. Real historical data exists in `041` improvement artifacts like [002 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl), [009 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl), and the corresponding registries and benchmark runs, but it is sparse and inconsistent today. Follow Phase 004’s advisory-only optimizer model from [042.004 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/spec.md): keep `dimensionWeights` tunable, keep stop contract fields locked, build a replayable corpus first, and refuse auto-apply until there are at least 2 compatible target families and a materially larger run history.
+10. Scoring weight optimization. Real historical data exists in `041` improvement artifacts like [002 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/improvement/agent-improvement-state.jsonl), [009 state log](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/improvement/agent-improvement-state.jsonl), and the corresponding registries and benchmark runs, but it is sparse and inconsistent today. Follow Phase 004’s advisory-only optimizer model from [042.004 spec](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/spec.md): keep `dimensionWeights` tunable, keep stop contract fields locked, build a replayable corpus first, and refuse auto-apply until there are at least 2 compatible target families and a materially larger run history.
 
 Read-only conclusion: the best upgrade is not “add five new scripts” in isolation, but “turn improver into a typed deep-loop product.” The cleanest implementation order is `stop contract -> resume/journal split -> coverage/trajectory/trade-off -> integration-hash gating -> optional parallel board -> advisory optimizer`. No files were changed, and I did not run the loop or tests in this pass.
 

@@ -1,6 +1,6 @@
 ---
-title: "Tasks: sk-prompt-improver Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/tasks]"
-description: "title: \"Tasks: sk-prompt-improver Initial Creation\""
+title: "Tasks: sk-improve-prompt Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/tasks]"
+description: "title: \"Tasks: sk-improve-prompt Initial Creation\""
 trigger_phrases:
   - "tasks"
   - "prompt"
@@ -11,7 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Tasks: sk-prompt-improver Initial Creation
+# Tasks: sk-improve-prompt Initial Creation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -40,7 +40,7 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create skill directory structure (.opencode/skill/sk-prompt-improver/)
+- [x] T001 Create skill directory structure (.opencode/skill/sk-improve-prompt/)
 - [x] T002 Create references/ subdirectory
 - [x] T003 [P] Review source Prompt Improver knowledge base documents
 
@@ -54,7 +54,7 @@ contextType: "implementation"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Create SKILL.md with all required sections (.opencode/skill/sk-prompt-improver/SKILL.md)
+- [x] T004 Create SKILL.md with all required sections (.opencode/skill/sk-improve-prompt/SKILL.md)
 - [x] T005 [P] Create references/system_prompt.md (adapted from System Prompt v0.200)
 - [x] T006 [P] Create references/depth_framework.md (adapted from DEPTH Framework v0.200)
 - [x] T007 [P] Create references/patterns_evaluation.md (adapted from Patterns v0.201)
@@ -78,7 +78,7 @@ contextType: "implementation"
 
 ### Phase 3: Integration
 
-- [x] T013 Update skill_advisor.py with sk-prompt-improver intent boosters (.opencode/skill/scripts/skill_advisor.py)
+- [x] T013 Update skill_advisor.py with sk-improve-prompt intent boosters (.opencode/skill/scripts/skill_advisor.py)
 - [x] T014 Validate skill with package_skill.py
 - [x] T015 Test routing with skill_advisor.py
 

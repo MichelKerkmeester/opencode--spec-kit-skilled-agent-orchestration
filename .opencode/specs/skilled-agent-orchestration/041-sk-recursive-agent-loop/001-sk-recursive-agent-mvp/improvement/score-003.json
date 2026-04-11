@@ -1,7 +1,7 @@
 {
   "status": "scored",
   "target": ".opencode/agent/handover.md",
-  "candidate": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-003.md",
+  "candidate": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/candidates/candidate-003.md",
   "baseline": ".opencode/agent/handover.md",
   "totals": {
     "candidate": 100,

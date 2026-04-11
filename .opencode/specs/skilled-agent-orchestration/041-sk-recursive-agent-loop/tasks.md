@@ -32,8 +32,8 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Move the original `041` implementation docs into [`001-sk-agent-improver-mvp/`](./001-sk-agent-improver-mvp/)
-- [x] T002 Move the former standalone full-skill packet into [`002-sk-agent-improver-full-skill/`](./002-sk-agent-improver-full-skill/)
+- [x] T001 Move the original `041` implementation docs into [`001-sk-improve-agent-mvp/`](./001-sk-improve-agent-mvp/)
+- [x] T002 Move the former standalone full-skill packet into [`002-sk-improve-agent-full-skill/`](./002-sk-improve-agent-full-skill/)
 - [x] T003 Keep shared research, external analysis, and memory at the root `041/` level
 - [x] T004 Add new root packet docs so `041/` becomes the parent phase index
 <!-- /ANCHOR:phase-1 -->
@@ -43,8 +43,8 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T005 Rewrite stale `001` titles and evidence paths to the new `001-sk-agent-improver-mvp/` location
-- [x] T006 Rewrite stale `002` titles, path references, and packet wording to the new `002-sk-agent-improver-full-skill/` location
+- [x] T005 Rewrite stale `001` titles and evidence paths to the new `001-sk-improve-agent-mvp/` location
+- [x] T006 Rewrite stale `002` titles, path references, and packet wording to the new `002-sk-improve-agent-full-skill/` location
 - [x] T007 Update operator references such as the skill quick reference to point at the phase-based packet path
 - [x] T008 Ensure future continuation is documented as new child phases under `041/`
 <!-- /ANCHOR:phase-2 -->
@@ -65,8 +65,8 @@ contextType: "general"
 
 ### Documentation Alignment
 
-- [x] T014 Create phase `003-sk-agent-improver-doc-alignment/` under the parent packet
-- [x] T015 Align `sk-agent-improver` package docs with `sk-doc`
+- [x] T014 Create phase `003-sk-improve-agent-doc-alignment/` under the parent packet
+- [x] T015 Align `sk-improve-agent` package docs with `sk-doc`
 - [x] T016 Align the canonical loop command and agent docs with `sk-doc`
 - [x] T017 Update parent packet `041` docs to record phase `003`
 - [x] T018 Run package and document validators for the agent-improver surfaces
@@ -74,7 +74,7 @@ contextType: "general"
 
 ### Promotion Verification
 
-- [x] T020 Create phase `004-sk-agent-improver-promotion-verification/` under the parent packet
+- [x] T020 Create phase `004-sk-improve-agent-promotion-verification/` under the parent packet
 - [x] T021 Calibrate the handover scorer narrowly for a truthful promotion verification run
 - [x] T022 Generate handover and context-prime repeatability evidence in the new phase
 - [x] T023 Run guarded promotion and rollback evidence for the canonical handover target
@@ -83,18 +83,18 @@ contextType: "general"
 
 ### Package and Runtime Alignment
 
-- [x] T026 Create phase `005-sk-agent-improver-package-runtime-alignment/` under the parent packet
-- [x] T027 Rewrite `sk-agent-improver` package docs and markdown assets to tighter `sk-doc` template fidelity
+- [x] T026 Create phase `005-sk-improve-agent-package-runtime-alignment/` under the parent packet
+- [x] T027 Rewrite `sk-improve-agent` package docs and markdown assets to tighter `sk-doc` template fidelity
 - [x] T028 Rename the canonical mutator runtime from `agent-improvement-loop` to `agent-improver` across supported runtimes
 - [x] T029 Update command wrappers and workflow YAML to dispatch `@agent-improver`
-- [x] T030 Resync `.agents/skills/sk-agent-improver/` from the corrected source package
+- [x] T030 Resync `.agents/skills/sk-improve-agent/` from the corrected source package
 - [x] T031 Repair active packet references that still presented removed mutator paths as current
 - [x] T032 Update parent packet `041` docs and registry metadata to record phase `005`
 - [x] T033 Re-run document, script, and strict packet validation for the aligned package/runtime surfaces
 
 ### Command Entrypoint Rename
 
-- [x] T034 Create phase `006-sk-agent-improver-command-rename/` under the parent packet
+- [x] T034 Create phase `006-sk-improve-agent-command-rename/` under the parent packet
 - [x] T035 Rename the canonical command entrypoint from `agent-improvement-loop` to `agent-improver`
 - [x] T036 Rename the command YAML asset files and wrapper TOMLs to the agent-improver family
 - [x] T037 Update runtime agent tables, skill docs, README examples, and active packet docs to the new command name and path
@@ -103,7 +103,7 @@ contextType: "general"
 
 ### Wording Alignment
 
-- [x] T040 Create phase `007-sk-agent-improver-wording-alignment/` under the parent packet
+- [x] T040 Create phase `007-sk-improve-agent-wording-alignment/` under the parent packet
 - [x] T041 Clean up wording in the current agent-improver source package and references
 - [x] T042 Clean up wording in the canonical command and mirrored wrapper prompts
 - [x] T043 Clean up wording in runtime-specific agent-improver mirrors and fix runtime-path wording bugs
@@ -135,13 +135,13 @@ contextType: "general"
 - **Plan**: See [plan.md](./plan.md)
 - **Checklist**: See [checklist.md](./checklist.md)
 - **Implementation Summary**: See [implementation-summary.md](./implementation-summary.md)
-- **Phase 1**: See [`001-sk-agent-improver-mvp/`](./001-sk-agent-improver-mvp/)
-- **Phase 2**: See [`002-sk-agent-improver-full-skill/`](./002-sk-agent-improver-full-skill/)
-- **Phase 3**: See [`003-sk-agent-improver-doc-alignment/`](./003-sk-agent-improver-doc-alignment/)
-- **Phase 4**: See [`004-sk-agent-improver-promotion-verification/`](./004-sk-agent-improver-promotion-verification/)
-- **Phase 5**: See [`005-sk-agent-improver-package-runtime-alignment/`](./005-sk-agent-improver-package-runtime-alignment/)
-- **Phase 6**: See [`006-sk-agent-improver-command-rename/`](./006-sk-agent-improver-command-rename/)
-- **Phase 7**: See [`007-sk-agent-improver-wording-alignment/`](./007-sk-agent-improver-wording-alignment/)
+- **Phase 1**: See [`001-sk-improve-agent-mvp/`](./001-sk-improve-agent-mvp/)
+- **Phase 2**: See [`002-sk-improve-agent-full-skill/`](./002-sk-improve-agent-full-skill/)
+- **Phase 3**: See [`003-sk-improve-agent-doc-alignment/`](./003-sk-improve-agent-doc-alignment/)
+- **Phase 4**: See [`004-sk-improve-agent-promotion-verification/`](./004-sk-improve-agent-promotion-verification/)
+- **Phase 5**: See [`005-sk-improve-agent-package-runtime-alignment/`](./005-sk-improve-agent-package-runtime-alignment/)
+- **Phase 6**: See [`006-sk-improve-agent-command-rename/`](./006-sk-improve-agent-command-rename/)
+- **Phase 7**: See [`007-sk-improve-agent-wording-alignment/`](./007-sk-improve-agent-wording-alignment/)
 <!-- /ANCHOR:cross-refs -->
 
 ---

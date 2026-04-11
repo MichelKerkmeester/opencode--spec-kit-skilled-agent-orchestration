@@ -8,7 +8,7 @@
   "proposalOnly": true,
   "promotionEnabled": false,
   "baselineRequired": true,
-  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test",
+  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test",
   "createdAt": "2026-04-04T11:20:00Z",
   "status": "initialized",
   "lineage": {
@@ -28,8 +28,8 @@
     "manifest": "improvement/target-manifest.jsonc",
     "candidates": "improvement/candidates",
     "benchmarkRoot": "improvement/benchmark-runs",
-    "targetProfiles": ".opencode/skill/sk-agent-improver/assets/target-profiles",
-    "fixtureCatalog": ".opencode/skill/sk-agent-improver/assets/fixtures"
+    "targetProfiles": ".opencode/skill/sk-improve-agent/assets/target-profiles",
+    "fixtureCatalog": ".opencode/skill/sk-improve-agent/assets/fixtures"
   },
   "targets": {
     "activeProfile": "agent-improver",

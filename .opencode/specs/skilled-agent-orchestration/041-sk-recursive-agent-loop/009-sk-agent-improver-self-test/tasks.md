@@ -9,7 +9,7 @@
 
 ## Loop Execution
 
-- [x] T005: Create runtime directories under `009-sk-agent-improver-self-test/improvement/`
+- [x] T005: Create runtime directories under `009-sk-improve-agent-self-test/improvement/`
 - [x] T006: Copy config, strategy, charter, manifest templates into runtime root
 - [x] T007: Execute iteration 1: scan, propose candidate, score, benchmark, reduce
 - [x] T008: Execute iteration 2: scan, propose candidate, score, benchmark, reduce

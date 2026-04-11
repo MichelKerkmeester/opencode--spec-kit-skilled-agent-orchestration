@@ -1,5 +1,5 @@
 {
-  // MVP surface classification for sk-agent-improver.
+  // MVP surface classification for sk-improve-agent.
   "version": 1,
   "defaultMode": "proposal-only",
   "targets": [

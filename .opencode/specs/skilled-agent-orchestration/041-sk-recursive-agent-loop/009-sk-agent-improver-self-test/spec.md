@@ -5,13 +5,13 @@
 | Status | Complete |
 | Priority | P1 |
 | Level | 2 |
-| Parent | 041-sk-agent-improver-loop |
+| Parent | 041-sk-improve-agent-loop |
 | Phase | 009 |
 | Estimated LOC | 0 (test-only phase, no new code) |
 
 ## Problem
 
-The sk-agent-improver skill has been validated against handover, debug, orchestrate, and review agents (Phases 001-008), but never against itself. The agent-improver's own agent definition (`.opencode/agent/agent-improver.md`) has never been a target. This is the only agent in the system that describes the improvement workflow itself, creating a unique self-referential case where the integration scanner discovers its own surfaces, the profile generator extracts its own rules, and the scorer evaluates its own quality.
+The sk-improve-agent skill has been validated against handover, debug, orchestrate, and review agents (Phases 001-008), but never against itself. The agent-improver's own agent definition (`.opencode/agent/agent-improver.md`) has never been a target. This is the only agent in the system that describes the improvement workflow itself, creating a unique self-referential case where the integration scanner discovers its own surfaces, the profile generator extracts its own rules, and the scorer evaluates its own quality.
 
 ## Solution
 

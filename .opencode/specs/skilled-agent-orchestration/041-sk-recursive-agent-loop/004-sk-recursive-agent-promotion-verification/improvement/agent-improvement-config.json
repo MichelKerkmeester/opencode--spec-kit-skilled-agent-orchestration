@@ -8,7 +8,7 @@
   "proposalOnly": false,
   "promotionEnabled": true,
   "baselineRequired": true,
-  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification",
+  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/004-sk-improve-agent-promotion-verification",
   "createdAt": "2026-04-03T16:10:00Z",
   "status": "promotion-verification",
   "lineage": {
@@ -33,8 +33,8 @@
     "manifest": "improvement/target-manifest.jsonc",
     "candidates": "improvement/candidates",
     "benchmarkRoot": "improvement/benchmark-runs",
-    "targetProfiles": ".opencode/skill/sk-agent-improver/assets/target-profiles",
-    "fixtureCatalog": ".opencode/skill/sk-agent-improver/assets/fixtures"
+    "targetProfiles": ".opencode/skill/sk-improve-agent/assets/target-profiles",
+    "fixtureCatalog": ".opencode/skill/sk-improve-agent/assets/fixtures"
   },
   "targets": {
     "activeProfile": "handover",

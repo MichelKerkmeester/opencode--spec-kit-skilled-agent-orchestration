@@ -256,7 +256,7 @@ Original request
 
 ### Rejection R-004 — Do Not Delete Narrow Improvement Skills
 - Origin iteration: `iteration-028.md`
-- Rationale: `sk-prompt-improver` and `sk-agent-improver` are bounded opt-in specialist workflows; the problem is overexposure, not existence. [SOURCE: .opencode/skill/sk-prompt-improver/SKILL.md:19-47] [SOURCE: .opencode/skill/sk-agent-improver/SKILL.md:24-56]
+- Rationale: `sk-improve-prompt` and `sk-improve-agent` are bounded opt-in specialist workflows; the problem is overexposure, not existence. [SOURCE: .opencode/skill/sk-improve-prompt/SKILL.md:19-47] [SOURCE: .opencode/skill/sk-improve-agent/SKILL.md:24-56]
 
 ## 10. Cross-Phase Implications
 - Retry-mode and Phase 3 UX work are now coupled. A good retry controller added to the current surface would still inherit too much command, memory, and gate ceremony. [SOURCE: .opencode/command/spec_kit/plan.md:31-145] [SOURCE: .opencode/command/spec_kit/complete.md:32-150]

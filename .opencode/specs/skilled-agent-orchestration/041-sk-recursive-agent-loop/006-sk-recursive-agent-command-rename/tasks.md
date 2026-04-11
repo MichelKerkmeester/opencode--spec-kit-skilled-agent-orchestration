@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create the new `006-sk-agent-improver-command-rename/` phase packet
+- [x] T001 Create the new `006-sk-improve-agent-command-rename/` phase packet
 - [x] T002 Identify all active command-name and command-path references before editing
 - [x] T003 Confirm the rename remains bounded to command surfaces and packet history
 <!-- /ANCHOR:phase-1 -->
@@ -78,7 +78,7 @@ contextType: "general"
 ## Cross-References
 
 - **Parent Packet**: See [../](../)
-- **Previous Phase**: See [../005-sk-agent-improver-package-runtime-alignment/](../005-sk-agent-improver-package-runtime-alignment/)
+- **Previous Phase**: See [../005-sk-improve-agent-package-runtime-alignment/](../005-sk-improve-agent-package-runtime-alignment/)
 - **Specification**: See [spec.md](./spec.md)
 - **Plan**: See [plan.md](./plan.md)
 - **Checklist**: See [checklist.md](./checklist.md)

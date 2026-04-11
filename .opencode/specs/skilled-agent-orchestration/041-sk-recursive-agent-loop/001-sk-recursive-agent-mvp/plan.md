@@ -1,9 +1,9 @@
 ---
-title: "Implementation Plan: Agent Improvement Loop [skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/plan]"
-description: "Phased plan for building sk-agent-improver as an evaluator-first experiment system with a proposal-only MVP on the handover target."
+title: "Implementation Plan: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/plan]"
+description: "Phased plan for building sk-improve-agent as an evaluator-first experiment system with a proposal-only MVP on the handover target."
 trigger_phrases:
   - "agent improvement plan"
-  - "sk-agent-improver plan"
+  - "sk-improve-agent plan"
   - "proposal-only MVP"
 importance_tier: "important"
 contextType: "general"
@@ -30,7 +30,7 @@ contextType: "general"
 
 ### Overview
 
-Build `sk-agent-improver` as a sibling to `sk-deep-research`, but change the meaning of success. Instead of question convergence, the loop optimizes for score governance: propose bounded candidate changes or outputs, score them independently, retain evidence from every attempt, and promote only when the evaluator and policy both allow it.
+Build `sk-improve-agent` as a sibling to `sk-deep-research`, but change the meaning of success. Instead of question convergence, the loop optimizes for score governance: propose bounded candidate changes or outputs, score them independently, retain evidence from every attempt, and promote only when the evaluator and policy both allow it.
 
 The MVP stays intentionally narrow. It targets the handover surface because handover behavior already has a structured output contract, a canonical source file, and a command workflow that is much easier to score than open-ended synthesis agents.
 <!-- /ANCHOR:summary -->
@@ -64,7 +64,7 @@ A five-surface experiment architecture: command orchestration, mutator execution
 - **Mutator layer**: `@agent-improver` generates bounded candidates against one canonical target surface.
 - **Evaluator layer**: deterministic scoring scripts and/or fixed validation commands score candidates separately from the mutator.
 - **State layer**: charter, manifest, config, strategy, JSONL ledger, iteration artifacts, and reducer-owned dashboard/accepted-state views.
-- **Skill layer**: `sk-agent-improver` documents the loop protocol, evaluator contract, promotion rules, and operator guidance.
+- **Skill layer**: `sk-improve-agent` documents the loop protocol, evaluator contract, promotion rules, and operator guidance.
 
 ### Data Flow
 The command initializes an experiment packet from skill assets, dispatches the loop agent to generate candidates, passes those candidates through an independent scorer, appends all results to `improvement-state.jsonl`, and runs the reducer to update dashboard and best-state views. Phase 1 stops there. Later phases may convert accepted candidates into bounded auto-edits after the promotion contract is proven.
@@ -89,7 +89,7 @@ Lock the MVP around one measurable surface before building the loop.
 
 ### Phase 3: Skill and State Skeleton
 Build the reusable packet/state model that future experiments will use.
-- Create the skill entrypoint and README surfaces for `sk-agent-improver`
+- Create the skill entrypoint and README surfaces for `sk-improve-agent`
 - Add loop protocol, promotion rules, and quick reference docs
 - Add config and strategy assets
 - Create the reducer and scoring script entrypoints

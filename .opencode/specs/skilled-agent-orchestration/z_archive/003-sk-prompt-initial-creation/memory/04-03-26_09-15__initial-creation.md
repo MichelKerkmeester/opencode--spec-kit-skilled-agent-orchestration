@@ -1,15 +1,32 @@
 ---
-title: "Text-only refocus for [03--commands-and-skills/003-sk-prompt-initial-creation/04-03-26_09-15__initial-creation]"
+title: "Initial Creation"
+description: 'Initial Creation SESSION SUMMARY Meta Data Value : : Session Date 2026 03 04 Session ID session 1772'
 trigger_phrases:
-  - "text only refocus"
-  - "visual mode removal"
-  - "prompt framework deep dives"
-importance_tier: "normal"
-contextType: "general"
+- text only refocus
+- visual mode removal
+- prompt framework deep dives
+- only refocus commands
+- refocus commands skills
+- commands skills 003
+- skills 003 prompt
+- 003 prompt initial
+- prompt initial creation
+- initial creation initial
+- creation initial creation
+- text only
+- only refocus
+- refocus commands
+- commands skills
+importance_tier: deprecated
+contextType: implementation
+quality_score: 0.8
 quality_flags:
-  - "needs_review"
-quality_score: 0.60
+- needs_review
+- deprecated_retroactive
+- retroactive_reviewed
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Initial Creation
 
 ## SESSION SUMMARY
@@ -41,9 +58,9 @@ quality_score: 0.60
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | /100 |  |
-| Uncertainty Score | /100 |  |
-| Context Score | /100 |  |
+| Knowledge Score | [RETROACTIVE: score unavailable] |  |
+| Uncertainty Score | [RETROACTIVE: score unavailable] |  |
+| Context Score | [RETROACTIVE: score unavailable] |  |
 | Timestamp |  | Session start |
 
 **Initial Gaps Identified:**
@@ -97,7 +114,7 @@ quality_score: 0.60
 
 **Decisions:** 6 decisions recorded
 
-**Summary:** Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md ...
+**Summary:** Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md ... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -120,7 +137,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/skill/sk-prompt-improver/SKILL.md, .opencode/skill/sk-prompt-improver/README.md, .opencode/.../references/depth_framework.md
+- Files modified: .opencode/skill/sk-improve-prompt/SKILL.md, .opencode/skill/sk-improve-prompt/README.md, .opencode/.../references/depth_framework.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -138,7 +155,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/skill/sk-prompt-improver/SKILL.md |
+| Active File | .opencode/skill/sk-improve-prompt/SKILL.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intent |
@@ -172,15 +189,15 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references...** - Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.
+- **Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references...** - Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.
 
-- **Technical Implementation Details** - rootCause: sk-prompt-improver still contained residual visual/creative mode content (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring; $vibe/$image/$video modes) from its original multi-mode design, plus Smart Router pseudocode did not follow the canonical template pattern used by peer skills; solution: Multi-phase cleanup: (1) delete format_guides.
+- **Technical Implementation Details** - rootCause: sk-improve-prompt still contained residual visual/creative mode content (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring; $vibe/$image/$video modes) from its original multi-mode design, plus Smart Router pseudocode did not follow the canonical template pattern used by peer skills; solution: Multi-phase cleanup: (1) delete format_guides.
 
 **Key Files and Their Roles**:
 
-- `.opencode/skill/sk-prompt-improver/SKILL.md` - Documentation
+- `.opencode/skill/sk-improve-prompt/SKILL.md` - Documentation
 
-- `.opencode/skill/sk-prompt-improver/README.md` - Documentation
+- `.opencode/skill/sk-improve-prompt/README.md` - Documentation
 
 - `.opencode/.../references/depth_framework.md` - Documentation
 
@@ -219,10 +236,10 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
+Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
 
 **Key Outcomes**:
-- Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references...
+- Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references... [RETROACTIVE: auto-truncated]
 - Decision: Delete references/format_guides.
 - Decision: Delete references/interactive_mode.
 - Decision: Rewrite SKILL.
@@ -235,12 +252,12 @@ Refocused sk-prompt-improver skill to text-only by removing all visual/creative 
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/skill/sk-prompt-improver/(merged-small-files)` | Tree-thinning merged 2 small files (SKILL.md, README.md). SKILL.md: Canonical sk-doc template (split score_intents/select_int... | README.md: Correct version and framework list |
-| `.opencode/.../references/(merged-small-files)` | Tree-thinning merged 4 small files (depth_framework.md, patterns_evaluation.md, format_guides.md, interactive_mode.md). depth_framework.md: File modified (description pending) | patterns_evaluation.md: Canonical sk-doc template (split score_intents/select_int... |
+| `.opencode/skill/sk-improve-prompt/(merged-small-files)` | Tree-thinning merged 2 small files (SKILL.md, README.md). SKILL.md: Canonical sk-doc template (split score_intents/select_int... [RETROACTIVE: auto-truncated] | README.md: Correct version and framework list |
+| `.opencode/.../references/(merged-small-files)` | Tree-thinning merged 4 small files (depth_framework.md, patterns_evaluation.md, format_guides.md, interactive_mode.md). depth_framework.md: File modified (description pending) | patterns_evaluation.md: Canonical sk-doc template (split score_intents/select_int... [RETROACTIVE: auto-truncated] |
 | `.opencode/skill/(merged-small-files)` | Tree-thinning merged 1 small files (README.md). README.md: Correct version and framework list |
 | `.opencode/command/create/(merged-small-files)` | Tree-thinning merged 1 small files (prompt.md). prompt.md: File modified (description pending) |
 | `.agents/commands/create/(merged-small-files)` | Tree-thinning merged 1 small files (prompt.toml). prompt.toml: File modified (description pending) |
-| `.opencode/changelog/13--sk-prompt-improver/(merged-small-files)` | Tree-thinning merged 1 small files (v1.2.0.0.md). v1.2.0.0.md: File modified (description pending) |
+| `.opencode/changelog/13--sk-improve-prompt/(merged-small-files)` | Tree-thinning merged 1 small files (v1.2.0.0.md). v1.2.0.0.md: File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
 
@@ -252,17 +269,17 @@ Refocused sk-prompt-improver skill to text-only by removing all visual/creative 
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-refocused-skpromptimprover-skill-textonly-2128c2f2 -->
-### FEATURE: Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references...
+### FEATURE: Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references... [RETROACTIVE: auto-truncated]
 
-Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
+Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
 
-**Details:** sk-prompt-improver | text-only refocus | visual creative mode removal | VIBE FRAME MOTION removal | Smart Router alignment | canonical template | framework deep dives | CLEAR scoring rubrics | interactive mode to command | prompt improver v1.2.0.0 | RCAF COSTAR RACE CIDI TIDD-EC CRISPE CRAFT | patterns_evaluation.md | depth_framework.md
+**Details:** sk-improve-prompt | text-only refocus | visual creative mode removal | VIBE FRAME MOTION removal | Smart Router alignment | canonical template | framework deep dives | CLEAR scoring rubrics | interactive mode to command | prompt improver v1.2.0.0 | RCAF COSTAR RACE CIDI TIDD-EC CRISPE CRAFT | patterns_evaluation.md | depth_framework.md
 <!-- /ANCHOR:implementation-refocused-skpromptimprover-skill-textonly-2128c2f2 -->
 
 <!-- ANCHOR:implementation-technical-implementation-details-4826bf30 -->
 ### IMPLEMENTATION: Technical Implementation Details
 
-rootCause: sk-prompt-improver still contained residual visual/creative mode content (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring; $vibe/$image/$video modes) from its original multi-mode design, plus Smart Router pseudocode did not follow the canonical template pattern used by peer skills; solution: Multi-phase cleanup: (1) delete format_guides.md and interactive_mode.md, (2) strip visual content from patterns_evaluation.md and depth_framework.md, (3) add missing framework deep dives and CLEAR rubrics, (4) rewrite Smart Router to canonical template, (5) move interactive behavior to command files, (6) update all cross-references; patterns: Smart Router canonical template: prose Primary Detection Signal, split score_intents()/select_intents() two-function pattern, _task_text() helper for dict extraction, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES covering both references/ and assets/, 3-tier loading levels (ALWAYS/CONDITIONAL/ON_DEMAND)
+rootCause: sk-improve-prompt still contained residual visual/creative mode content (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring; $vibe/$image/$video modes) from its original multi-mode design, plus Smart Router pseudocode did not follow the canonical template pattern used by peer skills; solution: Multi-phase cleanup: (1) delete format_guides.md and interactive_mode.md, (2) strip visual content from patterns_evaluation.md and depth_framework.md, (3) add missing framework deep dives and CLEAR rubrics, (4) rewrite Smart Router to canonical template, (5) move interactive behavior to command files, (6) update all cross-references; patterns: Smart Router canonical template: prose Primary Detection Signal, split score_intents()/select_intents() two-function pattern, _task_text() helper for dict extraction, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES covering both references/ and assets/, 3-tier loading levels (ALWAYS/CONDITIONAL/ON_DEMAND)
 
 <!-- /ANCHOR:implementation-technical-implementation-details-4826bf30 -->
 
@@ -459,7 +476,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-03-04 @ 09:15:09
 
-Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
+Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
 
 ---
 
@@ -544,7 +561,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03-
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -571,107 +588,62 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772612109726-jcqwlrak1"
-spec_folder: "03--commands-and-skills/003-sk-prompt-initial-creation"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772612109726-jcqwlrak1
+spec_folder: 03--commands-and-skills/003-sk-prompt-initial-creation
+channel: main
+importance_tier: deprecated
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-04"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-04'
 created_at_epoch: 1772612109
 last_accessed_epoch: 1772612109
-expires_at_epoch: 1780388109  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1780388109
 message_count: 1
 decision_count: 6
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "because"
-  - "skill"
-  - "references"
-  - "deep dives"
-  - "content"
-  - "command"
-  - "deep"
-  - "dives"
-  - "delete"
-  - "decision delete"
-  - "delete references"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- deep dives
+- decision delete
+- delete references
+- initial creation
+- session summary
+- preflight baseline
+- table contents
+- continue session
 trigger_phrases:
-  - "text only refocus"
-  - "visual mode removal"
-  - "prompt framework deep dives"parent_spec: "03--commands-and-skills/003-sk-prompt-initial-creation"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- text only refocus
+- visual mode removal
+- prompt framework deep dives
+parent_spec: 03--commands-and-skills/003-sk-prompt-initial-creation
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

@@ -13,7 +13,7 @@ Compared BAD's one-skill activation flow to the local Gate 2 requirements, skill
 - BAD effectively activates one skill for one domain and moves quickly into execution. [SOURCE: .opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/external/skills/bad/SKILL.md:10-25]
 - Local Gate 2 requires skill routing for non-trivial tasks and treats a high-confidence recommendation as mandatory invocation. [SOURCE: AGENTS.md:165-177] [SOURCE: CLAUDE.md:107-123]
 - The local skill system documents a formal loading sequence from request, to `skill_advisor.py`, to `SKILL.md`, to referenced resources, across 20 skill folders. [SOURCE: .opencode/skill/README.md:42-46] [SOURCE: .opencode/skill/README.md:80-109]
-- Some local skills are narrow expert tools rather than default workflow surfaces, such as `sk-prompt-improver` and `sk-agent-improver`. [SOURCE: .opencode/skill/sk-prompt-improver/SKILL.md:23-46] [SOURCE: .opencode/skill/sk-agent-improver/SKILL.md:28-55]
+- Some local skills are narrow expert tools rather than default workflow surfaces, such as `sk-improve-prompt` and `sk-improve-agent`. [SOURCE: .opencode/skill/sk-improve-prompt/SKILL.md:23-46] [SOURCE: .opencode/skill/sk-improve-agent/SKILL.md:28-55]
 
 ## Analysis
 This is where the local system risks feeling self-conscious instead of helpful. Skill routing is good infrastructure, but the user should mostly experience "the system knew what to do," not "the system performed a ceremony before doing it." BAD's simpler flow is not enough for local breadth, yet it does show the right UX principle: keep routing implicit by default and reserve explicit specialist language for power use.

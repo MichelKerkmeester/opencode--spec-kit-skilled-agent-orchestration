@@ -23,13 +23,13 @@
 ### 2.3 Files Modified
 | File | Change Summary | Status |
 | --- | --- | --- |
-| `.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs` | Added deterministic fixture runner | COMPLETE |
+| `.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs` | Added deterministic fixture runner | COMPLETE |
 | `spec.md` | Full-skill scope remains bounded | COMPLETE |
 
 ## 3. For Next Session
 
 ### 3.1 Recommended Starting Point
-- **File:** `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/tasks.md:40`
+- **File:** `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/tasks.md:40`
 - **Context:** verify benchmark repeatability and update checklist evidence
 
 ### 3.2 Priority Tasks Remaining

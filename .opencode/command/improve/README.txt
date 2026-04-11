@@ -67,8 +67,8 @@ Both commands support `:auto` and `:confirm` execution modes.
 
 | Command | Skill | Purpose |
 |---------|-------|---------|
-| `agent` | `sk-agent-improver` | Integration scanning, dynamic profiling, 5D scoring, benchmarks, promotion |
-| `prompt` | `sk-prompt-improver` | Framework selection, DEPTH rounds, CLEAR scoring |
+| `agent` | `sk-improve-agent` | Integration scanning, dynamic profiling, 5D scoring, benchmarks, promotion |
+| `prompt` | `sk-improve-prompt` | Framework selection, DEPTH rounds, CLEAR scoring |
 
 <!-- /ANCHOR:commands -->
 
@@ -245,8 +245,8 @@ When max iterations is reached, all 5 dimensions plateau (3+ identical scores), 
 | Document | Purpose |
 |----------|---------|
 | [Parent: OpenCode Commands](../README.md) | Overview of all command groups |
-| [sk-agent-improver SKILL.md](../../skill/sk-agent-improver/SKILL.md) | Agent improvement skill with 5D evaluation |
-| [sk-prompt-improver SKILL.md](../../skill/sk-prompt-improver/SKILL.md) | Prompt improvement skill with DEPTH/CLEAR |
+| [sk-improve-agent SKILL.md](../../skill/sk-improve-agent/SKILL.md) | Agent improvement skill with 5D evaluation |
+| [sk-improve-prompt SKILL.md](../../skill/sk-improve-prompt/SKILL.md) | Prompt improvement skill with DEPTH/CLEAR |
 | [Spec Kit Commands](../spec_kit/README.txt) | Spec folder lifecycle commands |
 | [Create Commands](../create/README.txt) | Component scaffolding commands |
 

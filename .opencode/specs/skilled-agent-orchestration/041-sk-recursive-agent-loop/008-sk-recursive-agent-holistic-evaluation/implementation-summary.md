@@ -4,12 +4,12 @@
 | --- | --- |
 | Status | Complete |
 | Phase | 008 |
-| Parent | 041-sk-agent-improver-loop |
+| Parent | 041-sk-improve-agent-loop |
 | Date | 2026-04-04 |
 
 ## What Was Built
 
-Transformed the sk-agent-improver evaluation from structural keyword-checking (~15-20% coverage) to a **5-dimension integration-aware scoring framework** that evaluates agents holistically across their full system integration surface. Renamed the skill from `sk-recursive-agent` to `sk-agent-improver` and the command from `/spec_kit:recursive-agent` to `/improve:agent`.
+Transformed the sk-improve-agent evaluation from structural keyword-checking (~15-20% coverage) to a **5-dimension integration-aware scoring framework** that evaluates agents holistically across their full system integration surface. Renamed the skill from `sk-recursive-agent` to `sk-improve-agent` and the command from `/spec_kit:recursive-agent` to `/improve:agent`.
 
 ### New Scripts
 
@@ -67,7 +67,7 @@ All 8 `.cjs` scripts aligned with sk-code-opencode JavaScript standard: box comm
 
 | Old | New |
 | --- | --- |
-| `sk-recursive-agent` | `sk-agent-improver` |
+| `sk-recursive-agent` | `sk-improve-agent` |
 | `recursive-agent` | `agent-improver` |
 | `/spec_kit:recursive-agent` | `/improve:agent` |
 | `@recursive-agent` | `@agent-improver` |
@@ -84,7 +84,7 @@ All 12 create command YAMLs aligned with spec_kit gold standard: `description:` 
 2. **Deterministic only**: No LLM-as-judge scoring. All checks are regex/string/file-existence based for promotion gate reliability.
 3. **Any agent as target**: Dynamic profile generation means any `.opencode/agent/*.md` file is a valid evaluation target.
 4. **Integration-first**: The scanner is the foundational capability — everything else builds on knowing what surfaces an agent touches.
-5. **Rename to sk-agent-improver**: Clearer name reflecting the skill's purpose. Command moved from `spec_kit` namespace to `improve` namespace.
+5. **Rename to sk-improve-agent**: Clearer name reflecting the skill's purpose. Command moved from `spec_kit` namespace to `improve` namespace.
 
 ## Verification Results
 

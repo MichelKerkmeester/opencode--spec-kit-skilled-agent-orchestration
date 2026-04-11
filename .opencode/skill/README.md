@@ -53,9 +53,9 @@ Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffoldi
 | CLI orchestrator skills | 4 | cli-claude-code, cli-codex, cli-copilot, cli-gemini |
 | MCP integration skills | 5 | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma |
 | Code quality overlays | 4 | sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web |
-| Documentation, research, review, and improvement skills | 5 | sk-agent-improver, sk-deep-research, sk-deep-review, sk-doc, sk-prompt-improver |
+| Documentation, research, review, and improvement skills | 5 | sk-improve-agent, sk-deep-research, sk-deep-review, sk-doc, sk-improve-prompt |
 | Git and system skills | 2 | sk-git, system-spec-kit |
-| Skills with local scripts/ | 6 | mcp-code-mode, sk-agent-improver, sk-code-, sk-doc, system-spec-kit |
+| Skills with local scripts/ | 6 | mcp-code-mode, sk-improve-agent, sk-code-, sk-doc, system-spec-kit |
 | Shared routing scripts | 4 | skill_advisor.py plus bench, regression, runtime helpers |
 
 ### Key Features
@@ -162,11 +162,11 @@ The skill system covers four distinct workflow domains.
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `sk-agent-improver` | 1.0.0.0 | Evaluator-first agent improvement with 5-dimension integration-aware scoring, dynamic profiling, deterministic benchmarks, and guarded promotion |
+| `sk-improve-agent` | 1.0.0.0 | Evaluator-first agent improvement with 5-dimension integration-aware scoring, dynamic profiling, deterministic benchmarks, and guarded promotion |
 | `sk-deep-research` | 1.2.0 | Autonomous research loop with iterative investigation, externalized state, and convergence detection |
 | `sk-deep-review` | 1.0.0 | Autonomous iterative code review with severity-weighted findings, dimension coverage, convergence detection, and release readiness verdicts |
 | `sk-doc` | 1.3.0.0 | Markdown quality enforcement, component templates, validation scripts, and DQI scoring |
-| `sk-prompt-improver` | 1.2.0.0 | Prompt engineering using 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT) |
+| `sk-improve-prompt` | 1.2.0.0 | Prompt engineering using 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT) |
 
 **Git and System Skills**
 
@@ -194,7 +194,7 @@ The skill system covers four distinct workflow domains.
 ├── mcp-code-mode/          # MCP orchestration hub (TypeScript)
 ├── mcp-figma/              # Figma design file access via MCP
 ├── scripts/                # Shared skill routing scripts
-├── sk-agent-improver/ # Evaluator-first agent improvement loop
+├── sk-improve-agent/ # Evaluator-first agent improvement loop
 ├── sk-code-full-stack/    # Stack-agnostic implementation orchestrator
 ├── sk-code-opencode/      # OpenCode system code standards
 ├── sk-code-review/        # Findings-first code review baseline
@@ -203,7 +203,7 @@ The skill system covers four distinct workflow domains.
 ├── sk-deep-review/         # Autonomous iterative code review
 ├── sk-doc/                 # Documentation quality and templates
 ├── sk-git/                 # Git workflow orchestrator
-├── sk-prompt-improver/     # Prompt engineering specialist
+├── sk-improve-prompt/     # Prompt engineering specialist
 ├── system-spec-kit/        # Spec folder and memory foundation
 └── README.md               # This file
 ```
@@ -250,7 +250,7 @@ For the full system-spec-kit script inventory, see `system-spec-kit/scripts/scri
 | `sk-deep-review` | Yes | No | Yes |
 | `sk-doc` | Yes | Yes | Yes |
 | `sk-git` | Yes | Yes | No |
-| `sk-prompt-improver` | Yes | Yes | No |
+| `sk-improve-prompt` | Yes | Yes | No |
 | `system-spec-kit` | Yes | Yes | Yes |
 
 <!-- /ANCHOR:structure -->

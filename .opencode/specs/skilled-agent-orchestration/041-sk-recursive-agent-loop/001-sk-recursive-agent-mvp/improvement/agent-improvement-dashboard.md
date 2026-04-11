@@ -12,19 +12,19 @@
 
 ## Baseline
 
-- Path: `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/archive/handover.md.2026-04-03T13-41-06.898Z.bak`
+- Path: `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/archive/handover.md.2026-04-03T13-41-06.898Z.bak`
 - Score: 95
 
 ## Best Known State
 
-- Candidate: `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-003.md`
+- Candidate: `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/candidates/candidate-003.md`
 - Score: 100
 - Status: accepted
 
 ## Latest Record
 
 - Type: infra_failure
-- Path: `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/candidates/candidate-003.md`
+- Path: `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/candidates/candidate-003.md`
 - Score: n/a
 - Recommendation: infra_failure
 

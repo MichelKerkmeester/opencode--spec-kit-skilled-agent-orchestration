@@ -3,7 +3,7 @@
 Date: 2026-04-10
 
 ## Research question
-Are narrow skills like `sk-prompt-improver` and `sk-agent-improver` dead weight that should be removed, or are they valid specialist islands that only become a UX problem when the whole system routes too ceremonially by default?
+Are narrow skills like `sk-improve-prompt` and `sk-improve-agent` dead weight that should be removed, or are they valid specialist islands that only become a UX problem when the whole system routes too ceremonially by default?
 
 ## Hypothesis
 They should stay. The real UX problem is not that these specialist skills exist, but that the broader routing and command ceremony makes every skill feel equally central.
@@ -12,8 +12,8 @@ They should stay. The real UX problem is not that these specialist skills exist,
 I compared the specialist skill contracts and their dedicated command wrappers against the broader skill-routing system to separate "niche but justified" from "unnecessarily exposed."
 
 ## Evidence
-- [SOURCE: .opencode/skill/sk-prompt-improver/SKILL.md:19-47] `sk-prompt-improver` has a narrow, legitimate domain: structured prompt enhancement using explicit frameworks and scoring.
-- [SOURCE: .opencode/skill/sk-agent-improver/SKILL.md:24-56] `sk-agent-improver` also has a narrow but real use case: bounded agent improvement with evidence gates and rollback discipline.
+- [SOURCE: .opencode/skill/sk-improve-prompt/SKILL.md:19-47] `sk-improve-prompt` has a narrow, legitimate domain: structured prompt enhancement using explicit frameworks and scoring.
+- [SOURCE: .opencode/skill/sk-improve-agent/SKILL.md:24-56] `sk-improve-agent` also has a narrow but real use case: bounded agent improvement with evidence gates and rollback discipline.
 - [SOURCE: .opencode/command/improve/prompt.md:61-149] The prompt improver already sits behind a dedicated command surface with its own setup flow.
 - [SOURCE: .opencode/command/improve/agent.md:61-151] The agent improver likewise lives behind a dedicated command and narrow setup contract.
 - [SOURCE: .opencode/skill/README.md:42-46] The broader skills system presents all skills as discoverable on-demand capabilities.
@@ -22,7 +22,7 @@ I compared the specialist skill contracts and their dedicated command wrappers a
 - [SOURCE: .opencode/skill/scripts/skill_advisor.py:259-283] It also contains strong direct boosters for deep-research, deep-review, agent-improvement, and related specialist loops.
 
 ## Analysis
-The presence of specialist skills is not, by itself, a UX smell. `sk-prompt-improver` and `sk-agent-improver` correspond to real, bounded operator intents and already live behind dedicated commands. Deleting them would sacrifice valuable niche workflows for little gain. The real issue is that the system's default routing and documentation posture can make specialist islands feel like part of the everyday baseline. The external repo's lesson is to keep specialized mechanisms available without making them part of the default mental model. In other words: keep the skills, shrink their ambient prominence.
+The presence of specialist skills is not, by itself, a UX smell. `sk-improve-prompt` and `sk-improve-agent` correspond to real, bounded operator intents and already live behind dedicated commands. Deleting them would sacrifice valuable niche workflows for little gain. The real issue is that the system's default routing and documentation posture can make specialist islands feel like part of the everyday baseline. The external repo's lesson is to keep specialized mechanisms available without making them part of the default mental model. In other words: keep the skills, shrink their ambient prominence.
 
 ## Conclusion
 confidence: medium

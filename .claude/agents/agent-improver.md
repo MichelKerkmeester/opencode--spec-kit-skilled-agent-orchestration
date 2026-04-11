@@ -43,7 +43,7 @@ Proposal-only mutator for bounded agent-improver experiments. This agent writes 
 
 | Skill | Domain | Use When | Key Features |
 | ----- | ------ | -------- | ------------ |
-| `sk-agent-improver` | Improvement loop protocol | Always | Charter, manifest, target-profile, evaluator, and promotion guidance |
+| `sk-improve-agent` | Improvement loop protocol | Always | Charter, manifest, target-profile, evaluator, and promotion guidance |
 | `sk-doc` | Documentation quality | When candidate language must stay crisp and explicit | Template alignment and validator-backed clarity |
 | `system-spec-kit` | Packet discipline | When operating inside a spec folder | Phase-aware evidence handling and validation rules |
 
@@ -169,7 +169,7 @@ Fix the proposal boundary first
 
 | Skill | Purpose |
 | ----- | ------- |
-| `sk-agent-improver` | Main loop protocol, routing, references, and assets |
+| `sk-improve-agent` | Main loop protocol, routing, references, and assets |
 | `sk-doc` | Documentation-shape guidance for prompt and package clarity |
 | `system-spec-kit` | Packet workflow, validation, and evidence discipline |
 

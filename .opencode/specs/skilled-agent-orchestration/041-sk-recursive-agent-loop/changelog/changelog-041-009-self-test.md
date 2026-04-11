@@ -6,9 +6,9 @@
 
 ## 009-self-test — 2026-04-04
 
-Ran the first self-referential test of the sk-agent-improver skill: the `/improve:agent` loop targeting `agent-improver.md` itself. The test proved the 5-dimension framework works against the skill's own agent file, discovered a real bug (invalid resource reference), and confirmed the proposal-only boundary holds when the mutator reads its own definition.
+Ran the first self-referential test of the sk-improve-agent skill: the `/improve:agent` loop targeting `agent-improver.md` itself. The test proved the 5-dimension framework works against the skill's own agent file, discovered a real bug (invalid resource reference), and confirmed the proposal-only boundary holds when the mutator reads its own definition.
 
-> Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/`
+> Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test/`
 
 ---
 

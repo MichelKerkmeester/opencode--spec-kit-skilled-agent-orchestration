@@ -6,7 +6,7 @@
 
 ## 041-sk-recursive-agent-loop — 2026-04-04
 
-This packet delivered the sk-agent-improver skill across 11 phases, starting from a proposal-only evaluator-first MVP and ending with a holistic 5-dimension integration-aware scoring framework, a self-referential test pass, fixes promoted from that test, and full skill advisor routing. The skill can now evaluate any agent across structural integrity, rule coherence, integration consistency, output quality, and system fitness without LLM-as-judge scoring. The work also included a repo-wide rename from `sk-recursive-agent` to `sk-agent-improver` and from `/spec_kit:recursive-agent` to `/improve:agent`, touching 187+ files and 1129+ occurrences.
+This packet delivered the sk-improve-agent skill across 11 phases, starting from a proposal-only evaluator-first MVP and ending with a holistic 5-dimension integration-aware scoring framework, a self-referential test pass, fixes promoted from that test, and full skill advisor routing. The skill can now evaluate any agent across structural integrity, rule coherence, integration consistency, output quality, and system fitness without LLM-as-judge scoring. The work also included a repo-wide rename from `sk-recursive-agent` to `sk-improve-agent` and from `/spec_kit:recursive-agent` to `/improve:agent`, touching 187+ files and 1129+ occurrences.
 
 > Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/` (Level 3)
 
@@ -52,11 +52,11 @@ The single largest phase in the program, transforming evaluation coverage from r
 
 **Fix:** Phase 008 added `scan-integration.cjs` (discovers all surfaces an agent touches), `generate-profile.cjs` (derives scoring profile from any agent's own rules), and a 5-dimension framework in `score-candidate.cjs` with structural (0.20), ruleCoherence (0.25), integration (0.25), outputQuality (0.15), and systemFitness (0.15) weights. The reducer gained per-dimension tracking and dimension plateau stop rules.
 
-### Repo-wide rename to sk-agent-improver
+### Repo-wide rename to sk-improve-agent
 
 **Problem:** The original name `sk-recursive-agent` described the mechanism, not the purpose. The command lived under `spec_kit` instead of its own namespace.
 
-**Fix:** Phase 008 renamed the skill to `sk-agent-improver`, the agent to `agent-improver`, the command to `/improve:agent`, and the dispatch to `@agent-improver` across 187+ files. A fresh audit confirmed zero stale references.
+**Fix:** Phase 008 renamed the skill to `sk-improve-agent`, the agent to `agent-improver`, the command to `/improve:agent`, and the dispatch to `@agent-improver` across 187+ files. A fresh audit confirmed zero stale references.
 
 ### Documentation and testing rewrite
 
@@ -125,14 +125,14 @@ These phases handled template fidelity, command path changes, and wording consis
 
 | File | Changes |
 | ---- | ------- |
-| `sk-agent-improver/scripts/score-candidate.cjs` | Deterministic scorer, later 5-dimension framework with `--dynamic` flag |
-| `sk-agent-improver/scripts/reduce-state.cjs` | Ledger reducer, dashboard, later per-dimension tracking and plateau stop |
-| `sk-agent-improver/scripts/promote-candidate.cjs` | Guarded canonical promotion helper |
-| `sk-agent-improver/scripts/rollback-candidate.cjs` | Canonical rollback helper |
-| `sk-agent-improver/scripts/check-mirror-drift.cjs` | Derived-surface drift report |
-| `sk-agent-improver/scripts/run-benchmark.cjs` | Fixture benchmark runner with profile-based scoring |
-| `sk-agent-improver/scripts/scan-integration.cjs` | Integration surface scanner (Phase 008) |
-| `sk-agent-improver/scripts/generate-profile.cjs` | Dynamic profile generator (Phase 008) |
+| `sk-improve-agent/scripts/score-candidate.cjs` | Deterministic scorer, later 5-dimension framework with `--dynamic` flag |
+| `sk-improve-agent/scripts/reduce-state.cjs` | Ledger reducer, dashboard, later per-dimension tracking and plateau stop |
+| `sk-improve-agent/scripts/promote-candidate.cjs` | Guarded canonical promotion helper |
+| `sk-improve-agent/scripts/rollback-candidate.cjs` | Canonical rollback helper |
+| `sk-improve-agent/scripts/check-mirror-drift.cjs` | Derived-surface drift report |
+| `sk-improve-agent/scripts/run-benchmark.cjs` | Fixture benchmark runner with profile-based scoring |
+| `sk-improve-agent/scripts/scan-integration.cjs` | Integration surface scanner (Phase 008) |
+| `sk-improve-agent/scripts/generate-profile.cjs` | Dynamic profile generator (Phase 008) |
 
 ### Agent and Command
 
@@ -146,10 +146,10 @@ These phases handled template fidelity, command path changes, and wording consis
 
 | File | Changes |
 | ---- | ------- |
-| `sk-agent-improver/SKILL.md` | Skill definition with 5D framework, emoji rule markers, integration scanning |
-| `sk-agent-improver/README.md` | Expanded from 231 to 416 lines with full Phase 008 coverage |
-| `sk-agent-improver/references/*.md` | 11 reference documents enriched across all phases |
-| `sk-agent-improver/assets/*.json` | Config, manifest, charter, strategy templates |
+| `sk-improve-agent/SKILL.md` | Skill definition with 5D framework, emoji rule markers, integration scanning |
+| `sk-improve-agent/README.md` | Expanded from 231 to 416 lines with full Phase 008 coverage |
+| `sk-improve-agent/references/*.md` | 11 reference documents enriched across all phases |
+| `sk-improve-agent/assets/*.json` | Config, manifest, charter, strategy templates |
 
 </details>
 
@@ -157,4 +157,4 @@ These phases handled template fidelity, command path changes, and wording consis
 
 ## Upgrade
 
-No migration required. The rename from `sk-recursive-agent` to `sk-agent-improver` was completed within Phase 008 with zero stale references remaining. All runtime mirrors, commands, YAML workflows, and skill advisor routing were updated atomically.
+No migration required. The rename from `sk-recursive-agent` to `sk-improve-agent` was completed within Phase 008 with zero stale references remaining. All runtime mirrors, commands, YAML workflows, and skill advisor routing were updated atomically.

@@ -1,9 +1,9 @@
 ---
-title: "Feature Specification: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/spec]"
-description: "Phase 002 under packet 041 expands sk-agent-improver from the bounded MVP into a fuller skill with benchmark-backed evaluation, reusable runtime architecture, and safe multi-target expansion."
+title: "Feature Specification: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/spec]"
+description: "Phase 002 under packet 041 expands sk-improve-agent from the bounded MVP into a fuller skill with benchmark-backed evaluation, reusable runtime architecture, and safe multi-target expansion."
 trigger_phrases:
   - "agent improvement full skill"
-  - "sk-agent-improver phase 2"
+  - "sk-improve-agent phase 2"
   - "benchmark harness"
   - "multi-target agent improvement"
 importance_tier: "important"
@@ -18,11 +18,11 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-Packet `041-sk-agent-improver-loop` shipped the evaluator-first MVP and proved that the loop can safely operate on one canonical target with explicit promotion and rollback boundaries. Phase `002-sk-agent-improver-full-skill` defines the next step: stronger benchmark-backed evaluation, reusable runtime structure, target-specific scoring profiles, controlled expansion to a second structured target, and packaging rules for mirror sync without weakening the trust boundary.
+Packet `041-sk-improve-agent-loop` shipped the evaluator-first MVP and proved that the loop can safely operate on one canonical target with explicit promotion and rollback boundaries. Phase `002-sk-improve-agent-full-skill` defines the next step: stronger benchmark-backed evaluation, reusable runtime structure, target-specific scoring profiles, controlled expansion to a second structured target, and packaging rules for mirror sync without weakening the trust boundary.
 
 **Key Decisions**: keep `.opencode/agent/handover.md` as the benchmark seed target, build fixture-based output evaluation before expanding scope, add one second structured target before considering broader agent families, and keep mirror sync as a downstream packaging phase rather than experiment evidence.
 
-**Critical Dependencies**: packet `041-sk-agent-improver-loop`, `/spec_kit:handover`, the current `sk-agent-improver` runtime and scoring surfaces, spec-kit validation rules, and any second target chosen for expansion.
+**Critical Dependencies**: packet `041-sk-improve-agent-loop`, `/spec_kit:handover`, the current `sk-improve-agent` runtime and scoring surfaces, spec-kit validation rules, and any second target chosen for expansion.
 
 ---
 
@@ -36,7 +36,7 @@ Packet `041-sk-agent-improver-loop` shipped the evaluator-first MVP and proved t
 | **Created** | 2026-04-03 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Successor** | `003-sk-agent-improver-doc-alignment/` |
+| **Successor** | `003-sk-improve-agent-doc-alignment/` |
 
 ---
 
@@ -47,7 +47,7 @@ Packet `041-sk-agent-improver-loop` shipped the evaluator-first MVP and proved t
 The current loop is real and safe, but it is still narrow. It can score prompt-surface changes and promote one canonical target, yet it does not have the richer benchmark harness, reusable target profiles, or multi-target rollout contract needed for broader autonomous agent improvement. Without that next layer, the skill remains a careful MVP rather than a trusted framework capability.
 
 ### Purpose
-Define the next implementation packet that upgrades `sk-agent-improver` from a single-target evaluator-first MVP into a fuller skill with benchmark-backed evaluation, reusable target onboarding, one additional structured target, and explicit packaging rules for downstream parity work.
+Define the next implementation packet that upgrades `sk-improve-agent` from a single-target evaluator-first MVP into a fuller skill with benchmark-backed evaluation, reusable target onboarding, one additional structured target, and explicit packaging rules for downstream parity work.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -75,15 +75,15 @@ Define the next implementation packet that upgrades `sk-agent-improver` from a s
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/sk-agent-improver/SKILL.md` | Modify | Expand operator protocol for benchmarked full-skill workflows |
-| `.opencode/skill/sk-agent-improver/README.md` | Modify | Document benchmark harness, target onboarding, and rollout stages |
-| `.opencode/skill/sk-agent-improver/references/` | Modify | Add target-profile, benchmark, and expansion runbooks |
-| `.opencode/skill/sk-agent-improver/assets/` | Modify | Add reusable profile templates and richer config fields |
-| `.opencode/skill/sk-agent-improver/scripts/` | Modify | Add fixture evaluation, target-profile routing, and richer reporting |
+| `.opencode/skill/sk-improve-agent/SKILL.md` | Modify | Expand operator protocol for benchmarked full-skill workflows |
+| `.opencode/skill/sk-improve-agent/README.md` | Modify | Document benchmark harness, target onboarding, and rollout stages |
+| `.opencode/skill/sk-improve-agent/references/` | Modify | Add target-profile, benchmark, and expansion runbooks |
+| `.opencode/skill/sk-improve-agent/assets/` | Modify | Add reusable profile templates and richer config fields |
+| `.opencode/skill/sk-improve-agent/scripts/` | Modify | Add fixture evaluation, target-profile routing, and richer reporting |
 | `.opencode/command/spec_kit/agent-improver.md` | Modify | Expand command contract for benchmark mode and second-target support |
 | `.opencode/command/spec_kit/assets/improve_agent-improver_*.yaml` | Modify | Extend workflow surfaces for benchmark runs and controlled sync |
 | `.opencode/agent/` | Modify | Only if a second approved target or benchmark harness needs canonical support surfaces |
-| `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/` | Create | Phase `002` docs and verification evidence |
+| `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/` | Create | Phase `002` docs and verification evidence |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -131,7 +131,7 @@ Define the next implementation packet that upgrades `sk-agent-improver` from a s
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Packet `041-sk-agent-improver-loop` | Defines the working MVP and its hard safety boundary | Treat 041 as the non-negotiable baseline rather than re-opening MVP decisions |
+| Dependency | Packet `041-sk-improve-agent-loop` | Defines the working MVP and its hard safety boundary | Treat 041 as the non-negotiable baseline rather than re-opening MVP decisions |
 | Dependency | `/spec_kit:handover` and handover template | Supplies the first benchmarkable artifact family | Build fixture-based evaluation from the existing output contract |
 | Risk | Benchmark harness becomes brittle or too expensive | High | Start with a small, explicit fixture corpus and grow only after stability is proven |
 | Risk | Second target expands scope too quickly | High | Require one structured, template-backed target only |
@@ -237,7 +237,7 @@ Define the next implementation packet that upgrades `sk-agent-improver` from a s
 ## RELATED DOCUMENTS
 
 - **Parent Packet**: See `../`
-- **Previous Phase**: See `../001-sk-agent-improver-mvp/`
+- **Previous Phase**: See `../001-sk-improve-agent-mvp/`
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`

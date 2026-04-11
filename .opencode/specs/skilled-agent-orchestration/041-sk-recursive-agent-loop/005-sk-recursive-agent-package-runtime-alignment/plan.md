@@ -44,7 +44,7 @@ This phase corrects the gap between validator-clean output and exact template-fa
 - [x] Recursive-agent source package validates cleanly
 - [x] Renamed runtime agents are synchronized
 - [x] Command and wrapper surfaces are synchronized
-- [x] `.agents/skills/sk-agent-improver/` is resynchronized
+- [x] `.agents/skills/sk-improve-agent/` is resynchronized
 - [x] Root `041` and phase `005` validate strictly
 <!-- /ANCHOR:quality-gates -->
 
@@ -57,10 +57,10 @@ This phase corrects the gap between validator-clean output and exact template-fa
 Source package correction plus downstream runtime and mirror synchronization
 
 ### Key Components
-- **Source package**: `.opencode/skill/sk-agent-improver/`
+- **Source package**: `.opencode/skill/sk-improve-agent/`
 - **Runtime agents**: `.opencode/agent/agent-improver.md` plus runtime mirrors
 - **Command surfaces**: canonical command doc, YAML workflows, and TOML wrappers
-- **Mirror package**: `.agents/skills/sk-agent-improver/`
+- **Mirror package**: `.agents/skills/sk-improve-agent/`
 - **Packet docs**: new phase `005` plus parent packet updates
 
 ### Data Flow
@@ -74,8 +74,8 @@ The source package is corrected first, runtime agent and command surfaces are al
 
 ### Phase 1: Source Package Alignment
 
-- [x] Rewrite `.opencode/skill/sk-agent-improver/SKILL.md` to the `sk-doc` skill template shape
-- [x] Rewrite `.opencode/skill/sk-agent-improver/README.md` to the `sk-doc` README template shape
+- [x] Rewrite `.opencode/skill/sk-improve-agent/SKILL.md` to the `sk-doc` skill template shape
+- [x] Rewrite `.opencode/skill/sk-improve-agent/README.md` to the `sk-doc` README template shape
 - [x] Rewrite `references/*.md` and markdown `assets/*.md` to the matching template family
 
 ### Phase 2: Runtime and Command Alignment
@@ -87,7 +87,7 @@ The source package is corrected first, runtime agent and command surfaces are al
 
 ### Phase 3: Mirror Sync and Verification
 
-- [x] Resynchronize `.agents/skills/sk-agent-improver/`
+- [x] Resynchronize `.agents/skills/sk-improve-agent/`
 - [x] Re-run package, document, syntax, and packet validators
 - [x] Update root `041` to record phase `005`
 <!-- /ANCHOR:phases -->
@@ -128,7 +128,7 @@ The source package is corrected first, runtime agent and command surfaces are al
 - **Trigger**: Template alignment breaks validators, runtime rename leaves stale dispatch paths, or mirror sync drifts.
 - **Procedure**: Restore the last good source package and runtime agent names, then replay the correction in the order source package -> runtime surfaces -> mirror package -> packet docs.
 
-Future agent-improver work must continue as `006-*` and later child phases under `041-sk-agent-improver-loop/`.
+Future agent-improver work must continue as `006-*` and later child phases under `041-sk-improve-agent-loop/`.
 <!-- /ANCHOR:rollback -->
 
 ---

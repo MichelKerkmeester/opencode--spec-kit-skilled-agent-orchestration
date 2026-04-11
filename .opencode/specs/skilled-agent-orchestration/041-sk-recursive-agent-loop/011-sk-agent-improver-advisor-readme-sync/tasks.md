@@ -2,8 +2,8 @@
 
 ## Skill README (D1)
 
-- [x] T001: Update sk-agent-improver version from 0.1.0.0 to 1.0.0.0 in skill table
-- [x] T002: Update sk-agent-improver description to mention 5D scoring, integration scanning, dynamic profiling
+- [x] T001: Update sk-improve-agent version from 0.1.0.0 to 1.0.0.0 in skill table
+- [x] T002: Update sk-improve-agent description to mention 5D scoring, integration scanning, dynamic profiling
 - [x] T003: Verify skill counts are correct
 
 ## Skill Advisor — Public (D2)
@@ -19,9 +19,9 @@
 
 ## Verification (D4)
 
-- [x] T009: Test "evaluate agent with 5 dimensions" → sk-agent-improver >= 0.8
-- [x] T010: Test "/improve:agent" → sk-agent-improver >= 0.8
-- [x] T011: Test "/improve:prompt" → sk-prompt-improver >= 0.8
+- [x] T009: Test "evaluate agent with 5 dimensions" → sk-improve-agent >= 0.8
+- [x] T010: Test "/improve:agent" → sk-improve-agent >= 0.8
+- [x] T011: Test "/improve:prompt" → sk-improve-prompt >= 0.8
 - [x] T012: Test "/create:agent" → sk-doc >= 0.8
 - [x] T013: Verify README shows 1.0.0.0
 - [x] T014: Update parent 041 spec.md with Phase 11

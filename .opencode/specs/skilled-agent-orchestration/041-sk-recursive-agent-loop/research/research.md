@@ -1,7 +1,7 @@
 # Research Report: 041 Recursive Agent
 
 ## 1. Executive Summary
-`autoagent-main` is a benchmarked experiment loop, not a general research workflow. The human edits the policy in `program.md`, the loop mutates a narrow pre-boundary harness surface, a local ledger records each run, and the keep/discard rule is score-first with a simplicity tie-break. Rejected runs still matter because they feed the next iteration, and infrastructure failures are treated separately from real regressions. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:33] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:89] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:160] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:204]
+`autoagent-main` is a benchmarked experiment loop, not a general research workflow. The human edits the policy in `program.md`, the loop mutates a narrow pre-boundary harness surface, a local ledger records each run, and the keep/discard rule is score-first with a simplicity tie-break. Rejected runs still matter because they feed the next iteration, and infrastructure failures are treated separately from real regressions. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:33] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:89] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:160] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:204]
 
 This repo already has strong reusable mechanics for a similar loop: disk-first state, fresh-context iteration dispatch, reducer-managed summaries, skill auto-discovery, and canonical create/update flows for new skills. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:137] [SOURCE: .opencode/agent/deep-research.md:28] [SOURCE: .opencode/skill/README.md:42] [SOURCE: .opencode/command/create/sk-skill.md:239]
 
@@ -10,9 +10,9 @@ The 10 Copilot-led extension iterations made the key gap clearer: the hard part 
 ## 2. What `autoagent-main` Teaches
 The external repo succeeds because three contracts line up:
 
-1. A human-authored control surface (`program.md`) defines the task, mutable boundary, and acceptance rule. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/README.md:7] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:141]
-2. The editable surface is narrow and protected from adjacent system complexity. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/README.md:13] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:40]
-3. The evaluator is explicit, ledgered, and operationally disciplined: baseline row, reruns for variance, score-first selection, simplicity tie-break, and evidence-preserving rejection. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:33] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:89] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:160]
+1. A human-authored control surface (`program.md`) defines the task, mutable boundary, and acceptance rule. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/README.md:7] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:141]
+2. The editable surface is narrow and protected from adjacent system complexity. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/README.md:13] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:40]
+3. The evaluator is explicit, ledgered, and operationally disciplined: baseline row, reruns for variance, score-first selection, simplicity tie-break, and evidence-preserving rejection. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:33] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:89] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:160]
 
 That last point matters most. The loop is not "autonomy" in the abstract. It is bounded mutation under a trusted scoring contract.
 
@@ -82,9 +82,9 @@ Recommended rollout:
 2. Phase 2: bounded auto-edit on one canonical `.opencode/agent/*.md` target after the scorer and rollback/promotion contract are proven.
 3. Phase 3: parity-aware expansion into derived runtime copies or adjacent control files after sync/promotion rules are explicit.
 
-[SOURCE: AGENTS.md:179] [SOURCE: .opencode/skill/system-spec-kit/SKILL.md:438] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:89]
+[SOURCE: AGENTS.md:179] [SOURCE: .opencode/skill/system-spec-kit/SKILL.md:438] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:89]
 
-Do not build `sk-agent-improver` yet if any of these stay unresolved:
+Do not build `sk-improve-agent` yet if any of these stay unresolved:
 
 - no independent evaluator/scorer
 - no canonical mutable surface
@@ -95,7 +95,7 @@ Do not build `sk-agent-improver` yet if any of these stay unresolved:
 [SOURCE: .opencode/agent/review.md:24] [SOURCE: .opencode/README.md:330] [SOURCE: AGENTS.md:14]
 
 ## 7. Feasibility Verdict
-Yes, `sk-agent-improver` is feasible here.
+Yes, `sk-improve-agent` is feasible here.
 
 The stronger, updated version of that verdict is:
 
@@ -115,7 +115,7 @@ Without those conditions, the skill would mostly automate prompt churn and creat
 - Final stop reason: user-requested completed-continue synthesis
 
 ## 9. Bottom Line
-`sk-agent-improver` is worth pursuing, but not as "let the repo rewrite all agents overnight."
+`sk-improve-agent` is worth pursuing, but not as "let the repo rewrite all agents overnight."
 
 The right next move is:
 

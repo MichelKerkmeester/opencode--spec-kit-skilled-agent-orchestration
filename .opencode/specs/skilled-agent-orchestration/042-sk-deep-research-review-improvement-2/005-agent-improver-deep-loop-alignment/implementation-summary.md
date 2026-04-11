@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Agent-Improver Deep-Loop Alignment [005]"
-description: "Post-implementation record for the deep-loop alignment of sk-agent-improver. Filled after all 4 sub-phases complete."
+description: "Post-implementation record for the deep-loop alignment of sk-improve-agent. Filled after all 4 sub-phases complete."
 trigger_phrases:
   - "005"
   - "agent improver implementation summary"
@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-[To be filled after implementation completes. Open with a hook: what changed in sk-agent-improver and why it matters. Lead with impact on improvement session auditability and convergence reliability.]
+[To be filled after implementation completes. Open with a hook: what changed in sk-improve-agent and why it matters. Lead with impact on improvement session auditability and convergence reliability.]
 
 ### Stop-Reason Taxonomy and Audit Journal
 

@@ -194,7 +194,7 @@
         "failed_rules:none"
       ],
       "passedThrough": [
-        "current_spec:041-sk-agent-improver-loop",
+        "current_spec:041-sk-improve-agent-loop",
         "trigger_phrases:30",
         "key_topics:12",
         "captured_file_count:9",

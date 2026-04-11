@@ -14,7 +14,7 @@ Reviewed the Gate 2 contracts in `AGENTS.md` and `CLAUDE.md`, the skill advisor'
 ## Evidence
 - Both `AGENTS.md` and `CLAUDE.md` require Gate 2 for non-trivial tasks, explicitly instructing the agent to run `python3 .opencode/skill/scripts/skill_advisor.py ... --threshold 0.8`. [SOURCE: AGENTS.md:174-179] [SOURCE: CLAUDE.md:122-127]
 - The skill advisor is itself a substantial routing system, with synonym expansion, intent boosters, and threshold logic designed around confidence scoring. [SOURCE: .opencode/skill/scripts/skill_advisor.py:6-17] [SOURCE: .opencode/skill/scripts/skill_advisor.py:67-80] [SOURCE: .opencode/skill/scripts/skill_advisor.py:211-219]
-- Public also carries specialist skills whose value is real but long-tail, including prompt improvement and bounded agent-improvement loops. [SOURCE: .opencode/skill/sk-prompt-improver/SKILL.md:10-38] [SOURCE: .opencode/skill/sk-agent-improver/SKILL.md:17-47]
+- Public also carries specialist skills whose value is real but long-tail, including prompt improvement and bounded agent-improvement loops. [SOURCE: .opencode/skill/sk-improve-prompt/SKILL.md:10-38] [SOURCE: .opencode/skill/sk-improve-agent/SKILL.md:17-47]
 - Relay's plugin instead lets the operator use three commands or natural language and routes the rest internally to skills, agent definitions, and MCP tools. [SOURCE: external/docs/plugin-claude-code.md:27-87]
 - Relay's workflow surfaces likewise begin with one workflow runner or builder instead of a mandatory pre-routing ritual. [SOURCE: external/packages/sdk/src/workflows/README.md:1-27] [SOURCE: external/packages/sdk/README.md:13-31]
 

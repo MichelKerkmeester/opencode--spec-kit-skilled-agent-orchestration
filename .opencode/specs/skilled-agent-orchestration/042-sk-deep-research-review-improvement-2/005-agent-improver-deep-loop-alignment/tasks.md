@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Agent-Improver Deep-Loop Alignment [005]"
-description: "28 tasks across 4 sub-phases mapping 13 requirements to concrete implementation steps for the sk-agent-improver runtime truth alignment."
+description: "28 tasks across 4 sub-phases mapping 13 requirements to concrete implementation steps for the sk-improve-agent runtime truth alignment."
 trigger_phrases:
   - "005"
   - "agent improver tasks"
@@ -38,16 +38,16 @@ contextType: "planning"
 
 *Sub-phase 5a: Runtime Truth Alignment (P0 — research priority: formalize runtime truth first) — typed stop contract with separate stopReason/sessionOutcome, legal-stop gate bundles, resume classifier, audit journal separated from mutation ledger.*
 
-- [ ] T001 Read existing sk-agent-improver SKILL.md, improvement_config.json, improvement_charter.md, improvement_strategy.md, and agent-improver.md to understand current state before modifying (REQ-AI-001 through REQ-AI-005)
+- [ ] T001 Read existing sk-improve-agent SKILL.md, improvement_config.json, improvement_charter.md, improvement_strategy.md, and agent-improver.md to understand current state before modifying (REQ-AI-001 through REQ-AI-005)
 - [ ] T002 Read 042 Phase 1 journal schema from `../001-runtime-truth-foundation/` to confirm event type contract before writing journal script
-- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `stopReason` enum (`converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`) and `sessionOutcome` enum (`keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`) per research finding (`.opencode/skill/sk-agent-improver/SKILL.md`) (REQ-AI-001)
+- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `stopReason` enum (`converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`) and `sessionOutcome` enum (`keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`) per research finding (`.opencode/skill/sk-improve-agent/SKILL.md`) (REQ-AI-001)
 - [ ] T004 Add legal-stop gate protocol to agent-improver.md: gate bundles (contractGate, behaviorGate, integrationGate, evidenceGate, improvementGate) per research finding; failed gates persist blockedStop (`.opencode/agent/agent-improver.md`) (REQ-AI-002)
 - [ ] T005 Add resume/continuation semantics to agent.md command: session-id parameter, journal replay on resume, iteration counter carry-over (`.opencode/command/improve/agent.md`) (REQ-AI-003)
-- [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-004)
-- [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs`) (REQ-AI-005)
-- [ ] T008 Update improvement_charter.md: add audit trail obligations section specifying that the orchestrator must emit journal events at each iteration boundary (`.opencode/skill/sk-agent-improver/assets/improvement_charter.md`)
-- [ ] T009 Update improvement_config.json: add optional `journal.path`, `journal.sessionId`, `sessionResume.enabled` fields with documented defaults (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T010 Write `improvement-journal.vitest.ts`: test event emit, append-only enforcement (second write appends not overwrites), invalid event type rejection, resume journal read, session-ended event schema (`.opencode/skill/sk-agent-improver/scripts/tests/improvement-journal.vitest.ts`)
+- [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-004)
+- [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-005)
+- [ ] T008 Update improvement_charter.md: add audit trail obligations section specifying that the orchestrator must emit journal events at each iteration boundary (`.opencode/skill/sk-improve-agent/assets/improvement_charter.md`)
+- [ ] T009 Update improvement_config.json: add optional `journal.path`, `journal.sessionId`, `sessionResume.enabled` fields with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T010 Write `improvement-journal.vitest.ts`: test event emit, append-only enforcement (second write appends not overwrites), invalid event type rejection, resume journal read, session-ended event schema (`.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -62,22 +62,22 @@ contextType: "planning"
 ### Sub-phase 5b: Improvement Intelligence
 
 - [ ] T011 [P] Read 042 Phase 2 coverage graph API from `../002-semantic-coverage-graph/` to confirm `loop_type` namespace parameter support before implementing mutation-coverage.cjs
-- [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-agent-improver/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
+- [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
 - [ ] T013 Add dimension trajectory writer to `mutation-coverage.cjs` or as a co-located module: time-ordered score vector per dimension, enforces minimum 3 data points before convergence claim (REQ-AI-007)
-- [ ] T014 Create `trade-off-detector.cjs`: reads current trajectory, computes per-dimension deltas, compares against configurable thresholds, returns structured trade-off report (`.opencode/skill/sk-agent-improver/scripts/trade-off-detector.cjs`) (REQ-AI-008)
-- [ ] T015 Update improvement_strategy.md: add trajectory-based convergence criteria (minimum 3 data points, stabilization threshold), mutation exhaustion guidance (skip exhausted types, annotate journal), trade-off resolution guidance (`.opencode/skill/sk-agent-improver/assets/improvement_strategy.md`)
-- [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-agent-improver/scripts/tests/mutation-coverage.vitest.ts`)
-- [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-agent-improver/scripts/tests/trade-off-detector.vitest.ts`)
+- [ ] T014 Create `trade-off-detector.cjs`: reads current trajectory, computes per-dimension deltas, compares against configurable thresholds, returns structured trade-off report (`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs`) (REQ-AI-008)
+- [ ] T015 Update improvement_strategy.md: add trajectory-based convergence criteria (minimum 3 data points, stabilization threshold), mutation exhaustion guidance (skip exhausted types, annotate journal), trade-off resolution guidance (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md`)
+- [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts`)
+- [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts`)
 
 ### Sub-phase 5c: Parallel Candidates
 
 *Can begin after Phase 1 completes, in parallel with 5b.*
 
-- [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-agent-improver/scripts/candidate-lineage.cjs`) (REQ-AI-011)
+- [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs`) (REQ-AI-011)
 - [ ] T020 [P] Add parallel wave orchestration branch to agent-improver.md: activation check against `parallelWaves.enabled` and `explorationBreadthScore >= activationThreshold`; spawn 2-3 candidates with different strategies; merge results by selecting highest non-regressive score (`.opencode/agent/agent-improver.md`) (REQ-AI-010)
-- [ ] T021 Update improvement_config.json: add `parallelWaves` config block with `enabled: false`, `activationThreshold`, `maxCandidates` fields and JSDoc comments (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T022 Write `candidate-lineage.vitest.ts`: test node creation, parent-child linkage, root-to-leaf traversal, wave-index assignment, session-id isolation (`.opencode/skill/sk-agent-improver/scripts/tests/candidate-lineage.vitest.ts`)
+- [ ] T021 Update improvement_config.json: add `parallelWaves` config block with `enabled: false`, `activationThreshold`, `maxCandidates` fields and JSDoc comments (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T022 Write `candidate-lineage.vitest.ts`: test node creation, parent-child linkage, root-to-leaf traversal, wave-index assignment, session-id isolation (`.opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts`)
 - [ ] T023 [P] Manual verification: run an improvement session with `parallelWaves.enabled: false` (default) and confirm single-wave behavior is unchanged; confirm no lineage graph is written when parallel mode is off
 <!-- /ANCHOR:phase-2 -->
 
@@ -92,11 +92,11 @@ contextType: "planning"
 
 ### Sub-phase 5d: Scoring Optimization
 
-- [ ] T024 Create `benchmark-stability.cjs`: accepts array of benchmark result sets from identical replays, computes per-dimension stability coefficient (1 - stddev/mean), emits stability report JSON, appends `stabilityWarning` to journal if any coefficient is below configured threshold (`.opencode/skill/sk-agent-improver/scripts/benchmark-stability.cjs`) (REQ-AI-013)
+- [ ] T024 Create `benchmark-stability.cjs`: accepts array of benchmark result sets from identical replays, computes per-dimension stability coefficient (1 - stddev/mean), emits stability report JSON, appends `stabilityWarning` to journal if any coefficient is below configured threshold (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs`) (REQ-AI-013)
 - [ ] T025 Implement weight optimizer logic in `benchmark-stability.cjs` or co-located module: reads historical journal files after session count threshold, computes per-dimension performance patterns, emits weight-recommendation report file (not auto-applied) (REQ-AI-012)
-- [ ] T026 Update SKILL.md: add weight optimizer invocation guidance (when to run, what the report contains, how to apply recommendations manually), benchmark stability interpretation guide (`.opencode/skill/sk-agent-improver/SKILL.md`)
-- [ ] T027 Update improvement_config.json: add `weightOptimizer.sessionCountThreshold`, `weightOptimizer.reportPath`, `benchmarkStability.replayCount`, `benchmarkStability.warningThreshold` optional config fields (`.opencode/skill/sk-agent-improver/assets/improvement_config.json`)
-- [ ] T028 Write `benchmark-stability.vitest.ts`: test stability coefficient math (perfect stability = 1.0, high variance = low coefficient), stability warning threshold triggering, weight recommendation report format, multi-session history aggregation (`.opencode/skill/sk-agent-improver/scripts/tests/benchmark-stability.vitest.ts`)
+- [ ] T026 Update SKILL.md: add weight optimizer invocation guidance (when to run, what the report contains, how to apply recommendations manually), benchmark stability interpretation guide (`.opencode/skill/sk-improve-agent/SKILL.md`)
+- [ ] T027 Update improvement_config.json: add `weightOptimizer.sessionCountThreshold`, `weightOptimizer.reportPath`, `benchmarkStability.replayCount`, `benchmarkStability.warningThreshold` optional config fields (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
+- [ ] T028 Write `benchmark-stability.vitest.ts`: test stability coefficient math (perfect stability = 1.0, high variance = low coefficient), stability warning threshold triggering, weight recommendation report format, multi-session history aggregation (`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts`)
 
 ### Cross-Phase Verification
 

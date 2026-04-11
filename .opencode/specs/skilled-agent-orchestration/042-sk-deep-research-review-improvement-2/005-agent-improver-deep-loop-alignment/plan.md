@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Agent-Improver Deep-Loop Alignment [005]"
-description: "4-sub-phase plan porting 042 runtime truth contracts to sk-agent-improver: stop-reason taxonomy, audit journal, mutation coverage graph, trade-off detection, optional parallel candidate waves, and scoring weight optimization."
+description: "4-sub-phase plan porting 042 runtime truth contracts to sk-improve-agent: stop-reason taxonomy, audit journal, mutation coverage graph, trade-off detection, optional parallel candidate waves, and scoring weight optimization."
 trigger_phrases:
   - "005"
   - "agent improver plan"
@@ -25,13 +25,13 @@ contextType: "planning"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | Node.js CJS (scripts), TypeScript (tests), Markdown (skill/agent docs) |
-| **Framework** | Vitest (tests), existing sk-agent-improver runtime |
+| **Framework** | Vitest (tests), existing sk-improve-agent runtime |
 | **Storage** | JSONL files (journal, ledger), JSON files (coverage graph, lineage, trajectory) |
 | **Testing** | Vitest with 5 test suites; manual integration verification |
 
 ### Overview
 
-This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-agent-improver skill across four sub-phases. Sub-phase ordering matches research priority (P0 first, then P1, P2):
+This plan ports the runtime truth infrastructure proven in 042 Phases 1-4 into the sk-improve-agent skill across four sub-phases. Sub-phase ordering matches research priority (P0 first, then P1, P2):
 
 - **Sub-phase 5a (P0)**: Core runtime truth — typed stop contract with separate stopReason/sessionOutcome, resume classifier, audit journal separated from mutation ledger. Research finding: formalize runtime truth before adding intelligence.
 - **Sub-phase 5b (P1)**: Improvement intelligence — mutation coverage, dimension trajectories, trade-off detection with Pareto awareness, exhausted-mutations log. Research finding: make the loop explainable and replayable.
@@ -50,7 +50,7 @@ All new config fields are optional with defaults, preserving backward compatibil
 
 - [ ] 042 Phase 1 journal schema confirmed and compatible with improvement events
 - [ ] 042 Phase 2 coverage graph API confirmed to support `loop_type` namespace parameter
-- [ ] Existing sk-agent-improver SKILL.md and improvement_config.json read and understood
+- [ ] Existing sk-improve-agent SKILL.md and improvement_config.json read and understood
 - [ ] All 13 requirements documented in spec.md with measurable acceptance criteria
 
 ### Definition of Done
@@ -162,9 +162,9 @@ Add scoring weight optimizer using historical session data and benchmark replay 
 |------------|------|--------|-------------------|
 | 042 Phase 1 journal schema | Internal | Green | Cannot finalize journal event types without schema contract |
 | 042 Phase 2 coverage graph API | Internal | Green | Must confirm `loop_type` param support before mutation-coverage.cjs |
-| sk-agent-improver SKILL.md current state | Internal | Green | Must read before modifying |
+| sk-improve-agent SKILL.md current state | Internal | Green | Must read before modifying |
 | Vitest (test runner) | External | Green | Required for 5 test suites; already used in project |
-| Node.js CJS module conventions | Internal | Green | All new scripts follow existing sk-agent-improver script patterns |
+| Node.js CJS module conventions | Internal | Green | All new scripts follow existing sk-improve-agent script patterns |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -224,7 +224,7 @@ Add scoring weight optimizer using historical session data and benchmark replay 
 ### Rollback Procedure
 
 1. Revert SKILL.md, improvement_config.json, improvement_strategy.md, improvement_charter.md, agent-improver.md, and agent.md to pre-phase state using git revert or file restore
-2. Remove new scripts from `.opencode/skill/sk-agent-improver/scripts/` (they are not imported by existing code)
+2. Remove new scripts from `.opencode/skill/sk-improve-agent/scripts/` (they are not imported by existing code)
 3. Remove new test files from `scripts/tests/`
 4. Verify an existing improvement session runs without error
 

@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create the new `003-sk-agent-improver-doc-alignment/` phase packet
+- [x] T001 Create the new `003-sk-improve-agent-doc-alignment/` phase packet
 - [x] T002 Update root packet `041` so phase `003` is part of the program history
 - [x] T003 Identify all failing `sk-doc` and packaging surfaces before editing
 <!-- /ANCHOR:phase-1 -->
@@ -42,10 +42,10 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Align `.opencode/skill/sk-agent-improver/SKILL.md` with `sk-doc` packaging rules
-- [x] T005 Align `.opencode/skill/sk-agent-improver/README.md` with `sk-doc` README rules
-- [x] T006 Align all markdown files under `.opencode/skill/sk-agent-improver/references/`
-- [x] T007 Align markdown assets under `.opencode/skill/sk-agent-improver/assets/`
+- [x] T004 Align `.opencode/skill/sk-improve-agent/SKILL.md` with `sk-doc` packaging rules
+- [x] T005 Align `.opencode/skill/sk-improve-agent/README.md` with `sk-doc` README rules
+- [x] T006 Align all markdown files under `.opencode/skill/sk-improve-agent/references/`
+- [x] T007 Align markdown assets under `.opencode/skill/sk-improve-agent/assets/`
 - [x] T008 Align `.opencode/command/spec_kit/agent-improver.md` with `sk-doc`
 - [x] T009 Align `.opencode/agent/agent-improver.md` with `sk-doc`
 - [x] T010 Update packet-linked usage examples and metadata to the new phase path
@@ -56,7 +56,7 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T011 Run `package_skill.py --check` for `sk-agent-improver`
+- [x] T011 Run `package_skill.py --check` for `sk-improve-agent`
 - [x] T012 Run `validate_document.py` for README, command, and agent
 - [x] T013 Run `validate_document.py` for all references and markdown assets
 - [x] T014 Run strict validation for root `041`
@@ -70,7 +70,7 @@ contextType: "general"
 ## Completion Criteria
 
 - [x] Phase `003` exists and is documented
-- [x] `sk-agent-improver` package docs align with `sk-doc`
+- [x] `sk-improve-agent` package docs align with `sk-doc`
 - [x] Related command and agent docs align with `sk-doc`
 - [x] Parent packet `041` records `003` as completed work
 - [x] Validators pass for the package and packet
@@ -82,7 +82,7 @@ contextType: "general"
 ## Cross-References
 
 - **Parent Packet**: See [../](../)
-- **Previous Phase**: See [../002-sk-agent-improver-full-skill/](../002-sk-agent-improver-full-skill/)
+- **Previous Phase**: See [../002-sk-improve-agent-full-skill/](../002-sk-improve-agent-full-skill/)
 - **Specification**: See [spec.md](./spec.md)
 - **Plan**: See [plan.md](./plan.md)
 - **Checklist**: See [checklist.md](./checklist.md)

@@ -62,5 +62,5 @@ contextType: "planning"
 ## Part C: README Updates
 
 - [ ] T015 [P] Update sk-deep-research and sk-deep-review READMEs with graph capability references (REQ-GT-014)
-- [ ] T016 [P] Update sk-agent-improver README with graph capability references (REQ-GT-014)
+- [ ] T016 [P] Update sk-improve-agent README with graph capability references (REQ-GT-014)
 <!-- /ANCHOR:part-c -->

@@ -20,7 +20,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 006-sk-agent-improver-command-rename |
+| **Spec Folder** | 006-sk-improve-agent-command-rename |
 | **Completed** | 2026-04-03 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -55,7 +55,7 @@ The work was delivered in three passes: rename the canonical command files, rena
 | Decision | Why |
 |----------|-----|
 | Rename the command entrypoint to `/improve:agent-improver` | The user explicitly asked to fix the remaining command-name mismatch |
-| Keep the skill name `sk-agent-improver` unchanged | The skill rename was already settled earlier and matched the mutator/runtime family |
+| Keep the skill name `sk-improve-agent` unchanged | The skill rename was already settled earlier and matched the mutator/runtime family |
 | Record the rename as phase `006` instead of revising phase `005` silently | Makes the follow-up explicit and auditable |
 <!-- /ANCHOR:decisions -->
 

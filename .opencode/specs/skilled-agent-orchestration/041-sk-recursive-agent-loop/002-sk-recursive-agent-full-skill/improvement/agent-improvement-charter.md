@@ -1,6 +1,6 @@
 ---
 title: Agent Improvement Charter
-description: Fixed charter for sk-agent-improver full-skill packet.
+description: Fixed charter for sk-improve-agent full-skill packet.
 ---
 
 # Agent Improvement Charter

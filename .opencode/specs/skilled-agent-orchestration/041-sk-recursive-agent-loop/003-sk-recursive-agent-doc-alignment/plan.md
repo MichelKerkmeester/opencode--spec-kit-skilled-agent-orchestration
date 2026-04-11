@@ -27,7 +27,7 @@ contextType: "general"
 | **Testing** | `package_skill.py`, `validate_document.py`, `validate.sh --strict`, `python3` JSON validation |
 
 ### Overview
-This phase closes the remaining structural debt after phases `001` and `002`: normalize `sk-agent-improver` package docs to `sk-doc`, normalize the related command and agent files, then update root packet `041` so the full program history shows `003` as the final closeout phase.
+This phase closes the remaining structural debt after phases `001` and `002`: normalize `sk-improve-agent` package docs to `sk-doc`, normalize the related command and agent files, then update root packet `041` so the full program history shows `003` as the final closeout phase.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -56,7 +56,7 @@ This phase closes the remaining structural debt after phases `001` and `002`: no
 Documentation truth-sync phase under an existing parent packet
 
 ### Key Components
-- **Skill package docs**: `.opencode/skill/sk-agent-improver/SKILL.md`, `.opencode/skill/sk-agent-improver/README.md`, `references/`, `assets/`
+- **Skill package docs**: `.opencode/skill/sk-improve-agent/SKILL.md`, `.opencode/skill/sk-improve-agent/README.md`, `references/`, `assets/`
 - **Related runtime docs**: canonical loop command and canonical loop agent
 - **Parent packet docs**: root `041` phase map, tasks, checklist, and implementation summary
 - **Registry metadata**: `.opencode/specs/descriptions.json`
@@ -72,20 +72,20 @@ Normalize the package and related surfaces first, then update the packet docs to
 
 ### Phase 1: Packet Setup
 
-- [x] Create the new `003-sk-agent-improver-doc-alignment/` phase folder
+- [x] Create the new `003-sk-improve-agent-doc-alignment/` phase folder
 - [x] Add phase `003` spec, plan, tasks, checklist, and implementation summary
 - [x] Update root packet `041` to recognize phase `003`
 
 ### Phase 2: sk-doc Alignment
 
-- [x] Align `.opencode/skill/sk-agent-improver/SKILL.md` and `.opencode/skill/sk-agent-improver/README.md`
+- [x] Align `.opencode/skill/sk-improve-agent/SKILL.md` and `.opencode/skill/sk-improve-agent/README.md`
 - [x] Align all markdown references and markdown assets
 - [x] Align the canonical loop command and canonical loop agent
 - [x] Update packet-linked examples and metadata to point at the new phase
 
 ### Phase 3: Verification
 
-- [x] Run package validation for `sk-agent-improver`
+- [x] Run package validation for `sk-improve-agent`
 - [x] Run `validate_document.py` across the package, command, and agent surfaces
 - [x] Run strict packet validation for root `041` and phase `003`
 <!-- /ANCHOR:phases -->
@@ -97,7 +97,7 @@ Normalize the package and related surfaces first, then update the packet docs to
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Packaging | `sk-agent-improver` package shape | `python3 .opencode/skill/sk-doc/scripts/package_skill.py --check` |
+| Packaging | `sk-improve-agent` package shape | `python3 .opencode/skill/sk-doc/scripts/package_skill.py --check` |
 | Validation | README | `validate_document.py --type readme` |
 | Validation | Command and agent | `validate_document.py --type command` and `--type agent` |
 | Validation | References and markdown assets | `validate_document.py --type reference` and `--type asset` |
@@ -114,7 +114,7 @@ Normalize the package and related surfaces first, then update the packet docs to
 |------------|------|--------|-------------------|
 | `sk-doc` validators | Internal | Green | Cannot prove documentation alignment |
 | Root packet `041` | Internal | Green | Phase completion cannot be recorded honestly |
-| `sk-agent-improver` skill package | Internal | Green | Core doc surfaces cannot be normalized |
+| `sk-improve-agent` skill package | Internal | Green | Core doc surfaces cannot be normalized |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -125,7 +125,7 @@ Normalize the package and related surfaces first, then update the packet docs to
 - **Trigger**: Validators fail after rewrite, or root `041` becomes inconsistent with the child phases.
 - **Procedure**: Restore the previous doc shapes, reintroduce phase `003` only after the failing surface is understood, and re-run the validator set before claiming completion.
 
-Future agent-improver work should continue as `004-*` and later child phases under `041-sk-agent-improver-loop/`.
+Future agent-improver work should continue as `004-*` and later child phases under `041-sk-improve-agent-loop/`.
 <!-- /ANCHOR:rollback -->
 
 ---

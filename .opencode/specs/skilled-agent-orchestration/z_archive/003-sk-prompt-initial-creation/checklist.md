@@ -1,6 +1,6 @@
 ---
-title: "Verification Checklist: sk-prompt-improver Initial [03--commands-and-skills/003-sk-prompt-initial-creation/checklist]"
-description: "title: \"Verification Checklist: sk-prompt-improver Initial Creation\""
+title: "Verification Checklist: sk-improve-prompt Initial [03--commands-and-skills/003-sk-prompt-initial-creation/checklist]"
+description: "title: \"Verification Checklist: sk-improve-prompt Initial Creation\""
 trigger_phrases:
   - "verification"
   - "checklist"
@@ -11,7 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Verification Checklist: sk-prompt-improver Initial Creation
+# Verification Checklist: sk-improve-prompt Initial Creation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -39,7 +39,7 @@ contextType: "implementation"
 
 These must be completed before claiming readiness.
 
-- [x] **SKILL.md exists with valid frontmatter** [EVIDENCE: SKILL.md:1-5 — name: sk-prompt-improver, description: "Prompt engineering specialist...", allowed-tools: [Read, Write, Edit, Bash, Glob, Grep], version: 1.0.0]
+- [x] **SKILL.md exists with valid frontmatter** [EVIDENCE: SKILL.md:1-5 — name: sk-improve-prompt, description: "Prompt engineering specialist...", allowed-tools: [Read, Write, Edit, Bash, Glob, Grep], version: 1.0.0]
   - Required fields: `name`, `description`, `allowed-tools`
   - Frontmatter format: YAML between `---` markers
 
@@ -66,7 +66,7 @@ These must be completed before claiming readiness.
   - video_mode.md
   - format_guides.md
 
-- [x] **skill_advisor.py updated with sk-prompt-improver entries** [EVIDENCE: skill_advisor.py contains 43 occurrences of "sk-prompt-improver" — INTENT_BOOSTERS (18 keywords), PHRASE_INTENT_BOOSTERS (21 phrases), MULTI_SKILL_BOOSTERS (4 entries), SYNONYM_MAP (3 entries). Routing test: "improve my prompt" returns 0.95 confidence]
+- [x] **skill_advisor.py updated with sk-improve-prompt entries** [EVIDENCE: skill_advisor.py contains 43 occurrences of "sk-improve-prompt" — INTENT_BOOSTERS (18 keywords), PHRASE_INTENT_BOOSTERS (21 phrases), MULTI_SKILL_BOOSTERS (4 entries), SYNONYM_MAP (3 entries). Routing test: "improve my prompt" returns 0.95 confidence]
   - Verify intent boosters added
   - Verify confidence weighting configured
 
@@ -84,7 +84,7 @@ These must be completed before claiming readiness.
 
 These must be completed or explicitly deferred with user approval.
 
-- [x] **SKILL.md name matches folder name** [EVIDENCE: SKILL.md:2 — `name: sk-prompt-improver` matches directory `.opencode/skill/sk-prompt-improver/`]
+- [x] **SKILL.md name matches folder name** [EVIDENCE: SKILL.md:2 — `name: sk-improve-prompt` matches directory `.opencode/skill/sk-improve-prompt/`]
   - Consistency check: skill name must match directory name
 
 - [x] **Description uses third-person voice** [EVIDENCE: SKILL.md:3 — "Prompt engineering specialist that transforms vague requests..." — no first-person pronouns (I/we/you), professional third-person voice throughout]
@@ -130,7 +130,7 @@ These must be completed or explicitly deferred with user approval.
 
 These enhance quality but are not blockers.
 
-- [ ] **README.md for skill folder** [E: .opencode/skill/sk-prompt-improver/README.md]
+- [ ] **README.md for skill folder** [E: .opencode/skill/sk-improve-prompt/README.md]
   - Overview of skill purpose
   - Quick start guide
   - Links to skill documentation
@@ -163,7 +163,7 @@ For each checked item, provide:
 
 Example:
 ```
-- [x] SKILL.md exists [E: grep -l "name:" .opencode/skill/sk-prompt-improver/SKILL.md returns file path]
+- [x] SKILL.md exists [E: grep -l "name:" .opencode/skill/sk-improve-prompt/SKILL.md returns file path]
 ```
 
 ---

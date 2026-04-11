@@ -4,12 +4,12 @@
 | --- | --- |
 | Status | Complete |
 | Phase | 009 |
-| Parent | 041-sk-agent-improver-loop |
+| Parent | 041-sk-improve-agent-loop |
 | Date | 2026-04-04 |
 
 ## What Was Done
 
-Ran the first self-referential test of the sk-agent-improver skill: the `/improve:agent` loop targeting `.opencode/agent/agent-improver.md` itself. This is the agent that describes the improvement workflow evaluating its own quality across 5 dimensions.
+Ran the first self-referential test of the sk-improve-agent skill: the `/improve:agent` loop targeting `.opencode/agent/agent-improver.md` itself. This is the agent that describes the improvement workflow evaluating its own quality across 5 dimensions.
 
 ### Pre-Flight Verification
 
@@ -28,7 +28,7 @@ The scanner discovered **9 surfaces** for `agent-improver`:
 | Command | `.opencode/command/improve/agent.md` | 1 reference |
 | YAML (auto) | `.opencode/command/improve/assets/improve_agent-improver_auto.yaml` | 2 references |
 | YAML (confirm) | `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml` | 2 references |
-| Skill | `.opencode/skill/sk-agent-improver/SKILL.md` | 6 references |
+| Skill | `.opencode/skill/sk-improve-agent/SKILL.md` | 6 references |
 | Skill Advisor | `.opencode/skill/scripts/skill_advisor.py` | Matched |
 
 ### Dynamic Profile Results
@@ -60,7 +60,7 @@ Loop exited via **max-iterations (3)**, not dimension plateau. The plateau detec
 
 1. **Tautological rule coherence**: The profile extracts ALWAYS/NEVER rules from agent-improver.md, then the scorer checks the same content for those same rules. First iteration predictably scores 100 on ruleCoherence because the rules came from the content being scored.
 
-2. **High skill reference count**: The integration scanner found 6 references to `agent-improver` in `sk-agent-improver/SKILL.md`. This is expected — the skill is literally about this agent — but stands out compared to typical agents (1-3 refs).
+2. **High skill reference count**: The integration scanner found 6 references to `agent-improver` in `sk-improve-agent/SKILL.md`. This is expected — the skill is literally about this agent — but stands out compared to typical agents (1-3 refs).
 
 3. **No static fixtures**: The benchmark runner has no fixture directory for `agent-improver`. Dynamic-only mode correctly skips benchmarking without error. Benchmark runs = 0 in the dashboard.
 

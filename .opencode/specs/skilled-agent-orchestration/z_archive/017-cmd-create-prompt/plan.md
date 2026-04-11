@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: create:prompt Command [03--commands-and-skills/017-cmd-create-prompt/plan]"
-description: "Mode-based command wrapping sk-prompt-improver with argument routing and CLEAR scoring"
+description: "Mode-based command wrapping sk-improve-prompt with argument routing and CLEAR scoring"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -33,7 +33,7 @@ contextType: "planning"
 
 ### Overview
 
-Create a single command file (`.opencode/command/create/prompt.md`) that serves as a user-facing entry point for the sk-prompt-improver skill. The command implements the Mode-Based Command Template pattern from command_template.md, with argument dispatch for sk-prompt-improver mode prefixes and :auto/:confirm execution modes.
+Create a single command file (`.opencode/command/create/prompt.md`) that serves as a user-facing entry point for the sk-improve-prompt skill. The command implements the Mode-Based Command Template pattern from command_template.md, with argument dispatch for sk-improve-prompt mode prefixes and :auto/:confirm execution modes.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -45,7 +45,7 @@ Create a single command file (`.opencode/command/create/prompt.md`) that serves 
 
 - [x] Problem statement clear and scope documented (spec.md)
 - [x] Success criteria measurable (SC-001 through SC-003)
-- [x] Dependencies identified (sk-prompt-improver exists)
+- [x] Dependencies identified (sk-improve-prompt exists)
 
 ### Definition of Done
 
@@ -68,8 +68,8 @@ Mode-Based Workflow Command (command_template.md §11) with Argument Dispatch (�
 
 - **Mandatory Gate**: Blocks execution without explicit prompt input; prevents context inference
 - **Argument Router**: Detects mode prefix ($text, $improve, etc.) and execution mode (:auto/:confirm)
-- **Skill Loader**: Reads sk-prompt-improver SKILL.md and routes to appropriate references based on detected mode
-- **Enhancement Pipeline**: Delegates to sk-prompt-improver's DEPTH processing → Framework Selection → CLEAR Scoring
+- **Skill Loader**: Reads sk-improve-prompt SKILL.md and routes to appropriate references based on detected mode
+- **Enhancement Pipeline**: Delegates to sk-improve-prompt's DEPTH processing → Framework Selection → CLEAR Scoring
 - **Status Reporter**: Returns structured STATUS=OK/FAIL/CANCELLED output
 
 ### Data Flow
@@ -127,7 +127,7 @@ User invocation → Mandatory Gate → Argument Router → Skill Loader → Enha
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| sk-prompt-improver SKILL.md | Internal | Green | Cannot create command without skill |
+| sk-improve-prompt SKILL.md | Internal | Green | Cannot create command without skill |
 | command_template.md | Internal | Green | Pattern reference for structure |
 | create/ namespace | Internal | Green | Directory exists with other commands |
 <!-- /ANCHOR:dependencies -->

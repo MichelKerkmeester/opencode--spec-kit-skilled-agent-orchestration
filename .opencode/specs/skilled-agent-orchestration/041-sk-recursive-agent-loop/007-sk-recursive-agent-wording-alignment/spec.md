@@ -26,7 +26,7 @@ contextType: "general"
 | **Created** | 2026-04-04 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Predecessor** | [../006-sk-agent-improver-command-rename/](../006-sk-agent-improver-command-rename/) |
+| **Predecessor** | [../006-sk-improve-agent-command-rename/](../006-sk-improve-agent-command-rename/) |
 | **Successor** | None |
 <!-- /ANCHOR:metadata -->
 
@@ -48,7 +48,7 @@ Run a wording-only cleanup across the current agent-improver surfaces so the lan
 ## 3. SCOPE
 
 ### In Scope
-- wording cleanup in `.opencode/skill/sk-agent-improver/` markdown surfaces
+- wording cleanup in `.opencode/skill/sk-improve-agent/` markdown surfaces
 - wording cleanup in the canonical command and mirrored wrapper prompts
 - wording cleanup in runtime-specific `agent-improver` mirror files
 - wording cleanup in root packet `041` docs so phase `007` is recorded cleanly
@@ -60,10 +60,10 @@ Run a wording-only cleanup across the current agent-improver surfaces so the lan
 - rewriting historical `research/` or `memory/` artifacts under `041`
 
 ### Files to Change
-- `.opencode/skill/sk-agent-improver/SKILL.md`
-- `.opencode/skill/sk-agent-improver/README.md`
-- selected markdown files under `.opencode/skill/sk-agent-improver/references/`
-- selected markdown files under `.opencode/skill/sk-agent-improver/assets/`
+- `.opencode/skill/sk-improve-agent/SKILL.md`
+- `.opencode/skill/sk-improve-agent/README.md`
+- selected markdown files under `.opencode/skill/sk-improve-agent/references/`
+- selected markdown files under `.opencode/skill/sk-improve-agent/assets/`
 - `.opencode/command/spec_kit/agent-improver.md`
 - `.agents/commands/spec_kit/agent-improver.toml`
 - `.gemini/commands/spec_kit/agent-improver.toml`
@@ -72,7 +72,7 @@ Run a wording-only cleanup across the current agent-improver surfaces so the lan
 - `.gemini/agents/agent-improver.md`
 - `.agents/agents/agent-improver.md`
 - `.codex/agents/agent-improver.toml`
-- active packet docs under `041-sk-agent-improver-loop/`
+- active packet docs under `041-sk-improve-agent-loop/`
 - `.opencode/specs/descriptions.json`
 <!-- /ANCHOR:scope -->
 

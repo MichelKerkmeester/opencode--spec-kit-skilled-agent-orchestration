@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create the new `007-sk-agent-improver-wording-alignment/` phase packet
+- [x] T001 Create the new `007-sk-improve-agent-wording-alignment/` phase packet
 - [x] T002 Read the current agent-improver source, mirror, and packet surfaces before editing
 - [x] T003 Confirm the pass stays wording-only and skips historical `research/` and `memory/` artifacts
 <!-- /ANCHOR:phase-1 -->
@@ -40,7 +40,7 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Clean up wording in `.opencode/skill/sk-agent-improver/SKILL.md`, `.opencode/skill/sk-agent-improver/README.md`, and bundled agent-improver references
+- [x] T004 Clean up wording in `.opencode/skill/sk-improve-agent/SKILL.md`, `.opencode/skill/sk-improve-agent/README.md`, and bundled agent-improver references
 - [x] T005 Clean up wording in the canonical command and mirrored wrapper prompts
 - [x] T006 Clean up wording in runtime-specific agent-improver mirrors and fix runtime-path wording bugs
 - [x] T007 Update parent packet `041` docs and registry metadata to record phase `007`

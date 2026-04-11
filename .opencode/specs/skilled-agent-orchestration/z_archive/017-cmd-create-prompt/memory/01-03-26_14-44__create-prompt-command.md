@@ -1,15 +1,29 @@
 ---
-title: "Create prompt command [03--commands-and-skills/017-cmd-create-prompt/01-03-26_14-44__create-prompt-command]"
+title: "Create Prompt Command"
+description: 'Create Prompt Command SESSION SUMMARY Meta Data Value : : Session Date 2026 03 01 Session ID session'
 trigger_phrases:
-  - "create prompt command"
-  - "prompt improver wrapper"
-  - "gemini toml embedding"
-  - "clear scoring workflow"
-importance_tier: "normal"
-contextType: "implementation"
+- create prompt command
+- prompt improver wrapper
+- gemini toml embedding
+- clear scoring workflow
+- prompt command commands
+- command commands skills
+- commands skills 017
+- skills 017 cmd
+- 017 cmd create
+- cmd create prompt
+- create prompt create
+- prompt create prompt
+- create prompt
+- prompt command
+- command commands
+importance_tier: deprecated
+contextType: implementation
+quality_score: 0.8
 quality_flags:
-  - "needs_review"
-quality_score: 0.60
+- needs_review
+- deprecated_retroactive
+- retroactive_reviewed
 ---
 # Create Prompt Command
 
@@ -42,9 +56,9 @@ quality_score: 0.60
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | /100 |  |
-| Uncertainty Score | /100 |  |
-| Context Score | /100 |  |
+| Knowledge Score | [RETROACTIVE: score unavailable] |  |
+| Uncertainty Score | [RETROACTIVE: score unavailable] |  |
+| Context Score | [RETROACTIVE: score unavailable] |  |
 | Timestamp |  | Session start |
 
 **Initial Gaps Identified:**
@@ -98,7 +112,7 @@ quality_score: 0.60
 
 **Decisions:** 4 decisions recorded
 
-**Summary:** Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new com...
+**Summary:** Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new com...
 
 ### Pending Work
 
@@ -171,7 +185,7 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill...** - Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring.
+- **Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill...** - Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring.
 
 - **Technical Implementation Details** - rootCause: Gemini TOML command files used @{} file references which may not resolve correctly in all environments; solution: Rewrote all 21 TOML files to embed full .
 
@@ -210,10 +224,10 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new command. Then converted all 21 Gemini CLI TOML command files from @{} file references to fully embedded content — covering create/ (8 files), memory/ (5 files), spec_kit/ (7 files), and agent_router (1 file). Verified byte-level parity between all TOML embedded content and their OpenCode source .md files (21/21 confirmed).
+Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new command. Then converted all 21 Gemini CLI TOML command files from @{} file references to fully embedded content — covering create/ (8 files), memory/ (5 files), spec_kit/ (7 files), and agent_router (1 file). Verified byte-level parity between all TOML embedded content and their OpenCode source .md files (21/21 confirmed).
 
 **Key Outcomes**:
-- Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill...
+- Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill...
 - Decision: Embed full .
 - Decision: Version as v2.
 - Decision: Used 4 parallel sonnet agents to rewrite TOMLs across directories simu
@@ -238,11 +252,11 @@ Completed the /create:prompt command implementation (530 lines) wrapping sk-prom
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-completed-createprompt-command-implementation-d0aedffd -->
-### FEATURE: Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill...
+### FEATURE: Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill...
 
-Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new command. Then converted all 21 Gemini CLI TOML command files from @{} file references to fully embedded content — covering create/ (8 files), memory/ (5 files), spec_kit/ (7 files), and agent_router (1 file). Verified byte-level parity between all TOML embedded content and their OpenCode source .md files (21/21 confirmed).
+Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new command. Then converted all 21 Gemini CLI TOML command files from @{} file references to fully embedded content — covering create/ (8 files), memory/ (5 files), spec_kit/ (7 files), and agent_router (1 file). Verified byte-level parity between all TOML embedded content and their OpenCode source .md files (21/21 confirmed).
 
-**Details:** create prompt command | gemini toml commands | toml file reference | embedded content toml | gemini cli commands | changelog commands | sk-prompt-improver wrapper | parity check toml | convert reference to inline | create namespace
+**Details:** create prompt command | gemini toml commands | toml file reference | embedded content toml | gemini cli commands | changelog commands | sk-improve-prompt wrapper | parity check toml | convert reference to inline | create namespace
 <!-- /ANCHOR:implementation-completed-createprompt-command-implementation-d0aedffd -->
 
 <!-- ANCHOR:implementation-technical-implementation-details-84ac6b05 -->
@@ -389,7 +403,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-03-01 @ 14:44:30
 
-Completed the /create:prompt command implementation (530 lines) wrapping sk-prompt-improver skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new command. Then converted all 21 Gemini CLI TOML command files from @{} file references to fully embedded content — covering create/ (8 files), memory/ (5 files), spec_kit/ (7 files), and agent_router (1 file). Verified byte-level parity between all TOML embedded content and their OpenCode source .md files (21/21 confirmed).
+Completed the /create:prompt command implementation (530 lines) wrapping sk-improve-prompt skill with Phase 0 gates, Unified Setup Phase, and CLEAR scoring. Created changelog v2.2.0.0 for the new command. Then converted all 21 Gemini CLI TOML command files from @{} file references to fully embedded content — covering create/ (8 files), memory/ (5 files), spec_kit/ (7 files), and agent_router (1 file). Verified byte-level parity between all TOML embedded content and their OpenCode source .md files (21/21 confirmed).
 
 ---
 
@@ -474,7 +488,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03-
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -501,108 +515,63 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772372670990-z9ep5k167"
-spec_folder: "03--commands-and-skills/017-cmd-create-prompt"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772372670990-z9ep5k167
+spec_folder: 03--commands-and-skills/017-cmd-create-prompt
+channel: main
+importance_tier: deprecated
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-01"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-01'
 created_at_epoch: 1772372671
 last_accessed_epoch: 1772372671
-expires_at_epoch: 1780148671  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1780148671
 message_count: 1
 decision_count: 4
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "command"
-  - "create"
-  - "prompt"
-  - "tomls"
-  - "create prompt"
-  - "prompt command"
-  - "commands"
-  - "commands and skills/017-cmd-create-prompt"
-  - "content"
-  - "changelog"
-  - "cmd-017"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- create prompt
+- prompt command
+- commands and skills 017-cmd-create-prompt
+- create prompt command
+- session summary
+- preflight baseline
+- table contents
+- continue session
 trigger_phrases:
-  - "create prompt command"
-  - "prompt improver wrapper"
-  - "gemini toml embedding"
-  - "clear scoring workflow"parent_spec: "03--commands-and-skills/017-cmd-create-prompt"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- create prompt command
+- prompt improver wrapper
+- gemini toml embedding
+- clear scoring workflow
+parent_spec: 03--commands-and-skills/017-cmd-create-prompt
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

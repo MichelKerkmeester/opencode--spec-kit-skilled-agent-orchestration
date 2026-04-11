@@ -1,10 +1,10 @@
 {
   "specFolder": "skilled-agent-orchestration/z_archive/003-sk-prompt-initial-creation",
-  "description": "Feature Specification: sk-prompt-improver",
+  "description": "Feature Specification: sk-improve-prompt",
   "keywords": [
     "feature",
     "specification",
-    "sk-prompt-improver"
+    "sk-improve-prompt"
   ],
   "lastUpdated": "2026-04-06T09:57:54.499Z",
   "specId": "003",

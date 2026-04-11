@@ -1,9 +1,9 @@
 ---
 title: "Feature Specification: Recursive Agent sk-doc Alignment [template:level_2/spec.md]"
-description: "Phase 003 under packet 041 closes the remaining sk-doc alignment gaps across sk-agent-improver package surfaces, related command/agent docs, and parent packet continuation records."
+description: "Phase 003 under packet 041 closes the remaining sk-doc alignment gaps across sk-improve-agent package surfaces, related command/agent docs, and parent packet continuation records."
 trigger_phrases:
   - "recursive agent doc alignment"
-  - "sk-agent-improver sk-doc alignment"
+  - "sk-improve-agent sk-doc alignment"
   - "041 phase 003"
 importance_tier: "important"
 contextType: "general"
@@ -26,8 +26,8 @@ contextType: "general"
 | **Created** | 2026-04-03 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Predecessor** | [../002-sk-agent-improver-full-skill/](../002-sk-agent-improver-full-skill/) |
-| **Successor** | [../004-sk-agent-improver-promotion-verification/](../004-sk-agent-improver-promotion-verification/) |
+| **Predecessor** | [../002-sk-improve-agent-full-skill/](../002-sk-improve-agent-full-skill/) |
+| **Successor** | [../004-sk-improve-agent-promotion-verification/](../004-sk-improve-agent-promotion-verification/) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -36,10 +36,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Packet `041-sk-agent-improver-loop` already completed the functional agent-improver work, but the package still had structural drift against `sk-doc` rules. The skill entrypoint at `.opencode/skill/sk-agent-improver/SKILL.md`, the skill README, the bundled references, markdown assets, the canonical loop agent, and the slash command all had section-shape or packaging issues that prevented clean `sk-doc` validation and kept packet `041` short of a true 100 percent closeout.
+Packet `041-sk-improve-agent-loop` already completed the functional agent-improver work, but the package still had structural drift against `sk-doc` rules. The skill entrypoint at `.opencode/skill/sk-improve-agent/SKILL.md`, the skill README, the bundled references, markdown assets, the canonical loop agent, and the slash command all had section-shape or packaging issues that prevented clean `sk-doc` validation and kept packet `041` short of a true 100 percent closeout.
 
 ### Purpose
-Add a dedicated phase that brings `sk-agent-improver` and its related command and agent surfaces into `sk-doc` alignment, updates the parent packet to record that closure honestly, and verifies the whole `041` packet family again.
+Add a dedicated phase that brings `sk-improve-agent` and its related command and agent surfaces into `sk-doc` alignment, updates the parent packet to record that closure honestly, and verifies the whole `041` packet family again.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,10 +48,10 @@ Add a dedicated phase that brings `sk-agent-improver` and its related command an
 ## 3. SCOPE
 
 ### In Scope
-- `.opencode/skill/sk-agent-improver/SKILL.md`
-- `.opencode/skill/sk-agent-improver/README.md`
-- Markdown files under `.opencode/skill/sk-agent-improver/references/`
-- Markdown files under `.opencode/skill/sk-agent-improver/assets/`
+- `.opencode/skill/sk-improve-agent/SKILL.md`
+- `.opencode/skill/sk-improve-agent/README.md`
+- Markdown files under `.opencode/skill/sk-improve-agent/references/`
+- Markdown files under `.opencode/skill/sk-improve-agent/assets/`
 - `.opencode/command/spec_kit/agent-improver.md`
 - `.opencode/agent/agent-improver.md`
 - Parent packet `041` docs and registry metadata needed to record phase `003`
@@ -62,10 +62,10 @@ Add a dedicated phase that brings `sk-agent-improver` and its related command an
 - Opening a new sibling packet outside `041`
 
 ### Files to Change
-- `.opencode/skill/sk-agent-improver/`
+- `.opencode/skill/sk-improve-agent/`
 - `.opencode/command/spec_kit/agent-improver.md`
 - `.opencode/agent/agent-improver.md`
-- `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/`
+- `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/`
 - `.opencode/specs/descriptions.json`
 <!-- /ANCHOR:scope -->
 
@@ -78,7 +78,7 @@ Add a dedicated phase that brings `sk-agent-improver` and its related command an
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | `sk-agent-improver` packages cleanly | `package_skill.py --check` passes for `.opencode/skill/sk-agent-improver` |
+| REQ-001 | `sk-improve-agent` packages cleanly | `package_skill.py --check` passes for `.opencode/skill/sk-improve-agent` |
 | REQ-002 | README aligns with `sk-doc` | `validate_document.py --type readme` passes for the skill README |
 | REQ-003 | Canonical loop command aligns with `sk-doc` | `validate_document.py --type command` passes for `.opencode/command/spec_kit/agent-improver.md` |
 | REQ-004 | Canonical loop agent aligns with `sk-doc` | `validate_document.py --type agent` passes for `.opencode/agent/agent-improver.md` |
@@ -98,13 +98,13 @@ Add a dedicated phase that brings `sk-agent-improver` and its related command an
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `sk-agent-improver` passes `package_skill.py --check`.
+- **SC-001**: `sk-improve-agent` passes `package_skill.py --check`.
 - **SC-002**: The skill README, all markdown references, all markdown assets, the canonical loop command, and the canonical loop agent pass `sk-doc` validation.
 - **SC-003**: Root packet `041` clearly shows phases `001`, `002`, and `003` as complete.
 - **SC-004**: The next operator can understand that future agent-improver work continues as later child phases under `041`.
 
 ### Acceptance Scenarios
-1. **Given** a maintainer runs the skill packaging check, **when** the package is structurally aligned, **then** `sk-agent-improver` passes packaging without missing-section errors.
+1. **Given** a maintainer runs the skill packaging check, **when** the package is structurally aligned, **then** `sk-improve-agent` passes packaging without missing-section errors.
 2. **Given** a maintainer validates the command and agent docs, **when** they use `sk-doc` validators, **then** both files pass with the required sections present.
 3. **Given** a maintainer opens root packet `041`, **when** they inspect the phase map and implementation summary, **then** phase `003` appears as the doc-alignment closeout step.
 4. **Given** strict validation is re-run, **when** root `041` and phase `003` are consistent, **then** both validations pass.

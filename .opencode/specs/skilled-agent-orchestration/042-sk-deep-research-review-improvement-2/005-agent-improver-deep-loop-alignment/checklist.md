@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: Agent-Improver Deep-Loop Alignment [005]"
-description: "Verification checklist for the 4-sub-phase deep-loop alignment of sk-agent-improver covering runtime truth, improvement intelligence, parallel candidates, and scoring optimization."
+description: "Verification checklist for the 4-sub-phase deep-loop alignment of sk-improve-agent covering runtime truth, improvement intelligence, parallel candidates, and scoring optimization."
 trigger_phrases:
   - "005"
   - "agent improver checklist"
@@ -37,7 +37,7 @@ Mark each item `[x]` with evidence in brackets: `[Test: filename - result]`, `[M
 - [ ] CHK-002 [P0] plan.md defines all 4 sub-phases with task breakdown and dependency order
 - [ ] CHK-003 [P0] 042 Phase 1 journal schema read and confirmed compatible with improvement events
 - [ ] CHK-004 [P0] 042 Phase 2 coverage graph API confirmed to support `loop_type` namespace parameter
-- [ ] CHK-005 [P1] Existing sk-agent-improver SKILL.md, improvement_config.json, agent-improver.md read before modification
+- [ ] CHK-005 [P1] Existing sk-improve-agent SKILL.md, improvement_config.json, agent-improver.md read before modification
 - [ ] CHK-006 [P1] ADR-005 backward compatibility commitment confirmed: all new config fields are optional with defaults
 <!-- /ANCHOR:pre-impl -->
 
@@ -46,7 +46,7 @@ Mark each item `[x]` with evidence in brackets: `[Test: filename - result]`, `[M
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] All 5 new CJS scripts (`improvement-journal.cjs`, `mutation-coverage.cjs`, `trade-off-detector.cjs`, `candidate-lineage.cjs`, `benchmark-stability.cjs`) follow existing sk-agent-improver script module pattern
+- [ ] CHK-010 [P0] All 5 new CJS scripts (`improvement-journal.cjs`, `mutation-coverage.cjs`, `trade-off-detector.cjs`, `candidate-lineage.cjs`, `benchmark-stability.cjs`) follow existing sk-improve-agent script module pattern
 - [ ] CHK-011 [P0] No hardcoded file paths in scripts; all paths pass through config or function arguments
 - [ ] CHK-012 [P0] Journal emitter enforces append-only discipline: no overwrite code path exists in improvement-journal.cjs
 - [ ] CHK-013 [P1] All new config fields in improvement_config.json have JSDoc comments with type, default, and valid range
@@ -101,8 +101,8 @@ Mark each item `[x]` with evidence in brackets: `[Test: filename - result]`, `[M
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P1] All 5 new scripts placed in `.opencode/skill/sk-agent-improver/scripts/`
-- [ ] CHK-051 [P1] All 5 new test suites placed in `.opencode/skill/sk-agent-improver/scripts/tests/`
+- [ ] CHK-050 [P1] All 5 new scripts placed in `.opencode/skill/sk-improve-agent/scripts/`
+- [ ] CHK-051 [P1] All 5 new test suites placed in `.opencode/skill/sk-improve-agent/scripts/tests/`
 - [ ] CHK-052 [P1] No test files or debug artifacts left in skill root or assets directories
 - [ ] CHK-053 [P2] scratch/ cleared of temporary analysis files before completion
 <!-- /ANCHOR:file-org -->
@@ -150,7 +150,7 @@ Mark each item `[x]` with evidence in brackets: `[Test: filename - result]`, `[M
 ## L3+: DEPLOYMENT READINESS
 
 - [ ] CHK-120 [P0] Rollback procedure documented in plan.md and verified: reverting 6 modified files and removing 5 new scripts fully restores prior behavior
-- [ ] CHK-121 [P1] All new scripts are additive: not imported by existing sk-agent-improver code paths unless SKILL.md is updated to reference them
+- [ ] CHK-121 [P1] All new scripts are additive: not imported by existing sk-improve-agent code paths unless SKILL.md is updated to reference them
 - [ ] CHK-122 [P1] New config fields confirmed optional: improvement session runs without them without error
 <!-- /ANCHOR:deploy-ready -->
 

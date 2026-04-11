@@ -23,7 +23,7 @@ Separate the reusable packet machinery from the research-specific semantics so a
 
 ## Assessment
 - New information ratio: 0.42
-- Questions addressed: Which parts of that loop align with our existing `.opencode/agent`, `sk-deep-research`, and skill infrastructure? What capabilities are missing if we want a reliable `sk-agent-improver` rather than a one-off research packet?
+- Questions addressed: Which parts of that loop align with our existing `.opencode/agent`, `sk-deep-research`, and skill infrastructure? What capabilities are missing if we want a reliable `sk-improve-agent` rather than a one-off research packet?
 - Questions answered: None newly answered; this iteration clarified reuse boundaries.
 
 ## Reflection

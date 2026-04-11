@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: Agent-Improver Deep-Loop Alignment [005]"
-description: "5 ADRs governing the deep-loop alignment of sk-agent-improver: journal emission ownership, coverage graph reuse, trajectory convergence, parallel candidate opt-in, and backward compatibility."
+description: "5 ADRs governing the deep-loop alignment of sk-improve-agent: journal emission ownership, coverage graph reuse, trajectory convergence, parallel candidate opt-in, and backward compatibility."
 trigger_phrases:
   - "005"
   - "agent improver ADR"
@@ -36,13 +36,13 @@ contextType: "planning"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The sk-agent-improver skill uses a proposal-only agent model: the improvement agent generates candidate proposals but performs no side effects. All state mutations (promotion, rollback, scoring) happen in the orchestrator. We needed to add audit journal emission as part of this phase, which raised the question of where journal writes should happen.
+The sk-improve-agent skill uses a proposal-only agent model: the improvement agent generates candidate proposals but performs no side effects. All state mutations (promotion, rollback, scoring) happen in the orchestrator. We needed to add audit journal emission as part of this phase, which raised the question of where journal writes should happen.
 
 If journal writes happen inside the agent, the agent can no longer be described as proposal-only, which breaks the core architectural guarantee that makes the skill safe to run in bounded improvement loops.
 
 ### Constraints
 
-- Proposal-only constraint is a foundational guarantee of sk-agent-improver; violating it would require rethinking the entire skill model.
+- Proposal-only constraint is a foundational guarantee of sk-improve-agent; violating it would require rethinking the entire skill model.
 - Journal must capture the full session lifecycle including events that only the orchestrator knows about (legal-stop gate outcomes, session-ended stop-reason).
 <!-- /ANCHOR:adr-001-context -->
 
@@ -67,7 +67,7 @@ If journal writes happen inside the agent, the agent can no longer be described 
 | Agent emits its own events | Agent has direct access to its own state | Violates proposal-only constraint; agent gains side-effect capability | 2/10 |
 | Shared event bus | Decoupled; both orchestrator and agent can emit | Adds infrastructure complexity; still gives agent write capability | 4/10 |
 
-**Why this one**: The proposal-only constraint is the reason sk-agent-improver is safe for bounded improvement loops. Breaking it to simplify journal wiring is not a worthwhile trade.
+**Why this one**: The proposal-only constraint is the reason sk-improve-agent is safe for bounded improvement loops. Breaking it to simplify journal wiring is not a worthwhile trade.
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---
@@ -237,7 +237,7 @@ If journal writes happen inside the agent, the agent can no longer be described 
 <!-- ANCHOR:adr-003-context -->
 ### Context
 
-The current sk-agent-improver convergence check looks at absolute score thresholds: if all 5 dimensions meet their targets, the session converges. This works for clean cases but is susceptible to noisy single-iteration jumps that look like convergence but are not stable.
+The current sk-improve-agent convergence check looks at absolute score thresholds: if all 5 dimensions meet their targets, the session converges. This works for clean cases but is susceptible to noisy single-iteration jumps that look like convergence but are not stable.
 
 042 Phase 1 introduced trajectory tracking for deep-research and deep-review to detect genuine stabilization vs. one-off score spikes. We needed to decide whether to adopt the same approach for agent-improver or keep the simpler absolute-threshold model.
 
@@ -440,7 +440,7 @@ We needed to decide whether to enable parallel waves by default or make them opt
 <!-- ANCHOR:adr-005-context -->
 ### Context
 
-This phase adds 13 new behaviors and approximately 15 new configuration fields to the sk-agent-improver skill. Any of these changes could silently break existing improvement sessions if they introduce required fields or change default behavior. We needed to decide how to structure the additions to guarantee that existing sessions are unaffected.
+This phase adds 13 new behaviors and approximately 15 new configuration fields to the sk-improve-agent skill. Any of these changes could silently break existing improvement sessions if they introduce required fields or change default behavior. We needed to decide how to structure the additions to guarantee that existing sessions are unaffected.
 
 ### Constraints
 

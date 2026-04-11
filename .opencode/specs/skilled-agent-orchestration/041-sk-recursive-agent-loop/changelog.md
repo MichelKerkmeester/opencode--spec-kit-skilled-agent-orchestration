@@ -1,6 +1,6 @@
 ---
-title: "Changelog: sk-agent-improver program [041]"
-description: "Chronological changelog for Packet 041 covering the full sk-agent-improver program across 11 phases — from evaluator-first MVP through holistic 5-dimension evaluation, self-test, fixes, and advisor routing sync."
+title: "Changelog: sk-improve-agent program [041]"
+description: "Chronological changelog for Packet 041 covering the full sk-improve-agent program across 11 phases — from evaluator-first MVP through holistic 5-dimension evaluation, self-test, fixes, and advisor routing sync."
 importance_tier: "high"
 contextType: "implementation"
 ---
@@ -9,16 +9,16 @@ contextType: "implementation"
 ## 2026-04-04 — Phase 011: Skill Advisor Routing + README Sync
 
 ### Changed
-- Skill README: sk-agent-improver version bumped from 0.1.0.0 to 1.0.0.0 with updated description
+- Skill README: sk-improve-agent version bumped from 0.1.0.0 to 1.0.0.0 with updated description
 - Skill advisor (Public): added 7 INTENT_BOOSTERS, 13 PHRASE_INTENT_BOOSTERS, 8 COMMAND_BRIDGES for Phase 008+ capabilities
 - Skill advisor (Barter): added 7 COMMAND_BRIDGES and 2 PHRASE_INTENT_BOOSTERS for /improve:prompt and /create:* commands
 - Root README.md: added Context-Prime and Agent-Improver to Agent Network section, rewrote Improve Agent command description
 - 5 command README.txt files updated across all runtimes (root, spec_kit, create, improve, memory)
 
 ### Verification
-- `skill_advisor.py "5-dimension evaluation"` → sk-agent-improver at 0.92 confidence
+- `skill_advisor.py "5-dimension evaluation"` → sk-improve-agent at 0.92 confidence
 - `skill_advisor.py "/improve:agent"` → command-improve-agent at 0.95 confidence
-- `skill_advisor.py "score agent"` → sk-agent-improver at 0.89 confidence
+- `skill_advisor.py "score agent"` → sk-improve-agent at 0.89 confidence
 - All /create:* commands routed correctly
 
 ---
@@ -101,7 +101,7 @@ contextType: "implementation"
 - All 12 create command YAMLs aligned with spec_kit gold standard
 
 ### Renamed
-- Skill: `sk-recursive-agent` -> `sk-agent-improver` (187+ files, 1129+ occurrences)
+- Skill: `sk-recursive-agent` -> `sk-improve-agent` (187+ files, 1129+ occurrences)
 - Agent: `recursive-agent` -> `agent-improver` (all 5 runtimes)
 - Command: `/spec_kit:recursive-agent` -> `/improve:agent`
 - Dispatch: `@recursive-agent` -> `@agent-improver`
@@ -188,7 +188,7 @@ contextType: "implementation"
 
 | File | Action | Description |
 | --- | --- | --- |
-| `.opencode/skill/sk-agent-improver/` | Created | Full skill package |
+| `.opencode/skill/sk-improve-agent/` | Created | Full skill package |
 | `.opencode/agent/agent-improver.md` | Created | Canonical mutator agent |
 | `.opencode/command/improve/agent.md` | Created | Command entrypoint |
 

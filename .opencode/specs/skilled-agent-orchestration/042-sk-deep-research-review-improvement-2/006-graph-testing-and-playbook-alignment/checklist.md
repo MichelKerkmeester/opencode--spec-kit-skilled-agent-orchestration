@@ -62,7 +62,7 @@ Mark each item `[x]` with evidence in brackets: `[Test: filename - result]`, `[M
 - [x] CHK-021 [P0] sk-deep-research: `029-graph-events-emission.md` created following existing playbook format [Manual: DR-029 with 5-section structure matching DR-025 pattern]
 - [x] CHK-022 [P0] sk-deep-review: `021-graph-convergence-review.md` created following existing playbook format [Manual: DRV-021 with 5-section structure matching DRV-020 pattern]
 - [x] CHK-023 [P0] sk-deep-review: `015-graph-events-review.md` created following existing playbook format [Manual: DRV-015 with 5-section structure matching DRV-014 pattern]
-- [x] CHK-024 [P1] sk-agent-improver: mutation coverage, trade-off detection, and candidate lineage test cases created [Manual: E2E-022, E2E-023, E2E-024 following E2E-021 pattern]
+- [x] CHK-024 [P1] sk-improve-agent: mutation coverage, trade-off detection, and candidate lineage test cases created [Manual: E2E-022, E2E-023, E2E-024 following E2E-021 pattern]
 - [x] CHK-025 [P1] All playbook files use consistent frontmatter and section structure [Manual: all 7 new files verified]
 <!-- /ANCHOR:playbooks -->
 
@@ -73,6 +73,6 @@ Mark each item `[x]` with evidence in brackets: `[Test: filename - result]`, `[M
 
 - [x] CHK-030 [P1] sk-deep-research README updated with graph capability references [Manual: 3 new feature rows added to features table]
 - [x] CHK-031 [P1] sk-deep-review README updated with graph capability references [Manual: new "Semantic Coverage Graph" subsection added]
-- [x] CHK-032 [P1] sk-agent-improver README updated with graph capability references [Manual: 3 new capability rows added to Key Capabilities table]
+- [x] CHK-032 [P1] sk-improve-agent README updated with graph capability references [Manual: 3 new capability rows added to Key Capabilities table]
 - [x] CHK-033 [P2] implementation-summary.md created after all implementation is complete [Manual: implementation-summary.md filled with 3-part summary and key findings]
 <!-- /ANCHOR:docs -->

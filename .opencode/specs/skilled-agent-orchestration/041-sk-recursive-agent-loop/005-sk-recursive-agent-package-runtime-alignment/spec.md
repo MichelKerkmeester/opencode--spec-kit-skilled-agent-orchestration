@@ -26,8 +26,8 @@ contextType: "general"
 | **Created** | 2026-04-03 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Predecessor** | [../004-sk-agent-improver-promotion-verification/](../004-sk-agent-improver-promotion-verification/) |
-| **Successor** | [../006-sk-agent-improver-command-rename/](../006-sk-agent-improver-command-rename/) |
+| **Predecessor** | [../004-sk-improve-agent-promotion-verification/](../004-sk-improve-agent-promotion-verification/) |
+| **Successor** | [../006-sk-improve-agent-command-rename/](../006-sk-improve-agent-command-rename/) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -36,7 +36,7 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-After phase `004`, the agent-improver workflow was functionally strong, but the package still had a stricter alignment gap against the `sk-doc` templates. The source package docs were valid but not template-faithful enough, the mutator agent still used the old `agent-improvement-loop` name across runtimes, the command body and wrappers still reflected an older command shape, and the `.agents/skills/sk-agent-improver` mirror had not been resynchronized to the corrected source package.
+After phase `004`, the agent-improver workflow was functionally strong, but the package still had a stricter alignment gap against the `sk-doc` templates. The source package docs were valid but not template-faithful enough, the mutator agent still used the old `agent-improvement-loop` name across runtimes, the command body and wrappers still reflected an older command shape, and the `.agents/skills/sk-improve-agent` mirror had not been resynchronized to the corrected source package.
 
 ### Purpose
 Create a package-and-runtime alignment phase that brings the agent-improver skill docs, markdown assets, runtime agent surfaces, command surfaces, and mirrored `.agents/skills` package into explicit parity with the `sk-doc` and `sk-code-opencode` expectations.
@@ -48,10 +48,10 @@ Create a package-and-runtime alignment phase that brings the agent-improver skil
 ## 3. SCOPE
 
 ### In Scope
-- `.opencode/skill/sk-agent-improver/` markdown package alignment against `sk-doc` templates
+- `.opencode/skill/sk-improve-agent/` markdown package alignment against `sk-doc` templates
 - renaming the canonical mutator agent to `agent-improver` across OpenCode, Claude, Gemini, `.agents`, and Codex runtimes
 - aligning the command entrypoint and command wrappers with the `sk-doc` command template shape
-- syncing `.agents/skills/sk-agent-improver/` to the corrected source package
+- syncing `.agents/skills/sk-improve-agent/` to the corrected source package
 - parent packet `041` docs and registry metadata needed to record phase `005`
 
 ### Out of Scope
@@ -60,7 +60,7 @@ Create a package-and-runtime alignment phase that brings the agent-improver skil
 - widening promotion eligibility or target scope
 
 ### Files to Change
-- `.opencode/skill/sk-agent-improver/`
+- `.opencode/skill/sk-improve-agent/`
 - `.opencode/agent/agent-improver.md`
 - `.claude/agents/agent-improver.md`
 - `.gemini/agents/agent-improver.md`
@@ -71,8 +71,8 @@ Create a package-and-runtime alignment phase that brings the agent-improver skil
 - `.opencode/command/spec_kit/assets/improve_agent-improver_confirm.yaml`
 - `.agents/commands/spec_kit/agent-improver.toml`
 - `.gemini/commands/spec_kit/agent-improver.toml`
-- `.agents/skills/sk-agent-improver/`
-- `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/`
+- `.agents/skills/sk-improve-agent/`
+- `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/`
 - `.opencode/specs/descriptions.json`
 <!-- /ANCHOR:scope -->
 
@@ -85,10 +85,10 @@ Create a package-and-runtime alignment phase that brings the agent-improver skil
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Source package matches `sk-doc` templates more closely | `.opencode/skill/sk-agent-improver/SKILL.md`, `.opencode/skill/sk-agent-improver/README.md`, `references/*.md`, and markdown `assets/*.md` validate and use the expected template family structure |
+| REQ-001 | Source package matches `sk-doc` templates more closely | `.opencode/skill/sk-improve-agent/SKILL.md`, `.opencode/skill/sk-improve-agent/README.md`, `references/*.md`, and markdown `assets/*.md` validate and use the expected template family structure |
 | REQ-002 | Mutator agent is renamed to `agent-improver` across runtimes | OpenCode, Claude, Gemini, `.agents`, and Codex runtime files use the new agent name and current template-aligned structure |
 | REQ-003 | Command surfaces are aligned | The canonical command doc and both wrapper TOMLs reflect the corrected command template structure |
-| REQ-004 | `.agents/skills/sk-agent-improver` is resynchronized | The mirrored `.agents` skill package matches the corrected source package, including scripts |
+| REQ-004 | `.agents/skills/sk-improve-agent` is resynchronized | The mirrored `.agents` skill package matches the corrected source package, including scripts |
 | REQ-005 | Parent packet records phase `005` | Root `041` docs list phase `005` and report `5 of 5 complete` |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -106,9 +106,9 @@ Create a package-and-runtime alignment phase that brings the agent-improver skil
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: The agent-improver source package is template-faithful across `.opencode/skill/sk-agent-improver/SKILL.md`, `.opencode/skill/sk-agent-improver/README.md`, `references/`, and markdown `assets/`.
+- **SC-001**: The agent-improver source package is template-faithful across `.opencode/skill/sk-improve-agent/SKILL.md`, `.opencode/skill/sk-improve-agent/README.md`, `references/`, and markdown `assets/`.
 - **SC-002**: The mutator exists only as `agent-improver` across runtime surfaces, and dispatch files call the new name.
-- **SC-003**: The `.agents/skills/sk-agent-improver/` mirror matches the source package after the correction pass.
+- **SC-003**: The `.agents/skills/sk-improve-agent/` mirror matches the source package after the correction pass.
 - **SC-004**: Root packet `041` clearly shows five completed phases and pushes future work to `006-*`.
 
 ### Acceptance Scenarios

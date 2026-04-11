@@ -1,5 +1,5 @@
 {
-  "topic": "Compare autoagent-main automatic agent iteration with our .opencode/agent system and assess feasibility of a new skill named sk-agent-improver.",
+  "topic": "Compare autoagent-main automatic agent iteration with our .opencode/agent system and assess feasibility of a new skill named sk-improve-agent.",
   "maxIterations": 13,
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 10,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop",
+  "specFolder": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop",
   "createdAt": "2026-04-03T12:06:08Z",
   "status": "complete",
   "executionMode": "auto",

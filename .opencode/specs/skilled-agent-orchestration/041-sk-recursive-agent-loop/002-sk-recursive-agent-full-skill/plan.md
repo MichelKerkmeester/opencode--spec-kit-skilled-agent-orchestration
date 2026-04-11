@@ -1,6 +1,6 @@
 ---
-title: "Implementation Plan: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/plan]"
-description: "Phase 002 plan for upgrading sk-agent-improver from the phase 001 MVP into a benchmark-backed, reusable full-skill system."
+title: "Implementation Plan: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/plan]"
+description: "Phase 002 plan for upgrading sk-improve-agent from the phase 001 MVP into a benchmark-backed, reusable full-skill system."
 trigger_phrases:
   - "agent improvement full skill plan"
   - "benchmark harness plan"
@@ -23,8 +23,8 @@ contextType: "general"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | Markdown, YAML, JSON/JSONC, Node.js scripts, packet-local experiment evidence |
-| **Primary Runtime Surface** | `.opencode/skill/sk-agent-improver/`, `.opencode/command/spec_kit/`, `.opencode/agent/` |
-| **Baseline Packet** | `041-sk-agent-improver-loop` |
+| **Primary Runtime Surface** | `.opencode/skill/sk-improve-agent/`, `.opencode/command/spec_kit/`, `.opencode/agent/` |
+| **Baseline Packet** | `041-sk-improve-agent-loop` |
 | **Primary Upgrade Goal** | Add benchmark-backed evaluation and reusable multi-target runtime structure |
 | **Verification Basis** | Strict spec validation, fixture runs, target-profile runs, manifest guard checks, reducer outputs |
 
@@ -39,7 +39,7 @@ This phase starts from the proven MVP and expands only along the safest path. Fi
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- Packet `041-sk-agent-improver-loop` remains complete and verified.
+- Packet `041-sk-improve-agent-loop` remains complete and verified.
 - The next packet scope is limited to benchmarking, reusable runtime structure, one additional target, and operator documentation.
 - The second target candidate is structured enough to support deterministic evaluation.
 
@@ -76,7 +76,7 @@ An experiment selects a target profile, loads the shared runtime config, runs th
 
 ### Phase 1: Follow-On Packet Foundation
 - Create and sync the Level 3 planning packet
-- Carry forward the verified baseline and explicit non-goals from phase `001-sk-agent-improver-mvp`
+- Carry forward the verified baseline and explicit non-goals from phase `001-sk-improve-agent-mvp`
 
 ### Phase 2: Handover Benchmark Harness
 - Define fixture input set for handover
@@ -198,7 +198,7 @@ Benchmark Harness ──► Runtime Profiles ──► Second Target
 
 ### Pre-Task Checklist
 
-- Confirm packet `041-sk-agent-improver-loop` remains the verified baseline before broadening scope.
+- Confirm packet `041-sk-improve-agent-loop` remains the verified baseline before broadening scope.
 - Re-read this packet's `spec.md` and `decision-record.md` before changing evaluator architecture or target expansion rules.
 - Validate this packet after each structural documentation batch and after each future implementation phase.
 

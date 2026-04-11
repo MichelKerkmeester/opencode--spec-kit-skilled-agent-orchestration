@@ -1,5 +1,5 @@
 ## Session Context
-- **Spec Folder:** 041-sk-agent-improver-loop/002-sk-agent-improver-full-skill
+- **Spec Folder:** 041-sk-improve-agent-loop/002-sk-improve-agent-full-skill
 - **Current Task:** benchmark harness verification
 - **Blockers:** none
 

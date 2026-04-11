@@ -39,7 +39,7 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P1] `.opencode/skill/sk-agent-improver/SKILL.md` contains the required `REFERENCES` section (verified)
+- [x] CHK-010 [P1] `.opencode/skill/sk-improve-agent/SKILL.md` contains the required `REFERENCES` section (verified)
 - [x] CHK-011 [P1] The README includes a table of contents and overview section (verified)
 - [x] CHK-012 [P1] The canonical loop command uses the required `PURPOSE` and `INSTRUCTIONS` sections (verified)
 - [x] CHK-013 [P1] The canonical loop agent contains the required `CORE WORKFLOW`, `CAPABILITY SCAN`, `OUTPUT VERIFICATION`, `ANTI-PATTERNS`, and `RELATED RESOURCES` sections (verified)
@@ -50,7 +50,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] `package_skill.py --check` passes for `sk-agent-improver` (verified)
+- [x] CHK-020 [P0] `package_skill.py --check` passes for `sk-improve-agent` (verified)
 - [x] CHK-021 [P0] README validation passes (verified)
 - [x] CHK-022 [P0] Command validation passes (verified)
 - [x] CHK-023 [P0] Agent validation passes (verified)

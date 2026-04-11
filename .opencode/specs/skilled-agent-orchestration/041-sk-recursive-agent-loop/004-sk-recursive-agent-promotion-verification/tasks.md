@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create the new `004-sk-agent-improver-promotion-verification/` phase packet
+- [x] T001 Create the new `004-sk-improve-agent-promotion-verification/` phase packet
 - [x] T002 Create a phase-local `improvement/` runtime for verification artifacts
 - [x] T003 Copy forward the bounded manifest, charter, strategy, and reusable baseline benchmark outputs
 <!-- /ANCHOR:phase-1 -->
@@ -83,7 +83,7 @@ contextType: "general"
 ## Cross-References
 
 - **Parent Packet**: See [../](../)
-- **Previous Phase**: See [../003-sk-agent-improver-doc-alignment/](../003-sk-agent-improver-doc-alignment/)
+- **Previous Phase**: See [../003-sk-improve-agent-doc-alignment/](../003-sk-improve-agent-doc-alignment/)
 - **Specification**: See [spec.md](./spec.md)
 - **Plan**: See [plan.md](./plan.md)
 - **Checklist**: See [checklist.md](./checklist.md)

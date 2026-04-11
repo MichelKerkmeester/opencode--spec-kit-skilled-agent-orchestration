@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────
 # AGENT IMPROVER: EVALUATION LOOP (INTERACTIVE MODE)
 # ─────────────────────────────────────────────────────────────────
-role: Agent Improvement Specialist using sk-agent-improver with operator approval
+role: Agent Improvement Specialist using sk-improve-agent with operator approval
 purpose: Integration-aware agent evaluation with 5-dimension scoring, deterministic benchmarks, and guarded promotion
 action: Scan integration surfaces, generate dynamic profiles, score candidates across 5 dimensions, reduce evidence, and pause at each decision gate
 
@@ -81,19 +81,19 @@ context_loading:
 # SKILL REFERENCE
 # ─────────────────────────────────────────────────────────────────
 skill_reference:
-  skill: sk-agent-improver
-  skill_md: .opencode/skill/sk-agent-improver/SKILL.md
+  skill: sk-improve-agent
+  skill_md: .opencode/skill/sk-improve-agent/SKILL.md
   templates:
-    config: .opencode/skill/sk-agent-improver/assets/improvement_config.json
-    strategy: .opencode/skill/sk-agent-improver/assets/improvement_strategy.md
-    charter: .opencode/skill/sk-agent-improver/assets/improvement_charter.md
-    manifest: .opencode/skill/sk-agent-improver/assets/target_manifest.jsonc
+    config: .opencode/skill/sk-improve-agent/assets/improvement_config.json
+    strategy: .opencode/skill/sk-improve-agent/assets/improvement_strategy.md
+    charter: .opencode/skill/sk-improve-agent/assets/improvement_charter.md
+    manifest: .opencode/skill/sk-improve-agent/assets/target_manifest.jsonc
   scripts:
-    scanner: .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs
-    profiler: .opencode/skill/sk-agent-improver/scripts/generate-profile.cjs
-    scorer: .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs
-    benchmark: .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs
-    reducer: .opencode/skill/sk-agent-improver/scripts/reduce-state.cjs
+    scanner: .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+    profiler: .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs
+    scorer: .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+    benchmark: .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+    reducer: .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
 
 # ─────────────────────────────────────────────────────────────────
 # STATE PATHS
@@ -123,11 +123,11 @@ workflow:
         command: "mkdir -p {spec_folder}/improvement/candidates {spec_folder}/improvement/benchmark-runs/{target_profile}"
       step_scan_integration:
         description: "Map all surfaces the target agent touches across the repo"
-        command: "node .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs --agent={target_profile} --output={spec_folder}/improvement/integration-report.json"
+        command: "node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={target_profile} --output={spec_folder}/improvement/integration-report.json"
       step_generate_profile:
         description: "Generate dynamic scoring profile from the agent's own rules (skip if static profile)"
         condition: "scoring_mode == 'dynamic'"
-        command: "node .opencode/skill/sk-agent-improver/scripts/generate-profile.cjs --agent={target_path} --output={spec_folder}/improvement/dynamic-profile.json"
+        command: "node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent={target_path} --output={spec_folder}/improvement/dynamic-profile.json"
       step_copy_templates:
         description: "Copy config, strategy, charter, and manifest templates into runtime root"
         action: "Copy config, strategy, charter, and manifest templates into the runtime root"
@@ -152,7 +152,7 @@ workflow:
     steps:
       step_scan_integration:
         description: "Refresh integration surface map before each iteration"
-        command: "node .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs --agent={target_profile} --output={spec_folder}/improvement/integration-report.json"
+        command: "node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={target_profile} --output={spec_folder}/improvement/integration-report.json"
       gate_before_candidate:
         type: approval_gate
         description: "Operator authorizes candidate generation for this iteration"
@@ -166,7 +166,7 @@ workflow:
         action: "Dispatch @agent-improver to write a new candidate into candidates/"
       step_score_candidate:
         description: "Score candidate across 5 dimensions (dynamic) or keyword checks (static)"
-        command: "node .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs --candidate={candidate_path} --baseline={target_path} --manifest={spec_folder}/improvement/target-manifest.jsonc --profile={target_profile} --target={target_path} --output={score_output_path}"
+        command: "node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate={candidate_path} --baseline={target_path} --manifest={spec_folder}/improvement/target-manifest.jsonc --profile={target_profile} --target={target_path} --output={score_output_path}"
       step_run_benchmark:
         description: "Run fixture tests against packet-local outputs"
         action: "Run profile fixtures against packet-local outputs under benchmark-runs/{target_profile}/"
@@ -175,7 +175,7 @@ workflow:
         action: "Append prompt-score and benchmark records into agent-improvement-state.jsonl"
       step_reduce:
         description: "Refresh dashboard, registry, and dimensional progress"
-        command: "node .opencode/skill/sk-agent-improver/scripts/reduce-state.cjs {spec_folder}/improvement"
+        command: "node .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs {spec_folder}/improvement"
       gate_after_score:
         type: approval_gate
         description: "Operator reviews scores and decides next action"
@@ -188,7 +188,7 @@ workflow:
       step_promote_candidate:
         description: "Promote the accepted candidate to canonical target (guarded, requires score evidence)"
         condition: "gate_after_score == 'B' AND score_recommendation == 'candidate-better'"
-        command: "node .opencode/skill/sk-agent-improver/scripts/promote-candidate.cjs --candidate={candidate_path} --target={target_path} --score={score_output_path} --benchmark-report={benchmark_output_path} --repeatability-report={repeatability_output_path} --config={spec_folder}/improvement/agent-improvement-config.json --manifest={spec_folder}/improvement/target-manifest.jsonc --archive-dir={spec_folder}/improvement/archive --approve"
+        command: "node .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs --candidate={candidate_path} --target={target_path} --score={score_output_path} --benchmark-report={benchmark_output_path} --repeatability-report={repeatability_output_path} --config={spec_folder}/improvement/agent-improvement-config.json --manifest={spec_folder}/improvement/target-manifest.jsonc --archive-dir={spec_folder}/improvement/archive --approve"
 
   phase_synthesis:
     description: "After loop exits, summarize findings and recommend next action"

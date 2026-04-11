@@ -564,7 +564,7 @@ exec
    121	
    122	**Decisions:** 6 decisions recorded
    123	
-   124	**Summary:** Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md ...
+   124	**Summary:** Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md ...
    125	
    126	### Pending Work
    127	
@@ -976,7 +976,7 @@ exec
    505	
    506	> **User** | 2026-03-04 @ 09:15:09
    507	
-   508	Refocused sk-prompt-improver skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
+   508	Refocused sk-improve-prompt skill to text-only by removing all visual/creative mode references (VIBE, VIBE-MP, FRAME, MOTION frameworks; EVOKE/VISUAL scoring), deleting consolidated format_guides.md and interactive_mode.md references, adding 4 missing framework deep dives (RACE, CIDI, CRISPE, CRAFT) and CLEAR per-dimension rubrics to patterns_evaluation.md, rewrote SKILL.md Section 2 Smart Router to align with canonical sk-doc template (split score_intents/select_intents, UNKNOWN_FALLBACK_CHECKLIST, ON_DEMAND_KEYWORDS, RESOURCE_BASES), moved interactive mode orchestration content from deleted reference file into command files as inline Step 1a (response templates, error recovery, smart defaults, formatting rules), updated skill/README.md with correct version and framework list, and created v1.2.0.0 changelog. All changes committed and pushed to main.
    509	
    510	---
    511	
@@ -1287,12 +1287,12 @@ exec
    599	  // Step 7.6: Tree thinning — pre-pipeline token reduction
  succeeded in 51ms:
    740	key_files:
-   741	  - ".opencode/skill/sk-prompt-improver/(merged-small-files)"
+   741	  - ".opencode/skill/sk-improve-prompt/(merged-small-files)"
    742	  - ".opencode/.../references/(merged-small-files)"
    743	  - ".opencode/skill/(merged-small-files)"
    744	  - ".opencode/command/create/(merged-small-files)"
    745	  - ".agents/commands/create/(merged-small-files)"
-   746	  - ".opencode/changelog/13--sk-prompt-improver/(merged-small-files)"
+   746	  - ".opencode/changelog/13--sk-improve-prompt/(merged-small-files)"
    747	
  succeeded in 51ms:
    244	**Key Files:**

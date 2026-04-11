@@ -1,6 +1,6 @@
 ---
-title: "Decision Record: Agent Improvement Loop [skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/decision-record]"
-description: "Architecture decisions for building sk-agent-improver as a bounded experiment system instead of a freeform self-editing loop."
+title: "Decision Record: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/decision-record]"
+description: "Architecture decisions for building sk-improve-agent as a bounded experiment system instead of a freeform self-editing loop."
 trigger_phrases:
   - "agent improvement decisions"
   - "decision record"
@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-We needed to decide whether `sk-agent-improver` should begin by directly editing agent files or by staying in a proposal-only mode first. The research packet showed that this repo already has strong loop packaging patterns, but it does not yet have a benchmark-grade evaluator for agent quality. Shipping mutation first would make every later score suspect.
+We needed to decide whether `sk-improve-agent` should begin by directly editing agent files or by staying in a proposal-only mode first. The research packet showed that this repo already has strong loop packaging patterns, but it does not yet have a benchmark-grade evaluator for agent quality. Shipping mutation first would make every later score suspect.
 
 ### Constraints
 

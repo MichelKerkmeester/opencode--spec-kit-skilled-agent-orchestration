@@ -4,7 +4,7 @@
   "family": "session-bootstrap",
   "evaluationMode": "prompt-surface",
   "target": ".opencode/agent/context-prime.md",
-  "candidate": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/improvement/candidates/context-prime-candidate-001.md",
+  "candidate": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/improvement/candidates/context-prime-candidate-001.md",
   "baseline": ".opencode/agent/context-prime.md",
   "score": 100,
   "totals": {

@@ -26,8 +26,8 @@ contextType: "general"
 | **Created** | 2026-04-03 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Predecessor** | [../003-sk-agent-improver-doc-alignment/](../003-sk-agent-improver-doc-alignment/) |
-| **Successor** | [../005-sk-agent-improver-package-runtime-alignment/](../005-sk-agent-improver-package-runtime-alignment/) |
+| **Predecessor** | [../003-sk-improve-agent-doc-alignment/](../003-sk-improve-agent-doc-alignment/) |
+| **Successor** | [../005-sk-improve-agent-package-runtime-alignment/](../005-sk-improve-agent-package-runtime-alignment/) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -60,10 +60,10 @@ Create a verification-focused phase that proves a real `candidate-better` handov
 - Broadening target families beyond `handover` and `context-prime`
 
 ### Files to Change
-- `.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs`
-- `.opencode/skill/sk-agent-improver/references/evaluator_contract.md`
-- `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/`
-- `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/`
+- `.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs`
+- `.opencode/skill/sk-improve-agent/references/evaluator_contract.md`
+- `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/004-sk-improve-agent-promotion-verification/`
+- `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/`
 - `.opencode/specs/descriptions.json`
 <!-- /ANCHOR:scope -->
 

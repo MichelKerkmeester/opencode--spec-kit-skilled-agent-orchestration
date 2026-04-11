@@ -1,5 +1,5 @@
 ## Session Context
-- **Spec Folder:** 041-sk-agent-improver-loop/002-sk-agent-improver-full-skill
+- **Spec Folder:** 041-sk-improve-agent-loop/002-sk-improve-agent-full-skill
 
 ## Recommended Next Steps
 1. run code_graph_scan

@@ -1,7 +1,7 @@
 # Iteration 13: Adversarial Critique and Go/No-Go Conditions
 
 ## Focus
-Stress-test the overall recommendation by asking when `sk-agent-improver` should not be built and what evidence would justify proceeding anyway.
+Stress-test the overall recommendation by asking when `sk-improve-agent` should not be built and what evidence would justify proceeding anyway.
 
 ## Findings
 1. The biggest risk is false confidence. The repo explicitly requires verification, strict scope, and halt-on-uncertainty behavior, so an autonomous improvement loop without a trustworthy scorer would manufacture activity without trustworthy progress. [SOURCE: AGENTS.md:12] [SOURCE: AGENTS.md:14] [SOURCE: AGENTS.md:15]
@@ -23,7 +23,7 @@ Stress-test the overall recommendation by asking when `sk-agent-improver` should
 
 ## Assessment
 - New information ratio: 0.31
-- Questions addressed: What capabilities are missing if we want a reliable `sk-agent-improver` rather than a one-off research packet? What should the MVP scope, boundaries, and success metric be for a new skill in this repo?
+- Questions addressed: What capabilities are missing if we want a reliable `sk-improve-agent` rather than a one-off research packet? What should the MVP scope, boundaries, and success metric be for a new skill in this repo?
 - Questions answered: None newly answered; this iteration converted the recommendation into explicit go/no-go conditions.
 
 ## Reflection

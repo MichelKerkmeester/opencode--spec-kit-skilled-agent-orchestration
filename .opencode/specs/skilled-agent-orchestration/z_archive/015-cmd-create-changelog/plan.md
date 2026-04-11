@@ -125,7 +125,7 @@ User invokes /create:changelog <spec-folder> [:auto|:confirm]
 | `.opencode/skill/sk-code-review/**` | `09--sk-code-review` |
 | `.opencode/skill/sk-git/**` | `10--sk-git` |
 | `.opencode/skill/sk-doc/**` | `11--sk-doc` |
-| `.opencode/skill/sk-prompt-improver/**` | `13--sk-prompt-improver` |
+| `.opencode/skill/sk-improve-prompt/**` | `13--sk-improve-prompt` |
 | `.opencode/skill/mcp-chrome-devtools/**` | `14--mcp-chrome-devtools` |
 | `.opencode/skill/mcp-code-mode/**` | `15--mcp-code-mode` |
 | `.opencode/skill/mcp-figma/**` | `16--mcp-figma` |

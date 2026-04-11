@@ -41,7 +41,7 @@ contextType: "implementation"
 
 | File Path | Change Type | LOC | Description |
 |-----------|-------------|-----|-------------|
-| `.opencode/command/create/prompt.md` | Create | 338 | New `/create:prompt` command — mode-based workflow command wrapping sk-prompt-improver skill |
+| `.opencode/command/create/prompt.md` | Create | 338 | New `/create:prompt` command — mode-based workflow command wrapping sk-improve-prompt skill |
 | `.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/spec.md` | Create | 167 | Feature specification |
 | `.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/plan.md` | Create | 184 | Implementation plan |
 | `.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/tasks.md` | Create | 83 | Task breakdown (10 tasks, all complete) |
@@ -54,11 +54,11 @@ contextType: "implementation"
 
 ### Command: `/create:prompt`
 
-A mode-based workflow command in the `create/` namespace that provides a user-facing entry point for prompt engineering via the `sk-prompt-improver` skill.
+A mode-based workflow command in the `create/` namespace that provides a user-facing entry point for prompt engineering via the `sk-improve-prompt` skill.
 
 **Key features:**
 - **Mandatory gate**: Blocks execution without explicit prompt input; prevents context inference
-- **7 mode prefixes**: `$text`, `$improve`, `$refine`, `$short`, `$json`, `$yaml`, `$raw` — maps to sk-prompt-improver operating modes
+- **7 mode prefixes**: `$text`, `$improve`, `$refine`, `$short`, `$json`, `$yaml`, `$raw` — maps to sk-improve-prompt operating modes
 - **Execution modes**: `:auto` (default, autonomous) and `:confirm` (interactive with approval gates)
 - **DEPTH processing**: Full 5-phase pipeline (Discover → Engineer → Prototype → Test → Harmonize) with energy levels per mode
 - **CLEAR scoring**: 50-point quality scoring with dimension floors and threshold enforcement (40+/50)

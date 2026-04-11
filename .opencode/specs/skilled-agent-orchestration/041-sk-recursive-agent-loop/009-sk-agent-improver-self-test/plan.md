@@ -25,7 +25,7 @@ Run the full `/improve:agent` command targeting agent-improver.md.
 - Mode: `:confirm` (interactive gates for observation at each iteration)
 - Scoring: Dynamic (5-dimension, no static profile exists for agent-improver)
 - Iterations: 3 maximum
-- Runtime root: `009-sk-agent-improver-self-test/improvement/`
+- Runtime root: `009-sk-improve-agent-self-test/improvement/`
 
 Per iteration: scan refresh → dispatch `@agent-improver` → score candidate → benchmark → append ledger → reduce state → check stop.
 
@@ -60,7 +60,7 @@ D2 + D3 ← D4 (parent updates)
 
 ## Self-Referential Edge Cases
 
-1. **Scanner finds own surfaces**: sk-agent-improver SKILL.md references `agent-improver` heavily — high ref count expected, not a bug
+1. **Scanner finds own surfaces**: sk-improve-agent SKILL.md references `agent-improver` heavily — high ref count expected, not a bug
 2. **Tautological rule coherence**: Profile extracts rules from agent-improver.md, then checks the same content for those rules — first iteration scores near 100
 3. **Rapid plateau**: Well-maintained agent file likely converges immediately → plateau stop after 1-2 iterations
 4. **No static fixtures**: `run-benchmark.cjs` has no fixture dir for agent-improver — observe how dynamic-only mode handles this

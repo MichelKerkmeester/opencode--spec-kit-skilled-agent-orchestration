@@ -42,7 +42,7 @@ This directory serves as the configuration backbone of the OpenCode AI Assistant
 
 The framework is built on two core systems:
 
-1. **Memory Engine**: 43 MCP tools across 7 layers, with graph-first structural routing (Code Graph before semantic), 3-tier FTS fallback, 3-source indexing, 7-intent retrieval routing, schema v15 metadata (`document_type`, `spec_level`), document-type scoring, causal lineage tracking, typed-weighted degree channel, persistent embedding cache, query complexity routing, RSF fusion, confidence truncation, post-save quality gates with heuristic calibration, and CocoIndex semantic code search bridge
+1. **Memory Engine**: 47 MCP tools across 7 layers, with graph-first structural routing (Code Graph before semantic), 3-tier FTS fallback, 3-source indexing, 7-intent retrieval routing, schema v15 metadata (`document_type`, `spec_level`), document-type scoring, causal lineage tracking, typed-weighted degree channel, persistent embedding cache, query complexity routing, RSF fusion, confidence truncation, post-save quality gates with heuristic calibration, and CocoIndex semantic code search bridge
 2. **Spec Kit Documentation Framework**: Structured documentation with 83 templates, 13 validation rules and Level 1-3+ CORE + ADDENDUM architecture
 
 Together, these systems enable context-aware development with traceability, hardened retrieval behavior and session continuity through quality gates.
@@ -52,7 +52,7 @@ Together, these systems enable context-aware development with traceability, hard
 | Category | Count | Details |
 |---|---:|---|
 | MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
-| MCP Tools | 52 | 43 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
+| MCP Tools | 56 | 47 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
 | Agents | 12 | Base agent definitions in `.opencode/agent/*.md` |
 | Skills | 20 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
 | Commands | 21 | Markdown command entry points in `.opencode/command/` (8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility) |
@@ -141,10 +141,10 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 | `cli-codex` | Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel code generation, and multi-agent task dispatch (v1.2.0) |
 | `cli-claude-code` | Claude Code CLI orchestration enabling external AIs to invoke Claude Code for deep reasoning, extended thinking, code editing, and structured output (v1.0) |
 | `cli-copilot` | Copilot CLI orchestration for multi-model tasks, cloud delegation, plan mode, autopilot, and repository memory (v1.2.0) |
-| `sk-agent-improver` | Evaluator-first agent improvement with 5-dimension integration-aware scoring, dynamic profiling, deterministic benchmarks, and guarded promotion (v1.0.0) |
+| `sk-improve-agent` | Evaluator-first agent improvement with 5-dimension integration-aware scoring, dynamic profiling, deterministic benchmarks, and guarded promotion (v1.0.0) |
 | `sk-deep-research` | Autonomous deep-research loop protocol with iterative investigation and convergence handling (v1.0) |
 | `sk-deep-review` | Autonomous iterative code review with severity-weighted findings, dimension coverage, convergence detection, and release readiness verdicts (v1.0) |
-| `sk-prompt-improver` | Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring (v1.0) |
+| `sk-improve-prompt` | Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring (v1.0) |
 
 **Skill Structure:** Each skill contains `SKILL.md` (entry point), `references/` (documentation), `scripts/` (automation) and `assets/` (templates/checklists).
 
@@ -245,7 +245,7 @@ The Spec Kit Memory MCP provides persistent context across sessions:
 
 - **Storage:** Memory files in `specs/[###-name]/memory/` using ANCHOR format for structured retrieval
 - **Engine:** SQLite + `sqlite-vec` with provider auto-detection (Voyage, OpenAI, HF Local)
-- **Retrieval:** Graph-first routing (structural Code Graph before semantic CocoIndex), hybrid search across vector, BM25, FTS5, trigger matching and typed-weighted degree channels with RRF + RSF (Reciprocal Similarity Fusion) fusion, 3-tier FTS fallback (vector-only -> vector+BM25 -> all channels), cross-encoder reranking, query complexity routing (simple/moderate/complex), confidence truncation (2x median gap), persistent embedding cache and interference scoring
+- **Retrieval:** Graph-first routing (structural Code Graph before semantic CocoIndex), hybrid search across vector, BM25, FTS5, trigger matching and typed-weighted degree channels with RRF + RSF (Reciprocal Similarity Fusion) fusion, 3-tier FTS fallback (FTS5 full-text -> BM25 keyword scoring -> Grep/Glob filesystem search when graph and semantic channels miss), cross-encoder reranking, query complexity routing (simple/moderate/complex), confidence truncation (2x median gap), persistent embedding cache and interference scoring
 - **Architecture:** 7-layer tool hierarchy (L1 Orchestration to L7 Maintenance)
 - **Indexing:** 3 sources (spec memories, constitutional files, spec documents) with `includeSpecDocs: true` default
 - **Schema:** v15 adds `document_type` and `spec_level` columns for document-type scoring and filtering

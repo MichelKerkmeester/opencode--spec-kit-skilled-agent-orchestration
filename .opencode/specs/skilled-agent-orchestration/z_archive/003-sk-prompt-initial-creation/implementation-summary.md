@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: sk-prompt-improv [03--commands-and-skills/003-sk-prompt-initial-creation/implementation-summary]"
-description: "title: \"Implementation Summary: sk-prompt-improver Initial Creation\""
+description: "title: \"Implementation Summary: sk-improve-prompt Initial Creation\""
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -35,7 +35,7 @@ contextType: "implementation"
 
 ### What Was Built
 
-The standalone Prompt Improver AI system (v0.200, ~250KB across 7+ documents) is now an OpenCode-native skill. You can invoke `sk-prompt-improver` through the skill advisor and get structured prompt engineering across text, visual, image, and video domains with automatic framework selection and quality scoring.
+The standalone Prompt Improver AI system (v0.200, ~250KB across 7+ documents) is now an OpenCode-native skill. You can invoke `sk-improve-prompt` through the skill advisor and get structured prompt engineering across text, visual, image, and video domains with automatic framework selection and quality scoring.
 
 ### SKILL.md Orchestrator
 
@@ -56,7 +56,7 @@ Each reference file was adapted from the original Prompt Improver knowledge base
 
 ### Skill Advisor Integration
 
-The skill advisor (`skill_advisor.py`) now routes to `sk-prompt-improver` with 0.95 confidence for prompt-related queries. Registration includes 18 intent booster keywords, 21 phrase-level boosters, 4 multi-skill booster entries, and 3 synonym map entries.
+The skill advisor (`skill_advisor.py`) now routes to `sk-improve-prompt` with 0.95 confidence for prompt-related queries. Registration includes 18 intent booster keywords, 21 phrase-level boosters, 4 multi-skill booster entries, and 3 synonym map entries.
 
 ---
 
@@ -114,7 +114,7 @@ Verification covered: SKILL.md frontmatter validation, section presence check (8
 | SKILL.md word count | PASS — 2,334 words (46.7% of 5,000 limit) |
 | RULES subsections | PASS — ALWAYS (6), NEVER (5), ESCALATE IF (3) |
 | Reference files complete | PASS — 8/8 files present, 307KB total |
-| Skill advisor routing | PASS — "improve my prompt" returns sk-prompt-improver at 0.95 confidence |
+| Skill advisor routing | PASS — "improve my prompt" returns sk-improve-prompt at 0.95 confidence |
 | Triple scoring documented | PASS — 174 occurrences of CLEAR/EVOKE/VISUAL across reference files |
 | DEPTH framework integrated | PASS — 43 matches for DEPTH methodology terms in depth_framework.md |
 | All tasks completed | PASS — 15/15 tasks marked [x] in tasks.md |
@@ -136,7 +136,7 @@ Verification covered: SKILL.md frontmatter validation, section presence check (8
 1. **P2 items deferred.** README.md for the skill folder, per-file word count audit (some references exceed 10k words), and flowchart supplements were not created. These are nice-to-have items that can be added in a follow-up spec.
 2. **No end-to-end invocation test.** The skill was verified structurally (frontmatter, sections, routing) but not tested with an actual prompt improvement request through the full pipeline. Manual testing is recommended.
 3. **Large reference files.** image_mode.md (64KB) and visual_mode.md (49KB) are substantial. Consider splitting if context window pressure becomes an issue during actual use.
-4. **Missing reference files (audit finding, 2026-03-21).** The implementation-summary and verification table above claim 8/8 reference files present. As of the spec folder alignment audit, only 2 of the 8 reference files in `.opencode/skill/sk-prompt-improver/references/` actually exist on disk: depth_framework.md and patterns_evaluation.md. The following 6 files are missing: system_prompt.md, interactive_mode.md, visual_mode.md, image_mode.md, video_mode.md, format_guides.md. The skill was subsequently refactored (spec 003, session 2026-03-04) to remove visual/creative modes, so the missing visual/image/video/interactive mode files may have been intentionally deleted. system_prompt.md and format_guides.md are unaccounted for. A follow-up task should verify the current state of the skill and update the reference list accordingly.
+4. **Missing reference files (audit finding, 2026-03-21).** The implementation-summary and verification table above claim 8/8 reference files present. As of the spec folder alignment audit, only 2 of the 8 reference files in `.opencode/skill/sk-improve-prompt/references/` actually exist on disk: depth_framework.md and patterns_evaluation.md. The following 6 files are missing: system_prompt.md, interactive_mode.md, visual_mode.md, image_mode.md, video_mode.md, format_guides.md. The skill was subsequently refactored (spec 003, session 2026-03-04) to remove visual/creative modes, so the missing visual/image/video/interactive mode files may have been intentionally deleted. system_prompt.md and format_guides.md are unaccounted for. A follow-up task should verify the current state of the skill and update the reference list accordingly.
 
 ---
 

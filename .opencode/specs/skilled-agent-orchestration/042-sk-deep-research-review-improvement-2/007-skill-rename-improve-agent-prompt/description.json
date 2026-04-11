@@ -1,0 +1,18 @@
+{
+  "specFolder": "042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt",
+  "description": "Phase 1: skill-rename-improve-agent-prompt",
+  "keywords": [
+    "phase",
+    "skill-rename-improve-agent-prompt"
+  ],
+  "lastUpdated": "2026-04-11T06:05:30.316Z",
+  "specId": "007",
+  "folderSlug": "skill-rename-improve-agent-prompt",
+  "parentChain": [
+    "042-sk-deep-research-review-improvement-2"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "11-04-26_07-28__renamed-two-opencode-skills-to-align-with-the.md"
+  ]
+}

@@ -58,7 +58,7 @@
 - [x] improve/ README.txt created in all 4 runtimes
 
 ### Rename
-- [x] Skill renamed: sk-recursive-agent -> sk-agent-improver (0 old refs)
+- [x] Skill renamed: sk-recursive-agent -> sk-improve-agent (0 old refs)
 - [x] Agent renamed: recursive-agent -> agent-improver (all 5 runtimes)
 - [x] Command renamed: /spec_kit:recursive-agent -> /improve:agent
 - [x] YAMLs renamed: spec_kit_recursive-agent -> improve_agent-improver

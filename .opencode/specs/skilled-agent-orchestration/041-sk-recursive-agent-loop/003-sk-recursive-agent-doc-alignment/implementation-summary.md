@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Recursive Agent sk-doc Alignment [template:level_2/implementation-summary.md]"
-description: "Phase 003 closed the remaining sk-doc alignment gaps across sk-agent-improver, the canonical loop command and agent, and the parent packet records."
+description: "Phase 003 closed the remaining sk-doc alignment gaps across sk-improve-agent, the canonical loop command and agent, and the parent packet records."
 trigger_phrases:
   - "041 phase 003 implementation summary"
   - "recursive agent doc alignment summary"
@@ -20,7 +20,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 003-sk-agent-improver-doc-alignment |
+| **Spec Folder** | 003-sk-improve-agent-doc-alignment |
 | **Completed** | 2026-04-03 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -33,9 +33,9 @@ contextType: "general"
 This phase closed the remaining documentation-shape work after the functional agent-improver phases were already done.
 
 What changed:
-- `.opencode/skill/sk-agent-improver/SKILL.md` now uses the expected `sk-doc` skill package structure, including a proper `REFERENCES` section
+- `.opencode/skill/sk-improve-agent/SKILL.md` now uses the expected `sk-doc` skill package structure, including a proper `REFERENCES` section
 - the skill README now includes a table of contents, overview, and clearer operator sections
-- every markdown reference and markdown asset under `sk-agent-improver` now has the required `OVERVIEW` structure
+- every markdown reference and markdown asset under `sk-improve-agent` now has the required `OVERVIEW` structure
 - the canonical loop command now follows the expected command structure with `PURPOSE`, `INSTRUCTIONS`, examples, and notes
 - the canonical loop agent now follows the expected agent structure with workflow, capability scan, verification, anti-patterns, and related resources
 - parent packet `041` now records this work as phase `003`
@@ -70,14 +70,14 @@ The work happened in three steps:
 ## Verification
 
 Verification completed:
-- `python3 .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/sk-agent-improver --check`
-- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/sk-agent-improver/README.md --type readme`
+- `python3 .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/sk-improve-agent --check`
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/sk-improve-agent/README.md --type readme`
 - `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/command/spec_kit/agent-improver.md --type command`
 - `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/agent/agent-improver.md --type agent`
-- `python3` batch validation across `.opencode/skill/sk-agent-improver/references/*.md`
-- `python3` batch validation across markdown files under `.opencode/skill/sk-agent-improver/assets/`
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop --strict`
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/003-sk-agent-improver-doc-alignment --strict`
+- `python3` batch validation across `.opencode/skill/sk-improve-agent/references/*.md`
+- `python3` batch validation across markdown files under `.opencode/skill/sk-improve-agent/assets/`
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop --strict`
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/003-sk-improve-agent-doc-alignment --strict`
 - `python3` JSON parse for `.opencode/specs/descriptions.json`
 <!-- /ANCHOR:verification -->
 

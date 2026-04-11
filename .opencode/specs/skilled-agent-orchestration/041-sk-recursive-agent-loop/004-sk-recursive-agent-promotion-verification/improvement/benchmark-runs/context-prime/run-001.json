@@ -15,7 +15,7 @@
   "fixtures": [
     {
       "id": "clean-bootstrap",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/benchmark-runs/context-prime/baseline/clean-bootstrap.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/004-sk-improve-agent-promotion-verification/improvement/benchmark-runs/context-prime/baseline/clean-bootstrap.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,
@@ -26,7 +26,7 @@
     },
     {
       "id": "urgent-skip",
-      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/004-sk-agent-improver-promotion-verification/improvement/benchmark-runs/context-prime/baseline/urgent-skip.md",
+      "outputPath": ".opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/004-sk-improve-agent-promotion-verification/improvement/benchmark-runs/context-prime/baseline/urgent-skip.md",
       "score": 100,
       "maxScore": 100,
       "passed": true,

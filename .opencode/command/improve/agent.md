@@ -43,7 +43,7 @@ SELF-CHECK: Are you operating as the @general agent?
     │   ┌────────────────────────────────────────────────────────────┐
     │   │ ⛔ GENERAL AGENT REQUIRED                                  │
     │   │                                                            │
-    │   │ This command orchestrates sk-agent-improver skill          │
+    │   │ This command orchestrates sk-improve-agent skill          │
     │   │ invocation and does not require @write routing.            │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
@@ -237,16 +237,16 @@ $ARGUMENTS
 
 ## 4. WORKFLOW STEPS
 
-### Step 1: Load sk-agent-improver Skill
+### Step 1: Load sk-improve-agent Skill
 
 ```
-Read(".opencode/skill/sk-agent-improver/SKILL.md")
+Read(".opencode/skill/sk-improve-agent/SKILL.md")
 ```
 
 ### Step 2: Run Integration Scan
 
 ```bash
-node .opencode/skill/sk-agent-improver/scripts/scan-integration.cjs --agent={agent_name} --output={spec_folder}/improvement/integration-report.json
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={agent_name} --output={spec_folder}/improvement/integration-report.json
 ```
 
 Review the integration report: mirror sync status, command coverage, skill references.
@@ -255,11 +255,11 @@ Review the integration report: mirror sync status, command coverage, skill refer
 
 **Dynamic mode (scoring_mode = dynamic):**
 ```bash
-node .opencode/skill/sk-agent-improver/scripts/generate-profile.cjs --agent={target_path} --output={spec_folder}/improvement/dynamic-profile.json
+node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent={target_path} --output={spec_folder}/improvement/dynamic-profile.json
 ```
 
 **Static mode (scoring_mode = static):**
-Load profile from `.opencode/skill/sk-agent-improver/assets/target-profiles/{target_profile}.json`
+Load profile from `.opencode/skill/sk-improve-agent/assets/target-profiles/{target_profile}.json`
 
 ### Step 4: Initialize Runtime
 
@@ -297,7 +297,7 @@ At each iteration boundary, the orchestrator MUST emit journal events via `impro
 
 ```bash
 # At session start:
-node .opencode/skill/sk-agent-improver/scripts/improvement-journal.cjs --emit --journal={spec_folder}/improvement/improvement-journal.jsonl --event=session_initialized
+node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit --journal={spec_folder}/improvement/improvement-journal.jsonl --event=session_initialized
 
 # After each candidate is scored:
 # (programmatic: emitEvent(journalPath, { eventType: 'candidate_scored', iteration, candidateId, details: { dimensions, weightedScore } }))
@@ -410,7 +410,7 @@ STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="all_dimensions_plateaued"
 
 ## 7. NOTES
 
-- **Skill dependency**: Requires `sk-agent-improver` at `.opencode/skill/sk-agent-improver/`
+- **Skill dependency**: Requires `sk-improve-agent` at `.opencode/skill/sk-improve-agent/`
 - **Promotion**: Only handover target with static profile is promotion-eligible. Dynamic profiles produce assessment only.
 - **Scoring**: All 5 dimensions are deterministic (regex, string matching, file existence). No LLM-as-judge.
 - **Stop rules**: Loop stops on dimension plateau (3+ identical scores), max iterations, or infra failure threshold.

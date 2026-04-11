@@ -73,14 +73,14 @@ Built the complete evaluator-first MVP for bounded agent improvement. The phase 
 
 | File | What changed |
 | --- | --- |
-| `sk-agent-improver/scripts/score-candidate.cjs` | Deterministic prompt-surface scorer with keyword and structural checks. |
-| `sk-agent-improver/scripts/reduce-state.cjs` | Append-only ledger reducer with dashboard generation and stop-condition logic. |
-| `sk-agent-improver/scripts/promote-candidate.cjs` | Guarded canonical promotion with manifest validation and proposal-only blocking. |
-| `sk-agent-improver/scripts/rollback-candidate.cjs` | Canonical rollback helper with ledger-backed baseline restore. |
-| `sk-agent-improver/scripts/check-mirror-drift.cjs` | Mirror drift reporter comparing manifest surfaces to discovered copies. |
+| `sk-improve-agent/scripts/score-candidate.cjs` | Deterministic prompt-surface scorer with keyword and structural checks. |
+| `sk-improve-agent/scripts/reduce-state.cjs` | Append-only ledger reducer with dashboard generation and stop-condition logic. |
+| `sk-improve-agent/scripts/promote-candidate.cjs` | Guarded canonical promotion with manifest validation and proposal-only blocking. |
+| `sk-improve-agent/scripts/rollback-candidate.cjs` | Canonical rollback helper with ledger-backed baseline restore. |
+| `sk-improve-agent/scripts/check-mirror-drift.cjs` | Mirror drift reporter comparing manifest surfaces to discovered copies. |
 | `.opencode/agent/agent-improver.md` | Canonical mutator agent definition. |
 | `.opencode/command/improve/agent.md` | Command entrypoint for the improvement loop. |
-| `.opencode/skill/sk-agent-improver/` | Full skill package with charter, strategy, config, manifest, SKILL.md, README. |
+| `.opencode/skill/sk-improve-agent/` | Full skill package with charter, strategy, config, manifest, SKILL.md, README. |
 
 </details>
 

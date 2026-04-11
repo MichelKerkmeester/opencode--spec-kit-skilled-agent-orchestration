@@ -32,7 +32,7 @@ contextType: "planning"
 This plan delivers three parts:
 
 - **Part A**: Rigorous integration and stress tests that verify CJS-to-TS API contract alignment, namespace isolation, and performance at scale
-- **Part B**: Manual testing playbook updates adding graph-specific test cases to sk-deep-research, sk-deep-review, and sk-agent-improver
+- **Part B**: Manual testing playbook updates adding graph-specific test cases to sk-deep-research, sk-deep-review, and sk-improve-agent
 - **Part C**: README updates for skills missing graph capability references
 <!-- /ANCHOR:summary -->
 
@@ -53,7 +53,7 @@ This plan delivers three parts:
 - [ ] Integration test suite passes with zero failures
 - [ ] Stress test suite passes with acceptable performance
 - [ ] 4 new playbook files in sk-deep-research and sk-deep-review
-- [ ] 3 new playbook files in sk-agent-improver
+- [ ] 3 new playbook files in sk-improve-agent
 - [ ] Skill READMEs updated where graph references are missing
 - [ ] Checklist items verified with evidence
 <!-- /ANCHOR:quality-gates -->
@@ -95,7 +95,7 @@ This plan delivers three parts:
 
 ### Part C: README Updates
 
-6. Update READMEs for sk-deep-research, sk-deep-review, and sk-agent-improver to reference graph capabilities where missing.
+6. Update READMEs for sk-deep-research, sk-deep-review, and sk-improve-agent to reference graph capabilities where missing.
 <!-- /ANCHOR:plan -->
 
 ---

@@ -15,7 +15,7 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Topic: Compare autoagent-main automatic agent iteration with our .opencode/agent system and assess feasibility of a new skill named sk-agent-improver.
+- Topic: Compare autoagent-main automatic agent iteration with our .opencode/agent system and assess feasibility of a new skill named sk-improve-agent.
 - Started: 2026-04-03T12:06:08Z
 - Status: COMPLETE
 - Iteration: 13 of 13
@@ -32,7 +32,7 @@ Reducer-generated observability surface for the active research packet.
 |---|-------|-------|-------|----------|--------|
 | 1 | External autoagent-main loop anatomy | external-loop | 1.00 | 4 | complete |
 | 2 | Internal mapping to .opencode/agent and skills | internal-mapping | 0.90 | 4 | complete |
-| 3 | Feasibility and MVP boundaries for sk-agent-improver | feasibility | 0.80 | 4 | insight |
+| 3 | Feasibility and MVP boundaries for sk-improve-agent | feasibility | 0.80 | 4 | insight |
 | 4 | Deeper experiment contract inside autoagent-main | external-loop | 0.57 | 4 | complete |
 | 5 | Runtime target topology and canonical mutation surface | internal-topology | 0.82 | 5 | complete |
 | 6 | Evaluator candidates from existing validation surfaces | evaluator | 0.58 | 5 | insight |
@@ -55,7 +55,7 @@ Reducer-generated observability surface for the active research packet.
 - Answered: 4/4
 - [x] How does `autoagent-main` structure its automatic agent-improvement loop and editable boundary?
 - [x] Which parts of that loop align with our existing `.opencode/agent`, `sk-deep-research`, and skill infrastructure?
-- [x] What capabilities are missing if we want a reliable `sk-agent-improver` rather than a one-off research packet?
+- [x] What capabilities are missing if we want a reliable `sk-improve-agent` rather than a one-off research packet?
 - [x] What should the MVP scope, boundaries, and success metric be for a new skill in this repo?
 
 <!-- /ANCHOR:questions -->
@@ -70,14 +70,14 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
 ## 6. DEAD ENDS
-- Assuming the harness itself is the human-authored control plane. The human-controlled directive actually lives in `program.md`, which means the loop depends on a stable "meta-program" surface rather than ad hoc prompting. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/README.md:7] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:3] (iteration 1)
-- Treating `autoagent-main` as a research loop equivalent to `sk-deep-research` is inaccurate; it is an experiment loop with benchmark scoring, not a general evidence-synthesis loop. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/README.md:5] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:80] (iteration 1)
+- Assuming the harness itself is the human-authored control plane. The human-controlled directive actually lives in `program.md`, which means the loop depends on a stable "meta-program" surface rather than ad hoc prompting. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/README.md:7] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:3] (iteration 1)
+- Treating `autoagent-main` as a research loop equivalent to `sk-deep-research` is inaccurate; it is an experiment loop with benchmark scoring, not a general evidence-synthesis loop. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/README.md:5] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:80] (iteration 1)
 - Directly equating `.opencode/agent/*.md` with `autoagent-main`'s single-file harness would erase a key architectural difference: our agent layer is only one surface inside a broader command/skill/runtime ecosystem. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:16] [SOURCE: .opencode/agent/deep-research.md:28] (iteration 2)
 - Treating "add a skill folder" as the hard part of this idea is misleading. Skill discovery and creation are already solved; evaluation contract, mutable target definition, and success metrics are the real blockers. [SOURCE: .opencode/skill/README.md:46] [SOURCE: .opencode/command/create/sk-skill.md:201] (iteration 2)
-- Copying `autoagent-main` wholesale would import the wrong trust boundary. Its loop assumes a benchmark harness under test, while our repo currently organizes behavior across commands, skills, and runtime agent files rather than one isolated harness file. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/README.md:13] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:137] (iteration 3)
-- Starting with a fully autonomous overnight loop over the entire `.opencode/agent` directory is too broad for an MVP because the repository lacks a benchmark-grade evaluator and because runtime mirrors would make result attribution ambiguous. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:16] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:35] (iteration 3)
-- The snapshot still does not expose the exact git rollback mechanic for rejected runs. The policy outcome is explicit, but the concrete reset/revert procedure remains implicit in this import. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:145] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:162] (iteration 4)
-- Treating keep/discard as a stateless "best score wins" rule is too shallow; the loop is designed to preserve evidence from rejected runs and to separate infra noise from actual harness changes. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:160] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/external/autoagent-main/program.md:204] (iteration 4)
+- Copying `autoagent-main` wholesale would import the wrong trust boundary. Its loop assumes a benchmark harness under test, while our repo currently organizes behavior across commands, skills, and runtime agent files rather than one isolated harness file. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/README.md:13] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:137] (iteration 3)
+- Starting with a fully autonomous overnight loop over the entire `.opencode/agent` directory is too broad for an MVP because the repository lacks a benchmark-grade evaluator and because runtime mirrors would make result attribution ambiguous. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:16] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:35] (iteration 3)
+- The snapshot still does not expose the exact git rollback mechanic for rejected runs. The policy outcome is explicit, but the concrete reset/revert procedure remains implicit in this import. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:145] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:162] (iteration 4)
+- Treating keep/discard as a stateless "best score wins" rule is too shallow; the loop is designed to preserve evidence from rejected runs and to separate infra noise from actual harness changes. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:160] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/external/autoagent-main/program.md:204] (iteration 4)
 - I did not locate a checked-in sync/generation workflow that deterministically refreshes all runtime copies from `.opencode/agent`, which keeps mirror maintenance a live drift risk. [SOURCE: .opencode/README.md:330] [SOURCE: .opencode/install_guides/README.md:1421] (iteration 5)
 - Treating `.opencode/agent`, `.claude/agents`, `.codex/agents`, and `.gemini/agents` as equal first-class mutation targets is too broad for an MVP; some are copies, some are format translations, and some behavior lives in adjacent control files. [SOURCE: .opencode/README.md:330] [SOURCE: .codex/config.toml:47] [SOURCE: .opencode/skill/cli-gemini/SKILL.md:277] (iteration 5)
 - A pure prompt-quality evaluator is too subjective for a first loop. The repo already favors structural checks, deterministic tests, and thresholded quality scores over freeform prose judgment. [SOURCE: .opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh:126] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts:49] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:670] (iteration 6)

@@ -6,7 +6,7 @@
 
 ## 008-holistic-evaluation — 2026-04-04
 
-Transformed the sk-agent-improver evaluation from structural keyword-checking (~15-20% coverage) to a 5-dimension integration-aware scoring framework. Added two new scripts (integration scanner, dynamic profile generator), refactored three existing scripts for dimensional scoring, executed a repo-wide rename from `sk-recursive-agent` to `sk-agent-improver`, and rewrote all documentation and command surfaces to match the new capabilities.
+Transformed the sk-improve-agent evaluation from structural keyword-checking (~15-20% coverage) to a 5-dimension integration-aware scoring framework. Added two new scripts (integration scanner, dynamic profile generator), refactored three existing scripts for dimensional scoring, executed a repo-wide rename from `sk-recursive-agent` to `sk-improve-agent`, and rewrote all documentation and command surfaces to match the new capabilities.
 
 > Spec folder: `.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation/`
 
@@ -46,7 +46,7 @@ Transformed the sk-agent-improver evaluation from structural keyword-checking (~
 
 **Problem:** The name `sk-recursive-agent` described the mechanism, not the purpose.
 
-**Fix:** Renamed to `sk-agent-improver` across 187+ files and 1129+ occurrences. Agent renamed to `agent-improver`, command moved to `/improve:agent`, dispatch changed to `@agent-improver`. Zero stale references verified by fresh audit.
+**Fix:** Renamed to `sk-improve-agent` across 187+ files and 1129+ occurrences. Agent renamed to `agent-improver`, command moved to `/improve:agent`, dispatch changed to `@agent-improver`. Zero stale references verified by fresh audit.
 
 ### Command rewrite
 
@@ -101,19 +101,19 @@ Transformed the sk-agent-improver evaluation from structural keyword-checking (~
 
 | File | What changed |
 | --- | --- |
-| `sk-agent-improver/scripts/scan-integration.cjs` | New integration surface scanner. |
-| `sk-agent-improver/scripts/generate-profile.cjs` | New dynamic profile generator. |
-| `sk-agent-improver/scripts/score-candidate.cjs` | 5-dimension framework with `--dynamic` flag. |
-| `sk-agent-improver/scripts/reduce-state.cjs` | Per-dimension tracking, dimensional dashboard, plateau stop. |
-| `sk-agent-improver/scripts/run-benchmark.cjs` | `--integration-report` flag for integration consistency scoring. |
+| `sk-improve-agent/scripts/scan-integration.cjs` | New integration surface scanner. |
+| `sk-improve-agent/scripts/generate-profile.cjs` | New dynamic profile generator. |
+| `sk-improve-agent/scripts/score-candidate.cjs` | 5-dimension framework with `--dynamic` flag. |
+| `sk-improve-agent/scripts/reduce-state.cjs` | Per-dimension tracking, dimensional dashboard, plateau stop. |
+| `sk-improve-agent/scripts/run-benchmark.cjs` | `--integration-report` flag for integration consistency scoring. |
 | `.opencode/agent/agent-improver.md` | Title, callouts, dividers, ASCII summary box, integration-aware workflow. |
 | `.opencode/command/improve/agent.md` | Full rewrite to 430+ lines. |
 | `.opencode/command/improve/assets/*.yaml` | Both workflows rewritten to spec_kit gold standard. |
-| `sk-agent-improver/SKILL.md` | 5D framework, emoji rule markers, integration scanning. |
-| `sk-agent-improver/README.md` | Expanded from 231 to 416 lines. |
-| `sk-agent-improver/references/*.md` | All 11 references enriched. |
-| `sk-agent-improver/assets/*.json` | Config, manifest, charter, strategy updated. |
-| 187+ files | Repo-wide rename from sk-recursive-agent to sk-agent-improver. |
+| `sk-improve-agent/SKILL.md` | 5D framework, emoji rule markers, integration scanning. |
+| `sk-improve-agent/README.md` | Expanded from 231 to 416 lines. |
+| `sk-improve-agent/references/*.md` | All 11 references enriched. |
+| `sk-improve-agent/assets/*.json` | Config, manifest, charter, strategy updated. |
+| 187+ files | Repo-wide rename from sk-recursive-agent to sk-improve-agent. |
 
 </details>
 

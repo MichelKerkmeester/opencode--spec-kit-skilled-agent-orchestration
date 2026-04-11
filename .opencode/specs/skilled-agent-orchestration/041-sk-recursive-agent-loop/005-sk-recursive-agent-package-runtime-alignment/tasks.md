@@ -32,10 +32,10 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Rewrite `.opencode/skill/sk-agent-improver/SKILL.md` to the stricter `sk-doc` skill template family
-- [x] T002 Rewrite `.opencode/skill/sk-agent-improver/README.md` to the `sk-doc` README template family
-- [x] T003 Rewrite every markdown file under `.opencode/skill/sk-agent-improver/references/`
-- [x] T004 Rewrite markdown files under `.opencode/skill/sk-agent-improver/assets/`
+- [x] T001 Rewrite `.opencode/skill/sk-improve-agent/SKILL.md` to the stricter `sk-doc` skill template family
+- [x] T002 Rewrite `.opencode/skill/sk-improve-agent/README.md` to the `sk-doc` README template family
+- [x] T003 Rewrite every markdown file under `.opencode/skill/sk-improve-agent/references/`
+- [x] T004 Rewrite markdown files under `.opencode/skill/sk-improve-agent/assets/`
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -55,9 +55,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T010 Resynchronize `.agents/skills/sk-agent-improver/`
+- [x] T010 Resynchronize `.agents/skills/sk-improve-agent/`
 - [x] T011 Update active packet docs that still referenced the removed mutator path
-- [x] T012 Create the new `005-sk-agent-improver-package-runtime-alignment/` phase packet
+- [x] T012 Create the new `005-sk-improve-agent-package-runtime-alignment/` phase packet
 - [x] T013 Update parent packet `041` to record phase `005`
 - [x] T014 Update `.opencode/specs/descriptions.json` with the new phase
 - [x] T015 Run package, document, syntax, and packet validators
@@ -72,7 +72,7 @@ contextType: "general"
 - [x] Source agent-improver package follows the intended template family
 - [x] Runtime mutator surfaces use `agent-improver`
 - [x] Command and wrapper surfaces are synchronized
-- [x] `.agents/skills/sk-agent-improver/` is synchronized to the corrected source package
+- [x] `.agents/skills/sk-improve-agent/` is synchronized to the corrected source package
 - [x] Root `041` records phase `005` and validates strictly
 <!-- /ANCHOR:completion -->
 
@@ -82,7 +82,7 @@ contextType: "general"
 ## Cross-References
 
 - **Parent Packet**: See [../](../)
-- **Previous Phase**: See [../004-sk-agent-improver-promotion-verification/](../004-sk-agent-improver-promotion-verification/)
+- **Previous Phase**: See [../004-sk-improve-agent-promotion-verification/](../004-sk-improve-agent-promotion-verification/)
 - **Specification**: See [spec.md](./spec.md)
 - **Plan**: See [plan.md](./plan.md)
 - **Checklist**: See [checklist.md](./checklist.md)

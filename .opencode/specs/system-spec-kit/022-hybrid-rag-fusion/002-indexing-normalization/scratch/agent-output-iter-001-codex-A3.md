@@ -72,7 +72,7 @@ AGENTS.md
 .opencode/skill/mcp-figma/SKILL.md
 .opencode/skill/mcp-clickup/SKILL.md
 .opencode/specs/03--commands-and-skills/016-sk-code-review-creation/context/SKILL.md
-.opencode/skill/sk-prompt-improver/SKILL.md
+.opencode/skill/sk-improve-prompt/SKILL.md
 .opencode/skill/mcp-code-mode/SKILL.md
 .opencode/skill/cli-codex/SKILL.md
 .opencode/skill/sk-code-full-stack/SKILL.md

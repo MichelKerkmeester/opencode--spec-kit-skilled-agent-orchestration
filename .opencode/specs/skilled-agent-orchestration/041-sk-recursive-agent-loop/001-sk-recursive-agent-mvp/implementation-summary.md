@@ -1,6 +1,6 @@
 ---
-title: "Implementation Summary: Agent Improvement Loop [skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/implementation-summary]"
-description: "Completed implementation summary for sk-agent-improver, covering proposal, scoring, promotion, rollback, drift review, and verification evidence."
+title: "Implementation Summary: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/implementation-summary]"
+description: "Completed implementation summary for sk-improve-agent, covering proposal, scoring, promotion, rollback, drift review, and verification evidence."
 trigger_phrases:
   - "implementation summary"
   - "agent improvement summary"
@@ -19,7 +19,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 001-sk-agent-improver-mvp |
+| **Spec Folder** | 001-sk-improve-agent-mvp |
 | **Completed** | 2026-04-03 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -29,13 +29,13 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase now contains the completed first-wave implementation of `sk-agent-improver`. The work started from the proposal-only MVP and then extended into a bounded, approval-gated promotion path for one canonical target with tested rollback, explicit promotion blocking under default settings, and documented mirror-drift handling.
+This phase now contains the completed first-wave implementation of `sk-improve-agent`. The work started from the proposal-only MVP and then extended into a bounded, approval-gated promotion path for one canonical target with tested rollback, explicit promotion blocking under default settings, and documented mirror-drift handling.
 
 ### Shipped Surfaces
 
 The following surfaces now exist:
 
-- The new skill bundle under `.opencode/skill/sk-agent-improver/`
+- The new skill bundle under `.opencode/skill/sk-improve-agent/`
 - The canonical loop mutator at `.opencode/agent/agent-improver.md`
 - Runtime wrappers for Claude, Codex, and Gemini
 - The new `/improve:agent-improver` command plus `:auto` and `:confirm` YAML workflows
@@ -51,7 +51,7 @@ The following surfaces now exist:
 
 The work was delivered in three parts. First, the planning packet established the evaluator-first scope. Second, the implementation pass created the loop skeleton: charter, manifest, config, strategy, scorer, reducer, mutator agent, command wrappers, and runtime parity files for the loop itself. Third, the packet was completed with a real accepted candidate, a blocked promotion attempt while proposal-only mode was still active, an explicitly approved promotion into `.opencode/agent/handover.md`, a tested rollback drill, a re-promotion, an infra-failure drill, and a manifest-backed mirror-drift review.
 
-After the code and docs landed, I ran strict spec validation, validated the new JSON and TOML surfaces, verified the Node scripts parse, exercised the skill advisor against a representative request, and ran proposal-only, promotion, rollback, and drift-report checks inside `041-sk-agent-improver-loop/001-sk-agent-improver-mvp/improvement/`.
+After the code and docs landed, I ran strict spec validation, validated the new JSON and TOML surfaces, verified the Node scripts parse, exercised the skill advisor against a representative request, and ran proposal-only, promotion, rollback, and drift-report checks inside `041-sk-improve-agent-loop/001-sk-improve-agent-mvp/improvement/`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -77,9 +77,9 @@ After the code and docs landed, I ran strict spec validation, validated the new 
 | `python3 -m py_compile .opencode/skill/scripts/skill_advisor.py` | PASS |
 | `python3.11` JSON + TOML parse for `descriptions.json` and new runtime wrappers | PASS |
 | `node --check` on `score-candidate.cjs`, `reduce-state.cjs`, `promote-candidate.cjs`, `rollback-candidate.cjs`, and `check-mirror-drift.cjs` | PASS |
-| `python3 .opencode/skill/scripts/skill_advisor.py "continue with agent improvement loop for handover target proposal-only evaluator-first scoring" --threshold 0.8` | PASS, `sk-agent-improver` returned at `0.95` confidence |
+| `python3 .opencode/skill/scripts/skill_advisor.py "continue with agent improvement loop for handover target proposal-only evaluator-first scoring" --threshold 0.8` | PASS, `sk-improve-agent` returned at `0.95` confidence |
 | `git diff -- .opencode/agent/handover.md` during proposal-only dry run | PASS, no canonical edits before promotion |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop --strict` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop --strict` | PASS |
 | Proposal-only and promotion evidence in `improvement/` | PASS, baseline, tie candidate, rejected candidate, accepted candidate, and infra-failure evidence created in the reducer ledger |
 | `promotion-blocked.log` | PASS, promotion was refused while runtime config remained in proposal-only mode |
 | `promotion-invalid-target.log` and `rollback-invalid-target.log` | PASS, the scripts refused a non-canonical target even after approval mode was enabled |

@@ -28,7 +28,7 @@
 ## 3. For Next Session
 
 ### 3.1 Recommended Starting Point
-- **File:** `.opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/implementation-summary.md:1`
+- **File:** `.opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/implementation-summary.md:1`
 - **Context:** convert planning stub into final summary
 
 ### 3.2 Priority Tasks Remaining

@@ -40,7 +40,7 @@ contextType: "implementation"
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: spec.md:1-167 — 7 requirements defined with acceptance criteria]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: plan.md:1-184 — architecture, phases, dependencies documented]
-- [x] CHK-003 [P1] Dependencies identified (sk-prompt-improver skill, command_template.md) [EVIDENCE: plan.md:107-112 — 3 dependencies all Green]
+- [x] CHK-003 [P1] Dependencies identified (sk-improve-prompt skill, command_template.md) [EVIDENCE: plan.md:107-112 — 3 dependencies all Green]
 
 ---
 
@@ -78,7 +78,7 @@ contextType: "implementation"
 - [x] CHK-021 [P0] Empty invocation triggers mandatory gate [EVIDENCE: prompt.md:12 — "IF $ARGUMENTS is empty, undefined, or contains only whitespace"]
 - [x] CHK-022 [P1] Mode prefixes ($text, $improve, etc.) correctly detected in argument dispatch [EVIDENCE: prompt.md:86-104 — ASCII decision tree with 7 mode prefixes]
 - [x] CHK-023 [P1] :auto/:confirm modes documented and routed [EVIDENCE: prompt.md:109-114 — execution mode parsing with defaults]
-- [x] CHK-024 [P1] Instructions reference sk-prompt-improver SKILL.md correctly [EVIDENCE: prompt.md:146-147 — Read(".opencode/skill/sk-prompt-improver/SKILL.md")]
+- [x] CHK-024 [P1] Instructions reference sk-improve-prompt SKILL.md correctly [EVIDENCE: prompt.md:146-147 — Read(".opencode/skill/sk-improve-prompt/SKILL.md")]
 
 ---
 

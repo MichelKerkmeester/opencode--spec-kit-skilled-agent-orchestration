@@ -52,7 +52,7 @@ contextType: "implementation"
    - `04--convergence-and-recovery/021-graph-convergence-review.md` (DRV-021)
    - `03--iteration-execution-and-state-discipline/015-graph-events-review.md` (DRV-015)
 
-5. **sk-agent-improver playbook** (3 new test cases)
+5. **sk-improve-agent playbook** (3 new test cases)
    - `06--end-to-end-loop/022-mutation-coverage-graph-tracking.md` (E2E-022)
    - `06--end-to-end-loop/023-trade-off-detection.md` (E2E-023)
    - `06--end-to-end-loop/024-candidate-lineage.md` (E2E-024)
@@ -61,7 +61,7 @@ contextType: "implementation"
 
 6. **sk-deep-research README.md** -- Added 3 new feature rows: Semantic coverage graph, Graph convergence guards, Question coverage tracking
 7. **sk-deep-review README.md** -- Added new "Semantic Coverage Graph" subsection in Features
-8. **sk-agent-improver README.md** -- Added 3 new capability rows: Mutation coverage graph, Trade-off detection, Candidate lineage
+8. **sk-improve-agent README.md** -- Added 3 new capability rows: Mutation coverage graph, Trade-off detection, Candidate lineage
 
 ## KEY FINDINGS
 

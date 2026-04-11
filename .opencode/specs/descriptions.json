@@ -1120,7 +1120,7 @@
       "lastUpdated": "2026-04-06T09:59:48.980Z"
     },
     {
-      "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test",
+      "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-improve-agent-self-test",
       "description": "Spec: Agent-Improver Self-Test",
       "keywords": [
         "spec",
@@ -1130,7 +1130,7 @@
       "lastUpdated": "2026-04-06T09:59:48.980Z"
     },
     {
-      "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes",
+      "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-improve-agent-self-test-fixes",
       "description": "Spec: Self-Test Fixes and Reducer Improvements",
       "keywords": [
         "spec",
@@ -1142,7 +1142,7 @@
       "lastUpdated": "2026-04-06T09:59:48.980Z"
     },
     {
-      "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync",
+      "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-improve-agent-advisor-readme-sync",
       "description": "Spec: Skill Advisor Routing + README Sync",
       "keywords": [
         "spec",
@@ -1181,11 +1181,11 @@
     },
     {
       "specFolder": "skilled-agent-orchestration/z_archive/003-sk-prompt-initial-creation",
-      "description": "Feature Specification: sk-prompt-improver",
+      "description": "Feature Specification: sk-improve-prompt",
       "keywords": [
         "feature",
         "specification",
-        "sk-prompt-improver"
+        "sk-improve-prompt"
       ],
       "lastUpdated": "2026-04-06T09:57:54.499Z"
     },

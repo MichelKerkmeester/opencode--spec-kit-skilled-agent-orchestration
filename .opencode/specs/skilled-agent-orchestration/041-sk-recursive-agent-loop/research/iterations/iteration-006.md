@@ -1,7 +1,7 @@
 # Iteration 6: Evaluator Candidates from Existing Validation Surfaces
 
 ## Focus
-Find real repo-native evaluator candidates that could score a future `sk-agent-improver` without inventing a benchmark from scratch.
+Find real repo-native evaluator candidates that could score a future `sk-improve-agent` without inventing a benchmark from scratch.
 
 ## Findings
 1. The repo already has deterministic document-integrity validation. `check-spec-doc-integrity.sh` checks markdown references, stale spec metadata, missing handover targets, and non-resolvable `/spec_kit:resume` paths, which makes it a strong structural gate for artifact-oriented agents. [SOURCE: .opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh:82] [SOURCE: .opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh:95] [SOURCE: .opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh:103] [SOURCE: .opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh:126]
@@ -24,7 +24,7 @@ Find real repo-native evaluator candidates that could score a future `sk-agent-i
 
 ## Assessment
 - New information ratio: 0.58
-- Questions addressed: What capabilities are missing if we want a reliable `sk-agent-improver` rather than a one-off research packet?
+- Questions addressed: What capabilities are missing if we want a reliable `sk-improve-agent` rather than a one-off research packet?
 - Questions answered: None newly answered; this iteration identified the most realistic scoring candidates.
 
 ## Reflection

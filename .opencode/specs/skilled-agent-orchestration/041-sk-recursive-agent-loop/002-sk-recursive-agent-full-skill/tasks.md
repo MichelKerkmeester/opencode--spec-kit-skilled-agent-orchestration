@@ -1,6 +1,6 @@
 ---
-title: "Task Breakdown: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/tasks]"
-description: "Ordered task list for upgrading sk-agent-improver from the phase 001 MVP into a benchmark-backed full-skill system."
+title: "Task Breakdown: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/tasks]"
+description: "Ordered task list for upgrading sk-improve-agent from the phase 001 MVP into a benchmark-backed full-skill system."
 trigger_phrases:
   - "agent improvement full skill tasks"
   - "benchmark harness tasks"
@@ -49,7 +49,7 @@ contextType: "general"
 
 - [x] T-010: Define the fixture input corpus for handover benchmarking
 - [x] T-011: Define benchmark scoring expectations and stable pass/fail rules
-- [x] T-012: Add harness scripts or runner extensions under `.opencode/skill/sk-agent-improver/scripts/`
+- [x] T-012: Add harness scripts or runner extensions under `.opencode/skill/sk-improve-agent/scripts/`
 - [x] T-013: Create packet-local benchmark evidence layout under this packet
 - [x] T-014: Verify repeatability across at least two benchmark runs
 
@@ -120,7 +120,7 @@ contextType: "general"
 ## Cross-References
 
 - **Parent Packet**: See `../`
-- **Previous Phase**: See `../001-sk-agent-improver-mvp/`
+- **Previous Phase**: See `../001-sk-improve-agent-mvp/`
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`

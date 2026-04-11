@@ -1,6 +1,6 @@
 ---
-title: "Implementation Summary: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill/implementation-summary]"
-description: "Completed implementation summary for the fuller sk-agent-improver packet with benchmark harnesses, target profiles, and bounded second-target support."
+title: "Implementation Summary: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/implementation-summary]"
+description: "Completed implementation summary for the fuller sk-improve-agent packet with benchmark harnesses, target profiles, and bounded second-target support."
 trigger_phrases:
   - "agent improvement full skill summary"
   - "implementation summary stub"
@@ -19,7 +19,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 002-sk-agent-improver-full-skill |
+| **Spec Folder** | 002-sk-improve-agent-full-skill |
 | **Completed** | 2026-04-03 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -29,16 +29,16 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase implemented the fuller `sk-agent-improver` model on top of the phase 001 MVP.
+This phase implemented the fuller `sk-improve-agent` model on top of the phase 001 MVP.
 
 What was added or expanded:
-- profile-aware runtime config and manifest support in `.opencode/skill/sk-agent-improver/assets/`
-- reusable target profiles under `.opencode/skill/sk-agent-improver/assets/target-profiles/`
-- reusable fixture catalogs under `.opencode/skill/sk-agent-improver/assets/fixtures/`
-- a deterministic benchmark runner at `.opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs`
-- profile-aware prompt scoring in `.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs`
-- cross-target reducer reporting plus reducer-enforced stop status in `.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs`
-- repeatability-gated promotion checks in `.opencode/skill/sk-agent-improver/scripts/promote-candidate.cjs`
+- profile-aware runtime config and manifest support in `.opencode/skill/sk-improve-agent/assets/`
+- reusable target profiles under `.opencode/skill/sk-improve-agent/assets/target-profiles/`
+- reusable fixture catalogs under `.opencode/skill/sk-improve-agent/assets/fixtures/`
+- a deterministic benchmark runner at `.opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs`
+- profile-aware prompt scoring in `.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs`
+- cross-target reducer reporting plus reducer-enforced stop status in `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs`
+- repeatability-gated promotion checks in `.opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs`
 - operator docs for benchmarking, onboarding, promotion posture, and mirror packaging boundaries
 - packet-local runtime evidence under `improvement/` for both `handover` and `context-prime`
 - `session_bootstrap()`-aligned `context-prime` guidance across the canonical agent, runtime mirrors, fixtures, and benchmark evidence
@@ -77,14 +77,14 @@ The packet was delivered in five concrete slices:
 ## Verification
 
 Verification completed:
-- `node --check .opencode/skill/sk-agent-improver/scripts/score-candidate.cjs`
-- `node --check .opencode/skill/sk-agent-improver/scripts/reduce-state.cjs`
-- `node --check .opencode/skill/sk-agent-improver/scripts/run-benchmark.cjs`
-- `node --check .opencode/skill/sk-agent-improver/scripts/promote-candidate.cjs`
+- `node --check .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs`
+- `node --check .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs`
+- `node --check .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs`
+- `node --check .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs`
 - `python3.11` JSON parsing across packet-local improvement JSON artifacts
 - `python3 -m py_compile .opencode/skill/scripts/skill_advisor.py`
 - `python3 .opencode/skill/scripts/skill_advisor.py "recursive agent benchmark harness for handover and context-prime" --threshold 0.8`
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-agent-improver-loop/002-sk-agent-improver-full-skill --strict`
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill --strict`
 - Final parallel read-only review evidence is recorded in `review/parallel-review-summary.md`, and the final re-check returned `NO_FINDINGS`
 
 Evidence produced:

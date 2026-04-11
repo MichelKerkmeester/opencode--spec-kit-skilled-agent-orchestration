@@ -1,8 +1,8 @@
 {
-  // Full-skill surface classification for sk-agent-improver.
+  // Full-skill surface classification for sk-improve-agent.
   "version": 2,
   "defaultMode": "proposal-first",
-  "profileCatalog": ".opencode/skill/sk-agent-improver/assets/target-profiles",
+  "profileCatalog": ".opencode/skill/sk-improve-agent/assets/target-profiles",
   "targets": [
     {
       "id": "handover-canonical",

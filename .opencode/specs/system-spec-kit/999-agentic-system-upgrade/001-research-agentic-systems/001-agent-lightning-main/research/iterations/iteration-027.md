@@ -16,7 +16,7 @@ I compared the current skill family descriptions and routing expectations with A
 - `sk-code-opencode` provides OpenCode-specific standards for JS, TS, Python, Shell, and config files. [SOURCE: .opencode/skill/sk-code-opencode/SKILL.md:2-3] [SOURCE: .opencode/skill/sk-code-opencode/SKILL.md:15-40]
 - `sk-code-web` separately orchestrates frontend implementation, debugging, and verification phases. [SOURCE: .opencode/skill/sk-code-web/SKILL.md:2-3] [SOURCE: .opencode/skill/sk-code-web/SKILL.md:15-43]
 - `sk-code-full-stack` adds another stack-agnostic implementation/testing/verification orchestrator. [SOURCE: .opencode/skill/sk-code-full-stack/SKILL.md:2-3] [SOURCE: .opencode/skill/sk-code-full-stack/SKILL.md:15-40]
-- Long-tail specialist skills such as `sk-prompt-improver` and `sk-agent-improver` add more routeable surfaces for prompt engineering and bounded agent mutation loops. [SOURCE: .opencode/skill/sk-prompt-improver/SKILL.md:2-3] [SOURCE: .opencode/skill/sk-agent-improver/SKILL.md:2-3]
+- Long-tail specialist skills such as `sk-improve-prompt` and `sk-improve-agent` add more routeable surfaces for prompt engineering and bounded agent mutation loops. [SOURCE: .opencode/skill/sk-improve-prompt/SKILL.md:2-3] [SOURCE: .opencode/skill/sk-improve-agent/SKILL.md:2-3]
 - Agent Lightning instead packages operator choice mostly through docs categories, example families, and algorithm references rather than a large set of routeable skill identities. [SOURCE: external/docs/index.md:14-19] [SOURCE: external/examples/README.md:1-18]
 
 ## Analysis

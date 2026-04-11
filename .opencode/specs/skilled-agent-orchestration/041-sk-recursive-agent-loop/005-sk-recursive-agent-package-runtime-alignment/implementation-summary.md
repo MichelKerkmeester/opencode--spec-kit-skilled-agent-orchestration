@@ -20,7 +20,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 005-sk-agent-improver-package-runtime-alignment |
+| **Spec Folder** | 005-sk-improve-agent-package-runtime-alignment |
 | **Completed** | 2026-04-03 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -32,12 +32,12 @@ contextType: "general"
 
 Phase `005` corrected the remaining agent-improver package and runtime parity gaps after the earlier functional phases were already complete.
 
-- `.opencode/skill/sk-agent-improver/SKILL.md` now follows the stricter `sk-doc` skill template family rather than only passing minimal validation
-- `.opencode/skill/sk-agent-improver/README.md`, every reference file, and every markdown asset now follow the matching `sk-doc` template family
+- `.opencode/skill/sk-improve-agent/SKILL.md` now follows the stricter `sk-doc` skill template family rather than only passing minimal validation
+- `.opencode/skill/sk-improve-agent/README.md`, every reference file, and every markdown asset now follow the matching `sk-doc` template family
 - the mutator agent was renamed from `agent-improvement-loop` to `agent-improver` across OpenCode, Claude, Gemini, `.agents`, and Codex runtime surfaces
 - the canonical command and wrapper TOMLs were rewritten to the current command-template shape
 - YAML dispatch now targets `@agent-improver`
-- `.agents/skills/sk-agent-improver/` was resynchronized to the corrected source package, including scripts
+- `.agents/skills/sk-improve-agent/` was resynchronized to the corrected source package, including scripts
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -58,7 +58,7 @@ The work was delivered in three passes: correct the source package docs, rename 
 | Defer the command entrypoint rename | At phase `005` completion, the runtime mutator rename was in scope but the command entrypoint rename was still deferred |
 | Rename the mutator to `agent-improver` across all runtimes | Keeps the runtime name aligned with the shipped skill name |
 | Record this as phase `005` instead of rewriting history invisibly | Makes the stricter correction explicit and auditable |
-| Resynchronize `.agents/skills/sk-agent-improver/` after source edits | Prevents source and mirror package drift |
+| Resynchronize `.agents/skills/sk-improve-agent/` after source edits | Prevents source and mirror package drift |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -68,9 +68,9 @@ The work was delivered in three passes: correct the source package docs, rename 
 
 | Check | Scope | Result |
 |-------|-------|--------|
-| `package_skill.py --check` | `.opencode/skill/sk-agent-improver/` | PASS |
-| `validate_document.py --type skill` | `.opencode/skill/sk-agent-improver/SKILL.md` | PASS |
-| `validate_document.py --type readme` | `.opencode/skill/sk-agent-improver/README.md` | PASS |
+| `package_skill.py --check` | `.opencode/skill/sk-improve-agent/` | PASS |
+| `validate_document.py --type skill` | `.opencode/skill/sk-improve-agent/SKILL.md` | PASS |
+| `validate_document.py --type readme` | `.opencode/skill/sk-improve-agent/README.md` | PASS |
 | `validate_document.py --type command` | `.opencode/command/spec_kit/agent-improver.md` | PASS |
 | `validate_document.py --type agent` | `.opencode/agent/agent-improver.md` | PASS |
 | `validate_document.py --type reference` | all agent-improver references | PASS |

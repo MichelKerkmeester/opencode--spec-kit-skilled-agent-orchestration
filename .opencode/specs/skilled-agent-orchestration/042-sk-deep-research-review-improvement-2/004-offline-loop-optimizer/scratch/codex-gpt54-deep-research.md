@@ -80,7 +80,7 @@ python3: error: couldn't create cache file '/tmp/xcrun_db-vuX5xPEV' (errno=Opera
     "reason": "Matched: !intent:review, !review, !review(multi), find~, review(name)"
   },
   {
-    "skill": "sk-prompt-improver",
+    "skill": "sk-improve-prompt",
     "kind": "skill",
     "confidence": 0.92,
     "uncertainty": 0.23,
@@ -7639,9 +7639,9 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/description.json
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/README.md
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/implementation-summary.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/05--reducer-dimensions/017-no-dimensions.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/05--reducer-dimensions/019-plateau-detection.md
-.opencode/skill/sk-agent-improver/manual_testing_playbook/05--reducer-dimensions/018-with-dimensions.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensions/017-no-dimensions.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensions/019-plateau-detection.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensions/018-with-dimensions.md
 .opencode/skill/system-spec-kit/scripts/tests/deep-review-contract-parity.vitest.ts
 .opencode/skill/system-spec-kit/scripts/tests/deep-review-reducer-schema.vitest.ts
 .opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts

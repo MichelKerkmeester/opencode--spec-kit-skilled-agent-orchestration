@@ -1,9 +1,9 @@
 ---
-title: "Feature Specification: Agent Improvement Loop [skilled-agent-orchestration/041-sk-agent-improver-loop/001-sk-agent-improver-mvp/spec]"
+title: "Feature Specification: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/spec]"
 description: "The repo has reusable loop scaffolding, but no evaluator-first system for safely iterating on agent behavior. We need a bounded experiment loop that improves one canonical agent surface without pretending prompt churn is validated progress."
 trigger_phrases:
   - "agent improvement loop"
-  - "sk-agent-improver"
+  - "sk-improve-agent"
   - "automatic agent iteration"
   - "evaluator-first"
   - "proposal-only loop"
@@ -19,7 +19,7 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-Create a repo-native `sk-agent-improver` system that borrows the good parts of `autoagent-main` without copying its trust boundary. The MVP is evaluator-first and proposal-only: it runs bounded experiments against one canonical source surface, scores candidates independently, records every attempt in an append-only ledger, and blocks canonical file mutation until the scorer and promotion contract are proven.
+Create a repo-native `sk-improve-agent` system that borrows the good parts of `autoagent-main` without copying its trust boundary. The MVP is evaluator-first and proposal-only: it runs bounded experiments against one canonical source surface, scores candidates independently, records every attempt in an append-only ledger, and blocks canonical file mutation until the scorer and promotion contract are proven.
 
 **Key Decisions**: start with `.opencode/agent/handover.md` as the first target surface, keep runtime mirrors out of the mutation target set for phase 1, and package the loop as skill + command + leaf agent + reducer-backed state bundle rather than a skill-only shortcut.
 
@@ -37,7 +37,7 @@ Create a repo-native `sk-agent-improver` system that borrows the good parts of `
 | **Created** | 2026-04-03 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Successor** | `002-sk-agent-improver-full-skill/` |
+| **Successor** | `002-sk-improve-agent-full-skill/` |
 
 ---
 
@@ -48,7 +48,7 @@ Create a repo-native `sk-agent-improver` system that borrows the good parts of `
 This repo now has enough orchestration, state, and packaging infrastructure to attempt automatic agent iteration, but it does not yet have the one thing that makes such a loop trustworthy: a bounded evaluator contract tied to a single canonical mutation surface. Without that contract, an "agent improvement" skill would mostly automate prompt edits and create false confidence instead of measurable improvement.
 
 ### Purpose
-Define a safe, phased plan for `sk-agent-improver` that starts with one canonical `.opencode/agent` target, one deterministic evaluator, one append-only experiment ledger, and one promotion gate before any auto-editing of canonical files is allowed.
+Define a safe, phased plan for `sk-improve-agent` that starts with one canonical `.opencode/agent` target, one deterministic evaluator, one append-only experiment ledger, and one promotion gate before any auto-editing of canonical files is allowed.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -57,7 +57,7 @@ Define a safe, phased plan for `sk-agent-improver` that starts with one canonica
 ## 3. SCOPE
 
 ### In Scope
-- `sk-agent-improver` as a new skill with protocol, references, assets, and operator guidance
+- `sk-improve-agent` as a new skill with protocol, references, assets, and operator guidance
 - `/improve:agent-improver` as the command entrypoint with `:auto` and `:confirm` workflows
 - `@agent-improver` as a LEAF execution surface for bounded candidate generation
 - A repo-native control bundle: improvement charter, `target-manifest.jsonc`, `improvement-config.json`, and `improvement-state.jsonl`
@@ -83,18 +83,18 @@ Define a safe, phased plan for `sk-agent-improver` that starts with one canonica
 | `.opencode/command/spec_kit/agent-improver` | Create | Command spec for setup, routing, and loop execution |
 | `.opencode/command/spec_kit/assets/improve_agent-improver_auto.yaml` | Create | Autonomous workflow for proposal-only execution |
 | `.opencode/command/spec_kit/assets/improve_agent-improver_confirm.yaml` | Create | Interactive workflow with approval checkpoints |
-| `.opencode/skill/sk-agent-improver/SKILL` | Create | Skill protocol and routing guidance |
-| `.opencode/skill/sk-agent-improver/README` | Create | Skill overview and usage examples |
-| `.opencode/skill/sk-agent-improver/references/loop_protocol` | Create | Iteration lifecycle and state transitions |
-| `.opencode/skill/sk-agent-improver/references/evaluator_contract` | Create | Deterministic scoring contract for MVP targets |
-| `.opencode/skill/sk-agent-improver/references/promotion_rules` | Create | Promotion, rollback, and drift rules |
-| `.opencode/skill/sk-agent-improver/references/quick_reference` | Create | One-page operator cheat sheet |
-| `.opencode/skill/sk-agent-improver/assets/improvement_charter` | Create | Human-authored policy template for each experiment packet |
-| `.opencode/skill/sk-agent-improver/assets/target_manifest.jsonc` | Create | Machine-readable target classification and mutability map |
-| `.opencode/skill/sk-agent-improver/assets/improvement_config.json` | Create | Execution mode, budgets, and acceptance thresholds |
-| `.opencode/skill/sk-agent-improver/assets/improvement_strategy` | Create | Mutable strategy/state summary for fresh-context iterations |
-| `.opencode/skill/sk-agent-improver/scripts/reduce-state.cjs` | Create | Reducer for dashboard, accepted state, and score summaries |
-| `.opencode/skill/sk-agent-improver/scripts/score-candidate.cjs` | Create | Deterministic evaluator harness for the first target |
+| `.opencode/skill/sk-improve-agent/SKILL` | Create | Skill protocol and routing guidance |
+| `.opencode/skill/sk-improve-agent/README` | Create | Skill overview and usage examples |
+| `.opencode/skill/sk-improve-agent/references/loop_protocol` | Create | Iteration lifecycle and state transitions |
+| `.opencode/skill/sk-improve-agent/references/evaluator_contract` | Create | Deterministic scoring contract for MVP targets |
+| `.opencode/skill/sk-improve-agent/references/promotion_rules` | Create | Promotion, rollback, and drift rules |
+| `.opencode/skill/sk-improve-agent/references/quick_reference` | Create | One-page operator cheat sheet |
+| `.opencode/skill/sk-improve-agent/assets/improvement_charter` | Create | Human-authored policy template for each experiment packet |
+| `.opencode/skill/sk-improve-agent/assets/target_manifest.jsonc` | Create | Machine-readable target classification and mutability map |
+| `.opencode/skill/sk-improve-agent/assets/improvement_config.json` | Create | Execution mode, budgets, and acceptance thresholds |
+| `.opencode/skill/sk-improve-agent/assets/improvement_strategy` | Create | Mutable strategy/state summary for fresh-context iterations |
+| `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs` | Create | Reducer for dashboard, accepted state, and score summaries |
+| `.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs` | Create | Deterministic evaluator harness for the first target |
 | `.opencode/skill/README` | Modify | Register the new skill in the catalog |
 | `.opencode/skill/scripts/skill_advisor.py` | Modify | Route agent-improvement queries to the new skill |
 | `.opencode/specs/descriptions.json` | Modify | Add packet/feature description entry |

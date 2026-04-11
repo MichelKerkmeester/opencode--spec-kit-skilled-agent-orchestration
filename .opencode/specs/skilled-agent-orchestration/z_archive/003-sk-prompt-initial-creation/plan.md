@@ -1,6 +1,6 @@
 ---
-title: "Implementation Plan: sk-prompt-improver Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/plan]"
-description: "title: \"Implementation Plan: sk-prompt-improver Initial Creation\""
+title: "Implementation Plan: sk-improve-prompt Initial Creation [03--commands-and-skills/003-sk-prompt-initial-creation/plan]"
+description: "title: \"Implementation Plan: sk-improve-prompt Initial Creation\""
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -11,7 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "planning"
 ---
-# Implementation Plan: sk-prompt-improver Initial Creation
+# Implementation Plan: sk-improve-prompt Initial Creation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -107,7 +107,7 @@ User Request → SKILL.md (intent classification)
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Create .opencode/skill/sk-prompt-improver/ directory
+- [ ] Create .opencode/skill/sk-improve-prompt/ directory
 - [ ] Create references/ subdirectory
 
 ### Phase 2: Core Implementation
@@ -158,7 +158,7 @@ User Request → SKILL.md (intent classification)
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Validation failures or skill conflicts
-- **Procedure**: Delete .opencode/skill/sk-prompt-improver/ directory; revert skill_advisor.py changes
+- **Procedure**: Delete .opencode/skill/sk-improve-prompt/ directory; revert skill_advisor.py changes
 <!-- /ANCHOR:rollback -->
 
 ---

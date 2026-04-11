@@ -24,7 +24,7 @@ Identify the strongest safety constraints and workflow boundaries that would gov
 
 ## Assessment
 - New information ratio: 0.22
-- Questions addressed: What capabilities are missing if we want a reliable `sk-agent-improver` rather than a one-off research packet?
+- Questions addressed: What capabilities are missing if we want a reliable `sk-improve-agent` rather than a one-off research packet?
 - Questions answered: None newly answered; this iteration turned repo rules into explicit design constraints.
 
 ## Reflection
@@ -33,4 +33,4 @@ Identify the strongest safety constraints and workflow boundaries that would gov
 - What I would do differently: Treat evaluator independence as a first-class design requirement from day one rather than an implementation detail.
 
 ## Recommended Next Focus
-Translate those constraints into the repo-native package shape for a future `sk-agent-improver` skill and its workflow surface.
+Translate those constraints into the repo-native package shape for a future `sk-improve-agent` skill and its workflow surface.

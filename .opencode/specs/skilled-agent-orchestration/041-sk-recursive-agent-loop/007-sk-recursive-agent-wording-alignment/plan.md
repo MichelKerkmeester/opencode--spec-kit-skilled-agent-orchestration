@@ -55,7 +55,7 @@ This phase cleans up wording across the current agent-improver program. It impro
 Wording-only cleanup across current source, mirror, and packet surfaces
 
 ### Key Components
-- **Source package**: `.opencode/skill/sk-agent-improver/`
+- **Source package**: `.opencode/skill/sk-improve-agent/`
 - **Canonical command**: `.opencode/command/spec_kit/agent-improver.md`
 - **Wrapper prompts**: `.agents/commands/spec_kit/agent-improver.toml` and `.gemini/commands/spec_kit/agent-improver.toml`
 - **Runtime mirrors**: agent-improver files under OpenCode, Claude, Gemini, `.agents`, and Codex
@@ -72,7 +72,7 @@ Read the current agent-improver source and mirror surfaces first, update wording
 
 ### Phase 1: Setup
 
-- [x] Create the new `007-sk-agent-improver-wording-alignment/` phase packet
+- [x] Create the new `007-sk-improve-agent-wording-alignment/` phase packet
 - [x] Identify the current agent-improver surfaces with awkward or inaccurate wording before editing
 - [x] Confirm the wording pass remains bounded to current agent-improver surfaces and active packet docs
 
@@ -112,7 +112,7 @@ Read the current agent-improver source and mirror surfaces first, update wording
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Current `sk-agent-improver` source docs | Internal | Green | Wording cleanup cannot be applied cleanly |
+| Current `sk-improve-agent` source docs | Internal | Green | Wording cleanup cannot be applied cleanly |
 | Runtime mirror files | Internal | Green | Runtime-specific guidance would remain inconsistent |
 | Parent packet `041` docs | Internal | Green | The wording pass would not be recorded honestly |
 | `sk-doc` validators | Internal | Green | Wording cleanup could not be proven template-safe |
@@ -126,7 +126,7 @@ Read the current agent-improver source and mirror surfaces first, update wording
 - **Trigger**: Validators fail, runtime wording becomes inconsistent, or a wording edit changes the stated behavior incorrectly.
 - **Procedure**: Restore the affected wording surfaces to the previous phase-`006` state, repair the inaccurate edits, then re-run the validation stack.
 
-Future work must continue inside `041-sk-agent-improver-loop/` as additional child phases such as `008-*` and later folders.
+Future work must continue inside `041-sk-improve-agent-loop/` as additional child phases such as `008-*` and later folders.
 <!-- /ANCHOR:rollback -->
 
 ---

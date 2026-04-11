@@ -63,7 +63,7 @@ Custom agents share the same role definitions across 4 runtime directories. Open
 | 9 | `sk-code-review` | Review | v1.2.0.0 | Stack-agnostic code review baseline. Findings-first severity analysis, mandatory security/correctness minimums, baseline+overlay compatibility |
 | 10 | `sk-doc` | Docs | v1.1.2.0 | Unified markdown and OpenCode component specialist. Document quality enforcement, content optimization, component creation workflows, ASCII flowcharts, install guides |
 | 11 | `sk-git` | Git | v1.1.0.0 | Git workflow orchestrator: workspace setup (worktrees), clean commits (conventional), and work completion (PRs) |
-| 12 | `sk-prompt-improver` | Prompt Eng | v1.2.0.0 | Prompt engineering specialist. 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, CLEAR scoring |
+| 12 | `sk-improve-prompt` | Prompt Eng | v1.2.0.0 | Prompt engineering specialist. 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, CLEAR scoring |
 | 13 | `cli-gemini` | Cross-AI | v1.2.1 | Gemini CLI orchestrator for web research via Google Search, codebase architecture analysis, cross-AI validation, parallel code generation |
 | 14 | `cli-codex` | Cross-AI | v1.3.1 | Codex CLI orchestrator for OpenAI cross-AI tasks: code generation, web research, codebase analysis, code review, parallel processing |
 | 15 | `cli-claude-code` | Cross-AI | v1.1.1 | Claude Code CLI orchestrator for deep reasoning, extended thinking, code editing, structured output, agent delegation |
@@ -78,7 +78,7 @@ Custom agents share the same role definitions across 4 runtime directories. Open
 | Code Workflows | 4 | sk-code-full-stack, sk-code-opencode, sk-code-web, sk-code-review |
 | Documentation | 2 | system-spec-kit, sk-doc |
 | Git | 1 | sk-git |
-| Prompt Engineering | 1 | sk-prompt-improver |
+| Prompt Engineering | 1 | sk-improve-prompt |
 
 [SOURCE: `.opencode/skill/` - 16 directories verified via ls]
 [SOURCE: Each `SKILL.md` frontmatter - descriptions and versions extracted directly]

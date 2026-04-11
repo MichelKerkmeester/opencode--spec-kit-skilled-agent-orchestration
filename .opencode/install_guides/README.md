@@ -830,7 +830,7 @@ Skills are automatically discovered from:
 | sk-code-web         | v1.1.0.0   | Web development implementation orchestrator          |
 | sk-doc               | v1.1.2.0   | Unified markdown and skill management                |
 | sk-git               | v1.1.0.0   | Git workflow orchestrator                            |
-| sk-prompt-improver   | v1.2.0.0   | Prompt engineering frameworks and scoring            |
+| sk-improve-prompt   | v1.2.0.0   | Prompt engineering frameworks and scoring            |
 
 **How it works:**
 - OpenCode scans skill folders on startup
@@ -1464,7 +1464,7 @@ bash .opencode/command/doctor/scripts/mcp-doctor.sh --fix
 | Category           | Count | Items                                                                                                                    |
 | ------------------ | ----- | ------------------------------------------------------------------------------------------------------------------------ |
 | Native MCP Servers | 3     | code_mode, spec_kit_memory, sequential_thinking                                                                          |
-| Skills             | 18    | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, sk-deep-research, sk-doc, sk-git, sk-prompt-improver |
+| Skills             | 18    | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, sk-deep-research, sk-doc, sk-git, sk-improve-prompt |
 | Commands           | 22    | /create:* (7), /memory:* (6), /spec_kit:* (8), agent_router (1)                                                         |
 | CLI Tools          | 1     | Chrome DevTools (bdg)                                                                                                    |
 | Plugins            | 2     | Antigravity Auth, OpenAI Codex Auth                                                                                      |
