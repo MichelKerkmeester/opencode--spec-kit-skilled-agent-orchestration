@@ -81,6 +81,10 @@ export interface IndexResult extends Record<string, unknown> {
   rejectionCode?: string;
   sufficiency?: MemorySufficiencyResult;
   assistiveRecommendation?: AssistiveRecommendation;
+  routeCategory?: RouteCategory;
+  mergeMode?: MergeModeHint;
+  targetDocPath?: string;
+  targetAnchorId?: string;
   qualityGate?: {
     pass: boolean;
     reasons: string[];

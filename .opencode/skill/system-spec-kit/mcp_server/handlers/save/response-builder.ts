@@ -56,6 +56,10 @@ interface BuildIndexResultParams {
   causalLinksResult: CausalLinksResult | null;
   enrichmentStatus?: EnrichmentStatus;
   filePath: string;
+  routeCategory?: IndexResult['routeCategory'];
+  mergeMode?: IndexResult['mergeMode'];
+  targetDocPath?: string;
+  targetAnchorId?: string | null;
 }
 
 interface BuildSaveResponseParams {
@@ -124,6 +128,10 @@ export function buildIndexResult({
   causalLinksResult,
   enrichmentStatus,
   filePath,
+  routeCategory,
+  mergeMode,
+  targetDocPath,
+  targetAnchorId,
 }: BuildIndexResultParams): IndexResult {
   let resultStatus: string;
   if (existing) {
@@ -174,6 +182,10 @@ export function buildIndexResult({
     warnings: [...validation.warnings, ...reconWarnings],
     qualityScore: parsed.qualityScore,
     qualityFlags: parsed.qualityFlags,
+    ...(routeCategory ? { routeCategory } : {}),
+    ...(mergeMode ? { mergeMode } : {}),
+    ...(targetDocPath ? { targetDocPath } : {}),
+    ...(targetAnchorId ? { targetAnchorId } : {}),
   };
   if (!ledgerRecorded) {
     result.warnings = result.warnings || [];
@@ -339,6 +351,18 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     qualityFlags: result.qualityFlags,
     message: result.message ?? (result.status === 'duplicate' ? 'Memory skipped (duplicate content)' : `Memory ${result.status} successfully`),
   };
+  if (result.routeCategory) {
+    response.routeCategory = result.routeCategory;
+  }
+  if (result.mergeMode) {
+    response.mergeMode = result.mergeMode;
+  }
+  if (result.targetDocPath) {
+    response.targetDocPath = result.targetDocPath;
+  }
+  if (result.targetAnchorId) {
+    response.targetAnchorId = result.targetAnchorId;
+  }
   if (result.assistiveRecommendation) {
     response.assistiveRecommendation = result.assistiveRecommendation;
   }
@@ -402,6 +426,9 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
 
   const summary = response.message as string;
   const hints: string[] = [];
+  if (result.routeCategory && result.targetDocPath) {
+    hints.push(`Routed save targeted ${result.targetDocPath}${result.targetAnchorId ? `#${result.targetAnchorId}` : ''}`);
+  }
   if (result.pe_action === 'REINFORCE') {
     hints.push('Existing memory was reinforced instead of creating duplicate');
   }

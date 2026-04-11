@@ -48,7 +48,6 @@ import { applyPostInsertMetadata } from './save/db-helpers.js';
 import {
   createMemoryRecord,
   findSamePathExistingMemory,
-  resolveCreateRecordIdentity,
   type CreateRecordIdentityHints,
   type MemoryScopeMatch,
 } from './save/create-record.js';
@@ -118,6 +117,7 @@ import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor
 // Create local path validator
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
 const MANUAL_FALLBACK_SOURCE_CLASSIFICATION = 'manual-fallback' as const;
+const ROUTED_CONTINUITY_ANCHOR_ID = '_memory.continuity';
 
 interface PreparedParsedMemory {
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
@@ -140,11 +140,29 @@ interface RoutedSaveOptions extends CreateRecordIdentityHints {
   mergeModeHint?: MergeModeHint;
 }
 
+interface RoutedRecordIdentity {
+  targetDocPath: string;
+  canonicalFilePath: string;
+  targetAnchorId: string | null;
+  routeAs: RouteCategory | null;
+  continuitySourceKey: string | null;
+}
+
 const STANDARD_MEMORY_TEMPLATE_MARKERS = [
   '## continue session',
   '## recovery hints',
   '<!-- memory metadata -->',
 ];
+const ROUTE_CATEGORIES = new Set<RouteCategory>([
+  'narrative_progress',
+  'narrative_delivery',
+  'decision',
+  'handover_state',
+  'research_finding',
+  'task_update',
+  'metadata_only',
+  'drop',
+]);
 
 class VRuleUnavailableError extends Error {
   constructor(message: string) {
@@ -637,6 +655,65 @@ function applyRoutedSaveHints(
   return parsedWithHints;
 }
 
+function buildRoutedSaveOptions(
+  filePath: string,
+  routeAs?: RouteCategory,
+  mergeModeHint?: MergeModeHint,
+): RoutedSaveOptions | undefined {
+  if (!routeAs && !mergeModeHint) {
+    return undefined;
+  }
+
+  return {
+    targetDocPath: filePath,
+    ...(routeAs ? { routeAs } : {}),
+    ...(mergeModeHint ? { mergeModeHint } : {}),
+  };
+}
+
+function pickRoutedIdentityValue(value: unknown): string | null {
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
+}
+
+function pickRouteCategory(value: unknown): RouteCategory | null {
+  const normalized = pickRoutedIdentityValue(value);
+  if (!normalized || !ROUTE_CATEGORIES.has(normalized as RouteCategory)) {
+    return null;
+  }
+  return normalized as RouteCategory;
+}
+
+function resolveRoutedRecordIdentity(
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  routedFilePath: string,
+  routing: RoutedSaveOptions,
+): RoutedRecordIdentity {
+  const routedRecord = parsed as unknown as Record<string, unknown>;
+  const routeAs = pickRouteCategory(routing.routeAs ?? routedRecord.routeAs ?? routedRecord.route_as);
+  const continuitySourceKey = pickRoutedIdentityValue(
+    routing.continuitySourceKey
+    ?? routedRecord.continuitySourceKey
+    ?? routedRecord.continuity_source_key
+    ?? routedRecord.sourceKey
+    ?? routedRecord.source_key,
+  );
+  const explicitTargetAnchorId = pickRoutedIdentityValue(
+    routing.targetAnchorId
+    ?? routedRecord.targetAnchorId
+    ?? routedRecord.target_anchor_id
+    ?? routedRecord.anchorId
+    ?? routedRecord.anchor_id,
+  );
+
+  return {
+    targetDocPath: routing.targetDocPath ?? routedFilePath,
+    canonicalFilePath: routing.canonicalFilePath ?? getCanonicalPathKey(routing.targetDocPath ?? routedFilePath),
+    targetAnchorId: explicitTargetAnchorId ?? ((routeAs === 'metadata_only' || continuitySourceKey !== null) ? ROUTED_CONTINUITY_ANCHOR_ID : null),
+    routeAs,
+    continuitySourceKey,
+  };
+}
+
 async function processPreparedMemory(
   prepared: PreparedParsedMemory,
   filePath: string,
@@ -747,11 +824,16 @@ async function processPreparedMemory(
           targetDocPath: routedFilePath,
         })
       : parsed;
-    const recordIdentity = resolveCreateRecordIdentity(routedParsed, routedFilePath, {
+    const recordIdentity = resolveRoutedRecordIdentity(routedParsed, routedFilePath, {
       ...routing,
       targetDocPath: routedFilePath,
     });
     const canonicalFilePath = recordIdentity.canonicalFilePath;
+    const samePathDedupExclusion = {
+      canonicalFilePath,
+      filePath: routedFilePath,
+      ...(recordIdentity.targetAnchorId != null ? { targetAnchorId: recordIdentity.targetAnchorId } : {}),
+    };
     const samePathExisting = findSamePathExistingMemory(
       database,
       routedParsed.specFolder,
@@ -849,11 +931,14 @@ async function processPreparedMemory(
       }
     }
 
-    const duplicatePrecheck = checkContentHashDedup(database, parsed, force, validation.warnings, {
-      canonicalFilePath,
-      filePath: routedFilePath,
-      targetAnchorId: recordIdentity.targetAnchorId,
-    }, scope);
+    const duplicatePrecheck = checkContentHashDedup(
+      database,
+      routedParsed,
+      force,
+      validation.warnings,
+      samePathDedupExclusion,
+      scope,
+    );
     if (duplicatePrecheck) {
       return duplicatePrecheck;
     }
@@ -972,10 +1057,14 @@ async function processPreparedMemory(
     // C5-1: Content-hash dedup check BEFORE the write transaction — reads are
     // safe outside the transaction and this avoids an early-return inside the
     // transaction callback (which would COMMIT an empty tx unnecessarily).
-    const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings, {
-      canonicalFilePath,
-      filePath,
-    }, scope);
+    const dupResult = checkContentHashDedup(
+      database,
+      routedParsed,
+      force,
+      validation.warnings,
+      samePathDedupExclusion,
+      scope,
+    );
     if (dupResult) {
       return dupResult;
     }
@@ -991,7 +1080,7 @@ async function processPreparedMemory(
         recordIdentity,
       ) as { id: number; content_hash: string } | undefined;
 
-      const memoryId = existing && existing.content_hash !== parsed.contentHash
+      const memoryId = existing && existing.content_hash !== routedParsed.contentHash
         ? createAppendOnlyMemoryRecord({
             database,
             parsed: routedParsed,
@@ -1001,7 +1090,7 @@ async function processPreparedMemory(
             predecessorMemoryId: existing.id,
             actor: 'mcp:memory_save',
           })
-        : createMemoryRecord(
+          : createMemoryRecord(
             database,
             routedParsed,
             routedFilePath,
@@ -1024,11 +1113,11 @@ async function processPreparedMemory(
 
       recordLineageVersion(database, {
         memoryId,
-        predecessorMemoryId: existing && existing.content_hash !== parsed.contentHash
+        predecessorMemoryId: existing && existing.content_hash !== routedParsed.contentHash
           ? existing.id
           : null,
         actor: 'mcp:memory_save',
-        transitionEvent: existing && existing.content_hash !== parsed.contentHash
+        transitionEvent: existing && existing.content_hash !== routedParsed.contentHash
           ? 'SUPERSEDE'
           : 'CREATE',
       });
@@ -1069,7 +1158,7 @@ async function processPreparedMemory(
     }
 
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking
-    const { causalLinksResult, enrichmentStatus } = await runPostInsertEnrichment(database, id, parsed);
+    const { causalLinksResult, enrichmentStatus } = await runPostInsertEnrichment(database, id, routedParsed);
 
     // BUILD RESULT
     return appendResultWarning(buildIndexResult({
@@ -1086,6 +1175,10 @@ async function processPreparedMemory(
       causalLinksResult,
       enrichmentStatus,
       filePath: routedFilePath,
+      routeCategory: routing.routeAs ?? recordIdentity.routeAs ?? undefined,
+      mergeMode: routing.mergeModeHint,
+      targetDocPath: routedFilePath,
+      targetAnchorId: recordIdentity.targetAnchorId,
     }), finalizeWarning);
   };
 
@@ -1107,6 +1200,14 @@ async function indexMemoryFile(
     asyncEmbedding = false,
     scope = {} as MemoryScopeMatch,
     qualityGateMode = 'enforce' as 'enforce' | 'warn-only',
+    routing,
+  }: {
+    force?: boolean;
+    parsedOverride?: ReturnType<typeof memoryParser.parseMemoryFile> | null;
+    asyncEmbedding?: boolean;
+    scope?: MemoryScopeMatch;
+    qualityGateMode?: 'enforce' | 'warn-only';
+    routing?: RoutedSaveOptions;
   } = {},
 ): Promise<IndexResult> {
   // Reuse parsed content when provided by caller to avoid a second parse.
@@ -1128,6 +1229,7 @@ async function indexMemoryFile(
     refreshFromDiskAfterLock: parsedOverride !== null,
     scope,
     qualityGateMode,
+    routing,
   });
 }
 
@@ -1161,6 +1263,8 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     dryRun = false,
     skipPreflight = false,
     asyncEmbedding = false,
+    routeAs,
+    mergeModeHint,
     tenantId,
     userId,
     agentId,
@@ -1492,6 +1596,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
       parsedOverride: parsedForPreflight,
       asyncEmbedding,
       scope: saveScope,
+      routing: buildRoutedSaveOptions(validatedPath, routeAs, mergeModeHint),
     });
   } catch (error: unknown) {
     if (error instanceof VRuleUnavailableError) {
@@ -1577,252 +1682,130 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
  * is restored before the error is returned and before the lock is released.
  */
 async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOptions = {}): Promise<AtomicSaveResult> {
-  const { file_path, content } = params;
-  const { force = false } = options;
+  const { file_path, content, routeAs, mergeModeHint } = params;
   const database = requireDb();
-  // Use unique suffix to prevent concurrent pending-file race (F01-003)
-  const basePendingPath = transactionManager.getPendingPath(file_path);
-  const pendingPath = `${basePendingPath}.${randomUUID().slice(0, 8)}`;
-  const originalState = captureAtomicSaveOriginalState(file_path);
+  const routing = buildRoutedSaveOptions(file_path, routeAs, mergeModeHint);
 
-  let indexResult: IndexResult | null = null;
-  let indexError: Error | null = null;
-  let validationError: ReturnType<typeof memoryParser.validateParsedMemory> | null = null;
-  let restoredOriginalAfterFailure = false;
-  let errorMetadata: Record<string, string> | null = null;
-  const mergeErrorMetadata = (entry: Record<string, string> | null): void => {
-    if (!entry) {
-      return;
-    }
-    errorMetadata = {
-      ...(errorMetadata ?? {}),
-      ...entry,
-    };
-  };
-  const maxIndexAttempts = 2;
-  for (let attempt = 1; attempt <= maxIndexAttempts; attempt++) {
-    let promotedToFinalPath = false;
-    let handledFailureWhileLocked = false;
-    let rollbackSucceededAfterRejectedSave = false;
-    try {
+  return atomicIndexMemory(params, options, {
+    prepare: ({ file_path: currentFilePath, content: currentContent }) => {
       const prepared = prepareParsedMemoryForIndexing(
-        memoryParser.parseMemoryContent(file_path, content),
+        memoryParser.parseMemoryContent(currentFilePath, currentContent),
         database,
       );
 
       if (!prepared.validation.valid) {
-        validationError = prepared.validation;
-        indexError = null;
-        break;
+        return {
+          status: 'abort',
+          result: {
+            success: false,
+            filePath: currentFilePath,
+            status: 'error',
+            summary: 'Atomic save preflight failed',
+            message: 'Parsed content failed validation before atomic save',
+            error: `Validation failed: ${prepared.validation.errors.join(', ')}`,
+          },
+        } as const;
       }
 
       if (prepared.qualityLoopResult.fixes.length > 0 && prepared.qualityLoopResult.passed && prepared.qualityLoopResult.fixedContent) {
-        console.error(`[memory-save] Quality loop applied ${prepared.qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(file_path)} before pending-file promotion`);
+        console.error(`[memory-save] Quality loop applied ${prepared.qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(currentFilePath)} before pending-file promotion`);
       }
 
-      const persistedContent = prepared.qualityLoopResult.passed && prepared.qualityLoopResult.fixedContent
-        ? prepared.qualityLoopResult.fixedContent
-        : content;
+      return {
+        status: 'ready',
+        prepared,
+        specFolder: prepared.parsed.specFolder,
+        persistedContent: prepared.qualityLoopResult.passed && prepared.qualityLoopResult.fixedContent
+          ? prepared.qualityLoopResult.fixedContent
+          : currentContent,
+      } as const;
+    },
+    indexPrepared: ({ ready, params: currentParams, force }) => processPreparedMemory(ready.prepared, currentParams.file_path, {
+      force,
+      asyncEmbedding: true,
+      persistQualityLoopContent: false,
+      specFolderLockAlreadyHeld: true,
+      routing: buildRoutedSaveOptions(currentParams.file_path, currentParams.routeAs, currentParams.mergeModeHint),
+    }),
+    getPendingPath: (currentFilePath) => `${transactionManager.getPendingPath(currentFilePath)}.${randomUUID().slice(0, 8)}`,
+    withSpecFolderLock,
+    captureOriginalState: captureAtomicSaveOriginalState,
+    restoreOriginalState: restoreAtomicSaveOriginalState,
+    cleanupPendingFile: cleanupAtomicSavePendingFile,
+    writePendingAndPromote: (pendingPath, currentFilePath, persistedContent) => {
+      fs.mkdirSync(path.dirname(pendingPath), { recursive: true });
+      fs.writeFileSync(pendingPath, persistedContent, 'utf-8');
+      fs.renameSync(pendingPath, currentFilePath);
+    },
+    mapSuccessResult: (indexResult) => {
+      const routedRouteCategory = indexResult.routeCategory ?? routing?.routeAs;
+      const routedMergeMode = indexResult.mergeMode ?? routing?.mergeModeHint;
+      const routedTargetDocPath = indexResult.targetDocPath ?? file_path;
 
-      indexResult = await withSpecFolderLock(prepared.parsed.specFolder, async () => {
+      if (indexResult.status !== 'unchanged' && indexResult.status !== 'duplicate' && indexResult.id > 0) {
+        applyPostInsertMetadata(database, indexResult.id, {});
+      }
+
+      const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate' && indexResult.status !== 'unchanged';
+      let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
+      if (shouldEmitPostMutationFeedback) {
+        let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
         try {
-          fs.mkdirSync(path.dirname(pendingPath), { recursive: true });
-          fs.writeFileSync(pendingPath, persistedContent, 'utf-8');
-          fs.renameSync(pendingPath, file_path);
-          promotedToFinalPath = true;
-
-          const lockedIndexResult = await processPreparedMemory(prepared, file_path, {
-            force,
-            asyncEmbedding: true,
-            persistQualityLoopContent: false,
-            specFolderLockAlreadyHeld: true,
+          postMutationHooks = runPostMutationHooks('atomic-save', {
+            filePath: file_path,
+            specFolder: indexResult.specFolder,
+            memoryId: indexResult.id,
           });
-
-          if (lockedIndexResult.status === 'rejected') {
-            handledFailureWhileLocked = true;
-            const rollbackResult = restoreAtomicSaveOriginalState(file_path, originalState);
-            rollbackSucceededAfterRejectedSave = rollbackResult.restored;
-            if (!rollbackResult.restored && rollbackResult.error) {
-              mergeErrorMetadata({ rollbackError: rollbackResult.error });
-            }
-          }
-
-          return lockedIndexResult;
-        } catch (lockedError: unknown) {
-          handledFailureWhileLocked = true;
-          const pendingCleanupResult = cleanupAtomicSavePendingFile(pendingPath);
-          if (!pendingCleanupResult.cleaned && pendingCleanupResult.error) {
-            mergeErrorMetadata({ pendingCleanupError: pendingCleanupResult.error });
-          }
-          if (promotedToFinalPath) {
-            const rollbackResult = restoreAtomicSaveOriginalState(file_path, originalState);
-            restoredOriginalAfterFailure = rollbackResult.restored;
-            if (!rollbackResult.restored && rollbackResult.error) {
-              mergeErrorMetadata({ rollbackError: rollbackResult.error });
-            }
-            if (!restoredOriginalAfterFailure) {
-              const promoteMessage = lockedError instanceof Error ? lockedError.message : String(lockedError);
-              throw new Error(`Original file rollback failed after promote-before-index path: ${promoteMessage}`);
-            }
-          }
-          throw lockedError;
+        } catch (hookError: unknown) {
+          const msg = hookError instanceof Error ? hookError.message : String(hookError);
+          postMutationHooks = {
+            latencyMs: 0, triggerCacheCleared: false,
+            constitutionalCacheCleared: false, toolCacheInvalidated: 0,
+            graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+            errors: [msg],
+          };
         }
-      });
-      if (indexResult.status === 'error') {
-        throw new Error(indexResult.message ?? indexResult.error ?? 'indexMemoryFile returned status=error');
+        postMutationFeedback = buildMutationHookFeedback('atomic-save', postMutationHooks);
       }
-      if (indexResult.status === 'rejected') {
-        const rollbackSucceeded = rollbackSucceededAfterRejectedSave;
-        return {
-          success: false,
-          filePath: file_path,
-          status: 'rejected',
-          id: indexResult.id,
-          specFolder: indexResult.specFolder,
-          title: indexResult.title,
-          summary: rollbackSucceeded
-            ? 'Atomic save rejected after file promotion rollback'
-            : 'Atomic save rejected but original file rollback failed',
-          message: indexResult.message ?? indexResult.rejectionReason ?? 'Memory save rejected',
-          embeddingStatus: indexResult.embeddingStatus,
-          hints: [
-            rollbackSucceeded
-              ? 'Original file content was restored because the save was rejected after promotion'
-              : 'Original file rollback failed after rejection; manual recovery may be required',
-          ],
-          ...(rollbackSucceeded ? {} : { error: 'Original file rollback failed after rejected save' }),
-          ...(rollbackSucceeded || !errorMetadata ? {} : { errorMetadata }),
-        };
+
+      const message = indexResult.message ?? (
+        indexResult.status === 'duplicate'
+          ? 'Memory skipped (duplicate content)'
+          : `Memory ${indexResult.status} successfully`
+      );
+      const hints: string[] = [];
+
+      if (indexResult.embeddingStatus === 'pending') {
+        hints.push('Memory will be fully indexed when embedding provider becomes available');
       }
-      indexError = null;
-      break;
-    } catch (err: unknown) {
-      if (!handledFailureWhileLocked) {
-        const pendingCleanupResult = cleanupAtomicSavePendingFile(pendingPath);
-        if (!pendingCleanupResult.cleaned && pendingCleanupResult.error) {
-          mergeErrorMetadata({ pendingCleanupError: pendingCleanupResult.error });
-        }
-        if (promotedToFinalPath) {
-          const rollbackResult = restoreAtomicSaveOriginalState(file_path, originalState);
-          restoredOriginalAfterFailure = rollbackResult.restored;
-          if (!rollbackResult.restored && rollbackResult.error) {
-            mergeErrorMetadata({ rollbackError: rollbackResult.error });
-          }
-          if (!restoredOriginalAfterFailure) {
-            const promoteMessage = err instanceof Error ? err.message : String(err);
-            indexError = new Error(`Original file rollback failed after promote-before-index path: ${promoteMessage}`);
-            break;
-          }
-        }
+      if (indexResult.embeddingStatus === 'partial') {
+        hints.push('Large file indexed via chunking: parent record + individual chunk records with embeddings');
       }
-      indexError = err instanceof Error ? err : new Error(String(err));
-      if (attempt < maxIndexAttempts) {
-        console.warn(`[memory-save] index attempt ${attempt} failed for ${file_path}, retrying once: ${indexError.message}`);
+      if (postMutationFeedback) {
+        hints.push(...postMutationFeedback.hints);
+      } else if (indexResult.status === 'duplicate') {
+        hints.push('Duplicate content matched an existing indexed memory, so caches were left unchanged');
       }
-    }
-  }
 
-  if (validationError) {
-    return {
-      success: false,
-      filePath: file_path,
-      status: 'error',
-      summary: 'Atomic save preflight failed',
-      message: 'Parsed content failed validation before atomic save',
-      error: `Validation failed: ${validationError.errors.join(', ')}`,
-    };
-  }
-
-  if (indexError || !indexResult) {
-    const pendingCleanupResult = cleanupAtomicSavePendingFile(pendingPath);
-    const rollbackSucceeded = restoredOriginalAfterFailure || pendingCleanupResult.cleaned;
-    const rollbackError = rollbackSucceeded ? '' : ' (rollback failed)';
-    const finalErrorMetadata = {
-      ...(errorMetadata ?? {}),
-      ...(!pendingCleanupResult.cleaned && pendingCleanupResult.error
-        ? { pendingCleanupError: pendingCleanupResult.error }
-        : {}),
-    };
-
-    return {
-      success: false,
-      filePath: file_path,
-      status: 'error',
-      summary: rollbackSucceeded
-        ? 'Atomic save rolled back to the original file state'
-        : 'Atomic save indexing failed and pending cleanup failed',
-      message: rollbackSucceeded
-        ? 'Indexing failed and the original file state was preserved or restored'
-        : 'Indexing failed and pending cleanup could not be completed',
-      hints: [
-        rollbackSucceeded
-          ? 'Original file content was preserved or restored because indexing failed before completion'
-          : 'Pending file cleanup failed after indexing error; manual cleanup may be required',
-        'Retry memory_save({ filePath, force: true }) once dependencies are healthy',
-      ],
-      error: `Indexing failed after retry${rollbackError}: ${indexError?.message ?? 'unknown'}`,
-      ...(Object.keys(finalErrorMetadata).length > 0 ? { errorMetadata: finalErrorMetadata } : {}),
-    };
-  }
-
-  if (indexResult.status !== 'unchanged' && indexResult.status !== 'duplicate' && indexResult.id > 0) {
-    applyPostInsertMetadata(database, indexResult.id, {});
-  }
-
-  const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate' && indexResult.status !== 'unchanged';
-  let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
-  if (shouldEmitPostMutationFeedback) {
-    let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
-    try {
-      postMutationHooks = runPostMutationHooks('atomic-save', {
+      return {
+        success: true,
         filePath: file_path,
+        status: indexResult.status,
+        id: indexResult.id,
         specFolder: indexResult.specFolder,
-        memoryId: indexResult.id,
-      });
-    } catch (hookError: unknown) {
-      const msg = hookError instanceof Error ? hookError.message : String(hookError);
-      postMutationHooks = {
-        latencyMs: 0, triggerCacheCleared: false,
-        constitutionalCacheCleared: false, toolCacheInvalidated: 0,
-        graphSignalsCacheCleared: false, coactivationCacheCleared: false,
-        errors: [msg],
+        title: indexResult.title,
+        summary: message,
+        message,
+        embeddingStatus: indexResult.embeddingStatus,
+        ...(routedRouteCategory ? { routeCategory: routedRouteCategory } : {}),
+        ...(routedMergeMode ? { mergeMode: routedMergeMode } : {}),
+        ...(routedTargetDocPath ? { targetDocPath: routedTargetDocPath } : {}),
+        ...(indexResult.targetAnchorId ? { targetAnchorId: indexResult.targetAnchorId } : {}),
+        ...(postMutationFeedback ? { postMutationHooks: postMutationFeedback.data } : {}),
+        ...(hints.length > 0 ? { hints } : {}),
       };
-    }
-    postMutationFeedback = buildMutationHookFeedback('atomic-save', postMutationHooks);
-  }
-
-  const message = indexResult.message ?? (
-    indexResult.status === 'duplicate'
-      ? 'Memory skipped (duplicate content)'
-      : `Memory ${indexResult.status} successfully`
-  );
-  const hints: string[] = [];
-
-  if (indexResult.embeddingStatus === 'pending') {
-    hints.push('Memory will be fully indexed when embedding provider becomes available');
-  }
-  if (indexResult.embeddingStatus === 'partial') {
-    hints.push('Large file indexed via chunking: parent record + individual chunk records with embeddings');
-  }
-  if (postMutationFeedback) {
-    hints.push(...postMutationFeedback.hints);
-  } else if (indexResult.status === 'duplicate') {
-    hints.push('Duplicate content matched an existing indexed memory, so caches were left unchanged');
-  }
-
-  return {
-    success: true,
-    filePath: file_path,
-    status: indexResult.status,
-    id: indexResult.id,
-    specFolder: indexResult.specFolder,
-    title: indexResult.title,
-    summary: message,
-    message,
-    embeddingStatus: indexResult.embeddingStatus,
-    ...(postMutationFeedback ? { postMutationHooks: postMutationFeedback.data } : {}),
-    ...(hints.length > 0 ? { hints } : {}),
-  };
+    },
+  });
 }
 
 /** Return transaction manager metrics for atomicity monitoring */
