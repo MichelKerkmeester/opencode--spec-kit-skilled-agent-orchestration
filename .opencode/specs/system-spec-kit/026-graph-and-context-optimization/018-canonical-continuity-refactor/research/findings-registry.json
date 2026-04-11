@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.1",
+  "iteration": 40,
+  "generated_at": "2026-04-11T18:35:00Z",
+  "total_findings": 196,
+  "total_questions": 9,
+  "resolved_questions": 9,
+  "open_questions": 0,
+  "generation_history": [
+    {"generation": 1, "iters": "1-20", "worker": "claude-opus-4-6 (in-session)", "focus": "9 key questions resolved + synthesis"},
+    {"generation": 2, "iters": "21-30", "worker": "cli-codex gpt-5.4 high fast", "focus": "Implementation-grade drill-downs sequential"},
+    {"generation": 3, "iters": "31-40", "worker": "cli-codex gpt-5.4 xhigh fast", "focus": "Phase-019-blocking depth pass (3-wave parallel); 6 iter-030 deferrals resolved in iter 040"}
+  ],
+  "summary": {
+    "by_band": {
+      "A_foundations": 26,
+      "B_retargeting": 33,
+      "C_ux": 25,
+      "D_synthesis": 15
+    },
+    "by_question": {
+      "Q1": 10,
+      "Q2": 15,
+      "Q3": 11,
+      "Q4": 29,
+      "Q5": 5,
+      "Q6": 5,
+      "Q7": 10,
+      "Q8": 5,
+      "Q9": 15
+    }
+  },
+  "resolved_questions_list": [
+    { "id": "Q1", "question": "Routing authority", "resolution": "contentRouter with 3-tier classifier (rule → embedding → LLM), 8 content categories, confidence tiers, refuse-to-route at <0.5", "iterations": [1, 2] },
+    { "id": "Q2", "question": "Anchor-scoped write semantics", "resolution": "5 merge modes (append-paragraph, insert-adr, append-table-row, update-in-place, append-section) inside per-spec-folder mutex envelope", "iterations": [3, 4, 15] },
+    { "id": "Q3", "question": "Thin continuity layer shape", "resolution": "_memory.continuity YAML sub-block in spec doc frontmatter, ~10-15 fields, <2KB per block", "iterations": [4, 5] },
+    { "id": "Q4", "question": "Feature retargeting per advanced capability", "resolution": "All 13 features retarget without deletion; 6 XS, 4 S, 3 M effort; biggest schema change is 2 new columns on causal_edges", "iterations": [6, 7, 8, 9, 10, 11, 12] },
+    { "id": "Q5", "question": "Resume journey end-to-end", "resolution": "4x faster fast path bypassing SQL; reads handover.md + _memory.continuity; actionable recovery package in <300ms", "iterations": [13] },
+    { "id": "Q6", "question": "/memory:save user flow", "resolution": "Auto mode + interactive mode + dry-run; routing transparency shows targets before write; user override via --route-as", "iterations": [14] },
+    { "id": "Q7", "question": "Validation contract", "resolution": "New spec-doc-structure validator + FRONTMATTER_MEMORY_BLOCK rule + MERGE_LEGALITY + POST_SAVE_FINGERPRINT verification", "iterations": [9, 17] },
+    { "id": "Q8", "question": "Migration of existing corpus", "resolution": "M4 bounded archive with FSRS decay; 1-week implementation; 180-day observation window with data-driven permanence decision", "iterations": [16] },
+    { "id": "Q9", "question": "Trust and safety", "resolution": "Per-spec-folder mutex + mtime external-edit detection + post-save fingerprint verification + 30 failure modes mapped + dashboard metrics", "iterations": [15, 17, 18, 19] }
+  ],
+  "key_findings": [
+    { "id": "F-018-001", "title": "4 new components needed: contentRouter, anchorMergeOperation, thinContinuityRecord, resumeLadder", "iterations": [1] },
+    { "id": "F-018-002", "title": "Only 2 of 16 save pipeline stages need full rewrite; 8 transfer as-is", "iterations": [1, 2] },
+    { "id": "F-018-003", "title": "8 content categories cover all memory content types", "iterations": [2] },
+    { "id": "F-018-004", "title": "3-tier classifier (rule → embedding → LLM) handles 80/15/5 split", "iterations": [2] },
+    { "id": "F-018-005", "title": "5 merge modes (append-paragraph, insert-adr, append-table-row, update-in-place, append-section)", "iterations": [3] },
+    { "id": "F-018-006", "title": "Atomic envelope reuses existing withSpecFolderLock at memory-save.ts:1569", "iterations": [3] },
+    { "id": "F-018-007", "title": "Option M-B (embedded YAML _memory sub-block) wins over sidecar and separate file", "iterations": [4] },
+    { "id": "F-018-008", "title": "_memory.continuity lives in frontmatter; not a separate storage primitive", "iterations": [5] },
+    { "id": "F-018-009", "title": "All 13 advanced features retarget without deletion", "iterations": [6, 7, 8, 9, 10, 11, 12] },
+    { "id": "F-018-010", "title": "Only 2 schema changes needed: is_archived column + causal_edges anchor columns", "iterations": [11] },
+    { "id": "F-018-011", "title": "Resume latency drops 4x (1200ms → 300ms) on happy path", "iterations": [13] },
+    { "id": "F-018-012", "title": "Resume output drops 3x (10KB → 3KB) with higher signal", "iterations": [13] },
+    { "id": "F-018-013", "title": "Routing transparency is the core UX win for /memory:save", "iterations": [14] },
+    { "id": "F-018-014", "title": "Per-spec-folder mutex is the right concurrency granularity", "iterations": [15] },
+    { "id": "F-018-015", "title": "Mtime external-edit detection is a new safety net (current system lacks it)", "iterations": [15] },
+    { "id": "F-018-016", "title": "M4 migration is 1 week of code + 180-day observation window", "iterations": [16] },
+    { "id": "F-018-017", "title": "~5 root packets with no canonical docs are a Gate A prerequisite blocker", "iterations": [13, 16, 18] },
+    { "id": "F-018-018", "title": "30 failure modes mapped with recovery paths", "iterations": [17] },
+    { "id": "F-018-019", "title": "Post-save fingerprint verification catches silent failures", "iterations": [17] },
+    { "id": "F-018-020", "title": "End-to-end journey composes cleanly with 5 weak links, none blocking", "iterations": [18] },
+    { "id": "F-018-021", "title": "~250 tests + 10 manual playbooks = ~50 M-eq test effort (12% of total)", "iterations": [19] },
+    { "id": "F-018-022", "title": "6-gate rollout plan with explicit pass criteria per gate", "iterations": [20] },
+    { "id": "F-018-023", "title": "10-item risk register; top risks: schema corruption, classifier misroute, latency regression", "iterations": [20] },
+    { "id": "F-018-024", "title": "Composite convergence 0.95 — higher than phase 017 (0.92)", "iterations": [20] }
+  ],
+  "ruled_out_directions": [
+    { "direction": "cli-codex gpt-5.4 as worker", "reason": "repeated exit code failures in this session; substituted to in-session orchestration" },
+    { "direction": "Per-anchor mutex granularity", "reason": "over-engineering; per-spec-folder mutex matches current primitive" },
+    { "direction": "Sidecar JSON files for memory metadata", "reason": "doubles file count; Option M-B (embedded YAML) is cleaner" },
+    { "direction": "Separate continuity database table", "reason": "unnecessary new primitive; _memory.continuity in frontmatter suffices" },
+    { "direction": "Bulk rewrite of 155 memories into spec docs", "reason": "over-promotes waste; M4 bounded archive is the right choice (fixed from phase 017)" }
+  ],
+  "open_questions_list": [],
+  "_provenance": {
+    "mode": "in-session-rerun",
+    "orchestrator": "claude-opus-4-6",
+    "worker": "claude-opus-4-6 (same session, both roles)",
+    "worker_requested": "gpt-5.4 high fast — substituted due to cli-codex instability",
+    "stop_path": "all_questions_answered_plus_audit_complete",
+    "composite_score": 0.95
+  }
+}

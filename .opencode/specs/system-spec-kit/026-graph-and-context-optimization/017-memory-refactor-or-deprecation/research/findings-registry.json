@@ -1,0 +1,258 @@
+{
+  "_provenance": {
+    "type": "single-shot-codex-retrofit",
+    "retrofitted_at": "2026-04-11T12:15:00Z",
+    "retrofitted_by": "claude-opus-4-6 (Claude Code session)",
+    "note": "Phase 017 research was executed as a single-shot `codex exec` delegation; the sk-deep-research reducer never ran. This registry was RECONSTRUCTED by hand from the final deliverables (research/research.md, findings/*.md, recommendation.md). Findings are listed with evidence pointers to the real output files. Confidence scores are estimated retrospectively — they are NOT output from the quality guard pipeline."
+  },
+  "schema_version": "1.1",
+  "iteration": 1,
+  "generated_at": "2026-04-11T12:15:00Z",
+  "total_findings": 9,
+  "total_questions": 8,
+  "resolved_questions": 8,
+  "open_questions": 0,
+  "summary": {
+    "by_question": {
+      "Q1": 1,
+      "Q2": 1,
+      "Q3": 1,
+      "Q4": 1,
+      "Q5": 1,
+      "Q6": 1,
+      "Q7": 1,
+      "Q8": 1,
+      "cross": 1
+    },
+    "by_confidence": {
+      "high": 6,
+      "medium": 2,
+      "low": 1
+    },
+    "by_tag": {
+      "recommendation": 1,
+      "architecture": 2,
+      "redundancy": 2,
+      "retrieval": 1,
+      "migration": 1,
+      "integration": 1,
+      "root-cause": 1
+    }
+  },
+  "resolved_questions_list": [
+    {
+      "id": "Q1",
+      "question": "Current memory system — what does it actually do right now?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "Mapped the 16-stage memory_save pipeline and identified that the system does two jobs at once (narrative journal + retrieval substrate).",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q1" }
+      ]
+    },
+    {
+      "id": "Q2",
+      "question": "Value assessment — are the memories themselves useful?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "Some memories are useful for exact resume recovery, but the average narrative memory is not strong enough to justify the current default-save architecture. Saved content is more useful as retrieval hint than canonical document.",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q2" }
+      ]
+    },
+    {
+      "id": "Q3",
+      "question": "Redundancy with spec kit documentation — how much overlap?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "High narrative overlap. Unique content is mostly machine metadata, not prose.",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q3" },
+        { "file": "findings/redundancy-matrix.md", "section": "root" }
+      ]
+    },
+    {
+      "id": "Q4",
+      "question": "Retrieval value — does MCP search on memories actually work?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "Live runtime path too brittle; direct SQLite FTS comparison shows memory wins on session-shaped/historical queries, spec docs win on current-packet queries. Retrieval value is real but narrow.",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q4" },
+        { "file": "findings/retrieval-comparison.md", "section": "root" }
+      ],
+      "caveat": "I'M UNCERTAIN: live production retrieval precision under a healthy embedding runtime may be somewhat better than the local runtime path observed here."
+    },
+    {
+      "id": "Q5",
+      "question": "Alternative architectures — what are the options?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "Six options evaluated. Ranking: 1st C (wiki-style + thin continuity), 2nd B (minimal memory), 3rd F (full deprecation), 4th D (handover-only), 5th E (findings-only), 6th A (status quo).",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q5" },
+        { "file": "findings/alternatives-comparison.md", "section": "root" }
+      ]
+    },
+    {
+      "id": "Q6",
+      "question": "Migration path — what happens to the 153 existing memories?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "Do not bulk-convert. Freeze old memories as read-only history. Promote only high-value unique material to packet docs. Keep the rest archived and searchable during transition.",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q6" }
+      ]
+    },
+    {
+      "id": "Q7",
+      "question": "Integration impact — what breaks if memory is deprecated?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "Primary impact surfaces: /spec_kit:resume, /memory:*, workflow commands (plan/implement/complete/deep-research/deep-review), agent instructions (@context, @speckit, @orchestrate), MCP handlers, schemas, tests, and docs. Migration is doable but not a one-file change.",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q7" },
+        { "file": "findings/integration-impact.md", "section": "root" }
+      ]
+    },
+    {
+      "id": "Q8",
+      "question": "Recommendation — what should we actually do?",
+      "resolved_at": "2026-04-10T22:09:00Z",
+      "resolution": "Adopt Option C as target architecture with Option B as retention policy. Canonical narrative → spec docs; memory saves → thin continuity layer. Phased rollout: phase 018 redefines canonical authority, phase 019 replaces default save behavior, phase 020 decides permanence.",
+      "evidence": [
+        { "file": "research/research.md", "section": "Q8" },
+        { "file": "recommendation.md", "section": "root" },
+        { "file": "phase-018-proposal.md", "section": "root" }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-017-001",
+      "title": "Memory system has two jobs: narrative journal + retrieval substrate",
+      "question": "Q1",
+      "tag": "architecture",
+      "evidence": [
+        { "file": "research/research.md", "lines": "Q1 section" },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts", "lines": "1-107" }
+      ],
+      "confidence": "high",
+      "recommendation": "split",
+      "rationale": "The second job (retrieval) is useful; the first job (narrative) is where most redundancy and quality drift lives. Split them by routing narrative into spec docs and keeping the retrieval substrate as a thin layer."
+    },
+    {
+      "id": "F-017-002",
+      "title": "Narrative memory sections are mostly redundant with spec kit docs",
+      "question": "Q3",
+      "tag": "redundancy",
+      "evidence": [
+        { "file": "findings/redundancy-matrix.md", "lines": "root" },
+        { "file": "research/research.md", "lines": "Q3 section" }
+      ],
+      "confidence": "high",
+      "recommendation": "deprecate-narrative-keep-metadata",
+      "rationale": "Every major memory section (CONTINUE SESSION, PROJECT STATE SNAPSHOT, IMPLEMENTATION GUIDE, OVERVIEW, DETAILED CHANGES, DECISIONS, CANONICAL SOURCES, RECOVERY HINTS) has a clear equivalent in existing spec kit docs. Only MEMORY METADATA is genuinely unique."
+    },
+    {
+      "id": "F-017-003",
+      "title": "Memory retrieval wins on session-shaped and historical queries",
+      "question": "Q4",
+      "tag": "retrieval",
+      "evidence": [
+        { "file": "findings/retrieval-comparison.md", "lines": "root" },
+        { "file": "research/research.md", "lines": "Q4 section" }
+      ],
+      "confidence": "medium",
+      "recommendation": "preserve-retrieval-layer",
+      "rationale": "3/10 queries favor memory, 3/10 favor spec docs, 4/10 tie. The retrieval layer has real value that must be preserved even if narrative is deprecated.",
+      "caveat": "I'M UNCERTAIN: local runtime was degraded; production may perform differently."
+    },
+    {
+      "id": "F-017-004",
+      "title": "Option C (wiki-style + thin continuity) is the best architecture",
+      "question": "Q5",
+      "tag": "recommendation",
+      "evidence": [
+        { "file": "findings/alternatives-comparison.md", "lines": "root" },
+        { "file": "recommendation.md", "lines": "root" }
+      ],
+      "confidence": "high",
+      "recommendation": "adopt",
+      "rationale": "Best value-to-complexity ratio. Matches operator's real source-of-truth workflow (spec docs already treated as authoritative). Preserves the retrieval substrate that earns its keep."
+    },
+    {
+      "id": "F-017-005",
+      "title": "Option A (status quo + fix generator) is not recommended",
+      "question": "Q5",
+      "tag": "architecture",
+      "evidence": [
+        { "file": "findings/alternatives-comparison.md", "lines": "root" },
+        { "file": "research/research.md", "lines": "Q5 section" }
+      ],
+      "confidence": "high",
+      "recommendation": "reject",
+      "rationale": "Highest complexity for the weakest long-term information architecture. Phase 005 already documents 562 generator defects; fixing them is a sunk-cost bet on the wrong layer."
+    },
+    {
+      "id": "F-017-006",
+      "title": "Freeze existing 150 memories rather than bulk-convert",
+      "question": "Q6",
+      "tag": "migration",
+      "evidence": [
+        { "file": "research/research.md", "lines": "Q6 section" }
+      ],
+      "confidence": "high",
+      "recommendation": "freeze-and-lazy-promote",
+      "rationale": "Bulk conversion has high cost and low value — most content is redundant. Freeze as read-only historical corpus, lazy-promote only high-value unique material (durable decisions, handovers, research findings)."
+    },
+    {
+      "id": "F-017-007",
+      "title": "Integration impact is wide but tractable",
+      "question": "Q7",
+      "tag": "integration",
+      "evidence": [
+        { "file": "findings/integration-impact.md", "lines": "root" },
+        { "file": "research/research.md", "lines": "Q7 section" }
+      ],
+      "confidence": "high",
+      "recommendation": "phased-migration",
+      "rationale": "12 VERY-HIGH effort files, ~20 HIGH effort, dozens MEDIUM/LOW. Doable but not a one-file change. Largest cost is command/agent contract cleanup, not archive handling."
+    },
+    {
+      "id": "F-017-008",
+      "title": "Phased rollout: phase 018 authority → phase 019 runtime → phase 020 permanence",
+      "question": "Q8",
+      "tag": "recommendation",
+      "evidence": [
+        { "file": "phase-018-proposal.md", "lines": "root" },
+        { "file": "recommendation.md", "lines": "root" }
+      ],
+      "confidence": "high",
+      "recommendation": "adopt",
+      "rationale": "Three-phase migration: phase 018 redefines canonical authority (narrative → spec docs, old memories read-only), phase 019 replaces default memory_save behavior with thin continuity artifact, phase 020 decides on permanence or full deprecation."
+    },
+    {
+      "id": "F-017-009",
+      "title": "Session continuity + exact resume phrasing are the only irreplaceable memory value",
+      "question": "cross",
+      "tag": "root-cause",
+      "evidence": [
+        { "file": "research/research.md", "lines": "Executive Summary + Q4 + Q8" }
+      ],
+      "confidence": "high",
+      "recommendation": "preserve-as-thin-continuity-layer",
+      "rationale": "The only piece of memory clearly earning its keep is exact continuity retrieval for session-shaped queries. Everything else can move into spec docs. This single finding justifies the 'thin continuity layer' component of Option C."
+    }
+  ],
+  "ruled_out_directions": [
+    {
+      "direction": "Bulk-convert all 150 memory files into spec doc anchors",
+      "reason": "Migration cost exceeds phase budget; most content is redundant",
+      "ruled_out_at": "Q6 resolution"
+    },
+    {
+      "direction": "Full deprecation of memory MCP in phase 018",
+      "reason": "Unsafe while some root packets still rely on memory as the only surviving narrative artifact",
+      "ruled_out_at": "Q5 resolution"
+    },
+    {
+      "direction": "Invest in fixing generator-quality bugs from phase 005",
+      "reason": "Highest complexity for weakest long-term architecture",
+      "ruled_out_at": "Q5 resolution"
+    }
+  ]
+}
