@@ -204,7 +204,7 @@ def route_codex_resources(task):
             loaded.append(guarded)
             seen.add(guarded)
 
-    # 1. ALWAYS load baseline
+    # 1. ALWAYS load baseline + fast-path prompt-quality asset
     for relative_path in LOADING_LEVELS["ALWAYS"]:
         load_if_available(relative_path)
 

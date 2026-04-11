@@ -138,7 +138,37 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE, "assets/prompt_quality_card.md"],
+    "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide"],
+    "ON_DEMAND": ["references/copilot_tools.md", "assets/prompt_templates.md"],
 }
+
+UNKNOWN_FALLBACK_CHECKLIST = [
+    "Is the user asking about Copilot CLI specifically?",
+    "Does the task benefit from collaborative planning or cloud delegation?",
+    "Is autonomous execution with --allow-all-tools needed?",
+    "Would repo-memory-aware generation or review help?",
+]
+
+def _task_text(task) -> str:
+    return " ".join([
+        str(getattr(task, "text", "")),
+        str(getattr(task, "query", "")),
+        " ".join(getattr(task, "keywords", []) or []),
+    ]).lower()
+
+def _guard_in_skill(relative_path: str) -> str:
+    resolved = (SKILL_ROOT / relative_path).resolve()
+    resolved.relative_to(SKILL_ROOT)
+    if resolved.suffix.lower() != ".md":
+        raise ValueError(f"Only markdown resources are routable: {relative_path}")
+    return resolved.relative_to(SKILL_ROOT).as_posix()
+
+def discover_markdown_resources() -> set[str]:
+    docs = []
+    for base in RESOURCE_BASES:
+        if base.exists():
+            docs.extend(p for p in base.rglob("*.md") if p.is_file())
+    return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
 
 def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
     ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
@@ -148,6 +178,61 @@ def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_i
     if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
         selected.append(ranked[1][0])
     return selected[:max_intents]
+
+def score_intents(task) -> dict[str, float]:
+    text = _task_text(task)
+    scores = {intent: 0.0 for intent in INTENT_SIGNALS}
+    for intent, cfg in INTENT_SIGNALS.items():
+        for keyword in cfg["keywords"]:
+            if keyword in text:
+                scores[intent] += cfg["weight"]
+    return scores
+
+def route_copilot_resources(task):
+    inventory = discover_markdown_resources()
+    scores = score_intents(task)
+    intents = select_intents(scores, ambiguity_delta=1.0)
+    loaded = []
+    seen = set()
+
+    def load_if_available(relative_path: str) -> None:
+        guarded = _guard_in_skill(relative_path)
+        if guarded in inventory and guarded not in seen:
+            load(guarded)
+            loaded.append(guarded)
+            seen.add(guarded)
+
+    # 1. ALWAYS load baseline + fast-path prompt-quality asset
+    for relative_path in LOADING_LEVELS["ALWAYS"]:
+        load_if_available(relative_path)
+
+    # 2. UNKNOWN FALLBACK: no keywords matched at all
+    if max(scores.values()) == 0:
+        load_if_available("references/cli_reference.md")
+        return {
+            "intents": ["GENERATION"],
+            "load_level": "UNKNOWN_FALLBACK",
+            "needs_disambiguation": True,
+            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
+            "resources": loaded,
+        }
+
+    # 3. CONDITIONAL: intent-mapped resources
+    for intent in intents:
+        for relative_path in RESOURCE_MAP.get(intent, []):
+            load_if_available(relative_path)
+
+    # 4. ON_DEMAND: explicit keyword triggers
+    text = _task_text(task)
+    if any(keyword in text for keyword in LOADING_LEVELS["ON_DEMAND_KEYWORDS"]):
+        for relative_path in LOADING_LEVELS["ON_DEMAND"]:
+            load_if_available(relative_path)
+
+    # 5. Safety net
+    if not loaded:
+        load_if_available(DEFAULT_RESOURCE)
+
+    return {"intents": intents, "intent_scores": scores, "resources": loaded}
 ```
 
 ---
