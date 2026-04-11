@@ -1,24 +1,6 @@
 {
   "openQuestions": [
     {
-      "id": "question-2-d1-are-there-convergence-signals-that-should-exist-but-currently-don-t-e-g-citat",
-      "text": "D1: Are there convergence signals that should exist but currently don't (e.g., citation density, source diversity, contradiction frequency)?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-3-d2-how-effective-is-the-legal-stop-gate-bundle-in-sk-deep-review-v1-2-0-0-under-",
-      "text": "D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-4-d2-does-the-new-scripts-reduce-state-cjs-correctly-handle-partial-failure-iterat",
-      "text": "D2: Does the new `scripts/reduce-state.cjs` correctly handle partial-failure iterations, severity transitions, and finding deduplication at scale (50+ findings)?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
       "id": "question-5-d3-how-fault-tolerant-is-the-orchestrator-only-journal-emission-in-sk-improve-ag",
       "text": "D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?",
       "addedAtIteration": 0,
@@ -43,12 +25,6 @@
       "resolvedAtIteration": null
     },
     {
-      "id": "question-14-d5-do-convergence-gates-consult-coverage-graph-contradictions-cjs-to-block-stop-",
-      "text": "D5: Do convergence gates consult `coverage-graph-contradictions.cjs` to block STOP on contradictions, or only consult ratio-based signals?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
       "id": "question-15-d5-does-the-coverage-graph-s-contribution-to-the-3-signal-convergence-math-excee",
       "text": "D5: Does the coverage graph's contribution to the 3-signal convergence math exceed its weight, or is it merely nominal?",
       "addedAtIteration": 0,
@@ -67,6 +43,24 @@
       "text": "D1: What undocumented edge cases, redundant reducer passes, journal-rollup gaps, or resume-flow drifts exist in the sk-deep-research v1.5.0.0 loop?",
       "addedAtIteration": 0,
       "resolvedAtIteration": 1
+    },
+    {
+      "id": "question-2-d1-are-there-convergence-signals-that-should-exist-but-currently-don-t-e-g-citat",
+      "text": "D1: Are there convergence signals that should exist but currently don't (e.g., citation density, source diversity, contradiction frequency)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 7
+    },
+    {
+      "id": "question-3-d2-how-effective-is-the-legal-stop-gate-bundle-in-sk-deep-review-v1-2-0-0-under-",
+      "text": "D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 10
+    },
+    {
+      "id": "question-4-d2-does-the-new-scripts-reduce-state-cjs-correctly-handle-partial-failure-iterat",
+      "text": "D2: Does the new `scripts/reduce-state.cjs` correctly handle partial-failure iterations, severity transitions, and finding deduplication at scale (50+ findings)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 9
     },
     {
       "id": "question-8-d4-do-the-loops-emit-the-full-stop-reasons-enum-in-practice-or-are-any-values-bl",
@@ -97,6 +91,12 @@
       "text": "D5: Is the `graphEvents` JSONL field consumed by the reducer or downstream tools, or is it write-only?",
       "addedAtIteration": 0,
       "resolvedAtIteration": 3
+    },
+    {
+      "id": "question-14-d5-do-convergence-gates-consult-coverage-graph-contradictions-cjs-to-block-stop-",
+      "text": "D5: Do convergence gates consult `coverage-graph-contradictions.cjs` to block STOP on contradictions, or only consult ratio-based signals?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 6
     }
   ],
   "keyFindings": [
@@ -649,6 +649,469 @@
         ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-548",
         ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:625-638"
       ]
+    },
+    {
+      "id": "finding-6-3-contradiction-aware-blocking-does-exist-in-shared-infrastructure-but-only-behind",
+      "text": "Contradiction-aware blocking does exist in shared infrastructure, but only behind separate graph helpers. `coverage-graph-contradictions.cjs` scans `CONTRADICTS` edges and computes contradiction density (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158`), and the MCP convergence handler blocks when `findContradictions(ns)` returns contradictions above threshold (`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264`).",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-49",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-005.md:31-32",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-375",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-review/references/convergence.md:661-683",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:11-13",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:359-368",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-490",
+        ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264"
+      ]
+    },
+    {
+      "id": "finding-6-1-the-live-deep-research-stop-path-still-uses-an-inline-3-signal-vote-plus-checkqu",
+      "text": "The live deep-research stop path still uses an inline 3-signal vote plus `checkQualityGuards(state, strategy)` and never names any graph or contradiction helper in the active convergence step, even while calling the graph-aware model \"experimental/reference-only\" for live runs (`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277`).",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-49",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-005.md:31-32",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-375",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-review/references/convergence.md:661-683",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:11-13",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:359-368",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-490",
+        ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264"
+      ]
+    },
+    {
+      "id": "finding-6-2-the-live-deep-review-stop-path-is-likewise-inline-rolling-average-mad-dimension-",
+      "text": "The live deep-review stop path is likewise inline: rolling-average, MAD, dimension-coverage, and four binary quality guards determine whether STOP is allowed, but there is no graph-aware or contradiction-specific call before `if_stop` transfers control to synthesis (`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-375`).",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-49",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-005.md:31-32",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-375",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-review/references/convergence.md:661-683",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:11-13",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:359-368",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-490",
+        ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264"
+      ]
+    },
+    {
+      "id": "finding-6-4-the-published-deep-research-contract-says-that-when-graphevents-exist-the-reduce",
+      "text": "The published deep-research contract says that when `graphEvents` exist, \"the reducer builds an in-memory coverage graph and derives additional signals for the legal-stop gate evaluation,\" including graph coverage sub-checks (`.opencode/skill/sk-deep-research/references/convergence.md:1181-1205`). The live research reducer does not implement that bridge: its only imports are `fs` and `path`, and its convergence score is taken from `latestIteration.convergenceSignals?.compositeStop` or `latestIteration?.newInfoRatio` rather than any graph helper (`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:11-13`, `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249`).",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-49",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-005.md:31-32",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-375",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-review/references/convergence.md:661-683",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:11-13",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:359-368",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-490",
+        ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264"
+      ]
+    },
+    {
+      "id": "finding-6-5-the-same-contract-runtime-gap-exists-on-the-review-side-the-review-convergence-r",
+      "text": "The same contract/runtime gap exists on the review side. The review convergence reference says `graphEvents` should feed structural signals into the `findingStability` gate (`.opencode/skill/sk-deep-review/references/convergence.md:661-683`), but the live review reducer imports only `fs` and `path`, computes convergence from `latest?.convergenceSignals?.compositeStop` or `1 - newFindingsRatio`, and renders dashboards from plain iteration records without any graph-helper bridge (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:11-12`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:359-368`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-490`).",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-49",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-005.md:31-32",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-375",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-review/references/convergence.md:661-683",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:11-13",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:359-368",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-490",
+        ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264"
+      ]
+    },
+    {
+      "id": "finding-7-5-claimverificationrate-and-evidencedepth-look-like-deliberate-non-adoptions-in-sk",
+      "text": "`claimVerificationRate` and `evidenceDepth` look like deliberate non-adoptions in `sk-deep-research` rather than current regressions. The shared graph stack exposes both signals, but the published deep-research semantic extension still names `semanticNovelty`, `contradictionDensity`, and `citationOverlap` as the added semantic checks, not claim-verification or path-depth gates (.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41; .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228; .opencode/skill/sk-deep-research/references/convergence.md:341-457).",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-39",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-006.md:39-40",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/skill/sk-deep-research/SKILL.md:217-218",
+        ".opencode/skill/sk-deep-research/references/convergence.md:214-320",
+        ".opencode/skill/sk-deep-research/references/convergence.md:341-457",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275"
+      ]
+    },
+    {
+      "id": "finding-7-3-contradictiondensity-is-also-already-part-of-the-published-deep-research-converg",
+      "text": "`contradictionDensity` is also already part of the published deep-research convergence model: the contract says high contradiction density should block STOP and surface as a `qualityGate` semantic sub-check. Because the live workflow's active stop math still stops at the inline 3-signal vote, this is another concrete runtime gap rather than a merely hypothetical graph enhancement (.opencode/skill/sk-deep-research/references/convergence.md:363-386; .opencode/skill/sk-deep-research/references/convergence.md:411-423; .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277).",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-39",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-006.md:39-40",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/skill/sk-deep-research/SKILL.md:217-218",
+        ".opencode/skill/sk-deep-research/references/convergence.md:214-320",
+        ".opencode/skill/sk-deep-research/references/convergence.md:341-457",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275"
+      ]
+    },
+    {
+      "id": "finding-7-2-sourcediversity-is-not-a-speculative-extra-from-the-shared-graph-stack-the-deep-",
+      "text": "`sourceDiversity` is not a speculative extra from the shared graph stack; the deep-research convergence contract already makes it a first-class `qualityGate.checks` sub-check inside the legal-stop bundle. That means the current lack of an explicit shared-graph bridge for this signal is a runtime integration gap, not a deliberate omission (.opencode/skill/sk-deep-research/references/convergence.md:214-220; .opencode/skill/sk-deep-research/references/convergence.md:246-260; .opencode/skill/sk-deep-research/references/convergence.md:297-303).",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-39",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-006.md:39-40",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/skill/sk-deep-research/SKILL.md:217-218",
+        ".opencode/skill/sk-deep-research/references/convergence.md:214-320",
+        ".opencode/skill/sk-deep-research/references/convergence.md:341-457",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275"
+      ]
+    },
+    {
+      "id": "finding-7-1-the-live-deep-research-workflow-still-evaluates-stop-with-a-local-3-signal-vote-",
+      "text": "The live deep-research workflow still evaluates STOP with a local 3-signal vote only: rolling average, MAD noise floor, and question entropy, then falls through a generic `checkQualityGuards(state, strategy)` call. The active convergence step does not name `contradictionDensity`, `sourceDiversity`, `claimVerificationRate`, or `evidenceDepth` anywhere in the runtime algorithm (.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277).",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-39",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-006.md:39-40",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/skill/sk-deep-research/SKILL.md:217-218",
+        ".opencode/skill/sk-deep-research/references/convergence.md:214-320",
+        ".opencode/skill/sk-deep-research/references/convergence.md:341-457",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275"
+      ]
+    },
+    {
+      "id": "finding-7-6-the-reducer-still-cannot-surface-graph-backed-research-convergence-even-when-gra",
+      "text": "The reducer still cannot surface graph-backed research convergence even when `graphEvents` are present. It derives its convergence score from `latestIteration.convergenceSignals?.compositeStop ?? latestIteration?.newInfoRatio`, while the same convergence reference says the reducer should derive additional graph signals when `graphEvents` exist. That leaves graph-side research signals operationally disconnected from packet-level status surfaces (.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249; .opencode/skill/sk-deep-research/references/convergence.md:1181-1205).",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-39",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-006.md:39-40",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/skill/sk-deep-research/SKILL.md:217-218",
+        ".opencode/skill/sk-deep-research/references/convergence.md:214-320",
+        ".opencode/skill/sk-deep-research/references/convergence.md:341-457",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275"
+      ]
+    },
+    {
+      "id": "finding-7-4-the-shared-coverage-graph-stack-already-computes-a-richer-research-convergence-p",
+      "text": "The shared coverage-graph stack already computes a richer research convergence payload with `questionCoverage`, `claimVerificationRate`, `contradictionDensity`, `sourceDiversity`, and `evidenceDepth`, then evaluates `sourceDiversity` and `evidenceDepth` as blocking guards and escalates high contradiction density or unverified claims into blockers/warnings. So the infrastructure gap is not in the graph/MCP layer; it is in the deep-research runtime not calling that layer (.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41; .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275).",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-39",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-006.md:39-40",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277",
+        ".opencode/skill/sk-deep-research/SKILL.md:217-218",
+        ".opencode/skill/sk-deep-research/references/convergence.md:214-320",
+        ".opencode/skill/sk-deep-research/references/convergence.md:341-457",
+        ".opencode/skill/sk-deep-research/references/convergence.md:1181-1205",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-249",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:35-41",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275"
+      ]
+    },
+    {
+      "id": "finding-8-1-parsejsonl-silently-skips-malformed-jsonl-lines-instead-of-surfacing-an-error-so",
+      "text": "`parseJsonl()` silently skips malformed JSONL lines instead of surfacing an error, so a truncated append record disappears from reducer input and repeated reducer runs stabilize around the surviving rows rather than flagging corruption (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:64-85`).",
+      "addedAtIteration": 8,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-007.md:39-40",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:64-85",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:165-200",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-658",
+        ".opencode/skill/sk-deep-review/references/state_format.md:171-206",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-87",
+        ".opencode/skill/sk-deep-review/references/convergence.md:364-411",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:335-437"
+      ]
+    },
+    {
+      "id": "finding-8-2-finding-lifecycle-state-is-markdown-authoritative-parseiterationfile-only-extrac",
+      "text": "Finding lifecycle state is markdown-authoritative: `parseIterationFile()` only extracts findings from `## Findings` -> `### P0/P1/P2` blocks, and `buildFindingRegistry()` derives `firstSeen`, `lastSeen`, severity transitions, and repeated-finding status from parsed iteration markdown while using JSONL only for `resolvedFindings` (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:165-200`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`).",
+      "addedAtIteration": 8,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-007.md:39-40",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:64-85",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:165-200",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-658",
+        ".opencode/skill/sk-deep-review/references/state_format.md:171-206",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-87",
+        ".opencode/skill/sk-deep-review/references/convergence.md:364-411",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:335-437"
+      ]
+    },
+    {
+      "id": "finding-8-3-in-a-temp-harness-against-the-live-reducer-entrypoint-a-run-2-jsonl-row-reportin",
+      "text": "In a temp harness against the live reducer entrypoint, a run-2 JSONL row reporting `dimensions:[\"security\"]` and `findingsSummary {P0:1,P1:0,P2:0}` still produced a registry where `F001` remained `P1`, `lastSeen: 1`, and had no transition when `iteration-002.md` was truncated before a parseable finding bullet. The dashboard still rendered run 2 as `1/0/0`, which means progress rows can diverge from lifecycle state under partial markdown writes because the dashboard trusts JSONL while the registry trusts markdown (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:146-156`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:503-512`).",
+      "addedAtIteration": 8,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-007.md:39-40",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:64-85",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:165-200",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-658",
+        ".opencode/skill/sk-deep-review/references/state_format.md:171-206",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-87",
+        ".opencode/skill/sk-deep-review/references/convergence.md:364-411",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:335-437"
+      ]
+    },
+    {
+      "id": "finding-8-4-the-blocked-stop-contract-requires-persisted-stopreason-legalstop-blockedby-and-",
+      "text": "The blocked-stop contract requires persisted `stopReason`, `legalStop.blockedBy`, and full `gateResults`, but the reducer-owned surfaces never read those fields. Under a partial iteration failure, the JSONL event can still retain the stop-block explanation, yet the dashboard/strategy outputs drop it entirely because rendering is driven by iteration summaries, severity counts, and dimension coverage only (`.opencode/skill/sk-deep-review/references/convergence.md:44-87`, `.opencode/skill/sk-deep-review/references/convergence.md:364-411`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-602`).",
+      "addedAtIteration": 8,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-007.md:39-40",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:64-85",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:165-200",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-658",
+        ".opencode/skill/sk-deep-review/references/state_format.md:171-206",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-87",
+        ".opencode/skill/sk-deep-review/references/convergence.md:364-411",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:335-437"
+      ]
+    },
+    {
+      "id": "finding-8-5-the-reducer-s-idempotency-guarantee-is-therefore-omission-based-rather-than-fail",
+      "text": "The reducer's idempotency guarantee is therefore omission-based rather than failure-preserving: `reduceReviewState()` will deterministically reproduce the same registry/dashboard for the same broken on-disk inputs, but it does so by normalizing malformed JSONL away and by accepting partially written markdown as a valid zero-or-partial finding source (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:606-658`).",
+      "addedAtIteration": 8,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-007.md:39-40",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:64-85",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:165-200",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-658",
+        ".opencode/skill/sk-deep-review/references/state_format.md:171-206",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-87",
+        ".opencode/skill/sk-deep-review/references/convergence.md:364-411",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:335-437"
+      ]
+    },
+    {
+      "id": "finding-9-1-a-disposable-4-iteration-harness-with-60-finding-bullets-and-34-unique-finding-i",
+      "text": "A disposable 4-iteration harness with 60 finding bullets and 34 unique finding IDs still collapsed cleanly to 33 open findings plus 1 resolved finding, which matches the reducer's `Map`-based merge design and shows that repeated IDs do not explode the registry at this scale (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`).",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:421-425`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-008.md:17-18`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:116-156`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-512`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-658`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:44-87`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:364-411`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-9-3-the-repeatedfindings-surface-is-stable-but-coarse-at-scale-it-classifies-any-ope",
+      "text": "The `repeatedFindings` surface is stable but coarse at scale: it classifies any open finding with `lastSeen - firstSeen >= 1` as repeated, so long-lived same-severity findings and upgrade/downgrade churn both collapse into the same bucket. That keeps counts deterministic, but it weakens triage value once a packet contains many transition-heavy findings (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390`).",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:421-425`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-008.md:17-18`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:116-156`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-512`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-658`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:44-87`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:364-411`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-9-4-the-blocked-stop-observability-gap-from-iteration-8-becomes-more-operationally-s",
+      "text": "The blocked-stop observability gap from iteration 8 becomes more operationally serious at scale. Even when every iteration record carries `stopReason: \"blockedStop\"` plus a full `legalStop.gateResults` bundle, the reducer-owned dashboard still renders only focus, dimensions, novelty ratio, findings summary, and status because `renderDashboard()` never reads `stopReason`, `legalStop.blockedBy`, or `legalStop.gateResults` (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-512`, `.opencode/skill/sk-deep-review/references/convergence.md:44-87`, `.opencode/skill/sk-deep-review/references/convergence.md:364-411`).",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:421-425`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-008.md:17-18`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:116-156`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-512`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-658`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:44-87`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:364-411`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-9-5-the-scale-harness-shows-the-reducer-s-d2-weakness-is-now-primarily-recovery-summ",
+      "text": "The scale harness shows the reducer's D2 weakness is now primarily recovery-summary omission rather than merge instability. `buildFindingRegistry()` still pulls resolution state only from JSONL `resolvedFindings`, while lifecycle severity remains markdown-authoritative, so large packets can preserve finding histories yet still strand the legal-stop explanation outside registry/dashboard surfaces (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:271-289`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-512`).",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:421-425`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-008.md:17-18`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:116-156`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-512`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-658`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:44-87`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:364-411`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-9-2-transition-ordering-remained-stable-under-the-scaled-packet-because-the-reducer-",
+      "text": "Transition ordering remained stable under the scaled packet because the reducer walks sorted iteration files once and appends severity changes in encounter order. In the harness, upgrade/downgrade chains for `F001`, `F010`, and `F020` were preserved as ordered histories rather than being reordered or duplicated (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:239-267`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:629-634`).",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:421-425`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-008.md:17-18`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:116-156`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-512`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-658`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:44-87`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:364-411`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-10-3-the-active-auto-workflow-does-not-serialize-that-first-class-blocked-stop-bundle",
+      "text": "The active auto workflow does not serialize that first-class blocked-stop bundle. Its convergence path still reduces stop legality to four binary `QUALITY GUARDS`, and when a guard fails it only logs `\"Quality guard failed: {violations}. Overriding STOP to CONTINUE.\"`, sets `decision = \"CONTINUE\"`, and exposes only `decision` plus a human-readable `reason`; no `blocked_stop`, `blockedBy`, `gateResults`, or `recoveryStrategy` append exists in the live path I inspected (`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-369`).",
+      "addedAtIteration": 10,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:37-38",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-98",
+        ".opencode/skill/sk-deep-review/references/convergence.md:362-419",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-369",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-520",
+        ".opencode/skill/sk-deep-review/references/state_format.md:336-352",
+        ".opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:1-6"
+      ]
+    },
+    {
+      "id": "finding-10-2-the-deep-loop-optimizer-fixture-already-contains-the-kind-of-uneven-packet-this-",
+      "text": "The deep-loop optimizer fixture already contains the kind of uneven packet this iteration needed: after two iterations that only examined `correctness` and `security`, run 2 still had 6 active findings and emitted a `blocked_stop` event with `blockedBy:[\"dimensionCoverage\",\"p0Resolution\"]`, replay inputs showing only 2 of 4 review dimensions examined, and a recovery strategy telling the operator to cover `traceability` and `maintainability` before resolving the active P0 (`.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:2-4`).",
+      "addedAtIteration": 10,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:37-38",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-98",
+        ".opencode/skill/sk-deep-review/references/convergence.md:362-419",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-369",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-520",
+        ".opencode/skill/sk-deep-review/references/state_format.md:336-352",
+        ".opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:1-6"
+      ]
+    },
+    {
+      "id": "finding-10-1-the-published-sk-deep-review-contract-makes-the-legal-stop-bundle-explicitly-act",
+      "text": "The published `sk-deep-review` contract makes the legal-stop bundle explicitly actionable: if any of the five review gates fail, the loop must persist `stopReason=blockedStop`, carry `legalStop.blockedBy`, copy full `gateResults`, snapshot replay inputs, and attach a gate-specific `recoveryStrategy`; for `dimensionCoverage`, the recovery action is to schedule the next uncovered review dimension immediately (`.opencode/skill/sk-deep-review/references/convergence.md:44-98`, `.opencode/skill/sk-deep-review/references/convergence.md:362-419`).",
+      "addedAtIteration": 10,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:37-38",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-98",
+        ".opencode/skill/sk-deep-review/references/convergence.md:362-419",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-369",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-520",
+        ".opencode/skill/sk-deep-review/references/state_format.md:336-352",
+        ".opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:1-6"
+      ]
+    },
+    {
+      "id": "finding-10-4-the-reducer-cannot-keep-multi-gate-blocks-actionable-even-when-the-raw-jsonl-inc",
+      "text": "The reducer cannot keep multi-gate blocks actionable even when the raw JSONL includes them. `renderDashboard()` builds progress rows only from iteration `run/focus/dimensions/newFindingsRatio/findingsSummary/status`, and its next-focus fallback is just the first uncovered required dimension rather than any persisted `legalStop.blockedBy` or `recoveryStrategy`, so a block like `[\"dimensionCoverage\",\"p0Resolution\"]` is flattened into generic coverage progress in reducer-owned outputs (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-520`).",
+      "addedAtIteration": 10,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:37-38",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-98",
+        ".opencode/skill/sk-deep-review/references/convergence.md:362-419",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-369",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-520",
+        ".opencode/skill/sk-deep-review/references/state_format.md:336-352",
+        ".opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:1-6"
+      ]
+    },
+    {
+      "id": "finding-10-5-the-reducer-owned-state-model-reinforces-that-drift-buildfindingregistry-tracks-",
+      "text": "The reducer-owned state model reinforces that drift. `buildFindingRegistry()` tracks finding lifecycle from iteration files plus `resolvedFindings` IDs from iteration records, `buildRegistry()` stores dimension coverage as booleans and severity buckets, and the documented reducer-owned JSON surface mirrors that narrowed shape instead of carrying stop-bundle fields (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390`, `.opencode/skill/sk-deep-review/references/state_format.md:336-352`). The result is that dimension coverage still blocks STOP in principle, but the `blockedBy` set is not preserved where operators actually resume work.",
+      "addedAtIteration": 10,
+      "sources": [
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:39-40",
+        ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:37-38",
+        ".opencode/skill/sk-deep-review/references/convergence.md:44-98",
+        ".opencode/skill/sk-deep-review/references/convergence.md:362-419",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-369",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:236-295",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:377-390",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:484-520",
+        ".opencode/skill/sk-deep-review/references/state_format.md:336-352",
+        ".opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:1-6"
+      ]
     }
   ],
   "ruledOutDirections": [
@@ -871,17 +1334,82 @@
       "id": "ruled-out-5-2-this-is-not-a-documentation-gap-false-alarm-both-convergence-references-already-",
       "text": "This is not a documentation-gap false alarm: both convergence references already define the shared enum, the legacy-label normalization rules, and the required blocked-stop persistence shape in detail (.opencode/skill/sk-deep-research/references/convergence.md:21-31; .opencode/skill/sk-deep-review/references/convergence.md:44-56).",
       "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-6-1-i-did-not-inspect-confirm-mode-yamls-in-this-pass-because-the-strategy-explicitl",
+      "text": "I did not inspect confirm-mode YAMLs in this pass because the strategy explicitly targeted the active runtime path, and the auto workflows plus reducers were already sufficient to determine whether contradiction-aware blocking is reachable before STOP.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-2-this-is-not-because-contradiction-tooling-is-missing-the-shared-contradiction-sc",
+      "text": "This is not because contradiction tooling is missing. The shared contradiction scanner and MCP convergence handler already implement contradiction-aware blocking logic (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264`).",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-3-this-is-not-limited-to-one-loop-both-research-and-review-convergence-references-",
+      "text": "This is not limited to one loop. Both research and review convergence references promise graph-aware gate participation, but both active auto workflows keep STOP evaluation inline and local (`.opencode/skill/sk-deep-research/references/convergence.md:1181-1205`, `.opencode/skill/sk-deep-review/references/convergence.md:661-683`, `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:250-277`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:343-375`).",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-7-3-claimverificationrate-and-evidencedepth-should-not-yet-be-treated-as-contract-dr",
+      "text": "`claimVerificationRate` and `evidenceDepth` should not yet be treated as contract drift in `sk-deep-research`; the current research convergence reference still frames the semantic extension around `semanticNovelty`, `contradictionDensity`, and `citationOverlap` instead (.opencode/skill/sk-deep-research/references/convergence.md:341-457).",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-1-i-did-not-inspect-confirm-mode-workflows-in-this-pass-because-the-question-was-w",
+      "text": "I did not inspect confirm-mode workflows in this pass because the question was whether the active deep-research runtime currently bridges to the shared graph signal set; the auto workflow, convergence reference, reducer, and shared graph handler were sufficient to classify the signal gaps.",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-2-this-is-not-primarily-a-shared-infrastructure-deficit-the-graph-mcp-layer-alread",
+      "text": "This is not primarily a shared-infrastructure deficit: the graph/MCP layer already computes and evaluates the richer research signals, including blocker semantics for `sourceDiversity`, `evidenceDepth`, contradictions, and unverified claims (.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275).",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-8-1-i-did-not-execute-the-50-finding-stress-portion-of-the-d2-question-in-this-pass-",
+      "text": "I did not execute the 50+ finding stress portion of the D2 question in this pass; the budget went to reproducing the partial-write divergence first, so scale behavior remains open.",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-8-2-this-is-not-a-blanket-any-truncation-breaks-lifecycle-failure-if-a-truncated-ite",
+      "text": "This is not a blanket \"any truncation breaks lifecycle\" failure. If a truncated iteration file still includes a parseable finding bullet, `parseFindingLine()` and `buildFindingRegistry()` can still record the severity transition and mark the finding as repeated (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:116-143`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:239-267`).",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-9-2-a-50-finding-packet-does-not-by-itself-break-map-by-findingid-dedup-or-transitio",
+      "text": "A 50+ finding packet does not by itself break `Map`-by-`findingId` dedup or transition ordering; the remaining reducer risk is visibility loss, not merge corruption.",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-9-1-i-did-not-pursue-confirm-mode-workflow-differences-in-this-pass-because-the-open",
+      "text": "I did not pursue confirm-mode workflow differences in this pass because the open question was reducer behavior under a large persisted packet, and the reducer entrypoint plus the shared convergence contract were enough to answer that.",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-10-1-i-did-not-find-a-packet-local-blocked-stop-example-under-opencode-specs-review-s",
+      "text": "I did not find a packet-local `blocked_stop` example under `.opencode/specs` review state logs, so the dimension-skewed evidence had to come from the deep-loop optimizer fixture rather than a live spec review packet.",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-10-2-this-is-not-a-bad-gate-taxonomy-problem-the-blocked-stop-fixture-uses-the-same-g",
+      "text": "This is not a bad gate taxonomy problem. The blocked-stop fixture uses the same gate names and recovery semantics the contract publishes, so the issue is persistence/consumption drift rather than mislabeled review gates (`.opencode/skill/sk-deep-review/references/convergence.md:362-419`, `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:4`).",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-10-3-this-is-not-another-reducer-merge-stability-regression-iteration-9-already-estab",
+      "text": "This is not another reducer merge-stability regression. Iteration 9 already established that finding dedup and transition ordering stay stable at 50+ findings, which leaves observability and recovery handoff as the remaining D2 weakness (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:7-11`).",
+      "addedAtIteration": 10
     }
   ],
   "metrics": {
-    "iterationsCompleted": 5,
-    "openQuestions": 10,
-    "resolvedQuestions": 6,
-    "keyFindings": 26,
-    "convergenceScore": 0.67,
+    "iterationsCompleted": 10,
+    "openQuestions": 6,
+    "resolvedQuestions": 10,
+    "keyFindings": 52,
+    "convergenceScore": 0.4,
     "coverageBySources": {
-      "code": 64,
-      "other": 25
+      "code": 112,
+      "other": 33
     }
   }
 }
