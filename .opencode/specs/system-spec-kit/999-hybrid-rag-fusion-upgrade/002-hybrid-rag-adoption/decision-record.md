@@ -24,3 +24,8 @@
 - Context: The research converged on adoption scope, but late iterations explicitly called out missing latency, token, storage, and verification thresholds.
 - Decision: No public-surface change ships from this adoption track without measurable rollout gates and named CI ownership.
 - Evidence: `003-modus-memory-main/research/iterations/iteration-040.md:16-21`, `005-mempalace/research/iterations/iteration-040.md:32-45`, `005-mempalace/research/iterations/iteration-040.md:95-104`.
+
+## DECISION 6: Run The Investigation Track In Parallel, Not Inline With 001-009
+- Context: The five research phases converged on a safe adopt-now slice, but they also left explicit prototype-later, measurement, and NEW FEATURE seams around passive capture, tool packaging, drift-checker boundaries, decay defaults, lexical weighting, hybrid regression, connected-doc hints, temporal facts, and wake-up formatting.
+- Decision: `010` through `018` run in parallel to the current adoption track after `001-architecture-boundary-freeze`. Their outcomes feed future adopt/prototype/reject decisions and do not block or expand the current `001` through `009` implementation scope.
+- Evidence: `001-engram-main/research/iterations/iteration-040.md:311-311`, `002-mex-main/research/iterations/iteration-040.md:318-351`, `003-modus-memory-main/research/iterations/iteration-040.md:32-41`, `004-opencode-mnemosyne-main/research/iterations/iteration-038.md:9218-9261`, `005-mempalace/research/iterations/iteration-040.md:89-103`.
