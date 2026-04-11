@@ -2374,7 +2374,10 @@ export function create_schema(
       last_review TEXT,
       review_count INTEGER DEFAULT 0,
       file_mtime_ms INTEGER,
-      is_archived INTEGER DEFAULT 0,
+      -- DEPRECATED post-026.018 cleanup: archived-tier removed. Column kept to
+      -- DEPRECATED schema stability: new rows always have is_archived = 0 and
+      -- query paths must not branch on this column.
+      is_archived INTEGER DEFAULT 0, -- DEPRECATED schema stability
       document_type TEXT DEFAULT 'memory',
       spec_level INTEGER,
       content_text TEXT,

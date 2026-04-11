@@ -255,12 +255,12 @@ function ensureArchivedColumn(): void {
 
   try {
     const columns = (db.prepare('PRAGMA table_info(memory_index)') as Database.Statement).all() as Array<{ name: string }>;
-    const hasArchived = columns.some(c => c.name === 'is_archived');
+    const hasArchived = columns.some(c => c.name === 'is_archived'); // DEPRECATED legacy schema ballast
 
     if (!hasArchived) {
-      db.exec('ALTER TABLE memory_index ADD COLUMN is_archived INTEGER DEFAULT 0');
-      db.exec('CREATE INDEX IF NOT EXISTS idx_archived ON memory_index(is_archived)');
-      console.error('[archival-manager] Added is_archived column');
+      db.exec('ALTER TABLE memory_index ADD COLUMN is_archived INTEGER DEFAULT 0'); // DEPRECATED legacy schema ballast
+      db.exec('CREATE INDEX IF NOT EXISTS idx_archived ON memory_index(is_archived)'); // DEPRECATED legacy schema ballast
+      console.error('[archival-manager] Added is_archived column'); // DEPRECATED legacy schema ballast
     }
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -363,71 +363,8 @@ function saveArchivalStats(): void {
  * This unifies the dual archival paths (P5-05) — FSRS is primary, SQL is pre-filter.
  */
 function getArchivalCandidates(limit: number = ARCHIVAL_CONFIG.batchSize): ArchivalCandidate[] {
-  if (!db) return [];
-
-  try {
-    const protectedList = ARCHIVAL_CONFIG.protectedTiers.map(() => '?').join(',');
-
-    // Broad SQL pre-filter: get unarchived, non-protected, non-pinned memories
-    const rows = (db.prepare(`
-      SELECT *
-      FROM memory_index
-      WHERE (is_archived IS NULL OR is_archived = 0)
-        AND importance_tier NOT IN (${protectedList})
-        AND is_pinned = 0
-      ORDER BY last_accessed ASC NULLS FIRST, access_count ASC
-      LIMIT ?
-    `) as Database.Statement).all(
-      ...ARCHIVAL_CONFIG.protectedTiers,
-      limit * 3  // Fetch extra since FSRS will filter further
-    ) as Array<Record<string, unknown>>;
-
-    // Use FSRS-based tier classifier as authoritative archival decision
-    const classifier = getTierClassifier();
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - ARCHIVAL_CONFIG.maxAgeDays);
-
-    const candidates: ArchivalCandidate[] = [];
-
-    for (const row of rows) {
-      let shouldArchiveRow = false;
-
-      if (classifier && typeof classifier.shouldArchive === 'function') {
-        // Primary: FSRS-based decision
-        shouldArchiveRow = classifier.shouldArchive(row) as boolean;
-      } else {
-        // Fallback: SQL-based criteria only when FSRS is unavailable
-        shouldArchiveRow = (
-          row.created_at != null &&
-          new Date(row.created_at as string) < cutoffDate &&
-          ((row.access_count as number) || 0) <= ARCHIVAL_CONFIG.maxAccessCount &&
-          ((row.confidence as number) || 0.5) <= ARCHIVAL_CONFIG.maxConfidence
-        );
-      }
-
-      if (shouldArchiveRow) {
-        candidates.push({
-          id: row.id as number,
-          title: row.title as string | null,
-          spec_folder: row.spec_folder as string,
-          file_path: row.file_path as string,
-          created_at: row.created_at as string,
-          importance_tier: row.importance_tier as string,
-          access_count: (row.access_count as number) || 0,
-          confidence: (row.confidence as number) || 0.5,
-          reason: determineArchivalReason(row, cutoffDate),
-        });
-
-        if (candidates.length >= limit) break;
-      }
-    }
-
-    return candidates;
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[archival-manager] getArchivalCandidates error: ${msg}`);
-    return [];
-  }
+  void limit;
+  return [];
 }
 
 function determineArchivalReason(row: Record<string, unknown>, cutoffDate: Date): string {
@@ -448,30 +385,8 @@ function checkMemoryArchivalStatus(memoryId: number): {
   isArchived: boolean;
   shouldArchive: boolean;
 } {
-  if (!db) return { isArchived: false, shouldArchive: false };
-
-  try {
-    const memory = (db.prepare(
-      'SELECT * FROM memory_index WHERE id = ?'
-    ) as Database.Statement).get(memoryId) as Record<string, unknown> | undefined;
-
-    if (!memory) return { isArchived: false, shouldArchive: false };
-
-    const isArchived = (memory.is_archived as number) === 1;
-
-    // Check with tier classifier if available
-    const classifier = getTierClassifier();
-    let shouldArchive = false;
-    if (classifier && typeof classifier.shouldArchive === 'function') {
-      shouldArchive = classifier.shouldArchive(memory) as boolean;
-    }
-
-    return { isArchived, shouldArchive };
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[archival-manager] checkMemoryArchivalStatus error: ${msg}`);
-    return { isArchived: false, shouldArchive: false };
-  }
+  void memoryId;
+  return { isArchived: false, shouldArchive: false };
 }
 
 function getMemoryIndexColumns(): Set<string> {
@@ -500,8 +415,7 @@ function syncBm25OnArchive(memoryId: number): void {
 }
 
 // Vector-only deletion — removes the vec_memories embedding row without
-// Touching memory_index or ancillary tables. This preserves the archived row
-// (is_archived=1) so unarchive can still find and restore it.
+// Touching memory_index or ancillary tables. DEPRECATED archived-tier behavior.
 function syncVectorOnArchive(memoryId: number): void {
   if (!db) return;
 
@@ -527,7 +441,7 @@ function syncBm25OnUnarchive(memoryId: number): void {
 
     if (availableColumns.length === 0) return;
 
-    const query = `SELECT ${availableColumns.join(', ')} FROM memory_index WHERE id = ? AND is_archived = 0`;
+    const query = `SELECT ${availableColumns.join(', ')} FROM memory_index WHERE id = ?`;
     const row = (db.prepare(query) as Database.Statement).get(memoryId) as Record<string, unknown> | undefined;
     if (!row) return;
 
@@ -556,111 +470,17 @@ function syncVectorOnUnarchive(memoryId: number): void {
 }
 
 function archiveMemory(memoryId: number): boolean {
-  if (!db) return false;
-
-  try {
-    const result = (db.prepare(`
-      UPDATE memory_index
-      SET is_archived = 1,
-          updated_at = datetime('now')
-      WHERE id = ?
-        AND (is_archived IS NULL OR is_archived = 0)
-    `) as Database.Statement).run(memoryId);
-
-    const success = (result as { changes: number }).changes > 0;
-    if (success) {
-      archivalStats.totalArchived++;
-      syncBm25OnArchive(memoryId);
-      syncVectorOnArchive(memoryId);
-      clearDegreeCache();
-      clearGraphSignalsCache();
-      saveArchivalStats();
-    }
-    return success;
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    const MAX_ERROR_LOG = 100;
-    archivalStats.errors.push(msg);
-    if (archivalStats.errors.length > MAX_ERROR_LOG) {
-      archivalStats.errors = archivalStats.errors.slice(-MAX_ERROR_LOG);
-    }
-    console.warn(`[archival-manager] archiveMemory error: ${msg}`);
-    return false;
-  }
+  void memoryId;
+  return false;
 }
 
 function archiveBatch(memoryIds: number[]): { archived: number; failed: number } {
-  if (!db) return { archived: 0, failed: memoryIds.length };
-
-  let archived = 0;
-  let failed = 0;
-
-  const batchTransaction = db.transaction(() => {
-    for (const id of memoryIds) {
-      try {
-        // Db is guaranteed non-null because archiveBatch returns early when the module database is missing
-        const result = (db!.prepare(`
-          UPDATE memory_index
-          SET is_archived = 1,
-              updated_at = datetime('now')
-          WHERE id = ?
-            AND (is_archived IS NULL OR is_archived = 0)
-        `) as Database.Statement).run(id);
-
-        const success = (result as { changes: number }).changes > 0;
-        if (success) {
-          archivalStats.totalArchived++;
-          syncBm25OnArchive(id);
-          syncVectorOnArchive(id);
-          archived++;
-        } else {
-          failed++;
-        }
-      } catch (error: unknown) {
-        const msg = error instanceof Error ? error.message : String(error);
-        const MAX_ERROR_LOG = 100;
-        archivalStats.errors.push(msg);
-        if (archivalStats.errors.length > MAX_ERROR_LOG) {
-          archivalStats.errors = archivalStats.errors.slice(-MAX_ERROR_LOG);
-        }
-        console.warn(`[archival-manager] archiveMemory error: ${msg}`);
-        failed++;
-      }
-    }
-  });
-
-  batchTransaction();
-  saveArchivalStats();
-
-  return { archived, failed };
+  return { archived: 0, failed: memoryIds.length };
 }
 
 function unarchiveMemory(memoryId: number): boolean {
-  if (!db) return false;
-
-  try {
-    const result = (db.prepare(`
-      UPDATE memory_index
-      SET is_archived = 0,
-          updated_at = datetime('now')
-      WHERE id = ? AND is_archived = 1
-    `) as Database.Statement).run(memoryId);
-
-    const success = (result as { changes: number }).changes > 0;
-    if (success) {
-      archivalStats.totalUnarchived++;
-      syncBm25OnUnarchive(memoryId);
-      syncVectorOnUnarchive(memoryId);
-      clearDegreeCache();
-      clearGraphSignalsCache();
-      saveArchivalStats();
-    }
-    return success;
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[archival-manager] unarchiveMemory error: ${msg}`);
-    return false;
-  }
+  void memoryId;
+  return false;
 }
 
 /* ───────────────────────────────────────────────────────────────

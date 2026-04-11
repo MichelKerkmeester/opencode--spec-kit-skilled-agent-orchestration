@@ -69,7 +69,7 @@ const V15_COLUMNS = [
   'last_review',
   'review_count',
   'file_mtime_ms',
-  'is_archived',
+  'is_archived', // DEPRECATED schema compatibility
   'related_memories',
   'memory_type',
   'half_life_days',
@@ -145,7 +145,7 @@ function createMemoryIndexV15(database: Database.Database): void {
       last_review TEXT,
       review_count INTEGER DEFAULT 0,
       file_mtime_ms INTEGER,
-      is_archived INTEGER DEFAULT 0,
+      is_archived INTEGER DEFAULT 0, -- DEPRECATED schema compatibility
       related_memories TEXT,
       memory_type TEXT DEFAULT 'declarative'
         CHECK(memory_type IN ('working', 'episodic', 'prospective', 'implicit', 'declarative', 'procedural', 'semantic', 'autobiographical', 'meta-cognitive')),

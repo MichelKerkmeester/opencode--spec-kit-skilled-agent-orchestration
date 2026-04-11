@@ -66,18 +66,20 @@ describe('T206 - getConstitutionalMemories accepts includeArchived [deferred - D
    and can run without DB dependencies.
 ──────────────────────────────────────────────────────────────── */
 
-describe('T206 - Source code contains is_archived filter', () => {
-  it('T206-SRC1: vector-index-queries.ts has is_archived filters (>= 3)', () => {
-    const vsFilterCount = (VECTOR_INDEX_QUERIES_SOURCE.match(/is_archived IS NULL OR.*is_archived\s*=\s*0/g) || []).length;
-    expect(vsFilterCount).toBeGreaterThanOrEqual(3);
+describe('T206 - archived-tier cleanup leaves the column schema-only', () => {
+  it('T206-SRC1: vector-index-queries.ts no longer filters on is_archived', () => {
+    expect(VECTOR_INDEX_QUERIES_SOURCE).not.toContain('is_archived IS NULL OR is_archived = 0');
   });
 
-  it('T206-SRC2: multi_concept_search uses archival_filter', () => {
-    expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('archival_filter');
-    expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('${archival_filter}');
+  it('T206-SRC2: vector-index-schema documents the deprecated column', () => {
+    const schemaSource = fs.readFileSync(
+      path.join(SRC_LIB_PATH, 'search', 'vector-index-schema.ts'),
+      'utf-8'
+    );
+    expect(schemaSource).toContain('DEPRECATED post-026.018 cleanup');
   });
 
-  it('T206-SRC3: hybrid-search has is_archived filter in ftsSearch', () => {
+  it('T206-SRC3: hybrid-search does not gate structural search on is_archived', () => {
     let hsSource: string;
     try {
       hsSource = fs.readFileSync(
@@ -91,7 +93,7 @@ describe('T206 - Source code contains is_archived filter', () => {
         'utf-8'
       );
     }
-    expect(hsSource).toContain('is_archived');
+    expect(hsSource).not.toContain('(is_archived IS NULL OR is_archived = 0)');
   });
 
   it('T206-SRC4: HybridSearchOptions has includeArchived', () => {
@@ -112,7 +114,7 @@ describe('T206 - Source code contains is_archived filter', () => {
     expect(count).toBeGreaterThanOrEqual(1);
   });
 
-  it('T206-SRC6: Filter is NULL-safe (IS NULL OR = 0 pattern)', () => {
-    expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('is_archived IS NULL OR is_archived = 0');
+  it('T206-SRC6: includeArchived is API-only compatibility after cleanup', () => {
+    expect(VECTOR_INDEX_QUERIES_SOURCE).toMatch(/includeArchived = false/);
   });
 });

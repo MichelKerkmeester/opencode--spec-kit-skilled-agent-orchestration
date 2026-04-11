@@ -131,8 +131,6 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
   let totalSpecFolders = 0;
   const tierBreakdown: Record<string, number> = {};
   let lastIndexedAt: string | null = null;
-  let archivedHitRate = 0;
-
   try {
     const totalResult = database.prepare('SELECT COUNT(*) as count FROM memory_index').get() as Record<string, unknown>;
     total = (totalResult && typeof totalResult.count === 'number') ? totalResult.count : 0;
@@ -154,43 +152,6 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
     ).get() as { last_indexed: string | null } | undefined;
     lastIndexedAt = lastIndexedRow?.last_indexed || null;
 
-    const feedbackLedgerPresent = Boolean(
-      database.prepare(
-        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'feedback_events'"
-      ).get()
-    );
-
-    if (feedbackLedgerPresent) {
-      const archivedHitRateRow = database.prepare(`
-        WITH ranked_feedback AS (
-          SELECT
-            fe.memory_id,
-            ROW_NUMBER() OVER (PARTITION BY fe.query_id ORDER BY fe.id ASC) AS result_rank
-          FROM feedback_events fe
-          WHERE fe.type = 'search_shown'
-        ),
-        presented_slots AS (
-          SELECT memory_id
-          FROM ranked_feedback
-          WHERE result_rank <= 10
-        )
-        SELECT
-          COUNT(*) AS presented_slots,
-          SUM(CASE WHEN COALESCE(mi.is_archived, 0) = 1 THEN 1 ELSE 0 END) AS archived_slots
-        FROM presented_slots ps
-        LEFT JOIN memory_index mi
-          ON CAST(mi.id AS TEXT) = ps.memory_id
-      `).get() as { presented_slots?: number; archived_slots?: number } | undefined;
-
-      const presentedSlots = typeof archivedHitRateRow?.presented_slots === 'number'
-        ? archivedHitRateRow.presented_slots
-        : 0;
-      const archivedSlots = typeof archivedHitRateRow?.archived_slots === 'number'
-        ? archivedHitRateRow.archived_slots
-        : 0;
-
-      archivedHitRate = presentedSlots > 0 ? archivedSlots / presentedSlots : 0;
-    }
   } catch (dbErr: unknown) {
     const message = toErrorMessage(dbErr);
     console.error(`[memory-stats] Database query failed (aggregate stats): ${message}`);
@@ -355,7 +316,6 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       tierBreakdown,
       databaseSizeBytes,
       lastIndexedAt,
-      archived_hit_rate: archivedHitRate,
     },
     hints,
     startTime,

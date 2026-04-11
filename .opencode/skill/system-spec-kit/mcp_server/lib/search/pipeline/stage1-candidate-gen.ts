@@ -132,16 +132,9 @@ function backfillMissingQualityScores(results: PipelineRow[]): PipelineRow[] {
 
 function applyArchiveFilter(
   results: PipelineRow[],
-  includeArchived: boolean
+  _includeArchived: boolean
 ): PipelineRow[] {
-  if (includeArchived) return results;
-  return results.filter((row) => {
-    const archived = row.is_archived ?? row.isArchived;
-    if (archived == null) return true;
-    if (typeof archived === 'number') return archived === 0;
-    if (typeof archived === 'boolean') return archived === false;
-    return true;
-  });
+  return results;
 }
 
 function applyFolderFilter(
@@ -1237,7 +1230,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             if (newSummaryIds.length > 0) {
               const placeholders = newSummaryIds.map(() => '?').join(', ');
               const memRows = db.prepare(
-                `SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, is_archived, context_type, tenant_id, user_id, agent_id, session_id, shared_space_id FROM memory_index WHERE id IN (${placeholders})`
+                `SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, context_type, tenant_id, user_id, agent_id, session_id, shared_space_id FROM memory_index WHERE id IN (${placeholders})`
               ).all(...newSummaryIds) as PipelineRow[];
 
               const memRowMap = new Map(memRows.map((r) => [r.id, r]));

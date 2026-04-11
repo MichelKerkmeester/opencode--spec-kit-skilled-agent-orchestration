@@ -223,9 +223,6 @@ export function vector_search(
 
   where_clauses.push('(m.expires_at IS NULL OR m.expires_at > datetime(\'now\'))');
 
-  if (!includeArchived) {
-    where_clauses.push('(m.is_archived IS NULL OR m.is_archived = 0)');
-  }
   if (tier === 'deprecated') {
     where_clauses.push('m.importance_tier = ?');
     params.push('deprecated');
@@ -357,8 +354,6 @@ export function multi_concept_search(
   ).join(' AND ');
 
   const folder_filter = specFolder ? 'AND m.spec_folder = ?' : '';
-  const archival_filter = !includeArchived ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)' : '';
-
   const similarity_select = concept_buffers.map((_, i) =>
     `ROUND((1 - sub.dist_${i} / 2) * 100, 2) as similarity_${i}`
   ).join(', ');
@@ -380,7 +375,6 @@ export function multi_concept_search(
       WHERE m.embedding_status = 'success'
         AND (m.expires_at IS NULL OR m.expires_at > datetime('now'))
         ${folder_filter}
-        ${archival_filter}
         AND ${distance_filters}
     ) sub
     ORDER BY avg_distance ASC
@@ -637,10 +631,6 @@ export function keyword_search(
   if (specFolder) {
     where_clause += ' AND spec_folder = ?';
     params.push(specFolder);
-  }
-
-  if (!includeArchived) {
-    where_clause += ' AND (is_archived IS NULL OR is_archived = 0)';
   }
 
   const sql = `

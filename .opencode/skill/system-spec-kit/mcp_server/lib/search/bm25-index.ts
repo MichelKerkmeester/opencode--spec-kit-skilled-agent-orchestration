@@ -379,8 +379,7 @@ class BM25Index {
       const rows = (database.prepare(
         `SELECT id, title, content_text, trigger_phrases, file_path
          FROM memory_index
-         WHERE id IN (${placeholders})
-           AND COALESCE(is_archived, 0) = 0`
+         WHERE id IN (${placeholders})`
       ) as Database.Statement).all(...normalizedIds) as Array<{
         id: number;
         title: string | null;
@@ -428,7 +427,6 @@ class BM25Index {
       const rows = (database.prepare(
         `SELECT id
          FROM memory_index
-         WHERE COALESCE(is_archived, 0) = 0
          ORDER BY id`
       ) as Database.Statement).all() as Array<{ id: number }>;
 

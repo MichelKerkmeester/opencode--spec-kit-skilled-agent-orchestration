@@ -201,7 +201,7 @@
         "sourceShape": "research",
         "tags": ["archive", "metric", "decision-rule", "finding"],
         "negativeHints": ["decision", "narrative_delivery"],
-        "chunk": "The bounded-archive strategy is viable because archived memories can be weighted down to zero point three and surfaced only when fresh spec-doc results are sparse. The critical signal is archived_hit_rate: if it drops below zero point five percent for a sustained window, the archive stops being load-bearing."
+        "chunk": "The bounded-archive strategy is obsolete after the canonical continuity cleanup. Search treats every retained row as equally fresh, and archived-hit telemetry no longer exists because the archived tier is no longer load-bearing."
       },
       {
         "id": "RF-05",

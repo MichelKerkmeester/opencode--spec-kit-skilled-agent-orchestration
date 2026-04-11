@@ -180,9 +180,6 @@ function fts5Bm25Search(
   const folderFilter = specFolder
     ? 'AND (m.spec_folder = ? OR m.spec_folder LIKE ? || "/%")'
     : '';
-  const archivalFilter = !includeArchived
-    ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)'
-    : '';
   const deprecatedTierFilter =
     "AND (m.importance_tier IS NULL OR m.importance_tier != 'deprecated')";
 
@@ -199,7 +196,6 @@ function fts5Bm25Search(
     JOIN memory_index m ON m.id = memory_fts.rowid
     WHERE memory_fts MATCH ?
       ${folderFilter}
-      ${archivalFilter}
       ${deprecatedTierFilter}
     ORDER BY fts_score DESC
     LIMIT ?

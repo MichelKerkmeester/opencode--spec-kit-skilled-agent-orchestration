@@ -205,7 +205,7 @@ describe('Stage 2 fusion regression coverage', () => {
     }
   });
 
-  it('ranks archived rows below otherwise comparable fresh rows', async () => {
+  it('treats archived flags as inert after the archived-tier cleanup', async () => {
     process.env.SPECKIT_GRAPH_SIGNALS = 'false';
     process.env.SPECKIT_GRAPH_UNIFIED = 'false';
     process.env.SPECKIT_LEARNED_STAGE2_COMBINER = 'false';
@@ -219,10 +219,8 @@ describe('Stage 2 fusion regression coverage', () => {
 
     expect(result.scored.map((row) => row.id)).toEqual([1, 2, 3]);
     expect(result.scored[0].score).toBeCloseTo(0.8, 9);
-    expect(result.scored[1].score).toBeCloseTo(0.24, 9);
-    expect(result.scored[2].score).toBeCloseTo(0.24, 9);
-    expect(result.scored[1].score).toBeLessThan(result.scored[0].score);
-    expect(result.scored[2].score).toBeLessThan(result.scored[0].score);
+    expect(result.scored[1].score).toBeCloseTo(0.8, 9);
+    expect(result.scored[2].score).toBeCloseTo(0.8, 9);
   });
 
   it('applies bounded_runtime graph bonus deterministically across repeated runs', async () => {

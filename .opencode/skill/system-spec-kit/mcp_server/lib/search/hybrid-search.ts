@@ -462,7 +462,7 @@ function ftsSearch(
     // C138-P2: Delegate to weighted BM25 FTS5 search from sqlite-fts.ts
     // Uses bm25(memory_fts, 10.0, 5.0, 2.0, 1.0) for per-column weighting
     // (title 10x, trigger_phrases 5x, file_path 2x, content 1x)
-    // Filters: is_archived exclusion and spec_folder matching handled by fts5Bm25Search
+    // Filters: deprecated-tier exclusion and spec-folder matching handled by fts5Bm25Search
     const bm25Results = fts5Bm25Search(db, query, { limit, specFolder, includeArchived });
 
     return bm25Results.map(row => ({
@@ -1808,7 +1808,6 @@ function structuralSearch(
     // H13 FIX: Exclude archived rows unless explicitly requested
     const conditions = [
       `(importance_tier IS NULL OR importance_tier NOT IN ('deprecated', 'archived'))`,
-      `(is_archived IS NULL OR is_archived = 0)`
     ];
     const params: unknown[] = [];
 

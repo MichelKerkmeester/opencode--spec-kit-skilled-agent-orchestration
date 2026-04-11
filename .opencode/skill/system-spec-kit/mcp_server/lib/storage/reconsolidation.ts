@@ -285,14 +285,6 @@ export async function executeMerge(
         file_path: currentFilePath,
       });
 
-      // Mark existing memory as archived (superseded)
-      db.prepare(`
-        UPDATE memory_index
-        SET is_archived = 1,
-            updated_at = datetime('now')
-        WHERE id = ?
-      `).run(existingMemory.id);
-
       const insertValues = buildMergedMemoryInsertValues(currentRow, {
         spec_folder: existingMemory.spec_folder,
         file_path: currentFilePath,
@@ -827,8 +819,8 @@ function hasPredecessorChanged(
 }
 
 function isArchivedRow(row: Record<string, unknown>): boolean {
-  const value = row.is_archived;
-  return value === 1 || value === true;
+  void row;
+  return false;
 }
 
 function buildMergeAbortResult(

@@ -6,13 +6,17 @@ status: complete
 closed_by_commit: TBD
 parent: 018-canonical-continuity-refactor
 gate: B
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/002-gate-b-foundation"
+    last_updated_at: "2026-04-11T20:55:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Recorded Gate B archived-tier cleanup follow-through"
+    next_safe_action: "Have orchestrator commit the validated Gate B cleanup"
+    key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/002-gate-b-foundation/plan.md"]
 description: "Execution plan for the two-week Gate B foundation lane: prove the migration on a copy, execute the approved schema and archive changes in production, then validate ranking and archived-hit observability before Gate C starts."
-trigger_phrases:
-  - "gate b plan"
-  - "foundation plan"
-  - "archive flip"
-  - "causal edges migration"
-  - "phase 018"
+trigger_phrases: ["gate b plan", "foundation plan", "archive flip", "causal edges migration", "phase 018"]
 importance_tier: "important"
 contextType: "planning"
 ---

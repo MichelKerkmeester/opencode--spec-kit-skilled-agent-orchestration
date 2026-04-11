@@ -32,7 +32,6 @@ export const INTERFERENCE_PENALTY_COEFFICIENT = -0.08;
 
 interface MemoryIndexScopeInfo {
   hasActiveProjection: boolean;
-  hasArchivedColumn: boolean;
   hasImportanceTierColumn: boolean;
 }
 
@@ -50,17 +49,12 @@ function getMemoryIndexScopeInfo(database: Database.Database): MemoryIndexScopeI
         "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'active_memory_projection'"
       ).get(),
     ),
-    hasArchivedColumn: columnSet.has('is_archived'),
     hasImportanceTierColumn: columnSet.has('importance_tier'),
   };
 }
 
 function buildRetrievableMemoryPredicates(alias: string, scopeInfo: MemoryIndexScopeInfo): string[] {
   const predicates = [`${alias}.parent_id IS NULL`];
-
-  if (scopeInfo.hasArchivedColumn) {
-    predicates.push(`COALESCE(${alias}.is_archived, 0) = 0`);
-  }
 
   if (scopeInfo.hasImportanceTierColumn) {
     predicates.push(`COALESCE(${alias}.importance_tier, 'normal') != 'deprecated'`);

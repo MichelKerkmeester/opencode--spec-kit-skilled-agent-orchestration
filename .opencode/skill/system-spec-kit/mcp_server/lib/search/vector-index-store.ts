@@ -634,7 +634,6 @@ export function get_constitutional_memories(
       JOIN active_memory_projection p ON p.active_memory_id = m.id
       WHERE m.importance_tier = 'constitutional'
         AND m.embedding_status = 'success'
-        ${!includeArchived ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)' : ''}
         ${spec_folder ? 'AND m.spec_folder = ?' : ''}
       ORDER BY m.importance_weight DESC, m.created_at DESC
     `;
@@ -712,7 +711,6 @@ export function refresh_interference_scores_for_folder(database: Database.Databa
        JOIN active_memory_projection p ON p.active_memory_id = m.id
        WHERE m.spec_folder = ?
          AND m.parent_id IS NULL
-         AND COALESCE(m.is_archived, 0) = 0
          AND COALESCE(m.importance_tier, 'normal') != 'deprecated'`
     ).all(specFolder) as Array<{ id: number }>;
 

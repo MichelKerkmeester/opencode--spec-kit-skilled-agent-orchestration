@@ -393,27 +393,10 @@ export async function runReconsolidationIfEnabled(
         const tier = classifyAssistiveSimilarity(similarity);
 
         if (tier === 'auto_merge') {
-          // Auto-merge: archive the older memory record (shadow operation —
-          // we mark is_archived so it is excluded from future search results
-          // but NOT physically deleted).
-          try {
-            database.prepare(`
-              UPDATE memory_index
-              SET is_archived = 1,
-                  updated_at = datetime('now')
-              WHERE id = ?
-            `).run(topId);
-            if (bm25Index.isBm25Enabled()) {
-              bm25Index.getIndex().removeDocument(String(topId));
-            }
-            console.warn(
-              `[reconsolidation-bridge] assistive auto-merge: archived older=${topId} ` +
-              `(similarity=${similarity.toFixed(3)}) — newer memory continues normal save`
-            );
-          } catch (mergeErr: unknown) {
-            const msg = mergeErr instanceof Error ? mergeErr.message : String(mergeErr);
-            console.warn(`[reconsolidation-bridge] assistive auto-merge archive failed: ${msg}`);
-          }
+          console.warn(
+            `[reconsolidation-bridge] assistive auto-merge compatibility note: ` +
+            `older=${topId} similarity=${similarity.toFixed(3)}; archived-tier side effects are disabled`
+          );
         } else if (tier === 'review') {
           // Review tier: classify and surface as recommendation (no mutations)
           const classification = classifySupersededOrComplement(topContent, parsed.content);

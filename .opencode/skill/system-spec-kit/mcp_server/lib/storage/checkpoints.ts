@@ -1355,7 +1355,7 @@ function getMemoryRestoreColumns(
     'last_review',
     'review_count',
     'file_mtime_ms',
-    'is_archived',
+    'is_archived', // DEPRECATED schema compatibility
     'document_type',
     'spec_level',
     'content_text',
