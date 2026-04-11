@@ -1,6 +1,7 @@
 ---
 title: "Index-time query surrogates"
 description: "Index-time query surrogates generate surrogate metadata (aliases, headings, summaries, heuristic questions) at index time for improved recall without runtime LLM calls, gated by the SPECKIT_QUERY_SURROGATES flag."
+audited_post_018: true
 ---
 
 # Index-time query surrogates

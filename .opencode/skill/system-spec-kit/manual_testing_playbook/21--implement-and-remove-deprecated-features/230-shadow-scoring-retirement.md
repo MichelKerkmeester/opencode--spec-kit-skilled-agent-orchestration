@@ -1,6 +1,8 @@
 ---
 title: "230 -- Shadow-scoring retirement"
 description: "This scenario validates Shadow-scoring retirement for `230`. It focuses on confirming runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; shadow scoring stays retired and the scenario remains read-only."
 ---
 
 # 230 -- Shadow-scoring retirement

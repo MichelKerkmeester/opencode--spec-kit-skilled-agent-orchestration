@@ -1,6 +1,8 @@
 ---
 title: "Memory metadata update (memory_update)"
 description: "Covers the update tool that modifies memory metadata and auto-regenerates embeddings when titles change."
+audited_post_018: true
+phase_018_change: "Metadata update remains live under the post-018 save and indexing pipeline"
 ---
 
 # Memory metadata update (memory_update)

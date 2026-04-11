@@ -1,6 +1,7 @@
 ---
 title: "066 -- Scoring and ranking corrections"
 description: "This scenario validates Scoring and ranking corrections for `066`. It focuses on Confirm Sprint 8 scoring fixes."
+audited_post_018: true
 ---
 
 # 066 -- Scoring and ranking corrections

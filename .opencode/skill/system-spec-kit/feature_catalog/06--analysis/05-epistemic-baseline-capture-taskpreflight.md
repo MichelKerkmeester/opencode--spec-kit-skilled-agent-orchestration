@@ -1,6 +1,7 @@
 ---
 title: "Epistemic baseline capture (task_preflight)"
 description: "Covers the preflight tool that records knowledge, uncertainty and context completeness baselines before task execution."
+audited_post_018: true
 ---
 
 # Epistemic baseline capture (task_preflight)

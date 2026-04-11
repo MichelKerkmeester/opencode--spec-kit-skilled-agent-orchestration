@@ -1,6 +1,7 @@
 ---
 title: "081 -- Graph and cognitive memory fixes"
 description: "This scenario validates Graph and cognitive memory fixes for `081`. It focuses on Confirm graph/cognitive fix bundle."
+audited_post_018: true
 ---
 
 # 081 -- Graph and cognitive memory fixes

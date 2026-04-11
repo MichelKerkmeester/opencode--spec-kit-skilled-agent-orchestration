@@ -1,6 +1,7 @@
 ---
 title: "Entity normalization consolidation"
 description: "Entity normalization consolidation unified two divergent normalization functions and deduplicated `computeEdgeDensity` into a single source."
+audited_post_018: true
 ---
 
 # Entity normalization consolidation

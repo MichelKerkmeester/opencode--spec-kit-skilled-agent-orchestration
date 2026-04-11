@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `082` and confirm the ex
 - Playbook ID: 082
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/082-evaluation-and-housekeeping-fixes.md`
+- audited_post_018: true

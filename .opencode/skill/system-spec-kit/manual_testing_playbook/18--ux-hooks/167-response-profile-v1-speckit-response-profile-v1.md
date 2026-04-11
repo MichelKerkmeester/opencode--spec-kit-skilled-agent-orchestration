@@ -1,13 +1,13 @@
 ---
 title: "167 -- Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1)"
-description: "This scenario validates response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) for `167`. It focuses on enabling the flag, requesting the `quick` profile, and verifying reduced response shape."
+description: "This scenario validates response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) for `167`. It focuses on enabling the flag, requesting the `quick` profile, and verifying reduced response shape while keeping the live context-side profile routing in view."
 ---
 
 # 167 -- Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1)
 
 ## 1. OVERVIEW
 
-This scenario validates response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) for `167`. It focuses on enabling the flag, requesting the `quick` profile, and verifying reduced response shape.
+This scenario validates response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) for `167`. It focuses on enabling the flag, requesting the `quick` profile, and verifying reduced response shape while the context-side routing path remains live.
 
 ---
 
@@ -19,6 +19,7 @@ Operators run the exact prompt and command sequence for `167` and confirm the ex
 - Prompt: `Test SPECKIT_RESPONSE_PROFILE_V1=true with profile=quick. Run a search and verify the response contains only topResult, oneLineWhy, omittedCount, and tokenReduction (with savingsPercent). Then test profile=research for results + evidenceDigest + followUps, and profile=resume for state + nextSteps + blockers. Capture the evidence needed to prove each profile produces its expected shape and token savings are calculated. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: quick profile returns QuickProfile with topResult, oneLineWhy, omittedCount, and tokenReduction.savingsPercent; research profile returns results[], evidenceDigest, followUps[]; resume profile returns state, nextSteps[], blockers[]; original full response when flag OFF or profile omitted
 - Pass/fail: PASS if quick profile contains topResult + tokenReduction, research has evidenceDigest, resume has nextSteps, and full response when flag OFF; FAIL if profile shape missing expected fields or token savings not calculated
+- memory_context now auto-routes an inferred profile when no explicit profile is supplied, so the profile surface is live on both search and context handlers even though this scenario stays search-first.
 
 ---
 
@@ -45,3 +46,5 @@ Operators run the exact prompt and command sequence for `167` and confirm the ex
 - Playbook ID: 167
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/167-response-profile-v1-speckit-response-profile-v1.md`
+- phase_018_change: memory_context now auto-routes inferred profiles when no explicit profile is supplied
+- audited_post_018: true

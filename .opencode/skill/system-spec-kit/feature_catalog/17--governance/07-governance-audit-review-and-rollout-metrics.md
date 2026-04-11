@@ -1,6 +1,7 @@
 ---
 title: "Governance audit review and rollout metrics"
 description: "Governance audit review exposes filtered audit rows with aggregate summaries, while shared-memory rollout metrics report tenant, cohort, membership, kill-switch, and conflict coverage for governance operations."
+audited_post_018: true
 ---
 
 # Governance audit review and rollout metrics

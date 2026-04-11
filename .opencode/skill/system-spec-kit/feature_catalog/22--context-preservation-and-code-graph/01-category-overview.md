@@ -1,6 +1,8 @@
 ---
 title: "Context preservation and code graph"
 description: "Category covering Claude Code hooks (PreCompact, SessionStart, Stop), structural code graph (indexer, SQLite, MCP tools), CocoIndex bridge, and compaction working-set integration."
+audited_post_018: true
+phase_018_change: "Aligned the overview with the phase-018 canonical continuity ladder and current session_bootstrap/session_resume recovery wording."
 ---
 
 # Context preservation and code graph
@@ -15,7 +17,7 @@ This category documents the hybrid context injection system that preserves criti
 
 ## 2. CURRENT REALITY
 
-Implemented across spec 024-compact-code-graph phases 001-028. The shipped surface now includes hook scripts, code graph modules, MCP tools, budget allocator, tree-sitter parser with regex fallback, query-intent routing, auto-trigger, session health/resume/bootstrap tools, the structural ready/stale/missing contract, Gemini hooks, and startup-brief follow-ons.
+Implemented across spec 024-compact-code-graph with phase 018 canonical continuity layered on top. The shipped surface now includes hook scripts, code graph modules, MCP tools, budget allocator, tree-sitter parser with regex fallback, query-intent routing, auto-trigger, session health/resume/bootstrap tools, the structural ready/stale/missing contract, Gemini hooks, and startup-brief follow-ons. Recovery now treats `/spec_kit:resume` as the canonical surface and follows `handover.md -> _memory.continuity -> spec docs` before widening to broader memory artifacts.
 
 ---
 
@@ -45,4 +47,4 @@ Implemented across spec 024-compact-code-graph phases 001-028. The shipped surfa
 
 - Group: Context Preservation and Code Graph
 - Source feature title: Context preservation and code graph
-- Current reality source: spec 024-compact-code-graph
+- Current reality source: spec 024-compact-code-graph; phase 018 canonical continuity refactor

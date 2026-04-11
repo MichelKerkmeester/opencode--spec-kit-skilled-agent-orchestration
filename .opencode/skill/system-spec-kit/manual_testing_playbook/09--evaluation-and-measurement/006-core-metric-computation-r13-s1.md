@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `006` and confirm the ex
 - Playbook ID: 006
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/006-core-metric-computation-r13-s1.md`
+- audited_post_018: true

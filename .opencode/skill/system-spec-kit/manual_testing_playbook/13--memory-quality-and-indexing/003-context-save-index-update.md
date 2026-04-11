@@ -1,6 +1,7 @@
 ---
 title: "M-003 -- Context Save + Index Update"
 description: "This snippet preserves the canonical memory/spec-kit operator workflow for `M-003`."
+audited_post_018: true
 ---
 
 # M-003 -- Context Save + Index Update

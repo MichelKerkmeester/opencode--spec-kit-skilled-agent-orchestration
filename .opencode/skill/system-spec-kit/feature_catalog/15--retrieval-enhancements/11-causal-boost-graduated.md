@@ -1,6 +1,7 @@
 ---
 title: "Causal graph boost (graduated default-ON)"
 description: "Causal graph traversal boost amplifies search results related to top-ranked seeds via weighted 2-hop CTE walk, gated by SPECKIT_CAUSAL_BOOST (default true, graduated)."
+audited_post_018: true
 ---
 
 # Causal graph boost (graduated default-ON)

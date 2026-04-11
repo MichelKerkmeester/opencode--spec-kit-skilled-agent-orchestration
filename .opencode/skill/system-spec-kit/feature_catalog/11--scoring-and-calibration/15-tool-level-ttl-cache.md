@@ -1,6 +1,7 @@
 ---
 title: "Tool-level TTL cache"
 description: "Describes the per-tool TTL-based in-memory cache that reduces expensive embedding and database operations by SHA-256 keyed deduplication with configurable TTL and oldest-entry eviction."
+audited_post_018: true
 ---
 
 # Tool-level TTL cache

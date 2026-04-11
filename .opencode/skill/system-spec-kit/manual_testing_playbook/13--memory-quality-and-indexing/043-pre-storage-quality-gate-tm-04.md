@@ -1,6 +1,7 @@
 ---
 title: "043 -- Pre-storage quality gate (TM-04)"
 description: "This scenario validates Pre-storage quality gate (TM-04) for `043`. It focuses on Confirm 3-layer gate behavior."
+audited_post_018: true
 ---
 
 # 043 -- Pre-storage quality gate (TM-04)

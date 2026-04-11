@@ -1,6 +1,7 @@
 ---
 title: "132 -- description.json schema field validation"
 description: "This scenario validates description.json schema field validation for `132`. It focuses on Confirm per-folder description metadata matches schema contract."
+audited_post_018: true
 ---
 
 # 132 -- description.json schema field validation

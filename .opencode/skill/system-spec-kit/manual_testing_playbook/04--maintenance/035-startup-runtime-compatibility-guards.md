@@ -43,3 +43,5 @@ Operators run the exact prompt and command sequence for `EX-035` and confirm the
 - Playbook ID: EX-035
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `04--maintenance/035-startup-runtime-compatibility-guards.md`
+- audited_post_018: true
+- phase_018_change: post-018 audit verified against `mcp_server/startup-checks.ts`, `mcp_server/context-server.ts`, and `mcp_server/tests/startup-checks.vitest.ts`

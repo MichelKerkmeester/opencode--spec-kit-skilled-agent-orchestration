@@ -46,6 +46,7 @@ The baseline path now initializes the eval database beside the context database 
 - Group: Evaluation and measurement
 - Source feature title: Memory roadmap baseline snapshot
 - Current reality source: direct implementation audit of `memory-state-baseline.ts`, `eval-db.ts`, `capability-flags.ts`, and `mcp_server/tests/memory-state-baseline.vitest.ts`
+- audited_post_018: true
 
 ---
 

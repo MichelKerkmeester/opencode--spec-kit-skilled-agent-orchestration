@@ -1,6 +1,7 @@
 ---
 title: "EX-003 -- Trigger phrase matching (memory_match_triggers)"
 description: "This scenario validates Trigger phrase matching (memory_match_triggers) for `EX-003`. It focuses on Fast recall path."
+audited_post_018: true
 ---
 
 # EX-003 -- Trigger phrase matching (memory_match_triggers)

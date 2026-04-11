@@ -49,3 +49,5 @@ Manual validation is covered by playbook scenario `EX-035`, which runs the targe
 - Source feature title: Startup runtime compatibility guards
 - Current reality source: audit-D04 gap backfill
 - Manual playbook scenario: EX-035
+- audited_post_018: true
+- phase_018_change: post-018 audit verified against `mcp_server/startup-checks.ts`, `mcp_server/context-server.ts`, and `mcp_server/tests/startup-checks.vitest.ts`

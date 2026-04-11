@@ -46,6 +46,7 @@ Test file removed: `mcp_server/tests/ceiling-quality.vitest.ts`.
 - Group: Evaluation and measurement
 - Source feature title: Quality proxy formula
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
 
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "074 -- Stage 3 effectiveScore fallback chain"
 description: "This scenario validates Stage 3 effectiveScore fallback chain for `074`. It focuses on Confirm fallback order correctness."
+audited_post_018: true
 ---
 
 # 074 -- Stage 3 effectiveScore fallback chain

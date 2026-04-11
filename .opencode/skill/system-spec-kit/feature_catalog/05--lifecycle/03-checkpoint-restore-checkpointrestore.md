@@ -65,3 +65,4 @@ Barrier release is guaranteed in the restore `finally` path, so the maintenance 
 - Group: Lifecycle
 - Source feature title: Checkpoint restore (checkpoint_restore)
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

@@ -1,6 +1,7 @@
 ---
 title: "Fast delegated search (memory_quick_search)"
 description: "Simplified search wrapper in the L2 Core layer that accepts query, optional limit, and optional spec folder, then delegates to memory_search with sensible defaults (intent auto-detect ON, dedup ON, content included, reranking ON, constitutional inclusion ON, limit 10)."
+audited_post_018: true
 ---
 
 # Fast delegated search (memory_quick_search)

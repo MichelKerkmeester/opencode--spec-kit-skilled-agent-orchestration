@@ -1,6 +1,8 @@
 ---
 title: "Shadow-scoring retirement"
 description: "The shadow-scoring module now preserves read-only comparison helpers and historical stats access while runtime scoring and persistence remain permanently retired."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; runtime shadow scoring stays retired while read-only comparison helpers remain available."
 ---
 
 # Shadow-scoring retirement

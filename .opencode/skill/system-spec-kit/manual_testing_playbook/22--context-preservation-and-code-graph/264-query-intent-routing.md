@@ -1,6 +1,7 @@
 ---
 title: "264 -- Query-intent routing in memory_context"
 description: "This scenario validates Query-intent routing for 264. It focuses on verifying structural queries route to code graph and semantic queries route to CocoIndex."
+audited_post_018: true
 ---
 
 # 264 -- Query-intent routing in memory_context

@@ -58,3 +58,4 @@ All health validation failures return MCP error envelopes with `E_INVALID_INPUT`
 - Group: Discovery
 - Source feature title: Health diagnostics (memory_health)
 - Current reality source: `mcp_server/handlers/memory-crud-health.ts`, public schemas, and discovery test coverage
+- audited_post_018: true

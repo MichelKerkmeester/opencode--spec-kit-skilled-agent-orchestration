@@ -1,6 +1,7 @@
 ---
 title: "Lightweight consolidation"
 description: "Lightweight consolidation is invoked after every save, but contradiction scanning, Hebbian edge strengthening, staleness detection and edge bounds enforcement execute on a weekly cadence."
+audited_post_018: true
 ---
 
 # Lightweight consolidation

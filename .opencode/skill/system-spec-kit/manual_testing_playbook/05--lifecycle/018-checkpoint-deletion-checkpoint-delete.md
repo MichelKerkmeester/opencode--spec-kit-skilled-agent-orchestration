@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `EX-018` and confirm the
 - Playbook ID: EX-018
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/018-checkpoint-deletion-checkpoint-delete.md`
+- audited_post_018: true

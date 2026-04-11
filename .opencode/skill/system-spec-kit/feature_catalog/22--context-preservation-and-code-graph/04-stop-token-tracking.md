@@ -1,6 +1,7 @@
 ---
 title: "Stop hook token tracking"
 description: "Stop hook token tracking parses Claude Code transcript JSONL for token usage, calculates cost estimates per model, and stores snapshots."
+audited_post_018: true
 ---
 
 # Stop hook token tracking

@@ -1,6 +1,7 @@
 ---
 title: "Causal graph statistics (memory_causal_stats)"
 description: "Covers the causal graph health metrics tool reporting edge counts, relationship breakdowns and link coverage percentage."
+audited_post_018: true
 ---
 
 # Causal graph statistics (memory_causal_stats)

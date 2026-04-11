@@ -1,6 +1,7 @@
 ---
 title: "Shadow scoring with holdout evaluation"
 description: "Shadow scoring compares would-have-changed rankings against live rankings on a deterministic holdout slice of queries, tracking weekly improvement cycles and gating promotion of learned signals to production via the SPECKIT_SHADOW_FEEDBACK flag."
+audited_post_018: true
 ---
 
 # Shadow scoring with holdout evaluation

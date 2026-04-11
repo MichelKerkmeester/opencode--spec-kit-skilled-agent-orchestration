@@ -1,6 +1,7 @@
 ---
 title: "173 -- Query decomposition (SPECKIT_QUERY_DECOMPOSITION)"
 description: "This scenario validates query decomposition (SPECKIT_QUERY_DECOMPOSITION) for `173`. It focuses on the default-on graduated rollout and verifying bounded facet detection decomposes multi-faceted queries into max 3 sub-queries."
+audited_post_018: true
 ---
 
 # 173 -- Query decomposition (SPECKIT_QUERY_DECOMPOSITION)

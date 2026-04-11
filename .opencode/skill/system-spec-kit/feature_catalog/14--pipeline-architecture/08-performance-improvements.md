@@ -1,6 +1,7 @@
 ---
 title: "Performance improvements"
 description: "Sixteen performance improvements reduce runtime cost across TF-IDF scoring, fallback fusion, token budgeting, mutation ledger scanning, entity linking and hierarchy caching."
+audited_post_018: true
 ---
 
 # Performance improvements

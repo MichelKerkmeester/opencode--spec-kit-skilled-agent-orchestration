@@ -1,6 +1,10 @@
 ---
 title: "Warm server / daemon mode"
-description: "Warm server / daemon mode is a deferred HTTP transport for persistent server execution, currently using stdio transport."
+description: "Archived copy of the warm server / daemon mode entry. The live transport remains stdio."
+audited_post_018: true
+deprecated_at: 2026-04-11
+deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_reason: "Daemon mode is still deferred and is not part of the phase-018 live transport model."
 ---
 
 # Warm server / daemon mode

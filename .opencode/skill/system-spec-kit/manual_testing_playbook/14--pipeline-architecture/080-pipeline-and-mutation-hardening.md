@@ -1,6 +1,7 @@
 ---
 title: "080 -- Pipeline and mutation hardening"
 description: "This scenario validates Pipeline and mutation hardening for `080`. It focuses on Confirm mutation hardening bundle, including chunked-save finalize rollback safety."
+audited_post_018: true
 ---
 
 # 080 -- Pipeline and mutation hardening

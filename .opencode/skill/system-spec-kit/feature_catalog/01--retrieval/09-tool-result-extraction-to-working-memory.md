@@ -1,6 +1,7 @@
 ---
 title: "Tool-result extraction to working memory"
 description: "Covers the working memory module that captures salient tool results as session-scoped attention items for cross-turn continuity."
+audited_post_018: true
 ---
 
 # Tool-result extraction to working memory

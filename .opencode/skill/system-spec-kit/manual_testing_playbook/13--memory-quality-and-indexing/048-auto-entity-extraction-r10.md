@@ -1,6 +1,7 @@
 ---
 title: "048 -- Auto entity extraction (R10)"
 description: "This scenario validates Auto entity extraction (R10) for `048`. It focuses on Confirm entity pipeline persistence."
+audited_post_018: true
 ---
 
 # 048 -- Auto entity extraction (R10)

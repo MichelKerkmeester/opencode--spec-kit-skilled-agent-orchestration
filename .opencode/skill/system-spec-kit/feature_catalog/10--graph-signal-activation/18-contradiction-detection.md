@@ -1,6 +1,7 @@
 ---
 title: "Contradiction detection"
 description: "detectContradictions() auto-invalidates old edges when superseding or conflicting edges are created, maintaining graph consistency by ensuring only the most current causal relationships remain active, gated by the SPECKIT_TEMPORAL_EDGES flag."
+audited_post_018: true
 ---
 
 # Contradiction detection

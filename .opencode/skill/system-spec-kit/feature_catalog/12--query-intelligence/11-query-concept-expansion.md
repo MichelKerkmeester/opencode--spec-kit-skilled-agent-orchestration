@@ -1,6 +1,7 @@
 ---
 title: "Query concept expansion"
 description: "D2 concept routing expands queries with alias terms from entity-linker via getConceptExpansionTerms(), broadening recall for queries that use synonyms or abbreviations, gated by the SPECKIT_QUERY_CONCEPT_EXPANSION flag."
+audited_post_018: true
 ---
 
 # Query concept expansion

@@ -1,6 +1,7 @@
 ---
 title: "Database and schema safety"
 description: "Tracks five database-layer bug fixes covering column references, DDL placement, edge deletion filters, update validation and per-path connection isolation."
+audited_post_018: true
 ---
 
 # Database and schema safety

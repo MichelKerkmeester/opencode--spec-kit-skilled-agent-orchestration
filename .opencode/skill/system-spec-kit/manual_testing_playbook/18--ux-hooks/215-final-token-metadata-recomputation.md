@@ -43,4 +43,5 @@ Operators run the exact prompt and command sequence for `215` and confirm the ex
 - Playbook ID: 215
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/215-final-token-metadata-recomputation.md`
+- audited_post_018: true
 - Feature catalog back-ref: `18--ux-hooks/11-final-token-metadata-recomputation.md`

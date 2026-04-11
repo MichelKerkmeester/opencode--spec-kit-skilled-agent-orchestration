@@ -1,6 +1,7 @@
 ---
 title: "033 -- Query complexity router (R15)"
 description: "This scenario validates Query complexity router (R15) for `033`. It focuses on Confirm query-class routing."
+audited_post_018: true
 ---
 
 # 033 -- Query complexity router (R15)

@@ -1,6 +1,7 @@
 ---
 title: "251 -- Stop hook saves token usage"
 description: "This scenario validates Stop hook token tracking for 251. It focuses on Transcript parsing, cost estimation, and snapshot storage."
+audited_post_018: true
 ---
 
 # 251 -- Stop hook saves token usage

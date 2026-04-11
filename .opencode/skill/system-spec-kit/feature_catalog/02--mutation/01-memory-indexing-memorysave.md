@@ -1,6 +1,8 @@
 ---
 title: "Memory indexing (memory_save)"
 description: "Covers the save entry point that reads files, generates embeddings, applies quality gating and indexes content into the memory database."
+audited_post_018: true
+phase_018_replaces: "legacy memory-file save model with spec-doc anchored continuity save path"
 ---
 
 # Memory indexing (memory_save)
@@ -15,20 +17,20 @@ This is how you add new knowledge to the system. You point it at a file and it r
 
 ## 2. CURRENT REALITY
 
-`memory_save` is the entry point for getting content into the memory system. You give it a file path. It reads the file, parses metadata from the frontmatter (title, trigger phrases, spec folder, importance tier, context type, causal links), generates a vector embedding and indexes everything into the SQLite database.
+`memory_save` is the save entry point for the canonical packet continuity path. You point it at a packet document or other supported markdown input, and it routes the content through `contentRouter`, applies the selected merge behavior via `anchorMergeOperation`, and writes the result through `atomicIndexMemory` inside the existing spec-folder lock. `_memory.continuity` now lives as supporting frontmatter state inside the spec doc, and `/spec_kit:resume` remains the canonical recovery surface.
 
-Before embedding generation, content normalization strips structural markdown noise. Seven primitives (frontmatter, anchors, HTML comments, code fences, tables, lists, headings) run in sequence to produce cleaner text for the embedding model. BM25 has a separate normalization entry point (`normalizeContentForBM25`) that currently delegates to the embedding normalizer, and it is used on rebuild-from-database paths. In live save paths, raw content is passed to BM25 tokenization (`addDocument`) before tokenizer normalization.
+Before the indexed write, the handler still normalizes content, generates embeddings, runs prediction-error arbitration, applies the three-layer quality gate and performs reconsolidation where enabled. The save path still records mutation history, invalidates caches and preserves async-embedding behavior, but those steps now feed spec-doc anchored continuity instead of treating legacy memory-file continuity as the primary source of truth.
 
 The interesting part is what happens before the record is created. A Prediction Error (PE) gating system compares the new content against existing memories via cosine similarity and decides one of five actions. CREATE stores a new record when no similar memory exists. REINFORCE boosts the FSRS stability of an existing duplicate without creating a new entry (the system already knows this, so it strengthens the memory). UPDATE overwrites an existing high-similarity memory in-place when the new version supersedes the old. SUPERSEDE marks the old memory as deprecated, creates a new record and links them with a causal edge. CREATE_LINKED stores a new memory with a relationship edge to a similar but distinct existing memory.
 
 A three-layer quality gate runs before storage when `SPECKIT_SAVE_QUALITY_GATE` is enabled (default ON). Layer 1 validates structure (title exists, content at least 50 characters, valid spec folder path). Layer 2 scores content quality across five dimensions (title, triggers, length, anchors, metadata) against a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity, rejecting near-duplicates above 0.92. A warn-only mode runs for the first 14 days after activation, logging would-reject decisions without blocking saves.
 
-When `SPECKIT_QUALITY_LOOP=true`, the save path also runs a verify-fix-verify loop before storage. The runtime performs one initial evaluation and then up to 2 immediate auto-fix retries by default. The reported `attempts` count is the actual number of evaluations used, so early-break cases do not claim the full configured retry budget. Accepted saves persist quality-loop metadata fixes, while rewritten body content stays in-memory until later hard-reject gates clear under the per-spec-folder lock. If the loop rejects the save, `indexMemoryFile()` returns `status: 'rejected'`, and `atomicSaveMemory()` rolls back the just-written file instead of retrying indexing again.
+When `SPECKIT_QUALITY_LOOP=true`, the save path also runs a verify-fix-verify loop before storage. The runtime performs one initial evaluation and then up to 2 immediate auto-fix retries by default. The reported `attempts` count is the actual number of evaluations used, so early-break cases do not claim the full configured retry budget. Accepted saves persist quality-loop metadata fixes, while rewritten body content stays in memory until later hard-reject gates clear under the per-spec-folder lock. If the loop rejects the save, `atomicIndexMemory()` returns `status: 'rejected'` and rolls back the just-written index write instead of retrying again.
 
 Two earlier hard-blocks now sit between the quality loop and the older pre-storage quality gate:
 
 1. the shared semantic sufficiency gate, which rejects thin aligned memories with `INSUFFICIENT_CONTEXT_ABORT`
-2. the rendered-memory template contract validator, which rejects malformed files when required frontmatter, mandatory section anchors/HTML ids, or cleanup invariants are missing
+2. the spec-doc structure validator, which rejects malformed files when required frontmatter, mandatory section anchors/HTML ids, or cleanup invariants are missing
 
 That means `memory_save` no longer treats a merely parseable file as good enough. It must be both semantically durable and structurally compliant before the pre-storage quality gate runs.
 
@@ -46,7 +48,7 @@ Safety mechanisms run deep. Path security validation checks the file against an 
 
 Successful insertions now clear the search cache immediately instead of waiting for delete-time invalidation or TTL expiry. `index_memory()` calls `clear_search_cache()` after the transactional insert, active-projection update and optional `vec_memories` write succeed, so a brand-new memory becomes visible to repeated `memory_search` calls right away. The fix closes a stale-results gap where the save path could report success while cached searches still replayed a pre-insert snapshot.
 
-Document type affects importance weighting automatically: constitutional files get 1.0, spec documents 0.8, plans 0.7, memory files 0.5 and scratch files 0.25.
+Document type affects importance weighting automatically: constitutional files get 1.0, spec documents 0.8, plans 0.7, supporting memory artifacts 0.5 and scratch files 0.25.
 
 ---
 
@@ -56,18 +58,22 @@ Document type affects importance weighting automatically: constitutional files g
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/handlers/memory-save.ts` | Handler | Save entry point and orchestration for validation, quality gating, PE arbitration, reconsolidation, and persistence |
+| `mcp_server/handlers/memory-save.ts` | Handler | Save entry point and orchestration for validation, quality gating, PE arbitration, spec-doc routing, reconsolidation, and persistence |
+| `mcp_server/handlers/save/atomic-index-memory.ts` | Handler | Atomic post-merge index/write commit for spec-doc continuity |
+| `mcp_server/lib/routing/content-router.ts` | Lib | Classifies save content and selects the merge/routing path |
+| `mcp_server/lib/merge/anchor-merge-operation.ts` | Lib | Anchor-aware merge modes used by the save path |
 | `mcp_server/handlers/save/markdown-evidence-builder.ts` | Handler | Extracts structured markdown evidence snapshots used by save-time semantic sufficiency checks |
 | `mcp_server/handlers/save/validation-responses.ts` | Handler | Builds insufficiency, template-contract, and dry-run response payloads for the save path |
 | `mcp_server/handlers/save/embedding-pipeline.ts` | Handler | Embedding cache lookup, provider generation, and async/deferred pending behavior |
 | `mcp_server/handlers/save/pe-orchestration.ts` | Handler | Save-path PE decision evaluation and early-return handling |
 | `mcp_server/handlers/save/create-record.ts` | Handler | Record creation, BM25 insert, lineage transition, and save-time history writes |
 | `mcp_server/handlers/save/spec-folder-mutex.ts` | Handler | Per-spec-folder serialization around save execution |
-| `mcp_server/handlers/chunking-orchestrator.ts` | Handler | Chunked indexing path for large memory files |
+| `mcp_server/handlers/chunking-orchestrator.ts` | Handler | Chunked indexing path for large packet documents |
 | `mcp_server/handlers/quality-loop.ts` | Handler | Verify-fix-verify quality loop before storage |
+| `mcp_server/lib/validation/spec-doc-structure.ts` | Lib | Phase-018 spec-doc structure rule set for save legality |
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Pre-storage quality gate and semantic dedup checks |
 | `mcp_server/lib/storage/history.ts` | Lib | ADD/UPDATE history logging used by the save path |
-| `shared/parsing/memory-template-contract.ts` | Shared | Rendered-memory structural contract validator |
+| `shared/parsing/memory-template-contract.ts` | Shared | Rendered document structural contract validator |
 
 ### Tests
 

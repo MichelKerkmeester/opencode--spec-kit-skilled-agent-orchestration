@@ -61,3 +61,5 @@ Runtime behavior is read-only after initialization. The dashboard path queries t
 - Group: Evaluation
 - Source feature title: Reporting dashboard (eval_reporting_dashboard)
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
+- phase_018_change: post-018 audit verified against `mcp_server/handlers/eval-reporting.ts`, `mcp_server/lib/eval/reporting-dashboard.ts`, `mcp_server/tests/reporting-dashboard.vitest.ts`, and `mcp_server/tests/handler-eval-reporting.vitest.ts`

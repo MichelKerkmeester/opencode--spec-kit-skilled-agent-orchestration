@@ -1,6 +1,7 @@
 ---
 title: "Learned Stage 2 weight combiner"
 description: "A regularized linear ranker that learns combination weights from accumulated Stage 2 signals, running in shadow-only mode behind the SPECKIT_LEARNED_STAGE2_COMBINER flag."
+audited_post_018: true
 ---
 
 # Learned Stage 2 weight combiner

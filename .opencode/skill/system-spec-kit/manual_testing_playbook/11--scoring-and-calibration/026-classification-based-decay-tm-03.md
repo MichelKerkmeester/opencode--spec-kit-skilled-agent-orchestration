@@ -1,6 +1,7 @@
 ---
 title: "026 -- Classification-based decay (TM-03)"
 description: "This scenario validates Classification-based decay (TM-03) for `026`. It focuses on Confirm class+tier decay matrix."
+audited_post_018: true
 ---
 
 # 026 -- Classification-based decay (TM-03)

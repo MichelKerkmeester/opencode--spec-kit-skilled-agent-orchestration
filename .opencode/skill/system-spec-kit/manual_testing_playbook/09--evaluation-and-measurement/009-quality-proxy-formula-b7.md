@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `009` and confirm the ex
 - Playbook ID: 009
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/009-quality-proxy-formula-b7.md`
+- audited_post_018: true

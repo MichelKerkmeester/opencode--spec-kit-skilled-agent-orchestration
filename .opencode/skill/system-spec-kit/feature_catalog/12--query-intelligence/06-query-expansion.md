@@ -1,6 +1,7 @@
 ---
 title: "Query expansion"
 description: "Covers the embedding-based query expansion path and distinguishes it from the separate rule-based deep-mode query-variant expansion path."
+audited_post_018: true
 ---
 
 # Query expansion

@@ -1,6 +1,7 @@
 ---
 title: "Session health tool"
 description: "MCP tool (session_health) that reports session readiness with ok/warning/stale status, code graph freshness, priming status, and quality score."
+audited_post_018: true
 ---
 
 # Session health tool

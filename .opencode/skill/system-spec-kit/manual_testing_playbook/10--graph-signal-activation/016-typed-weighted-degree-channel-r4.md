@@ -1,6 +1,7 @@
 ---
 title: "016 -- Typed-weighted degree channel (R4)"
 description: "This scenario validates Typed-weighted degree channel (R4) for `016`. It focuses on Confirm bounded typed-degree boost."
+audited_post_018: true
 ---
 
 # 016 -- Typed-weighted degree channel (R4)

@@ -1,6 +1,7 @@
 ---
 title: "Dry-run preflight for memory_save"
 description: "The `dryRun` parameter on `memory_save` runs preflight validation without indexing, database mutation or file writes."
+audited_post_018: true
 ---
 
 # Dry-run preflight for memory_save

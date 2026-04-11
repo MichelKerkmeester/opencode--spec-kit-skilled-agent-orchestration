@@ -1,6 +1,8 @@
 ---
 title: "232 -- Adaptive-fusion flag drift"
 description: "This scenario validates Adaptive-fusion flag drift for `232`. It focuses on confirming live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; adaptive fusion stays live and the install-guide mismatch remains the item under test."
 ---
 
 # 232 -- Adaptive-fusion flag drift

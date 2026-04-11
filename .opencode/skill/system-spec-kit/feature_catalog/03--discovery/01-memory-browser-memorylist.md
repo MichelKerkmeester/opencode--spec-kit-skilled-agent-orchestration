@@ -52,3 +52,4 @@ An empty-string `specFolder` is treated the same as omitting the filter entirely
 - Group: Discovery
 - Source feature title: Memory browser (memory_list)
 - Current reality source: `mcp_server/handlers/memory-crud-list.ts` and discovery test coverage
+- audited_post_018: true

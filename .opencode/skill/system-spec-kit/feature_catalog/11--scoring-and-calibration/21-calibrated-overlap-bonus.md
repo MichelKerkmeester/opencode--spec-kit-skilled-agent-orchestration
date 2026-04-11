@@ -1,6 +1,7 @@
 ---
 title: "Calibrated overlap bonus"
 description: "Calibrated overlap bonus replaces the flat convergence bonus in RRF fusion with a query-aware scaled bonus that accounts for the number of overlapping channels and the mean normalized top score, gated by the SPECKIT_CALIBRATED_OVERLAP_BONUS flag."
+audited_post_018: true
 ---
 
 # Calibrated overlap bonus

@@ -1,13 +1,13 @@
 ---
 title: "BM25-only baseline"
-description: "Describes the FTS5-only baseline measurement (MRR@5 of 0.2083) that confirmed hybrid retrieval adds real value over keyword search alone."
+description: "Describes the BM25/FTS5-only baseline measurement (MRR@5 of 0.2083) that confirmed lexical search alone still underperforms hybrid retrieval."
 ---
 
 # BM25-only baseline
 
 ## 1. OVERVIEW
 
-Describes the FTS5-only baseline measurement (MRR@5 of 0.2083) that confirmed hybrid retrieval adds real value over keyword search alone.
+Describes the BM25/FTS5-only baseline measurement (MRR@5 of 0.2083) that confirmed lexical search alone still underperforms hybrid retrieval.
 
 This test answered a simple question: "Would basic keyword search be good enough on its own?" By running just keyword matching against 110 test questions and measuring how poorly it performed, the team proved that the more advanced multi-method search approach is worth the extra effort. Without this baseline measurement, you would be guessing whether the added complexity actually helps.
 
@@ -15,9 +15,9 @@ This test answered a simple question: "Would basic keyword search be good enough
 
 ## 2. CURRENT REALITY
 
-Running FTS5 alone (disabling vector, graph and trigger channels) on the 110-query corpus produced an MRR@5 of 0.2083. That is well below 50% of hybrid performance.
+Running the BM25/FTS5-only baseline path (disabling vector, graph and trigger channels) on the 110-query corpus produced an MRR@5 of 0.2083. That is well below 50% of hybrid performance.
 
-If BM25 had been competitive, the entire multi-channel approach would be questioned. Instead, the gap confirmed that hybrid retrieval adds real value over keyword search. The contingency decision to proceed with the full program was based on this measurement. No opinions, no intuitions, just a number. The in-memory BM25 channel (distinct from FTS5) now runs only when `ENABLE_BM25` is explicitly enabled; default runtime behavior leaves FTS5 as the lexical baseline. Reproducing a true in-memory BM25-only comparison therefore requires opting in to the BM25 flag first, while the FTS5-only lexical baseline can still run with the default configuration.
+If BM25 had been competitive, the entire multi-channel approach would be questioned. Instead, the gap confirmed that hybrid retrieval adds real value over lexical search. The contingency decision to proceed with the full program was based on this measurement. No opinions, no intuitions, just a number. The current runtime keeps the in-memory BM25 path enabled by default; use `ENABLE_BM25=false` if you need to force the FTS5 fallback for comparison.
 
 ---
 
@@ -46,6 +46,8 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 - Group: Evaluation and measurement
 - Source feature title: BM25-only baseline
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
+- phase_018_change: aligned the baseline wording with the live BM25/FTS5-only runner and the default-enabled BM25 path
 
 ---
 

@@ -78,3 +78,5 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 - Group: Maintenance
 - Source feature title: Workspace scanning and indexing (memory_index_scan)
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
+- phase_018_change: post-018 audit verified against `mcp_server/handlers/memory-index.ts`, `mcp_server/handlers/memory-index-discovery.ts`, and `mcp_server/tests/handler-memory-index-cooldown.vitest.ts`

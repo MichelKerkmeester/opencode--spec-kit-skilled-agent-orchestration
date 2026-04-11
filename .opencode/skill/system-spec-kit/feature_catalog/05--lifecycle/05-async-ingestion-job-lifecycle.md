@@ -133,3 +133,4 @@ When extended telemetry is enabled, ingest-status responses also record lifecycl
 - Group: Extra features (Sprint 019)
 - Source feature title: Async ingestion job lifecycle
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

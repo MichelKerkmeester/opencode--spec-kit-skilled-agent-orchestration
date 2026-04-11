@@ -1,13 +1,15 @@
 ---
 title: "178 -- Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS)"
-description: "This scenario validates save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) for `178`. It focuses on the default-on graduated rollout and verifying short-critical quality gate exception for decision documents with structural signals."
+description: "This scenario validates save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) for `178`. It focuses on the default-on exception behavior and verifying short-critical quality gate exception for decision documents with structural signals."
+audited_post_018: true
+phase_018_change: "Remove rollout framing; keep the short-critical exception and structural-signal checks"
 ---
 
 # 178 -- Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS)
 
 ## 1. OVERVIEW
 
-This scenario validates save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) for `178`. It focuses on the default-on graduated rollout and verifying short-critical quality gate exception for decision documents with structural signals.
+This scenario validates save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) for `178`. It focuses on the default-on exception behavior and verifying the short-critical quality gate exception for decision documents with structural signals.
 
 ---
 

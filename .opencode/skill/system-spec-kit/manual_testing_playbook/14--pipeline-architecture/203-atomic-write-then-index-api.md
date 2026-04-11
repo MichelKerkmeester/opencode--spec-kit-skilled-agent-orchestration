@@ -1,6 +1,7 @@
 ---
 title: "203 -- Atomic write-then-index API"
 description: "This scenario validates Atomic write-then-index API for `203`. It focuses on verifying that the handler writes to a pending path, indexes before promotion, retries transient indexing once, and only renames into place after success."
+audited_post_018: true
 ---
 
 # 203 -- Atomic write-then-index API

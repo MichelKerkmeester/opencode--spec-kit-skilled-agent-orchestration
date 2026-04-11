@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `114` and confirm the ex
 - Playbook ID: 114
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/114-path-traversal-validation-p0-4.md`
+- audited_post_018: true

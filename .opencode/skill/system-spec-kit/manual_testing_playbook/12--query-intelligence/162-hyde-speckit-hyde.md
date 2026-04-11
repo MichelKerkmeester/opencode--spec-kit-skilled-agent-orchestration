@@ -1,6 +1,7 @@
 ---
 title: "162 -- HyDE (SPECKIT_HYDE)"
 description: "This scenario validates HyDE (SPECKIT_HYDE) for `162`. It focuses on enabling the flag in deep mode and verifying a HyDE pseudo-document is generated."
+audited_post_018: true
 ---
 
 # 162 -- HyDE (SPECKIT_HYDE)
@@ -34,7 +35,7 @@ Operators run the exact prompt and command sequence for `162` and confirm the ex
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [12--query-intelligence/08-hyde-hypothetical-document-embeddings.md](../../feature_catalog/12--query-intelligence/08-hyde-hypothetical-document-embeddings.md)
-- Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
+- Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/search/hyde.ts`
 
 ---

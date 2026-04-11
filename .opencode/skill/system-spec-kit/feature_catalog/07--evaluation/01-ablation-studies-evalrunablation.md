@@ -68,3 +68,5 @@ Results from the `ablation` path can be stored in `eval_metric_snapshots` with n
 - Group: Evaluation
 - Source feature title: Ablation studies (eval_run_ablation)
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
+- phase_018_change: post-018 audit verified against `mcp_server/handlers/eval-reporting.ts`, `mcp_server/lib/eval/ablation-framework.ts`, `mcp_server/lib/eval/k-value-analysis.ts`, `mcp_server/tests/ablation-framework.vitest.ts`, and `mcp_server/tests/handler-eval-reporting.vitest.ts`

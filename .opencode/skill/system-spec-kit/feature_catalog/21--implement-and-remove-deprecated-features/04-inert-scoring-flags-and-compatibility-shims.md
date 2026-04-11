@@ -1,6 +1,8 @@
 ---
 title: "Inert scoring flags and compatibility shims"
 description: "Documents retired scoring-flag behavior and shim layers that remain in the codebase for compatibility, observability, and legacy imports."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; novelty and graph-flag shims remain compatibility-only and forward into the current rollout helpers."
 ---
 
 # Inert scoring flags and compatibility shims

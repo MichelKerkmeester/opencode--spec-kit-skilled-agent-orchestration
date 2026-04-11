@@ -1,6 +1,7 @@
 ---
 title: "RRF K experimental tuning"
 description: "RRF K experimental tuning enables judged K-value selection for Reciprocal Rank Fusion, sweeping candidate K values and selecting the one that maximizes NDCG@10 per query intent, gated by the SPECKIT_RRF_K_EXPERIMENTAL flag."
+audited_post_018: true
 ---
 
 # RRF K experimental tuning

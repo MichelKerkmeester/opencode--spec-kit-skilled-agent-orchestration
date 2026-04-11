@@ -1,6 +1,7 @@
 ---
 title: "001 -- Graph channel ID fix (G1)"
 description: "This scenario validates Graph channel ID fix (G1) for `001`. It focuses on Confirm graph hits are non-zero when edges exist."
+audited_post_018: true
 ---
 
 # 001 -- Graph channel ID fix (G1)

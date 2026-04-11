@@ -45,3 +45,4 @@ The surface also exposes `loadGroundTruth` and `initEvalDb` directly from their 
 - Group: Evaluation and measurement
 - Source feature title: Evaluation API Surface
 - Current reality source: direct implementation audit of `mcp_server/api/eval.ts` and the explicit API-surface export test
+- audited_post_018: true

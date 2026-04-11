@@ -1,6 +1,7 @@
 ---
 title: "Interference scoring"
 description: "Describes the interference penalty that demotes memories in dense similarity clusters, preventing near-identical results from crowding out unique content."
+audited_post_018: true
 ---
 
 # Interference scoring

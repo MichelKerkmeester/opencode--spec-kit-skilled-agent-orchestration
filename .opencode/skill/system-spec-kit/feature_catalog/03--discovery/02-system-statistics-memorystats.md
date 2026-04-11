@@ -55,3 +55,4 @@ Embedding-status totals now treat `partial` as a first-class state instead of si
 - Group: Discovery
 - Source feature title: System statistics (memory_stats)
 - Current reality source: `mcp_server/handlers/memory-crud-stats.ts` and discovery test coverage
+- audited_post_018: true

@@ -43,3 +43,4 @@ Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mu
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Final token metadata recomputation
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

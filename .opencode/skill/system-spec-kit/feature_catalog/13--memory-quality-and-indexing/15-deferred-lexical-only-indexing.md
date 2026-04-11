@@ -1,6 +1,7 @@
 ---
 title: "Deferred lexical-only indexing"
 description: "Deferred lexical-only indexing stores memories with `embedding_status='pending'` when embedding generation fails, keeping them searchable via BM25/FTS5 until retry succeeds."
+audited_post_018: true
 ---
 
 # Deferred lexical-only indexing

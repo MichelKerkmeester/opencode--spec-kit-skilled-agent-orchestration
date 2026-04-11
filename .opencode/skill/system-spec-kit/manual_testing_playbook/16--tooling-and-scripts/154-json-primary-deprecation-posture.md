@@ -1,6 +1,6 @@
 ---
 title: "154 -- JSON-primary deprecation posture"
-description: "This scenario validates the JSON-primary deprecation posture: routine saves require --json/--stdin, direct positional saves reject with migration guidance, and operator guidance reflects the JSON-only save contract."
+description: "This scenario validates the JSON-primary deprecation posture: routine saves prefer --json/--stdin, direct positional JSON file input remains supported on the same structured path, and operator guidance reflects the JSON-first save contract."
 ---
 
 # 154 -- JSON-primary deprecation posture
@@ -15,18 +15,18 @@ description: "This scenario validates the JSON-primary deprecation posture: rout
 
 ## 1. OVERVIEW
 
-This scenario validates the phase 017 JSON-primary deprecation posture. It confirms that direct positional saves reject with migration guidance, and that `--json` and `--stdin` succeed as routine saves.
+This scenario validates the phase 017 JSON-primary deprecation posture. It confirms that structured JSON is the preferred routine-save path, while direct positional JSON file input remains supported on the same structured loader path.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators verify the JSON-only save contract: structured JSON succeeds and direct positional rejects.
+Operators verify the JSON-first save contract: structured JSON succeeds and direct positional file input still succeeds.
 
-- Objective: Verify JSON-primary deprecation gating
-- Prompt: `Test the two generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) direct positional without --json/--stdin should reject with migration guidance. Return a pass/fail verdict for each path.`
-- Expected signals: Path 1 exits 0, Path 2 exits non-zero with guidance text
-- Pass/fail: PASS if both paths behave as documented; FAIL if any path has unexpected behavior
+- Objective: Verify JSON-primary preference without removing positional file input support
+- Prompt: `Test the generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) --stdin with valid structured payload should succeed, and (3) direct positional JSON file input should still succeed on the same structured path. Return a pass/fail verdict for each path.`
+- Expected signals: Path 1 exits 0, Path 2 exits 0, Path 3 exits 0
+- Pass/fail: PASS if all three paths behave as documented; FAIL if any path has unexpected behavior
 
 ---
 
@@ -34,7 +34,7 @@ Operators verify the JSON-only save contract: structured JSON succeeds and direc
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 154 | JSON-primary deprecation posture | Verify JSON-only save contract | `Test the two generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) direct positional without --json/--stdin should reject with migration guidance. Return a pass/fail verdict for each path.` | 1) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"test","sessionSummary":"test"}' <spec-folder>` → expect exit 0 2) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <spec-folder>` → expect non-zero exit with migration message | Path 1: exit 0, Path 2: non-zero with guidance | CLI exit codes and stdout/stderr output | PASS if both paths match documented behavior | Check generate-context.ts argument parsing and migration guidance text |
+| 154 | JSON-primary deprecation posture | Verify JSON-first save contract without removing positional file input support | `Test the generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) --stdin with valid structured payload should succeed, and (3) direct positional JSON file input should still succeed on the same structured path. Return a pass/fail verdict for each path.` | 1) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"test","sessionSummary":"test"}' <spec-folder>` → expect exit 0 2) `printf '{"specFolder":"test","sessionSummary":"test"}' | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin <spec-folder>` → expect exit 0 3) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json <spec-folder>` → expect exit 0 | Path 1: exit 0, Path 2: exit 0, Path 3: exit 0 | CLI exit codes and stdout/stderr output | PASS if all three paths match documented behavior | Check generate-context.ts argument parsing, loader routing, and structured-input authority |
 
 ---
 
@@ -52,3 +52,5 @@ Operators verify the JSON-only save contract: structured JSON succeeds and direc
 - Playbook ID: 154
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `16--tooling-and-scripts/154-json-primary-deprecation-posture.md`
+- phase_018_change: direct positional JSON file input remains supported; scenario now validates JSON-first preference without claiming removal
+- audited_post_018: true

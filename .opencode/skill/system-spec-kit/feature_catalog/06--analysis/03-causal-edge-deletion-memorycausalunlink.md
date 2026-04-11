@@ -1,6 +1,7 @@
 ---
 title: "Causal edge deletion (memory_causal_unlink)"
 description: "Covers the causal edge deletion tool that removes relationship edges by ID with automatic cleanup on memory deletion."
+audited_post_018: true
 ---
 
 # Causal edge deletion (memory_causal_unlink)

@@ -1,6 +1,7 @@
 ---
 title: "071 -- Performance improvements"
 description: "This scenario validates Performance improvements for `071`. It focuses on confirming key perf remediations active, including fallback split, token-estimate caching, and BM25 demotion behavior."
+audited_post_018: true
 ---
 
 # 071 -- Performance improvements

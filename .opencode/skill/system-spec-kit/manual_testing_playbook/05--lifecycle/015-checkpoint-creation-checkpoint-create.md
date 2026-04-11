@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `EX-015` and confirm the
 - Playbook ID: EX-015
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/015-checkpoint-creation-checkpoint-create.md`
+- audited_post_018: true

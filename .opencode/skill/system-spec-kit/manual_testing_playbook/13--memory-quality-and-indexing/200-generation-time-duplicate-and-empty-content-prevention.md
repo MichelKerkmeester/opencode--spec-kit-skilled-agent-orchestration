@@ -1,6 +1,7 @@
 ---
 title: "200 -- Generation-time duplicate and empty content prevention"
 description: "This scenario validates Generation-time duplicate and empty content prevention for `200`. It focuses on verifying that template-only and exact-duplicate memories are rejected before the atomic write step."
+audited_post_018: true
 ---
 
 # 200 -- Generation-time duplicate and empty content prevention

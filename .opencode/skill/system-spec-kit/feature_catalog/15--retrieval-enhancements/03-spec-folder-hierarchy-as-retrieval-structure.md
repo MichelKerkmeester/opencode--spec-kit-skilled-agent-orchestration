@@ -1,6 +1,7 @@
 ---
 title: "Spec folder hierarchy as retrieval structure"
 description: "Spec folder paths are parsed into an in-memory hierarchy tree that surfaces parent, sibling and ancestor memories during retrieval."
+audited_post_018: true
 ---
 
 # Spec folder hierarchy as retrieval structure

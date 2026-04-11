@@ -1,6 +1,7 @@
 ---
 title: "PreCompact hook context caching"
 description: "PreCompact hook precomputes critical context before Claude Code compaction and caches to temp file for later injection."
+audited_post_018: true
 ---
 
 # PreCompact hook context caching

@@ -45,3 +45,4 @@ Operators run the exact prompt and command sequence for `180` and confirm the ex
 - Playbook ID: 180
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/180-result-confidence-speckit-result-confidence-v1.md`
+- audited_post_018: true

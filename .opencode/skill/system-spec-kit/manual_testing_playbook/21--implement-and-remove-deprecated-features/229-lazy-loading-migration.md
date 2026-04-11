@@ -1,6 +1,8 @@
 ---
 title: "229 -- Lazy-loading migration and warmup compatibility"
 description: "This scenario validates Lazy-loading migration and warmup compatibility for `229`. It focuses on confirming lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; confirms lazy startup is canonical and warmup flags remain compatibility-only."
 ---
 
 # 229 -- Lazy-loading migration and warmup compatibility

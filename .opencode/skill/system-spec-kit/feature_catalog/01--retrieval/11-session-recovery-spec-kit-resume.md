@@ -1,13 +1,15 @@
 ---
 title: "Session recovery via /spec_kit:resume"
 description: "Reconstructs interrupted session state through the unified spec-folder resume workflow."
+audited_post_018: true
+phase_018_change: Aligned the recovery ladder to `handover.md -> _memory.continuity -> spec docs` and removed legacy CONTINUE_SESSION wording from the primary path.
 ---
 
 # Session recovery via /spec_kit:resume
 
 ## 1. OVERVIEW
 
-When a session is interrupted by a crash, context compaction, timeout, or an ordinary handoff between sessions, `/spec_kit:resume` reconstructs the most likely previous state and routes the user to the best next step. Session recovery is no longer a standalone memory command. It now lives under the spec-folder resume workflow, where its primary recovery chain relies on shared memory tools while the wrapper also exposes broader helper access for resume workflows.
+When a session is interrupted by a crash, context compaction, timeout, or an ordinary handoff between sessions, `/spec_kit:resume` reconstructs the most likely previous state and routes the user to the best next step. Session recovery is owned by the spec-folder resume workflow, where the canonical continuity ladder is `handover.md -> _memory.continuity -> spec docs` and the wrapper exposes helper access only when the packet is still thin.
 
 ---
 
@@ -15,7 +17,8 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 
 **SHIPPED.** `/spec_kit:resume` owns both standard continuation and interrupted-session recovery. Its primary recovery chain uses 3 shared memory tools, while the live wrapper also allows `memory_stats`, `memory_match_triggers`, `memory_delete`, `memory_update`, plus health, indexing, validation, checkpoint, and CocoIndex helpers:
 
-- **`memory_context`** (from `/memory:search`) -- Called in `resume` mode as the primary interrupted-session recovery path whenever no fresh `handover.md` already provides enough state. In `mcp_server/handlers/memory-context.ts`, resume mode is a dedicated `memory_search`-backed strategy with anchors `["state", "next-steps", "summary", "blockers"]`, default `limit=5`, a 1200-token budget, `minState=WARM`, `includeContent=true`, and both dedup and decay disabled. When auto-resume is enabled and the caller resumes a reusable working-memory session, `systemPromptContext` is injected before token-budget enforcement.
+- **`memory_context`** (from `/memory:search`) -- Helper recovery path in `resume` mode when the handover packet is thin. In `mcp_server/handlers/memory-context.ts`, resume mode is a dedicated `memory_search`-backed strategy with anchors `["state", "next-steps", "summary", "blockers"]`, default `limit=5`, a 1200-token budget, `minState=WARM`, `includeContent=true`, and both dedup and decay disabled. When auto-resume is enabled and the caller resumes a reusable working-memory session, `systemPromptContext` is injected before token-budget enforcement.
+- **`_memory.continuity`** (in `implementation-summary.md`) -- Supporting continuity state when `handover.md` is present but needs enrichment from the canonical packet.
 - **`memory_search`** (from `/memory:search`) -- Fallback for thin summaries when `memory_context` resolves the right folder but does not return enough state detail. Uses the same resume anchors.
 - **`memory_list`** (from `/memory:manage`) -- Recent-candidate discovery when no clear session candidate exists. Returns the most recently updated memories.
 
@@ -31,8 +34,8 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 | Priority | Source | Use |
 |----------|--------|-----|
 | 1 | `handover.md` (<24h) | Preferred continuation context when a fresh structured handoff exists |
-| 2 | `memory_context(mode: "resume")` | Primary interrupted-session recovery path |
-| 3 | `CONTINUE_SESSION.md` | Crash breadcrumb and quick-resume hint |
+| 2 | `_memory.continuity` in `implementation-summary.md` | Supporting continuity state when the handover packet needs enrichment |
+| 3 | `memory_context(mode: "resume")` | Helper recovery path when the packet is still thin |
 | 4 | `memory_search()` with resume anchors | Fallback when the summary is thin |
 | 5 | `memory_list()` | Recent-candidate discovery |
 | 6 | User confirmation | Final fallback |
@@ -59,18 +62,18 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/handlers/memory-context.ts` | Handler | Context orchestration entry point (resume mode) |
-| `mcp_server/handlers/memory-search.ts` | Handler | Search handler (fallback path) |
-| `mcp_server/handlers/memory-crud-list.ts` | Handler | List handler (candidate discovery) |
-| `mcp_server/lib/session/session-manager.ts` | Lib | Session lifecycle and crash-recovery breadcrumbs |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | Handler | Context orchestration entry point (resume mode) |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Handler | Search handler (fallback path) |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts` | Handler | List handler (candidate discovery) |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts` | Lib | Session lifecycle and crash-recovery breadcrumbs |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/memory-context.vitest.ts` | Resume-mode token budget, anchor selection, and auto-resume routing |
-| `mcp_server/tests/continue-session.vitest.ts` | CONTINUE_SESSION generation helpers and crash-recovery data shape |
-| `mcp_server/tests/crash-recovery.vitest.ts` | Crash breadcrumb generation and CONTINUE_SESSION write path |
+| `mcp_server/tests/continue-session.vitest.ts` | Session recovery generation helpers and crash-recovery data shape |
+| `mcp_server/tests/crash-recovery.vitest.ts` | Crash breadcrumb generation and recovery write path |
 | `mcp_server/tests/recovery-hints.vitest.ts` | User-facing recovery hint routing for expired sessions |
 
 ---

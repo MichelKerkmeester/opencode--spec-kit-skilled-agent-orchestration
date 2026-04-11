@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `EX-013` and confirm the
 - Playbook ID: EX-013
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `03--discovery/013-health-diagnostics-memory-health.md`
+- audited_post_018: true

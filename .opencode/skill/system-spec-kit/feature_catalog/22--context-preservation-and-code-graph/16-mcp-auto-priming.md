@@ -1,6 +1,7 @@
 ---
 title: "MCP auto-priming"
 description: "First-call session context injection that delivers a Prime Package containing constitutional memories, code graph status, and triggered context on the first MCP tool call."
+audited_post_018: true
 ---
 
 # MCP auto-priming

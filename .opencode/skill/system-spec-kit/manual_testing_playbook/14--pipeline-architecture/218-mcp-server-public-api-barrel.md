@@ -1,6 +1,7 @@
 ---
 title: "218 -- MCP Server Public API Barrel"
 description: "This scenario validates MCP Server Public API Barrel for `218`. It focuses on verifying the top-level barrel re-exports the approved runtime, helper, and metadata surfaces from one stable import boundary."
+audited_post_018: true
 ---
 
 # 218 -- MCP Server Public API Barrel

@@ -1,6 +1,7 @@
 ---
 title: "Token budget allocator"
 description: "Token budget allocator distributes 4000-token compaction budget across context sources using floor allocations plus overflow redistribution."
+audited_post_018: true
 ---
 
 # Token budget allocator

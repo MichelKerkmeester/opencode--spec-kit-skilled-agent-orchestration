@@ -1,6 +1,7 @@
 ---
 title: "MCP Server Public API Barrel"
 description: "Stable top-level import surface re-exporting evaluation, indexing, search, provider, and metadata helpers without exposing internal lib/core/handlers modules."
+audited_post_018: true
 ---
 
 # MCP Server Public API Barrel

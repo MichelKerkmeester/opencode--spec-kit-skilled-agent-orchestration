@@ -1,6 +1,7 @@
 ---
 title: "Error response credential sanitization"
 description: "Strips API keys and bearer tokens from MCP tool error responses to prevent credential leakage through buildErrorResponse()."
+audited_post_018: true
 ---
 
 # Error response credential sanitization

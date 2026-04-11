@@ -57,6 +57,7 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Evaluation and housekeeping fixes
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
 
 ---
 

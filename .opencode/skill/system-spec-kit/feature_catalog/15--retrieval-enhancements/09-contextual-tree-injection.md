@@ -1,6 +1,7 @@
 ---
 title: "Contextual tree injection"
 description: "Contextual tree injection prefixes returned chunks with hierarchical context headers using cached spec folder descriptions."
+audited_post_018: true
 ---
 
 # Contextual tree injection

@@ -1,6 +1,7 @@
 ---
 title: "Graph calibration profiles and community thresholds"
 description: "Graph calibration profiles define weight caps, RRF fusion overflow limits, and Louvain community detection threshold configuration as an active graduated feature in the live Stage 2 pipeline. Weight cap enforcement is wired end-to-end; Louvain activation thresholds are implemented and tested but not consumed by the community detection pipeline."
+audited_post_018: true
 ---
 
 # Graph calibration profiles and community thresholds

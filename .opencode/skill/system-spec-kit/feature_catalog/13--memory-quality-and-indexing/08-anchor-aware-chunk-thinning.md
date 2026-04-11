@@ -1,6 +1,7 @@
 ---
 title: "Anchor-aware chunk thinning"
 description: "Anchor-aware chunk thinning scores each chunk by anchor presence and content density, dropping low-value chunks from the index."
+audited_post_018: true
 ---
 
 # Anchor-aware chunk thinning

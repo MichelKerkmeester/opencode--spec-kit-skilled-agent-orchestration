@@ -1,6 +1,7 @@
 ---
 title: "221 -- Shared-memory admin-identity governance"
 description: "This scenario validates Shared-memory admin-identity governance for `221`. It focuses on confirming shared-space admin mutations bind to one configured admin identity, reject ambiguous hints or configuration, and return the resolved admin subject."
+audited_post_018: true
 ---
 
 # 221 -- Shared-memory admin-identity governance

@@ -1,6 +1,8 @@
 ---
 title: "Pipeline and mutation hardening"
 description: "Pipeline and mutation hardening applies baseline fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality, data cleanup and checkpoint restore mutation safety."
+audited_post_018: true
+phase_018_change: "Phase 018 moved the canonical save writer into handlers/save/atomic-index-memory.ts and added contentRouter, anchorMergeOperation, and spec-doc structure validation to the save pipeline."
 ---
 
 # Pipeline and mutation hardening
@@ -34,6 +36,10 @@ A later audit added three more pipeline-side corrections to the same runtime pat
 - **Constitutional scope parity (H12):** Constitutional injection now uses `shouldApplyScopeFiltering`, so global scope enforcement applies even when callers omit explicit governance scope fields.
 - **CamelCase chunk metadata support (H14):** Chunk reassembly now accepts `parentId`, `chunkIndex` and `chunkLabel` aliases in addition to snake_case fields, preventing silent bypass of parent collapse.
 
+Phase 018 reshaped the save pipeline itself:
+
+- **Canonical save routing (018):** `memory_save` now routes through `contentRouter`, applies `anchorMergeOperation`, validates legality with `spec-doc-structure.ts`, and commits through `atomicIndexMemory` inside the existing spec-folder lock. `memory-save.ts` remains the orchestration shell.
+
 A later mutation-safety pass added a checkpoint restore barrier to the same runtime surface:
 
 - **Checkpoint restore maintenance barrier (T300):** `restoreCheckpoint()` now flips a module-level restore-in-progress flag before restore mutations begin and holds it through post-restore rebuilds. Concurrent `checkpoint_restore` calls plus mutation traffic from `memory_save`, `memory_index_scan` and `memory_bulk_delete` fail fast with `E_RESTORE_IN_PROGRESS` instead of racing restore-side rebuilds. The barrier is cleared in a `finally` path, so both successful and failed restores reopen mutation traffic.
@@ -60,6 +66,10 @@ Phase 13 added three chunking and mutation hardening follow-ups to the same save
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Query embedding caching plus deep-mode filter parity and constitutional scope enforcement |
 | `mcp_server/lib/search/chunk-reassembly.ts` | Lib | CamelCase chunk metadata support during parent collapse |
 | `mcp_server/lib/search/bm25-index.ts` | Lib | Doubled-consonant stemming fix after suffix stripping |
+| `mcp_server/handlers/save/atomic-index-memory.ts` | Handler | Canonical save writer helper for the phase-018 atomic index path |
+| `mcp_server/lib/routing/content-router.ts` | Lib | Classifies save content and selects the merge/routing path |
+| `mcp_server/lib/merge/anchor-merge-operation.ts` | Lib | Anchor-aware merge modes used by the save path |
+| `mcp_server/lib/validation/spec-doc-structure.ts` | Lib | Phase-018 spec-doc structure rule set for save legality |
 
 ### Implementation — Mutation hardening
 

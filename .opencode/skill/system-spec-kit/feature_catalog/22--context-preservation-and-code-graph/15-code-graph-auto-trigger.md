@@ -1,6 +1,7 @@
 ---
 title: "Code graph auto-trigger"
 description: "ensureCodeGraphReady() provides lazy indexing that automatically detects graph freshness and triggers full scans or selective reindexing before queries."
+audited_post_018: true
 ---
 
 # Code graph auto-trigger

@@ -1,6 +1,7 @@
 ---
 title: "Guards and edge cases"
 description: "Tracks six guard/edge-case fixes for temporal contiguity scoring, entity resolution fallback, retrieval expiry filtering, limit enforcement, embedding validation and partial-status accounting."
+audited_post_018: true
 ---
 
 # Guards and edge cases

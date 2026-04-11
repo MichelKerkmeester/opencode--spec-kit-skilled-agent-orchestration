@@ -1,6 +1,7 @@
 ---
 title: "194 -- Causal neighbor boost and injection"
 description: "This scenario validates Causal neighbor boost and injection for `194`. It focuses on Confirm 2-hop causal amplification with shared ceiling enforcement."
+audited_post_018: true
 ---
 
 # 194 -- Causal neighbor boost and injection

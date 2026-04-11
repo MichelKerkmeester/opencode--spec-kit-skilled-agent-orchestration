@@ -1,6 +1,7 @@
 ---
 title: "222 -- Governance audit review and rollout metrics"
 description: "This scenario validates Governance audit review and rollout metrics for `222`. It focuses on confirming governance review stays scoped by default and returns matching audit, rollout, cohort, membership, and conflict summaries when filters are explicit."
+audited_post_018: true
 ---
 
 # 222 -- Governance audit review and rollout metrics

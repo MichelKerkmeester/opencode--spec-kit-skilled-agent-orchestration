@@ -1,6 +1,7 @@
 ---
 title: "Smarter memory content generation"
 description: "The content normalizer strips markdown formatting noise before embedding generation and BM25 indexing to improve retrieval quality."
+audited_post_018: true
 ---
 
 # Smarter memory content generation

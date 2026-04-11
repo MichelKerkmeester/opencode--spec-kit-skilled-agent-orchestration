@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `072` and confirm the ex
 - Playbook ID: 072
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/072-test-quality-improvements.md`
+- audited_post_018: true

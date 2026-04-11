@@ -1,6 +1,7 @@
 ---
 title: "Context preservation metrics"
 description: "In-memory session quality scoring and event tracking that computes a QualityScore from recency, recovery, graph freshness, and continuity factors."
+audited_post_018: true
 ---
 
 # Context preservation metrics

@@ -48,3 +48,4 @@ The result contract also includes an `errors: string[]` field that captures actu
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Mutation hook result contract expansion
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

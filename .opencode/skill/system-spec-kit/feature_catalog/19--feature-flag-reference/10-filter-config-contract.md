@@ -1,6 +1,7 @@
 ---
 title: "Filter Config Contract"
 description: "JSONC contract for the content-filter pipeline, covering stage order, filtering thresholds, and the loader behavior that deep-merges `filters.jsonc` with code defaults."
+audited_post_018: true
 ---
 
 # Filter Config Contract

@@ -1,6 +1,7 @@
 ---
 title: "042 -- Spec folder description discovery (PI-B3)"
 description: "This scenario validates Spec folder description discovery (PI-B3) for `042`. It focuses on Confirm per-folder + aggregated routing."
+audited_post_018: true
 ---
 
 # 042 -- Spec folder description discovery (PI-B3)

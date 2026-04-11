@@ -46,3 +46,4 @@ Operators run the exact prompt and command sequence for `EX-017` and confirm the
 - Playbook ID: EX-017
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/017-checkpoint-restore-checkpoint-restore.md`
+- audited_post_018: true

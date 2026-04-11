@@ -11,6 +11,7 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 ## TABLE OF CONTENTS
 
+- [Phase 018 audit](#phase-018-audit)
 - [1. OVERVIEW](#1-overview)
 - [2. RETRIEVAL](#2-retrieval)
 - [3. MUTATION](#3-mutation)
@@ -36,6 +37,47 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 ---
 
+## Phase 018 audit
+
+Audit date: `2026-04-12`
+
+Phase 018 audited the split feature catalog against the canonical continuity refactor. The catalog now treats spec-doc anchored continuity as the live substrate, keeps retired concepts under category-local `_deprecated/` folders, and adds dedicated entries for the new validator and save-path surfaces.
+
+Active category entries: `286`
+Deprecated archival entries: `8`
+Total category entries: `294`
+
+| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
+|---|---:|---:|---:|---:|---:|
+| `01--retrieval` | 23 | 4 | 1 | 0 | 0 |
+| `02--mutation` | 6 | 13 | 3 | 0 | 0 |
+| `03--discovery` | 5 | 1 | 0 | 0 | 0 |
+| `04--maintenance` | 0 | 4 | 0 | 0 | 0 |
+| `05--lifecycle` | 18 | 0 | 0 | 0 | 0 |
+| `06--analysis` | 14 | 0 | 0 | 0 | 0 |
+| `07--evaluation` | 0 | 4 | 0 | 0 | 0 |
+| `08--bug-fixes-and-data-integrity` | 24 | 0 | 0 | 0 | 0 |
+| `09--evaluation-and-measurement` | 28 | 2 | 0 | 0 | 0 |
+| `10--graph-signal-activation` | 35 | 0 | 0 | 2 | 0 |
+| `11--scoring-and-calibration` | 45 | 0 | 0 | 2 | 0 |
+| `12--query-intelligence` | 0 | 20 | 0 | 2 | 0 |
+| `13--memory-quality-and-indexing` | 46 | 2 | 2 | 4 | 4 |
+| `14--pipeline-architecture` | 43 | 2 | 0 | 4 | 0 |
+| `15--retrieval-enhancements` | 26 | 0 | 0 | 0 | 0 |
+| `16--tooling-and-scripts` | 83 | 1 | 0 | 0 | 0 |
+| `17--governance` | 13 | 0 | 0 | 2 | 0 |
+| `18--ux-hooks` | 37 | 2 | 0 | 0 | 0 |
+| `19--feature-flag-reference` | 18 | 1 | 1 | 0 | 1 |
+| `20--remediation-revalidation` | 0 | 6 | 0 | 0 | 0 |
+| `21--implement-and-remove-deprecated-features` | 0 | 10 | 0 | 0 | 0 |
+| `22--context-preservation-and-code-graph` | 36 | 6 | 1 | 0 | 0 |
+| **TOTAL** | 500 | 78 | 8 | 16 | 5 |
+
+- Deprecated entries now live under `feature_catalog/10--graph-signal-activation/_deprecated/`, `feature_catalog/11--scoring-and-calibration/_deprecated/`, `feature_catalog/12--query-intelligence/_deprecated/`, `feature_catalog/13--memory-quality-and-indexing/_deprecated/`, `feature_catalog/14--pipeline-architecture/_deprecated/`, and `feature_catalog/17--governance/_deprecated/`.
+- New phase-018 coverage now lives in [`13--memory-quality-and-indexing/26-spec-doc-structure-validator.md`](13--memory-quality-and-indexing/26-spec-doc-structure-validator.md), [`13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md`](13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md), and [`19--feature-flag-reference/11-memory-roadmap-capability-flags.md`](19--feature-flag-reference/11-memory-roadmap-capability-flags.md).
+
+---
+
 ## 1. OVERVIEW
 
 Use this catalog as the canonical inventory for both current behavior and delivered refinements. The numbered sections below group the live system by capability area so operators can move from the top-level reference into the per-feature files without losing implementation, validation, or rollout context.
@@ -46,7 +88,7 @@ Use this catalog as the canonical inventory for both current behavior and delive
 |---|---|
 | `020-feature-flag-reference` | Covered by [`19--feature-flag-reference/`](19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) via slug match (`feature-flag-reference`). See [`19--feature-flag-reference/08-audit-phase-020-mapping-note.md`](19--feature-flag-reference/08-audit-phase-020-mapping-note.md). |
 | `021-remediation-revalidation` | Covered as cross-category remediation records (for example: [08--bug-fixes-and-data-integrity/06](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md), [14--pipeline-architecture/07](14--pipeline-architecture/07-search-pipeline-safety.md), [16--tooling-and-scripts/05](16--tooling-and-scripts/05-code-standards-alignment.md)). See [`20--remediation-revalidation/01-category-stub.md`](20--remediation-revalidation/01-category-stub.md). |
-| `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/02](17--governance/02-feature-flag-sunset-audit.md)). See [`21--implement-and-remove-deprecated-features/01-category-stub.md`](21--implement-and-remove-deprecated-features/01-category-stub.md). |
+| `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/_deprecated/02](17--governance/_deprecated/02-feature-flag-sunset-audit.md)). See [`21--implement-and-remove-deprecated-features/01-category-stub.md`](21--implement-and-remove-deprecated-features/01-category-stub.md). |
 
 ### Command-Surface Contract
 
@@ -1674,7 +1716,7 @@ Anchor markers are labels placed inside memories to highlight important sections
 
 #### Source Files
 
-See [`10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md`](10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/_deprecated/09-anchor-tags-as-graph-nodes.md`](10--graph-signal-activation/_deprecated/09-anchor-tags-as-graph-nodes.md) for the archival deprecation record.
 
 ---
 
@@ -1842,7 +1884,7 @@ The boost applies before FSRS decay and caps the composite score at 0.95 to prev
 
 #### Source Files
 
-See [`11--scoring-and-calibration/02-cold-start-novelty-boost.md`](11--scoring-and-calibration/02-cold-start-novelty-boost.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md`](11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md) for the archival deprecation record.
 
 ---
 
@@ -2266,7 +2308,7 @@ Sprint 8 removed the dead `isRsfEnabled()` helper, the dead hybrid-search branch
 
 #### Source Files
 
-See [`12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md`](12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md) for full implementation and test file listings.
+See [`12--query-intelligence/_deprecated/02-relative-score-fusion-in-shadow-mode.md`](12--query-intelligence/_deprecated/02-relative-score-fusion-in-shadow-mode.md) for the archival deprecation record.
 
 ---
 
@@ -2872,7 +2914,7 @@ Enabled by default (graduated). Set `SPECKIT_IMPLICIT_FEEDBACK_LOG=false` to dis
 
 #### Source Files
 
-See [`13--memory-quality-and-indexing/22-implicit-feedback-log.md`](13--memory-quality-and-indexing/22-implicit-feedback-log.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/_deprecated/22-implicit-feedback-log.md`](13--memory-quality-and-indexing/_deprecated/22-implicit-feedback-log.md) for the archival deprecation record.
 
 ---
 
@@ -2920,7 +2962,7 @@ The batch learning pipeline runs on a 7-day window. It reads implicit feedback e
 
 #### Source Files
 
-See [`13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md`](13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/_deprecated/20-weekly-batch-feedback-learning.md`](13--memory-quality-and-indexing/_deprecated/20-weekly-batch-feedback-learning.md) for the archival deprecation record.
 
 ---
 
@@ -3116,11 +3158,11 @@ The quality gate needs a two-week trial period before it starts blocking bad sav
 
 #### Current Reality
 
-The `ensureActivationTimestampInitialized` path was added to `save-quality-gate.ts` to preserve the warn-only window activation timestamp across process restarts. Without this, the 14-day warm-up period restarted on every server reload. Regression test `WO7` verifies persistence.
+The `ensureActivationTimestampInitialized` path was added to `save-quality-gate.ts` to preserve the legacy activation timestamp across process restarts. Without this, the 14-day timer restarted on every server reload. Regression test `WO7` captures the historical behavior.
 
 #### Source Files
 
-See [`14--pipeline-architecture/09-activation-window-persistence.md`](14--pipeline-architecture/09-activation-window-persistence.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/_deprecated/09-activation-window-persistence.md`](14--pipeline-architecture/_deprecated/09-activation-window-persistence.md) for the archival deprecation record.
 
 ---
 
@@ -3235,7 +3277,7 @@ Right now, the memory server starts fresh every time it is called and shuts down
 
 #### Source Files
 
-See [`14--pipeline-architecture/15-warm-server-daemon-mode.md`](14--pipeline-architecture/15-warm-server-daemon-mode.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/_deprecated/15-warm-server-daemon-mode.md`](14--pipeline-architecture/_deprecated/15-warm-server-daemon-mode.md) for the archival deprecation record.
 
 ---
 
@@ -3950,7 +3992,7 @@ The current active flag-helper inventory in `search-flags.ts` is 24 exported `is
 
 No dedicated source files. This describes governance process controls.
 
-See [`17--governance/02-feature-flag-sunset-audit.md`](17--governance/02-feature-flag-sunset-audit.md) for full audit details and flag disposition table.
+See [`17--governance/_deprecated/02-feature-flag-sunset-audit.md`](17--governance/_deprecated/02-feature-flag-sunset-audit.md) for the archival disposition record.
 
 ---
 

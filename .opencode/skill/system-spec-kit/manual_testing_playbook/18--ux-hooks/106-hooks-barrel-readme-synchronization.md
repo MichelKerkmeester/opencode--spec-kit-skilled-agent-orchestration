@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `106` and confirm the ex
 - Playbook ID: 106
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/106-hooks-barrel-readme-synchronization.md`
+- audited_post_018: true

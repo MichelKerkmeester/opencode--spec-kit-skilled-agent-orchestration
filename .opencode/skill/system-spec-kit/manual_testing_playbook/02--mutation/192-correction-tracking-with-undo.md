@@ -1,6 +1,7 @@
 ---
 title: "192 -- Correction tracking with undo"
 description: "This scenario validates Correction tracking with undo for `192`. It focuses on Confirm library-level correction recording, stability rollback, and scoped undo behavior."
+audited_post_018: true
 ---
 
 # 192 -- Correction tracking with undo

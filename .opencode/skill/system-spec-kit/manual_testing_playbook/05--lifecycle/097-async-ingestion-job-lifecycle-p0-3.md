@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `097` and confirm the ex
 - Playbook ID: 097
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md`
+- audited_post_018: true

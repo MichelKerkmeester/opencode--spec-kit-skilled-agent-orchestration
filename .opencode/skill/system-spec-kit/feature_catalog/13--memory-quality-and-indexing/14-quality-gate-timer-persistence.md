@@ -1,6 +1,7 @@
 ---
 title: "Quality gate timer persistence"
 description: "Quality gate timer persistence stores the warn-only countdown timestamp in SQLite so server restarts do not reset the 14-day graduation period."
+audited_post_018: true
 ---
 
 # Quality gate timer persistence

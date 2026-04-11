@@ -1,6 +1,7 @@
 ---
 title: "067 -- Search pipeline safety"
 description: "This scenario validates Search pipeline safety for `067`. It focuses on Confirm Sprint 8 pipeline safety fixes."
+audited_post_018: true
 ---
 
 # 067 -- Search pipeline safety

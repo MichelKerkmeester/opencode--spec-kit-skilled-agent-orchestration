@@ -1,6 +1,7 @@
 ---
 title: "060 -- Cross-document entity linking (S5)"
 description: "This scenario validates Cross-document entity linking (S5) for `060`. It focuses on Confirm guarded supports-edge linking."
+audited_post_018: true
 ---
 
 # 060 -- Cross-document entity linking (S5)

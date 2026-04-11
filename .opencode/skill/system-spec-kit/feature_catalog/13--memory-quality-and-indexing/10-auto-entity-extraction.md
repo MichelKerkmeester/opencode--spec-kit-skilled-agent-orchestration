@@ -1,6 +1,7 @@
 ---
 title: "Auto entity extraction"
 description: "Auto entity extraction runs five regex rules at save time to capture technology names, project identifiers and architectural concepts from memory content."
+audited_post_018: true
 ---
 
 # Auto entity extraction

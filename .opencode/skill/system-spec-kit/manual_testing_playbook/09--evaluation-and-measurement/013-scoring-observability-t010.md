@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `013` and confirm the ex
 - Playbook ID: 013
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/013-scoring-observability-t010.md`
+- audited_post_018: true

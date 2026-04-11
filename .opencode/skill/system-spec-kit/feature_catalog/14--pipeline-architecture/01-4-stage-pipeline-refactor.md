@@ -1,6 +1,7 @@
 ---
 title: "4-stage pipeline refactor"
 description: "The 4-stage pipeline structures retrieval into candidate generation, fusion, reranking and filtering with a strict score-immutability invariant in the final stage."
+audited_post_018: true
 ---
 
 # 4-stage pipeline refactor

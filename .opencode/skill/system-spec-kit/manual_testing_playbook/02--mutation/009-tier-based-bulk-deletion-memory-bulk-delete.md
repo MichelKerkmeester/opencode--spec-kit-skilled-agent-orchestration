@@ -1,6 +1,8 @@
 ---
 title: "EX-009 -- Tier-based bulk deletion (memory_bulk_delete)"
 description: "This scenario validates Tier-based bulk deletion (memory_bulk_delete) for `EX-009`. It focuses on Tier cleanup with safety."
+audited_post_018: true
+phase_018_change: "Tier bulk delete scenario remains live with post-018 audit coverage"
 ---
 
 # EX-009 -- Tier-based bulk deletion (memory_bulk_delete)

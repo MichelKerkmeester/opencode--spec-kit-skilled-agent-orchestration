@@ -1,6 +1,7 @@
 ---
 title: "2. Session and Cache"
 description: "This document captures the implemented behavior, source references, and validation scope for 2. Session and Cache."
+audited_post_018: true
 ---
 
 # 2. Session and Cache

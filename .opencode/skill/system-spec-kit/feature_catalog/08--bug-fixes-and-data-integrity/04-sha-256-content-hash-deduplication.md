@@ -1,6 +1,7 @@
 ---
 title: "SHA-256 content-hash deduplication"
 description: "Tracks the O(1) SHA-256 hash lookup that skips embedding generation when identical content is re-saved."
+audited_post_018: true
 ---
 
 # SHA-256 content-hash deduplication

@@ -1,6 +1,7 @@
 ---
 title: "Search API surface"
 description: "Covers the stable public search barrel that re-exports hybrid search, SQLite FTS helpers, and the vector index namespace."
+audited_post_018: true
 ---
 # Search API surface
 ## TABLE OF CONTENTS

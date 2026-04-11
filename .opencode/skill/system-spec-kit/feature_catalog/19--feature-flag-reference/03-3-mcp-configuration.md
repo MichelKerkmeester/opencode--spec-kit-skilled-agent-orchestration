@@ -1,6 +1,7 @@
 ---
 title: "3. MCP Configuration"
 description: "This document captures the implemented behavior, source references, and validation scope for 3. MCP Configuration."
+audited_post_018: true
 ---
 
 # 3. MCP Configuration

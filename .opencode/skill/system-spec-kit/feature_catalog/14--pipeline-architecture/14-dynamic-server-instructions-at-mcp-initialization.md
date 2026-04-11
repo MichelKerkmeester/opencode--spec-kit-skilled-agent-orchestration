@@ -1,6 +1,7 @@
 ---
 title: "Dynamic server instructions at MCP initialization"
 description: "Dynamic server instructions inject a memory-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload at startup."
+audited_post_018: true
 ---
 
 # Dynamic server instructions at MCP initialization

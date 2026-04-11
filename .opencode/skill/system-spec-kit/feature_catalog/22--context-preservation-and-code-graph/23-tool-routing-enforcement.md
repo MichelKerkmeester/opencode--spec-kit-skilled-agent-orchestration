@@ -1,6 +1,7 @@
 ---
 title: "Tool routing enforcement"
 description: "5-layer active enforcement system that routes AI tool selection: semantic queries to CocoIndex, structural queries to Code Graph, exact text to Grep — replacing passive CLAUDE.md instructions with MCP-level enforcement."
+audited_post_018: true
 ---
 
 # Tool routing enforcement

@@ -1,6 +1,7 @@
 ---
 title: "084 -- Session-manager transaction gap fixes"
 description: "This scenario validates Session-manager transaction gap fixes for `084`. It focuses on Confirm transactional limit enforcement."
+audited_post_018: true
 ---
 
 # 084 -- Session-manager transaction gap fixes

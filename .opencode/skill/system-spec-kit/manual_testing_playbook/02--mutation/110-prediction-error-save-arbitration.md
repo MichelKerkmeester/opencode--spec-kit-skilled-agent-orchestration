@@ -1,6 +1,8 @@
 ---
 title: "110 -- Prediction-error save arbitration"
 description: "This scenario validates Prediction-error save arbitration for `110`. It focuses on Confirm 5-action PE decision engine during save."
+audited_post_018: true
+phase_018_change: "PE arbitration scenario remains live on the post-018 continuity save path"
 ---
 
 # 110 -- Prediction-error save arbitration

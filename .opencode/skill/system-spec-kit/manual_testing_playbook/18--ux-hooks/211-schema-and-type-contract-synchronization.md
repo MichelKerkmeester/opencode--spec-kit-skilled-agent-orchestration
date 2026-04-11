@@ -43,4 +43,5 @@ Operators run the exact prompt and command sequence for `211` and confirm the ex
 - Playbook ID: 211
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/211-schema-and-type-contract-synchronization.md`
+- audited_post_018: true
 - Feature catalog back-ref: `18--ux-hooks/04-schema-and-type-contract-synchronization.md`

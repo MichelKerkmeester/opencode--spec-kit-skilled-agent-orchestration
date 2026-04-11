@@ -1,6 +1,7 @@
 ---
 title: "Adaptive shadow ranking, bounded proposals, and rollback"
 description: "Describes the shipped adaptive ranking module that records signals, persists bounded threshold state in SQLite, and emits shadow or promoted proposal payloads without changing live result order."
+audited_post_018: true
 ---
 
 # Adaptive shadow ranking, bounded proposals, and rollback

@@ -46,3 +46,4 @@ The hooks barrel and hooks README were brought back into sync with the implement
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Hooks README and export alignment
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

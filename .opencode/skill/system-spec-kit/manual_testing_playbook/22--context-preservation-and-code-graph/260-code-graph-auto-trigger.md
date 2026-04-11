@@ -1,6 +1,7 @@
 ---
 title: "260 -- Code graph auto-trigger on fresh install"
 description: "This scenario validates Code graph auto-trigger for 260. It focuses on verifying ensureCodeGraphReady() detects empty/stale graphs and auto-indexes."
+audited_post_018: true
 ---
 
 # 260 -- Code graph auto-trigger on fresh install

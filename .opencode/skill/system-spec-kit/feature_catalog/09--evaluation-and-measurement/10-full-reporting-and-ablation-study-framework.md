@@ -52,6 +52,7 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 - Group: Evaluation and measurement
 - Source feature title: Full reporting and ablation study framework
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
 
 ---
 

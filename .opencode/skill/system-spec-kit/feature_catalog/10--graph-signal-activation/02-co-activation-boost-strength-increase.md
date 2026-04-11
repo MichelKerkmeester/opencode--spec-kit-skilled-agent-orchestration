@@ -1,6 +1,7 @@
 ---
 title: "Co-activation boost strength increase"
 description: "Describes the co-activation boost multiplier increase from 0.1x to 0.25x, making graph signal contribution visible in retrieval results at 15% or higher effective contribution."
+audited_post_018: true
 ---
 
 # Co-activation boost strength increase

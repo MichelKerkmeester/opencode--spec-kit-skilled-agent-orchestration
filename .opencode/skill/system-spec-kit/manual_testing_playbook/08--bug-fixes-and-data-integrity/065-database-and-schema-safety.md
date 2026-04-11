@@ -1,6 +1,7 @@
 ---
 title: "065 -- Database and schema safety"
 description: "This scenario validates Database and schema safety for `065`. It focuses on Confirm Sprint 8 DB safety bundle."
+audited_post_018: true
 ---
 
 # 065 -- Database and schema safety

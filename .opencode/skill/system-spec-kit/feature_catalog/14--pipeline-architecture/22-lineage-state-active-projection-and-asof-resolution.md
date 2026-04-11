@@ -1,6 +1,7 @@
 ---
 title: "Lineage state active projection and asOf resolution"
 description: "Lineage state active projection appends immutable lineage rows at save time and resolves the currently effective state via deterministic `asOf` timestamp lookup."
+audited_post_018: true
 ---
 
 # Lineage state active projection and asOf resolution

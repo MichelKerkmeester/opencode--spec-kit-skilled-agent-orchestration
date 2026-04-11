@@ -54,3 +54,4 @@ Confidence drivers (`large_margin`, `multi_channel_agreement`, `reranker_boost`,
 - Group: UX hooks
 - Source feature title: Result confidence scoring
 - Current reality source: mcp_server/lib/search/confidence-scoring.ts module header and implementation
+- audited_post_018: true

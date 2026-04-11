@@ -1,6 +1,7 @@
 ---
 title: "077 -- Tier-2 fallback channel forcing"
 description: "This scenario validates Tier-2 fallback channel forcing for `077`. It focuses on Confirm force-all-channels in tier-2."
+audited_post_018: true
 ---
 
 # 077 -- Tier-2 fallback channel forcing

@@ -1,6 +1,7 @@
 ---
 title: "Passive context enrichment"
 description: "Server-side auto-enrichment pipeline that injects constitutional memories, triggered memories, and code graph status into every MCP response without explicit user action."
+audited_post_018: true
 ---
 
 # Passive context enrichment

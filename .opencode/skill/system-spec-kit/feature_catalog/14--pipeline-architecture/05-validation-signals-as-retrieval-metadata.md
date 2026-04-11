@@ -1,6 +1,7 @@
 ---
 title: "Validation signals as retrieval metadata"
 description: "Validation signals as retrieval metadata integrates spec document quality scores into the Stage 2 scoring layer as a bounded multiplier."
+audited_post_018: true
 ---
 
 # Validation signals as retrieval metadata

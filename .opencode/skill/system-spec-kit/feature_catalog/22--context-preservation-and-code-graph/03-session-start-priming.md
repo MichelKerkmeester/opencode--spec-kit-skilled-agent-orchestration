@@ -1,6 +1,8 @@
 ---
 title: "SessionStart priming"
 description: "SessionStart priming injects context via stdout on Claude Code SessionStart based on source routing (compact/startup/resume/clear)."
+audited_post_018: true
+phase_018_change: "Updated recovery wording so SessionStart guidance points at the phase-018 canonical recovery chain and /spec_kit:resume."
 ---
 
 # SessionStart priming
@@ -15,7 +17,7 @@ This hook handles four session start scenarios: after compaction it reads the ca
 
 ## 2. CURRENT REALITY
 
-The SessionStart hook routes by `source` field from stdin JSON. For `compact`: reads cached payload from hook state, injects, clears cache. For `startup`: outputs Spec Kit Memory tool overview. For `resume`: loads lastSpecFolder from hook state. For `clear`: minimal output. Token budget: 2000 for startup/resume, 4000 for compact.
+The SessionStart hook routes by `source` field from stdin JSON. For `compact`: reads cached payload from hook state, injects, clears cache. For `startup`: outputs Spec Kit Memory tool overview. For `resume`: loads lastSpecFolder from hook state and points recovery back to `/spec_kit:resume` with the `handover.md -> _memory.continuity -> spec docs` chain. For `clear`: minimal output. Token budget: 2000 for startup/resume, 4000 for compact.
 
 ---
 

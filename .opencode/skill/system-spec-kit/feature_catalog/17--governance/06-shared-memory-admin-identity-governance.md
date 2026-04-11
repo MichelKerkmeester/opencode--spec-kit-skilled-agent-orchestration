@@ -1,6 +1,7 @@
 ---
 title: "Shared-memory admin-identity governance"
 description: "Shared-memory admin mutations are bound to a server-configured admin identity, reject ambiguous configuration, and expose actor-hint contracts through both JSON tool schemas and strict Zod validation."
+audited_post_018: true
 ---
 
 # Shared-memory admin-identity governance

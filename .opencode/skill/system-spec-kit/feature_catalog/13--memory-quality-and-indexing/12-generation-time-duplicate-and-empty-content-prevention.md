@@ -1,6 +1,7 @@
 ---
 title: "Generation-time duplicate and empty content prevention"
 description: "Generation-time duplicate and empty content prevention blocks template-only files and exact-match duplicates before the atomic write operation."
+audited_post_018: true
 ---
 
 # Generation-time duplicate and empty content prevention

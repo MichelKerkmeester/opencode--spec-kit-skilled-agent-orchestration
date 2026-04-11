@@ -1,6 +1,7 @@
 ---
 title: "LLM query reformulation"
 description: "Corpus-grounded LLM query reformulation applies step-back abstraction combined with real corpus seed grounding to produce enriched query variants in deep mode, gated by the SPECKIT_LLM_REFORMULATION flag."
+audited_post_018: true
 ---
 
 # LLM query reformulation

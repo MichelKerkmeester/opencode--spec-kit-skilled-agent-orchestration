@@ -1,6 +1,7 @@
 ---
 title: "Structural code indexer"
 description: "Structural code indexer orchestrates tree-sitter WASM symbol extraction by default, with regex fallback support for JS/TS/Python/Bash."
+audited_post_018: true
 ---
 
 # Structural code indexer

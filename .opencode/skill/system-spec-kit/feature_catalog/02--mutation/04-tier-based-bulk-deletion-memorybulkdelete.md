@@ -1,6 +1,8 @@
 ---
 title: "Tier-based bulk deletion (memory_bulk_delete)"
 description: "Covers the bulk delete tool that targets entire importance tiers with safety checkpoints and constitutional protection."
+audited_post_018: true
+phase_018_change: "Tier bulk delete remains live with post-018 audit coverage"
 ---
 
 # Tier-based bulk deletion (memory_bulk_delete)

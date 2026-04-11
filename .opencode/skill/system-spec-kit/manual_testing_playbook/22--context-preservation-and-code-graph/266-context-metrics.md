@@ -1,6 +1,7 @@
 ---
 title: "266 -- Context preservation metrics quality score computation"
 description: "This scenario validates Context preservation metrics for 266. It focuses on verifying quality score computation from tool call events and factor decay."
+audited_post_018: true
 ---
 
 # 266 -- Context preservation metrics quality score computation

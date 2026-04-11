@@ -1,6 +1,7 @@
 ---
 title: "Content-aware memory filename generation"
 description: "Content-aware memory filename generation derives slugs from task context and session data instead of using the spec folder name alone."
+audited_post_018: true
 ---
 
 # Content-aware memory filename generation

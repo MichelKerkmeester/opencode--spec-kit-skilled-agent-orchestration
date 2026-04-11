@@ -1,6 +1,7 @@
 ---
 title: "Embeddings and Retry API"
 description: "The embeddings and retry API exposes a stable provider-facing surface for embedding generation while pairing it with shared embedding lifecycle utilities and a background retry manager for failed vector creation."
+audited_post_018: true
 ---
 
 # Embeddings and Retry API

@@ -1,6 +1,7 @@
 ---
 title: "Query-intent routing"
 description: "Automatic backend selection in memory_context that routes queries to code graph, CocoIndex, or both based on the query-intent classifier output."
+audited_post_018: true
 ---
 
 # Query-intent routing

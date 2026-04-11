@@ -49,3 +49,4 @@ All five post-mutation hook catch blocks (save atomic, save standard, update, de
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Shared post-mutation hook wiring
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

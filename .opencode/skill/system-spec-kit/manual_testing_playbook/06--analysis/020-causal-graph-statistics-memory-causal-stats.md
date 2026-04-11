@@ -1,6 +1,7 @@
 ---
 title: "EX-020 -- Causal graph statistics (memory_causal_stats)"
 description: "This scenario validates Causal graph statistics (memory_causal_stats) for `EX-020`. It focuses on Graph coverage review."
+audited_post_018: true
 ---
 
 # EX-020 -- Causal graph statistics (memory_causal_stats)

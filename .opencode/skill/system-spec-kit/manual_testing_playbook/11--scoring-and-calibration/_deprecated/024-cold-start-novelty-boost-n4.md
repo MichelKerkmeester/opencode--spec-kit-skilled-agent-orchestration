@@ -1,6 +1,10 @@
 ---
 title: "024 -- Cold-start novelty boost (N4)"
-description: "This scenario validates Cold-start novelty boost (N4) for `024`. It focuses on Confirm novelty removed from hot path."
+description: "Archived copy of the Cold-start novelty boost (N4) scenario. It validates that novelty is removed from the hot path."
+audited_post_018: true
+deprecated_at: 2026-04-11
+deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_reason: "The novelty boost scenario is no longer part of the live playbook; it was moved out of the active category into _deprecated/."
 ---
 
 # 024 -- Cold-start novelty boost (N4)
@@ -33,7 +37,7 @@ Operators run the exact prompt and command sequence for `024` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
-- Feature catalog: [11--scoring-and-calibration/02-cold-start-novelty-boost.md](../../feature_catalog/11--scoring-and-calibration/02-cold-start-novelty-boost.md)
+- Feature catalog: [11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md](../../feature_catalog/11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md)
 
 ---
 
@@ -42,4 +46,4 @@ Operators run the exact prompt and command sequence for `024` and confirm the ex
 - Group: Scoring and Calibration
 - Playbook ID: 024
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
-- Feature file path: `11--scoring-and-calibration/024-cold-start-novelty-boost-n4.md`
+- Feature file path: `11--scoring-and-calibration/_deprecated/024-cold-start-novelty-boost-n4.md`

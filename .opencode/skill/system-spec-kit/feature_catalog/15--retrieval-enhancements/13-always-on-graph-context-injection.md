@@ -1,6 +1,7 @@
 ---
 title: "Always-on graph context injection"
 description: "injectGraphContext() runs concept routing and a 1-hop causal walk even without seed results, ensuring graph-derived context is always available to enrich search output, gated by the SPECKIT_GRAPH_CONTEXT_INJECTION flag."
+audited_post_018: true
 ---
 
 # Always-on graph context injection

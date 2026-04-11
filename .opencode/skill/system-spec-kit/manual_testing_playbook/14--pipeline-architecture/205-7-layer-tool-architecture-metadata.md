@@ -1,6 +1,7 @@
 ---
 title: "205 -- 7-layer tool architecture metadata"
 description: "This scenario validates 7-layer tool architecture metadata for `205`. It focuses on verifying that the seven layers act as governance metadata with budgets and recommendations, not as a separate runtime dispatch router."
+audited_post_018: true
 ---
 
 # 205 -- 7-layer tool architecture metadata

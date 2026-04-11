@@ -1,6 +1,7 @@
 ---
 title: "Dual-level retrieval"
 description: "Adds a retrievalLevel parameter (local|global|auto) to memory_search, where auto mode falls back to community search on weak results, enabling both fine-grained and topic-level retrieval in a single query, gated by the SPECKIT_DUAL_RETRIEVAL flag."
+audited_post_018: true
 ---
 
 # Dual-level retrieval

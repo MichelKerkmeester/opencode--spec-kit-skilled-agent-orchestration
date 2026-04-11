@@ -1,6 +1,7 @@
 ---
 title: "EX-034 -- 7. CI and Build (informational)"
 description: "This scenario validates 7. CI and Build (informational) for `EX-034`. It focuses on Branch metadata source audit."
+audited_post_018: true
 ---
 
 # EX-034 -- 7. CI and Build (informational)

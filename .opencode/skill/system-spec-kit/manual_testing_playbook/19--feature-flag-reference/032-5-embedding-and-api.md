@@ -1,6 +1,7 @@
 ---
 title: "EX-032 -- 5. Embedding and API"
 description: "This scenario validates 5. Embedding and API for `EX-032`. It focuses on Provider selection audit."
+audited_post_018: true
 ---
 
 # EX-032 -- 5. Embedding and API

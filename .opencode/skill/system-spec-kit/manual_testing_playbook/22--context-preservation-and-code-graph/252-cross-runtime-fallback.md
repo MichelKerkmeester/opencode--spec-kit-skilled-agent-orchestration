@@ -1,6 +1,8 @@
 ---
 title: "252 -- Tool-based recovery on hook-limited runtimes"
 description: "This scenario validates Cross-runtime fallback for 252. It focuses on Runtime detection and tool-based fallback for Codex and dynamically configured Copilot/Gemini."
+audited_post_018: true
+phase_018_change: "Reframed recovery so hook-limited runtimes fall back through /spec_kit:resume and the canonical packet continuity ladder."
 ---
 
 # 252 -- Tool-based recovery on non-hook runtimes
@@ -13,12 +15,12 @@ This scenario validates Cross-runtime fallback.
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that runtimes without active hook wiring fall back to tools correctly. Codex CLI remains hookless, while Copilot CLI and Gemini CLI are now dynamic: they report hooks when the current repo/config exposes `sessionStart` wiring and otherwise fall back to the tool path. CLAUDE.md and agent definitions must still preserve tool-based recovery whenever hook context is unavailable.
+- **Objective**: Verify that runtimes without active hook wiring fall back to tools correctly. Codex CLI remains hookless, while Copilot CLI and Gemini CLI are now dynamic: they report hooks when the current repo/config exposes `sessionStart` wiring and otherwise fall back to the canonical tool path through `/spec_kit:resume`. CLAUDE.md and agent definitions must still preserve tool-based recovery whenever hook context is unavailable.
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
   - Environment variables can be simulated in test fixtures (e.g., `CODEX_CLI=1`, `COPILOT_CLI=1`, `GEMINI_CLI=1`)
-- **Prompt**: `Validate 252 Cross-runtime fallback behavior. Run the vitest suites for runtime-detection and cross-runtime fallback and confirm: (1) CODEX_CLI=1 or CODEX_SANDBOX env yields runtime=codex-cli with hookPolicy=unavailable, (2) COPILOT_CLI=1 or GITHUB_COPILOT_TOKEN yields runtime=copilot-cli with hookPolicy=enabled when repo .github/hooks/*.json exposes sessionStart and disabled_by_scope when it does not, (3) GEMINI_CLI=1 or GOOGLE_GENAI_USE_VERTEXAI yields runtime=gemini-cli with hookPolicy enabled only when .gemini/settings.json exposes hooks, (4) areHooksAvailable() and getRecoveryApproach() follow those dynamic policies.`
+- **Prompt**: `Validate 252 Cross-runtime fallback behavior. Run the vitest suites for runtime-detection and cross-runtime fallback and confirm: (1) CODEX_CLI=1 or CODEX_SANDBOX env yields runtime=codex-cli with hookPolicy=unavailable, (2) COPILOT_CLI=1 or GITHUB_COPILOT_TOKEN yields runtime=copilot-cli with hookPolicy=enabled when repo .github/hooks/*.json exposes sessionStart and disabled_by_scope when it does not, (3) GEMINI_CLI=1 or GOOGLE_GENAI_USE_VERTEXAI yields runtime=gemini-cli with hookPolicy enabled only when .gemini/settings.json exposes hooks, (4) areHooksAvailable() and getRecoveryApproach() follow those dynamic policies and point fallback back to /spec_kit:resume when hooks are absent.`
 - **Expected signals**:
   - All vitest tests in `runtime-detection.vitest.ts` pass
   - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'unavailable' }`
@@ -26,7 +28,7 @@ This scenario validates Cross-runtime fallback.
   - Gemini CLI: `{ runtime: 'gemini-cli', hookPolicy: 'enabled' }` only when `.gemini/settings.json` contains hooks; otherwise `disabled_by_scope` or `unavailable`
   - `areHooksAvailable()` and `getRecoveryApproach()` follow the detected hookPolicy instead of a hardcoded per-runtime answer
 - **Pass/fail criteria**:
-  - PASS: Each runtime is correctly detected from env vars, dynamic hookPolicy matches the current repo/config state, and fallback only appears when hooks are unavailable or disabled_by_scope
+  - PASS: Each runtime is correctly detected from env vars, dynamic hookPolicy matches the current repo/config state, and fallback only appears when hooks are unavailable or disabled_by_scope and routes through /spec_kit:resume
   - FAIL: Any runtime misidentified, hookPolicy incorrect, or hooks reported as available for non-Claude runtime
 
 ---

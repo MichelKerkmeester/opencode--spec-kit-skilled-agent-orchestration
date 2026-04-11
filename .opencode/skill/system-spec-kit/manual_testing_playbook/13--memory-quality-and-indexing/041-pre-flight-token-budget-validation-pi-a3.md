@@ -1,6 +1,7 @@
 ---
 title: "041 -- Pre-flight token budget validation (PI-A3)"
 description: "This scenario validates Pre-flight token budget validation (PI-A3) for `041`. It focuses on Confirm save-time preflight warn/fail behavior."
+audited_post_018: true
 ---
 
 # 041 -- Pre-flight token budget validation (PI-A3)

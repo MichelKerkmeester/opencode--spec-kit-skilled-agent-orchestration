@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `144` and confirm the ex
 - Playbook ID: 144
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/144-advisory-ingest-lifecycle-forecast.md`
+- audited_post_018: true

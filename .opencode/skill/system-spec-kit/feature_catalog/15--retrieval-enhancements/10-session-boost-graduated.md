@@ -1,6 +1,7 @@
 ---
 title: "Session attention boost (graduated default-ON)"
 description: "Session attention boost re-ranks search results by amplifying memories the user recently interacted with during the current session, gated by SPECKIT_SESSION_BOOST (default true, graduated)."
+audited_post_018: true
 ---
 
 # Session attention boost (graduated default-ON)

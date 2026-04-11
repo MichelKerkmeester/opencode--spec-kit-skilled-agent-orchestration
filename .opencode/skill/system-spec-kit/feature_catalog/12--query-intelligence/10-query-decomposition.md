@@ -1,6 +1,7 @@
 ---
 title: "Query decomposition"
 description: "Query decomposition splits multi-faceted questions into up to 3 sub-queries using rule-based heuristics, enabling facet-aware retrieval in deep mode without LLM calls, gated by the SPECKIT_QUERY_DECOMPOSITION flag."
+audited_post_018: true
 ---
 
 # Query decomposition

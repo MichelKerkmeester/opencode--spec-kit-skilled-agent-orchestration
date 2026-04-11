@@ -49,3 +49,4 @@ This suppression applies to both the standard save path (`response-builder.ts`) 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Duplicate-save no-op feedback hardening
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

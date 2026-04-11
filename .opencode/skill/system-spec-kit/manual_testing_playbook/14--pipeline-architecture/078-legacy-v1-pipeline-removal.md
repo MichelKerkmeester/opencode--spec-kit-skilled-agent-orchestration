@@ -1,6 +1,7 @@
 ---
 title: "078 -- Legacy V1 pipeline removal"
 description: "This scenario validates Legacy V1 pipeline removal for `078`. It focuses on Confirm V2-only runtime."
+audited_post_018: true
 ---
 
 # 078 -- Legacy V1 pipeline removal

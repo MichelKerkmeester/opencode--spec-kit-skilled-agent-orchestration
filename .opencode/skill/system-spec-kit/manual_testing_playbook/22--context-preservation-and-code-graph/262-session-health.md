@@ -1,6 +1,7 @@
 ---
 title: "262 -- Session health reports ok/warning/stale status"
 description: "This scenario validates Session health tool for 262. It focuses on verifying session_health returns correct status thresholds and quality score."
+audited_post_018: true
 ---
 
 # 262 -- Session health reports ok/warning/stale status

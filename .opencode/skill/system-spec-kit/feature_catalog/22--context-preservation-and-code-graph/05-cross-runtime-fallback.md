@@ -1,6 +1,8 @@
 ---
 title: "Cross-runtime tool fallback"
 description: "Cross-runtime tool fallback ensures context injection remains available when runtime hooks are missing or unavailable."
+audited_post_018: true
+phase_018_replaces: "Legacy placeholder recovery wording that pointed at .claude/CLAUDE.md instead of the canonical /spec_kit:resume ladder."
 ---
 
 # Cross-runtime tool fallback
@@ -9,13 +11,13 @@ description: "Cross-runtime tool fallback ensures context injection remains avai
 
 Cross-runtime fallback ensures context injection remains available when runtime hooks are missing, disabled by scope, or intentionally unavailable.
 
-All runtimes now have hook or bootstrap-based startup injection. Claude Code, Codex CLI, Copilot CLI, and Gemini CLI use shell-script `session-prime.ts` hooks. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). When hooks fail or are unavailable in any runtime, recover through the tool-based path starting with `session_bootstrap()` on fresh start or after `/clear`. Runtime detection identifies the active runtime and its current hook policy.
+All runtimes now have hook or bootstrap-based startup injection. Claude Code, Codex CLI, Copilot CLI, and Gemini CLI use shell-script `session-prime.ts` hooks. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). When hooks fail or are unavailable in any runtime, recover through the canonical tool-based path starting with `/spec_kit:resume`, which resolves `handover.md -> _memory.continuity -> spec docs`; `session_bootstrap()` and `session_resume()` remain the lower-level recovery surfaces for structural bootstrap and detailed merged state. Runtime detection identifies the active runtime and its current hook policy.
 
 ---
 
 ## 2. CURRENT REALITY
 
-.claude/CLAUDE.md
+Runtime detection is the source of truth for hook-aware fallback. It identifies the active runtime, classifies the current hook policy as enabled, disabled_by_scope, unavailable, or unknown, and then lets packet recovery fall back through `/spec_kit:resume` and the `handover.md -> _memory.continuity -> spec docs` chain when runtime hooks are missing.
 
 ---
 
@@ -25,14 +27,15 @@ All runtimes now have hook or bootstrap-based startup injection. Claude Code, Co
 
 | File | Layer | Role |
 |------|-------|------|
-| `Config` | Claude-specific recovery instructions | mcp_server/lib/code-graph/runtime-detection.ts |
-| `Lib` | Runtime identification and hook policy | mcp_server/tests/runtime-detection.vitest.ts |
+| `mcp_server/lib/code-graph/runtime-detection.ts` | Lib | Runtime identification and hook policy |
+| `mcp_server/context-server.ts` | Server | Startup recovery guidance and tool routing hints |
+| `mcp_server/tests/runtime-detection.vitest.ts` | Tests | Runtime env simulation and detection |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `Runtime detection and hook policy classification` | phase 004 |
+| `mcp_server/tests/runtime-detection.vitest.ts` | Runtime env simulation and detection |
 
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "Spec folder description discovery"
 description: "Spec folder description discovery generates per-folder `description.json` metadata and uses it to short-circuit full-corpus vector search."
+audited_post_018: true
 ---
 
 # Spec folder description discovery

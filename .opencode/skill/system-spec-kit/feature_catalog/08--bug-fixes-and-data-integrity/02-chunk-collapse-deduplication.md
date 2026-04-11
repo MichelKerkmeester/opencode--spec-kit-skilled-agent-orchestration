@@ -1,6 +1,7 @@
 ---
 title: "Chunk collapse deduplication"
 description: "Tracks the fix that removed the conditional gate restricting chunk deduplication to content-included queries only."
+audited_post_018: true
 ---
 
 # Chunk collapse deduplication

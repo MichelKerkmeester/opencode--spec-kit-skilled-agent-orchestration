@@ -1,6 +1,7 @@
 ---
 title: "157 -- LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL)"
 description: "This scenario validates LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) for `157`. It focuses on enabling the flag and verifying the backfill hook is registered."
+audited_post_018: true
 ---
 
 # 157 -- LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL)

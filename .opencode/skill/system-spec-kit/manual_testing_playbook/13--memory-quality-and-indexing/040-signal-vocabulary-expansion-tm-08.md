@@ -1,6 +1,7 @@
 ---
 title: "040 -- Signal vocabulary expansion (TM-08)"
 description: "This scenario validates Signal vocabulary expansion (TM-08) for `040`. It focuses on Confirm signal category detection."
+audited_post_018: true
 ---
 
 # 040 -- Signal vocabulary expansion (TM-08)

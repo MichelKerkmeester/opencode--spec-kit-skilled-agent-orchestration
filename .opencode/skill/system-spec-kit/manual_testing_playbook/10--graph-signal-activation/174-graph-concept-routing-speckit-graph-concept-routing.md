@@ -1,6 +1,7 @@
 ---
 title: "174 -- Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING)"
 description: "This scenario validates graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) for `174`. It focuses on the default-on graduated rollout and verifying query-time alias matching activates the graph channel for matched concepts."
+audited_post_018: true
 ---
 
 # 174 -- Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING)

@@ -1,6 +1,7 @@
 ---
 title: "202 -- Backend storage adapter abstraction"
 description: "This scenario validates Backend storage adapter abstraction for `202`. It focuses on verifying that vector storage uses the `IVectorStore` seam while broader graph/document persistence remains concretely SQLite-backed."
+audited_post_018: true
 ---
 
 # 202 -- Backend storage adapter abstraction

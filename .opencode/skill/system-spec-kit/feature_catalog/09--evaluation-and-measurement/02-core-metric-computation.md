@@ -46,6 +46,7 @@ This battery of metrics means you can diagnose where the pipeline fails, not jus
 - Group: Evaluation and measurement
 - Source feature title: Core metric computation
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
 
 ---
 

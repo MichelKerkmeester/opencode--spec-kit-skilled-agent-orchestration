@@ -1,6 +1,7 @@
 ---
 title: "259 -- Tree-sitter WASM parser extracts symbols from TS file"
 description: "This scenario validates Tree-Sitter WASM parser for 259. It focuses on parsing a TypeScript file with classes/functions and verifying symbol extraction accuracy."
+audited_post_018: true
 ---
 
 # 259 -- Tree-sitter WASM parser extracts symbols from TS file

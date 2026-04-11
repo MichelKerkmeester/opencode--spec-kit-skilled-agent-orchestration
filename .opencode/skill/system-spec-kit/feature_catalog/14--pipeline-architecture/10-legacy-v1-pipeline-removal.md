@@ -1,6 +1,7 @@
 ---
 title: "Legacy V1 pipeline removal"
 description: "The 4-stage pipeline is the sole runtime search path. The SPECKIT_PIPELINE_V2 environment variable is not consumed by runtime code."
+audited_post_018: true
 ---
 
 # Legacy V1 pipeline removal

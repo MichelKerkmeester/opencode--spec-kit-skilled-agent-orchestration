@@ -1,6 +1,8 @@
 ---
 title: "Single and folder delete (memory_delete)"
 description: "Covers the delete tool that supports both single-memory and bulk folder deletion with atomic transactions."
+audited_post_018: true
+phase_018_change: "Delete behavior remains live with post-018 audit coverage"
 ---
 
 # Single and folder delete (memory_delete)

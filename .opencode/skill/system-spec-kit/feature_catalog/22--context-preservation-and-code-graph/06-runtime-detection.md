@@ -1,6 +1,7 @@
 ---
 title: "Runtime detection and hook policy"
 description: "Runtime detection identifies the active AI runtime and classifies its hook policy as enabled, disabled_by_scope, unavailable, or unknown based on repo/config reality."
+audited_post_018: true
 ---
 
 # Runtime detection and hook policy

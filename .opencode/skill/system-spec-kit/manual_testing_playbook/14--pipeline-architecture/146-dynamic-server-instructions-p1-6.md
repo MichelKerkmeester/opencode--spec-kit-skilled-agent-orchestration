@@ -1,6 +1,7 @@
 ---
 title: "146 -- Dynamic server instructions (P1-6)"
 description: "This scenario validates Dynamic server instructions (P1-6) for `146`. It focuses on Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning."
+audited_post_018: true
 ---
 
 # 146 -- Dynamic server instructions (P1-6)

@@ -1,6 +1,7 @@
 ---
 title: "Quality-aware 3-tier search fallback"
 description: "Covers the adaptive search degradation chain that progressively widens retrieval when initial results fail quality checks."
+audited_post_018: true
 ---
 
 # Quality-aware 3-tier search fallback

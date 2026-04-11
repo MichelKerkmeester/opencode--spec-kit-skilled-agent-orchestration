@@ -1,6 +1,7 @@
 ---
 title: "Async LLM graph backfill"
 description: "Async LLM graph backfill enriches high-value documents with probabilistic graph edges via an LLM call after deterministic extraction, gated by the SPECKIT_LLM_GRAPH_BACKFILL flag."
+audited_post_018: true
 ---
 
 # Async LLM graph backfill

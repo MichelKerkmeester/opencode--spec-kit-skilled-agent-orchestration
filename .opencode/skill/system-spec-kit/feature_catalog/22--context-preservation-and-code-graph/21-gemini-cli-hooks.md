@@ -1,6 +1,7 @@
 ---
 title: "Gemini CLI hooks"
 description: "Gemini-native lifecycle hooks providing session priming, compact injection, and stop tracking for the Gemini CLI runtime."
+audited_post_018: true
 ---
 
 # Gemini CLI hooks

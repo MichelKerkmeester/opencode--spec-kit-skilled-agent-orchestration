@@ -45,6 +45,7 @@ Failures are fail-safe but not silent. Initialization, insert and stats-query er
 - Group: Evaluation and measurement
 - Source feature title: Scoring observability
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
 
 ---
 

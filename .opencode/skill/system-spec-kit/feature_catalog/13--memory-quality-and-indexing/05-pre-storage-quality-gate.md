@@ -1,6 +1,7 @@
 ---
 title: "Pre-storage quality gate"
 description: "The pre-storage quality gate validates structural integrity, content quality and semantic deduplication before a memory enters the index."
+audited_post_018: true
 ---
 
 # Pre-storage quality gate

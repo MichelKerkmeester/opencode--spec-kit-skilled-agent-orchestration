@@ -1,6 +1,7 @@
 ---
 title: "Strict Zod schema validation"
 description: "Strict Zod schema validation adds runtime input validation across the schema-backed MCP tool surface, rejecting hallucinated parameters from calling LLMs."
+audited_post_018: true
 ---
 
 # Strict Zod schema validation

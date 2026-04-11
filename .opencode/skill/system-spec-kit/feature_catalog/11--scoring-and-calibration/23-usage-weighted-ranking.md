@@ -1,6 +1,7 @@
 ---
 title: "Usage-weighted ranking signal"
 description: "Tracks access counts per memory and computes a log-scale ranking boost (0-0.10) that rewards frequently accessed memories without letting popularity dominate relevance, gated by the SPECKIT_USAGE_RANKING flag."
+audited_post_018: true
 ---
 
 # Usage-weighted ranking signal

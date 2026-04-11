@@ -42,6 +42,7 @@ A formal p95 latency comparison (eval logging enabled vs disabled) and an automa
 - Group: Evaluation and measurement
 - Source feature title: Observer effect mitigation
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
 
 ---
 

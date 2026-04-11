@@ -1,6 +1,7 @@
 ---
 title: "EX-031 -- 4. Memory and Storage"
 description: "This scenario validates 4. Memory and Storage for `EX-031`. It focuses on Storage precedence check."
+audited_post_018: true
 ---
 
 # EX-031 -- 4. Memory and Storage

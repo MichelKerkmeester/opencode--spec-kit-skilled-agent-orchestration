@@ -1,6 +1,7 @@
 ---
 title: "Assistive reconsolidation"
 description: "Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into shadow-archive, review, or keep-separate tiers, providing non-destructive recommendations for near-duplicates and borderline pairs, gated by the SPECKIT_ASSISTIVE_RECONSOLIDATION flag."
+audited_post_018: true
 ---
 
 # Assistive reconsolidation

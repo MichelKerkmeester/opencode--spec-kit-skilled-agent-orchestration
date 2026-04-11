@@ -1,6 +1,7 @@
 ---
 title: "EX-029 -- 2. Session and Cache"
 description: "This scenario validates 2. Session and Cache for `EX-029`. It focuses on Session policy audit."
+audited_post_018: true
 ---
 
 # EX-029 -- 2. Session and Cache

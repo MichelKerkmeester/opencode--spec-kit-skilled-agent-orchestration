@@ -1,6 +1,7 @@
 ---
 title: "Backend storage adapter abstraction"
 description: "Backend storage adapter abstraction now exists as a shipped vector-store seam while SQLite remains the concrete backend."
+audited_post_018: true
 ---
 
 # Backend storage adapter abstraction

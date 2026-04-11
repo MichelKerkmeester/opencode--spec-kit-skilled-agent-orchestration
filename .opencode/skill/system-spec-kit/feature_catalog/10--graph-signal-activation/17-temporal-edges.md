@@ -1,6 +1,7 @@
 ---
 title: "Temporal edge validity"
 description: "valid_at/invalid_at columns on causal_edges enable time-bounded graph traversal, with invalidateEdge() marking outdated edges and getValidEdges() filtering to currently valid ones, gated by the SPECKIT_TEMPORAL_EDGES flag."
+audited_post_018: true
 ---
 
 # Temporal edge validity

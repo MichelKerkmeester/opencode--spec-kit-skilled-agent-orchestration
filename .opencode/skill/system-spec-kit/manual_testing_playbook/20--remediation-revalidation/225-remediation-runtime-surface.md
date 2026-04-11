@@ -1,6 +1,8 @@
 ---
 title: "225 -- Runtime remediation, revalidation, and auto-repair workflows"
 description: "This scenario validates Runtime remediation, revalidation, and auto-repair workflows for `225`. It focuses on Confirm the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals."
+audited_post_018: true
+phase_018_change: "Post-018 audit kept the scenario aligned to the live remediation surface, including save-time guards, confirmation-gated repair, and rollback-aware revalidation."
 ---
 
 # 225 -- Runtime remediation, revalidation, and auto-repair workflows

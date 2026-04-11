@@ -1,6 +1,7 @@
 ---
 title: "075 -- Canonical ID dedup hardening"
 description: "This scenario validates Canonical ID dedup hardening for `075`. It focuses on Confirm mixed-format ID dedup."
+audited_post_018: true
 ---
 
 # 075 -- Canonical ID dedup hardening

@@ -1,6 +1,8 @@
 ---
 title: "226 -- Memory health auto-repair"
 description: "This scenario validates Memory health auto-repair for `226`. It focuses on Confirm memory_health exposes confirmation-gated repair actions, executes bounded cleanup, and reports partial-success outcomes transparently."
+audited_post_018: true
+phase_018_change: "Post-018 audit kept the scenario aligned to the confirmed `memory_health` repair path and its transparent repair bookkeeping."
 ---
 
 # 226 -- Memory health auto-repair

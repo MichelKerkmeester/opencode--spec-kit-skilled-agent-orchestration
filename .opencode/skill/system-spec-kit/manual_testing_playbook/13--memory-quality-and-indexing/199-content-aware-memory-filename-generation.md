@@ -1,6 +1,7 @@
 ---
 title: "199 -- Content-aware memory filename generation"
 description: "This scenario validates Content-aware memory filename generation for `199`. It focuses on verifying that saved memory filenames and headings derive from task/session context instead of collapsing to the spec-folder slug."
+audited_post_018: true
 ---
 
 # 199 -- Content-aware memory filename generation

@@ -1,6 +1,7 @@
 ---
 title: "Encoding-intent capture at index time"
 description: "Encoding-intent capture classifies content as `document`, `code` or `structured_data` at index time using heuristic scoring."
+audited_post_018: true
 ---
 
 # Encoding-intent capture at index time

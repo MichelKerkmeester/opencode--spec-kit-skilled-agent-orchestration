@@ -1,6 +1,7 @@
 ---
 title: "Temporal-structural coherence scoring"
 description: "Describes the coherence dimension in the quality loop that scores basic content structure, future-dated completion claims, and unresolved or self-referential causal links."
+audited_post_018: true
 ---
 
 # Temporal-structural coherence scoring

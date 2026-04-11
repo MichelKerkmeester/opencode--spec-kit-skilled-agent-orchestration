@@ -2,6 +2,7 @@
 title: "Audit phase mapping note (020 feature-flag-reference)"
 description: "Records the slug-based mapping between audit phase 020 and the existing feature-flag-reference catalog category."
 type: meta-note
+audited_post_018: true
 ---
 
 # Audit phase mapping note (020 feature-flag-reference)

@@ -1,6 +1,7 @@
 ---
 title: "032 -- Auto-promotion on validation (T002a)"
 description: "This scenario validates Auto-promotion on validation (T002a) for `032`. It focuses on Confirm promotion thresholds/throttle."
+audited_post_018: true
 ---
 
 # 032 -- Auto-promotion on validation (T002a)

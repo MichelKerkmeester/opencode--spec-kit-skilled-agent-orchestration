@@ -1,6 +1,7 @@
 ---
 title: "129 -- Lineage state active projection and asOf resolution"
 description: "This scenario validates Lineage state active projection and asOf resolution for `129`. It focuses on Verify append-first lineage projection and deterministic `asOf` resolution."
+audited_post_018: true
 ---
 
 # 129 -- Lineage state active projection and asOf resolution

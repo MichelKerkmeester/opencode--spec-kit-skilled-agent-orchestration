@@ -1,6 +1,7 @@
 ---
 title: "254 -- Code graph scan and structural query"
 description: "This scenario validates Code graph storage and query for 254. It focuses on Indexer produces nodes/edges, query returns results."
+audited_post_018: true
 ---
 
 # 254 -- Code graph scan and structural query

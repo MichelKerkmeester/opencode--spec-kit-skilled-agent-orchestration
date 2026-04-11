@@ -1,6 +1,7 @@
 ---
 title: "055 -- Dual-scope memory auto-surface (TM-05)"
 description: "This scenario validates Dual-scope memory auto-surface (TM-05) for `055`. It focuses on Confirm auto-surface hooks."
+audited_post_018: true
 ---
 
 # 055 -- Dual-scope memory auto-surface (TM-05)

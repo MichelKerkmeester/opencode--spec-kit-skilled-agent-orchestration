@@ -1,6 +1,7 @@
 ---
 title: "095 -- Strict Zod schema validation (P0-1)"
 description: "This scenario validates Strict Zod schema validation (P0-1) for `095`. It focuses on Confirm schema enforcement rejects hallucinated params."
+audited_post_018: true
 ---
 
 # 095 -- Strict Zod schema validation (P0-1)

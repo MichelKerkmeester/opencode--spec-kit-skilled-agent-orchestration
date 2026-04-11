@@ -1,6 +1,7 @@
 ---
 title: "Score normalization"
 description: "Covers how raw retrieval scores from RRF and composite scoring are min-max normalized to a common [0,1] range before fusion, so relevance signals compete on comparable scale."
+audited_post_018: true
 ---
 
 # Score normalization

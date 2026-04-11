@@ -1,6 +1,7 @@
 ---
 title: "Working-set tracker"
 description: "Working-set tracker tracks files and symbols accessed during a session using recency-weighted scoring for compaction priority."
+audited_post_018: true
 ---
 
 # Working-set tracker

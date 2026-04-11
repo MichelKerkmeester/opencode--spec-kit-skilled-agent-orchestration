@@ -1,6 +1,7 @@
 ---
 title: "111 -- Deferred lexical-only indexing"
 description: "This scenario validates Deferred lexical-only indexing for `111`. It focuses on Confirm embedding-failure fallback and BM25 searchability."
+audited_post_018: true
 ---
 
 # 111 -- Deferred lexical-only indexing

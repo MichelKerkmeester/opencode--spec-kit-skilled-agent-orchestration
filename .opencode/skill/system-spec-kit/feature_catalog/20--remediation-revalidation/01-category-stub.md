@@ -1,6 +1,7 @@
 ---
 title: "Runtime remediation, revalidation, and auto-repair workflows"
 description: "Maps the live runtime safety surface for remediation: preflight checks, V-rule enforcement, save-time auto-fix and revalidation, health auto-repair, validation feedback, and checkpoint-backed rollback."
+audited_post_018: true
 ---
 
 # Runtime remediation, revalidation, and auto-repair workflows

@@ -1,6 +1,7 @@
 ---
 title: "Stage 3 effectiveScore fallback chain"
 description: "Describes the unified `effectiveScore()` fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`) with `isFinite()` guards and [0,1] clamping used by Stage 3 reranking and cross-encoder mapping."
+audited_post_018: true
 ---
 
 # Stage 3 effectiveScore fallback chain

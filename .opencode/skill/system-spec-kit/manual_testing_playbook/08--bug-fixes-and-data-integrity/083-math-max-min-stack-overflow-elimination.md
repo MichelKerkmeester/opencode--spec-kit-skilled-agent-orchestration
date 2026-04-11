@@ -1,6 +1,7 @@
 ---
 title: "083 -- Math.max/min stack overflow elimination"
 description: "This scenario validates Math.max/min stack overflow elimination for `083`. It focuses on Confirm large-array safety."
+audited_post_018: true
 ---
 
 # 083 -- Math.max/min stack overflow elimination

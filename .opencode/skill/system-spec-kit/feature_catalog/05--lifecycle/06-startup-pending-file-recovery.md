@@ -46,3 +46,4 @@ Recovery is automatic and requires no user intervention. If the pending file is 
 - Group: Lifecycle
 - Source feature title: Startup pending-file recovery
 - Current reality source: audit-D04 gap backfill
+- audited_post_018: true

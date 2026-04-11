@@ -1,6 +1,7 @@
 ---
 title: "Hybrid decay policy"
 description: "Hybrid decay policy applies type-aware no-decay rules to permanent artifacts (decision, constitutional, critical context types) while all other types follow the standard FSRS schedule, gated by the SPECKIT_HYBRID_DECAY_POLICY flag."
+audited_post_018: true
 ---
 
 # Hybrid decay policy

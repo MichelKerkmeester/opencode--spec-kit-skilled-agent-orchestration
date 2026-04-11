@@ -1,6 +1,7 @@
 ---
 title: "EX-005 -- 4-stage pipeline architecture"
 description: "This scenario validates 4-stage pipeline architecture for `EX-005`. It focuses on Stage invariant verification."
+audited_post_018: true
 ---
 
 # EX-005 -- 4-stage pipeline architecture

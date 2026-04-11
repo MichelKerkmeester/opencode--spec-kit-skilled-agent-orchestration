@@ -1,6 +1,7 @@
 ---
 title: "037 -- Dynamic token budget allocation (FUT-7)"
 description: "This scenario validates Dynamic token budget allocation (FUT-7) for `037`. It focuses on Confirm complexity-tier budgets."
+audited_post_018: true
 ---
 
 # 037 -- Dynamic token budget allocation (FUT-7)

@@ -1,6 +1,7 @@
 ---
 title: "185 -- /memory:search command routing"
 description: "This scenario validates /memory:search command routing for `185`. It focuses on Verify the command's routing logic: no args prompts intent, query triggers retrieval mode, and analysis subcommands route correctly."
+audited_post_018: true
 ---
 
 # 185 -- /memory:search command routing

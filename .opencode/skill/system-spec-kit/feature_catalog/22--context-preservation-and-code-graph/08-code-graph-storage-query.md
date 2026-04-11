@@ -1,6 +1,7 @@
 ---
 title: "Code graph SQLite storage and MCP query tools"
 description: "Code graph provides SQLite storage with code_files, code_nodes, code_edges tables and 4 MCP tools for structural queries."
+audited_post_018: true
 ---
 
 # Code graph SQLite storage and MCP query tools

@@ -1,9 +1,13 @@
 ---
-title: "201 -- Warm server / daemon mode"
-description: "This scenario validates Warm server / daemon mode for `201`. It focuses on verifying that daemon transport remains deferred and the current runtime still uses stdio startup behavior."
+title: "201 -- Warm server / daemon mode [deprecated]"
+description: "Archived copy of the Warm server / daemon mode scenario. The live playbook no longer includes a daemon transport path."
+audited_post_018: true
+deprecated_at: 2026-04-11
+deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_reason: "Daemon mode is still deferred and is not part of the phase-018 live playbook."
 ---
 
-# 201 -- Warm server / daemon mode
+# 201 -- Warm server / daemon mode [deprecated]
 
 ## 1. OVERVIEW
 
@@ -33,7 +37,7 @@ Operators run the exact prompt and command sequence for `201` and confirm the ex
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
-- Feature catalog: [14--pipeline-architecture/15-warm-server-daemon-mode.md](../../feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md)
+- Feature catalog: [14--pipeline-architecture/_deprecated/15-warm-server-daemon-mode.md](../../feature_catalog/14--pipeline-architecture/_deprecated/15-warm-server-daemon-mode.md)
 
 ---
 
@@ -42,4 +46,4 @@ Operators run the exact prompt and command sequence for `201` and confirm the ex
 - Group: Pipeline Architecture
 - Playbook ID: 201
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
-- Feature file path: `14--pipeline-architecture/201-warm-server-daemon-mode.md`
+- Feature file path: `14--pipeline-architecture/_deprecated/201-warm-server-daemon-mode.md`

@@ -1,6 +1,7 @@
 ---
 title: "189 -- Tool-result extraction to working memory"
 description: "This scenario validates tool-result extraction to working memory for `189`. It focuses on Verify salient tool results are automatically captured as session-scoped attention items, survive checkpoint recovery, and follow the documented attention decay rules."
+audited_post_018: true
 ---
 
 # 189 -- Tool-result extraction to working memory

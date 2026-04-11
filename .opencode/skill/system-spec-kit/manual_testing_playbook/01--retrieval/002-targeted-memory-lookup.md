@@ -1,6 +1,7 @@
 ---
 title: "M-002 -- Targeted Memory Lookup"
 description: "This snippet preserves the canonical memory/spec-kit operator workflow for `M-002`."
+audited_post_018: true
 ---
 
 # M-002 -- Targeted Memory Lookup

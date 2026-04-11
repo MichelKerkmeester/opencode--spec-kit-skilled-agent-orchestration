@@ -1,6 +1,7 @@
 ---
 title: "145 -- Contextual tree injection (P1-4)"
 description: "This scenario validates Contextual tree injection (P1-4) for `145`. It focuses on Verify hierarchical spec-folder headers are injected into search results when `SPECKIT_CONTEXT_HEADERS=true` and suppressed when disabled."
+audited_post_018: true
 ---
 
 # 145 -- Contextual tree injection (P1-4)

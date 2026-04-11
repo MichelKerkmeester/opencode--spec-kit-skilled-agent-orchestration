@@ -1,6 +1,8 @@
 ---
 title: "Validation feedback (memory_validate)"
 description: "Covers the validation feedback tool that adjusts confidence scores, triggers auto-promotion and records learned feedback."
+audited_post_018: true
+phase_018_change: "Feedback loop remains live with post-018 audit coverage"
 ---
 
 # Validation feedback (memory_validate)

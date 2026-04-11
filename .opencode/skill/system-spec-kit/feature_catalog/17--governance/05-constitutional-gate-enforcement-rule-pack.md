@@ -1,6 +1,7 @@
 ---
 title: "Constitutional Gate-Enforcement Rule Pack"
 description: "Always-surface constitutional rule pack that keeps Spec Kit gate behavior visible through trigger phrases, gate cross-references, and continuation/compaction edge-case handling."
+audited_post_018: true
 ---
 
 # Constitutional Gate-Enforcement Rule Pack

@@ -1,6 +1,7 @@
 ---
 title: "045 -- Smarter memory content generation (S1)"
 description: "This scenario validates Smarter memory content generation (S1) for `045`. It focuses on Confirm quality/structure output."
+audited_post_018: true
 ---
 
 # 045 -- Smarter memory content generation (S1)

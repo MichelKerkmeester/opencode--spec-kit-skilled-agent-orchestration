@@ -46,3 +46,4 @@ The archival sweep runs periodically after access tracker data (`access_count`, 
 - Group: Lifecycle
 - Source feature title: Automatic archival subsystem
 - Current reality source: audit-D04 gap backfill
+- audited_post_018: true

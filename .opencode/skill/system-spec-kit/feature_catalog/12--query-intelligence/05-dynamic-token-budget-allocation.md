@@ -1,6 +1,7 @@
 ---
 title: "Dynamic token budget allocation"
 description: "Dynamic token budget allocation scales the token budget returned per query based on query complexity tier."
+audited_post_018: true
 ---
 
 # Dynamic token budget allocation

@@ -1,11 +1,13 @@
 ---
 title: "Search Pipeline Features (SPECKIT_*)"
-description: "Feature flag reference for the Spec Kit Memory search pipeline controls, rollout gates, and retrieval-shaping toggles."
+description: "Feature flag reference for the Spec Kit Memory search pipeline controls, compatibility shims, and retrieval-shaping toggles."
+audited_post_018: true
+phase_018_replaces: legacy rollout/shadow/state-machine framing with the phase-018 compatibility-shim and live-controls view
 ---
 
 # Search Pipeline Features (SPECKIT_*)
 
-This document captures the implemented behavior, source references, and validation scope for the search-pipeline flag surface that is still read by code or intentionally retained as a live compatibility shim. These flags are the main control panel for how search works, letting operators tune fallback logic, reranking, telemetry, and rollout gates without changing code.
+This document captures the implemented behavior, source references, and validation scope for the search-pipeline flag surface that is still read by code or intentionally retained as a live compatibility shim. The live set focuses on current search controls plus any compatibility shims that remain in code, so operators can separate active behavior from retired rollout history without treating old state-machine language as the current story.
 
 ---
 
@@ -22,7 +24,7 @@ This document captures the implemented behavior, source references, and validati
 
 This feature-reference file mirrors the feature-catalog snippet pattern: a short explanation of the flag family, the full current-reality table, and the source metadata needed to keep docs, implementation, and validation aligned.
 
-These flags turn major retrieval behaviors on or off, including fallback logic, reranking, telemetry, and rollout gates, so operators can reason about quality, speed, and safety from one place.
+These flags turn major retrieval behaviors on or off, including fallback logic, reranking, telemetry, and compatibility shims, so operators can reason about quality, speed, and safety from one place.
 
 ---
 

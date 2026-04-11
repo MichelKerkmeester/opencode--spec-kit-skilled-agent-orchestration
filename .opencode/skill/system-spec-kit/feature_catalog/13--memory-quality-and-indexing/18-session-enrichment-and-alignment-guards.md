@@ -1,6 +1,8 @@
 ---
 title: "Stateless enrichment and alignment guards"
 description: "Stateless enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task."
+audited_post_018: true
+phase_018_replaces: "archived phase 014 quality-gate framing and external memory-continuity assumptions"
 ---
 
 # Stateless enrichment and alignment guards
@@ -27,6 +29,8 @@ Git enrichment no longer scopes only to the spec folder path itself. It uses fil
 Git extraction also preserves uncommitted file context in freshly initialized repositories that do not have a `HEAD` commit yet, survives detached-HEAD saves without dropping commit identity, and parses multi-commit history without leaking similarly named foreign spec folders into the target result.
 
 Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction` and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
+
+Phase 018 adds a supporting continuity ladder on the document side: `handover.md` now overrides older research notes when they conflict, `_memory.continuity` is a thin frontmatter block rather than a separate external memory file, and spec-doc content remains the final source of truth for recovery.
 
 Status: Implemented and covered by targeted Vitest regressions.
 
@@ -58,4 +62,4 @@ Status: Implemented and covered by targeted Vitest regressions.
 
 - Group: Memory quality and indexing
 - Source feature title: Stateless enrichment and alignment guards
-- Current reality source: spec 009-perfect-session-capturing / archived phase 014 quality gates
+- Current reality source: phase 018 canonical-continuity-refactor handover.md and implementation design

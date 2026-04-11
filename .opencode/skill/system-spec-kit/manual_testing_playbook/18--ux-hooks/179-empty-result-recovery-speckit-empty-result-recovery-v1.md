@@ -45,3 +45,4 @@ Operators run the exact prompt and command sequence for `179` and confirm the ex
 - Playbook ID: 179
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/179-empty-result-recovery-speckit-empty-result-recovery-v1.md`
+- audited_post_018: true

@@ -1,6 +1,7 @@
 ---
 title: "079 -- Scoring and fusion corrections"
 description: "This scenario validates scoring and fusion corrections for `079` with executable source checks and a targeted Vitest regression bundle for the phase-017 fixes plus the later single-pass fusion refinement."
+audited_post_018: true
 ---
 
 # 079 -- Scoring and fusion corrections

@@ -1,6 +1,8 @@
 ---
 title: "231 -- Inert scoring flags and compatibility shims"
 description: "This scenario validates Inert scoring flags and compatibility shims for `231`. It focuses on confirming retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; novelty remains inert and graph-flag imports still forward through the current rollout helper."
 ---
 
 # 231 -- Inert scoring flags and compatibility shims

@@ -39,6 +39,7 @@ Canonical source artifacts:
 
 ## TABLE OF CONTENTS
 
+- [Phase 018 audit](#phase-018-audit)
 - [1. OVERVIEW](#1--overview)
 - [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
 - [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
@@ -51,6 +52,47 @@ Canonical source artifacts:
 - [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
 - [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
 - [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
+
+---
+
+## Phase 018 audit
+
+Audit date: `2026-04-12`
+
+Phase 018 re-audited the playbook against the canonical continuity refactor. Scenario coverage now treats spec-doc anchored continuity as the live path, keeps retired validations under category-local `_deprecated/` folders, and adds dedicated scenarios for the new validator and canonical save substrate.
+
+Active scenario entries: `305`
+Deprecated archival scenario entries: `8`
+Total scenario entries: `313`
+
+| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
+|---|---:|---:|---:|---:|---:|
+| `01--retrieval` | 23 | 4 | 1 | 0 | 0 |
+| `02--mutation` | 6 | 13 | 3 | 0 | 0 |
+| `03--discovery` | 5 | 1 | 0 | 0 | 0 |
+| `04--maintenance` | 0 | 4 | 0 | 0 | 0 |
+| `05--lifecycle` | 18 | 0 | 0 | 0 | 0 |
+| `06--analysis` | 14 | 0 | 0 | 0 | 0 |
+| `07--evaluation` | 0 | 4 | 0 | 0 | 0 |
+| `08--bug-fixes-and-data-integrity` | 24 | 0 | 0 | 0 | 0 |
+| `09--evaluation-and-measurement` | 28 | 2 | 0 | 0 | 0 |
+| `10--graph-signal-activation` | 35 | 0 | 0 | 2 | 0 |
+| `11--scoring-and-calibration` | 45 | 0 | 0 | 2 | 0 |
+| `12--query-intelligence` | 0 | 20 | 0 | 2 | 0 |
+| `13--memory-quality-and-indexing` | 46 | 2 | 2 | 4 | 4 |
+| `14--pipeline-architecture` | 43 | 2 | 0 | 4 | 0 |
+| `15--retrieval-enhancements` | 26 | 0 | 0 | 0 | 0 |
+| `16--tooling-and-scripts` | 83 | 1 | 0 | 0 | 0 |
+| `17--governance` | 13 | 0 | 0 | 2 | 0 |
+| `18--ux-hooks` | 37 | 2 | 0 | 0 | 0 |
+| `19--feature-flag-reference` | 18 | 1 | 1 | 0 | 1 |
+| `20--remediation-revalidation` | 0 | 6 | 0 | 0 | 0 |
+| `21--implement-and-remove-deprecated-features` | 0 | 10 | 0 | 0 | 0 |
+| `22--context-preservation-and-code-graph` | 36 | 6 | 1 | 0 | 0 |
+| **TOTAL** | 500 | 78 | 8 | 16 | 5 |
+
+- Deprecated scenarios now live under `manual_testing_playbook/10--graph-signal-activation/_deprecated/`, `manual_testing_playbook/11--scoring-and-calibration/_deprecated/`, `manual_testing_playbook/12--query-intelligence/_deprecated/`, `manual_testing_playbook/13--memory-quality-and-indexing/_deprecated/`, `manual_testing_playbook/14--pipeline-architecture/_deprecated/`, and `manual_testing_playbook/17--governance/_deprecated/`.
+- New phase-018 playbook coverage now lives in [`13--memory-quality-and-indexing/201-spec-doc-structure-validator-and-continuity-frontmatter.md`](13--memory-quality-and-indexing/201-spec-doc-structure-validator-and-continuity-frontmatter.md) and [`13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md`](13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md).
 
 ---
 
@@ -149,7 +191,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 311 scenario files while the feature catalog contains 291 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 313 scenario files while the feature catalog contains 294 feature files.
 5. No unresolved blocking triage item remains.
 6. Orphan scenario count is zero (every scenario file is linked in Section 12).
 
@@ -167,17 +209,22 @@ count = sum(
     for path in root.glob('[0-9][0-9]--*/*.md')
     if path.is_file()
 )
+count += sum(
+    1
+    for path in root.glob('[0-9][0-9]--*/_deprecated/*.md')
+    if path.is_file()
+)
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 311 ]; then
-  echo "Expected 311 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 313 ]; then
+  echo "Expected 313 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```
 
 Final verdict report must include `COVERED_SCENARIOS/TOTAL_SCENARIOS` and should call out any remaining feature-catalog entries that are automated-only, indirect, or intentionally operator-only.
-As of 2026-03-24, the root index links all current scenario files (0 orphan scenario files).
+As of 2026-04-12, the root index links all 313 scenario files, including the archival phase-018 `_deprecated/` scenarios (0 orphan scenario files).
 
 ### Destructive Scenario Rules
 
@@ -1066,8 +1113,8 @@ Prompt: `Confirm N4 novelty hot-path removal. Capture the evidence needed to pro
 Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path
 
 #### Test Execution
-> **Feature File:** [024](11--scoring-and-calibration/024-cold-start-novelty-boost-n4.md)
-> **Catalog:** [11--scoring-and-calibration/02-cold-start-novelty-boost.md](../feature_catalog/11--scoring-and-calibration/02-cold-start-novelty-boost.md)
+> **Feature File:** [024](11--scoring-and-calibration/_deprecated/024-cold-start-novelty-boost-n4.md)
+> **Catalog:** [11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md](../feature_catalog/11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md)
 
 ### 025 | Interference scoring (TM-01)
 
@@ -1206,8 +1253,8 @@ Prompt: `N/A — active manual validation for RSF live ranking was removed from 
 This page is retained only as a retirement note and should not be treated as an active operator scenario
 
 #### Test Execution
-> **Feature File:** [034](12--query-intelligence/034-relative-score-fusion-in-shadow-mode-r14-n1.md)
-> **Catalog:** [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md)
+> **Feature File:** [034](12--query-intelligence/_deprecated/034-relative-score-fusion-in-shadow-mode-r14-n1.md)
+> **Catalog:** [12--query-intelligence/_deprecated/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/_deprecated/02-relative-score-fusion-in-shadow-mode.md)
 
 ### 035 | Channel min-representation (R2)
 
@@ -1626,8 +1673,8 @@ Prompt: `Verify feature flag sunset audit outcomes. Capture the evidence needed 
 Documented dispositions match code state; inert compatibility flags remain no-op; retired topics are not treated as live runtime checks
 
 #### Test Execution
-> **Feature File:** [064](17--governance/064-feature-flag-sunset-audit.md)
-> **Catalog:** [17--governance/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/02-feature-flag-sunset-audit.md)
+> **Feature File:** [064](17--governance/_deprecated/064-feature-flag-sunset-audit.md)
+> **Catalog:** [17--governance/_deprecated/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/_deprecated/02-feature-flag-sunset-audit.md)
 
 ### 065 | Database and schema safety
 
@@ -1794,16 +1841,16 @@ Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; d
 ### 076 | Activation window persistence
 
 #### Description
-Confirm warn-only window persistence.
+Confirm the archived activation-timestamp persistence record remains source-accurate.
 
 #### Current Reality
-Prompt: `Verify activation window persistence. Capture the evidence needed to prove Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Verify the archived activation-timestamp persistence record. Capture the evidence needed to prove the historical save-quality-gate path persisted its timer across restart, that the archived record clearly marks the behavior as retired, and that no live phase-018 flow depends on this timer path. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart
 
 #### Test Execution
-> **Feature File:** [076](14--pipeline-architecture/076-activation-window-persistence.md)
-> **Catalog:** [14--pipeline-architecture/09-activation-window-persistence.md](../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md)
+> **Feature File:** [076](14--pipeline-architecture/_deprecated/076-activation-window-persistence.md)
+> **Catalog:** [14--pipeline-architecture/_deprecated/09-activation-window-persistence.md](../feature_catalog/14--pipeline-architecture/_deprecated/09-activation-window-persistence.md)
 
 ### 077 | Tier-2 fallback channel forcing
 
@@ -3013,8 +3060,8 @@ Prompt: `Test SPECKIT_BATCH_LEARNED_FEEDBACK=true. Populate feedback events acro
 AggregatedSignal with sessionCount >= MIN_SUPPORT_SESSIONS (3) for promoted signals; weightedScore computed using CONFIDENCE_WEIGHTS (strong=1.0, medium=0.5, weak=0.1); computedBoost capped at MAX_BOOST_DELTA (0.10); batch_learning_log rows recorded; shadow-only (no live ranking mutation)
 
 #### Test Execution
-> **Feature File:** [164](13--memory-quality-and-indexing/164-batch-learned-feedback-speckit-batch-learned-feedback.md)
-> **Catalog:** [13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md](../feature_catalog/13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md)
+> **Feature File:** [164](13--memory-quality-and-indexing/_deprecated/164-batch-learned-feedback-speckit-batch-learned-feedback.md)
+> **Catalog:** [13--memory-quality-and-indexing/_deprecated/20-weekly-batch-feedback-learning.md](../feature_catalog/13--memory-quality-and-indexing/_deprecated/20-weekly-batch-feedback-learning.md)
 
 ### 165 | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION)
 
@@ -3167,8 +3214,8 @@ Prompt: `Test the default-on SPECKIT_IMPLICIT_FEEDBACK_LOG behavior. Run a searc
 5 event types recorded; confidence tiers: strong (result_cited, follow_on_tool_use), medium (query_reformulated), weak (search_shown, same_topic_requery); shadow-only (no ranking influence)
 
 #### Test Execution
-> **Feature File:** [176](13--memory-quality-and-indexing/176-implicit-feedback-log-speckit-implicit-feedback-log.md)
-> **Catalog:** [13--memory-quality-and-indexing/22-implicit-feedback-log.md](../feature_catalog/13--memory-quality-and-indexing/22-implicit-feedback-log.md)
+> **Feature File:** [176](13--memory-quality-and-indexing/_deprecated/176-implicit-feedback-log-speckit-implicit-feedback-log.md)
+> **Catalog:** [13--memory-quality-and-indexing/_deprecated/22-implicit-feedback-log.md](../feature_catalog/13--memory-quality-and-indexing/_deprecated/22-implicit-feedback-log.md)
 
 ### 177 | Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY)
 
@@ -3320,7 +3367,7 @@ These 30 catalog entries are explicitly documented here even when validation is 
 | `02--mutation/07-namespace-management-crud-tools.md` | Deferred | Not yet implemented |
 | `02--mutation/09-correction-tracking-with-undo.md` | Automated only | Covered by mutation regression tests; no dedicated operator scenario yet |
 | `02--mutation/10-per-memory-history-log.md` | Manual + automated | Covered by mutation/history suites and dedicated direct manual scenario M-008 |
-| `10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | Deferred | Planned for Sprint 019; not yet implemented |
+| `10--graph-signal-activation/_deprecated/09-anchor-tags-as-graph-nodes.md` | Deprecated archival | Retained only as a historical deprecation record; anchor markers stay metadata-only |
 | `11--scoring-and-calibration/15-tool-level-ttl-cache.md` | Automated only | Cache policy behavior is exercised in scoring/cache tests |
 | `11--scoring-and-calibration/16-access-driven-popularity-scoring.md` | Automated only | Popularity heuristics are validated by ranking tests |
 | `11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md` | Automated only | Temporal/structural scoring logic is covered by scoring suites |
@@ -3328,7 +3375,7 @@ These 30 catalog entries are explicitly documented here even when validation is 
 | `13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md` | Indirect scenario coverage | Covered implicitly via 004 (SHA-256 deduplication) |
 | `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Manual + automated | Dedicated memory workflow coverage exists in M-005 |
 | `14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md` | Automated only | Startup concern; validated implicitly by startup/runtime coverage |
-| `14--pipeline-architecture/15-warm-server-daemon-mode.md` | Deferred | Not yet implemented |
+| `14--pipeline-architecture/_deprecated/15-warm-server-daemon-mode.md` | Deprecated archival | Retained only as a historical deprecation record; live transport remains stdio |
 | `14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | Automated only | Covered by `interfaces.vitest.ts`, `pipeline-architecture-remediation.vitest.ts`, and `vector-index-impl.vitest.ts`; no operator-facing manual step is required today |
 | `14--pipeline-architecture/18-atomic-write-then-index-api.md` | Indirect scenario coverage | Covered by 104 and atomic-save failure-injection tests |
 | `14--pipeline-architecture/19-embedding-retry-orchestrator.md` | Automated only | Covered by `retry-manager.vitest.ts` and `index-refresh.vitest.ts` |
@@ -3522,7 +3569,7 @@ This split playbook keeps automated coverage references in three places:
 | 021 | Features | Causal depth signal (N2b) | [021](10--graph-signal-activation/021-causal-depth-signal-n2b.md) | [10--graph-signal-activation/06-causal-depth-signal.md](../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md) |
 | 022 | Features | Community detection (N2c) | [022](10--graph-signal-activation/022-community-detection-n2c.md) | [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
 | 023 | Features | Score normalization | [023](11--scoring-and-calibration/023-score-normalization.md) | [11--scoring-and-calibration/01-score-normalization.md](../feature_catalog/11--scoring-and-calibration/01-score-normalization.md) |
-| 024 | Features | Cold-start novelty boost (N4) | [024](11--scoring-and-calibration/024-cold-start-novelty-boost-n4.md) | [11--scoring-and-calibration/02-cold-start-novelty-boost.md](../feature_catalog/11--scoring-and-calibration/02-cold-start-novelty-boost.md) |
+| 024 | Features | Cold-start novelty boost (N4) | [024](11--scoring-and-calibration/_deprecated/024-cold-start-novelty-boost-n4.md) | [11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md](../feature_catalog/11--scoring-and-calibration/_deprecated/02-cold-start-novelty-boost.md) |
 | 025 | Features | Interference scoring (TM-01) | [025](11--scoring-and-calibration/025-interference-scoring-tm-01.md) | [11--scoring-and-calibration/03-interference-scoring.md](../feature_catalog/11--scoring-and-calibration/03-interference-scoring.md) |
 | 026 | Features | Classification-based decay (TM-03) | [026](11--scoring-and-calibration/026-classification-based-decay-tm-03.md) | [11--scoring-and-calibration/04-classification-based-decay.md](../feature_catalog/11--scoring-and-calibration/04-classification-based-decay.md) |
 | 027 | Features | Folder-level relevance scoring (PI-A1) | [027](11--scoring-and-calibration/027-folder-level-relevance-scoring-pi-a1.md) | [11--scoring-and-calibration/05-folder-level-relevance-scoring.md](../feature_catalog/11--scoring-and-calibration/05-folder-level-relevance-scoring.md) |
@@ -3532,7 +3579,7 @@ This split playbook keeps automated coverage references in three places:
 | 031 | Features | Negative feedback confidence signal (A4) | [031](11--scoring-and-calibration/031-negative-feedback-confidence-signal-a4.md) | [11--scoring-and-calibration/09-negative-feedback-confidence-signal.md](../feature_catalog/11--scoring-and-calibration/09-negative-feedback-confidence-signal.md) |
 | 032 | Features | Auto-promotion on validation (T002a) | [032](11--scoring-and-calibration/032-auto-promotion-on-validation-t002a.md) | [11--scoring-and-calibration/10-auto-promotion-on-validation.md](../feature_catalog/11--scoring-and-calibration/10-auto-promotion-on-validation.md) |
 | 033 | Features | Query complexity router (R15) | [033](12--query-intelligence/033-query-complexity-router-r15.md) | [12--query-intelligence/01-query-complexity-router.md](../feature_catalog/12--query-intelligence/01-query-complexity-router.md) |
-| 034 | Features | Relative score fusion in shadow mode (R14/N1) [retired] | [034](12--query-intelligence/034-relative-score-fusion-in-shadow-mode-r14-n1.md) | [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md) |
+| 034 | Features | Relative score fusion in shadow mode (R14/N1) [retired] | [034](12--query-intelligence/_deprecated/034-relative-score-fusion-in-shadow-mode-r14-n1.md) | [12--query-intelligence/_deprecated/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/_deprecated/02-relative-score-fusion-in-shadow-mode.md) |
 | 035 | Features | Channel min-representation (R2) | [035](12--query-intelligence/035-channel-min-representation-r2.md) | [12--query-intelligence/03-channel-min-representation.md](../feature_catalog/12--query-intelligence/03-channel-min-representation.md) |
 | 036 | Features | Confidence-based result truncation (R15-ext) | [036](12--query-intelligence/036-confidence-based-result-truncation-r15-ext.md) | [12--query-intelligence/04-confidence-based-result-truncation.md](../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md) |
 | 037 | Features | Dynamic token budget allocation (FUT-7) | [037](12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md) | [12--query-intelligence/05-dynamic-token-budget-allocation.md](../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md) |
@@ -3562,7 +3609,7 @@ This split playbook keeps automated coverage references in three places:
 | 061 | Features | Tree thinning for spec folder consolidation (PI-B1) | [061](16--tooling-and-scripts/061-tree-thinning-for-spec-folder-consolidation-pi-b1.md) | [16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md](../feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md) |
 | 062 | Features | Progressive validation for spec documents (PI-B2) | [062](16--tooling-and-scripts/062-progressive-validation-for-spec-documents-pi-b2.md) | [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md) |
 | 063 | Features | Feature flag governance | [063](17--governance/063-feature-flag-governance.md) | [17--governance/01-feature-flag-governance.md](../feature_catalog/17--governance/01-feature-flag-governance.md) |
-| 064 | Features | Feature flag sunset audit | [064](17--governance/064-feature-flag-sunset-audit.md) | [17--governance/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/02-feature-flag-sunset-audit.md) |
+| 064 | Features | Feature flag sunset audit | [064](17--governance/_deprecated/064-feature-flag-sunset-audit.md) | [17--governance/_deprecated/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/_deprecated/02-feature-flag-sunset-audit.md) |
 | 065 | Features | Database and schema safety | [065](08--bug-fixes-and-data-integrity/065-database-and-schema-safety.md) | [08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md](../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md) |
 | 066 | Features | Scoring and ranking corrections | [066](11--scoring-and-calibration/066-scoring-and-ranking-corrections.md) | [11--scoring-and-calibration/11-scoring-and-ranking-corrections.md](../feature_catalog/11--scoring-and-calibration/11-scoring-and-ranking-corrections.md) |
 | 067 | Features | Search pipeline safety | [067](14--pipeline-architecture/067-search-pipeline-safety.md) | [14--pipeline-architecture/07-search-pipeline-safety.md](../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md) |
@@ -3574,7 +3621,7 @@ This split playbook keeps automated coverage references in three places:
 | 073 | Features | Quality gate timer persistence | [073](13--memory-quality-and-indexing/073-quality-gate-timer-persistence.md) | [13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md](../feature_catalog/13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md) |
 | 074 | Features | Stage 3 effectiveScore fallback chain | [074](11--scoring-and-calibration/074-stage-3-effectivescore-fallback-chain.md) | [11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md](../feature_catalog/11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md) |
 | 075 | Features | Canonical ID dedup hardening | [075](08--bug-fixes-and-data-integrity/075-canonical-id-dedup-hardening.md) | [08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md](../feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) |
-| 076 | Features | Activation window persistence | [076](14--pipeline-architecture/076-activation-window-persistence.md) | [14--pipeline-architecture/09-activation-window-persistence.md](../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md) |
+| 076 | Features | Activation window persistence | [076](14--pipeline-architecture/_deprecated/076-activation-window-persistence.md) | [14--pipeline-architecture/_deprecated/09-activation-window-persistence.md](../feature_catalog/14--pipeline-architecture/_deprecated/09-activation-window-persistence.md) |
 | 077 | Features | Tier-2 fallback channel forcing | [077](15--retrieval-enhancements/077-tier-2-fallback-channel-forcing.md) | [15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md](../feature_catalog/15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md) |
 | 078 | Features | Legacy V1 pipeline removal | [078](14--pipeline-architecture/078-legacy-v1-pipeline-removal.md) | [14--pipeline-architecture/10-legacy-v1-pipeline-removal.md](../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md) |
 | 079 | Features | Scoring and fusion corrections | [079](11--scoring-and-calibration/079-scoring-and-fusion-corrections.md) | [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) |
@@ -3667,7 +3714,7 @@ This split playbook keeps automated coverage references in three places:
 | 161 | Features | LLM reformulation (SPECKIT_LLM_REFORMULATION) | [161](12--query-intelligence/161-llm-reformulation-speckit-llm-reformulation.md) | [12--query-intelligence/07-llm-query-reformulation.md](../feature_catalog/12--query-intelligence/07-llm-query-reformulation.md) |
 | 162 | Features | HyDE (SPECKIT_HYDE) | [162](12--query-intelligence/162-hyde-speckit-hyde.md) | [12--query-intelligence/08-hyde-hypothetical-document-embeddings.md](../feature_catalog/12--query-intelligence/08-hyde-hypothetical-document-embeddings.md) |
 | 163 | Features | Query surrogates (SPECKIT_QUERY_SURROGATES) | [163](12--query-intelligence/163-query-surrogates-speckit-query-surrogates.md) | [12--query-intelligence/09-index-time-query-surrogates.md](../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md) |
-| 164 | Features | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | [164](13--memory-quality-and-indexing/164-batch-learned-feedback-speckit-batch-learned-feedback.md) | [13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md](../feature_catalog/13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md) |
+| 164 | Features | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | [164](13--memory-quality-and-indexing/_deprecated/164-batch-learned-feedback-speckit-batch-learned-feedback.md) | [13--memory-quality-and-indexing/_deprecated/20-weekly-batch-feedback-learning.md](../feature_catalog/13--memory-quality-and-indexing/_deprecated/20-weekly-batch-feedback-learning.md) |
 | 165 | Features | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) | [165](13--memory-quality-and-indexing/165-assistive-reconsolidation-speckit-assistive-reconsolidation.md) | [13--memory-quality-and-indexing/21-assistive-reconsolidation.md](../feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md) |
 | 166 | Features | Result explain v1 (SPECKIT_RESULT_EXPLAIN_V1) | [166](18--ux-hooks/166-result-explain-v1-speckit-result-explain-v1.md) | [18--ux-hooks/14-result-explainability.md](../feature_catalog/18--ux-hooks/14-result-explainability.md) |
 | 167 | Features | Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) | [167](18--ux-hooks/167-response-profile-v1-speckit-response-profile-v1.md) | [18--ux-hooks/15-mode-aware-response-profiles.md](../feature_catalog/18--ux-hooks/15-mode-aware-response-profiles.md) |
@@ -3678,7 +3725,7 @@ This split playbook keeps automated coverage references in three places:
 | 173 | Features | Query decomposition (SPECKIT_QUERY_DECOMPOSITION) | [173](12--query-intelligence/173-query-decomposition-speckit-query-decomposition.md) | [12--query-intelligence/10-query-decomposition.md](../feature_catalog/12--query-intelligence/10-query-decomposition.md) |
 | 174 | Features | Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) | [174](10--graph-signal-activation/174-graph-concept-routing-speckit-graph-concept-routing.md) | [12--query-intelligence/11-graph-concept-routing.md](../feature_catalog/12--query-intelligence/11-graph-concept-routing.md) |
 | 175 | Features | Typed traversal (SPECKIT_TYPED_TRAVERSAL) | [175](10--graph-signal-activation/175-typed-traversal-speckit-typed-traversal.md) | [10--graph-signal-activation/16-typed-traversal.md](../feature_catalog/10--graph-signal-activation/16-typed-traversal.md) |
-| 176 | Features | Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG) | [176](13--memory-quality-and-indexing/176-implicit-feedback-log-speckit-implicit-feedback-log.md) | [13--memory-quality-and-indexing/22-implicit-feedback-log.md](../feature_catalog/13--memory-quality-and-indexing/22-implicit-feedback-log.md) |
+| 176 | Features | Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG) | [176](13--memory-quality-and-indexing/_deprecated/176-implicit-feedback-log-speckit-implicit-feedback-log.md) | [13--memory-quality-and-indexing/_deprecated/22-implicit-feedback-log.md](../feature_catalog/13--memory-quality-and-indexing/_deprecated/22-implicit-feedback-log.md) |
 | 177 | Features | Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) | [177](13--memory-quality-and-indexing/177-hybrid-decay-policy-speckit-hybrid-decay-policy.md) | [13--memory-quality-and-indexing/23-hybrid-decay-policy.md](../feature_catalog/13--memory-quality-and-indexing/23-hybrid-decay-policy.md) |
 | 178 | Features | Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) | [178](13--memory-quality-and-indexing/178-save-quality-gate-exceptions-speckit-save-quality-gate-exceptions.md) | [13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md](../feature_catalog/13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md) |
 | 179 | Features | Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) | [179](18--ux-hooks/179-empty-result-recovery-speckit-empty-result-recovery-v1.md) | [18--ux-hooks/18-empty-result-recovery.md](../feature_catalog/18--ux-hooks/18-empty-result-recovery.md) |
@@ -3704,7 +3751,7 @@ This split playbook keeps automated coverage references in three places:
 | 189 | Features | Tool-result extraction to working memory | [189](01--retrieval/189-tool-result-extraction-to-working-memory.md) | [01--retrieval/09-tool-result-extraction-to-working-memory.md](../feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md) |
 | 191 | Features | Namespace management CRUD tools | [191](02--mutation/191-namespace-management-crud-tools.md) | [02--mutation/07-namespace-management-crud-tools.md](../feature_catalog/02--mutation/07-namespace-management-crud-tools.md) |
 | 192 | Features | Correction tracking with undo | [192](02--mutation/192-correction-tracking-with-undo.md) | [02--mutation/09-correction-tracking-with-undo.md](../feature_catalog/02--mutation/09-correction-tracking-with-undo.md) |
-| 193 | Features | ANCHOR tags as graph nodes | [193](10--graph-signal-activation/193-anchor-tags-as-graph-nodes.md) | [10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md](../feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) |
+| 193 | Features | ANCHOR tags as graph nodes | [193](10--graph-signal-activation/_deprecated/193-anchor-tags-as-graph-nodes.md) | [10--graph-signal-activation/_deprecated/09-anchor-tags-as-graph-nodes.md](../feature_catalog/10--graph-signal-activation/_deprecated/09-anchor-tags-as-graph-nodes.md) |
 | 194 | Features | Causal neighbor boost and injection | [194](10--graph-signal-activation/194-causal-neighbor-boost-and-injection.md) | [10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md](../feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md) |
 | 195 | Features | Temporal contiguity layer | [195](10--graph-signal-activation/195-temporal-contiguity-layer.md) | [10--graph-signal-activation/11-temporal-contiguity-layer.md](../feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md) |
 | 196 | Features | Tool-level TTL cache | [196](11--scoring-and-calibration/196-tool-level-ttl-cache.md) | [11--scoring-and-calibration/15-tool-level-ttl-cache.md](../feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md) |
@@ -3712,7 +3759,7 @@ This split playbook keeps automated coverage references in three places:
 | 198 | Features | Temporal-structural coherence scoring | [198](11--scoring-and-calibration/198-temporal-structural-coherence-scoring.md) | [11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md](../feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md) |
 | 199 | Features | Content-aware memory filename generation | [199](13--memory-quality-and-indexing/199-content-aware-memory-filename-generation.md) | [13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md](../feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md) |
 | 200 | Features | Generation-time duplicate prevention | [200](13--memory-quality-and-indexing/200-generation-time-duplicate-and-empty-content-prevention.md) | [13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md](../feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md) |
-| 201 | Features | Warm server / daemon mode | [201](14--pipeline-architecture/201-warm-server-daemon-mode.md) | [14--pipeline-architecture/15-warm-server-daemon-mode.md](../feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md) |
+| 201 | Features | Warm server / daemon mode | [201](14--pipeline-architecture/_deprecated/201-warm-server-daemon-mode.md) | [14--pipeline-architecture/_deprecated/15-warm-server-daemon-mode.md](../feature_catalog/14--pipeline-architecture/_deprecated/15-warm-server-daemon-mode.md) |
 | 202 | Features | Backend storage adapter abstraction | [202](14--pipeline-architecture/202-backend-storage-adapter-abstraction.md) | [14--pipeline-architecture/16-backend-storage-adapter-abstraction.md](../feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md) |
 | 203 | Features | Atomic write-then-index API | [203](14--pipeline-architecture/203-atomic-write-then-index-api.md) | [14--pipeline-architecture/18-atomic-write-then-index-api.md](../feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md) |
 | 204 | Features | Embedding retry orchestrator | [204](14--pipeline-architecture/204-embedding-retry-orchestrator.md) | [14--pipeline-architecture/19-embedding-retry-orchestrator.md](../feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md) |

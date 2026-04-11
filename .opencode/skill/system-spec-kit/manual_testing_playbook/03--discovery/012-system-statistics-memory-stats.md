@@ -20,6 +20,10 @@ Operators run the exact prompt and command sequence for `EX-012` and confirm the
 - Expected signals: Counts, tiers, folder ranking present
 - Pass/fail: PASS if dashboard fields populated
 
+Additional audit scenario: `Return memory_stats from a fixture set that includes at least one partial embedding_status row. Capture the evidence needed to prove the response exposes a partial bucket and that total equals pending + success + failed + retry + partial. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Partial bucket present and included in totals
+
 ---
 
 ## 3. TEST EXECUTION
@@ -43,3 +47,5 @@ Operators run the exact prompt and command sequence for `EX-012` and confirm the
 - Playbook ID: EX-012
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `03--discovery/012-system-statistics-memory-stats.md`
+- audited_post_018: true
+- phase_018_change: Mirror the root playbook's partial-bucket audit scenario for `memory_stats`.

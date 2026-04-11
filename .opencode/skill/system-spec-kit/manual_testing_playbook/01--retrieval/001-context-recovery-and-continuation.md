@@ -1,6 +1,8 @@
 ---
 title: "M-001 -- Context Recovery and Continuation"
 description: "This snippet preserves the canonical memory/spec-kit operator workflow for `M-001`."
+audited_post_018: true
+phase_018_change: Re-centered the resume path on `/spec_kit:resume`, `handover.md`, `_memory.continuity`, and supporting spec docs instead of legacy CONTINUE_SESSION wording.
 ---
 
 # M-001 -- Context Recovery and Continuation
@@ -19,17 +21,17 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `/spec_kit:resume specs/<target-spec>. Capture the evidence needed to prove the resume-ready state summary and next steps. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `/spec_kit:resume specs/<target-spec>. Capture the evidence needed to prove the resume-ready state summary and next steps come from handover.md first, then _memory.continuity, then supporting spec docs. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
-  1. `memory_context({ input: "resume previous work continue session", mode: "resume", specFolder: "specs/<target-spec>", includeContent: true })` — primary recovery path
-  2. If resume-mode returns a clear session match, verify the recovery summary includes: last action, next steps, likely files
-  3. If results are empty or low-confidence, fall back to `memory_list({ limit: 5, sortBy: "updated_at" })` to discover recent candidates
-  4. Optionally enrich with `CONTINUE_SESSION.md` crash breadcrumbs if present in the spec folder
-  5. If summary is still thin, run anchored fallback: `memory_search({ query: "session state next steps summary blockers", specFolder: "specs/<target-spec>", anchors: ["state","next-steps","summary","blockers"], includeContent: true, limit: 5 })`
-- Expected: Resume-ready state summary and next steps via `memory_context(mode:"resume")` as primary path.
-- Evidence: returned context + extracted next actions + recovery source identification (memory_context / continue_session / memory_search / user).
-- Pass: `memory_context(mode:"resume")` is used as the primary recovery path; continuation context is actionable and specific.
-- Fail triage: verify `memory_context` resume mode routes correctly; broaden anchors on fallback search; verify spec folder path; check `CONTINUE_SESSION.md` presence.
+  1. `/spec_kit:resume specs/<target-spec>` — primary recovery surface
+  2. If the packet is thin, verify `memory_context({ input: "resume previous work continue session", mode: "resume", specFolder: "specs/<target-spec>", includeContent: true })` is used as the helper recovery path
+  3. If the packet is still thin, confirm the workflow consults `handover.md`, then `_memory.continuity`, then the supporting spec docs
+  4. If summary is still thin, run anchored fallback: `memory_search({ query: "session state next steps summary blockers", specFolder: "specs/<target-spec>", anchors: ["state","next-steps","summary","blockers"], includeContent: true, limit: 5 })`
+  5. If results are empty or low-confidence, fall back to `memory_list({ limit: 5, sortBy: "updated_at" })` to discover recent candidates
+- Expected: Resume-ready state summary and next steps via `/spec_kit:resume` and the canonical packet ladder.
+- Evidence: returned context + extracted next actions + recovery source identification (`handover.md` / `_memory.continuity` / memory_context / memory_search / user).
+- Pass: `/spec_kit:resume` is used as the primary recovery path; continuation context is actionable and specific.
+- Fail triage: verify `memory_context` resume mode routes correctly; broaden anchors on fallback search; verify spec folder path; check the canonical packet ladder order.
 
 ---
 

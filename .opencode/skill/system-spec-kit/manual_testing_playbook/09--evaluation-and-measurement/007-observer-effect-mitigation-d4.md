@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `007` and confirm the ex
 - Playbook ID: 007
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `09--evaluation-and-measurement/007-observer-effect-mitigation-d4.md`
+- audited_post_018: true

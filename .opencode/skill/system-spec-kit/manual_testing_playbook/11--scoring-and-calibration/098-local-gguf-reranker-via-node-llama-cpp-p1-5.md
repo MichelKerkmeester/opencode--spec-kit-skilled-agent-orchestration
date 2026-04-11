@@ -1,6 +1,7 @@
 ---
 title: "098 -- Local GGUF reranker via node-llama-cpp (P1-5)"
 description: "This scenario validates Local GGUF reranker via node-llama-cpp (P1-5) for `098`. It focuses on Confirm reranker gating and graceful fallback."
+audited_post_018: true
 ---
 
 # 098 -- Local GGUF reranker via node-llama-cpp (P1-5)

@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `124` and confirm the ex
 - Playbook ID: 124
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/124-automatic-archival-lifecycle-coverage.md`
+- audited_post_018: true

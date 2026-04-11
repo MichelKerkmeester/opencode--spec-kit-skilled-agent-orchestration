@@ -1,6 +1,7 @@
 ---
 title: "Signal vocabulary expansion"
 description: "Signal vocabulary expansion adds CORRECTION and PREFERENCE categories to the trigger matcher for better intent detection."
+audited_post_018: true
 ---
 
 # Signal vocabulary expansion

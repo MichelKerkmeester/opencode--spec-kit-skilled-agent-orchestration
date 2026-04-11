@@ -1,6 +1,7 @@
 ---
 title: "Graph-expanded fallback"
 description: "buildGraphExpandedFallback() walks 1-hop causal edges from concept seeds when search returns no_results or low_confidence, providing graph-derived recovery candidates, gated by the SPECKIT_GRAPH_FALLBACK flag."
+audited_post_018: true
 ---
 
 # Graph-expanded fallback

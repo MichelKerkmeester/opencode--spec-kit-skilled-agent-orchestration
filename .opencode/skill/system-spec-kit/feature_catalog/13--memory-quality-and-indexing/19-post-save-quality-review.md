@@ -1,6 +1,7 @@
 ---
 title: "Post-save quality review"
 description: "After a memory file is written, a post-save quality review compares saved frontmatter against the original JSON payload and emits machine-readable severity-graded findings before indexing begins."
+audited_post_018: true
 ---
 
 # Post-save quality review

@@ -1,6 +1,7 @@
 ---
 title: "Memory health auto-repair"
 description: "Documents the confirmed repair path behind `memory_health`, including FTS rebuilds, trigger-cache refreshes, and orphan cleanup for causal edges, vectors, and chunks."
+audited_post_018: true
 ---
 
 # Memory health auto-repair

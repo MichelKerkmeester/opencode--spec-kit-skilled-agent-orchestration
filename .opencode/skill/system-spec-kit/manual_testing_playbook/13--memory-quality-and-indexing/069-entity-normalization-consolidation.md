@@ -1,6 +1,7 @@
 ---
 title: "069 -- Entity normalization consolidation"
 description: "This scenario validates Entity normalization consolidation for `069`. It focuses on Confirm shared normalization path."
+audited_post_018: true
 ---
 
 # 069 -- Entity normalization consolidation

@@ -1,6 +1,7 @@
 ---
 title: "Indexing runtime bootstrap API"
 description: "Covers the public bootstrap surface that initializes indexing dependencies, warms embeddings, runs index scans, and closes the shared runtime."
+audited_post_018: true
 ---
 # Indexing runtime bootstrap API
 ## TABLE OF CONTENTS

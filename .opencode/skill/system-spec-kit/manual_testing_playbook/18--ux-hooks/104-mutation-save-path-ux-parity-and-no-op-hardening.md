@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `104` and confirm the ex
 - Playbook ID: 104
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/104-mutation-save-path-ux-parity-and-no-op-hardening.md`
+- audited_post_018: true

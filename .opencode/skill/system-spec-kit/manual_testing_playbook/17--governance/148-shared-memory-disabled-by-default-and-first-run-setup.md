@@ -1,6 +1,7 @@
 ---
 title: "148 -- Shared-memory disabled-by-default and first-run setup"
 description: "This scenario validates Shared-memory disabled-by-default and first-run setup for `148`. It focuses on Confirm shared memory is off by default, enable flow works, persistence survives restart, env var overrides DB, and enable is idempotent."
+audited_post_018: true
 ---
 
 # 148 -- Shared-memory disabled-by-default and first-run setup

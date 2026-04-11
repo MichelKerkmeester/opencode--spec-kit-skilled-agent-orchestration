@@ -94,3 +94,4 @@ The shipped posture enforces the following behavior:
 - Source feature title: JSON-primary deprecation posture
 - Source spec: `009-perfect-session-capturing/017-json-primary-deprecation`
 - Phase: 017
+- audited_post_018: true

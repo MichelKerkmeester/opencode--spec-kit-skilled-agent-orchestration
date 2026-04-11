@@ -1,6 +1,7 @@
 ---
 title: "Compact merger"
 description: "Compact merger combines context from Memory, Code Graph, and CocoIndex into a unified compact brief within the 4000-token budget."
+audited_post_018: true
 ---
 
 # Compact merger

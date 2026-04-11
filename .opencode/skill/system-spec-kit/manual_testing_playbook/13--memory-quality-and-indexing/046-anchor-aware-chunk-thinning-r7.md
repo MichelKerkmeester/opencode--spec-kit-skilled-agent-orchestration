@@ -1,6 +1,7 @@
 ---
 title: "046 -- Anchor-aware chunk thinning (R7)"
 description: "This scenario validates Anchor-aware chunk thinning (R7) for `046`. It focuses on Confirm anchor-priority thinning."
+audited_post_018: true
 ---
 
 # 046 -- Anchor-aware chunk thinning (R7)

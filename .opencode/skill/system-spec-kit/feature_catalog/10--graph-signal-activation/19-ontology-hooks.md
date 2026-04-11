@@ -6,6 +6,7 @@ default: 'true'
 category: 10--graph-signal-activation
 since: Phase 009 (2026-04-01)
 spec: system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements
+audited_post_018: true
 ---
 
 # Ontology-Guided Extraction Hooks

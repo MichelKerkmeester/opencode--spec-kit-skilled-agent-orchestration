@@ -1,6 +1,7 @@
 ---
 title: "036 -- Confidence-based result truncation (R15-ext)"
 description: "This scenario validates Confidence-based result truncation (R15-ext) for `036`. It focuses on Confirm relevance-cliff cutoff."
+audited_post_018: true
 ---
 
 # 036 -- Confidence-based result truncation (R15-ext)

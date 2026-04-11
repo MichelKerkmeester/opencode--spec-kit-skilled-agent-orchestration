@@ -55,3 +55,4 @@ Checkpoints are the safety net for destructive operations. `memory_bulk_delete` 
 - Group: Lifecycle
 - Source feature title: Checkpoint creation (checkpoint_create)
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `EX-016` and confirm the
 - Playbook ID: EX-016
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/016-checkpoint-listing-checkpoint-list.md`
+- audited_post_018: true

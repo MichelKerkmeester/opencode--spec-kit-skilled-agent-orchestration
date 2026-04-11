@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `134` and confirm the ex
 - Playbook ID: 134
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/134-startup-pending-file-recovery-lifecycle-coverage.md`
+- audited_post_018: true

@@ -1,6 +1,7 @@
 ---
 title: "031 -- Negative feedback confidence signal (A4)"
 description: "This scenario validates Negative feedback confidence signal (A4) for `031`. It focuses on Confirm demotion floor+recovery."
+audited_post_018: true
 ---
 
 # 031 -- Negative feedback confidence signal (A4)

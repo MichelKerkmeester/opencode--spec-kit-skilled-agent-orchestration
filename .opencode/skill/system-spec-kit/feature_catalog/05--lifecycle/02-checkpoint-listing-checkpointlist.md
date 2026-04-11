@@ -50,3 +50,4 @@ Returns a limit-based list of available checkpoints with metadata: name, creatio
 - Group: Lifecycle
 - Source feature title: Checkpoint listing (checkpoint_list)
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true

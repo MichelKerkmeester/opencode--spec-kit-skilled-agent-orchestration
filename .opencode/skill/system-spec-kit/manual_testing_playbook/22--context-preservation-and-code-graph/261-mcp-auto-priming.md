@@ -1,6 +1,7 @@
 ---
 title: "261 -- MCP auto-priming delivers Prime Package on first tool call"
 description: "This scenario validates MCP auto-priming for 261. It focuses on verifying the first MCP tool call returns a Prime Package in response hints."
+audited_post_018: true
 ---
 
 # 261 -- MCP auto-priming delivers Prime Package on first tool call

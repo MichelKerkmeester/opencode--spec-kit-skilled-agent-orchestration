@@ -1,6 +1,7 @@
 ---
 title: "Namespace management CRUD tools (shared-memory lifecycle)"
 description: "Tracks the shared-memory lifecycle tools that provide workspace-level scoping beyond `specFolder` with deny-by-default membership."
+audited_post_018: true
 ---
 
 # Namespace management CRUD tools (shared-memory lifecycle)

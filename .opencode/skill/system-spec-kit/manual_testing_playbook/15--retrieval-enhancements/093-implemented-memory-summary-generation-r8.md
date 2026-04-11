@@ -1,6 +1,7 @@
 ---
 title: "093 -- Implemented: memory summary generation (R8)"
 description: "This scenario validates Implemented: memory summary generation (R8) for `093`. It focuses on Confirm deferred->implemented status."
+audited_post_018: true
 ---
 
 # 093 -- Implemented: memory summary generation (R8)

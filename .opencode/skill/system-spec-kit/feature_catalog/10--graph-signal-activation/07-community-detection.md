@@ -1,6 +1,7 @@
 ---
 title: "Community detection"
 description: "Describes BFS connected components and Louvain modularity-based community detection that clusters related memories, enabling co-member injection at 0.3x source score during Stage 2."
+audited_post_018: true
 ---
 
 # Community detection

@@ -11,6 +11,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 
 ## TABLE OF CONTENTS
 
+- [Phase 018 audit](#phase-018-audit)
 - [1. OVERVIEW](#1-overview)
 - [2. RETRIEVAL](#2-retrieval)
 - [3. MUTATION](#3-mutation)
@@ -33,6 +34,47 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 - [20. SPEC KIT PHASE WORKFLOWS](#20-spec-kit-phase-workflows)
 - [21. FEATURE FLAG REFERENCE](#21-feature-flag-reference)
 - [22. CONTEXT PRESERVATION AND CODE GRAPH](#22-context-preservation-and-code-graph)
+
+---
+
+## Phase 018 audit
+
+Audit date: `2026-04-12`
+
+Phase 018 rechecked the catalog against the new canonical continuity model. In plain English: continuity now lives in spec docs, retired ideas were moved into `_deprecated/` archive folders, and the catalog got new entries for the validator plus the new save path.
+
+Active category entries: `286`
+Deprecated archival entries: `8`
+Total category entries: `294`
+
+| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
+|---|---:|---:|---:|---:|---:|
+| `01--retrieval` | 23 | 4 | 1 | 0 | 0 |
+| `02--mutation` | 6 | 13 | 3 | 0 | 0 |
+| `03--discovery` | 5 | 1 | 0 | 0 | 0 |
+| `04--maintenance` | 0 | 4 | 0 | 0 | 0 |
+| `05--lifecycle` | 18 | 0 | 0 | 0 | 0 |
+| `06--analysis` | 14 | 0 | 0 | 0 | 0 |
+| `07--evaluation` | 0 | 4 | 0 | 0 | 0 |
+| `08--bug-fixes-and-data-integrity` | 24 | 0 | 0 | 0 | 0 |
+| `09--evaluation-and-measurement` | 28 | 2 | 0 | 0 | 0 |
+| `10--graph-signal-activation` | 35 | 0 | 0 | 2 | 0 |
+| `11--scoring-and-calibration` | 45 | 0 | 0 | 2 | 0 |
+| `12--query-intelligence` | 0 | 20 | 0 | 2 | 0 |
+| `13--memory-quality-and-indexing` | 46 | 2 | 2 | 4 | 4 |
+| `14--pipeline-architecture` | 43 | 2 | 0 | 4 | 0 |
+| `15--retrieval-enhancements` | 26 | 0 | 0 | 0 | 0 |
+| `16--tooling-and-scripts` | 83 | 1 | 0 | 0 | 0 |
+| `17--governance` | 13 | 0 | 0 | 2 | 0 |
+| `18--ux-hooks` | 37 | 2 | 0 | 0 | 0 |
+| `19--feature-flag-reference` | 18 | 1 | 1 | 0 | 1 |
+| `20--remediation-revalidation` | 0 | 6 | 0 | 0 | 0 |
+| `21--implement-and-remove-deprecated-features` | 0 | 10 | 0 | 0 | 0 |
+| `22--context-preservation-and-code-graph` | 36 | 6 | 1 | 0 | 0 |
+| **TOTAL** | 500 | 78 | 8 | 16 | 5 |
+
+- Archived phase-018 removals now live under the `_deprecated/` folders in categories `10`, `11`, `12`, `13`, `14`, and `17`.
+- New phase-018 entries now cover the spec-doc structure validator, the canonical continuity save substrate, and the memory roadmap capability flags.
 
 ---
 

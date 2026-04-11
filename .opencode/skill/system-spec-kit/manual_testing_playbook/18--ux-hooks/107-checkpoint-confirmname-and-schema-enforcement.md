@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `107` and confirm the ex
 - Playbook ID: 107
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/107-checkpoint-confirmname-and-schema-enforcement.md`
+- audited_post_018: true

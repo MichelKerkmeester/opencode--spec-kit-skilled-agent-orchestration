@@ -72,3 +72,4 @@ In practice, this is the highest-priority memory path in the system. Constitutio
 - Group: Lifecycle
 - Source feature title: Constitutional Memory End-to-End Lifecycle
 - Source spec: Deep research remediation 2026-03-26
+- audited_post_018: true

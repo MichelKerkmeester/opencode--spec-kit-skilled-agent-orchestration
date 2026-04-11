@@ -1,6 +1,7 @@
 ---
 title: "Math.max/min stack overflow hardening"
 description: "Tracks targeted replacement of `Math.max(...array)` spread patterns with stack-safe extrema logic, while noting residual production sites that still remain."
+audited_post_018: true
 ---
 
 # Math.max/min stack overflow hardening

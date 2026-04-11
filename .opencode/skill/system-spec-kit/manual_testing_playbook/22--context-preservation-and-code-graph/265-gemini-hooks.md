@@ -1,6 +1,7 @@
 ---
 title: "265 -- Gemini CLI hooks session-prime fires on startup"
 description: "This scenario validates Gemini CLI hooks for 265. It focuses on verifying Gemini session-prime delivers context on SessionStart events."
+audited_post_018: true
 ---
 
 # 265 -- Gemini CLI hooks session-prime fires on startup

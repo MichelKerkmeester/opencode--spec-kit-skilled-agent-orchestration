@@ -1,6 +1,8 @@
 ---
 title: "Lazy-loading migration and warmup compatibility"
 description: "Embedding startup now uses permanent lazy initialization, while the old warmup flags remain only as deprecated compatibility surfaces."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; lazy startup remains the shipped path and warmup flags stay compatibility-only."
 ---
 
 # Lazy-loading migration and warmup compatibility

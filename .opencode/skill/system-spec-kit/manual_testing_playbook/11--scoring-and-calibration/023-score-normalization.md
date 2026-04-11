@@ -1,6 +1,7 @@
 ---
 title: "023 -- Score normalization"
 description: "This scenario validates Score normalization for `023`. It focuses on Confirm batch min-max behavior."
+audited_post_018: true
 ---
 
 # 023 -- Score normalization

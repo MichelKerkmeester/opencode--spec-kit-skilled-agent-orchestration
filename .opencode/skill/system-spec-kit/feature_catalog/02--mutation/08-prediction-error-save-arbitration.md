@@ -1,6 +1,8 @@
 ---
 title: "Prediction-error save arbitration"
 description: "Covers the 5-action decision engine that classifies new saves as REINFORCE, UPDATE, SUPERSEDE, CREATE_LINKED or CREATE based on semantic similarity."
+audited_post_018: true
+phase_018_change: "PE arbitration remains live on the post-018 continuity save path"
 ---
 
 # Prediction-error save arbitration

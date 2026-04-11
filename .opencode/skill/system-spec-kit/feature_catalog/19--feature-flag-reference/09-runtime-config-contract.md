@@ -1,6 +1,7 @@
 ---
 title: "Runtime Config Contract"
 description: "JSONC contract for the script runtime loader, including the active legacy keys in `config.jsonc` and the documentation-only sections retained for reference."
+audited_post_018: true
 ---
 
 # Runtime Config Contract

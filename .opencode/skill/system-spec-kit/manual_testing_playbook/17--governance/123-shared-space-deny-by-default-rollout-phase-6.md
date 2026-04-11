@@ -1,6 +1,7 @@
 ---
 title: "123 -- Shared-space deny-by-default rollout (Phase 6)"
 description: "This scenario validates Shared-space deny-by-default rollout (Phase 6) for `123`. It focuses on Confirm shared-memory spaces require explicit membership and respect rollout/kill-switch controls."
+audited_post_018: true
 ---
 
 # 123 -- Shared-space deny-by-default rollout (Phase 6)

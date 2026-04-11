@@ -1,6 +1,7 @@
 ---
 title: "163 -- Query surrogates (SPECKIT_QUERY_SURROGATES)"
 description: "This scenario validates query surrogates (SPECKIT_QUERY_SURROGATES) for `163`. It focuses on enabling the flag, saving a memory, and verifying surrogates are generated at index time."
+audited_post_018: true
 ---
 
 # 163 -- Query surrogates (SPECKIT_QUERY_SURROGATES)
@@ -34,7 +35,7 @@ Operators run the exact prompt and command sequence for `163` and confirm the ex
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
 - Feature catalog: [12--query-intelligence/09-index-time-query-surrogates.md](../../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md)
-- Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
+- Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/search/query-surrogates.ts`
 
 ---

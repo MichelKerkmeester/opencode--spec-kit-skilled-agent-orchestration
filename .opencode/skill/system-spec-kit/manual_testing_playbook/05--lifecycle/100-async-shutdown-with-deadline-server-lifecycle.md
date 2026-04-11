@@ -43,3 +43,4 @@ Operators run the exact prompt and command sequence for `100` and confirm the ex
 - Playbook ID: 100
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `05--lifecycle/100-async-shutdown-with-deadline-server-lifecycle.md`
+- audited_post_018: true

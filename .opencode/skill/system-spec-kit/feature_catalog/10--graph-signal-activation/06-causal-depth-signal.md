@@ -1,6 +1,7 @@
 ---
 title: "Causal depth signal"
 description: "Describes the SCC-condensed longest-path depth signal that normalizes each memory's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2."
+audited_post_018: true
 ---
 
 # Causal depth signal

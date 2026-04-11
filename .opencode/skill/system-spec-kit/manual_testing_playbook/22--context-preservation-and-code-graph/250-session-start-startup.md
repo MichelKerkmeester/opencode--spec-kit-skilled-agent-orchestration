@@ -1,6 +1,8 @@
 ---
 title: "250 -- SessionStart primes fresh session"
 description: "This scenario validates SessionStart priming (startup) for 250. It focuses on SessionStart outputs Spec Kit Memory overview on fresh startup."
+audited_post_018: true
+phase_018_change: "Updated startup recovery wording so the resume instruction points at /spec_kit:resume and the canonical packet continuity chain."
 ---
 
 # 250 -- SessionStart primes fresh session
@@ -13,19 +15,19 @@ This scenario validates SessionStart priming (startup).
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that the SessionStart hook, when triggered with `source=startup` (fresh session), outputs a "Session Priming" section to stdout listing available Spec Kit Memory tools (`memory_context`, `memory_match_triggers`, `memory_search`), CocoIndex Code availability status, Code Graph tools (`code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`), and resume instructions. Output must stay within SESSION_PRIME_TOKEN_BUDGET (2000 tokens).
+- **Objective**: Verify that the SessionStart hook, when triggered with `source=startup` (fresh session), outputs a "Session Priming" section to stdout listing available Spec Kit Memory tools (`memory_context`, `memory_match_triggers`, `memory_search`), CocoIndex Code availability status, Code Graph tools (`code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`), and resume instructions that point to `/spec_kit:resume` and the packet continuity chain. Output must stay within SESSION_PRIME_TOKEN_BUDGET (2000 tokens).
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
   - No prior session state required (fresh startup scenario)
-- **Prompt**: `Validate 250 SessionStart priming (startup) behavior. Run the vitest suite for hook-session-start and confirm: (1) source=startup routes to handleStartup(), (2) stdout contains "Session Priming" section, (3) memory tools listed (memory_context, memory_match_triggers, memory_search), (4) CocoIndex availability checked via checkCocoIndexAvailable(), (5) Code Graph tools listed, (6) resume instructions present, (7) output within SESSION_PRIME_TOKEN_BUDGET (2000 tokens).`
+- **Prompt**: `Validate 250 SessionStart priming (startup) behavior. Run the vitest suite for hook-session-start and confirm: (1) source=startup routes to handleStartup(), (2) stdout contains "Session Priming" section, (3) memory tools listed (memory_context, memory_match_triggers, memory_search), (4) CocoIndex availability checked via checkCocoIndexAvailable(), (5) Code Graph tools listed, (6) resume instructions mention /spec_kit:resume and the canonical packet continuity chain, (7) output within SESSION_PRIME_TOKEN_BUDGET (2000 tokens).`
 - **Expected signals**:
   - All vitest tests in `hook-session-start.vitest.ts` pass for startup source
   - Stdout contains `## Session Priming` header
   - Body mentions `memory_context`, `memory_match_triggers`, `memory_search`
   - Body mentions `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`
   - CocoIndex status line shows either "available" or "not installed" based on `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` existence
-  - Resume instruction: `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })`
+  - Resume instruction: `/spec_kit:resume` with the `handover.md -> _memory.continuity -> spec docs` chain
   - Output length stays within 2000 tokens (8000 chars)
 - **Pass/fail criteria**:
   - PASS: All tool references present in stdout, CocoIndex status accurate, output within budget

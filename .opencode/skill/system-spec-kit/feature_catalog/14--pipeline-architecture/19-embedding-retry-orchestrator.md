@@ -1,6 +1,7 @@
 ---
 title: "Embedding retry orchestrator"
 description: "The embedding retry orchestrator runs background batch retries for memories with failed embedding generation, using cache dedup and progressive backoff."
+audited_post_018: true
 ---
 
 # Embedding retry orchestrator

@@ -1,6 +1,7 @@
 ---
 title: "Query-intent classifier"
 description: "Heuristic pre-classifier that routes queries to the optimal retrieval backend: structural (code graph), semantic (CocoIndex), or hybrid (both)."
+audited_post_018: true
 ---
 
 # Query-intent classifier

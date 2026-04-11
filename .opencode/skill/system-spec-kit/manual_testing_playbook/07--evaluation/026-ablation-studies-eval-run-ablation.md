@@ -43,3 +43,5 @@ Operators run the exact prompt and command sequence for `EX-026` and confirm the
 - Playbook ID: EX-026
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `07--evaluation/026-ablation-studies-eval-run-ablation.md`
+- audited_post_018: true
+- phase_018_change: post-018 audit verified against `mcp_server/handlers/eval-reporting.ts`, `mcp_server/lib/eval/ablation-framework.ts`, `mcp_server/lib/eval/k-value-analysis.ts`, `mcp_server/tests/ablation-framework.vitest.ts`, and `mcp_server/tests/handler-eval-reporting.vitest.ts`

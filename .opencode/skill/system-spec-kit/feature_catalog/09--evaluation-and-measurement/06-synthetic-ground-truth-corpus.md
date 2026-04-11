@@ -45,6 +45,7 @@ Hard negative queries are included to verify that irrelevant memories rank low. 
 - Group: Evaluation and measurement
 - Source feature title: Synthetic ground truth corpus
 - Current reality source: FEATURE_CATALOG.md
+- audited_post_018: true
 
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "Cross-process DB hot rebinding"
 description: "Cross-process DB hot rebinding detects external database mutations via a marker file and reinitializes the DB connection with module rebinding."
+audited_post_018: true
 ---
 
 # Cross-process DB hot rebinding

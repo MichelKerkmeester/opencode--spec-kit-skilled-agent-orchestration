@@ -1,6 +1,7 @@
 ---
 title: "Graph lifecycle refresh"
 description: "Graph lifecycle refresh manages dirty-node tracking and graph recomputation after write operations, with synchronous local or scheduled background modes controlled by the SPECKIT_GRAPH_REFRESH_MODE flag."
+audited_post_018: true
 ---
 
 # Graph lifecycle refresh

@@ -1,6 +1,7 @@
 ---
 title: "030 -- RRF K-value sensitivity analysis (FUT-5)"
 description: "This scenario validates RRF K-value sensitivity analysis (FUT-5) for `030`. It focuses on Confirm K sensitivity measurements."
+audited_post_018: true
 ---
 
 # 030 -- RRF K-value sensitivity analysis (FUT-5)

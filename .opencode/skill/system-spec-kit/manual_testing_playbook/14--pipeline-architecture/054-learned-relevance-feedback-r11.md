@@ -1,6 +1,7 @@
 ---
 title: "054 -- Learned relevance feedback (R11)"
 description: "This scenario validates Learned relevance feedback (R11) for `054`. It focuses on Confirm learned trigger safeguards."
+audited_post_018: true
 ---
 
 # 054 -- Learned relevance feedback (R11)

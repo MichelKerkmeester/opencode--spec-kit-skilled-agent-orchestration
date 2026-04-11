@@ -1,6 +1,7 @@
 ---
 title: "175 -- Typed traversal (SPECKIT_TYPED_TRAVERSAL)"
 description: "This scenario validates typed traversal (SPECKIT_TYPED_TRAVERSAL) for `175`. It focuses on the default-on graduated rollout and verifying sparse-first policy and intent-aware edge traversal scoring."
+audited_post_018: true
 ---
 
 # 175 -- Typed traversal (SPECKIT_TYPED_TRAVERSAL)

@@ -1,6 +1,7 @@
 ---
 title: "7. CI and Build (informational)"
 description: "This document captures the implemented behavior, source references, and validation scope for 7. CI and Build (informational)."
+audited_post_018: true
 ---
 
 # 7. CI and Build (informational)

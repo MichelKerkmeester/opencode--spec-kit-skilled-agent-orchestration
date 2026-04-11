@@ -1,6 +1,7 @@
 ---
 title: "Pre-flight token budget validation"
 description: "Pre-flight token budget validation estimates token count before embedding generation and rejects oversized content at save time."
+audited_post_018: true
 ---
 
 # Pre-flight token budget validation

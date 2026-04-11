@@ -1,6 +1,8 @@
 ---
 title: "Adaptive-fusion mode flag"
 description: "`SPECKIT_ADAPTIVE_FUSION` remains a live runtime flag that selects between fixed and adaptive fusion modes in hybrid search."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; adaptive fusion remains the live hybrid-search path and the older disable wording is treated as stale guidance."
 ---
 
 # Adaptive-fusion mode flag

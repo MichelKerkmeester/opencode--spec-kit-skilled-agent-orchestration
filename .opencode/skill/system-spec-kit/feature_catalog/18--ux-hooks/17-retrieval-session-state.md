@@ -54,3 +54,4 @@ Canonical flag behavior is default ON (graduated). Set `SPECKIT_SESSION_RETRIEVA
 - Group: UX hooks
 - Source feature title: Retrieval session state
 - Current reality source: `mcp_server/lib/search/session-state.ts`, `mcp_server/lib/search/search-flags.ts`, and `mcp_server/handlers/memory-search.ts`
+- audited_post_018: true

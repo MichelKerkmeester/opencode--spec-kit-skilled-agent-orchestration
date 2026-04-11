@@ -1,6 +1,7 @@
 ---
 title: "Atomic pending-file recovery"
 description: "Atomic pending-file recovery scans for `_pending` files left by interrupted saves and completes the rename when the DB row exists."
+audited_post_018: true
 ---
 
 # Atomic pending-file recovery

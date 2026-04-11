@@ -1,6 +1,7 @@
 ---
 title: "115 -- Transaction atomicity on rename failure (P0-5)"
 description: "This scenario validates Transaction atomicity on rename failure (P0-5) for `115`. It focuses on Verify that pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup."
+audited_post_018: true
 ---
 
 # 115 -- Transaction atomicity on rename failure (P0-5)

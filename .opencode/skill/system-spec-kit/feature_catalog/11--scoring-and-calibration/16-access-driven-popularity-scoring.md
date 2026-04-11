@@ -1,6 +1,7 @@
 ---
 title: "Access-driven popularity scoring"
 description: "Describes the batched access counting with soft-accumulator pattern that feeds popularity signals into composite scoring and drives archival dormancy detection."
+audited_post_018: true
 ---
 
 # Access-driven popularity scoring

@@ -1,6 +1,8 @@
 ---
 title: "Retired runtime shims and inert compatibility flags"
 description: "Current-state reference for compatibility flags and runtime shims that remain visible in code but no longer change live behavior."
+audited_post_018: true
+phase_018_change: "Validated against phase-018 canonical continuity refactor; retained as a live compatibility summary for lazy loading, shadow retirement, novelty inertness, and adaptive fusion."
 ---
 
 # Retired runtime shims and inert compatibility flags

@@ -1,6 +1,7 @@
 ---
 title: "102 -- node-llama-cpp optionalDependencies"
 description: "This scenario validates node-llama-cpp optionalDependencies for `102`. It focuses on Confirm install succeeds without native build tools."
+audited_post_018: true
 ---
 
 # 102 -- node-llama-cpp optionalDependencies

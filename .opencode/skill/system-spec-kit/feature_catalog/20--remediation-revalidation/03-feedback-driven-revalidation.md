@@ -1,6 +1,7 @@
 ---
 title: "Feedback-driven revalidation"
 description: "Documents the `memory_validate` feedback loop, including confidence updates, adaptive signals, auto-promotion, negative-feedback persistence, and learned feedback."
+audited_post_018: true
 ---
 
 # Feedback-driven revalidation

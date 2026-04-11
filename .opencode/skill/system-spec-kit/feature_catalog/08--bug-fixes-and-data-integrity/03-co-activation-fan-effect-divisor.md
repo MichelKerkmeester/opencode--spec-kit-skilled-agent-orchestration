@@ -1,6 +1,7 @@
 ---
 title: "Co-activation fan-effect divisor"
 description: "Tracks the fan-effect divisor that prevents hub memories from dominating co-activation results."
+audited_post_018: true
 ---
 
 # Co-activation fan-effect divisor

@@ -1,6 +1,7 @@
 ---
 title: "256 -- Budget allocator floors and overflow"
 description: "This scenario validates Budget allocator for 256. It focuses on Floor distribution and overflow redistribution."
+audited_post_018: true
 ---
 
 # 256 -- Budget allocator floors and overflow

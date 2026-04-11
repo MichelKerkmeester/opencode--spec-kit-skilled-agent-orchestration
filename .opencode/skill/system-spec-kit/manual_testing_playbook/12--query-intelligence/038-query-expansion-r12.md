@@ -1,6 +1,7 @@
 ---
 title: "038 -- Query expansion (R12)"
 description: "This scenario validates Query expansion (R12) for `038`. It focuses on Confirm parallel expansion + dedup."
+audited_post_018: true
 ---
 
 # 038 -- Query expansion (R12)

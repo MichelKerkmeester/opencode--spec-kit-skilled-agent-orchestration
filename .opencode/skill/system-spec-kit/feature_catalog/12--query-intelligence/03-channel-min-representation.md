@@ -1,6 +1,7 @@
 ---
 title: "Channel min-representation"
 description: "Channel min-representation ensures every retrieval channel with results has at least one entry in the top-k window after fusion."
+audited_post_018: true
 ---
 
 # Channel min-representation

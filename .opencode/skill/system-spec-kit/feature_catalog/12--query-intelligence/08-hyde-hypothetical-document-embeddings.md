@@ -1,6 +1,7 @@
 ---
 title: "HyDE (Hypothetical Document Embeddings)"
 description: "HyDE generates a short hypothetical document answering the query, embeds it, and uses the pseudo-document embedding as an additional retrieval channel for deep low-confidence queries, gated by the SPECKIT_HYDE flag."
+audited_post_018: true
 ---
 
 # HyDE (Hypothetical Document Embeddings)

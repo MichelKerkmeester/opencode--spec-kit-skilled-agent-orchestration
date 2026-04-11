@@ -1,6 +1,8 @@
 ---
 title: "EX-010 -- Validation feedback (memory_validate)"
 description: "This scenario validates Validation feedback (memory_validate) for `EX-010`. It focuses on Feedback learning loop."
+audited_post_018: true
+phase_018_change: "Validation feedback scenario remains live with post-018 audit coverage"
 ---
 
 # EX-010 -- Validation feedback (memory_validate)

@@ -57,3 +57,4 @@ No-op when `SPECKIT_RESULT_EXPLAIN_V1` is not set. Default ON (graduated), contr
 - Group: UX hooks
 - Source feature title: Two-tier result explainability
 - Current reality source: mcp_server/lib/search/result-explainability.ts module header and implementation
+- audited_post_018: true

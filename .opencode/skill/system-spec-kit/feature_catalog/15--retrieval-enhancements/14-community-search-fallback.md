@@ -1,6 +1,7 @@
 ---
 title: "Community-level search fallback"
 description: "searchCommunities() provides topic-level fallback via word overlap scoring against community summaries, surfacing broad topical matches when fine-grained retrieval fails, gated by the SPECKIT_COMMUNITY_SEARCH_FALLBACK flag."
+audited_post_018: true
 ---
 
 # Community-level search fallback

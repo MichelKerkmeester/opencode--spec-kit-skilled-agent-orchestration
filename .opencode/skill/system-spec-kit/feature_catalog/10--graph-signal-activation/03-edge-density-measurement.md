@@ -1,6 +1,7 @@
 ---
 title: "Edge density measurement"
 description: "Describes the global edge density metric (`total_edges / total_memories`) used by runtime guards to gate graph-derived features and entity-linking creation."
+audited_post_018: true
 ---
 
 # Edge density measurement

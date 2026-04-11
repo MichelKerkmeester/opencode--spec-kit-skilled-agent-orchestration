@@ -43,4 +43,5 @@ Operators run the exact prompt and command sequence for `216` and confirm the ex
 - Playbook ID: 216
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/216-end-to-end-success-envelope-verification.md`
+- audited_post_018: true
 - Feature catalog back-ref: `18--ux-hooks/13-end-to-end-success-envelope-verification.md`

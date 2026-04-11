@@ -1,6 +1,7 @@
 ---
 title: "Double intent weighting investigation"
 description: "Documents the pipeline trace confirming that dual intent weight systems (channel-level in adaptive fusion, attribute-level in intent classifier) are intentional and non-overlapping by design through the `isHybrid` gate."
+audited_post_018: true
 ---
 
 # Double intent weighting investigation

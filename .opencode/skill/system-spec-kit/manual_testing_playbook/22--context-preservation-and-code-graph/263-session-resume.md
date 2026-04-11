@@ -1,6 +1,7 @@
 ---
 title: "263 -- Session resume returns detailed recovery state"
 description: "This scenario validates Session resume tool for 263. It focuses on verifying session_resume returns a detailed merged recovery payload, including structural readiness hints."
+audited_post_018: true
 ---
 
 # 263 -- Session resume returns detailed recovery state

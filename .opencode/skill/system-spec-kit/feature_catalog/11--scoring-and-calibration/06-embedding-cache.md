@@ -1,6 +1,7 @@
 ---
 title: "Embedding cache"
 description: "Describes the SQLite-backed embedding cache keyed by SHA-256 content hash and model ID that avoids redundant embedding API calls on re-index, plus the request-scoped embedding reuse path for MMR reranking."
+audited_post_018: true
 ---
 
 # Embedding cache

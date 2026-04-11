@@ -1,6 +1,7 @@
 ---
 title: "EX-021 -- Causal edge deletion (memory_causal_unlink)"
 description: "This scenario validates Causal edge deletion (memory_causal_unlink) for `EX-021`. It focuses on Edge correction."
+audited_post_018: true
 ---
 
 # EX-021 -- Causal edge deletion (memory_causal_unlink)

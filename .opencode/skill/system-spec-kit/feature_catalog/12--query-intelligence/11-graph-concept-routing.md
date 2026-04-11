@@ -1,6 +1,7 @@
 ---
 title: "Graph concept routing"
 description: "Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, recording matched concepts as Stage 1 trace metadata when SPECKIT_GRAPH_CONCEPT_ROUTING is enabled."
+audited_post_018: true
 ---
 
 # Graph concept routing

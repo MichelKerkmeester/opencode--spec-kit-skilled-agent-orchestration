@@ -53,3 +53,4 @@ The recommended actions are: `retry_broader`, `switch_mode`, `save_memory`, or `
 - Group: UX hooks
 - Source feature title: Empty result recovery
 - Current reality source: mcp_server/lib/search/recovery-payload.ts module header and implementation
+- audited_post_018: true

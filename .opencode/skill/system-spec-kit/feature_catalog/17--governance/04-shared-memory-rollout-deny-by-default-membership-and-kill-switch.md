@@ -1,6 +1,7 @@
 ---
 title: "Shared-memory rollout, deny-by-default membership, and kill switch"
 description: "Shared-memory rollout controls access to shared spaces through deny-by-default membership, an immediate kill switch for incident response, and a disabled-by-default subsystem requiring explicit first-run setup."
+audited_post_018: true
 ---
 
 # Shared-memory rollout, deny-by-default membership, and kill switch

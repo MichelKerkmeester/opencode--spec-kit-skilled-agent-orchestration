@@ -1,6 +1,7 @@
 ---
 title: "4. Memory and Storage"
 description: "This document captures the implemented behavior, source references, and validation scope for 4. Memory and Storage."
+audited_post_018: true
 ---
 
 # 4. Memory and Storage

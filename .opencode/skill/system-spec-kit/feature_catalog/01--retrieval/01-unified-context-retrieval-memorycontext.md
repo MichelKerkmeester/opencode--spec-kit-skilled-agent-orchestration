@@ -1,6 +1,7 @@
 ---
 title: "Unified context retrieval (memory_context)"
 description: "Describes the L1 orchestration layer that auto-detects task intent and routes to the best retrieval strategy."
+audited_post_018: true
 ---
 
 # Unified context retrieval (memory_context)

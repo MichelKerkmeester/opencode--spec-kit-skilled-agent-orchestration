@@ -1,6 +1,7 @@
 ---
 title: "253 -- Runtime detection outputs"
 description: "This scenario validates Runtime detection for 253. It focuses on runtime + hookPolicy for all 4 runtimes."
+audited_post_018: true
 ---
 
 # 253 -- Runtime detection outputs

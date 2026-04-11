@@ -1,6 +1,7 @@
 ---
 title: "160 -- Shadow feedback (SPECKIT_SHADOW_FEEDBACK)"
 description: "This scenario validates shadow feedback (SPECKIT_SHADOW_FEEDBACK) for `160`. It focuses on enabling the flag, running a search, and verifying shadow_scoring_log entries are created."
+audited_post_018: true
 ---
 
 # 160 -- Shadow feedback (SPECKIT_SHADOW_FEEDBACK)

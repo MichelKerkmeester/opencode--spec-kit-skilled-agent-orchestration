@@ -1,6 +1,7 @@
 ---
 title: "Save quality gate exceptions"
 description: "Save quality gate exceptions allow decision-type documents with sufficient structural signals to bypass the minimum content length check, preventing false rejections of short but high-value memories, gated by the SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS flag."
+audited_post_018: true
 ---
 
 # Save quality gate exceptions

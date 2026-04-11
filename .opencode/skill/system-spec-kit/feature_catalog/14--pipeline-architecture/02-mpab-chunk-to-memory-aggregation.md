@@ -1,6 +1,7 @@
 ---
 title: "MPAB chunk-to-memory aggregation"
 description: "MPAB chunk-to-memory aggregation combines multiple chunk scores into a single memory-level score using a damped bonus formula."
+audited_post_018: true
 ---
 
 # MPAB chunk-to-memory aggregation

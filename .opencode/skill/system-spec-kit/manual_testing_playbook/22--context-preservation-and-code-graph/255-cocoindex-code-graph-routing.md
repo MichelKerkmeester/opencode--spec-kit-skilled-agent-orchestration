@@ -1,6 +1,7 @@
 ---
 title: "255 -- Semantic vs structural query routing"
 description: "This scenario validates CocoIndex bridge for 255. It focuses on CocoIndex used for semantic, code_graph for structural."
+audited_post_018: true
 ---
 
 # 255 -- Semantic vs structural query routing

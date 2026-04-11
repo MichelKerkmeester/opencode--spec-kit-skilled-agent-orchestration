@@ -1,6 +1,7 @@
 ---
 title: "EX-030 -- 3. MCP Configuration"
 description: "This scenario validates 3. MCP Configuration for `EX-030`. It focuses on MCP limits audit."
+audited_post_018: true
 ---
 
 # EX-030 -- 3. MCP Configuration

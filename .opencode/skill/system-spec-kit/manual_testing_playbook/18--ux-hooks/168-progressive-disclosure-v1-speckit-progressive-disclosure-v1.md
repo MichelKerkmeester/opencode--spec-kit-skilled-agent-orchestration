@@ -45,3 +45,4 @@ Operators run the exact prompt and command sequence for `168` and confirm the ex
 - Playbook ID: 168
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/168-progressive-disclosure-v1-speckit-progressive-disclosure-v1.md`
+- audited_post_018: true

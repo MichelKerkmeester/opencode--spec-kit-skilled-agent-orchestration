@@ -1,13 +1,15 @@
 ---
-title: "143 -- Bounded graph-walk rollout and diagnostics"
-description: "This scenario validates Bounded graph-walk rollout and diagnostics for `143`. It focuses on Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering."
+title: "143 -- Bounded graph diagnostics and ordering stability"
+description: "This scenario validates the bounded graph bonus diagnostics that remain after the graph-walk rollout ladder was retired."
+audited_post_018: true
+phase_018_replaces: graph-walk rollout-state ladder and diagnostics
 ---
 
-# 143 -- Bounded graph-walk rollout and diagnostics
+# 143 -- Bounded graph diagnostics and ordering stability
 
 ## 1. OVERVIEW
 
-This scenario validates Bounded graph-walk rollout and diagnostics for `143`. It focuses on Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering.
+This scenario validates bounded graph diagnostics for `143`. It focuses on confirming the active trace contract exposes bounded bonus behavior and stable ordering without relying on the retired rollout-state ladder.
 
 ---
 
@@ -15,10 +17,10 @@ This scenario validates Bounded graph-walk rollout and diagnostics for `143`. It
 
 Operators run the exact prompt and command sequence for `143` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering
-- Prompt: `Validate bounded graph-walk rollout states and trace diagnostics. Capture the evidence needed to prove Rollout states switch cleanly between trace_only, bounded_runtime, and off; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; off disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: Rollout states switch cleanly between `trace_only`, `bounded_runtime`, and `off`; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; `off` disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering
-- Pass/fail: PASS if rollout state, bounded bonus, cap saturation signaling, and ordering guarantees all match the documented ladder
+- Objective: Verify bounded graph diagnostics expose the live trace fields and preserve deterministic ordering even when any legacy rollout metadata is treated as compatibility-only
+- Prompt: `Validate bounded graph diagnostics after graph-walk rollout retirement. Capture the evidence needed to prove trace.graphContribution exposes raw, normalized, appliedBonus, and capApplied; any legacy rolloutState field is compatibility metadata only; repeated identical runs preserve deterministic ordering. Return a concise user-facing pass/fail verdict with the main reason.`
+- Expected signals: Trace diagnostics expose `raw`, `normalized`, `appliedBonus`, and `capApplied`; repeated identical runs preserve deterministic ordering; any legacy rollout-state label is compatibility metadata only and not part of the active operator contract
+- Pass/fail: PASS if bounded bonus and ordering remain stable and the active contract no longer depends on rollout-state transitions
 
 ---
 
@@ -26,7 +28,7 @@ Operators run the exact prompt and command sequence for `143` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 143 | Bounded graph-walk rollout and diagnostics | Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering | `Validate bounded graph-walk rollout states and trace diagnostics. Capture the evidence needed to prove Rollout states switch cleanly between trace_only, bounded_runtime, and off; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; off disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Prepare a graph-connected sandbox corpus 2) Start runtime with `SPECKIT_GRAPH_WALK_ROLLOUT=trace_only` and run `memory_search({ query:"graph rollout trace check", includeTrace:true, limit:10 })` 3) Verify `trace.graphContribution.rolloutState` is `trace_only` and `appliedBonus` remains 0 while `raw`/`normalized` are still visible 4) Restart with `SPECKIT_GRAPH_WALK_ROLLOUT=bounded_runtime` and repeat 5) Verify `appliedBonus` is present, bounded at `<= 0.03`, and `capApplied` flips to `true` when the bounded runtime bonus saturates at the Stage 2 cap 6) Restart with `SPECKIT_GRAPH_WALK_ROLLOUT=off` and verify the graph-walk bonus disappears while the broader graph-signal path stays governed by `SPECKIT_GRAPH_SIGNALS` and repeated identical runs keep the same ordering | Rollout states switch cleanly between `trace_only`, `bounded_runtime`, and `off`; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; `off` disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering | Search outputs for all three rollout states + ordering comparison across repeated runs | PASS if rollout state, bounded bonus, cap saturation signaling, and ordering guarantees all match the documented ladder | Inspect `lib/search/search-flags.ts`, `lib/search/graph-flags.ts`, `lib/graph/graph-signals.ts`, and `lib/search/pipeline/ranking-contract.ts` if bonus or ordering contracts drift |
+| 143 | Bounded graph diagnostics and ordering stability | Verify the live trace contract exposes bounded bonus fields and stable ordering without depending on retired rollout states | `Validate bounded graph diagnostics after graph-walk rollout retirement. Capture the evidence needed to prove trace.graphContribution exposes raw, normalized, appliedBonus, and capApplied; any legacy rolloutState field is compatibility metadata only; repeated identical runs preserve deterministic ordering. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run `memory_search({ query:"graph diagnostics stable ordering", includeTrace:true, limit:10 })` on a graph-connected corpus 2) Verify `trace.graphContribution.raw`, `normalized`, `appliedBonus`, and `capApplied` are present in the trace envelope 3) Repeat the identical query and confirm the returned ordering is stable across runs 4) If `trace.graphContribution.rolloutState` is present, treat it as compatibility metadata only and confirm the active operator contract does not depend on `trace_only`, `bounded_runtime`, or `off` state transitions | Trace diagnostics expose `raw`, `normalized`, `appliedBonus`, and `capApplied`; repeated identical runs preserve deterministic ordering; any legacy rollout-state label is compatibility metadata only and not part of the active operator contract | Search outputs for repeated identical runs + trace-envelope comparison | PASS if bounded bonus and ordering remain stable and the active contract no longer depends on rollout-state transitions | Inspect `mcp_server/formatters/search-results.ts`, `mcp_server/lib/search/hybrid-search.ts`, and `mcp_server/tests/search-results-format.vitest.ts` if the trace envelope no longer carries the bounded graph fields |
 
 ---
 

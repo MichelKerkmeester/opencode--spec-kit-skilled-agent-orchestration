@@ -1,6 +1,7 @@
 ---
 title: "CocoIndex bridge and code_graph_context"
 description: "CocoIndex bridge resolves semantic search results to code graph nodes and expands into LLM-oriented neighborhoods."
+audited_post_018: true
 ---
 
 # CocoIndex bridge and code_graph_context

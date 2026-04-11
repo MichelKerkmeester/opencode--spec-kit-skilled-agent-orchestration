@@ -1,6 +1,7 @@
 ---
 title: "191 -- Namespace management CRUD tools"
 description: "This scenario validates Namespace management CRUD tools for `191`. It focuses on Confirm shared-memory lifecycle enablement, scoped access, and membership mutations."
+audited_post_018: true
 ---
 
 # 191 -- Namespace management CRUD tools

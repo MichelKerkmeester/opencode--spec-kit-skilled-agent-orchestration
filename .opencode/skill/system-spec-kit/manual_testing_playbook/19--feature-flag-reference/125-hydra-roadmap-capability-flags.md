@@ -1,6 +1,8 @@
 ---
 title: "125: Memory roadmap capability flags"
 description: "Manual-testing reference for validating the runtime roadmap capability resolvers, including canonical SPECKIT_MEMORY_* precedence over legacy Hydra aliases."
+audited_post_018: true
+phase_018_change: updated to use the dedicated roadmap-capability catalog reference and corrected the snapshot count
 ---
 
 # 125: Memory roadmap capability flags
@@ -40,7 +42,7 @@ Operators run the exact prompt and command sequence for `125` and confirm the ex
 
 1. Restate the user request in rollout-language, not just environment-variable language.
 2. Choose local execution over delegation because the test is blocked on immediate runtime output.
-3. Run the four deterministic snapshots exactly as written.
+3. Run the five deterministic snapshots exactly as written.
 4. Compare the outputs and explicitly map them back to the user-facing conclusion.
 5. Return a short final answer that distinguishes default-off roadmap behavior from explicit canonical or legacy opt-in behavior, while calling out canonical-key precedence.
 
@@ -52,14 +54,14 @@ Operators run the exact prompt and command sequence for `125` and confirm the ex
 
 ## 4. SOURCE FILES
 
-- Feature catalog: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
+- Feature catalog: [19--feature-flag-reference/11-memory-roadmap-capability-flags.md](../../feature_catalog/19--feature-flag-reference/11-memory-roadmap-capability-flags.md)
 
 ### Playbook Sources
 
 | File | Role |
 |---|---|
 | [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md) | Root directory page and scenario summary |
-| [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) | Feature-catalog source describing the roadmap-flag contract |
+| [19--feature-flag-reference/11-memory-roadmap-capability-flags.md](../../feature_catalog/19--feature-flag-reference/11-memory-roadmap-capability-flags.md) | Feature-catalog source describing the roadmap-flag contract |
 
 ### Implementation And Test Anchors
 

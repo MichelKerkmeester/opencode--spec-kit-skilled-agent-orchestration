@@ -50,3 +50,4 @@ Default ON (graduated). Set `SPECKIT_PROGRESSIVE_DISCLOSURE_V1=false` to disable
 - Group: UX hooks
 - Source feature title: Progressive disclosure with cursor pagination
 - Current reality source: mcp_server/lib/search/progressive-disclosure.ts and handlers/memory-search.ts
+- audited_post_018: true

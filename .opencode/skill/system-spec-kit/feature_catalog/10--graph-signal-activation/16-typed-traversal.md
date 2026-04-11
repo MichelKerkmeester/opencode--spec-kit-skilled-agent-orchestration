@@ -1,6 +1,7 @@
 ---
 title: "Typed traversal"
-description: "Typed traversal is partially wired for sparse-first graph policy and intent-aware edge traversal in `causal-boost.ts`, behind the `SPECKIT_TYPED_TRAVERSAL` flag, with some runtime/export coverage still planned."
+description: "Typed traversal is active for sparse-first graph policy and intent-aware edge traversal in `causal-boost.ts`, behind the `SPECKIT_TYPED_TRAVERSAL` flag, with live runtime and test coverage."
+audited_post_018: true
 ---
 
 # Typed traversal
@@ -17,7 +18,7 @@ When the graph has few edges relative to the number of memories, deep multi-hop 
 
 The flag surface is enabled by default (graduated). Set `SPECKIT_TYPED_TRAVERSAL=false` to disable.
 
-`search-flags.ts` exports `isTypedTraversalEnabled()`, and `causal-boost.ts` contains helper logic for the D3 Phase A sparse-first and intent-aware traversal behavior. However, the dedicated `sparse-first-graph.vitest.ts` file is entirely `describe.skip(...)` and marked "spec-ahead-of-implementation", so this should be treated as partial/planned runtime wiring rather than fully validated live behavior.
+`search-flags.ts` exports `isTypedTraversalEnabled()`, and `causal-boost.ts` contains the sparse-first and intent-aware traversal behavior used in live scoring. The companion `sparse-first-graph.vitest.ts` suite is active, so this is now a live feature with working runtime and test coverage rather than a spec-ahead placeholder.
 
 When the flag is on, the current helper logic covers two D3 Phase A requirements:
 
@@ -43,7 +44,7 @@ Key constants: `MAX_HOPS = 2` (normal mode), `SPARSE_MAX_HOPS = 1`, `SPARSE_DENS
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/causal-boost.vitest.ts` | Causal boost with typed traversal, sparse-first gating, intent-aware scoring |
-| `mcp_server/tests/sparse-first-graph.vitest.ts` | Skipped spec-ahead-of-implementation coverage documenting planned sparse-first export/runtime wiring |
+| `mcp_server/tests/sparse-first-graph.vitest.ts` | Sparse-first policy coverage for traversal depth and community gating |
 
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "258 -- 3-source compact merger within budget"
 description: "This scenario validates Compact merger for 258. It focuses on All non-empty sources included, total within 4000 tokens."
+audited_post_018: true
 ---
 
 # 258 -- 3-source compact merger within budget

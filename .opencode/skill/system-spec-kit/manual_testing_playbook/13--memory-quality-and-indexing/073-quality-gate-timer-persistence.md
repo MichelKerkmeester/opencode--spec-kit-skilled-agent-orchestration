@@ -1,6 +1,7 @@
 ---
 title: "073 -- Quality gate timer persistence"
 description: "This scenario validates Quality gate timer persistence for `073`. It focuses on Confirm restart persistence."
+audited_post_018: true
 ---
 
 # 073 -- Quality gate timer persistence

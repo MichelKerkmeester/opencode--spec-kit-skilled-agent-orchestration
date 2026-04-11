@@ -1,6 +1,7 @@
 ---
 title: "248 -- PreCompact hook fires and caches context"
 description: "This scenario validates PreCompact hook context caching for 248. It focuses on PreCompact hook precomputes context and caches to hook state."
+audited_post_018: true
 ---
 
 # 248 -- PreCompact hook fires and caches context

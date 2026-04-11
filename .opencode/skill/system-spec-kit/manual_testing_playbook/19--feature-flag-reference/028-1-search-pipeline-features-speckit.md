@@ -1,6 +1,7 @@
 ---
 title: "EX-028 -- 1. Search Pipeline Features (SPECKIT_*)"
 description: "This scenario validates 1. Search Pipeline Features (SPECKIT_*) for `EX-028`. It focuses on flag catalog verification with inert and retired surface cleanup."
+audited_post_018: true
 ---
 
 # EX-028 -- 1. Search Pipeline Features (SPECKIT_*)

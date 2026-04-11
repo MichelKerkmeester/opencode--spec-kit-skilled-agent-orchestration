@@ -43,4 +43,5 @@ Operators run the exact prompt and command sequence for `213` and confirm the ex
 - Playbook ID: 213
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `18--ux-hooks/213-mutation-response-ux-payload-exposure.md`
+- audited_post_018: true
 - Feature catalog back-ref: `18--ux-hooks/07-mutation-response-ux-payload-exposure.md`

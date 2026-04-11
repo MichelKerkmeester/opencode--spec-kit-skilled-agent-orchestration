@@ -1,6 +1,7 @@
 ---
 title: "116 -- Chunking safe swap atomicity (P0-6)"
 description: "This scenario validates Chunking safe swap atomicity (P0-6) for `116`. It focuses on Verify re-chunking indexes new chunks before deleting old ones, finalization cleans staged replacements on failure, and old chunks survive if new indexing fails."
+audited_post_018: true
 ---
 
 # 116 -- Chunking safe swap atomicity (P0-6)

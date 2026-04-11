@@ -1,6 +1,7 @@
 ---
 title: "Shared Memory End-to-End Architecture and Source Map"
 description: "Documents the implemented shared-memory flow from enablement through shared-space creation, membership, governed write visibility, query filtering, kill-switch behavior, and conflict recording."
+audited_post_018: true
 ---
 
 # Shared Memory End-to-End Architecture and Source Map

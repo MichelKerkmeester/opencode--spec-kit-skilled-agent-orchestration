@@ -1,6 +1,7 @@
 ---
 title: "5. Embedding and API"
 description: "This document captures the implemented behavior, source references, and validation scope for 5. Embedding and API."
+audited_post_018: true
 ---
 
 # 5. Embedding and API

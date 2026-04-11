@@ -1,6 +1,7 @@
 ---
 title: "029 -- Double intent weighting investigation (G2)"
 description: "This scenario validates Double intent weighting investigation (G2) for `029`. It focuses on Confirm no hybrid double-weight."
+audited_post_018: true
 ---
 
 # 029 -- Double intent weighting investigation (G2)
