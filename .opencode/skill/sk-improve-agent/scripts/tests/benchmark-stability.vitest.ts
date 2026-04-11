@@ -4,13 +4,14 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
-const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../../');
+const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../');
 const require = createRequire(import.meta.url);
 
 const stability = require(path.join(
   WORKSPACE_ROOT,
   '.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs',
 )) as {
+  MIN_REPLAY_COUNT_DEFAULT: number;
   DEFAULT_REPLAY_COUNT: number;
   DEFAULT_WARNING_THRESHOLD: number;
   DEFAULT_SESSION_COUNT_THRESHOLD: number;
@@ -18,13 +19,20 @@ const stability = require(path.join(
   mean: (values: number[]) => number;
   stddev: (values: number[]) => number;
   stabilityCoefficient: (values: number[]) => number;
-  measureStability: (results: object[], config?: object) => { dimensions: Record<string, { coefficient: number; mean: number; stddev: number; samples: number }>; stable: boolean; warnings: string[] };
-  isStable: (stabilityResult: object, maxVariance?: number) => boolean;
+  measureStability:
+    (results: object[], config?: object) =>
+      | { dimensions: Record<string, { coefficient: number; mean: number; stddev: number; samples: number }>; stable: boolean; warnings: string[] }
+      | { state: string; replayCount: number; minRequired: number; reason: string };
+  isStable: (stabilityResult: { state?: string; dimensions?: Record<string, { coefficient: number }> }, maxVariance?: number) => boolean;
   generateWeightRecommendations: (sessionHistory: object[], currentWeights: Record<string, number>, config?: object) => { recommendations: Record<string, number> | null; sufficient: boolean; report: string };
 };
 
 describe('benchmark-stability', () => {
   describe('constants', () => {
+    it('has default minimum replay count of 3', () => {
+      expect(stability.MIN_REPLAY_COUNT_DEFAULT).toBe(3);
+    });
+
     it('has default replay count of 3', () => {
       expect(stability.DEFAULT_REPLAY_COUNT).toBe(3);
     });
@@ -78,6 +86,29 @@ describe('benchmark-stability', () => {
   });
 
   describe('measureStability', () => {
+    it('returns insufficientSample for 1 replay', () => {
+      expect(stability.measureStability([
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+      ])).toEqual({
+        state: 'insufficientSample',
+        replayCount: 1,
+        minRequired: 3,
+        reason: 'Benchmark stability requires at least 3 replays before verdict',
+      });
+    });
+
+    it('returns insufficientSample for 2 replays', () => {
+      expect(stability.measureStability([
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+      ])).toEqual({
+        state: 'insufficientSample',
+        replayCount: 2,
+        minRequired: 3,
+        reason: 'Benchmark stability requires at least 3 replays before verdict',
+      });
+    });
+
     it('returns stable for identical replays', () => {
       const results = [
         { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
@@ -86,6 +117,9 @@ describe('benchmark-stability', () => {
       ];
 
       const result = stability.measureStability(results);
+      if ('state' in result) {
+        throw new Error('Expected full stability verdict for 3 replays');
+      }
       expect(result.stable).toBe(true);
       expect(result.warnings).toHaveLength(0);
       expect(result.dimensions.structural.coefficient).toBe(1.0);
@@ -99,6 +133,9 @@ describe('benchmark-stability', () => {
       ];
 
       const result = stability.measureStability(results);
+      if ('state' in result) {
+        throw new Error('Expected full stability verdict for 3 replays');
+      }
       expect(result.stable).toBe(false);
       expect(result.warnings.length).toBeGreaterThan(0);
       expect(result.warnings[0]).toContain('stabilityWarning');
@@ -109,21 +146,47 @@ describe('benchmark-stability', () => {
       const results = [
         { dimensions: [{ name: 'structural', score: 95 }, { name: 'ruleCoherence', score: 90 }] },
         { dimensions: [{ name: 'structural', score: 95 }, { name: 'ruleCoherence', score: 90 }] },
+        { dimensions: [{ name: 'structural', score: 95 }, { name: 'ruleCoherence', score: 90 }] },
       ];
 
       const result = stability.measureStability(results);
+      if ('state' in result) {
+        throw new Error('Expected full stability verdict for 3 replays');
+      }
       expect(result.dimensions.structural.coefficient).toBe(1.0);
     });
 
-    it('handles empty results gracefully', () => {
+    it('returns insufficientSample for empty results', () => {
       const result = stability.measureStability([]);
-      expect(result.stable).toBe(true);
+      expect(result).toEqual({
+        state: 'insufficientSample',
+        replayCount: 0,
+        minRequired: 3,
+        reason: 'Benchmark stability requires at least 3 replays before verdict',
+      });
+    });
+
+    it('respects custom minReplayCount override', () => {
+      const result = stability.measureStability([
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+      ], { minReplayCount: 5 });
+
+      expect(result).toEqual({
+        state: 'insufficientSample',
+        replayCount: 4,
+        minRequired: 5,
+        reason: 'Benchmark stability requires at least 5 replays before verdict',
+      });
     });
   });
 
   describe('isStable', () => {
     it('accepts results with low variance', () => {
       const result = stability.measureStability([
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
         { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
         { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
       ]);
@@ -134,8 +197,16 @@ describe('benchmark-stability', () => {
       const result = stability.measureStability([
         { scores: { structural: 50, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
         { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+        { scores: { structural: 70, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
       ]);
       expect(stability.isStable(result, 0.01)).toBe(false);
+    });
+
+    it('treats insufficientSample as not stable', () => {
+      const result = stability.measureStability([
+        { scores: { structural: 95, ruleCoherence: 90, integration: 92, outputQuality: 88, systemFitness: 93 } },
+      ]);
+      expect(stability.isStable(result)).toBe(false);
     });
   });
 

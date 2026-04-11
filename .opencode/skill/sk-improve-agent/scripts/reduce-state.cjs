@@ -53,6 +53,93 @@ function parseJsonl(content) {
     });
 }
 
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function findNestedState(value, expectedState, seen = new Set()) {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  if (seen.has(value)) {
+    return null;
+  }
+  seen.add(value);
+
+  if (isPlainObject(value) && value.state === expectedState) {
+    return value;
+  }
+
+  const entries = Array.isArray(value) ? value : Object.values(value);
+  for (const entry of entries) {
+    const found = findNestedState(entry, expectedState, seen);
+    if (found) {
+      return found;
+    }
+  }
+
+  return null;
+}
+
+function inferRun(record, statePayload, fallbackIndex) {
+  const candidates = [
+    statePayload?.run,
+    statePayload?.iteration,
+    statePayload?.runNumber,
+    record?.run,
+    record?.iteration,
+    record?.runNumber,
+    record?.label,
+    fallbackIndex + 1,
+  ];
+
+  for (const candidate of candidates) {
+    if (typeof candidate === 'number' && Number.isFinite(candidate)) {
+      return candidate;
+    }
+    if (typeof candidate === 'string' && candidate.trim()) {
+      return candidate;
+    }
+  }
+
+  return fallbackIndex + 1;
+}
+
+function extractInsufficientDataIteration(record, fallbackIndex) {
+  const statePayload = findNestedState(record, 'insufficientData');
+  if (
+    !statePayload ||
+    typeof statePayload.dataPoints !== 'number' ||
+    typeof statePayload.minRequired !== 'number'
+  ) {
+    return null;
+  }
+
+  return {
+    run: inferRun(record, statePayload, fallbackIndex),
+    dataPoints: statePayload.dataPoints,
+    minRequired: statePayload.minRequired,
+  };
+}
+
+function extractInsufficientSampleIteration(record, fallbackIndex) {
+  const statePayload = findNestedState(record, 'insufficientSample');
+  if (
+    !statePayload ||
+    typeof statePayload.replayCount !== 'number' ||
+    typeof statePayload.minRequired !== 'number'
+  ) {
+    return null;
+  }
+
+  return {
+    run: inferRun(record, statePayload, fallbackIndex),
+    replayCount: statePayload.replayCount,
+    minRequired: statePayload.minRequired,
+  };
+}
+
 function inferProfileId(record) {
   if (record.profileId) {
     return record.profileId;
@@ -144,6 +231,8 @@ function maybeSetBestBenchmark(bucket, record) {
 
 function buildRegistry(records) {
   const profiles = {};
+  const insufficientDataIterations = [];
+  const insufficientSampleIterations = [];
   const globalMetrics = {
     totalRecords: records.length,
     targetProfiles: 0,
@@ -158,11 +247,21 @@ function buildRegistry(records) {
     benchmarkFailCount: 0,
   };
 
-  for (const record of records) {
+  for (const [index, record] of records.entries()) {
     const profileId = inferProfileId(record);
     const family = inferFamily(record, profileId);
     if (!profiles[profileId]) {
       profiles[profileId] = createProfileBucket(profileId, family);
+    }
+
+    const insufficientDataIteration = extractInsufficientDataIteration(record, index);
+    if (insufficientDataIteration) {
+      insufficientDataIterations.push(insufficientDataIteration);
+    }
+
+    const insufficientSampleIteration = extractInsufficientSampleIteration(record, index);
+    if (insufficientSampleIteration) {
+      insufficientSampleIterations.push(insufficientSampleIteration);
     }
 
     const bucket = profiles[profileId];
@@ -230,6 +329,8 @@ function buildRegistry(records) {
 
   return {
     globalMetrics,
+    insufficientDataIterations,
+    insufficientSampleIterations,
     profiles,
   };
 }

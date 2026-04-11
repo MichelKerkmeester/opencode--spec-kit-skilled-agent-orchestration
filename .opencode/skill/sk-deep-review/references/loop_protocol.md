@@ -169,6 +169,14 @@ Run `shouldContinue_review()` (see `../sk-deep-research/references/convergence.m
   - Evidence, scope, and coverage gates pass
 - Otherwise: `CONTINUE`
 
+If convergence math or a hard-stop candidate points to STOP, the workflow must run the review legal-stop decision tree before actually stopping. That decision tree records five review-specific gates: `convergenceGate`, `dimensionCoverageGate`, `p0ResolutionGate`, `evidenceDensityGate`, and `hotspotSaturationGate`. If any gate fails, the loop does **not** stop. Instead it emits a first-class `blocked_stop` JSONL event with:
+
+- `blockedBy`: array of the failed review gate names
+- `gateResults`: per-gate pass/fail payloads using the review gate names above
+- `recoveryStrategy`: one-line hint describing the next review action
+
+The blocked-stop event is append-only evidence that legal-stop blocked the run; the loop then continues with the recovery or next-focus path rather than synthesizing.
+
 Convergence signals and weights:
 
 | Signal | Weight | Description |
@@ -185,7 +193,7 @@ Before dispatching, check for a pause sentinel file:
 
 1. Check if `review/.deep-review-pause` exists (note: the file name uses the shared `-pause` suffix)
 2. If present:
-   - Log event to JSONL: `{"type":"event","event":"paused","reason":"sentinel file detected"}`
+   - Log event to JSONL: `{"type":"event","event":"userPaused","mode":"review","stopReason":"userPaused","reason":"sentinel file detected"}`
    - Halt the loop with message:
      ```
      Review paused. Delete review/.deep-review-pause to resume.
@@ -197,6 +205,8 @@ Before dispatching, check for a pause sentinel file:
    - Continue from step_read_state
 
 **Use case**: In autonomous mode, this provides the only graceful intervention mechanism short of killing the process. Users can create the sentinel file at any time to pause review between iterations.
+
+Normalization rule: if the runtime first observes a raw `paused` condition or a raw `stuck_recovery` condition, it MUST rewrite the emitted JSONL event names to `userPaused` and `stuckRecovery` before appending them. Persisted review JSONL should never contain raw `paused` or raw `stuck_recovery` rows after emission.
 
 #### Step 2b: Generate State Summary
 

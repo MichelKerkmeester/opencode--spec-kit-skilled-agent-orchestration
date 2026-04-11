@@ -17,7 +17,8 @@ const path = require('node:path');
  * Default number of replay runs for stability measurement.
  * @type {number}
  */
-const DEFAULT_REPLAY_COUNT = 3;
+const MIN_REPLAY_COUNT_DEFAULT = 3;
+const DEFAULT_REPLAY_COUNT = MIN_REPLAY_COUNT_DEFAULT;
 
 /**
  * Default stability warning threshold. Below this coefficient, a warning is emitted.
@@ -44,6 +45,22 @@ const DIMENSIONS = Object.freeze([
   'outputQuality',
   'systemFitness',
 ]);
+
+function resolveMinReplayCount(config) {
+  if (Number.isInteger(config?.minReplayCount) && config.minReplayCount > 0) {
+    return config.minReplayCount;
+  }
+
+  const envValue = Number.parseInt(
+    process.env.SK_IMPROVE_AGENT_BENCHMARK_MIN_REPLAY_COUNT || '',
+    10
+  );
+  if (Number.isInteger(envValue) && envValue > 0) {
+    return envValue;
+  }
+
+  return MIN_REPLAY_COUNT_DEFAULT;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. STABILITY MEASUREMENT
@@ -97,20 +114,23 @@ function stabilityCoefficient(values) {
  * per-dimension stability coefficients.
  *
  * @param {object[]} results - Array of benchmark result objects, each with { dimensions: [{ name, score }] } or { scores: { dim: number } }
- * @param {object} [config] - { warningThreshold? }
- * @returns {{ dimensions: object, stable: boolean, warnings: string[] }}
+ * @param {object} [config] - { warningThreshold?, minReplayCount? }
+ * @returns {{ dimensions: object, stable: boolean, warnings: string[] }|{state: string, replayCount: number, minRequired: number, reason: string}}
  */
 function measureStability(results, config) {
+  const replayCount = Array.isArray(results) ? results.length : 0;
   const opts = {
     warningThreshold: DEFAULT_WARNING_THRESHOLD,
+    minReplayCount: resolveMinReplayCount(config),
     ...config,
   };
 
-  if (!results || results.length === 0) {
+  if (replayCount < opts.minReplayCount) {
     return {
-      dimensions: {},
-      stable: true,
-      warnings: ['No results provided for stability measurement'],
+      state: 'insufficientSample',
+      replayCount,
+      minRequired: opts.minReplayCount,
+      reason: `Benchmark stability requires at least ${opts.minReplayCount} replays before verdict`,
     };
   }
 
@@ -179,6 +199,10 @@ function measureStability(results, config) {
  * @returns {boolean} True if all dimensions have acceptable variance
  */
 function isStable(stabilityResult, maxVariance) {
+  if (stabilityResult?.state === 'insufficientSample') {
+    return false;
+  }
+
   const threshold = typeof maxVariance === 'number' ? maxVariance : 0.05;
 
   for (const dim of DIMENSIONS) {
@@ -300,6 +324,7 @@ function generateWeightRecommendations(sessionHistory, currentWeights, config) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
+  MIN_REPLAY_COUNT_DEFAULT,
   DEFAULT_REPLAY_COUNT,
   DEFAULT_WARNING_THRESHOLD,
   DEFAULT_SESSION_COUNT_THRESHOLD,

@@ -40,6 +40,12 @@ const SOFT_DIMENSIONS = Object.freeze([
 const DEFAULT_IMPROVEMENT_THRESHOLD = 3;
 
 /**
+ * Default minimum number of trajectory points required before trade-off analysis.
+ * @type {number}
+ */
+const MIN_DATA_POINTS_DEFAULT = 3;
+
+/**
  * Default regression thresholds.
  * Research finding: +3/-3 for hard dims, +3/-5 for soft dims.
  * @type {{ hard: number, soft: number }}
@@ -48,6 +54,22 @@ const DEFAULT_REGRESSION_THRESHOLDS = Object.freeze({
   hard: -3,
   soft: -5,
 });
+
+function resolveMinDataPoints(options) {
+  if (Number.isInteger(options?.minDataPoints) && options.minDataPoints > 0) {
+    return options.minDataPoints;
+  }
+
+  const envValue = Number.parseInt(
+    process.env.SK_IMPROVE_AGENT_TRADE_OFF_MIN_DATA_POINTS || '',
+    10
+  );
+  if (Number.isInteger(envValue) && envValue > 0) {
+    return envValue;
+  }
+
+  return MIN_DATA_POINTS_DEFAULT;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. CORE API
@@ -58,16 +80,24 @@ const DEFAULT_REGRESSION_THRESHOLDS = Object.freeze({
  * A trade-off exists when one dimension improves significantly while another regresses.
  *
  * @param {object[]} trajectoryData - Array of trajectory data points with { scores: { dim: number } }
- * @param {object} [options] - { improvementThreshold?, regressionThresholds?: { hard?, soft? } }
- * @returns {object[]} Array of detected trade-offs: { improving, regressing, improvementDelta, regressionDelta, iteration? }
+ * @param {object} [options] - { improvementThreshold?, minDataPoints?, regressionThresholds?: { hard?, soft? } }
+ * @returns {object[]|{state: string, dataPoints: number, minRequired: number, reason: string}} Array of detected trade-offs or insufficient-data state
  */
 function detectTradeOffs(trajectoryData, options) {
-  if (!trajectoryData || trajectoryData.length < 2) {
-    return [];
+  const dataPoints = Array.isArray(trajectoryData) ? trajectoryData.length : 0;
+  const minDataPoints = resolveMinDataPoints(options);
+  if (dataPoints < minDataPoints) {
+    return {
+      state: 'insufficientData',
+      dataPoints,
+      minRequired: minDataPoints,
+      reason: `Trade-off detection requires at least ${minDataPoints} data points before analysis`,
+    };
   }
 
   const opts = {
     improvementThreshold: DEFAULT_IMPROVEMENT_THRESHOLD,
+    minDataPoints,
     regressionThresholds: { ...DEFAULT_REGRESSION_THRESHOLDS },
     ...options,
   };
@@ -214,6 +244,7 @@ module.exports = {
   HARD_DIMENSIONS,
   SOFT_DIMENSIONS,
   DEFAULT_IMPROVEMENT_THRESHOLD,
+  MIN_DATA_POINTS_DEFAULT,
   DEFAULT_REGRESSION_THRESHOLDS,
   detectTradeOffs,
   getTrajectory,

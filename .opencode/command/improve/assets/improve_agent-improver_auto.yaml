@@ -87,6 +87,7 @@ skill_reference:
     profiler: .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs
     scorer: .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
     benchmark: .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+    journal: .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
     reducer: .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
 
 # ─────────────────────────────────────────────────────────────────
@@ -128,6 +129,9 @@ workflow:
       step_record_baseline:
         description: "Record baseline candidate state in append-only ledger"
         action: "Append a baseline record for {target_path} into agent-improvement-state.jsonl"
+      step_emit_journal_event:
+        description: "Emit session_start journal event before the first loop iteration begins"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit session_start --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"target\":\"{target_path}\",\"charter\":\"{spec_folder}/improvement/agent-improvement-charter.md\",\"startedAt\":\"{started_at}\"}'"
 
   phase_loop:
     description: "Iterative propose -> score -> benchmark -> reduce cycle"
@@ -140,9 +144,15 @@ workflow:
       step_generate_candidate:
         description: "Dispatch @agent-improver to write one bounded candidate"
         action: "Dispatch @agent-improver to write a new candidate into candidates/"
+      step_emit_journal_event_candidate_generated:
+        description: "Emit candidate_generated journal event after the candidate is written"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit candidate_generated --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"candidateId\":\"{candidate_id}\",\"candidatePath\":\"{candidate_path}\"}'"
       step_score_candidate:
         description: "Score candidate across 5 dimensions (dynamic) or keyword checks (static)"
         command: "node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate={candidate_path} --baseline={target_path} --manifest={spec_folder}/improvement/target-manifest.jsonc --profile={target_profile} --target={target_path} --output={score_output_path}"
+      step_emit_journal_event_candidate_scored:
+        description: "Emit candidate_scored journal event after scoring completes"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit candidate_scored --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"candidateId\":\"{candidate_id}\",\"scoreOutputPath\":\"{score_output_path}\",\"weightedScore\":\"{weighted_score}\"}'"
       step_run_benchmark:
         description: "Run fixture tests against packet-local outputs"
         action: "Run profile fixtures against packet-local outputs under benchmark-runs/{target_profile}/"
@@ -155,6 +165,9 @@ workflow:
       step_stop_check:
         description: "Evaluate stop conditions: dimension plateau, infra failure, weak benchmarks, max iterations"
         action: "Stop if experiment-registry.json reports stopStatus.shouldStop: true"
+      step_emit_journal_event_gate_evaluation:
+        description: "Emit gate_evaluation journal event after stop-condition evaluation"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit gate_evaluation --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"gateName\":\"stop_check\",\"gateResult\":\"{stop_status}\",\"stopReason\":\"{stop_reason}\"}'"
 
   phase_synthesis:
     description: "After loop exits, summarize findings and recommend next action"
@@ -165,3 +178,6 @@ workflow:
       step_recommendation:
         description: "Recommend continue, promote, or stop based on reducer output"
         action: "Check experiment-registry.json for bestPromptRecord and stopStatus"
+      step_emit_journal_event:
+        description: "Emit session_end journal event after synthesis completes"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit session_end --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"stopReason\":\"{stop_reason}\",\"sessionOutcome\":\"{session_outcome}\",\"endedAt\":\"{ended_at}\",\"totalIterations\":\"{total_iterations}\"}'"

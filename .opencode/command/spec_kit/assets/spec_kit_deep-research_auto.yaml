@@ -241,7 +241,7 @@ workflow:
         action: "Check for pause sentinel file"
         check: "Does {spec_folder}/research/.deep-research-pause exist?"
         if_exists:
-          log_event: '{"type":"event","event":"paused","reason":"sentinel file detected"}'
+          log_event: '{"type":"event","event":"userPaused","mode":"research","run":{current_iteration},"stopReason":"userPaused","sentinelPath":"{spec_folder}/research/.deep-research-pause","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
           message: "Research paused. Delete research/.deep-research-pause to resume."
           halt: true
         if_not_exists:
@@ -279,17 +279,36 @@ workflow:
           - decision: "STOP | STUCK_RECOVERY | CONTINUE"
           - reason: "Human-readable stop reason"
 
+      step_emit_blocked_stop:
+        action: "Persist a first-class blocked_stop event when the legal-stop decision tree returns blocked"
+        if_blocked:
+          append_to_jsonl: '{"type":"event","event":"blocked_stop","mode":"research","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergence":{"pass":{gate_convergence_pass},"score":{gate_convergence_score}},"keyQuestionCoverage":{"pass":{gate_key_question_coverage_pass},"answered":{answered_count},"total":{total_questions}},"evidenceDensity":{"pass":{gate_evidence_density_pass},"sources":{gate_evidence_density_sources}},"hotspotSaturation":{"pass":{gate_hotspot_saturation_pass}}},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
+          set:
+            decision: "CONTINUE"
+            reason: "blockedStop"
+
       step_handle_convergence:
         action: "Act on convergence decision"
         if_stop:
           log: "Loop stopping. Reason: {reason}"
           skip_to: phase_synthesis
         if_stuck_recovery:
+          append_to_jsonl: '{"type":"event","event":"stuckRecovery","mode":"research","run":{current_iteration},"stopReason":"stuckRecovery","fromIteration":{current_iteration},"outcome":"recovered","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
           log: "Stuck detected ({stuck_count} consecutive no-progress). Entering recovery."
           set: { next_focus: "RECOVERY: Widen scope. Try fundamentally different approach. Least-explored question: {least_explored}" }
           reset: { stuck_count: 0 }
         if_continue:
           log: "Iteration {current_iteration}: Continuing. Focus: {next_focus}"
+
+      step_normalize_pause_events:
+        action: "Normalize pause and recovery lifecycle events to the frozen STOP_REASONS enum at emission time"
+        stop_reasons_enum: [converged, maxIterationsReached, blockedStop, stuckRecovery, error, manualStop, userPaused]
+        rule_pause_sentinel:
+          raw_event_forbidden: '{"type":"event","event":"paused"}'
+          canonical_event: '{"type":"event","event":"userPaused","mode":"research","run":{current_iteration},"stopReason":"userPaused","sentinelPath":"{spec_folder}/research/.deep-research-pause","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
+        rule_stuck_recovery:
+          raw_event_forbidden: '{"type":"event","event":"stuck_recovery"}'
+          canonical_event: '{"type":"event","event":"stuckRecovery","mode":"research","run":{current_iteration},"stopReason":"stuckRecovery","fromIteration":{current_iteration},"outcome":"recovered","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
 
       step_dispatch_iteration:
         action: "Dispatch @deep-research agent for one iteration"

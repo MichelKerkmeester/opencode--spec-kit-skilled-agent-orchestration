@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
-const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../../');
+const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../');
 const require = createRequire(import.meta.url);
 
 const detector = require(path.join(
@@ -16,8 +16,12 @@ const detector = require(path.join(
   HARD_DIMENSIONS: readonly string[];
   SOFT_DIMENSIONS: readonly string[];
   DEFAULT_IMPROVEMENT_THRESHOLD: number;
+  MIN_DATA_POINTS_DEFAULT: number;
   DEFAULT_REGRESSION_THRESHOLDS: Readonly<{ hard: number; soft: number }>;
-  detectTradeOffs: (trajectoryData: object[], options?: object) => Array<{ improving: string; regressing: string; improvementDelta: number; regressionDelta: number; iteration: number }>;
+  detectTradeOffs:
+    (trajectoryData: object[], options?: object) =>
+      | Array<{ improving: string; regressing: string; improvementDelta: number; regressionDelta: number; iteration: number }>
+      | { state: string; dataPoints: number; minRequired: number; reason: string };
   getTrajectory: (journalPath: string) => object[];
   checkParetoDominance: (candidateScores: Record<string, number>, baselineScores: Record<string, number>) => { dominated: boolean; dominatingDimensions: string[]; regressions: string[] };
 };
@@ -49,6 +53,10 @@ describe('trade-off-detector', () => {
       expect(detector.DEFAULT_IMPROVEMENT_THRESHOLD).toBe(3);
     });
 
+    it('has default minimum data points of 3', () => {
+      expect(detector.MIN_DATA_POINTS_DEFAULT).toBe(3);
+    });
+
     it('has default regression thresholds', () => {
       expect(detector.DEFAULT_REGRESSION_THRESHOLDS.hard).toBe(-3);
       expect(detector.DEFAULT_REGRESSION_THRESHOLDS.soft).toBe(-5);
@@ -56,32 +64,45 @@ describe('trade-off-detector', () => {
   });
 
   describe('detectTradeOffs', () => {
-    it('returns empty for insufficient data', () => {
-      expect(detector.detectTradeOffs([])).toEqual([]);
-      expect(detector.detectTradeOffs([{ scores: { structural: 90 } }])).toEqual([]);
-    });
-
-    it('detects trade-off when hard dimension regresses while another improves', () => {
-      const trajectory = [
+    it('returns insufficientData for 2-point trajectories', () => {
+      expect(detector.detectTradeOffs([
         { iteration: 1, scores: { structural: 90, ruleCoherence: 80, integration: 90, outputQuality: 85, systemFitness: 90 } },
         { iteration: 2, scores: { structural: 85, ruleCoherence: 90, integration: 90, outputQuality: 85, systemFitness: 90 } },
+      ])).toEqual({
+        state: 'insufficientData',
+        dataPoints: 2,
+        minRequired: 3,
+        reason: 'Trade-off detection requires at least 3 data points before analysis',
+      });
+    });
+
+    it('detects trade-off when 3-point trajectory has a hard regression and another improvement', () => {
+      const trajectory = [
+        { iteration: 1, scores: { structural: 92, ruleCoherence: 80, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 2, scores: { structural: 91, ruleCoherence: 82, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 3, scores: { structural: 85, ruleCoherence: 90, integration: 90, outputQuality: 85, systemFitness: 90 } },
       ];
 
       const tradeOffs = detector.detectTradeOffs(trajectory);
+      expect(Array.isArray(tradeOffs)).toBe(true);
+      if (!Array.isArray(tradeOffs)) {
+        throw new Error('Expected trade-off array for 3-point trajectory');
+      }
       expect(tradeOffs.length).toBeGreaterThan(0);
 
       const found = tradeOffs.find(
         (t) => t.improving === 'ruleCoherence' && t.regressing === 'structural'
       );
       expect(found).toBeDefined();
-      expect(found!.improvementDelta).toBe(10);
-      expect(found!.regressionDelta).toBe(-5);
+      expect(found!.improvementDelta).toBe(8);
+      expect(found!.regressionDelta).toBe(-6);
     });
 
     it('does not flag when both dimensions improve', () => {
       const trajectory = [
         { iteration: 1, scores: { structural: 85, ruleCoherence: 80, integration: 88, outputQuality: 85, systemFitness: 88 } },
-        { iteration: 2, scores: { structural: 92, ruleCoherence: 88, integration: 92, outputQuality: 90, systemFitness: 93 } },
+        { iteration: 2, scores: { structural: 88, ruleCoherence: 84, integration: 90, outputQuality: 87, systemFitness: 90 } },
+        { iteration: 3, scores: { structural: 92, ruleCoherence: 88, integration: 92, outputQuality: 90, systemFitness: 93 } },
       ];
 
       const tradeOffs = detector.detectTradeOffs(trajectory);
@@ -91,7 +112,8 @@ describe('trade-off-detector', () => {
     it('does not flag when regressions are below threshold', () => {
       const trajectory = [
         { iteration: 1, scores: { structural: 90, ruleCoherence: 85, integration: 90, outputQuality: 85, systemFitness: 90 } },
-        { iteration: 2, scores: { structural: 89, ruleCoherence: 90, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 2, scores: { structural: 90, ruleCoherence: 86, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 3, scores: { structural: 89, ruleCoherence: 90, integration: 90, outputQuality: 85, systemFitness: 90 } },
       ];
 
       const tradeOffs = detector.detectTradeOffs(trajectory);
@@ -101,7 +123,8 @@ describe('trade-off-detector', () => {
     it('respects custom thresholds', () => {
       const trajectory = [
         { iteration: 1, scores: { structural: 90, ruleCoherence: 80, integration: 90, outputQuality: 85, systemFitness: 90 } },
-        { iteration: 2, scores: { structural: 85, ruleCoherence: 90, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 2, scores: { structural: 89, ruleCoherence: 82, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 3, scores: { structural: 85, ruleCoherence: 90, integration: 90, outputQuality: 85, systemFitness: 90 } },
       ];
 
       // With very strict thresholds, even -5 should not trigger
@@ -111,9 +134,30 @@ describe('trade-off-detector', () => {
       expect(tradeOffs).toEqual([]);
     });
 
+    it('respects custom minDataPoints override', () => {
+      const trajectory = [
+        { iteration: 1, scores: { structural: 90, ruleCoherence: 80, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 2, scores: { structural: 89, ruleCoherence: 82, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 3, scores: { structural: 88, ruleCoherence: 84, integration: 90, outputQuality: 85, systemFitness: 90 } },
+        { iteration: 4, scores: { structural: 83, ruleCoherence: 90, integration: 90, outputQuality: 85, systemFitness: 90 } },
+      ];
+
+      expect(detector.detectTradeOffs(trajectory, { minDataPoints: 5 })).toEqual({
+        state: 'insufficientData',
+        dataPoints: 4,
+        minRequired: 5,
+        reason: 'Trade-off detection requires at least 5 data points before analysis',
+      });
+    });
+
     it('handles empty trajectory gracefully', () => {
       const tradeOffs = detector.detectTradeOffs(null as unknown as object[]);
-      expect(tradeOffs).toEqual([]);
+      expect(tradeOffs).toEqual({
+        state: 'insufficientData',
+        dataPoints: 0,
+        minRequired: 3,
+        reason: 'Trade-off detection requires at least 3 data points before analysis',
+      });
     });
   });
 

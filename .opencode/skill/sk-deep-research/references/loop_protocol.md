@@ -118,9 +118,12 @@ When the convergence algorithm returns STOP:
 3. If **all guards pass**: proceed with STOP, exit to synthesis
 4. If **any guard fails**: override decision to CONTINUE
    - Log each violation: `{"type":"event","event":"guard_violation","guard":"<name>","iteration":N,"detail":"<reason>"}`
+   - Persist the blocked legal-stop outcome: `{"type":"event","event":"blocked_stop","mode":"research","run":N,"blockedBy":["<gate>"],"gateResults":{"convergence":{"pass":true,"score":0.0},"keyQuestionCoverage":{"pass":false,"answered":X,"total":Y},"evidenceDensity":{"pass":false,"sources":N},"hotspotSaturation":{"pass":true}},"recoveryStrategy":"<one-line hint>","timestamp":"<ISO8601>","sessionId":"<sid>","generation":G}`
    - Append failed guard details to strategy.md "Active Risks" section
 5. The loop continues until BOTH convergence AND quality guards pass simultaneously
 6. Guard checks apply only to STOP decisions — CONTINUE and STUCK_RECOVERY bypass this step
+
+If the legal-stop decision tree returns `blocked`, the workflow MUST append the `blocked_stop` JSONL event before continuing. Reducers and dashboards consume the persisted event; they must not infer blocked-stop state solely from prose logs.
 
 #### Step 2a: Check Pause Sentinel
 
@@ -128,7 +131,7 @@ Before dispatching, check for a pause sentinel file:
 
 1. Check if `research/.deep-research-pause` exists
 2. If present:
-   - Log event to JSONL: `{"type":"event","event":"paused","reason":"sentinel file detected"}`
+   - Log event to JSONL: `{"type":"event","event":"userPaused","mode":"research","run":N,"stopReason":"userPaused","sentinelPath":"{spec_folder}/research/.deep-research-pause","timestamp":"<ISO8601>","sessionId":"<sid>","generation":G}`
    - Halt the loop with message:
      ```
      Research paused. Delete research/.deep-research-pause to resume.
@@ -138,6 +141,8 @@ Before dispatching, check for a pause sentinel file:
 3. On resume (file deleted and loop restarted):
    - Log event: `{"type":"event","event":"resumed","fromIteration":N}`
    - Continue from step_read_state
+
+Pause and recovery events use the frozen stop-reason enum on the live path. Raw `paused` and `stuck_recovery` labels are legacy aliases and MUST be normalized to `userPaused` and `stuckRecovery` at emission time.
 
 **Use case**: In autonomous mode, this provides the only graceful intervention mechanism short of killing the process. Users can create the sentinel file at any time to pause research between iterations.
 

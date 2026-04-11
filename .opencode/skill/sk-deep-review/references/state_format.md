@@ -230,6 +230,77 @@ Append-only JSON Lines file. One JSON object per line.
 
 **Required:** `type`, `event`, `mode`, `totalIterations`, `verdict`, `activeP0`, `activeP1`, `activeP2`, `dimensionCoverage`, `stopReason`, `timestamp`
 
+### Blocked-Stop Event
+
+When the review legal-stop decision tree returns `blocked`, append a first-class `blocked_stop` event instead of silently overriding STOP to CONTINUE.
+
+```json
+{
+  "type": "event",
+  "event": "blocked_stop",
+  "mode": "review",
+  "run": 4,
+  "blockedBy": ["dimensionCoverageGate", "p0ResolutionGate"],
+  "gateResults": {
+    "convergenceGate": { "pass": true, "score": 0.72 },
+    "dimensionCoverageGate": {
+      "pass": false,
+      "covered": ["correctness", "security"],
+      "missing": ["traceability", "maintainability"]
+    },
+    "p0ResolutionGate": { "pass": false, "activeP0": 1 },
+    "evidenceDensityGate": { "pass": true, "avgEvidencePerFinding": 1.5 },
+    "hotspotSaturationGate": { "pass": true }
+  },
+  "recoveryStrategy": "Cover the missing review dimensions, then resolve the active P0.",
+  "timestamp": "2026-04-11T09:45:00Z",
+  "sessionId": "rvw-2026-04-11T09-00-00Z",
+  "generation": 1
+}
+```
+
+**Required:** `type`, `event`, `mode`, `run`, `blockedBy`, `gateResults`, `recoveryStrategy`, `timestamp`, `sessionId`, `generation`
+
+### Normalized Pause and Recovery Events
+
+Pause and recovery events MUST use the frozen shared stop-reason enum at emission time:
+
+`converged`, `maxIterationsReached`, `blockedStop`, `stuckRecovery`, `error`, `manualStop`, `userPaused`
+
+Raw `paused` and `stuck_recovery` labels are not legal persisted event names in the review JSONL contract. The workflow must rewrite them before appending JSONL rows.
+
+```json
+{
+  "type": "event",
+  "event": "userPaused",
+  "mode": "review",
+  "stopReason": "userPaused",
+  "reason": "sentinel file detected",
+  "timestamp": "2026-04-11T09:32:00Z",
+  "sessionId": "rvw-2026-04-11T09-00-00Z",
+  "generation": 1
+}
+```
+
+```json
+{
+  "type": "event",
+  "event": "stuckRecovery",
+  "mode": "review",
+  "stopReason": "stuckRecovery",
+  "fromIteration": 5,
+  "strategy": "Traceability protocol replay: re-run unresolved core or overlay checks",
+  "targetDimension": "traceability",
+  "outcome": "pending",
+  "reason": "Recovery path activated after repeated no-progress iterations",
+  "timestamp": "2026-04-11T09:40:00Z",
+  "sessionId": "rvw-2026-04-11T09-00-00Z",
+  "generation": 1
+}
+```
+
+**Emission rule:** If runtime logic first identifies a raw `paused` or `stuck_recovery` condition, the workflow MUST normalize it to `userPaused` or `stuckRecovery` before writing the JSONL line. Reducers and dashboards may assume persisted event names are already normalized.
+
 ### Verdict Rules
 
 | Verdict | Condition | Next Command |

@@ -61,7 +61,8 @@ function zeroSeverityMap() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Parse JSONL content into an array of records, skipping malformed lines.
+ * Parse JSONL content into an array of records, preserving both iteration and
+ * event rows while skipping malformed lines.
  *
  * @param {string} jsonlContent - Newline-delimited JSON string
  * @returns {Array<Object>} Parsed records
@@ -368,11 +369,37 @@ function computeConvergenceScore(iterationRecords) {
   );
 }
 
+function buildBlockedStopHistory(records) {
+  return records
+    .filter((record) => record?.type === 'event' && record?.event === 'blocked_stop')
+    .map((record) => {
+      const legacyLegalStop = record.legalStop && typeof record.legalStop === 'object'
+        ? record.legalStop
+        : {};
+      return {
+        run: typeof record.run === 'number' ? record.run : 0,
+        blockedBy: Array.isArray(record.blockedBy)
+          ? record.blockedBy
+          : Array.isArray(legacyLegalStop.blockedBy)
+            ? legacyLegalStop.blockedBy
+            : [],
+        gateResults: record.gateResults && typeof record.gateResults === 'object'
+          ? record.gateResults
+          : legacyLegalStop.gateResults && typeof legacyLegalStop.gateResults === 'object'
+            ? legacyLegalStop.gateResults
+            : {},
+        recoveryStrategy: normalizeText(record.recoveryStrategy || ''),
+        timestamp: normalizeText(record.timestamp || ''),
+      };
+    });
+}
+
 function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, config) {
   const { openFindings, resolvedFindings } = buildFindingRegistry(iterationFiles, iterationRecords);
   const dimensionCoverage = buildDimensionCoverage(iterationRecords, strategyDimensions);
   const findingsBySeverity = buildFindingsBySeverity(openFindings);
   const convergenceScore = computeConvergenceScore(iterationRecords);
+  const blockedStopHistory = buildBlockedStopHistory(iterationRecords);
 
   const repeatedFindings = openFindings.filter((finding) => finding.lastSeen - finding.firstSeen >= 1);
 
@@ -382,6 +409,7 @@ function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, con
     lineageMode: config.lineageMode || 'new',
     openFindings,
     resolvedFindings,
+    blockedStopHistory,
     repeatedFindings,
     dimensionCoverage,
     findingsBySeverity,

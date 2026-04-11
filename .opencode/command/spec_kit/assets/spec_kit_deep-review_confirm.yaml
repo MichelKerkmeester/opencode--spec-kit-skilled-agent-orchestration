@@ -343,6 +343,8 @@ workflow:
           - p0_count: "Count P0 findings across all iterations"
           - p1_count: "Count P1 findings across all iterations"
           - p2_count: "Count P2 findings across all iterations"
+          - session_id: "Extract sessionId from deep-review-config.json"
+          - generation: "Extract generation from deep-review-config.json, else 1"
           - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: dimension (ratio, P0/P1/P2)'"
           - latest_status: "Extract status from latest iteration record, else 'none yet'"
 
@@ -350,14 +352,16 @@ workflow:
         action: "Check for pause sentinel file"
         check: "Does {spec_folder}/review/.deep-review-pause exist?"
         if_exists:
-          log_event: '{"type":"event","event":"paused","reason":"sentinel file detected"}'
-          message: "Review paused. Delete review/.deep-review-pause to resume."
-          halt: true
+          set:
+            pending_stop_event: "paused"
+            pending_stop_reason: "userPaused"
+            pending_stop_detail: "sentinel file detected"
+          skip_to: step_normalize_pause_events
         if_not_exists:
           proceed: true
 
       step_check_convergence:
-        action: "Evaluate review-specific stop conditions"
+        action: "Evaluate review-specific stop conditions and the legal-stop decision tree"
         algorithm: |
           1. HARD STOPS:
              a) if iteration_count >= max_iterations: STOP (max_iterations_reached)
@@ -378,34 +382,94 @@ workflow:
                Redistribute weights for unavailable signals.
                if latest ratio <= 0.05: mark no_progress_threshold_reached
                if weighted_stop_score >= 0.60: check binary gates
-          4. QUALITY GUARDS (4 binary checks — ALL must pass to allow STOP):
-               a) Evidence: Every active finding has concrete file:line evidence and no active P0/P1 relies only on inference
-               b) Scope: All findings stay within declared review scope and target boundaries
-               c) Coverage: Configured dimensions and required traceability protocols covered, with coverage_age >= 1
-               d) Claim adjudication: claim_adjudication_passed != false (STOP is blocked while claim_adjudication_passed == false)
-             if not all guards passed:
-               log: "Quality guard failed: {violations}. Overriding STOP to CONTINUE."
-               decision = "CONTINUE"
+          4. LEGAL-STOP DECISION TREE (review-specific gates; only runs when STOP is a candidate):
+               a) convergenceGate: pass when a hard-stop condition is met OR weighted_stop_score >= 0.60; record score
+               b) dimensionCoverageGate: pass when configured dimensions and required traceability coverage are complete and coverage_age >= 1; record covered and missing dimensions
+               c) p0ResolutionGate: pass when activeP0 == 0; record activeP0
+               d) evidenceDensityGate: pass when every active P0/P1 has concrete file:line evidence and no active P0/P1 relies only on inference; record avgEvidencePerFinding
+               e) hotspotSaturationGate: pass when review hotspots have been revisited enough times to satisfy the saturation heuristic
+             if STOP is a candidate and any gate fails:
+               decision = "BLOCKED"
+               stopReason = "blockedStop"
+               blocked_by_json = JSON array of failing gate names
+               blocked_by_csv = comma-separated list of failing gate names
+               convergence_gate_pass = boolean
+               convergence_gate_score = numeric convergence score
+               dimension_coverage_gate_pass = boolean
+               dimension_coverage_gate_covered_json = JSON array of covered review dimensions
+               dimension_coverage_gate_missing_json = JSON array of missing review dimensions
+               p0_resolution_gate_pass = boolean
+               active_p0_count = number of active P0 findings
+               evidence_density_gate_pass = boolean
+               avg_evidence_per_finding = numeric evidence density
+               hotspot_saturation_gate_pass = boolean
+               recovery_strategy = one-line hint describing the next review action needed to satisfy the failed gates
           5. else: CONTINUE
         outputs:
-          - decision: "STOP | STUCK_RECOVERY | CONTINUE"
+          - decision: "STOP | BLOCKED | STUCK_RECOVERY | CONTINUE"
           - reason: "Human-readable stop reason"
+          - blocked_by_json: "JSON array of failed legal-stop gates when decision == BLOCKED"
+          - blocked_by_csv: "Comma-separated list of failed legal-stop gates when decision == BLOCKED"
+          - convergence_gate_pass: "Boolean pass/fail for convergenceGate"
+          - convergence_gate_score: "Numeric score recorded for convergenceGate"
+          - dimension_coverage_gate_pass: "Boolean pass/fail for dimensionCoverageGate"
+          - dimension_coverage_gate_covered_json: "JSON array of covered review dimensions"
+          - dimension_coverage_gate_missing_json: "JSON array of missing review dimensions"
+          - p0_resolution_gate_pass: "Boolean pass/fail for p0ResolutionGate"
+          - active_p0_count: "Active P0 finding count at stop-check time"
+          - evidence_density_gate_pass: "Boolean pass/fail for evidenceDensityGate"
+          - avg_evidence_per_finding: "Numeric evidence density for active findings"
+          - hotspot_saturation_gate_pass: "Boolean pass/fail for hotspotSaturationGate"
+          - recovery_strategy: "One-line hint describing the next review action when decision == BLOCKED or STUCK_RECOVERY"
+
+      step_emit_blocked_stop:
+        action: "Persist blocked-stop evidence whenever the review legal-stop decision tree vetoes STOP"
+        if_blocked:
+          append_jsonl: '{"type":"event","event":"blocked_stop","mode":"review","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergenceGate":{"pass":{convergence_gate_pass},"score":{convergence_gate_score}},"dimensionCoverageGate":{"pass":{dimension_coverage_gate_pass},"covered":{dimension_coverage_gate_covered_json},"missing":{dimension_coverage_gate_missing_json}},"p0ResolutionGate":{"pass":{p0_resolution_gate_pass},"activeP0":{active_p0_count}},"evidenceDensityGate":{"pass":{evidence_density_gate_pass},"avgEvidencePerFinding":{avg_evidence_per_finding}},"hotspotSaturationGate":{"pass":{hotspot_saturation_gate_pass}}},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          log: "Blocked STOP persisted for review loop. Failed gates: {blocked_by_csv}. Recovery strategy: {recovery_strategy}"
+        if_not_blocked:
+          proceed: true
 
       step_handle_convergence:
         action: "Act on convergence decision"
         if_stop:
           log: "Loop stopping. Reason: {reason}"
           skip_to: gate_pre_synthesis
+        if_blocked:
+          log: "Legal-stop gates blocked STOP. Failed gates: {blocked_by_csv}. Continuing review."
         if_stuck_recovery:
           log: "Stuck detected ({stuck_count} consecutive no-progress). Entering recovery."
           recovery_strategies:
             - "Change granularity: file-level → function-level → line-level review"
             - "Traceability protocol replay: re-run unresolved core or overlay checks"
             - "Escalate severity review: re-examine P2 findings for potential P1 upgrades"
-          set: { next_dimension: "RECOVERY: {recovery_strategy}. Least-explored dimension: {least_explored}" }
+          set:
+            next_dimension: "RECOVERY: {recovery_strategy}. Least-explored dimension: {least_explored}"
+            pending_stop_event: "stuck_recovery"
+            pending_stop_reason: "stuckRecovery"
+            pending_stop_detail: "Recovery path activated after repeated no-progress iterations"
           reset: { stuck_count: 0 }
         if_continue:
           log: "Iteration {current_iteration}: Continuing."
+
+      step_normalize_pause_events:
+        action: "Rewrite raw pause and recovery events to the frozen STOP_REASONS enum at emission time: converged, maxIterationsReached, blockedStop, stuckRecovery, error, manualStop, userPaused"
+        if_pending_pause_event:
+          append_jsonl: '{"type":"event","event":"userPaused","mode":"review","stopReason":"userPaused","reason":"{pending_stop_detail}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          message: "Review paused. Delete review/.deep-review-pause to resume."
+          reset:
+            pending_stop_event: null
+            pending_stop_reason: null
+            pending_stop_detail: null
+          halt: true
+        if_pending_stuck_recovery:
+          append_jsonl: '{"type":"event","event":"stuckRecovery","mode":"review","stopReason":"stuckRecovery","fromIteration":{current_iteration},"strategy":"{recovery_strategy}","targetDimension":"{least_explored}","outcome":"pending","reason":"{pending_stop_detail}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          reset:
+            pending_stop_event: null
+            pending_stop_reason: null
+            pending_stop_detail: null
+        if_no_pending_event:
+          proceed: true
 
       # ─── APPROVAL GATE: Pre-Iteration ───
       gate_pre_iteration:

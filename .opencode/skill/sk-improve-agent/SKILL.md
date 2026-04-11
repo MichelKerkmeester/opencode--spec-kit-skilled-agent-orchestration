@@ -324,6 +324,41 @@ Reads historical session data and emits a weight-recommendation report. Recommen
 ---
 
 <!-- /ANCHOR:runtime-truth -->
+## Journal Wiring Contract
+
+Journal emission is orchestrator-only. The target agent being evaluated never writes journal rows directly; only the visible YAML workflow or an operator-side wrapper invokes `scripts/improvement-journal.cjs`.
+
+The CLI contract is:
+
+```bash
+node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit <eventType> --journal <journal_path> --details '<json>'
+```
+
+The helper validates event type plus `session_end` or `session_ended` details, and the CLI entrypoint stores boundary context under `details`. Top-level `iteration` and `candidateId` fields are available only through the JS API, not through the CLI wrapper used by the YAML workflows.
+
+### Boundary Points
+
+| Boundary | When It Fires | Event Types | Required Details |
+| --- | --- | --- | --- |
+| `session_start` | Once after baseline setup is recorded and before the first loop iteration begins | `session_start` | `sessionId`, `target`, `charter`, `startedAt` |
+| `iteration_boundary` | On every iteration after candidate generation, after candidate scoring, and after gate evaluation | `candidate_generated`, `candidate_scored`, `gate_evaluation` | Per-iteration context such as `sessionId`, `iteration`, `candidateId`, `candidatePath`, `scoreOutputPath`, `weightedScore`, and gate decision details |
+| `session_end` | Once after synthesis completes or the session reaches a terminal stop | `session_end` | `stopReason`, `sessionOutcome`, `endedAt`, `totalIterations` |
+
+### Frozen Helper Enums
+
+`improvement-journal.cjs` currently exports and validates the following enums:
+
+- `STOP_REASONS`: `converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`
+- `SESSION_OUTCOMES`: `keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`
+
+Keep session-end emissions aligned to those helper-owned values until the helper contract itself changes. Labels such as `convergedImprovement`, `benchmarkPlateau`, `rejected`, `deferred`, `blocked`, or `errored` are not accepted by the current CLI validator.
+
+### Orchestrator Ownership
+
+- Auto mode emits `session_start` after `step_record_baseline`, then emits `candidate_generated`, `candidate_scored`, and `gate_evaluation` inside each loop iteration, and finally emits `session_end` after synthesis.
+- Confirm mode mirrors the same boundaries, with `gate_evaluation` emitted after the operator-facing approval gate is resolved.
+- Operators invoking the helper manually must use the same boundary order so replay and reducer consumers see a consistent journal shape.
+
 <!-- ANCHOR:rules -->
 ## 5. RULES
 

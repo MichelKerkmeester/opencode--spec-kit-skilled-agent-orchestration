@@ -293,20 +293,20 @@ After loop exits, present:
 
 ### Step 6B: Journal Emission (Phase 005)
 
-At each iteration boundary, the orchestrator MUST emit journal events via `improvement-journal.cjs`:
+At each journal boundary, the orchestrator MUST emit events via `improvement-journal.cjs`. The CLI entrypoint accepts `--emit`, `--journal`, and `--details`:
 
 ```bash
 # At session start:
-node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit --journal={spec_folder}/improvement/improvement-journal.jsonl --event=session_initialized
+node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit session_start --journal specs/042/008/improvement/improvement-journal.jsonl --details '{"sessionId":"imp-2026-04-11T12-00-00Z","target":"deep-research","charter":"...","startedAt":"2026-04-11T12:00:00Z"}'
 
-# After each candidate is scored:
-# (programmatic: emitEvent(journalPath, { eventType: 'candidate_scored', iteration, candidateId, details: { dimensions, weightedScore } }))
-
-# After legal-stop gate evaluation:
-# (programmatic: emitEvent(journalPath, { eventType: 'legal_stop_evaluated', iteration, details: { gateResults } }))
+# At iteration boundaries:
+# candidate_generated after the candidate is written
+# candidate_scored after scoring completes
+# gate_evaluation after stop-check or operator-gate evaluation
+# The CLI form carries boundary metadata inside details because the helper's CLI does not expose top-level iteration/candidate fields.
 
 # At session end:
-# (programmatic: emitEvent(journalPath, { eventType: 'session_ended', details: { stopReason, sessionOutcome } }))
+# node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit session_end --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{"stopReason":"blockedStop","sessionOutcome":"advisoryOnly","endedAt":"2026-04-11T12:05:00Z","totalIterations":3}'
 ```
 
 ### Step 6C: Stop-Reason Reporting (Phase 005)

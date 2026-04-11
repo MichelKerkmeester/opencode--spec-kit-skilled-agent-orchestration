@@ -194,7 +194,7 @@ function uniqueById(items) {
 // 4. CORE LOGIC
 // ─────────────────────────────────────────────────────────────────────────────
 
-function buildRegistry(strategyQuestions, iterationFiles, iterationRecords) {
+function buildRegistry(strategyQuestions, iterationFiles, iterationRecords, eventRecords) {
   const answeredSet = new Set(
     iterationRecords.flatMap((record) => (Array.isArray(record.answeredQuestions) ? record.answeredQuestions : [])).map(normalizeText),
   );
@@ -247,6 +247,15 @@ function buildRegistry(strategyQuestions, iterationFiles, iterationRecords) {
     latestIteration?.convergenceSignals?.compositeStop
     ?? latestIteration?.newInfoRatio
     ?? 0;
+  const blockedStopHistory = eventRecords
+    .filter((record) => record.event === 'blocked_stop')
+    .map((record) => ({
+      run: typeof record.run === 'number' ? record.run : 0,
+      blockedBy: Array.isArray(record.blockedBy) ? record.blockedBy : [],
+      gateResults: record.gateResults && typeof record.gateResults === 'object' ? record.gateResults : {},
+      recoveryStrategy: typeof record.recoveryStrategy === 'string' ? record.recoveryStrategy : '',
+      timestamp: typeof record.timestamp === 'string' ? record.timestamp : '',
+    }));
 
   return {
     openQuestions: keyedQuestions.filter((question) => !question.resolved).map((question) => ({
@@ -263,6 +272,7 @@ function buildRegistry(strategyQuestions, iterationFiles, iterationRecords) {
     })),
     keyFindings,
     ruledOutDirections,
+    blockedStopHistory,
     metrics: {
       iterationsCompleted: iterationRecords.filter((record) => record.type === 'iteration').length,
       openQuestions: keyedQuestions.filter((question) => !question.resolved).length,
@@ -487,7 +497,9 @@ function reduceResearchState(specFolder, options = {}) {
   const iterationDir = path.join(researchDir, 'iterations');
 
   const config = readJson(configPath);
-  const records = parseJsonl(readUtf8(stateLogPath)).filter((record) => record.type === 'iteration');
+  const parsedRecords = parseJsonl(readUtf8(stateLogPath));
+  const records = parsedRecords.filter((record) => record.type === 'iteration');
+  const events = parsedRecords.filter((record) => record.type === 'event');
   const strategyContent = readUtf8(strategyPath);
   const strategyQuestions = parseStrategyQuestions(strategyContent);
   const iterationFiles = fs.existsSync(iterationDir)
@@ -497,7 +509,7 @@ function reduceResearchState(specFolder, options = {}) {
         .map((fileName) => parseIterationFile(path.join(iterationDir, fileName)))
     : [];
 
-  const registry = buildRegistry(strategyQuestions, iterationFiles, records);
+  const registry = buildRegistry(strategyQuestions, iterationFiles, records, events);
   const strategy = updateStrategyContent(strategyContent, registry, iterationFiles);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 

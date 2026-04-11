@@ -241,14 +241,15 @@ Events are written by the YAML workflow or diagnostics layer for lifecycle track
 | restarted | workflow | active | Start a new generation from prior state | sessionId, parentSessionId, generation, timestamp |
 | forked | workflow | active | Create a new branch from current packet state | sessionId, parentSessionId, generation, timestamp |
 | completed_continue | workflow | active | Reopen a completed lineage after immutable snapshotting | sessionId, parentSessionId, generation, continuedFromRun, completedAt, reopenedAt, timestamp |
-| paused | workflow | active | Pause sentinel detected | reason, timestamp |
+| blocked_stop | workflow | active | Legal-stop candidate was blocked and the loop must continue | mode, run, blockedBy, gateResults, recoveryStrategy, timestamp, sessionId, generation |
+| userPaused | workflow | active | Pause sentinel detected and normalized to the frozen stop-reason enum | mode, run, stopReason, sentinelPath, timestamp, sessionId, generation |
 | migration | workflow | active | Legacy artifact consumed and canonical name written | legacyPath, canonicalPath, timestamp |
 | direct_mode | workflow | reference-only | Orchestrator absorbed iteration work | iteration, reason, timestamp |
 | state_reconstructed | recovery | active | JSONL rebuilt from iteration files | iterationsRecovered, timestamp |
 | wave_complete | wave coordinator | reference-only | Parallel wave finished | wave, iterations, medianRatio, timestamp |
 | wave_pruned | wave coordinator | reference-only | Low-value wave branch deprioritized | wave, prunedIterations, medianRatio, timestamp |
 | breakthrough | wave coordinator | reference-only | Wave branch exceeded 2x average | wave, iteration, ratio, timestamp |
-| stuck_recovery | workflow | active | Stuck recovery outcome | fromIteration, outcome, timestamp |
+| stuckRecovery | workflow | active | Stuck recovery outcome normalized to the frozen stop-reason enum | mode, run, stopReason, fromIteration, outcome, timestamp, sessionId, generation |
 | missing_newInfoRatio | parser | active | Missing ratio defaulted to 0.0 | iteration, timestamp |
 | ratio_within_noise | diagnostics | active | Latest ratio fell within MAD floor | iteration, ratio, noiseFloor, timestamp |
 | segment_start | workflow | reference-only | Start of a new segment | segment, reason, timestamp |
@@ -264,6 +265,66 @@ Guard violation events are emitted when a research guard detects a quality const
 Supported guard values: `source_diversity`, `focus_alignment`, `single_weak_source`. These events are informational and do not halt the loop, but the orchestrator may use them to adjust subsequent iteration focus.
 
 Additional event-specific fields may appear on the JSON line, but the table above is the canonical coverage for emitted events.
+
+#### Canonical blocked-stop event
+
+```json
+{"type":"event","event":"blocked_stop","mode":"research","run":7,"blockedBy":["keyQuestionCoverage","evidenceDensity"],"gateResults":{"convergence":{"pass":true,"score":0.72},"keyQuestionCoverage":{"pass":false,"answered":5,"total":7},"evidenceDensity":{"pass":false,"sources":2},"hotspotSaturation":{"pass":true}},"recoveryStrategy":"Collect evidence for the remaining uncovered question cluster.","timestamp":"2026-04-11T12:00:00Z","sessionId":"dr-2026-04-11T12-00-00Z","generation":2}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| type | string | Yes | Always `event` |
+| event | string | Yes | Always `blocked_stop` |
+| mode | string | Yes | Always `research` for this loop family |
+| run | number | Yes | 1-indexed loop iteration whose stop candidate was blocked |
+| blockedBy | string[] | Yes | Gate names that vetoed legal STOP |
+| gateResults | object | Yes | Replayable gate bundle with `convergence`, `keyQuestionCoverage`, `evidenceDensity`, and `hotspotSaturation` results |
+| recoveryStrategy | string | Yes | One-line recovery hint for the next loop turn |
+| timestamp | ISO 8601 | Yes | Event creation time |
+| sessionId | string | Yes | Active lineage session identifier |
+| generation | number | Yes | Active lineage generation |
+
+#### Canonical userPaused event
+
+```json
+{"type":"event","event":"userPaused","mode":"research","run":7,"stopReason":"userPaused","sentinelPath":"specs/042/research/.deep-research-pause","timestamp":"2026-04-11T12:05:00Z","sessionId":"dr-2026-04-11T12-00-00Z","generation":2}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| type | string | Yes | Always `event` |
+| event | string | Yes | Always `userPaused` |
+| mode | string | Yes | Always `research` for this loop family |
+| run | number | Yes | Iteration index active when pause was detected |
+| stopReason | string | Yes | Always `userPaused` |
+| sentinelPath | string | Yes | Absolute or packet-relative pause sentinel path that triggered the halt |
+| timestamp | ISO 8601 | Yes | Event creation time |
+| sessionId | string | Yes | Active lineage session identifier |
+| generation | number | Yes | Active lineage generation |
+
+#### Canonical stuckRecovery event
+
+```json
+{"type":"event","event":"stuckRecovery","mode":"research","run":7,"stopReason":"stuckRecovery","fromIteration":7,"outcome":"recovered","timestamp":"2026-04-11T12:10:00Z","sessionId":"dr-2026-04-11T12-00-00Z","generation":2}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| type | string | Yes | Always `event` |
+| event | string | Yes | Always `stuckRecovery` |
+| mode | string | Yes | Always `research` for this loop family |
+| run | number | Yes | Iteration index that entered recovery |
+| stopReason | string | Yes | Always `stuckRecovery` |
+| fromIteration | number | Yes | Iteration that triggered the recovery branch |
+| outcome | string | Yes | Recovery outcome such as `recovered` or `failed` |
+| timestamp | ISO 8601 | Yes | Event creation time |
+| sessionId | string | Yes | Active lineage session identifier |
+| generation | number | Yes | Active lineage generation |
+
+#### Emission-time normalization rule
+
+Raw `paused` and `stuck_recovery` labels are legacy-only aliases. The live workflow MUST rewrite them at emission time to `userPaused` and `stuckRecovery` respectively, and MUST persist the normalized `stopReason` enum value on the JSONL line.
 
 ### Lineage Schema
 
