@@ -34,9 +34,13 @@ Control which users and agents can access shared knowledge through deny-by-defau
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Shared memory lets multiple users or agents access the same pool of knowledge inside a controlled space. Picture a shared office with a keycard lock. The office stays locked until an admin activates it. Only people on the access list can enter. And management can lock it down instantly if something goes wrong.
+Shared memory lets multiple users or agents access the same indexed knowledge pool inside a controlled space. Picture a shared office with a keycard lock. The office stays locked until an admin activates it. Only people on the access list can enter. And management can lock it down instantly if something goes wrong.
 
-The feature lives inside the same SQLite database as your private memories. It does not create a separate file or move any existing data. It adds an access layer on top of what you already have.
+The feature lives inside the same SQLite database as your private memories. It does not create a separate file or move any existing data. It adds an access layer on top of indexed retrieval and governed writes.
+
+### Post-Phase-018 Boundary
+
+Phase 018 moved canonical packet continuity into git-tracked spec documents and `_memory.continuity` frontmatter. Shared memory still gates indexed search results and governed writes to rows in `memory_index`, but it does **not** hide spec-doc content from people who can already read those files from the repository.
 
 ### Key Facts
 
@@ -58,7 +62,9 @@ Shared memory makes sense when multiple people or agents must read and write to 
 
 ### When You Do Not Need This
 
-If you work solo and all your agents connect to the same MCP server, every agent can already see every memory by default. Shared memory adds value only when you need controlled access boundaries between different users or agents.
+If you work solo and all your agents connect to the same MCP server, every agent can already see every memory by default. Shared memory adds value only when you need controlled access boundaries between different users or agents at the retrieval layer.
+
+If the packet content is already shared through git, shared memory does not create a second secrecy boundary around `_memory.continuity` or other spec-doc frontmatter. In that model, shared memory is most useful for rollout control, governed writes, and query-time partitioning.
 
 <!-- /ANCHOR:overview -->
 
@@ -90,10 +96,10 @@ Restart the MCP server after this change. Claude Code restarts it automatically 
 
 ### Step 2: Enable the subsystem
 
-Run the command with no arguments. If shared memory is not yet enabled, it walks you through first-time setup:
+Run the command with an explicit caller identity. If shared memory is not yet enabled, it walks you through first-time setup:
 
 ```text
-/memory:manage shared
+/memory:manage shared enable --actor-agent spec-kit
 ```
 
 Confirm when prompted. This creates the database tables and persists the enabled state.
@@ -109,7 +115,7 @@ The first create auto-grants the acting caller `owner` access so the space is no
 ### Step 4: Verify
 
 ```text
-/memory:manage shared status
+/memory:manage shared status --actor-agent spec-kit
 ```
 
 You should see 1 space with the acting agent listed as owner.
@@ -193,7 +199,9 @@ Private and shared memories live in the same database. The `memory_index` table 
 └─────────────────────────────────────────────────────┘
 ```
 
-Search works the same way it always has. When you run `memory_search`, the system checks which shared spaces you belong to and includes those memories in results alongside your private ones. Collaborator B can find memories that Collaborator A saved to a shared space without needing to be in the same session or conversation.
+Indexed search works the same way it always has. When you run `memory_search`, the system checks which shared spaces you belong to and includes those memories in results alongside your private ones. Collaborator B can find memories that Collaborator A saved to a shared space without needing to be in the same session or conversation.
+
+This boundary applies to indexed retrieval and governed writes. Packet recovery via `/spec_kit:resume` still rebuilds state from `handover.md`, `_memory.continuity`, and spec docs on disk, so git-visible spec-doc content remains readable outside shared-memory gating.
 
 ### Conflict Handling
 
@@ -249,7 +257,7 @@ A complete MCP server configuration with shared memory admin identity:
 The system checks whether shared memory is active using two tiers. The first tier always wins.
 
 1. **Tier 1 (env var)**: If `SPECKIT_MEMORY_SHARED_MEMORY` or `SPECKIT_HYDRA_SHARED_MEMORY` is set to `true` or `1`, shared memory is enabled regardless of what the database says.
-2. **Tier 2 (database)**: The `config` table stores a `shared_memory_enabled` key. Running `/memory:manage shared enable` sets this to `true` and it persists across restarts.
+2. **Tier 2 (database)**: The `config` table stores a `shared_memory_enabled` key. Running `/memory:manage shared enable --actor-user <id>` sets this to `true` and it persists across restarts.
 
 If neither tier is active, shared memory stays off.
 
@@ -266,7 +274,7 @@ First-time setup followed by space creation:
 
 ```text
 # Turn on the subsystem (one-time)
-/memory:manage shared enable
+/memory:manage shared enable --actor-agent spec-kit
 
 # Create a space named "research" in tenant "acme"
 /memory:manage shared create research acme "Research Team" --actor-agent spec-kit
@@ -293,7 +301,7 @@ Block access, verify the block, then restore:
 /memory:manage shared create research acme "Research Team" --actor-agent spec-kit --kill-switch
 
 # Confirm access is blocked
-/memory:manage shared status
+/memory:manage shared status --actor-agent spec-kit
 
 # Restore access by updating without kill switch
 /memory:manage shared create research acme "Research Team" --actor-agent spec-kit
@@ -306,14 +314,14 @@ The kill switch is set through `shared_space_upsert` by passing `killSwitch: tru
 Query which spaces are visible to a given identity:
 
 ```text
-# View all spaces you can access
-/memory:manage shared status
+# View all spaces visible to the acting agent
+/memory:manage shared status --actor-agent spec-kit
 
-# View spaces for a specific user
-/memory:manage shared status --user alice
+# View spaces visible to a specific user inside a tenant
+/memory:manage shared status --tenant acme --actor-user alice
 
-# View spaces for a specific agent
-/memory:manage shared status --agent claude-code
+# View spaces visible to a specific agent
+/memory:manage shared status --actor-agent claude-code
 ```
 
 <!-- /ANCHOR:usage-examples -->
@@ -333,7 +341,7 @@ Query which spaces are visible to a given identity:
 
 **Cause**: The subsystem has not been turned on yet.
 
-**Fix**: Run `/memory:manage shared enable` or set `SPECKIT_MEMORY_SHARED_MEMORY=true` in your environment.
+**Fix**: Run `/memory:manage shared enable --actor-user <id>` or set `SPECKIT_MEMORY_SHARED_MEMORY=true` in your environment.
 
 ### "Actor must already own the shared space"
 
@@ -355,7 +363,7 @@ Query which spaces are visible to a given identity:
 
 ### "Provide exactly one of --actor-user or --actor-agent"
 
-**Cause**: You passed both actor flags or neither.
+**Cause**: You passed both actor flags or neither. This applies to `enable`, `create`, `member`, `status`, and the shared overview entrypoint.
 
 **Fix**: Each command requires exactly one actor identity. Pick either `--actor-user` or `--actor-agent`.
 
@@ -374,6 +382,9 @@ A: Probably not. If you work alone and all your AI agents connect to the same MC
 
 **Q: What happens to my existing private memories?**
 A: Nothing changes. Private memories remain private. Shared memory is an additional access dimension, not a replacement for individual memory ownership.
+
+**Q: Does shared memory hide `_memory.continuity` inside spec docs?**
+A: No. Shared memory governs indexed retrieval and governed writes. If someone can already read the git-tracked spec document on disk, they can still read its frontmatter directly.
 
 **Q: Can I undo enablement?**
 A: Yes. Remove the `SPECKIT_MEMORY_SHARED_MEMORY` env var and the database config reverts to whatever was previously set. You can also clear the `shared_memory_enabled` key in the `config` table directly.

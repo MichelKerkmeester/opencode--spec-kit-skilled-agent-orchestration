@@ -468,7 +468,10 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
     actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
     actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
   }),
-  shared_memory_enable: getSchema({}) as unknown as ToolInputSchema,
+  shared_memory_enable: getSchema({
+    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
+    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
+  }),
   session_bootstrap: getSchema({
     specFolder: optionalPathString(),
   }) as unknown as ToolInputSchema,
@@ -512,7 +515,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   shared_space_upsert: ['spaceId', 'tenantId', 'name', 'actorUserId', 'actorAgentId', 'rolloutEnabled', 'rolloutCohort', 'killSwitch'],
   shared_space_membership_set: ['spaceId', 'tenantId', 'actorUserId', 'actorAgentId', 'subjectType', 'subjectId', 'role'],
   shared_memory_status: ['tenantId', 'actorUserId', 'actorAgentId'],
-  shared_memory_enable: [],
+  shared_memory_enable: ['actorUserId', 'actorAgentId'],
   session_bootstrap: ['specFolder'],
   session_health: [],
   session_resume: ['specFolder', 'minimal'],

@@ -923,23 +923,24 @@ Control who can access a shared space. Assign owner, editor or viewer roles. Onl
 
 ##### `shared_memory_status`
 
-Check the state of shared memory. See which spaces exist, who has access and whether the kill switch is active. Use this to verify your setup after making changes.
+Check the state of shared memory for an authenticated caller. The response includes `allowedSharedSpaceIds` for currently readable spaces plus `spaces[]` and `rolloutSummary` for the caller's visible memberships.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `tenantId` | string | Filter by tenant |
-| `userId` | string | Filter by user |
-| `agentId` | string | Filter by agent |
+| `actorUserId` | string | Caller identity (user). Provide exactly one actor |
+| `actorAgentId` | string | Caller identity (agent). Provide exactly one actor |
 
 ---
 
 ##### `shared_memory_enable`
 
-Turn on the shared-memory subsystem. First-time setup creates the database tables. Safe to call multiple times.
+Turn on the shared-memory subsystem. First-time setup creates the database tables. Safe to call multiple times. Caller authentication is required until the transport provides a server-minted principal.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
-| _(none required)_ | | Call with empty arguments |
+| `actorUserId` | string | Caller identity (user). Provide exactly one actor |
+| `actorAgentId` | string | Caller identity (agent). Provide exactly one actor |
 
 ---
 
@@ -1495,7 +1496,12 @@ After finishing, capture what you learned:
 Enable the subsystem and create a shared space for your team:
 
 ```json
-{ "tool": "shared_memory_enable", "arguments": {} }
+{
+  "tool": "shared_memory_enable",
+  "arguments": {
+    "actorAgentId": "spec-kit"
+  }
+}
 ```
 
 ```json

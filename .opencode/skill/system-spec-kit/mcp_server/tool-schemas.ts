@@ -442,7 +442,7 @@ const sharedSpaceMembershipSet: ToolDefinition = {
 
 const sharedMemoryStatus: ToolDefinition = {
   name: 'shared_memory_status',
-  description: '[L5:Lifecycle] Inspect current shared-memory rollout and the spaces accessible to the authenticated caller.',
+  description: '[L5:Lifecycle] Inspect current shared-memory rollout and the caller-visible spaces for the authenticated actor.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
@@ -457,11 +457,14 @@ const sharedMemoryStatus: ToolDefinition = {
 
 const sharedMemoryEnable: ToolDefinition = {
   name: 'shared_memory_enable',
-  description: '[L5:Lifecycle] Enable the shared-memory subsystem. First-run setup: persists enablement, creates infrastructure tables, and generates a README. Idempotent — subsequent calls return alreadyEnabled: true.',
+  description: '[L5:Lifecycle] Enable the shared-memory subsystem. Caller authentication is required. First-run setup persists enablement, creates infrastructure tables, and generates a README. Idempotent — subsequent calls return alreadyEnabled: true.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
-    properties: {},
+    properties: {
+      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
+      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
+    },
     required: [],
   },
 };

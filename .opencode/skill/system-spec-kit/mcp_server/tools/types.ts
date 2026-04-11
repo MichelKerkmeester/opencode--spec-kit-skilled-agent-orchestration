@@ -216,6 +216,11 @@ export interface SharedMemoryStatusArgs {
   actorAgentId?: string;
 }
 
+export interface SharedMemoryEnableArgs {
+  actorUserId?: string;
+  actorAgentId?: string;
+}
+
 /** Arguments for session resume requests. */
 export interface SessionResumeArgs {
   specFolder?: string;

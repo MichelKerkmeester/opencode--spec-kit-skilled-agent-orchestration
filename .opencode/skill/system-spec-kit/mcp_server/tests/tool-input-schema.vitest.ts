@@ -427,7 +427,7 @@ describe('governed retrieval schema propagation', () => {
 
 describe('shared-memory admin actor schema', () => {
   it('public schemas expose actor identity fields without top-level exclusivity combinators', () => {
-    for (const toolName of ['shared_space_upsert', 'shared_space_membership_set', 'shared_memory_status']) {
+    for (const toolName of ['shared_space_upsert', 'shared_space_membership_set', 'shared_memory_status', 'shared_memory_enable']) {
       const tool = TOOL_DEFINITIONS.find((entry) => entry.name === toolName);
       const schema = tool?.inputSchema as { properties?: Record<string, unknown> } | undefined;
       expect(schema?.properties).toMatchObject({
@@ -489,6 +489,14 @@ describe('shared-memory admin actor schema', () => {
       validateToolArgs('shared_memory_status', {
         tenantId: 'tenant-a',
         actorAgentId: 'agent-1',
+      });
+    }).not.toThrow();
+  });
+
+  it('runtime accepts shared_memory_enable with one actor identity', () => {
+    expect(() => {
+      validateToolArgs('shared_memory_enable', {
+        actorUserId: 'user-1',
       });
     }).not.toThrow();
   });

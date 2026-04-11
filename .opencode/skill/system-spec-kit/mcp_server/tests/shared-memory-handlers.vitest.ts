@@ -667,6 +667,22 @@ describe('shared-memory admin handlers', () => {
       subjectId: 'user-other',
       role: 'viewer',
     });
+    await handleSharedSpaceUpsert({
+      spaceId: 'space-status-killed',
+      tenantId: 'tenant-a',
+      name: 'Status Killed',
+      actorUserId: 'user-owner',
+      rolloutEnabled: true,
+      killSwitch: true,
+    });
+    await handleSharedSpaceMembershipSet({
+      spaceId: 'space-status-killed',
+      tenantId: 'tenant-a',
+      actorUserId: 'user-owner',
+      subjectType: 'user',
+      subjectId: 'user-other',
+      role: 'viewer',
+    });
 
     const response = await handleSharedMemoryStatus({
       tenantId: 'tenant-a',
@@ -676,6 +692,33 @@ describe('shared-memory admin handlers', () => {
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(false);
     expect(envelope.data.allowedSharedSpaceIds).toEqual(['space-status-other']);
+    expect(envelope.data.spaces).toEqual([
+      {
+        spaceId: 'space-status-killed',
+        tenantId: 'tenant-a',
+        name: 'Status Killed',
+        role: 'viewer',
+        rolloutEnabled: true,
+        killSwitch: true,
+        currentlyAccessible: false,
+      },
+      {
+        spaceId: 'space-status-other',
+        tenantId: 'tenant-a',
+        name: 'Status Other',
+        role: 'viewer',
+        rolloutEnabled: true,
+        killSwitch: false,
+        currentlyAccessible: true,
+      },
+    ]);
+    expect(envelope.data.rolloutSummary).toEqual({
+      totalSpaces: 2,
+      currentlyAccessibleSpaces: 1,
+      rolloutEnabledSpaces: 2,
+      rolloutDisabledSpaces: 0,
+      killSwitchedSpaces: 1,
+    });
     expect(envelope.data.userId).toBe('user-other');
     expect(envelope.data.agentId).toBeNull();
     expect(envelope.data.actorSubjectType).toBe('user');

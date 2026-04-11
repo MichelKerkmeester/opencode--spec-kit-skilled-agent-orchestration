@@ -435,6 +435,65 @@ function getAllowedSharedSpaceIdsForCaller(
   return rows.map((row) => row.space_id);
 }
 
+type SharedMemoryStatusSpace = {
+  spaceId: string;
+  tenantId: string;
+  name: string;
+  role: 'owner' | 'editor' | 'viewer';
+  rolloutEnabled: boolean;
+  killSwitch: boolean;
+  currentlyAccessible: boolean;
+};
+
+function listSharedSpacesForCaller(
+  database: ReturnType<typeof requireDb>,
+  actor: SharedAdminActor,
+  tenantId?: string,
+): SharedMemoryStatusSpace[] {
+  ensureSharedCollabRuntime(database);
+  const normalizedTenantId = typeof tenantId === 'string' && tenantId.trim().length > 0
+    ? tenantId.trim()
+    : null;
+
+  const rows = database.prepare(`
+    SELECT
+      s.space_id,
+      s.tenant_id,
+      s.name,
+      s.rollout_enabled,
+      s.kill_switch,
+      m.role
+    FROM shared_space_members m
+    JOIN shared_spaces s ON s.space_id = m.space_id
+    WHERE m.subject_type = ?
+      AND m.subject_id = ?
+      AND (? IS NULL OR s.tenant_id = ?)
+    ORDER BY s.space_id ASC
+  `).all(
+    actor.subjectType,
+    actor.subjectId,
+    normalizedTenantId,
+    normalizedTenantId,
+  ) as Array<{
+    space_id: string;
+    tenant_id: string;
+    name: string;
+    rollout_enabled: number;
+    kill_switch: number;
+    role: 'owner' | 'editor' | 'viewer';
+  }>;
+
+  return rows.map((row) => ({
+    spaceId: row.space_id,
+    tenantId: row.tenant_id,
+    name: row.name,
+    role: row.role,
+    rolloutEnabled: row.rollout_enabled === 1,
+    killSwitch: row.kill_switch === 1,
+    currentlyAccessible: row.rollout_enabled === 1 && row.kill_switch === 0,
+  }));
+}
+
 /**
  * Persist a shared-space definition for rollout and membership checks.
  *
@@ -758,9 +817,19 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
       actorAgentId: args.actorAgentId,
     });
     const enabled = isSharedMemoryEnabled(db);
+    const spaces = enabled
+      ? listSharedSpacesForCaller(db, actor, args.tenantId)
+      : [];
     const allowedSharedSpaceIds = enabled
       ? getAllowedSharedSpaceIdsForCaller(db, actor, args.tenantId)
       : [];
+    const rolloutSummary = {
+      totalSpaces: spaces.length,
+      currentlyAccessibleSpaces: spaces.filter((space) => space.currentlyAccessible).length,
+      rolloutEnabledSpaces: spaces.filter((space) => space.rolloutEnabled).length,
+      rolloutDisabledSpaces: spaces.filter((space) => !space.rolloutEnabled).length,
+      killSwitchedSpaces: spaces.filter((space) => space.killSwitch).length,
+    };
     return createMCPSuccessResponse({
       tool: 'shared_memory_status',
       summary: enabled
@@ -769,6 +838,8 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
       data: {
         enabled,
         allowedSharedSpaceIds,
+        spaces,
+        rolloutSummary,
         tenantId: args.tenantId ?? null,
         userId: actor.subjectType === 'user' ? actor.subjectId : null,
         agentId: actor.subjectType === 'agent' ? actor.subjectId : null,
@@ -797,7 +868,10 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
  * already enables the runtime check. Subsequent calls that find both the
  * DB flag set and the README present return `alreadyEnabled: true`.
  */
-export async function handleSharedMemoryEnable(args: Record<string, unknown>): Promise<MCPResponse> {
+export async function handleSharedMemoryEnable(args: {
+  actorUserId?: string;
+  actorAgentId?: string;
+}): Promise<MCPResponse> {
   try {
     // WARNING: Admin mutations trust caller-supplied actor identity until transport-auth binding is added.
     warnTrustedAdminIdentityAssumption();
@@ -907,10 +981,16 @@ Shared memory has been **enabled** for this workspace.
 
 | Command | Description |
 |---------|-------------|
-| \`/memory:manage shared status\` | View rollout state and accessible spaces |
-| \`/memory:manage shared create <spaceId> <tenantId> <name>\` | Create or update a shared space; first creator becomes owner |
-| \`/memory:manage shared member <spaceId> <type> <id> <role>\` | Set membership; caller must already own the space |
-| \`/memory:manage shared enable\` | Re-run first-time setup (idempotent) |
+| \`/memory:manage shared status --actor-user <id>\` | View rollout state and caller-visible spaces |
+| \`/memory:manage shared create <spaceId> <tenantId> <name> --actor-user <id>\` | Create or update a shared space; first creator becomes owner |
+| \`/memory:manage shared member <spaceId> <tenantId> <type> <id> <role> --actor-user <id>\` | Set membership; caller must already own the space |
+| \`/memory:manage shared enable --actor-user <id>\` | Re-run first-time setup (idempotent) |
+
+## Important Boundary
+
+Shared memory governs indexed retrieval and governed writes. It does **not** hide
+git-tracked spec-doc content such as \`_memory.continuity\` frontmatter from
+people who can already read the repository on disk.
 
 ## Environment Overrides
 
