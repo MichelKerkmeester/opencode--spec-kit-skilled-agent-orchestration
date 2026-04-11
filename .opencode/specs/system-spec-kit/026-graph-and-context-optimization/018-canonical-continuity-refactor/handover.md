@@ -61,6 +61,31 @@ Pattern per gate:
 3. Orchestrator flips Gate's packet `status: planned/blocked → complete` + adds `closed_by_commit: <hash>` in frontmatter
 4. Launch next Gate
 
+### cli-copilot gpt-5.4 high fallback chain (when codex blocks)
+
+Default worker is **cli-codex gpt-5.4 high fast**. Fall back to **cli-copilot gpt-5.4 high** when ANY of these trigger:
+
+1. **3 consecutive failed cli-codex attempts** on the same gate (exit non-zero, sandbox block, or cancellation envelope without producing useful work)
+2. **cli-codex hangs >15 min with 0 bytes of output** AND no file changes on disk in the target gate folder
+3. **cli-codex repeatedly hits the same logic-sync halt** even after the orchestrator updates the prompt (e.g., the same packet-vs-reality mismatch surfaces twice in a row)
+4. **A specific tool/sandbox block** that copilot's broader sandbox bypasses (notably `.git/index.lock` if copilot's sandbox is more permissive — verify on first fallback attempt)
+
+**Canonical cli-copilot invocation** (read `.claude/skills/cli-copilot/SKILL.md` for full details):
+
+```bash
+copilot -p "$(cat /tmp/execute-gate-X.prompt)" --allow-all-tools --model claude-sonnet-4.6 2>&1 | tail -30
+```
+
+(Substitute `claude-sonnet-4.6` with `gpt-5.4` if copilot exposes it as a model option per `cli-copilot/references/cli_reference.md`. Default to copilot's strongest available model.)
+
+When falling back:
+- Re-launch the same gate prompt file (no rewrite needed unless the logic-sync triggered the fallback)
+- Background mode + `tail -30` so we see final output
+- Same orchestrator commit/push pattern after completion
+- Document the fallback in the gate's commit message and the handover
+
+**Do NOT fall back on first failure.** Codex transient errors are common; retry once first. Only escalate after 3 strikes or sustained hang.
+
 ### Gate B logic-sync resolution (rebaselined from packet's 155 assumption)
 The packet was based on earlier "~155 memory files" research. Live DB had **183 legacy memory rows + 1 pre-existing archived non-memory baseline row**, and the actual column is **`file_path`** (not `source_path`). Resolution:
 - Use `file_path` LIKE `'%/memory/%.md'` everywhere
