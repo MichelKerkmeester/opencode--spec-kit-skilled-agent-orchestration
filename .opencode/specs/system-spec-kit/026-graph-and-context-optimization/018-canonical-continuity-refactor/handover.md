@@ -31,6 +31,9 @@ directives:
 | D — Reader Ready | ⏳ ready | — | — | 6 reader handlers + 3-level resumeLadder (no archived fallback) + 13-feature regression + perf benchmarks. NO D0 observation. |
 | E — Runtime Migration | ⏳ ready | — | — | Single canonical flip (no state machine, no observation gates) + 160+ doc/cmd/agent/skill updates |
 | F — Cleanup Verification | ⏳ ready | — | — | REPURPOSED. Verify Gate B cleanup completeness, remove deprecated archived-tier code, no orphan edges. NO 180-day observation. NO retire/keep/investigate decision. |
+| G — Shared Memory Feature Audit | ⏳ ready | — | — | NEW. Audit `SHARED_MEMORY_DATABASE.md` features for post-refactor relevance. Verify 4 MCP tools still wired, access-control still gates new spec-doc rows, constitutional tier still works. Recommendation: keep-as-is / patch / rework / deprecate. Prompt at `/tmp/execute-gate-g-shared-memory.prompt`. |
+
+**Pipeline order**: Gate A ✅ → Gate B ✅ → **Gate C 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F → Gate G → deep-review × 7 per gate × 7 gates = 49 iterations → fix findings → final completion marking
 
 **Pipeline order**: Gate A ✅ → Gate B ✅ → **Gate C 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F → deep-review × 7 per gate × 6 gates = 42 iterations → fix findings → final completion marking
 
