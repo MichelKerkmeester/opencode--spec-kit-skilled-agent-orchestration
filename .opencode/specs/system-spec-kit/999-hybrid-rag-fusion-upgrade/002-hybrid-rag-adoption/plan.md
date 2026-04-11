@@ -1,0 +1,39 @@
+# Implementation Plan: 002-hybrid-rag-adoption
+
+## 1. Affected Files
+- Authority boundary and tool contracts: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`.
+- Save authority and wrappers: `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`, `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`.
+- Compaction transport and startup guidance: `.opencode/plugins/spec-kit-compact-code-graph.js`, `.opencode/skill/system-spec-kit/mcp_server/context-server.ts`.
+- Review and diagnostics surfaces: `.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts`.
+- Documentation and rollout surfaces: workflow docs under `.opencode/skill/system-spec-kit/references/`, packet-local docs under this folder, and the existing strict validator at `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`.
+
+## 2. Implementation Order
+1. `001-architecture-boundary-freeze`
+2. `007-workflow-guidance-map`
+3. `002-memory-review-tool`
+4. `003-save-ergonomics`
+5. `004-compaction-checkpointing`
+6. `005-bootstrap-guidance`
+7. `006-doctor-debug-overlay`
+8. `008-rollout-evidence-gates`
+9. `009-prototype-backlog`
+
+## 3. Parallelization
+- `007-workflow-guidance-map` can begin immediately after `001` because it documents the frozen boundary rather than changing runtime behavior.
+- `002`, `003`, `005`, and `006` can run in parallel once `001` is accepted, provided they preserve the frozen authorities.
+- `004` should follow `003` because compaction checkpointing depends on JSON-primary save wrappers being settled.
+- `008` should consolidate measurable gates after the implementation-facing surfaces from `002` through `007` are defined.
+- `009` should remain last so prototype candidates inherit the final authority and rollout constraints.
+
+## 4. Integration Points
+- `memory_review` should integrate with existing validation and FSRS behavior, not replace `memory_validate` or the search pipeline.
+- Save wrappers must route through `generate-context.js --json/--stdin` and respect explicit CLI target precedence.
+- Compaction preservation must enter through `experimental.session.compacting` and remain advisory/fail-open.
+- Bootstrap hints must extend `session_bootstrap`, `memory_context`, and startup instructions emitted by `context-server.ts`.
+- Doctor/debug output must summarize `memory_health`, `memory_save` dry-run/preflight, and routing state without becoming a second repair authority.
+
+## 5. Rollback Plan
+- If any sub-phase proposes a new authority lane, stop and revert that plan to the `001-architecture-boundary-freeze` constraints.
+- If a helper surface cannot compile into existing handlers cleanly, demote it into `009-prototype-backlog`.
+- If compaction or bootstrap guidance becomes blocking, remove the helper layer and preserve the current transport and bootstrap authorities unchanged.
+- If rollout gates cannot be measured against real handlers or tests, keep the packet as design-only and do not publish a public-surface change.

@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "description": "Feature Specification: Hybrid RAG Adoption phased implementation packet",
+  "keywords": [
+    "feature",
+    "specification",
+    "hybrid-rag",
+    "adoption",
+    "memory-review",
+    "compaction",
+    "bootstrap",
+    "rollout-gates"
+  ],
+  "lastUpdated": "2026-04-11T06:39:22Z",
+  "specId": "002",
+  "folderSlug": "hybrid-rag-adoption",
+  "parentChain": [
+    "system-spec-kit",
+    "999-hybrid-rag-fusion-upgrade"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

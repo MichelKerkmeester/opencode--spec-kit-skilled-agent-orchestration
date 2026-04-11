@@ -1,0 +1,10 @@
+# Tasks: 002-hybrid-rag-adoption
+
+1. Create the parent adoption packet and lock the research-backed scope in [spec.md](./spec.md), [plan.md](./plan.md), [tasks.md](./tasks.md), [checklist.md](./checklist.md), [decision-record.md](./decision-record.md), and [implementation-summary.md](./implementation-summary.md).
+2. Write `001-architecture-boundary-freeze/*` so every later phase inherits the same authority and non-goal rules.
+3. Write `002-memory-review-tool/*` around `.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts`, `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`, and the existing memory mutation surfaces.
+4. Write `003-save-ergonomics/*` around `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`, `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`, and `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`.
+5. Write `004-compaction-checkpointing/*` around `.opencode/plugins/spec-kit-compact-code-graph.js` and the JSON-primary save authority.
+6. Write `005-bootstrap-guidance/*` around `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`, `.opencode/skill/system-spec-kit/mcp_server/context-server.ts`, and `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`.
+7. Write `006-doctor-debug-overlay/*` and `007-workflow-guidance-map/*` around `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`, `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`, and operator-facing workflow docs.
+8. Write `008-rollout-evidence-gates/*` and `009-prototype-backlog/*`, then verify the packet with `jq empty description.json`, `find .opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption -type f -name "*.md" | wc -l`, and `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption --recursive --strict`.
