@@ -738,7 +738,7 @@ workflow:
     steps:
 
       step_hydrate_summary_metrics:
-        action: "Hydrate summary metrics before synthesis, including completed-continue reopen paths"
+        action: "Hydrate summary metrics before synthesis"
         read:
           - "{spec_folder}/review/deep-review-config.json"
           - "{spec_folder}/review/deep-review-state.jsonl"
@@ -752,7 +752,7 @@ workflow:
           - dimensions_covered: "List of reviewed dimensions"
           - dimension_coverage: "covered / total"
           - last_3_summaries: "Summarize the latest 3 iteration records"
-          - reason: "Use the latest stop reason if present, else 'completed-continue'"
+          - reason: "Use the latest stop reason if present, else the frozen default 'converged'. (Must be a member of the STOP_REASONS enum: converged, maxIterationsReached, blockedStop, stuckRecovery, error, manualStop, userPaused.)"
 
       step_read_all_iterations:
         action: "Read all iteration files and strategy"
@@ -828,7 +828,7 @@ workflow:
              - Convergence summary, coverage summary, ruled-out claims, sources reviewed
              - Cross-reference appendix MUST be split into `Core Protocols` and `Overlay Protocols`
 
-          Preserve machine-owned markers so completed-continue can snapshot and reopen without mutating prior synthesis.
+          Preserve machine-owned markers so the reducer-owned registry, dashboard, and strategy anchors can be refreshed on re-run without mutating prior synthesis. (Note: `completed-continue` lineage branch is deferred — see `sk-deep-review/references/loop_protocol.md §Lifecycle Branches`.)
         output: "{spec_folder}/review/review-report.md"
 
       step_convergence_report:

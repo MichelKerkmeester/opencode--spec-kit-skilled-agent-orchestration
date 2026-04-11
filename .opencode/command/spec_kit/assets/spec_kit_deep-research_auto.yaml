@@ -139,14 +139,21 @@ workflow:
         outputs:
           - session_state: "fresh | resume | completed-session | invalid-state"
         on_resume:
-          log: "Auto-resume: state artifacts are complete and consistent. Continue same lineage."
+          log: "Auto-resume: state artifacts are complete and consistent. Continue the same lineage (sessionId unchanged, generation unchanged, no archive)."
+          append_jsonl: '{"type":"event","event":"resumed","mode":"research","sessionId":"{session_id}","parentSessionId":"{session_id}","lineageMode":"resume","continuedFromRun":{iteration_count},"generation":{generation},"archivedPath":null,"timestamp":"{ISO_8601_NOW}"}'
           skip_to: phase_loop
         on_restart:
-          action: "Archive current packet, increment generation, and create a new lineage segment"
-        on_fork:
-          action: "Copy current packet as a fork baseline with explicit parent linkage"
+          action: "Archive the current research/ tree under research_archive/{timestamp}/ and start a new lineage segment with a fresh sessionId and generation+1."
+          archive: "{spec_folder}/research -> {spec_folder}/research_archive/{timestamp_slug}"
+          set:
+            lineage_mode: "restart"
+            parent_session_id: "{prior_session_id}"
+            generation: "{prior_generation + 1}"
+          append_jsonl: '{"type":"event","event":"restarted","mode":"research","sessionId":"{session_id}","parentSessionId":"{prior_session_id}","lineageMode":"restart","generation":{generation},"archivedPath":"{spec_folder}/research_archive/{timestamp_slug}","timestamp":"{ISO_8601_NOW}"}'
+          skip_to: step_create_config
+        note_deferred_branches: "fork and completed-continue are deferred and no longer runtime-supported in this release. The reducer still reads `lineageMode` from config for dashboards and analysis, but only `new`, `resume`, and `restart` are live. See sk-deep-research/references/loop_protocol.md §Lifecycle Branch Contract for the one-session contract."
         on_completed_session:
-          log: "Prior session already completed. Snapshot synthesis and reopen via completed-continue."
+          log: "Prior session already completed. Either archive the completed research/ tree and start a fresh session, or jump straight to synthesis with the existing artifacts."
           skip_to: phase_synthesis
         on_invalid_state:
           halt: true
@@ -479,7 +486,7 @@ workflow:
     steps:
 
       step_hydrate_summary_metrics:
-        action: "Hydrate summary metrics before synthesis, including completed-continue reopen paths"
+        action: "Hydrate summary metrics before synthesis"
         read:
           - "{spec_folder}/research/deep-research-config.json"
           - "{spec_folder}/research/deep-research-state.jsonl"
@@ -497,7 +504,7 @@ workflow:
           - answered_count: "Count answered questions from strategy.md"
           - total_questions: "Count total questions tracked in strategy.md"
           - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: focus (ratio)'"
-          - reason: "Use the latest synthesis/recovery stop reason if present, else 'completed-continue'"
+          - reason: "Use the latest synthesis/recovery stop reason if present, else the frozen default 'converged'. (Must be a member of the STOP_REASONS enum: converged, maxIterationsReached, blockedStop, stuckRecovery, error, manualStop, userPaused.)"
 
       step_read_all_iterations:
         action: "Read all iteration files and strategy"
@@ -519,7 +526,7 @@ workflow:
             2. Populate sections from iteration files
             3. Add citations from original sources
             4. Note unanswered questions in Open Questions section
-          Preserve machine-owned markers so completed-continue can snapshot and reopen without mutating prior synthesis.
+          Preserve machine-owned markers so the reducer-owned registry, dashboard, and strategy anchors can be refreshed on re-run without mutating prior synthesis. (Note: `completed-continue` lineage branch is deferred — see `sk-deep-research/references/loop_protocol.md §Lifecycle Branch Contract`.)
         output: "{spec_folder}/research/research.md"
 
       step_convergence_report:

@@ -70,7 +70,7 @@ Extract from state:
 - Remaining key questions
 - Exhausted approaches (DO NOT retry these)
 - Recommended next focus
-- Lifecycle branch from `config.lineage.lineageMode` (`resume`, `restart`, `fork`, or `completed-continue`)
+- Lifecycle branch from `config.lineage.lineageMode` (`new`, `resume`, or `restart`). `fork` and `completed-continue` are deferred — see `.opencode/skill/sk-deep-research/references/loop_protocol.md §Lifecycle Branches`.
 
 #### Step 2: Determine Focus
 

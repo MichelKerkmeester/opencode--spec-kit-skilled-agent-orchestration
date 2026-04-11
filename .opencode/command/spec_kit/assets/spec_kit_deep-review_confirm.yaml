@@ -30,7 +30,7 @@ user_inputs:
   review_target_type: "[spec-folder|skill|agent|track|files] - Target type for scope derivation. REQUIRED."
   review_dimensions: "[all|correctness,security,traceability,maintainability] - Dimensions to check. Default: all."
   spec_folder: "[SPEC_FOLDER] - Spec folder path for state files. REQUIRED."
-  lineage_mode: "[auto|resume|restart|fork|completed-continue] - Session lifecycle intent. Default: auto."
+  lineage_mode: "[auto|resume|restart] - Session lifecycle intent. Default: auto. The runtime only persists lineage events for `resume` (same sessionId, no archive) and `restart` (new sessionId, generation+1, prior review/ archived). `fork` and `completed-continue` are deferred and no longer accepted — see sk-deep-review/references/loop_protocol.md §Lifecycle Branches."
   max_iterations: 7
   convergence_threshold: 0.10
 
@@ -821,7 +821,7 @@ workflow:
     steps:
 
       step_hydrate_summary_metrics:
-        action: "Hydrate summary metrics before synthesis or completed-continue review"
+        action: "Hydrate summary metrics before synthesis"
         read:
           - "{spec_folder}/review/deep-review-config.json"
           - "{spec_folder}/review/deep-review-state.jsonl"
@@ -835,7 +835,7 @@ workflow:
           - dimensions_covered: "List of reviewed dimensions"
           - dimension_coverage: "covered / total"
           - last_3_summaries: "Summarize the latest 3 iteration records"
-          - reason: "Use the latest stop reason if present, else 'completed-continue'"
+          - reason: "Use the latest stop reason if present, else the frozen default 'converged'. (Must be a member of the STOP_REASONS enum: converged, maxIterationsReached, blockedStop, stuckRecovery, error, manualStop, userPaused.)"
 
       # ─── APPROVAL GATE: Pre-Synthesis ───
       gate_pre_synthesis:
@@ -935,7 +935,7 @@ workflow:
              - Convergence summary, coverage summary, ruled-out claims, sources reviewed
              - Cross-reference appendix MUST be split into `Core Protocols` and `Overlay Protocols`
 
-          Preserve machine-owned markers so completed-continue can snapshot and reopen without mutating prior synthesis.
+          Preserve machine-owned markers so the reducer-owned registry, dashboard, and strategy anchors can be refreshed on re-run without mutating prior synthesis. (Note: `completed-continue` lineage branch is deferred — see `sk-deep-review/references/loop_protocol.md §Lifecycle Branches`.)
         output: "{spec_folder}/review/review-report.md"
 
       step_convergence_report:

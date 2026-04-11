@@ -151,14 +151,15 @@ Re-invoking on a spec folder that has existing review state triggers auto-resume
 
 ### Lifecycle Modes
 
-| Mode                 | Effect                                                                                                |
-| -------------------- | ----------------------------------------------------------------------------------------------------- |
-| `resume`             | Continue the same review lineage and keep the current generation                                      |
-| `restart`            | Archive the current review state and start a new generation linked by `parentSessionId`               |
-| `fork`               | Create a new review branch with full ancestry preserved                                               |
-| `completed-continue` | Snapshot `review-report-v{generation}.md`, reopen the packet, and continue with amendment-only deltas |
+| Mode                       | Effect                                                                                                                                                                  |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new`                      | First run against the spec folder. No prior state.                                                                                                                      |
+| `resume`                   | Continue the same review lineage, keep the current `sessionId` and generation. Appends a typed `resumed` JSONL event.                                                   |
+| `restart`                  | Archive the existing `review/` tree under `review_archive/{timestamp}/`, mint a fresh `sessionId`, increment `generation`, and append a typed `restarted` JSONL event. |
+| `fork` (deferred)          | Reserved. Earlier drafts described a child review branch; the workflow no longer exposes this option.                                                                  |
+| `completed-continue` (deferred) | Reserved. Earlier drafts described snapshotting `review-report-v{generation}.md` and reopening; not runtime-wired.                                                 |
 
-Review lineage metadata lives in `deep-review-config.json` and every iteration record: `sessionId`, `parentSessionId`, `lineageMode`, `generation`, `continuedFromRun`, and `releaseReadinessState`.
+See `references/loop_protocol.md §Lifecycle Branches (current release)` for the canonical event contract. Review lineage metadata lives in `deep-review-config.json` and every iteration record: `sessionId`, `parentSessionId`, `lineageMode`, `generation`, `continuedFromRun`, and `releaseReadinessState`.
 
 ### Release Readiness States
 
@@ -207,7 +208,8 @@ Created in `{spec_folder}/review/` during initialization. All files are scoped t
 ├── deep-review-dashboard.md        # Auto-generated after each iteration
 ├── .deep-review-pause              # Pause sentinel: create to halt, delete to resume
 ├── review-report.md                # 9-section findings-first synthesis with verdict
-├── review-report-v{generation}.md  # Immutable snapshot when completed-continue reopens a finished review
+# `review-report-v{generation}.md` is reserved for the deferred completed-continue
+# lifecycle mode and is not written by the current runtime.
 └── iterations/
     └── iteration-NNN.md            # Write-once per-iteration detailed findings
 ```
@@ -421,6 +423,6 @@ A: Raise `--max-iterations` above the number of completed iterations and re-invo
 | State log         | `review/deep-review-state.jsonl`                                                                                                     |
 | Findings registry | `review/deep-review-findings-registry.json`                                                                                          |
 | Pause sentinel    | `review/.deep-review-pause`                                                                                                          |
-| Lifecycle modes   | `resume`, `restart`, `fork`, `completed-continue`                                                                                    |
+| Lifecycle modes   | Runtime: `new`, `resume`, `restart`. Deferred (reserved, not emitted): `fork`, `completed-continue`. See `references/loop_protocol.md §Lifecycle Branches`. |
 | Release readiness | `in-progress`, `converged`, `release-blocking`                                                                                       |
 | Runtime mirrors   | `.opencode/agent/deep-review.md`, `.claude/agents/deep-review.md`, `.codex/agents/deep-review.toml`, `.gemini/agents/deep-review.md` |

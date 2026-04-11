@@ -229,11 +229,16 @@ This agent loads shared review doctrine from .opencode/skill/sk-code-review/refe
 
 ### Lifecycle + Reducer Contract
 
-The orchestrator may enter this agent through any of these lifecycle modes:
-- `resume`: Continue the active review session.
-- `restart`: Reset loop state and start a fresh generation for the same target.
-- `fork`: Start a child review session from an earlier lineage point.
-- `completed-continue`: Re-open a previously completed session for additional review coverage.
+Runtime-supported lifecycle modes (current release):
+- `new`: First run against the spec folder; no prior state.
+- `resume`: Continue the active review session; same `sessionId`, no archive. The workflow appends a typed `resumed` JSONL event before dispatch.
+- `restart`: Archive the existing `review/` tree under `review_archive/{timestamp}/`, mint a fresh `sessionId`, increment `generation`. The workflow appends a typed `restarted` JSONL event with a non-null `archivedPath`.
+
+Deferred (reserved, not runtime-supported):
+- `fork`: Earlier drafts described this as a child review session from an earlier lineage point. Not emitted today.
+- `completed-continue`: Earlier drafts described re-opening a completed session for additional review coverage. Not emitted today.
+
+See `.opencode/skill/sk-deep-review/references/loop_protocol.md §Lifecycle Branches (current release)` for the canonical event contract.
 
 Always treat these config fields as required read-only lineage metadata:
 - `sessionId`, `parentSessionId`, `lineageMode`, `generation`

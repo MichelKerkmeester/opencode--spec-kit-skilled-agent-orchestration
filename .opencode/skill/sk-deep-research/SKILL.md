@@ -4,7 +4,7 @@ description: "Autonomous deep research loop protocol with iterative investigatio
 allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search]
 # Note: Task tool is for the command executor (loop management). The @deep-research agent itself does NOT have Task (LEAF-only).
 argument-hint: "[topic] [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.6.0.0
+version: 1.6.1.0
 ---
 
 <!-- Keywords: autoresearch, deep-research, iterative-research, autonomous-loop, convergence-detection, externalized-state, fresh-context, research-agent, JSONL-state, strategy-file -->
@@ -46,11 +46,16 @@ For iterative code review and quality auditing, see `sk-deep-review`.
 
 ### Lifecycle Contract
 
-Live lifecycle branches:
-- `resume` — continue the active lineage
-- `restart` — start a new generation with explicit parent linkage
-- `fork` — branch from the current packet state
-- `completed-continue` — reopen a completed lineage only after immutable synthesis snapshotting
+Runtime-supported lifecycle modes (current release):
+- `new` — first run against the spec folder
+- `resume` — continue the active lineage; appends a typed `resumed` JSONL event with `sessionId`, `parentSessionId`, `lineageMode`, `continuedFromRun`, `generation`, `archivedPath` (null), and `timestamp`
+- `restart` — archive the existing `research/` tree under `research_archive/{timestamp}/`, mint a fresh `sessionId`, increment `generation`, and append a typed `restarted` JSONL event with the same field set plus a non-null `archivedPath`
+
+Deferred (reserved, not runtime-supported):
+- `fork` — earlier drafts described a sibling-lineage branch; the workflow no longer exposes this as an option
+- `completed-continue` — earlier drafts described snapshotting the prior synthesis as immutable `synthesis-v{generation}.md`; not runtime-wired
+
+See `references/loop_protocol.md §Lifecycle Branches` for the canonical event contract and the rationale for the retraction.
 
 ---
 

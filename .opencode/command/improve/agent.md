@@ -336,7 +336,7 @@ When `--session-id=<prior-id>` is provided:
 3. Resume the iteration counter from that point
 4. Do NOT repeat already-completed iterations
 
-Supported lineage modes: `new`, `resume`, `restart`, `fork`, `completed-continue`
+Supported lineage modes: `new`. sk-improve-agent is one-session-only in the current release — every invocation starts a fresh session with generation 1. `resume`, `restart`, `fork`, and `completed-continue` were described in earlier drafts but have no runtime wiring; see `.opencode/skill/sk-improve-agent/SKILL.md §Resume/Continuation Semantics (current release)` for the full retraction.
 
 ### Step 7: Return Status
 

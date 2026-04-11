@@ -36,7 +36,7 @@ trigger_phrases:
 
 `sk-deep-research` is research-only. It runs repeated investigation cycles through `/spec_kit:deep-research`, dispatching a fresh `@deep-research` agent for each iteration while keeping continuity in packet files instead of live conversation memory.
 
-The packet is now lineage-aware. Every run carries `sessionId`, `parentSessionId`, `lineageMode`, `generation`, and `continuedFromRun`, so the workflow can distinguish an active resume from a restart, a fork, or a completed lineage that is being reopened.
+The packet is now lineage-aware. Every run carries `sessionId`, `parentSessionId`, `lineageMode`, `generation`, and `continuedFromRun`, so the workflow can distinguish an active resume from a restart. `fork` and `completed-continue` are reserved for a future release and are not runtime-supported today — see `references/loop_protocol.md §Lifecycle Branches` for the canonical one-session contract.
 
 The packet is also reducer-synchronized. The agent writes the iteration file plus the JSONL record. The workflow reducer then updates the machine-owned packet surfaces so `deep-research-strategy.md`, `findings-registry.json`, `deep-research-dashboard.md`, and synthesis metadata cannot drift apart.
 
@@ -75,7 +75,7 @@ Pause a running loop by creating `research/.deep-research-pause`. Delete that fi
 | Feature | Description |
 |---------|-------------|
 | Fresh context per iteration | Each iteration uses a fresh LEAF agent dispatch. |
-| Lineage-aware lifecycle | Supports `resume`, `restart`, `fork`, and `completed-continue`. |
+| Lineage-aware lifecycle | Supports `new`, `resume`, and `restart`. `fork` and `completed-continue` are deferred — see `references/loop_protocol.md §Lifecycle Branches`. |
 | Reducer synchronization | Strategy, dashboard, registry, and synthesis metadata are updated from canonical iteration outputs. |
 | Packet-first recovery | Hook and non-hook runtimes derive the same next action from packet files. |
 | Runtime capability matrix | One documented and machine-readable source of truth for provider quirks and parity expectations. |
@@ -142,12 +142,13 @@ Ownership model:
 
 | Mode | Meaning |
 |------|---------|
-| `resume` | Continue the active lineage with the same `sessionId`. |
-| `restart` | Start a new generation with explicit parent linkage and archive the prior packet state. |
-| `fork` | Create a sibling lineage from the current packet state. |
-| `completed-continue` | Reopen a completed lineage only after snapshotting the prior synthesis as immutable `synthesis-v{generation}.md`. |
+| `new` | First run against this spec folder. No prior state. |
+| `resume` | Continue the active lineage with the same `sessionId`. Persisted as a `resumed` JSONL event. |
+| `restart` | Start a new generation with explicit parent linkage and archive the prior `research/` tree under `research_archive/{timestamp}/`. Persisted as a `restarted` JSONL event. |
+| `fork` (deferred) | Reserved. Earlier drafts described this as a sibling-lineage branch; the runtime does not emit lineage events for `fork` today. Do not expose it in user-facing workflows. |
+| `completed-continue` (deferred) | Reserved. Earlier drafts described snapshotting the prior synthesis as immutable `synthesis-v{generation}.md`; the runtime does not emit lineage events for `completed-continue` today. |
 
-Legacy artifact names remain read-only migration aliases for a 4-week window. The workflow writes only canonical `deep-research-*` names and emits migration events when it consumes a legacy alias.
+See `references/loop_protocol.md §Lifecycle Branches` for the canonical event contract. Legacy artifact names remain read-only migration aliases for a 4-week window. The workflow writes only canonical `deep-research-*` names and emits migration events when it consumes a legacy alias.
 <!-- /ANCHOR:lifecycle-modes -->
 
 ---
@@ -189,8 +190,11 @@ Read `.opencode/skill/sk-deep-research/references/capability_matrix.md` for the 
 **Q: Does the agent still edit `deep-research-strategy.md` directly?**
 A: Not as the source of truth. The reducer owns the machine-managed sections so packet state stays synchronized.
 
-**Q: What is the difference between `restart` and `completed-continue`?**
-A: `restart` begins a new generation from an active or inactive packet and archives prior state. `completed-continue` reopens a completed lineage after snapshotting the old synthesis boundary.
+**Q: What is the difference between `resume` and `restart`?**
+A: `resume` continues the same `sessionId` and generation, leaving the `research/` tree in place; the workflow appends a `resumed` JSONL event. `restart` archives the existing `research/` tree under `research_archive/{timestamp}/`, mints a fresh `sessionId`, increments `generation`, and appends a `restarted` JSONL event. Both events share the full lineage-contract field set documented in `references/loop_protocol.md §Lifecycle Branches`.
+
+**Q: What happened to `fork` and `completed-continue`?**
+A: Both were described in earlier drafts but never shipped as runtime branches. They are deferred and the workflow no longer exposes them as options. If the long-form lineage feature is implemented later it will arrive with first-class event emission, reducer ancestry handling, and replay fixtures; until then treat each run as a standalone session or use `restart` to archive the prior one.
 
 **Q: Can non-hook runtimes use the same workflow safely?**
 A: Yes. Packet files are the authority. Hooks only improve startup ergonomics.

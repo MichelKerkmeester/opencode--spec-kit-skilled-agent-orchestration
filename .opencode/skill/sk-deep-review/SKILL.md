@@ -5,7 +5,7 @@ allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memor
 # Note: Task tool is for the command executor (loop management). The @deep-review agent itself does NOT have Task (LEAF-only).
 # No WebFetch: review is code-only and read-only. No external resource fetching.
 argument-hint: "[target] [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.3.0.0
+version: 1.3.1.0
 ---
 
 <!-- Keywords: deep-review, code-audit, iterative-review, review-loop, convergence-detection, externalized-state, fresh-context, review-agent, JSONL-state, severity-findings, P0-P1-P2, release-readiness, spec-alignment -->
@@ -264,12 +264,16 @@ Review mode is lineage-aware. Every packet uses canonical review-mode artifacts:
 - `deep-review-dashboard.md`
 - `.deep-review-pause`
 
-Supported lifecycle modes:
-- `new`
-- `resume`
-- `restart`
-- `fork`
-- `completed-continue`
+Runtime-supported lifecycle modes:
+- `new` — first run against the spec folder
+- `resume` — continue the active lineage; appends a typed `resumed` JSONL event with `sessionId`, `parentSessionId`, `lineageMode`, `continuedFromRun`, `generation`, `archivedPath` (null), `timestamp`
+- `restart` — archive the existing `review/` tree under `review_archive/{timestamp}/`, mint a fresh `sessionId`, increment `generation`, and append a typed `restarted` JSONL event with the same field set plus a non-null `archivedPath`
+
+Deferred (reserved, not runtime-supported):
+- `fork` — earlier drafts described a sibling-lineage branch; the workflow no longer exposes this option
+- `completed-continue` — earlier drafts described snapshotting `review-report-v{generation}.md`; not runtime-wired
+
+See `references/loop_protocol.md §Lifecycle Branches (current release)` for the canonical event contract and the rationale for the retraction.
 
 Required lineage fields on config and iteration records:
 - `sessionId`

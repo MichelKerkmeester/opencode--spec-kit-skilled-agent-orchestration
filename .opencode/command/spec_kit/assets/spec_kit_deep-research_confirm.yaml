@@ -568,7 +568,7 @@ workflow:
     steps:
 
       step_hydrate_summary_metrics:
-        action: "Hydrate summary metrics before synthesis or completed-continue review"
+        action: "Hydrate summary metrics before synthesis"
         read:
           - "{spec_folder}/research/deep-research-config.json"
           - "{spec_folder}/research/deep-research-state.jsonl"
@@ -586,7 +586,7 @@ workflow:
           - answered_count: "Count answered questions from strategy.md"
           - total_questions: "Count total questions tracked in strategy.md"
           - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: focus (ratio)'"
-          - reason: "Use the latest synthesis/recovery stop reason if present, else 'completed-continue'"
+          - reason: "Use the latest synthesis/recovery stop reason if present, else the frozen default 'converged'. (Must be a member of the STOP_REASONS enum: converged, maxIterationsReached, blockedStop, stuckRecovery, error, manualStop, userPaused.)"
 
       # ─── APPROVAL GATE: Pre-Synthesis ───
       gate_pre_synthesis:
@@ -631,7 +631,7 @@ workflow:
             2. Populate sections from iteration files
             3. Add citations from original sources
             4. Note unanswered questions in Open Questions section
-          Preserve machine-owned markers so completed-continue can snapshot and reopen without mutating prior synthesis.
+          Preserve machine-owned markers so the reducer-owned registry, dashboard, and strategy anchors can be refreshed on re-run without mutating prior synthesis. (Note: `completed-continue` lineage branch is deferred — see `sk-deep-research/references/loop_protocol.md §Lifecycle Branch Contract`.)
         output: "{spec_folder}/research/research.md"
 
       step_convergence_report:
