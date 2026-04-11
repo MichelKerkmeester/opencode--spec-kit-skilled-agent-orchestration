@@ -1,0 +1,210 @@
+{
+  "sessionId": "rvw-2026-04-11T13-50-06Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Canonical deep-review agent still emits an unparseable iteration schema",
+      "file": ".opencode/agent/deep-review.md",
+      "line": 147,
+      "description": "The live agent contract tells the LEAF reviewer to write `# Review Iteration [N]: ...` plus findings like `### P0-NNN:` with freeform bullets, but the reducer only extracts `- **FNNN**:` bullets inside `### P0` / `### P1` / `### P2` subsections from `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:137-206`. A run that follows the canonical agent file can therefore surface zero findings into the registry and dashboard even when the markdown contains substantive defects.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 1,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Claim-adjudication is documented as a hard stop gate but never participates in STOP eligibility",
+      "file": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+      "line": 574,
+      "description": "`step_post_iteration_claim_adjudication` sets `claim_adjudication_passed=false` and states that STOP must stay blocked until the packet is present, but `step_check_convergence` only evaluates convergence, dimension coverage, P0 resolution, evidence density, and hotspot saturation at `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:388-429`; no branch reads `claim_adjudication_passed`. The loop can therefore stop and synthesize after a P0/P1 iteration whose required adjudication packet failed validation.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 1,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P1",
+      "title": "Coverage-graph writes are not session-isolated when IDs collide",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts",
+      "line": 154,
+      "description": "`coverage_nodes` and `coverage_edges` key rows by bare `id` only (`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-192`), and both upsert paths decide update vs insert with `WHERE id = ?` instead of the full namespace (`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:292-302`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:370-376`). A later session that reuses an earlier node or edge ID mutates the existing row rather than creating a session-local record, violating REQ-012’s `specFolder + loopType + sessionId` isolation contract (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements/spec.md:99-100`) and creating a cross-session overwrite/leak path underneath handlers that otherwise pass `sessionId`.",
+      "dimension": "security",
+      "firstSeen": 2,
+      "lastSeen": 2,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P1",
+      "title": "Graph-event namespace contract is still undocumented on the visible path",
+      "file": ".opencode/skill/sk-deep-research/references/state_format.md",
+      "line": 145,
+      "description": "The research state-format reference lists optional iteration fields through `sourceStrength` but never documents `graphEvents`, even though the live research confirm workflow requires `graphEvents` objects shaped as raw `{type, id, label, relation?, source?, target?}` and then preserves those IDs unchanged into `deep_loop_graph_upsert` at `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:438` and `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:464-475`. The review side is only slightly better: it names `graphEvents` as an optional field with no schema or namespace guidance at `.opencode/skill/sk-deep-review/references/state_format.md:192-194`, while the confirm mirror still emits raw `{type, id, ...}` events and deduplicates/upserts by bare `id` at `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:597` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:658-665`. Because the runtime write layer already keys rows by bare ID (see F004), the missing doc-level namespace contract leaves the session-isolation requirement invisible to operators and makes the collision hazard easy to reintroduce.",
+      "dimension": "security",
+      "firstSeen": 3,
+      "lastSeen": 3,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F007",
+      "severity": "P1",
+      "title": "Claim-adjudication state format still documents a prose block instead of the typed packet the workflow enforces",
+      "file": ".opencode/skill/sk-deep-review/references/state_format.md",
+      "line": 621,
+      "description": "The visible state-format reference still tells reviewers to record claim adjudication as a markdown section (`### Claim Adjudication: F[NNN]` plus prose bullets) at `.opencode/skill/sk-deep-review/references/state_format.md:621-635`, but the live confirm workflow rejects P0/P1 findings unless the iteration file contains a typed packet with `claim`, `evidenceRefs`, `counterevidenceSought`, `alternativeExplanation`, `finalSeverity`, `confidence`, and `downgradeTrigger` at `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:619-628`; the loop protocol also defines those fields as required machine-readable adjudication data at `.opencode/skill/sk-deep-review/references/loop_protocol.md:304-327`. An operator following the visible state-format example will produce a non-conforming adjudication record and keep STOP blocked even after doing the review work.",
+      "dimension": "traceability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F008",
+      "severity": "P1",
+      "title": "Deep-review quick reference teaches the wrong weighted convergence signal set",
+      "file": ".opencode/skill/sk-deep-review/references/quick_reference.md",
+      "line": 145,
+      "description": "The cheat sheet says the three weighted convergence signals are Rolling Average, MAD Noise Floor, and Dimension Coverage at `.opencode/skill/sk-deep-review/references/quick_reference.md:145-151`, but the canonical convergence contract defines the weighted vote as Rolling Average, MAD Noise Floor, and Novelty Ratio at `.opencode/skill/sk-deep-review/references/convergence.md:165-171`. Dimension coverage is a later legal-stop/coverage guard, not the third weighted vote. Because quick_reference is the most operator-facing summary, it currently points reviewers at the wrong stop math and tuning levers.",
+      "dimension": "traceability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P2",
+      "title": "Review config JSONL collapses requested dimensions into one string element",
+      "file": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+      "line": 260,
+      "description": "The init record writes `\\\"reviewDimensions\\\":[\\\"{review_dimensions}\\\"]` even though the same workflow says dimensions should be normalized before writing at `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:240-241`; the confirm mirror repeats the same shape at `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:259`. Consumers reading the state log get `[\"correctness,security\"]` or `[\"all\"]` instead of discrete dimensions, which weakens replay/debug tooling and any future reducer migration that trusts the JSONL contract.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 1,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P2",
+      "title": "Session-isolation regression omits the ID-collision path",
+      "file": ".opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts",
+      "line": 62,
+      "description": "The REQ-024 suite only inserts disjoint node and edge IDs per session (`q-a`/`q-b`, `a-answers-1`/`b-answers-1`) across `.opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts:62-91`, so it proves filtered reads on non-overlapping fixtures but never exercises the global-ID overwrite path in `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:292-302` and `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:370-376`. The test can stay green while the runtime still corrupts session isolation under shared IDs.",
+      "dimension": "security",
+      "firstSeen": 2,
+      "lastSeen": 2,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F009",
+      "severity": "P2",
+      "title": "Convergence reference still describes a persisted `legalStop` synthesis payload the shipped JSONL schema does not write",
+      "file": ".opencode/skill/sk-deep-review/references/convergence.md",
+      "line": 44,
+      "description": "The convergence reference says every terminal stop and blocked-stop vote must emit a typed `legalStop` record and later shows a persisted `{\"event\":\"synthesis\",\"legalStop\":...}` JSONL example at `.opencode/skill/sk-deep-review/references/convergence.md:44-87` and `.opencode/skill/sk-deep-review/references/convergence.md:609-626`, but the shipped workflows append `blocked_stop` rows with top-level `blockedBy`/`gateResults`/`recoveryStrategy` and a `synthesis_complete` row without any `legalStop` payload at `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:476-479` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:896`; the persisted state-format reference also models the on-disk contract without `legalStop` at `.opencode/skill/sk-deep-review/references/state_format.md:221-289`. That leaves the reference set internally contradictory for anyone building replay or audit tooling from the docs.",
+      "dimension": "traceability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 3
+  },
+  "openFindingsCount": 9,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.6699999999999999,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}
