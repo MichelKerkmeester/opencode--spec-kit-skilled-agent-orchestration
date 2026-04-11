@@ -81,6 +81,8 @@ function createTestDb(): void {
       id INTEGER PRIMARY KEY,
       source_id TEXT NOT NULL,
       target_id TEXT NOT NULL,
+      source_anchor TEXT,
+      target_anchor TEXT,
       relation TEXT NOT NULL,
       strength REAL DEFAULT 1.0,
       evidence TEXT,
@@ -106,13 +108,13 @@ function createTestDb(): void {
     VALUES (?, ?, ?, ?)
   `).run(1, '1', '2', 'supports');
   database.prepare(`
-    INSERT INTO causal_edges (id, source_id, target_id, relation)
-    VALUES (?, ?, ?, ?)
-  `).run(2, '1', '3', 'derived_from');
+    INSERT INTO causal_edges (id, source_id, target_id, source_anchor, target_anchor, relation)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(2, '1', '3', 'alpha-source-anchor', 'alpha-target-anchor', 'derived_from');
   database.prepare(`
-    INSERT INTO causal_edges (id, source_id, target_id, relation)
-    VALUES (?, ?, ?, ?)
-  `).run(3, '3', '3', 'supports');
+    INSERT INTO causal_edges (id, source_id, target_id, source_anchor, target_anchor, relation)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(3, '3', '30', null, null, 'supports');
 
   mod.init(database);
   causalEdges.init(database);
@@ -238,6 +240,7 @@ function updateCheckpointSnapshot(
   checkpointName: string,
   mutate: (snapshot: {
     tables?: Record<string, { columns: string[]; rows: Array<Record<string, unknown>> }>;
+    causalEdges?: Array<Record<string, unknown>>;
   }) => void,
 ): void {
   const row = database.prepare(
@@ -248,6 +251,7 @@ function updateCheckpointSnapshot(
     zlib.gunzipSync(requireValue(row).memory_snapshot).toString('utf-8')
   ) as {
     tables?: Record<string, { columns: string[]; rows: Array<Record<string, unknown>> }>;
+    causalEdges?: Array<Record<string, unknown>>;
   };
   mutate(snapshot);
   database.prepare('UPDATE checkpoints SET memory_snapshot = ? WHERE name = ?').run(
@@ -504,6 +508,71 @@ describe('Checkpoints Storage (T503)', () => {
       mod.deleteCheckpoint('scoped-edge-snapshot');
     });
 
+    it('T503-11b: legacy causal edge snapshots preserve anchor values and null anchors on restore', () => {
+      const checkpoint = mod.createCheckpoint({
+        name: 'legacy-anchor-restore',
+      });
+      requireValue(checkpoint);
+
+      updateCheckpointSnapshot(getTestDb(), 'legacy-anchor-restore', (snapshot) => {
+        if (snapshot.tables) {
+          delete snapshot.tables.causal_edges;
+        }
+        if (!Array.isArray(snapshot.causalEdges)) {
+          throw new Error('Expected causalEdges legacy payload');
+        }
+
+        snapshot.causalEdges = snapshot.causalEdges.map((row, index) => {
+          if (index !== 0) {
+            return row;
+          }
+
+          const { source_anchor: _sourceAnchor, target_anchor: _targetAnchor, ...rest } = row;
+          return rest;
+        });
+      });
+
+      const db = getTestDb();
+      db.prepare(`
+        UPDATE causal_edges SET source_anchor = ?, target_anchor = ? WHERE id = ?
+      `).run('mutated-source-anchor-1', 'mutated-target-anchor-1', 1);
+      db.prepare(`
+        UPDATE causal_edges SET source_anchor = ?, target_anchor = ? WHERE id = ?
+      `).run('mutated-source-anchor-2', 'mutated-target-anchor-2', 2);
+      db.prepare(`
+        UPDATE causal_edges SET source_anchor = ?, target_anchor = ? WHERE id = ?
+      `).run('mutated-source-anchor-3', 'mutated-target-anchor-3', 3);
+
+      const result = mod.restoreCheckpoint('legacy-anchor-restore', true);
+
+      expect(result.errors).toEqual([]);
+      expect(
+        db.prepare(`
+          SELECT id, source_id, target_id, source_anchor, target_anchor
+          FROM causal_edges
+          ORDER BY id
+        `).all()
+      ).toEqual([
+        { id: 1, source_id: '1', target_id: '2', source_anchor: null, target_anchor: null },
+        {
+          id: 2,
+          source_id: '1',
+          target_id: '3',
+          source_anchor: 'alpha-source-anchor',
+          target_anchor: 'alpha-target-anchor',
+        },
+        {
+          id: 3,
+          source_id: '3',
+          target_id: '30',
+          source_anchor: null,
+          target_anchor: null,
+        },
+      ]);
+
+      mod.deleteCheckpoint('legacy-anchor-restore');
+    });
+
     it('T503-12: scoped clearExisting restore preserves other spec data and unrelated edges', () => {
       const checkpoint = mod.createCheckpoint({
         name: 'scoped-edge-restore',
@@ -534,7 +603,7 @@ describe('Checkpoints Storage (T503)', () => {
         (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '2') as { cnt: number }).cnt
       ).toBe(1);
       expect(
-        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '30') as { cnt: number }).cnt
       ).toBe(1);
       expect(
         (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '3') as { cnt: number }).cnt
@@ -572,7 +641,7 @@ describe('Checkpoints Storage (T503)', () => {
         (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('2', '3') as { cnt: number }).cnt
       ).toBe(0);
       expect(
-        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '30') as { cnt: number }).cnt
       ).toBe(1);
 
       mod.deleteCheckpoint('scoped-edge-merge-restore');

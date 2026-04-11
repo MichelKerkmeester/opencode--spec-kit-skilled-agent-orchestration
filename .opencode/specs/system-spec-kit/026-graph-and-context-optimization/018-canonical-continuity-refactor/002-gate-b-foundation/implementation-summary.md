@@ -2,23 +2,23 @@
 title: "Gate B — Foundation"
 feature: phase-018-gate-b-foundation
 level: 3
-status: planned
+status: complete
+closed_by_commit: TBD
 parent: 018-canonical-continuity-refactor
 gate: B
-description: "Planned closeout shape for Gate B. Post-implementation facts stay intentionally stubbed until the foundation work actually lands."
+description: "Gate B closed against the rebaselined live DB state. The migration rehearsed cleanly on a copy, production moved schema_version 25 -> 26, 183 legacy memory-path rows were archived with the 1 pre-existing non-memory archived row preserved, and anchor-aware causal traversal plus archived observability were verified."
 trigger_phrases:
   - "gate b implementation summary"
   - "foundation closeout"
-  - "archive flip summary"
+  - "canonical continuity"
   - "phase 018"
-  - "planned summary"
+  - "archive flip"
 importance_tier: "important"
-contextType: "planning"
+contextType: "documentation"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -28,8 +28,10 @@ contextType: "planning"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-gate-b-foundation |
-| **Completed** | TBD after Gate B implementation closes |
+| **Completed** | Yes |
 | **Level** | 3 |
+| **Status** | Complete |
+| **Closed By Commit** | `TBD` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -37,9 +39,15 @@ contextType: "planning"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Gate B is expected to turn phase 018 from research into operational reality. When this gate closes, you should be able to point to one proof package that shows the migration was rehearsed on a copy, rolled back cleanly, rerun without drift, and then applied in production with the 155-row archive flip, the approved `causal_edges` anchor fields, and live archived-result observability.
+Gate B completed on the rebaselined live DB contract. The foundation step preserved the live `memory_index` total of `2553` rows, operated against `183` legacy memory-path archive candidates, preserved the `1` pre-existing archived non-memory row as baseline state, and kept `causal_edges` at `3264` rows while adding anchor-aware continuity support.
 
-The finished Gate B story should read like this: the team corrected the earlier `is_archived` add-column misconception, kept migration ownership canonical in `vector-index-schema.ts`, shipped the bounded archive flip, demoted archived rows to `x0.3` in fusion ranking, and exposed `archived_hit_rate` so later permanence decisions can be data-driven. This packet is intentionally pre-populated before implementation, so that narrative is the target outcome rather than a claim that the work already landed.
+### Completed outcomes
+
+1. Copy-first rehearsal and rollback drill passed against the live baseline.
+2. Production schema bootstrap advanced from `schema_version 25` to `26`.
+3. `causal_edges` now has `source_anchor` and `target_anchor` columns plus both anchor indexes.
+4. The archive flip marked the `183` legacy memory-path rows archived without touching the existing non-memory archived row.
+5. Archived ranking and archived-hit observability are both exposed and verified.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -47,12 +55,9 @@ The finished Gate B story should read like this: the team corrected the earlier 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-TBD after Gate B implementation closes.
+The gate was executed in the same order the packet planned it. First, the live DB was rebaselined and `memory-018-pre.db` was refreshed so rollback matched the current `2553 / 183 / 1 / 3264` reality. Next, the schema DDL and archive flip were rehearsed on a copy, rerun to confirm `0` additional archive changes, and rolled back to prove recovery before touching production.
 
-Planned delivery story:
-- Start with the dual-fork rehearsal from iteration 037 and do not approve the maintenance window until rerun and hard rollback both pass.
-- Apply the approved `causal_edges` anchor-column migration and storage threading in production only after the copy proof is complete.
-- Run the bounded archive flip, validate the 155-row target, then prove the `x0.3` ranking change and `archived_hit_rate` visibility before handing off to Gate C.
+After the rehearsal passed, the canonical schema chain was updated so fresh bootstraps and upgraded DBs both converge on the anchor-aware `causal_edges` shape. The live DB then moved from schema version `25` to `26`, applied the `183`-row archive flip, and was rechecked for counts, anchor columns, anchor indexes, query-plan usage, traversal continuity, archived ranking, and archived-hit telemetry.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -62,10 +67,10 @@ Planned delivery story:
 
 | Decision | Why |
 |----------|-----|
-| Reuse `memory_index.is_archived` instead of adding it again | `../resource-map.md` F-1 and `../scratch/resource-map/01-schema.md` show the column already exists in the canonical schema and downgrade rebuild path. |
-| Keep canonical migration ownership inline in `vector-index-schema.ts` | ADR-001 avoids split-brain schema ownership while keeping fresh bootstrap behavior aligned with migrated behavior. |
-| Require hard rollback proof before production cutover | Iteration 037 makes hard rollback, not soft rollback, the certification path for Gate B promotion. |
-| Expose `archived_hit_rate` in Gate B itself | Gate B needs to leave behind the observability signal that phase 020 will later use for permanence decisions. |
+| Rebaseline Gate B to `183 / 184 / 1` | The live DB no longer matched the earlier 155-row packet assumption, so the gate had to follow verified current reality. |
+| Refresh `memory-018-pre.db` before production | The existing backup no longer matched live row counts, so rollback safety required a fresh pre-cutover snapshot. |
+| Keep the migration canonical in `vector-index-schema.ts` | Fresh bootstraps and upgraded DBs now converge on the same `causal_edges` schema and index shape. |
+| Preserve the one archived non-memory row | The user explicitly allowed it as baseline state and excluded it from bleed failure criteria. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -73,15 +78,52 @@ Planned delivery story:
 <!-- ANCHOR:verification -->
 ## Verification
 
+### Live baseline
+
+| Measure | Value |
+|--------|-------|
+| `memory_index` total rows | `2553` |
+| Legacy archive candidates | `183` |
+| Baseline archived rows | `1` |
+| Baseline non-memory archived rows | `1` |
+| `causal_edges` rows | `3264` |
+
+### Rehearsal and rollback
+
 | Check | Result |
 |-------|--------|
-| Copy-first migration rehearsal + JSON evidence | TBD after Gate B implementation closes |
-| Rerun proves operator-level no-op | TBD after Gate B implementation closes |
-| Hard rollback returns logical baseline equivalence | TBD after Gate B implementation closes |
-| Production archive flip reaches 155 rows | TBD after Gate B implementation closes |
-| Ranking proof for fresh-over-archived ordering | TBD after Gate B implementation closes |
-| `archived_hit_rate` visible in stats/dashboard | TBD after Gate B implementation closes |
-| Mixed-edge 2-hop causal BFS works | TBD after Gate B implementation closes |
+| Rehearsal post-archive rows | `184` |
+| Rehearsal bleed rows | `1` |
+| Rehearsal delta | `183` |
+| Rehearsal rerun changes | `0` |
+| Rollback result | Returned to baseline counts |
+
+### Production migration
+
+| Check | Result |
+|-------|--------|
+| Schema version | `25 -> 26` |
+| `source_anchor` column present | `1` |
+| `target_anchor` column present | `1` |
+| `idx_causal_edges_source_anchor` present | `1` |
+| `idx_causal_edges_target_anchor` present | `1` |
+| Live 2-hop sample path | `1 -> 10 -> 11` |
+| `EXPLAIN QUERY PLAN` | Uses `idx_causal_edges_source_anchor` and `idx_causal_edges_target_anchor` |
+
+### Ranking and metrics
+
+| Check | Result |
+|-------|--------|
+| `archived_hit_rate` presented slots | `396` |
+| `archived_hit_rate` archived slots | `64` |
+| `archived_hit_rate` rate | `0.161616` |
+
+### Focused verification suite
+
+| Check | Result |
+|-------|--------|
+| Test files passed | `7` |
+| Tests passed | `199` |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -89,15 +131,7 @@ Planned delivery story:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **This is a planned closeout shell, not a factual post-implementation record.** Post-implementation facts stay intentionally stubbed until Gate B actually lands.
-2. **The Gate B stats hook still needs implementation work.** The target reporting surface is `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts`, but this packet remains a planned closeout shell until the runtime change actually lands.
-3. **The broader tuple-column proposal from iteration 035 remains unresolved for this gate.** Gate B is scoped to the prompt's narrower anchor-column plan unless a later decision widens it explicitly.
+1. The current `archived_hit_rate` sample is a point-in-time reading, not a stabilized Gate F permanence signal.
+2. The original planning docs in this packet still contain the earlier 155-row assumption; this summary records the actual rebaselined execution outcome.
+3. `closed_by_commit` is intentionally left as `TBD` for the orchestrator to fill.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

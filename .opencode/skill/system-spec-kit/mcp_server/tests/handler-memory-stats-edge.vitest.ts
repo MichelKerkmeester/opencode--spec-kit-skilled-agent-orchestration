@@ -4,6 +4,7 @@ import * as core from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 
 const seededSpecFolders = new Set<string>();
+const seededFeedbackQueryIds = new Set<string>();
 
 /** Parse the JSON payload from an MCP response. */
 function parseResponse(result: { content: Array<{ text: string }> }) {
@@ -49,13 +50,22 @@ async function insertStatsRows(specFolders: string[], repeat = 1) {
 }
 
 function cleanupSeededStatsRows(): void {
-  if (seededSpecFolders.size === 0) {
-    return;
-  }
-
   const database = vectorIndex.getDb();
   if (!database) {
     seededSpecFolders.clear();
+    seededFeedbackQueryIds.clear();
+    return;
+  }
+
+  if (seededFeedbackQueryIds.size > 0) {
+    const deleteByQueryId = database.prepare('DELETE FROM feedback_events WHERE query_id = ?');
+    for (const queryId of seededFeedbackQueryIds) {
+      deleteByQueryId.run(queryId);
+    }
+    seededFeedbackQueryIds.clear();
+  }
+
+  if (seededSpecFolders.size === 0) {
     return;
   }
 
@@ -218,5 +228,62 @@ describe('handleMemoryStats Edge Cases (T007a)', () => {
     expect(getErrorMessage(parsed)).toMatch(/Database refresh failed before query execution/);
     expect(parsed.data.code).toBe('E021');
     expect(typeof details?.requestId).toBe('string');
+  });
+
+  it('T007a-S15: archived_hit_rate uses presented-slot share capped at top 10 results per query', async () => {
+    const database = vectorIndex.getDb();
+    if (!database) {
+      throw new Error('Database not initialized');
+    }
+
+    database.exec(`
+      CREATE TABLE IF NOT EXISTS feedback_events (
+        id         INTEGER PRIMARY KEY AUTOINCREMENT,
+        type       TEXT NOT NULL,
+        memory_id  TEXT NOT NULL,
+        query_id   TEXT NOT NULL,
+        confidence TEXT NOT NULL,
+        timestamp  INTEGER NOT NULL,
+        session_id TEXT
+      )
+    `);
+
+    const queryId = `archived-hit-rate-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const specFolder = `specs/${queryId}`;
+    const nowIso = new Date().toISOString();
+    const nowMs = Date.now();
+    const insertMemory = database.prepare(`
+      INSERT INTO memory_index (id, spec_folder, file_path, title, created_at, updated_at, embedding_status, is_archived)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    const insertFeedback = database.prepare(`
+      INSERT INTO feedback_events (type, memory_id, query_id, confidence, timestamp, session_id)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+
+    seededSpecFolders.add(specFolder);
+    seededFeedbackQueryIds.add(queryId);
+
+    const baseId = nowMs;
+    for (let rank = 1; rank <= 12; rank += 1) {
+      const memoryId = baseId + rank;
+      const isArchived = rank <= 2 || rank > 10 ? 1 : 0;
+      insertMemory.run(
+        memoryId,
+        specFolder,
+        `/tmp/${queryId}-${rank}.md`,
+        `Archived Hit Rate ${rank}`,
+        nowIso,
+        nowIso,
+        'success',
+        isArchived,
+      );
+      insertFeedback.run('search_shown', String(memoryId), queryId, 'weak', nowMs, null);
+    }
+
+    const result = await handler.handleMemoryStats({ folderRanking: 'count' });
+    const parsed = parseResponse(result);
+
+    expect(parsed.data.archived_hit_rate).toBeCloseTo(0.2);
   });
 });

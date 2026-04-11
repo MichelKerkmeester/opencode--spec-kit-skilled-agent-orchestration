@@ -15,7 +15,6 @@
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 import { recordHistory } from './history.js';
-import * as causalEdges from './causal-edges.js';
 import * as bm25Index from '../search/bm25-index.js';
 import { clear_search_cache } from '../search/vector-index-aliases.js';
 import { refresh_interference_scores_for_folder } from '../search/vector-index-store.js';
@@ -343,11 +342,11 @@ export async function executeMerge(
         applyPostInsertMetadata(db, newId, postInsertMetadata);
       }
 
-      // Create supersedes causal edge
-      db.prepare(`
-        INSERT OR IGNORE INTO causal_edges (source_id, target_id, relation, strength, extracted_at)
-        VALUES (?, ?, 'supersedes', 1.0, datetime('now'))
-      `).run(newId, existingMemory.id);
+      // Create supersedes causal edge, carrying anchors when the table supports them.
+      const edgeId = insertSupersedesEdge(db, newId, existingMemory.id);
+      if (edgeId == null) {
+        throw new Error(`Failed to insert supersedes edge (${newId} -> ${existingMemory.id})`);
+      }
 
       recordLineageTransition(db, newId, {
         actor: 'mcp:reconsolidation',
@@ -503,15 +502,9 @@ export function executeConflict(
           return;
         }
 
-        const sourceId = String(newMemory.id);
-        const targetId = String(existingMemory.id);
-        edgeId = causalEdges.insertEdge(
-          sourceId,
-          targetId,
-          'supersedes',
-          1.0,
-          `TM-06 reconsolidation conflict: similarity ${(existingMemory.similarity * 100).toFixed(1)}%`
-        );
+        const sourceId = newMemory.id;
+        const targetId = existingMemory.id;
+        edgeId = insertSupersedesEdge(db, sourceId, targetId);
         if (edgeId == null) {
           throw new Error(
             `Failed to insert supersedes edge (${sourceId} -> ${targetId}) — aborting reconsolidation`
@@ -940,6 +933,77 @@ function buildMergePostInsertMetadata(
   }
 
   return metadata;
+}
+
+function getMemoryAnchor(db: Database.Database, memoryId: number): string | null {
+  const memoryColumns = getTableColumns(db, 'memory_index');
+  if (!memoryColumns.has('anchor_id')) {
+    return null;
+  }
+
+  try {
+    const row = db.prepare(`
+      SELECT anchor_id
+      FROM memory_index
+      WHERE id = ?
+    `).get(memoryId) as { anchor_id?: unknown } | undefined;
+    return getOptionalString(row ?? {}, 'anchor_id') ?? null;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[reconsolidation] Failed to read anchor for memory ${memoryId}: ${message}`);
+    return null;
+  }
+}
+
+function insertSupersedesEdge(
+  db: Database.Database,
+  sourceMemoryId: number,
+  targetMemoryId: number,
+): number | null {
+  if (sourceMemoryId === targetMemoryId) {
+    return null;
+  }
+
+  const edgeColumns = getTableColumns(db, 'causal_edges');
+  const sourceAnchor = getMemoryAnchor(db, sourceMemoryId);
+  const targetAnchor = getMemoryAnchor(db, targetMemoryId);
+  const columns = ['source_id', 'target_id', 'relation', 'strength', 'extracted_at'];
+  const values: unknown[] = [
+    String(sourceMemoryId),
+    String(targetMemoryId),
+    'supersedes',
+    1.0,
+    new Date().toISOString(),
+  ];
+
+  if (edgeColumns.has('source_anchor')) {
+    columns.push('source_anchor');
+    values.push(sourceAnchor);
+  }
+  if (edgeColumns.has('target_anchor')) {
+    columns.push('target_anchor');
+    values.push(targetAnchor);
+  }
+
+  try {
+    db.prepare(`
+      INSERT OR IGNORE INTO causal_edges (${columns.join(', ')})
+      VALUES (${columns.map(() => '?').join(', ')})
+    `).run(...values);
+
+    const row = db.prepare(`
+      SELECT id
+      FROM causal_edges
+      WHERE source_id = ? AND target_id = ? AND relation = 'supersedes'
+    `).get(String(sourceMemoryId), String(targetMemoryId)) as { id?: number } | undefined;
+    return typeof row?.id === 'number' ? row.id : null;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `[reconsolidation] Failed to insert supersedes edge (${sourceMemoryId} -> ${targetMemoryId}): ${message}`,
+    );
+    return null;
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────

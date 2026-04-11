@@ -424,7 +424,7 @@ function getMigrationAllowedBasePaths(): string[] {
 // V23: One-time spec_folder re-canonicalization + session_state migration
 // V24: Add trigger-cache source and temporal contiguity indexes
 /** Current schema version for vector-index migrations. */
-export const SCHEMA_VERSION = 25;
+export const SCHEMA_VERSION = 26;
 
 // Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
@@ -609,6 +609,8 @@ export function run_migrations(database: Database.Database, from_version: number
             id INTEGER PRIMARY KEY,
             source_id TEXT NOT NULL,
             target_id TEXT NOT NULL,
+            source_anchor TEXT,
+            target_anchor TEXT,
             relation TEXT NOT NULL CHECK(relation IN (
               'caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'
             )),
@@ -632,6 +634,8 @@ export function run_migrations(database: Database.Database, from_version: number
         database.exec('CREATE INDEX IF NOT EXISTS idx_causal_target ON causal_edges(target_id)');
         database.exec('CREATE INDEX IF NOT EXISTS idx_causal_relation ON causal_edges(relation)');
         database.exec('CREATE INDEX IF NOT EXISTS idx_causal_strength ON causal_edges(strength DESC)');
+        database.exec('CREATE INDEX IF NOT EXISTS idx_causal_edges_source_anchor ON causal_edges(source_anchor)');
+        database.exec('CREATE INDEX IF NOT EXISTS idx_causal_edges_target_anchor ON causal_edges(target_anchor)');
         logger.info('Migration v8: Created causal_edges indexes');
       } catch (e: unknown) {
         console.warn('[VectorIndex] Migration v8 warning (indexes):', get_error_message(e));
@@ -1219,6 +1223,34 @@ export function run_migrations(database: Database.Database, from_version: number
       } else {
         logger.info('Migration v25: CHECK constraint already correct, skipping table rebuild');
       }
+    }
+  };
+
+  migrations[26] = () => {
+    try {
+      database.exec('ALTER TABLE causal_edges ADD COLUMN source_anchor TEXT');
+      logger.info('Migration v26: Added source_anchor column to causal_edges');
+    } catch (e: unknown) {
+      if (!get_error_message(e).includes('duplicate column')) {
+        console.warn('[VectorIndex] Migration v26 warning (source_anchor):', get_error_message(e));
+      }
+    }
+
+    try {
+      database.exec('ALTER TABLE causal_edges ADD COLUMN target_anchor TEXT');
+      logger.info('Migration v26: Added target_anchor column to causal_edges');
+    } catch (e: unknown) {
+      if (!get_error_message(e).includes('duplicate column')) {
+        console.warn('[VectorIndex] Migration v26 warning (target_anchor):', get_error_message(e));
+      }
+    }
+
+    try {
+      database.exec('CREATE INDEX IF NOT EXISTS idx_causal_edges_source_anchor ON causal_edges(source_anchor)');
+      database.exec('CREATE INDEX IF NOT EXISTS idx_causal_edges_target_anchor ON causal_edges(target_anchor)');
+      logger.info('Migration v26: Created causal_edges anchor indexes');
+    } catch (e: unknown) {
+      console.warn('[VectorIndex] Migration v26 warning (anchor indexes):', get_error_message(e));
     }
   };
 

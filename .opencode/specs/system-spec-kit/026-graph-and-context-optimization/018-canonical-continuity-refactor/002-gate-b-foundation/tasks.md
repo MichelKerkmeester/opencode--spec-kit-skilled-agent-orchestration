@@ -2,7 +2,8 @@
 title: "Gate B — Foundation"
 feature: phase-018-gate-b-foundation
 level: 3
-status: planned
+status: complete
+closed_by_commit: TBD
 parent: 018-canonical-continuity-refactor
 gate: B
 description: "Ordered execution list for the Gate B foundation lane: rehearsal, production schema and archive cutover, then ranking and metric validation."

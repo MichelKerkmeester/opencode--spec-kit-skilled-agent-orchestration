@@ -136,6 +136,59 @@ describe('vector-index schema migration refinements', () => {
     ]));
   });
 
+  it('adds causal-edge anchor columns and indexes during the v26 upgrade', () => {
+    const database = new Database(':memory:');
+    openDatabases.add(database);
+
+    database.exec(`
+      CREATE TABLE schema_version (
+        id INTEGER PRIMARY KEY CHECK (id = 1),
+        version INTEGER NOT NULL,
+        updated_at TEXT
+      );
+      INSERT INTO schema_version (id, version, updated_at) VALUES (1, 25, datetime('now'));
+
+      CREATE TABLE causal_edges (
+        id INTEGER PRIMARY KEY,
+        source_id TEXT NOT NULL,
+        target_id TEXT NOT NULL,
+        relation TEXT NOT NULL,
+        strength REAL DEFAULT 1.0,
+        evidence TEXT,
+        extracted_at TEXT DEFAULT (datetime('now')),
+        created_by TEXT DEFAULT 'manual',
+        last_accessed TEXT,
+        UNIQUE(source_id, target_id, relation)
+      );
+
+      INSERT INTO causal_edges (id, source_id, target_id, relation)
+      VALUES (1, '1', '2', 'supports');
+    `);
+
+    runMigrations(database, 25, 26);
+
+    const columns = (database.prepare('PRAGMA table_info(causal_edges)').all() as Array<{ name: string }>)
+      .map((column) => column.name);
+    const indexes = (database.prepare("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='causal_edges'").all() as Array<{ name: string }>)
+      .map((row) => row.name);
+    const row = database.prepare(`
+      SELECT id, source_anchor, target_anchor
+      FROM causal_edges
+      WHERE id = 1
+    `).get() as { id: number; source_anchor: string | null; target_anchor: string | null };
+
+    expect(columns).toEqual(expect.arrayContaining(['source_anchor', 'target_anchor']));
+    expect(indexes).toEqual(expect.arrayContaining([
+      'idx_causal_edges_source_anchor',
+      'idx_causal_edges_target_anchor',
+    ]));
+    expect(row).toEqual({
+      id: 1,
+      source_anchor: null,
+      target_anchor: null,
+    });
+  });
+
   it('fails fast on legacy memory_index schemas that cannot store constitutional tier values', () => {
     const database = new Database(':memory:');
     openDatabases.add(database);

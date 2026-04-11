@@ -256,6 +256,29 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
   return sortDeterministicRows(adjusted as Array<PipelineRow & { id: number }>);
 }
 
+function isArchivedPipelineRow(row: PipelineRow): boolean {
+  const archived = row.is_archived ?? row.isArchived;
+  if (typeof archived === 'number') return archived === 1;
+  if (typeof archived === 'boolean') return archived === true;
+  return false;
+}
+
+function applyArchivedRankingPenalty(results: PipelineRow[]): PipelineRow[] {
+  if (!Array.isArray(results) || results.length === 0) return results;
+
+  const adjusted = results.map((row) => {
+    if (!isArchivedPipelineRow(row)) return row;
+
+    const baseScore = resolveBaseScore(row);
+    const penalizedScore = baseScore * 0.3;
+    if (penalizedScore === baseScore) return row;
+
+    return withSyncedScoreAliases(row, penalizedScore);
+  });
+
+  return sortDeterministicRows(adjusted as Array<PipelineRow & { id: number }>);
+}
+
 // -- Internal helpers --
 
 /**
@@ -1320,6 +1343,8 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     const message = err instanceof Error ? err.message : String(err);
     console.warn(`[stage2-fusion] validation signal scoring failed: ${message}`);
   }
+
+  results = applyArchivedRankingPenalty(results);
 
   // Keep all score aliases aligned after late-stage score mutations.
   syncScoreAliasesInPlace(results);

@@ -2,7 +2,8 @@
 title: "Gate B — Foundation"
 feature: phase-018-gate-b-foundation
 level: 3
-status: planned
+status: complete
+closed_by_commit: TBD
 parent: 018-canonical-continuity-refactor
 gate: B
 description: "Establish the irreversible foundation for phase 018 by rehearsing the migration on a copy, adding the approved causal-edge anchor fields, flipping 155 legacy memory rows to archived, and exposing the ranking and metric signals needed before writer and reader retargeting begins."
@@ -33,6 +34,7 @@ The grounding corrects one early research assumption: `memory_index.is_archived`
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -42,6 +44,7 @@ The grounding corrects one early research assumption: `memory_index.is_archived`
 | **Status** | Planned |
 | **Created** | 2026-04-11 |
 | **Branch** | `[UNCERTAIN: branch not assigned for Gate B implementation]` |
+<!-- /ANCHOR:metadata -->
 
 ---
 

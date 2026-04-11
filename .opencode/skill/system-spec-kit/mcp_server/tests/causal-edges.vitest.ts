@@ -47,8 +47,18 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
     relation: RelationType,
     strength: number = 1.0,
     evidence: string | null = null,
+    anchors: { sourceAnchor?: string | null; targetAnchor?: string | null } = {},
   ): number {
-    const edgeId = causalEdges.insertEdge(sourceId, targetId, relation, strength, evidence);
+    const edgeId = causalEdges.insertEdge(
+      sourceId,
+      targetId,
+      relation,
+      strength,
+      evidence,
+      true,
+      'manual',
+      anchors,
+    );
     if (edgeId === null) {
       throw new Error(`Failed to insert edge ${sourceId} -> ${targetId} (${relation})`);
     }
@@ -69,6 +79,8 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
         id INTEGER PRIMARY KEY,
         source_id TEXT NOT NULL,
         target_id TEXT NOT NULL,
+        source_anchor TEXT,
+        target_anchor TEXT,
         relation TEXT NOT NULL CHECK(relation IN (
           'caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'
         )),
@@ -154,6 +166,67 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
         relation: causalEdges.RELATION_TYPES.CAUSED,
         strength: 0.9,
         evidence: 'basic',
+        source_anchor: null,
+        target_anchor: null,
+      });
+    });
+
+    it('should round-trip null and anchored causal edges', () => {
+      insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.9, 'legacy row');
+      insertEdgeOrThrow(
+        '1',
+        '3',
+        causalEdges.RELATION_TYPES.ENABLED,
+        0.8,
+        'anchored row',
+        {
+          sourceAnchor: 'spec:overview',
+          targetAnchor: 'plan:details',
+        },
+      );
+
+      const edges = causalEdges.getEdgesFrom('1');
+      const legacy = edges.find((edge) => edge.target_id === '2');
+      const anchored = edges.find((edge) => edge.target_id === '3');
+
+      expect(legacy).toMatchObject({
+        source_anchor: null,
+        target_anchor: null,
+      });
+      expect(anchored).toMatchObject({
+        source_anchor: 'spec:overview',
+        target_anchor: 'plan:details',
+      });
+    });
+
+    it('should expose anchors consistently across all read paths', () => {
+      insertEdgeOrThrow(
+        '7',
+        '8',
+        causalEdges.RELATION_TYPES.SUPPORTS,
+        0.7,
+        'shared anchor row',
+        {
+          sourceAnchor: 'spec:7#decision',
+          targetAnchor: 'plan:8#follow-up',
+        },
+      );
+
+      const fromEdge = causalEdges.getEdgesFrom('7')[0];
+      const toEdge = causalEdges.getEdgesTo('8')[0];
+      const allEdge = causalEdges.getAllEdges().find((edge) => edge.id === fromEdge.id);
+
+      expect(fromEdge).toMatchObject({
+        source_anchor: 'spec:7#decision',
+        target_anchor: 'plan:8#follow-up',
+      });
+      expect(toEdge).toMatchObject({
+        source_anchor: 'spec:7#decision',
+        target_anchor: 'plan:8#follow-up',
+      });
+      expect(allEdge).toMatchObject({
+        source_anchor: 'spec:7#decision',
+        target_anchor: 'plan:8#follow-up',
       });
     });
 
@@ -376,6 +449,53 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(edge.evidence).toBe('after');
     });
 
+    it('should update anchor fields without disturbing existing edge identity', () => {
+      const edgeId = insertEdgeOrThrow('4', '5', causalEdges.RELATION_TYPES.SUPPORTS, 0.4, 'before');
+      const updated = causalEdges.updateEdge(edgeId, {
+        sourceAnchor: 'memory:4#section',
+        targetAnchor: 'memory:5#section',
+      });
+      const edge = causalEdges.getEdgesFrom('4')[0];
+
+      expect(updated).toBe(true);
+      expect(edge).toMatchObject({
+        source_id: '4',
+        target_id: '5',
+        source_anchor: 'memory:4#section',
+        target_anchor: 'memory:5#section',
+        evidence: 'before',
+      });
+    });
+
+    it('should clear anchor fields when updateEdge receives explicit nulls', () => {
+      const edgeId = insertEdgeOrThrow(
+        '4',
+        '5',
+        causalEdges.RELATION_TYPES.SUPPORTS,
+        0.4,
+        'before',
+        {
+          sourceAnchor: 'memory:4#section',
+          targetAnchor: 'memory:5#section',
+        },
+      );
+
+      const updated = causalEdges.updateEdge(edgeId, {
+        sourceAnchor: null,
+        targetAnchor: null,
+      });
+      const edge = causalEdges.getEdgesFrom('4')[0];
+
+      expect(updated).toBe(true);
+      expect(edge).toMatchObject({
+        source_id: '4',
+        target_id: '5',
+        source_anchor: null,
+        target_anchor: null,
+        evidence: 'before',
+      });
+    });
+
     it('should delete an edge', () => {
       const edgeId = insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.9);
       const deleted = causalEdges.deleteEdge(edgeId);
@@ -500,7 +620,17 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       const columns = testDb.prepare('PRAGMA table_info(causal_edges)').all() as Array<{ name: string }>;
       const names = columns.map((column) => column.name);
       expect(names).toEqual(
-        expect.arrayContaining(['id', 'source_id', 'target_id', 'relation', 'strength', 'evidence', 'extracted_at']),
+        expect.arrayContaining([
+          'id',
+          'source_id',
+          'target_id',
+          'source_anchor',
+          'target_anchor',
+          'relation',
+          'strength',
+          'evidence',
+          'extracted_at',
+        ]),
       );
     });
 
@@ -510,6 +640,8 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(typeByColumn.id).toBe('INTEGER');
       expect(typeByColumn.source_id).toBe('TEXT');
       expect(typeByColumn.target_id).toBe('TEXT');
+      expect(typeByColumn.source_anchor).toBe('TEXT');
+      expect(typeByColumn.target_anchor).toBe('TEXT');
       expect(typeByColumn.relation).toBe('TEXT');
       expect(typeByColumn.strength).toBe('REAL');
       expect(typeByColumn.evidence).toBe('TEXT');

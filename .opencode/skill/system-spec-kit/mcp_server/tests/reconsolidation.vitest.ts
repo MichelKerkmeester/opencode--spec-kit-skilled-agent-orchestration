@@ -1,9 +1,8 @@
 // TEST: Reconsolidation-on-Save (TM-06)
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
-import * as causalEdges from '../lib/storage/causal-edges';
 import * as bm25Index from '../lib/search/bm25-index';
-import { getHistory, init as initHistory } from '../lib/storage/history';
+import { init as initHistory } from '../lib/storage/history';
 import {
   isReconsolidationEnabled,
   findSimilarMemories,
@@ -86,6 +85,35 @@ function getReachableVectorMemoryIds(database: Database.Database): number[] {
   `).all() as Array<{ id: number }>;
 
   return rows.map((row) => row.id);
+}
+
+function addColumnIfMissing(
+  database: Database.Database,
+  tableName: string,
+  columnDefinition: string,
+): void {
+  const [columnName] = columnDefinition.split(/\s+/, 1);
+  const columns = database.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name?: string }>;
+  if (columns.some((column) => column.name === columnName)) {
+    return;
+  }
+  database.exec(`ALTER TABLE ${tableName} ADD COLUMN ${columnDefinition}`);
+}
+
+function getEdgesFrom(database: Database.Database, sourceId: string) {
+  return database.prepare(`
+    SELECT *
+    FROM causal_edges
+    WHERE source_id = ?
+    ORDER BY id ASC
+  `).all(sourceId) as Array<{
+    id: number;
+    relation: string;
+    target_id: string;
+    evidence?: string | null;
+    source_anchor?: string | null;
+    target_anchor?: string | null;
+  }>;
 }
 
 function expectMergeResult(result: Awaited<ReturnType<typeof executeMerge>>) {
@@ -188,8 +216,6 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       )
     `);
 
-    // Initialize causal edges module
-    causalEdges.init(testDb);
     initHistory(testDb);
   });
 
@@ -793,16 +819,22 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       // Verify causal edge
       expect(result.causalEdgeId).not.toBeNull();
-      const edges = causalEdges.getEdgesFrom('201');
+      const edges = getEdgesFrom(testDb, '201');
       expect(edges).toHaveLength(1);
       expect(edges[0]!.relation).toBe('supersedes');
       expect(edges[0]!.target_id).toBe('200');
     });
 
-    it('CP2: Supersedes edge has TM-06 evidence', () => {
+    it('CP2: Carries anchors when causal_edges supports anchor columns', () => {
+      addColumnIfMissing(testDb, 'memory_index', 'anchor_id TEXT');
+      addColumnIfMissing(testDb, 'causal_edges', 'source_anchor TEXT');
+      addColumnIfMissing(testDb, 'causal_edges', 'target_anchor TEXT');
+
       testDb.prepare(`
-        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, created_at, updated_at)
-        VALUES (210, 'test-spec', '/test/210.md', 'Old', 'Old', datetime('now'), datetime('now'))
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, anchor_id, created_at, updated_at)
+        VALUES
+          (210, 'test-spec', '/test/210.md', 'Old', 'Old', 'target-anchor', datetime('now'), datetime('now')),
+          (211, 'test-spec', '/test/211.md', 'New', 'New', 'source-anchor', datetime('now'), datetime('now'))
       `).run();
 
       const existing = makeSimilarMemory({ id: 210, similarity: 0.82 });
@@ -810,9 +842,9 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       executeConflict(existing, newMem, testDb);
 
-      const edges = causalEdges.getEdgesFrom('211');
-      expect(edges[0]!.evidence).toContain('TM-06');
-      expect(edges[0]!.evidence).toContain('reconsolidation');
+      const edges = getEdgesFrom(testDb, '211');
+      expect(edges[0]!.source_anchor).toBe('source-anchor');
+      expect(edges[0]!.target_anchor).toBe('target-anchor');
     });
 
     it('CP3: Conflict with no new memory ID uses existing ID and avoids self-edge', () => {
@@ -828,11 +860,11 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result.newMemoryId).toBe(220); // Falls back to existing ID
       expect(result.causalEdgeId).toBeNull();
 
-      const selfSupersedes = causalEdges
-        .getEdgesFrom('220')
+      const selfSupersedes = getEdgesFrom(testDb, '220')
         .filter((edge) => edge.relation === 'supersedes' && edge.target_id === '220');
       expect(selfSupersedes).toHaveLength(0);
     });
+
   });
 
   /* ───────────────────────────────────────────────────────────────
@@ -1135,17 +1167,26 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         return orphanId;
       };
 
-      const insertEdgeSpy = vi.spyOn(causalEdges, 'insertEdge')
-        .mockImplementation(() => { throw new Error('forced edge failure'); });
+      testDb.exec(`
+        CREATE TEMP TRIGGER fail_supersedes_insert
+        BEFORE INSERT ON causal_edges
+        BEGIN
+          SELECT RAISE(ABORT, 'forced edge failure');
+        END
+      `);
 
-      await expect(reconsolidate(
-        makeNewMemory({ content: 'Conflicting content for cleanup path' }),
-        testDb,
-        {
-          findSimilar: mockFindSimilar([makeSimilarMemory({ id: 520, similarity: 0.8 })]),
-          storeMemory,
-        }
-      )).rejects.toThrow('forced edge failure');
+      try {
+        await expect(reconsolidate(
+          makeNewMemory({ content: 'Conflicting content for cleanup path' }),
+          testDb,
+          {
+            findSimilar: mockFindSimilar([makeSimilarMemory({ id: 520, similarity: 0.8 })]),
+            storeMemory,
+          }
+        )).rejects.toThrow('Failed to insert supersedes edge');
+      } finally {
+        testDb.exec('DROP TRIGGER IF EXISTS fail_supersedes_insert');
+      }
 
       // F04-002: storeMemory + executeConflict are wrapped in a single transaction.
       // When executeConflict throws, the transaction rolls back the storeMemory insert,
@@ -1153,7 +1194,6 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       const orphanRow = testDb.prepare('SELECT id FROM memory_index WHERE id = ?').get(orphanId);
       expect(orphanRow).toBeUndefined();
 
-      insertEdgeSpy.mockRestore();
     });
 
     it('EC3: Merge with null existing content handles gracefully', async () => {

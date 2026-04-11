@@ -205,6 +205,26 @@ describe('Stage 2 fusion regression coverage', () => {
     }
   });
 
+  it('ranks archived rows below otherwise comparable fresh rows', async () => {
+    process.env.SPECKIT_GRAPH_SIGNALS = 'false';
+    process.env.SPECKIT_GRAPH_UNIFIED = 'false';
+    process.env.SPECKIT_LEARNED_STAGE2_COMBINER = 'false';
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const result = await executeStage2(createStage2Input([
+      { id: 1, score: 0.8, similarity: 80 },
+      { id: 2, score: 0.8, similarity: 80, is_archived: 1 },
+      { id: 3, score: 0.8, similarity: 80, isArchived: true },
+    ]));
+
+    expect(result.scored.map((row) => row.id)).toEqual([1, 2, 3]);
+    expect(result.scored[0].score).toBeCloseTo(0.8, 9);
+    expect(result.scored[1].score).toBeCloseTo(0.24, 9);
+    expect(result.scored[2].score).toBeCloseTo(0.24, 9);
+    expect(result.scored[1].score).toBeLessThan(result.scored[0].score);
+    expect(result.scored[2].score).toBeLessThan(result.scored[0].score);
+  });
+
   it('applies bounded_runtime graph bonus deterministically across repeated runs', async () => {
     process.env.SPECKIT_GRAPH_WALK_ROLLOUT = 'bounded_runtime';
     mockApplyGraphSignals.mockImplementation((rows: Array<Record<string, unknown>>) =>

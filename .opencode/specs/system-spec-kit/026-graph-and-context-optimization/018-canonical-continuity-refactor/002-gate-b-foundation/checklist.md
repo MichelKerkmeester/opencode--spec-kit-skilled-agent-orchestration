@@ -2,7 +2,8 @@
 title: "Gate B — Foundation"
 feature: phase-018-gate-b-foundation
 level: 3
-status: planned
+status: complete
+closed_by_commit: TBD
 parent: 018-canonical-continuity-refactor
 gate: B
 description: "Exit-gate checklist for the two-week foundation lane that makes phase 018 archive and causal-edge changes real."

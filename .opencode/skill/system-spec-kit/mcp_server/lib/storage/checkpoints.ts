@@ -56,6 +56,20 @@ function dedupeRowsById<T extends Record<string, unknown>>(rows: T[]): T[] {
   return results;
 }
 
+function getSnapshotColumnsFromRows(rows: Array<Record<string, unknown>>): string[] {
+  const columns = new Set<string>();
+
+  for (const row of rows) {
+    for (const key of Object.keys(row ?? {})) {
+      if (typeof key === 'string' && key.length > 0) {
+        columns.add(key);
+      }
+    }
+  }
+
+  return Array.from(columns);
+}
+
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS
 ----------------------------------------------------------------*/
@@ -862,7 +876,7 @@ function buildLegacyTableSnapshots(snapshot: CheckpointSnapshot): Record<string,
 
   if (Array.isArray(snapshot.causalEdges)) {
     tableSnapshots.causal_edges = {
-      columns: Object.keys(snapshot.causalEdges[0] ?? {}),
+      columns: getSnapshotColumnsFromRows(snapshot.causalEdges),
       rows: snapshot.causalEdges,
     };
   }

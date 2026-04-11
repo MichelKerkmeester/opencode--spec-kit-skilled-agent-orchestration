@@ -2,7 +2,8 @@
 title: "Gate B — Foundation"
 feature: phase-018-gate-b-foundation
 level: 3
-status: planned
+status: complete
+closed_by_commit: TBD
 parent: 018-canonical-continuity-refactor
 gate: B
 description: "Execution plan for the two-week Gate B foundation lane: prove the migration on a copy, execute the approved schema and archive changes in production, then validate ranking and archived-hit observability before Gate C starts."

@@ -59,6 +59,22 @@ function clampStrength(strength: number): number | null {
   return Math.max(0, Math.min(1, strength));
 }
 
+function normalizeCausalEdgeRow(row: Record<string, unknown>): CausalEdge {
+  return {
+    id: Number(row.id),
+    source_id: String(row.source_id),
+    target_id: String(row.target_id),
+    source_anchor: row.source_anchor == null ? null : String(row.source_anchor),
+    target_anchor: row.target_anchor == null ? null : String(row.target_anchor),
+    relation: String(row.relation) as RelationType,
+    strength: Number(row.strength),
+    evidence: row.evidence == null ? null : String(row.evidence),
+    extracted_at: String(row.extracted_at),
+    created_by: String(row.created_by ?? 'manual'),
+    last_accessed: row.last_accessed == null ? null : String(row.last_accessed),
+  };
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. INTERFACES
 ----------------------------------------------------------------*/
@@ -67,6 +83,22 @@ interface CausalEdge {
   id: number;
   source_id: string;
   target_id: string;
+  source_anchor: string | null;
+  target_anchor: string | null;
+  relation: RelationType;
+  strength: number;
+  evidence: string | null;
+  extracted_at: string;
+  created_by: string;
+  last_accessed: string | null;
+}
+
+interface CausalEdgeRow extends Record<string, unknown> {
+  id: number;
+  source_id: string;
+  target_id: string;
+  source_anchor?: string | null;
+  target_anchor?: string | null;
   relation: RelationType;
   strength: number;
   evidence: string | null;
@@ -163,6 +195,7 @@ function insertEdge(
   evidence: string | null = null,
   shouldInvalidateCache: boolean = true,
   createdBy: string = 'manual',
+  anchors: { sourceAnchor?: string | null; targetAnchor?: string | null } = {},
 ): number | null {
   if (!db) {
     console.warn('[causal-edges] Database not initialized. Server may still be starting up.');
@@ -220,12 +253,32 @@ function insertEdge(
       `) as Database.Statement).get(sourceId, targetId, relation) as { id: number; strength: number } | undefined;
 
       (database.prepare(`
-        INSERT INTO causal_edges (source_id, target_id, relation, strength, evidence, created_by)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO causal_edges (
+          source_id,
+          target_id,
+          source_anchor,
+          target_anchor,
+          relation,
+          strength,
+          evidence,
+          created_by
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(source_id, target_id, relation) DO UPDATE SET
           strength = excluded.strength,
-          evidence = COALESCE(excluded.evidence, causal_edges.evidence)
-      `) as Database.Statement).run(sourceId, targetId, relation, clampedStrength, evidence, createdBy);
+          evidence = COALESCE(excluded.evidence, causal_edges.evidence),
+          source_anchor = COALESCE(excluded.source_anchor, causal_edges.source_anchor),
+          target_anchor = COALESCE(excluded.target_anchor, causal_edges.target_anchor)
+      `) as Database.Statement).run(
+        sourceId,
+        targetId,
+        anchors.sourceAnchor ?? null,
+        anchors.targetAnchor ?? null,
+        relation,
+        clampedStrength,
+        evidence,
+        createdBy,
+      );
 
       const row = (database.prepare(`
         SELECT id FROM causal_edges WHERE source_id = ? AND target_id = ? AND relation = ?
@@ -263,6 +316,8 @@ function insertEdgesBatch(
     strength?: number;
     evidence?: string | null;
     createdBy?: string;
+    sourceAnchor?: string | null;
+    targetAnchor?: string | null;
   }>
 ): { inserted: number; failed: number } {
   if (!db) return { inserted: 0, failed: edges.length };
@@ -280,6 +335,10 @@ function insertEdgesBatch(
         edge.evidence ?? null,
         false,
         edge.createdBy ?? 'manual',
+        {
+          sourceAnchor: edge.sourceAnchor ?? null,
+          targetAnchor: edge.targetAnchor ?? null,
+        },
       );
       if (id !== null) inserted++;
       else failed++;
@@ -374,9 +433,9 @@ function getEdgesFrom(sourceId: string, limit: number = MAX_EDGES_LIMIT): EdgeQu
       WHERE source_id = ?
       ORDER BY strength DESC
       LIMIT ?
-    `) as Database.Statement).all(sourceId, limit + 1) as CausalEdge[];
+    `) as Database.Statement).all(sourceId, limit + 1) as CausalEdgeRow[];
     const truncated = rows.length > limit;
-    const edges = truncated ? rows.slice(0, limit) : rows;
+    const edges = (truncated ? rows.slice(0, limit) : rows).map(normalizeCausalEdgeRow);
     for (const edge of edges) {
       try { touchEdgeAccess(edge.id); } catch (e: unknown) {
         console.warn(`[causal-edges] touchEdgeAccess failed for edge ${edge.id}: ${e instanceof Error ? e.message : String(e)}`);
@@ -399,9 +458,9 @@ function getEdgesTo(targetId: string, limit: number = MAX_EDGES_LIMIT): EdgeQuer
       WHERE target_id = ?
       ORDER BY strength DESC
       LIMIT ?
-    `) as Database.Statement).all(targetId, limit + 1) as CausalEdge[];
+    `) as Database.Statement).all(targetId, limit + 1) as CausalEdgeRow[];
     const truncated = rows.length > limit;
-    const edges = truncated ? rows.slice(0, limit) : rows;
+    const edges = (truncated ? rows.slice(0, limit) : rows).map(normalizeCausalEdgeRow);
     for (const edge of edges) {
       try { touchEdgeAccess(edge.id); } catch (e: unknown) {
         console.warn(`[causal-edges] touchEdgeAccess failed for edge ${edge.id}: ${e instanceof Error ? e.message : String(e)}`);
@@ -423,9 +482,9 @@ function getAllEdges(limit: number = MAX_EDGES_LIMIT): EdgeQueryResult {
       SELECT * FROM causal_edges
       ORDER BY extracted_at DESC
       LIMIT ?
-    `) as Database.Statement).all(limit + 1) as CausalEdge[];
+    `) as Database.Statement).all(limit + 1) as CausalEdgeRow[];
     const truncated = rows.length > limit;
-    const edges = truncated ? rows.slice(0, limit) : rows;
+    const edges = (truncated ? rows.slice(0, limit) : rows).map(normalizeCausalEdgeRow);
     return createEdgeQueryResult(edges, limit, truncated);
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -503,7 +562,7 @@ function getCausalChain(
 
 function updateEdge(
   edgeId: number,
-  updates: { strength?: number; evidence?: string },
+  updates: { strength?: number; evidence?: string; sourceAnchor?: string | null; targetAnchor?: string | null },
   changedBy: string = 'manual',
   reason: string | null = null,
 ): boolean {
@@ -528,6 +587,14 @@ function updateEdge(
     if (updates.evidence !== undefined) {
       parts.push('evidence = ?');
       params.push(updates.evidence);
+    }
+    if (updates.sourceAnchor !== undefined) {
+      parts.push('source_anchor = ?');
+      params.push(updates.sourceAnchor);
+    }
+    if (updates.targetAnchor !== undefined) {
+      parts.push('target_anchor = ?');
+      params.push(updates.targetAnchor);
     }
 
     if (parts.length === 0) return false;
@@ -652,7 +719,7 @@ function findOrphanedEdges(): CausalEdge[] {
       SELECT ce.* FROM causal_edges ce
       WHERE NOT EXISTS (SELECT 1 FROM memory_index m WHERE CAST(m.id AS TEXT) = ce.source_id)
         OR NOT EXISTS (SELECT 1 FROM memory_index m WHERE CAST(m.id AS TEXT) = ce.target_id)
-    `) as Database.Statement).all() as CausalEdge[];
+    `) as Database.Statement).all().map(normalizeCausalEdgeRow) as CausalEdge[];
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] findOrphanedEdges error: ${msg}`);
@@ -858,12 +925,13 @@ function touchEdgeAccess(edgeId: number): void {
 function getStaleEdges(thresholdDays: number = STALENESS_THRESHOLD_DAYS): CausalEdge[] {
   if (!db) return [];
   try {
-    return (db.prepare(`
+    const rows = (db.prepare(`
       SELECT * FROM causal_edges
       WHERE (last_accessed IS NULL AND extracted_at < datetime('now', '-' || ? || ' days'))
          OR (last_accessed IS NOT NULL AND last_accessed < datetime('now', '-' || ? || ' days'))
       ORDER BY COALESCE(last_accessed, extracted_at) ASC
-    `) as Database.Statement).all(thresholdDays, thresholdDays) as CausalEdge[];
+    `) as Database.Statement).all(thresholdDays, thresholdDays) as CausalEdgeRow[];
+    return rows.map(normalizeCausalEdgeRow);
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] getStaleEdges error: ${msg}`);
