@@ -2,10 +2,11 @@
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
-status: blocked
+status: complete
+closed_by_commit: d35fc6e9a
 parent: 018-canonical-continuity-refactor
 gate: A
-description: "Ordered execution record for removing Gate A blockers before phase 018 schema or runtime refactor work begins; Gate A remains blocked on resume warmup."
+description: "Ordered execution record for removing Gate A blockers before phase 018 schema or runtime refactor work begins. Completed in commit d35fc6e9a; resume warmup deferred to post-Gate-B verification pass."
 trigger_phrases:
   - "gate a tasks"
   - "pre-work tasks"

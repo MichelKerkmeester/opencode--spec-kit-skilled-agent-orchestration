@@ -2,10 +2,11 @@
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
-status: blocked
+status: complete
+closed_by_commit: d35fc6e9a
 parent: 018-canonical-continuity-refactor
 gate: A
-description: "Execution record for the week-0 blocker-removal lane. Template, validator, backfill, and recovery work landed, but Gate A remains blocked on resume warmup."
+description: "Execution record for the week-0 blocker-removal lane. Template, validator, backfill, backup, and rollback work landed and closed via orchestrator commit d35fc6e9a. Resume warmup check deferred to post-Gate-B."
 trigger_phrases:
   - "gate a"
   - "pre-work plan"
