@@ -1,17 +1,21 @@
 ---
-title: "Feature Specification: Gate F — Archive Permanence [template:level_2/spec.md]"
-description: "Gate F turns the 180-day archive observation window into a permanent decision. It defines how `archived_hit_rate` is evaluated, when humans must intervene, and which conditional code changes are allowed if the archive is retired."
-trigger_phrases:
-  - "gate f"
-  - "archive permanence"
-  - "archived_hit_rate"
-  - "ewma alpha 0.1"
-  - "retire keep investigate"
+title: "Gate F — Cleanup Verification"
+description: "Verify Gate B cleanup completeness, confirm no orphan references remain, and record whether archived-tier runtime cleanup is already complete or still needs follow-up."
+trigger_phrases: ["gate f", "cleanup verification", "gate b cleanup", "archived-tier deprecation", "orphan causal edges"]
 importance_tier: "important"
-contextType: "general"
+contextType: "verification"
+status: complete
+closed_by_commit: TBD
+_memory:
+  continuity:
+    packet_pointer: "018/006-gate-f-archive-permanence"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Rewrote packet to cleanup-only Gate F scope"
+    next_safe_action: "Use implementation-summary.md as the audit record"
+    key_files: ["spec.md", "implementation-summary.md"]
 ---
-# Feature Specification: Gate F — Archive Permanence
-
+# Feature Specification: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -22,56 +26,56 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P1 |
-| **Status** | Draft |
-| **Created** | 2026-04-11 |
-| **Branch** | `018-canonical-continuity-refactor` |
+| Level | 2 |
+| Priority | P1 |
+| Status | Complete |
+| Created | 2026-04-11 |
+| Updated | 2026-04-12 |
+| Branch | `system-speckit/026-graph-and-context-optimization` |
 <!-- /ANCHOR:metadata -->
-
----
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Gate B introduced the bounded archive and started the 180-day observation window, but the packet still needs a final permanence decision that can survive audit and rollback review. Without a strict Gate F rulebook, the team could retire the archive on a quiet stretch, keep it forever on weak evidence, or hide intent-level dependence behind a calm global average.
+
+Gate B cleanup was supposed to delete legacy `**/memory/*.md` artifacts and retire archived-tier runtime branches, but the Gate F packet still described a dead observation-and-decision model. Until this packet is rewritten and the cleanup is re-verified against the live SQLite database plus on-disk spec tree, the phase does not provide an auditable answer to the real question: did Gate B actually finish the cleanup without leaving stale rows, orphan causal edges, or misleading packet guidance behind?
 
 ### Purpose
-Use iter 036's EWMA and stability rules to classify the archived tier as RETIRE, KEEP, INVESTIGATE, or ESCALATE with a complete evidence package and only the minimum conditional code follow-up.
-<!-- /ANCHOR:problem -->
 
----
+Provide a narrow, auditable verification pass that proves legacy memory-file rows are gone from `memory_index`, proves dependent `causal_edges` do not point at deleted rows, proves on-disk spec packets no longer contain `**/memory/*.md` files, and proves archived-tier runtime cleanup is already complete or clearly called out for later follow-up.
+<!-- /ANCHOR:problem -->
 
 <!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Pull the full 180-day `archived_hit_rate` daily series that started at the Gate B archive flip.
-- Apply iter 036 exactly: eligibility floors, weekly seasonality correction, EWMA `alpha=0.1`, variance bounds, slope guard, and decision ladder.
-- Record the outcome and evidence package in `implementation-summary.md`, including top archive-only queries, fresh-doc comparisons, and cost notes.
-- If and only if RETIRE is supported, prepare the small retirement code path and phase 021 follow-up.
+
+- Query the live Spec Kit Memory database at `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite`.
+- Verify `memory_index` contains no `file_path LIKE '%/memory/%.md'` rows after cleanup.
+- Verify `causal_edges` contains no rows whose `source_id` or `target_id` points at a deleted `memory_index` record.
+- Verify `.opencode/specs` contains no `**/memory/*.md` files and report any empty `memory/` directories.
+- Confirm whether the archived-tier ranking penalty, `archived_hit_rate` metric, and `is_archived` schema comment are already in the expected post-cleanup state.
+- Rewrite this packet so its docs describe cleanup verification and deprecated-code verification only.
 
 ### Out of Scope
-- Starting a new observation window - Gate F consumes the existing 180-day window.
-- Broad routing redesign - investigate outcomes only file a follow-up.
-- Hard-deleting archived source data - iter 036 requires logical retirement first and snapshot safety before any irreversible cleanup.
+
+- Any new observation window, `archived_hit_rate` trend analysis, or EWMA decision ladder.
+- Retire/keep/investigate decision-making.
+- Dropping the `is_archived` column from SQLite.
+- Deleting the single pre-existing baseline non-memory archived row.
+- Editing files outside this packet to clean up broader wording drift.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/006-gate-f-archive-permanence/spec.md` | Modify | Define the Gate F decision contract and scope boundaries. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/006-gate-f-archive-permanence/plan.md` | Modify | Document execution order, dependencies, and rollback posture. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/006-gate-f-archive-permanence/tasks.md` | Modify | Capture evaluation, evidence, and conditional follow-up tasks. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/006-gate-f-archive-permanence/checklist.md` | Modify | Encode the exit gate and conditional verification rules. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/006-gate-f-archive-permanence/implementation-summary.md` | Modify | Pre-build the decision evidence shell to fill after evaluation. |
-| `mcp_server/lib/search/stage1-candidate-gen.ts` | Modify if RETIRE | Remove archived rows from live candidate generation. |
-| `mcp_server/lib/storage/incremental-index.ts` | Modify if RETIRE | Stop reindexing archived rows into the live tier. |
-| `scripts/memory/018-006-gate-f-retirement.ts` | Create if RETIRE | Snapshot archived rows into a read-only recovery artifact. |
+| `spec.md` | Modify | Rewrite Gate F scope to cleanup verification only. |
+| `plan.md` | Modify | Replace the dead observation plan with the actual verification phases. |
+| `tasks.md` | Modify | Record the completed verification and cleanup work from this turn. |
+| `checklist.md` | Modify | Convert exit gates to cleanup-verification checks and mark them honestly. |
+| `implementation-summary.md` | Modify | Capture the exact database, filesystem, and code-verification evidence from this turn. |
 <!-- /ANCHOR:scope -->
-
----
 
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
@@ -80,118 +84,81 @@ Use iter 036's EWMA and stability rules to classify the archived tier as RETIRE,
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Gate F uses iter 036 as the authoritative permanence rulebook. | Decision logic references daily slot-share `archived_hit_rate`, EWMA `alpha=0.1`, weekly seasonality correction, eligible-day floors, and the retire/keep/investigate ladder: `<0.005` RETIRE, `[0.005, 0.020)` KEEP, `>=0.020` INVESTIGATE. |
-| REQ-002 | Stability is defined, not inferred. | The evaluation checks 30 consecutive eligible days, rolling 30-day standard deviation, max raw-rate spike guard, 14-day EWMA slope, and anomaly-day handling before any decision is recorded. |
-| REQ-003 | Ambiguous or unsafe outcomes stop automation. | Any missing telemetry, mixed-band streak, or intent-slice dependence above the iter 036 guardrails produces an escalation package instead of a silent auto-decision. |
+| REQ-001 | Prove stale legacy memory rows are removed from the live DB | `SELECT COUNT(*) FROM memory_index WHERE file_path LIKE '%/memory/%.md'` returns `0` after cleanup |
+| REQ-002 | Prove no orphan causal edges remain | `SELECT COUNT(*) FROM causal_edges WHERE source_id NOT IN (SELECT id FROM memory_index) OR target_id NOT IN (SELECT id FROM memory_index)` returns `0` |
+| REQ-003 | Prove on-disk spec packets contain no `**/memory/*.md` files | `find .opencode/specs -path '*/memory/*.md' -type f | wc -l` returns `0` |
+| REQ-004 | Preserve the baseline archived row | `SELECT COUNT(*) FROM memory_index WHERE is_archived = 1` returns `1`, and the remaining row is the known baseline row |
+| REQ-005 | Keep `is_archived` deprecated only | No schema drop occurs; the column remains documented as deprecated |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | The evidence package is complete enough for human review. | `implementation-summary.md` captures a 90-day trend chart with threshold lines at 0.5% and 2.0%, a `+/-1 sigma` band, anomaly-day shading, query-class breakdown, top 20 archive-only queries, fresh-doc comparisons, and keep-vs-retire cost notes. |
-| REQ-005 | Retirement work stays conditional and small. | Runtime code edits are scoped only to `stage1-candidate-gen.ts`, `incremental-index.ts`, and `scripts/memory/018-006-gate-f-retirement.ts`, and only after RETIRE is justified. |
-| REQ-006 | Non-retire outcomes produce the right follow-up artifact. | KEEP closes with documented rationale and no code changes; INVESTIGATE or ESCALATE opens a routing-refinement or human-review follow-up instead of retiring the tier. |
+| REQ-006 | Verify archived-tier runtime cleanup in the active code paths | `stage2-fusion.ts` has no archived-tier penalty and `memory-crud-stats.ts` has no `archived_hit_rate` metric |
+| REQ-007 | Verify schema comments reflect the new state | `vector-index-schema.ts` keeps `is_archived` and marks it deprecated in comments |
+| REQ-008 | Rewrite packet docs to the cleanup-only model | All five docs use cleanup-verification wording rather than observation/decision wording |
+| REQ-009 | Add validator-friendly continuity metadata | All five docs include `_memory.continuity`, `status: complete`, and `closed_by_commit: TBD` |
+
+### P2 - Follow-up Recording
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-010 | Record broader wording drift outside this packet as TODOs only | Out-of-scope locations are listed in `implementation-summary.md` without unrelated edits |
+| REQ-011 | Preserve exact evidence in the packet | SQL, counts, and filesystem command results are recorded in `implementation-summary.md` |
 <!-- /ANCHOR:requirements -->
 
----
+### Acceptance Scenarios
+
+- **Given** stale `*/memory/*.md` rows still exist in `memory_index`, **when** Gate F runs the verification pass, **then** it deletes dependent edges first and removes only those stale rows.
+- **Given** the filesystem already has no `**/memory/*.md` files, **when** Gate F compares DB and disk state, **then** it still treats stale DB rows as a cleanup failure until the DB is corrected.
+- **Given** `stage2-fusion.ts` and `memory-crud-stats.ts` already lack archived-tier behavior, **when** Gate F audits deprecated code, **then** it records PASS rather than widening scope.
+- **Given** broader archived-tier wording remains outside the packet, **when** Gate F closes, **then** it records those locations as follow-up TODOs without editing unrelated files.
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: A reviewer can rerun the same 180-day dataset through the iter 036 rulebook and reach the same Gate F classification.
-- **SC-002**: The evidence package explains whether archive demand is global noise, intent-local dependency, or true long-tail value.
-- **SC-003**: If RETIRE is chosen, the live search path stops serving archived rows while rollback readiness remains intact through a cold snapshot.
+- **SC-001**: The live DB shows `0` legacy `*/memory/*.md` rows and `0` orphan causal edges.
+- **SC-002**: The filesystem shows `0` `**/memory/*.md` files and no empty `memory/` directories needing cleanup.
+- **SC-003**: The only remaining archived row is the preserved baseline non-memory row `2174`.
+- **SC-004**: Archived-tier runtime cleanup is verified as already complete, with broader wording drift captured as explicit follow-up notes instead of silent scope creep.
+- **SC-005**: `validate.sh --strict` passes for this packet after the rewrite.
 <!-- /ANCHOR:success-criteria -->
-
----
 
 <!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `../research/iterations/iteration-036.md` | Gate F has no defensible stability definition without it. | Treat iter 036 as the binding rulebook and cite it throughout the decision package. |
-| Dependency | `memory_stats` `archived_hit_rate` daily series from Gate B onward | No metric series means no permanence decision. | Halt at ESCALATE and package the telemetry gap instead of substituting approximate data. |
-| Dependency | `../resource-map.md` Gate F execution order | Missing the overlap note would incorrectly restart the observation window. | Preserve the parent note that the 180-day window started at Gate B, not at Gate F kickoff. |
-| Risk | Global averages look calm while one intent slice still depends on archive hits. | High | Break down the metric by intent and spec-family, and escalate if any slice exceeds iter 036's investigate guardrail. |
-| Risk | A short holiday dip or outage creates a false retirement streak. | Medium | Exclude ineligible and anomaly days from the 30-day streak, and show them in the evidence package. |
-| Risk | Retirement is treated as hard deletion instead of logical removal. | High | Require snapshot readiness, restore rehearsal, and Option F phase 021 follow-up before any irreversible cleanup. |
+| Dependency | Parent handover and implementation design | Gate F needs parent context to verify the packet rewrite against phase reality | Re-read both before editing |
+| Dependency | Live SQLite DB | Cleanup verification depends on the actual runtime DB state, not packet assumptions | Query the configured DB path directly |
+| Risk | Stale DB rows remain after Gate B cleanup | Gate F would falsely declare the cleanup done | Query the live DB first, then run the minimal delete transaction only against stale `*/memory/*.md` rows and their dependent edges |
+| Risk | The baseline archived row is mistaken for phase-018 residue | Incorrect destructive cleanup | Record the baseline row ID and path explicitly and preserve it |
+| Risk | Broader archived-tier wording still exists elsewhere | Hidden drift remains after packet closeout | Record out-of-scope TODOs in `implementation-summary.md` without editing unrelated files |
 <!-- /ANCHOR:risks -->
 
----
+### Non-Functional Requirements
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
-
-### Performance
-- **NFR-P01**: Only days with `presented_slots >= 1000` and `unique_queries >= 100` count toward the permanence streak.
-- **NFR-P02**: The evidence package must include the 90-day trend view plus the top 20 archive-only query comparison set without truncating the decision-critical samples.
-
-### Security
-- **NFR-S01**: No retirement path may destroy archived source data on first decision; snapshot storage remains mandatory.
-- **NFR-S02**: Human sign-off is required before any RETIRE_CANDIDATE becomes a live retirement action.
+### Maintainability
+- **NFR-M01**: Gate F must stay packet-local and must not hide broader cleanup drift behind silent unrelated edits.
 
 ### Reliability
-- **NFR-R01**: Telemetry gaps longer than 3 consecutive days invalidate an automatic retirement streak.
-- **NFR-R02**: If more than 20% of days in the candidate window are ineligible or anomalous, the phase escalates instead of auto-deciding.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Cleanup verification must rely on direct SQL and filesystem checks instead of inferred state.
 
----
+### Safety
+- **NFR-S01**: Any cleanup in this phase must remain limited to stale `*/memory/*.md` rows and their dependent `causal_edges`.
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+### Edge Cases
 
-### Data Boundaries
-- Empty or partial window: stop at ESCALATE; Gate F requires the full 180-day history.
-- Low-volume day: chart it, but do not count it toward the 30-day permanence streak.
-- Weekday skew: apply iter 036 day-of-week correction only when the trailing 56-day index is supported and meaningfully separated.
+### Data Edge Cases
+- A single archived row may remain if it is the known baseline non-memory row and must not be deleted.
+- The filesystem can already be clean even when stale DB rows remain, so both checks are required.
 
-### Error Scenarios
-- Telemetry outage: mark anomaly days, include them in the evidence package, and block retirement.
-- Mixed-band behavior: if the streak crosses retire and keep thresholds inside the same window, escalate to humans.
-- Missing fresh-doc comparison data: do not infer archive-only demand from query text alone; package the gap as unresolved evidence.
+### Documentation Edge Cases
+- The folder name still includes `archive-permanence`, but the in-file contract now defines cleanup verification only.
+- Broader archived-tier wording outside this packet must be logged as TODOs instead of fixed here.
 
-### State Transitions
-- RETIRE: logical removal first, snapshot preserved, then phase 021 Option F follow-up opens.
-- KEEP: retain the thin archive layer permanently and close without code edits.
-- INVESTIGATE: keep the archive live, file routing refinement work, and avoid retirement changes.
-
-### Acceptance Scenarios
-- **Given** 30 consecutive eligible days, a seasonality-corrected EWMA below `0.005`, no disqualifying spike, and a flat-to-falling 14-day slope, **when** Gate F evaluates the ladder, **then** the packet records `RETIRE` and prepares only the minimal retirement branch.
-- **Given** 30 consecutive eligible days with corrected EWMA inside `[0.005, 0.020)`, acceptable variance, and no intent-slice guardrail breach, **when** Gate F evaluates the ladder, **then** the packet records `KEEP` and closes with no runtime edits.
-- **Given** a corrected EWMA at or above `0.020` or a still-dependent intent/spec-family slice above the investigate guardrail, **when** Gate F evaluates the ladder, **then** the packet records `INVESTIGATE` and opens routing-refinement follow-up instead of retiring the archive.
-- **Given** missing telemetry, mixed-band streak behavior, or anomaly/ineligible-day pressure that breaks the stability contract, **when** Gate F evaluates the ladder, **then** the packet records `ESCALATE` and ships the full evidence package to human review instead of auto-deciding.
-<!-- /ANCHOR:edge-cases -->
-
----
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 16/25 | Five phase docs now, plus at most three small runtime files if RETIRE is justified. |
-| Risk | 19/25 | The decision affects long-term retrieval behavior and must remain rollback-safe. |
-| Research | 11/20 | The rulebook exists, but the live 180-day evidence still has to be assembled and interpreted. |
-| **Total** | **46/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- None at authoring time. The remaining unknown is the measured 180-day classification, which Gate F resolves from live data rather than additional design debate.
+- None inside the owned packet scope. Broader wording follow-up is recorded in `implementation-summary.md` as out-of-scope TODOs.
 <!-- /ANCHOR:questions -->
-
----
-
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->

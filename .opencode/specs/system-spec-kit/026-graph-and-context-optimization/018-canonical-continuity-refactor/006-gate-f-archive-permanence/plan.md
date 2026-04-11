@@ -1,16 +1,21 @@
 ---
-title: "Implementation Plan: Gate F — Archive Permanence [template:level_2/plan.md]"
-description: "Gate F is a decision-first phase that consumes the already-running 180-day archive observation window. The plan applies iter 036's statistical ladder, assembles the evidence package, and only branches into runtime edits if RETIRE is justified."
-trigger_phrases:
-  - "gate f plan"
-  - "archive permanence plan"
-  - "retire keep investigate"
-  - "archived_hit_rate evaluation"
+title: "Gate F — Cleanup Verification Plan"
+description: "Execute a narrow verification pass for Gate B cleanup, confirm archived-tier deprecation work is already complete, and close the packet with evidence."
+trigger_phrases: ["gate f plan", "cleanup verification plan", "gate b cleanup verification", "archived-tier deprecation audit"]
 importance_tier: "important"
-contextType: "general"
+contextType: "verification"
+status: complete
+closed_by_commit: TBD
+_memory:
+  continuity:
+    packet_pointer: "018/006-gate-f-archive-permanence"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Replaced observation plan with cleanup verification phases"
+    next_safe_action: "Reuse the recorded evidence if follow-up packet opens"
+    key_files: ["plan.md", "implementation-summary.md"]
 ---
-# Implementation Plan: Gate F — Archive Permanence
-
+# Implementation Plan: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -23,165 +28,136 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript + Node.js scripting around Spec Kit Memory data |
-| **Framework** | Spec packet workflow, iter 036 decision rulebook |
-| **Storage** | `memory_index` / `memory_stats` daily archive telemetry |
-| **Testing** | Evidence review, conditional live-query verification if RETIRE |
+| Language/Stack | Markdown, SQLite, shell verification, TypeScript code verification |
+| Framework | system-spec-kit phase packet closeout |
+| Storage | `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` |
+| Testing | SQL queries, filesystem sweeps, `rg` verification, `validate.sh --strict` |
 
 ### Overview
-Gate F does not start a new experiment. It consumes the 180-day window that began at the Gate B archive flip, normalizes the daily `archived_hit_rate` series, and classifies archive permanence using iter 036's conservative ladder. Most work happens in documentation and evidence assembly; runtime edits stay dormant unless the result is RETIRE and the snapshot safeguards are ready.
-<!-- /ANCHOR:summary -->
 
----
+Gate F is a cleanup-verification phase. The execution model is simple: verify the live DB and filesystem state first, run a minimal cleanup transaction only if stale Gate B residue remains, confirm the archived-tier runtime code has already been removed or deprecated as intended, then rewrite the packet docs so the phase tells the truth about what happened.
+<!-- /ANCHOR:summary -->
 
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Gate E is closed and the archive flag has been live for at least 30 days
-- [ ] A full 180-day `archived_hit_rate` daily series is available from Gate B onward
-- [ ] Iter 036, iter 020, iter 016, and the resource-map overlap note are cited in the phase docs
+
+- [x] Gates A-E are recorded as closed in the parent handover.
+- [x] Gate B cleanup is recorded as committed work in the parent handover.
+- [x] The live DB path and packet ownership boundaries are known before edits start.
 
 ### Definition of Done
-- [ ] The decision ladder result is recorded with trend, slice, and query evidence
-- [ ] Conditional follow-up matches the result: RETIRE, KEEP, INVESTIGATE, or ESCALATE
-- [ ] All five phase documents remain synchronized and scoped to Gate F only
-<!-- /ANCHOR:quality-gates -->
 
----
+- [x] `memory_index` has `0` `file_path LIKE '%/memory/%.md'` rows after cleanup.
+- [x] `causal_edges` has `0` orphan rows.
+- [x] `.opencode/specs` has `0` `**/memory/*.md` files.
+- [x] Archived-tier runtime cleanup is verified or explicitly flagged as out-of-scope follow-up.
+- [x] All five packet docs match the cleanup-only Gate F scope and pass `validate.sh --strict`.
+<!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Statistical decision gate with conditional retirement branch
+
+Evidence-first verification with minimal corrective cleanup.
 
 ### Key Components
-- **Daily metric extraction**: pulls the 180-day `archived_hit_rate` series and eligibility metadata.
-- **Trend normalizer**: applies weekly seasonality correction, EWMA `alpha=0.1`, variance bounds, and slope checks.
-- **Decision ladder**: classifies RETIRE, KEEP, INVESTIGATE, or ESCALATE using iter 036 section 6: `<0.005` RETIRE, `[0.005, 0.020)` KEEP, `>=0.020` INVESTIGATE, with ESCALATE reserved for guardrail failures or missing evidence.
-- **Evidence package**: captures the 90-day trend view, slice breakdowns, top 20 archive-only queries, fresh-doc comparisons, and cost notes.
+
+- DB verification using direct SQL checks against `memory_index` and `causal_edges`
+- filesystem verification using `find` sweeps for `**/memory/*.md` artifacts and empty `memory/` directories
+- deprecated-code audit using exact-match checks in `stage2-fusion.ts`, `memory-crud-stats.ts`, and `vector-index-schema.ts`
+- packet alignment using doc rewrites that preserve validator anchors and continuity frontmatter
 
 ### Data Flow
-Gate B telemetry feeds the daily series, iter 036 transforms it into an auditable classification, and the resulting evidence drives either a no-code closure or a tightly scoped retirement branch.
-<!-- /ANCHOR:architecture -->
 
----
+Entry-gate facts from the parent handover establish that Gate B cleanup should already be complete. Live SQL and filesystem checks confirm or disprove that expectation. If stale rows remain, a minimal SQLite transaction deletes dependent edges first and stale `*/memory/*.md` rows second. The post-cleanup state becomes the evidence source for packet closeout.
+<!-- /ANCHOR:architecture -->
 
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Evidence Collection
-- [ ] Confirm the observation window start date and pull the 180-day daily series
-- [ ] Mark eligible, ineligible, and anomaly days per iter 036 floors
-- [ ] Collect query-intent, spec-family, and archive-only query breakdowns
+### Phase 1: DB and File Verification
 
-### Phase 2: Decision Classification
-- [ ] Apply weekly seasonality correction and EWMA `alpha=0.1`
-- [ ] Check 30-day streak, rolling standard deviation, max raw-rate spike, and 14-day slope
-- [ ] Write the outcome and supporting evidence into `implementation-summary.md`
+- [x] Query `memory_index` for stale `*/memory/*.md` rows.
+- [x] Query `memory_index` for `is_archived = 1` to confirm the preserved baseline row count.
+- [x] Query `causal_edges` for orphan references.
+- [x] Sweep `.opencode/specs` for `**/memory/*.md` files and empty `memory/` directories.
+- [x] Run the minimal cleanup transaction because stale rows were still present.
 
-### Phase 3: Conditional Follow-up
-- [ ] If RETIRE, implement the minimal runtime cleanup and snapshot path
-- [ ] If KEEP, document the permanent thin-layer rationale with no runtime edits
-- [ ] If INVESTIGATE or ESCALATE, open the required follow-up and stop retirement work
+### Phase 2: Deprecated-Code Verification
+
+- [x] Confirm `stage2-fusion.ts` no longer applies an archived-tier penalty.
+- [x] Confirm `memory-crud-stats.ts` no longer exposes `archived_hit_rate`.
+- [x] Confirm `vector-index-schema.ts` keeps `is_archived` only as a deprecated column comment.
+- [x] Collect broader out-of-scope wording drift as TODOs instead of editing unrelated files.
+
+### Phase 3: Packet Alignment and Evidence
+
+- [x] Rewrite `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` to the cleanup-only model.
+- [x] Add validator-friendly `_memory.continuity` blocks plus `status: complete` and `closed_by_commit: TBD` frontmatter to all five files.
+- [x] Record the exact SQL, cleanup transaction, post-cleanup counts, preserved baseline row, and code audit evidence.
+
+### Phase 4: Exit Gate
+
+- [x] Run `validate.sh --strict` for this packet.
+- [x] Confirm packet docs, evidence, and truthfulness are aligned.
 <!-- /ANCHOR:phases -->
-
----
 
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Analytical | EWMA, variance, seasonality, and streak calculations | Iter 036 rulebook + metric export |
-| Integration | Fresh-doc comparison for archive-only queries | Search result inspection against current docs |
-| Manual | Live query verification, only if RETIRE | Operator query replay against the runtime search path |
+| Database verification | stale memory rows, archived row count, orphan edges | `sqlite3` |
+| Filesystem verification | `**/memory/*.md` files and empty dirs | `find`, `wc -l` |
+| Code verification | archived-tier runtime remnants | `rg`, targeted file reads |
+| Packet validation | markdown structure and continuity frontmatter | `validate.sh --strict` |
 <!-- /ANCHOR:testing -->
-
----
 
 <!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../research/iterations/iteration-036.md` | Internal | Green | Without it, "stable" is too vague to automate safely. |
-| `../resource-map.md` Gate F overlap note | Internal | Green | Missing it would wrongly restart the observation clock. |
-| `archived_hit_rate` daily metric source | Internal | Yellow | Missing data forces ESCALATE and blocks retirement. |
-| Phase 021 Option F sibling packet | Internal | Yellow | Needed only if RETIRE is supported and approved. |
+| Parent handover | Internal | Green | Establishes that Gates A-E and Gate B cleanup are already closed |
+| Parent implementation design | Internal | Green | Confirms the packet sits inside phase 018 but still contains stale Gate F design assumptions |
+| `context-index.sqlite` | Runtime data | Green | Live cleanup verification depends on the actual DB state |
+| Existing runtime files | Code evidence | Green | Needed to prove archived-tier cleanup is already complete |
 <!-- /ANCHOR:dependencies -->
-
----
 
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: RETIRE was chosen, but post-decision replay or human review finds archive dependence or snapshot gaps.
-- **Procedure**: Re-enable archived candidate generation, restore the `0.3x` archive weighting model, and recover archived rows from the cold snapshot before restarting a shorter observation cycle.
-- **Irreversibility boundary**: Physical delete of archived rows is irreversible once snapshot retention expires; the retention bake period is the last reversible point.
+- Trigger: The cleanup transaction removes anything beyond stale `*/memory/*.md` rows or leaves orphan edges behind.
+- Procedure: Stop immediately, inspect the DB diff, and restore from the local backup before re-running a narrower cleanup.
+- Irreversibility boundary: This packet does not authorize any deletion outside stale `*/memory/*.md` rows and dependent `causal_edges`.
 <!-- /ANCHOR:rollback -->
-
----
-
-
----
 
 <!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Evidence) ───────────────► Phase 2 (Decision) ──────────────► Phase 3 (Conditional action)
-          │                                      │
-          └──────── query/slice package ─────────┘
+Phase 1 (verify live state) -> Phase 2 (verify code cleanup) -> Phase 3 (rewrite packet) -> Phase 4 (validate exit)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Evidence Collection | Gate E closure + 180-day window | Decision Classification |
-| Decision Classification | Evidence Collection | Conditional Follow-up |
-| Conditional Follow-up | Decision Classification | Gate F closeout |
+| Phase 1 | Parent gate closure facts | All later phases |
+| Phase 2 | Phase 1 post-cleanup truth | Packet closeout evidence |
+| Phase 3 | Phase 1 and 2 evidence | Exit validation |
+| Phase 4 | Final packet rewrite | Phase completion |
 <!-- /ANCHOR:phase-deps -->
-
----
 
 <!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Evidence Collection | Medium | 4-6 days active work |
-| Decision Classification | Medium | 3-5 days active work |
-| Conditional Follow-up | Low to Medium | 3-5 days active work, only heavier on RETIRE |
-| **Total** | | **~3 weeks active work inside the longer 180-day window** |
+| Phase 1 | Low | <1 hour |
+| Phase 2 | Low | <1 hour |
+| Phase 3 | Medium | 1-2 hours |
+| Phase 4 | Low | <30 minutes |
+| Total | | Same-turn closeout |
 <!-- /ANCHOR:effort -->
-
----
-
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [ ] Cold snapshot path identified for archived rows
-- [ ] Human review package prepared with trend and query evidence
-- [ ] Live query replay plan ready if RETIRE is selected
-
-### Rollback Procedure
-1. Freeze the RETIRE rollout and re-open archived participation in candidate generation.
-2. Restore archived rows from the snapshot manifest if any live index material was removed.
-3. Re-run archive-only query checks to confirm the long-tail fallback is back.
-4. Reclassify Gate F as ESCALATE or INVESTIGATE and hand the evidence to humans.
-
-### Data Reversal
-- **Has data migrations?** Conditional only for RETIRE
-- **Reversal procedure**: Recover the archived snapshot, rebuild any removed archive index entries, and restore the legacy retrieval path before a new observation period starts.
-<!-- /ANCHOR:enhanced-rollback -->
-
----
-
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->

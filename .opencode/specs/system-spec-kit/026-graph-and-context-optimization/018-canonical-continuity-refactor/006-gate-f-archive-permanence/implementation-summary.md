@@ -1,15 +1,21 @@
 ---
-title: "Implementation Summary: Gate F — Archive Permanence [template:level_2/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
-trigger_phrases:
-  - "gate f implementation summary"
-  - "archive permanence evidence package"
-  - "retire keep investigate summary"
+title: "Gate F — Cleanup Verification Summary"
+description: "Audit record for the Gate F cleanup-verification pass and the minimal DB cleanup executed during this turn."
+trigger_phrases: ["gate f implementation summary", "cleanup verification summary", "stale memory rows", "baseline archived row"]
 importance_tier: "important"
-contextType: "general"
+contextType: "verification"
+status: complete
+closed_by_commit: TBD
+_memory:
+  continuity:
+    packet_pointer: "018/006-gate-f-archive-permanence"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Recorded Gate F cleanup evidence and follow-up notes"
+    next_safe_action: "Add commit hash after commit"
+    key_files: ["implementation-summary.md"]
 ---
-# Implementation Summary: Gate F — Archive Permanence
-
+# Implementation Summary: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
@@ -21,111 +27,98 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 006-gate-f-archive-permanence |
-| **Completed** | Pending Gate F execution |
-| **Level** | 2 |
+| Spec Folder | `006-gate-f-archive-permanence` |
+| Completed | 2026-04-12 |
+| Level | 2 |
+| Live DB Path | `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` |
 <!-- /ANCHOR:metadata -->
-
----
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
-
-Gate F is where the archive stops being a rollout hedge and becomes a permanent product choice. This summary is intentionally pre-populated as the final evidence shell for the 180-day decision so the operator can record one of four outcomes, keep the reasoning auditable, and avoid inventing a different standard at closeout time.
-
-### Decision Record Shell
-
-You will complete this section after evaluating the 180-day `archived_hit_rate` series with iter 036's weekly seasonality correction, EWMA `alpha=0.1`, variance bounds, and 30-day stability rules. Record the final class as `RETIRE`, `KEEP`, `INVESTIGATE`, or `ESCALATE`, then summarize why that class won over the other branches.
-
-### Evidence Package
-
-Fill this section with the required proof bundle:
-- 90-day trend data with threshold crossings, anomaly days, and current streak length
-- query-class and spec-family breakdowns with sample sizes and 14-day slope notes
-- top 20 archive-only queries plus fresh-doc comparison results
-- keep-vs-retire cost estimate, including snapshot and rollback burden
+Gate F was repurposed from a dead archive-permanence decision packet into a cleanup-verification packet that tells the truth about the current system. The work in this turn did two things: it fixed the packet docs so they no longer promise a 180-day observation ladder that no longer exists, and it verified the real cleanup state in the live Spec Kit Memory database. That verification exposed stale residue that Gate B cleanup should already have removed, so the pass executed one minimal SQLite transaction to delete dependent edges first and then delete the `183` stale `*/memory/*.md` rows. After that cleanup, the live DB and filesystem matched the new contract.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `spec.md` | Modified | Defines the Gate F decision contract and conditional scope. |
-| `plan.md` | Modified | Documents the statistical flow, dependencies, and rollback posture. |
-| `tasks.md` | Modified | Tracks evidence gathering, classification, and conditional follow-up. |
-| `checklist.md` | Modified | Encodes the exit gate and conditional verification rules. |
-| `implementation-summary.md` | Modified | Provides the final decision and evidence shell for closeout. |
+| `spec.md` | Modified | Reframed Gate F as cleanup verification and archived-tier deprecation audit only. |
+| `plan.md` | Modified | Replaced the dead observation plan with the actual four-phase verification flow. |
+| `tasks.md` | Modified | Logged the real work completed in this turn, including the DB cleanup transaction result. |
+| `checklist.md` | Modified | Converted the exit gates into auditable cleanup-verification checks and marked them honestly. |
+| `implementation-summary.md` | Modified | Captured the exact DB path, counts, SQL, preserved baseline row, code verification, and broader TODOs. |
 <!-- /ANCHOR:what-built -->
-
----
 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-This population pass was grounded in `../implementation-design.md`, the Gate F execution order in `../resource-map.md`, and the permanence criteria from iterations 016, 020, 036, and 040. No runtime code or live metrics were executed in this documentation step, so the sections above remain a structured shell until the real 180-day evidence is pulled.
+This pass started by re-reading the parent handover and implementation design, then checking the live DB and filesystem state instead of trusting the packet text. The live queries showed the packet's assumptions were wrong: stale legacy memory-file rows still existed in `memory_index`, and dependent `causal_edges` still pointed at them. A minimal SQLite transaction cleaned up only those stale `*/memory/*.md` rows and their dependent edges. After the data cleanup, the packet docs were rewritten in place to match the live reality and to add validator-friendly continuity frontmatter.
 <!-- /ANCHOR:how-delivered -->
-
----
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| Use iter 036 as the binding rulebook | Gate F is the permanence gate, and iter 036 is the packet's explicit definition of "stable for 30+ days." |
-| Keep retirement edits conditional | Most Gate F outcomes should close without code changes, so runtime cleanup must stay dormant unless RETIRE is actually supported. |
-| Require evidence beyond the global average | A quiet global EWMA can still hide archive dependence inside one intent slice or spec family. |
+| Rewrite Gate F to cleanup verification only | The observation window and decision ladder are dead code, so keeping that model in the packet would be misleading. |
+| Preserve the folder name but change the contract | Renaming the folder was out of scope, but the docs still needed to reflect the real job of the phase. |
+| Delete dependent edges before deleting stale memory rows | This is the minimal safe cleanup that prevents orphan references in `causal_edges`. |
+| Preserve the one baseline archived row | The user explicitly called out that row as pre-existing and out of scope for deletion. |
 <!-- /ANCHOR:decisions -->
-
----
 
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
+### Database Checks
 
-| Check | Result |
-|-------|--------|
-| Phase docs populated and anchors preserved | PASS, all five requested files were converted from template placeholders into Gate F-specific content. |
-| Parent packet grounding | PASS, wording aligns to the Gate F overlap note and iter 016/020/036/040 references. |
-| Live metric pull and runtime verification | NOT RUN, deferred to actual Gate F execution per this phase's decision workflow. |
+Initial live DB results before cleanup:
+
+- `SELECT COUNT(*) FROM memory_index WHERE file_path LIKE '%/memory/%.md';` -> `183`
+- `SELECT COUNT(*) FROM memory_index WHERE is_archived = 1;` -> `184`
+- stale dependent `causal_edges` count tied to those stale memory rows -> `1141`
+
+Cleanup performed during this turn:
+
+```sql
+BEGIN;
+DELETE FROM causal_edges
+WHERE source_id IN (SELECT id FROM memory_index WHERE file_path LIKE '%/memory/%.md')
+   OR target_id IN (SELECT id FROM memory_index WHERE file_path LIKE '%/memory/%.md');
+DELETE FROM memory_index
+WHERE file_path LIKE '%/memory/%.md';
+COMMIT;
+```
+
+Post-cleanup live DB results:
+
+- `SELECT COUNT(*) FROM memory_index WHERE file_path LIKE '%/memory/%.md';` -> `0`
+- `SELECT COUNT(*) FROM memory_index WHERE is_archived = 1;` -> `1`
+- `SELECT COUNT(*) FROM causal_edges WHERE source_id NOT IN (SELECT id FROM memory_index) OR target_id NOT IN (SELECT id FROM memory_index);` -> `0`
+
+Preserved baseline archived row:
+
+- `2174|.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/plan.md`
+
+### Filesystem Checks
+
+- `find .opencode/specs -path '*/memory/*.md' -type f | wc -l` -> `0`
+- `find .opencode/specs -type d -name memory -empty` -> none
+
+### Code Verification
+
+- `mcp_server/lib/search/pipeline/stage2-fusion.ts` already has no archived-tier penalty and no `0.3` weighting branch.
+- `mcp_server/handlers/memory-crud-stats.ts` already has no `archived_hit_rate` metric.
+- `mcp_server/lib/search/vector-index-schema.ts` already keeps `is_archived` as a deprecated column and marks it deprecated in comments.
+
+### Packet Validation
+
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/006-gate-f-archive-permanence` -> PASS
 <!-- /ANCHOR:verification -->
-
----
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **Decision still pending.** This file is a closeout shell until the 180-day metric series is evaluated.
-2. **RETIRE branch not yet proven.** The runtime file touches and phase 021 follow-up only activate if the evidence supports archive retirement.
+1. The parent packet context still contains old Gate F wording. Out-of-scope follow-up only: the parent handover, the parent implementation design, and the phase-root `spec.md` plus `plan.md` still mention the dead decision or observation model.
+2. Broader archived-tier wording still exists outside this packet. Out-of-scope follow-up only: `mcp_server/handlers/memory-context.ts`, `routing-prototypes.json`, and `gate-d-regression-embedding-semantic-search.vitest.ts` may still contain archived-tier wording that should be reviewed later to determine whether it is intentional.
+3. This packet does not drop the SQLite `is_archived` column. The column remains deprecated by design because dropping it would be a higher-risk schema change outside this pass.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->
