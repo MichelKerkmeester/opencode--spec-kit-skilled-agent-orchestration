@@ -1,10 +1,13 @@
 ---
 title: "Phase 018 — Autonomous Execution Runbook"
-version: 1
+version: 2
 created: 2026-04-11T20:00:00Z
+updated: 2026-04-11T20:30:00Z
 target_runtime: cli-codex gpt-5.4 high fast
 scope: Implement + verify + test Gates A–E autonomously; Gate F runs as observation only
 total_active_wall_clock: ~8–14 hours serial + 2-week D0 observation gap
+notes:
+  - v2 (2026-04-11T20:30Z) — adjusted for parent packet now having root-level spec/plan/tasks/checklist/implementation-summary (L2 coordination packet); dropped .md extension from /tmp/execute-*.prompt paths to avoid validator false-positive markdown link detection; added parent packet coordination wrap-up steps to Sessions 1, 2, 3; preflight check for child phase linkage (PHASE_LINKS 13-warning requirement)
 ---
 
 # Phase 018 — Autonomous Execution Runbook
@@ -29,6 +32,25 @@ One-shot execution plan for Gates A through E of the phase 018 Canonical Continu
 
 **Total active wall clock**: ~8–14 hours of Codex execution. Plus the real-world observation windows which run in the background after the active session ends.
 
+### Parent Packet Coordination Role (v2)
+
+As of runbook v2, `018-canonical-continuity-refactor/` is no longer research-only. It is a **Level 2 parent coordination packet** with its own root `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`. These describe the phase's coordination role across the 6 child gates — they do NOT duplicate gate-level execution detail.
+
+**Parent packet responsibilities during autonomous execution**:
+- At Session 1 kickoff: flip parent `status: planned` → `in-progress` in `spec.md` frontmatter and commit
+- At each gate close: update parent `tasks.md` coordination checklist (mark that gate's row complete)
+- At Session 1 close: update parent `checklist.md` for the Gate A–D portion
+- At Session 2 close: update parent `checklist.md` for Gate E + Gate F observation handoff portion
+- At Session 3 close: flip parent `status: in-progress` → `complete`, fill parent `implementation-summary.md` with the full 6-gate evidence package
+- All updates committed under `feat(026.018-parent-coord): ...`
+
+**The parent packet's validation contract requires** (enforced by `validate.sh --strict` at the parent level):
+- Each child `spec.md` carries a parent back-reference (`parent:` frontmatter field OR `| **Parent Spec** | ../spec.md |` in the metadata table)
+- Each child `spec.md` references its predecessor + successor child (e.g., 002 references 001 as predecessor and 003 as successor)
+- This is the `PHASE_LINKS` check — currently 13 warnings at runbook-v2 time because child packets were populated before the parent spec existed. See §11 Handover for the preflight fix.
+
+---
+
 **Recommended execution mode**: split into two active sessions with observation windows between them:
 - **Session 1 (Gates A → D writer + reader ready, D0 start)**: ~6–10 hours active
 - **Observation gap 1**: D0 2-week window + Gate C dual-write stability
@@ -49,7 +71,7 @@ Each gate is executed by **one orchestrating Codex session** launched via `cli-c
 ### Dispatch pattern
 
 ```bash
-cat /tmp/execute-<gate>-prompt.md | codex exec \
+cat /tmp/execute-<gate>.prompt | codex exec \
   --model gpt-5.4 \
   -c model_reasoning_effort="high" \
   -c service_tier="fast" \
@@ -110,7 +132,7 @@ cat /tmp/execute-<gate>-prompt.md | codex exec \
 
 **Entry**: commit `0c39fff10` present on 026 branch (phase 018 spec folders committed + reviewed + P1s fixed). No code changes yet.
 
-**Prompt file**: `/tmp/execute-gate-a-prompt.md`
+**Prompt file**: `/tmp/execute-gate-a.prompt`
 
 Content:
 ```
@@ -155,7 +177,7 @@ Update implementation-summary.md with real evidence (commits, file paths, valida
 
 **Entry**: Gate A closed + committed + pushed. Backup file exists.
 
-**Prompt file**: `/tmp/execute-gate-b-prompt.md`
+**Prompt file**: `/tmp/execute-gate-b.prompt`
 
 Content:
 ```
@@ -198,7 +220,7 @@ Update implementation-summary.md with rehearsal evidence JSON + row counts + mig
 
 **Entry**: Gate B closed. Schema in place. Archive flipped. Ranking updated.
 
-**Prompt file**: `/tmp/execute-gate-c-prompt.md`
+**Prompt file**: `/tmp/execute-gate-c.prompt`
 
 Content:
 ```
@@ -258,7 +280,7 @@ Push at gate close.
 
 **Entry**: Gate C closed. Dual-write shadow stable ≥7 days. Writer path proven.
 
-**Prompt file**: `/tmp/execute-gate-d-prompt.md`
+**Prompt file**: `/tmp/execute-gate-d.prompt`
 
 Content:
 ```
@@ -318,7 +340,7 @@ Push at gate close.
 
 ### Gate E — Runtime Migration (~60–120 min active + 7-day canonical stability)
 
-**Prompt file**: `/tmp/execute-gate-e-prompt.md`
+**Prompt file**: `/tmp/execute-gate-e.prompt`
 
 Content:
 ```
@@ -371,7 +393,7 @@ Push at gate close.
 
 ### Gate F — Observation Only (~10 min setup in Session 2)
 
-**Prompt file**: `/tmp/execute-gate-f-setup-prompt.md`
+**Prompt file**: `/tmp/execute-gate-f-setup.prompt`
 
 Content:
 ```
@@ -466,7 +488,7 @@ git pull --ff-only
 # Run each gate sequentially
 for gate in 001-gate-a-prework 002-gate-b-foundation 003-gate-c-writer-ready 004-gate-d-reader-ready; do
   echo "=== Starting $gate ==="
-  cat "/tmp/execute-$gate-prompt.md" | codex exec \
+  cat "/tmp/execute-$gate.prompt" | codex exec \
     --model gpt-5.4 \
     -c model_reasoning_effort="high" \
     -c service_tier="fast" \
@@ -558,16 +580,40 @@ The orchestrator must honor these thresholds and stop autonomous execution on tr
 
 ## 11. Handover to the Orchestrator
 
-To start autonomous execution:
+### Preflight checklist (MUST pass before Session 1 kickoff)
 
-1. Verify commit `0c39fff10` is the HEAD of `system-speckit/026-graph-and-context-optimization`
-2. Write the 6 prompt files to `/tmp/execute-<gate>-prompt.md` (using the content blocks above as templates, tailored to each gate's actual tasks.md contents at execution time)
-3. Run the Session 1 orchestrator script
-4. Wait for Session 1 completion + D0 observation gap
-5. Run the Session 2 orchestrator script
-6. Wait for real-world observation windows
-7. Run Session 3 (human-in-the-loop) when 180 days have elapsed
+1. **HEAD check**: verify the current commit on `system-speckit/026-graph-and-context-optimization` contains all 6 gate packets populated + reviewed + fixed + the parent coordination spec (runbook v2 expects commit `96e0f66ce` or later).
+
+2. **Parent packet validation**: run `validate.sh --strict` on `018-canonical-continuity-refactor/` (parent packet itself). Expected state at runbook-v2 time: 62 `SPEC_DOC_INTEGRITY` errors + 13 `PHASE_LINKS` warnings. These come from:
+   - Parent `implementation-design.md` and `phase-017-rerun-seed.md` referencing the now-removed `findings/` folder (deleted earlier in session — cleanup deferred)
+   - This runbook's old `/tmp/execute-*-prompt.md` path references (fixed in v2 — should drop to 62 errors or lower after commit)
+   - Child spec.md files missing parent back-references + predecessor/successor chain (13 PHASE_LINKS warnings)
+
+3. **Fix child phase linkage** (unblocks the 13 PHASE_LINKS warnings):
+   - Add `parent: 018-canonical-continuity-refactor` to each child `spec.md` frontmatter (or the `| **Parent Spec** | ../spec.md |` metadata table row)
+   - Add predecessor reference to 002-F (e.g., 003's spec.md mentions "predecessor: 002-gate-b-foundation")
+   - Add successor reference to A-005 (e.g., 003's spec.md mentions "successor: 004-gate-d-reader-ready")
+   - Re-run parent-level validate.sh --strict → 13 PHASE_LINKS warnings should clear
+   - This can be done via a single 5-minute Edit pass, OR as a Codex task added to Gate A before the main Gate A work
+
+4. **Fix stale findings/ references** (unblocks most of the 62 SPEC_DOC_INTEGRITY errors):
+   - The session earlier deleted `findings/` after reporting it was non-standard
+   - `implementation-design.md` still references `findings/routing-rules.md`, `findings/feature-retargeting-map.md`, `findings/resume-journey.md`, `findings/rollout-plan.md`, and `handover.md` / `iteration-020.md` without the `research/iterations/` prefix
+   - `phase-017-rerun-seed.md` still references `iteration-010.md`, `handover.md` similarly
+   - Fix: update the dead refs to point at `research/iterations/iteration-NNN.md` where appropriate, or remove them
+   - This is a doc cleanup, ~15 minutes
+
+5. **Orchestrator script**: write the 6 prompt files to `/tmp/execute-<gate>.prompt` (using the content blocks in §3 / §4 as templates, tailored to each gate's actual tasks.md contents at execution time)
+
+6. **Staging dry-run**: run Session 1 in a dev/staging environment first with a throwaway DB copy to validate the orchestrator script end-to-end before touching production memory.db
+
+### Execution sequence
+
+1. **Session 1**: flip parent spec.md `status: planned` → `in-progress`, commit, then run the Session 1 orchestrator script (Gates A → B → C → D → D0 start)
+2. **Observation gap 1** (~2 weeks): D0 window runs unattended; Gate C 7-day canonical stability runs underneath
+3. **Session 2**: run the Session 2 orchestrator script (Gate E transitions + Gate F observation kickoff)
+4. **Observation gap 2** (remainder of 180 days): Gate F `archived_hit_rate` collection
+5. **Session 3** (human-in-the-loop at Day 180): Gate F retire/keep/investigate decision
+6. **Parent close**: flip parent spec.md `status: in-progress` → `complete`, fill parent `implementation-summary.md` with full 6-gate evidence package, commit
 
 **Estimated total autonomous time**: 8–14 hours of Codex active execution across 2 sessions. Real-world time including observation gaps: ~6 months from Session 1 kickoff to Gate F close.
-
-**Recommended first step**: run Session 1 in a dev/staging environment first with a throwaway DB copy to validate the orchestrator script end-to-end before touching production memory.db.
