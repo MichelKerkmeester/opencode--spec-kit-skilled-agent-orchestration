@@ -1,58 +1,108 @@
-# Research Dashboard — 008-bmad-autonomous-development
+---
+title: Deep Research Dashboard
+description: Auto-generated reducer view over the research packet.
+---
 
-| Phase | Iteration | Question | Confidence | Priority | Adopt Target |
-|-------|-----------|----------|------------|----------|--------------|
-| 1 | 001 | Coordinator-only boundary discipline | high | should-have | `.opencode/agent/orchestrate.md` |
-| 1 | 002 | Dependency graph truth sources | high | should-have | `.opencode/skill/system-spec-kit/references/structure/phase_definitions.md` |
-| 1 | 003 | Ready-queue scheduling and epic ordering | high | nice-to-have | `.opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml` |
-| 1 | 004 | Per-story worktrees versus `sk-git` | high | rejected | `.opencode/skill/sk-git/SKILL.md` |
-| 1 | 005 | Four-step pipeline stage contracts | high | must-have | `.opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml` |
-| 1 | 006 | `MODEL_STANDARD` / `MODEL_QUALITY` split | high | must-have | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` |
-| 1 | 007 | PR / CI / repair loop after push | high | should-have | `.opencode/skill/sk-git/references/finish_workflows.md` |
-| 1 | 008 | Sequential auto-merge policy | high | rejected | `.opencode/skill/sk-git/references/finish_workflows.md` |
-| 1 | 009 | Config-path parity and contract tests | high | should-have | `.opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts` |
-| 1 | 010 | Unverified guard / hook claims | high | rejected | `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md` |
-| 2 | 011 | Single-setup automation UX | high | should-have | `.opencode/command/spec_kit/README.txt` |
-| 2 | 012 | Timer-aware pause and recovery | high | should-have | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` |
-| 2 | 013 | Harness-aware config centralization | high | must-have | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` |
-| 2 | 014 | Spec lifecycle levels versus thin planning assumptions | high | rejected | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
-| 2 | 015 | Memory architecture versus packet-local state | high | rejected | `.opencode/skill/system-spec-kit/references/memory/memory_system.md` |
-| 2 | 016 | Agent topology and domain coordinators | high | should-have | `.opencode/agent/orchestrate.md` |
-| 2 | 017 | Validation philosophy and drift control | high | rejected | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
-| 2 | 018 | Command surface sprawl | high | should-have | `.opencode/command/spec_kit/README.txt` |
-| 2 | 019 | Deep-loop abstraction overhead | high | must-have | `.opencode/skill/sk-deep-research/references/state_format.md` |
-| 2 | 020 | Core versus extension boundary | high | should-have | `.opencode/command/spec_kit/README.txt` |
-| 3 | 021 | Command UX surface area | high | should-have | `.opencode/command/spec_kit/README.txt` |
-| 3 | 022 | Lifecycle split versus integrated flow | high | must-have | `.opencode/command/spec_kit/README.txt` |
-| 3 | 023 | Template and spec-folder bootstrap UX | high | should-have | `.opencode/skill/system-spec-kit/templates/README.md` |
-| 3 | 024 | Sub-agent granularity and public surface | high | should-have | `.opencode/agent/orchestrate.md` |
-| 3 | 025 | LEAF iteration pattern versus simpler state passing | high | rejected | `.opencode/agent/deep-research.md` |
-| 3 | 026 | Skills system packaging and overlap | high | should-have | `.opencode/skill/README.md` |
-| 3 | 027 | Gate 2 skill routing ceremony | high | must-have | `AGENTS.md` |
-| 3 | 028 | Gates, hooks, and constitutional surface UX | high | must-have | `CLAUDE.md` |
-| 3 | 029 | End-to-end workflow friction | high | should-have | `.opencode/command/spec_kit/README.txt` |
-| 3 | 030 | Memory surface boundaries in the UX redesign | high | rejected | `.opencode/command/memory/README.txt` |
+# Deep Research Dashboard - Session Overview
 
-## Convergence Signal
-- Iterations without new signal: 0
-- Early stop rule triggered: no
-- Stop reason: max_iterations
+Auto-generated from JSONL state log, iteration files, findings registry, and strategy state. Never manually edited.
 
-## Finding Totals
-- Must-have: 7
-- Should-have: 14
-- Nice-to-have: 1
-- Rejected: 8
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-## Phase 2 Verdict Totals
-- REFACTOR: 2
-- PIVOT: 2
-- SIMPLIFY: 3
-- KEEP: 3
+Reducer-generated observability surface for the active research packet.
 
-## Phase 3 UX Verdict Totals
-- SIMPLIFY: 2
-- ADD: 2
-- MERGE: 3
-- KEEP: 2
-- REDESIGN: 1
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:status -->
+## 2. STATUS
+- Topic: Research BMad Autonomous Development's backlog-driven multi-agent pipeline orchestration with isolated worktrees to identify improvements for Code_Environment/Public, especially around autonomous pipelines, worktree isolation, backlog decomposition, and multi-stage quality gates.
+- Started: 2026-04-09T21:20:00Z
+- Status: COMPLETE
+- Iteration: 30 of 30
+- Session ID: dr-2026-04-09-008-bmad-autonomous-development
+- Parent Session: none
+- Lifecycle Mode: new
+- Generation: 1
+
+<!-- /ANCHOR:status -->
+<!-- ANCHOR:progress -->
+## 3. PROGRESS
+
+| # | Focus | Track | Ratio | Findings | Status |
+|---|-------|-------|-------|----------|--------|
+| 1 | Coordinator Boundary Discipline | - | 0.85 | 5 | complete |
+| 2 | Dependency Truth Sources | - | 0.85 | 4 | complete |
+| 3 | Scheduling And Epic Ordering | - | 0.85 | 5 | complete |
+| 4 | Per-Story Worktree Lifecycle | - | 0.85 | 5 | complete |
+| 5 | Four-Step Pipeline Contracts | - | 0.85 | 5 | complete |
+| 6 | Model Tiering By Stage | - | 0.85 | 6 | complete |
+| 7 | PR, CI, And Repair Loop | - | 0.85 | 5 | complete |
+| 8 | Sequential Auto-Merge Policy | - | 0.85 | 5 | complete |
+| 9 | Config Surface And Contract Drift | - | 0.85 | 7 | complete |
+| 10 | Guard Claims And Overlap Boundaries | - | 0.85 | 5 | complete |
+| 11 | Single-Setup Automation UX | - | 0.85 | 9 | complete |
+| 12 | Timer-Aware Pause And Recovery | - | 0.85 | 9 | complete |
+| 13 | Harness-Aware Config Centralization | - | 0.85 | 11 | complete |
+| 14 | Spec Lifecycle Levels Versus Thin Planning Assumptions | - | 0.85 | 9 | complete |
+| 15 | Memory Architecture Versus Packet-Local State | - | 0.85 | 10 | complete |
+| 16 | Agent Topology And Domain Coordinators | - | 0.85 | 7 | complete |
+| 17 | Validation Philosophy And Drift Control | - | 0.85 | 8 | complete |
+| 18 | Command Surface Sprawl | - | 0.85 | 6 | complete |
+| 19 | Deep-Loop Abstraction Overhead | - | 0.85 | 11 | complete |
+| 20 | Core Versus Extension Boundary | - | 0.85 | 6 | complete |
+| 21 | Command UX Surface Area | - | 0.85 | 6 | complete |
+| 22 | Lifecycle Split Versus Integrated Flow | - | 0.85 | 7 | complete |
+| 23 | Template And Spec Folder Bootstrap UX | - | 0.85 | 7 | complete |
+| 24 | Sub-Agent Granularity And Public Surface | - | 0.85 | 5 | complete |
+| 25 | LEAF Iteration Pattern Versus Simpler State Passing | - | 0.85 | 8 | complete |
+| 26 | Skills System Packaging And Overlap | - | 0.85 | 9 | complete |
+| 27 | Gate 2 Skill Routing Ceremony | - | 0.85 | 7 | complete |
+| 28 | Gates, Hooks, And Constitutional Surface UX | - | 0.85 | 7 | complete |
+| 29 | End-To-End Workflow Friction | - | 0.85 | 6 | complete |
+| 30 | Memory Surface Boundaries In The UX Redesign | - | 0.85 | 5 | complete |
+
+- iterationsCompleted: 30
+- keyFindings: 0
+- openQuestions: 10
+- resolvedQuestions: 0
+
+<!-- /ANCHOR:progress -->
+<!-- ANCHOR:questions -->
+## 4. QUESTIONS
+- Answered: 0/10
+- [ ] Q1: Coordinator Boundary Discipline
+- [ ] Q2: Dependency Truth Sources
+- [ ] Q3: Scheduling And Epic Ordering
+- [ ] Q4: Per-Story Worktree Lifecycle
+- [ ] Q5: Four-Step Pipeline Contracts
+- [ ] Q6: Model Tiering By Stage
+- [ ] Q7: PR, CI, And Repair Loop
+- [ ] Q8: Sequential Auto-Merge Policy
+- [ ] Q9: Config Surface And Contract Drift
+- [ ] Q10: Guard Claims And Overlap Boundaries
+
+<!-- /ANCHOR:questions -->
+<!-- ANCHOR:trend -->
+## 5. TREND
+- Last 3 ratios: 0.85 -> 0.85 -> 0.85
+- Stuck count: 0
+- Guard violations: none recorded by the reducer pass
+- convergenceScore: 0.85
+- coverageBySources: {}
+
+<!-- /ANCHOR:trend -->
+<!-- ANCHOR:dead-ends -->
+## 6. DEAD ENDS
+- None yet
+
+<!-- /ANCHOR:dead-ends -->
+<!-- ANCHOR:next-focus -->
+## 7. NEXT FOCUS
+Q1: Coordinator Boundary Discipline
+
+<!-- /ANCHOR:next-focus -->
+<!-- ANCHOR:active-risks -->
+## 8. ACTIVE RISKS
+- None active beyond normal research uncertainty.
+
+<!-- /ANCHOR:active-risks -->

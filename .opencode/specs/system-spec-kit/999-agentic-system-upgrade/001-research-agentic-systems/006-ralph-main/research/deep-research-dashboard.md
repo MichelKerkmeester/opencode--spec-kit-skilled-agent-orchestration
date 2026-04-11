@@ -1,52 +1,108 @@
-# Research Dashboard — 006-ralph-main
+---
+title: Deep Research Dashboard
+description: Auto-generated reducer view over the research packet.
+---
 
-| Iteration | Question | Confidence | Priority | Adopt Target |
-|-----------|----------|------------|----------|--------------|
-| 001 | What concrete benefits does Ralph get from spawning a fresh AI instance every iteration, and where could system-spec-kit reuse that pattern? | high | should-have | `.opencode/command/spec_kit/deep-research.md` |
-| 002 | What tradeoffs does Ralph's clean-context loop create, and should system-spec-kit replace its richer continuity stack with the same model? | medium | rejected | `.opencode/skill/system-spec-kit/references/memory/memory_system.md` |
-| 003 | How reliable is git history as Ralph's primary memory layer, and what selective git metadata should system-spec-kit capture instead? | medium | should-have | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` |
-| 004 | How does Ralph's append-only progress.txt improve iteration continuity, and what analogous artifact could system-spec-kit add? | high | should-have | `.opencode/skill/system-spec-kit/templates/progress-log.md` |
-| 005 | How does Ralph's PRD-to-JSON decomposition enforce one-context-window task sizing, and where should system-spec-kit codify equivalent rules? | high | must-have | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
-| 006 | What does Ralph gain from keeping orchestration in Bash, and should system-spec-kit introduce a similarly minimal wrapper? | medium | nice-to-have | `.opencode/skill/system-spec-kit/scripts/spec/fresh-loop.sh` |
-| 007 | Should system-spec-kit adopt Ralph's archive rotation and .last-branch tracking literally, or does the existing lineage model already cover that problem better? | high | rejected | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` |
-| 008 | How do Ralph's AGENTS.md and CLAUDE.md update rules propagate reusable learnings, and how should system-spec-kit promote similar learnings into always-surface guidance? | medium | should-have | `.opencode/agent/deep-research.md` |
-| 009 | How much of Ralph's one-story-per-iteration discipline comes from prompt wording versus PRD structure, and where should system-spec-kit enforce equivalent focus during implementation? | high | must-have | `.opencode/command/spec_kit/implement.md` |
-| 010 | Which Ralph patterns should system-spec-kit adopt now, prototype later, or reject so the result stays complementary to richer internal orchestration rather than replacing it? | medium | nice-to-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
-| 011 | Should system-spec-kit pivot away from its Level 1/2/3+ classification toward Ralph's PRD-to-json execution lifecycle? | medium | should-have | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
-| 012 | Should system-spec-kit's continuity model be refactored into a lightweight execution bridge plus semantic archival memory? | high | must-have | `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` |
-| 013 | Is the current agent-role architecture over-factored compared with Ralph's workflow-local contracts? | medium | should-have | `.opencode/agent/orchestrate.md` |
-| 014 | Should validation simplify toward task-local executable acceptance evidence instead of increasingly heavy document-centered checklists? | high | must-have | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
-| 015 | Does Ralph's developer experience suggest system-spec-kit's command and gate surface is over-exposed for common operator workflows? | medium | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
-| 016 | Can Ralph's gitignored run-state pattern be adopted as a lightweight, non-authoritative continuity overlay in system-spec-kit? | medium | nice-to-have | `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` |
-| 017 | Should system-spec-kit simplify its deep-loop failure handling toward Ralph's sentinel-and-max-iterations model? | high | rejected | `.opencode/command/spec_kit/deep-research.md` |
-| 018 | Should task sizing be defined as one strict context window, or as one independently verifiable unit sized to runtime handoff behavior? | high | should-have | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
-| 019 | Does Ralph's interactive flowchart suggest system-spec-kit needs a more visual lifecycle explanation for operators? | medium | nice-to-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
-| 020 | Should system-spec-kit expose an explicit lightweight workflow lane instead of making every operator path feel like the full governed stack? | medium | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
-| 021 | Is system-spec-kit exposing too many operator-facing commands compared with Ralph's much smaller runtime surface? | high | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
-| 022 | Does Ralph's compact lifecycle suggest that plan, implement, and complete are too ceremonial as separate front-door commands? | medium | should-have | `.opencode/command/spec_kit/plan.md` |
-| 023 | Is the /memory:* command family well-integrated with the /spec_kit:* lifecycle, or is it an awkward parallel surface? | high | must-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
-| 024 | Should system-spec-kit replace spec folders and Level 1/2/3+ templates with a much smaller Ralph-style artifact model? | medium | rejected | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` |
-| 025 | Is system-spec-kit's 10+ agent roster the right granularity, or should several roles be merged or hidden? | medium | should-have | `.opencode/agent/orchestrate.md` |
-| 026 | Should deep research and deep review replace their LEAF architecture with Ralph's thinner shell loop? | high | rejected | `.opencode/agent/deep-research.md` |
-| 027 | Is the skill system too fragmented, and is Gate 2 plus skill_advisor.py adding too much ceremony? | medium | should-have | `.opencode/skill/scripts/skill_advisor.py` |
-| 028 | Should the sk-code-* family collapse behind a single coding front door with internal overlays? | medium | nice-to-have | `.opencode/skill/sk-code-opencode/SKILL.md` |
-| 029 | Should system-spec-kit redesign its operator-facing automation contract around a smaller visible gate surface? | high | must-have | `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md` |
-| 030 | What does end-to-end feature workflow friction reveal about the right front door for system-spec-kit? | high | should-have | `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` |
+# Deep Research Dashboard - Session Overview
 
-## Convergence Signal
-- Iterations without new signal: 0
-- Stop rule triggered: no
-- Phase 3 stop rule used: max_iterations
+Auto-generated from JSONL state log, iteration files, findings registry, and strategy state. Never manually edited.
 
-## Finding Totals
-- Phase 1: must=2 | should=4 | nice=2 | rejected=2
-- Phase 2: must=2 | should=5 | nice=2 | rejected=1
-- Phase 3: must=2 | should=5 | nice=1 | rejected=2
-- Combined: must=6 | should=14 | nice=5 | rejected=5
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-## UX Verdicts
-- SIMPLIFY: 2
-- ADD: 1
-- MERGE: 3
-- KEEP: 2
-- REDESIGN: 2
+Reducer-generated observability surface for the active research packet.
+
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:status -->
+## 2. STATUS
+- Topic: Research Ralph's fresh-agent-per-iteration pattern and git-as-memory architecture to identify practical improvements for Code_Environment/Public, especially around context management, lightweight orchestration, persistent learnings across iterations, PRD decomposition, and validation-first execution.
+- Started: 2026-04-09T21:20:00Z
+- Status: COMPLETE
+- Iteration: 30 of 30
+- Session ID: dr-2026-04-09-006-ralph-main
+- Parent Session: none
+- Lifecycle Mode: new
+- Generation: 1
+
+<!-- /ANCHOR:status -->
+<!-- ANCHOR:progress -->
+## 3. PROGRESS
+
+| # | Focus | Track | Ratio | Findings | Status |
+|---|-------|-------|-------|----------|--------|
+| 1 | Fresh Context Loop Value | - | 0.85 | 10 | complete |
+| 2 | Tradeoffs of Clean Restarts | - | 0.60 | 11 | complete |
+| 3 | Git as Memory Boundary | - | 0.60 | 7 | complete |
+| 4 | Append-only Learning Log | - | 0.85 | 9 | complete |
+| 5 | One-Window Story Sizing | - | 0.85 | 11 | complete |
+| 6 | Bash Spine vs YAML Stack | - | 0.60 | 9 | complete |
+| 7 | Archive Rotation and Restart Safety | - | 0.85 | 8 | complete |
+| 8 | Guidance Propagation Surfaces | - | 0.60 | 9 | complete |
+| 9 | One Task Per Implementation Run | - | 0.85 | 6 | complete |
+| 10 | Adopt vs Reject Boundary | - | 0.60 | 10 | complete |
+| 11 | Levels vs Execution Grain | - | 0.60 | 16 | complete |
+| 12 | Split Run-State from Semantic Memory | - | 0.85 | 21 | complete |
+| 13 | Agent Role Sprawl vs Workflow-Local Contracts | - | 0.60 | 21 | complete |
+| 14 | Validation Should Center on Acceptance Evidence | - | 0.85 | 18 | complete |
+| 15 | Command Surface and Gate UX Simplification | - | 0.60 | 17 | complete |
+| 16 | Gitignored Run-State as a Lightweight Overlay | - | 0.60 | 6 | complete |
+| 17 | Reject Ralph's Thin Failure Model | - | 0.85 | 6 | complete |
+| 18 | Runtime-Aware Task Sizing Beats Dogma | - | 0.85 | 12 | complete |
+| 19 | Visual Lifecycle Docs as UX Infrastructure | - | 0.60 | 6 | complete |
+| 20 | Two-Lane Architecture for Minimal vs Governed Workflows | - | 0.60 | 17 | complete |
+| 21 | Command Surface Size and Fragmentation | - | 0.85 | 9 | complete |
+| 22 | Lifecycle Split: Plan vs Implement vs Complete | - | 0.60 | 8 | complete |
+| 23 | Memory UX as a Parallel Surface | - | 0.85 | 10 | complete |
+| 24 | Template and Spec Folder UX | - | 0.60 | 9 | complete |
+| 25 | Sub-Agent Granularity and Role Overlap | - | 0.60 | 10 | complete |
+| 26 | LEAF Iteration Architecture vs Ralph's Simple Loop | - | 0.85 | 8 | complete |
+| 27 | Skills System Fragmentation and Routing Overhead | - | 0.60 | 8 | complete |
+| 28 | Code Standards Skill Family Overlap | - | 0.60 | 5 | complete |
+| 29 | Automation, Gates, Hooks, and Behavioral Surface | - | 0.85 | 12 | complete |
+| 30 | End-to-End Workflow Friction | - | 0.85 | 10 | complete |
+
+- iterationsCompleted: 30
+- keyFindings: 0
+- openQuestions: 10
+- resolvedQuestions: 0
+
+<!-- /ANCHOR:progress -->
+<!-- ANCHOR:questions -->
+## 4. QUESTIONS
+- Answered: 0/10
+- [ ] Q1: Fresh Context Loop Value
+- [ ] Q2: Tradeoffs of Clean Restarts
+- [ ] Q3: Git as Memory Boundary
+- [ ] Q4: Append-only Learning Log
+- [ ] Q5: One-Window Story Sizing
+- [ ] Q6: Bash Spine vs YAML Stack
+- [ ] Q7: Archive Rotation and Restart Safety
+- [ ] Q8: Guidance Propagation Surfaces
+- [ ] Q9: One Task Per Implementation Run
+- [ ] Q10: Adopt vs Reject Boundary
+
+<!-- /ANCHOR:questions -->
+<!-- ANCHOR:trend -->
+## 5. TREND
+- Last 3 ratios: 0.60 -> 0.85 -> 0.85
+- Stuck count: 0
+- Guard violations: none recorded by the reducer pass
+- convergenceScore: 0.85
+- coverageBySources: {}
+
+<!-- /ANCHOR:trend -->
+<!-- ANCHOR:dead-ends -->
+## 6. DEAD ENDS
+- None yet
+
+<!-- /ANCHOR:dead-ends -->
+<!-- ANCHOR:next-focus -->
+## 7. NEXT FOCUS
+Q1: Fresh Context Loop Value
+
+<!-- /ANCHOR:next-focus -->
+<!-- ANCHOR:active-risks -->
+## 8. ACTIVE RISKS
+- None active beyond normal research uncertainty.
+
+<!-- /ANCHOR:active-risks -->

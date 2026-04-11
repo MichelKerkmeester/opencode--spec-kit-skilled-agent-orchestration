@@ -1,62 +1,108 @@
-# Research Dashboard — 002-babysitter-main
+---
+title: Deep Research Dashboard
+description: Auto-generated reducer view over the research packet.
+---
 
-| Phase | Iteration | Question | Confidence | Priority | Verdict / Target |
-|-------|-----------|----------|------------|----------|------------------|
-| 1 | 001 | Can Babysitter's append-only journal model materially improve deep-research auditability over JSONL-only state logging? | high | should-have | Journaled workflow state |
-| 1 | 002 | Would journal-head-based replay caches make `session_resume` more deterministic than the current cached-summary flow? | high | should-have | Cache + journal-head validation |
-| 1 | 003 | Does process-code authority plus mandatory-stop runtime offer a stronger enforcement model than documentation-surfaced gates? | high | must-have | Runtime-enforced gates |
-| 1 | 004 | Should auto mode emit explicit audit records when approval gates are auto-passed? | high | should-have | Approval audit semantics |
-| 1 | 005 | Can pending-action batches improve resumability for blocked or partially parallel research loops? | high | should-have | Pending-action registry |
-| 1 | 006 | Is executable methodology packaging a better reuse primitive than prose-only workflow references? | medium | nice-to-have | Executable workflow packs |
-| 1 | 007 | Should `system-spec-kit` adopt a unified runtime-manifest layer for multi-harness resolution? | high | must-have | Runtime manifest |
-| 1 | 008 | Should `system-spec-kit` adopt Babysitter's full plugin marketplace and installer model? | medium | rejected | Reject marketplace import |
-| 1 | 009 | Would a built-in internal harness or headless runner materially improve CI and overnight workflows? | medium | should-have | Headless runner |
-| 1 | 010 | Should command-phase lifecycle hooks become first-class extension points? | high | should-have | Lifecycle hooks |
-| 2 | 011 | Is the Level 1/2/3/3+ classification the right control model, or should Spec Kit move to workflow profiles? | high | should-have | `PIVOT` workflow profiles |
-| 2 | 012 | Is the current Gate 1/2/3 system the right UX, or should it become persistent runtime policy plus checkpoints? | high | must-have | `SIMPLIFY` gate entry ritual |
-| 2 | 013 | Is the memory architecture the right shape, or should session capture split from durable indexed memory? | high | must-have | `PIVOT` two-lane memory |
-| 2 | 014 | Are deep-research and deep-review the right separate abstractions, or should Spec Kit use one iteration engine? | high | should-have | `REFACTOR` shared iteration engine |
-| 2 | 015 | Is the universal validation pipeline too broad, and should semantic checks move into workflow-owned gates? | high | should-have | `SIMPLIFY` validator scope |
-| 2 | 016 | Is the specialist agent architecture over-factored, or is the real problem mirror tax around it? | high | should-have | `KEEP` roles, centralize mirrors |
-| 2 | 017 | What does Babysitter's structured runtime error model suggest about current operator-facing failures? | high | should-have | Structured error taxonomy |
-| 2 | 018 | Does Babysitter's testing approach suggest a better test philosophy for workflow runtime behavior? | high | should-have | Deterministic workflow simulation |
-| 2 | 019 | Does Babysitter surface a lightweight timing safeguard that Spec Kit should add to unattended loops? | medium | nice-to-have | Timing guard |
-| 2 | 020 | Should Spec Kit adopt Babysitter's four-layer compression subsystem as a major architecture move? | medium | rejected | `KEEP` current boundary; reject wholesale import |
-| 3 | 021 | Is the `/spec_kit:plan` -> `/implement` -> `/complete` split the right lifecycle UX? | high | must-have | `MERGE` lifecycle surface |
-| 3 | 022 | Should routine `/memory:*` behavior disappear into the main lifecycle UX? | high | should-have | `MERGE` memory into lifecycle |
-| 3 | 023 | Is the Level 1/2/3+ spec-folder UX intuitive enough, or should artifact creation become lazy? | high | should-have | `REDESIGN` starter packet + lazy expansion |
-| 3 | 024 | Are `@context-prime` and `@context` both necessary public continuity concepts? | high | should-have | `MERGE` bootstrap into continuity |
-| 3 | 025 | Is the externalized iteration/dashboard/JSONL artifact model itself too heavy? | high | rejected | `KEEP` inspectable evidence layer |
-| 3 | 026 | Should resume, handover, and bootstrap merge into one continuity stack? | high | should-have | `MERGE` handover into continuity |
-| 3 | 027 | Is the public skill roster too fragmented for operators? | high | must-have | `MERGE` public skills |
-| 3 | 028 | Should mandatory `skill_advisor.py` routing become fallback-only? | high | must-have | `SIMPLIFY` Gate 2 routing |
-| 3 | 029 | Is the operator guidance surface too hand-maintained across docs, commands, and YAML? | high | must-have | `REDESIGN` generated operator guidance |
-| 3 | 030 | Does the end-to-end workflow need execution profiles to lower repeat friction? | medium | nice-to-have | `ADD` execution profiles |
+# Deep Research Dashboard - Session Overview
 
-## Convergence Signal
-- Phase 1 iterations without new signal at stop: 0
-- Phase 2 iterations without new signal at stop: 0
-- Phase 3 iterations without new signal at stop: 0
-- Stop rule triggered: yes (`max_iterations`)
+Auto-generated from JSONL state log, iteration files, findings registry, and strategy state. Never manually edited.
 
-## Totals
-- Phase 1: must-have 2 | should-have 6 | nice-to-have 1 | rejected 1
-- Phase 2: must-have 2 | should-have 6 | nice-to-have 1 | rejected 1
-- Phase 3: must-have 4 | should-have 4 | nice-to-have 1 | rejected 1
-- Combined: must-have 8 | should-have 16 | nice-to-have 3 | rejected 3
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-## Phase 3 UX Verdicts
-- `SIMPLIFY`: 1
-- `ADD`: 1
-- `MERGE`: 5
-- `KEEP`: 1
-- `REDESIGN`: 2
+Reducer-generated observability surface for the active research packet.
 
-## Combined Verdicts
-- `REFACTOR`: 1
-- `PIVOT`: 2
-- `SIMPLIFY`: 3
-- `MERGE`: 5
-- `ADD`: 1
-- `REDESIGN`: 2
-- `KEEP`: 3
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:status -->
+## 2. STATUS
+- Topic: Research Babysitter's event-sourcing and process orchestration patterns to identify concrete improvements for Code_Environment/Public, especially around deterministic execution, quality gates, replay and resumption, plugin and harness extensibility, and context compression for agent workflows.
+- Started: 2026-04-09T21:20:00Z
+- Status: COMPLETE
+- Iteration: 30 of 30
+- Session ID: dr-2026-04-09-002-babysitter-main
+- Parent Session: none
+- Lifecycle Mode: new
+- Generation: 1
+
+<!-- /ANCHOR:status -->
+<!-- ANCHOR:progress -->
+## 3. PROGRESS
+
+| # | Focus | Track | Ratio | Findings | Status |
+|---|-------|-------|-------|----------|--------|
+| 1 | Checksummed Research Journal | - | 0.85 | 12 | complete |
+| 2 | Journal-Head Resume Fidelity | - | 0.85 | 13 | complete |
+| 3 | Runtime-Enforced Gates | - | 0.85 | 12 | complete |
+| 4 | Auto-Approval Audit Events | - | 0.85 | 11 | complete |
+| 5 | Pending Action Queues | - | 0.85 | 13 | complete |
+| 6 | Executable Methodology Packs | - | 0.60 | 10 | complete |
+| 7 | Unified Runtime Manifest | - | 0.85 | 14 | complete |
+| 8 | Marketplace Model Rejection | - | 0.60 | 10 | complete |
+| 9 | Headless Internal Runner | - | 0.60 | 12 | complete |
+| 10 | Lifecycle Hook Surface | - | 0.85 | 16 | complete |
+| 11 | Workflow Profiles Over Level Tiers | - | 0.85 | 28 | complete |
+| 12 | Turn Gates Into Runtime Policy, Not Turn-Zero Ritual | - | 0.85 | 13 | complete |
+| 13 | Split Session Capture From Durable Memory | - | 0.85 | 26 | complete |
+| 14 | Replace Parallel Loop Stacks With One Iteration Engine | - | 0.85 | 25 | complete |
+| 15 | Shrink Universal Validation Into Workflow-Owned Checks | - | 0.85 | 23 | complete |
+| 16 | Keep Specialist Agents, Reduce Mirror Tax | - | 0.85 | 14 | complete |
+| 17 | Structured Errors For Spec Kit Operators | - | 0.85 | 13 | complete |
+| 18 | Deterministic Workflow Simulation Tests | - | 0.85 | 13 | complete |
+| 19 | Add A Lightweight Timing Guard To Long Loops | - | 0.60 | 12 | complete |
+| 20 | Do Not Import Babysitter's Compression Stack Whole | - | 0.60 | 12 | complete |
+| 21 | Merge Lifecycle Entry Commands | - | 0.85 | 43 | complete |
+| 22 | Fold Memory UX Into The Lifecycle | - | 0.85 | 37 | complete |
+| 23 | Replace Level-First Packet UX With Lazy Scaffolding | - | 0.85 | 23 | complete |
+| 24 | Merge `@context-prime` Into The Continuity Stack | - | 0.85 | 27 | complete |
+| 25 | Do Not Delete Externalized Loop Artifacts | - | 0.85 | 25 | complete |
+| 26 | Merge Handover Into One Continuity Stack | - | 0.85 | 28 | complete |
+| 27 | Consolidate The Public Skill Surface | - | 0.85 | 38 | complete |
+| 28 | Demote Gate 2 To Fallback Routing | - | 0.85 | 21 | complete |
+| 29 | Generate Operator Guidance From Runtime Policy | - | 0.85 | 19 | complete |
+| 30 | Add Execution Profiles To Lower Workflow Friction | - | 0.60 | 19 | complete |
+
+- iterationsCompleted: 30
+- keyFindings: 0
+- openQuestions: 10
+- resolvedQuestions: 0
+
+<!-- /ANCHOR:progress -->
+<!-- ANCHOR:questions -->
+## 4. QUESTIONS
+- Answered: 0/10
+- [ ] Q1: Checksummed Research Journal
+- [ ] Q2: Journal-Head Resume Fidelity
+- [ ] Q3: Runtime-Enforced Gates
+- [ ] Q4: Auto-Approval Audit Events
+- [ ] Q5: Pending Action Queues
+- [ ] Q6: Executable Methodology Packs
+- [ ] Q7: Unified Runtime Manifest
+- [ ] Q8: Marketplace Model Rejection
+- [ ] Q9: Headless Internal Runner
+- [ ] Q10: Lifecycle Hook Surface
+
+<!-- /ANCHOR:questions -->
+<!-- ANCHOR:trend -->
+## 5. TREND
+- Last 3 ratios: 0.85 -> 0.85 -> 0.60
+- Stuck count: 0
+- Guard violations: none recorded by the reducer pass
+- convergenceScore: 0.60
+- coverageBySources: {}
+
+<!-- /ANCHOR:trend -->
+<!-- ANCHOR:dead-ends -->
+## 6. DEAD ENDS
+- None yet
+
+<!-- /ANCHOR:dead-ends -->
+<!-- ANCHOR:next-focus -->
+## 7. NEXT FOCUS
+Q1: Checksummed Research Journal
+
+<!-- /ANCHOR:next-focus -->
+<!-- ANCHOR:active-risks -->
+## 8. ACTIVE RISKS
+- None active beyond normal research uncertainty.
+
+<!-- /ANCHOR:active-risks -->
