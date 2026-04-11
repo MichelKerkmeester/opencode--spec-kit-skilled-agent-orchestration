@@ -1,10 +1,17 @@
 ---
 title: "Phase 018 Autonomous Execution — Live Handover"
 purpose: "Resume document for the orchestrator session running Gates A→F via cli-codex gpt-5.4 high fast. Updated after each gate close. Read this first if context was compacted."
-last_updated: 2026-04-11T21:05:00Z
+last_updated: 2026-04-11T21:30:00Z
 session_role: orchestrator (claude-opus-4-6 in Claude Code)
-worker: cli-codex gpt-5.4 high fast
+worker: cli-codex gpt-5.4 high fast (primary), cli-copilot gpt-5.4 high (fallback after 3 codex failures)
 branch: system-speckit/026-graph-and-context-optimization
+directives:
+  - DELETE old memories, do not archive — phase 018 makes them irrelevant
+  - NO observation windows (D0 2-week, canonical 7-day, F 180-day all dead)
+  - Run all gates autonomously without confirmation
+  - After all 6 gates code-complete: dispatch /spec_kit:deep-review × 7 iterations per gate, fix every finding
+  - Mark every spec.md/plan.md/tasks.md/checklist.md/decision-record.md/implementation-summary.md across all 6 gate packets `status: complete` + verified at end
+  - Commit + push to 026 after every gate close
 ---
 
 # Phase 018 Live Handover
@@ -18,13 +25,16 @@ branch: system-speckit/026-graph-and-context-optimization
 | Gate | Status | Background ID | Commit | Notes |
 |:-:|---|---|---|---|
 | A — Pre-work | ✅ DONE | `bm7rb2730` | `d35fc6e9a` + `63e5a0635` | template anchor fixes, validator exclusion, backup, status flip follow-up |
-| B — Foundation | ✅ DONE | `b8bwxd5tk` (v2) | `b69b44bec` | schema migration, archive flip 183→184, ranking ×0.3, archived_hit_rate metric, 199 tests passing |
-| **C — Writer Ready** | 🟡 **IN FLIGHT** | `bnvwpmjwt` | — | biggest gate, ~120-240 min expected. 4 new modules + memory-save.ts XL rewrite + template _memory.continuity + dual-write shadow + 243-test catalog |
-| D — Reader Ready | ⏳ ready | — | — | 6 reader handlers + resumeLadder + 13-feature regression + perf benchmarks + D0 observation start |
-| E — Runtime Migration | ⏳ ready | — | — | feature flag state machine flip + 160+ doc/cmd/agent/skill files + canonical stability |
-| F — Archive Permanence | ⏳ ready | — | — | observation kickoff only (decision needs Day 180) |
+| B — Foundation | ✅ DONE | `b8bwxd5tk` (v2) | `b69b44bec` | schema migration (causal_edges anchor cols + 2 indexes), archive flip 183→184, 199 tests passing. **Note: ranking ×0.3 + archived_hit_rate metric will be removed in B-cleanup.** |
+| B-cleanup — Delete legacy memory rows + files | ⏳ queued | — | — | NEW STEP. DELETE the 183 archived rows + rm the .md files + remove ranking penalty + remove archived_hit_rate. Prompt at /tmp/execute-gate-b-cleanup.prompt |
+| **C — Writer Ready** | 🟡 **IN FLIGHT** | `bnvwpmjwt` | — | 4 new modules + memory-save.ts XL rewrite + template _memory.continuity + 243-test catalog. **Skip the shadow_only activation step in post-processing — observation framework removed.** |
+| D — Reader Ready | ⏳ ready | — | — | 6 reader handlers + 3-level resumeLadder (no archived fallback) + 13-feature regression + perf benchmarks. NO D0 observation. |
+| E — Runtime Migration | ⏳ ready | — | — | Single canonical flip (no state machine, no observation gates) + 160+ doc/cmd/agent/skill updates |
+| F — Cleanup Verification | ⏳ ready | — | — | REPURPOSED. Verify Gate B cleanup completeness, remove deprecated archived-tier code, no orphan edges. NO 180-day observation. NO retire/keep/investigate decision. |
 
-**Next action when Gate C notification fires**: read tail of `/private/tmp/claude-501/-Users-michelkerkmeester-MEGA-Development-Code-Environment-Public/6a7d3112-89bf-442b-92c2-4d3557d832db/tasks/bnvwpmjwt.output`, verify, commit Gate C scope, push, launch Gate D.
+**Pipeline order**: Gate A ✅ → Gate B ✅ → **Gate C 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F → deep-review × 7 per gate × 6 gates = 42 iterations → fix findings → final completion marking
+
+**Next action when Gate C notification fires**: read tail of `/private/tmp/claude-501/-Users-michelkerkmeester-MEGA-Development-Code-Environment-Public/6a7d3112-89bf-442b-92c2-4d3557d832db/tasks/bnvwpmjwt.output`, verify (skip shadow_only step), commit Gate C scope, push, launch Gate B-cleanup, then Gate D.
 
 ---
 
@@ -84,15 +94,17 @@ The 042 `sk-deep-research/sk-deep-review/sk-improve-agent` lane is actively comm
 
 ## 5. Gate Prompt Files
 
-All Codex execution prompts live at:
+All Codex execution prompts live at (rewritten 2026-04-11T21:30Z to remove observation/archive complexity):
 
 - `/tmp/execute-gate-a.prompt` — Pre-work (DONE)
-- `/tmp/execute-gate-b.prompt` — Foundation v1 (halted)
+- `/tmp/execute-gate-b.prompt` — Foundation v1 (halted, superseded)
 - `/tmp/execute-gate-b-v2.prompt` — Foundation rebaselined (DONE)
-- `/tmp/execute-gate-c.prompt` — Writer Ready (IN FLIGHT as `bnvwpmjwt`)
-- `/tmp/execute-gate-d.prompt` — Reader Ready (ready)
-- `/tmp/execute-gate-e.prompt` — Runtime Migration (ready)
-- `/tmp/execute-gate-f-setup.prompt` — Permanence observation kickoff (ready)
+- `/tmp/execute-gate-b-cleanup.prompt` — DELETE legacy memory rows + files (NEW, queued after Gate C)
+- `/tmp/execute-gate-c.prompt` — Writer Ready (IN FLIGHT as `bnvwpmjwt`, may still produce shadow_only step which we skip in post-processing)
+- `/tmp/execute-gate-d.prompt` — Reader Ready (REWRITTEN: 3-level resumeLadder, no D0)
+- `/tmp/execute-gate-e.prompt` — Runtime Migration (REWRITTEN: single canonical flip, no state machine)
+- `/tmp/execute-gate-f-cleanup.prompt` — Cleanup Verification (NEW, replaces the old execute-gate-f-setup.prompt)
+- `/tmp/execute-gate-f-setup.prompt` — old observation kickoff (superseded, do not use)
 
 If `/tmp` is wiped (system reboot), regenerate from `autonomous-execution-runbook.md` §3 / §4 templates plus:
 - Per-gate scope from `001-gate-a-prework/` through `006-gate-f-archive-permanence/`
