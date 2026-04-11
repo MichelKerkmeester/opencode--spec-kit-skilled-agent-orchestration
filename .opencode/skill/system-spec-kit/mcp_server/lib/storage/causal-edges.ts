@@ -719,7 +719,7 @@ function findOrphanedEdges(): CausalEdge[] {
       SELECT ce.* FROM causal_edges ce
       WHERE NOT EXISTS (SELECT 1 FROM memory_index m WHERE CAST(m.id AS TEXT) = ce.source_id)
         OR NOT EXISTS (SELECT 1 FROM memory_index m WHERE CAST(m.id AS TEXT) = ce.target_id)
-    `) as Database.Statement).all().map(normalizeCausalEdgeRow) as CausalEdge[];
+    `) as Database.Statement).all().map((row) => normalizeCausalEdgeRow(row as Record<string, unknown>)) as CausalEdge[];
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] findOrphanedEdges error: ${msg}`);

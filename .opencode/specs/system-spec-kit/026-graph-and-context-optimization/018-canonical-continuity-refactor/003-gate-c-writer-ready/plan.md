@@ -1,22 +1,24 @@
 ---
 title: "Gate C — Writer Ready"
-description: "Implementation plan for the Gate C writer-critical path: validator bridge, routed save modules, template rollout, and shadow-only proving."
-trigger_phrases:
-  - "gate c"
-  - "writer ready"
-  - "plan"
-  - "canonical continuity"
-  - "shadow only"
+description: "Implementation plan for the Gate C writer-critical path: validator bridge, routed save modules, template rollout, and parity-plus-rollback proof assembly."
+trigger_phrases: ["gate c", "writer ready", "plan", "canonical continuity", "parity proof"]
 importance_tier: "critical"
 contextType: "implementation"
 level: "3+"
 gate: "C"
 parent: "018-canonical-continuity-refactor"
+_memory:
+  continuity:
+    packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
+    last_updated_at: "2026-04-11T20:11:09Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Aligned plan with current Gate C proof wording"
+    next_safe_action: "Keep tasks and checklist aligned with proof-pack terms"
+    key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/plan.md"]
 ---
-# Implementation Plan: Gate C — Writer Ready
-
 <!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+# Implementation Plan: Gate C — Writer Ready
 
 ---
 
@@ -33,7 +35,7 @@ parent: "018-canonical-continuity-refactor"
 | **Testing** | Vitest/unit fixtures, integration fixtures, golden-set parity, shadow reducers |
 
 ### Overview
-Gate C ships the writer-side substrate that phase 018 has been designing since iteration 001. The plan follows the dependency chain from rows B1/C1/C10/C11/D1: freeze the validator contract, build the router and merge engine, replace `atomicSaveMemory` with `atomicIndexMemory`, rewrite `memory-save.ts`, refactor `generate-context.ts`, roll `_memory.continuity` into templates, then prove the result under `S1 shadow_only` with the iter 029/032/033/034 evidence model.
+Gate C ships the writer-side substrate that phase 018 has been designing since iteration 001. The plan follows the dependency chain from rows B1/C1/C10/C11/D1: freeze the validator contract, build the router and merge engine, replace `atomicSaveMemory` with `atomicIndexMemory`, rewrite `memory-save.ts`, refactor `generate-context.ts`, roll `_memory.continuity` into templates, then assemble the proof pack with the iter 029/032/033/034/038 evidence model.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -49,7 +51,7 @@ Gate C ships the writer-side substrate that phase 018 has been designing since i
 ### Definition of Done
 - [ ] Four new components land with >80 percent unit coverage and the 243-test catalog is green.
 - [ ] `memory-save.ts` rewrite, `generate-context.ts` parity, and template continuity rollout all pass targeted regression.
-- [ ] `shadow_only` stays healthy for the required window with >=95 percent parity, zero fingerprint rollback, and recorded sign-off.
+- [ ] Gate C proof artifacts show >=95 percent parity, zero fingerprint rollback, and recorded sign-off.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -114,10 +116,10 @@ Source: `../scratch/resource-map/02-handlers.md`, "Save Pipeline Stage Matrix".
 - [ ] Add `_memory.continuity` to all level templates and keep the 14-field, <=2048-byte contract intact.
 - [ ] Keep packet-local docs, rule help text, and runtime-facing contract language synchronized.
 
-### Phase 4: Shadow Proving
-- [ ] Activate `S1 shadow_only` through the iter 034 control plane.
+### Phase 4: Proof Pack Assembly
+- [ ] Activate routed parity and rollback telemetry through the current Gate C control-plane guard.
 - [ ] Run the 243-test catalog, golden-set parity, and routing-audit reducers.
-- [ ] Hold the proving window long enough to clear Gate C exit criteria and hand off cleanly to Gate D.
+- [ ] Assemble the packet-local proof artifacts needed to clear Gate C exit criteria and hand off cleanly to Gate D.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -155,7 +157,7 @@ If a blocker appears, stop the affected workstream, record the exact file/rule/t
 | Integration | `memory-save.ts`, `generate-context.ts`, save helpers, feature-flag plumbing | MCP/runtime integration tests |
 | Golden Set | Shadow compare across `resume`, search classes, causal graph, triggers | Golden fixtures + reducer replay |
 | Regression | 13 preserved feature scenarios from prior packets | Packet regression suite |
-| Manual | Rollback drill, dashboard review, shadow-only observation window | Runbooks + dashboards |
+| Manual | Rollback drill, dashboard review, proof-artifact spot check | Runbooks + dashboards |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -170,7 +172,7 @@ If a blocker appears, stop the affected workstream, record the exact file/rule/t
 | `../scratch/resource-map/03-scripts.md` + `nested-changelog.ts` | Internal pattern | Green | Merge/read-transform-write design loses its proven reference |
 | `../scratch/resource-map/04-templates.md` | Internal audit | Green | Template/frontmatter rollout can miss required files or anchor defects |
 | Iter 021/031 prototype + LLM contracts | Internal research | Green | Router behavior drifts from the approved 3-tier classifier |
-| Iter 032/033/034 shadow + flag contracts | Internal rollout | Green | Gate C cannot prove parity or rollback safety |
+| Iter 032/033/034 proof + flag contracts | Internal rollout | Green | Gate C cannot prove parity or rollback safety |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -178,8 +180,8 @@ If a blocker appears, stop the affected workstream, record the exact file/rule/t
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: any `validator.rollback.fingerprint` event, `trigger_match` miss, resume severe breach, or `search.shadow.diff` correctness-loss mismatch while the new writer is active.
-- **Procedure**: force the rollout back to the safe state from iter 034 (`S1 -> S0`, `S2 -> S1`, `S3 -> S2`, `S4 -> S3`), restore the pre-merge snapshot when fingerprint verification fails, and keep legacy serving authoritative until the incident is closed.
+- **Trigger**: any `validator.rollback.fingerprint` event, `trigger_match` miss, resume severe breach, or `search.shadow.diff` correctness-loss mismatch while the new writer proof path is active.
+- **Procedure**: disable the active writer proof path, restore the pre-merge snapshot when fingerprint verification fails, and keep legacy serving authoritative until the incident is closed.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -214,7 +216,7 @@ Gate B Closure ────────┘
 | Contract Freeze | High | 2 days |
 | Writer Core | Very High | 5 days |
 | Template And Script Rollout | High | 3 days |
-| Shadow Proving | High | 4 days including observation time |
+| Proof Pack Assembly | High | 4 days including parity review and artifact assembly |
 | **Total** | | **~2 weeks wall clock** |
 <!-- /ANCHOR:effort -->
 
@@ -225,14 +227,14 @@ Gate B Closure ────────┘
 
 ### Pre-deployment Checklist
 - [ ] Backup or snapshot path proven for canonical docs and SQLite control-plane tables
-- [ ] `canonical_continuity_rollout` state machine reachable from the runtime
+- [ ] Gate C proof toggle or equivalent guard reachable from the runtime
 - [ ] Routing/shadow dashboards and alert routes live
 
 ### Rollback Procedure
-1. Move the flag to the fallback bucket defined by iter 034.
+1. Disable the active Gate C proof toggle or routed writer guard.
 2. Stop accepting new canonical writes if fingerprint rollback or shadow correctness is red.
 3. Re-run the failing fixture or sampled traffic class to confirm the rollback restored stable behavior.
-4. Record the incident, owner, and cooldown window before any re-promotion attempt.
+4. Record the incident, owner, and blocking reason before any retry attempt.
 
 ### Data Reversal
 - **Has data migrations?** Only Gate B schema work, already complete
@@ -277,9 +279,9 @@ Gate B Closure ────────┘
 1. **Freeze validator, continuity, and schema contracts** - ~2 days - CRITICAL
 2. **Land router + merge + atomic index modules** - ~3 days - CRITICAL
 3. **Rewrite `memory-save.ts` and refactor `generate-context.ts`** - ~2 days - CRITICAL
-4. **Run parity, shadow, and rollback proving** - ~4 days including hold time - CRITICAL
+4. **Run parity, rollback, and proof-pack assembly** - ~4 days - CRITICAL
 
-**Total Critical Path**: ~11 delivery days inside a 2-week gate window
+**Total Critical Path**: ~11 delivery days for implementation and proof-pack assembly
 
 **Parallel Opportunities**:
 - Template continuity rollout and save-helper adaptation can run alongside the core writer implementation after Phase 1.
@@ -296,7 +298,7 @@ Gate B Closure ────────┘
 | M1 | Contract Freeze | Validator order, failure codes, types, and schema fields approved | Start of week 1 |
 | M2 | Writer Core Landed | Router, merge, atomic index, and `memory-save.ts` rewrite compile and test | Mid week 1 |
 | M3 | Template + Generator Alignment | `generate-context.ts` and all continuity templates updated | End of week 1 |
-| M4 | Gate C Proof Pack | 243 tests green, >=95% parity, `shadow_only` stable, sign-off ready | End of week 2 |
+| M4 | Gate C Proof Pack | 243 tests green, >=95% parity, proof artifacts complete, sign-off ready | End of week 2 |
 <!-- /ANCHOR:milestones -->
 
 ---
@@ -307,7 +309,7 @@ Gate B Closure ────────┘
 
 **Status**: Proposed for implementation with this gate
 
-**Context**: Gate C only closes if the new writer boundaries, Tier 3 classifier contract, validator rule ordering, flag state machine, and `_memory.continuity` schema are frozen before the XL rewrite begins.
+**Context**: Gate C only closes if the new writer boundaries, Tier 3 classifier contract, validator rule ordering, proof guardrails, and `_memory.continuity` schema are frozen before the XL rewrite begins.
 
 **Decision**: Keep those decisions in `decision-record.md` and treat them as implementation constraints, not optional guidance.
 
@@ -337,12 +339,12 @@ Gate B Closure ────────┘
 | Workstream A | Validator + schema | `spec-doc-structure.ts`, `validate.sh`, `tool-input-schemas.ts` |
 | Workstream B | Writer core | `content-router.ts`, `anchor-merge-operation.ts`, `atomic-index-memory.ts`, `memory-save.ts` |
 | Workstream C | Templates + generator | `generate-context.ts`, `templates/level_*/*.md`, save adapters |
-| Workstream D | Telemetry + proving | feature flags, shadow compare, routing audit, parity fixtures |
+| Workstream D | Telemetry + proof pack | guard controls, parity compare, routing audit, proof fixtures |
 
 ### Tier 3: Integration
 **Agent**: Primary + reviewers
 **Task**: Merge workstreams, rerun targeted verification, and prepare Gate C sign-off
-**Duration**: Final proving window plus packet closeout
+**Duration**: Final proof-pack assembly plus packet closeout
 <!-- /ANCHOR:ai-execution -->
 
 ---

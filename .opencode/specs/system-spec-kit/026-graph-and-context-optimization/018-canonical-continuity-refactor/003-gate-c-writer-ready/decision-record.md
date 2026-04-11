@@ -1,22 +1,24 @@
 ---
 title: "Gate C — Writer Ready"
-description: "Gate C ADR set for the canonical writer boundaries, validator ordering, classifier fallback, flag state machine, and continuity schema."
-trigger_phrases:
-  - "gate c"
-  - "writer ready"
-  - "decision record"
-  - "phase 018"
-  - "continuity"
+description: "Gate C ADR set for the canonical writer boundaries, validator ordering, classifier fallback, proof guardrails, and continuity schema."
+trigger_phrases: ["gate c", "writer ready", "decision record", "phase 018", "continuity"]
 importance_tier: "critical"
 contextType: "implementation"
 level: "3+"
 gate: "C"
 parent: "018-canonical-continuity-refactor"
+_memory:
+  continuity:
+    packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
+    last_updated_at: "2026-04-11T20:11:09Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Aligned ADRs with current Gate C proof wording"
+    next_safe_action: "Patch implementation placeholder"
+    key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/decision-record.md"]
 ---
-# Decision Record: Gate C — Writer Ready
-
 <!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+# Decision Record: Gate C — Writer Ready
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
@@ -197,7 +199,7 @@ See `../research/iterations/iteration-031.md` section 3 "Prompt template" and se
 - `contentRouter` gains Tier 3 prompt/versioning, response parsing, cache keys, and refusal behavior.
 - Schemas and telemetry gain route confidence, alternatives, and decision latency fields.
 
-**How to roll back**: Disable Tier 3 calls, fall back to Tier 2 plus refusal, and keep Gate C in `shadow_only` until classifier health recovers.
+**How to roll back**: Disable Tier 3 calls, fall back to Tier 2 plus refusal, and keep Gate C non-serving until classifier health recovers.
 
 ---
 
@@ -276,25 +278,26 @@ The current shell validator does not understand continuity blocks, merge legalit
 
 ---
 
-### Sub-decision 4: Gate C uses the iter 034 feature-flag state machine
+### Sub-decision 4: Gate C uses proof-mode control-plane guardrails
 
 **Deciders**: Incident commander, runtime owner, QA/on-call lead | **Status**: Proposed | **Date**: 2026-04-11
 
 ### Context
 
-Shadow-only proving is not enough without an auditable control plane. Iterations 032, 033, and 034 define class-specific thresholds, rollback rules, and eight named states (`S0` through `S7`) that Gate C must follow so promotion and rollback are evidence-driven.
+Gate C still needs an auditable control plane. Iterations 032, 033, and 034 remain useful for thresholds, event names, and rollback signals, yet Gate C should describe only the non-serving proof path it still owns.
 
 **Constraints**:
-- Gate C only uses `S1 shadow_only`; it must not skip buckets.
-- Correctness-loss incidents for `resume` and `trigger_match` must jump straight back to `S1`.
+- Gate C stays non-serving while proof evidence is collected.
+- No downstream promotion ladder is part of the live Gate C contract.
+- Correctness-loss incidents for `resume` and `trigger_match` must block handoff immediately.
 
 ---
 
 ### Decision
 
-**We chose**: the iter 034 SQLite-backed state machine with states `disabled`, `shadow_only`, `dual_write_10pct`, `dual_write_50pct`, `dual_write_100pct`, `canonical`, `legacy_cleanup`, and `rolled_back`.
+**We chose**: proof-mode control-plane guardrails that record when Gate C proof collection is active, blocked, or disabled, without treating downstream promotion states as the packet's source of truth.
 
-**How it works**: Gate C must reach a stable `S1` foundation and prepare promotion evidence for `S2-S4`, but no serving-state skip is allowed. Automatic rollback uses the named thresholds from iter 032/033 and always emits a control-plane event.
+**How it works**: Gate C enables non-serving parity and rollback telemetry, emits control-plane events for proof start or failure, and blocks handoff the moment the iter 032/033 thresholds are breached. Any later canonical flip is follow-on work, not part of this packet's live contract.
 
 ---
 
@@ -302,19 +305,19 @@ Shadow-only proving is not enough without an auditable control plane. Iterations
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Named state machine** | Auditable, rollback-safe, cacheable | More explicit control-plane work | 9/10 |
-| Env-var toggles only | Simple | Too static for canaries and rollback | 4/10 |
-| Direct shadow->canonical jump | Faster | Skips required proof buckets | 2/10 |
+| **Proof-mode guardrails** | Auditable, rollback-safe, aligned with the directive | Requires explicit proof-pack tracking | 9/10 |
+| Downstream promotion ladder | Familiar from research | Carries superseded rollout detail into Gate C docs | 3/10 |
+| Direct canonical flip in Gate C | Faster on paper | Blurs Gate C and Gate E responsibilities | 2/10 |
 
-**Why this one**: The state machine makes rollback visible and keeps Gate C, Gate D, and Gate E evidence on the same control-plane vocabulary.
+**Why this one**: It keeps rollback visible, preserves the useful event surface, and matches the current direction that Gate C ends with a proof pack rather than a promotion ladder.
 
 ---
 
 ### Consequences
 
 **What improves**:
-- Promotion and rollback become auditable packet events instead of operator folklore.
-- Shadow, latency, and fingerprint alerts map to explicit demotion behavior.
+- Proof, rollback, and incident states remain auditable packet events instead of operator folklore.
+- Parity, latency, and fingerprint alerts map directly to blocking handoff behavior.
 
 **What it costs**:
 - Control-plane tables and dashboards must exist before claiming success. Mitigation: treat them as P0 Gate C work.
@@ -323,7 +326,7 @@ Shadow-only proving is not enough without an auditable control plane. Iterations
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Missing telemetry blocks promotion | M | Gate C checklist requires live spans and reducers |
+| Missing telemetry blocks proof closure | M | Gate C checklist requires live spans and reducers |
 
 ---
 
@@ -331,11 +334,11 @@ Shadow-only proving is not enough without an auditable control plane. Iterations
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | Rollout without a state machine is unsafe |
-| 2 | **Beyond Local Maxima?** | PASS | Rejected env-var and bucket-skip options |
-| 3 | **Sufficient?** | PASS | S0-S7 covers proving and rollback |
-| 4 | **Fits Goal?** | PASS | Gate C closes on stable shadow evidence |
-| 5 | **Open Horizons?** | PASS | Same control plane supports Gates D-F |
+| 1 | **Necessary?** | PASS | Proof collection without guardrails is unsafe |
+| 2 | **Beyond Local Maxima?** | PASS | Rejected staged rollout carry-over and direct flip options |
+| 3 | **Sufficient?** | PASS | Active, blocked, and disabled proof states cover Gate C needs |
+| 4 | **Fits Goal?** | PASS | Gate C closes on proof-pack evidence, not rollout time |
+| 5 | **Open Horizons?** | PASS | The same event surface can support later gates without freezing old stage names |
 
 **Checks Summary**: 5/5 PASS
 
@@ -344,10 +347,10 @@ Shadow-only proving is not enough without an auditable control plane. Iterations
 ### Implementation
 
 **What changes**:
-- Add or reuse the `canonical_continuity_rollout` control-plane row, cache semantics, and event log.
-- Wire state transitions to shadow, latency, resume, trigger, and fingerprint signals.
+- Add or reuse the Gate C control-plane row, cache semantics, and event log.
+- Wire proof-blocking events to parity, latency, resume, trigger, and fingerprint signals.
 
-**How to roll back**: Use the state machine's fallback path, preserve the event trail, and keep the new writer non-serving until the cooldown expires.
+**How to roll back**: Disable the active proof path, preserve the event trail, and keep the new writer non-serving until the blocking issue is closed.
 
 ---
 

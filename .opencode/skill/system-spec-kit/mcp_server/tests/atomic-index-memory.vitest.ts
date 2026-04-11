@@ -88,6 +88,34 @@ describe('atomicIndexMemory', () => {
     expect(fs.readdirSync(path.dirname(filePath)).every((entry) => !entry.includes('_pending'))).toBe(true);
   });
 
+  it('promotes routed canonical content into the prepared persisted file path', async () => {
+    const root = createTempRoot();
+    tempRoots.push(root);
+    const sourcePath = createTargetPath(root, 'memory/session.md');
+    const targetPath = createTargetPath(root, 'implementation-summary.md');
+    fs.writeFileSync(sourcePath, '# original source memory', 'utf8');
+
+    const result = await atomicIndexMemory(paramsFrom(sourcePath), { force: true }, buildDependencies({
+      prepare: async () => ({
+        status: 'ready',
+        specFolder: 'specs/026-fixture',
+        persistedContent: '# routed canonical summary',
+        persistedFilePath: targetPath,
+        prepared: { token: 'routed-target' },
+      }),
+      indexPrepared: async () => buildIndexResult({
+        specFolder: 'specs/026-fixture',
+        title: 'Implementation Summary',
+        targetDocPath: targetPath,
+      }),
+    }));
+
+    expect(result.success).toBe(true);
+    expect(result.filePath).toBe(targetPath);
+    expect(fs.readFileSync(sourcePath, 'utf8')).toBe('# original source memory');
+    expect(fs.readFileSync(targetPath, 'utf8')).toBe('# routed canonical summary');
+  });
+
   it('rolls back the original file when canonical indexing returns rejected', async () => {
     const root = createTempRoot();
     tempRoots.push(root);
@@ -267,3 +295,10 @@ describe('atomicIndexMemory', () => {
     expect(fs.readFileSync(filePath, 'utf8')).toBe('# second canonical write');
   });
 });
+
+function paramsFrom(filePath: string): AtomicSaveParams {
+  return {
+    file_path: filePath,
+    content: '# placeholder content',
+  };
+}

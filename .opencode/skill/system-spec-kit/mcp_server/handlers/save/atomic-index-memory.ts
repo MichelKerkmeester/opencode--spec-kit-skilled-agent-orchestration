@@ -40,6 +40,7 @@ export interface AtomicIndexReady<TPrepared = unknown> {
   prepared: TPrepared;
   specFolder: string;
   persistedContent?: string;
+  persistedFilePath?: string;
 }
 
 export interface AtomicIndexTerminal {
@@ -275,8 +276,6 @@ export async function atomicIndexMemory<TPrepared = unknown>(
   const { force = false } = options;
 
   const maxIndexAttempts = dependencies.maxIndexAttempts ?? 2;
-  const pendingPath = (dependencies.getPendingPath ?? defaultPendingPath)(file_path);
-  const originalState = (dependencies.captureOriginalState ?? captureOriginalState)(file_path);
 
   let indexResult: IndexResult | null = null;
   let indexError: Error | null = null;
@@ -284,6 +283,8 @@ export async function atomicIndexMemory<TPrepared = unknown>(
   let anyPromotionAttempted = false;
   let errorMetadata: Record<string, string> | null = null;
   let successfulLockedContext: AtomicIndexLockedContext<TPrepared> | null = null;
+  let lastEffectiveFilePath = file_path;
+  let lastPendingPath = (dependencies.getPendingPath ?? defaultPendingPath)(file_path);
 
   const mergeErrorMetadata = (entry: Record<string, string> | null): void => {
     if (!entry) {
@@ -306,7 +307,12 @@ export async function atomicIndexMemory<TPrepared = unknown>(
         return prepared.result;
       }
 
+      const effectiveFilePath = prepared.persistedFilePath ?? file_path;
       const persistedContent = prepared.persistedContent ?? content;
+      const pendingPath = (dependencies.getPendingPath ?? defaultPendingPath)(effectiveFilePath);
+      const originalState = (dependencies.captureOriginalState ?? captureOriginalState)(effectiveFilePath);
+      lastEffectiveFilePath = effectiveFilePath;
+      lastPendingPath = pendingPath;
       const lockedContext: AtomicIndexLockedContext<TPrepared> = {
         attempt,
         force,
@@ -319,7 +325,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
 
       indexResult = await runWithLock(prepared.specFolder, async () => {
         try {
-          (dependencies.writePendingAndPromote ?? writePendingAndPromote)(pendingPath, file_path, persistedContent);
+          (dependencies.writePendingAndPromote ?? writePendingAndPromote)(pendingPath, effectiveFilePath, persistedContent);
           promotedToFinalPath = true;
           anyPromotionAttempted = true;
 
@@ -327,7 +333,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
 
           if (lockedIndexResult.status === 'rejected') {
             handledFailureWhileLocked = true;
-            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(file_path, originalState);
+            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(effectiveFilePath, originalState);
             rollbackSucceededAfterRejectedSave = rollbackResult.restored;
             if (!rollbackResult.restored && rollbackResult.error) {
               mergeErrorMetadata({ rollbackError: rollbackResult.error });
@@ -343,7 +349,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
           }
 
           if (promotedToFinalPath) {
-            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(file_path, originalState);
+            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(effectiveFilePath, originalState);
             restoredOriginalAfterFailure = rollbackResult.restored;
             if (!rollbackResult.restored && rollbackResult.error) {
               mergeErrorMetadata({ rollbackError: rollbackResult.error });
@@ -363,7 +369,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
       }
 
       if (indexResult.status === 'rejected') {
-        return buildRejectedResult(file_path, indexResult, rollbackSucceededAfterRejectedSave, errorMetadata);
+        return buildRejectedResult(effectiveFilePath, indexResult, rollbackSucceededAfterRejectedSave, errorMetadata);
       }
 
       successfulLockedContext = lockedContext;
@@ -371,7 +377,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
       break;
     } catch (error: unknown) {
       if (!handledFailureWhileLocked) {
-        const pendingCleanupResult = (dependencies.cleanupPendingFile ?? cleanupPendingFile)(pendingPath);
+        const pendingCleanupResult = (dependencies.cleanupPendingFile ?? cleanupPendingFile)(lastPendingPath);
         if (!pendingCleanupResult.cleaned && pendingCleanupResult.error) {
           mergeErrorMetadata({ pendingCleanupError: pendingCleanupResult.error });
         }
@@ -385,7 +391,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
 
   if (!indexResult || indexError) {
     return buildRetryFailureResult(
-      file_path,
+      lastEffectiveFilePath,
       indexError,
       anyPromotionAttempted ? restoredOriginalAfterFailure : true,
       errorMetadata,
@@ -396,7 +402,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
     return await dependencies.mapSuccessResult(indexResult, successfulLockedContext);
   }
 
-  return buildSuccessResult(file_path, indexResult);
+  return buildSuccessResult(successfulLockedContext?.ready.persistedFilePath ?? file_path, indexResult);
 }
 
 const atomic_index_memory = atomicIndexMemory;

@@ -213,6 +213,59 @@ describe('anchorMergeOperation', () => {
       expect(result.changed).toBe(false);
       expect(result.reason).toBe('adr title already present');
     });
+
+    it('accepts the synthetic adr-NNN target and appends to the decision-record root body', () => {
+      const documentContent = [
+        '---',
+        'title: "Decision Record"',
+        'description: "Fixture"',
+        'contextType: "implementation"',
+        'importance_tier: "normal"',
+        '---',
+        '',
+        '<!-- ANCHOR:adr-001 -->',
+        '## ADR-001: Keep existing writer',
+        '',
+        '<!-- ANCHOR:adr-001-context -->',
+        '### Context',
+        '',
+        'Legacy context.',
+        '<!-- /ANCHOR:adr-001-context -->',
+        '',
+        '<!-- ANCHOR:adr-001-decision -->',
+        '### Decision',
+        '',
+        'Keep the writer for now.',
+        '<!-- /ANCHOR:adr-001-decision -->',
+        '',
+        '<!-- ANCHOR:adr-001-consequences -->',
+        '### Consequences',
+        '',
+        '- Low risk.',
+        '<!-- /ANCHOR:adr-001-consequences -->',
+        '<!-- /ANCHOR:adr-001 -->',
+      ].join('\n');
+
+      const result = anchorMergeOperation({
+        documentContent,
+        docPath: 'decision-record.md',
+        anchorId: 'adr-NNN',
+        mergeMode: 'insert-new-adr',
+        payload: {
+          title: 'Adopt routed writer integration',
+          context: 'Gate C now writes into the routed target document directly.',
+          decision: 'Use the real decision-record root body as the ADR insertion container.',
+          consequences: ['Keeps decision routing compatible with existing ADR anchors.'],
+        },
+        dedupeFingerprint: 'sha256:7777777777777777777777777777777777777777777777777777777777777777',
+      });
+
+      expect(result.changed).toBe(true);
+      expect(result.metadata.adrNumber).toBe(2);
+      expect(result.updatedDocument).toContain('<!-- ANCHOR:adr-002 -->');
+      expect(result.updatedDocument).toContain('## ADR-002: Adopt routed writer integration');
+      expect(result.updatedDocument).toContain('<!-- ANCHOR:adr-002-decision -->');
+    });
   });
 
   describe('append-table-row', () => {

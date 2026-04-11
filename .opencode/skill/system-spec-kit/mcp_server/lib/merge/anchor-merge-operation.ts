@@ -136,6 +136,30 @@ export function anchorMergeOperation(request: AnchorMergeRequest): AnchorMergeRe
   }
 
   const split = splitDocument(request.documentContent);
+  if (request.mergeMode === 'insert-new-adr' && request.anchorId === 'adr-NNN') {
+    failOnCorruptedAnchorBody(split.body, request);
+    const transform = mergeInsertNewAdr(
+      request.payload as InsertNewAdrPayload,
+      split.body,
+      request.dedupeFingerprint,
+      split.newline,
+    );
+    validateAnchorGraph(request, split.body, transform.updatedAnchorBody);
+    return {
+      changed: transform.changed,
+      docPath: request.docPath,
+      anchorId: request.anchorId,
+      mergeMode: request.mergeMode,
+      updatedDocument: `${split.frontmatter}${split.separator}${transform.updatedAnchorBody}`,
+      updatedAnchorBody: transform.updatedAnchorBody,
+      dedupeFingerprint: request.dedupeFingerprint,
+      reason: transform.reason,
+      metadata: {
+        insertedFingerprintComment: transform.insertedFingerprintComment,
+        ...(transform.metadata ?? {}),
+      },
+    };
+  }
   const block = locateAnchorBlock(split.body, request.anchorId);
   const transform = dispatchMergeMode(request, block.innerAnchorBody, split.newline);
   const rebuiltBody = rebuildBody(block, transform.updatedAnchorBody);

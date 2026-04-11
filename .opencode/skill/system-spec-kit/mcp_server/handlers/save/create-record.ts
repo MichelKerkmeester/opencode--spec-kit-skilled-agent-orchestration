@@ -22,6 +22,7 @@ import { detectSpecLevelFromParsed } from '../handler-utils.js';
 import { classifyEncodingIntent } from '../../lib/search/encoding-intent.js';
 import { isEncodingIntentEnabled } from '../../lib/search/search-flags.js';
 import { applyPostInsertMetadata } from './db-helpers.js';
+import { inferDocumentTypeFromPath } from '../../lib/config/memory-types.js';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Per-memory history log
@@ -253,13 +254,17 @@ export function createMemoryRecord(
   identityHints: CreateRecordIdentityHints = {},
 ): number {
   const recordIdentity = resolveCreateRecordIdentity(parsed, filePath, identityHints);
+  const routedDocumentType = inferDocumentTypeFromPath(recordIdentity.targetDocPath);
+  const persistedDocumentType = routedDocumentType !== 'memory'
+    ? routedDocumentType
+    : (parsed.documentType || 'memory');
 
   if (!embedding) {
     console.error(`[memory-save] Using deferred indexing for ${path.basename(recordIdentity.targetDocPath)}`);
   }
 
   // Detect spec level for spec documents.
-  const specLevel = isSpecDocumentType(parsed.documentType)
+  const specLevel = isSpecDocumentType(persistedDocumentType)
     ? detectSpecLevelFromParsed(recordIdentity.targetDocPath)
     : null;
   const encodingIntent = isEncodingIntentEnabled()
@@ -293,7 +298,7 @@ export function createMemoryRecord(
           importanceWeight,
           embedding,
           encodingIntent,
-          documentType: parsed.documentType || 'memory',
+          documentType: persistedDocumentType,
           specLevel,
           contentText: parsed.content,
           qualityScore: parsed.qualityScore,
@@ -309,7 +314,7 @@ export function createMemoryRecord(
           importanceWeight,
           failureReason: persistedEmbeddingFailureReason,
           encodingIntent,
-          documentType: parsed.documentType || 'memory',
+          documentType: persistedDocumentType,
           specLevel,
           contentText: parsed.content,
           qualityScore: parsed.qualityScore,
@@ -330,7 +335,7 @@ export function createMemoryRecord(
       difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
       file_mtime_ms: fileMtimeMs,
       encoding_intent: encodingIntent,
-      document_type: parsed.documentType || 'memory',
+      document_type: persistedDocumentType,
       spec_level: specLevel,
       quality_score: parsed.qualityScore ?? 0,
       quality_flags: JSON.stringify(parsed.qualityFlags ?? []),

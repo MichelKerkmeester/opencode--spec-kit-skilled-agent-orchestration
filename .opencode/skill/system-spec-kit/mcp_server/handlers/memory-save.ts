@@ -4,7 +4,7 @@
 /* --- 1. DEPENDENCIES --- */
 
 // Node built-ins
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import * as fs from 'node:fs';
 import path from 'path';
 
@@ -93,6 +93,20 @@ import { runPostInsertEnrichment } from './save/post-insert.js';
 import { buildIndexResult, buildSaveResponse } from './save/response-builder.js';
 import { atomicIndexMemory } from './save/atomic-index-memory.js';
 import { createMCPErrorResponse } from '../lib/response/envelope.js';
+import { createContentRouter } from '../lib/routing/content-router.js';
+import { anchorMergeOperation } from '../lib/merge/anchor-merge-operation.js';
+import {
+  readThinContinuityRecord,
+  upsertThinContinuityInMarkdown,
+  type ThinContinuityRecord,
+} from '../lib/continuity/thin-continuity-record.js';
+import {
+  runSpecDocStructureRule,
+  type ContaminationPlan,
+  type MergePlan,
+  type PostSavePlan,
+} from '../lib/validation/spec-doc-structure.js';
+import { detectSpecLevelFromParsed } from './handler-utils.js';
 
 // Extracted sub-modules
 import { withSpecFolderLock } from './save/spec-folder-mutex.js';
@@ -146,6 +160,22 @@ interface RoutedRecordIdentity {
   targetAnchorId: string | null;
   routeAs: RouteCategory | null;
   continuitySourceKey: string | null;
+}
+
+type CanonicalPacketLevel = 'L1' | 'L2' | 'L3' | 'L3+';
+
+interface CanonicalAtomicValidatorPlan {
+  folder: string;
+  level: string;
+  mergePlan: MergePlan | null;
+  contaminationPlan: ContaminationPlan | null;
+  postSavePlan: PostSavePlan;
+}
+
+interface CanonicalAtomicPrepared {
+  preparedMemory: PreparedParsedMemory;
+  routing: RoutedSaveOptions;
+  validatorPlan: CanonicalAtomicValidatorPlan | null;
 }
 
 const STANDARD_MEMORY_TEMPLATE_MARKERS = [
@@ -683,6 +713,14 @@ function pickRouteCategory(value: unknown): RouteCategory | null {
   return normalized as RouteCategory;
 }
 
+function isMergeModeHint(value: unknown): value is MergeModeHint {
+  return value === 'append-as-paragraph'
+    || value === 'insert-new-adr'
+    || value === 'append-table-row'
+    || value === 'update-in-place'
+    || value === 'append-section';
+}
+
 function resolveRoutedRecordIdentity(
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
   routedFilePath: string,
@@ -712,6 +750,536 @@ function resolveRoutedRecordIdentity(
     routeAs,
     continuitySourceKey,
   };
+}
+
+function toCanonicalPacketLevel(level: number | null): CanonicalPacketLevel {
+  if (level === 1) return 'L1';
+  if (level === 2) return 'L2';
+  if (level === 3) return 'L3';
+  return 'L3+';
+}
+
+function toValidatorLevel(packetLevel: CanonicalPacketLevel): string {
+  return packetLevel.replace(/^L/u, '');
+}
+
+function normalizeForFingerprint(content: string): string {
+  return content
+    .replace(/\r\n/g, '\n')
+    .replace(/[ \t]+$/gm, '');
+}
+
+function buildContinuityFingerprint(content: string): string {
+  return `sha256:${createHash('sha256').update(normalizeForFingerprint(content), 'utf8').digest('hex')}`;
+}
+
+function stripMarkdownFrontmatter(markdown: string): string {
+  return markdown.replace(/^(?:\uFEFF)?---\r?\n[\s\S]*?\r?\n---(?:\r?\n)?/u, '');
+}
+
+function normalizeRoutingChunkText(markdown: string): string {
+  return stripMarkdownFrontmatter(markdown)
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/\r\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function collapseInlineWhitespace(value: string): string {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function clipInlineText(value: string, maxLength = 96): string {
+  const normalized = collapseInlineWhitespace(value);
+  return normalized.length <= maxLength ? normalized : `${normalized.slice(0, maxLength - 3).trimEnd()}...`;
+}
+
+function extractParagraphs(markdown: string): string[] {
+  return normalizeRoutingChunkText(markdown)
+    .split(/\n\s*\n/g)
+    .map((entry) => collapseInlineWhitespace(entry))
+    .filter(Boolean);
+}
+
+function extractListItems(markdown: string): string[] {
+  return normalizeRoutingChunkText(markdown)
+    .split(/\r?\n/g)
+    .map((line) => line.match(/^\s*(?:[-*+]|\d+\.)\s+(.+)$/u)?.[1] ?? '')
+    .map((line) => clipInlineText(line, 120))
+    .filter(Boolean);
+}
+
+function resolveSpecFolderAbsoluteFromFilePath(filePath: string, specFolder: string): string {
+  const normalizedFilePath = filePath.replace(/\\/g, '/');
+  const normalizedSpecFolder = specFolder.replace(/^specs\//u, '');
+  const markers = [
+    `/specs/${normalizedSpecFolder}/`,
+    `/specs/${specFolder}/`,
+  ];
+
+  for (const marker of markers) {
+    const markerIndex = normalizedFilePath.lastIndexOf(marker);
+    if (markerIndex >= 0) {
+      return path.normalize(`${normalizedFilePath.slice(0, markerIndex)}${marker.slice(0, -1)}`);
+    }
+  }
+
+  return path.resolve(path.dirname(filePath), '..');
+}
+
+function resolveMetadataHostDocPath(specFolderAbsolute: string, currentFilePath: string): string {
+  const currentDocumentType = memoryParser.extractDocumentType(currentFilePath);
+  if (currentDocumentType !== 'memory' && fs.existsSync(currentFilePath)) {
+    return currentFilePath;
+  }
+
+  const implementationSummaryPath = path.join(specFolderAbsolute, 'implementation-summary.md');
+  if (fs.existsSync(implementationSummaryPath)) {
+    return implementationSummaryPath;
+  }
+
+  return path.join(specFolderAbsolute, 'spec.md');
+}
+
+function resolveCanonicalTargetDocPath(
+  specFolderAbsolute: string,
+  currentFilePath: string,
+  routedDocPath: string,
+): string {
+  if (routedDocPath === 'spec-frontmatter') {
+    return resolveMetadataHostDocPath(specFolderAbsolute, currentFilePath);
+  }
+  return path.join(specFolderAbsolute, routedDocPath);
+}
+
+function buildFallbackContinuityRecord(params: {
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
+  routeCategory: RouteCategory;
+  targetDocPath: string;
+  specFolderAbsolute: string;
+  currentContent: string;
+}): ThinContinuityRecord {
+  const { parsed, routeCategory, targetDocPath, specFolderAbsolute, currentContent } = params;
+  const relativeTargetPath = path.relative(specFolderAbsolute, targetDocPath).replace(/\\/g, '/');
+  const absoluteSpecFolder = specFolderAbsolute.replace(/\\/g, '/');
+  const packetPointerFromPath = absoluteSpecFolder.includes('/specs/')
+    ? absoluteSpecFolder.split('/specs/')[1]
+    : parsed.specFolder.replace(/^specs\//u, '');
+  const title = clipInlineText(parsed.title ?? (normalizeRoutingChunkText(currentContent) || 'Updated canonical continuity'));
+  const nextActionByRoute: Record<RouteCategory, string> = {
+    narrative_progress: 'Review routed update',
+    narrative_delivery: 'Verify delivery route',
+    decision: 'Review ADR follow-up',
+    handover_state: 'Resume routed handover',
+    research_finding: 'Review cited finding',
+    task_update: 'Verify task alignment',
+    metadata_only: 'Refresh continuity',
+    drop: 'Inspect refused route',
+  };
+
+  return {
+    packet_pointer: packetPointerFromPath,
+    last_updated_at: new Date().toISOString().replace(/\.\d{3}Z$/u, 'Z'),
+    last_updated_by: 'memory-save',
+    recent_action: title,
+    next_safe_action: nextActionByRoute[routeCategory],
+    blockers: [],
+    key_files: relativeTargetPath ? [relativeTargetPath] : [],
+    session_dedup: {
+      fingerprint: buildContinuityFingerprint(currentContent),
+      session_id: 'memory-save',
+      parent_session_id: null,
+    },
+    completion_pct: 0,
+    open_questions: [],
+    answered_questions: [],
+  };
+}
+
+function buildCanonicalMergePayload(params: {
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
+  routeCategory: RouteCategory;
+  mergeMode: MergeModeHint;
+  content: string;
+}): Record<string, unknown> {
+  const { parsed, routeCategory, mergeMode, content } = params;
+  const paragraphs = extractParagraphs(content);
+  const firstParagraph = paragraphs[0] ?? clipInlineText(content, 160);
+  const secondParagraph = paragraphs[1] ?? firstParagraph;
+  const listItems = extractListItems(content);
+
+  switch (mergeMode) {
+    case 'append-as-paragraph':
+      return { paragraph: firstParagraph };
+    case 'append-section':
+      return {
+        title: clipInlineText(parsed.title ?? `${routeCategory.replace(/_/g, ' ')} update`, 72),
+        body: normalizeRoutingChunkText(content) || firstParagraph,
+      };
+    case 'insert-new-adr':
+      return {
+        title: clipInlineText(parsed.title ?? 'Captured canonical decision', 80),
+        context: firstParagraph,
+        decision: secondParagraph,
+        consequences: listItems.slice(0, 3),
+      };
+    case 'update-in-place': {
+      const targetId = content.match(/\b(?:T\d{3}|CHK-\d{3})\b/u)?.[0];
+      if (!targetId) {
+        throw new Error(`Canonical task update could not find a target task/checklist id in routed content.`);
+      }
+      const checked = /\[[xX]\]/u.test(content)
+        ? true
+        : (/\[[ ]\]/u.test(content) ? false : undefined);
+      return {
+        targetId,
+        ...(checked === undefined ? {} : { checked }),
+        evidence: clipInlineText(parsed.title ?? firstParagraph, 96),
+      };
+    }
+    case 'append-table-row':
+      return {
+        cells: [
+          clipInlineText(parsed.title ?? routeCategory, 48),
+          'Updated',
+          clipInlineText(firstParagraph, 96),
+        ],
+        dedupeColumn: 0,
+      };
+    default:
+      return { paragraph: firstParagraph };
+  }
+}
+
+async function buildCanonicalAtomicPreparedSave(
+  params: AtomicSaveParams,
+  database: ReturnType<typeof requireDb>,
+): Promise<{ status: 'ready'; prepared: CanonicalAtomicPrepared; persistedContent: string; persistedFilePath: string } | { status: 'abort'; result: AtomicSaveResult }> {
+  const preparedMemory = prepareParsedMemoryForIndexing(
+    memoryParser.parseMemoryContent(params.file_path, params.content),
+    database,
+  );
+  if (!preparedMemory.validation.valid) {
+    return {
+      status: 'abort',
+      result: {
+        success: false,
+        filePath: params.file_path,
+        status: 'error',
+        summary: 'Atomic save preflight failed',
+        message: 'Parsed content failed validation before canonical atomic save',
+        error: `Validation failed: ${preparedMemory.validation.errors.join(', ')}`,
+      },
+    };
+  }
+
+  if (preparedMemory.qualityLoopResult.fixes.length > 0 && preparedMemory.qualityLoopResult.passed && preparedMemory.qualityLoopResult.fixedContent) {
+    console.error(`[memory-save] Quality loop applied ${preparedMemory.qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(params.file_path)} before canonical pending-file promotion`);
+  }
+
+  const specFolderAbsolute = resolveSpecFolderAbsoluteFromFilePath(params.file_path, preparedMemory.parsed.specFolder);
+  const packetLevel = toCanonicalPacketLevel(detectSpecLevelFromParsed(path.join(specFolderAbsolute, 'spec.md')));
+  const router = createContentRouter();
+  const routingChunkText = normalizeRoutingChunkText(params.content);
+  const decision = await router.classifyContent(
+    {
+      id: path.basename(params.file_path),
+      text: routingChunkText,
+      sourceField: params.routeAs === 'metadata_only' ? 'preflight' : 'observations',
+      routeAs: params.routeAs,
+    },
+    {
+      specFolder: preparedMemory.parsed.specFolder,
+      packetLevel,
+      sessionMeta: {
+        spec_folder: preparedMemory.parsed.specFolder,
+        packet_level: packetLevel,
+        packet_kind: preparedMemory.parsed.specFolder.includes('/') ? 'phase' : 'feature',
+        save_mode: 'route-as',
+        recent_docs_touched: [],
+        recent_anchors_touched: [],
+        likely_phase_anchor: 'phase-1',
+      },
+    },
+  );
+
+  if (decision.refusal || decision.category === 'drop') {
+    return {
+      status: 'abort',
+      result: {
+        success: false,
+        filePath: params.file_path,
+        status: 'rejected',
+        summary: 'Canonical routed save refused to merge content',
+        message: decision.warningMessage ?? 'Router refused to route canonical content safely',
+        routeCategory: decision.category,
+        targetDocPath: decision.target.docPath,
+      },
+    };
+  }
+
+  if (params.mergeModeHint && params.mergeModeHint !== decision.target.mergeMode) {
+    return {
+      status: 'abort',
+      result: {
+        success: false,
+        filePath: params.file_path,
+        status: 'rejected',
+        summary: 'Canonical routed save rejected conflicting merge-mode hint',
+        message: `mergeModeHint "${params.mergeModeHint}" did not match routed mode "${decision.target.mergeMode}"`,
+        routeCategory: decision.category,
+        mergeMode: params.mergeModeHint,
+        targetDocPath: decision.target.docPath,
+      },
+    };
+  }
+
+  const targetDocPath = resolveCanonicalTargetDocPath(specFolderAbsolute, params.file_path, decision.target.docPath);
+  if (!fs.existsSync(targetDocPath)) {
+    return {
+      status: 'abort',
+      result: {
+        success: false,
+        filePath: targetDocPath,
+        status: 'error',
+        summary: 'Canonical routed save target document is missing',
+        message: `Target document "${targetDocPath}" does not exist`,
+        routeCategory: decision.category,
+      },
+    };
+  }
+
+  const originalTargetContent = fs.readFileSync(targetDocPath, 'utf8');
+  const routedMergeMode = params.mergeModeHint ?? decision.target.mergeMode;
+  if (!isMergeModeHint(routedMergeMode)) {
+    return {
+      status: 'abort',
+      result: {
+        success: false,
+        filePath: targetDocPath,
+        status: 'rejected',
+        summary: 'Canonical routed save refused unsupported merge mode',
+        message: `Routed merge mode "${decision.target.mergeMode}" is not supported by atomic writer saves`,
+        routeCategory: decision.category,
+        targetDocPath,
+        targetAnchorId: decision.target.anchorId ?? undefined,
+      },
+    };
+  }
+  const mergeMode: MergeModeHint = routedMergeMode;
+  const relativeTargetFile = path.relative(specFolderAbsolute, targetDocPath).replace(/\\/g, '/');
+
+  let persistedContent = originalTargetContent;
+  let targetAnchorId = decision.target.anchorId;
+
+  if (decision.category === 'metadata_only') {
+    const readResult = readThinContinuityRecord(params.content);
+    const continuityRecord = readResult.ok && readResult.record
+      ? readResult.record
+      : buildFallbackContinuityRecord({
+          parsed: preparedMemory.parsed,
+          routeCategory: decision.category,
+          targetDocPath,
+          specFolderAbsolute,
+          currentContent: params.content,
+        });
+    const writeResult = upsertThinContinuityInMarkdown(persistedContent, continuityRecord, {
+      fallbackActor: 'memory-save',
+      fallbackPacketPointer: preparedMemory.parsed.specFolder,
+      fallbackTimestamp: new Date().toISOString(),
+    });
+    if (!writeResult.ok || !writeResult.markdown) {
+      return {
+        status: 'abort',
+        result: {
+          success: false,
+          filePath: targetDocPath,
+          status: 'rejected',
+          summary: 'Canonical continuity update failed validation',
+          message: writeResult.errors.map((error) => `${error.code}:${error.field}:${error.message}`).join('; '),
+          routeCategory: decision.category,
+          mergeMode,
+          targetDocPath,
+          targetAnchorId: ROUTED_CONTINUITY_ANCHOR_ID,
+        },
+      };
+    }
+    persistedContent = writeResult.markdown;
+    targetAnchorId = ROUTED_CONTINUITY_ANCHOR_ID;
+  } else {
+    let mergedDocument: string;
+    try {
+      const mergeResult = anchorMergeOperation({
+        documentContent: originalTargetContent,
+        docPath: relativeTargetFile,
+        anchorId: targetAnchorId,
+        mergeMode,
+        payload: buildCanonicalMergePayload({
+          parsed: preparedMemory.parsed,
+          routeCategory: decision.category,
+          mergeMode,
+          content: params.content,
+        }) as never,
+        dedupeFingerprint: buildContinuityFingerprint(params.content),
+      });
+      mergedDocument = mergeResult.updatedDocument;
+    } catch (error: unknown) {
+      return {
+        status: 'abort',
+        result: {
+          success: false,
+          filePath: targetDocPath,
+          status: 'rejected',
+          summary: 'Canonical anchor merge failed',
+          message: error instanceof Error ? error.message : String(error),
+          routeCategory: decision.category,
+          mergeMode,
+          targetDocPath,
+          targetAnchorId,
+        },
+      };
+    }
+
+    const continuityRecord = buildFallbackContinuityRecord({
+      parsed: preparedMemory.parsed,
+      routeCategory: decision.category,
+      targetDocPath,
+      specFolderAbsolute,
+      currentContent: params.content,
+    });
+    const writeResult = upsertThinContinuityInMarkdown(mergedDocument, continuityRecord, {
+      fallbackActor: 'memory-save',
+      fallbackPacketPointer: preparedMemory.parsed.specFolder,
+      fallbackTimestamp: new Date().toISOString(),
+    });
+    if (!writeResult.ok || !writeResult.markdown) {
+      return {
+        status: 'abort',
+        result: {
+          success: false,
+          filePath: targetDocPath,
+          status: 'rejected',
+          summary: 'Canonical continuity update failed after merge',
+          message: writeResult.errors.map((error) => `${error.code}:${error.field}:${error.message}`).join('; '),
+          routeCategory: decision.category,
+          mergeMode,
+          targetDocPath,
+          targetAnchorId,
+        },
+      };
+    }
+    persistedContent = writeResult.markdown;
+  }
+
+  const routing: RoutedSaveOptions = {
+    targetDocPath,
+    canonicalFilePath: getCanonicalPathKey(targetDocPath),
+    targetAnchorId,
+    routeAs: decision.category,
+    mergeModeHint: mergeMode,
+    continuitySourceKey: 'frontmatter',
+  };
+
+  return {
+    status: 'ready',
+    persistedContent,
+    persistedFilePath: targetDocPath,
+    prepared: {
+      preparedMemory,
+      routing,
+      validatorPlan: {
+        folder: specFolderAbsolute,
+        level: toValidatorLevel(packetLevel),
+        mergePlan: decision.category === 'metadata_only'
+          ? null
+          : {
+              targetFile: relativeTargetFile,
+              targetAnchor: targetAnchorId,
+              mergeMode,
+              chunkText: routingChunkText,
+            },
+        contaminationPlan: {
+          routeCategory: decision.category,
+          chunkText: routingChunkText,
+          routeOverrideAccepted: decision.overrideApplied,
+        },
+        postSavePlan: {
+          file: relativeTargetFile,
+          expectedFingerprint: buildContinuityFingerprint(persistedContent),
+          snapshotContent: originalTargetContent,
+          expectedSize: Buffer.byteLength(persistedContent, 'utf8'),
+        },
+      },
+    },
+  };
+}
+
+function validateCanonicalPreparedSave(
+  prepared: CanonicalAtomicPrepared,
+): { ok: true; warnings: string[] } | { ok: false; rejection: IndexResult } {
+  if (!prepared.validatorPlan) {
+    return { ok: true, warnings: [] };
+  }
+
+  const warnings: string[] = [];
+  const rules: Array<{
+    rule: 'FRONTMATTER_MEMORY_BLOCK' | 'MERGE_LEGALITY' | 'SPEC_DOC_SUFFICIENCY' | 'CROSS_ANCHOR_CONTAMINATION' | 'POST_SAVE_FINGERPRINT';
+    mergePlan?: MergePlan | null;
+    contaminationPlan?: ContaminationPlan | null;
+    postSavePlan?: PostSavePlan | null;
+  }> = [
+    { rule: 'FRONTMATTER_MEMORY_BLOCK' },
+    { rule: 'MERGE_LEGALITY', mergePlan: prepared.validatorPlan.mergePlan },
+    { rule: 'SPEC_DOC_SUFFICIENCY' },
+    { rule: 'CROSS_ANCHOR_CONTAMINATION', contaminationPlan: prepared.validatorPlan.contaminationPlan },
+    { rule: 'POST_SAVE_FINGERPRINT', postSavePlan: prepared.validatorPlan.postSavePlan },
+  ];
+
+  for (const entry of rules) {
+    const result = runSpecDocStructureRule({
+      folder: prepared.validatorPlan.folder,
+      level: prepared.validatorPlan.level,
+      rule: entry.rule,
+      mergePlan: entry.mergePlan ?? null,
+      contaminationPlan: entry.contaminationPlan ?? null,
+      postSavePlan: entry.postSavePlan ?? null,
+    });
+    if (result.status === 'warn') {
+      warnings.push(...result.diagnostics.map((diagnostic) => `${entry.rule}:${diagnostic.code}:${diagnostic.detail}`));
+    }
+    if (result.status === 'fail') {
+      return {
+        ok: false,
+        rejection: {
+          status: 'rejected',
+          id: 0,
+          specFolder: prepared.preparedMemory.parsed.specFolder,
+          title: prepared.preparedMemory.parsed.title ?? '',
+          message: result.diagnostics.map((diagnostic) => `${diagnostic.code}: ${diagnostic.detail}`).join('; ') || result.message,
+          rejectionReason: `${entry.rule} failed for canonical routed save`,
+          routeCategory: prepared.routing.routeAs ?? undefined,
+          mergeMode: prepared.routing.mergeModeHint ?? undefined,
+          targetDocPath: prepared.routing.targetDocPath ?? undefined,
+          targetAnchorId: prepared.routing.targetAnchorId ?? undefined,
+          warnings,
+        },
+      };
+    }
+  }
+
+  return { ok: true, warnings };
+}
+
+function isCanonicalAtomicPrepared(value: unknown): value is CanonicalAtomicPrepared {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  return typeof candidate.preparedMemory === 'object'
+    && candidate.preparedMemory !== null
+    && typeof candidate.routing === 'object'
+    && candidate.routing !== null;
 }
 
 async function processPreparedMemory(
@@ -1686,8 +2254,24 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   const database = requireDb();
   const routing = buildRoutedSaveOptions(file_path, routeAs, mergeModeHint);
 
-  return atomicIndexMemory(params, options, {
-    prepare: ({ file_path: currentFilePath, content: currentContent }) => {
+  return atomicIndexMemory<PreparedParsedMemory | CanonicalAtomicPrepared>(params, options, {
+    prepare: async (currentParams, _context) => {
+      if (currentParams.routeAs || currentParams.mergeModeHint) {
+        const canonicalPrepared = await buildCanonicalAtomicPreparedSave(currentParams, database);
+        if (canonicalPrepared.status !== 'ready') {
+          return canonicalPrepared;
+        }
+
+        return {
+          status: 'ready',
+          prepared: canonicalPrepared.prepared,
+          specFolder: canonicalPrepared.prepared.preparedMemory.parsed.specFolder,
+          persistedContent: canonicalPrepared.persistedContent,
+          persistedFilePath: canonicalPrepared.persistedFilePath,
+        } as const;
+      }
+
+      const { file_path: currentFilePath, content: currentContent } = currentParams;
       const prepared = prepareParsedMemoryForIndexing(
         memoryParser.parseMemoryContent(currentFilePath, currentContent),
         database,
@@ -1720,13 +2304,40 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
           : currentContent,
       } as const;
     },
-    indexPrepared: ({ ready, params: currentParams, force }) => processPreparedMemory(ready.prepared, currentParams.file_path, {
-      force,
-      asyncEmbedding: true,
-      persistQualityLoopContent: false,
-      specFolderLockAlreadyHeld: true,
-      routing: buildRoutedSaveOptions(currentParams.file_path, currentParams.routeAs, currentParams.mergeModeHint),
-    }),
+    indexPrepared: ({ ready, params: currentParams, force }) => {
+      const effectiveFilePath = ready.persistedFilePath ?? currentParams.file_path;
+      const routedPrepared = isCanonicalAtomicPrepared(ready.prepared)
+        ? ready.prepared
+        : null;
+
+      if (routedPrepared) {
+        const validationResult = validateCanonicalPreparedSave(routedPrepared);
+        if (!validationResult.ok) {
+          return validationResult.rejection;
+        }
+
+        return processPreparedMemory(routedPrepared.preparedMemory, effectiveFilePath, {
+          force,
+          asyncEmbedding: true,
+          persistQualityLoopContent: false,
+          specFolderLockAlreadyHeld: true,
+          routing: routedPrepared.routing,
+        }).then((result) => {
+          for (const warning of validationResult.warnings) {
+            appendResultWarning(result, warning);
+          }
+          return result;
+        });
+      }
+
+      return processPreparedMemory(ready.prepared as PreparedParsedMemory, currentParams.file_path, {
+        force,
+        asyncEmbedding: true,
+        persistQualityLoopContent: false,
+        specFolderLockAlreadyHeld: true,
+        routing: buildRoutedSaveOptions(currentParams.file_path, currentParams.routeAs, currentParams.mergeModeHint),
+      });
+    },
     getPendingPath: (currentFilePath) => `${transactionManager.getPendingPath(currentFilePath)}.${randomUUID().slice(0, 8)}`,
     withSpecFolderLock,
     captureOriginalState: captureAtomicSaveOriginalState,
@@ -1737,10 +2348,11 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
       fs.writeFileSync(pendingPath, persistedContent, 'utf-8');
       fs.renameSync(pendingPath, currentFilePath);
     },
-    mapSuccessResult: (indexResult) => {
+    mapSuccessResult: (indexResult, context) => {
+      const effectiveFilePath = context.ready.persistedFilePath ?? file_path;
       const routedRouteCategory = indexResult.routeCategory ?? routing?.routeAs;
       const routedMergeMode = indexResult.mergeMode ?? routing?.mergeModeHint;
-      const routedTargetDocPath = indexResult.targetDocPath ?? file_path;
+      const routedTargetDocPath = indexResult.targetDocPath ?? effectiveFilePath;
 
       if (indexResult.status !== 'unchanged' && indexResult.status !== 'duplicate' && indexResult.id > 0) {
         applyPostInsertMetadata(database, indexResult.id, {});
@@ -1752,7 +2364,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         let postMutationHooks: import('./mutation-hooks.js').MutationHookResult;
         try {
           postMutationHooks = runPostMutationHooks('atomic-save', {
-            filePath: file_path,
+            filePath: routedTargetDocPath,
             specFolder: indexResult.specFolder,
             memoryId: indexResult.id,
           });
@@ -1789,7 +2401,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
 
       return {
         success: true,
-        filePath: file_path,
+        filePath: routedTargetDocPath,
         status: indexResult.status,
         id: indexResult.id,
         specFolder: indexResult.specFolder,

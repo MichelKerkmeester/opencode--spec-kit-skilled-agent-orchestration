@@ -504,6 +504,9 @@ export function executeConflict(
 
         const sourceId = newMemory.id;
         const targetId = existingMemory.id;
+        if (sourceId == null || targetId == null) {
+          throw new Error('Reconsolidation source/target memory missing id — aborting');
+        }
         edgeId = insertSupersedesEdge(db, sourceId, targetId);
         if (edgeId == null) {
           throw new Error(

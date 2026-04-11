@@ -1,22 +1,24 @@
 ---
 title: "Gate C — Writer Ready"
-description: "Verification checklist for the Gate C writer-critical path and its shadow-only proving window."
-trigger_phrases:
-  - "gate c"
-  - "writer ready"
-  - "checklist"
-  - "phase 018"
-  - "shadow compare"
+description: "Verification checklist for the Gate C writer-critical path and its parity-plus-rollback proof pack."
+trigger_phrases: ["gate c", "writer ready", "checklist", "phase 018", "parity proof"]
 importance_tier: "critical"
 contextType: "implementation"
 level: "3+"
 gate: "C"
 parent: "018-canonical-continuity-refactor"
+_memory:
+  continuity:
+    packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
+    last_updated_at: "2026-04-11T20:11:09Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Aligned checklist with current Gate C proof wording"
+    next_safe_action: "Patch ADRs with matching proof language"
+    key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/checklist.md"]
 ---
-# Verification Checklist: Gate C — Writer Ready
-
 <!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+# Verification Checklist: Gate C — Writer Ready
 
 ---
 
@@ -37,7 +39,7 @@ parent: "018-canonical-continuity-refactor"
 
 - [ ] CHK-001 [P0] Gate B closure is treated as fixed input: schema, archive flip, and ranking are not reopened
 - [ ] CHK-002 [P0] Gate C docs cite `implementation-design`, resource-map F-4/F-5/F-6/F-7, rows B1/C1/C10/C11/D1-D30, and the critical research iterations
-- [ ] CHK-003 [P1] Workstream ownership is defined for validator, writer core, templates, and shadow telemetry
+- [ ] CHK-003 [P1] Workstream ownership is defined for validator, writer core, templates, and parity/rollback telemetry
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -118,7 +120,7 @@ parent: "018-canonical-continuity-refactor"
 - [ ] CHK-100 [P0] ADR-001 through ADR-005 are documented in `decision-record.md`
 - [ ] CHK-101 [P1] Component boundaries stay aligned with `contentRouter`, `anchorMergeOperation`, `thinContinuityRecord`, and `atomicIndexMemory`
 - [ ] CHK-102 [P1] Tier 3 classifier prompt, schema, timeout, and token budget match iter 031
-- [ ] CHK-103 [P1] State-machine, rollback, and cooldown behavior match iter 034
+- [ ] CHK-103 [P1] Proof guardrails, rollback signaling, and telemetry behavior match the current Gate C contract
 <!-- /ANCHOR:arch-verify -->
 
 ---
@@ -127,7 +129,7 @@ parent: "018-canonical-continuity-refactor"
 ## L3+: PERFORMANCE VERIFICATION
 
 - [ ] CHK-110 [P0] `save.path.total p95 <= 2000ms` during Gate C proving
-- [ ] CHK-111 [P1] `save.lock.wait p99 <= 200ms` in healthy windows and no `>500ms` breach persists for two windows
+- [ ] CHK-111 [P1] `save.lock.wait p99 <= 200ms` in healthy proving runs and no `>500ms` breach appears in any accepted proof batch
 - [ ] CHK-112 [P1] Routing audit, shadow compare, and save-path dashboards use the canonical iter 033/038 span names
 - [ ] CHK-113 [P1] Resume/search perf fixtures are prepared for Gate D handoff even though Gate D code is out of scope here
 <!-- /ANCHOR:perf-verify -->
@@ -137,11 +139,11 @@ parent: "018-canonical-continuity-refactor"
 <!-- ANCHOR:deploy-ready -->
 ## L3+: DEPLOYMENT READINESS
 
-- [ ] CHK-120 [P0] `canonical_continuity_rollout` is active at `S1 shadow_only`
-- [ ] CHK-121 [P0] Automatic rollback and one-bucket demotion behavior are proven on a safe copy or staging surface
+- [ ] CHK-120 [P0] Gate C proof guard is active for non-serving parity capture
+- [ ] CHK-121 [P0] Automatic rollback or proof-path disable behavior is proven on a safe copy or staging surface
 - [ ] CHK-122 [P1] `feature_flag_events` and routing-audit JSONL rows emit on every transition and final classification
-- [ ] CHK-123 [P1] The runbook covers `S1 -> S4` promotion prerequisites and `S7` rollback triage
-- [ ] CHK-124 [P1] The 7-day stable shadow window completes without auto-disable
+- [ ] CHK-123 [P1] The runbook covers Gate C proof-pack handoff requirements and rollback triage
+- [ ] CHK-124 [P1] The proof pack is complete with no deferred proof-run requirement
 <!-- /ANCHOR:deploy-ready -->
 
 ---

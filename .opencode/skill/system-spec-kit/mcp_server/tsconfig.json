@@ -17,7 +17,7 @@
   "references": [
     { "path": "../shared" }
   ],
-  "include": ["**/*.ts", "lib/eval/data/*.json"],
+  "include": ["**/*.ts", "lib/eval/data/*.json", "lib/routing/*.json"],
   "exclude": [
     "node_modules",
     "dist",

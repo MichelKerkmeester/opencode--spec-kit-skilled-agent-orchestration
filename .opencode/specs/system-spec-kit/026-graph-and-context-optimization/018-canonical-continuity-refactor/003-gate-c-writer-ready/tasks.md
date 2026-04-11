@@ -1,22 +1,24 @@
 ---
 title: "Gate C — Writer Ready"
 description: "Gate C task ledger for the writer-critical path of phase 018."
-trigger_phrases:
-  - "gate c"
-  - "writer ready"
-  - "tasks"
-  - "phase 018"
-  - "shadow parity"
+trigger_phrases: ["gate c", "writer ready", "tasks", "phase 018", "parity proof"]
 importance_tier: "critical"
 contextType: "implementation"
 level: "3+"
 gate: "C"
 parent: "018-canonical-continuity-refactor"
+_memory:
+  continuity:
+    packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
+    last_updated_at: "2026-04-11T20:11:09Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Aligned tasks with current Gate C proof wording"
+    next_safe_action: "Patch checklist with matching proof language"
+    key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/tasks.md"]
 ---
-# Tasks: Gate C — Writer Ready
-
 <!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+# Tasks: Gate C — Writer Ready
 
 ---
 
@@ -55,7 +57,7 @@ parent: "018-canonical-continuity-refactor"
 - [ ] T007 [P] Add `_memory.continuity` to all level templates and keep the block within the iter 024 budget (`templates/level_{1,2,3,3+}/*.md`)
 - [ ] T008 [P] Update save pipeline contracts to `AtomicIndex*` types (`mcp_server/handlers/save/types.ts`)
 - [ ] T009 [P] Adapt save helpers and schemas for doc-anchor identity, route hints, and continuity fields (`handlers/save/{create-record,dedup,post-insert,response-builder,validation-responses}.ts`, `handlers/causal-links-processor.ts`, `lib/validation/save-quality-gate.ts`, `schemas/tool-input-schemas.ts`, `handlers/memory-triggers.ts`)
-- [ ] T010 Activate `S1 shadow_only`, routing audit, and shadow-compare plumbing via the iter 034 control plane (`feature_flags`, telemetry/reducer surfaces)
+- [ ] T010 Activate routed parity telemetry, routing audit, and rollback-proof plumbing via the Gate C control-plane surfaces (`feature_flags`, telemetry/reducer surfaces)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -64,7 +66,7 @@ parent: "018-canonical-continuity-refactor"
 ## Phase 3: Verification
 
 - [ ] T011 Execute the iter 029 catalog: routing 120, merge 50, validator 25, resume 10, integration 25, regression 13 (tests and fixtures)
-- [ ] T012 Prove >=95 percent golden-set parity, zero fingerprint rollback, a 7-day stable shadow window, and multi-agent governance sign-off (shadow reducers, dashboards, checklist evidence)
+- [ ] T012 Prove >=95 percent golden-set parity, zero fingerprint rollback, and multi-agent governance sign-off with a complete Gate C proof pack (reducers, dashboards, checklist evidence)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -73,7 +75,7 @@ parent: "018-canonical-continuity-refactor"
 ## Completion Criteria
 
 - [ ] All thirteen tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remain on validator, writer core, templates, or shadow proving
+- [ ] No `[B]` blocked tasks remain on validator, writer core, templates, or proof-pack assembly
 - [ ] Checklist evidence proves Gate C exit criteria and leaves Gate D as the next gate
 <!-- /ANCHOR:completion -->
 

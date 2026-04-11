@@ -173,6 +173,20 @@ describe('Tool Input Schema Validation', () => {
       } as Record<string, unknown>);
     }).toThrow();
   });
+
+  it('includes canonical continuity route hints in memory_save validation guidance', () => {
+    try {
+      validateToolArgs('memory_save', {
+        filePath: '/tmp/example.md',
+        mergeModeHint: 'append-new-session',
+      } as Record<string, unknown>);
+      throw new Error('Expected validateToolArgs to throw for invalid mergeModeHint');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      expect(message).toContain('routeAs');
+      expect(message).toContain('mergeModeHint');
+    }
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

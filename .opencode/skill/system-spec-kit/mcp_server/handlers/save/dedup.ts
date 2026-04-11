@@ -50,6 +50,12 @@ interface DuplicateLookupRow {
   content_text?: string | null;
 }
 
+interface CheckExistingRowArgs {
+  targetAnchorId: string | null;
+  warnings: string[] | undefined;
+  scope: MemoryScopeMatch;
+}
+
 function buildScopedWhereClauses(scope: MemoryScopeMatch): {
   clauses: string[];
   params: Array<string>;
@@ -183,17 +189,45 @@ function verifyStoredContentMatch(
   return null;
 }
 
+function resolveCheckExistingRowArgs(
+  targetAnchorIdOrForce: string | null | boolean,
+  forceOrWarnings: boolean | string[] | undefined,
+  warningsOrScope: string[] | MemoryScopeMatch | undefined,
+  scope: MemoryScopeMatch,
+): CheckExistingRowArgs {
+  if (typeof targetAnchorIdOrForce === 'boolean') {
+    return {
+      targetAnchorId: null,
+      warnings: Array.isArray(forceOrWarnings) ? forceOrWarnings : undefined,
+      scope: Array.isArray(warningsOrScope) || !warningsOrScope ? scope : warningsOrScope,
+    };
+  }
+
+  return {
+    targetAnchorId: targetAnchorIdOrForce ?? null,
+    warnings: Array.isArray(warningsOrScope)
+      ? warningsOrScope
+      : (Array.isArray(forceOrWarnings) ? forceOrWarnings : undefined),
+    scope: Array.isArray(warningsOrScope) || !warningsOrScope ? scope : warningsOrScope,
+  };
+}
+
 export function checkExistingRow(
   database: Database.Database,
   parsed: ParsedMemory,
   canonicalFilePath: string,
   filePath: string,
-  targetAnchorId: string | null,
-  force: boolean,
-  warnings: string[] | undefined,
+  targetAnchorIdOrForce: string | null | boolean,
+  forceOrWarnings: boolean | string[] | undefined,
+  warningsOrScope?: string[] | MemoryScopeMatch,
   scope: MemoryScopeMatch = {},
 ): IndexResult | null {
-  const { clauses: scopeClauses, params: scopeParams } = buildScopedWhereClauses(scope);
+  const {
+    targetAnchorId,
+    warnings,
+    scope: resolvedScope,
+  } = resolveCheckExistingRowArgs(targetAnchorIdOrForce, forceOrWarnings, warningsOrScope, scope);
+  const { clauses: scopeClauses, params: scopeParams } = buildScopedWhereClauses(resolvedScope);
   const candidates = [
     selectLatestExistingRow(
       database,
