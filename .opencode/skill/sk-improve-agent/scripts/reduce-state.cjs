@@ -34,6 +34,14 @@ function parseJson(content, fallback) {
   }
 }
 
+function readOptionalJson(filePath) {
+  const content = readOptionalUtf8(filePath);
+  if (content === null) {
+    return null;
+  }
+  return parseJson(content, null);
+}
+
 function writeUtf8(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, 'utf8');
@@ -55,6 +63,16 @@ function parseJsonl(content) {
 
 function isPlainObject(value) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isFiniteNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function sortObjectKeys(value) {
+  return Object.fromEntries(
+    Object.entries(value).sort((left, right) => left[0].localeCompare(right[0]))
+  );
 }
 
 function findNestedState(value, expectedState, seen = new Set()) {
@@ -155,6 +173,199 @@ function inferFamily(record, profileId) {
   if (profileId === 'context-prime') return 'session-bootstrap';
   if (profileId === 'handover') return 'session-handover';
   return profileId;
+}
+
+function buildJournalSummary(filePath) {
+  const content = readOptionalUtf8(filePath);
+  if (content === null) {
+    return null;
+  }
+
+  const events = parseJsonl(content).filter((event) => isPlainObject(event));
+  const eventTypeCounts = {};
+  let lastSessionStart = null;
+  let lastSessionEnd = null;
+  let stopReason = null;
+  let sessionOutcome = null;
+
+  for (const event of events) {
+    const eventType = typeof event.eventType === 'string' ? event.eventType : null;
+    const timestamp = typeof event.timestamp === 'string' ? event.timestamp : null;
+    const details = isPlainObject(event.details) ? event.details : {};
+
+    if (eventType) {
+      eventTypeCounts[eventType] = (eventTypeCounts[eventType] || 0) + 1;
+    }
+
+    if (eventType === 'session_start' && timestamp) {
+      lastSessionStart = timestamp;
+    }
+
+    if ((eventType === 'session_end' || eventType === 'session_ended') && timestamp) {
+      lastSessionEnd = timestamp;
+      stopReason =
+        typeof details.stopReason === 'string' && details.stopReason.trim()
+          ? details.stopReason
+          : stopReason;
+      sessionOutcome =
+        typeof details.sessionOutcome === 'string' && details.sessionOutcome.trim()
+          ? details.sessionOutcome
+          : sessionOutcome;
+    }
+  }
+
+  return {
+    lastSessionStart,
+    lastSessionEnd,
+    totalEvents: events.length,
+    eventTypeCounts: sortObjectKeys(eventTypeCounts),
+    stopReason,
+    sessionOutcome,
+  };
+}
+
+function buildCandidateLineageSummary(filePath) {
+  const data = readOptionalJson(filePath);
+  if (!isPlainObject(data) || !Array.isArray(data.nodes)) {
+    return null;
+  }
+
+  const nodes = data.nodes.filter((node) => isPlainObject(node) && typeof node.id === 'string');
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const memo = new Map();
+
+  function getDepth(nodeId, trail = new Set()) {
+    if (!nodeById.has(nodeId)) {
+      return 0;
+    }
+    if (memo.has(nodeId)) {
+      return memo.get(nodeId);
+    }
+    if (trail.has(nodeId)) {
+      return 0;
+    }
+
+    trail.add(nodeId);
+    const node = nodeById.get(nodeId);
+    const parentId = typeof node.parentId === 'string' ? node.parentId : null;
+    const depth = parentId ? getDepth(parentId, trail) + 1 : 0;
+    trail.delete(nodeId);
+    memo.set(nodeId, depth);
+    return depth;
+  }
+
+  let lineageDepth = 0;
+  for (const node of nodes) {
+    lineageDepth = Math.max(lineageDepth, getDepth(node.id));
+  }
+
+  return {
+    lineageDepth,
+    totalCandidates: nodes.length,
+    currentLeaf: nodes.length > 0 ? nodes[nodes.length - 1].id : null,
+  };
+}
+
+function buildMutationCoverageSummary(filePath) {
+  const data = readOptionalJson(filePath);
+  if (!isPlainObject(data)) {
+    return null;
+  }
+
+  const metrics = isPlainObject(data.metrics) ? data.metrics : {};
+  return {
+    coverageRatio: isFiniteNumber(metrics.coverageRatio) ? metrics.coverageRatio : null,
+    uncoveredMutations:
+      metrics.uncoveredMutations === undefined ? null : metrics.uncoveredMutations,
+  };
+}
+
+function deriveReplayCountFromDimensions(dimensions) {
+  if (!isPlainObject(dimensions)) {
+    return null;
+  }
+
+  const samples = Object.values(dimensions)
+    .map((entry) => (isPlainObject(entry) && isFiniteNumber(entry.samples) ? entry.samples : null))
+    .filter((value) => value !== null);
+
+  if (samples.length === 0) {
+    return null;
+  }
+
+  return Math.max(...samples);
+}
+
+function deriveStabilityCoefficientFromDimensions(dimensions) {
+  if (!isPlainObject(dimensions)) {
+    return null;
+  }
+
+  const coefficients = Object.values(dimensions)
+    .map((entry) => (isPlainObject(entry) && isFiniteNumber(entry.coefficient) ? entry.coefficient : null))
+    .filter((value) => value !== null);
+
+  if (coefficients.length === 0) {
+    return null;
+  }
+
+  return Math.min(...coefficients);
+}
+
+function collectSampleQualityMatches(value, seen = new Set(), matches = []) {
+  if (!value || typeof value !== 'object') {
+    return matches;
+  }
+  if (seen.has(value)) {
+    return matches;
+  }
+  seen.add(value);
+
+  if (Array.isArray(value)) {
+    for (const entry of value) {
+      collectSampleQualityMatches(entry, seen, matches);
+    }
+    return matches;
+  }
+
+  const replayCount = isFiniteNumber(value.replayCount)
+    ? value.replayCount
+    : deriveReplayCountFromDimensions(value.dimensions);
+  const stabilityCoefficient = isFiniteNumber(value.stabilityCoefficient)
+    ? value.stabilityCoefficient
+    : deriveStabilityCoefficientFromDimensions(value.dimensions);
+  const isInsufficientSample = value.state === 'insufficientSample' && replayCount !== null;
+
+  if (isInsufficientSample || stabilityCoefficient !== null) {
+    matches.push({
+      replayCount: replayCount === null ? null : replayCount,
+      stabilityCoefficient: stabilityCoefficient === null ? null : stabilityCoefficient,
+    });
+  }
+
+  for (const entry of Object.values(value)) {
+    collectSampleQualityMatches(entry, seen, matches);
+  }
+
+  return matches;
+}
+
+function summarizeSampleQuality(records, registry) {
+  let latestSummary = null;
+
+  for (const record of records) {
+    const matches = collectSampleQualityMatches(record);
+    if (matches.length > 0) {
+      latestSummary = matches[matches.length - 1];
+    }
+  }
+
+  return {
+    replayCount: latestSummary?.replayCount ?? null,
+    stabilityCoefficient: latestSummary?.stabilityCoefficient ?? null,
+    insufficientSampleIterations: registry.insufficientSampleIterations.length,
+    insufficientDataIterations: registry.insufficientDataIterations.length,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -465,6 +676,16 @@ function formatDimensionName(key) {
     .trim();
 }
 
+function formatDashboardValue(value) {
+  if (value === null || value === undefined) {
+    return 'n/a';
+  }
+  if (isFiniteNumber(value)) {
+    return Number.isInteger(value) ? String(value) : String(Math.round(value * 10000) / 10000);
+  }
+  return String(value);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 7. DASHBOARD RENDERER
 // ─────────────────────────────────────────────────────────────────────────────
@@ -523,7 +744,26 @@ ${failureSummary}
 ${renderDimensionalProgress(bucket)}`;
 }
 
-function renderDashboard(registry) {
+function renderSampleQualitySection(sampleQuality) {
+  const hasInsufficientData =
+    sampleQuality.insufficientSampleIterations > 0 ||
+    sampleQuality.insufficientDataIterations > 0;
+  const explanation = hasInsufficientData
+    ? '\nSome iterations had insufficient data for trade-off / stability analysis. Review the specific iterations before trusting verdicts.\n'
+    : '';
+
+  return `## Sample Quality
+
+| Field | Value |
+| --- | --- |
+| replayCount | ${formatDashboardValue(sampleQuality.replayCount)} |
+| stabilityCoefficient | ${formatDashboardValue(sampleQuality.stabilityCoefficient)} |
+| insufficientSampleIterations | ${sampleQuality.insufficientSampleIterations} |
+| insufficientDataIterations | ${sampleQuality.insufficientDataIterations} |
+${explanation}`;
+}
+
+function renderDashboard(registry, sampleQuality) {
   const sections = Object.values(registry.profiles)
     .sort((left, right) => left.profileId.localeCompare(right.profileId))
     .map((bucket) => renderProfileSection(bucket))
@@ -555,6 +795,8 @@ function renderDashboard(registry) {
 | Benchmark passes | ${registry.globalMetrics.benchmarkPassCount} |
 | Benchmark fails | ${registry.globalMetrics.benchmarkFailCount} |
 | Infra failures | ${registry.globalMetrics.infraFailureCount} |
+
+${renderSampleQualitySection(sampleQuality)}
 
 ## Guardrails
 
@@ -592,13 +834,20 @@ function main() {
   const dashboardPath = path.join(runtimeRoot, 'agent-improvement-dashboard.md');
   const configPath = path.join(runtimeRoot, 'agent-improvement-config.json');
   const mirrorDriftReportPath = path.join(runtimeRoot, 'mirror-drift-report.md');
+  const journalPath = path.join(runtimeRoot, 'improvement-journal.jsonl');
+  const candidateLineagePath = path.join(runtimeRoot, 'candidate-lineage.json');
+  const mutationCoveragePath = path.join(runtimeRoot, 'mutation-coverage.json');
 
   const records = parseJsonl(readUtf8(stateLogPath));
   const registry = buildRegistry(records);
+  registry.journalSummary = buildJournalSummary(journalPath);
+  registry.candidateLineage = buildCandidateLineageSummary(candidateLineagePath);
+  registry.mutationCoverage = buildMutationCoverageSummary(mutationCoveragePath);
   const config = parseJson(readOptionalUtf8(configPath) || '{}', {});
   const mirrorDriftReport = readOptionalUtf8(mirrorDriftReportPath);
   registry.stopStatus = evaluateStopStatus(registry, config, mirrorDriftReport);
-  const dashboard = renderDashboard(registry);
+  const sampleQuality = summarizeSampleQuality(records, registry);
+  const dashboard = renderDashboard(registry, sampleQuality);
 
   writeUtf8(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
   writeUtf8(dashboardPath, dashboard);

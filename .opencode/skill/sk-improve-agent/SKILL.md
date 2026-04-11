@@ -359,6 +359,34 @@ Keep session-end emissions aligned to those helper-owned values until the helper
 - Confirm mode mirrors the same boundaries, with `gate_evaluation` emitted after the operator-facing approval gate is resolved.
 - Operators invoking the helper manually must use the same boundary order so replay and reducer consumers see a consistent journal shape.
 
+### Reducer Consumer Side
+
+The reducer is the consumer for replay artifacts on refresh. Every `scripts/reduce-state.cjs` pass now attempts to read:
+
+- `improvement-journal.jsonl`
+- `candidate-lineage.json`
+- `mutation-coverage.json`
+
+These inputs remain optional. Missing files do not fail the reducer; the corresponding registry field is set to `null` so dashboard and registry refreshes still complete.
+
+## ADR-002: Journal Replay Consumer
+
+ADR-002 is implemented in the reducer via replay consumers instead of a separate orchestrator-only synthesis step. During each refresh pass, `scripts/reduce-state.cjs` now reads the following artifacts when present:
+
+- `improvement-journal.jsonl` to summarize last session boundaries, total replayed events, per-event counts, and terminal `stopReason` / `sessionOutcome`
+- `candidate-lineage.json` to summarize lineage depth, total candidate count, and the latest candidate leaf
+- `mutation-coverage.json` to summarize mutation coverage ratio and uncovered mutations
+
+The reducer writes these summaries into new top-level registry fields:
+
+- `journalSummary`
+- `candidateLineage`
+- `mutationCoverage`
+
+Graceful degradation is required: if any artifact is missing, unreadable, or not yet generated for the current runtime, the reducer preserves the rest of the registry and records `null` for that field instead of throwing.
+
+The dashboard now also includes a dedicated **Sample Quality** section. This separates replay/stability sample sufficiency from benchmark failures so operators can tell the difference between a true regression and an iteration that simply lacked enough data for trade-off or replay-stability trust.
+
 <!-- ANCHOR:rules -->
 ## 5. RULES
 

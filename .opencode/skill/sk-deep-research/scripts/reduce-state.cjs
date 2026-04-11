@@ -213,6 +213,105 @@ function buildGraphConvergenceRollup(eventRecords) {
   };
 }
 
+function formatBlockedByList(blockedBy) {
+  return Array.isArray(blockedBy) && blockedBy.length
+    ? blockedBy.join(', ')
+    : 'unspecified gates';
+}
+
+function formatSummaryValue(value) {
+  if (Array.isArray(value)) {
+    return value.map((entry) => formatSummaryValue(entry)).join(', ');
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.keys(value)
+      .sort()
+      .map((key) => `${key}=${formatSummaryValue(value[key])}`)
+      .join(', ');
+  }
+
+  return String(value);
+}
+
+function summarizeGateResults(gateResults) {
+  if (!gateResults || typeof gateResults !== 'object' || !Object.keys(gateResults).length) {
+    return 'none recorded';
+  }
+
+  return Object.keys(gateResults)
+    .sort()
+    .map((gateName) => {
+      const result = gateResults[gateName];
+      if (!result || typeof result !== 'object') {
+        return `${gateName}=${formatSummaryValue(result)}`;
+      }
+
+      const status = typeof result.pass === 'boolean'
+        ? (result.pass ? 'pass' : 'fail')
+        : 'unknown';
+      const details = Object.keys(result)
+        .filter((key) => key !== 'pass' && result[key] !== undefined && result[key] !== null && result[key] !== '')
+        .sort()
+        .map((key) => `${key}=${formatSummaryValue(result[key])}`);
+
+      return details.length
+        ? `${gateName}=${status} (${details.join(', ')})`
+        : `${gateName}=${status}`;
+    })
+    .join('; ');
+}
+
+function formatGraphBlocker(blocker) {
+  if (!blocker || typeof blocker !== 'object') {
+    return formatSummaryValue(blocker);
+  }
+
+  const name = typeof blocker.name === 'string' && blocker.name ? blocker.name : 'unnamed-blocker';
+  const severity = typeof blocker.severity === 'string' && blocker.severity ? ` (${blocker.severity})` : '';
+  const detail = typeof blocker.detail === 'string' && blocker.detail ? blocker.detail : null;
+
+  if (detail) {
+    return `${name}${severity}: ${detail}`;
+  }
+
+  const extras = Object.keys(blocker)
+    .filter((key) => !['name', 'severity', 'detail'].includes(key))
+    .sort()
+    .map((key) => `${key}=${formatSummaryValue(blocker[key])}`);
+
+  return extras.length ? `${name}${severity}: ${extras.join(', ')}` : `${name}${severity}`;
+}
+
+function getTimestampValue(timestamp) {
+  const value = Date.parse(timestamp);
+  return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
+}
+
+function resolveNextFocus(registry, iterationFiles, iterationRecords) {
+  const latestBlockedStop = Array.isArray(registry.blockedStopHistory)
+    ? registry.blockedStopHistory.at(-1)
+    : null;
+  const latestIteration = Array.isArray(iterationRecords) ? iterationRecords.at(-1) : null;
+
+  if (latestBlockedStop) {
+    const latestBlockedTimestamp = getTimestampValue(latestBlockedStop.timestamp);
+    const latestIterationTimestamp = getTimestampValue(latestIteration?.timestamp);
+
+    if (latestBlockedTimestamp > latestIterationTimestamp) {
+      return [
+        `BLOCKED on: ${formatBlockedByList(latestBlockedStop.blockedBy)}`,
+        `Recovery: ${latestBlockedStop.recoveryStrategy || '[No recovery strategy recorded]'}`,
+        'Address the blocking gates before the next iteration.',
+      ].join('\n');
+    }
+  }
+
+  return iterationFiles.map((iteration) => iteration.nextFocus).filter(Boolean).at(-1)
+    || registry.openQuestions[0]?.text
+    || '[All tracked questions are resolved]';
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. CORE LOGIC
 // ─────────────────────────────────────────────────────────────────────────────
@@ -368,7 +467,7 @@ function replaceAnchorSection(content, anchorId, heading, body) {
   return content.replace(pattern, replacement);
 }
 
-function updateStrategyContent(strategyContent, registry, iterationFiles) {
+function updateStrategyContent(strategyContent, registry, iterationFiles, iterationRecords) {
   const answeredTexts = registry.resolvedQuestions.map((question) => question.text);
   const questionEntries = parseStrategyQuestions(strategyContent);
   const answeredSet = new Set(answeredTexts.map(normalizeText));
@@ -383,9 +482,7 @@ function updateStrategyContent(strategyContent, registry, iterationFiles) {
   const whatFailed = iterationFiles
     .filter((iteration) => iteration.reflectionFailed)
     .map((iteration) => `${iteration.reflectionFailed} (iteration ${iteration.run})`);
-  const nextFocus = iterationFiles.map((iteration) => iteration.nextFocus).filter(Boolean).at(-1)
-    || registry.openQuestions[0]?.text
-    || '[All tracked questions are resolved]';
+  const nextFocus = resolveNextFocus(registry, iterationFiles, iterationRecords);
 
   let updated = strategyContent;
   updated = replaceAnchorSection(updated, 'key-questions', '3. KEY QUESTIONS (remaining)', rewrittenQuestionLines.join('\n'));
@@ -412,9 +509,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     .map((record) => (typeof record.newInfoRatio === 'number' ? record.newInfoRatio : null))
     .filter((value) => value !== null);
   const lastThreeRatios = ratios.slice(-3).map((value) => value.toFixed(2)).join(' -> ') || 'N/A';
-  const nextFocus = iterationFiles.map((iteration) => iteration.nextFocus).filter(Boolean).at(-1)
-    || registry.openQuestions[0]?.text
-    || '[All tracked questions are resolved]';
+  const nextFocus = resolveNextFocus(registry, iterationFiles, iterationRecords);
   const progressRows = iterationRecords
     .map((record) => {
       const track = record.focusTrack || '-';
@@ -499,6 +594,27 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
       : ['- None active beyond normal research uncertainty.']),
     '',
     '<!-- /ANCHOR:active-risks -->',
+    '<!-- ANCHOR:blocked-stops -->',
+    '## 9. BLOCKED STOPS',
+    ...(registry.blockedStopHistory.length
+      ? registry.blockedStopHistory.flatMap((entry) => ([
+          `### Iteration ${entry.run} — blocked by [${formatBlockedByList(entry.blockedBy)}]`,
+          `- Recovery: ${entry.recoveryStrategy || '[No recovery strategy recorded]'}`,
+          `- Gate results: ${summarizeGateResults(entry.gateResults)}`,
+          `- Timestamp: ${entry.timestamp || '[Unknown timestamp]'}`,
+          '',
+        ]))
+      : ['No blocked-stop events recorded.', '']),
+    '<!-- /ANCHOR:blocked-stops -->',
+    '<!-- ANCHOR:graph-convergence -->',
+    '## 10. GRAPH CONVERGENCE',
+    `- graphConvergenceScore: ${Number.isFinite(registry.graphConvergenceScore) ? registry.graphConvergenceScore.toFixed(2) : '[Not recorded]'}`,
+    `- graphDecision: ${registry.graphDecision || '[Not recorded]'}`,
+    ...(registry.graphBlockers.length
+      ? registry.graphBlockers.map((blocker) => `- Blocker: ${formatGraphBlocker(blocker)}`)
+      : ['- graphBlockers: none recorded']),
+    '',
+    '<!-- /ANCHOR:graph-convergence -->',
     '',
   ].join('\n');
 }
@@ -537,7 +653,7 @@ function reduceResearchState(specFolder, options = {}) {
     : [];
 
   const registry = buildRegistry(strategyQuestions, iterationFiles, records, events);
-  const strategy = updateStrategyContent(strategyContent, registry, iterationFiles);
+  const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 
   if (write) {

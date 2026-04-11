@@ -62,15 +62,31 @@ function zeroSeverityMap() {
 
 /**
  * Parse JSONL content into an array of records, preserving both iteration and
- * event rows while skipping malformed lines.
+ * event rows. Backward-compatible array return.
  *
  * @param {string} jsonlContent - Newline-delimited JSON string
- * @returns {Array<Object>} Parsed records
+ * @returns {Array<Object>} Parsed records (corrupt lines silently dropped — use parseJsonlDetailed for fail-closed behavior)
  */
 function parseJsonl(jsonlContent) {
+  return parseJsonlDetailed(jsonlContent).records;
+}
+
+/**
+ * Parse JSONL content and report malformed lines (fail-closed pathway).
+ *
+ * Returns both the parsed records and a corruption warning list. The reducer
+ * exit code is non-zero when warnings are present unless `--lenient` is passed.
+ *
+ * @param {string} jsonlContent - Newline-delimited JSON string
+ * @returns {{records: Array<Object>, corruptionWarnings: Array<{line: number, raw: string, error: string}>}}
+ */
+function parseJsonlDetailed(jsonlContent) {
   const records = [];
+  const corruptionWarnings = [];
+  let lineNumber = 0;
 
   for (const rawLine of jsonlContent.split('\n')) {
+    lineNumber += 1;
     const line = rawLine.trim();
     if (!line) {
       continue;
@@ -78,12 +94,16 @@ function parseJsonl(jsonlContent) {
 
     try {
       records.push(JSON.parse(line));
-    } catch (_error) {
-      continue;
+    } catch (error) {
+      corruptionWarnings.push({
+        line: lineNumber,
+        raw: rawLine.length > 200 ? `${rawLine.slice(0, 200)}...` : rawLine,
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 
-  return records;
+  return { records, corruptionWarnings };
 }
 
 function extractSection(markdown, heading) {
@@ -438,7 +458,7 @@ function buildBlockedStopHistory(records) {
     });
 }
 
-function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, config) {
+function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, config, corruptionWarnings = []) {
   const { openFindings, resolvedFindings } = buildFindingRegistry(iterationFiles, iterationRecords);
   const dimensionCoverage = buildDimensionCoverage(iterationRecords, strategyDimensions);
   const findingsBySeverity = buildFindingsBySeverity(openFindings);
@@ -446,6 +466,24 @@ function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, con
   const graphConvergence = buildGraphConvergenceRollup(iterationRecords);
   const blockedStopHistory = buildBlockedStopHistory(iterationRecords);
 
+  // Part C REQ-018: split repeatedFindings into two semantically distinct buckets
+  // so persistent-same-severity findings and severity-churn findings don't collapse.
+  const persistentSameSeverity = openFindings.filter((finding) => {
+    if (finding.lastSeen - finding.firstSeen < 1) return false;
+    const transitions = Array.isArray(finding.transitions) ? finding.transitions : [];
+    // Exclude the initial discovery transition from the "no change" count
+    const nontrivialTransitions = transitions.filter((t) => t.from !== null);
+    return nontrivialTransitions.length === 0;
+  });
+
+  const severityChanged = openFindings.filter((finding) => {
+    const transitions = Array.isArray(finding.transitions) ? finding.transitions : [];
+    const nontrivialTransitions = transitions.filter((t) => t.from !== null);
+    return nontrivialTransitions.length > 0;
+  });
+
+  // Deprecated: keep repeatedFindings for backward compatibility with older consumers.
+  // New code should read persistentSameSeverity + severityChanged directly.
   const repeatedFindings = openFindings.filter((finding) => finding.lastSeen - finding.firstSeen >= 1);
 
   return {
@@ -455,6 +493,8 @@ function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, con
     openFindings,
     resolvedFindings,
     blockedStopHistory,
+    persistentSameSeverity,
+    severityChanged,
     repeatedFindings,
     dimensionCoverage,
     findingsBySeverity,
@@ -464,6 +504,7 @@ function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, con
     graphConvergenceScore: graphConvergence.score,
     graphDecision: graphConvergence.decision,
     graphBlockers: graphConvergence.blockers,
+    corruptionWarnings,
   };
 }
 
@@ -504,7 +545,7 @@ function buildExhaustedApproaches(iterationFiles) {
     .join('\n\n');
 }
 
-function replaceAnchorSection(content, anchorId, heading, body) {
+function replaceAnchorSection(content, anchorId, heading, body, options = {}) {
   const pattern = new RegExp(`<!-- ANCHOR:${anchorId} -->[\\s\\S]*?<!-- \\/ANCHOR:${anchorId} -->`, 'm');
   const replacement = [
     `<!-- ANCHOR:${anchorId} -->`,
@@ -515,12 +556,28 @@ function replaceAnchorSection(content, anchorId, heading, body) {
   ].join('\n');
 
   if (!pattern.test(content)) {
-    return content;
+    if (options.createMissing) {
+      const suffix = content.endsWith('\n') ? '' : '\n';
+      return `${content}${suffix}\n${replacement}\n`;
+    }
+    throw new Error(
+      `Missing machine-owned anchor "${anchorId}" in deep-review strategy file. `
+      + 'Pass createMissing:true (or the reducer CLI flag --create-missing-anchors) to bootstrap.',
+    );
   }
   return content.replace(pattern, replacement);
 }
 
-function updateStrategyContent(strategyContent, registry, iterationFiles) {
+function updateStrategyContent(strategyContent, registry, iterationFiles, options = {}) {
+  // Early return when there is no strategy file to update. Empty content
+  // cannot contain the machine-owned anchors and replaceAnchorSection would
+  // correctly fail-close — but for that specific case we intentionally skip
+  // rather than throw so bootstrap flows (no strategy yet) still work.
+  if (!strategyContent) {
+    return strategyContent;
+  }
+
+  const anchorOptions = { createMissing: Boolean(options.createMissingAnchors) };
   const severity = registry.findingsBySeverity;
   const runningFindings = [
     `- P0 (Blockers): ${severity.P0}`,
@@ -539,21 +596,44 @@ function updateStrategyContent(strategyContent, registry, iterationFiles) {
     .map((dimension) => `- [ ] ${dimension}`)
     .join('\n') || '[All dimensions complete]';
 
-  const nextFocus = iterationFiles.map((iteration) => iteration.nextFocus).filter(Boolean).at(-1)
+  // Default next-focus comes from latest iteration → first uncovered dimension → fallback.
+  let nextFocus = iterationFiles.map((iteration) => iteration.nextFocus).filter(Boolean).at(-1)
     || REQUIRED_DIMENSIONS.find((dimension) => !registry.dimensionCoverage[dimension])
     || '[All dimensions covered]';
 
+  // Part C REQ-014: when blocked-stop is the most recent loop event, override
+  // next-focus with the recovery strategy so operators see the blocker first.
+  const latestBlockedStop = registry.blockedStopHistory?.at(-1);
+  if (latestBlockedStop && latestBlockedStop.timestamp) {
+    const latestIterationTimestamp = iterationFiles
+      .map((iteration) => iteration.timestamp)
+      .filter(Boolean)
+      .at(-1);
+    if (!latestIterationTimestamp || latestBlockedStop.timestamp >= latestIterationTimestamp) {
+      const blockers = Array.isArray(latestBlockedStop.blockedBy) && latestBlockedStop.blockedBy.length > 0
+        ? latestBlockedStop.blockedBy.join(', ')
+        : 'unknown gates';
+      const recovery = latestBlockedStop.recoveryStrategy || '[no recovery strategy provided]';
+      nextFocus = [
+        `BLOCKED on: ${blockers}`,
+        `Recovery: ${recovery}`,
+        'Address the blocking gates before the next iteration.',
+      ].join('\n');
+    }
+  }
+
   let updated = strategyContent;
-  updated = replaceAnchorSection(updated, 'review-dimensions', '3. REVIEW DIMENSIONS (remaining)', remainingDimensions);
-  updated = replaceAnchorSection(updated, 'completed-dimensions', '4. COMPLETED DIMENSIONS', completedDimensions);
-  updated = replaceAnchorSection(updated, 'running-findings', '5. RUNNING FINDINGS', runningFindings);
+  updated = replaceAnchorSection(updated, 'review-dimensions', '3. REVIEW DIMENSIONS (remaining)', remainingDimensions, anchorOptions);
+  updated = replaceAnchorSection(updated, 'completed-dimensions', '4. COMPLETED DIMENSIONS', completedDimensions, anchorOptions);
+  updated = replaceAnchorSection(updated, 'running-findings', '5. RUNNING FINDINGS', runningFindings, anchorOptions);
   updated = replaceAnchorSection(
     updated,
     'exhausted-approaches',
     '9. EXHAUSTED APPROACHES (do not retry)',
     buildExhaustedApproaches(iterationFiles),
+    anchorOptions,
   );
-  updated = replaceAnchorSection(updated, 'next-focus', '11. NEXT FOCUS', nextFocus);
+  updated = replaceAnchorSection(updated, 'next-focus', '11. NEXT FOCUS', nextFocus, anchorOptions);
   return updated;
 }
 
@@ -652,21 +732,64 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     dimensionRows,
     '',
     '<!-- /ANCHOR:dimension-coverage -->',
+    '<!-- ANCHOR:blocked-stops -->',
+    '## 6. BLOCKED STOPS',
+    ...(registry.blockedStopHistory && registry.blockedStopHistory.length > 0
+      ? registry.blockedStopHistory.flatMap((entry) => {
+          const blockers = Array.isArray(entry.blockedBy) && entry.blockedBy.length > 0
+            ? entry.blockedBy.join(', ')
+            : 'unknown gates';
+          const gateSummary = entry.gateResults && typeof entry.gateResults === 'object'
+            ? Object.entries(entry.gateResults)
+                .map(([gate, result]) => {
+                  const pass = result && typeof result === 'object' && 'pass' in result ? result.pass : '?';
+                  return `${gate}: ${pass}`;
+                })
+                .join(', ')
+            : '[no gate results]';
+          return [
+            `### Iteration ${entry.run} — blocked by [${blockers}]`,
+            `- Recovery: ${entry.recoveryStrategy || '[no recovery strategy recorded]'}`,
+            `- Gate results: ${gateSummary}`,
+            `- Timestamp: ${entry.timestamp || '[no timestamp]'}`,
+            '',
+          ];
+        })
+      : ['No blocked-stop events recorded.', '']),
+    '<!-- /ANCHOR:blocked-stops -->',
+    '<!-- ANCHOR:graph-convergence -->',
+    '## 7. GRAPH CONVERGENCE',
+    `- graphConvergenceScore: ${Number(registry.graphConvergenceScore || 0).toFixed(2)}`,
+    `- graphDecision: ${registry.graphDecision || 'none'}`,
+    ...(Array.isArray(registry.graphBlockers) && registry.graphBlockers.length > 0
+      ? [`- graphBlockers: ${registry.graphBlockers.map((b) => (typeof b === 'string' ? b : JSON.stringify(b))).join(', ')}`]
+      : ['- graphBlockers: none']),
+    '',
+    '<!-- /ANCHOR:graph-convergence -->',
     '<!-- ANCHOR:trend -->',
-    '## 6. TREND',
+    '## 8. TREND',
     `- Last 3 ratios: ${lastThreeRatios}`,
     `- convergenceScore: ${Number(registry.convergenceScore || 0).toFixed(2)}`,
     `- openFindings: ${registry.openFindingsCount}`,
-    `- repeatedFindings: ${registry.repeatedFindings.length}`,
+    `- persistentSameSeverity: ${(registry.persistentSameSeverity || []).length}`,
+    `- severityChanged: ${(registry.severityChanged || []).length}`,
+    `- repeatedFindings (deprecated combined bucket): ${registry.repeatedFindings.length}`,
     '',
     '<!-- /ANCHOR:trend -->',
+    '<!-- ANCHOR:corruption-warnings -->',
+    '## 9. CORRUPTION WARNINGS',
+    ...(Array.isArray(registry.corruptionWarnings) && registry.corruptionWarnings.length > 0
+      ? registry.corruptionWarnings.map((w) => `- Line ${w.line}: ${w.error} (raw: ${w.raw})`)
+      : ['No corrupt JSONL lines detected.']),
+    '',
+    '<!-- /ANCHOR:corruption-warnings -->',
     '<!-- ANCHOR:next-focus -->',
-    '## 7. NEXT FOCUS',
+    '## 10. NEXT FOCUS',
     nextFocus,
     '',
     '<!-- /ANCHOR:next-focus -->',
     '<!-- ANCHOR:active-risks -->',
-    '## 8. ACTIVE RISKS',
+    '## 11. ACTIVE RISKS',
     ...(latestIteration?.status === 'error'
       ? ['- Latest iteration reported error status.']
       : severity.P0 > 0
@@ -689,6 +812,8 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
  */
 function reduceReviewState(specFolder, options = {}) {
   const write = options.write !== false;
+  const lenient = Boolean(options.lenient);
+  const createMissingAnchors = Boolean(options.createMissingAnchors);
   const resolvedSpecFolder = path.resolve(specFolder);
   const reviewDir = path.join(resolvedSpecFolder, 'review');
   const configPath = path.join(reviewDir, 'deep-review-config.json');
@@ -699,7 +824,7 @@ function reduceReviewState(specFolder, options = {}) {
   const iterationDir = path.join(reviewDir, 'iterations');
 
   const config = readJson(configPath);
-  const records = parseJsonl(readUtf8(stateLogPath));
+  const { records, corruptionWarnings } = parseJsonlDetailed(readUtf8(stateLogPath));
   const strategyContent = fs.existsSync(strategyPath) ? readUtf8(strategyPath) : '';
   const strategyDimensions = parseStrategyDimensions(strategyContent);
   const iterationFiles = fs.existsSync(iterationDir)
@@ -709,8 +834,8 @@ function reduceReviewState(specFolder, options = {}) {
         .map((fileName) => parseIterationFile(path.join(iterationDir, fileName)))
     : [];
 
-  const registry = buildRegistry(strategyDimensions, iterationFiles, records, config);
-  const strategy = updateStrategyContent(strategyContent, registry, iterationFiles);
+  const registry = buildRegistry(strategyDimensions, iterationFiles, records, config, corruptionWarnings);
+  const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, { createMissingAnchors });
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 
   if (write) {
@@ -719,6 +844,18 @@ function reduceReviewState(specFolder, options = {}) {
       writeUtf8(strategyPath, strategy.endsWith('\n') ? strategy : `${strategy}\n`);
     }
     writeUtf8(dashboardPath, dashboard);
+  }
+
+  // Part C REQ-015: fail-closed on corruption. Callers can opt out via lenient:true.
+  if (corruptionWarnings.length > 0 && !lenient) {
+    const preview = corruptionWarnings
+      .slice(0, 3)
+      .map((w) => `  - line ${w.line}: ${w.error}`)
+      .join('\n');
+    process.stderr.write(
+      `[sk-deep-review] parseJsonl detected ${corruptionWarnings.length} corrupt line(s) in ${stateLogPath}:\n${preview}\n`
+      + 'Pass --lenient to the reducer CLI (or lenient:true to reduceReviewState) to ignore corruption.\n',
+    );
   }
 
   return {
@@ -730,6 +867,8 @@ function reduceReviewState(specFolder, options = {}) {
     registry,
     strategy,
     dashboard,
+    corruptionWarnings,
+    hasCorruption: corruptionWarnings.length > 0,
   };
 }
 
@@ -738,27 +877,45 @@ function reduceReviewState(specFolder, options = {}) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 if (require.main === module) {
-  const specFolder = process.argv[2];
+  const args = process.argv.slice(2);
+  const lenient = args.includes('--lenient');
+  const createMissingAnchors = args.includes('--create-missing-anchors');
+  const positional = args.filter((arg) => !arg.startsWith('--'));
+  const specFolder = positional[0];
+
   if (!specFolder) {
-    process.stderr.write('Usage: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs <spec-folder>\n');
+    process.stderr.write(
+      'Usage: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs <spec-folder> [--lenient] [--create-missing-anchors]\n',
+    );
     process.exit(1);
   }
 
-  const result = reduceReviewState(specFolder, { write: true });
-  process.stdout.write(
-    `${JSON.stringify(
-      {
-        registryPath: result.registryPath,
-        dashboardPath: result.dashboardPath,
-        strategyPath: result.strategyPath,
-        openFindingsCount: result.registry.openFindingsCount,
-        resolvedFindingsCount: result.registry.resolvedFindingsCount,
-        convergenceScore: result.registry.convergenceScore,
-      },
-      null,
-      2,
-    )}\n`,
-  );
+  try {
+    const result = reduceReviewState(specFolder, { write: true, lenient, createMissingAnchors });
+    process.stdout.write(
+      `${JSON.stringify(
+        {
+          registryPath: result.registryPath,
+          dashboardPath: result.dashboardPath,
+          strategyPath: result.strategyPath,
+          openFindingsCount: result.registry.openFindingsCount,
+          resolvedFindingsCount: result.registry.resolvedFindingsCount,
+          convergenceScore: result.registry.convergenceScore,
+          graphConvergenceScore: result.registry.graphConvergenceScore,
+          corruptionCount: result.corruptionWarnings.length,
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    // Part C REQ-015: non-zero exit when corruption detected and not lenient.
+    if (result.hasCorruption && !lenient) {
+      process.exit(2);
+    }
+  } catch (error) {
+    process.stderr.write(`[sk-deep-review] reducer failed: ${error instanceof Error ? error.message : String(error)}\n`);
+    process.exit(3);
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -772,6 +929,8 @@ module.exports = {
   buildGraphConvergenceRollup,
   parseIterationFile,
   parseJsonl,
+  parseJsonlDetailed,
   parseFindingLine,
+  replaceAnchorSection,
   reduceReviewState,
 };

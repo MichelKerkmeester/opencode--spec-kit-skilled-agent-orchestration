@@ -444,6 +444,9 @@ Reducer-owned JSON document regenerated after every iteration and lifecycle tran
   "lineageMode": "resume",
   "openFindings": [],
   "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
   "repeatedFindings": [],
   "dimensionCoverage": {
     "correctness": true,
@@ -461,13 +464,35 @@ Reducer-owned JSON document regenerated after every iteration and lifecycle tran
   "convergenceScore": 0.44,
   "graphConvergenceScore": 1.01,
   "graphDecision": "STOP_ALLOWED",
-  "graphBlockers": []
+  "graphBlockers": [],
+  "corruptionWarnings": []
 }
 ```
 
 This file is machine-owned and must stay synchronized with the latest iteration delta, dashboard metrics, and synthesized review report.
 
+### Phase 008 Additions
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `blockedStopHistory` | array | One entry per `blocked_stop` JSONL event: `{run, blockedBy, gateResults, recoveryStrategy, timestamp}`. Rendered in the dashboard `BLOCKED STOPS` section and can drive the strategy `next-focus` anchor when blocked-stop is the most recent loop event. |
+| `persistentSameSeverity` | array | Findings observed in ≥2 iterations with NO severity transitions beyond initial discovery. REQ-018 split of the deprecated `repeatedFindings` bucket. |
+| `severityChanged` | array | Findings that went through at least one severity transition (P0↔P1↔P2) in their `transitions` history. |
+| `repeatedFindings` | array | **Deprecated.** Union of `persistentSameSeverity` and `severityChanged`. Retained for backward compatibility; new code should read the split arrays. |
+| `corruptionWarnings` | array | Per-line corruption reports from `parseJsonlDetailed()`: `{line, raw, error}`. Non-empty means the reducer detected malformed JSONL. |
+
+### Default Values
+
 When no `graph_convergence` event has been recorded yet, defaults are `graphConvergenceScore: 0`, `graphDecision: null`, and `graphBlockers: []`.
+When no `blocked_stop` event has been recorded yet, `blockedStopHistory: []`.
+When JSONL parses cleanly, `corruptionWarnings: []`.
+
+### Fail-Closed Semantics (REQ-015, REQ-016)
+
+- **Malformed JSONL**: The reducer CLI exits with code `2` and writes a warning to stderr when `corruptionWarnings.length > 0`. Pass `--lenient` (or `lenient:true` to `reduceReviewState`) to escape-hatch out and preserve the v1.2.0.0 fail-open behavior for legacy packets.
+- **Missing machine-owned anchors**: `replaceAnchorSection()` throws `Error('Missing machine-owned anchor "<id>" in deep-review strategy file.')` when the strategy file is present but lacks one of the required anchors. Pass `--create-missing-anchors` (or `createMissingAnchors:true`) to bootstrap empty strategy files by appending the missing anchor blocks.
+- **Dashboard surfaces**: `CORRUPTION WARNINGS` section lists detected lines; `BLOCKED STOPS` section lists `blockedStopHistory` entries; `GRAPH CONVERGENCE` section reports `graphConvergenceScore` / `graphDecision` / `graphBlockers`.
+- **Strategy next-focus override**: When the latest `blocked_stop` event timestamp is newer than the latest iteration timestamp, the reducer rewrites the strategy `next-focus` anchor to surface the blocking gates and recovery hint so operators see the blocker before choosing the next iteration direction.
 
 ---
 

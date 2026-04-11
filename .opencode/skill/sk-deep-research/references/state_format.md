@@ -383,6 +383,63 @@ Outputs:
 - `dashboardMetrics`
 - `strategyUpdates`
 
+### Findings Registry (findings-registry.json)
+
+`findings-registry.json` is the reducer-owned research registry. It aggregates open/resolved questions, key findings, negative knowledge, and reducer-derived stop-state signals into a single read-only artifact.
+
+```json
+{
+  "openQuestions": [],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "blockedStopHistory": [
+    {
+      "run": 7,
+      "blockedBy": ["keyQuestionCoverage", "evidenceDensity"],
+      "gateResults": {
+        "convergence": { "pass": true, "score": 0.72 },
+        "keyQuestionCoverage": { "pass": false, "answered": 5, "total": 7 },
+        "evidenceDensity": { "pass": false, "sources": 2 },
+        "hotspotSaturation": { "pass": true }
+      },
+      "recoveryStrategy": "Collect evidence for the remaining uncovered question cluster.",
+      "timestamp": "2026-04-11T12:00:00Z"
+    }
+  ],
+  "graphConvergenceScore": 0.68,
+  "graphDecision": "STOP_BLOCKED",
+  "graphBlockers": [
+    {
+      "name": "sourceDiversity",
+      "severity": "high",
+      "detail": "Only 2 distinct corroborating sources cover the active claim cluster."
+    }
+  ],
+  "metrics": {
+    "iterationsCompleted": 7,
+    "openQuestions": 2,
+    "resolvedQuestions": 5,
+    "keyFindings": 14,
+    "convergenceScore": 0.72,
+    "coverageBySources": {
+      "code": 4,
+      "memory": 1,
+      "other": 2
+    }
+  }
+}
+```
+
+Research-specific registry fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| blockedStopHistory | array | One entry per `blocked_stop` event promoted under REQ-014. Reducer preserves append order from the JSONL and exposes `run`, `blockedBy`, `gateResults`, `recoveryStrategy`, and `timestamp` for operator replay. |
+| graphConvergenceScore | number | Latest graph convergence blended score surfaced under REQ-013. Derived from the most recent `graph_convergence` event. |
+| graphDecision | string or null | Latest graph convergence verdict: `CONTINUE`, `STOP_ALLOWED`, `STOP_BLOCKED`, or null when unavailable. |
+| graphBlockers | array | Latest blocking guard bundle returned by the graph convergence tool. Empty array when no blockers were reported. |
+
 Failure modes:
 - malformed delta -> skip + warning event
 - missing iteration file -> no-op + error event
@@ -491,6 +548,18 @@ Updated at the end of each iteration. Template at `assets/deep_research_strategy
 5. If an approach is fully exhausted, move to "Exhausted Approaches"
 6. Set "Next Focus" based on remaining questions and successful approaches
 
+### Blocked-stop next-focus override
+
+When the most recent loop event is a `blocked_stop` (its timestamp is newer than the latest iteration record), the reducer may drive the `next-focus` anchor directly from that event instead of the last iteration file. In that case the anchor must surface:
+
+```text
+BLOCKED on: <blockedBy>
+Recovery: <recoveryStrategy>
+Address the blocking gates before the next iteration.
+```
+
+This keeps the strategy file aligned with the latest recovery path instead of repeating stale iteration guidance.
+
 ---
 
 <!-- /ANCHOR:strategy-file -->
@@ -581,6 +650,13 @@ Review mode writes the equivalent dashboard to `{spec_folder}/review/deep-review
 | Dead Ends | JSONL ruledOut + strategy | Accumulated ruled-out approaches with reasons |
 | Next Focus | Strategy file | Current recommended direction for next iteration |
 | Source Diversity | Registry metrics | Source count per question and `coverageBySources` summary |
+
+### Blocked-stop and graph convergence surfaces
+
+The reducer-owned dashboard adds two operator-facing sections when the supporting registry data is available:
+
+- **Blocked Stops**: Renders `blockedStopHistory` as an ordered replay log. Each entry shows the blocked iteration, the vetoing gates, the recovery strategy, a brief gate-result summary, and the ISO-8601 event timestamp so operators can trace why STOP was denied under REQ-014.
+- **Graph Convergence**: Renders `graphConvergenceScore`, `graphDecision`, and the current `graphBlockers` list from the latest `graph_convergence` event so the dashboard exposes the REQ-013 graph verdict alongside inline convergence metrics.
 
 ### Generation Rules
 
