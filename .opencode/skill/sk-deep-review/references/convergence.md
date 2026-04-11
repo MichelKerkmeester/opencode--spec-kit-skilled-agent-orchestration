@@ -41,7 +41,7 @@ Release-readiness states are derived alongside convergence:
 
 ### Shared Stop Contract
 
-Every terminal stop and every blocked-stop vote MUST emit the shared stop contract from REQ-001: a named `stopReason` enum plus a typed `legalStop` record.
+Every terminal stop and every blocked-stop vote MUST emit the shared stop contract from REQ-001: a named `stopReason` enum plus — when STOP is vetoed — a `blocked_stop` event written to `deep-review-state.jsonl`. There is no nested `legalStop` wrapper on the persisted path; earlier drafts of this document implied one, and that drift was the source of F009 in the 042 closing audit.
 
 #### stopReason Enum
 
@@ -55,36 +55,40 @@ Every terminal stop and every blocked-stop vote MUST emit the shared stop contra
 | `error` | Unrecoverable error during iteration or reducer flow. |
 | `manualStop` | Operator explicitly halted outside the pause sentinel path. |
 
-#### legalStop Record
+#### blocked_stop Event (canonical, persisted)
+
+`step_emit_blocked_stop` in both `spec_kit_deep-review_{auto,confirm}.yaml` appends the following record to `deep-review-state.jsonl` whenever the legal-stop decision tree vetoes STOP. The gate names and their shapes are load-bearing — the reducer reads them verbatim:
 
 ```json
 {
-  "blockedBy": ["dimensionCoverage", "p0Resolution"],
+  "type": "event",
+  "event": "blocked_stop",
+  "mode": "review",
+  "run": 5,
+  "blockedBy": ["dimensionCoverageGate", "p0ResolutionGate"],
   "gateResults": {
-    "findingStability": { "pass": true, "detail": "Rolling average, MAD noise floor, and novelty ratio all voted STOP." },
-    "dimensionCoverage": { "pass": false, "detail": "Maintainability has not been examined yet and required review coverage is incomplete." },
-    "p0Resolution": { "pass": false, "detail": "1 unresolved P0 finding remains active." },
-    "evidenceDensity": { "pass": true, "detail": "Evidence density met the configured threshold across active findings." },
-    "hotspotSaturation": { "pass": true, "detail": "Priority hotspots were revisited enough times to satisfy saturation." }
+    "convergenceGate": { "pass": true, "score": 0.72 },
+    "dimensionCoverageGate": {
+      "pass": false,
+      "covered": ["correctness", "security", "traceability"],
+      "missing": ["maintainability"]
+    },
+    "p0ResolutionGate": { "pass": false, "activeP0": 1 },
+    "evidenceDensityGate": { "pass": true, "avgEvidencePerFinding": 1.6 },
+    "hotspotSaturationGate": { "pass": true },
+    "claimAdjudicationGate": { "pass": true, "activeP0P1": 2 }
   },
-  "replayInputs": {
-    "iterationCount": 5,
-    "maxIterations": 7,
-    "newFindingsRatio": 0.04,
-    "noveltyRatio": 0.03,
-    "activeFindings": { "P0": 1, "P1": 0, "P2": 2 },
-    "dimensionsExamined": ["correctness", "security", "traceability"],
-    "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
-    "hotspotCoverage": { "saturated": 2, "required": 2 },
-    "signals": ["rollingAvg", "madScore", "noveltyRatio"]
-  }
+  "recoveryStrategy": "Dispatch the next iteration at the maintainability dimension and re-check after resolving the remaining P0.",
+  "timestamp": "2026-03-24T15:02:00Z",
+  "sessionId": "rvw-2026-03-24T10-00-00Z",
+  "generation": 1
 }
 ```
 
-- `blockedBy`: Array of gate names that failed. Empty when STOP is legal.
-- `gateResults`: Map of review-specific gate name to pass/fail plus detail. Deep review records `findingStability`, `dimensionCoverage`, `p0Resolution`, `evidenceDensity`, and `hotspotSaturation`.
-- `replayInputs`: Snapshot of the concrete inputs used to replay the stop decision.
-- Blocked-stop events also persist a top-level `recoveryStrategy` describing what the next iteration should do before another stop attempt.
+- `blockedBy`: array of gate names that failed (string[] — never structured objects). Empty when STOP is legal, in which case no `blocked_stop` event is emitted.
+- `gateResults`: named sub-records keyed by `convergenceGate`, `dimensionCoverageGate`, `p0ResolutionGate`, `evidenceDensityGate`, `hotspotSaturationGate`, and `claimAdjudicationGate`. Each sub-record has a `pass` boolean plus gate-specific fields (score, covered/missing, activeP0, avgEvidencePerFinding, activeP0P1). The reducer reads these verbatim and does not coerce shapes.
+- `recoveryStrategy`: human-readable one-liner describing what the next iteration should do before another stop attempt.
+- When the graph convergence verdict is `STOP_BLOCKED`, the same event is emitted with `blocked_gate == "graph_blockers"` folded into `blockedBy` and the structured blocker objects preserved under `graph_blocker_detail_json` (see phase 008 P1-02 closure in the auto YAML).
 
 ### Decision Priority
 
@@ -162,13 +166,13 @@ The recovery entry uses `stopReason=stuckRecovery` while the loop is in recovery
 <!-- ANCHOR:composite-convergence -->
 ## 4. COMPOSITE CONVERGENCE
 
-Three independent signals each cast a stop/continue vote. Stop when the weighted stop-score meets or exceeds the consensus threshold.
+Three independent signals each cast a stop/continue vote. Stop when the weighted stop-score meets or exceeds the consensus threshold. The signal set below matches the authoritative 3-signal vote in `spec_kit_deep-review_{auto,confirm}.yaml` `step_check_convergence` and the quick-reference convergence table — the 3rd signal is **dimension coverage**, not a standalone novelty ratio.
 
 | Signal | Weight | Min Iterations | Measures |
 |--------|--------|---------------|----------|
 | Rolling Average | 0.30 | 2 | Recent severity-weighted finding yield |
 | MAD Noise Floor | 0.25 | 3 | Signal vs noise in newFindingsRatio |
-| Novelty Ratio | 0.45 | 1 | Latest severity-weighted novelty ratio against `convergenceThreshold` |
+| Dimension Coverage | 0.45 | 1 | Configured review dimensions fully covered AND required traceability protocols covered AND `coverage_age >= minStabilizationPasses` |
 
 ### Signal 1: Rolling Average (weight 0.30)
 
@@ -194,13 +198,18 @@ if len(evidenceIterations) >= 3:
   madStop = evidenceIterations[-1].newFindingsRatio <= noiseFloor
 ```
 
-### Signal 3: Novelty Ratio (weight 0.45)
+### Signal 3: Dimension Coverage (weight 0.45)
 
-Highest-weight signal. Votes STOP when the latest severity-weighted novelty ratio falls at or below `convergenceThreshold` (default 0.10).
+Highest-weight signal. Votes STOP once every configured review dimension AND every required traceability protocol has been covered by at least one iteration, and the coverage set has been stable for at least `minStabilizationPasses` iterations (default 1). This is the signal the YAML workflow actually evaluates — earlier drafts of this reference labelled it "Novelty Ratio", which was drift.
 
 ```
-noveltyStop = latestRatio <= config.convergenceThreshold
+dimensionStop =
+  dimensions_covered_count == configured_dimensions_count
+  AND required_traceability_protocols_covered
+  AND coverage_age >= config.minStabilizationPasses
 ```
+
+The latest severity-weighted newFindingsRatio is still tracked (the dashboard and registry surface it as `newFindingsRatio`), but it does NOT cast an independent stop vote — it feeds the rolling average and MAD noise-floor signals only.
 
 ### Weighted Vote
 

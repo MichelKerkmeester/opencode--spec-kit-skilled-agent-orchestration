@@ -144,69 +144,61 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 - **P2** --> No self-check needed (severity too low to warrant overhead)
 
 #### Step 5: Write Findings
-Create `review/iterations/iteration-NNN.md` with this structure:
+
+Create `review/iterations/iteration-NNN.md`. The structure below is **parser-sensitive**: the reducer at `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:186` extracts findings by matching the `# Iteration N:` heading, the exact section names (`## Focus`, `## Findings`, `## Ruled Out`, `## Dead Ends`, `## Recommended Next Focus`, `## Assessment`), the `### P0` / `### P1` / `### P2` subheadings inside `## Findings`, and finding bullets of the form `- **FNNN**: Title — file:line — Description`. Deviating from any of these will cause the reducer to silently drop findings.
 
 ```markdown
-# Review Iteration [N]: [Dimension] - [Focus Area]
+# Iteration [N]: [Focus label, e.g. "Correctness contracts on review loop runtime"]
 
 ## Focus
-[What dimension and specific area was reviewed]
-
-## Scope
-- Review target: [files reviewed]
-- Spec refs: [if applicable]
-- Dimension: [dimension name]
+[1–3 sentences describing the dimension, files, and scope investigated this iteration.]
 
 ## Scorecard
-| File | Corr | Sec | Trace | Maint |
-|------|------|-----|-------|-------|
-[per-file scores for files reviewed this iteration]
+- Dimensions covered: [correctness, traceability, ...]
+- Files reviewed: [count]
+- New findings: P0=[n] P1=[n] P2=[n]
+- Refined findings: P0=[n] P1=[n] P2=[n]
+- New findings ratio: [0.0-1.0]
 
 ## Findings
-### P0-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Cross-reference: [SOURCE: spec/checklist if applicable]
-- Impact: [description]
-- Hunter: [finding assessment]
-- Skeptic: [challenge]
-- Referee: [verdict]
-- Final severity: P0
 
-### P1-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Impact: [description]
-- Skeptic: [challenge]
-- Referee: [verdict]
-- Final severity: P1
+### P0 — Blocker
+- **F001**: [Title] — `file:line` — [Description with file:line evidence and why it blocks release]
+
+### P1 — Required
+- **F002**: [Title] — `file:line` — [Description]
+
+### P2 — Suggestion
+- **F003**: [Title] — `file:line` — [Description]
+
+> Use sequential finding IDs across the whole session (iteration 2 starts at F00K where K = last F-id used in iteration 1). The reducer deduplicates on the `FNNN` prefix, so collisions are silent.
+> For every P0/P1 finding, also emit a typed claim-adjudication packet (schema in state_format.md §9 and loop_protocol.md Step 4a) so `step_post_iteration_claim_adjudication` can validate it. A missing or malformed packet vetoes STOP via the `claimAdjudicationGate` on the next convergence check.
 
 ```json
-{"type":"claim-adjudication","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0|P1","confidence":0.90,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
+{"type":"claim-adjudication","findingId":"F002","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0","confidence":0.9,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
 ```
 
-### P2-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Impact: [description]
-- Final severity: P2
-
 ## Cross-Reference Results
-### Core Protocols
-- Confirmed: [alignment checks that passed]
-- Contradictions: [misalignments found]
-- Unknowns: [could not verify]
+| Protocol | Status | Gate | Evidence | Notes |
+|----------|--------|------|----------|-------|
+| spec_code | pass/partial/fail | hard | `file:line` | ... |
+| checklist_evidence | pass/partial/fail | hard | `file:line` | ... |
+| skill_agent | pass/partial/fail | soft | `file:line` | ... |
 
-### Overlay Protocols
-- Confirmed: [overlay-specific checks that passed]
-- Contradictions: [runtime or integration drift found]
-- Unknowns: [could not verify]
+## Assessment
+- New findings ratio: [0.0-1.0]
+- Dimensions addressed: [correctness, traceability]
+- Novelty justification: [1–2 sentence breakdown of what is net-new vs refinement]
 
 ## Ruled Out
-[Investigated but not an issue, with reasoning]
+- [Approach]: [Why] — [file:line evidence]
 
-## Sources Reviewed
-[All files read this iteration with SOURCE: file:line]
+## Dead Ends
+- [Direction]: [Why the current evidence does not justify escalation]
+
+## Recommended Next Focus
+[What the next iteration should investigate. Rotate dimensions unless the current dimension is still incomplete.]
+```
 
 ## Assessment
 - Confirmed findings: [N]
