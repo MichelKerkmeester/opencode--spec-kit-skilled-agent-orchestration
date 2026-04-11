@@ -91,11 +91,13 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
     }
   }
 
-  // Search both canonical specs roots for workspace compatibility.
-  const specsRoots = [
-    path.join(workspacePath, '.opencode', 'specs'),
-    path.join(workspacePath, 'specs'),
-  ];
+  // Gate D canonical continuity makes .opencode/specs authoritative.
+  // Only fall back to the legacy specs/ root when the canonical root is absent.
+  const canonicalSpecsRoot = path.join(workspacePath, '.opencode', 'specs');
+  const legacySpecsRoot = path.join(workspacePath, 'specs');
+  const specsRoots = fs.existsSync(canonicalSpecsRoot)
+    ? [canonicalSpecsRoot]
+    : [legacySpecsRoot];
 
   for (const specsRoot of specsRoots) {
     if (!fs.existsSync(specsRoot)) continue;

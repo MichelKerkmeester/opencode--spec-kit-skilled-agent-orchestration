@@ -36,6 +36,9 @@ interface MockMemoryRow {
   trigger_phrases: string;
   importance_weight: number;
   embedding_status?: string;
+  document_type?: string | null;
+  anchor_id?: string | null;
+  content_text?: string | null;
 }
 
 interface VectorIndexMockExports {
@@ -108,6 +111,30 @@ vi.mock('../lib/search/vector-index.js', () => ({
 
 const Database = require('better-sqlite3') as DatabaseModule;
 
+function buildSpecDocContent(triggerPhrases: string): string {
+  let parsedTriggers: string[] = [];
+  try {
+    const parsed = JSON.parse(triggerPhrases);
+    parsedTriggers = Array.isArray(parsed)
+      ? parsed.filter((value): value is string => typeof value === 'string')
+      : [];
+  } catch {
+    parsedTriggers = [];
+  }
+
+  const triggerLines = parsedTriggers.map((phrase) => `  - "${phrase}"`);
+  return [
+    '---',
+    'title: "Trigger Fixture"',
+    ...(triggerLines.length > 0 ? ['trigger_phrases:', ...triggerLines] : []),
+    'importance_tier: "normal"',
+    'contextType: "implementation"',
+    '---',
+    '',
+    'Fixture body',
+  ].join('\n');
+}
+
 // Create in-memory DB with the memory_index table trigger-matcher expects
 function createMockDb(rows: MockMemoryRow[] = []): DatabaseInstance {
   const db = new Database(':memory:');
@@ -119,15 +146,32 @@ function createMockDb(rows: MockMemoryRow[] = []): DatabaseInstance {
       title           TEXT,
       trigger_phrases TEXT,
       importance_weight REAL,
-      embedding_status TEXT DEFAULT 'success'
+      embedding_status TEXT DEFAULT 'success',
+      document_type   TEXT DEFAULT 'spec',
+      anchor_id       TEXT,
+      content_text    TEXT
     )
   `);
   const insert = db.prepare(`
-    INSERT INTO memory_index (id, spec_folder, file_path, title, trigger_phrases, importance_weight, embedding_status)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO memory_index (
+      id, spec_folder, file_path, title, trigger_phrases, importance_weight,
+      embedding_status, document_type, anchor_id, content_text
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   for (const r of rows) {
-    insert.run(r.id, r.spec_folder, r.file_path, r.title, r.trigger_phrases, r.importance_weight, r.embedding_status ?? 'success');
+    insert.run(
+      r.id,
+      r.spec_folder,
+      r.file_path,
+      r.title,
+      r.trigger_phrases,
+      r.importance_weight,
+      r.embedding_status ?? 'success',
+      r.document_type ?? 'spec',
+      r.anchor_id ?? null,
+      r.content_text ?? buildSpecDocContent(r.trigger_phrases),
+    );
   }
   return db;
 }
@@ -305,7 +349,17 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       const fn = triggerMatcher.loadTriggerCache;
       if (!fn) return;
       setMockDb([
-        { id: 1, spec_folder: 's', file_path: '/a.md', title: 'T', trigger_phrases: 'NOT_JSON', importance_weight: 0.5 },
+        {
+          id: 1,
+          spec_folder: 's',
+          file_path: '/a.md',
+          title: 'T',
+          trigger_phrases: 'NOT_JSON',
+          importance_weight: 0.5,
+          document_type: 'spec',
+          anchor_id: '_memory.continuity',
+          content_text: 'metadata-only continuity row',
+        },
         { id: 2, spec_folder: 's', file_path: '/b.md', title: 'T', trigger_phrases: '["valid"]', importance_weight: 0.5 },
       ]);
       const cache = fn();
@@ -399,7 +453,17 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       const fn = triggerMatcher.matchTriggerPhrasesWithStats;
       if (!fn) return;
       setMockDb([
-        { id: 1, spec_folder: 's', file_path: '/bad.md', title: 'Bad', trigger_phrases: 'NOT_JSON', importance_weight: 0.5 },
+        {
+          id: 1,
+          spec_folder: 's',
+          file_path: '/bad.md',
+          title: 'Bad',
+          trigger_phrases: 'NOT_JSON',
+          importance_weight: 0.5,
+          document_type: 'spec',
+          anchor_id: '_memory.continuity',
+          content_text: 'metadata-only continuity row',
+        },
         { id: 2, spec_folder: 's', file_path: '/good.md', title: 'Good', trigger_phrases: '["valid trigger"]', importance_weight: 0.7 },
       ]);
       const result = fn('valid trigger') as TriggerMatchWithStats & {

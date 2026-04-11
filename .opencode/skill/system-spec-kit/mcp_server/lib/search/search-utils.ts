@@ -53,6 +53,7 @@ interface CacheArgsInput {
   enableSessionBoost: boolean;
   enableCausalBoost: boolean;
   includeTrace?: boolean;
+  cacheVersion?: string;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -136,6 +137,7 @@ function buildCacheArgs({
   enableSessionBoost,
   enableCausalBoost,
   includeTrace = false,
+  cacheVersion,
 }: CacheArgsInput): Record<string, unknown> {
   return {
     query: normalizedQuery,
@@ -165,6 +167,7 @@ function buildCacheArgs({
     enableSessionBoost,
     enableCausalBoost,
     includeTrace,
+    cacheVersion,
   };
 }
 

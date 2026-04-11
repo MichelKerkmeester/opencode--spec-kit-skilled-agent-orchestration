@@ -11,6 +11,9 @@ interface MockMemoryRow {
   title: string | null;
   trigger_phrases: string;
   importance_weight: number | null;
+  document_type?: string | null;
+  anchor_id?: string | null;
+  content_text?: string | null;
 }
 
 const mockDbState = vi.hoisted(() => ({
@@ -51,8 +54,37 @@ import {
 type TriggerPrompt = Parameters<typeof matchTriggerPhrases>[0];
 type UnicodeInput = Parameters<typeof normalizeUnicode>[0];
 
+function buildSpecDocContent(triggerPhrases: string): string {
+  let parsedTriggers: string[] = [];
+  try {
+    const parsed = JSON.parse(triggerPhrases);
+    parsedTriggers = Array.isArray(parsed)
+      ? parsed.filter((value): value is string => typeof value === 'string')
+      : [];
+  } catch {
+    parsedTriggers = [];
+  }
+
+  const triggerLines = parsedTriggers.map((phrase) => `  - "${phrase}"`);
+  return [
+    '---',
+    'title: "Trigger Fixture"',
+    ...(triggerLines.length > 0 ? ['trigger_phrases:', ...triggerLines] : []),
+    'importance_tier: "normal"',
+    'contextType: "implementation"',
+    '---',
+    '',
+    'Fixture body',
+  ].join('\n');
+}
+
 function setMockDbRows(rows: MockMemoryRow[]): void {
-  mockDbState.rows = rows;
+  mockDbState.rows = rows.map((row) => ({
+    document_type: 'spec',
+    anchor_id: null,
+    content_text: buildSpecDocContent(row.trigger_phrases),
+    ...row,
+  }));
 }
 
 function runFullScan(prompt: string, limit: number = CONFIG.DEFAULT_LIMIT) {
@@ -288,6 +320,90 @@ describe('Trigger Matcher (T501)', () => {
       expect(lookupMatches.map((match) => match.memoryId)).toEqual([1]);
       expect(cyrillicMatch.map((match) => match.memoryId)).toContain(1);
       expect(cjkMatch.map((match) => match.memoryId)).toContain(1);
+    });
+  });
+
+  describe('Canonical trigger provenance (T501-13c)', () => {
+    it('prefers spec-doc frontmatter triggers over continuity rows for the same canonical doc', () => {
+      setMockDbRows([
+        {
+          id: 20,
+          spec_folder: 'specs/gate-d',
+          file_path: '/specs/gate-d/implementation-summary.md',
+          title: 'Canonical Doc',
+          trigger_phrases: JSON.stringify(['stale continuity phrase']),
+          importance_weight: 0.5,
+          document_type: 'implementation_summary',
+          content_text: [
+            '---',
+            'title: "Canonical Doc"',
+            'trigger_phrases:',
+            '  - "frontmatter winner"',
+            'importance_tier: "important"',
+            'contextType: "implementation"',
+            '---',
+            '',
+            'Doc body',
+          ].join('\n'),
+        },
+        {
+          id: 21,
+          spec_folder: 'specs/gate-d',
+          file_path: '/specs/gate-d/implementation-summary.md',
+          title: 'Continuity Row',
+          trigger_phrases: JSON.stringify(['continuity fallback']),
+          importance_weight: 0.4,
+          document_type: 'implementation_summary',
+          anchor_id: '_memory.continuity',
+          content_text: 'metadata-only continuity row',
+        },
+      ]);
+
+      const cache = loadTriggerCache();
+
+      expect(cache.map((entry) => entry.phrase)).toContain('frontmatter winner');
+      expect(cache.map((entry) => entry.phrase)).not.toContain('continuity fallback');
+      expect(cache.every((entry) => entry.memoryId === 20)).toBe(true);
+    });
+
+    it('falls back to continuity triggers when spec-doc frontmatter has none', () => {
+      setMockDbRows([
+        {
+          id: 30,
+          spec_folder: 'specs/gate-d',
+          file_path: '/specs/gate-d/tasks.md',
+          title: 'Tasks Doc',
+          trigger_phrases: JSON.stringify(['stale doc phrase']),
+          importance_weight: 0.5,
+          document_type: 'tasks',
+          content_text: [
+            '---',
+            'title: "Tasks Doc"',
+            'importance_tier: "normal"',
+            'contextType: "implementation"',
+            '---',
+            '',
+            'No trigger phrases in frontmatter.',
+          ].join('\n'),
+        },
+        {
+          id: 31,
+          spec_folder: 'specs/gate-d',
+          file_path: '/specs/gate-d/tasks.md',
+          title: 'Tasks Continuity',
+          trigger_phrases: JSON.stringify(['continuity recovery']),
+          importance_weight: 0.7,
+          document_type: 'tasks',
+          anchor_id: '_memory.continuity',
+          content_text: 'metadata-only continuity row',
+        },
+      ]);
+
+      const cache = loadTriggerCache();
+
+      expect(cache).toHaveLength(1);
+      expect(cache[0].phrase).toBe('continuity recovery');
+      expect(cache[0].memoryId).toBe(31);
     });
   });
 

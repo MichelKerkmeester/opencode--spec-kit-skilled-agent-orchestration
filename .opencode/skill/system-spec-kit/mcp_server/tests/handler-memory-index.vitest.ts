@@ -101,6 +101,36 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
   });
 
   describe('findSpecDocuments', () => {
+    it('T520-9a: prefers canonical .opencode/specs over legacy specs root', () => {
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-spec-docs-canonical-'));
+      try {
+        const canonicalSpecFolder = path.join(
+          root,
+          '.opencode',
+          'specs',
+          'system-spec-kit',
+          '890-canonical',
+        );
+        const legacySpecFolder = path.join(
+          root,
+          'specs',
+          'system-spec-kit',
+          '891-legacy',
+        );
+        fs.mkdirSync(canonicalSpecFolder, { recursive: true });
+        fs.mkdirSync(legacySpecFolder, { recursive: true });
+        fs.writeFileSync(path.join(canonicalSpecFolder, 'spec.md'), '# Canonical Spec');
+        fs.writeFileSync(path.join(legacySpecFolder, 'spec.md'), '# Legacy Spec');
+
+        const result = handler.findSpecDocuments(root);
+        expect(result).toHaveLength(1);
+        expect(result[0]).toContain(path.join('.opencode', 'specs'));
+        expect(result[0]).toContain('890-canonical');
+      } finally {
+        fs.rmSync(root, { recursive: true, force: true });
+      }
+    });
+
     it('T520-9b: deduplicates symlinked specs roots', () => {
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-spec-docs-'));
       try {
@@ -127,7 +157,31 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
       }
     });
 
-    it('T520-9c: keeps specFolder filtering with root dedup', () => {
+    it('T520-9c: never walks memory directories even if they contain spec doc names', () => {
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-spec-docs-memory-skip-'));
+      try {
+        const specFolder = path.join(
+          root,
+          '.opencode',
+          'specs',
+          'system-spec-kit',
+          '905-no-memory-walk',
+        );
+        const memoryDir = path.join(specFolder, 'memory');
+        fs.mkdirSync(memoryDir, { recursive: true });
+        fs.writeFileSync(path.join(specFolder, 'spec.md'), '# Canonical Spec');
+        fs.writeFileSync(path.join(memoryDir, 'spec.md'), '# Should Be Ignored');
+        fs.writeFileSync(path.join(memoryDir, 'plan.md'), '# Also Ignored');
+
+        const result = handler.findSpecDocuments(root);
+        expect(result).toHaveLength(1);
+        expect(result[0]).toBe(path.join(specFolder, 'spec.md'));
+      } finally {
+        fs.rmSync(root, { recursive: true, force: true });
+      }
+    });
+
+    it('T520-9d: keeps specFolder filtering with root dedup', () => {
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-spec-docs-filter-'));
       try {
         const canonicalSpecs = path.join(root, '.opencode', 'specs');

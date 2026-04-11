@@ -80,6 +80,11 @@ import {
   resolveCursor,
 } from '../lib/search/progressive-disclosure.js';
 import {
+  SPEC_DOCUMENT_FILENAMES,
+  canClassifyAsSpecDocument,
+  normalizeSpecPath,
+} from '../lib/config/spec-doc-paths.js';
+import {
   getLastLexicalCapabilitySnapshot,
   resetLastLexicalCapabilitySnapshot,
 } from '../lib/search/sqlite-fts.js';
@@ -156,6 +161,127 @@ type SessionAwareResult = Record<string, unknown> & {
   score?: number;
   content?: string;
 };
+
+type CanonicalSourceKind = 'spec_doc' | 'continuity' | 'constitutional';
+
+interface CanonicalSourceStats {
+  retained: number;
+  dropped: number;
+  bySourceKind: Record<CanonicalSourceKind, number>;
+}
+
+const CONTINUITY_ANCHOR_ID = '_memory.continuity';
+const CANONICAL_READER_CACHE_VERSION = 'gate-d-reader-ready-v1';
+const CANONICAL_SPEC_DOC_DOCUMENT_TYPES = new Set([
+  'spec',
+  'plan',
+  'tasks',
+  'checklist',
+  'decision_record',
+  'implementation_summary',
+  'research',
+  'handover',
+  'spec_doc',
+]);
+const NON_CANONICAL_DOCUMENT_TYPES = new Set([
+  'memory',
+  'scratch',
+]);
+
+function normalizeDocumentType(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const normalized = value.trim().toLowerCase();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function resolveAnchorId(row: Record<string, unknown>): string | null {
+  const value = row.anchor_id ?? row.anchorId;
+  return typeof value === 'string' && value.trim().length > 0
+    ? value.trim()
+    : null;
+}
+
+function resolveFilePath(row: Record<string, unknown>): string | null {
+  const value = row.file_path ?? row.filePath;
+  return typeof value === 'string' && value.trim().length > 0
+    ? value
+    : null;
+}
+
+function resolveCanonicalSourceKind(row: Record<string, unknown>): CanonicalSourceKind | null {
+  const documentType = normalizeDocumentType(row.document_type ?? row.documentType);
+  const importanceTier = normalizeDocumentType(row.importance_tier ?? row.importanceTier);
+  const anchorId = resolveAnchorId(row);
+
+  if (importanceTier === 'constitutional' || documentType === 'constitutional') {
+    return 'constitutional';
+  }
+
+  if (anchorId === CONTINUITY_ANCHOR_ID || documentType === 'continuity') {
+    return 'continuity';
+  }
+
+  if (documentType && CANONICAL_SPEC_DOC_DOCUMENT_TYPES.has(documentType)) {
+    return 'spec_doc';
+  }
+
+  if (documentType && NON_CANONICAL_DOCUMENT_TYPES.has(documentType)) {
+    return null;
+  }
+
+  const filePath = resolveFilePath(row);
+  if (!filePath) {
+    return null;
+  }
+  const normalizedPath = normalizeSpecPath(filePath);
+  const basename = normalizedPath.split('/').filter(Boolean).pop() ?? '';
+
+  if (
+    basename.length > 0 &&
+    SPEC_DOCUMENT_FILENAMES.has(basename) &&
+    canClassifyAsSpecDocument(normalizedPath)
+  ) {
+    return anchorId === CONTINUITY_ANCHOR_ID ? 'continuity' : 'spec_doc';
+  }
+
+  return null;
+}
+
+function filterCanonicalSourceRows<T extends SessionAwareResult>(
+  results: T[],
+): { results: T[]; stats: CanonicalSourceStats } {
+  const stats: CanonicalSourceStats = {
+    retained: 0,
+    dropped: 0,
+    bySourceKind: {
+      spec_doc: 0,
+      continuity: 0,
+      constitutional: 0,
+    },
+  };
+
+  const filtered: T[] = [];
+  for (const result of results) {
+    const sourceKind = resolveCanonicalSourceKind(result);
+    if (!sourceKind) {
+      stats.dropped += 1;
+      continue;
+    }
+
+    filtered.push({
+      ...result,
+      canonicalSource: sourceKind,
+      canonicalSourceType: sourceKind,
+      documentType: sourceKind,
+    });
+    stats.retained += 1;
+    stats.bySourceKind[sourceKind] += 1;
+  }
+
+  return { results: filtered, stats };
+}
 
 // ChunkReassemblyResult — now imported from lib/search/chunk-reassembly.ts
 
@@ -517,7 +643,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     rerank = true, // Enable reranking by default for better result quality
     applyLengthPenalty: applyLengthPenalty = true,
     trackAccess: trackAccess = false, // opt-in, off by default
-    includeArchived: includeArchived = false, // REQ-206: exclude archived by default
+    includeArchived: includeArchivedRequested = false, // compatibility-only after Gate B cleanup
     enableSessionBoost: enableSessionBoost = isSessionBoostEnabled(),
     enableCausalBoost: enableCausalBoost = isCausalBoostEnabled(),
     minQualityScore,
@@ -530,6 +656,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   } = args;
   const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
+  const includeArchived = false;
   const normalizedScope = normalizeScopeContext({ tenantId, userId, agentId, sessionId, sharedSpaceId });
   const progressiveScopeKey = JSON.stringify({
     tenantId: normalizedScope.tenantId ?? null,
@@ -745,6 +872,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     enableSessionBoost,
     enableCausalBoost,
     includeTrace,
+    cacheVersion: CANONICAL_READER_CACHE_VERSION,
   });
 
   let _evalChannelPayloads: EvalChannelPayload[] = [];
@@ -830,8 +958,8 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
             const placeholders = memberIds.map(() => '?').join(', ');
             const db = requireDb();
             const memberRows = db.prepare(`
-              SELECT id, title, similarity, content, file_path, importance_tier, context_type,
-                     quality_score, created_at
+              SELECT id, title, similarity, content, file_path, anchor_id, document_type,
+                     importance_tier, context_type, quality_score, created_at
               FROM memory_index
               WHERE id IN (${placeholders})
             `).all(...memberIds) as Array<Record<string, unknown> & { id: number }>;
@@ -882,6 +1010,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         });
       }
     }
+
+    const canonicalFilter = filterCanonicalSourceRows(resultsForFormatting);
+    resultsForFormatting = canonicalFilter.results;
 
     if (sessionId && isSessionRetrievalStateEnabled()) {
       const activeGoal = effectiveQuery.trim().length > 0 ? effectiveQuery : null;
@@ -961,6 +1092,16 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       extraData.chunkReassembly = pipelineResult.metadata.stage3.chunkReassemblyStats;
       extraData.chunk_reassembly = pipelineResult.metadata.stage3.chunkReassemblyStats;
     }
+    extraData.sourceContract = {
+      version: CANONICAL_READER_CACHE_VERSION,
+      archivedTierEnabled: false,
+      legacyFallbackEnabled: false,
+      includeArchivedCompatibility: includeArchivedRequested === true ? 'ignored' : 'not_requested',
+      preferredDocumentTypes: ['spec_doc', 'continuity'],
+      retainedResults: canonicalFilter.stats.retained,
+      droppedNonCanonicalResults: canonicalFilter.stats.dropped,
+      countsBySourceKind: canonicalFilter.stats.bySourceKind,
+    };
 
     if (pipelineResult.trace) {
       extraData.retrievalTrace = pipelineResult.trace;

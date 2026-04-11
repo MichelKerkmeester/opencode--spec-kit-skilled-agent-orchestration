@@ -96,6 +96,7 @@ describe('session-bootstrap handler', () => {
     expect(parsed.data.nextActions).toEqual(expect.arrayContaining([
       'Structural context available. Use code_graph_query for structural lookups.',
       'Use `session_resume({ specFolder })` when you need the fuller merged recovery payload.',
+      'Resume recovery follows `handover.md` -> `_memory.continuity` -> spec docs.',
     ]));
     expect(recordBootstrapEvent).toHaveBeenCalledWith('tool', expect.any(Number), 'full');
   });

@@ -7,7 +7,6 @@
 import { createHash } from 'node:crypto';
 import { statSync } from 'node:fs';
 import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
-import { handleMemoryContext } from './memory-context.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
 import { getGraphFreshness, type GraphFreshness } from '../lib/code-graph/ensure-ready.js';
 import { computeQualityScore, recordMetricEvent, recordBootstrapEvent } from '../lib/session/context-metrics.js';
@@ -32,6 +31,7 @@ import {
   type CodeGraphOpsContract,
 } from '../lib/code-graph/ops-hardening.js';
 import { loadMostRecentState, type HookProducerMetadata, type HookState } from '../hooks/claude/hook-state.js';
+import { buildResumeLadder } from '../lib/resume/resume-ladder.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -406,32 +406,28 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
   const startMs = Date.now();
   const hints: string[] = [];
 
-  // ── Sub-call 1: Memory context resume (skip in minimal mode) ──
-  let memoryResult: Record<string, unknown> = {};
-  if (args.minimal) {
-    memoryResult = { skipped: true, reason: 'minimal mode' };
-  } else {
-    try {
-      const mcpResponse = await handleMemoryContext({
-        input: 'resume previous work continue session',
-        mode: 'resume',
-        profile: 'resume',
-        specFolder: args.specFolder,
-      });
-      // Extract data from MCP envelope
-      if (mcpResponse?.content?.[0]?.text) {
-        try {
-          const parsed = JSON.parse(mcpResponse.content[0].text);
-          memoryResult = parsed?.data ?? parsed ?? {};
-        } catch {
-          memoryResult = { raw: mcpResponse.content[0].text };
-        }
-      }
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      memoryResult = { error: message };
-      hints.push('Memory resume failed. Try memory_context manually.');
-    }
+  const cachedSummaryDecision = getCachedSessionSummaryDecision({
+    specFolder: args.specFolder,
+    claudeSessionId: typeof args.sessionId === 'string' ? args.sessionId : undefined,
+  });
+  const scopeFallback = !args.specFolder && cachedSummaryDecision.status === 'accepted'
+    ? cachedSummaryDecision.cachedSummary?.lastSpecFolder ?? null
+    : null;
+  if (cachedSummaryDecision.status === 'accepted' && scopeFallback) {
+    hints.push('Using the cached session scope to resolve the resume target. Pass specFolder explicitly to override it.');
+  } else if (cachedSummaryDecision.status !== 'accepted') {
+    logCachedSummaryDecision('session_resume', cachedSummaryDecision);
+  }
+
+  // ── Sub-call 1: Resume ladder (filesystem-first, no SQL on happy path) ──
+  const memoryResult = buildResumeLadder({
+    specFolder: args.specFolder,
+    fallbackSpecFolder: scopeFallback,
+    workspacePath: process.cwd(),
+  });
+  hints.push(...memoryResult.hints);
+  if (memoryResult.source === 'none') {
+    hints.push('Resume ladder found no canonical recovery context. Pass specFolder explicitly or start with /spec_kit:plan.');
   }
 
   // ── Sub-call 2: Code graph status ───────────────────────────
@@ -476,17 +472,6 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
 
   const structuralTrust = buildStructuralContextTrust(structuralContext);
 
-  // Keep live resume authoritative; cached continuity only appends bounded notes when every gate passes.
-  const cachedSummaryDecision = getCachedSessionSummaryDecision({
-    specFolder: args.specFolder,
-    claudeSessionId: typeof args.sessionId === 'string' ? args.sessionId : undefined,
-  });
-  if (cachedSummaryDecision.status === 'accepted') {
-    hints.push('Cached continuity summary accepted as additive resume context.');
-  } else {
-    logCachedSummaryDecision('session_resume', cachedSummaryDecision);
-  }
-
   let sessionQuality: SessionResumeResult['sessionQuality'];
   if (args.minimal) {
     try {
@@ -496,12 +481,9 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     }
   }
 
-  const memoryCertainty: SharedPayloadCertainty = args.minimal
+  const memoryCertainty: SharedPayloadCertainty = memoryResult.source === 'none'
     ? 'defaulted'
-    : memoryResult.error
-      ? 'unknown'
-      : 'estimated';
-  const cachedCertainty: SharedPayloadCertainty = cachedSummaryDecision.status === 'accepted' ? 'estimated' : 'defaulted';
+    : 'exact';
   const codeGraphCertainty: SharedPayloadCertainty = codeGraph.status === 'error' ? 'unknown' : 'exact';
   const cocoIndexCertainty: SharedPayloadCertainty = 'exact';
   const structuralCertainty: SharedPayloadCertainty = 'exact';
@@ -515,19 +497,6 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
       certainty: memoryCertainty,
     },
   ];
-  if (cachedSummaryDecision.status === 'accepted' && cachedSummaryDecision.cachedSummary) {
-    payloadSections.push({
-      key: 'cached-continuity',
-      title: 'Cached Continuity',
-      content: [
-        cachedSummaryDecision.cachedSummary.continuityText,
-        `Cache tokens: create=${cachedSummaryDecision.cachedSummary.cacheCreationInputTokens}; read=${cachedSummaryDecision.cachedSummary.cacheReadInputTokens}`,
-        `Transcript: ${cachedSummaryDecision.cachedSummary.transcriptFingerprint}`,
-      ].join('\n'),
-      source: 'session',
-      certainty: cachedCertainty,
-    });
-  }
   payloadSections.push(
     {
       key: 'code-graph-status',
@@ -561,18 +530,17 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     sections: payloadSections,
     summary: `Resume payload: ${summarizeCertaintyContract([
       { label: 'memory', certainty: memoryCertainty },
-      ...(cachedSummaryDecision.status === 'accepted' ? [{ label: 'cached', certainty: cachedCertainty }] : []),
       { label: 'graph', certainty: codeGraphCertainty },
       { label: 'cocoindex', certainty: cocoIndexCertainty },
       { label: 'structural', certainty: structuralCertainty },
-    ])}; graph=${codeGraph.status}; graphStatus=${codeGraph.status}`,
+    ])}; resumeSource=${memoryResult.source}; graph=${codeGraph.status}; graphStatus=${codeGraph.status}`,
     provenance: {
       producer: 'session_resume',
       sourceSurface: 'session_resume',
       trustState: trustStateFromStructuralStatus(structuralContext.status),
       generatedAt: new Date().toISOString(),
       lastUpdated: structuralContext.provenance?.lastUpdated ?? codeGraph.lastScan,
-      sourceRefs: ['memory-context', 'code-graph-db', 'cocoindex-path', 'session-snapshot'],
+      sourceRefs: ['resume-ladder', 'code-graph-db', 'cocoindex-path', 'session-snapshot'],
     },
   });
   const graphOps = buildCodeGraphOpsContract({
@@ -581,7 +549,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
   });
 
   const result: SessionResumeResult = {
-    memory: memoryResult,
+    memory: memoryResult as unknown as Record<string, unknown>,
     codeGraph,
     cocoIndex,
     cachedSummary: cachedSummaryDecision,
@@ -593,7 +561,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     }),
     graphOps,
     ...(sessionQuality ? { sessionQuality } : {}),
-    hints,
+    hints: [...new Set(hints)],
   };
 
   // Phase 024 / Item 9: Record bootstrap telemetry

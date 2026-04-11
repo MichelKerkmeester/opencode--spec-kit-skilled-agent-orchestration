@@ -5,7 +5,8 @@ const PIPELINE_RESULTS = Array.from({ length: 7 }, (_, index) => ({
   score: 1 - index * 0.05,
   title: `Result ${index + 1}`,
   content: `Detailed result content ${index + 1} for fusion scoring decisions and retrieval context.`,
-  file_path: `/tmp/result-${index + 1}.md`,
+  file_path: `/tmp/specs/026-feature/result-${index + 1}/spec.md`,
+  document_type: 'spec',
 }));
 
 vi.mock('../core', () => ({
@@ -49,7 +50,15 @@ vi.mock('../lib/search/pipeline', () => ({
 }));
 
 vi.mock('../formatters', () => ({
-  formatSearchResults: vi.fn(async (results: Array<Record<string, unknown>>) => ({
+  formatSearchResults: vi.fn(async (
+    results: Array<Record<string, unknown>>,
+    _searchType: string,
+    _includeContent?: boolean,
+    _anchors?: string[] | null,
+    _parserOverride?: unknown,
+    _startTime?: number | null,
+    extraData: Record<string, unknown> = {},
+  ) => ({
     content: [{
       type: 'text',
       text: JSON.stringify({
@@ -57,6 +66,7 @@ vi.mock('../formatters', () => ({
         data: {
           count: results.length,
           results: results.map((row) => ({ ...row })),
+          ...extraData,
         },
       }),
     }],
@@ -113,6 +123,7 @@ vi.mock('../lib/feedback/feedback-ledger', () => ({
 }));
 
 import { handleMemorySearch } from '../handlers/memory-search';
+import * as pipeline from '../lib/search/pipeline';
 import { clearCursorStore } from '../lib/search/progressive-disclosure';
 import { manager as retrievalSessionStateManager } from '../lib/search/session-state';
 
@@ -197,5 +208,87 @@ describe('memory_search UX hook integration', () => {
 
     expect(resumedEnvelope.summary).toBe('Error: Cursor is invalid, expired, or out of scope');
     expect(resumedData.error).toBe('Cursor is invalid, expired, or out of scope');
+  });
+
+  it('filters legacy memory rows and reports canonical source counts', async () => {
+    vi.mocked(pipeline.executePipeline).mockResolvedValueOnce({
+      results: [
+        {
+          id: 101,
+          score: 0.95,
+          title: 'Canonical spec doc',
+          file_path: '/tmp/specs/026-feature/004-gate-d/spec.md',
+          document_type: 'spec',
+        },
+        {
+          id: 102,
+          score: 0.9,
+          title: 'Thin continuity block',
+          file_path: '/tmp/specs/026-feature/004-gate-d/spec.md',
+          document_type: 'spec',
+          anchor_id: '_memory.continuity',
+        },
+        {
+          id: 103,
+          score: 0.88,
+          title: 'Legacy memory note',
+          file_path: '/tmp/specs/026-feature/004-gate-d/memory/legacy.md',
+          document_type: 'memory',
+        },
+        {
+          id: 104,
+          score: 0.82,
+          title: 'Constitutional rule',
+          file_path: '/tmp/.opencode/skill/system-spec-kit/constitutional/rules.md',
+          document_type: 'constitutional',
+          importance_tier: 'constitutional',
+        },
+      ],
+      metadata: {
+        stage1: { searchType: 'hybrid', channelCount: 2, candidateCount: 4, constitutionalInjected: 0, durationMs: 1 },
+        stage2: {
+          sessionBoostApplied: 'off',
+          causalBoostApplied: 'off',
+          intentWeightsApplied: 'off',
+          artifactRoutingApplied: 'off',
+          feedbackSignalsApplied: 'off',
+          qualityFiltered: 0,
+          durationMs: 1,
+        },
+        stage3: {
+          rerankApplied: false,
+          chunkReassemblyStats: { collapsedChunkHits: 0, chunkParents: 0, reassembled: 0, fallback: 0 },
+          durationMs: 1,
+        },
+        stage4: { stateFiltered: 0, constitutionalInjected: 0, evidenceGapDetected: false, durationMs: 1 },
+      },
+      annotations: { stateStats: {}, featureFlags: {} },
+      trace: undefined,
+    });
+
+    const response = await handleMemorySearch({
+      query: 'Find canonical continuity state',
+      includeArchived: true,
+    });
+
+    const envelope = parseEnvelope(response);
+    const data = envelope.data as Record<string, unknown>;
+    const results = data.results as Array<Record<string, unknown>>;
+    const sourceContract = data.sourceContract as Record<string, unknown>;
+
+    expect(results.map((row) => row.id)).toEqual([101, 102, 104]);
+    expect(results.some((row) => row.id === 103)).toBe(false);
+    expect(sourceContract).toMatchObject({
+      archivedTierEnabled: false,
+      legacyFallbackEnabled: false,
+      includeArchivedCompatibility: 'ignored',
+      retainedResults: 3,
+      droppedNonCanonicalResults: 1,
+    });
+    expect(sourceContract.countsBySourceKind).toEqual({
+      spec_doc: 1,
+      continuity: 1,
+      constitutional: 1,
+    });
   });
 });

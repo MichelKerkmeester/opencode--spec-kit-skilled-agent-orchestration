@@ -3,6 +3,7 @@
 // ────────────────────────────────────────────────────────────────
 
 import { randomUUID } from 'crypto';
+import { readFileSync } from 'node:fs';
 
 // Layer definitions
 import * as layerDefs from '../lib/architecture/layer-definitions.js';
@@ -56,6 +57,7 @@ import {
   isPressurePolicyEnabled,
   isIntentAutoProfileEnabled,
 } from '../lib/search/search-flags.js';
+import { buildResumeLadder, type ResumeLadderResult } from '../lib/resume/resume-ladder.js';
 
 // Feature catalog: Unified context retrieval (memory_context)
 // Feature catalog: Dual-scope memory auto-surface
@@ -203,6 +205,23 @@ interface StructuralRoutingNudgeMeta {
   preservesAuthority: 'session_bootstrap';
 }
 
+interface ResumeRow extends Record<string, unknown> {
+  id: string;
+  title: string;
+  filePath: string;
+  specFolder: string;
+  documentType: 'handover' | 'continuity' | 'spec_doc';
+  source: 'handover' | 'continuity' | 'spec_docs';
+  score: number;
+  similarity: number;
+  fingerprint: string;
+  fingerprintExpected: string | null;
+  fingerprintStatus: 'verified';
+  content: string;
+}
+
+const RESUME_LADDER_ORDER = ['handover', 'continuity', 'spec_docs'] as const;
+
 const STRUCTURAL_ROUTING_PATTERNS = [
   /\b(?:who|what)\s+calls?\b/i,
   /\bcallers?\s+of\b/i,
@@ -243,6 +262,92 @@ function extractResultRowsFromContextResponse(responseText: string): Array<Recor
   } catch {
     return [];
   }
+}
+
+function readResumeDocumentContent(documentPath: string): string {
+  try {
+    return readFileSync(documentPath, 'utf8');
+  } catch {
+    return '';
+  }
+}
+
+function formatResumeLadderContent(result: ResumeLadderResult, row: ResumeRow): string {
+  if (row.documentType !== 'continuity') {
+    return readResumeDocumentContent(row.filePath);
+  }
+
+  const lines = [
+    `Recent action: ${result.recentAction ?? ''}`,
+    `Next safe action: ${result.nextSafeAction ?? ''}`,
+  ];
+
+  if (result.blockers.length > 0) {
+    lines.push(`Blockers: ${result.blockers.join('; ')}`);
+  }
+  if (result.keyFiles.length > 0) {
+    lines.push(`Key files: ${result.keyFiles.join(', ')}`);
+  }
+
+  return lines.join('\n');
+}
+
+function normalizeResumeSource(
+  source: ResumeLadderResult['source'],
+): 'handover' | 'continuity' | 'spec_docs' | 'unresolved' {
+  if (source === 'spec-docs') {
+    return 'spec_docs';
+  }
+  if (source === 'none') {
+    return 'unresolved';
+  }
+  return source;
+}
+
+function normalizeResumeDocumentType(
+  type: ResumeLadderResult['documents'][number]['type'],
+): ResumeRow['documentType'] {
+  if (type === 'spec-doc') {
+    return 'spec_doc';
+  }
+  return type;
+}
+
+function convertResumeLadderToRows(result: ResumeLadderResult, limit: number): ResumeRow[] {
+  const preferredDocuments = result.documents.filter((document) => {
+    if (result.source === 'handover') {
+      return document.type === 'handover';
+    }
+    if (result.source === 'continuity') {
+      return document.type === 'continuity';
+    }
+    if (result.source === 'spec-docs') {
+      return document.type === 'spec-doc';
+    }
+    return false;
+  });
+
+  return preferredDocuments.slice(0, limit).map((document) => {
+    const documentType = normalizeResumeDocumentType(document.type);
+    const source = normalizeResumeSource(result.source === 'none' ? 'spec-docs' : result.source) as ResumeRow['source'];
+    const row: ResumeRow = {
+      id: `resume:${source}:${document.relativePath}`,
+      title: document.relativePath,
+      filePath: document.path,
+      specFolder: result.specFolder ?? '',
+      documentType,
+      source,
+      score: 1,
+      similarity: 1,
+      fingerprint: document.fingerprint,
+      fingerprintExpected: null,
+      fingerprintStatus: 'verified',
+      content: '',
+    };
+
+    row.content = formatResumeLadderContent(result, row);
+    return row;
+  });
 }
 
 function extractStrategyError(result: ContextResult): StrategyErrorPayload | null {
@@ -781,29 +886,40 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
 }
 
 async function executeResumeStrategy(input: string, intent: string | null, options: ContextOptions): Promise<ContextResult> {
+  void input;
+  void intent;
   const resumeAnchors = options.anchors || ['state', 'next-steps', 'summary', 'blockers'];
-
-  const result = await handleMemorySearch({
-    query: input || 'resume work continue session',
+  const ladder = buildResumeLadder({
     specFolder: options.specFolder,
-    folderBoost: options.folderBoost,
-    tenantId: options.tenantId,
-    userId: options.userId,
-    agentId: options.agentId,
-    sharedSpaceId: options.sharedSpaceId,
-    limit: options.limit || 5,
-    includeConstitutional: false,
-    includeContent: true,
-    includeTrace: options.includeTrace || false, // CHK-040
-    anchors: resumeAnchors,
-    sessionId: options.sessionId,
-    sessionTransition: options.sessionTransition,
-    enableDedup: false,
-    profile: options.profile,
-    intent: intent ?? undefined,
-    autoDetectIntent: intent ? false : true,
-    useDecay: false,
-    // minState omitted — memoryState column not yet in schema
+    fallbackSpecFolder: options.folderBoost?.folder,
+    workspacePath: process.cwd(),
+  });
+  const normalizedSource = normalizeResumeSource(ladder.source);
+  const resumeRows = convertResumeLadderToRows(ladder, options.limit || 5);
+  const result = createMCPResponse({
+    tool: 'memory_context_resume',
+    summary: resumeRows.length > 0
+      ? `Resume ladder resolved via ${normalizedSource}`
+      : 'Resume ladder found no canonical recovery context',
+    data: {
+      count: resumeRows.length,
+      results: resumeRows,
+      resumeLadder: {
+        source: normalizedSource,
+        levels: [...RESUME_LADDER_ORDER],
+        specFolder: ladder.specFolder,
+        specFolderPath: ladder.resolution.folderPath,
+        legacyMemoryFallback: false,
+        archivedTierEnabled: false,
+        warnings: ladder.hints,
+        requestedAnchors: resumeAnchors,
+      },
+    },
+    hints: [
+      'Resume mode reads canonical docs directly: handover.md -> _memory.continuity -> spec docs.',
+      'No archived tier or legacy memory fallback is enabled in Gate D resume mode.',
+      ...ladder.hints.slice(0, 3),
+    ],
   });
 
   return {

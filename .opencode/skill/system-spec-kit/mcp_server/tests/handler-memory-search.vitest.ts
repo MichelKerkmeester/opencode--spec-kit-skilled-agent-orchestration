@@ -196,6 +196,48 @@ describe('Packet 010 lexical capability response surface', () => {
   });
 });
 
+describe('Gate D canonical reader compatibility', () => {
+  beforeEach(() => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+    vi.spyOn(toolCache, 'isEnabled').mockReturnValue(true);
+    vi.spyOn(toolCache, 'generateCacheKey').mockReturnValue('gate-d-cache-key');
+    vi.spyOn(toolCache, 'get').mockReturnValue({
+      summary: 'Found 1 canonical memory',
+      data: {
+        count: 1,
+        results: [
+          {
+            id: 901,
+            title: 'Canonical result',
+            similarity: 0.75,
+          },
+        ],
+      },
+      hints: [],
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('normalizes includeArchived out of the cache key contract', async () => {
+    const generateCacheKeySpy = vi.spyOn(toolCache, 'generateCacheKey');
+
+    await handler.handleMemorySearch({
+      query: 'canonical continuity search',
+      includeArchived: true,
+    });
+
+    expect(generateCacheKeySpy).toHaveBeenCalledTimes(1);
+    const [, cacheArgs] = generateCacheKeySpy.mock.calls[0] ?? [];
+    expect(cacheArgs).toMatchObject({
+      includeArchived: false,
+      cacheVersion: 'gate-d-reader-ready-v1',
+    });
+  });
+});
+
 describe('Packet 009 publication gate consumer', () => {
   beforeEach(() => {
     vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);

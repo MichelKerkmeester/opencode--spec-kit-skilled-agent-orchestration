@@ -61,6 +61,9 @@ interface SessionBootstrapResult {
   nextActions: string[];
 }
 
+const RESUME_LADDER_SUMMARY =
+  'Resume recovery follows `handover.md` -> `_memory.continuity` -> spec docs.';
+
 /* ───────────────────────────────────────────────────────────────
    2. HELPERS
 ──────────────────────────────────────────────────────────────── */
@@ -110,18 +113,8 @@ function buildNextActions(
     nextActions.add(structuralContext.recommendedAction);
   }
 
-  if (structuralContext.status === 'ready') {
-    nextActions.add('Use `session_resume({ specFolder })` when you need the fuller merged recovery payload.');
-  } else if (structuralContext.status === 'stale') {
-    nextActions.add('Run `code_graph_scan` if you need fresh structural context, then call `session_bootstrap()` again.');
-  } else {
-    nextActions.add('If structural context matters for this task, run `code_graph_scan` and then re-run `session_bootstrap()`.');
-  }
-
-  const healthStatus = typeof healthData.status === 'string' ? healthData.status : null;
-  if (healthStatus === 'warning' || healthStatus === 'stale') {
-    nextActions.add('Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` if you need a deeper state refresh.');
-  }
+  nextActions.add('Use `session_resume({ specFolder })` when you need the fuller merged recovery payload.');
+  nextActions.add(RESUME_LADDER_SUMMARY);
 
   return [...nextActions].slice(0, 3);
 }
@@ -200,9 +193,6 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   }
 
   const cachedSummary = extractCachedSummary(resumeData);
-  if (cachedSummary?.status === 'accepted') {
-    allHints.push('Cached continuity summary accepted as additive bootstrap context.');
-  }
   const structuralRoutingNudge = buildStructuralRoutingNudge(structuralContext);
   if (structuralRoutingNudge) {
     allHints.push(structuralRoutingNudge.message);

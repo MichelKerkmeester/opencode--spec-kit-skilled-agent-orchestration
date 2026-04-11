@@ -2,8 +2,10 @@
 // MODULE: Trigger Matcher
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Trigger phrase matching (memory_match_triggers)
+import fs from 'node:fs';
 import type Database from 'better-sqlite3';
 import * as vectorIndex from '../search/vector-index.js';
+import { extractTriggerPhrases } from './memory-parser.js';
 import { escapeRegex } from '../utils/path-security.js';
 
 /* --- 1. TYPES --- */
@@ -110,6 +112,18 @@ export interface TriggerMatcherConfig {
   MAX_REGEX_CACHE_SIZE: number;
 }
 
+interface TriggerSourceRow {
+  id: number;
+  spec_folder: string;
+  file_path: string;
+  title: string | null;
+  trigger_phrases: string;
+  importance_weight: number | null;
+  document_type: string | null;
+  anchor_id: string | null;
+  content_text: string | null;
+}
+
 /* --- 2. CONFIGURATION --- */
 
 /**
@@ -173,14 +187,27 @@ const COMMON_TRIGGER_STOPWORDS = new Set([
   'is', 'am', 'are', 'was', 'were', 'be', 'been', 'being',
   'to', 'of', 'in', 'on', 'at', 'for', 'from', 'with', 'by',
 ]);
+const CONTINUITY_ANCHOR_ID = '_memory.continuity';
+const CANONICAL_TRIGGER_DOCUMENT_TYPES = new Set([
+  'spec',
+  'plan',
+  'tasks',
+  'checklist',
+  'decision_record',
+  'implementation_summary',
+  'research',
+  'handover',
+]);
 const TRIGGER_CACHE_LOADER_SQL = `
-  SELECT id, spec_folder, file_path, title, trigger_phrases, importance_weight
+  SELECT id, spec_folder, file_path, title, trigger_phrases, importance_weight, document_type, anchor_id, content_text
   FROM memory_index
   WHERE embedding_status = 'success'
-    AND trigger_phrases IS NOT NULL
-    AND trigger_phrases != '[]'
-    AND trigger_phrases != ''
-  ORDER BY id ASC
+    AND (
+      (document_type IN ('spec', 'plan', 'tasks', 'checklist', 'decision_record', 'implementation_summary', 'research', 'handover')
+        AND (anchor_id IS NULL OR anchor_id = ''))
+      OR anchor_id = '${CONTINUITY_ANCHOR_ID}'
+    )
+  ORDER BY id DESC
 `;
 
 function getTriggerCacheLoaderStatement(database: Database.Database): Database.Statement {
@@ -266,6 +293,115 @@ function extractTriggerIndexKeys(text: string): string[] {
   }
 
   return [...keys];
+}
+
+function tryParseStoredTriggerPhrases(raw: string | null | undefined): {
+  phrases: string[];
+  error: string | null;
+} {
+  if (typeof raw !== 'string') {
+    return { phrases: [], error: null };
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return {
+      phrases: Array.isArray(parsed)
+        ? parsed.filter((value): value is string => typeof value === 'string')
+        : [],
+      error: null,
+    };
+  } catch {
+    return {
+      phrases: [],
+      error: 'Continuity trigger phrases must be valid JSON arrays',
+    };
+  }
+}
+
+function readCanonicalSpecDocContent(row: TriggerSourceRow): string {
+  if (typeof row.file_path === 'string' && row.file_path.length > 0 && fs.existsSync(row.file_path)) {
+    try {
+      return fs.readFileSync(row.file_path, 'utf8');
+    } catch {
+      // Fall back to the indexed snapshot when the live doc cannot be read.
+    }
+  }
+
+  return row.content_text ?? '';
+}
+
+function extractCanonicalTriggerPhrases(row: TriggerSourceRow): string[] {
+  return extractTriggerPhrases(readCanonicalSpecDocContent(row));
+}
+
+function isCanonicalSpecDocRow(row: TriggerSourceRow): boolean {
+  return typeof row.document_type === 'string'
+    && CANONICAL_TRIGGER_DOCUMENT_TYPES.has(row.document_type)
+    && (row.anchor_id === null || row.anchor_id === '');
+}
+
+function isContinuityTriggerRow(row: TriggerSourceRow): boolean {
+  return row.anchor_id === CONTINUITY_ANCHOR_ID;
+}
+
+function resolveTriggerSourceRows(rows: TriggerSourceRow[]): Array<{
+  row: TriggerSourceRow;
+  phrases: string[];
+}> {
+  const canonicalSpecDocByPath = new Map<string, TriggerSourceRow>();
+  const continuityByPath = new Map<string, TriggerSourceRow>();
+
+  for (const row of rows) {
+    const normalizedPath = normalizeTriggerText(row.file_path);
+    if (!normalizedPath) {
+      continue;
+    }
+
+    if (isCanonicalSpecDocRow(row) && !canonicalSpecDocByPath.has(normalizedPath)) {
+      canonicalSpecDocByPath.set(normalizedPath, row);
+      continue;
+    }
+
+    if (isContinuityTriggerRow(row) && !continuityByPath.has(normalizedPath)) {
+      continuityByPath.set(normalizedPath, row);
+    }
+  }
+
+  const resolvedSources: Array<{ row: TriggerSourceRow; phrases: string[] }> = [];
+  const processedPaths = new Set<string>();
+
+  for (const [normalizedPath, specDocRow] of canonicalSpecDocByPath.entries()) {
+    processedPaths.add(normalizedPath);
+    const frontmatterTriggerPhrases = extractCanonicalTriggerPhrases(specDocRow);
+    if (frontmatterTriggerPhrases.length > 0) {
+      resolvedSources.push({ row: specDocRow, phrases: frontmatterTriggerPhrases });
+      continue;
+    }
+
+    const continuityRow = continuityByPath.get(normalizedPath);
+    if (!continuityRow) {
+      continue;
+    }
+
+    const continuityTriggerPhrases = tryParseStoredTriggerPhrases(continuityRow.trigger_phrases).phrases;
+    if (continuityTriggerPhrases.length > 0) {
+      resolvedSources.push({ row: continuityRow, phrases: continuityTriggerPhrases });
+    }
+  }
+
+  for (const [normalizedPath, continuityRow] of continuityByPath.entries()) {
+    if (processedPaths.has(normalizedPath)) {
+      continue;
+    }
+
+    const continuityTriggerPhrases = tryParseStoredTriggerPhrases(continuityRow.trigger_phrases).phrases;
+    if (continuityTriggerPhrases.length > 0) {
+      resolvedSources.push({ row: continuityRow, phrases: continuityTriggerPhrases });
+    }
+  }
+
+  return resolvedSources;
 }
 
 function indexTriggerEntry(entry: TriggerCacheEntry): void {
@@ -358,39 +494,31 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
       return [];
     }
 
-    const rows = getTriggerCacheLoaderStatement(db as Database.Database).all() as Array<{
-      id: number;
-      spec_folder: string;
-      file_path: string;
-      title: string | null;
-      trigger_phrases: string;
-      importance_weight: number | null;
-    }>;
+    const rows = getTriggerCacheLoaderStatement(db as Database.Database).all() as TriggerSourceRow[];
 
     // Build flat cache for fast iteration
     triggerCache = [];
     triggerCandidateIndex = new Map();
     const failures: TriggerMatcherFailure[] = [];
+    const resolvedRows = resolveTriggerSourceRows(rows);
     for (const row of rows) {
-      let phrases: unknown;
-      try {
-        phrases = JSON.parse(row.trigger_phrases);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        console.warn(`[trigger-matcher] Failed to parse trigger phrases for memory ${row.id}: ${message}`);
+      if (!isContinuityTriggerRow(row)) {
+        continue;
+      }
+
+      const storedPhrases = tryParseStoredTriggerPhrases(row.trigger_phrases);
+      if (storedPhrases.error && typeof row.trigger_phrases === 'string' && row.trigger_phrases.trim().length > 0) {
         failures.push({
           code: 'E_TRIGGER_SOURCE_PARSE',
-          message,
+          message: storedPhrases.error,
           memoryId: row.id,
           filePath: row.file_path,
         });
-        continue;
       }
+    }
 
-      if (!Array.isArray(phrases)) {
-        continue;
-      }
-
+    for (const resolvedSource of resolvedRows) {
+      const { row, phrases } = resolvedSource;
       for (const phrase of phrases) {
         if (typeof phrase !== 'string') {
           continue;
