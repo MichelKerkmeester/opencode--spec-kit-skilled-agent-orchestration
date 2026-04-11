@@ -19,6 +19,7 @@ Complete research documentation providing in-depth technical analysis, architect
 
 ---
 
+<!-- ANCHOR:when-to-use -->
 ## WHEN TO USE THIS TEMPLATE
 
 **Use research.md when:**
@@ -33,9 +34,11 @@ Complete research documentation providing in-depth technical analysis, architect
 - Architecture decisions only (use decision-record.md or include in this doc)
 
 **This template is designed for comprehensive feature research that will guide implementation.**
+<!-- /ANCHOR:when-to-use -->
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 - **Research ID**: RESEARCH-[FORMAT: ###]
@@ -51,9 +54,11 @@ Complete research documentation providing in-depth technical analysis, architect
 - Spec: [OPTIONAL: link to spec.md if applicable]
 - Spike: [OPTIONAL: link to spike-*.md if applicable]
 - ADR: [OPTIONAL: link to decision-record-*.md if applicable]
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:file-organization -->
 ## FILE ORGANIZATION
 
 **During research, organize files as:**
@@ -68,9 +73,11 @@ Complete research documentation providing in-depth technical analysis, architect
 - Delete scratch/ contents
 
 > **OpenCode Users:** Clean up scratch/ manually before claiming completion.
+<!-- /ANCHOR:file-organization -->
 
 ---
 
+<!-- ANCHOR:investigation-report -->
 ## 2. INVESTIGATION REPORT
 
 ### Request Summary
@@ -93,9 +100,11 @@ Complete research documentation providing in-depth technical analysis, architect
 **Alternative Approaches**:
 - [YOUR_VALUE_HERE: alternative 1 with trade-offs - example: REST API - simpler but requires multiple endpoints]
 - [YOUR_VALUE_HERE: alternative 2 with trade-offs - example: gRPC - faster but steeper learning curve]
+<!-- /ANCHOR:investigation-report -->
 
 ---
 
+<!-- ANCHOR:executive-overview -->
 ## 3. EXECUTIVE OVERVIEW
 
 ### Executive Summary
@@ -135,9 +144,11 @@ Example:
 | Article/Tutorial | [Title] | [URL] | Medium |
 | Example Implementation | [Description] | [URL] | High |
 | Community Discussion | [Topic] | [URL] | Medium |
+<!-- /ANCHOR:executive-overview -->
 
 ---
 
+<!-- ANCHOR:core-architecture -->
 ## 4. CORE ARCHITECTURE
 
 ### System Components
@@ -201,9 +212,11 @@ User Input → Validation → Processing → Storage → Response
 |------------|---------|---------|-----------|-------------|
 | [Library 1] | [v.X.X] | [Purpose] | Yes/No | [Alternative] |
 | [Library 2] | [v.X.X] | [Purpose] | Yes/No | [Alternative] |
+<!-- /ANCHOR:core-architecture -->
 
 ---
 
+<!-- ANCHOR:technical-specifications -->
 ## 5. TECHNICAL SPECIFICATIONS
 
 ### API Documentation
@@ -274,9 +287,11 @@ User Input → Validation → Processing → Storage → Response
 ```
 
 **State Persistence**: [How and where state is persisted, if applicable]
+<!-- /ANCHOR:technical-specifications -->
 
 ---
 
+<!-- ANCHOR:constraints-limitations -->
 ## 6. CONSTRAINTS & LIMITATIONS
 
 ### Platform Limitations
@@ -304,9 +319,11 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 - **API Rate Limits**: [Description of rate limits]
 - **Throttling Strategy**: [How to handle rate limits]
 - **Backoff Strategy**: [Exponential backoff, retry logic]
+<!-- /ANCHOR:constraints-limitations -->
 
 ---
 
+<!-- ANCHOR:integration-patterns -->
 ## 7. INTEGRATION PATTERNS
 
 ### Third-Party Service Integration
@@ -367,9 +384,11 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 ```[language]
 [Code example showing retry implementation]
 ```
+<!-- /ANCHOR:integration-patterns -->
 
 ---
 
+<!-- ANCHOR:implementation-guide -->
 ## 8. IMPLEMENTATION GUIDE
 
 ### Markup Requirements
@@ -451,9 +470,11 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 ```[language]
 [Complete configuration example]
 ```
+<!-- /ANCHOR:implementation-guide -->
 
 ---
 
+<!-- ANCHOR:code-examples -->
 ## 9. CODE EXAMPLES & SNIPPETS
 
 ### Initialization Patterns
@@ -509,6 +530,7 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 ```[language]
 [Code showing how to handle this edge case]
 ```
+<!-- /ANCHOR:code-examples -->
 
 #### Edge Case 2: [YOUR_VALUE_HERE: scenario]
 **Problem**: [Description of edge case]
@@ -520,6 +542,7 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 
 ---
 
+<!-- ANCHOR:testing-debugging -->
 ## 10. TESTING & DEBUGGING
 
 ### Test Strategies
@@ -576,9 +599,11 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 **Console Commands**:
 - `[command1]`: [What it does]
 - `[command2]`: [What it does]
+<!-- /ANCHOR:testing-debugging -->
 
 ---
 
+<!-- ANCHOR:performance-optimization -->
 ## 11. PERFORMANCE OPTIMIZATION
 
 ### Optimization Tactics
@@ -622,9 +647,11 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 ```[language]
 [Code showing caching implementation]
 ```
+<!-- /ANCHOR:performance-optimization -->
 
 ---
 
+<!-- ANCHOR:security-considerations -->
 ## 12. SECURITY CONSIDERATIONS
 
 ### Validation Approach
@@ -676,9 +703,11 @@ Legend: ✅ Supported | ⚠️ Partial support | ❌ Not supported
 ```
 [Required security headers]
 ```
+<!-- /ANCHOR:security-considerations -->
 
 ---
 
+<!-- ANCHOR:future-proofing-maintenance -->
 ## 13. FUTURE-PROOFING & MAINTENANCE
 
 ### Upgrade Paths
@@ -723,9 +752,11 @@ Should I use [Option A] or [Option B]?
 ```[language]
 [Code showing proper cleanup]
 ```
+<!-- /ANCHOR:future-proofing-maintenance -->
 
 ---
 
+<!-- ANCHOR:api-reference -->
 ## 14. API REFERENCE
 
 ### Attributes Table
@@ -786,9 +817,11 @@ Should I use [Option A] or [Option B]?
 - Before removing DOM elements
 - On route changes in SPAs
 - Before re-initialization
+<!-- /ANCHOR:api-reference -->
 
 ---
 
+<!-- ANCHOR:troubleshooting-guide -->
 ## 15. TROUBLESHOOTING GUIDE
 
 ### Common Issues
@@ -845,9 +878,11 @@ Should I use [Option A] or [Option B]?
 ```
 
 **Trade-offs**: [What you lose with this workaround]
+<!-- /ANCHOR:troubleshooting-guide -->
 
 ---
 
+<!-- ANCHOR:acknowledgements -->
 ## 16. ACKNOWLEDGEMENTS
 
 ### Research Contributors
@@ -861,9 +896,11 @@ Should I use [Option A] or [Option B]?
 ### External Tools & Libraries Used
 - [Tool/Library 1]: [Version, purpose]
 - [Tool/Library 2]: [Version, purpose]
+<!-- /ANCHOR:acknowledgements -->
 
 ---
 
+<!-- ANCHOR:appendix -->
 ## APPENDIX
 
 ### Glossary
@@ -876,9 +913,11 @@ Should I use [Option A] or [Option B]?
 
 ### Change Log Detail
 [Detailed change history if needed beyond metadata section]
+<!-- /ANCHOR:appendix -->
 
 ---
 
+<!-- ANCHOR:changelog-updates -->
 ## CHANGELOG & UPDATES
 
 ### Version History
@@ -890,6 +929,7 @@ Should I use [Option A] or [Option B]?
 
 ### Recent Updates
 - [FORMAT: YYYY-MM-DD]: [Description of update]
+<!-- /ANCHOR:changelog-updates -->
 - [FORMAT: YYYY-MM-DD]: [Description of update]
 
 ---

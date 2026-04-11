@@ -18,6 +18,7 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 
 ---
 
+<!-- ANCHOR:when-to-use -->
 ## WHEN TO USE THIS TEMPLATE
 
 **Use debug-delegation.md when:**
@@ -28,14 +29,18 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 - Documenting failed attempts for knowledge transfer
 
 **Status values:** Draft | In Progress | Review | Complete | Archived
+<!-- /ANCHOR:when-to-use -->
 
 ---
 
+<!-- ANCHOR:delegation-metadata -->
 **Date:** [AUTO: timestamp]
 **Task ID:** [YOUR_VALUE_HERE: task_id]
 **Delegated By:** [YOUR_VALUE_HERE: agent_id]
 **Attempts Before Delegation:** [YOUR_VALUE_HERE: attempt_count]
+<!-- /ANCHOR:delegation-metadata -->
 
+<!-- ANCHOR:problem-summary -->
 ## 1. PROBLEM SUMMARY
 
 ### Error Category
@@ -49,7 +54,9 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 ### Affected Files
 - [YOUR_VALUE_HERE: file_path_1]
 - [YOUR_VALUE_HERE: file_path_2]
+<!-- /ANCHOR:problem-summary -->
 
+<!-- ANCHOR:attempted-fixes -->
 ## 2. ATTEMPTED FIXES
 
 ### Attempt 1
@@ -64,7 +71,9 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 ### Attempt 3
 - **Approach:** [YOUR_VALUE_HERE: description]
 - **Result:** [YOUR_VALUE_HERE: failed_because]
+<!-- /ANCHOR:attempted-fixes -->
 
+<!-- ANCHOR:context-for-specialist -->
 ## 3. CONTEXT FOR SPECIALIST
 
 ### Relevant Code Section
@@ -77,21 +86,27 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 
 ### Hypothesis
 [YOUR_VALUE_HERE: current_theory_about_root_cause]
+<!-- /ANCHOR:context-for-specialist -->
 
+<!-- ANCHOR:recommended-next-steps -->
 ## 4. RECOMMENDED NEXT STEPS
 
 1. [YOUR_VALUE_HERE: suggested_action_1]
 2. [YOUR_VALUE_HERE: suggested_action_2]
+<!-- /ANCHOR:recommended-next-steps -->
 
+<!-- ANCHOR:handoff-checklist -->
 ## 5. HANDOFF CHECKLIST
 
 - [ ] All attempted fixes documented
 - [ ] Error logs attached
 - [ ] Reproduction steps provided
 - [ ] Environment details included
+<!-- /ANCHOR:handoff-checklist -->
 
 ---
 
+<!-- ANCHOR:template-instructions -->
 ## TEMPLATE INSTRUCTIONS
 
 **How to use this template:**
@@ -112,6 +127,7 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 - Create memory file to preserve context for specialist
 - Reference spec.md and plan.md for original requirements
 - Update tasks.md with delegation status
+<!-- /ANCHOR:template-instructions -->
 
 ---
 

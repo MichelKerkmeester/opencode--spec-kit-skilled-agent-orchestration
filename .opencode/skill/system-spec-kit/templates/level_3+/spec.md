@@ -44,6 +44,7 @@ DO NOT use Level 3+ if:
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -186,6 +187,7 @@ DO NOT use Level 3+ if:
 
 ---
 
+<!-- ANCHOR:approval-workflow -->
 ## 12. APPROVAL WORKFLOW
 
 | Checkpoint | Approver | Status | Date |
@@ -194,9 +196,11 @@ DO NOT use Level 3+ if:
 | Design Review | [Role/Name] | [Pending/Approved] | [Date] |
 | Implementation Review | [Role/Name] | [Pending/Approved] | [Date] |
 | Launch Approval | [Role/Name] | [Pending/Approved] | [Date] |
+<!-- /ANCHOR:approval-workflow -->
 
 ---
 
+<!-- ANCHOR:compliance-checkpoints -->
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Security Compliance
@@ -207,22 +211,27 @@ DO NOT use Level 3+ if:
 ### Code Compliance
 - [ ] Coding standards followed
 - [ ] License compliance verified
+<!-- /ANCHOR:compliance-checkpoints -->
 
 ---
 
+<!-- ANCHOR:stakeholder-matrix -->
 ## 14. STAKEHOLDER MATRIX
 
 | Stakeholder | Role | Interest | Communication |
 |-------------|------|----------|---------------|
 | [Name] | Product | High | [Weekly sync] |
 | [Name] | Engineering | High | [Daily standup] |
+<!-- /ANCHOR:stakeholder-matrix -->
 
 ---
 
+<!-- ANCHOR:change-log -->
 ## 15. CHANGE LOG
 
 ### v1.0 ([Date])
 **Initial specification**
+<!-- /ANCHOR:change-log -->
 
 ---
 

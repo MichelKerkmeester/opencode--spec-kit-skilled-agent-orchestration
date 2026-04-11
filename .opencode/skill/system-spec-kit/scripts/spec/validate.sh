@@ -424,6 +424,11 @@ run_all_rules() {
         fi
         local bn; bn=$(basename "$rule_script" .sh)
         local rule_name; rule_name=$(echo "${bn#check-}" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+        # Gate A policy: changelog and sharded templates are not merge/save targets,
+        # so anchor-contract validation is intentionally skipped for those folders.
+        if [[ "$rule_name" == "ANCHORS_VALID" ]] && [[ "$folder" == *"/templates/changelog"* || "$folder" == *"/templates/sharded"* ]]; then
+            continue
+        fi
         should_run_rule "$rule_name" || continue
         
         # Capture start time for verbose timing

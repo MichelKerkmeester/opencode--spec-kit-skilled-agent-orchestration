@@ -17,6 +17,7 @@ Session handover template for preserving context and enabling seamless continuat
 
 ---
 
+<!-- ANCHOR:when-to-use -->
 ## WHEN TO USE THIS TEMPLATE
 
 **Use handover.md when:**
@@ -27,18 +28,22 @@ Session handover template for preserving context and enabling seamless continuat
 - Session compaction detected and recovery needed
 
 **Status values:** Draft | In Progress | Review | Complete | Archived
+<!-- /ANCHOR:when-to-use -->
 
 ---
 
+<!-- ANCHOR:handover-summary -->
 ## 1. Handover Summary
 
 - **From Session:** [YOUR_VALUE_HERE: session_id or date]
 - **To Session:** [YOUR_VALUE_HERE: next_session]
 - **Phase Completed:** [YOUR_VALUE_HERE: RESEARCH / PLANNING / IMPLEMENTATION]
 - **Handover Time:** [YOUR_VALUE_HERE: timestamp]
+<!-- /ANCHOR:handover-summary -->
 
 ---
 
+<!-- ANCHOR:context-transfer -->
 ## 2. Context Transfer
 
 ### 2.1 Key Decisions Made
@@ -56,9 +61,11 @@ Session handover template for preserving context and enabling seamless continuat
 | File        | Change Summary | Status                 |
 | ----------- | -------------- | ---------------------- |
 | [YOUR_VALUE_HERE: file_path] | [YOUR_VALUE_HERE: what changed] | [YOUR_VALUE_HERE: COMPLETE/IN_PROGRESS] |
+<!-- /ANCHOR:context-transfer -->
 
 ---
 
+<!-- ANCHOR:next-session -->
 ## 3. For Next Session
 
 ### 3.1 Recommended Starting Point
@@ -74,9 +81,11 @@ Session handover template for preserving context and enabling seamless continuat
 - [ ] Memory file: `memory/[YOUR_VALUE_HERE: filename].md`
 - [ ] Spec file: `spec.md` (sections [YOUR_VALUE_HERE: X, Y, Z])
 - [ ] Plan file: `plan.md` (phase [YOUR_VALUE_HERE: N])
+<!-- /ANCHOR:next-session -->
 
 ---
 
+<!-- ANCHOR:validation-checklist -->
 ## 4. Validation Checklist
 
 Before handover, verify:
@@ -85,15 +94,19 @@ Before handover, verify:
 - [ ] No breaking changes left mid-implementation
 - [ ] Tests passing (if applicable)
 - [ ] This handover document is complete
+<!-- /ANCHOR:validation-checklist -->
 
 ---
 
+<!-- ANCHOR:session-notes -->
 ## 5. Session Notes
 
 [YOUR_VALUE_HERE: free-form notes for next session]
+<!-- /ANCHOR:session-notes -->
 
 ---
 
+<!-- ANCHOR:template-instructions -->
 ## TEMPLATE INSTRUCTIONS
 
 **How to use this template:**
@@ -114,6 +127,7 @@ Before handover, verify:
 - Reference memory files from `memory/` folder for context recovery
 - Link to spec.md, plan.md, and tasks.md for complete picture
 - Create new memory file via `generate-context.js` before handover
+<!-- /ANCHOR:template-instructions -->
 
 ---
 

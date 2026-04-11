@@ -2,10 +2,10 @@
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
-status: planned
+status: blocked
 parent: 018-canonical-continuity-refactor
 gate: A
-description: "Ordered execution list for removing Gate A blockers before phase 018 schema or runtime refactor work begins."
+description: "Ordered execution record for removing Gate A blockers before phase 018 schema or runtime refactor work begins; Gate A remains blocked on resume warmup."
 trigger_phrases:
   - "gate a tasks"
   - "pre-work tasks"
@@ -41,12 +41,12 @@ Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Confirm the Gate A target set from `../resource-map.md` F-3, `../resource-map.md` §4, and `../scratch/resource-map/04-templates.md`.
-- [ ] T002 Audit all Level 1/2/3/3+ templates for anchor integrity in a read-only scan, then limit remediation to Level 3, Level 3+, and `.opencode/skill/system-spec-kit/templates/{handover.md,research.md,debug-delegation.md}`.
-- [ ] T003 Identify the root packets missing canonical `implementation-summary.md`, using iteration 016's M4 prerequisite as the audit rubric.
-- [ ] T004 Freeze the default validator scope decision: `changelog/*` and `sharded/*` are exempt from merge-target validation unless a later phase expands their contract.
-- [ ] T005 Decide whether Gate A will create an empty `mcp_server/database/migrations/` convention or record inline migration ownership in `vector-index-schema.ts`.
-- [ ] T006 [P] Pre-stage the copy-only backup/restore rehearsal plan and confirm the backup artifact name (`memory-018-pre.db`).
+- [x] T001 Confirm the Gate A target set from `../resource-map.md` F-3, `../resource-map.md` §4, and `../scratch/resource-map/04-templates.md`.
+- [x] T002 Audit all Level 1/2/3/3+ templates for anchor integrity in a read-only scan, then limit remediation to Level 3, Level 3+, and `.opencode/skill/system-spec-kit/templates/{handover.md,research.md,debug-delegation.md}`.
+- [x] T003 Identify the root packets missing canonical `implementation-summary.md`, using iteration 016's M4 prerequisite as the audit rubric. [Evidence: audit resolved to `../../016-release-alignment/implementation-summary.md`]
+- [x] T004 Freeze the default validator scope decision: `changelog/*` and `sharded/*` are exempt from merge-target validation unless a later phase expands their contract.
+- [x] T005 Decide whether Gate A will create an empty `mcp_server/database/migrations/` convention or record inline migration ownership in `vector-index-schema.ts`. [Decision: Option A inline in `mcp_server/lib/search/vector-index-schema.ts`]
+- [x] T006 [P] Pre-stage the copy-only backup/restore rehearsal plan and confirm the backup artifact name (`memory-018-pre.db`). [Evidence: backup created at `.opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db`]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -54,16 +54,16 @@ Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T007 Repair the orphan `metadata` anchor close in `.opencode/skill/system-spec-kit/templates/level_3/spec.md`.
-- [ ] T008 Repair the orphan `metadata` anchor close and add governance anchors in `.opencode/skill/system-spec-kit/templates/level_3+/spec.md`.
-- [ ] T009 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/handover.md`.
-- [ ] T010 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/research.md`.
-- [ ] T011 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/debug-delegation.md`.
-- [ ] T012 Update validator behavior or validator policy notes so `changelog/*` and `sharded/*` remain outside merge-target validation by default.
-- [ ] T013 Generate canonical `implementation-summary.md` backfills for each packet found by T003.
-- [ ] T014 Human-review every generated root-packet backfill and tighten wording until the packet narrative is canonical rather than memory-only.
-- [ ] T015 Commit the root-packet backfills before any archive-state or schema work begins.
-- [ ] T016 [P] Record the Gate A answer for migration-file ownership if T005 resolves it.
+- [x] T007 Repair the orphan `metadata` anchor close in `.opencode/skill/system-spec-kit/templates/level_3/spec.md`.
+- [x] T008 Repair the orphan `metadata` anchor close and add governance anchors in `.opencode/skill/system-spec-kit/templates/level_3+/spec.md`.
+- [x] T009 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/handover.md`.
+- [x] T010 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/research.md`.
+- [x] T011 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/debug-delegation.md`.
+- [x] T012 Update validator behavior or validator policy notes so `changelog/*` and `sharded/*` remain outside merge-target validation by default. [Evidence: `scripts/spec/validate.sh` exempts `templates/changelog` and `templates/sharded` under `ANCHORS_VALID`]
+- [x] T013 Generate canonical `implementation-summary.md` backfills for each packet found by T003. [Evidence: `../../016-release-alignment/implementation-summary.md` backfilled with `_provenance gate-a-retroactive-backfill`]
+- [x] T014 Human-review every generated root-packet backfill and tighten wording until the packet narrative is canonical rather than memory-only.
+- [B] T015 Commit the root-packet backfills before any archive-state or schema work begins. Local git is blocked by `.git/index.lock` sandbox permissions, so the work is not committed from this workspace.
+- [x] T016 [P] Record the Gate A answer for migration-file ownership if T005 resolves it.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -71,13 +71,13 @@ Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T017 Run strict validation on the repaired template examples and confirm the anchor-blocker set is closed.
-- [ ] T018 Create the SQLite backup file with the Gate A naming convention.
-- [ ] T019 Restore the backup onto a copy and verify the copied DB opens cleanly.
-- [ ] T020 Rehearse rollback on a copy and capture the exact reversal procedure.
-- [ ] T021 Run resume warmup and verify `memory_context({ mode: "resume" })` completes in under 5 seconds.
-- [ ] T022 Reconcile `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so Gate A status and evidence all agree.
-- [ ] T023 Record any unresolved item as a named blocker instead of silently carrying it into Gate B.
+- [x] T017 Run strict validation on the repaired template examples and confirm the anchor-blocker set is closed. [Evidence: `SPECKIT_RULES=ANCHORS_VALID` passed for `templates/level_1`, `templates/level_2`, `templates/level_3`, and `templates/level_3+`]
+- [x] T018 Create the SQLite backup file with the Gate A naming convention. [Evidence: `.opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db`, size `195276800` bytes, integrity ok]
+- [x] T019 Restore the backup onto a copy and verify the copied DB opens cleanly.
+- [x] T020 Rehearse rollback on a copy and capture the exact reversal procedure. [Evidence: restore/rollback drill passed with logical SHA3 `e986db400350ac106428a2289f6eafedb49a9c1b544d84eb46e4e73b`]
+- [B] T021 Run resume warmup and verify `memory_context({ mode: "resume" })` completes in under 5 seconds. [Blocker: direct resume call returns `user cancelled MCP tool call`; sub-agent measured the cancellation envelope at 6 ms and the main lane reproduced the same failure]
+- [x] T022 Reconcile `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so Gate A status and evidence all agree.
+- [x] T023 Record any unresolved item as a named blocker instead of silently carrying it into Gate B.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -88,7 +88,7 @@ Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A
 - [ ] All P0 Gate A blockers from `spec.md` REQ-001 through REQ-006 are marked complete.
 - [ ] No `[B]` task remains on template anchors, root-packet backfill, SQLite recovery proof, or warmup health.
 - [ ] Gate A exit criteria from iteration 020 and `../implementation-design.md` are all satisfied.
-- [ ] Follow-on work such as the 19 sub-README rewrites from `../resource-map.md` §8.5 is explicitly deferred instead of silently absorbed.
+- [x] Follow-on work such as the 19 sub-README rewrites from `../resource-map.md` §8.5 is explicitly deferred instead of silently absorbed.
 <!-- /ANCHOR:completion -->
 
 ---
@@ -99,7 +99,7 @@ Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A
 - **Specification**: See `spec.md` for scope, risks, and acceptance criteria.
 - **Plan**: See `plan.md` for sequencing, dependencies, rollback logic, and the one-week pacing model from iteration 028.
 - **Verification**: See `checklist.md` for the Gate A close checklist, including strict validation, backfill, backup, restore, rollback, and warmup proof.
-- **Planned closeout narrative**: See `implementation-summary.md` for the planned shape of the future post-implementation summary.
+- **Closeout narrative**: See `implementation-summary.md` for the factual landed work, verification results, and remaining blockers.
 <!-- /ANCHOR:cross-refs -->
 
 ---
