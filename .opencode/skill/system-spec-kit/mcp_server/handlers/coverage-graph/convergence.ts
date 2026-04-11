@@ -52,6 +52,55 @@ export interface ConvergenceTraceEntry {
   role: 'weighted' | 'blocking_guard';
 }
 
+/**
+ * Compute a canonical numeric composite score from convergence signals.
+ *
+ * Phase 008 P1-01 closure: reducers previously either recorded 0 (research)
+ * or averaged raw signal values (review) because the handler did not emit a
+ * composite score. This helper produces the single authoritative numeric
+ * value the reducer-owned `graphConvergenceScore` field should expose.
+ *
+ * Research signals are weighted as: questionCoverage 0.30, claimVerification
+ * 0.25, (1 - contradictionDensity) 0.15, sourceDiversity (capped /3) 0.15,
+ * evidenceDepth (capped /5) 0.15. All output is clamped to [0.0, 1.0].
+ *
+ * Review signals are weighted as: dimensionCoverage 0.25, findingStability
+ * 0.20, p0ResolutionRate 0.25, evidenceDensity 0.15, hotspotSaturation 0.15.
+ */
+function computeCompositeScore(
+  signals: ConvergenceSignals,
+  loopType: LoopType,
+): number {
+  if (!signals || typeof signals !== 'object') return 0;
+
+  const clamp = (value: number) => Math.max(0, Math.min(1, value));
+  const safe = (value: unknown): number =>
+    typeof value === 'number' && Number.isFinite(value) ? value : 0;
+
+  if (loopType === 'research') {
+    const r = signals as ResearchConvergenceSignals;
+    const normalizedDiversity = Math.min(safe(r.sourceDiversity) / 3.0, 1.0);
+    const normalizedDepth = Math.min(safe(r.evidenceDepth) / 5.0, 1.0);
+    const invertedContradictions = 1.0 - clamp(safe(r.contradictionDensity));
+    const score =
+      clamp(safe(r.questionCoverage)) * 0.30 +
+      clamp(safe(r.claimVerificationRate)) * 0.25 +
+      invertedContradictions * 0.15 +
+      normalizedDiversity * 0.15 +
+      normalizedDepth * 0.15;
+    return Math.round(clamp(score) * 1000) / 1000;
+  }
+
+  const v = signals as ReviewConvergenceSignals;
+  const score =
+    clamp(safe(v.dimensionCoverage)) * 0.25 +
+    clamp(safe(v.findingStability)) * 0.20 +
+    clamp(safe(v.p0ResolutionRate)) * 0.25 +
+    clamp(safe(v.evidenceDensity)) * 0.15 +
+    clamp(safe(v.hotspotSaturation)) * 0.15;
+  return Math.round(clamp(score) * 1000) / 1000;
+}
+
 export interface ConvergenceArgs {
   specFolder: string;
   loopType: LoopType;
@@ -185,10 +234,17 @@ export async function handleCoverageGraphConvergence(
 
     const reason = buildDecisionReason(decision, blockingBlockers, trace);
 
+    // Phase 008 P1-01: emit a single canonical numeric score alongside the
+    // raw signals so reducer-owned `graphConvergenceScore` can consume it
+    // directly without fallback math.
+    const score = computeCompositeScore(signals, args.loopType);
+    const signalsWithScore = { ...signals, score };
+
     return okResponse({
       decision,
       reason,
-      signals,
+      score,
+      signals: signalsWithScore,
       blockers,
       trace,
       momentum,

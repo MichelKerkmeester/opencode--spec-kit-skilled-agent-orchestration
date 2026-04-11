@@ -438,8 +438,13 @@ workflow:
                     decision = "BLOCKED"
                     stop_blocked = true
                     stopReason = "blockedStop"
-                    blocked_by_json = graph_blockers_json
+                    # Phase 008 P1-02 closure: blockedBy must be string[] per the
+                    # published review blocked-stop contract. Extract the `.type`
+                    # field from each structured graph blocker; preserve the full
+                    # objects in graph_blocker_detail_json for operator inspection.
+                    blocked_by_json = JSON.stringify(graph_blockers_json.map(b => typeof b === "string" ? b : (b && b.type) || "graph_blocker"))
                     blocked_by_csv = graph_blockers_csv
+                    graph_blocker_detail_json = graph_blockers_json
                     recovery_strategy = "Resolve review coverage-graph blockers before stopping."
                c) if inline STOP is legal AND graph_decision == "CONTINUE":
                     decision = "CONTINUE"

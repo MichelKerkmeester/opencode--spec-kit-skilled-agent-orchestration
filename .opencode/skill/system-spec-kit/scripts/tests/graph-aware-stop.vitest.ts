@@ -242,4 +242,27 @@ describe('graph-aware stop evaluation', () => {
     expect(result.dashboard).toContain('graphDecision: [Not recorded]');
     expect(result.dashboard).toContain('graphBlockers: none recorded');
   });
+
+  it('consumes the canonical MCP handler output shape (phase 008 P1-01 closure)', () => {
+    // Phase 008 P1-01 closure: the MCP handler emits a canonical `score`
+    // field at the top level of the graph_convergence event (and mirrored in
+    // signals.score). The reducer MUST consume this shape directly without
+    // relying on synthetic `blendedScore` aliases. This test seeds the exact
+    // shape the handler produces and asserts the reducer reads it verbatim.
+    const specFolder = makeFixture('handler-shape', [
+      '{"type":"config","topic":"Handler-shape fixture","sessionId":"graph-stop-handler","maxIterations":5,"createdAt":"2026-04-11T00:00:00Z"}',
+      '{"type":"iteration","run":1,"status":"complete","focus":"Handler-shape probe","findingsCount":2,"newInfoRatio":0.1,"timestamp":"2026-04-11T00:05:00Z","durationMs":1000}',
+      '{"type":"event","event":"graph_convergence","decision":"STOP_ALLOWED","score":0.74,"signals":{"questionCoverage":0.8,"claimVerificationRate":0.7,"contradictionDensity":0.05,"sourceDiversity":2.1,"evidenceDepth":3.2,"score":0.74},"blockers":[],"trace":[],"timestamp":"2026-04-11T00:06:00Z","sessionId":"graph-stop-handler","generation":1}',
+    ]);
+
+    const result = reducer.reduceResearchState(specFolder, { write: false });
+
+    expect(result.registry.graphDecision).toBe('STOP_ALLOWED');
+    // The reducer reads signals.score ?? signals.blendedScore ?? 0, so it
+    // picks up the canonical 0.74 directly from the handler-shaped payload.
+    expect(result.registry.graphConvergenceScore).toBe(0.74);
+    expect(result.registry.graphBlockers).toEqual([]);
+    expect(result.dashboard).toContain('graphDecision: STOP_ALLOWED');
+    expect(result.dashboard).toContain('graphConvergenceScore: 0.74');
+  });
 });

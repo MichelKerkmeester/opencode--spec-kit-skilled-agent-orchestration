@@ -433,6 +433,34 @@ function buildGraphConvergenceRollup(records) {
   };
 }
 
+/**
+ * Phase 008 P1-02 closure: defensively normalize each entry in `blockedBy` so
+ * the review dashboard cannot render `[object Object]` even if an older YAML
+ * workflow accidentally passes structured graph blockers through the contract.
+ *
+ * Contract: `blockedBy` is `string[]` of gate names. If an entry is already a
+ * string, pass it through. If it is a structured graph blocker object
+ * (`{type, description, count, severity}`), prefer `.type`, then `.name`, then
+ * a short JSON preview. If it is anything else, stringify it.
+ */
+function normalizeBlockedByList(value, legacyLegalStop) {
+  const rawList = Array.isArray(value)
+    ? value
+    : Array.isArray(legacyLegalStop?.blockedBy)
+      ? legacyLegalStop.blockedBy
+      : [];
+
+  return rawList.map((entry) => {
+    if (typeof entry === 'string') return entry;
+    if (entry && typeof entry === 'object') {
+      if (typeof entry.type === 'string' && entry.type.length > 0) return entry.type;
+      if (typeof entry.name === 'string' && entry.name.length > 0) return entry.name;
+      return 'graph_blocker';
+    }
+    return String(entry);
+  });
+}
+
 function buildBlockedStopHistory(records) {
   return records
     .filter((record) => record?.type === 'event' && record?.event === 'blocked_stop')
@@ -440,13 +468,17 @@ function buildBlockedStopHistory(records) {
       const legacyLegalStop = record.legalStop && typeof record.legalStop === 'object'
         ? record.legalStop
         : {};
+      const blockedBy = normalizeBlockedByList(record.blockedBy, legacyLegalStop);
+      const graphBlockerDetail = Array.isArray(record.graphBlockerDetail)
+        ? record.graphBlockerDetail
+        : Array.isArray(record.blockedBy) && record.blockedBy.some((e) => e && typeof e === 'object')
+          ? record.blockedBy
+          : [];
+
       return {
         run: typeof record.run === 'number' ? record.run : 0,
-        blockedBy: Array.isArray(record.blockedBy)
-          ? record.blockedBy
-          : Array.isArray(legacyLegalStop.blockedBy)
-            ? legacyLegalStop.blockedBy
-            : [],
+        blockedBy,
+        graphBlockerDetail,
         gateResults: record.gateResults && typeof record.gateResults === 'object'
           ? record.gateResults
           : legacyLegalStop.gateResults && typeof legacyLegalStop.gateResults === 'object'
@@ -568,7 +600,7 @@ function replaceAnchorSection(content, anchorId, heading, body, options = {}) {
   return content.replace(pattern, replacement);
 }
 
-function updateStrategyContent(strategyContent, registry, iterationFiles, options = {}) {
+function updateStrategyContent(strategyContent, registry, iterationFiles, options = {}, iterationRecords = []) {
   // Early return when there is no strategy file to update. Empty content
   // cannot contain the machine-owned anchors and replaceAnchorSection would
   // correctly fail-close — but for that specific case we intentionally skip
@@ -601,15 +633,22 @@ function updateStrategyContent(strategyContent, registry, iterationFiles, option
     || REQUIRED_DIMENSIONS.find((dimension) => !registry.dimensionCoverage[dimension])
     || '[All dimensions covered]';
 
-  // Part C REQ-014: when blocked-stop is the most recent loop event, override
-  // next-focus with the recovery strategy so operators see the blocker first.
+  // Part C REQ-014 / Phase 008 P1-03 closure: prefer the latest blocked-stop
+  // recovery only when blocked-stop is genuinely the most recent loop event.
+  // The earlier implementation read timestamps from the markdown iteration
+  // files, but parseIterationFile() never captures timestamps, so
+  // latestIterationTimestamp was always undefined and any historical
+  // blocked-stop permanently pinned next-focus. Fix: source recency from the
+  // JSONL iteration records (which do carry timestamps) instead.
   const latestBlockedStop = registry.blockedStopHistory?.at(-1);
   if (latestBlockedStop && latestBlockedStop.timestamp) {
-    const latestIterationTimestamp = iterationFiles
-      .map((iteration) => iteration.timestamp)
-      .filter(Boolean)
+    const latestIterationTimestamp = iterationRecords
+      .filter((record) => record?.type === 'iteration' && typeof record.timestamp === 'string')
+      .map((record) => record.timestamp)
       .at(-1);
-    if (!latestIterationTimestamp || latestBlockedStop.timestamp >= latestIterationTimestamp) {
+    const blockedIsMostRecent = !latestIterationTimestamp
+      || latestBlockedStop.timestamp >= latestIterationTimestamp;
+    if (blockedIsMostRecent) {
       const blockers = Array.isArray(latestBlockedStop.blockedBy) && latestBlockedStop.blockedBy.length > 0
         ? latestBlockedStop.blockedBy.join(', ')
         : 'unknown gates';
@@ -835,7 +874,7 @@ function reduceReviewState(specFolder, options = {}) {
     : [];
 
   const registry = buildRegistry(strategyDimensions, iterationFiles, records, config, corruptionWarnings);
-  const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, { createMissingAnchors });
+  const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, { createMissingAnchors }, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 
   if (write) {

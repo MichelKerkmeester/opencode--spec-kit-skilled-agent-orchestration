@@ -223,12 +223,15 @@ export function findProvenanceChain(ns: Namespace, nodeId: string, maxDepth: num
       if (visited.has(item.id) || item.depth >= maxDepth) continue;
       visited.add(item.id);
 
-      const edges = getEdgesFromNode(item.id, ns.sessionId);
+      // Phase 008 P1-04 closure: the provenance helpers must constrain by
+      // specFolder + loopType + sessionId (full namespace) so provenance reads
+      // cannot cross the packet boundary even when sessionId is present.
+      const edges = getEdgesFromNode(item.id, ns);
       for (const edge of edges) {
         if (!provenanceRelations.includes(edge.relation)) continue;
         if (visited.has(edge.targetId)) continue;
 
-        const targetNode = getNodeById(edge.targetId, ns.sessionId);
+        const targetNode = getNodeById(edge.targetId, ns);
         if (!targetNode) continue;
 
         const cumWeight = item.cumulativeWeight * edge.weight;
@@ -251,26 +254,36 @@ export function findProvenanceChain(ns: Namespace, nodeId: string, maxDepth: num
   return results;
 }
 
-/** Internal helper: get node by ID for provenance chain */
-function getNodeById(id: string, sessionId?: string): { kind: string; name: string } | null {
+/**
+ * Internal helper: get node by ID for provenance chain.
+ *
+ * Phase 008 P1-04 closure: constrain reads by the full namespace
+ * (specFolder + loopType + sessionId) rather than sessionId alone, so
+ * provenance cannot cross packet boundaries.
+ */
+function getNodeById(id: string, ns: Namespace): { kind: string; name: string } | null {
   const d = getDb();
-  const sessionFilter = buildSessionFilter('session_id', sessionId);
+  const sessionFilter = buildSessionFilter('session_id', ns.sessionId);
   const row = d.prepare(`
     SELECT kind, name
     FROM coverage_nodes
-    WHERE id = ?${sessionFilter.clause}
-  `).get(id, ...sessionFilter.params) as { kind: string; name: string } | undefined;
+    WHERE id = ?
+      AND spec_folder = ?
+      AND loop_type = ?${sessionFilter.clause}
+  `).get(id, ns.specFolder, ns.loopType, ...sessionFilter.params) as { kind: string; name: string } | undefined;
   return row ?? null;
 }
 
-function getEdgesFromNode(sourceId: string, sessionId?: string): CoverageEdge[] {
+function getEdgesFromNode(sourceId: string, ns: Namespace): CoverageEdge[] {
   const d = getDb();
-  const sessionFilter = buildSessionFilter('session_id', sessionId);
+  const sessionFilter = buildSessionFilter('session_id', ns.sessionId);
   const rows = d.prepare(`
     SELECT *
     FROM coverage_edges
-    WHERE source_id = ?${sessionFilter.clause}
-  `).all(sourceId, ...sessionFilter.params) as Record<string, unknown>[];
+    WHERE source_id = ?
+      AND spec_folder = ?
+      AND loop_type = ?${sessionFilter.clause}
+  `).all(sourceId, ns.specFolder, ns.loopType, ...sessionFilter.params) as Record<string, unknown>[];
 
   return rows.map(row => ({
     id: row.id as string,
