@@ -18,7 +18,7 @@ Reducer-generated observability surface for the active review packet.
 - Review Target: skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 (spec-folder)
 - Started: 2026-04-11T13:50:06Z
 - Status: INITIALIZED
-- Iteration: 4 of 10
+- Iteration: 10 of 10
 - Provisional Verdict: CONDITIONAL
 - hasAdvisories: false
 - Session ID: rvw-2026-04-11T13-50-06Z
@@ -32,8 +32,8 @@ Reducer-generated observability surface for the active review packet.
 | Severity | Count |
 |----------|------:|
 | P0 (Blockers) | 0 |
-| P1 (Required) | 6 |
-| P2 (Suggestions) | 3 |
+| P1 (Required) | 10 |
+| P2 (Suggestions) | 6 |
 | Resolved | 0 |
 
 <!-- /ANCHOR:findings-summary -->
@@ -46,6 +46,12 @@ Reducer-generated observability surface for the active review packet.
 | 2 | security session scoping on coverage graph runtime | security/traceability/maintainability | 0.40 | 0/3/2 | complete |
 | 3 | graph identity namespace contracts | security/traceability/maintainability | 0.17 | 0/4/2 | complete |
 | 4 | confirm/reference contract drift on claim adjudication and convergence docs | traceability/maintainability | 0.33 | 0/6/3 | complete |
+| 5 | lifecycle branch persistence across resume/restart/fork mirrors | correctness/traceability/maintainability | 0.18 | 0/7/4 | complete |
+| 6 | improve-agent lifecycle mirror and snapshot claims | correctness/traceability/maintainability | 0.08 | 0/8/4 | complete |
+| 7 | traceability closure on lifecycle persistence and claim-adjudication gating | traceability/correctness | 0.00 | 0/8/4 | complete |
+| 8 | session-isolation closure claims and graph namespace coverage | traceability/maintainability | 0.08 | 0/8/5 | complete |
+| 9 | release-readiness traceability on bundle summaries and reducer risk surfaces | traceability/maintainability | 0.13 | 0/9/6 | complete |
+| 10 | root completion surface trustworthiness | traceability/maintainability | 0.06 | 0/10/6 | complete |
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:dimension-coverage -->
@@ -53,9 +59,9 @@ Reducer-generated observability surface for the active review packet.
 
 | Dimension | Status | Open findings |
 |-----------|--------|--------------:|
-| correctness | covered | 3 |
+| correctness | covered | 4 |
 | security | covered | 3 |
-| traceability | covered | 3 |
+| traceability | covered | 5 |
 | maintainability | covered | 0 |
 
 <!-- /ANCHOR:dimension-coverage -->
@@ -73,9 +79,9 @@ No blocked-stop events recorded.
 <!-- /ANCHOR:graph-convergence -->
 <!-- ANCHOR:trend -->
 ## 8. TREND
-- Last 3 ratios: 0.40 -> 0.17 -> 0.33
-- convergenceScore: 0.67
-- openFindings: 9
+- Last 3 ratios: 0.08 -> 0.13 -> 0.06
+- convergenceScore: 0.94
+- openFindings: 16
 - persistentSameSeverity: 0
 - severityChanged: 0
 - repeatedFindings (deprecated combined bucket): 0
@@ -88,7 +94,7 @@ No corrupt JSONL lines detected.
 <!-- /ANCHOR:corruption-warnings -->
 <!-- ANCHOR:next-focus -->
 ## 10. NEXT FOCUS
-Rotate into the remaining lifecycle/session metadata and completed-continue/reopen mirrors across review and research docs, especially places where resume/restart/fork examples may still lag the persisted JSONL and config contracts.
+Session complete. Use the final reducer/report synthesis to carry F016 forward with F014/F015 and mark the packet root as not yet trustworthy for release-readiness until its root completion surfaces are reconciled with the live review packet.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

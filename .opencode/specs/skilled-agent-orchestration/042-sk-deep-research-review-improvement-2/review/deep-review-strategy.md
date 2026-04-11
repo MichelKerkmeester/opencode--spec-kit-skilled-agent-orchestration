@@ -46,8 +46,8 @@ Deep review of the entire 042 Deep Research & Review Runtime Improvement Bundle:
 <!-- ANCHOR:running-findings -->
 ## 5. RUNNING FINDINGS
 - P0 (Blockers): 0
-- P1 (Required): 6
-- P2 (Suggestions): 3
+- P1 (Required): 10
+- P2 (Suggestions): 6
 - Resolved: 0
 
 <!-- /ANCHOR:running-findings -->
@@ -87,10 +87,25 @@ Deep review of the entire 042 Deep Research & Review Runtime Improvement Bundle:
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
 ## 9. EXHAUSTED APPROACHES (do not retry)
+### `graph-aware-stop.vitest.ts` as isolation proof: Not applicable — `.opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts:194-260` exercises reducer ingestion of `graph_convergence` events and never probes storage collisions or cross-session ID reuse. -- BLOCKED (iteration 8, 1 attempts)
+- What was tried: `graph-aware-stop.vitest.ts` as isolation proof: Not applicable — `.opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts:194-260` exercises reducer ingestion of `graph_convergence` events and never probes storage collisions or cross-session ID reuse.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: `graph-aware-stop.vitest.ts` as isolation proof: Not applicable — `.opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts:194-260` exercises reducer ingestion of `graph_convergence` events and never probes storage collisions or cross-session ID reuse.
+
+### Additional phase 008 collision coverage outside the dedicated isolation suite: The targeted repo sweep surfaced no second static regression that exercises shared-ID reuse in the reviewed graph/runtime surfaces, so there was no alternate evidence to downgrade F004/F005 in this iteration. -- BLOCKED (iteration 8, 1 attempts)
+- What was tried: Additional phase 008 collision coverage outside the dedicated isolation suite: The targeted repo sweep surfaced no second static regression that exercises shared-ID reuse in the reviewed graph/runtime surfaces, so there was no alternate evidence to downgrade F004/F005 in this iteration.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Additional phase 008 collision coverage outside the dedicated isolation suite: The targeted repo sweep surfaced no second static regression that exercises shared-ID reuse in the reviewed graph/runtime surfaces, so there was no alternate evidence to downgrade F004/F005 in this iteration.
+
 ### Blocked-stop field promotion: No new issue. The persisted blocked-stop contract still matches between the state-format reference and the confirm workflow — `.opencode/skill/sk-deep-review/references/state_format.md:233-289` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:476-479` -- BLOCKED (iteration 4, 1 attempts)
 - What was tried: Blocked-stop field promotion: No new issue. The persisted blocked-stop contract still matches between the state-format reference and the confirm workflow — `.opencode/skill/sk-deep-review/references/state_format.md:233-289` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:476-479`
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Blocked-stop field promotion: No new issue. The persisted blocked-stop contract still matches between the state-format reference and the confirm workflow — `.opencode/skill/sk-deep-review/references/state_format.md:233-289` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:476-479`
+
+### Candidate-lineage depth as proof of session lifecycle support: `candidate-lineage.json` only summarizes candidate ancestry within a run, so it cannot substantiate resume/restart/fork/completed-continue session semantics — `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:227-267`. -- BLOCKED (iteration 6, 1 attempts)
+- What was tried: Candidate-lineage depth as proof of session lifecycle support: `candidate-lineage.json` only summarizes candidate ancestry within a run, so it cannot substantiate resume/restart/fork/completed-continue session semantics — `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:227-267`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Candidate-lineage depth as proof of session lifecycle support: `candidate-lineage.json` only summarizes candidate ancestry within a run, so it cannot substantiate resume/restart/fork/completed-continue session semantics — `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:227-267`.
 
 ### Code Graph tool-budget drift on the review path: Not supported by the code — `.opencode/command/spec_kit/deep-review.md:4` and `.opencode/agent/deep-review.md:15-16` both provision `code_graph_query` and `code_graph_context`. -- BLOCKED (iteration 1, 1 attempts)
 - What was tried: Code Graph tool-budget drift on the review path: Not supported by the code — `.opencode/command/spec_kit/deep-review.md:4` and `.opencode/agent/deep-review.md:15-16` both provision `code_graph_query` and `code_graph_context`.
@@ -102,15 +117,40 @@ Deep review of the entire 042 Deep Research & Review Runtime Improvement Bundle:
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Confirm-mirror contract drift on blocked-stop and normalized pause/recovery events: confirm YAML and loop-protocol references agree on `blocked_stop`, `userPaused`, `stuckRecovery`, and graph convergence/upsert wiring — `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:375-379`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:476-517`, `.opencode/skill/sk-deep-review/references/loop_protocol.md:172-209`, `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:273-381`, `.opencode/skill/sk-deep-research/references/loop_protocol.md:121-145`
 
+### Contract-parity suites as closure evidence: They only assert that docs/YAML mention lifecycle strings and reducer paths, not that runtime emits lineage-transition rows or STOP-gating consumers exist — `.opencode/skill/system-spec-kit/scripts/tests/deep-review-contract-parity.vitest.ts:74-105`; `.opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts:78-83`. -- BLOCKED (iteration 7, 1 attempts)
+- What was tried: Contract-parity suites as closure evidence: They only assert that docs/YAML mention lifecycle strings and reducer paths, not that runtime emits lineage-transition rows or STOP-gating consumers exist — `.opencode/skill/system-spec-kit/scripts/tests/deep-review-contract-parity.vitest.ts:74-105`; `.opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts:78-83`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Contract-parity suites as closure evidence: They only assert that docs/YAML mention lifecycle strings and reducer paths, not that runtime emits lineage-transition rows or STOP-gating consumers exist — `.opencode/skill/system-spec-kit/scripts/tests/deep-review-contract-parity.vitest.ts:74-105`; `.opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts:78-83`.
+
 ### Coverage-graph score parity: No correctness defect surfaced in this pass because the handler emits a canonical numeric score and the reducer consumes a named score path before falling back to averaging. -- BLOCKED (iteration 1, 1 attempts)
 - What was tried: Coverage-graph score parity: No correctness defect surfaced in this pass because the handler emits a canonical numeric score and the reducer consumes a named score path before falling back to averaging.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Coverage-graph score parity: No correctness defect surfaced in this pass because the handler emits a canonical numeric score and the reducer consumes a named score path before falling back to averaging.
 
+### Dashboard-only ancestry surfacing: The review reducer/dashboard still show only `sessionId`, `lineageMode`, and `generation`, but without a live restart/fork/completed-continue write path this stayed downstream of F010 rather than a distinct release-level defect. -- BLOCKED (iteration 5, 1 attempts)
+- What was tried: Dashboard-only ancestry surfacing: The review reducer/dashboard still show only `sessionId`, `lineageMode`, and `generation`, but without a live restart/fork/completed-continue write path this stayed downstream of F010 rather than a distinct release-level defect.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Dashboard-only ancestry surfacing: The review reducer/dashboard still show only `sessionId`, `lineageMode`, and `generation`, but without a live restart/fork/completed-continue write path this stayed downstream of F010 rather than a distinct release-level defect.
+
+### Deep-review changelog as a new claim-adjudication regression: ruled out — `.opencode/changelog/13--sk-deep-review/v1.3.0.0.md:3` and `.opencode/changelog/13--sk-deep-review/v1.3.0.0.md:43` -- BLOCKED (iteration 9, 1 attempts)
+- What was tried: Deep-review changelog as a new claim-adjudication regression: ruled out — `.opencode/changelog/13--sk-deep-review/v1.3.0.0.md:3` and `.opencode/changelog/13--sk-deep-review/v1.3.0.0.md:43`
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Deep-review changelog as a new claim-adjudication regression: ruled out — `.opencode/changelog/13--sk-deep-review/v1.3.0.0.md:3` and `.opencode/changelog/13--sk-deep-review/v1.3.0.0.md:43`
+
+### F015 resolution at the packet root: ruled out — `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/deep-review-dashboard.md:100-101` still says `None active beyond normal review uncertainty.` and no root surface counterbalances that message. -- BLOCKED (iteration 10, 1 attempts)
+- What was tried: F015 resolution at the packet root: ruled out — `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/deep-review-dashboard.md:100-101` still says `None active beyond normal review uncertainty.` and no root surface counterbalances that message.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: F015 resolution at the packet root: ruled out — `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/deep-review-dashboard.md:100-101` still says `None active beyond normal review uncertainty.` and no root surface counterbalances that message.
+
 ### Graph upsert missing from the visible review path: Not supported by the code — `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:604` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:649` both wire `mcp__spec_kit_memory__deep_loop_graph_upsert`. -- BLOCKED (iteration 1, 1 attempts)
 - What was tried: Graph upsert missing from the visible review path: Not supported by the code — `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:604` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:649` both wire `mcp__spec_kit_memory__deep_loop_graph_upsert`.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Graph upsert missing from the visible review path: Not supported by the code — `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:604` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:649` both wire `mcp__spec_kit_memory__deep_loop_graph_upsert`.
+
+### Graph-aware stop coverage as claim-adjudication proof: The dedicated phase 008 test validates graph convergence ingestion and explicitly targets reducer graph-event handling, not claim-adjudication STOP vetoes — `.opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts:1-5`. -- BLOCKED (iteration 7, 1 attempts)
+- What was tried: Graph-aware stop coverage as claim-adjudication proof: The dedicated phase 008 test validates graph convergence ingestion and explicitly targets reducer graph-event handling, not claim-adjudication STOP vetoes — `.opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts:1-5`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Graph-aware stop coverage as claim-adjudication proof: The dedicated phase 008 test validates graph convergence ingestion and explicitly targets reducer graph-event handling, not claim-adjudication STOP vetoes — `.opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts:1-5`.
 
 ### GraphEvents namespace guidance: This still points back to F006 rather than a distinct new defect, so I did not duplicate it. -- BLOCKED (iteration 4, 1 attempts)
 - What was tried: GraphEvents namespace guidance: This still points back to F006 rather than a distinct new defect, so I did not duplicate it.
@@ -122,20 +162,60 @@ Deep review of the entire 042 Deep Research & Review Runtime Improvement Bundle:
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Handler fallback without `sessionId`: The `all_sessions_default` path is explicitly documented bootstrap/debug behavior rather than a hidden bypass — `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:70`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:174`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/status.ts:71`
 
+### Improve-agent changelog as a second lineage-execution overclaim: not distinct enough — `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md:23` and `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md:85` -- BLOCKED (iteration 9, 1 attempts)
+- What was tried: Improve-agent changelog as a second lineage-execution overclaim: not distinct enough — `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md:23` and `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md:85`
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Improve-agent changelog as a second lineage-execution overclaim: not distinct enough — `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md:23` and `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md:85`
+
+### Improvement replay consumers missing entirely: Ruled out because the reducer does read the journal, candidate-lineage, and mutation-coverage artifacts on every refresh — `.opencode/skill/sk-improve-agent/SKILL.md:364-378`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:841-845`. -- BLOCKED (iteration 6, 1 attempts)
+- What was tried: Improvement replay consumers missing entirely: Ruled out because the reducer does read the journal, candidate-lineage, and mutation-coverage artifacts on every refresh — `.opencode/skill/sk-improve-agent/SKILL.md:364-378`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:841-845`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Improvement replay consumers missing entirely: Ruled out because the reducer does read the journal, candidate-lineage, and mutation-coverage artifacts on every refresh — `.opencode/skill/sk-improve-agent/SKILL.md:364-378`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:841-845`.
+
 ### In-memory `coverage-graph-core.cjs` edge auto-ID generation: not on the visible deep-loop write path for this bundle — live research/review graph persistence goes through `deep_loop_graph_upsert` from the confirm/auto YAMLs, not through `insertEdge()` in the in-memory helper. -- BLOCKED (iteration 3, 1 attempts)
 - What was tried: In-memory `coverage-graph-core.cjs` edge auto-ID generation: not on the visible deep-loop write path for this bundle — live research/review graph persistence goes through `deep_loop_graph_upsert` from the confirm/auto YAMLs, not through `insertEdge()` in the in-memory helper.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: In-memory `coverage-graph-core.cjs` edge auto-ID generation: not on the visible deep-loop write path for this bundle — live research/review graph persistence goes through `deep_loop_graph_upsert` from the confirm/auto YAMLs, not through `insertEdge()` in the in-memory helper.
+
+### Late phase 008 write-path namespacing: No hidden downgrade evidence surfaced — `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:463-475` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:655-660` both preserve incoming graph-event IDs when mapping the upsert payloads, so the visible write path still relies on the existing bare-ID store semantics. -- BLOCKED (iteration 8, 1 attempts)
+- What was tried: Late phase 008 write-path namespacing: No hidden downgrade evidence surfaced — `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:463-475` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:655-660` both preserve incoming graph-event IDs when mapping the upsert payloads, so the visible write path still relies on the existing bare-ID store semantics.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Late phase 008 write-path namespacing: No hidden downgrade evidence surfaced — `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:463-475` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:655-660` both preserve incoming graph-event IDs when mapping the upsert payloads, so the visible write path still relies on the existing bare-ID store semantics.
+
+### Lifecycle transition persistence via reducer summaries: The reducer/test surfaces expose `lineageMode`, `generation`, and `sessionId`, but the inspected paths did not reveal any persisted `resumed`, `restarted`, `forked`, or `completed_continue` event handling. -- BLOCKED (iteration 7, 1 attempts)
+- What was tried: Lifecycle transition persistence via reducer summaries: The reducer/test surfaces expose `lineageMode`, `generation`, and `sessionId`, but the inspected paths did not reveal any persisted `resumed`, `restarted`, `forked`, or `completed_continue` event handling.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Lifecycle transition persistence via reducer summaries: The reducer/test surfaces expose `lineageMode`, `generation`, and `sessionId`, but the inspected paths did not reveal any persisted `resumed`, `restarted`, `forked`, or `completed_continue` event handling.
+
+### Looking for a packet-root surface that already absorbs phases 005-008 or the active review ledger: none surfaced in the root docs audited this iteration, so there was no alternate root artifact to downgrade F016. -- BLOCKED (iteration 10, 1 attempts)
+- What was tried: Looking for a packet-root surface that already absorbs phases 005-008 or the active review ledger: none surfaced in the root docs audited this iteration, so there was no alternate root artifact to downgrade F016.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking for a packet-root surface that already absorbs phases 005-008 or the active review ledger: none surfaced in the root docs audited this iteration, so there was no alternate root artifact to downgrade F016.
 
 ### Looking for a second handler-side auth or validation bypass in `mcp_server/handlers/coverage-graph/upsert.ts`: the handler validates `specFolder`, `loopType`, `sessionId`, relation/kind enums, and self-loops, so this pass did not uncover a new security defect there beyond the pre-existing bare-ID storage semantics already captured in F004. -- BLOCKED (iteration 3, 1 attempts)
 - What was tried: Looking for a second handler-side auth or validation bypass in `mcp_server/handlers/coverage-graph/upsert.ts`: the handler validates `specFolder`, `loopType`, `sessionId`, relation/kind enums, and self-loops, so this pass did not uncover a new security defect there beyond the pre-existing bare-ID storage semantics already captured in F004.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Looking for a second handler-side auth or validation bypass in `mcp_server/handlers/coverage-graph/upsert.ts`: the handler validates `specFolder`, `loopType`, `sessionId`, relation/kind enums, and self-loops, so this pass did not uncover a new security defect there beyond the pre-existing bare-ID storage semantics already captured in F004.
 
+### Looking for a second independent changelog-level closure claim on resume/restart/fork semantics: the audited changelogs mostly stayed scoped to journal wiring, replay consumers, blocked-stop surfacing, and fail-closed behavior, so they did not yield a separate non-duplicative defect. -- BLOCKED (iteration 9, 1 attempts)
+- What was tried: Looking for a second independent changelog-level closure claim on resume/restart/fork semantics: the audited changelogs mostly stayed scoped to journal wiring, replay consumers, blocked-stop surfacing, and fail-closed behavior, so they did not yield a separate non-duplicative defect.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking for a second independent changelog-level closure claim on resume/restart/fork semantics: the audited changelogs mostly stayed scoped to journal wiring, replay consumers, blocked-stop surfacing, and fail-closed behavior, so they did not yield a separate non-duplicative defect.
+
+### Pause/recovery enum normalization: The confirm mirrors still emit canonical `userPaused` / `stuckRecovery` stop-reason values on the live path, so this focus area did not reveal a new pause-event regression — `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:264` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:355` -- BLOCKED (iteration 5, 1 attempts)
+- What was tried: Pause/recovery enum normalization: The confirm mirrors still emit canonical `userPaused` / `stuckRecovery` stop-reason values on the live path, so this focus area did not reveal a new pause-event regression — `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:264` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:355`
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Pause/recovery enum normalization: The confirm mirrors still emit canonical `userPaused` / `stuckRecovery` stop-reason values on the live path, so this focus area did not reveal a new pause-event regression — `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:264` and `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:355`
+
 ### Reducer corruption handling: Both reducers now surface `corruptionWarnings` and exit non-zero unless `--lenient` is passed — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:888-896`, `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:693-701` -- BLOCKED (iteration 2, 1 attempts)
 - What was tried: Reducer corruption handling: Both reducers now surface `corruptionWarnings` and exit non-zero unless `--lenient` is passed — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:888-896`, `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:693-701`
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Reducer corruption handling: Both reducers now surface `corruptionWarnings` and exit non-zero unless `--lenient` is passed — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:888-896`, `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:693-701`
+
+### Reducer lifecycle fields as closure evidence: The reducers still surface lifecycle mode from config metadata only, which does not prove that workflow branches persist `resumed`/`restarted`/`forked`/`completed_continue` events — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:521-524`; `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:567-570`. -- BLOCKED (iteration 7, 1 attempts)
+- What was tried: Reducer lifecycle fields as closure evidence: The reducers still surface lifecycle mode from config metadata only, which does not prove that workflow branches persist `resumed`/`restarted`/`forked`/`completed_continue` events — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:521-524`; `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:567-570`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Reducer lifecycle fields as closure evidence: The reducers still surface lifecycle mode from config metadata only, which does not prove that workflow branches persist `resumed`/`restarted`/`forked`/`completed_continue` events — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:521-524`; `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:567-570`.
 
 ### Reducer-owned graph/session dashboard fields: No new drift surfaced here because the reducer still exposes `sessionId`, `generation`, `lineageMode`, `graphConvergenceScore`, `graphDecision`, and `graphBlockers` consistently — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:522-538` and `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:742-805` -- BLOCKED (iteration 4, 1 attempts)
 - What was tried: Reducer-owned graph/session dashboard fields: No new drift surfaced here because the reducer still exposes `sessionId`, `generation`, `lineageMode`, `graphConvergenceScore`, `graphDecision`, and `graphBlockers` consistently — `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:522-538` and `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:742-805`
@@ -147,10 +227,25 @@ Deep review of the entire 042 Deep Research & Review Runtime Improvement Bundle:
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Resume/restart lineage examples: I found light incompleteness signals, but not enough evidence of a shipped contract break to elevate this pass.
 
+### Review/research completed-continue snapshotting as a separate new defect: Ruled out for this iteration because the current evidence still collapses into the already-active lineage-transition gap rather than a second independently shipped break — `.opencode/skill/sk-deep-review/references/quick_reference.md:90`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:167-170`. -- BLOCKED (iteration 6, 1 attempts)
+- What was tried: Review/research completed-continue snapshotting as a separate new defect: Ruled out for this iteration because the current evidence still collapses into the already-active lineage-transition gap rather than a second independently shipped break — `.opencode/skill/sk-deep-review/references/quick_reference.md:90`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:167-170`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Review/research completed-continue snapshotting as a separate new defect: Ruled out for this iteration because the current evidence still collapses into the already-active lineage-transition gap rather than a second independently shipped break — `.opencode/skill/sk-deep-review/references/quick_reference.md:90`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:167-170`.
+
+### Separate packet-root `review-report.md` handoff as the authoritative closeout surface: not applicable for this packet — the visible root completion signal is coming from `implementation-summary.md`, `tasks.md`, `checklist.md`, and `spec.md`, and all four preserve the stale implemented framing. -- BLOCKED (iteration 10, 1 attempts)
+- What was tried: Separate packet-root `review-report.md` handoff as the authoritative closeout surface: not applicable for this packet — the visible root completion signal is coming from `implementation-summary.md`, `tasks.md`, `checklist.md`, and `spec.md`, and all four preserve the stale implemented framing.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Separate packet-root `review-report.md` handoff as the authoritative closeout surface: not applicable for this packet — the visible root completion signal is coming from `implementation-summary.md`, `tasks.md`, `checklist.md`, and `spec.md`, and all four preserve the stale implemented framing.
+
+### Test/reducer search for claim-adjudication gate consumption: The inspected phase 008 test files and reducers yielded no consumer beyond the workflow validation step, so there was no static evidence to downgrade the open claim-adjudication finding. -- BLOCKED (iteration 7, 1 attempts)
+- What was tried: Test/reducer search for claim-adjudication gate consumption: The inspected phase 008 test files and reducers yielded no consumer beyond the workflow validation step, so there was no static evidence to downgrade the open claim-adjudication finding.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Test/reducer search for claim-adjudication gate consumption: The inspected phase 008 test files and reducers yielded no consumer beyond the workflow validation step, so there was no static evidence to downgrade the open claim-adjudication finding.
+
 <!-- /ANCHOR:exhausted-approaches -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Rotate into the remaining lifecycle/session metadata and completed-continue/reopen mirrors across review and research docs, especially places where resume/restart/fork examples may still lag the persisted JSONL and config contracts.
+Session complete. Use the final reducer/report synthesis to carry F016 forward with F014/F015 and mark the packet root as not yet trustworthy for release-readiness until its root completion surfaces are reconciled with the live review packet.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:known-context -->
