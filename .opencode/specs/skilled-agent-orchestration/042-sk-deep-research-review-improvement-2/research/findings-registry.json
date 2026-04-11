@@ -1,18 +1,5 @@
 {
-  "openQuestions": [
-    {
-      "id": "question-6-d3-does-the-trade-off-detector-produce-false-positives-on-small-benchmark-sample",
-      "text": "D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-7-d3-is-the-mutation-coverage-graph-namespace-loop-type-improvement-properly-isola",
-      "text": "D3: Is the mutation coverage graph namespace (`loop_type: \"improvement\"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    }
-  ],
+  "openQuestions": [],
   "resolvedQuestions": [
     {
       "id": "question-1-d1-what-undocumented-edge-cases-redundant-reducer-passes-journal-rollup-gaps-or-",
@@ -43,6 +30,18 @@
       "text": "D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?",
       "addedAtIteration": 0,
       "resolvedAtIteration": 11
+    },
+    {
+      "id": "question-6-d3-does-the-trade-off-detector-produce-false-positives-on-small-benchmark-sample",
+      "text": "D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 17
+    },
+    {
+      "id": "question-7-d3-is-the-mutation-coverage-graph-namespace-loop-type-improvement-properly-isola",
+      "text": "D3: Is the mutation coverage graph namespace (`loop_type: \"improvement\"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 16
     },
     {
       "id": "question-8-d4-do-the-loops-emit-the-full-stop-reasons-enum-in-practice-or-are-any-values-bl",
@@ -1708,6 +1707,509 @@
         "`.opencode/skill/sk-deep-review/SKILL.md:1-4`",
         "`.opencode/skill/sk-deep-review/SKILL.md:474-479`"
       ]
+    },
+    {
+      "id": "finding-16-1-scripts-mutation-coverage-cjs-is-a-local-json-helper-not-a-shared-sqlite-writer-",
+      "text": "`scripts/mutation-coverage.cjs` is a local JSON helper, not a shared SQLite writer: it creates an in-file graph object with `loopType: 'improvement'` and persists it by reading and rewriting `coveragePath` JSON via `fs.readFileSync` / `fs.writeFileSync`, with no shared coverage-graph imports or MCP calls in the module (`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:21`, `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:41-53`, `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:59-67`, `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:80-92`, `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:192-205`).",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:556-557`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:21-205`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:298-300`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-155`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:17-18`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-157`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:511-545`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:51-53`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:72-80`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:28-35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:47-52`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:63-147`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:238-277`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-220`"
+      ]
+    },
+    {
+      "id": "finding-16-5-a-different-namespace-isolation-weakness-does-exist-on-the-shared-read-side-for-",
+      "text": "A different namespace-isolation weakness does exist on the shared read side for research/review sessions: the convergence handler never accepts `sessionId`, constructs its namespace from only `{ specFolder, loopType }`, and then calls `getStats()` plus `computeSignals()` / `computeMomentum()` without session scoping, so convergence decisions aggregate all sessions sharing the same spec folder and loop type (`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:47-52`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:92-111`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:511-545`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-220`).",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:556-557`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:21-205`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:298-300`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-155`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:17-18`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-157`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:511-545`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:51-53`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:72-80`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:28-35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:47-52`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:63-147`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:238-277`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-220`"
+      ]
+    },
+    {
+      "id": "finding-16-4-because-the-shipped-shared-store-path-accepts-only-research-and-review-improveme",
+      "text": "Because the shipped shared-store path accepts only `research` and `review`, improvement-session nodes cannot currently co-mingle with deep-research or deep-review nodes inside the shared SQLite store through the visible MCP boundary. The more accurate finding is contract drift: Section 11 and Known Context both frame the improvement namespace as if it persists into the shared store, but the live writer and validator surfaces show a separate local JSON graph instead (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:43`, `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:556-557`, `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:599`, `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:59-67`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:76-78`).",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:556-557`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:21-205`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:298-300`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-155`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:17-18`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-157`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:511-545`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:51-53`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:72-80`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:28-35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:47-52`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:63-147`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:238-277`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-220`"
+      ]
+    },
+    {
+      "id": "finding-16-2-the-published-sk-improve-agent-contract-and-visible-auto-workflow-keep-that-muta",
+      "text": "The published `sk-improve-agent` contract and visible auto workflow keep that mutation coverage graph local to the improvement runtime rather than bridging it into the shared coverage-graph MCP. The skill describes `scripts/mutation-coverage.cjs` as the reader/writer for the coverage graph and says it uses `loop_type: \"improvement\"` isolation, while the auto workflow only appends the state ledger and runs `scripts/reduce-state.cjs`; I found no visible `deep_loop_graph_upsert` step on this path (`.opencode/skill/sk-improve-agent/SKILL.md:298-300`, `.opencode/skill/sk-improve-agent/SKILL.md:389-390`, `.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-155`).",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:556-557`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:21-205`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:298-300`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-155`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:17-18`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-157`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:511-545`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:51-53`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:72-80`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:28-35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:47-52`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:63-147`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:238-277`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-220`"
+      ]
+    },
+    {
+      "id": "finding-16-6-the-query-surface-only-partially-exposes-session-isolation-handlecoveragegraphqu",
+      "text": "The query surface only partially exposes session isolation. `handleCoverageGraphQuery()` accepts `sessionId` and passes it into `ns`, but the inspected helper queries for coverage gaps, contradictions, and unverified claims read by `spec_folder` and `loop_type` only, ignoring `ns.sessionId`; this means research/review sessions can be co-mingled on read even though improvement-mode entries are blocked from the DB entirely (`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:28-35`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:55-58`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:63-126`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:136-147`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:238-277`).",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:556-557`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:21-205`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:298-300`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-155`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:17-18`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-157`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:511-545`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:51-53`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:72-80`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:28-35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:47-52`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:63-147`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:238-277`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-220`"
+      ]
+    },
+    {
+      "id": "finding-16-3-the-shared-sqlite-coverage-graph-does-not-admit-improvement-loop-types-at-all-th",
+      "text": "The shared SQLite coverage graph does not admit `improvement` loop types at all. The DB layer defines `LoopType = 'research' | 'review'`, constrains valid kinds/relations by those two namespaces, and the schema enforces `CHECK(loop_type IN ('research', 'review'))`; the MCP upsert handler repeats the same validation and rejects any other value (`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:17`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:136-146`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-157`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:51-53`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:72-80`).",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:556-557`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:21-205`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:298-300`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-155`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:17-18`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:152-157`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:511-545`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:51-53`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:72-80`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:28-35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:47-52`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:63-147`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts:238-277`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-220`"
+      ]
+    },
+    {
+      "id": "finding-17-2-benchmark-stability-cjs-does-not-compensate-for-that-low-sample-risk-because-it-",
+      "text": "`benchmark-stability.cjs` does not compensate for that low-sample risk because it enforces no minimum replay count at all. Any non-empty result array is eligible, `stddev()` returns `0` for a single sample, `stabilityCoefficient()` converts that to `1.0`, and `measureStability()` therefore marks one-sample dimensions as fully stable; the configured `benchmarkStability.replayCount: 3` is descriptive only in the inspected helper path. (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:20-27`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:69-92`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:103-171`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:120-123`)",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:42-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-012.md:7-11`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-016.md:7-11`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:64-127`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:20-191`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:173-186`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-289`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-438`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts:58-79`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:80-139`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-123`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/README.md:67`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:19-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/029-benchmark-stability.md:64-80`"
+      ]
+    },
+    {
+      "id": "finding-17-1-trade-off-detector-cjs-treats-two-trajectory-points-as-sufficient-evidence-lengt",
+      "text": "`trade-off-detector.cjs` treats two trajectory points as sufficient evidence: `length < 2` is the only guard, and the detector immediately diffs each consecutive pair without consulting the shipped `trajectory.minDataPoints: 3` setting. That means one sharp delta between iteration 1 and 2 can already emit a trade-off even though the README and playbook describe a minimum 3-data-point requirement. (`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:64-67`, `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:85-127`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:96-99`, `.opencode/skill/sk-improve-agent/README.md:67`, `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:19-24`, `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:32-35`)",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:42-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-012.md:7-11`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-016.md:7-11`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:64-127`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:20-191`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:173-186`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-289`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-438`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts:58-79`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:80-139`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-123`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/README.md:67`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:19-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/029-benchmark-stability.md:64-80`"
+      ]
+    },
+    {
+      "id": "finding-17-4-reducer-stop-gating-collapses-every-non-benchmark-pass-benchmark-record-into-ben",
+      "text": "Reducer stop-gating collapses every non-`benchmark-pass` benchmark record into `benchmarkFailCount` and `weakBenchmarkRuns`, then stops after the configured maximum of 2 weak runs, but it never reads replay counts, per-dimension coefficients, or `stabilityWarning` payloads. In practice the operator-facing stop reason cannot distinguish “unstable because sample size is too small” from “genuine benchmark regression.” (`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:173-186`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-289`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-79`, `.opencode/skill/sk-improve-agent/assets/improvement_config_reference.md:57-60`)",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:42-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-012.md:7-11`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-016.md:7-11`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:64-127`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:20-191`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:173-186`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-289`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-438`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts:58-79`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:80-139`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-123`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/README.md:67`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:19-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/029-benchmark-stability.md:64-80`"
+      ]
+    },
+    {
+      "id": "finding-17-5-the-published-dashboard-contract-promises-reducer-populated-trade-off-visibility",
+      "text": "The published dashboard contract promises reducer-populated trade-off visibility, but the shipped renderer does not surface it. `improvement_strategy.md` reserves a reducer-owned “Trade-Off Detection” table, yet `reduce-state.cjs` only renders counts, repeated failure modes, dimensional progress, and a generic benchmark-failure recommendation, so neither real Pareto trade-offs nor insufficient-sample instability are clearly labeled in the visible dashboard path. (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-438`)",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:42-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-012.md:7-11`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-016.md:7-11`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:64-127`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:20-191`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:173-186`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-289`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-438`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts:58-79`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:80-139`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-123`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/README.md:67`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:19-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/029-benchmark-stability.md:64-80`"
+      ]
+    },
+    {
+      "id": "finding-17-3-the-shipped-tests-lock-in-that-under-constrained-behavior-instead-of-guarding-ag",
+      "text": "The shipped tests lock in that under-constrained behavior instead of guarding against it. Trade-off tests only rule out `0` or `1` trajectory point and then accept a 2-point trade-off as valid, while benchmark-stability tests explicitly accept a 2-replay sample as stable and only check instability once there are 3 replay results with visible variance. (`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts:58-79`, `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:80-121`, `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:124-139`)",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:42-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-012.md:7-11`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-016.md:7-11`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:64-127`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:20-191`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:173-186`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-289`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-438`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts:58-79`",
+        "`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:80-139`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-123`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/README.md:67`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:19-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/029-benchmark-stability.md:64-80`"
+      ]
+    },
+    {
+      "id": "finding-18-1-assets-improvement-strategy-md-presents-reducer-owned-machine-sections-for-what-",
+      "text": "`assets/improvement_strategy.md` presents reducer-owned machine sections for `What Improved`, `What Failed`, `Best Known State`, `Next Recommendation`, `Packaging Follow-Up`, `Mutation Coverage`, `Convergence Eligibility`, and `Trade-Off Detection`, but the visible reducer never opens or writes that file. `reduce-state.cjs` only emits `experiment-registry.json` and `agent-improvement-dashboard.md`, so most of the promised strategy-surface artifacts cannot survive the shipped reducer path. (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:71-137`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`)",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-53`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-017.md:42-43`",
+        "`.opencode/skill/sk-improve-agent/README.md:159-169`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:261-323`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:71-137`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-503`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:15-18`"
+      ]
+    },
+    {
+      "id": "finding-18-4-benchmark-stability-wording-is-lost-between-the-published-contract-and-the-reduc",
+      "text": "Benchmark stability wording is lost between the published contract and the reducer surface. README says promotion depends on benchmark status and repeatability evidence, and SKILL says `benchmark-stability.cjs` emits a weight-recommendation report only after a minimum session-count threshold, but the dashboard only shows benchmark run/pass/fail counts, best benchmark score, and a generic benchmark-failure recommendation. There is no replay-count, stability-coefficient, repeatability, or `insufficient data` label in the visible reducer output. (`.opencode/skill/sk-improve-agent/README.md:159-165`, `.opencode/skill/sk-improve-agent/SKILL.md:318-323`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:404-438`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:444-475`)",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-53`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-017.md:42-43`",
+        "`.opencode/skill/sk-improve-agent/README.md:159-169`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:261-323`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:71-137`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-503`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:15-18`"
+      ]
+    },
+    {
+      "id": "finding-18-5-stop-reason-and-session-outcome-wording-drift-before-reaching-the-operator-facin",
+      "text": "Stop-reason and session-outcome wording drift before reaching the operator-facing dashboard. The changelog says sessions should report exact `STOP_REASONS` and `SESSION_OUTCOMES`, and SKILL publishes the outcome labels plus `blockedStop` gate-bundle language, but the reducer collapses stop status to booleans and free-text reasons while only counting `Keep-baseline results` in the global summary. The visible dashboard never renders enum-style stop reasons or session outcomes such as `promoted`, `rolledBack`, or `advisoryOnly`. (`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:15-18`, `.opencode/skill/sk-improve-agent/SKILL.md:261-289`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:440-468`)",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-53`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-017.md:42-43`",
+        "`.opencode/skill/sk-improve-agent/README.md:159-169`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:261-323`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:71-137`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-503`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:15-18`"
+      ]
+    },
+    {
+      "id": "finding-18-2-the-dimensional-progress-contract-does-survive-readme-says-the-reducer-renders-a",
+      "text": "The dimensional-progress contract does survive. README says the reducer renders a Dimensional Progress table and stops when dimensions plateau, and the reducer both renders that table and adds an `all dimensions plateaued` stop reason when the plateau window condition is met. This is the clearest operator-visible contract that remains self-compliant in the visible path. (`.opencode/skill/sk-improve-agent/README.md:163-169`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:305-325`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-391`)",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-53`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-017.md:42-43`",
+        "`.opencode/skill/sk-improve-agent/README.md:159-169`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:261-323`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:71-137`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-503`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:15-18`"
+      ]
+    },
+    {
+      "id": "finding-18-3-trade-off-annotations-do-not-survive-the-visible-dashboard-path-improvement-stra",
+      "text": "Trade-off annotations do not survive the visible dashboard path. `improvement_strategy.md` reserves a `Trade-Off Detection` table plus hard/soft resolution guidance, but `renderProfileSection()` only outputs repeated failure modes plus dimensional progress and `renderDashboard()` adds only summary, guardrails, stop status, and recommendation. No trade-off table or action annotation is rendered in the shipped dashboard output. (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:125-136`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:394-475`)",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:36-53`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-017.md:42-43`",
+        "`.opencode/skill/sk-improve-agent/README.md:159-169`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:261-323`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:71-137`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-503`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:15-18`"
+      ]
+    },
+    {
+      "id": "finding-19-1-opencode-command-improve-agent-md-says-the-orchestrator-must-emit-candidate-scor",
+      "text": "`.opencode/command/improve/agent.md` says the orchestrator MUST emit `candidate_scored`, `legal_stop_evaluated`, and `session_ended` journal events with `gateResults`, `stopReason`, and `sessionOutcome`, but the visible auto and confirm YAML workflows never call `improvement-journal.cjs`. Their loop records only baseline/prompt-score/benchmark ledger data into `agent-improvement-state.jsonl`, runs `reduce-state.cjs`, and makes decisions from registry/dashboard outputs, so the richer journal contract is not emitted on the shipped workflow path. (`.opencode/command/improve/agent.md:294-309`, `.opencode/command/improve/assets/improve_agent-improver_auto.yaml:128-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:144-201`)",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-47`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-018.md:16-34`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:111-167`",
+        "`.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:144-201`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:78-104`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:242-275`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:42-54`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:425-503`"
+      ]
+    },
+    {
+      "id": "finding-19-4-reduce-state-cjs-is-not-the-first-place-where-the-rich-stop-outcome-contract-dis",
+      "text": "`reduce-state.cjs` is not the first place where the rich stop/outcome contract disappears, because it never opens `improvement-journal.jsonl` at all. Its main path reads only `agent-improvement-state.jsonl`, config, and mirror-drift report, then writes `experiment-registry.json` and `agent-improvement-dashboard.md`; any exact stop/session journal events would remain out-of-band from the reducer-owned operator surfaces. (`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:42-54`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`)",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-47`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-018.md:16-34`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:111-167`",
+        "`.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:144-201`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:78-104`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:242-275`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:42-54`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:425-503`"
+      ]
+    },
+    {
+      "id": "finding-19-5-the-documented-resume-lineage-contract-is-also-not-exercised-by-the-visible-work",
+      "text": "The documented resume/lineage contract is also not exercised by the visible workflow. `.opencode/command/improve/agent.md` says `--session-id` should replay `improvement-journal.jsonl`, resume from `continuedFromIteration`, and support `new`, `resume`, `restart`, `fork`, and `completed-continue`, but the visible auto and confirm YAML phases contain no journal-read step, no `--session-id` propagation, and no branch that consumes prior session results. (`.opencode/command/improve/agent.md:330-339`, `.opencode/command/improve/assets/improve_agent-improver_auto.yaml:111-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:148-201`)",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-47`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-018.md:16-34`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:111-167`",
+        "`.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:144-201`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:78-104`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:242-275`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:42-54`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:425-503`"
+      ]
+    },
+    {
+      "id": "finding-19-3-the-journal-helper-does-not-enforce-the-published-gate-result-contract-validatee",
+      "text": "The journal helper does not enforce the published gate-result contract. `validateEvent()` only checks `details.stopReason` and `details.sessionOutcome` for `session_ended`/`session_end`; it does not require or shape-check `details.gateResults` for `legal_stop_evaluated` or `blocked_stop`, even though the command contract says those events should carry gate results. On the visible helper path, incomplete gate payloads could therefore be emitted silently. (`.opencode/command/improve/agent.md:305-309`, `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:78-104`)",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-47`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-018.md:16-34`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:111-167`",
+        "`.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:144-201`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:78-104`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:242-275`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:42-54`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:425-503`"
+      ]
+    },
+    {
+      "id": "finding-19-2-the-one-concrete-session-start-journal-example-in-opencode-command-improve-agent",
+      "text": "The one concrete session-start journal example in `.opencode/command/improve/agent.md` is not executable as written. The docs show `--emit` plus `--event=session_initialized`, but `improvement-journal.cjs` reads the event type from `--emit <eventType>` and never parses an `--event` flag, so following the published command literally would reach the usage path instead of producing the intended event. (`.opencode/command/improve/agent.md:298-300`, `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:242-275`)",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-47`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-018.md:16-34`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:111-167`",
+        "`.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:144-201`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:78-104`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:242-275`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:42-54`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:425-503`"
+      ]
+    },
+    {
+      "id": "finding-19-6-the-visible-stop-synthesis-path-collapses-termination-to-reducer-generated-stop-",
+      "text": "The visible stop/synthesis path collapses termination to reducer-generated stop-status booleans and free-text reasons rather than exact journal enums. Auto mode stops when `experiment-registry.json` reports `stopStatus.shouldStop`, confirm mode presents dashboard-driven approval choices, and the reducer renders only `Should stop`, `Drift ambiguity`, and concatenated reasons; there is no operator-facing consumption of `sessionOutcome` or enum-valued `stopReason` on the shipped path. (`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:152-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:176-201`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:425-475`)",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:44-47`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-018.md:16-34`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:111-167`",
+        "`.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:144-201`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:78-104`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:242-275`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:42-54`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:425-503`"
+      ]
+    },
+    {
+      "id": "finding-20-1-skill-md-says-resume-replays-the-journal-coverage-graph-and-registry-before-disp",
+      "text": "`SKILL.md` says resume replays the journal, coverage graph, and registry before dispatch and that the orchestrator skips mutation types already in the exhausted log, but the visible autonomous loop never invokes `mutation-coverage.cjs` before candidate generation. The shipped loop proceeds from integration scan directly to candidate generation, scoring, benchmarking, ledger append, reducer refresh, and reducer-driven stop check, so coverage state does not visibly steer mutation focus selection. (`.opencode/skill/sk-improve-agent/SKILL.md:294-300`, `.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-158`)",
+      "addedAtIteration": 20,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-019.md:36-37`",
+        "`.opencode/command/improve/agent.md:272-286`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-167`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:294-300`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-99`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:114-123`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:80-92`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:192-204`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:229-290`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`"
+      ]
+    },
+    {
+      "id": "finding-20-5-i-found-no-visible-contradiction-oriented-graph-gate-in-the-operator-path-the-pu",
+      "text": "I found no visible contradiction-oriented graph gate in the operator path. The published improve-agent workflow enumerates scan, propose, score, benchmark, append, reduce, and stop steps, and the reducer’s stop evaluator uses no contradiction input or graph query surface, so contradiction handling remains absent from the visible coverage-graph loop rather than participating in stop blocking. (`.opencode/command/improve/agent.md:272-286`, `.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-158`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-325`)",
+      "addedAtIteration": 20,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-019.md:36-37`",
+        "`.opencode/command/improve/agent.md:272-286`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-167`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:294-300`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-99`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:114-123`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:80-92`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:192-204`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:229-290`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`"
+      ]
+    },
+    {
+      "id": "finding-20-3-the-helper-itself-does-contain-graph-aware-logic-it-records-mutation-attempts-ex",
+      "text": "The helper itself does contain graph-aware logic: it records mutation attempts, exhaustion state, and per-iteration trajectories, and it computes convergence eligibility from recent dimension stability. But that logic remains encapsulated inside `mutation-coverage.cjs`; the visible command/workflow/reducer path inspected here exposes no step that consumes those helper outputs during the live loop. (`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:80-92`, `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:192-204`, `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:229-290`, `.opencode/command/improve/agent.md:272-286`, `.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-158`)",
+      "addedAtIteration": 20,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-019.md:36-37`",
+        "`.opencode/command/improve/agent.md:272-286`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-167`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:294-300`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-99`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:114-123`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:80-92`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:192-204`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:229-290`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`"
+      ]
+    },
+    {
+      "id": "finding-20-2-the-runtime-config-enables-a-coverage-graph-file-and-the-strategy-template-reser",
+      "text": "The runtime config enables a coverage-graph file and the strategy template reserves reducer-populated `Mutation Coverage` and `Convergence Eligibility` sections, but `reduce-state.cjs` never opens `mutation-coverage.json`. Its main path reads only `agent-improvement-state.jsonl`, config, and mirror-drift report before writing `experiment-registry.json` and `agent-improvement-dashboard.md`, so graph data does not enter the operator-visible dashboard or recommendation surfaces. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-99`, `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:114-123`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`)",
+      "addedAtIteration": 20,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-019.md:36-37`",
+        "`.opencode/command/improve/agent.md:272-286`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-167`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:294-300`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-99`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:114-123`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:80-92`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:192-204`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:229-290`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`"
+      ]
+    },
+    {
+      "id": "finding-20-4-visible-stop-gating-is-reducer-driven-rather-than-graph-driven-checkconvergencee",
+      "text": "Visible stop gating is reducer-driven rather than graph-driven. `checkConvergenceEligibility()` would reject convergence for insufficient or unstable trajectory data, and the strategy template expects a verdict derived from trajectory plus exhaustion, but the actual stop path uses only trailing ties, infra failures, weak benchmark runs, drift ambiguity, and dimension plateau from the JSONL ledger. Coverage-graph convergence eligibility never feeds `step_stop_check`. (`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:229-272`, `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:116-123`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`, `.opencode/command/improve/assets/improve_agent-improver_auto.yaml:152-158`)",
+      "addedAtIteration": 20,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-019.md:36-37`",
+        "`.opencode/command/improve/agent.md:272-286`",
+        "`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:137-167`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:294-300`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-99`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:114-123`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:80-92`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:192-204`",
+        "`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs:229-290`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`"
+      ]
     }
   ],
   "ruledOutDirections": [
@@ -2065,17 +2567,72 @@
       "id": "ruled-out-15-1-i-did-not-inspect-hidden-executor-internals-outside-the-published-skill-command-",
       "text": "I did not inspect hidden executor internals outside the published skill, command, agent, and auto-YAML surfaces, so the negative claim stays scoped to the visible live iteration materials that actually define the LEAF-agent budget and workflow.",
       "addedAtIteration": 15
+    },
+    {
+      "id": "ruled-out-16-1-i-did-not-inspect-hidden-executor-internals-outside-the-published-skill-workflow",
+      "text": "I did not inspect hidden executor internals outside the published skill, workflow, and MCP handler surfaces, so the negative claim stays scoped to the shipped writer/validator/query path that is visible in-repo.",
+      "addedAtIteration": 16
+    },
+    {
+      "id": "ruled-out-16-2-the-visible-mcp-coverage-graph-path-is-not-currently-allowing-loop-type-improvem",
+      "text": "The visible MCP coverage-graph path is not currently allowing `loop_type: \"improvement\"` to pollute shared research/review graphs; the stronger risk is documentation/strategy drift plus missing per-session read isolation inside the research/review namespaces.",
+      "addedAtIteration": 16
+    },
+    {
+      "id": "ruled-out-17-3-benchmark-stability-is-not-over-blocking-small-samples-in-the-inspected-helper-p",
+      "text": "Benchmark stability is not over-blocking small samples in the inspected helper path; it under-blocks them by allowing 1-2 replay samples to look stable enough unless visible variance already appears. (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:69-92`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:103-171`, `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:124-139`)",
+      "addedAtIteration": 17
+    },
+    {
+      "id": "ruled-out-17-1-i-did-not-find-a-visible-orchestrator-implementation-file-that-wires-trade-off-d",
+      "text": "I did not find a visible orchestrator implementation file that wires `trade-off-detector.cjs` and `benchmark-stability.cjs` together end-to-end, so the compensation question had to be answered from the shipped helpers, tests, reducer inputs, and dashboard renderer rather than a single runtime driver.",
+      "addedAtIteration": 17
+    },
+    {
+      "id": "ruled-out-17-2-this-is-not-primarily-a-threshold-value-bug-the-shipped-trade-off-thresholds-and",
+      "text": "This is not primarily a threshold-value bug: the shipped trade-off thresholds and weak-benchmark stop thresholds are internally consistent with config, so the problem is missing sample-size enforcement and signal loss across consumers, not a simple off-by-one constant mismatch. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-79`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:100-123`, `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:40-49`)",
+      "addedAtIteration": 17
+    },
+    {
+      "id": "ruled-out-18-1-i-did-not-inspect-scripts-improvement-journal-cjs-or-the-improve-agent-yaml-emit",
+      "text": "I did not inspect `scripts/improvement-journal.cjs` or the `/improve:agent` YAML emitters in this pass, so I cannot yet tell whether exact stop reasons and session outcomes are produced upstream and then dropped by the reducer, or whether the visible workflow path never emits them at all.",
+      "addedAtIteration": 18
+    },
+    {
+      "id": "ruled-out-18-2-this-is-not-universal-contract-drift-readme-s-mirror-drift-as-packaging-work-gui",
+      "text": "This is not universal contract drift. README's `mirror drift as packaging work` guidance survives in the dashboard guardrails, and the dimensional-progress/plateau path is also visibly implemented. (`.opencode/skill/sk-improve-agent/README.md:167-169`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:458-463`)",
+      "addedAtIteration": 18
+    },
+    {
+      "id": "ruled-out-19-1-i-did-not-find-a-separate-visible-orchestrator-runtime-file-that-programmaticall",
+      "text": "I did not find a separate visible orchestrator runtime file that programmatically calls `emitEvent()` outside the command/YAML surfaces inspected here, so the conclusion stays scoped to the shipped command contract, journal helper, visible YAML workflow, and reducer path rather than every possible hidden executor implementation.",
+      "addedAtIteration": 19
+    },
+    {
+      "id": "ruled-out-19-2-this-is-not-a-reducer-only-discard-bug-the-visible-yaml-workflow-never-emits-jou",
+      "text": "This is not a reducer-only discard bug. The visible YAML workflow never emits journal events into the reducer input path in the first place, so the contract break begins upstream of `reduce-state.cjs`. (`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:173-201`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`)",
+      "addedAtIteration": 19
+    },
+    {
+      "id": "ruled-out-20-1-i-did-not-locate-a-separate-visible-orchestrator-runtime-file-beyond-the-publish",
+      "text": "I did not locate a separate visible orchestrator runtime file beyond the published command/YAML surfaces that might call `mutation-coverage.cjs` programmatically, so the conclusion stays scoped to the shipped operator-facing path rather than every possible hidden executor.",
+      "addedAtIteration": 20
+    },
+    {
+      "id": "ruled-out-20-2-this-is-not-because-the-graph-was-disabled-in-configuration-the-shipped-config-e",
+      "text": "This is not because the graph was disabled in configuration. The shipped config explicitly enables `coverageGraph` and points it at `improvement/mutation-coverage.json`, so the gap is consumption in the visible loop, not a disabled feature flag. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-95`)",
+      "addedAtIteration": 20
     }
   ],
   "metrics": {
-    "iterationsCompleted": 15,
-    "openQuestions": 2,
-    "resolvedQuestions": 14,
-    "keyFindings": 81,
-    "convergenceScore": 0.8,
+    "iterationsCompleted": 20,
+    "openQuestions": 0,
+    "resolvedQuestions": 16,
+    "keyFindings": 108,
+    "convergenceScore": 0.6,
     "coverageBySources": {
-      "code": 175,
-      "other": 55
+      "code": 229,
+      "other": 70
     }
   }
 }

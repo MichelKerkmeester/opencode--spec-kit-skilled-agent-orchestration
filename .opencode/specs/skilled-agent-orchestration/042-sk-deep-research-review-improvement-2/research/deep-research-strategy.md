@@ -39,8 +39,8 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - [x] D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?
 - [x] D2: Does the new `scripts/reduce-state.cjs` correctly handle partial-failure iterations, severity transitions, and finding deduplication at scale (50+ findings)?
 - [x] D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?
-- [ ] D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?
-- [ ] D3: Is the mutation coverage graph namespace (`loop_type: "improvement"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?
+- [x] D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?
+- [x] D3: Is the mutation coverage graph namespace (`loop_type: "improvement"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?
 - [x] D4: Do the loops emit the full `STOP_REASONS` enum in practice, or are any values (`blockedStop`, `stuckRecovery`, `userPaused`) effectively dead code?
 - [x] D4: Do blocked-stop events always persist `gateResults` with the complete set of review-specific or research-specific gates, or are gates silently dropped?
 - [x] D4: Are resume flows (`resume`, `restart`, `fork`, `completed-continue`) actually exercised by the YAML workflows, or only documented?
@@ -84,6 +84,8 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?
 - D2: Does the new `scripts/reduce-state.cjs` correctly handle partial-failure iterations, severity transitions, and finding deduplication at scale (50+ findings)?
 - D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?
+- D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?
+- D3: Is the mutation coverage graph namespace (`loop_type: "improvement"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?
 - D4: Do the loops emit the full `STOP_REASONS` enum in practice, or are any values (`blockedStop`, `stuckRecovery`, `userPaused`) effectively dead code?
 - D4: Do blocked-stop events always persist `gateResults` with the complete set of review-specific or research-specific gates, or are gates silently dropped?
 - D4: Are resume flows (`resume`, `restart`, `fork`, `completed-continue`) actually exercised by the YAML workflows, or only documented?
@@ -113,6 +115,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - Comparing the reducer write sites directly against the published mutability tables made it possible to answer the anchor-boundary question without reopening older runtime debates. (iteration 13)
 - Comparing the helper math, MCP handler, reducer reads, and workflow steps side by side made it possible to separate "graph capability exists" from "graph capability is actually on the live stop path." (iteration 14)
 - Comparing agent prompts against the concrete tool allowlists and auto-YAML wrapper steps made the contract gap visible very quickly. (iteration 15)
+- Reading the improvement-side writer next to the shared DB schema and MCP validators made the namespace boundary visible quickly because the accepted `loopType` values are explicit in both places. (iteration 16)
+- Reading the two D3 helpers beside their tests and the reducer made it possible to separate helper-level sample-size behavior from downstream operator surfacing. (iteration 17)
+- Comparing the contract documents directly against the reducer write targets made it easy to separate promises that survive in the shipped dashboard from promises that stop at documentation. (iteration 18)
+- Reading the published command contract, the helper CLI/parser, the visible YAML workflow, and the reducer entrypoint together made it possible to pinpoint exactly where the richer contract stops being real. (iteration 19)
+- Comparing the helper contract, runtime template expectations, and the visible YAML/reducer execution path made it easy to separate “graph exists” from “graph influences decisions.” (iteration 20)
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
@@ -132,6 +139,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - The deep-review contract spreads ownership promises across state-format prose rather than a single machine-owned-anchor table, so proving under-compliance required stitching several sections together. (iteration 13)
 - The workflow YAML alone could not prove total absence of every possible MCP invocation, so negative claims had to stay scoped to the reducer and visible workflow surfaces I could cite. (iteration 14)
 - Negative evidence still had to be scoped carefully, because the published wrappers can prove what the live loop exposes without proving the total absence of any hidden executor shortcut elsewhere. (iteration 15)
+- Proving absolute absence beyond the published workflow and handler surfaces is still not possible from this pass alone, so the conclusion has to stay scoped to the visible shipped path. (iteration 16)
+- I could not anchor the helper interaction to a single visible orchestrator runtime file, so some of the “does gating compensate?” answer had to come from omission across shipped consumer surfaces. (iteration 17)
+- The visible reducer path does not show whether richer stop/outcome fields exist upstream in the journal or YAML emitters, so the drift boundary is still scoped to the published reducer/dashboard surface. (iteration 18)
+- I could not anchor the result to a single live orchestrator implementation file beyond the command/YAML surfaces, so the conclusion has to stay scoped to the visible shipped path. (iteration 19)
+- Negative evidence still depends on the published operator path, so I cannot prove that no hidden executor ever calls the helper elsewhere. (iteration 20)
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
@@ -326,6 +338,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: A wrapper-level `deep_loop_graph_convergence` step on the visible research/review iteration path; the cited YAML paths go from iteration output to reducer execution without a graph-convergence call.
 
+### Benchmark stability is not over-blocking small samples in the inspected helper path; it under-blocks them by allowing 1-2 replay samples to look stable enough unless visible variance already appears. (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:69-92`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:103-171`, `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:124-139`) -- BLOCKED (iteration 17, 1 attempts)
+- What was tried: Benchmark stability is not over-blocking small samples in the inspected helper path; it under-blocks them by allowing 1-2 replay samples to look stable enough unless visible variance already appears. (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:69-92`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:103-171`, `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:124-139`)
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Benchmark stability is not over-blocking small samples in the inspected helper path; it under-blocks them by allowing 1-2 replay samples to look stable enough unless visible variance already appears. (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:69-92`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:103-171`, `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:124-139`)
+
 ### I did not execute the 50+ finding stress portion of the D2 question in this pass; the budget went to reproducing the partial-write divergence first, so scale behavior remains open. -- BLOCKED (iteration 8, 1 attempts)
 - What was tried: I did not execute the 50+ finding stress portion of the D2 question in this pass; the budget went to reproducing the partial-write divergence first, so scale behavior remains open.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -341,10 +358,25 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: I did not find a packet-local `improvement-journal.jsonl` or `mutation-coverage.json` artifact to inspect directly, so this pass had to infer interrupted-session behavior from the shipped helper surfaces plus the remaining legacy self-test state.
 
+### I did not find a separate visible orchestrator runtime file that programmatically calls `emitEvent()` outside the command/YAML surfaces inspected here, so the conclusion stays scoped to the shipped command contract, journal helper, visible YAML workflow, and reducer path rather than every possible hidden executor implementation. -- BLOCKED (iteration 19, 1 attempts)
+- What was tried: I did not find a separate visible orchestrator runtime file that programmatically calls `emitEvent()` outside the command/YAML surfaces inspected here, so the conclusion stays scoped to the shipped command contract, journal helper, visible YAML workflow, and reducer path rather than every possible hidden executor implementation.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: I did not find a separate visible orchestrator runtime file that programmatically calls `emitEvent()` outside the command/YAML surfaces inspected here, so the conclusion stays scoped to the shipped command contract, journal helper, visible YAML workflow, and reducer path rather than every possible hidden executor implementation.
+
 ### I did not find a shipped orchestrator implementation file that performs the promised “replay journal + coverage graph + registry before dispatch,” so this pass had to prove absence via reducer inputs and helper interfaces rather than a single end-to-end resume driver. -- BLOCKED (iteration 12, 1 attempts)
 - What was tried: I did not find a shipped orchestrator implementation file that performs the promised “replay journal + coverage graph + registry before dispatch,” so this pass had to prove absence via reducer inputs and helper interfaces rather than a single end-to-end resume driver.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: I did not find a shipped orchestrator implementation file that performs the promised “replay journal + coverage graph + registry before dispatch,” so this pass had to prove absence via reducer inputs and helper interfaces rather than a single end-to-end resume driver.
+
+### I did not find a visible orchestrator implementation file that wires `trade-off-detector.cjs` and `benchmark-stability.cjs` together end-to-end, so the compensation question had to be answered from the shipped helpers, tests, reducer inputs, and dashboard renderer rather than a single runtime driver. -- BLOCKED (iteration 17, 1 attempts)
+- What was tried: I did not find a visible orchestrator implementation file that wires `trade-off-detector.cjs` and `benchmark-stability.cjs` together end-to-end, so the compensation question had to be answered from the shipped helpers, tests, reducer inputs, and dashboard renderer rather than a single runtime driver.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: I did not find a visible orchestrator implementation file that wires `trade-off-detector.cjs` and `benchmark-stability.cjs` together end-to-end, so the compensation question had to be answered from the shipped helpers, tests, reducer inputs, and dashboard renderer rather than a single runtime driver.
+
+### I did not inspect `scripts/improvement-journal.cjs` or the `/improve:agent` YAML emitters in this pass, so I cannot yet tell whether exact stop reasons and session outcomes are produced upstream and then dropped by the reducer, or whether the visible workflow path never emits them at all. -- BLOCKED (iteration 18, 1 attempts)
+- What was tried: I did not inspect `scripts/improvement-journal.cjs` or the `/improve:agent` YAML emitters in this pass, so I cannot yet tell whether exact stop reasons and session outcomes are produced upstream and then dropped by the reducer, or whether the visible workflow path never emits them at all.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: I did not inspect `scripts/improvement-journal.cjs` or the `/improve:agent` YAML emitters in this pass, so I cannot yet tell whether exact stop reasons and session outcomes are produced upstream and then dropped by the reducer, or whether the visible workflow path never emits them at all.
 
 ### I did not inspect confirm-mode workflows in this pass because the question was whether the active deep-research runtime currently bridges to the shared graph signal set; the auto workflow, convergence reference, reducer, and shared graph handler were sufficient to classify the signal gaps. -- BLOCKED (iteration 7, 1 attempts)
 - What was tried: I did not inspect confirm-mode workflows in this pass because the question was whether the active deep-research runtime currently bridges to the shared graph signal set; the auto workflow, convergence reference, reducer, and shared graph handler were sufficient to classify the signal gaps.
@@ -371,10 +403,20 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: I did not inspect hidden executor internals outside the published skill, command, agent, and auto-YAML surfaces, so the negative claim stays scoped to the visible live iteration materials that actually define the LEAF-agent budget and workflow.
 
+### I did not inspect hidden executor internals outside the published skill, workflow, and MCP handler surfaces, so the negative claim stays scoped to the shipped writer/validator/query path that is visible in-repo. -- BLOCKED (iteration 16, 1 attempts)
+- What was tried: I did not inspect hidden executor internals outside the published skill, workflow, and MCP handler surfaces, so the negative claim stays scoped to the shipped writer/validator/query path that is visible in-repo.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: I did not inspect hidden executor internals outside the published skill, workflow, and MCP handler surfaces, so the negative claim stays scoped to the shipped writer/validator/query path that is visible in-repo.
+
 ### I did not inspect synthesis-only report generators or YAML wrappers in this pass because the open D4 question was specifically about reducer write boundaries, and the reducer entry points were sufficient to answer it. -- BLOCKED (iteration 13, 1 attempts)
 - What was tried: I did not inspect synthesis-only report generators or YAML wrappers in this pass because the open D4 question was specifically about reducer write boundaries, and the reducer entry points were sufficient to answer it.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: I did not inspect synthesis-only report generators or YAML wrappers in this pass because the open D4 question was specifically about reducer write boundaries, and the reducer entry points were sufficient to answer it.
+
+### I did not locate a separate visible orchestrator runtime file beyond the published command/YAML surfaces that might call `mutation-coverage.cjs` programmatically, so the conclusion stays scoped to the shipped operator-facing path rather than every possible hidden executor. -- BLOCKED (iteration 20, 1 attempts)
+- What was tried: I did not locate a separate visible orchestrator runtime file beyond the published command/YAML surfaces that might call `mutation-coverage.cjs` programmatically, so the conclusion stays scoped to the shipped operator-facing path rather than every possible hidden executor.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: I did not locate a separate visible orchestrator runtime file beyond the published command/YAML surfaces that might call `mutation-coverage.cjs` programmatically, so the conclusion stays scoped to the shipped operator-facing path rather than every possible hidden executor.
 
 ### I did not pursue confirm-mode workflow differences in this pass because the open question was reducer behavior under a large persisted packet, and the reducer entrypoint plus the shared convergence contract were enough to answer that. -- BLOCKED (iteration 9, 1 attempts)
 - What was tried: I did not pursue confirm-mode workflow differences in this pass because the open question was reducer behavior under a large persisted packet, and the reducer entrypoint plus the shared convergence contract were enough to answer that.
@@ -421,6 +463,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: The shared graph capability itself is not missing; the missing piece is runtime wiring. The MCP tool layer already exposes both `deep_loop_graph_upsert` and `deep_loop_graph_convergence` with reducer-oriented contracts (.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:779-823; .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:856-869).
 
+### The visible MCP coverage-graph path is not currently allowing `loop_type: "improvement"` to pollute shared research/review graphs; the stronger risk is documentation/strategy drift plus missing per-session read isolation inside the research/review namespaces. -- BLOCKED (iteration 16, 1 attempts)
+- What was tried: The visible MCP coverage-graph path is not currently allowing `loop_type: "improvement"` to pollute shared research/review graphs; the stronger risk is documentation/strategy drift plus missing per-session read isolation inside the research/review namespaces.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: The visible MCP coverage-graph path is not currently allowing `loop_type: "improvement"` to pollute shared research/review graphs; the stronger risk is documentation/strategy drift plus missing per-session read isolation inside the research/review namespaces.
+
 ### This is not a bad gate taxonomy problem. The blocked-stop fixture uses the same gate names and recovery semantics the contract publishes, so the issue is persistence/consumption drift rather than mislabeled review gates (`.opencode/skill/sk-deep-review/references/convergence.md:362-419`, `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:4`). -- BLOCKED (iteration 10, 1 attempts)
 - What was tried: This is not a bad gate taxonomy problem. The blocked-stop fixture uses the same gate names and recovery semantics the contract publishes, so the issue is persistence/consumption drift rather than mislabeled review gates (`.opencode/skill/sk-deep-review/references/convergence.md:362-419`, `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:4`).
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -436,6 +483,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: This is not a documentation-gap false alarm: both convergence references already define the shared enum, the legacy-label normalization rules, and the required blocked-stop persistence shape in detail (.opencode/skill/sk-deep-research/references/convergence.md:21-31; .opencode/skill/sk-deep-review/references/convergence.md:44-56).
 
+### This is not a reducer-only discard bug. The visible YAML workflow never emits journal events into the reducer input path in the first place, so the contract break begins upstream of `reduce-state.cjs`. (`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:173-201`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`) -- BLOCKED (iteration 19, 1 attempts)
+- What was tried: This is not a reducer-only discard bug. The visible YAML workflow never emits journal events into the reducer input path in the first place, so the contract break begins upstream of `reduce-state.cjs`. (`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:173-201`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`)
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: This is not a reducer-only discard bug. The visible YAML workflow never emits journal events into the reducer input path in the first place, so the contract break begins upstream of `reduce-state.cjs`. (`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:173-201`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`)
+
 ### This is not another reducer merge-stability regression. Iteration 9 already established that finding dedup and transition ordering stay stable at 50+ findings, which leaves observability and recovery handoff as the remaining D2 weakness (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:7-11`). -- BLOCKED (iteration 10, 1 attempts)
 - What was tried: This is not another reducer merge-stability regression. Iteration 9 already established that finding dedup and transition ordering stay stable at 50+ findings, which leaves observability and recovery handoff as the remaining D2 weakness (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:7-11`).
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -445,6 +497,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - What was tried: This is not because contradiction tooling is missing. The shared contradiction scanner and MCP convergence handler already implement contradiction-aware blocking logic (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264`).
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: This is not because contradiction tooling is missing. The shared contradiction scanner and MCP convergence handler already implement contradiction-aware blocking logic (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs:37-158`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:200-264`).
+
+### This is not because the graph was disabled in configuration. The shipped config explicitly enables `coverageGraph` and points it at `improvement/mutation-coverage.json`, so the gap is consumption in the visible loop, not a disabled feature flag. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-95`) -- BLOCKED (iteration 20, 1 attempts)
+- What was tried: This is not because the graph was disabled in configuration. The shipped config explicitly enables `coverageGraph` and points it at `improvement/mutation-coverage.json`, so the gap is consumption in the visible loop, not a disabled feature flag. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-95`)
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: This is not because the graph was disabled in configuration. The shipped config explicitly enables `coverageGraph` and points it at `improvement/mutation-coverage.json`, so the gap is consumption in the visible loop, not a disabled feature flag. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-95`)
 
 ### This is not isolated to one loop. The research and review auto YAMLs both classify the same lineage branches while only surfacing a smaller event set in the active runtime path (`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:128-153`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:155-177`). -- BLOCKED (iteration 4, 1 attempts)
 - What was tried: This is not isolated to one loop. The research and review auto YAMLs both classify the same lineage branches while only surfacing a smaller event set in the active runtime path (`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:128-153`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:155-177`).
@@ -475,6 +532,16 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - What was tried: This is not primarily a shared-infrastructure deficit: the graph/MCP layer already computes and evaluates the richer research signals, including blocker semantics for `sourceDiversity`, `evidenceDepth`, contradictions, and unverified claims (.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275).
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: This is not primarily a shared-infrastructure deficit: the graph/MCP layer already computes and evaluates the richer research signals, including blocker semantics for `sourceDiversity`, `evidenceDepth`, contradictions, and unverified claims (.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:163-228; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:175-275).
+
+### This is not primarily a threshold-value bug: the shipped trade-off thresholds and weak-benchmark stop thresholds are internally consistent with config, so the problem is missing sample-size enforcement and signal loss across consumers, not a simple off-by-one constant mismatch. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-79`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:100-123`, `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:40-49`) -- BLOCKED (iteration 17, 1 attempts)
+- What was tried: This is not primarily a threshold-value bug: the shipped trade-off thresholds and weak-benchmark stop thresholds are internally consistent with config, so the problem is missing sample-size enforcement and signal loss across consumers, not a simple off-by-one constant mismatch. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-79`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:100-123`, `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:40-49`)
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: This is not primarily a threshold-value bug: the shipped trade-off thresholds and weak-benchmark stop thresholds are internally consistent with config, so the problem is missing sample-size enforcement and signal loss across consumers, not a simple off-by-one constant mismatch. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-79`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:100-123`, `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:40-49`)
+
+### This is not universal contract drift. README's `mirror drift as packaging work` guidance survives in the dashboard guardrails, and the dimensional-progress/plateau path is also visibly implemented. (`.opencode/skill/sk-improve-agent/README.md:167-169`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:458-463`) -- BLOCKED (iteration 18, 1 attempts)
+- What was tried: This is not universal contract drift. README's `mirror drift as packaging work` guidance survives in the dashboard guardrails, and the dimensional-progress/plateau path is also visibly implemented. (`.opencode/skill/sk-improve-agent/README.md:167-169`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:458-463`)
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: This is not universal contract drift. README's `mirror drift as packaging work` guidance survives in the dashboard guardrails, and the dimensional-progress/plateau path is also visibly implemented. (`.opencode/skill/sk-improve-agent/README.md:167-169`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:458-463`)
 
 <!-- /ANCHOR:exhausted-approaches -->
 <!-- ANCHOR:ruled-out-directions -->
@@ -550,11 +617,22 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - A command-doc requirement to invoke structural graph tools before or during iterations; the inspected command surfaces only bootstrap CocoIndex. (iteration 15)
 - A wrapper-level `deep_loop_graph_convergence` step on the visible research/review iteration path; the cited YAML paths go from iteration output to reducer execution without a graph-convergence call. (iteration 15)
 - I did not inspect hidden executor internals outside the published skill, command, agent, and auto-YAML surfaces, so the negative claim stays scoped to the visible live iteration materials that actually define the LEAF-agent budget and workflow. (iteration 15)
+- I did not inspect hidden executor internals outside the published skill, workflow, and MCP handler surfaces, so the negative claim stays scoped to the shipped writer/validator/query path that is visible in-repo. (iteration 16)
+- The visible MCP coverage-graph path is not currently allowing `loop_type: "improvement"` to pollute shared research/review graphs; the stronger risk is documentation/strategy drift plus missing per-session read isolation inside the research/review namespaces. (iteration 16)
+- Benchmark stability is not over-blocking small samples in the inspected helper path; it under-blocks them by allowing 1-2 replay samples to look stable enough unless visible variance already appears. (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:69-92`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:103-171`, `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts:124-139`) (iteration 17)
+- I did not find a visible orchestrator implementation file that wires `trade-off-detector.cjs` and `benchmark-stability.cjs` together end-to-end, so the compensation question had to be answered from the shipped helpers, tests, reducer inputs, and dashboard renderer rather than a single runtime driver. (iteration 17)
+- This is not primarily a threshold-value bug: the shipped trade-off thresholds and weak-benchmark stop thresholds are internally consistent with config, so the problem is missing sample-size enforcement and signal loss across consumers, not a simple off-by-one constant mismatch. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:72-79`, `.opencode/skill/sk-improve-agent/assets/improvement_config.json:100-123`, `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:40-49`) (iteration 17)
+- I did not inspect `scripts/improvement-journal.cjs` or the `/improve:agent` YAML emitters in this pass, so I cannot yet tell whether exact stop reasons and session outcomes are produced upstream and then dropped by the reducer, or whether the visible workflow path never emits them at all. (iteration 18)
+- This is not universal contract drift. README's `mirror drift as packaging work` guidance survives in the dashboard guardrails, and the dimensional-progress/plateau path is also visibly implemented. (`.opencode/skill/sk-improve-agent/README.md:167-169`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:458-463`) (iteration 18)
+- I did not find a separate visible orchestrator runtime file that programmatically calls `emitEvent()` outside the command/YAML surfaces inspected here, so the conclusion stays scoped to the shipped command contract, journal helper, visible YAML workflow, and reducer path rather than every possible hidden executor implementation. (iteration 19)
+- This is not a reducer-only discard bug. The visible YAML workflow never emits journal events into the reducer input path in the first place, so the contract break begins upstream of `reduce-state.cjs`. (`.opencode/command/improve/assets/improve_agent-improver_auto.yaml:149-167`, `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml:173-201`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`) (iteration 19)
+- I did not locate a separate visible orchestrator runtime file beyond the published command/YAML surfaces that might call `mutation-coverage.cjs` programmatically, so the conclusion stays scoped to the shipped operator-facing path rather than every possible hidden executor. (iteration 20)
+- This is not because the graph was disabled in configuration. The shipped config explicitly enables `coverageGraph` and points it at `improvement/mutation-coverage.json`, so the gap is consumption in the visible loop, not a disabled feature flag. (`.opencode/skill/sk-improve-agent/assets/improvement_config.json:92-95`) (iteration 20)
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Rotate to the remaining D3 namespace-isolation question and trace how `sk-improve-agent` persists `loop_type: "improvement"` into the shared coverage-graph store versus how the research/review loops namespace their own writes. The most productive next pass is to read `sk-improve-agent/scripts/mutation-coverage.cjs` beside the shared coverage-graph DB/query handlers and confirm whether any query or convergence surface can accidentally co-mingle improvement-session nodes with research/review sessions.
+If this research spins into a follow-on packet, the next productive move is not another broad loop audit but a narrow implementation-gap triage for `sk-improve-agent`: inspect `score-candidate.cjs`, any hidden orchestrator wrapper, and the confirm-mode workflow for off-path graph consumption, then decide whether to wire `mutation-coverage.cjs` into live focus/stop decisions or downgrade the docs/templates so they stop implying graph-driven behavior that the visible loop does not perform.
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->
