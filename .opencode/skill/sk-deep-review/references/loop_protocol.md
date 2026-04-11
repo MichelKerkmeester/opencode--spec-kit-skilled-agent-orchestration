@@ -303,28 +303,31 @@ After agent completes:
 
 #### Step 4a: Claim Adjudication
 
-Before the next convergence pass, the orchestrator adjudicates every new P0/P1 finding. This step prevents false positives from inflating severity and distorting convergence.
+Before the next convergence pass, the orchestrator adjudicates every new P0/P1 finding with a **typed claim-adjudication packet**. This step prevents false positives from inflating severity and distorting convergence, AND acts as a hard STOP gate: `step_post_iteration_claim_adjudication` appends a `claim_adjudication` event to `deep-review-state.jsonl`, and the next iteration's `step_check_convergence` legal-stop decision tree consults that event via `claimAdjudicationGate` (gate `f`). A missing or failing packet vetoes STOP even when every other gate passes.
 
-Each new P0/P1 must record:
+Each new P0/P1 must carry a typed packet with the following required fields (see `state_format.md` §9 for the full schema and a worked example):
 
-| Field | Description |
-|-------|-------------|
-| `claim` | The specific assertion made by the finding |
-| `evidenceRefs` | File:line citations supporting the claim |
-| `counterevidenceSought` | Where the orchestrator looked for contradicting evidence |
-| `alternativeExplanation` | An alternative explanation, even if rejected |
-| `finalSeverity` | Confirmed or downgraded severity after adjudication |
-| `confidence` | Orchestrator confidence in the adjudicated severity |
-| `downgradeTrigger` | What would cause a future downgrade (if applicable) |
+| Field | Type | Description |
+|-------|------|-------------|
+| `findingId` | string | Matches the finding ID in the iteration body |
+| `claim` | string | The single assertion the finding makes |
+| `evidenceRefs` | string[] | `file:line` or `file:range` citations (≥ 1) |
+| `counterevidenceSought` | string | Where the orchestrator looked for contradicting evidence |
+| `alternativeExplanation` | string | An alternative explanation, even if rejected |
+| `finalSeverity` | `"P0"` \| `"P1"` \| `"P2"` | Severity after adjudication |
+| `confidence` | number `[0, 1]` | Orchestrator confidence in `finalSeverity` |
+| `downgradeTrigger` | string | Concrete condition that would cause a future downgrade |
+| `transitions` | object[] | Optional; required when `finalSeverity` differs from the originally asserted severity |
 
 **Protocol**:
 
-1. Re-read the cited evidence at the referenced file:line locations
-2. Seek counterevidence in adjacent code, docs, or prior iteration history
-3. Record an alternative explanation even if it is rejected
-4. Confirm or downgrade severity before the finding becomes convergence-visible
+1. Re-read the cited evidence at the referenced file:line locations.
+2. Seek counterevidence in adjacent code, docs, or prior iteration history.
+3. Record an alternative explanation even if it is rejected.
+4. Confirm or downgrade severity before the finding becomes convergence-visible.
+5. Emit the typed packet inside the iteration file so `step_post_iteration_claim_adjudication` can parse it.
 
-This adjudication step happens after iteration evaluation and before the next convergence math run. Findings that are downgraded have their `finalSeverity` updated; the original severity is preserved in the iteration file for audit trail.
+**Failure semantics**: when any new P0/P1 finding is missing a packet or a required field, the workflow records `{"event":"claim_adjudication","passed":false,"missingPackets":[...]}` in `deep-review-state.jsonl`. On the next loop, `step_check_convergence` step 0 (universal pre-check) routes STOP to `BLOCKED` with `blockedBy: ["claimAdjudicationGate"]` until a follow-up iteration rewrites the packet. Downgraded findings have their `finalSeverity` updated; the original severity is preserved in the iteration file for audit trail.
 
 #### Step 4b: Generate Dashboard
 

@@ -323,6 +323,8 @@ workflow:
           - generation: "Extract generation from deep-review-config.json, else 1"
           - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: dimension (ratio, P0/P1/P2)'"
           - latest_status: "Extract status from latest iteration record, else 'none yet'"
+          - last_claim_adjudication_passed: "Scan state.jsonl for the most recent `claim_adjudication` event; use its `passed` boolean. Default true when no event exists or when activeP0 + activeP1 == 0 (gate is vacuous without adjudicable findings)."
+          - claim_adjudication_active_count: "Count of active P0/P1 findings at the time of the last claim_adjudication event; 0 when none exist"
 
       step_check_pause_sentinel:
         action: "Check for pause sentinel file"
@@ -362,9 +364,19 @@ workflow:
       step_check_convergence:
         action: "Evaluate graph-assisted review stop conditions and the legal-stop decision tree"
         algorithm: |
-          1. HARD STOPS:
-             a) if iteration_count >= max_iterations: STOP (max_iterations_reached)
-             b) if all dimensions clean AND required traceability protocols are covered AND p0_count == 0 AND p1_count == 0 AND coverage_age >= 1 AND all quality gates pass (evidence: every P0/P1 has file:line; scope: all findings within target; coverage: all dimensions reviewed): STOP (all_dimensions_clean)
+          0. CLAIM-ADJUDICATION PRE-CHECK (universal STOP veto; runs before hard stops and composite convergence):
+             claim_adjudication_gate_pass = (last_claim_adjudication_passed != false) OR (p0_count + p1_count == 0)
+             If claim_adjudication_gate_pass == false:
+               candidate_decision = "BLOCKED"
+               stop_blocked = true
+               stopReason = "blockedStop"
+               blocked_gates = ["claimAdjudicationGate"]
+               recovery_strategy = "Reviewer must add typed claim-adjudication packets (claim, evidenceRefs, counterevidenceSought, alternativeExplanation, finalSeverity, confidence, downgradeTrigger) for every active P0/P1 finding before STOP is allowed."
+               Skip hard stops (1) and composite convergence (4); proceed directly to step 5 legal-stop decision-tree assembly so blocked_by_json, gate outputs, and the blocked_stop event still populate consistently.
+          1. HARD STOPS (each still subject to step 5 legal-stop gates, including claimAdjudicationGate):
+             a) if iteration_count >= max_iterations: mark hard_stop_reason = "max_iterations_reached" and promote to STOP candidate
+             b) if all dimensions clean AND required traceability protocols are covered AND p0_count == 0 AND p1_count == 0 AND coverage_age >= 1 AND all quality gates pass (evidence: every P0/P1 has file:line; scope: all findings within target; coverage: all dimensions reviewed): mark hard_stop_reason = "all_dimensions_clean" and promote to STOP candidate
+             A hard stop does NOT bypass the legal-stop decision tree; it must still pass step 5 including the claim-adjudication gate.
           2. STUCK DETECTION (threshold 2):
              if stuck_count >= 2: STUCK_RECOVERY
           3. GRAPH CONVERGENCE PREREQUISITE:
@@ -385,17 +397,18 @@ workflow:
                Redistribute weights for unavailable signals.
                if latest ratio <= 0.05: mark no_progress_threshold_reached
                if weighted_stop_score >= 0.60: inline STOP becomes a candidate and binary gates must run
-          5. LEGAL-STOP DECISION TREE (review-specific gates; only runs when inline STOP is a candidate):
+          5. LEGAL-STOP DECISION TREE (review-specific gates; runs whenever step 0 or a hard stop or the composite vote promotes STOP to a candidate):
                a) convergenceGate: pass when a hard-stop condition is met OR weighted_stop_score >= 0.60; record score
                b) dimensionCoverageGate: pass when configured dimensions and required traceability coverage are complete and coverage_age >= 1; record covered and missing dimensions
                c) p0ResolutionGate: pass when activeP0 == 0; record activeP0
                d) evidenceDensityGate: pass when every active P0/P1 has concrete file:line evidence and no active P0/P1 relies only on inference; record avgEvidencePerFinding
                e) hotspotSaturationGate: pass when review hotspots have been revisited enough times to satisfy the saturation heuristic
-             if inline STOP is a candidate and any gate fails:
+               f) claimAdjudicationGate: pass when claim_adjudication_gate_pass == true (i.e. last_claim_adjudication_passed != false OR there are no active P0/P1 findings to adjudicate); record last_claim_adjudication_passed and claim_adjudication_active_count
+             if STOP is a candidate and any gate fails:
                decision = "BLOCKED"
                stop_blocked = true
                stopReason = "blockedStop"
-               blocked_by_json = JSON array of failing gate names
+               blocked_by_json = JSON array of failing gate names (always include "claimAdjudicationGate" when claim_adjudication_gate_pass == false)
                blocked_by_csv = comma-separated list of failing gate names
                convergence_gate_pass = boolean
                convergence_gate_score = numeric convergence score
@@ -407,10 +420,12 @@ workflow:
                evidence_density_gate_pass = boolean
                avg_evidence_per_finding = numeric evidence density
                hotspot_saturation_gate_pass = boolean
-               recovery_strategy = one-line hint describing the next review action needed to satisfy the failed gates
+               claim_adjudication_gate_pass = boolean
+               claim_adjudication_active_count = numeric count of active P0/P1 at the gate
+               recovery_strategy = one-line hint describing the next review action needed to satisfy the failed gates (when claimAdjudicationGate is the failing gate, prefer the step-0 recovery_strategy already set)
           6. COMBINED STOP RULE:
-               a) if inline STOP is legal AND graph_decision == "STOP_ALLOWED": decision = "STOP"
-               b) if inline STOP is legal AND graph_decision == "STOP_BLOCKED":
+               a) if STOP is legal AND graph_decision == "STOP_ALLOWED": decision = "STOP"
+               b) if STOP is legal AND graph_decision == "STOP_BLOCKED":
                     decision = "BLOCKED"
                     stop_blocked = true
                     stopReason = "blockedStop"
@@ -422,7 +437,7 @@ workflow:
                     blocked_by_csv = graph_blockers_csv
                     graph_blocker_detail_json = graph_blockers_json
                     recovery_strategy = "Resolve review coverage-graph blockers before stopping."
-               c) if inline STOP is legal AND graph_decision == "CONTINUE":
+               c) if STOP is legal AND graph_decision == "CONTINUE":
                     decision = "CONTINUE"
                     stop_blocked = false
                     reason = "graph_convergence_continue"
@@ -443,6 +458,8 @@ workflow:
           - evidence_density_gate_pass: "Boolean pass/fail for evidenceDensityGate"
           - avg_evidence_per_finding: "Numeric evidence density for active findings"
           - hotspot_saturation_gate_pass: "Boolean pass/fail for hotspotSaturationGate"
+          - claim_adjudication_gate_pass: "Boolean pass/fail for claimAdjudicationGate (false vetoes STOP)"
+          - claim_adjudication_active_count: "Count of active P0/P1 findings evaluated by claimAdjudicationGate"
           - graph_decision: "CONTINUE | STOP_ALLOWED | STOP_BLOCKED from step_graph_convergence"
           - graph_signals_json: "JSON object returned by graph convergence"
           - graph_blockers_json: "JSON array of graph blockers"
@@ -452,7 +469,7 @@ workflow:
       step_emit_blocked_stop:
         action: "Persist blocked-stop evidence whenever the review legal-stop decision tree vetoes STOP"
         if_blocked:
-          append_jsonl: '{"type":"event","event":"blocked_stop","mode":"review","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergenceGate":{"pass":{convergence_gate_pass},"score":{convergence_gate_score}},"dimensionCoverageGate":{"pass":{dimension_coverage_gate_pass},"covered":{dimension_coverage_gate_covered_json},"missing":{dimension_coverage_gate_missing_json}},"p0ResolutionGate":{"pass":{p0_resolution_gate_pass},"activeP0":{active_p0_count}},"evidenceDensityGate":{"pass":{evidence_density_gate_pass},"avgEvidencePerFinding":{avg_evidence_per_finding}},"hotspotSaturationGate":{"pass":{hotspot_saturation_gate_pass}}},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          append_jsonl: '{"type":"event","event":"blocked_stop","mode":"review","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergenceGate":{"pass":{convergence_gate_pass},"score":{convergence_gate_score}},"dimensionCoverageGate":{"pass":{dimension_coverage_gate_pass},"covered":{dimension_coverage_gate_covered_json},"missing":{dimension_coverage_gate_missing_json}},"p0ResolutionGate":{"pass":{p0_resolution_gate_pass},"activeP0":{active_p0_count}},"evidenceDensityGate":{"pass":{evidence_density_gate_pass},"avgEvidencePerFinding":{avg_evidence_per_finding}},"hotspotSaturationGate":{"pass":{hotspot_saturation_gate_pass}},"claimAdjudicationGate":{"pass":{claim_adjudication_gate_pass},"activeP0P1":{claim_adjudication_active_count}}},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
           log: "Blocked STOP persisted for review loop. Failed gates: {blocked_by_csv}. Recovery strategy: {recovery_strategy}"
         if_not_blocked:
           proceed: true
@@ -572,15 +589,22 @@ workflow:
           append_jsonl: '{"type":"iteration","run":{current_iteration},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
 
       step_post_iteration_claim_adjudication:
-        action: "Validate typed claim-adjudication packets for any new P0/P1 findings"
+        action: "Validate typed claim-adjudication packets for any new P0/P1 findings and persist the result to state.jsonl so the next iteration's claimAdjudicationGate can read it"
         verify:
           - typed_packets_present: "Every new P0/P1 finding in review/iterations/iteration-{NNN}.md contains a claim-adjudication JSON block"
           - packet_fields: "Each packet includes claim, evidenceRefs, counterevidenceSought, alternativeExplanation, finalSeverity, confidence, downgradeTrigger"
+          - missing_packet_ids: "List of new P0/P1 finding IDs that are missing a typed packet or field; empty array when all packets validate"
+        on_pass:
+          set:
+            claim_adjudication_passed: true
+          append_jsonl: '{"type":"event","event":"claim_adjudication","mode":"review","run":{current_iteration},"passed":true,"activeP0P1":{active_p0_p1_count},"missingPackets":[],"timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          log: "Claim adjudication passed for iteration {current_iteration}. All new P0/P1 findings have typed packets."
         on_fail:
-          action: "Mark the iteration as invalid for convergence and require rewrite before STOP is permitted"
+          action: "Mark the iteration as invalid for convergence. The next iteration's claimAdjudicationGate (step_check_convergence step 0) reads the persisted `passed: false` event and vetoes STOP until a follow-up iteration rewrites the packets."
           set:
             claim_adjudication_passed: false
-          log: "Claim adjudication incomplete for new P0/P1 findings. Continue loop until packets are present. Set claim_adjudication_passed = false. This flag MUST be checked in convergence evaluation — STOP is blocked while claim_adjudication_passed == false."
+          append_jsonl: '{"type":"event","event":"claim_adjudication","mode":"review","run":{current_iteration},"passed":false,"activeP0P1":{active_p0_p1_count},"missingPackets":{missing_packet_ids},"reason":"Missing typed packet fields for new P0/P1 findings","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          log: "Claim adjudication incomplete for new P0/P1 findings. Event persisted. The next iteration's step_check_convergence claim-adjudication pre-check will veto STOP while `passed: false` remains the latest event and active P0/P1 > 0."
 
       step_reduce_review_state:
         action: "Run reducer to refresh the canonical findings registry before dashboard generation"

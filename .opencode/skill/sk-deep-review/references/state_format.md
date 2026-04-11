@@ -616,39 +616,59 @@ Auto-generated summary. Never manually edited.
 <!-- ANCHOR:claim-adjudication -->
 ## 9. CLAIM ADJUDICATION
 
-When a finding's severity is ambiguous, apply structured adjudication before finalizing.
+Every new P0/P1 finding must carry a **typed claim-adjudication packet**. The packet is parsed by `step_post_iteration_claim_adjudication` in the review workflow and its pass/fail result is persisted as a `claim_adjudication` event in `deep-review-state.jsonl`. The next iteration's `step_check_convergence` legal-stop decision tree reads the latest event via `claimAdjudicationGate` (gate `f`) — a missing or failed packet vetoes STOP even if every other gate passes. Prose-only adjudication blocks are no longer accepted.
 
-### Record Format
+### Typed Packet Schema (required)
 
-```markdown
-### Claim Adjudication: F[NNN]
+Embed the packet inside the iteration file for each new P0/P1 finding. The orchestrator parses it after evaluation and persists the validation result.
 
-**Original claim**: [What was observed]
-**Severity proposed**: [Initial severity]
-
-1. **Re-verify evidence**: [Does file:line evidence confirm the claim?]
-2. **Seek counterevidence**: [Evidence that contradicts or mitigates?]
-3. **Alternative explanation**: [Legitimate reason for the behavior?]
-4. **Adjudicate severity**: [Final severity with rationale]
-
-**Result**: [P0/P1/P2] — [Justification]
+```json
+{
+  "findingId": "F003",
+  "claim": "Coverage-graph upsert identity is bare `id`, so cross-session collisions overwrite prior rows.",
+  "evidenceRefs": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:154",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts:292-302"
+  ],
+  "counterevidenceSought": "Grepped the module for compound-key upserts, checked migration scripts, and inspected session-isolation.vitest.ts for a collision regression — none found.",
+  "alternativeExplanation": "Could be intentional single-tenant design, but phase 008 REQ-024 explicitly requires session isolation, so this is rejected.",
+  "finalSeverity": "P1",
+  "confidence": 0.86,
+  "downgradeTrigger": "If a composite primary key `(spec_folder, loop_type, session_id, id)` lands and a collision regression covers the ID-reuse path, downgrade to P2 tech-debt.",
+  "transitions": [
+    { "iteration": 2, "from": null, "to": "P1", "reason": "Initial discovery" }
+  ]
+}
 ```
 
-### Steps
+### Required Fields
 
-| Step | Purpose |
-|------|---------|
-| Re-verify evidence | Confirm finding is real and reproducible |
-| Seek counterevidence | Avoid false positives and severity inflation |
-| Alternative explanation | Distinguish bugs from intentional design |
-| Adjudicate severity | Produce defensible, evidence-backed classification |
+| Field | Type | Description |
+|-------|------|-------------|
+| `findingId` | string | Must match the finding ID in the iteration body and registry |
+| `claim` | string | The single assertion the finding makes (one sentence, evidence-backed) |
+| `evidenceRefs` | string[] | `file:line` or `file:range` citations that substantiate the claim (at least one entry) |
+| `counterevidenceSought` | string | Where the reviewer looked for contradicting evidence (commands, paths, docs) — blank string is not acceptable |
+| `alternativeExplanation` | string | An alternative reading of the evidence, even if the reviewer rejects it |
+| `finalSeverity` | `"P0"` \| `"P1"` \| `"P2"` | Severity after adjudication (may differ from the severity originally asserted) |
+| `confidence` | number `[0, 1]` | Reviewer confidence in `finalSeverity` |
+| `downgradeTrigger` | string | The concrete condition under which this finding should be downgraded in a future iteration |
+| `transitions` | object[] | Optional severity transition log; required when `finalSeverity` differs from the originally asserted severity |
+
+### Validation Rules (enforced by `step_post_iteration_claim_adjudication`)
+
+1. A packet MUST exist for every new P0/P1 finding introduced in this iteration. Carried-forward findings reuse the previous packet unless severity transitioned.
+2. All required fields MUST be present and non-empty. `confidence` MUST be a number in `[0, 1]`.
+3. Each `evidenceRefs` entry MUST contain a `:` separating the path from a line or range.
+4. `finalSeverity` MUST match the severity the finding is registered under in the iteration's `Findings` section and in `deep-review-findings-registry.json`.
+5. When any rule fails, the workflow appends `{"event":"claim_adjudication","passed":false,"missingPackets":[...]}` to the state log. The next `step_check_convergence` call reads that event and sets `claimAdjudicationGate` = `false`, producing a `blockedStop` event with `blockedBy: ["claimAdjudicationGate"]` until a follow-up iteration rewrites the packet.
 
 ### Severity Transition Rules
 
-- **P2 to P1**: Confirmed exploitable impact or spec violation with evidence
-- **P1 to P0**: Demonstrated data loss, security breach, or hard-gate failure
-- **Downgrade**: Requires counterevidence or confirmed alternative explanation
-- Every transition is recorded in the finding's `transitions` array
+- **P2 → P1**: confirmed exploitable impact or spec violation with direct evidence
+- **P1 → P0**: demonstrated data loss, security breach, or hard-gate failure
+- **Downgrade**: requires explicit counterevidence or a confirmed alternative explanation
+- Every transition is recorded in the packet's `transitions` array and mirrored into the finding registry's `transitions` field
 
 ---
 
