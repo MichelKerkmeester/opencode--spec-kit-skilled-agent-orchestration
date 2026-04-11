@@ -829,11 +829,45 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     '<!-- /ANCHOR:next-focus -->',
     '<!-- ANCHOR:active-risks -->',
     '## 11. ACTIVE RISKS',
-    ...(latestIteration?.status === 'error'
-      ? ['- Latest iteration reported error status.']
-      : severity.P0 > 0
-        ? [`- ${severity.P0} active P0 finding(s) blocking release.`]
-        : ['- None active beyond normal review uncertainty.']),
+    ...(function buildActiveRisks() {
+      // REQ-034 (042 closing audit, F015): surface non-P0 release-readiness
+      // debt alongside P0s so the dashboard cannot hide P1 debt behind a
+      // "None active" summary when activeP0 == 0. Gate debt on the latest
+      // `blocked_stop` and `claim_adjudication` events so operators see
+      // claim-adjudication and legal-stop gate failures, not just severity.
+      const lines = [];
+      if (latestIteration?.status === 'error') {
+        lines.push('- Latest iteration reported error status.');
+      }
+      if (severity.P0 > 0) {
+        lines.push(`- ${severity.P0} active P0 finding(s) blocking release.`);
+      }
+      if (severity.P1 > 0) {
+        lines.push(`- ${severity.P1} active P1 finding(s) — required before release; not a P0 but still blocks PASS.`);
+      }
+      const latestClaimAdjudication = [...iterationRecords]
+        .reverse()
+        .find((r) => r && r.type === 'event' && r.event === 'claim_adjudication');
+      if (latestClaimAdjudication && latestClaimAdjudication.passed === false) {
+        const missing = Array.isArray(latestClaimAdjudication.missingPackets) && latestClaimAdjudication.missingPackets.length > 0
+          ? ` (missing packets: ${latestClaimAdjudication.missingPackets.join(', ')})`
+          : '';
+        lines.push(`- Claim-adjudication gate last failed at run ${latestClaimAdjudication.run ?? '?'}${missing}. STOP is vetoed until every active P0/P1 has a typed claim-adjudication packet.`);
+      }
+      const latestBlockedStop = [...iterationRecords]
+        .reverse()
+        .find((r) => r && r.type === 'event' && r.event === 'blocked_stop');
+      if (latestBlockedStop && Array.isArray(latestBlockedStop.blockedBy) && latestBlockedStop.blockedBy.length > 0) {
+        lines.push(`- Latest blocked_stop at run ${latestBlockedStop.run ?? '?'}: ${latestBlockedStop.blockedBy.join(', ')}. Recovery: ${latestBlockedStop.recoveryStrategy || 'see dashboard §BLOCKED STOPS'}.`);
+      }
+      if (severity.P2 > 0 && lines.length === 0) {
+        lines.push(`- ${severity.P2} active P2 finding(s) — advisory only; release is not blocked by P2 alone, but the debt is tracked here so it does not disappear.`);
+      }
+      if (lines.length === 0) {
+        lines.push('- None active beyond normal review uncertainty.');
+      }
+      return lines;
+    })(),
     '',
     '<!-- /ANCHOR:active-risks -->',
     '',

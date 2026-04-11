@@ -93,8 +93,21 @@ New playbook scenarios (7 total):
 
 - **SKILL.md version bumps**: sk-deep-research 1.5.0.0 → **1.6.0.0**, sk-deep-review 1.2.0.0 → **1.3.0.0**, sk-improve-agent 1.1.0.0 → **1.2.0.0**.
 - **Changelogs**: `.opencode/changelog/12--sk-deep-research/v1.6.0.0.md`, `13--sk-deep-review/v1.3.0.0.md`, `15--sk-improve-agent/v1.2.0.0.md`.
-- **Closing deep-review (T061)**: **deferred**. Phase 008 already lands 12 new vitest tests all passing plus 7 manual playbook scenarios authored to the canonical playbook format. A separate `/spec_kit:deep-review:auto` run against phase 008 can be kicked off in a follow-up session; no P0/P1 regressions are expected given the rigor of Parts A-D verification.
-- **Memory save**: committed via `generate-context.js` at the end of phase 008.
+- **Closing deep-review (T061)**: **executed**. 10-iteration Codex GPT-5.4 `spec_kit:deep-review` session `rvw-2026-04-11T13-50-06Z` ran against the full 042 bundle, surfaced 16 findings (0 P0 / 10 P1 / 6 P2), and returned a CONDITIONAL verdict with `maxIterationsReached` as the stop reason. The full review packet lives at `review/` alongside this phase folder (strategy, dashboard, findings registry, 10 iteration files, and `review-report.md`).
+- **Post-review remediation**: the 16 findings routed to a follow-up remediation pass that lands in the same packet as this phase 008 close-out. That pass is tracked in 5 lanes mapped one-to-one onto the closing-audit findings and REQs (see **Closing Audit Remediation Notes** below); it supersedes the earlier "no regressions expected" assumption that is still archived above this section.
+- **Memory save**: committed via `generate-context.js` at the end of phase 008 and again after the closing-audit remediation lanes land.
+
+#### Closing Audit Remediation Notes
+
+The 16 closing-audit findings surfaced four classes of residual debt that Parts A–D did not catch:
+
+1. **Claim adjudication was documented as a hard STOP gate but never wired into the legal-stop decision tree** (F002, F007). The claim-adjudication step set `claim_adjudication_passed=false` on failure but no branch of `step_check_convergence` ever read the flag, so the loop could synthesize after a failed adjudication packet. Closed in **Lane 1** by adding a universal STOP veto pre-check (step 0 of the convergence algorithm) and a dedicated `claimAdjudicationGate` in the legal-stop tree, plus a persisted `claim_adjudication` JSONL event so the next iteration can read the prior pass/fail state. `state_format.md` §9 and `loop_protocol.md` Step 4a now document the typed packet schema operators must emit. New REQs: **REQ-026**, **REQ-027**.
+2. **Coverage-graph storage still keyed rows by bare `id`** (F004, F005, F006). Phase 008 Part B correctly scoped the READ path by `(spec_folder, loop_type, session_id)`, but the WRITE path (`upsertNode`/`upsertEdge` in `coverage-graph-db.ts`) still did a bare-id lookup, so two sessions reusing the same logical id would overwrite each other. Closed in **Lane 2** by bumping the schema to v2 with composite primary keys of `(spec_folder, loop_type, session_id, id)` for both `coverage_nodes` and `coverage_edges`, migrating via drop-and-recreate, and adding a "shared-ID collisions" regression block to `session-isolation.vitest.ts`. `state_format.md` now documents the `graphEvents` payload shape and namespace rules operators must follow. New REQs: **REQ-028**, **REQ-029**. This remediation is what makes the REQ-024 session-scoping claim on line 59 of this summary fully honest — before the schema change, the test proved filtered reads on disjoint fixtures but did not cover ID collisions.
+3. **Lifecycle branches were exposed without matching runtime wiring** (F010, F011, F012). The confirm YAMLs offered `resume`, `restart`, `fork`, and `completed-continue`, but only `new` lineage metadata was ever persisted. Closed in **Lane 3** by retracting the two unimplemented branches (`fork`, `completed-continue`) and wiring real event emission for the two that the runtime can honestly support (`resumed` / `restarted` events with the full persisted contract). sk-improve-agent's matching lineage promises were retracted in SKILL.md §Resume/Continuation Semantics with a note that the long-form feature is deferred. New REQs: **REQ-030**, **REQ-031**.
+4. **Canonical contracts drifted from shipped runtime** (F001, F003, F008, F009). The `.opencode/agent/deep-review.md` template emitted iteration markdown the reducer could not parse, the review config JSONL collapsed the dimensions array into a single string element, and `convergence.md` still described a phantom `legalStop` record plus a phantom "Novelty Ratio" as the 3rd convergence signal. Closed in **Lane 4** by rewriting the canonical iteration skeleton to match `reduce-state.cjs:186`, adding a `pre_serialize` directive for `review_dimensions_json` in both review workflows, replacing the phantom `legalStop` wrapper with the canonical `blocked_stop` event shape, and renaming Signal 3 to Dimension Coverage. New REQs: **REQ-032**, **REQ-033**.
+5. **Release-readiness surfaces certified PASS while the live review ledger still held active required findings** (F013, F014, F015, F016). This section is itself part of the closure; the packet-root `spec.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` are reconciled in **Lane 5**, and `sk-deep-review/scripts/reduce-state.cjs:832` is updated so the dashboard `ACTIVE RISKS` surface reports non-P0 release-readiness debt (P1 debt, typed adjudication gaps, documentation drift) instead of hiding it behind a P0-only check. New REQ: **REQ-034**.
+
+Each lane committed separately. REQ-026 through REQ-034 are the canonical additions layered on top of the original 25 and should be read as amendments rather than replacements. `review/review-report.md` remains the source of truth for the 16 findings and their evidence.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -154,19 +167,22 @@ Phase 008 was delivered in 5 sequential passes (A → B → C → D → E) with 
 
 | Check | Result |
 |-------|--------|
-| All 25 REQ items satisfied | ✅ REQ-001 through REQ-025 all closed |
-| Vitest new phase 008 suites green | ✅ 12/12 across 4 suites |
+| Original phase 008 REQ-001 through REQ-025 | ✅ All 25 satisfied at the end of Parts A–E |
+| Closing-audit REQ-026 through REQ-034 | ✅ Closed in the Lane 1–5 remediation pass; see **Closing Audit Remediation Notes** above and `review/review-report.md` |
+| Vitest new phase 008 suites green | ✅ 12/12 across 4 suites at phase 008 close |
+| Post-remediation vitest full scripts/tests run | ✅ 908 passed / 55 skipped / 0 failed after Lane 2 coverage-graph schema migration |
 | `graph-aware-stop.vitest.ts` passes | ✅ 3/3 |
-| `session-isolation.vitest.ts` passes | ✅ 3/3 |
+| `session-isolation.vitest.ts` passes | ✅ 6/6 — original 3 disjoint-read tests plus 3 new shared-ID collision regression tests from Lane 2 |
 | `graph-convergence-parity.vitest.ts` passes | ✅ 3/3 |
 | `review-reducer-fail-closed.vitest.ts` passes | ✅ 3/3 |
+| `coverage-graph-cross-layer.vitest.ts` still green after composite-key migration | ✅ 6/6 |
 | All 3 fixtures load via their respective reducer | ✅ All verified via smoke tests |
-| Backward compatibility with existing v1.5.0.0 / v1.2.0.0 / v1.1.0.0 packets | ✅ Additive registry fields only; `--lenient` + `--create-missing-anchors` escape hatches available for legacy review packets |
+| Backward compatibility with existing v1.5.0.0 / v1.2.0.0 / v1.1.0.0 packets | ✅ Additive registry fields only; `--lenient` + `--create-missing-anchors` escape hatches available for legacy review packets. Coverage-graph v1 DBs migrate automatically via drop-and-recreate on first open of the v2 schema (dev-only cache, no durable production state) |
 | Reducer idempotency preserved | ✅ Verified via fixture smoke tests (byte-identical second run) |
 | `node --check` on all modified CJS files | ✅ All pass |
 | YAML parse check on all modified workflows | ✅ All pass |
-| Full vitest suite | ⏸️ Re-run in progress at phase close |
-| Closing `/spec_kit:deep-review:auto` run | ⏸️ Deferred to follow-up session |
+| `tsc --noEmit` on `mcp_server` workspace after Lane 2 | ✅ Clean |
+| Closing `/spec_kit:deep-review:auto` run | ✅ Executed (10-iteration Codex GPT-5.4 session `rvw-2026-04-11T13-50-06Z`). Verdict CONDITIONAL with 0 P0 / 10 P1 / 6 P2; routed to Lane 1–5 remediation, all 16 findings closed in follow-up commits |
 | SKILL.md version bumps committed | ✅ 1.6.0.0 / 1.3.0.0 / 1.2.0.0 |
 | Changelogs written for all 3 skills | ✅ v1.6.0.0.md / v1.3.0.0.md / v1.2.0.0.md |
 | Memory save POST-SAVE QUALITY REVIEW | ⏸️ Pending final step |

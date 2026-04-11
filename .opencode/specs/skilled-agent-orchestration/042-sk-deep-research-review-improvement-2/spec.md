@@ -20,11 +20,25 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-This parent packet now serves as the coordination overview for four child implementation phases. The bundle keeps the same core goal as the original packet: make `sk-deep-research` and `sk-deep-review` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown now live in dedicated child folders, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.
+This parent packet coordinates **eight child implementation phases plus a post-phase-008 closing-audit remediation pass**. The bundle keeps the same core goal as the original packet: make `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown live in dedicated child folders (`001`–`008`) plus the live `review/` packet that drives closing audits, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.
 
-**Key decisions**: keep runtime truth first, reuse existing graph infrastructure instead of building a separate platform, keep wave execution at the orchestrator layer instead of inside LEAF agents, and split the optimizer into active Phase 4a work plus deferred Phase 4b work.
+**Child phases**:
 
-**Critical dependencies**: consolidated research findings `CF-004`, `CF-010`, `CF-014`, `CF-021`, `CF-027`, and `CF-030`; existing deep-loop reducer/parity surfaces; packet-local append-only state; the child phase plans under this packet.
+| Folder | Phase |
+|--------|-------|
+| `001-runtime-truth-foundation` | Phase 1 — runtime truth contracts and behavior tests |
+| `002-semantic-coverage-graph` | Phase 2 — coverage graph libraries, MCP tools, 101 tests |
+| `003-wave-executor` | Phase 3 — wave executor, keyed merge, 97 tests |
+| `004-offline-loop-optimizer` | Phase 4a — replay optimizer, audit trail, 91 tests (Phase 4b deferred) |
+| `005-agent-improver-deep-loop-alignment` | Phase 5 — sk-improve-agent parity with the frozen stop-reason taxonomy and journal wiring |
+| `006-graph-testing-and-playbook-alignment` | Phase 6 — vitest + playbook coverage across the coverage-graph stack |
+| `007-graph-aware-stop-gate` | Phase 7 — graph convergence MCP wiring + fail-closed reducer reconciliation |
+| `008-further-deep-loop-improvements` | Phase 8 — 12 Codex research recommendations + 4 phase-008 closing-audit P1 fixes; SKILL bumps to v1.6.0.0 / v1.3.0.0 / v1.2.0.0 |
+| `review/` | **Closing audit** — 10-iteration Codex GPT-5.4 deep-review session `rvw-2026-04-11T13-50-06Z`. Verdict CONDITIONAL with 16 findings (0 P0 / 10 P1 / 6 P2). Routed into the five-lane remediation pass described in `implementation-summary.md` §How It Was Delivered |
+
+**Key decisions**: keep runtime truth first, reuse existing graph infrastructure instead of building a separate platform, keep wave execution at the orchestrator layer instead of inside LEAF agents, split the optimizer into active Phase 4a work plus deferred Phase 4b work, add phases 5–8 to harden the deep-loop skills against the residual contract drift they shipped with, and absorb the closing-audit findings into the same packet via a five-lane remediation rather than spinning up a new packet.
+
+**Critical dependencies**: consolidated research findings `CF-004`, `CF-010`, `CF-014`, `CF-021`, `CF-027`, and `CF-030`; existing deep-loop reducer/parity surfaces; packet-local append-only state; the child phase plans under this packet; `review/review-report.md` for the 16 closing-audit findings and their Lane 1–5 remediation mapping.
 
 ---
 
@@ -34,12 +48,12 @@ This parent packet now serves as the coordination overview for four child implem
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Implemented |
+| **Status** | Implemented (phases 1–8) + post-phase-008 closing-audit remediation (Lanes 1–5) closed |
 | **Created** | 2026-04-10 |
-| **Branch** | `042-sk-deep-research-review-improvement-2` |
-| **Dependencies** | Consolidated research packet; child phase folders `001`-`004`; existing deep-loop assets, YAML workflows, reducers, and tests |
+| **Branch** | `system-speckit/026-graph-and-context-optimization` (formerly `042-sk-deep-research-review-improvement-2`) |
+| **Dependencies** | Consolidated research packet; child phase folders `001`–`008`; existing deep-loop assets, YAML workflows, reducers, and tests; `review/` closing-audit artifacts |
 | **Predecessor** | Related background packets: `028-auto-deep-research-review-improvement`, `040-sk-auto-deep-research-review-improvement` |
-| **Successor** | All child phases `001` -> `004` implemented; Phase 4b deferred |
+| **Successor** | All child phases `001`–`008` implemented; Phase 4b (prompt-pack generation + meta-learning) remains explicitly deferred; no new follow-up packet is required for the closing audit because its 16 findings (REQ-026 through REQ-034) were absorbed into Lanes 1–5 inside this same packet |
 
 ---
 

@@ -72,7 +72,8 @@ contextType: "planning"
 
 - [x] CHK-PARENT-040 [P1] Parent overview docs summarize the child phases without duplicating child implementation detail.
 - [x] CHK-PARENT-041 [P1] Phase 1 child checklist remains the verification source of truth and is linked correctly.
-- [x] CHK-PARENT-042 [P1] Phases 2-4 are clearly marked as having no child checklist files yet.
+- [x] CHK-PARENT-042 [P1] Phases 2–8 are clearly marked with their verification mechanism (child task completion, phase-scoped checklists where present, and deep review rounds).
+- [x] CHK-PARENT-043 [P1] `review/review-report.md` is linked from this checklist and from the root `implementation-summary.md` so operators can trace the 16 closing-audit findings to the Lane 1–5 remediation commits.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -82,6 +83,7 @@ contextType: "planning"
 
 - [x] CHK-PARENT-050 [P1] Root packet links resolve to the intended child folders and parent summary files.
 - [x] CHK-PARENT-051 [P1] Parent packet status/count summaries match the child task sources they summarize.
+- [x] CHK-PARENT-052 [P1] Packet-root spec.md, tasks.md, checklist.md, and implementation-summary.md are reconciled with phases 5–8 and the closing-audit Lane 1–5 remediation (not the original four-phase topology).
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -91,7 +93,8 @@ contextType: "planning"
 
 | Category | Total | Notes |
 |----------|-------|-------|
-| Child checklists present | 1 | Phase 1 checklist fully verified |
-| Child phases verified via tasks/plan gates | 3 | Phases 2-4 verified through task completion and deep review |
-| Parent packet status | Implemented | All 4 phases implemented and verified |
+| Child checklists present | 1 | Phase 1 checklist remains the only fully detailed child checklist; phases 2–8 were verified through their respective tasks.md, plan gates, and deep review rounds |
+| Child phases verified via tasks/plan gates | 7 | Phases 2–8 verified through task completion and deep review; phase 8 additionally gated by the 10-iteration Codex closing audit |
+| Closing audit | 1 | 10-iteration Codex `spec_kit:deep-review` session `rvw-2026-04-11T13-50-06Z` produced a CONDITIONAL verdict with 16 findings (0 P0 / 10 P1 / 6 P2); all 16 routed to Lane 1–5 remediation inside this same packet |
+| Parent packet status | Implemented | All 8 phases implemented and verified; closing-audit Lane 1–5 remediation absorbed into the packet; only Phase 4b remains explicitly deferred |
 <!-- /ANCHOR:summary -->

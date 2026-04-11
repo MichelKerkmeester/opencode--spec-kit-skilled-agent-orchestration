@@ -73,12 +73,23 @@ contextType: "planning"
 | **Phase 2** | [./002-semantic-coverage-graph/tasks.md](./002-semantic-coverage-graph/tasks.md) | Coverage graph + MCP reuse | Implemented; 23/23 tasks completed | 25 files (17 new), +5.2K lines, 4 CJS modules, SQLite DB, MCP handlers, 101 tests |
 | **Phase 3** | [./003-wave-executor/tasks.md](./003-wave-executor/tasks.md) | Wave executor | Implemented; 13/13 tasks completed | 11 files (9 new), +3.3K lines, 5 CJS wave modules, 97 tests |
 | **Phase 4** | [./004-offline-loop-optimizer/tasks.md](./004-offline-loop-optimizer/tasks.md) | Offline optimizer | Implemented (4a: 7/7); Deferred (4b: 3 Blocked) | 20 files (14 new), +3.8K lines, 6 optimizer modules, 91 tests |
+| **Phase 5** | [./005-agent-improver-deep-loop-alignment/tasks.md](./005-agent-improver-deep-loop-alignment/tasks.md) | sk-improve-agent alignment with frozen stop-reason taxonomy | Implemented; all tasks completed | Journal wiring, advisory optimizer integration, SKILL bump to v1.1.0.0 |
+| **Phase 6** | [./006-graph-testing-and-playbook-alignment/tasks.md](./006-graph-testing-and-playbook-alignment/tasks.md) | Graph testing + playbook coverage | Implemented; all tasks completed | Vitest coverage across coverage-graph layers + matching playbook scenarios |
+| **Phase 7** | [./007-graph-aware-stop-gate/tasks.md](./007-graph-aware-stop-gate/tasks.md) | Graph-aware stop gate + runtime-truth reconciliation | Implemented; all tasks completed | Graph convergence MCP wiring in both loop workflows, fail-closed reducer reconciliation |
+| **Phase 8** | [./008-further-deep-loop-improvements/tasks.md](./008-further-deep-loop-improvements/tasks.md) | 12 Codex research recommendations + 4 phase-008 closing-audit P1 fixes | Implemented; all tasks completed | 12 new vitest tests, 7 playbook scenarios, SKILL bumps to v1.6.0.0 / v1.3.0.0 / v1.2.0.0 |
+| **Closing Audit + Remediation** | [./review/review-report.md](./review/review-report.md) | Post-phase-008 closing audit (10 iterations, CONDITIONAL) and Lane 1–5 remediation | Closed — 16 findings routed to 5 remediation lanes, all landed in this packet | See `implementation-summary.md` §How It Was Delivered for the Lane 1–5 mapping and REQ-026 through REQ-034 |
 
 - [x] T-PARENT-001 Keep the root packet synchronized with Phase 1 child docs.
 - [x] T-PARENT-002 Keep the root packet synchronized with Phase 2 child docs.
 - [x] T-PARENT-003 Keep the root packet synchronized with Phase 3 child docs.
 - [x] T-PARENT-004 Keep the root packet synchronized with Phase 4 child docs.
 - [x] T-PARENT-005 Preserve deferred `4b` status until its prerequisites become real.
+- [x] T-PARENT-006 Keep the root packet synchronized with Phase 5 child docs.
+- [x] T-PARENT-007 Keep the root packet synchronized with Phase 6 child docs.
+- [x] T-PARENT-008 Keep the root packet synchronized with Phase 7 child docs.
+- [x] T-PARENT-009 Keep the root packet synchronized with Phase 8 child docs.
+- [x] T-PARENT-010 Run the phase-008 closing deep-review session and treat its verdict as a release gate.
+- [x] T-PARENT-011 Absorb the closing-audit remediation (Lanes 1–5) into the same packet rather than spinning up a new follow-up packet.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -90,12 +101,12 @@ contextType: "planning"
 
 | Category | Count |
 |----------|-------|
-| Total child tasks | 91 |
-| Completed | 88 |
-| Blocked (4b deferred) | 3 |
+| Child phases | 8 (`001`–`008`) plus closing-audit remediation (`review/` + Lanes 1–5) |
+| Completed child tasks | 88 across phases 1–4 plus all phase 5–8 tasks plus the 12 Lane 1–5 remediation tasks (T001–T012 in `review/review-report.md`) |
+| Blocked (Phase 4b deferred) | 3 |
 | Pending | 0 |
 
-**Parent packet status**: Implemented. All Phase 1-4a tasks completed. Phase 4b tasks remain blocked pending prerequisites.
+**Parent packet status**: Implemented. Phases 1–8 complete, closing-audit Lane 1–5 remediation complete, only Phase 4b (prompt-pack generation + meta-learning) remains explicitly deferred against its prerequisites.
 <!-- /ANCHOR:phase-2 -->
 
 ---

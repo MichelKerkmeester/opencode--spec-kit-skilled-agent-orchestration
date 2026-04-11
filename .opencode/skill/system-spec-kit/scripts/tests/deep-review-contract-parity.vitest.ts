@@ -97,12 +97,20 @@ describe('deep-review contract parity', () => {
       );
     }
 
+    // REQ-030 retraction (042 closing audit, F010/F011/F012): the runtime
+    // only persists lineage events for `resume` and `restart`. `fork` and
+    // `completed-continue` are deferred with an explicit note. The parity
+    // test mirrors the shipped contract by asserting the live branches exist
+    // and the retraction note is present, rather than pinning the legacy
+    // four-option list.
     const autoContent = readWorkspaceFile(commandAssets[0]);
     expect(autoContent).toContain('on_restart:');
-    expect(autoContent).toContain('on_fork:');
+    expect(autoContent).toContain('note_deferred_branches:');
+    expect(autoContent).not.toContain('on_fork:');
 
     const confirmContent = readWorkspaceFile(commandAssets[1]);
-    expect(confirmContent).toContain('options: [resume, restart, fork, completed-continue]');
+    expect(confirmContent).toContain('options: [resume, restart, cancel]');
+    expect(confirmContent).toContain('fork and completed-continue branches are deferred');
   });
 
   it('uses the same canonical agent_file path in both auto and confirm YAMLs', () => {
