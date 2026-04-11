@@ -2,7 +2,7 @@
 name: sk-improve-agent
 description: "Evaluator-first skill for bounded agent improvement with 5-dimension integration-aware scoring, dynamic profiling, packet-local candidates, and guarded promotion or rollback."
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
-version: 1.1.0.0
+version: 1.2.0.0
 triggers:
   - sk-improve-agent
   - agent improvement loop
