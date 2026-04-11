@@ -678,7 +678,7 @@ Ask your AI assistant:
 Load context from spec folder 012-authentication and show me what we were working on
 ```
 
-**Behind the scenes:** The AI calls `memory_context()` with `mode: "resume"` and `anchors: ["state", "next-steps"]`, then returns the previous session state.
+**Behind the scenes:** The AI uses `/spec_kit:resume` as the canonical recovery surface. That flow reconstructs packet context from `handover.md`, then `_memory.continuity`, then the canonical spec docs before it falls through to deeper MCP retrieval.
 
 ### Example 4: Intent-Aware Context Loading
 
@@ -696,7 +696,7 @@ I need to add a new feature for user profiles
 ### Example 5: Bulk Indexing After Creating Memories
 
 ```bash
-# After creating multiple memory files in specs/*/memory/
+# After updating spec docs or canonical continuity surfaces in a packet
 
 # Ask your AI:
 "Scan for new memory files and index them"
@@ -704,7 +704,7 @@ I need to add a new feature for user profiles
 
 **Behind the scenes:**
 1. AI calls `memory_index_scan({ force: false })`
-2. Server scans `specs/**/memory/`, `.opencode/skill/**/constitutional/` and spec documents
+2. Server scans canonical spec documents plus `.opencode/skill/**/constitutional/` content
 3. Indexes changed or new files, skipping unchanged ones based on content hash
 
 ### Example 6: Enabling Adaptive Fusion for a Debug Session

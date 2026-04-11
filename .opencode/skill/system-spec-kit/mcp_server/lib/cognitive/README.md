@@ -36,7 +36,9 @@ The cognitive subsystem implements human memory principles to manage conversatio
 
 ### What is the Cognitive Subsystem?
 
-The cognitive subsystem is the "brain" of the memory system. It determines which memories stay active, which fade, and which get archived. Unlike simple time-based caching, it uses FSRS v4 power-law decay validated on 100M+ real human memory data.
+The cognitive subsystem is the "brain" of the memory system. It determines which memories stay active, which fade, and which fall below active retrieval thresholds. Unlike simple time-based caching, it uses FSRS v4 power-law decay validated on 100M+ real human memory data.
+
+Gate E alignment: canonical continuity does not come from low-priority rows or lifecycle states. Operator-facing recovery still starts with `/spec_kit:resume`, then rebuilds context from `handover.md -> _memory.continuity -> spec docs`. Any colder or retained-history rows discussed below are supporting evidence only.
 
 ### Key Statistics
 
@@ -45,7 +47,7 @@ The cognitive subsystem is the "brain" of the memory system. It determines which
 | Decay          | 2       | ~650  | Memory forgetting curves (FSRS, attention)   |
 | Classification | 2       | ~960  | 5-state memory model + duplicate detection   |
 | Activation     | 2       | ~700  | Working memory + spreading activation        |
-| Lifecycle      | 1       | ~395  | Archival management                          |
+| Lifecycle      | 1       | ~395  | Retained-history lifecycle management        |
 | Temporal       | 1       | ~158  | Time-based contiguity boosting and timelines |
 | **Total**      | **10**  | ~2860 | Complete cognitive memory lifecycle          |
 
@@ -70,7 +72,7 @@ The cognitive subsystem is the "brain" of the memory system. It determines which
 │       ↓                                                         │
 │  Tier Classifier ───→ State = WARM → COLD → DORMANT              │
 │       ↓                                                         │
-│  Archival Manager ──→ After 90 days → ARCHIVED                  │
+│  Lifecycle Manager ──→ After 90 days → fallback evidence rows   │
 │       ↓                                                         │
 │  [Access Event]                                                 │
 │       ↓                                                         │
@@ -86,12 +88,12 @@ The cognitive subsystem is the "brain" of the memory system. It determines which
 | Feature                      | Implementation                                                                        | Benefit                              |
 | ---------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------ |
 | **Power-Law Decay**          | FSRS v4 formula validated on 100M+ users                                              | More accurate than exponential decay |
-| **5-State Model**            | HOT/WARM/COLD/DORMANT/ARCHIVED with thresholds                                        | Progressive memory transitions       |
+| **5-State Model**            | HOT/WARM/COLD/DORMANT plus a lowest-priority retained-history state                   | Progressive memory transitions       |
 | **Duplicate Prevention**     | 4-tier similarity detection (95/85/70/50%)                                            | Prevents redundant context           |
 | **Spreading Activation**     | Boost related memories (+0.15 on access)                                              | Maintains semantic coherence         |
 | **Type-Specific Decay**      | Constitutional (none), Critical (none), Normal (0.80/turn)                            | Memory importance = retention time   |
 | **Testing Effect**           | Low retrievability = greater boost on success                                         | Harder recalls strengthen more       |
-| **Automatic Archival**       | 90-day threshold with background job (2hr interval)                                   | Lifecycle management                 |
+| **Retained-History Lifecycle** | 90-day threshold with background job (2hr interval)                                 | Keeps cold rows as fallback evidence |
 | **Document-Aware Retrieval** | Uses indexed doc metadata (`spec`, `plan`, `decision_record`, etc.) in ranking inputs | Better relevance for spec workflows  |
 | **Event-Based Decay**        | Event-driven decay model (spec 136) replaces fixed per-turn decay with event triggers | Context-sensitive memory management  |
 | **Session-Attention Boost**  | `SPECKIT_SESSION_BOOST` boosts scores for memories active in the current session       | Recency-aware retrieval              |
@@ -148,7 +150,7 @@ Memories transition through states based on retrievability:
 | **WARM**     | R >= 0.25            | Recently relevant | Summary only  | 3-14 days   |
 | **COLD**     | R >= 0.05            | Fading            | Metadata only | 15-60 days  |
 | **DORMANT**  | R >= 0.02            | Nearly forgotten  | Metadata only | 60-90 days  |
-| **ARCHIVED** | R < 0.02 OR 90+ days | Long-term storage | Not loaded    | 90+ days    |
+| **EVIDENCE** | R < 0.02 OR 90+ days | Fallback evidence only | Not used for canonical continuity | 90+ days |
 
 **State Transitions:**
 ```
@@ -160,7 +162,7 @@ NEW MEMORY → HOT (R = 1.0)
     ↓ time passes
   DORMANT (R = 0.03)
     ↓ 90 days threshold
-  ARCHIVED
+  EVIDENCE
 
   ↑ access event
 [Any state] → HOT (R = 1.0) + Stability boost
@@ -250,7 +252,7 @@ cognitive/                      # TypeScript source files (10 modules)
 ├── attention-decay.ts          # Multi-factor attention decay (409 lines)
 ├── co-activation.ts            # Spreading activation with R17 fan-effect sqrt divisor (350 lines)
 ├── working-memory.ts           # Session-scoped activation (410 lines)
-├── archival-manager.ts         # 90-day archival lifecycle (395 lines)
+├── archival-manager.ts         # 90-day retained-history lifecycle (395 lines)
 ├── temporal-contiguity.ts      # Time-based contiguity boosting (158 lines)
 ├── pressure-monitor.ts         # Token pressure monitoring and context window management
 ├── rollout-policy.ts           # Feature flag rollout control and percentage-based activation
@@ -267,7 +269,7 @@ cognitive/                      # TypeScript source files (10 modules)
 | `prediction-error-gate.ts` | Conflict detection        | `evaluateMemory`, `detectContradiction`, `logConflict`                      |
 | `co-activation.ts`         | Semantic spreading (R17 fan-effect sqrt divisor) | `spreadActivation`, `populateRelatedMemories`, `boostScore`  |
 | `working-memory.ts`        | Session memory management | `setAttentionScore`, `getWorkingMemory`, `batchUpdateScores`                |
-| `archival-manager.ts`      | Lifecycle management      | `runArchivalScan`, `archiveMemory`, `startBackgroundJob`                    |
+| `archival-manager.ts`      | Retained-history lifecycle | `runArchivalScan`, `archiveMemory`, `startBackgroundJob`                   |
 | `temporal-contiguity.ts`   | Time-based linking        | `vectorSearchWithContiguity`, `getTemporalNeighbors`, `buildTimeline`       |
 | `pressure-monitor.ts`      | Token pressure monitoring | Context window management and pressure threshold tracking                   |
 | `rollout-policy.ts`        | Feature flag rollout      | Percentage-based activation and gradual feature rollout control             |
@@ -368,7 +370,7 @@ const active = filterAndLimitByState(allMemories);
 
 // State distribution statistics
 const stats = getStateStats(allMemories);
-// stats = { HOT: 3, WARM: 8, COLD: 12, DORMANT: 4, ARCHIVED: 20, total: 47 }
+// stats = { HOT: 3, WARM: 8, COLD: 12, DORMANT: 4, EVIDENCE: 20, total: 47 }
 ```
 
 **State Thresholds (configurable via env vars):**
@@ -376,7 +378,7 @@ const stats = getStateStats(allMemories);
 HOT_THRESHOLD=0.80      # Default: 0.80
 WARM_THRESHOLD=0.25     # Default: 0.25
 COLD_THRESHOLD=0.05     # Default: 0.05
-ARCHIVED_DAYS_THRESHOLD=90  # Default: 90 days
+ARCHIVED_DAYS_THRESHOLD=90  # Default: 90 days before rows become fallback evidence
 ```
 
 ### Prediction Error Gating
@@ -626,9 +628,9 @@ attentionDecayRate: 0.95      // 95% retention per decay cycle
 minAttentionScore: 0.1        // Below this = evicted
 ```
 
-### Automatic Archival
+### Retained-History Lifecycle
 
-**Purpose**: Lifecycle management for inactive memories
+**Purpose**: Keep inactive rows available as fallback evidence without treating them as canonical continuity
 
 **Usage**:
 ```typescript
@@ -655,13 +657,13 @@ startBackgroundJob();
 
 // Manual scan
 const scanResult = runArchivalScan();
-// scanResult = { scanned: 15, archived: 12 }
+// scanResult = { scanned: 15, archived: 12 }  // archived rows are fallback evidence only
 
 // Check specific memory status
 const status = checkMemoryArchivalStatus(memoryId);
-// status = { isArchived: boolean, shouldArchive: boolean }
+// status = { isArchived: boolean, shouldArchive: boolean }  // inspect retained-history status
 
-// Archive/unarchive
+// Move in or out of retained-history state
 archiveMemory(memoryId);
 unarchiveMemory(memoryId);
 
@@ -671,7 +673,7 @@ const candidates = getArchivalCandidates(50);
 
 // Get statistics
 const stats = getStats();
-// stats = { totalScanned, totalArchived, totalUnarchived, lastScanTime, errors }
+// stats = { totalScanned, totalArchived, totalUnarchived, lastScanTime, errors }  // counts retained-history transitions
 
 // Stop background job
 stopBackgroundJob();
@@ -847,7 +849,7 @@ for (const memory of activeMemories) {
 | **Memory Access** | Search hit → Boost + spread          | `activateMemoryWithFsrs`, `spreadActivation` |
 | **Session Decay** | Turn end → Apply decay               | `applyFsrsDecay`, `batchUpdateScores`        |
 | **State Check**   | Context selection → Filter by state  | `classifyState`, `filterAndLimitByState`     |
-| **Nightly Jobs**  | Background → Archive                 | `runArchivalScan`, `startBackgroundJob`      |
+| **Nightly Jobs**  | Background → retained-history check  | `runArchivalScan`, `startBackgroundJob`      |
 
 <!-- /ANCHOR:usage-examples -->
 
@@ -882,13 +884,13 @@ console.log('Decay rates:', decay.DECAY_CONFIG.decayRateByTier);
 
 **Symptom**: Memory consumption grows over time
 
-**Cause**: Not archiving old memories, or archival job not running
+**Cause**: Retained-history cleanup is not running, so low-signal rows are not being downgraded
 
 **Solution**:
 ```typescript
 import * as archival from './archival-manager';
 
-// Check archival stats
+// Check retained-history stats
 const stats = archival.getStats();
 console.log('Background job:', archival.isBackgroundJobRunning());
 
@@ -897,9 +899,9 @@ if (!archival.isBackgroundJobRunning()) {
   archival.startBackgroundJob();
 }
 
-// Manual cleanup
+// Manual retained-history sweep
 const scanResult = archival.runArchivalScan();
-console.log(`Archived ${scanResult.archived} old memories`);
+console.log(`Moved ${scanResult.archived} old memories into fallback evidence`);
 ```
 
 #### Duplicate Memories
@@ -951,7 +953,7 @@ console.log(`State: ${classification.state}, R: ${classification.retrievability}
 | Problem              | Quick Fix                                                    |
 | -------------------- | ------------------------------------------------------------ |
 | Decay not working    | Call `applyFsrsDecay(memory, score)` at turn boundaries      |
-| Memory leak          | Enable archival: `archival.startBackgroundJob()`             |
+| Memory leak          | Enable the retained-history sweep: `archival.startBackgroundJob()` |
 | Duplicate prevention | Use `gate.evaluateMemory()` before save                      |
 | State always COLD    | Use `activateMemoryWithFsrs()` (updates last_review)         |
 | Slow queries         | `CREATE INDEX idx_memory_state ON memory_index(memory_type)` |
@@ -996,14 +998,14 @@ A: When memories are accessed:
 
 ---
 
-**Q: Can I disable automatic archival?**
+**Q: Can I disable the retained-history sweep?**
 
 A: Yes, set `SPECKIT_ARCHIVAL=false` in environment or:
 ```typescript
 import * as archival from './archival-manager';
 archival.stopBackgroundJob();
 ```
-You will need to manually manage old memories to prevent database growth.
+You will need to manually manage older fallback-evidence rows to prevent database growth.
 
 ---
 
@@ -1046,9 +1048,9 @@ Note: `temporal-contiguity.js` in dist/ is **not** orphaned. It is compiled from
 | `HOT_THRESHOLD`           | 0.80    | Retrievability threshold for HOT state  |
 | `WARM_THRESHOLD`          | 0.25    | Retrievability threshold for WARM state |
 | `COLD_THRESHOLD`          | 0.05    | Retrievability threshold for COLD state |
-| `ARCHIVED_DAYS_THRESHOLD` | 90      | Days inactive before archival           |
+| `ARCHIVED_DAYS_THRESHOLD` | 90      | Days inactive before rows move to fallback evidence |
 | `SPECKIT_COACTIVATION`    | true    | Enable spreading activation             |
-| `SPECKIT_ARCHIVAL`        | true    | Enable background archival job          |
+| `SPECKIT_ARCHIVAL`        | true    | Enable background retained-history sweep |
 | `SPECKIT_WORKING_MEMORY`  | true    | Enable working memory sessions          |
 | `SPECKIT_SESSION_BOOST`   | false   | Enable session-based score boost from working_memory attention signals |
 | `SPECKIT_PRESSURE_POLICY` | false   | Enable pressure-aware mode for token budget monitoring and context window management |

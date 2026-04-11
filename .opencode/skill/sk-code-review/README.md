@@ -45,6 +45,8 @@ Every review begins with findings, not summaries. Findings carry severity labels
 
 The skill uses weighted intent scoring to select which reference files to load. Security and quality signals load their respective checklists automatically. Deep architecture concerns load the SOLID checklist. Removal requests load the removal plan template. For ambiguous tasks, a disambiguation checklist prompts the reviewer to confirm scope, risk priority, architecture lens, and desired output mode before analysis starts.
 
+When a review resumes packet work, `/spec_kit:resume` stays the canonical recovery surface. Continuity should rebuild from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
+
 ### Key Statistics
 
 | Attribute       | Value                                                                                 |

@@ -23,6 +23,8 @@ trigger_phrases:
 
 `api/` is the supported import surface for external consumers such as scripts and eval tooling. The goal is to keep callers out of `lib/`, `handlers/`, and `core/` internals unless a deliberate exception is documented.
 
+This import surface can expose support data, but it does not replace canonical packet continuity. For Spec Kit recovery, `/spec_kit:resume` still rebuilds state from `handover.md`, then `_memory.continuity`, then the remaining spec docs.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:available-modules -->
 ## 2. AVAILABLE MODULES

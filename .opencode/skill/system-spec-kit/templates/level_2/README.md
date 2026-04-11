@@ -89,6 +89,8 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 - Keep checklist current during implementation.
 - Completion checks run in priority order: P0, then P1, then P2.
 - `implementation-summary.md` is finalized after implementation work.
+- Resume active packet work through `/spec_kit:resume`, which rebuilds continuity from `handover.md -> _memory.continuity -> spec docs`.
+- Any generated `memory/` artifact remains supporting retrieval context only.
 
 <!-- /ANCHOR:workflow-notes -->
 

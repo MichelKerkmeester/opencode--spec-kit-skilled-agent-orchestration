@@ -34,6 +34,8 @@ trigger_phrases:
 
 This directory contains production-ready bash scripts demonstrating practical browser debugging, automation, performance testing and visual regression workflows using the browser-debugger-cli (bdg) tool.
 
+When these scripts support a Spec Kit packet, route packet recovery back through `/spec_kit:resume`. Canonical continuity still comes from `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts treated as support only.
+
 ### Key Features
 
 **Performance Testing**

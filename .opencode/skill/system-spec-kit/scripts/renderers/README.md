@@ -24,6 +24,8 @@ trigger_phrases:
 
 The `renderers/` directory turns extracted session data into markdown output for memory and spec-context documents.
 
+Under Gate E, those rendered outputs support the canonical packet flow rather than replace it: `/spec_kit:resume` restores context from `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
 ## 2. CURRENT INVENTORY

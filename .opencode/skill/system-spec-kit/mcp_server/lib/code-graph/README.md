@@ -2,6 +2,8 @@
 
 Core implementation for the structural code graph system. Provides file parsing, SQLite storage, graph queries, CocoIndex bridge, budget allocation, and compaction merging.
 
+For Gate E continuity, this library supports retrieval after `/spec_kit:resume` restores packet context through `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 ## Modules
 
 | File | Purpose |

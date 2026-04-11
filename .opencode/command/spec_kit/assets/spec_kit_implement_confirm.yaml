@@ -577,8 +577,8 @@ workflow:
         - { label: "View Final Summary", description: "Show complete implementation summary" }
     memory_creation:
       enforcement: HARD_BLOCK
-      method: "MUST use generate-context.js script"
-      command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]"
+      method: "MUST use structured JSON input with generate-context.js"
+      command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]"
       forbidden: ["Write tool on memory/ paths", "Edit tool on memory/ paths"]
       violation_recovery: "DELETE manually created file, re-run via script"
     post_save_indexing:

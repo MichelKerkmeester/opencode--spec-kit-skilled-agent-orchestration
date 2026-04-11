@@ -463,7 +463,7 @@ The CocoIndex MCP server exposes `search` as its primary tool. Additionally, 3 m
 
 > **Note**: `refresh_index` defaults to `true`. Use the default on the first query in a session, then switch follow-up queries to `false` when the codebase has not changed to avoid `ComponentContext` errors.
 >
-> **Companion recovery surface**: In the integrated Spec Kit workflow, hookless runtimes should use `session_bootstrap` as the first recovery call, then use `session_resume` when they need the fuller merged recovery payload that includes direct CocoIndex availability fields.
+> **Companion recovery surface**: In the integrated Spec Kit workflow, use `/spec_kit:resume` first. Recover packet context in the order `handover.md -> _memory.continuity -> spec docs`, then use CocoIndex when those canonical packet sources no longer answer the question.
 
 ### Supported Languages
 

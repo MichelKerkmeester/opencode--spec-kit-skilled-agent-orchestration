@@ -31,6 +31,7 @@ This section provides an overview of the Hooks directory.
 - `response-hints.ts`: auto-surface hint injection plus MCP JSON envelope metadata and token-count synchronization.
 - It is a utility layer for memory-aware context surfacing and UX feedback metadata.
 - It is not a standalone MCP hook registration system.
+- For packet work, hook output should align with `/spec_kit:resume` and the canonical continuity chain `handover.md -> _memory.continuity -> spec docs`, with generated memory artifacts treated as supporting context only.
 
 ### Claude Code Lifecycle Hooks (`claude/`)
 

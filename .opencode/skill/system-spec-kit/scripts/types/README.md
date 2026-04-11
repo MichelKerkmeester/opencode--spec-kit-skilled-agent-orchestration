@@ -33,6 +33,8 @@ trigger_phrases:
 
 **Shared session type definitions** used across the Spec Kit scripts pipeline. This module is the **canonical source of truth** for all session-related types, eliminating parallel type hierarchies that previously existed between `simulation-factory` and the extractors (resolves **TECH-DEBT P6-05**).
 
+For Gate E continuity, packet recovery still starts at `/spec_kit:resume` and follows `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only, even when these shared types model the save and resume payloads.
+
 ---
 
 <!-- /ANCHOR:overview -->

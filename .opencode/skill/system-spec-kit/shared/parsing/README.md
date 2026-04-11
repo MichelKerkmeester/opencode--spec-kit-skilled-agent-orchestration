@@ -28,6 +28,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 
 This module provides the canonical implementation for extracting `quality_score` and `quality_flags` from YAML frontmatter blocks. It replaces duplicate extraction logic that previously existed in `memory-indexer.ts` and `memory-parser.ts`.
+That metadata supports retrieval quality checks only; active packet continuity still lives in `handover.md -> _memory.continuity -> spec docs` and is resumed through `/spec_kit:resume`.
 
 **Key behaviors:**
 

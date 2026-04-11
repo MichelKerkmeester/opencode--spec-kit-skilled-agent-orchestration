@@ -25,6 +25,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 
 The `scripts/spec/` directory is the shell-based spec lifecycle layer.
+Under Gate E, these scripts validate and evolve the canonical packet docs that `/spec_kit:resume` restores through `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->

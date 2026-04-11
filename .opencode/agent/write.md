@@ -86,6 +86,8 @@ python .opencode/skill/sk-doc/scripts/validate_document.py <file.md>
 
 **If dispatched with a Context Package** (from @context or orchestrator): Skip Layer 1 memory checks (memory_match_triggers, memory_context, memory_search). Use provided context instead.
 
+**If the documentation task continues prior packet work and no Context Package is provided**: Rebuild the active context from `handover.md`, then `_memory.continuity`, then the relevant spec docs or the current `/spec_kit:resume` output. Use generated `memory/*.md` only as supporting artifacts when they already exist; they are not the canonical continuity surface.
+
 ---
 
 ## 2. TEMPLATE MAPPING
@@ -225,7 +227,8 @@ All template files follow this consistent structure:
 | references/**/*.md                     | `sk-doc` | skill_reference_template.md |
 | assets/*.md                            | `sk-doc` | skill_asset_template.md     |
 | README.md (general)                    | `sk-doc` | readme_template.md          |
-| Memory files (memory/*.md)             | `system-spec-kit`         | Auto-generated              |
+| Canonical continuity surfaces (`handover.md`, `_memory.continuity`, spec docs) | `system-spec-kit` | Source-of-truth continuity |
+| Legacy generated memory artifacts (`memory/*.md`) | `system-spec-kit` | Supporting artifacts only; not the primary continuity surface |
 | Install guides                         | `sk-doc` | install_guide_template.md   |
 | feature_catalog package docs           | `sk-doc` | feature_catalog templates   |
 | manual_testing_playbook package docs   | `sk-doc` | testing_playbook templates  |

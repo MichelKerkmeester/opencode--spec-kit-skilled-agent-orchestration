@@ -21,6 +21,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 
 `tools/` is the MCP dispatch layer. It maps runtime tool names to validated handler calls and keeps the handler modules grouped by domain.
+For continuity recovery, `/spec_kit:resume` remains the canonical operator surface; these dispatchers enrich the packet-first chain `handover.md -> _memory.continuity -> spec docs` rather than replacing it.
 
 Files in this directory:
 

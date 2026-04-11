@@ -26,6 +26,8 @@ trigger_phrases:
 
 The `tests/` directory is the Vitest suite for the MCP server. As of this audit, the root inventory contains 329 `.vitest.ts` files plus the `fixtures/` support directory.
 
+The suite now verifies the Gate E continuity contract as well: `/spec_kit:resume` is the recovery surface, packet context rebuilds from `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
+
 What this suite covers:
 
 - Core cognitive behavior such as attention decay, working memory, co-activation, and tier handling.

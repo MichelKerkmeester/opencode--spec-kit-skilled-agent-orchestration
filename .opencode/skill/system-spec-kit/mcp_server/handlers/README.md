@@ -23,6 +23,8 @@ trigger_phrases:
 
 `handlers/` is the MCP-facing handler layer. `handlers/index.ts` lazily loads these modules via async `import()` resolution and re-exports the public handler functions used by the tool dispatch layer.
 
+These handlers can support indexed retrieval and generated artifacts, but canonical packet continuity still belongs to `/spec_kit:resume` and packet docs. Recovery order remains `handover.md`, then `_memory.continuity`, then the remaining spec docs.
+
 Primary MCP handler modules:
 
 - `memory-context.ts` - L1 orchestration entry point for intent-aware context assembly.

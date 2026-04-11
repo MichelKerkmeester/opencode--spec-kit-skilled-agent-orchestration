@@ -27,6 +27,7 @@ Reference-only examples for level formatting and depth.
 
 Examples show how content scales from Level 1 through Level 3+.
 Use them for comparison, not direct copying.
+When resuming work, use `/spec_kit:resume` first; continuity lives in `handover.md` -> `_memory.continuity` -> spec docs, while generated memory artifacts are supporting only.
 
 <!-- /ANCHOR:overview -->
 

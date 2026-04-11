@@ -30,6 +30,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 
 The errors subsystem provides standardized error handling for the Spec Kit Memory MCP server. Every error includes a code and message paired with actionable recovery guidance to help agents self-diagnose and resolve issues across memory operations and document-aware indexing/search paths.
+When work is packet-scoped, recovery hints should re-anchor operators on `/spec_kit:resume` and the canonical continuity chain `handover.md -> _memory.continuity -> spec docs`.
 
 ### Key Statistics
 

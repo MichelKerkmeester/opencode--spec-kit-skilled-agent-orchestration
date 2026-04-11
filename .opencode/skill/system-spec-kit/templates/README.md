@@ -79,6 +79,8 @@ LOC is guidance, not a hard limit. Risk and complexity can move work up a level.
 
 - Gate 3 spec-folder choice applies before implementation work.
 - `implementation-summary.md` is required for all levels and finalized after implementation.
+- `/spec_kit:resume` is the canonical recovery surface; active continuity rebuild order is `handover.md -> _memory.continuity -> spec docs`.
+- Generated `memory/` artifacts are supporting indexed output, not the packet source of truth.
 - Nested packet changelogs can be generated at completion time with `../scripts/dist/spec-folder/nested-changelog.js`.
 - Level 2+ completion uses checklist verification (P0, then P1, then P2).
 - Memory context is saved via `../scripts/dist/memory/generate-context.js`, never manual file creation.

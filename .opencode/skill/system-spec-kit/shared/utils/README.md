@@ -33,6 +33,7 @@ trigger_phrases:
 Low-level utility functions shared across `system-spec-kit`. These modules provide **security-hardened path validation**, **resilient retry logic** with error classification, **JSONC comment stripping** for config parsing, and **token count estimation**.
 
 `path-security.ts` and `retry.ts` were migrated from `mcp_server/lib/utils/` to enable reuse by scripts and other consumers outside the MCP server.
+They support the packet-doc-first continuity model used by `/spec_kit:resume`; generated memory artifacts remain supporting outputs rather than the canonical source.
 
 <!-- /ANCHOR:overview -->
 

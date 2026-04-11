@@ -34,6 +34,8 @@ trigger_phrases:
 
 The canonical location for retrieval-trace is `shared/contracts/retrieval-trace.ts` (importable as `@spec-kit/shared/contracts/retrieval-trace`). This README is retained as a pointer so that existing documentation links remain valid.
 
+Gate E keeps continuity canonical at the packet level: `/spec_kit:resume` restores context from `handover.md` -> `_memory.continuity` -> spec docs, while generated memory artifacts remain supporting only. These contracts describe retrieval around that flow rather than replacing it.
+
 ### Key Statistics
 
 | Category | Count | Details |

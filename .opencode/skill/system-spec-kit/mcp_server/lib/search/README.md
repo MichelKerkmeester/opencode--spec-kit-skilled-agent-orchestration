@@ -38,6 +38,8 @@ trigger_phrases:
 
 The search subsystem provides production-grade hybrid search capabilities with multiple retrieval methods fused via RRF scoring. It handles query expansion, intent classification, typo tolerance and optional cross-encoder reranking.
 
+Gate E alignment: retrieval is subordinate to the canonical continuity chain. Resume and continuity work should anchor on `/spec_kit:resume`, then rebuild context from `handover.md -> _memory.continuity -> spec docs`. Search helps rank supporting evidence after those source-of-truth surfaces are known.
+
 **Core Capabilities:**
 - **5-Channel Hybrid Search**: Vector (semantic) + BM25/FTS5 (lexical) + Graph (relationship-based) + Graph Structure (structural)
 - **RRF Score Fusion**: Industry-standard k=40 with convergence bonuses
@@ -116,7 +118,7 @@ Single authoritative point for ALL scoring signals. Signal application order is 
 Cross-encoder reranking (optional, min 2 results) followed by MPAB chunk-to-memory aggregation. Aggregation formula: `parentScore = sMax + 0.3 * Sum(rest) / sqrt(N)` where `sMax` is the best chunk score and N is the remaining chunk count. Chunk ordering preserves `chunk_index` document order (B2 guarantee). `contentSource` metadata marks provenance (`reassembled_chunks` or `file_read_fallback`).
 
 **Stage 4 — Filter + Annotate** (`stage4-filter.ts`):
-**Score immutability invariant**: Stage 4 MUST NOT modify scores. Enforced via compile-time `Stage4ReadonlyRow` readonly fields and runtime `captureScoreSnapshot` / `verifyScoreInvariant` defence-in-depth. Applies memory-state filtering (HOT/WARM/COLD/DORMANT/ARCHIVED with per-tier limits), evidence gap detection (Z-score confidence check), quality floor (`QUALITY_FLOOR=0.005`), and token budget truncation.
+**Score immutability invariant**: Stage 4 MUST NOT modify scores. Enforced via compile-time `Stage4ReadonlyRow` readonly fields and runtime `captureScoreSnapshot` / `verifyScoreInvariant` defence-in-depth. Applies memory-state filtering, per-tier limits, evidence gap detection (Z-score confidence check), quality floor (`QUALITY_FLOOR=0.005`), and token budget truncation. Lowest-priority retained-history rows remain fallback evidence only when filters allow them.
 
 <!-- /ANCHOR:overview -->
 
@@ -137,7 +139,7 @@ Cross-encoder reranking (optional, min 2 results) followed by MPAB chunk-to-memo
 **Enhancements (REQ-011):**
 - **10% Convergence Bonus**: Results in multiple sources get +10% score boost
 - **1.5x Graph Weight**: Graph-exclusive discoveries weighted higher for novelty
-- **Adaptive Fusion**: Intent-aware weighted RRF with dark-run mode (feature flag `SPECKIT_ADAPTIVE_FUSION`)
+- **Adaptive Fusion**: Intent-aware weighted RRF with opt-in evaluation mode (feature flag `SPECKIT_ADAPTIVE_FUSION`)
 - **MMR Diversity**: Maximal Marginal Relevance reranking reduces near-duplicate results
 - **Recency Boost**: Time-aware score adjustment favoring recently updated memories
 - **Co-activation Boost**: Graph-neighbor score propagation via 2-hop causal traversal
@@ -656,7 +658,7 @@ Hub caps prevent high-degree nodes from dominating: `MAX_TYPED_DEGREE=15` (defau
 Top-ranked results seed a 2-hop BFS traversal over causal edges. Discovered neighbors receive a score boost with `SEED_FRACTION=0.25` strength. A `1/sqrt(neighbor_count)` fan-effect divisor (R17) prevents hub nodes from appearing in every co-activation result.
 
 **N2a: Graph Momentum** (`graph-signals.ts`):
-Tracks degree change over a 7-day rolling window using the `degree_snapshots` table. Momentum = currentDegree - pastDegree. Nodes gaining connections receive a score bonus: `clamp(momentum * 0.01, 0, 0.05)` — additive cap of +0.05.
+Tracks degree change over a rolling history window using the `degree_snapshots` table. Momentum = currentDegree - pastDegree. Nodes gaining connections receive a score bonus: `clamp(momentum * 0.01, 0, 0.05)` — additive cap of +0.05.
 
 **N2b: Causal Depth** (`graph-signals.ts`):
 The causal graph is condensed into strongly connected components, then longest-path depth is computed across the resulting DAG. Shortcut edges do not collapse deeper chains; cycle members share one bounded depth layer, and the final depth is normalized by the deepest reachable component chain (`maxDepth`). Score bonus: `normalizedDepth * 0.05` — rewards structurally deep nodes in the causal chain.
@@ -687,7 +689,7 @@ Same-path `unchanged` only applies to healthy existing rows (`success`, `pending
 | 2. Content Quality | 5-dimension weighted signal density | Dimensions: title (0.25), triggers (0.20), length (0.20), anchors (0.15), metadata (0.20) |
 | 3. Semantic Dedup | Cosine similarity against existing memories | Threshold: 0.92 rejects near-duplicates |
 
-Signal density threshold: **0.4** — below this, content quality is too low. 14-day warn-only period (MR12 mitigation): logs scores but does not block saves during ramp-up.
+Signal density threshold: **0.4** — below this, content quality is too low. Activation metadata can still be recorded for diagnostics, but continuity no longer depends on staged rollout windows.
 
 **TM-06: Reconsolidation** (`reconsolidation.ts`):
 Similarity-based merge/conflict/complement routing gated via `SPECKIT_RECONSOLIDATION` (default OFF, opt in with `SPECKIT_RECONSOLIDATION=true`):
@@ -754,7 +756,7 @@ FSRS stability is adjusted by a 2D multiplier matrix of context type x importanc
 Validation-count-based tier promotion engine. Thresholds: **5** positive validations = normal -> important, **10** = important -> critical. Throttle safeguard: max **3** promotions per **8-hour** rolling window. `NON_PROMOTABLE_TIERS`: critical, constitutional, temporary, deprecated. Promotion audit logged to `memory_promotion_audit` table.
 
 **R11: Learned Relevance Feedback** (`learned-feedback.ts`):
-Selection tracking writes to a separate `learned_triggers` column (NOT FTS5 index). 10 safeguards: separate column, 30-day TTL, 100+ stop words denylist, rate cap (3 terms/selection, 8 terms/memory), top-3 exclusion, 1-week shadow period, <72h memory exclusion, sprint gate review, rollback mechanism, provenance audit log. Query weight: **0.7x** of organic triggers. Gated via `SPECKIT_LEARN_FROM_SELECTION` (default ON; set to `false` to disable).
+Selection tracking writes to a separate `learned_triggers` column (NOT FTS5 index). Safeguards include separate-column isolation, 30-day TTL, 100+ stop words denylist, rate caps (3 terms/selection, 8 terms/memory), top-3 exclusion, a cooldown period, <72h memory exclusion, rollback support, and provenance audit logging. Query weight: **0.7x** of organic triggers. Gated via `SPECKIT_LEARN_FROM_SELECTION` (default ON; set to `false` to disable).
 
 <!-- /ANCHOR:features -->
 

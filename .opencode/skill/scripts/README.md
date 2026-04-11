@@ -45,6 +45,8 @@ Three supporting scripts extend the core engine. `skill_advisor_runtime.py` prov
 
 The directory also holds `fixtures/` for versioned test cases and `out/` for report output. `SET-UP_GUIDE.md` covers project-specific customization.
 
+These routing scripts can surface the right packet helpers, but canonical packet continuity still belongs to `/spec_kit:resume` and packet docs. The recovery order remains `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts kept as support only.
+
 ### Key Statistics
 
 | Component | Count | Notes |

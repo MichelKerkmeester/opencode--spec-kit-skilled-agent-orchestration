@@ -151,6 +151,8 @@ The loader strips JSONC comments and parses JSON safely with fallback to default
 |----------|---------|
 | [Memory System](../references/memory/memory_system.md) | How configs affect memory behavior |
 | [Trigger Config](../references/memory/trigger_config.md) | Automatic memory surfacing |
+
+For live Spec Kit packet recovery, `/spec_kit:resume` still remains canonical. Configuration can shape supporting retrieval behavior, but continuity itself still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs.
 | [Template Guide](../references/templates/template_guide.md) | Template style differences |
 | [Level Specifications](../references/templates/level_specifications.md) | Complexity level details |
 | [Config Loader](../scripts/core/config.ts) | Implementation of config loading |

@@ -69,10 +69,8 @@ Examples:
   node generate-context.js --json '{"specFolder":"specs/001-feature/"}'
 
 Output:
-  Creates a legacy memory context file in <spec-folder>/memory/ for indexing by
-  the Spec Kit Memory system. When structured input requests canonical continuity
-  shadow mode, the workflow also prepares a routed spec-doc preview without
-  mutating canonical docs.
+  Creates the saved context artifact for the active spec folder and indexes it
+  into the Spec Kit Memory system.
 
 Preferred save path (JSON-PRIMARY):
   - ALWAYS use --stdin, --json, or a JSON temp file.
@@ -119,12 +117,9 @@ JSON Data Format (with preflight/postflight, session/git, and tool/exchange enri
   - exchanges[]: Key user-assistant exchanges with timestamps
   - These provide richer context than DB extraction since the AI filters noise at source
 
-  Optional canonical continuity shadow fields (JSON-mode only):
-  - canonicalContinuity.mode: "shadow" enables a routed spec-doc preview only
-  - canonicalContinuity.routeAs: optional routing override hint
-  - canonicalContinuity.mergeModeHint: optional merge-mode hint
-  - Top-level routeAs / mergeModeHint are also accepted as compatibility hints
-  - Explicit CLI spec-folder targets remain authoritative for both legacy save and shadow preview
+  Structured JSON compatibility hints (JSON-mode only):
+  - Top-level routeAs / mergeModeHint are accepted for compatibility with routed save workflows
+  - Explicit CLI spec-folder targets remain authoritative over payload specFolder values
 
   Learning Delta Calculation:
   - Knowledge Delta = postflight.knowledgeScore - preflight.knowledgeScore

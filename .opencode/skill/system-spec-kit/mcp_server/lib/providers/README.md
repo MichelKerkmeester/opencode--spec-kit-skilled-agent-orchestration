@@ -31,6 +31,8 @@ trigger_phrases:
 
 The providers module handles embedding generation and retry logic for the Spec Kit Memory MCP server. It provides a unified abstraction layer for multiple embedding providers (Voyage AI, OpenAI) with exponential backoff retry management for reliable embedding generation.
 
+Those providers support the Gate E recovery model where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 ### Key Statistics
 
 | Category | Count | Details |

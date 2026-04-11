@@ -43,6 +43,8 @@ Code Mode applies to tools configured in `.utcp_config.json`: ClickUp, Figma, We
 
 The skill covers four native tools exposed by the Code Mode MCP server: `call_tool_chain` executes arbitrary TypeScript with tool access, `search_tools` finds relevant tools by description, `list_tools` returns all registered tool names, and `tool_info` returns the TypeScript interface for a specific tool. Together these four tools replace what would otherwise be 200+ individual tool definitions loaded upfront.
 
+When Code Mode work hands back into a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
+
 ### Key Statistics
 
 | Metric | Traditional | Code Mode | Improvement |

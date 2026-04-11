@@ -30,6 +30,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 
 The learning module tracks corrections over time and applies stability adjustments that help the system learn which entries are most reliable. This applies to both standard memory notes and indexed spec documents, improving ranking quality for spec and decision retrieval.
+These stability signals support retrieval and ranking only; canonical packet continuity still resumes through `/spec_kit:resume` with `handover.md -> _memory.continuity -> spec docs`.
 
 ### Key Benefits
 

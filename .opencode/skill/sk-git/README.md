@@ -42,6 +42,8 @@ The skill enforces a critical behavioral rule: the AI must never autonomously de
 
 Commit messages follow a deterministic Conventional Commits format with a first-match type and scope inference algorithm. The same diff and metadata always produce the same commit subject. Artifact filtering runs before staging to exclude build files, coverage reports, and other non-public outputs. Quality gates block progression at pre-commit, pre-merge, and pre-PR checkpoints, with a post-merge cleanup step to remove worktrees and branches.
 
+When a git workflow needs packet context, `/spec_kit:resume` is still the canonical recovery surface. The continuity source remains `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts kept as support only.
+
 ### Key Statistics
 
 | Metric | Value |

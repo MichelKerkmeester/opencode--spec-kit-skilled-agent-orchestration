@@ -33,6 +33,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 
 These scripts automate bounded remediation steps for known failure classes in the spec-kit memory system. Every handler follows deterministic retry behavior. If retries are exhausted, the script emits one escalation JSON line and exits non-zero.
+For packet continuity incidents, operators should still re-anchor on `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs` before using these remediation helpers.
 
 ### What You Get
 

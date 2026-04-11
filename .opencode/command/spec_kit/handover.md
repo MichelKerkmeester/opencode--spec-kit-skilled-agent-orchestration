@@ -181,7 +181,7 @@ Then execute the workflow steps below. This command uses a single YAML configura
 Confirm spec folder path exists and contains relevant context files.
 
 ### Step 2: Gather Context
-Load from: `spec.md`/`plan.md`/`tasks.md` (project definition), `checklist.md` (progress), `memory/*.{md,txt}` (session context).
+Load from: `spec.md`/`plan.md`/`tasks.md` (project definition), `checklist.md` (progress), `implementation-summary.md` (`_memory.continuity`), and the current `handover.md` if it already exists.
 
 ### Step 3: Create Handover
 Template: `.opencode/skill/system-spec-kit/templates/handover.md`
@@ -210,10 +210,8 @@ Show created file path and continuation instructions.
 
 **Output Location:** `[spec_folder]/handover.md` (NOT in memory/)
 
-> **Crash Recovery:** For emergency scenarios, same format can be saved as `CONTINUE_SESSION.md` in the spec folder. Checked by `/spec_kit:resume`.
-
 > **MANDATORY:** After creating handover, run:
-> `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
+> `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`
 
 ### Handover Success
 ```text
@@ -257,10 +255,10 @@ Show created file path and continuation instructions.
 | -------------------- | ---------------------------------------------------------------- |
 | `/spec_kit:resume`   | Loads handover document to continue work                         |
 | `/spec_kit:complete` | Start new feature (handover captures in-progress)                |
-| `/memory:save`       | Recommended companion - save semantic context for search         |
-| `/spec_kit:resume`   | Standard continuation and crash recovery - loads handover, CONTINUE_SESSION.md, and resume-mode memory context |
+| `/memory:save`       | Optional support-artifact refresh for search indexing; canonical continuity stays in spec docs |
+| `/spec_kit:resume`   | Standard continuation surface - reads `handover.md`, then `_memory.continuity`, then supporting spec docs |
 
-> After creating handover.md, also run `/memory:save` for semantic retrieval across sessions.
+> After creating handover.md, refresh the indexed support artifact with structured JSON input to `generate-context.js`; `/spec_kit:resume` still recovers from `handover.md` and spec docs first.
 
 ### Agents
 
@@ -318,7 +316,7 @@ Next step: `/spec_kit:resume [spec-folder-path]` (in new session)
 | ------------------------- | ------------------------------------------ | ------------------------- |
 | Handover created          | Copy continuation prompt                   | Ready for new session     |
 | Ready to continue now     | `/spec_kit:resume [spec-folder-path]`      | Load context and continue |
-| Want to save more context | `/memory:save [spec-folder-path]`          | Preserve additional info  |
+| Want to refresh search support | `generate-context.js /tmp/save-context-data.json [spec-folder-path]` | Refresh indexed support artifact without changing the canonical resume path |
 | Starting new work         | `/spec_kit:complete [feature-description]` | Begin different feature   |
 
 **ALWAYS** end with: "What would you like to do next?"

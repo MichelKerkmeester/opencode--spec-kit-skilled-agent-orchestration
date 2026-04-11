@@ -23,6 +23,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 
 The `lib/` directory provides 20 reusable helper libraries: 17 TypeScript modules compiled to `dist/lib/` and 3 shell helper scripts used by system-spec-kit workflows.
+These helpers support capture, rendering, and indexing around the canonical recovery path `/spec_kit:resume` -> `handover.md -> _memory.continuity -> spec docs`.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->

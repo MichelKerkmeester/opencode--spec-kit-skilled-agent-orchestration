@@ -26,6 +26,8 @@ trigger_phrases:
 
 `schemas/` holds a single file that defines every Zod validation schema used by MCP tool handlers. All 29+ tool schemas are declared here, exported through a `TOOL_SCHEMAS` registry and consumed by tool modules via the `validateToolArgs()` function.
 
+Those handlers now sit behind the Gate E continuity contract: `/spec_kit:resume` is the recovery surface, and packet continuity comes from `handover.md` -> `_memory.continuity` -> canonical spec docs. Generated memory artifacts are supporting only.
+
 Strict mode is on by default (`SPECKIT_STRICT_SCHEMAS !== 'false'`). When enabled, unknown parameters cause validation to fail instead of passing through silently.
 
 Compatibility and aliased tools may reuse the same validator path instead of getting a duplicated schema entry, so this README uses `29+` rather than treating the file as a fixed one-schema-per-runtime-name list.

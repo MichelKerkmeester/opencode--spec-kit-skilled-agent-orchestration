@@ -33,6 +33,8 @@ A four-stage retrieval pipeline that takes a search query through candidate gene
 
 The `pipeline/` directory implements the core retrieval pipeline behind `memory_search`. Each search request flows through four sequential stages, each with a defined I/O contract and clear responsibility boundary. The pipeline supports hybrid, vector and multi-concept search types with optional deep-mode query expansion, cross-encoder reranking, MMR diversity pruning and MPAB chunk-to-parent reassembly.
 
+Gate E alignment: pipeline ranking is not the source of continuity truth. Resume-oriented callers should anchor on `/spec_kit:resume` and the `handover.md -> _memory.continuity -> spec docs` chain before using pipeline-ranked evidence.
+
 The public API is a single function: `executePipeline(config)` exported from `index.ts`.
 
 ---
@@ -93,7 +95,7 @@ Query + Config
 - Preserves Stage 2 scores as `stage2Score` for auditability.
 
 **Stage 4 - Filter + Annotate** (`stage4-filter.ts`)
-- Memory state priority filtering (HOT > WARM > COLD > DORMANT > ARCHIVED).
+- Memory state priority filtering, with the coldest retained-history rows treated as fallback evidence only.
 - Per-tier hard limits prevent any single tier from dominating results.
 - TRM evidence-gap detection (Z-score confidence check on score distribution).
 - Runtime score invariant verification via snapshot comparison.

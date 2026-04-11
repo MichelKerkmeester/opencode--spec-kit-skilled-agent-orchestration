@@ -151,7 +151,7 @@ Run an iterative loop for deep research: Initialize state, dispatch `@deep-resea
 | Init | Initialize | Create config, strategy (with research charter), state files | State files in `research/` |
 | Loop | Iterate | Dispatch @deep-research agent, evaluate convergence + quality guards, generate dashboard | iteration-NNN.md files, deep-research-dashboard.md |
 | Synth | Synthesize | Compile final research/research.md | research/research.md (17 sections) |
-| Save | Preserve | Save memory context | memory/*.md |
+| Save | Preserve | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
 
 ### Execution Modes
 
@@ -180,7 +180,7 @@ The YAML contains the full loop workflow: initialization, iteration dispatch, co
 ```
 Deep research complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_answered]
-Artifacts: research/research.md, [N] iteration files, memory/*.md
+Artifacts: research/research.md, [N] iteration files, continuity support artifact refreshed
 Ready for: /spec_kit:plan [feature-description]
 STATUS=OK PATH=[spec-folder-path]
 ```
@@ -205,7 +205,7 @@ STATUS=FAIL ERROR="[message]"
 - Inject discovered code patterns into strategy.md "Known Context" section alongside memory findings
 
 ### After Completing
-- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`
+- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
 - Verify that `{spec_folder}/memory/` contains the generated memory artifact
 
 ### Anchor Tags (Automatic)
@@ -244,7 +244,7 @@ For code review, see `sk-deep-review` skill (`.opencode/skill/sk-deep-review/SKI
 | Research complete, ready to plan | `/spec_kit:plan [feature]` | Use findings for spec/plan |
 | Need more investigation | `/spec_kit:deep-research [new-topic]` | Another deep research session |
 | Need code/spec audit | `/spec_kit:deep-review [target]` | Iterative code review |
-| Want to save context | `/memory:save [spec-folder]` | Manual memory save |
+| Want to refresh search support | `/memory:save [spec-folder]` | Refresh the indexed support artifact while canonical continuity stays in spec docs |
 | Need to pause | `/spec_kit:handover [spec-folder]` | Save context for later |
 
 ---

@@ -601,8 +601,8 @@ When ANY context pressure signal fires:
 | Need formal research before planning   | `/spec_kit:deep-research` | Autonomous iterative research loop  |
 | Claiming task completion               | `/spec_kit:complete` | Verification workflow with checklist   |
 | Need to save important context         | `/memory:save`       | Preserve decisions and findings        |
-| Resuming prior work (known spec)       | `/spec_kit:resume`   | Load context from spec folder          |
-| Resuming interrupted work (unknown)    | `/spec_kit:resume`   | Auto-detect interrupted-session context and restore state |
+| Resuming prior work (known spec)       | `/spec_kit:resume`   | Recover via `handover.md` -> `_memory.continuity` -> spec docs |
+| Resuming interrupted work (unknown)    | `/spec_kit:resume`   | Auto-detect the packet, then follow the same canonical recovery order |
 | Need retrieval, analysis, or eval      | `/memory:search`    | Unified knowledge retrieval            |
 | Memory maintenance or ingest           | `/memory:manage`     | Stats, health, cleanup, ingest ops     |
 | Constitutional memory rules            | `/memory:learn`      | Create/list/edit/remove always-surface rules |
@@ -807,8 +807,9 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 If hook-injected context is present at the start of a session (injected by Claude Code SessionStart hook), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
 
 If hook context is NOT present (hooks disabled, different runtime, or unavailable), fall back to standard tool-based recovery:
-1. `memory_context({ mode: "resume", profile: "resume" })` for session recovery
-2. `memory_match_triggers()` for constitutional/triggered context
+1. Use `/spec_kit:resume` semantics: recover from `handover.md`, then `_memory.continuity`, then the packet's spec docs
+2. Use `memory_context({ mode: "resume", profile: "resume" })` only when packet location or continuity state is still unclear
+3. Use `memory_match_triggers()` for constitutional/triggered context
 
 ### Query-Intent Routing
 
@@ -819,7 +820,7 @@ Route context queries to the appropriate system based on intent:
 | "Find code that..." / semantic discovery | CocoIndex | `mcp__cocoindex_code__search` |
 | "What calls/imports/extends..." / structural | Code Graph | `code_graph_query`, `code_graph_context` |
 | "Show file structure/outline" | Code Graph | `code_graph_query` (operation: outline) |
-| Session continuity / prior decisions | Memory | `memory_search`, `memory_context` |
+| Session continuity / prior decisions | Packet docs first, then Memory | `Read`, `memory_search`, `memory_context` |
 
 ### Working-Set Awareness
 

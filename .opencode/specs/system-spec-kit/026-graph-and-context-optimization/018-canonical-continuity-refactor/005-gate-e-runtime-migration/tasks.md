@@ -1,19 +1,21 @@
 ---
-title: "Tasks: Gate E — Runtime Migration [system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/005-gate-e-runtime-migration/tasks]"
-description: "Phased Gate E task list for canonical rollout, surface-parity batches, and CLI handback coordination."
-trigger_phrases:
-  - "tasks"
-  - "gate e"
-  - "runtime migration"
-  - "canonical rollout"
-  - "phase 018"
+title: "Gate E — Runtime Migration Tasks"
+description: "Execution tasks."
+trigger_phrases: ["gate e", "tasks"]
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "018/005-gate-e-runtime-migration"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Tasks sync"
+    next_safe_action: "Update"
+    key_files: ["tasks.md"]
 ---
-# Tasks: Gate E — Runtime Migration
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+# Tasks: Gate E — Runtime Migration
 
 ---
 
@@ -27,65 +29,53 @@ contextType: "implementation"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+Task format: `T### Description`
 <!-- /ANCHOR:notation -->
-
----
 
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-State inventory for Gate E sequencing, per iteration 034 section 2: `S0 disabled` is the fallback and off state, `S1 shadow_only` mirrors traffic without serving it, `S2 dual_write_10pct`, `S3 dual_write_50pct`, and `S4 dual_write_100pct` are the proving buckets, `S5 canonical` is the default-serving state, `S6 legacy_cleanup` stays optional and belongs after Gate F permanence approval, and `S7 rolled_back` is the transient safety latch that resolves to a named fallback target.
-
-- [ ] T001 Confirm entry-gate evidence: Gates A-D closed, dual-write shadow stable for at least 7 days, and the impact-analysis artifact is available (`../implementation-design.md`, `../resource-map.md`, `../research/iterations/iteration-040.md`)
-- [ ] T002 Promote `shadow_only -> dual_write_10pct` and record the transition, hold window, and dashboards (`../research/iterations/iteration-034.md`)
-- [ ] T003 Observe 24h at `dual_write_10pct`; halt if divergence, correctness-loss, or blackout-window rules fire (`../research/iterations/iteration-034.md`)
-- [ ] T004 Promote `dual_write_10pct -> dual_write_50pct` after the hold clears (`../research/iterations/iteration-034.md`)
-- [ ] T005 Observe 24h at `dual_write_50pct` and capture week-1 evidence for the packet tracker (`../research/iterations/iteration-040.md`)
+- [x] T001 Capture the operator-approved entry gate in packet wording: Gate D closed, 13 regressions green, perf targets met, Gate B cleanup complete, Gate C writer path present.
+- [x] T002 Rewrite the packet spec from staged rollout language to immediate canonical migration.
+- [x] T003 Rewrite the packet plan, tasks, checklist, decision record, and implementation summary to remove shadow, dual-write, observation-window, EWMA, and archived-tier continuity framing.
 <!-- /ANCHOR:phase-1 -->
-
----
 
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T006 Promote `dual_write_50pct -> dual_write_100pct` and enforce the 48h observation window (`../research/iterations/iteration-034.md`)
-- [ ] T007 Promote `dual_write_100pct -> canonical`; keep the legacy path read-only as verification substrate, not as the default (`../research/iterations/iteration-034.md`)
-- [ ] T008 [P] Update command and workflow surfaces from resource-map surface E: `.opencode/command/memory/*.md`, `.opencode/command/spec_kit/*.md`, and workflow YAML assets
-- [ ] T009 [P] Update agent and skill surfaces from resource-map surfaces E and F: `.opencode/agent/*.md`, `sk-*` skills, and the 44 system-spec-kit files called out in `../scratch/resource-map/06-skill-surface-exhaustive.md`
-- [ ] T010 [P] Start top-level docs and README parity passes: root instructions, architecture and install docs, the MCP server overview, and the memory-relevant README set from `../scratch/resource-map/07-sub-readmes.md`
+- [x] T004 Locate the remaining rollout control-plane storage and determine whether canonical should be forced or the retired flag removed entirely.
+- [x] T005 Remove workflow-level rollout and shadow-preview scaffolding from the active implementation path.
+- [ ] T006 Verify a sample save end to end against the canonical path.
+- [x] T007 [P] Update the memory command slice to canonical continuity wording.
+- [x] T008 [P] Update the owned agent slices to canonical continuity wording and `/spec_kit:resume` recovery guidance.
+- [x] T009 [P] Update the 8 CLI handback files to the current `generate-context.js` JSON-primary contract.
+- [ ] T010 [P] Finish the remaining mapped doc-parity batches outside this packet: workflow YAMLs, `sk-*` and system-spec-kit internals, top-level docs, memory-relevant sub-READMEs, and doc-parity sub-READMEs.
 <!-- /ANCHOR:phase-2 -->
-
----
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T011 Finish all 160-plus mapped surface updates and resolve any remaining terminology drift against the file matrix (`../resource-map.md`, sections 8.1, 8.2, 8.5); keep the raw fan-out traceable as 50 command and agent surfaces + 71 skill rows + 19 memory-relevant READMEs + 92 doc-parity README touches, or about 232 raw candidates compressed to about 160 actionable edits after overlap and no-change exclusions
-- [ ] T012 Update the 8 CLI handback files in one lockstep batch: each `cli-*` skill doc plus prompt-template asset, aligned to the shipped `generate-context.js` contract
-- [ ] T012b Re-verify the 8-file CLI handback batch against the frozen `generate-context.js` schema hash before closeout so the Gate C contract stayed stable through the final parity pass
-- [ ] T013 Rewrite the 19 memory-relevant sub-READMEs and touch the 92 doc-parity README surfaces where terminology changed (`../scratch/resource-map/07-sub-readmes.md`)
-- [ ] T014 Hold `canonical` for at least 7 days, verify all alert thresholds remain quiet, and capture week-2/week-4 archive-review checkpoints (`../research/iterations/iteration-034.md`, `../research/iterations/iteration-040.md`)
-- [ ] T015 Prepare the optional `legacy_cleanup` handoff only if Gate F permanence conditions are already satisfied; otherwise close Gate E in `canonical`
+- [x] T011 Verify packet markdown integrity after the Gate E rewrite.
+- [ ] T012 Run `validate.sh --strict` on this packet and record the result.
+- [ ] T013 Record the final touched-file list, validation state, and any real post-flip metrics in `implementation-summary.md`.
+- [ ] T014 Mark packet frontmatter and closeout status as complete only after runtime verification and validator evidence exist.
 <!-- /ANCHOR:phase-3 -->
-
----
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All rollout-transition tasks are complete with evidence and no `[B]` blockers.
-- [ ] All mapped surfaces, including CLI handback files and README parity sets, are updated or explicitly deferred with approval.
-- [ ] The Gate E checklist shows `canonical` healthy for at least 7 days and rollback still available.
+- [ ] Canonical runtime verification is complete.
+- [ ] Required mapped parity surfaces are complete or remaining gaps are explicitly called out.
+- [ ] Packet validator state is attached.
+- [ ] `implementation-summary.md` reflects final evidence rather than placeholders.
 <!-- /ANCHOR:completion -->
-
----
 
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **Specification**: See `spec.md`
-- **Plan**: See `plan.md`
-- **Checklist**: See `checklist.md`
-- **ADR context**: See `decision-record.md`
+- Specification: `spec.md`
+- Plan: `plan.md`
+- Checklist: `checklist.md`
+- Decision Record: `decision-record.md`
+- Implementation Summary: `implementation-summary.md`
 <!-- /ANCHOR:cross-refs -->

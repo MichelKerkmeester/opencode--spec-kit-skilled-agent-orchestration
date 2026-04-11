@@ -40,6 +40,8 @@ The packet is now lineage-aware. Every run carries `sessionId`, `parentSessionId
 
 The packet is also reducer-synchronized. The agent writes the iteration file plus the JSONL record. The workflow reducer then updates the machine-owned packet surfaces so `deep-research-strategy.md`, `findings-registry.json`, `deep-research-dashboard.md`, and synthesis metadata cannot drift apart.
 
+Outside the research loop itself, `/spec_kit:resume` remains the canonical recovery surface for packet work. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
+
 For iterative code review, use `sk-deep-review`.
 <!-- /ANCHOR:overview -->
 

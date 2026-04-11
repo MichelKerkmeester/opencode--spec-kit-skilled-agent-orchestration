@@ -419,17 +419,18 @@ Key integrations:
 - **Gate 2**: Skill routing via `skill_advisor.py`
 - **Gate 3**: File modifications require spec folder question per AGENTS.md Gate 3 (HARD BLOCK)
 - **Tool Routing**: Per AGENTS.md Section 6 decision tree
-- **Memory**: Context preserved via Spec Kit Memory MCP
+- **Continuity**: `/spec_kit:resume` is the recovery surface; canonical packet context is read from `handover.md -> _memory.continuity -> spec docs`
 
-### Memory Integration
+### Continuity Integration
 
-Use Spec Kit Memory MCP for context recovery and preservation:
+Use canonical packet continuity for context recovery first, then use Spec Kit Memory MCP only when packet-native sources are exhausted:
 
-```javascript
-// Find prior git work in a spec folder
-memory_search({ query: "git workflow", specFolder: "007-feature-name" })
+```text
+// Recover the active packet before planning git work
+/spec_kit:resume
+// Recovery order: handover.md -> _memory.continuity -> spec docs
 
-// Search for related decisions across all specs
+// If packet-native sources are exhausted, use Spec Kit Memory MCP for wider lookups
 memory_search({ query: "branch strategy decisions", includeContent: true })
 
 // After major commits or workflow completion
@@ -437,7 +438,8 @@ memory_search({ query: "branch strategy decisions", includeContent: true })
 ```
 
 **Best Practices**:
-- Use `memory_search()` at session start to recover prior git context
+- Use `/spec_kit:resume` at session start to recover active packet context
+- Prefer `handover.md`, `_memory.continuity`, and canonical spec docs before broader memory queries
 - Save context after significant commits or before ending a session
 - Reference spec folder in commit messages for traceability
 

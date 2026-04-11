@@ -124,7 +124,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 9. Execute background operations:
    - IF memory_choice == A: Load most recent memory file
-   - IF memory_choice == B: Load up to 3 recent memory files
+   - IF memory_choice == B: Load up to 3 recent indexed support artifacts or MCP context results
    - IF dispatch_mode is multi_*: Note parallel dispatch will be used
 
 10. SET STATUS: PASSED
@@ -177,7 +177,7 @@ Run the planning workflow: specification, clarification, and technical planning.
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` — Feature description with optional parameters (branch, scope, context)
-**Outputs:** Spec folder with: spec.md, plan.md, tasks.md, checklist.md (Level 2+), memory/*.md
+**Outputs:** Spec folder with: spec.md, plan.md, tasks.md, checklist.md (Level 2+), plus a refreshed continuity support artifact generated via structured `generate-context.js` input
 
 > **Level 1 Note:** /spec_kit:plan creates spec.md, plan.md, and tasks.md. For complete Level 1 baseline implementation execution, run /spec_kit:implement after planning or use /spec_kit:complete instead.
 
@@ -196,7 +196,7 @@ $ARGUMENTS
 | 3    | Specification    | Create spec.md               | spec.md                  |
 | 4    | Clarification    | Resolve ambiguities          | updated spec.md          |
 | 5    | Planning         | Create technical plan        | plan.md, checklist.md    |
-| 6    | Save Context     | Save conversation context    | memory/*.md              |
+| 6    | Save Context     | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
 | 7    | Handover Check   | Prompt for session handover  | handover.md (optional)   |
 
 ---
@@ -217,7 +217,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 **Success:**
 ```
 ✅ SpecKit Planning Complete — All 7 steps executed.
-Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), memory/*.md
+Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), continuity support artifact refreshed
 Ready for: /spec_kit:implement [spec-folder-path]
 STATUS=OK PATH=[spec-folder-path]
 ```
@@ -307,13 +307,13 @@ Use `/memory:search` with intent-aware retrieval:
 | Before Step 1 | `/memory:search --intent:{intent} "topic"`            | Find prior related work     |
 | During Step 3 | `memory_search({ anchors: ['architecture'] })`          | Existing patterns/decisions |
 | During Step 5 | `memory_search({ anchors: ['decisions', 'rationale']})` | Prior planning decisions    |
-| After Step 6  | `generate-context.js [spec-folder]`                     | Preserve current planning   |
+| After Step 6  | `generate-context.js /tmp/save-context-data.json [spec-folder]` | Refresh the indexed support artifact   |
 
 ### After Planning
 
-1. **Generate:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`
+1. **Generate:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
 2. **Anchors auto-extracted:** planning-[feature], decisions, architecture, next-steps
-3. **Verify:** Check memory/*.md created with proper anchors
+3. **Verify:** Check the support artifact under `memory/` was created and indexed; the canonical continuity path still lives in spec docs and `_memory.continuity`
 
 ---
 
@@ -432,6 +432,6 @@ Next step: `/spec_kit:implement [spec-folder-path]`
 | Need stakeholder review      | Share `plan.md` for review               | Get approval before coding|
 | Technical uncertainty        | `/spec_kit:deep-research [topic]`        | Investigate first         |
 | Need to pause                | `/spec_kit:handover [spec-folder-path]`  | Save context for later    |
-| Save context                 | `/memory:save [spec-folder-path]`        | Preserve decisions        |
+| Refresh search support       | `/memory:save [spec-folder-path]`        | Refresh the indexed support artifact while canonical continuity stays in spec docs |
 
 **ALWAYS** end with: "What would you like to do next?"

@@ -2,6 +2,8 @@
 
 MCP tool handlers for the structural code graph system.
 
+Code graph handlers can enrich recovery, but they do not own packet continuity. For Spec Kit packet work, `/spec_kit:resume` remains canonical and recovery still flows through `handover.md`, then `_memory.continuity`, then the remaining spec docs.
+
 ## Handlers
 
 | File | MCP Tool | Purpose |

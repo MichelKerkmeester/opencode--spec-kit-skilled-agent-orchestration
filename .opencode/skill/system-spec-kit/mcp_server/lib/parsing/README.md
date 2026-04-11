@@ -27,6 +27,8 @@ trigger_phrases:
 - `trigger-matcher.ts` for cached phrase matching against surfaced memories.
 - `content-normalizer.ts` for embedding/BM25-safe normalization.
 
+Gate E alignment: parsing now supports the canonical continuity stack directly. Resume-oriented flows should expect `handover.md`, `_memory.continuity`, and canonical spec documents to be the primary parsed surfaces.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:structure -->
 ## 2. STRUCTURE

@@ -32,12 +32,14 @@ trigger_phrases:
 
 The graph module operates on the `causal_edges` and `memory_index` tables to detect communities, compute scoring signals, manage temporal edge validity, detect contradictions, track usage, and generate community summaries. All features are independently gated behind `SPECKIT_*` feature flags.
 
+In Gate E, these graph signals support retrieval after `/spec_kit:resume` restores context from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 ### What It Does
 
 - **Community detection** groups memory nodes into clusters using BFS connected-component labelling as a fast first pass, then escalates to single-level Louvain modularity when the largest component holds more than 50% of all nodes.
 - **Community summaries** generate readable text summaries per community by aggregating member titles and extracting top topics. Stored in `community_summaries` table.
 - **Community storage** provides persistence and retrieval for community data.
-- **Graph signals** compute two additive score bonuses for search results: momentum (degree change over 7 days) and causal depth (normalized longest-path depth on the SCC-condensed causal DAG).
+- **Graph signals** compute two additive score bonuses for search results: momentum (recent degree change) and causal depth (normalized longest-path depth on the SCC-condensed causal DAG).
 - **Temporal edges** add `valid_at`/`invalid_at` columns to `causal_edges` for bi-temporal validity management.
 - **Contradiction detection** auto-invalidates old edges when superseding or conflicting edges are created.
 - **Usage tracking** counts memory access and computes a log-scale ranking boost (0-0.10).
@@ -81,7 +83,7 @@ graph/
 | `community-summaries.ts` | Generates text summaries per community from member titles/topics, stores in `community_summaries` table | `SPECKIT_COMMUNITY_SUMMARIES` |
 | `community-storage.ts` | Stores and retrieves community data (assignments, membership) | `SPECKIT_COMMUNITY_SUMMARIES` |
 | `contradiction-detection.ts` | Detects superseding and conflicting edge relations, auto-invalidates old edges via `temporal-edges.ts` | `SPECKIT_TEMPORAL_EDGES` |
-| `graph-signals.ts` | Degree snapshots, momentum scoring (7-day delta), causal depth via SCC condensation | `SPECKIT_GRAPH_SIGNALS` |
+| `graph-signals.ts` | Degree snapshots, momentum scoring (recent degree delta), causal depth via SCC condensation | `SPECKIT_GRAPH_SIGNALS` |
 | `temporal-edges.ts` | Adds `valid_at`/`invalid_at` columns to `causal_edges`, provides `invalidateEdge()` and `getValidEdges()` | `SPECKIT_TEMPORAL_EDGES` |
 | `usage-ranking-signal.ts` | `computeUsageBoost()` — log-scale normalization producing 0.0-0.10 boost | `SPECKIT_USAGE_RANKING` |
 | `usage-tracking.ts` | Adds `access_count` column to `memory_index`, provides `incrementAccessCount()` and `getAccessCount()` | `SPECKIT_USAGE_RANKING` |
@@ -99,7 +101,7 @@ graph/
 | `applyCommunityBoost` | community-detection.ts | Injects up to 3 community co-members into result rows |
 | `resetCommunityDetectionState` | community-detection.ts | Resets module-level debounce state (test-only) |
 | `snapshotDegrees` | graph-signals.ts | Records current degree counts into `degree_snapshots` |
-| `computeMomentum` | graph-signals.ts | Computes single-node momentum (degree delta over 7 days) |
+| `computeMomentum` | graph-signals.ts | Computes single-node momentum from recent degree deltas |
 | `computeMomentumScores` | graph-signals.ts | Batch momentum computation with session caching |
 | `computeCausalDepthScores` | graph-signals.ts | Batch normalized causal depth via SCC condensation and longest-path DAG traversal |
 | `applyGraphSignals` | graph-signals.ts | Applies momentum (+0.05 max) and depth (+0.05 max) bonuses to result rows |

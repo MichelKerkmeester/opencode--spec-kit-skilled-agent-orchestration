@@ -218,7 +218,7 @@ specs/<###-feature-name>/
 ├── checklist.md                 # QA validation gates (Level 2+)
 ├── decision-record.md           # Architecture decisions (Level 3+)
 ├── implementation-summary.md    # Post-implementation summary (all levels)
-├── memory/                      # Session context files (via generate-context.js)
+├── memory/                      # Supporting generated context artifacts (not the canonical continuity source)
 │   └── YY-MM-DD_HH-MM__topic.md
 └── scratch/                     # Temporary workspace files (gitignored)
 ```
@@ -343,7 +343,7 @@ For the full spec folder workflow, template architecture (81 templates), gate de
 
 ### 🧠 Memory Engine
 
-The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders. The MCP server indexes them with vector embeddings, BM25 and FTS5 full-text search. When you start a session, `memory_match_triggers()` surfaces relevant prior context automatically.
+The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders as supporting artifacts. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes supporting context with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
 
 The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. The full 47-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
@@ -409,7 +409,7 @@ Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed var
 - **Auto-promotion** - Memories earn higher tiers through positive validation
 - **Negative feedback** - 30-day decay prevents permanent blacklisting
 
-Five cognitive states: **HOT** >> **WARM** >> **COLD** >> **DORMANT** >> **ARCHIVED**
+Five cognitive states: **HOT** >> **WARM** >> **COLD** >> **DORMANT** >> **ARCHIVED**. These are internal retrieval weights, not the continuity or recovery contract.
 
 
 #### CAUSAL GRAPH
@@ -498,7 +498,7 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **12-metric computation** - MRR, NDCG, MAP and more
 - **Ground truth corpus** - 110 test questions with known correct answers
 - **Ablation studies** - Per-channel quality impact measurement
-- **Shadow scoring** - Test ranking changes before deployment
+- **Offline scoring checks** - Test ranking changes before deployment
 
 
 #### Embedding Providers
@@ -513,7 +513,7 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Compact Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
 
-The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory preserves session decisions and active-task context. A 3-tier FTS fallback escalates automatically when results are weak.
+The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory supports session decisions and active-task context after the packet-local recovery sources have been checked. A 3-tier FTS fallback escalates automatically when results are weak.
 
 #### How the Code Graph Works
 
@@ -543,8 +543,9 @@ The default routing order is: **Code Graph** (structural) -> **CocoIndex** (sema
 
 - Use the **Compact Code Graph** first for structural questions: callers, callees, imports, hierarchy, file outlines, and reverse impact.
 - Use **CocoIndex** for semantic and intent-based questions: "find code that validates memory quality", "show similar routing patterns", "where is the logic for X?"
-- Use **session tools** when recovering or checking environment readiness: `session_bootstrap()` on fresh start or after `/clear`, `session_resume()` for reconnect-style follow-up, and `session_health()` to re-check stale or missing structural context.
-- Use **Memory** when the question is about prior decisions, spec history, handovers, or task continuity.
+- Use **session tools** when recovering or checking environment readiness, but treat `/spec_kit:resume` as the canonical operator-facing recovery surface.
+- Rebuild task continuity in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs.
+- Use **Memory** after those packet-local sources when the question is about prior decisions, spec history, handovers, or task continuity that still needs deeper retrieval.
 
 #### Why It Matters
 
@@ -984,7 +985,7 @@ Feature flags control search channels, scoring signals, save-time enforcement, a
 - **Session/Cache** - Working memory, cache invalidation on DB rebind, session deduplication, recovery helpers.
 - **Memory/Storage** - Save quality gate, reconsolidation, governed scopes, causal graph maintenance, projection cleanup.
 - **Embedding/API** - Startup provider resolution, fail-fast dimension checks, structured fallback metadata for effective vs requested provider.
-- **Evaluation/Debug** - Trace mode, eval logging, ablation/reporting guardrails, shadow-feedback evaluation, and adaptive-shadow diagnostics that observe proposals without reordering live results.
+- **Evaluation/Debug** - Trace mode, eval logging, ablation/reporting guardrails, feedback evaluation, and proposal diagnostics that observe candidates without reordering live results.
 
 For the complete flag reference with per-flag defaults, see [MCP Server README Section 5](.opencode/skill/system-spec-kit/mcp_server/README.md#5-configuration).
 
@@ -1058,7 +1059,7 @@ A: Gate 3 blocks file modifications until a spec folder answer is provided. You 
 
 **Q: How does the memory system know what is relevant to my current task?**
 
-A: Memory files use structured frontmatter and anchored markdown so the memory engine can classify, index, and retrieve them reliably. At session start, `memory_match_triggers()` does a fast trigger/cognitive pass for immediate surfacing, while `memory_context()` and `memory_search()` run the full hybrid retrieval pipeline with intent routing, reranking, and filtering when deeper context is needed.
+A: Memory files use structured frontmatter and anchored markdown so the memory engine can classify, index, and retrieve them reliably. For recovery, start with `/spec_kit:resume` and the packet-local continuity ladder `handover.md` -> `_memory.continuity` -> canonical spec docs. After that, `memory_match_triggers()` can do a fast trigger/cognitive pass, while `memory_context()` and `memory_search()` handle deeper retrieval with intent routing, reranking, and filtering.
 
 ---
 

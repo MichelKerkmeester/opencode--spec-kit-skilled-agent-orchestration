@@ -53,8 +53,8 @@ session_detection:
     tier_3_triggers:
       method: "memory_match_triggers({ prompt: 'resume work session context' })"
       fallback: "tier_4"
-    tier_4_mtime:
-      method: "glob {.opencode/,}specs/**/memory/*.md | sort by mtime | head -1"
+    tier_4_recent_artifacts:
+      method: "glob {.opencode/,}specs/**/{handover.md,implementation-summary.md,tasks.md} | filter active folders | sort by mtime | head -1"
       fallback: "report no session"
   phase_folder_detection:
     trigger: "After spec folder resolved, check if it contains [0-9][0-9][0-9]-*/ child directories"
@@ -67,8 +67,8 @@ session_detection:
 # CONTEXT LOADING
 # ─────────────────────────────────────────────────────────────────
 context_loading_priority:
-  order: ["Primary: handover.md (<24h old)", "Primary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
-  note: "Use recent structured handoff first, then resume-mode recovery; only use breadcrumb and anchored-search fallbacks when the primary context is missing or thin"
+  order: ["Primary: handover.md (<24h old)", "Primary: _memory.continuity in implementation-summary.md", "Primary: supporting spec docs (tasks/checklist/plan/decision-record)", "Secondary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: memory_search() with resume anchors"]
+  note: "Recover from the canonical packet first: handover, then _memory.continuity, then supporting spec docs. Use MCP enrichment only when that packet is still thin."
 
 memory_loading:
   mode: automatic
@@ -86,7 +86,7 @@ smart_memory_logic:
   sufficiency_rule: "Stop once next safe action is known plus any two supporting essentials"
   gap_fill_order:
     - "If current phase or task is missing, inspect tasks.md/checklist.md/handover.md"
-    - "If next safe action is missing, use memory_context(mode: resume) then targeted memory_search on next-steps/state"
+    - "If next safe action is missing, read `_memory.continuity`, then use memory_context(mode: resume) and targeted memory_search on next-steps/state"
     - "If blockers are missing, target blockers/summary"
     - "If a concrete starting point is missing, use tasks.md or implementation-summary.md before loading more memory"
     - "If ambiguity remains, surface uncertainty instead of guessing"
@@ -112,14 +112,14 @@ confidence_framework:
 # ─────────────────────────────────────────────────────────────────
 workflow:
   step_1_session_detection:
-    purpose: Detect active session from CLI argument or memory files
+    purpose: Detect active session from CLI argument or recent canonical spec artifacts
     activities:
       - Check CLI argument for spec folder
       - If no argument, build deterministic candidates from `specs/` and `.opencode/specs/`
       - Canonicalize aliases and filter archive/test/fixture/scratch paths
       - Rank candidates deterministically with stable tie-breakers
       - If low confidence in autonomous mode, fall through safely and request explicit path
-      - If no ranked candidate, continue to semantic/memory fallback
+      - If no ranked candidate, continue to semantic/MCP fallback
       - Validate resolved spec folder exists
     outputs: { spec_folder: detected_path, detection_method: argument_or_memory }
     validation: session_detected
@@ -129,17 +129,18 @@ workflow:
     activities:
       - Check for handover.md in spec_folder (<24h old)
       - If recent handover exists, load as primary context
-      - If handover is absent or insufficient, call session_bootstrap() first or memory_context() with mode="resume" and profile="resume"
+      - If handover is absent or insufficient, read `_memory.continuity` from implementation-summary.md
+      - Read supporting spec docs (`tasks.md`, `checklist.md`, `plan.md`, `decision-record.md`) before calling any MCP recovery tool
+      - If the canonical packet is still insufficient, call session_bootstrap() first or memory_context() with mode="resume" and profile="resume"
       - Extract Resume Essentials (current phase/task, last confirmed action, next safe action, blockers, relevant artifact/file)
-      - If the recovery packet is still thin, inspect CONTINUE_SESSION.md when present and recent
       - If specific essentials are still missing, run targeted anchored memory_search() for those gaps instead of broad loading
       - If ambiguity remains after targeted gap filling, mark confidence low instead of inventing state
-    context_priority: ["handover.md", "session_bootstrap()", "memory_context(mode: resume, profile: resume)", "CONTINUE_SESSION.md", "memory_search() with resume anchors"]
+    context_priority: ["handover.md", "_memory.continuity", "supporting spec docs", "session_bootstrap()", "memory_context(mode: resume, profile: resume)", "memory_search() with resume anchors"]
     mcp_tool:
       name: memory_context
-      note: "Call directly - NEVER through Code Mode. Use resume mode first; use anchored memory_search() only as a fallback when more detail is needed."
+      note: "Call directly - NEVER through Code Mode. Use it only after the canonical packet is still thin; use anchored memory_search() only for targeted gap filling."
       parameters: { input: "resume previous work continue session", mode: "resume", profile: "resume", specFolder: "{detected_spec_folder}", includeContent: true }
-    outputs: { memory_loaded: true, context_source: "handover|memory_context|continue_session|memory_search", context_summary: extracted_context, resume_packet: "now|last|next|blockers|artifact" }
+    outputs: { memory_loaded: true, context_source: "handover|continuity|spec_docs|memory_context|memory_search", context_summary: extracted_context, resume_packet: "now|last|next|blockers|artifact" }
     validation: context_loaded
 
   step_3_calculate_progress:
@@ -172,7 +173,7 @@ termination:
 
 crash_recovery:
   command_reference: "/spec_kit:resume"
-  description: "Crash recovery is handled inside the resume workflow through handover, resume-mode memory retrieval, crash breadcrumbs, and anchored search fallbacks"
+  description: "Recovery is handled inside the resume workflow through handover.md, then _memory.continuity, then supporting spec docs, with MCP enrichment only when the canonical packet is thin"
   when_to_use: ["Session interrupted unexpectedly", "Context compaction detected", "Need to recover without handover.md"]
   integration_with_resume:
     relationship: "/spec_kit:resume = standard continuation + interrupted-session recovery"

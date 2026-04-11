@@ -98,6 +98,8 @@ You receive structured input, not raw conversation:
 
 **If dispatched with a Context Package** (from @context or orchestrator): Skip Layer 1 memory checks (memory_match_triggers, memory_context, memory_search). Use provided context instead.
 
+**If no Context Package or structured handoff is provided**: Rebuild the active packet context from `handover.md`, then `_memory.continuity`, then the relevant spec docs before widening to memory tools. Treat `/spec_kit:resume` as the operator-facing recovery surface; use broader memory retrieval only when the canonical packet sources are missing or insufficient.
+
 ---
 
 ## 4. 5-PHASE METHODOLOGY

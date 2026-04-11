@@ -37,7 +37,7 @@ Execute TypeScript code with direct access to 200+ MCP tools through progressive
 - ❌ Text searching (use Grep tool)
 - ❌ File discovery (use Glob tool)
 - ❌ Bash commands (use Bash tool)
-- ❌ Conversation memory (use `spec_kit_memory_memory_search()` - **NATIVE MCP**)
+- ❌ Continuity recovery (use `/spec_kit:resume` first; only use native Spec Kit Memory tools after `handover.md -> _memory.continuity -> spec docs` has been exhausted)
 - ❌ Sequential Thinking (call `sequential_thinking_sequentialthinking()` directly - **NATIVE MCP**)
 
 > See Section 4 for details on Native MCP vs Code Mode distinction.
@@ -313,7 +313,7 @@ call_tool_chain({
 
 **1. Native MCP** (`opencode.json`) - Direct tools (call directly, NOT through Code Mode):
 - **Sequential Thinking**: `sequential_thinking_sequentialthinking()`
-- **Spec Kit Memory**: `spec_kit_memory_memory_search()`, `spec_kit_memory_memory_save()`, etc.
+- **Spec Kit continuity + memory**: `/spec_kit:resume` for recovery; native Spec Kit Memory tools such as `session_bootstrap()`, `session_resume()`, `memory_context()`, and `memory_search()` when canonical packet sources need deeper support
 - **Code Mode server**: The Code Mode tool itself
 - **Note**: Some AI environments have built-in extended thinking capabilities that may supersede Sequential Thinking MCP.
 

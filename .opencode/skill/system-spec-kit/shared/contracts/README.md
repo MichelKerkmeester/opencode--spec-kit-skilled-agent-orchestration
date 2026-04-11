@@ -30,7 +30,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder contains the typed contract definitions that the retrieval pipeline uses for instrumentation and error handling. The contracts serve two purposes:
+This folder contains the typed contract definitions that the retrieval pipeline uses for instrumentation and error handling. The contracts serve two purposes. They describe supporting retrieval flows around the canonical packet continuity path resumed via `/spec_kit:resume` from `handover.md -> _memory.continuity -> spec docs`:
 
 1. **Observability** -- Every retrieval request produces a `RetrievalTrace` capturing each pipeline stage (candidate, filter, fusion, rerank, fallback, final-rank) with timing, input/output counts and optional metadata. Traces are wrapped in a generic `ContextEnvelope<T>` for transport.
 

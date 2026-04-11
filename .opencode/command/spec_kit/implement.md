@@ -181,7 +181,7 @@ Missing prerequisites -> guide user to `/spec_kit:plan` first.
 | 6    | Development            | Execute implementation                        | code changes              |
 | 7    | Completion             | Generate summary (via @speckit)               | implementation-summary.md + nested changelog when applicable |
 | 7.5  | POSTFLIGHT Capture     | Learning delta and improvement calculation    | postflight_delta          |
-| 8    | Save Context           | Preserve conversation                         | memory/*.md               |
+| 8    | Save Context           | Refresh continuity support artifact           | support artifact generated via `generate-context.js` |
 | 9    | Session Handover Check | Prompt for handover document                  | handover.md (optional)    |
 
 > **Note:** This step validates checklist structure and item presence. Evidence verification occurs after implementation in the completion phase.
@@ -194,9 +194,9 @@ When reviewing plan.md references to codebase patterns, use CocoIndex semantic s
 
 ### Step 8: Save Context Protocol
 
-**MANDATORY** via generate-context.js (per AGENTS.md Memory Save Rule):
+**MANDATORY** via structured `generate-context.js` input (per AGENTS.md Memory Save Rule):
 ```
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]
 ```
 DO NOT use Write/Edit for memory files directly. After script, call `memory_save({ filePath })` for MCP availability.
 
@@ -222,7 +222,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 ### Success
 ```
 SpecKit Implementation Complete - All 9 steps executed.
-Artifacts: tasks.md, implementation-summary.md, nested changelog (when applicable), memory/*.md
+Artifacts: tasks.md, implementation-summary.md, nested changelog (when applicable), continuity support artifact refreshed
 STATUS=OK PATH=[spec-folder-path]
 ```
 
@@ -355,7 +355,7 @@ Prerequisite: `/spec_kit:plan [feature-description]` (creates spec.md, plan.md)
 | Condition                 | Suggested Command                          | Reason                          |
 | ------------------------- | ------------------------------------------ | ------------------------------- |
 | Implementation complete   | Verify in browser                          | Test functionality              |
-| Need to save progress     | `/memory:save [spec-folder-path]`          | Preserve context                |
+| Need to refresh search support | `/memory:save [spec-folder-path]`     | Refresh the indexed support artifact while canonical continuity stays in spec docs |
 | Ending session            | `/spec_kit:handover [spec-folder-path]`    | Create continuation document    |
 | Found bugs during testing | `/spec_kit:debug [spec-folder-path]`       | Delegate to fresh agent         |
 | Ready for next feature    | `/spec_kit:complete [feature-description]` | Start new workflow              |

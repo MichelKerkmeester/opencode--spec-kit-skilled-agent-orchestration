@@ -17,6 +17,8 @@ trigger_phrases:
 
 > The complete inventory of on-demand AI capabilities available in this framework.
 
+Across this skill tree, `/spec_kit:resume` is the canonical recovery surface for Spec Kit packet work. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts remain supporting only.
+
 ---
 
 <!-- ANCHOR:table-of-contents -->

@@ -24,6 +24,8 @@ trigger_phrases:
 
 The `tests/` directory validates script behavior, TypeScript module contracts, end-to-end flows, and targeted Vitest regressions for import-policy rules, task enrichment, rendered-memory fixture guardrails, and phase/alignment workflows. Current footprint: 442 files when traversing the linked `test-fixtures/` corpus (160 physical files rooted under `tests/` itself), including 44 top-level `*.vitest.ts` suites.
 
+These tests now assume the Gate E continuity contract: `/spec_kit:resume` is the recovery surface, packet context is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
 ## 2. CURRENT INVENTORY

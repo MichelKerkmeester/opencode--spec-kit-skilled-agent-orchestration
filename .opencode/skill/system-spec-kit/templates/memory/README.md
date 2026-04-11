@@ -26,18 +26,18 @@ Memory context files are generated, not hand-written.
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-Use memory files to preserve project state, decisions, blockers, and next steps across sessions.
+Use generated continuity artifacts to preserve project state, decisions, blockers, and next steps across sessions. In Gate E, packet recovery is canonicalized around `handover.md`, then `_memory.continuity`, then the packet's spec docs.
 
 <!-- /ANCHOR:overview -->
 
 ## 2. HARD RULE
 <!-- ANCHOR:warning -->
 
-Never create memory files manually.
+Never create continuity artifacts manually.
 Always use:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <spec-folder-or-json-input>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' specs/<###-spec-name>
 ```
 
 <!-- /ANCHOR:warning -->
@@ -47,7 +47,9 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <sp
 
 ```bash
 # Routine JSON mode
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/system-spec-kit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  --json '{"specFolder":"system-spec-kit","user_prompts":["Summarize the session"],"observations":["Capture the key outcome"],"recent_context":["List touched docs and validation"]}' \
+  specs/system-spec-kit
 
 # Recovery subfolder / phase mode (parent/child)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 003-parent/001-child
@@ -55,12 +57,13 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --r
 # Recovery bare child (auto-searches all parents for unique match)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 001-child-name
 
-# JSON payload mode
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json
+# Temp-file JSON payload mode
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/system-spec-kit
 ```
 
 Optional immediate index sync:
 - run MCP `memory_save()` or `memory_index_scan()` after generation.
+- when both the payload and the CLI specify a spec folder, the explicit CLI target wins.
 
 <!-- /ANCHOR:creation -->
 
@@ -68,7 +71,7 @@ Optional immediate index sync:
 <!-- ANCHOR:contents -->
 
 `templates/memory/` is intentionally empty.
-Actual memory files are written inside active spec folders at `specs/.../memory/`.
+Canonical continuity now lives in packet-local sources: `handover.md`, `_memory.continuity`, and the packet's spec docs. This template exists to document the rule, not to encourage hand-authored `memory/` files.
 
 <!-- /ANCHOR:contents -->
 

@@ -45,6 +45,8 @@ The skill ships with two access modes. The CLI (`ccc`) is fastest for one-off qu
 
 Indexing is incremental and daemon-backed. The first run scans and embeds all supported files in the project. Subsequent runs update only changed files. A background daemon starts automatically on the first command, persists across calls, and restarts itself when settings or the binary version change.
 
+If that exploration feeds into Spec Kit packet recovery, `/spec_kit:resume` remains the canonical surface. Packet continuity still comes from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay secondary.
+
 ### Key Statistics
 
 | Property | Value |

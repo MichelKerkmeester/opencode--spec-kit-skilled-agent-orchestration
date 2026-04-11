@@ -26,6 +26,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 
 Scripts in this directory evaluate memory system quality, performance, and correctness. They run as CLI tools via `npx tsx`.
+Those evaluations now sit beside the Gate E continuity model where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs, with generated memory artifacts kept as supporting only.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:import-policy -->

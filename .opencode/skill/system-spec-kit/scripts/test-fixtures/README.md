@@ -37,6 +37,7 @@ trigger_phrases:
 Test fixtures are pre-built spec folder examples that cover all validation scenarios (both valid and invalid cases). They serve as regression tests for the SpecKit validation system and document expected behaviors through concrete examples.
 
 **Purpose**: Ensure validation scripts correctly identify valid spec folders and catch all violation patterns.
+These fixtures also support the Gate E continuity contract where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs, with generated memory artifacts kept as supporting only.
 
 ### Key Statistics
 

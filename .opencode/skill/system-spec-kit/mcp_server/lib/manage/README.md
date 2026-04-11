@@ -32,6 +32,7 @@ trigger_phrases:
 `lib/manage/` currently has no live TypeScript modules.
 
 The former graph-authority helper was removed because the active retrieval pipeline uses typed-weighted degree scoring and graph signal helpers instead.
+Gate E continuity now resumes through `/spec_kit:resume` and `handover.md` -> `_memory.continuity` -> spec docs, with generated memory artifacts treated as supporting only.
 
 <!-- /ANCHOR:overview -->
 

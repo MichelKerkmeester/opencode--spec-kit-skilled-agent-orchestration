@@ -33,6 +33,8 @@ trigger_phrases:
 
 The utilities folder contains reusable TypeScript modules (compiled to JavaScript) plus a small direct-runtime JavaScript helper that provide core functionality for all system-spec-kit scripts. These modules handle data validation, path security, file I/O, structured logging, message formatting, prompt generation and tool detection. They enforce security standards (CWE-22 path traversal prevention), normalize diverse input formats and provide consistent error handling across the entire script collection.
 
+These shared helpers support the Gate E continuity model where `/spec_kit:resume` is the recovery surface and packet continuity is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 **Build System**: TypeScript source files (`.ts`) are compiled to `dist/utils/` using the TypeScript compiler. Scripts import from the compiled output at runtime.
 
 ### Key Statistics

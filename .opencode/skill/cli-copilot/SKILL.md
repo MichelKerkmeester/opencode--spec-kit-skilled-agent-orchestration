@@ -410,19 +410,21 @@ When the calling AI needs to preserve session context from a Copilot CLI delegat
 
 1. **Include epilogue**: Append the Memory Epilogue template (see `assets/prompt_templates.md` §12) to the delegated prompt
 2. **Extract section**: After receiving agent output, extract the `MEMORY_HANDBACK` section using: `/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/`
-3. **Parse to JSON**: Map extracted fields to `{ sessionSummary, filesModified, keyDecisions, specFolder, triggerPhrases, nextSteps }` (the save flow also accepts documented snake_case keys such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps`)
-4. **Redact and scrub**: Remove secrets, tokens, credentials, and any unnecessary sensitive values before writing the JSON file
-5. **Write JSON**: Save the scrubbed payload to `/tmp/save-context-data.json`
-6. **Invoke generate-context.js**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
+3. **Parse to structured JSON**: Build a payload anchored on the current structured contract: `specFolder`, `user_prompts`, `observations`, and `recent_context`, with optional `toolCalls`, `exchanges`, `preflight`, and `postflight` when you have them. Convenience fields such as `sessionSummary`, `filesModified`, `keyDecisions`, `triggerPhrases`, and `nextSteps` are still accepted and normalized, and documented snake_case keys such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps` also work.
+4. **Redact and scrub**: Remove secrets, tokens, credentials, and any unnecessary sensitive values before sending the JSON payload to the save script
+5. **Choose a structured-input mode**: Prefer `--stdin` when you already have the JSON in memory, use `--json` for a compact inline payload, or write a temp JSON file for larger handbacks
+6. **Invoke generate-context.js**: `printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]`
 7. **Index**: Run `memory_index_scan({ specFolder })` for immediate MCP visibility
 
-**Graceful degradation**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the JSON from agent output and saves via the same JSON mode path. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
+**Missing delimiter handling**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the structured JSON payload from the agent output and saves it through the same structured-input flow. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
 
-**Explicit JSON mode failures**: If the explicit data file cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture in that case; surface the error and stop.
+**Target precedence**: When both the payload and the CLI specify a spec folder, the explicit CLI target wins. Use the CLI argument whenever the calling AI already knows the correct destination.
 
-**Post-010 save gates**: Valid JSON can still be rejected after normalization. File-backed handbacks skip the stateless alignment and `QUALITY_GATE_ABORT` checks, but they still fail with `INSUFFICIENT_CONTEXT_ABORT` when the payload is too thin and with `CONTAMINATION_GATE_ABORT` when it includes content from another spec.
+**Structured-input failures**: If an explicit temp file cannot be loaded, `generate-context.js` stops with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Surface the error and fix the file path or payload before retrying.
 
-**Minimum payload guidance**: Include a specific `sessionSummary`, at least one meaningful `recentContext` entry or equivalent observation, and rich `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known so the saved memory carries durable evidence instead of bare filenames.
+**Save gates**: Valid JSON can still be rejected after normalization. Thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT`, and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
+
+**Minimum payload guidance**: Include a specific summary, at least one meaningful `recent_context` entry, at least one useful observation, and rich `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, `_provenance`, and `toolCalls` when known so the saved memory carries durable evidence instead of bare filenames.
 
 ---
 

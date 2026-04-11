@@ -29,3 +29,4 @@ Hooks registered in `.claude/settings.local.json`. Compiled JS at `dist/hooks/cl
 ## Design Principle
 
 Hooks are transport reliability, not separate business logic. They call the same retrieval primitives (`memory_match_triggers`, `memory_context`) that other runtimes call explicitly.
+For packet work, the operator-facing recovery surface remains `/spec_kit:resume`, with continuity rebuilt from `handover.md -> _memory.continuity -> spec docs`.

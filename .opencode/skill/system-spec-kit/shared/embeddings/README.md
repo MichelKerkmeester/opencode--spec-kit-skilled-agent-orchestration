@@ -35,6 +35,7 @@ trigger_phrases:
 ### What is the Embeddings Factory?
 
 The Embeddings Factory is a multi-provider architecture for generating vector embeddings. It automatically selects the best available provider based on environment configuration, with strong fallback to ensure embedding generation never fails.
+Those embeddings support retrieval over packet materials and generated artifacts; canonical continuity itself is still resumed through `/spec_kit:resume` from `handover.md -> _memory.continuity -> spec docs`.
 
 ### Key Statistics
 

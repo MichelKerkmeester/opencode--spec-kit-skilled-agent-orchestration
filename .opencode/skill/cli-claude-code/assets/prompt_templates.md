@@ -536,34 +536,61 @@ After receiving agent output, the calling AI extracts the handback section:
 const match = output.match(/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/);
 ```
 
-Then constructs JSON and saves via:
+Then constructs structured JSON and saves via:
 
 ```bash
 # Redact or scrub secrets before writing the JSON payload
 # Write extracted data to JSON
 cat > /tmp/save-context-data.json << 'JSONEOF'
 {
-  "sessionSummary": "<extracted summary>",
-  "filesModified": ["<extracted paths>"],
+  "specFolder": "<extracted or provided by calling AI>",
+  "user_prompts": [
+    "<delegated task or user goal>"
+  ],
+  "observations": [
+    {
+      "type": "implementation",
+      "title": "<short accomplishment>",
+      "narrative": "<what changed and why it matters>",
+      "facts": [
+        "<verification or durable implementation detail>"
+      ]
+    }
+  ],
+  "recent_context": [
+    {
+      "request": "<delegated task or user goal>",
+      "learning": "<durable implementation detail or verification result>"
+    }
+  ],
   "FILES": [
     {
       "FILE_PATH": "<extracted path when known>",
       "DESCRIPTION": "<what changed and why it matters>",
-      "ACTION": "modify",
+      "ACTION": "Modified",
       "MODIFICATION_MAGNITUDE": "small",
       "_provenance": "tool"
     }
   ],
+  "sessionSummary": "<extracted summary>",
   "keyDecisions": ["<extracted decisions>"],
-  "recentContext": [
+  "nextSteps": ["<extracted remaining work>"],
+  "triggerPhrases": ["<auto-derived from task>"],
+  "toolCalls": [
     {
-      "request": "<user goal or delegated ask>",
-      "learning": "<durable implementation detail or verification result>"
+      "tool": "Read",
+      "inputSummary": "<what was inspected>",
+      "outputSummary": "<important result>",
+      "status": "success"
     }
   ],
-  "nextSteps": ["<extracted remaining work>"],
-  "specFolder": "<extracted or provided by calling AI>",
-  "triggerPhrases": ["<auto-derived from task>"]
+  "exchanges": [
+    {
+      "userInput": "<delegated request>",
+      "assistantResponse": "<high-signal response excerpt>",
+      "timestamp": "<ISO-8601>"
+    }
+  ]
 }
 JSONEOF
 
@@ -571,12 +598,14 @@ JSONEOF
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]
 ```
 
-Accepted field names include camelCase and the documented snake_case equivalents such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps`. Persistence behavior for next-step fields: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
+Structured JSON is the required save path. You can pass the payload via temp file, `--stdin`, or `--json`; do not call `generate-context.js` with only a spec folder. If `[spec-folder]` is passed on the CLI, that explicit target overrides any payload `specFolder`.
+
+Accepted field names still include documented compatibility aliases such as `sessionSummary` / `session_summary`, `nextSteps` / `next_steps`, `userPrompts` / `user_prompts`, and `recentContext` / `recent_context`. Use the canonical field names shown above for new payloads. Persistence behavior for next-step fields: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
 
 If `/tmp/save-context-data.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture for that error.
 
 Valid JSON can still be rejected after normalization. File-backed handbacks skip stateless alignment and `QUALITY_GATE_ABORT`, but thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT` and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
 
-Minimum viable payload: include a specific summary, at least one meaningful `recentContext` entry or equivalent observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known.
+Minimum viable payload: include a specific `sessionSummary`, at least one meaningful `recent_context` entry or equivalent observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known.
 
 <!-- /ANCHOR:memory_epilogue -->

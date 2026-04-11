@@ -24,3 +24,4 @@ Canonical templates for packet-local changelogs generated inside spec folders.
 - These templates are separate from the global `.opencode/changelog/` release-note templates.
 - The generator script fills them from `spec.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` when available.
 - Root changelogs may include a phase coverage rollup when direct child phase folders exist.
+- Changelogs summarize canonical packet docs; active recovery still flows through `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs`.

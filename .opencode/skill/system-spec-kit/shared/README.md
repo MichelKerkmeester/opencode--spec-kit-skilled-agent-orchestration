@@ -39,6 +39,7 @@ The `shared/` directory is the **canonical source** for shared modules used by b
 - **MCP server** (`mcp_server/`) - `context-server.ts` and memory tools
 
 This consolidation eliminates code duplication and ensures consistent behavior across all entry points.
+These modules support packet-doc-first continuity: `/spec_kit:resume` rebuilds active context from `handover.md -> _memory.continuity -> spec docs`, while generated memory artifacts remain supporting search material.
 
 ### Architecture
 

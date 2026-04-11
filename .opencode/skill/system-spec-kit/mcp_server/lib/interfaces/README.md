@@ -31,6 +31,8 @@ trigger_phrases:
 
 The interfaces module documents contracts for embedding providers and vector stores. Most interfaces now live in `@spec-kit/shared`; this local module remains the compatibility layer and local vector-store stub.
 
+These interfaces support retrieval plumbing, but canonical packet continuity still lives in `/spec_kit:resume` and packet docs. Recovery order remains `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts kept secondary.
+
 ### Key Benefits
 
 | Benefit | Description |

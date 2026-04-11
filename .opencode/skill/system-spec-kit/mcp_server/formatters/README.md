@@ -25,6 +25,7 @@ trigger_phrases:
 This section provides an overview of the MCP Server Formatters directory.
 
 `formatters/` converts internal search results into MCP-ready payloads.
+These formatters support the Gate E recovery path where `/spec_kit:resume` rebuilds context from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts are supporting outputs, not canonical continuity sources.
 
 - `search-results.ts`: formats results, optional content embedding, anchor extraction, and path checks.
 - `token-metrics.ts`: token estimation and savings metrics.

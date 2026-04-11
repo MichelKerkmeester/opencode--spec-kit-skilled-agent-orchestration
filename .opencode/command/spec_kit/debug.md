@@ -57,7 +57,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 2. CHECK for spec folder in $ARGUMENTS:
    - IF has path -> validate and store
-   - IF empty -> auto-detect: Glob("specs/**/memory/*.{md,txt}"), sort by mtime, take first
+   - IF empty -> auto-detect from active spec folders using recent `handover.md`, `_memory.continuity`, and supporting spec docs
 
 3. Auto-detect result:
    - Found: spec_path = extracted, detection_method = "recent"
@@ -304,8 +304,8 @@ Agent file: `[runtime_agent_path]/debug.md`
 ### Memory Integration
 
 After resolution:
-- Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
-- Consider `/memory:save` for debugging context and `/memory:learn` for durable repo-wide debugging rules
+- Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`
+- Consider refreshing the indexed support artifact after debugging and `/memory:learn` for durable repo-wide debugging rules
 - debug-delegation.md serves as memory for the spec folder
 
 ---
@@ -328,7 +328,7 @@ After resolution: Return to the original workflow step that triggered debugging.
 | Fix applied successfully       | Verify in browser/tests                 | Confirm fix works               |
 | Fix applied, continue work     | Return to original workflow             | Resume implementation           |
 | Issue needs more analysis      | `/spec_kit:debug` (retry)              | Fresh perspective               |
-| Want to save debugging context | `/memory:save [spec-folder-path]`      | Preserve debugging insights     |
+| Want to refresh search support | `/memory:save [spec-folder-path]`     | Refresh the indexed support artifact while canonical continuity stays in spec docs |
 | Debugging session complete     | `/spec_kit:handover [spec-folder-path]`| Document for future reference   |
 | Record lasting debugging rule | `/memory:learn [rule]`                 | Save a constitutional rule from debugging |
 

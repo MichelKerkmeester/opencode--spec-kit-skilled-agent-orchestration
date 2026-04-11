@@ -53,6 +53,8 @@ Two integration paths are available. Option A uses the Official Figma MCP, an HT
 
 This skill acts as a design-to-code bridge. It does not write to Figma or modify designs. Its purpose is to read file structure, export rendered assets, extract tokens and components for documentation, and participate in comment threads during design review.
 
+When Figma-driven work lands in a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still comes from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
+
 ### Key Statistics
 
 | Metric | Value |

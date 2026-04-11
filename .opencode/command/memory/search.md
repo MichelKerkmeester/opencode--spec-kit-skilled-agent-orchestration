@@ -1,5 +1,5 @@
 ---
-description: Unified knowledge retrieval and analysis — intent-aware context search, epistemic baselines, causal graph, ablation studies, and dashboards
+description: Unified continuity retrieval and analysis — canonical spec-doc context search, epistemic baselines, causal graph, ablation studies, and dashboards
 argument-hint: "<query> [--intent:<type>] | preflight <specFolder> <taskId> | postflight <specFolder> <taskId> | history <specFolder> | causal <memoryId> | link <sourceId> <targetId> <relation> | unlink <edgeId> | causal-stats | ablation | dashboard"
 allowed-tools: Read, spec_kit_memory_memory_context, spec_kit_memory_memory_quick_search, spec_kit_memory_memory_search, spec_kit_memory_memory_match_triggers, spec_kit_memory_task_preflight, spec_kit_memory_task_postflight, spec_kit_memory_memory_drift_why, spec_kit_memory_memory_causal_link, spec_kit_memory_memory_causal_stats, spec_kit_memory_memory_causal_unlink, spec_kit_memory_eval_run_ablation, spec_kit_memory_eval_reporting_dashboard, spec_kit_memory_memory_get_learning_history
 ---
@@ -83,6 +83,7 @@ Provide a unified entry point that:
 - Returns context with relevance explanation
 - Enforces L1 token budget constraints (target: ~2000 tokens per call)
 - Handles session deduplication for cross-session queries
+- Targets canonical packet sources first: `handover.md`, `_memory.continuity`, then the packet spec docs
 
 **Analysis mode** (subcommand-triggered):
 - Epistemic measurement: Capture knowledge baselines before and after tasks (`task_preflight`, `task_postflight`)
@@ -102,6 +103,12 @@ The unified context tool runs a hybrid retrieval pipeline with **graph-first rou
 - MMR diversity pruning to reduce redundant chunks
 - Deep-mode query expansion for broader lexical coverage
 - Evidence-gap detection (026) to flag low-confidence retrievals with explicit gap warnings, enabling downstream reasoning to remain cautious and avoid acting on sparse evidence
+
+### Canonical Retrieval Order
+
+- `/spec_kit:resume` is the recovery surface for session continuation.
+- Resume-oriented retrieval follows `handover.md -> _memory.continuity -> spec docs`.
+- `find_spec` and `find_decision` should resolve against canonical spec docs and anchors, not against standalone continuity artifacts.
 
 ---
 
@@ -184,8 +191,8 @@ The system detects one of seven intent types:
 | **refactor** | Code restructuring | architecture: 1.5x, patterns: 1.4x, decisions: 1.2x |
 | **security_audit** | Security review | decisions: 1.4x, implementation: 1.3x, security: 1.5x |
 | **understand** | Learning existing code | architecture: 1.4x, decisions: 1.3x, overview: 1.5x |
-| **find_spec** | Spec document retrieval | spec-doc: 1.5x, architecture: 1.3x, overview: 1.2x |
-| **find_decision** | Decision rationale lookup | decisions: 1.5x, rationale: 1.4x, architecture: 1.2x |
+| **find_spec** | Canonical spec document retrieval | spec-doc: 1.5x, architecture: 1.3x, overview: 1.2x |
+| **find_decision** | Decision rationale lookup from canonical docs | decisions: 1.5x, rationale: 1.4x, architecture: 1.2x |
 
 #### Detection Logic
 
@@ -212,8 +219,8 @@ Intent is detected via keyword matching against the query. Keywords are phrase-b
 | **refactor** | architecture, patterns, decisions | technical-specs, code-quality | Need structure understanding + rationale |
 | **security_audit** | decisions, implementation, security | validation, auth, sanitization | Need security decisions + validation patterns |
 | **understand** | architecture, decisions, summary | overview, context, background | Need high-level understanding first |
-| **find_spec** | spec-doc, architecture, overview | specification, structure | Need spec document content + structure |
-| **find_decision** | decisions, rationale, architecture | context, background, history | Need decision records + rationale context |
+| **find_spec** | spec-doc, architecture, overview | specification, structure | Need canonical spec document content + structure |
+| **find_decision** | decisions, rationale, architecture | context, background, history | Need decision records and rationale from canonical docs |
 
 #### Example: add_feature Intent
 
@@ -909,11 +916,10 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 | `minState` | string | `WARM` | Minimum memory state: `HOT`, `WARM`, `COLD`, `DORMANT`, `ARCHIVED` |
 | `autoDetectIntent` | boolean | true | Auto-detect intent from query if not explicitly set |
 | `trackAccess` | boolean | false | Write FSRS strengthening updates on read (off by default to avoid write-on-read) |
-| `includeArchived` | boolean | false | Include archived memories in results |
 | `mode` | string | `auto` | `auto` (standard) or `deep` (multi-query expansion). Note: deep mode does not guarantee expansion for simple queries |
 | `includeTrace` | boolean | false | Include provenance-rich scores/source/trace fields in each result |
 
-> **Governance scoping:** `tenantId`, `userId`, `agentId`, and `sharedSpaceId` are advertised in the tool schema for governed retrieval. When shared-memory scope enforcement is active, results are isolated to the specified boundaries. These parameters are rollout-dependent.
+> **Governance scoping:** `tenantId`, `userId`, `agentId`, and `sharedSpaceId` are advertised in the tool schema for governed retrieval. When shared-memory scope enforcement is active, results are isolated to the specified boundaries.
 
 ### memory_match_triggers: Cognitive Parameters
 

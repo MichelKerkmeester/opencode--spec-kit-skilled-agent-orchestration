@@ -38,6 +38,8 @@ This directory contains **only** compatibility wrappers that delegate to canonic
 
 `mcp_server/scripts/` contains wrapper source files for legacy entry points. The source-of-truth implementations live under the workspace-level `scripts/` package.
 
+Those wrappers now sit behind the Gate E continuity model where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 <!-- /ANCHOR:overview -->
 
 ---

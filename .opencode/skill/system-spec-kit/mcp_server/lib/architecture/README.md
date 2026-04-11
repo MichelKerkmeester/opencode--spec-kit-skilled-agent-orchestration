@@ -31,6 +31,8 @@ trigger_phrases:
 
 The architecture module defines the 7-layer MCP tool organization (T060) that enables progressive disclosure from high-level orchestration to specialized operations. This layer model also frames document-aware behavior (spec documents, memory notes, constitutional files) used across indexing and retrieval.
 
+Gate E keeps that document-aware behavior anchored on `/spec_kit:resume` and the canonical packet chain `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 ### Design Principles
 
 | Principle | Description |

@@ -41,6 +41,8 @@ trigger_phrases:
 
 The skill covers Go, Node.js, React and Next.js, React Native and Expo, and Swift. Detection is ordered and deterministic. First match wins. Once the stack is identified, the router selects the right reference documents, checklists, and verification commands for that stack and loads them at the appropriate level. No cross-stack confusion, no generic advice.
 
+For spec-driven work, resume packet context through `/spec_kit:resume` and the canonical chain `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts support retrieval, but they do not replace the packet docs as continuity source-of-truth.
+
 The Iron Law governs all three phases: no completion claim is valid without command evidence from the detected stack. `done`, `works`, `complete`, and `fixed` are blocked until test, lint, and build commands have been run and their outputs documented.
 
 ### Key Statistics

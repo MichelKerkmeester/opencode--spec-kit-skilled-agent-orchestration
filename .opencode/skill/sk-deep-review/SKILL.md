@@ -403,7 +403,7 @@ Local review-specific protocol documents:
 - All configured review dimensions have at least one iteration of coverage
 - All state files present and consistent (`config.json`, `state.jsonl`, `strategy.md`)
 - `review/review-report.md` produced with all 9 sections
-- Memory context saved via `generate-context.js`
+- Canonical continuity surfaces updated via `generate-context.js`
 
 ### Quality Gates
 
@@ -414,7 +414,7 @@ Local review-specific protocol documents:
 | **Post-loop** | `review-report.md` exists with verdict and all sections | Yes |
 | **Quality guards** | Evidence completeness, scope alignment, no inference-only, severity coverage, cross-reference checks | Yes |
 | **Adversarial recheck** | All P0 findings re-confirmed via adversarial self-check | Yes |
-| **Memory save** | `memory/*.md` created via `generate-context.js` | No |
+| **Continuity save** | Canonical packet continuity surfaces updated via `generate-context.js` | No |
 
 ### Review Mode Success Criteria
 
@@ -448,15 +448,17 @@ This skill operates within the behavioral framework defined in CLAUDE.md.
 Key integrations:
 - **Gate 2**: Skill routing via `skill_advisor.py` (keywords: deep review, code audit, iterative review)
 - **Gate 3**: File modifications require spec folder question per CLAUDE.md Gate 3; the spec folder determines the `{spec_folder}/review/` state packet location
-- **Memory**: Context preserved via Spec Kit Memory MCP (`generate-context.js`)
+- **Continuity**: `/spec_kit:resume` is the operator-facing recovery surface; canonical packet continuity is written via `generate-context.js`
 - **Command**: `/spec_kit:deep-review` is the primary invocation point
 
-### Memory Integration
+### Continuity Integration
 
 ```
 Before review:
-  memory_context({ input: target, mode: "deep", intent: "review" })
-  --> Loads prior audit context into strategy.md "Known Context"
+  /spec_kit:resume
+  --> Recover packet context in this order:
+      handover.md -> _memory.continuity -> spec docs
+  --> Use memory_context() or memory_search() only after those canonical packet sources are exhausted
 
 During review (each iteration):
   Agent writes {spec_folder}/review/iterations/iteration-NNN.md
@@ -465,6 +467,7 @@ During review (each iteration):
 
 After review:
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]
+  # Updates canonical continuity surfaces directly.
 ```
 
 ### Command Integration
@@ -472,6 +475,7 @@ After review:
 | Command | Relationship |
 |---------|-------------|
 | `/spec_kit:deep-review` | Primary invocation point (auto and confirm modes) |
+| `/spec_kit:resume` | Canonical recovery surface before resuming or extending an active review packet |
 | `/spec_kit:implement` | Next step after CONDITIONAL/FAIL verdict to resolve P0/P1 findings |
 | `/memory:save` | Manual memory save (deep review auto-saves after synthesis) |
 

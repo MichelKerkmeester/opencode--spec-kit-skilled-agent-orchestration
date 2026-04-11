@@ -67,6 +67,7 @@ The skill includes a self-invocation guard: if you are already running inside Co
 | **Sandbox control** | Permission modes | `--yolo` flag | `--allow-all-tools` | 3 sandbox modes + approval policies |
 | **Image input** | No | No | No | `--image` flag for visual context |
 | **Session management** | Continue/resume | Memory tool | Repo memory | Resume, fork, session history |
+| **Spec Kit handoff** | Packet docs via `/spec_kit:resume` | Canonical packet continuity | Supporting artifacts only | `handover.md -> _memory.continuity -> spec docs` |
 | **Cloud execution** | No | No | Cloud delegation | `codex cloud` subcommand |
 
 ### Key Features at a Glance
@@ -140,6 +141,8 @@ Live web search is the first. The `--search` flag lets the agent browse the web 
 The sandbox model is the second differentiator. Most CLIs offer binary permission control: either ask before everything or auto-approve everything. Codex provides three graduated levels. `read-only` restricts the agent to file reads and analysis. `workspace-write` allows file modifications within the project directory. `danger-full-access` opens shell execution for tasks like running test suites. You can also layer approval policies (`untrusted`, `on-request`, `never`) on top of sandbox modes for fine-grained control.
 
 Session management rounds out the picture. Codex tracks conversation history and lets you resume where you left off or fork from any prior session. Forking is particularly useful when you want to explore two different implementation approaches from the same starting point without losing either thread.
+
+When Codex work feeds back into a Spec Kit packet, `/spec_kit:resume` is still the canonical recovery surface. Packet continuity rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts remain support only.
 
 The reasoning effort system adds another dimension. GPT-5.4 supports six effort levels from `none` (fastest, cheapest) through `xhigh` (maximum depth). This means you can run quick formatting tasks at `low` effort and deep architecture reviews at `high` effort, paying only for the reasoning depth each task actually needs.
 

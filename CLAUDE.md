@@ -51,7 +51,7 @@ Full details: `.opencode/skill/sk-git/`
 | **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                                         |
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings                       |
 | **Code search**           | Semantic/concept → `CocoIndex search` · Structural (callers/imports/deps) → `code_graph_query` · Exact text → `Grep` · File paths → `Glob` · Read contents → `Read` |
-| **Resume prior work**     | `/spec_kit:resume` OR `memory_context({ input: "resume previous work continue session", mode: "resume", profile: "resume", specFolder })` → Review checklist → Continue |
+| **Resume prior work**     | `/spec_kit:resume` → Rebuild context from `handover.md` → `_memory.continuity` → canonical spec docs → Review checklist → Continue |
 | **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
 | **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                                  |
@@ -75,10 +75,11 @@ These recovery steps are universal across Claude Code, OpenCode, Codex CLI, Copi
 
 ### After Context Compaction Or `/clear`
 
-1. **FIRST ACTION** — call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })`
-2. Review the recovered state: current task, spec folder, blockers, and next steps
-3. Re-read the active runtime-specific instructions if they exist (`CODEX.md`, `GEMINI.md`, `.claude/CLAUDE.md`, runtime agent docs)
-4. Present a concise recovered summary and WAIT for confirmation before proceeding
+1. **FIRST ACTION** — use `/spec_kit:resume` as the canonical recovery surface
+2. Rebuild prior work in this order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md`, `tasks.md`, `plan.md`, `spec.md`)
+3. Use `memory_context()` or `memory_search()` only when those packet-local continuity sources do not answer the question
+4. Re-read the active runtime-specific instructions if they exist (`CODEX.md`, `GEMINI.md`, `.claude/CLAUDE.md`, runtime agent docs)
+5. Present a concise recovered summary and WAIT for confirmation before proceeding
 
 ### Coding Analysis Lenses 
 

@@ -48,6 +48,7 @@ Use for work that needs formal governance, compliance traceability, and coordina
 - Compliance checkpoints must be documented.
 - Workstreams or multi-agent coordination are expected.
 - Complexity is high enough that Level 3 is not sufficient.
+- Under Gate E, the packet remains the continuity source of truth: `/spec_kit:resume` rebuilds context from `handover.md` -> `_memory.continuity` -> spec docs, while generated memory artifacts stay supporting only.
 
 <!-- /ANCHOR:overview -->
 

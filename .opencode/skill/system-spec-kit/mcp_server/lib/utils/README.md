@@ -31,6 +31,8 @@ trigger_phrases:
 
 The utils module provides foundational utilities used throughout the MCP server. These include date formatting and path traversal security (re-exported from `@spec-kit/shared`).
 
+Those utilities support the Gate E continuity model where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 ### Key Benefits
 
 | Benefit | Description |

@@ -850,7 +850,7 @@ workflow:
 
       step_generate_context:
         action: "Save memory context via generate-context.js"
-        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_folder}"
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_folder}"
         critical_rule: "NEVER use Write tool directly for memory/ paths"
 
       step_index_memory:
@@ -883,7 +883,7 @@ workflow:
       - "/spec_kit:plan [remediation] (if FAIL or CONDITIONAL verdict)"
       - "/create:changelog (if PASS, including PASS with hasAdvisories=true)"
       - "/spec_kit:deep-review [target] (for another review)"
-      - "/memory:save {spec_folder} (manual memory save)"
+      - "/spec_kit:handover {spec_folder} (prepare the canonical resume packet for the next session)"
 
 # ─────────────────────────────────────────────────────────────────
 # ERROR RECOVERY

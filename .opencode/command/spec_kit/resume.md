@@ -1,5 +1,5 @@
 ---
-description: Resume or recover work on an existing spec folder - smart memory recovery, crash breadcrumbs, and one clear next step
+description: Resume or recover work on an existing spec folder - canonical continuity recovery with one clear next step
 argument-hint: "[spec-folder-path] [:auto|:confirm] [--phase-folder=<path>]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, memory_match_triggers, memory_list, memory_stats, memory_delete, memory_update, memory_validate, memory_index_scan, memory_health, checkpoint_create, checkpoint_list, checkpoint_restore, checkpoint_delete, mcp__cocoindex_code__search
 ---
@@ -74,17 +74,20 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - Detected → continuation_detected = TRUE, parse Last/Next
    - Not detected → continuation_detected = FALSE
 
-4b. Check for CONTINUE_SESSION.md crash recovery:
-    - Exists in spec folder AND modified <24h → crash_recovery_available = TRUE
-    - Parse spec folder, Last, Next values (fallback for unexpected termination)
+4b. Check canonical continuity anchors:
+    - `handover.md` exists and is recent → continuity_hint_available = TRUE
+    - `implementation-summary.md` contains `_memory.continuity` → continuity_state_available = TRUE
+    - Parse last confirmed action, next safe action, blockers, and key files from those canonical sources
 
 5. Validate artifacts in spec folder:
    - Check: spec.md, plan.md, tasks.md
    - Store: artifacts_valid = [yes/partial/no]
 
-6. Check memory files:
-   - $ ls [spec_path]/memory/*.{md,txt} 2>/dev/null
-   - Store: memory_files_exist = [yes/no], memory_count = [N]
+6. Check canonical recovery sources:
+   - `handover.md`
+   - `implementation-summary.md` with `_memory.continuity`
+   - Supporting spec docs: `tasks.md`, `checklist.md`, `plan.md`, `decision-record.md`
+   - Store: continuity_sources_available = [yes/partial/no]
 
 7. ASK with SINGLE prompt (include only applicable questions):
 
@@ -105,12 +108,11 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      Missing: [list]
      A) Run /spec_kit:plan  B) Select different folder  C) Continue anyway
 
-   Q4. Smart Memory Preference (if memory files exist):
-     Found [N] file(s) in [spec_path]/memory/
+   Q4. Recovery Depth (when the canonical resume packet is still thin):
      A) Fast resume - just enough context to continue safely
      B) Fill missing next step / blockers
-     C) Deep context - load up to 3 recent files
-     D) Skip extra memory and use artifacts only
+     C) Deeper MCP context - enrich the packet if essentials are still missing
+     D) Use canonical artifacts only
 
    Reply format: "A, A" or "A, A, B"
 
@@ -127,8 +129,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 10. Execute background operations:
     - IF memory_choice == A: Recover only the default resume packet
     - IF memory_choice == B: Run targeted gap-filling for next step / blockers
-    - IF memory_choice == C: Load up to 3 recent memory files
-    - IF memory_choice == D: Use artifacts only
+   - IF memory_choice == C: Use `session_bootstrap()`/`memory_context()` to enrich the canonical packet
+   - IF memory_choice == D: Use canonical artifacts only
     - Calculate progress from tasks.md/checklist.md
 
 11. SET STATUS: PASSED
@@ -154,7 +156,7 @@ STOP HERE - Wait for user answers before continuing.
 | detection_method | Yes           | Auto-determined               |
 | execution_mode   | Yes           | Suffix (defaults INTERACTIVE) |
 | artifacts_valid  | Yes           | Validation check              |
-| memory_loaded    | Conditional   | Q4 (if memory files exist)    |
+| memory_loaded    | Conditional   | Q4 (if the canonical resume packet is still thin) |
 
 ALL required fields set? → Proceed to workflow | Missing? → Re-prompt for missing only
 
@@ -256,10 +258,10 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 
 **Context loading priority (after spec_path confirmed):**
 1. handover.md (exists & <24h) → use handover context
-2. `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` → primary interrupted-session recovery path
-3. `CONTINUE_SESSION.md` → crash breadcrumb when present and recent
-4. `memory_search()` with resume anchors → fallback when the summary is thin
-5. checklist.md → progress state fallback
+2. `implementation-summary.md` → `_memory.continuity` host block for last/next/blockers/key files
+3. Supporting spec docs (`tasks.md`, `checklist.md`, `plan.md`, `decision-record.md`) → canonical packet detail
+4. `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` → optional enrichment when the canonical packet is still thin
+5. `memory_search()` with resume anchors → targeted gap-filling only when essentials are still missing
 
 **Stale session (>7 days):** Warn user, offer: A) Resume anyway, B) Fresh start, C) Review changes, D) Cancel
 
@@ -273,11 +275,11 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 
 | Signal | Why it matters | Primary source | Fallback |
 | ------ | -------------- | -------------- | -------- |
-| Current phase or task | Orient the user immediately | `handover.md`, `tasks.md` | `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` |
-| Last confirmed action | Prevent duplicate work | `handover.md`, recent memory | `memory_search()` with `state` anchor |
-| Next safe action | Make the resume actually useful | `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` | `memory_search()` with `next-steps` anchor |
-| Blockers or "none" | Avoid unsafe continuation | `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` | `memory_search()` with `blockers` or `summary` anchor |
-| Relevant artifact or file | Give the user a concrete place to start | `tasks.md`, `implementation-summary.md`, `handover.md` | recent memory content |
+| Current phase or task | Orient the user immediately | `handover.md`, `tasks.md` | `_memory.continuity`, then `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` |
+| Last confirmed action | Prevent duplicate work | `handover.md`, `_memory.continuity` | `memory_search()` with `state` anchor |
+| Next safe action | Make the resume actually useful | `_memory.continuity`, `tasks.md` | `memory_search()` with `next-steps` anchor |
+| Blockers or "none" | Avoid unsafe continuation | `_memory.continuity`, `handover.md` | `memory_search()` with `blockers` or `summary` anchor |
+| Relevant artifact or file | Give the user a concrete place to start | `tasks.md`, `implementation-summary.md`, `handover.md` | `plan.md`, `decision-record.md` |
 
 ### Sufficiency Rule
 
@@ -290,8 +292,8 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 1. Missing current phase/task: check `tasks.md`, `checklist.md`, or `handover.md`.
 2. Missing next safe action: use `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })`, then targeted `memory_search()` on `next-steps` and `state`.
 3. Missing blockers: target `blockers` and `summary`.
-4. Missing concrete starting point: look for the most relevant artifact, file, or unfinished task before loading more memory files.
-5. Only use deep memory loading when the focused recovery packet is still insufficient.
+4. Missing concrete starting point: look for the most relevant artifact, file, or unfinished task in the spec docs before asking for MCP enrichment.
+5. Only use deeper MCP context when the focused recovery packet is still insufficient.
 
 ---
 
@@ -301,7 +303,7 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 ```
 RESUME BRIEF
 Spec: [path]
-Confidence: [high|medium|low] | Source: [handover|memory_context|continue_session|combined]
+Confidence: [high|medium|low] | Source: [handover|continuity|spec_docs|mcp_enrichment|combined]
 Now: [phase/current task]
 Last confirmed: [action]
 Next safe action: [action]
@@ -339,7 +341,7 @@ Call MCP tools directly — NEVER through Code Mode.
 | `memory_delete`         | Remove memory by ID or spec folder     |
 | `memory_update`         | Update metadata (title, triggers, tier)|
 | `memory_validate`       | Record validation feedback             |
-| `memory_index_scan`     | Bulk index after creating memory files |
+| `memory_index_scan`     | Bulk index support artifacts created by `generate-context.js` |
 | `memory_health`         | Check database/embeddings/index status |
 
 ### Checkpoint Tools
@@ -356,8 +358,9 @@ Call MCP tools directly — NEVER through Code Mode.
 ### Session Deduplication
 
 - Prefer deterministic ranked active candidates (archive/test/fixture filtered)
-- handover.md takes priority; if it is absent or thin, use `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` before checking `CONTINUE_SESSION.md`
-- Treat `CONTINUE_SESSION.md` as a breadcrumb, not the primary source of truth
+- handover.md takes priority; if it is absent or thin, read `_memory.continuity` from `implementation-summary.md` next
+- supporting spec docs are the next canonical layer before any MCP enrichment
+- use `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` only when the canonical packet is still thin
 - Older handovers preserved for audit trail
 
 ### Compaction Continuation Safety

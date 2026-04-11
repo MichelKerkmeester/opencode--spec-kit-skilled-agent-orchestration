@@ -56,6 +56,8 @@ trigger_phrases:
 
 The skill routes to domain-specific reference files using weighted keyword scoring. Implementation tasks load async handling and validation workflows. Debugging tasks load root-cause tracing workflows and the DevTools checklist. Performance tasks load Core Web Vitals remediation, interaction-gated loading patterns, and resource loading references. Verification tasks load the browser testing matrix and multi-viewport requirements. This scoped loading keeps each invocation focused rather than pulling the entire reference library.
 
+For spec-driven frontend work, resume context through `/spec_kit:resume` and the canonical packet chain `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts support retrieval, but they do not replace the packet docs as continuity source-of-truth.
+
 For formal code review output with severity-ranked findings, `sk-code-web` acts as the web overlay for `sk-code-review`. The baseline skill owns the severity model (P0/P1/P2), the output contract, and the security minimums. This skill owns the frontend-specific quality gate, browser verification evidence, and implementation standards for JavaScript and CSS.
 
 ### Key Statistics

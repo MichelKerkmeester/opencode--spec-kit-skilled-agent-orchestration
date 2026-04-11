@@ -1,5 +1,5 @@
 ---
-description: Save current conversation context to memory with semantic indexing
+description: Save current conversation context into canonical spec-doc continuity surfaces with semantic indexing
 argument-hint: "<spec-folder>"
 allowed-tools: Read, Bash, Task, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_stats, spec_kit_memory_memory_update
 ---
@@ -50,17 +50,24 @@ IF $ARGUMENTS is empty, undefined, or contains only whitespace:
 
 # /memory:save
 
-> Save current conversation context to a spec folder's memory directory with semantic indexing.
+> Save current conversation context into the packet's canonical continuity surfaces with semantic indexing.
 
 ---
 
 ## 1. PURPOSE
 
-Save the current conversation context, including session summary, key decisions, modified files, and trigger phrases, to a spec folder's `memory/` directory with semantic indexing for future retrieval.
+Save the current conversation context, including session summary, key decisions, modified files, and trigger phrases, into the packet's canonical continuity surfaces so `/spec_kit:resume` and `/memory:search` read the same source of truth.
 
 **Key difference from `/memory:learn`:**
-- `/memory:save` = Session context saved to `specs/*/memory/` (any tier)
+- `/memory:save` = Session context routed into canonical packet docs and `_memory.continuity`
 - `/memory:learn` = Constitutional rules saved to `constitutional/` (always-surface tier)
+
+### Canonical Routing Model
+
+- `handover.md` remains the top recovery document for active-session state and pending work.
+- `_memory.continuity` stores the compact continuity block used by `/spec_kit:resume`.
+- Canonical spec docs such as `implementation-summary.md` and `decision-record.md` receive the durable narrative content when the route applies.
+- Standalone memory markdown is not the primary operator-facing destination for this command.
 
 ---
 
@@ -69,7 +76,7 @@ Save the current conversation context, including session summary, key decisions,
 | Field   | Value                                                                                        |
 | ------- | -------------------------------------------------------------------------------------------- |
 | Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`) + AI-composed JSON data                       |
-| Output  | Memory file in `[spec]/memory/` + indexed in MCP                                             |
+| Output  | Canonical spec-doc continuity updates + indexed continuity data                               |
 | Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
 | Primary | **JSON mode:** `generate-context.js /tmp/save-context-data.json` or `--json '<data>'`        |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
@@ -80,9 +87,9 @@ Save the current conversation context, including session summary, key decisions,
 
 | Usage                                                  | Behavior                                                |
 | ------------------------------------------------------ | ------------------------------------------------------- |
-| `/memory:save`                                         | Auto-detect from session context, confirm if needed, then save |
-| `/memory:save 011-memory`                              | Save to specific spec folder                            |
-| `/memory:save specs/006-semantic-memory/003-debugging` | Save to nested spec folder                              |
+| `/memory:save`                                         | Auto-detect the active packet, confirm if needed, then route into canonical continuity targets |
+| `/memory:save 011-memory`                              | Save to a specific spec folder                          |
+| `/memory:save specs/006-semantic-memory/003-debugging` | Save to a nested spec folder                            |
 
 ---
 
@@ -334,17 +341,22 @@ rm "$TEMP_FILE"
 ✓ Transformed manual format to MCP-compatible structure
 ✓ Found N messages
 ✓ Found N decisions
-✓ Template populated (quality: 100/100)
-✓ {filename}.md (300+ lines)
-✓ Indexed as memory #NN
+✓ Routed canonical targets prepared
+✓ Continuity surfaces updated
+✓ Indexed continuity data
 ```
 
 ### File Output
 
-**Naming:** `{DD-MM-YY}_{HH-MM}__{topic}.md`
-Example: `08-12-25_12-30__semantic-memory.md`
+**Primary result:** canonical packet docs and `_memory.continuity` are updated in-place for the selected spec folder.
 
-**Location:** `specs/{spec-folder}/memory/{timestamp}__{topic}.md`
+**Typical targets:**
+- `handover.md`
+- `implementation-summary.md`
+- `decision-record.md`
+- frontmatter `_memory.continuity`
+
+If compatibility artifacts are emitted during migration cleanup, they are secondary to the canonical packet update and should not be treated as the source of truth.
 
 ### Step 6: Report Results
 
@@ -358,20 +370,22 @@ Display the completion report (see Section 6).
 
 ```json
 {
-  "summary": "Memory saved successfully to specs/011-memory/memory/08-02-26_14-30__semantic-search.md",
+  "summary": "Context saved successfully into the canonical continuity surfaces for specs/011-memory",
   "data": {
     "status": "OK",
-    "file_path": "specs/011-memory/memory/08-02-26_14-30__semantic-search.md",
     "spec_folder": "011-memory",
-    "memory_id": 42,
+    "targets_updated": [
+      "handover.md",
+      "implementation-summary.md",
+      "_memory.continuity"
+    ],
     "indexing_status": "indexed",
-    "anchors_created": ["summary-011", "decision-vector-search-011", "files-011"],
+    "anchors_updated": ["summary-011", "decision-vector-search-011", "files-011"],
     "trigger_phrases": ["semantic search", "vector embeddings", "memory retrieval"],
-    "file_size_kb": 12.4,
     "timestamp": "2026-02-01T14:30:00Z"
   },
   "hints": [
-    "Use /memory:search to find this memory later",
+    "Use /memory:search to find the updated packet context later",
     "Anchors enable 93% token savings when loading specific sections"
   ],
   "meta": {
@@ -388,10 +402,9 @@ Display the completion report (see Section 6).
 | Field                    | Type     | Description                              |
 | ------------------------ | -------- | ---------------------------------------- |
 | `data.status`            | string   | "OK" or "FAIL"                           |
-| `data.file_path`         | string   | Path to saved memory file                |
-| `data.memory_id`         | number   | Database ID (null if deferred indexing)  |
+| `data.targets_updated`   | string[] | Canonical packet targets updated         |
 | `data.indexing_status`   | string   | "indexed", "deferred", or "failed"       |
-| `data.anchors_created`   | string[] | List of anchor IDs in the file           |
+| `data.anchors_updated`   | string[] | List of anchor IDs updated or created    |
 | `meta.deferred_indexing` | boolean  | Whether indexing was deferred to restart |
 
 ### Human-Friendly Display
@@ -401,11 +414,10 @@ MEMORY:SAVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Folder      <spec_folder>
-  File        <file_path>
-  Memory ID   #<memory_id>
+  Targets     <target_1>, <target_2>, <target_3>
   Indexing    <indexing_status>
 
-→ Anchors ─────────────────────────────────── <count> created
+→ Anchors ─────────────────────────────────── <count> updated
   <anchor1>
   <anchor2>
   <anchor3>
@@ -416,7 +428,7 @@ MEMORY:SAVE
 ─────────────────────────────────────────────────────
 [t] edit triggers    [d] done
 
-STATUS=OK PATH=<file_path> ANCHORS=<count>
+STATUS=OK TARGETS=<count> ANCHORS=<count>
 ```
 
 ### Post-Save Actions
@@ -490,7 +502,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ## APPENDIX A: MCP TOOL REFERENCE
 
-> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` and `Edit` tools are intentionally excluded from this command's `allowed-tools`. Memory files MUST be created via the `generate-context.js` script to ensure proper ANCHOR tags, SESSION SUMMARY table, and MEMORY METADATA YAML block. See AGENTS.md Memory Save Rule.
+> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` and `Edit` tools are intentionally excluded from this command's `allowed-tools`. Canonical continuity updates MUST be driven through `generate-context.js` so routing, anchors, and `_memory.continuity` stay synchronized. See AGENTS.md Memory Save Rule.
 
 > **Mutation Ledger & Artifact Routing:** Every save operation is now recorded in the mutation ledger, an append-only audit trail that captures the file path, spec folder, timestamp, and indexing outcome. Artifact metadata associated with the saved memory may also be classified via artifact-class routing before indexing, ensuring consistent type tagging across the database.
 
@@ -501,16 +513,18 @@ STEP            REQUIRED CALLS                            ON FAILURE
 ─────────────── ───────────────────────────────────────── ──────────────
 FOLDER DETECT   Bash (ls, CLI argument)                   Prompt user
 CONTEXT SAVE    Bash (node generate-context.js)           Show error msg
-IMMEDIATE INDEX spec_kit_memory_memory_save (optional)    Auto on restart
+IMMEDIATE INDEX spec_kit_memory_memory_index_scan (optional) Show error msg
 ```
 
 **Script Location:** `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
 
-**Auto-Indexing:** Memory files in `specs/*/memory/` are automatically indexed on MCP server start. For immediate indexing:
+**Immediate indexing:** Canonical spec-doc surfaces participate in spec-doc indexing. If you need fresh retrieval immediately after a save, run a targeted index scan:
 
 ```javascript
-spec_kit_memory_memory_save({
-  filePath: "specs/<folder>/memory/<filename>.md"
+spec_kit_memory_memory_index_scan({
+  specFolder: "011-memory",
+  includeSpecDocs: true,
+  force: true
 })
 ```
 
@@ -526,7 +540,7 @@ Four indexing methods are available: auto-indexing on MCP startup (default), `ge
 
 #### Normalization Before Bulk Rebuild
 
-When corpus-wide markdown metadata has changed (templates/spec docs/memory docs), run normalization before force re-index:
+When corpus-wide markdown metadata has changed, run normalization before force re-index:
 
 ```bash
 # Dry-run normalization
@@ -543,28 +557,13 @@ Recommended order: **normalize → verify → rebuild**.
 
 #### Deferred Indexing (Graceful Degradation)
 
-When MCP is unavailable or embedding fails, the system uses deferred indexing:
-
-1. Memory file is written to disk (ALWAYS succeeds)
-2. Immediate indexing attempted via MCP
-3. On failure: file remains on disk, auto-indexed on next MCP restart
-4. File includes `indexing_status: deferred` metadata for tracking
-
-> **026 Note:** Deferred-indexed files are discoverable by the FTS5/BM25 lexical channel immediately after disk write (since FTS5 indexes markdown content directly). However, graph-based retrieval channels (`code_graph_query`) and vector/semantic channels require full MCP indexing to surface the file. Run `memory_index_scan` after MCP recovery to ensure all three retrieval channels can find the file.
+When MCP is unavailable or embedding fails, the canonical document update still lands on disk. Follow with a targeted `memory_index_scan` after MCP recovery so the updated spec docs and continuity anchors are discoverable across retrieval channels.
 
 **Manual Retry:**
 ```javascript
-// Single file
-spec_kit_memory_memory_save({ filePath: ".opencode/specs/.../memory/context.md", force: true })
-
-// Single file (non-blocking embedding)
-spec_kit_memory_memory_save({ filePath: ".opencode/specs/.../memory/context.md", asyncEmbedding: true })
-
 // Entire folder
 spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 ```
-
-Note: `filePath` should be specified relative to the repository root (e.g., `.opencode/specs/.../memory/context.md`).
 
 **Recovery Options:**
 
@@ -658,7 +657,7 @@ Prevents redundant saves of the same conversation content (accidental duplicates
 
 ### Governance, Provenance & Retention
 
-The `memory_save` tool schema advertises advanced governance parameters for multi-tenant, multi-agent, and compliance-aware deployments. These parameters are rollout-dependent: they take effect only when governance guardrails are enabled.
+The `memory_save` tool schema advertises advanced governance parameters for multi-tenant, multi-agent, and compliance-aware deployments. These parameters take effect only when governance guardrails are enabled.
 
 #### Governance Scoping
 

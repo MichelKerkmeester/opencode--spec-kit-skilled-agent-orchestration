@@ -44,6 +44,8 @@ The skill's routing logic scores incoming requests against five intent signals (
 
 The skill covers the full spectrum of browser automation tasks that belong in a terminal workflow: capturing screenshots and PDFs, exporting HAR network traces, reading and writing cookies, querying the DOM by CSS selector, executing JavaScript expressions, monitoring console output, and running performance metric collection. Three production-ready shell scripts in the `examples/` directory demonstrate performance baselining, animation testing, and multi-viewport visual regression testing.
 
+For browser work tied back to a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay secondary.
+
 ### Key Statistics
 
 | Attribute | Value |

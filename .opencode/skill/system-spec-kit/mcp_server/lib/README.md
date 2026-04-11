@@ -35,6 +35,8 @@ trigger_phrases:
 
 The MCP Server Library provides the core functionality for the Spec Kit Memory MCP server. It implements cognitive memory features including semantic search, attention decay, importance scoring and intelligent context retrieval. These modules work together to provide AI assistants with human-like memory recall and context awareness.
 
+Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the operator-facing recovery surface, and packet continuity is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts are not the primary continuity source.
+
 ### Key Statistics
 
 | Category | Count | Details |

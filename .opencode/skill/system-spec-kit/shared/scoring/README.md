@@ -30,7 +30,9 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Computes **composite relevance scores** for spec folders based on their memories. Used by `memory_stats` to rank folders by how relevant they are to the current session. The primary use case is **"resume recent work"**, which is why recency carries the highest weight.
+Computes **composite relevance scores** for spec folders based on their memories. Used by `memory_stats` to rank folders by how relevant they are to the current session.
+
+Gate E alignment: these scores are a secondary ranking signal only. Canonical recovery still starts with `/spec_kit:resume` and the `handover.md -> _memory.continuity -> spec docs` chain. Folder scoring helps rank candidate folders after those source-of-truth surfaces are known.
 
 <!-- /ANCHOR:overview -->
 
@@ -63,7 +65,7 @@ score = (recency * 0.40 + importance * 0.30 + activity * 0.20 + validation * 0.1
 | **Activity**     | 0.20   | `min(1, memoryCount / 5)`                                      |
 | **Validation**   | 0.10   | Placeholder `0.5` (real feedback tracking planned)             |
 
-**Archive multiplier** reduces scores for deprioritized folders:
+`archiveMultiplier` is the internal helper name for deprioritized-folder weighting. In practice it keeps scratch, test, and history-style folders in fallback-evidence territory instead of letting them outrank canonical spec-doc work.
 
 | Folder Type   | Multiplier |
 | ------------- | ---------- |
@@ -98,9 +100,9 @@ Constitutional-tier memories are **exempt from decay** (always 1.0).
 | `computeFolderScores`      | `(memories, options?) => FolderScore[]`                                 | Main entry: scores and ranks all folders        |
 | `computeSingleFolderScore` | `(folderPath, memories) => SingleFolderScore`                           | Composite score for one folder                  |
 | `computeRecencyScore`      | `(timestamp, tier?, decayRate?) => number`                              | Inverse decay with constitutional exemption     |
-| `isArchived`               | `(folderPath) => boolean`                                               | Check if path matches archive patterns          |
-| `getArchiveMultiplier`     | `(folderPath) => number`                                                | Get score multiplier for archived folders       |
-| `simplifyFolderPath`       | `(fullPath) => string`                                                  | Extract leaf name, mark archived                |
+| `isArchived`               | `(folderPath) => boolean`                                               | Check if path matches deprioritized history/fallback folder patterns |
+| `getArchiveMultiplier`     | `(folderPath) => number`                                                | Get the downgrade multiplier for fallback-evidence folders |
+| `simplifyFolderPath`       | `(fullPath) => string`                                                  | Extract leaf name and annotate deprioritized-history folders |
 | `findTopTier`              | `(memories) => string`                                                  | Highest importance tier in a set of memories    |
 | `findLastActivity`         | `(memories) => string`                                                  | Most recent timestamp (ISO string)              |
 
@@ -108,7 +110,7 @@ Constitutional-tier memories are **exempt from decay** (always 1.0).
 
 | Constant           | Type                  | Description                                   |
 | ------------------ | --------------------- | --------------------------------------------- |
-| `ARCHIVE_PATTERNS` | `readonly RegExp[]`   | Regex patterns for archive detection           |
+| `ARCHIVE_PATTERNS` | `readonly RegExp[]`   | Regex patterns for fallback-evidence folder detection |
 | `TIER_WEIGHTS`     | `TierWeights`         | Importance tier to weight mapping (0.1-1.0)    |
 | `SCORE_WEIGHTS`    | `ScoreWeights`        | Composite formula weights (sum = 1.0)          |
 | `DECAY_RATE`       | `number`              | Recency decay rate (`0.10`)                    |
@@ -129,8 +131,8 @@ Constitutional-tier memories are **exempt from decay** (always 1.0).
 
 | ID  | Decision                    | Rationale                                            |
 | --- | --------------------------- | ---------------------------------------------------- |
-| D1  | Composite weights           | Recency highest (0.40). Primary use is resume work   |
-| D2  | Archive patterns            | Deprioritize scratch/test/archive folders             |
+| D1  | Composite weights           | Recency highest (0.40). Supports recent-work ranking after canonical continuity recovery |
+| D2  | Archive patterns            | Deprioritize scratch/test/history folders so fallback evidence does not outrank active spec work |
 | D4  | Inverse decay               | Smooth curve, never reaches zero                      |
 | D7  | Tier weights                | Aligned with `importance-tiers.js` authoritative values |
 | D8  | Constitutional exemption    | Constitutional memories always score max recency      |

@@ -775,7 +775,7 @@ This skill operates within the behavioral framework defined in [AGENTS.md](../..
 Key integrations:
 - **Gate 2**: Skill routing via `skill_advisor.py`
 - **Tool Routing**: Per AGENTS.md Section 6 decision tree
-- **Memory**: Context preserved via Spec Kit Memory MCP
+- **Continuity**: Treat spec docs as canonical, use `/spec_kit:resume` for recovery, and read packet context in the order `handover.md -> _memory.continuity -> spec docs`
 
 ### Scripts
 

@@ -22,6 +22,8 @@ trigger_phrases:
 
 `core/` is the shared runtime foundation used by handlers, search modules, hooks, and formatters.
 
+These modules can support recovery plumbing, but they do not replace canonical packet continuity. For Spec Kit packet work, `/spec_kit:resume` still rebuilds state from `handover.md`, then `_memory.continuity`, then the remaining spec docs.
+
 Files in this directory:
 
 - `config.ts` - runtime path resolution, input limits, batch settings, allowed-path policy, and lazy cognitive config access.

@@ -31,6 +31,7 @@ trigger_phrases:
 - Roles are `owner`, `editor`, and `viewer`.
 - Conflict handling defaults to append-version behavior, with escalation to manual merge for repeat or high-risk conflicts.
 - `shared_memory_enable` bootstraps the shared-memory subsystem and generates this README if it is missing.
+- For packet work, `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs` remain the canonical recovery path; shared-space rows are supporting collaboration state.
 
 <!-- /ANCHOR:implemented-state -->
 <!-- ANCHOR:mcp-tool-surface -->

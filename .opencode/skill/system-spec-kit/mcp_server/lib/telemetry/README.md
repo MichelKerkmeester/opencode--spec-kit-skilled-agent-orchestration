@@ -34,6 +34,8 @@ trigger_phrases:
 
 The telemetry module provides structured observability for the retrieval pipeline and scoring subsystem. It records per-stage latency, search mode selection, fallback triggers, composite quality scores, scoring observation samples, trace payload validation, and agent consumption events. Telemetry data flows to governance tooling and is used by retrieval handlers to surface pipeline health metrics.
 
+Telemetry here supports the canonical Gate E flow: `/spec_kit:resume` remains the recovery surface, while packet continuity is re-established from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts are supporting evidence, not the primary continuity source.
+
 ### Key Statistics
 
 | Category | Count | Details |

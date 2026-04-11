@@ -48,10 +48,10 @@ Create, list, edit, and remove **constitutional memories**, the highest-tier rul
 
 ## 1. PURPOSE
 
-Provide a dedicated command for managing constitutional memories, the most powerful tier in the Spec Kit Memory system. Constitutional memories always appear at the top of every `memory_search()` result, never decay, and are exempt from archival. This command handles the full lifecycle: creation with proper frontmatter and ANCHOR format, budget validation, editing, and removal.
+Provide a dedicated command for managing constitutional memories, the most powerful tier in the Spec Kit Memory system. Constitutional memories always appear at the top of every `memory_search()` result and never decay. This command handles the full lifecycle: creation with proper frontmatter and ANCHOR format, budget validation, editing, and removal.
 
 **Key difference from `/memory:save`:**
-- `/memory:save` = Session context saved to `specs/*/memory/` (any tier)
+- `/memory:save` = Session context routed into canonical packet continuity surfaces
 - `/memory:learn` = Constitutional rules saved to `constitutional/` (always-surface tier)
 
 ### Constitutional Tier Reference
@@ -62,7 +62,7 @@ Provide a dedicated command for managing constitutional memories, the most power
 | Search boost | 3.0x | 2.0x | 1.0x |
 | Decays | Never | Never | Yes (90-day) |
 | Token budget | ~2000 total | Unlimited | Unlimited |
-| Location | `constitutional/` | `specs/*/memory/` | `specs/*/memory/` |
+| Location | `constitutional/` | Canonical packet continuity surfaces | Canonical packet continuity surfaces |
 
 **When NOT constitutional** (suggest `/memory:save` instead):
 - Session-specific context

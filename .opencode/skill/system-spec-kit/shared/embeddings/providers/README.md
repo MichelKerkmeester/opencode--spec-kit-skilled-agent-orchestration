@@ -31,6 +31,8 @@ trigger_phrases:
 
 Each file in this folder implements the `IEmbeddingProvider` interface from `shared/types.ts`. The parent `factory.ts` selects the active provider based on environment variables and available API keys.
 
+For Gate E continuity, use `/spec_kit:resume` as the operator-facing recovery surface. Rebuild prior packet context from `handover.md` -> `_memory.continuity` -> canonical spec docs; generated memory artifacts stay supporting only.
+
 All three providers share a common surface:
 
 - `generateEmbedding(text)` -- produce a `Float32Array` vector from raw text

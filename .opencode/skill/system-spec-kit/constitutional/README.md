@@ -43,6 +43,8 @@ The `constitutional/` directory contains memory files that are **always surfaced
 
 Think of constitutional memories as the "system prompt" for your memory system: rules that apply globally and should never be forgotten.
 
+For spec-folder continuity, constitutional memories are supporting guidance, not the primary recovery source. Canonical packet recovery still follows `handover.md`, then `_memory.continuity`, then the packet's spec docs via `/spec_kit:resume`.
+
 ### Key Statistics
 
 | Metric | Value | Description |
@@ -71,7 +73,7 @@ Think of constitutional memories as the "system prompt" for your memory system: 
 | critical | 2.0x | No | Never | No |
 | important | 1.5x | No | Never | No |
 | normal | 1.0x | Yes (90-day) | Never | No |
-| temporary | 0.5x | Yes (7-day) | 7 days | No |
+| temporary | 0.5x | Yes (short-lived) | Short-lived | No |
 | deprecated | 0.0x | N/A | Manual | No |
 
 **Key Difference**: Only constitutional memories appear in EVERY search result. Other tiers only appear when relevant to the query.

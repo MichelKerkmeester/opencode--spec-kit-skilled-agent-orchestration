@@ -33,6 +33,8 @@ The agent reads code using Read and Grep only. It never modifies, creates, or de
 
 All continuity across iterations comes from disk, not agent memory. The orchestrating command reads JSONL state, checks convergence, and dispatches the next agent with the current strategy file as its only context. This approach eliminates context window exhaustion for long review sessions and makes state fully inspectable, resumable, and recoverable.
 
+When the review hands control back to general packet work, `/spec_kit:resume` stays canonical. Recovery should rebuild from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay secondary.
+
 ### Key Statistics
 
 | Metric                        | Value                                                                                     |

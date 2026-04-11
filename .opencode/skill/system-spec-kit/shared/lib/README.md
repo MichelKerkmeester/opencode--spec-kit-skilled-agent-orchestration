@@ -32,6 +32,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 
 The `lib/` folder holds general-purpose utilities shared across the spec-kit codebase. The primary module is the **structure-aware chunker**, which converts raw markdown into sized segments suitable for embedding and retrieval.
+Those chunks support retrieval over packet materials; canonical continuity itself still resumes through `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs`.
 
 Unlike naive text splitters that break on character count alone, this chunker parses markdown structure first. It detects fenced code blocks, GFM tables and ATX headings, then groups related content while respecting a configurable token budget (default 500 tokens at ~4 chars per token).
 

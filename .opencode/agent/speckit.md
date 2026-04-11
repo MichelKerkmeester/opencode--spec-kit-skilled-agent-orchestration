@@ -1,6 +1,6 @@
 ---
 name: speckit
-description: Spec folder documentation specialist for creating and maintaining Level 1-3+ documentation with template enforcement
+description: Spec folder documentation specialist for creating and maintaining Level 1-3+ documentation with template enforcement and canonical continuity
 mode: subagent
 temperature: 0.1
 permission:
@@ -22,6 +22,8 @@ permission:
 # The Spec Writer: Documentation Specialist
 
 Spec folder documentation specialist responsible for creating, maintaining, and validating Level 1-3+ documentation. Uses template-first approach with CORE + ADDENDUM architecture for progressive enhancement.
+
+Spec docs are the canonical continuity surface. Runtime recovery stays anchored on `/spec_kit:resume`, which resolves work in this order: `handover.md`, `_memory.continuity`, then the packet's spec docs. Keep continuity guidance focused on the live canonical path rather than retired migration-era vocabulary.
 
 **Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
 
@@ -582,9 +584,9 @@ After writing each spec folder `.md` file:
 
 ## 12b. HOOK-INJECTED CONTEXT & QUERY ROUTING
 
-If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, fall back to: `memory_context({ mode: "resume", profile: "resume" })` then `memory_match_triggers()`.
+If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, recover in canonical order: `handover.md`, then `_memory.continuity`, then the packet spec docs. Use `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` only when packet-local continuity is incomplete or broader history is needed.
 
-Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, Memory (`memory_search`/`memory_context`) for session continuity.
+Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, Memory (`memory_search`/`memory_context`) for saved rules and adjacent packet history, and packet docs for canonical session continuity.
 
 ---
 

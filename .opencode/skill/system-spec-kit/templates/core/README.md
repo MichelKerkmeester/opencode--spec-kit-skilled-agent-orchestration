@@ -28,6 +28,7 @@ Shared base components for level template composition.
 
 Core templates define the common structure reused across levels.
 They are source artifacts, not direct user-facing copies.
+They are written for the Gate E continuity model, where packet docs stay canonical and `/spec_kit:resume` rebuilds active context from `handover.md -> _memory.continuity -> spec docs`.
 
 <!-- /ANCHOR:overview -->
 

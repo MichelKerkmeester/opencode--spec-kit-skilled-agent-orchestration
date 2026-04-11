@@ -29,6 +29,8 @@ trigger_phrases:
 
 The validation subsystem provides pre-flight checks that run before expensive operations like embedding generation or database writes. It prevents invalid data from entering the system and provides actionable feedback for resolution.
 
+Gate E alignment: these checks now protect the canonical continuity path directly. In practice that means validating the spec documents and supporting structured continuity data that `/spec_kit:resume` depends on, not a separate memory-file fallback workflow.
+
 ### Key Statistics
 
 | Category | Count | Details |
@@ -66,7 +68,7 @@ validation/
 | File | Purpose |
 |------|---------|
 | `preflight.ts` | All validation logic: anchors, duplicates, tokens, content size, unified preflight |
-| `save-quality-gate.ts` | 3-layer pre-storage quality gate: structural validation, content quality scoring (title, triggers, length, anchors, metadata, signal density), and semantic dedup. Behind `SPECKIT_SAVE_QUALITY_GATE` flag with 14-day warn-only graduation period |
+| `save-quality-gate.ts` | 3-layer pre-storage quality gate: structural validation, content quality scoring (title, triggers, length, anchors, metadata, signal density), and semantic dedup. Behind `SPECKIT_SAVE_QUALITY_GATE` |
 
 <!-- /ANCHOR:structure -->
 
@@ -160,14 +162,14 @@ Default cap is `MCP_MAX_CONTENT_LENGTH=250000` (250KB), configurable via environ
 | Layer 2 | Content Quality | Weighted signal density across 5 dimensions (title 0.25, triggers 0.20, length 0.20, anchors 0.15, metadata 0.20). Threshold: 0.4 |
 | Layer 3 | Semantic Dedup | Cosine similarity against existing memories. Threshold: 0.92 |
 
-**Warn-Only Mode**: First 14 days after activation, scores are logged but saves are not blocked. Activation timestamp is persisted to SQLite config table to survive restarts.
+**Activation Metadata**: Quality-gate activation timing is persisted to SQLite config so diagnostics and compatibility helpers can inspect the live gate state without introducing a staged rollout model into the continuity workflow.
 
 **Exported functions (save-quality-gate.ts):**
 
 | Function | Purpose |
 |----------|---------|
 | `isQualityGateEnabled()` | Check if `SPECKIT_SAVE_QUALITY_GATE` flag is enabled |
-| `isWarnOnlyMode()` | Check if still in 14-day warn-only period |
+| `isWarnOnlyMode()` | Compatibility helper for callers that inspect activation metadata |
 | `setActivationTimestamp(timestamp?)` | Persist activation timestamp to SQLite config |
 | `resetActivationTimestamp()` | Clear persisted activation timestamp |
 | `validateStructural(params)` | Layer 1: structural validation |
@@ -195,7 +197,7 @@ import { runPreflight } from './preflight';
 
 const result = runPreflight({
   content: memoryFileContent,
-  file_path: '/specs/<###-spec-name>/memory/context.md',
+  file_path: '/specs/<###-spec-name>/handover.md',
   spec_folder: 'specs/<###-spec-name>',
   database: db,
 }, {

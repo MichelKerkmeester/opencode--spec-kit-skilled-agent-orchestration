@@ -28,6 +28,8 @@ trigger_phrases:
 
 The barrel `index.ts` re-exports every module so consumers can import from `handlers/save` directly.
 
+Gate E alignment: this is the single canonical save pipeline. Successful writes update the current continuity model directly, with spec documents as the source of truth and `_memory.continuity` as supporting structured state. All save orchestration now converges on this one path.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:structure -->
 ## 2. STRUCTURE

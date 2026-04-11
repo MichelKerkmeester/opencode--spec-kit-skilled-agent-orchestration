@@ -90,7 +90,7 @@ The memory system exposes 47 MCP tools through 4 memory slash commands plus the 
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
 | `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, shared-memory spaces and memberships | 19 primary tools + 1 helper |
 | `/memory:save` | Save conversation context | 4 tools |
-| `/spec_kit:resume` | Continue or recover an interrupted spec-folder session through the broader memory/session recovery stack | Broad helper surface; primary chain uses 3 shared memory tools |
+| `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Broad helper surface; primary chain uses 3 shared memory tools |
 
 ### Requirements
 
@@ -520,9 +520,9 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 **Ablation study framework** -- turns off each search channel one at a time and measures quality degradation (Recall@20 delta). Identifies which components are critical.
 
-**Shadow scoring with holdout evaluation** -- tests proposed ranking improvements on a fixed test set before they go live. A new approach only reaches production after it proves itself.
+**Holdout scoring evaluation** -- tests proposed ranking improvements on a fixed test set before they go live. A new approach only reaches production after it proves itself.
 
-**Learned Stage 2 weight combiner** -- learns the best combination of scoring signals from actual usage data. Runs in shadow mode only, without affecting live results.
+**Learned Stage 2 weight combiner** -- learns the best combination of scoring signals from actual usage data. Candidate weights are evaluated offline against held-out runs before they affect live ranking.
 
 **Scoring observability** -- randomly samples scoring events and saves before-and-after snapshots for debugging.
 
@@ -598,7 +598,7 @@ The smart entry point. You describe what you need and it figures out the best wa
 
 ##### `session_resume`
 
-Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`.
+Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`, and for operator-facing packet recovery prefer `/spec_kit:resume`, which reconstructs context from `handover.md`, then `_memory.continuity`, then packet docs.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -609,7 +609,7 @@ Resume session with combined memory, code graph and CocoIndex status in a single
 
 ##### `session_bootstrap`
 
-Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions. Startup/bootstrap surfaces are freshness-aware but non-mutating; use `code_graph_scan` when readiness shows an empty or broad full-scan state.
+Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions. Startup/bootstrap surfaces are freshness-aware but non-mutating; use `code_graph_scan` when readiness shows an empty or broad full-scan state. In packet workflows, `/spec_kit:resume` sits above this tool as the operator-facing recovery surface.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1338,27 +1338,29 @@ Start a new feature and pull all relevant prior decisions:
 
 ---
 
-### Example 2: Save a Decision Memory
+### Example 2: Save Canonical Packet Continuity
 
-After making an architectural decision, save it for future retrieval:
+After an architectural decision or implementation session, update the packet's canonical continuity surfaces and reindex the packet docs:
 
 ```bash
-# 1. Generate the memory file
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/005-auth
+# 1. Update continuity from structured JSON
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  --json '{"specFolder":"005-auth","user_prompts":["Capture the auth decision"],"observations":["Documented the JWT rotation choice"],"recent_context":["Updated spec.md, decision-record.md, and implementation-summary.md"]}' \
+  specs/005-auth
 
-# 2. Index it
+# 2. Reindex the packet docs
 ```
 
 ```json
 {
-  "tool": "memory_save",
+  "tool": "memory_index_scan",
   "arguments": {
-    "filePath": "/absolute/path/to/specs/005-auth/memory/2026-03-15_auth-decision.md"
+    "specFolder": "specs/005-auth"
   }
 }
 ```
 
-**What happens**: File is validated, embedded and indexed. Returns memory ID, quality score and duplicate check results.
+**What happens**: The packet's canonical continuity surfaces are updated, the spec-folder docs are reindexed, and `/spec_kit:resume` can recover that work from `handover.md`, `_memory.continuity`, and packet docs on the next session.
 
 ---
 

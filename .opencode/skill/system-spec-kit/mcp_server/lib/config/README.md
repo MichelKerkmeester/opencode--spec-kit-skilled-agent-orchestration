@@ -32,6 +32,7 @@ trigger_phrases:
 ### What is the Config Module?
 
 The config module defines two related configuration layers: memory types (decay behavior) and spec document types (indexing and weighting behavior). This keeps retrieval aligned with both conversational memory state and spec-folder document structure.
+Canonical packet continuity still lives in `handover.md`, `_memory.continuity`, and the spec docs resumed through `/spec_kit:resume`; this module only configures how supporting artifacts are classified and weighted.
 
 ### Key Features
 

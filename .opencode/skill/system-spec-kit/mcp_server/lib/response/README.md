@@ -23,6 +23,8 @@ trigger_phrases:
 
 `lib/response/` standardizes how MCP tool handlers build envelopes, wrap them for MCP transport, and optionally compress them into profile-shaped outputs for specific consumers.
 
+Gate E alignment: response envelopes now describe the canonical continuity model directly. Resume-shaped outputs are meant to support `/spec_kit:resume` and should point callers back to `handover.md`, `_memory.continuity`, and the spec docs as the recovery chain.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:structure -->
 ## 2. STRUCTURE

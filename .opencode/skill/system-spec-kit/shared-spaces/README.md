@@ -13,6 +13,8 @@ Shared memory has been **enabled** for this workspace.
 - **Rollout** — Each space has independent rollout and kill-switch controls.
 - **Conflicts** — Concurrent edits produce append-version conflicts with automatic escalation to manual merge for repeat or high-risk cases.
 
+Shared spaces extend collaboration, but they do not replace canonical packet continuity. For Spec Kit packet work, `/spec_kit:resume` still rebuilds state from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
+
 ## Management Commands
 
 | Command | Description |

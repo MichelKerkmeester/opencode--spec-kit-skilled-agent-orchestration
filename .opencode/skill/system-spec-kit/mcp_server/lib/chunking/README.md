@@ -31,6 +31,8 @@ trigger_phrases:
 
 The chunking module splits large memory files into smaller pieces suitable for embedding and indexing. It works in two stages: first chunking (splitting), then thinning (filtering).
 
+Gate E alignment: chunking is a storage and retrieval optimization only. Canonical continuity still lives in spec documents first, with `_memory.continuity` as supporting structured state.
+
 ### What It Does
 
 - **Anchor chunking** detects `<!-- ANCHOR:id -->` / `<!-- /ANCHOR:id -->` tag pairs in content and groups anchor sections into chunks that stay under a target size. When no anchors are present, it falls back to structure-aware markdown splitting on H1/H2 headings.

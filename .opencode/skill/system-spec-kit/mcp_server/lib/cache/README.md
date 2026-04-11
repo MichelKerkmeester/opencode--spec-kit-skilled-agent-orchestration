@@ -30,6 +30,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 
 The cache module provides in-memory caching for MCP tool outputs to reduce redundant operations and improve response times. It uses SHA-256 hashed keys for deterministic cache lookups and supports automatic TTL-based expiration. Cache invalidation is especially important for spec document indexing and document-aware retrieval flows.
+The cache only accelerates supporting retrieval paths; canonical packet continuity is still recovered through `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs`.
 
 ### Key Characteristics
 

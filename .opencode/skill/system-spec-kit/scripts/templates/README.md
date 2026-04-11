@@ -36,6 +36,7 @@ trigger_phrases:
 The Template Composer (`compose.sh`) is an automated build system that generates level-specific documentation templates from modular source components. It merges core templates with level-specific addendums to create consistent templates for Levels 1, 2, 3 and 3+.
 
 **Purpose**: Maintain single-source-of-truth template components while preventing drift across documentation levels.
+The composed templates also preserve the Gate E continuity model: packet docs stay canonical, `/spec_kit:resume` is the recovery surface, and generated memory artifacts remain supporting only.
 
 ### Key Statistics
 

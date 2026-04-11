@@ -53,8 +53,8 @@ session_detection:
     tier_3_triggers:
       method: "memory_match_triggers({ prompt: 'resume work session context' })"
       fallback: "tier_4"
-    tier_4_mtime:
-      method: "glob {.opencode/,}specs/**/memory/*.md | sort by mtime | head -1"
+    tier_4_recent_artifacts:
+      method: "glob {.opencode/,}specs/**/{handover.md,implementation-summary.md,tasks.md} | filter active folders | sort by mtime | head -1"
       fallback: "report no session"
   phase_folder_detection:
     trigger: "After spec folder resolved, check if it contains [0-9][0-9][0-9]-*/ child directories"
@@ -69,8 +69,8 @@ session_detection:
 context_loading_priority:
   # 026: session_bootstrap() is preferred over plain memory_context() for interrupted-session recovery
   # It provides graph-aware context injection and replaces the removed context-prime agent
-  order: ["Primary: handover.md (<24h old)", "Primary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: CONTINUE_SESSION.md for crash recovery", "Secondary: memory_search() with resume anchors", "Secondary: checklist.md for progress"]
-  note: "Try session_bootstrap() for graph-aware recovery first, then let the user choose whether extra memory context is needed"
+  order: ["Primary: handover.md (<24h old)", "Primary: _memory.continuity in implementation-summary.md", "Primary: supporting spec docs (tasks/checklist/plan/decision-record)", "Secondary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: memory_search() with resume anchors"]
+  note: "Recover from the canonical packet first, then let the user choose whether MCP enrichment is needed"
 
 memory_loading:
   mode: interactive
@@ -79,7 +79,7 @@ memory_loading:
     - { id: A, label: "Fast resume", description: "Just enough context to continue safely" }
     - { id: B, label: "Fill missing next step / blockers", description: "Target only the missing recovery gaps" }
     - { id: C, label: "Deep context", description: "Load up to 3 recent files for a fuller picture" }
-    - { id: D, label: "Artifacts only", description: "Use tasks/checklist/handover without extra memory files" }
+    - { id: D, label: "Artifacts only", description: "Use handover, _memory.continuity, and supporting spec docs without extra MCP context" }
   mcp_integration:
     tool: memory_context
     note: "Call MCP tools directly - NEVER through Code Mode"
@@ -132,7 +132,7 @@ confidence_framework:
 # ─────────────────────────────────────────────────────────────────
 workflow:
   step_1_session_detection:
-    purpose: Detect active session from CLI argument or memory files
+    purpose: Detect active session from CLI argument or recent canonical spec artifacts
     activities:
       - Check CLI argument for spec folder
       - If no argument, build deterministic candidates from `specs/` and `.opencode/specs/`
@@ -157,10 +157,9 @@ workflow:
       - If recent handover exists, load and display contents
       - Attempt session_bootstrap() or memory_context() with mode="resume" and profile="resume" for the resolved spec folder
       - Extract Resume Essentials (current phase/task, last confirmed action, next safe action, blockers, relevant artifact/file)
-      - If essentials are still missing, inspect CONTINUE_SESSION.md when present and recent
       - Present targeted depth options instead of raw file-loading choices
       - Present numbered options to user, wait for selection
-    context_priority: ["handover.md", "session_bootstrap()", "memory_context(mode: resume, profile: resume)", "CONTINUE_SESSION.md", "memory/*.md (supplemental)"]
+    context_priority: ["handover.md", "_memory.continuity", "supporting spec docs", "session_bootstrap()", "memory_context(mode: resume, profile: resume)", "memory_search() with resume anchors"]
     outputs: { handover_loaded: "true|false", primary_recovery_loaded: "true|false", selected_memory: user_choice, load_count: number }
     checkpoint:
       question: "Do you want more context, or is the resume brief already enough?"
@@ -169,23 +168,23 @@ workflow:
         - { label: "A) Fast resume", description: "Current resume brief is enough" }
         - { label: "B) Fill missing next step / blockers", description: "Target only the missing recovery gaps" }
         - { label: "C) Deep context", description: "Load up to 3 recent files for a fuller picture" }
-        - { label: "D) Artifacts only", description: "Continue with the current artifacts and no extra memory files" }
+        - { label: "D) Artifacts only", description: "Continue with the canonical packet and no extra MCP context" }
 
   step_3_load_memory:
     purpose: Fill specific recovery gaps instead of broad-loading memory by default
     activities:
       - If the user chose Fast resume, keep the current recovery packet and do not load more
       - If the user chose Fill missing next step / blockers, run targeted anchored memory_search() only for those gaps
-      - If the user chose Deep context, load up to 3 recent memory files
-      - If the user chose Artifacts only, rely on tasks.md/checklist.md/handover.md and skip supplemental memory
+      - If the user chose Deep context, use `session_bootstrap()`/`memory_context()` plus targeted `memory_search()` to enrich the canonical packet
+      - If the user chose Artifacts only, rely on handover, `_memory.continuity`, and supporting spec docs and skip supplemental MCP context
       - Merge supplemental results with handover and primary recovery context
       - Extract Project State Snapshot (Phase, Active File, Last confirmed action, Next safe action, Blockers)
       - Parse and summarize combined context
     mcp_tool:
       name: memory_context
-      note: "Call directly - NEVER through Code Mode. Use resume mode first; use anchored memory_search() only when more detail is still needed."
+      note: "Call directly - NEVER through Code Mode. Use it only after the canonical packet is still thin; use anchored memory_search() only when more detail is still needed."
       parameters: { input: "resume previous work continue session", mode: "resume", profile: "resume", specFolder: "{detected_spec_folder}", includeContent: true }
-    outputs: { memory_loaded: true, context_source: "handover|memory_context|continue_session|memory|combined", context_summary: extracted_context, resume_packet: "now|last|next|blockers|artifact" }
+    outputs: { memory_loaded: true, context_source: "handover|continuity|spec_docs|memory_context|memory_search|combined", context_summary: extracted_context, resume_packet: "now|last|next|blockers|artifact" }
     validation: context_loaded
 
   step_4_calculate_progress:
@@ -239,7 +238,7 @@ interactive_execution:
 
 crash_recovery:
   command_reference: "/spec_kit:resume"
-  description: "Crash recovery is handled inside the resume workflow through handover, resume-mode memory retrieval, crash breadcrumbs, and anchored search fallbacks"
+  description: "Recovery is handled inside the resume workflow through handover.md, then _memory.continuity, then supporting spec docs, with MCP enrichment only when the canonical packet is thin"
   when_to_use: ["Session interrupted unexpectedly", "Context compaction detected", "Need to recover without handover.md"]
   integration_with_resume:
     relationship: "/spec_kit:resume = standard continuation + interrupted-session recovery"

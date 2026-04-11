@@ -43,6 +43,8 @@ This skill lets external AI assistants (Gemini CLI, Codex CLI, GitHub Copilot) i
 
 Claude Code brings capabilities that other CLIs lack or handle differently. Extended thinking with chain-of-thought reasoning gives it an edge on complex architecture decisions. The Edit tool performs surgical, diff-based code modifications rather than rewriting entire files. Schema-validated structured output guarantees machine-readable JSON. And 9 specialized agents handle everything from code review to session handover.
 
+When Claude Code returns work to a Spec Kit packet, `/spec_kit:resume` is the canonical recovery surface. Continuity stays in packet docs in the order `handover.md`, `_memory.continuity`, then the remaining spec docs, with generated memory artifacts treated as support only.
+
 The skill includes a self-invocation guard: if you are already running inside Claude Code, the skill blocks activation to prevent circular delegation.
 
 ### Key Statistics
@@ -79,6 +81,7 @@ The skill includes a self-invocation guard: if you are already running inside Cl
 | **Session Continuity** | Resume prior conversations with `--continue` or `--resume SESSION_ID` |
 | **Cost Control** | Hard budget cap per session via `--max-budget-usd` |
 | **Skills System** | On-demand specialized workflows loaded via SKILL.md files |
+| **Spec Kit handoff** | Return packet recovery through `/spec_kit:resume` and canonical packet docs |
 
 ### Requirements
 

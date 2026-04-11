@@ -25,6 +25,8 @@ trigger_phrases:
 
 The `loaders/` directory provides the ingestion layer for memory generation.
 
+Gate E alignment: loader output now feeds the canonical continuity contract only. Structured JSON, native capture normalization, and downstream save orchestration all converge on spec-doc continuity plus supporting `_memory.continuity`, not a separate side-memory workflow.
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
 ## 2. CURRENT INVENTORY

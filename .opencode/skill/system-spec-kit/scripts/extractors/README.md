@@ -24,6 +24,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 
 The `extractors/` directory converts collected session input into structured data used by templates and indexing.
+That extracted data supports generated artifacts and search enrichment; canonical continuity for active packet work is still resumed via `/spec_kit:resume` from `handover.md -> _memory.continuity -> spec docs`.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->

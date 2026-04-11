@@ -31,6 +31,8 @@ trigger_phrases:
 
 The extraction module provides the post-tool extraction pipeline for automated memory creation. It handles two distinct concerns: orchestrating extraction with deterministic memory ID resolution (`extraction-adapter.ts`) and blocking PII or secret content before it reaches the memory insert path (`redaction-gate.ts`).
 
+Gate E alignment: automated extraction feeds the same canonical continuity model as manual saves. Tool output is normalized once, then routed into canonical spec-document continuity plus supporting `_memory.continuity` state. There is no parallel fallback insert path.
+
 ### Key Statistics
 
 | Category | Count | Details |

@@ -26,6 +26,7 @@ trigger_phrases:
 This section provides an overview of the MCP Server Utilities directory.
 
 `utils/` provides reusable helpers used by handlers and core modules.
+In the Gate E model, those handlers support `/spec_kit:resume` and the packet continuity chain `handover.md` -> `_memory.continuity` -> spec docs; generated memory artifacts remain supporting only.
 
 - `validators.ts`: query and input-length validation, file-path validator factory.
 - `json-helpers.ts`: safe parse/stringify helpers.

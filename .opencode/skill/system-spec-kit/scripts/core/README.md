@@ -23,7 +23,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `core/` directory contains orchestration modules used by `dist/memory/generate-context.js`.
+The `core/` directory contains orchestration modules used by `dist/memory/generate-context.js` to update a packet's canonical continuity surfaces.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
@@ -74,6 +74,7 @@ cd .opencode/skill/system-spec-kit/scripts && npm run build
 - `subfolder-utils.ts` supports subfolder-aware operations used by memory save flows.
 - `file-writer.ts` and `memory-indexer.ts` keep generated context output consistent with indexing expectations.
 - `post-save-review.ts` runs after writes in JSON-mode save flows to compare saved frontmatter against the input payload and surface severity-graded drift findings.
+- `workflow.ts` now treats the canonical continuity path as unconditional. The save flow uses a single canonical path with no staged migration layer.
 - `workflow.ts` updates per-folder `description.json` after each memory save (increments `memorySequence`, appends to `memoryNameHistory`). This tracking is best-effort — failures are non-fatal.
 
 

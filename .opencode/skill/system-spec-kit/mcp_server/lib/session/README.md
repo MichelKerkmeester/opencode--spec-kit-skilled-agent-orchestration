@@ -32,6 +32,8 @@ trigger_phrases:
 
 The session layer provides all session-related operations for the Spec Kit Memory MCP server. It prevents duplicate context injection (saving ~50% tokens on follow-up queries) and enables crash recovery with immediate SQLite persistence.
 
+Gate E alignment: operator-facing recovery now anchors on `/spec_kit:resume`, with canonical continuity rebuilt from `handover.md -> _memory.continuity -> spec docs`. Session persistence in this directory supports that flow, but it is not a separate continuity source.
+
 ### Key Statistics
 
 | Category | Count | Details |
@@ -46,7 +48,7 @@ The session layer provides all session-related operations for the Spec Kit Memor
 | Feature | Description |
 |---------|-------------|
 | **Session Deduplication** | Tracks sent memories to prevent duplicate context injection |
-| **Crash Recovery** | Immediate SQLite persistence + CONTINUE_SESSION.md generation |
+| **Crash Recovery** | Immediate SQLite persistence backing `/spec_kit:resume` recovery |
 | **Token Savings** | ~50% reduction on follow-up queries |
 | **State Persistence** | Zero data loss on crash via immediate saves |
 | **Phase Awareness** | Session context includes phase metadata for phase-based specs (spec 139) |
@@ -68,7 +70,7 @@ session/
 
 | File | Purpose |
 |------|---------|
-| `session-manager.ts` | Core session tracking, deduplication, state persistence, CONTINUE_SESSION.md |
+| `session-manager.ts` | Core session tracking, deduplication, and state persistence used by resume/recovery flows |
 
 <!-- /ANCHOR:structure -->
 
@@ -106,23 +108,23 @@ Session Query Flow:
 | **Immediate Persistence** | State saved to SQLite instantly |
 | **Interrupted Detection** | On startup, active sessions marked as interrupted |
 | **State Recovery** | `recoverState()` returns state with `_recovered: true` flag |
-| **CONTINUE_SESSION.md** | Human-readable recovery file in spec folder |
+| **Resume Alignment** | Persisted state is available for upstream `handover.md` and `_memory.continuity` reconstruction |
 
 Session states:
 - `active`: Session in progress
 - `completed`: Session ended normally
 - `interrupted`: Session crashed (detected on restart)
 
-### CONTINUE_SESSION.md Generation
+### Canonical Recovery Alignment
 
-**Purpose**: Human-readable recovery file for smooth session continuation.
+**Purpose**: Keep technical session state available for the canonical resume flow.
 
-Generated on checkpoint with:
+Upstream recovery surfaces can rebuild continuity from persisted session state plus:
 - Session ID and status
 - Spec folder and current task
 - Last action and context summary
 - Pending work description
-- Quick resume command
+- The canonical recovery chain: `handover.md -> _memory.continuity -> spec docs`
 
 <!-- /ANCHOR:features -->
 
@@ -179,7 +181,7 @@ saveSessionState(sessionId, {
   pendingWork: 'Need to add traversal depth limit'
 });
 
-// Full checkpoint with CONTINUE_SESSION.md
+// Full checkpoint for upstream resume surfaces
 checkpointSession(sessionId, {
   specFolder: 'specs/<###-spec-name>',
   currentTask: 'T072',

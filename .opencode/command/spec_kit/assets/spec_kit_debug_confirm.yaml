@@ -291,7 +291,7 @@ termination:
     question: "Debug workflow complete. What's next?"
     options:
       - { label: "A) Verify fix", description: "Run tests or check in browser" }
-      - { label: "B) Save context", description: "Run /memory:save to preserve insights" }
+      - { label: "B) Refresh search support", description: "Refresh the indexed support artifact while canonical continuity stays in spec docs" }
       - { label: "C) Continue work", description: "Return to original task" }
       - { label: "D) Done", description: "End debugging session" }
     wait: true
@@ -299,7 +299,7 @@ termination:
     - { condition: "Fix applied successfully", action: "Verify in browser/tests" }
     - { condition: "Fix applied, continue work", action: "Return to original workflow" }
     - { condition: "Issue needs more analysis", action: "/spec_kit:debug (retry with different model)" }
-    - { condition: "Want to save debugging context", action: "/memory:save [spec-folder-path]" }
+    - { condition: "Want to refresh indexed search support", action: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]" }
     - { condition: "Debugging session complete", action: "/spec_kit:handover [spec-folder-path]" }
 
 # ─────────────────────────────────────────────────────────────────

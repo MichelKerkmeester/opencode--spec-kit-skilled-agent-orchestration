@@ -45,6 +45,8 @@ Copilot CLI is GitHub's standalone terminal interface for Copilot (GA February 2
 
 The defining feature is Autopilot mode. With `--allow-all-tools`, Copilot runs autonomously, reading files, writing code, and executing shell commands without pausing for approval. Combined with cloud delegation (`/delegate` or `&prompt`), this offloads heavy computation to GitHub's infrastructure rather than running everything locally.
 
+For Spec Kit packet work, Copilot handoff should always point back to `/spec_kit:resume`. Canonical continuity still comes from `handover.md`, then `_memory.continuity`, then the remaining spec docs, and any generated memory artifacts stay secondary.
+
 The skill includes a self-invocation guard: if you are already running inside Copilot CLI, activation is blocked to prevent circular delegation.
 
 ### Key Statistics
@@ -78,6 +80,7 @@ The skill includes a self-invocation guard: if you are already running inside Co
 | **Cloud Delegation** | Offload tasks to GitHub's cloud coding agents for heavy compute |
 | **Explore Agent** | Read-only codebase analysis for architecture mapping and onboarding |
 | **Task Agent** | Full-capability agent for implementation, refactoring, and testing |
+| **Spec Kit handoff** | Return packet recovery through `/spec_kit:resume` and packet docs, not generated memory artifacts |
 | **Repo Memory** | Persistent memory of project conventions and prior decisions across sessions |
 | **MCP Support** | Connect to Model Context Protocol servers for external data access |
 

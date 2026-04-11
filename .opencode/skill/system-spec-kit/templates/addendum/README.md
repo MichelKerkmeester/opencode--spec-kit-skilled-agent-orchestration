@@ -73,6 +73,7 @@ The `phase/` addendum is orthogonal to level composition -- it can be applied to
 - Copy from `../level_1/, ../level_2/, ../level_3/, or ../level_3+/` for real specs — never use addendum source files directly.
 - Keep addendums aligned with the current level architecture.
 - When sections move between levels, update both the addendum source and all affected level READMEs.
+- Template composition does not change continuity ownership. For live packets, `/spec_kit:resume` still recovers from `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts treated as support only.
 
 <!-- /ANCHOR:workflow-notes -->
 

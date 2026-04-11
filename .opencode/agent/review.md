@@ -63,6 +63,8 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 **If dispatched with a Context Package** (from @context or orchestrator): Skip Layer 1 memory checks (memory_match_triggers, memory_context, memory_search). Use provided context instead.
 
+**If no Context Package is provided and resumed packet context matters**: Read `handover.md`, then `_memory.continuity`, then the relevant spec docs before widening to broader memory retrieval. Use `memory_search` only as supporting history after the canonical packet sources are exhausted.
+
 ---
 
 ## 3. CAPABILITY SCAN

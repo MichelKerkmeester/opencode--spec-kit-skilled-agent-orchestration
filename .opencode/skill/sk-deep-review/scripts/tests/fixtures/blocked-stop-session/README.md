@@ -7,6 +7,8 @@ description: End-to-end fixture for the sk-deep-review blocked_stop reducer path
 
 This fixture demonstrates the full `blocked_stop -> registry -> dashboard` reducer path for a review packet.
 
+For Gate E continuity, this fixture stays supporting evidence only. Broader packet recovery still routes through `/spec_kit:resume`, then `handover.md`, `_memory.continuity`, and the remaining spec docs.
+
 It includes:
 - A complete `blocked_stop` bundle with all required `gateResults`
 - A severity upgrade where `F002` moves from `P2` in iteration 1 to `P1` in iteration 3

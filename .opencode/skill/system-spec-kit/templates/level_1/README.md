@@ -76,6 +76,8 @@ At completion, add and fill:
 cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-short-name/
 ```
 
+Resume follow-up work through `/spec_kit:resume`, which rebuilds packet continuity from `handover.md -> _memory.continuity -> spec docs`; generated `memory/` artifacts stay secondary.
+
 <!-- /ANCHOR:quick-start -->
 
 ## 4. PHASE DECOMPOSITION

@@ -45,6 +45,8 @@ The skill covers the full spectrum of prompt complexity, from rapid single-outpu
 
 The skill also validates every prompt against RICCE criteria (Role, Instructions, Context, Constraints, Examples) before delivery. If any element is missing, the DEPTH Harmonize phase flags it and either adds it or documents why it was intentionally omitted. This prevents silent gaps that would cause the enhanced prompt to underperform in practice.
 
+When prompt work feeds back into a Spec Kit packet, `/spec_kit:resume` is the canonical recovery surface. Packet continuity still lives in `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay secondary.
+
 ### Key Statistics
 
 | Category | Value | Details |

@@ -29,6 +29,8 @@ Background processing primitives for file-change detection and sequential job ex
 
 The `ops/` directory provides two background operation modules that keep the memory index current without blocking the main MCP request path:
 
+For Gate E, these background jobs support the canonical packet flow rather than defining it: `/spec_kit:resume` restores context through `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
+
 - **File Watcher** monitors spec folders for Markdown file changes and triggers debounced re-indexing with content-hash deduplication.
 - **Job Queue** manages multi-file ingestion as stateful jobs with a true sequential worker, crash recovery and continue-on-error behavior.
 
@@ -41,7 +43,7 @@ Both modules include SQLITE_BUSY retry logic to handle concurrent database acces
 | File | Description |
 |------|-------------|
 | `file-watcher.ts` | Chokidar-based file watcher that detects add/change/unlink events on Markdown files, debounces them, compares content hashes to skip no-op writes and triggers re-indexing with bounded concurrency (max 2 parallel). Includes dotfile filtering, symlink-escape prevention and per-file AbortController cancellation. |
-| `job-queue.ts` | SQLite-backed ingestion job queue with a finite state machine (`queued` > `parsing` > `embedding` > `indexing` > `complete`/`failed`/`cancelled`). Enforces valid state transitions, tracks per-file progress against the original submitted path list and caps stored errors at 50. Crash recovery resets incomplete jobs to `queued` on startup. |
+| `job-queue.ts` | SQLite-backed ingestion job queue with a bounded lifecycle (`queued` > `parsing` > `embedding` > `indexing` > `complete`/`failed`/`cancelled`). Enforces valid state transitions, tracks per-file progress against the original submitted path list and caps stored errors at 50. Crash recovery resets incomplete jobs to `queued` on startup. |
 
 ---
 
@@ -55,7 +57,7 @@ Both modules include SQLITE_BUSY retry logic to handle concurrent database acces
 - Reindex parity: watcher- and ingest-driven reindex paths use the normal synchronous embedding cache-miss path; they do not force deferred embeddings unless async mode was explicitly requested or provider generation fails.
 
 **Job Queue**
-- State machine: Six states with a strict transition map. Terminal states (`complete`, `failed`, `cancelled`) are immutable.
+- Lifecycle model: Six states with a strict transition map. Terminal states (`complete`, `failed`, `cancelled`) are immutable.
 - Sequential worker: Only one job processes at a time. Multiple `enqueueIngestJob` calls add to a pending queue drained by a single async worker.
 - Continue-on-error: Individual file failures are recorded but do not abort the entire job. A job is marked `failed` only when all files error.
 - Crash recovery: On init, incomplete jobs are reset to `queued` and re-enqueued for processing.

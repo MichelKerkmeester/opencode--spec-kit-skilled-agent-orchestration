@@ -1,263 +1,239 @@
 ---
-title: "Feature Specification: Gate E — Runtime Migration [system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/005-gate-e-runtime-migration/spec]"
-description: "Promote canonical continuity from shadow-only rollout buckets to canonical default, then align the command, agent, skill, and documentation surfaces to the shipped runtime semantics."
-trigger_phrases:
-  - "gate e"
-  - "runtime migration"
-  - "canonical continuity"
-  - "phase 018"
-  - "feature flag rollout"
+title: "Gate E — Runtime Migration"
+description: "Canonical cutover."
+trigger_phrases: ["gate e", "runtime migration"]
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "018/005-gate-e-runtime-migration"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Spec sync"
+    next_safe_action: "Run"
+    key_files: ["spec.md"]
 ---
-# Feature Specification: Gate E — Runtime Migration
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+# Feature Specification: Gate E — Runtime Migration
 
 ---
 
-## EXECUTIVE SUMMARY
+## Executive Summary
 
-Gate E is the runtime cutover for phase 018. The new continuity path has already been proven in shadow and reader mode, so this phase advances the rollout state machine from `shadow_only` through the dual-write buckets into `canonical`, then updates the 160-plus command, agent, skill, and documentation surfaces to describe the new default honestly.
+Gate E is the canonical cutover for phase 018. The runtime no longer uses a staged rollout ladder, shadow mode, observation windows, or archived-tier continuity semantics. This phase flips the new path to the only live continuity path immediately, removes rollout-era framing from the active surfaces, and updates the mapped command, agent, skill, and README files so the repo describes the shipped contract honestly.
 
-**Key Decisions**: batch the 8 CLI handback files with the settled Gate C `generate-context.js` contract, and keep `legacy_cleanup` out of the default Gate E critical path.
+The operator-facing recovery surface is `/spec_kit:resume`. Canonical continuity is sourced from packet artifacts in this order: `../handover.md`, `_memory.continuity`, then the canonical spec docs. Legacy memory files are supporting artifacts only, not the source of truth.
 
-**Critical Dependencies**: Gates A-D closed, dual-write shadow stable for at least 7 days, the resource-map file matrix, and the iteration-034/040 telemetry plus rollback contract.
-
----
-
-## 1. METADATA
+<!-- ANCHOR:metadata -->
+## 1. Metadata
 
 | Field | Value |
 |-------|-------|
-| **Level** | 3 |
-| **Priority** | P0 |
-| **Status** | Draft |
-| **Created** | 2026-04-11 |
-| **Branch** | `main` |
-
----
+| Level | 3 |
+| Priority | P0 |
+| Status | In Progress |
+| Created | 2026-04-11 |
+| Updated | 2026-04-12 |
+| Branch | `main` |
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Phase 018 proves the writer and reader paths before the runtime default changes, but Gate E is where the contract becomes user-visible. Without a controlled state-machine flip and synchronized doc-surface rewrite, the runtime could say `canonical` while 160-plus command, agent, skill, and README surfaces still teach shadow-era behavior.
+
+The previous Gate E packet was still written as a rollout state machine with `shadow_only`, dual-write buckets, hold windows, and post-flip observation gates. That is no longer the intended behavior. If the packet docs stay in that shape, the phase spec becomes an obstacle to the implementation instead of a truthful guide for it.
 
 ### Purpose
-Make `canonical` the default continuity mode, keep rollback and telemetry armed during the 7-day proving window, and bring every operator-facing surface into parity with the shipped runtime behavior described in iteration 034, iteration 040, and resource-map sections 2, 8.1, 8.2, and 8.5.
+
+Make the new continuity path canonical immediately, remove the retired rollout model from the active guidance, and drive parity across the mapped doc surfaces so operators, agents, and delegated CLIs all describe the same live contract.
 <!-- /ANCHOR:problem -->
 
----
-
 <!-- ANCHOR:scope -->
-## 3. SCOPE
+## 3. Scope
 
 ### In Scope
-- Gate E uses the full 8-state inventory from iteration 034 section 2: `S0 disabled` (fallback/off), `S1 shadow_only` (mirror-only compare mode), `S2 dual_write_10pct` (10 percent proving), `S3 dual_write_50pct` (50 percent proving), `S4 dual_write_100pct` (full dual-write proof), `S5 canonical` (default-serving), `S6 legacy_cleanup` (post-Gate-F permanence cleanup), and `S7 rolled_back` (transient safety latch that resolves to a named fallback target).
-- Advance `canonical_continuity_rollout` through `dual_write_10pct`, `dual_write_50pct`, `dual_write_100pct`, and `canonical` using the holds, cool-down windows, and rollback rules from iteration 034.
-- Update the full Gate E surface inventory: commands, agents, workflow YAMLs, top-level docs, 19 memory-relevant sub-READMEs, and 92 doc-parity README surfaces tracked in the resource map.
-- Synchronize the 8 CLI handback files with the final `generate-context.js` JSON contract before the broad documentation batch lands.
-- Resource-map arithmetic remains traceable: 50 command and agent surfaces plus 71 skill-surface rows plus 19 memory-relevant READMEs plus 92 doc-parity README touches yield about 232 raw candidates, which collapse to about 160 actionable Gate E edits after overlap and no-change exclusions are applied.
+
+- Flip the new path to the only live canonical continuity path.
+- Remove rollout-era continuity concepts from active guidance:
+  - `shadow_only`
+  - dual-write buckets
+  - 7-day and 180-day holds
+  - EWMA decision ladders
+  - archived-tier continuity and legacy fallback language
+- Align the mapped Gate E surfaces called out by the packet resource map:
+  - commands
+  - workflow YAMLs
+  - agents
+  - CLI handback docs
+  - `sk-*` skills and system-spec-kit internal docs
+  - top-level docs and sub-READMEs
+- Keep `/spec_kit:resume` as the recovery surface and make canonical spec docs the continuity source of truth.
+- Update packet-local closeout docs for truthful implementation and verification reporting.
 
 ### Out of Scope
-- Re-opening writer or reader architecture from Gates C-D. Gate E consumes those contracts; it does not redesign them.
-- Ad hoc archive fallback tuning during the first canonical window. Iteration 040 freezes that work behind evidence reviews.
-- Mandatory transition into `legacy_cleanup`. That state belongs to Gate F unless week-3 evidence plus permanence approval already exist.
 
-### Files to Change
+- Re-opening Gate C or Gate D writer and reader design.
+- Editing research iterations, resource-map artifacts, or sibling packet docs.
+- Reintroducing any staged rollout or observation framework.
+- Inventing completion evidence that has not been captured yet.
+
+### Files in This Packet
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/command/memory/*.md` | Modify | Update save/search/manage/learn semantics for canonical continuity |
-| `.opencode/command/spec_kit/*.md` and `assets/*.yaml` | Modify | Align resume, handover, plan, implement, complete, deep-research, and deep-review flows |
-| `.opencode/agent/*.md` | Modify | Retarget agent guidance to canonical-first continuity behavior |
-| `.opencode/skill/sk-*/**` and `.opencode/skill/system-spec-kit/**` | Modify | Update skill guidance, especially the 8 CLI handback files and 19 memory-relevant sub-READMEs |
-| Top-level docs and operator references | Modify | Keep the root instructions, architecture guide, install guide, and MCP server overview consistent with the runtime state machine |
+| `spec.md` | Modify | Rewrite scope and requirements to the single-flip runtime model |
+| `plan.md` | Modify | Replace staged rollout plan with immediate cutover plus parity plan |
+| `tasks.md` | Modify | Reflect current execution slices and remaining exit-gate work |
+| `checklist.md` | Modify | Verify against the single canonical contract and parity evidence |
+| `decision-record.md` | Modify | Record the immediate-cutover and canonical-doc decisions |
+| `implementation-summary.md` | Modify | Report the current implementation state and pending closeout evidence |
 <!-- /ANCHOR:scope -->
 
----
-
 <!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
+## 4. Requirements
 
-### P0 - Blockers (MUST complete)
-
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-001 | Promote the rollout state machine safely into `canonical` | The runtime advances through 10, 50, 100, and `canonical` only after each hold window and without tripping iteration-034 rollback rules |
-| REQ-002 | Keep rollback and telemetry live through the proving window | No blackout-window violation occurs, rollback remains available, and week-2/week-4 evidence checkpoints exist per iteration 040 |
-| REQ-003 | Update every required Gate E surface | All 160-plus command, agent, skill, and doc surfaces mapped in resource-map sections 2, 8.1, 8.2, and 8.5 are touched or explicitly marked no-change by the file matrix |
-| REQ-004 | Hold `canonical` for at least 7 days before claiming Gate E complete | `canonical` stays healthy for at least 7 days and no critical alert or auto-rollback event remains open |
-
-### P1 - Required (complete OR user-approved deferral)
+### P0 - Blockers
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-005 | Coordinate the 8 CLI handback files with the final `generate-context.js` contract | All `cli-*` skill docs and prompt-template assets match the shipped JSON contract in one batch |
-| REQ-006 | Rewrite the 19 memory-relevant sub-READMEs and touch the 92 doc-parity sub-READMEs | The memory-relevant set is rewritten for canonical continuity and the doc-parity set receives terminology parity where required |
-| REQ-007 | Keep archive fallback tuning evidence-driven | `archived_hit_rate` and by-intent review checkpoints stay live, and no unlogged tuning change lands during the initial canonical window |
-| REQ-008 | Defer `legacy_cleanup` unless Gate F permanence conditions are met | Gate E closes in `canonical` unless the separate permanence approval allows the optional cleanup move |
+| REQ-001 | Canonical continuity is the only live runtime path | Feature-flag or routing behavior is set to canonical unconditionally, or the retired flag path is removed entirely |
+| REQ-002 | No rollout-era continuity model remains in active Gate E guidance | Packet docs and updated repo surfaces no longer instruct operators to use shadow, dual-write, observation, EWMA, or archived-tier continuity behavior |
+| REQ-003 | Recovery guidance uses canonical continuity sources | `/spec_kit:resume` is the recovery surface and packet continuity resolves from `handover.md -> _memory.continuity -> spec docs` |
+| REQ-004 | Broad doc parity remains tied to the mapped surface inventory | The Gate E fanout updates the required command, agent, skill, CLI, and README surfaces or records honest remaining gaps |
+
+### P1 - Required
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-005 | CLI handback docs match the shipped `generate-context.js` contract | The 8 `cli-*` skill and prompt-template files use the current JSON-primary contract and precedence rules |
+| REQ-006 | Packet closeout stays evidence-backed | `implementation-summary.md` reports actual touched files, validation state, and any still-pending proof |
+| REQ-007 | Packet validation is run before Gate E is claimed complete | Packet-local markdown validation succeeds and any repo-wide completion claim cites real validator output |
+| REQ-008 | Packet guidance remains structurally valid under the active spec template | Required headers, anchors, and continuity frontmatter blocks pass validation |
 <!-- /ANCHOR:requirements -->
 
----
-
 <!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
+## 5. Success Criteria
 
-- **SC-001**: `canonical` becomes the default continuity state and remains healthy for at least 7 days with rollback still armed.
-- **SC-002**: All mapped Gate E surfaces describe canonical-first behavior, including the CLI handback protocol and memory-relevant README set.
-- **SC-003**: Metrics stay inside the iteration-033 and iteration-034 alert thresholds, with no unresolved correctness-loss or parity incident.
+- SC-001: The active runtime path is canonical without a shadow or dual-write control plane.
+- SC-002: Updated repo surfaces describe canonical continuity, spec-doc primacy, and `/spec_kit:resume` consistently.
+- SC-003: Packet closeout material reports real validation and implementation evidence without rollout-era placeholders.
 <!-- /ANCHOR:success-criteria -->
-
----
 
 <!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Gate D proof package | Canonical promotion is invalid if reader metrics or dual-write evidence are incomplete | Require Gates A-D closed and reuse iteration-040 week-1 blocker review before promotion |
-| Dependency | Impact-analysis artifact plus resource-map matrix | Broad doc parity can miss surfaces without a locked file matrix | Treat the artifact as a Gate E scope authority and block repo-wide parity work until cited |
-| Risk | CLI handback contract drifts from `generate-context.js` | External AI handback flows could regress even if core runtime is healthy | Update all 8 CLI files in one batch after the Gate C contract settles |
-| Risk | Metrics look healthy while docs lag behind | Operators could follow stale instructions during the migration window | Group updates by surface and track completion against the resource-map batches, not by ad hoc grep |
+| Dependency | Entry gate truth from prior packets | If Gates B, C, or D are not actually complete, this packet could overstate readiness | Keep entry-gate assumptions explicit and avoid marking runtime verification complete without current evidence |
+| Risk | Doc fanout drifts from the shipped save contract | Delegated CLI or operator instructions could regress | Keep the CLI handback batch tied to the current `generate-context.js` behavior |
+| Risk | Packet docs claim full parity too early | Gate E could appear closed while repo-wide fanout is still running | Mark only evidence-backed tasks and keep pending checks open |
+| Risk | Old continuity terms remain in overlooked surfaces | Operators may continue following retired instructions | Use resource-map-driven sweeps and targeted grep verification |
 <!-- /ANCHOR:risks -->
 
----
-
-<!-- ANCHOR:questions -->
-
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## 7. Non-Functional Requirements
 
 ### Performance
-- **NFR-P01**: While `S5 canonical` is active, Gate E must stay below the exact iteration-034 section 4 post-flip rollback thresholds: `resume.path.total p95 <= 1000ms` unless it also remains within the allowed `<=2x` 7-run baseline guard, `validator.rollback.fingerprint rate = 0`, and `search.shadow.diff divergence rate <= 3%` with no correctness-loss mismatch. Any breach demotes `S5 -> S4`, except a global post-flip fingerprint failure which may demote `S5 -> S1`.
 
-### Security
-- **NFR-S01**: Every promotion, freeze, rollback, or override must remain audit-logged with actor, reason, and incident or ticket reference.
+- NFR-P01: Post-flip verification must report actual sample-save and validator evidence when available. Placeholder metrics are not acceptable closeout evidence.
 
 ### Reliability
-- **NFR-R01**: Cool-down windows, blackout windows, and auto-rollback rules remain enabled for the entire Gate E proving window.
 
----
+- NFR-R01: Canonical continuity guidance must not depend on retired fallback tiers or observation-state coordination.
+
+### Maintainability
+
+- NFR-M01: Packet docs must describe the current runtime in plain, stable terms that do not require readers to reconstruct earlier rollout history.
 
 ## 8. EDGE CASES
 
-### Rollout Boundaries
-- A warning-only threshold breach can pause promotion, but it must not silently skip a hold window.
-- A post-flip correctness-loss event forces rollback even if doc updates are already in progress.
-
-### Documentation Drift
-- The broad parity batch cannot start from grep memory alone; it must follow the resource-map file matrix and the impact-analysis exclusions.
-- If the `generate-context.js` schema changes late, the CLI handback files must be re-batched before Gate E can close.
-
----
+- If a sample save still depends on retired flag plumbing, the packet remains in progress and the runtime validation items stay open.
+- If some doc slices are complete but the full mapped fanout is not, the packet may report partial progress but not close the parity requirement.
+- If `generate-context.js` behavior changes again before final closeout, the CLI contract checks must be rerun before completion is claimed.
+- If the parent `../handover.md` or `_memory.continuity` guidance drifts from the packet docs, `/spec_kit:resume` guidance must be re-synced before closeout.
 
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 23/25 | 160-plus shallow edits across commands, agents, skills, docs, and README surfaces |
-| Risk | 21/25 | Runtime default flip, rollback policy, and external CLI handback coordination |
-| Research | 11/20 | Bound strongly to iteration 014, 018, 020, 030, 034, and 040 |
-| Multi-Agent | 7/15 | Parallel surface batches are possible, but the runtime contract is centralized |
-| Coordination | 12/15 | Runtime state, telemetry, `generate-context.js`, and doc parity must land in sync |
-| **Total** | **74/100** | **Level 3** |
-
----
+| Scope | 22/25 | Canonical cutover plus a large mapped doc fanout |
+| Risk | 20/25 | Runtime truth and operator guidance must move together |
+| Research | 10/20 | Scope is grounded in prior packet research and resource maps |
+| Multi-Agent | 8/15 | Parallel doc batches are required for the broad fanout |
+| Coordination | 11/15 | Runtime, CLI contract, and packet closeout must stay aligned |
+| Total | 71/100 | Level 3 |
 
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | Promotion reaches `canonical` before the doc surface says the same thing | High | Medium | Tie closeout to the full resource-map matrix and keep parity batches visible by surface |
-| R-002 | CLI handback docs lag behind the shipped `generate-context.js` contract | High | Medium | Treat the 8 CLI files as one lockstep batch with explicit verification |
-| R-003 | Archive fallback tuning starts too early and hides a real regression | Medium | Medium | Freeze tuning during the initial canonical window and require week-2/week-4 evidence reviews |
-
----
+| R-001 | Runtime flips but guidance stays stale | High | Medium | Finish mapped parity fanout before closeout |
+| R-002 | CLI handback docs drift from save contract | High | Medium | Keep 8-file CLI batch tied to live contract checks |
+| R-003 | Packet claims completion without validation evidence | High | Medium | Keep checklist items open until proof is attached |
 
 ## 11. USER STORIES
 
-### US-001: Operator Promotes the Runtime Safely (Priority: P0)
+### US-001: Operator Uses the Canonical Path
 
-**As a** rollout operator, **I want** the feature flag to advance through the canonical buckets with explicit holds and rollback rules, **so that** Gate E proves the new default instead of gambling on a single flip.
+As an operator, I want Gate E to describe one canonical continuity path, so I can execute and validate the migration without threading through retired rollout states.
 
-**Acceptance Criteria**:
-1. Given healthy metrics and cleared hold windows, When the operator promotes from one bucket to the next, Then the state machine follows iteration-034 transitions and records the move.
+### US-002: Agent Resumes from Canonical Continuity
 
----
+As an agent or delegated CLI, I want continuity recovery to prioritize `../handover.md`, `_memory.continuity`, and canonical spec docs, so resume behavior follows the actual source of truth.
 
-### US-002: Documentation Consumer Sees the New Truth (Priority: P0)
+### US-003: Documentation Matches Runtime Reality
 
-**As a** command or skill user, **I want** the repo docs to describe canonical continuity as the default behavior, **so that** I do not keep following shadow-era guidance after the runtime has changed.
-
-**Acceptance Criteria**:
-1. Given the Gate E parity batch is complete, When a user reads commands, agents, skills, top-level docs, or memory-relevant READMEs, Then the language matches the canonical runtime contract.
-
----
-
-### US-003: External AI Handback Stays Compatible (Priority: P1)
-
-**As a** user of the `cli-*` delegation skills, **I want** the Memory Handback Protocol to stay aligned with `generate-context.js`, **so that** cross-AI save flows continue to work during and after the runtime cutover.
-
-**Acceptance Criteria**:
-1. Given the Gate C save contract is final, When the 8 CLI handback files are updated, Then they all document the same JSON schema, invocation path, and follow-up indexing behavior.
-
----
+As a repo reader, I want command, skill, agent, and README docs to match the live runtime contract, so I do not learn a rollout model that no longer exists.
 
 ### Acceptance Scenarios
 
-- **Given** Gates A-D are closed, **When** Gate E starts, **Then** the first rollout action is the 10 percent bucket, not a direct jump to `canonical`.
-- **Given** a promotion hold window is still open, **When** an operator tries to advance the feature flag, **Then** the migration pauses instead of skipping the required observation period.
-- **Given** the runtime is in `canonical`, **When** a correctness-loss or fingerprint rollback event fires, **Then** rollback takes priority over the remaining doc batch.
-- **Given** the parity sweep is running, **When** a command or skill surface is updated, **Then** the wording matches the canonical continuity contract and the resource-map matrix records the touch.
-- **Given** the CLI handback contract changes late, **When** the prompt-template batch has not landed yet, **Then** the 8 CLI files are re-synced before Gate E can close.
-- **Given** week-3 evidence is healthy but permanence approval is missing, **When** Gate E closes, **Then** the final state remains `canonical` and the `legacy_cleanup` move is handed to Gate F.
-
----
+1. **Given** the old rollout ladder text still appears in the packet, **when** Gate E packet docs are rewritten, **then** the phase describes an immediate canonical migration instead of staged rollout buckets.
+2. **Given** `/spec_kit:resume` is the operator recovery surface, **when** continuity guidance is read, **then** it points to `../handover.md`, `_memory.continuity`, and canonical spec docs in that order.
+3. **Given** the CLI handback files are part of the Gate E fanout, **when** the packet describes contract alignment, **then** it references the current JSON-primary `generate-context.js` behavior.
+4. **Given** runtime validation has not been attached yet, **when** checklist and summary files are updated, **then** completion-only checks remain open.
+5. **Given** some doc slices are already updated outside this packet, **when** implementation progress is summarized, **then** the packet records those slices as supporting evidence without inflating final update counts.
+6. **Given** strict packet validation runs after the rewrite, **when** template and frontmatter issues surface, **then** the packet is corrected before closeout is reported.
 
 ### AI Execution Protocol
 
 ### Pre-Task Checklist
 
-- Reconfirm Gate D is closed and the shadow window has at least 7 stable days before touching runtime state.
-- Re-read `../resource-map.md` plus the impact-analysis artifact before starting any wide parity batch.
-- Freeze the final `generate-context.js` contract before editing the CLI handback surfaces.
+- Confirm this packet only touches the owned markdown files in `005-gate-e-runtime-migration/`.
+- Treat resource-map artifacts and research iterations as read-only evidence sources.
+- Record only evidence-backed completion status.
 
 ### Execution Rules
 
 | Rule ID | Rule | Why |
 |---------|------|-----|
-| AI-SCOPE-018E | Follow the resource-map file matrix for every parity edit | Prevents missing or invented surfaces during the 160-plus file sweep |
-| AI-STATE-018E | Do not skip rollout buckets or hold windows | Preserves the iteration-034 safety model |
-| AI-CLI-018E | Update the 8 CLI handback files in one batch after the contract freezes | Prevents cross-AI handback drift |
-| AI-EVIDENCE-018E | Capture dashboard, playbook, and rollback evidence alongside the doc batch | Keeps Gate E grounded in runtime proof instead of wording alone |
+| AI-SCOPE-018E | Keep edits inside the owned packet markdown files only | Prevents cross-packet churn |
+| AI-TRUTH-018E | Rewrite to the current canonical model, not the retired rollout design | Keeps the packet useful |
+| AI-EVIDENCE-018E | Do not mark checks complete without direct evidence | Avoids false closeout |
+| AI-RESUME-018E | Keep `/spec_kit:resume` and canonical spec docs as the recovery contract | Matches the new continuity model |
 
 ### Status Reporting Format
 
-- Start state: active rollout bucket, current hold window, and parity surface group.
-- Work state: which batch is changing and which evidence source proves it.
-- End state: promoted, held, rolled back, or blocked.
+- Start state: packet rewrite status, known execution evidence, and open closeout blockers.
+- Work state: owned file updates plus any validator failures being resolved.
+- End state: validated, pending runtime proof, or complete with attached evidence.
 
 ### Blocked Task Protocol
 
-1. Stop if a required edit depends on a still-moving Gate C contract or a missing impact-analysis artifact.
-2. Record the blocked surface group and the missing prerequisite in the packet tracker.
-3. Resume only after the contract or evidence source is stable again.
+1. Stop if a packet claim depends on validator output or runtime proof that has not been produced yet.
+2. Leave the relevant checklist items open.
+3. Record the missing evidence in `implementation-summary.md`.
 
----
+<!-- ANCHOR:questions -->
+## 12. Open Questions
 
-## 12. OPEN QUESTIONS
-
-- None for scope population. Gate E explicitly defers `legacy_cleanup` to the optional path unless Gate F permanence evidence is already approved.
+- None inside packet scope. Remaining uncertainty is execution evidence, not packet design.
 <!-- /ANCHOR:questions -->
 
----
+## 13. Related Documents
 
-## RELATED DOCUMENTS
-
-- **Implementation Plan**: See `plan.md`
-- **Task Breakdown**: See `tasks.md`
-- **Verification Checklist**: See `checklist.md`
-- **Decision Records**: See `decision-record.md`
-- **Parent Grounding**: `../implementation-design.md`, `../resource-map.md`, and research iterations 014, 018, 020, 030, 034, 040
+- Implementation Plan: `plan.md`
+- Task Breakdown: `tasks.md`
+- Verification Checklist: `checklist.md`
+- Decision Record: `decision-record.md`
+- Current Closeout State: `implementation-summary.md`

@@ -50,7 +50,7 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 ### 7-Step Ultra-Think Process
 
 1. **RECEIVE** → Parse request, identify task type (bug fix, feature, refactor, architecture, custom)
-2. **PREPARE** → Load context via memory (`memory_match_triggers` → `memory_context`) and gather required file context. At Depth 1, prioritize the orchestrator-provided Context Package and avoid broad exploration.
+2. **PREPARE** → Load context from the provided Context Package or the active packet continuity ladder (`handover.md` -> `_memory.continuity` -> spec docs), then gather required file context. Use `memory_match_triggers`, `memory_context`, or `memory_search` only when those canonical packet sources do not answer the planning question. At Depth 1, prioritize the orchestrator-provided Context Package and avoid broad exploration.
 3. **DIVERSIFY** → Select strategy combination based on task type (see §3 Thinking Strategy Routing)
 4. **DISPATCH** → Launch N strategy subagents in parallel (Depth 0) or process sequentially via `sequential_thinking` (Depth 1)
 5. **SYNTHESIZE** → Score each strategy result using the 5-dimension rubric (see §6 Synthesis Protocol), resolve conflicts
@@ -80,9 +80,9 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 | `Grep`                  | Pattern search                 | Finding relevant code patterns         |
 | `Glob`                  | File discovery                 | Locating files for context             |
 | `WebFetch`              | External resources             | Fetching documentation, references     |
-| `memory_match_triggers` | Memory triggers                | Quick context surfacing in PREPARE     |
-| `memory_context`        | Unified memory retrieval       | Deep context loading in PREPARE        |
-| `memory_search`         | Hybrid memory search           | Finding prior decisions and patterns   |
+| `memory_match_triggers` | Memory triggers                | Supplemental context surfacing after packet continuity is checked |
+| `memory_context`        | Unified memory retrieval       | Deep historical context when `handover.md`, `_memory.continuity`, and spec docs are insufficient |
+| `memory_search`         | Hybrid memory search           | Finding older decisions and patterns after the canonical packet sources are exhausted |
 
 > **Planning-only permissions**: This agent has read/search access for analysis but CANNOT modify files.
 > Write, Edit, and Bash are denied. The plan output guides the user (or another agent) through execution.

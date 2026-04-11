@@ -19,7 +19,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This directory is empty. Scoring functions are in `lib/scoring/`.
+This directory is empty. Scoring functions are in `lib/scoring/`, where they support retrieval ranking around the canonical packet continuity path resumed via `/spec_kit:resume`.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:related-documents -->

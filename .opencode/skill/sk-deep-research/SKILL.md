@@ -314,7 +314,7 @@ These concepts remain documented for future design work, but they are not part o
 - Research loop ran to convergence or max iterations
 - All state files present and consistent (config, JSONL, strategy)
 - research/research.md produced with findings from all iterations
-- Memory context saved via generate-context.js
+- Canonical continuity surfaces updated via generate-context.js
 
 ### Quality Gates
 
@@ -324,7 +324,7 @@ These concepts remain documented for future design work, but they are not part o
 | **Per-iteration** | iteration-NNN.md written, JSONL appended, reducer refreshes strategy/dashboard/registry | Yes |
 | **Post-loop** | research/research.md exists with content, convergence report generated | Yes |
 | **Quality guards** | Source diversity (>=2), focus alignment, no single-weak-source | Yes |
-| **Memory save** | memory/*.md created via generate-context.js | No |
+| **Continuity save** | Canonical packet continuity surfaces updated via generate-context.js | No |
 
 ### Convergence Report
 
@@ -347,15 +347,17 @@ This skill operates within the behavioral framework defined in CLAUDE.md.
 Key integrations:
 - **Gate 2**: Skill routing via `skill_advisor.py` (keywords: autoresearch, deep research)
 - **Gate 3**: File modifications require spec folder question per CLAUDE.md Gate 3
-- **Memory**: Context preserved via Spec Kit Memory MCP (generate-context.js)
+- **Continuity**: `/spec_kit:resume` is the operator-facing recovery surface; canonical packet continuity is written via `generate-context.js`
 - **Orchestrator**: @orchestrate dispatches @deep-research as LEAF agent
 
-### Memory Integration
+### Continuity Integration
 
 ```
 Before research:
-  memory_context({ input: topic, mode: "deep", intent: "understand" })
-  --> Loads prior research into strategy.md "Known Context"
+  /spec_kit:resume
+  --> Recover packet context in this order:
+      handover.md -> _memory.continuity -> spec docs
+  --> Use memory_context() or memory_search() only after those canonical packet sources are exhausted
 
 During research (each iteration):
   Agent writes research/iterations/iteration-NNN.md
@@ -365,6 +367,7 @@ During research (each iteration):
 
 After research:
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]
+  # Updates canonical continuity surfaces directly.
   # No additional indexing step is part of the live workflow contract.
 ```
 
@@ -373,6 +376,7 @@ After research:
 | Command | Relationship |
 |---------|-------------|
 | `/spec_kit:deep-research` | Primary invocation point |
+| `/spec_kit:resume` | Canonical recovery surface before resuming or extending an active packet |
 | `/spec_kit:plan` | Next step after deep research completes |
 | `/memory:save` | Manual memory save (deep research auto-saves) |
 

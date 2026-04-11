@@ -440,15 +440,21 @@ After receiving agent output, the calling AI extracts the handback section:
 const match = output.match(/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/);
 ```
 
-Then constructs JSON and saves via:
+Then constructs structured JSON and saves via:
 
 ```bash
-# Redact or scrub secrets before writing the JSON payload
-# Write extracted data to JSON
-cat > /tmp/save-context-data.json << 'JSONEOF'
+# Redact or scrub secrets before sending the JSON payload
+JSON_PAYLOAD=$(cat <<'JSONEOF'
 {
+  "specFolder": "<extracted or provided by calling AI>",
   "sessionSummary": "<extracted summary>",
-  "filesModified": ["<extracted paths>"],
+  "filesModified": [
+    {
+      "path": "<extracted path>",
+      "action": "modify",
+      "description": "<what changed and why it matters>"
+    }
+  ],
   "FILES": [
     {
       "FILE_PATH": "<extracted path when known>",
@@ -458,29 +464,69 @@ cat > /tmp/save-context-data.json << 'JSONEOF'
       "_provenance": "tool"
     }
   ],
-  "keyDecisions": ["<extracted decisions>"],
-  "recentContext": [
+  "keyDecisions": [
     {
-      "request": "<user goal or delegated ask>",
-      "learning": "<durable implementation detail or verification result>"
+      "decision": "<extracted decision>",
+      "rationale": "<why it was chosen>"
     }
   ],
   "nextSteps": ["<extracted remaining work>"],
-  "specFolder": "<extracted or provided by calling AI>",
-  "triggerPhrases": ["<auto-derived from task>"]
+  "triggerPhrases": ["<auto-derived from task>"],
+  "user_prompts": [
+    {
+      "prompt": "<delegated ask>",
+      "timestamp": "<ISO-8601>"
+    }
+  ],
+  "observations": [
+    {
+      "type": "implementation",
+      "title": "Delegation summary",
+      "narrative": "<high-signal summary of what happened>",
+      "timestamp": "<ISO-8601>",
+      "files": ["<extracted path>"],
+      "facts": ["<durable fact or verification result>"]
+    }
+  ],
+  "recent_context": [
+    {
+      "request": "<user goal or delegated ask>",
+      "learning": "<durable implementation detail or verification result>",
+      "completed": "<what finished>",
+      "date": "<ISO-8601>"
+    }
+  ],
+  "toolCalls": [
+    {
+      "tool": "gemini",
+      "inputSummary": "<prompt summary>",
+      "outputSummary": "<result summary>",
+      "status": "success"
+    }
+  ]
 }
 JSONEOF
+)
 
-# Save via generate-context.js JSON mode
+# Preferred: structured stdin mode
+printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+
+# Also valid for compact payloads
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json "$JSON_PAYLOAD" [spec-folder]
+
+# Also valid for larger payloads that are easier to stage on disk
+printf '%s\n' "$JSON_PAYLOAD" > /tmp/save-context-data.json
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]
 ```
 
-Accepted field names include camelCase and the documented snake_case equivalents such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps`. Persistence behavior for next-step fields: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
+The structured contract prefers `specFolder`, `user_prompts`, `observations`, `recent_context`, and optional `toolCalls`, `exchanges`, `preflight`, and `postflight`. Convenience fields such as `sessionSummary`, `filesModified`, `keyDecisions`, `triggerPhrases`, and `nextSteps` are still accepted and normalized. Documented snake_case equivalents such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps` also work. Persistence behavior for next-step fields: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
 
-If `/tmp/save-context-data.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture for that error.
+If both the payload and the CLI specify a spec folder, the explicit CLI target wins.
 
-Valid JSON can still be rejected after normalization. File-backed handbacks skip stateless alignment and `QUALITY_GATE_ABORT`, but thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT` and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
+If `/tmp/save-context-data.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Surface the error and fix the path or payload before retrying.
 
-Minimum viable payload: include a specific summary, at least one meaningful `recentContext` entry or equivalent observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known.
+Valid JSON can still be rejected after normalization. Thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT`, and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
+
+Minimum viable payload: include a specific summary, at least one meaningful `recent_context` entry, at least one useful observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, `_provenance`, and `toolCalls` when known.
 
 <!-- /ANCHOR:memory_epilogue -->

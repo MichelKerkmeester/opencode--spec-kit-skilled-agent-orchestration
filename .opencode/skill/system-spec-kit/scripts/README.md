@@ -107,6 +107,8 @@ Memory save entrypoint (required by Memory Save Rule):
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
 
+Use `/spec_kit:resume` for active recovery; canonical continuity lives in `handover.md -> _memory.continuity -> spec docs`, while generated `memory/` output remains supporting/indexed material.
+
 Direct positional saves are not supported; use structured JSON. Explicit CLI targets remain authoritative in structured-input modes, and phase-folder saves write into that selected phase folder's `memory/` directory.
 
 JSON mode is also supported:

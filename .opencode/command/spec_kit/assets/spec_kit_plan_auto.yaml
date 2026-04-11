@@ -479,12 +479,12 @@ workflow:
     tool_invocation:
       command: Read(".opencode/skill/system-spec-kit/SKILL.md")
       note: 'Read SKILL.md to activate context saving'
-    outputs: ["[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__planning_session.md"]
+    outputs: ["Canonical continuity refreshed in spec docs + indexed support artifact under [SPEC_FOLDER]/memory/"]
     validation: context_saved_successfully
     post_save_indexing:
       pre_index_instruction:
-        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_path}"
-        note: "First run generate-context.js before MCP indexing"
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_path}"
+        note: "First compose structured JSON, then run generate-context.js before MCP indexing"
       mcp_tool: memory_save
       invocation: 'spec_kit_memory_memory_save({ filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__planning_session.md" })'
       critical_note: "Then index via memory_save or memory_index_scan. Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
@@ -502,7 +502,7 @@ workflow:
         - { context_type: "research", example_id: "RESEARCH-{topic}-{spec#}" }
         - { context_type: "files", example_id: "FILES-{spec#}" }
       benefit: "93% token savings on anchor-based retrieval"
-      reference: "See /memory:save Step 3 for full anchor documentation"
+      reference: "See the system-spec-kit save workflow for full anchor documentation"
     importance_tier:
       assign: normal
       promotion_note: "Use memory_update() to promote to 'important' or 'critical' if warranted"

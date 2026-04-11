@@ -35,6 +35,8 @@ Evaluator-first workflow for improving agents across their full integration surf
 
 `sk-improve-agent` helps operators improve agent surfaces safely by proving improvement before mutation. It treats agent improvement as a measurable optimization problem — not ad-hoc prompt tweaking — by scanning integration surfaces, deriving scoring profiles, and maintaining an append-only evidence trail.
 
+For packet recovery around an improvement run, `/spec_kit:resume` remains the canonical surface. Continuity still comes from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts remain supporting only.
+
 | Item | Value |
 | --- | --- |
 | Primary mode | Proposal-only by default |

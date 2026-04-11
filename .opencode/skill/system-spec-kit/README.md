@@ -90,9 +90,9 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | **Spec Folder Workflow**      | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk, with packet-local changelog closeout for packet roots and child phases                      |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs                                                                                                            |
 | **Spec Kit Memory MCP**       | 43-tool MCP server providing persistent semantic memory, graph intelligence, and session orchestration across sessions, models and tools                                                                       |
-| **Startup / Recovery Surfaces** | Runtime-specific startup context delivery where available, with `session_bootstrap()` as the canonical non-hook recovery entry and `session_resume()` as the detailed follow-up surface                    |
+| **Startup / Recovery Surfaces** | `/spec_kit:resume` is the canonical operator-facing recovery surface. Under the hood, startup and recovery rebuild active context from `handover.md`, then `_memory.continuity`, then canonical spec docs |
 | **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
-| **Session Continuity**        | Context preserved across session boundaries via `generate-context.js` and semantic indexing                                                                                                                    |
+| **Session Continuity**        | `generate-context.js` updates the canonical continuity surfaces for a spec folder so `/spec_kit:resume` can rebuild the next session from packet-local sources                                              |
 | **Validation Scripts**        | 20-rule validation, completeness checks and placeholder detection for spec folders                                                                                                                             |
 | **Phase Decomposition**       | Parent/child spec folder structure for multi-session, multi-phase work                                                                                                                                         |
 | **Constitutional Memory**     | Always-surface rules with a 3.0x boost that never decay -- like pinned notes that show up in every search                                                                                                      |
@@ -153,12 +153,12 @@ The script sets up the folder, copies the right templates for the chosen level, 
 When your work session ends, save what happened so the next session can continue:
 
 ```bash
-# Generate a memory file from structured JSON
+# Update the canonical continuity surfaces from structured JSON
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  --json '{"specFolder":"042-my-feature","sessionSummary":"Implemented login form validation"}' \
+  --json '{"specFolder":"042-my-feature","user_prompts":["Implement login form validation"],"observations":["Added client-side validation for empty email and password"],"recent_context":["Touched auth form schema and submit handler"],"toolCalls":["npm test -- auth"],"exchanges":["Verified the error states render before submit"]}' \
   specs/042-my-feature/
 
-# Output: memory/YY-MM-DD_HH-MM__topic.md (auto-indexed in MCP)
+# Result: canonical continuity surfaces updated for the target spec folder
 ```
 
 Or use the command shorthand:
@@ -175,7 +175,7 @@ Start a new session on work you did before:
 /spec_kit:resume
 ```
 
-The system checks the best available continuation context for your most recent work, prefers a fresh `handover.md` when it exists, falls back to resume-mode memory retrieval and crash-recovery breadcrumbs when needed, and presents your prior decisions, file changes and next steps before you start.
+The system rebuilds continuation context in a fixed order: `handover.md` first, then `_memory.continuity`, then the packet's canonical spec docs. It presents the current state, prior decisions, touched files, and next steps before you start.
 
 ### Search for Context
 
@@ -258,11 +258,12 @@ specs/<###-feature-name>/
 ├── checklist.md                 # QA validation gates (Level 2+)
 ├── decision-record.md           # Architecture decisions (Level 3+)
 ├── implementation-summary.md    # Post-implementation summary (all levels)
+├── handover.md                  # Operator-facing session handoff for /spec_kit:resume
 ├── changelog/                   # Packet-local changelog history for packet roots / phase parents
-├── memory/                      # Session context files (via generate-context.js)
-│   └── YY-MM-DD_HH-MM__topic.md
 └── scratch/                     # Temporary workspace files (gitignored)
 ```
+
+`generate-context.js` updates the packet's continuity state for `/spec_kit:resume`; recovery then rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs.
 
 #### Checklist Priority System (Level 2+)
 
@@ -627,7 +628,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`templates/core/`](./templates/core/)                                       | Four foundation templates used at all documentation levels                                           |
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh)                         | Create spec folders with level-appropriate template files                                            |
 | [`scripts/spec/validate.sh`](./scripts/spec/validate.sh)                     | Run 20-rule validation on any spec folder                                                            |
-| `scripts/dist/memory/generate-context.js`                                    | Primary workflow for saving session context to memory                                                |
+| `scripts/dist/memory/generate-context.js`                                    | Primary workflow for updating packet continuity state from structured JSON                            |
 | [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 291 implemented features across 22 categories                                    |
 
 ### How the Pieces Connect
@@ -636,7 +637,7 @@ Think of Spec Kit as a filing system with a librarian attached.
 
 The **spec folder workflow** is the filing system. Every time you modify files, it creates a numbered folder with the right paperwork (specification, plan, tasks). Templates make sure every folder follows the same structure. Validation checks that nothing is missing.
 
-The **memory system** is the librarian. When a session ends, `generate-context.js` writes a summary of what happened and files it in the spec folder's `memory/` directory. The MCP server indexes it into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, runtime-specific startup integrations may auto-surface that context. If startup context is unavailable or the runtime is operating without hooks, begin with `session_bootstrap()`, which bundles resume context, health, and structural readiness into one recovery call before deeper `memory_context` work begins.
+The **memory system** is the librarian. When a session ends, `generate-context.js` updates the packet's canonical continuity surfaces so the next session can recover from packet-local sources first. The MCP server indexes those packet docs into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, `/spec_kit:resume` rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs. If you need deeper retrieval after that, `session_bootstrap()` bundles resume context, health, and structural readiness into one follow-up recovery call before broader `memory_context` work begins.
 
 The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation and packet-local changelog closeout when applicable. `/memory:save` saves context. `/spec_kit:resume` recovers or continues a previous session.
 
@@ -652,12 +653,13 @@ Session starts
             │
             ▼
   Session ends
-  └─► generate-context.js writes memory file
-       └─► MCP indexes it (vector + BM25 + graph)
+  └─► generate-context.js updates canonical continuity surfaces
+       └─► MCP reindexes packet docs (vector + BM25 + graph)
             │
             ▼
   Next session starts
-  └─► Startup surface auto-primes OR session_bootstrap() runs once
+  └─► /spec_kit:resume reads handover.md -> _memory.continuity -> packet docs
+       └─► session_bootstrap() or memory_context() deepen retrieval when needed
        └─► AI resumes with context + health + structural readiness
 ```
 
@@ -780,7 +782,7 @@ After implementing the first phase, save context so the next session can resume:
 ```bash
 # Using the generate-context.js script directly
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  --json '{"specFolder":"043-user-profile-update","sessionSummary":"Implemented data model and API endpoints. Frontend pending."}' \
+  --json '{"specFolder":"043-user-profile-update","user_prompts":["Capture the completed backend phase"],"observations":["Implemented the data model and API endpoints"],"recent_context":["Frontend work is still pending for the next session"]}' \
   .opencode/specs/[project]/043-user-profile-update/
 ```
 
@@ -877,7 +879,7 @@ Verify `spec-kit-memory` appears in your `opencode.json` or equivalent MCP confi
 
 **What you see**: `generate-context.js` runs but the output file is empty or the script exits with an error.
 
-**Common causes**: Invalid JSON input, or TypeScript source not compiled to `dist/`.
+**Common causes**: Invalid structured JSON input, a missing explicit spec-folder target, or TypeScript source not compiled to `dist/`.
 
 **Fix**:
 
@@ -885,9 +887,10 @@ Verify `spec-kit-memory` appears in your `opencode.json` or equivalent MCP confi
 # Rebuild the scripts
 cd .opencode/skill/system-spec-kit && npm run build
 
-# Retry with valid JSON
+# Retry with a valid structured payload
 node scripts/dist/memory/generate-context.js \
-  --json '{"specFolder":"NNN-feature","sessionSummary":"Brief summary of what happened"}'
+  --json '{"specFolder":"NNN-feature","user_prompts":["Summarize the completed work"],"observations":["Captured the main change and verification"],"recent_context":["List the files or packet areas touched"]}' \
+  specs/NNN-feature
 ```
 
 ---
@@ -951,7 +954,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | `generate-context.js` not found  | Run `npm run build` in `system-spec-kit/`                                       |
 | Spec folder fails validation     | Run `validate.sh --verbose` and read each failing rule                          |
 | Memory context seems wrong       | Call `memory_stats({})` to check index counts                                   |
-| Session context lost after crash | Use `/spec_kit:resume` to recover from the best available checkpoint or handoff |
+| Session context lost after crash | Use `/spec_kit:resume` to rebuild from `handover.md`, `_memory.continuity`, and packet docs |
 | Placeholder check fails          | Run `check-placeholders.sh` and replace all `[PLACEHOLDER]` values              |
 | Stale results after save         | Call `memory_index_scan({ specFolder: "..." })` to force re-index               |
 | Too many near-duplicate results  | Check that interference penalty is active in feature flags                      |
@@ -1002,19 +1005,19 @@ A: Level 3 adds a `decision-record.md` for architecture decision records. Use it
 
 **Q: How do spec folders and memory work together?**
 
-A: Spec folders capture what happened in structured documentation. The memory system makes that documentation searchable across sessions. When a session ends, `generate-context.js` writes a summary to the spec folder's `memory/` directory. The MCP server indexes it. When the next session starts, runtime-specific startup integrations may auto-surface that context; otherwise the canonical recovery sequence is `session_bootstrap()` first, then `memory_context` or `memory_match_triggers` for deeper retrieval. One side captures, the recovery surfaces retrieve.
+A: Spec folders capture what happened in structured documentation. `generate-context.js` updates the packet's canonical continuity surfaces, and `/spec_kit:resume` rebuilds the next session from `handover.md`, `_memory.continuity`, and the packet docs. The MCP server indexes those packet-local sources so deeper retrieval can still use `session_bootstrap()`, `memory_context()`, or `memory_match_triggers()` after the canonical resume step. One side captures, the recovery surfaces retrieve.
 
 ---
 
 **Q: Can I use memory without spec folders?**
 
-A: The memory system can index any markdown file, beyond spec folder contents. But the spec folder workflow is the primary way context gets saved (via `generate-context.js`), so in practice they work together. You can save standalone memories using `memory_save`, but Gate 3 will still ask about a spec folder for file modifications.
+A: The memory system can index any markdown file, beyond spec folder contents. But for implementation work the canonical continuity path is the spec folder itself: `generate-context.js` updates packet-local continuity surfaces and `/spec_kit:resume` recovers from those packet sources first. You can still save standalone memories with `memory_save`, but Gate 3 will still ask about a spec folder for file modifications.
 
 ---
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 43-tool API reference, 5-channel hybrid retrieval, code graph and session lifecycle tooling, runtime-resolved rollout behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 43-tool API reference, 5-channel hybrid retrieval, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 

@@ -33,6 +33,8 @@ trigger_phrases:
 
 The `scripts/spec-folder/` directory contains TypeScript modules that handle intelligent spec folder detection, alignment validation, and packet-local changelog generation. These utilities ensure memory context is saved to the correct spec folder and that completion workflows can write consistent nested changelogs for root specs or phase children.
 
+In the Gate E model, that spec folder is also the canonical continuity home: `/spec_kit:resume` rebuilds context from `handover.md` -> `_memory.continuity` -> spec docs, while generated memory artifacts remain supporting only.
+
 ### Key Features
 
 | Feature                     | Description                                                                         |

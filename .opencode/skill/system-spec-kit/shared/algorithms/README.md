@@ -32,7 +32,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder contains three core algorithms that power the retrieval fusion pipeline:
+This folder contains three core algorithms that power the retrieval fusion pipeline. They rank supporting retrieval candidates after the canonical packet continuity chain (`handover.md -> _memory.continuity -> spec docs`) has been established through `/spec_kit:resume`:
 
 1. **RRF Fusion** (`rrf-fusion.ts`) -- Reciprocal Rank Fusion for combining ranked lists from different search channels. Supports two-list, multi-list and cross-variant fusion modes with optional score normalization and convergence bonuses for items that appear across multiple sources.
 

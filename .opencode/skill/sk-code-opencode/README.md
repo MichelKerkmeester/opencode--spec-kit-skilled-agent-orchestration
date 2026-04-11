@@ -44,6 +44,8 @@ The standards in this skill are evidence-based. Every pattern is extracted from 
 
 The skill also owns the alignment verifier contract. The script `scripts/verify_alignment_drift.py` runs on any changed scope and reports rule violations by severity. ERROR findings are blockers. WARN findings are advisory by default and become blockers with `--fail-on-warn`. Running this verifier is a P0 requirement before claiming completion on any OpenCode system code change.
 
+When OpenCode system work resumes inside a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts used only as support.
+
 ### Key Statistics
 
 | Statistic | Value |

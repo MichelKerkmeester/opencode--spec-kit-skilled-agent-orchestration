@@ -45,6 +45,8 @@ The skill routes between the two tools based on intent signals in the request. T
 
 Routing is weighted and scored at invocation time. The skill reads keywords and availability signals to select CLI, MCP, or both, then loads only the reference files relevant to the detected intent. This keeps token usage low on simple queries while giving full access to deep reference material when needed.
 
+When ClickUp work feeds back into a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
+
 ### Key Statistics
 
 | Dimension | CLI (cu) | MCP (Code Mode) |

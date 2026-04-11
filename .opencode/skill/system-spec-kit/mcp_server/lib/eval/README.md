@@ -22,7 +22,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`lib/eval/` contains the measurement stack for retrieval quality, eval logging, baseline comparisons, and rollout reporting. The directory currently has 14 TypeScript modules plus the static `data/ground-truth.json` fixture.
+`lib/eval/` contains the measurement stack for retrieval quality, eval logging, baseline comparisons, and reporting. The directory currently has 14 TypeScript modules plus the static `data/ground-truth.json` fixture.
 
 The current surface covers:
 
@@ -30,7 +30,7 @@ The current surface covers:
 - Metric computation and quality proxy scoring.
 - BM25 baselines, ablations, k-sensitivity, and state baselines.
 - Ground-truth generation plus feedback-based expansion.
-- Reporting dashboard and read-only shadow comparison analysis.
+- Reporting dashboard and read-only comparison analysis.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:structure -->
@@ -51,7 +51,7 @@ The current surface covers:
 | `k-value-analysis.ts` | RRF K-value sweep helpers |
 | `memory-state-baseline.ts` | Retrieval/isolation baseline snapshots against the active memory DB |
 | `reporting-dashboard.ts` | Sprint/channel aggregation and formatted dashboard output |
-| `shadow-scoring.ts` | Read-only shadow comparison helpers and holdout analysis |
+| `shadow-scoring.ts` | Read-only comparison helpers and holdout analysis |
 
 <!-- /ANCHOR:structure -->
 <!-- ANCHOR:implemented-state -->
@@ -61,7 +61,7 @@ The current surface covers:
 - `eval-quality-proxy.ts` is a pure calculation module with no DB writes, making it safe for inline quality scoring and tests.
 - `ablation-framework.ts` and the handler layer gate mutation-style ablation storage behind `SPECKIT_ABLATION=true`.
 - `reporting-dashboard.ts` is the current reporting surface for sprint/channel aggregation.
-- `shadow-scoring.ts` retains comparison and analysis helpers, but the legacy write path is retired; the module is now effectively read-only analysis support.
+- `shadow-scoring.ts` retains comparison and analysis helpers, but the legacy write path is retired; the module is now effectively read-only analysis support for supporting retrieval signals.
 - `ground-truth-feedback.ts` is the bridge between implicit user selections, stored labels, and judge-agreement analysis.
 
 <!-- /ANCHOR:implemented-state -->

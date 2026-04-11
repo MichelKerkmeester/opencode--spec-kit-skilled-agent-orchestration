@@ -32,6 +32,8 @@ Key responsibilities:
 - Shared post-insert metadata updates used by save/index flows.
 - Reconsolidation, consolidation, and causal-edge persistence helpers.
 
+Gate E alignment: storage helpers back the single canonical continuity path. They persist metadata, lineage, and retrieval support for canonical spec-doc continuity and supporting `_memory.continuity` state, not a separate fallback save model.
+
 Current schema note:
 
 - The primary memory schema is at `SCHEMA_VERSION = 23` in `lib/search/vector-index-schema.ts`.

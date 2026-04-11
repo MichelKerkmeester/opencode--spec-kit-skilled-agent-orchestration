@@ -43,7 +43,7 @@ Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database
 - `ast-parser.ts` - parse markdown into heading/code/table-aware sections
 - `backfill-frontmatter.ts` - bulk frontmatter normalization for templates, spec docs, and memory files
 - `rebuild-auto-entities.ts` - rebuild auto-entity metadata from indexed content
-- `fix-memory-h1.mjs` - One-shot migration script — fixes H1 heading format in legacy memory files
+- `fix-memory-h1.mjs` - One-shot migration script — fixes H1 heading format in older generated memory artifacts
 
 Runtime files are compiled into `../dist/memory/`.
 
@@ -56,15 +56,19 @@ Runtime files are compiled into `../dist/memory/`.
 Routine JSON mode:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  --json '{"specFolder":"NNN-name","user_prompts":["Summarize the session"],"observations":["Capture the concrete outcome"],"recent_context":["List touched docs, commands, and verification"]}' \
+  specs/<###-spec-name>
 ```
 
-Explicit CLI targets are authoritative, including policy-defined phase folders. Direct positional saves now reject and must be replaced with structured JSON input.
+Explicit CLI targets are authoritative, including policy-defined phase folders. `generate-context.js` now updates the canonical continuity surfaces for the target packet through a single canonical path.
 
 JSON input mode:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"sessionSummary":"...","specFolder":"..."}' specs/NNN-name
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  /tmp/save-context-data.json \
+  specs/NNN-name
 ```
 
 
@@ -91,10 +95,10 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js
 - Supports subfolder-aware spec path handling through core utilities.
 - Produces ANCHOR-structured markdown expected by downstream validation and indexing.
 - Enforces the shared rendered-memory contract before successful write/index so malformed anchors, ids, frontmatter, or cleanup artifacts do not persist as active memories.
-- Uses content-aware candidate selection so task/session evidence beats generic folder fallback when valid.
+- Uses content-aware candidate selection so task/session evidence beats generic packet defaults when valid.
 - Derives `MEMORY_TITLE` from the content slug via `slugToTitle(contentSlug)` and writes it into the H1 heading. A blank line separates the frontmatter close `---` from the `# H1`.
 - Writes `MEMORY_DASHBOARD_TITLE` into context template frontmatter so dashboard titles stay disambiguated.
-- Runs post-render memory quality validation so contaminated headings or fallback-decision leaks are caught after template population. The post-save quality pipeline includes 3-layer gates (structure, semantic sufficiency, duplicate detection), heuristic calibration for scoring thresholds, and trigger sanitization to prevent noisy or over-broad trigger phrases from persisting in the index.
+- Runs post-render memory quality validation so contaminated headings or stale decision leaks are caught after template population. The post-save quality pipeline includes 3-layer gates (structure, semantic sufficiency, duplicate detection), heuristic calibration for scoring thresholds, and trigger sanitization to prevent noisy or over-broad trigger phrases from persisting in the index.
 - Retroactive title refresh for existing memories: run `memory_index_scan({ force: true })` after parser/template updates.
 <!-- /ANCHOR:workflow-alignment -->
 

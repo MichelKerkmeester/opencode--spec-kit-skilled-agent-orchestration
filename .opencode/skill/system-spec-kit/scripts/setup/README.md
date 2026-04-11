@@ -33,6 +33,8 @@ trigger_phrases:
 
 Setup scripts validate feature-folder prerequisites before implementation begins. They ensure required files exist for the active feature and can invoke full spec validation when needed.
 
+Those prerequisites now assume the Gate E continuity path where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+
 ### Key Statistics
 
 | Category | Count | Details |

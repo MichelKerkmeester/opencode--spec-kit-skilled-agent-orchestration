@@ -35,6 +35,8 @@ trigger_phrases:
 
 Validation rules are modular shell scripts that check spec folders for structural correctness and documentation completeness. Each rule focuses on a single validation concern and returns standardized results that the orchestrator (`spec/validate.sh`) aggregates.
 
+These checks assume Gate E continuity now resumes through `/spec_kit:resume` and the canonical packet chain `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting inputs, not the source of truth.
+
 ### Key Statistics
 
 | Category             | Count | Details                                       |

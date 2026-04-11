@@ -33,6 +33,8 @@ trigger_phrases:
 
 The scoring module provides multi-factor algorithms for ranking memories in the Spec Kit Memory system. It combines similarity scores with temporal decay, importance tiers, usage patterns and validation feedback to surface the most relevant memories.
 
+Gate E alignment: scoring is a retrieval aid, not the continuity source of truth. `/spec_kit:resume` should rebuild canonical continuity from `handover.md -> _memory.continuity -> spec docs` first, then use these scores to rank supporting evidence.
+
 ### Key Features
 
 | Feature | Description |
@@ -233,7 +235,7 @@ import { computeFolderScores } from './folder-scoring';
 const memories = [
   { spec_folder: '012-auth', updated_at: '2025-01-20', importance_tier: 'critical' },
   { spec_folder: '012-auth', updated_at: '2025-01-19', importance_tier: 'normal' },
-  { spec_folder: 'z_archive/001-old', updated_at: '2024-06-01', importance_tier: 'deprecated' },
+  { spec_folder: 'z_archive/001-old-evidence', updated_at: '2024-06-01', importance_tier: 'deprecated' },
 ];
 
 const ranked = computeFolderScores(memories, { includeArchived: false });
@@ -268,7 +270,7 @@ const info = getConfidenceInfo(db, memoryId);
 |---------|------|-------------|
 | Get tier value | `getTierValue('critical')` | Numeric importance (0-1) |
 | Check decay | `allowsDecay('constitutional')` | Filter decay-exempt tiers |
-| Archive check | `isArchived('/z_archive/old')` | Deprioritize archived folders |
+| Fallback-folder check | `isArchived('/z_archive/old')` | Deprioritize fallback-evidence folders |
 | Score breakdown | `getFiveFactorBreakdown(row)` | Debug/explain scoring |
 
 <!-- /ANCHOR:usage -->

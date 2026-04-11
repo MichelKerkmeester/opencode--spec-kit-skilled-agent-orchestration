@@ -90,10 +90,11 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 **Hook-capable runtimes** auto-inject startup context — no manual action needed. 
 **Fallback** — when hooks fail or are unavailable in any runtime:
 
-1. Call `session_bootstrap()` — one composite call that runs `session_resume` + `session_health` and returns structural context
-2. If structural context shows `stale` or `missing`, run `code_graph_scan` to rebuild
-3. If the graph remains unavailable, fall back to CocoIndex + direct file reads
-4. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
+1. Use `/spec_kit:resume` as the canonical recovery surface
+2. Rebuild prior work in this order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md`, `tasks.md`, `plan.md`, `spec.md`)
+3. If structural context is stale or missing, run `session_bootstrap()` and then `code_graph_scan` when needed
+4. If the graph remains unavailable, use CocoIndex + direct file reads for code exploration, but keep the packet-local continuity ladder above as source-of-truth
+5. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
 
 ---
 
@@ -136,7 +137,7 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 | **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                                         |
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings                       |
 | **Code search**           | CocoIndex for semantic/intent → Grep for exact text → Glob for file paths → Read for contents                                       |
-| **Resume prior work**     | `/spec_kit:resume` OR `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` → Review → Continue    |
+| **Resume prior work**     | `/spec_kit:resume` → Rebuild context from `handover.md` → `_memory.continuity` → canonical spec docs → Review → Continue    |
 | **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed                                 |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
 | **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                                  |

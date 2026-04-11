@@ -20,6 +20,8 @@ contextType: "general"
 
 The `scratch/` folder provides a dedicated location for temporary, disposable files created during implementation. This keeps experimental code, debug output, quick notes and other temporary artifacts separate from permanent documentation.
 
+Under Gate E, continuity does not live here: `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs, and both `scratch/` files and generated memory artifacts remain supporting only.
+
 <!-- /ANCHOR:overview -->
 
 ---

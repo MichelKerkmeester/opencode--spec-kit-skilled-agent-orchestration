@@ -130,7 +130,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 9. Execute background operations:
    - IF memory_choice == A: Load most recent memory file
-   - IF memory_choice == B: Load up to 3 recent memory files
+   - IF memory_choice == B: Load up to 3 recent indexed support artifacts or MCP context results
    - IF dispatch_mode is multi_*: Note parallel dispatch will be used
 
 10. SET STATUS: PASSED
@@ -213,7 +213,7 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | 11 | Checklist Verify | Verify P0/P1 items (Level 2+) | All P0/P1 verified |
 | 11.5 | **POSTFLIGHT Capture** | Capture learning delta | postflight_delta |
 | 12 | Completion | Generate summary (MANDATORY L2+) | implementation-summary.md |
-| 13 | Save Context | Preserve conversation | memory/*.md |
+| 13 | Save Context | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
 | 14 | Handover Check | Offer handover before completion | User prompted |
 
 ### Execution Modes
@@ -288,7 +288,7 @@ When `:with-phases` flag present:
 | 11 | Checklist Verify | All P0/P1 verified | **Level 2+ ONLY - BLOCKING** |
 | 11.5 | **POSTFLIGHT Capture** | postflight_delta | Learning delta calculated |
 | 12 | Completion | `implementation-summary.md` + nested changelog when applicable | **Summary file created (MANDATORY Level 1+)** |
-| 13 | Save Context | `memory/*.md` | Context preserved |
+| 13 | Save Context | support artifact refreshed | Context preserved without changing the canonical resume path |
 | 14 | Handover Check | User prompted | Handover offered before completion |
 
 ### Step Requirements
@@ -310,7 +310,7 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 
 **Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically (exit 0=pass, 1=warnings, 2=errors must fix). Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results. When the target is a spec root or phase child, also generate the packet-local changelog with `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [spec-folder-path] --write`.
 
-**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`. DO NOT use Write/Edit tools to create memory files directly.
+**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`. DO NOT use Write/Edit tools to create memory files directly.
 
 **Step 14 (Session Handover Check):** Display handover prompt offering `/spec_kit:handover`. Recommended if: continuing later, another dev may pick up, implementation has nuances. Wait for user response before marking workflow complete.
 
@@ -343,7 +343,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 **Success:**
 ```
 All 14 steps executed successfully.
-Artifacts: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, nested changelog (when applicable), memory/*.md
+Artifacts: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, nested changelog (when applicable), continuity support artifact refreshed
 STATUS=OK PATH=[spec-folder-path]
 ```
 
@@ -450,7 +450,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 
 **Planning Gate (>= 70):** spec.md no [NEEDS CLARIFICATION] (25), plan.md with approach (25), tasks.md with T### IDs (25), checklist.md verified L2+ (15), the review agent's approval (10)
 
-**Post-execution (>= 70):** All tasks marked [x] (30), implementation-summary.md exists (40), memory/*.md saved (20), validation passed (10)
+**Post-execution (>= 70):** All tasks marked [x] (30), implementation-summary.md exists (40), continuity support artifact refreshed (20), validation passed (10)
 
 ---
 
@@ -484,7 +484,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 | Condition | Suggested Command | Reason |
 |-----------|-------------------|--------|
 | Implementation complete | Verify in browser | Test functionality |
-| Need to save context | `/memory:save [spec-folder-path]` | Preserve decisions |
+| Need to refresh search support | `/memory:save [spec-folder-path]` | Refresh the indexed support artifact while canonical continuity stays in spec docs |
 | Ending session | `/spec_kit:handover [spec-folder-path]` | Create continuation doc |
 | Found bugs | `/spec_kit:debug [spec-folder-path]` | Delegate debugging |
 | Ready for next feature | `/spec_kit:complete [feature-description]` | Start new workflow |
