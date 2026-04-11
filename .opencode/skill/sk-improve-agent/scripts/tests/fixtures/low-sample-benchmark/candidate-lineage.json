@@ -1,0 +1,43 @@
+{
+  "nodes": [
+    {
+      "id": "candidate-0",
+      "parentId": null,
+      "score": 7.0,
+      "dimensions": {
+        "correctness": 0.8,
+        "efficiency": 0.6
+      }
+    },
+    {
+      "id": "candidate-1",
+      "parentId": "candidate-0",
+      "score": 7.2,
+      "dimensions": {
+        "correctness": 0.82,
+        "efficiency": 0.61
+      }
+    },
+    {
+      "id": "candidate-2",
+      "parentId": "candidate-1",
+      "score": 7.1,
+      "dimensions": {
+        "correctness": 0.8,
+        "efficiency": 0.62
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "candidate-0",
+      "to": "candidate-1",
+      "mutation": "prompt-tighten"
+    },
+    {
+      "from": "candidate-1",
+      "to": "candidate-2",
+      "mutation": "weight-rebalance"
+    }
+  ]
+}

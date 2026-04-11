@@ -1,0 +1,16 @@
+{
+  "sessionId": "imp-low-sample-fixture",
+  "candidates": {
+    "candidate-2": {
+      "replays": [
+        {
+          "seed": 42,
+          "score": 7.1,
+          "runtimeMs": 1200
+        }
+      ],
+      "replayCount": 1,
+      "stabilityCoefficient": null
+    }
+  }
+}

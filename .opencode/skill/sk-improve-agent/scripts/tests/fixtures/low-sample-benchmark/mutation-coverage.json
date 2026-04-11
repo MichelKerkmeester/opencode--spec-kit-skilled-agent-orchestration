@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {
+      "id": "m-1",
+      "kind": "mutation",
+      "label": "prompt-tighten"
+    },
+    {
+      "id": "m-2",
+      "kind": "mutation",
+      "label": "weight-rebalance"
+    }
+  ],
+  "edges": [],
+  "metrics": {
+    "coverageRatio": 0.33,
+    "uncoveredMutations": 4,
+    "sessionId": "imp-low-sample-fixture",
+    "loopType": "improvement"
+  }
+}

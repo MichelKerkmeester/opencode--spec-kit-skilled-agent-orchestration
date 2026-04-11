@@ -1,0 +1,22 @@
+{
+  "dimensions": [
+    "correctness",
+    "efficiency"
+  ],
+  "trajectory": [
+    {
+      "candidate": "candidate-0",
+      "point": [
+        0.8,
+        0.6
+      ]
+    },
+    {
+      "candidate": "candidate-1",
+      "point": [
+        0.82,
+        0.61
+      ]
+    }
+  ]
+}

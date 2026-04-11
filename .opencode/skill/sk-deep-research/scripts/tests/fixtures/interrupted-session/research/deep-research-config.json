@@ -1,0 +1,15 @@
+{
+  "topic": "Interrupted deep-research recovery fixture",
+  "sessionId": "rsr-interrupted-fixture",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "progressiveSynthesis": true,
+  "status": "running",
+  "createdAt": "2026-04-11T12:00:00Z",
+  "lineage": {
+    "sessionId": "rsr-interrupted-fixture",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1
+  }
+}

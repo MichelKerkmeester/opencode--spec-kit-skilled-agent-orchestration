@@ -1,0 +1,7 @@
+{
+  "sessionId": "imp-low-sample-fixture",
+  "target": "deep-research",
+  "startedAt": "2026-04-11T12:00:00Z",
+  "minDataPoints": 3,
+  "minReplayCount": 3
+}
