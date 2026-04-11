@@ -27,7 +27,10 @@ const ORIGINAL_PROJECT_ROOT = CONFIG.PROJECT_ROOT;
 // ───────────────────────────────────────────────────────────────────
 
 function makeTempProjectRoot(): string {
-  const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'nested-changelog-project-'));
+  // Realpath resolves macOS /var -> /private/var so CONFIG.PROJECT_ROOT stays
+  // consistent with paths that later flow through fs.realpathSync in
+  // validateFilePath, preventing spurious ../../private/... relative output.
+  const projectRoot = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'nested-changelog-project-')));
   tempRoots.push(projectRoot);
   CONFIG.PROJECT_ROOT = projectRoot;
   const root = path.join(

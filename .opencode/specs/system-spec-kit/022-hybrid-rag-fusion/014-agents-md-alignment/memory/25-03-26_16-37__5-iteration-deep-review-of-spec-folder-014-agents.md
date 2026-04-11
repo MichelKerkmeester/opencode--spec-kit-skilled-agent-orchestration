@@ -1,31 +1,42 @@
 ---
-title: "...-kit/022-hybrid-rag-fusion/014-agents-md-alignment/25-03-26_16-37__5-iteration-deep-review-of-spec-folder-014-agents]"
+title: '...-kit/022-hybrid-rag-fusion/014-agents-md-alignment/25-03-26_16-37__5-iteration-deep-review-of-spec-folder-014-agents]'
+description: '5 Iteration Deep Review Of Spec Folder 014 Agents SESSION SUMMARY Meta Data Value : : Session Date 2'
 trigger_phrases:
-  - "014 deep review"
-  - "agents md alignment review"
-  - "014 review report"
-  - "agents.md review"
-  - "014 agents md alignment"
-  - "deep review"
-  - "partial revert"
-  - "spec scope drift"
-  - "checklist evidence"
-  - "template sections missing"
-  - "kit/022"
-  - "fusion/014"
-importance_tier: "important"
-contextType: "general"
+- 014 deep review
+- agents md alignment review
+- 014 review report
+- agents.md review
+- 014 agents md alignment
+- deep review
+- partial revert
+- spec scope drift
+- checklist evidence
+- template sections missing
+- kit 022
+- fusion 014
+- kit 022 hybrid
+- 022 hybrid rag
+- hybrid rag fusion
+importance_tier: important
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
+spec_folder_health:
+  pass: true
+  score: 0.95
+  errors: 0
+  warnings: 1
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # 5 Iteration Deep Review Of Spec Folder 014 Agents
 
 ## SESSION SUMMARY
@@ -85,7 +96,7 @@ spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 
 **Phase:** RESEARCH
 
-**Recent:** 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked...
+**Recent:** 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -102,7 +113,7 @@ spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 ```
 CONTINUATION - Attempt 2
 Spec: system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment
-Last: 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked...
+Last: 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked... [RETROACTIVE: auto-truncated]
 Next: Continue implementation
 ```
 
@@ -110,7 +121,7 @@ Next: Continue implementation
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4...
+- Last: 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -125,7 +136,7 @@ Next: Continue implementation
 |-------|-------|
 | Phase | RESEARCH |
 | Active File | N/A |
-| Last Action | 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked... |
+| Last Action | 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked... [RETROACTIVE: auto-truncated] |
 | Next Action | Continue implementation |
 | Blockers | None |
 
@@ -158,7 +169,7 @@ Next: Continue implementation
 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked alignment with current AGENTS.md file state and phase system conventions. Verdict: CONDITIONAL (P0=0, P1=2, P2=5). Key findings: (1) spec scope drift -- declared 3 files/5 gaps but actual work included 5 files, 6+ gaps, and skill overhauls; (2) missing Level 2 template sections 7-9; (3) misleading partial-revert note downgraded from P1 to P2 after git investigation showed all alignment rows still present; (4) stale checklist line numbers; (5) missing review artifact for CHK-017. Implementation itself is intact. Phase system linkage correct.
 
 **Key Outcomes**:
-- 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked...
+- 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:summary -->
 
@@ -170,9 +181,9 @@ Next: Continue implementation
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-5iteration-deep-review-spec-26133cf2 -->
-### FEATURE: 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked...
+### FEATURE: 5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked... [RETROACTIVE: auto-truncated]
 
-5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked alignment with current AGENTS.md file state and phase system conventions. Verdict: CONDITIONAL (P0=0, P1=2, P2=5). Key findings: (1) spec scope drift -- declared 3 files/5 gaps but actual work included 5 files, 6+ gaps, and skill overhauls; (2) missing Level 2 template sections 7-9; (3) misleading partial-revert note downgraded from P1 to P2 after git investigation showed all alignment rows still...
+5-iteration deep review of spec folder 014-agents-md-alignment via GPT 5.4 (cli-copilot). Checked alignment with current AGENTS.md file state and phase system conventions. Verdict: CONDITIONAL (P0=0, P1=2, P2=5). Key findings: (1) spec scope drift -- declared 3 files/5 gaps but actual work included 5 files, 6+ gaps, and skill overhauls; (2) missing Level 2 template sections 7-9; (3) misleading partial-revert note downgraded from P1 to P2 after git investigation showed all alignment rows still... [RETROACTIVE: auto-truncated]
 
 **Details:** 014 deep review | agents md alignment review | 014 review report | AGENTS.md review | 014 agents md alignment
 <!-- /ANCHOR:implementation-5iteration-deep-review-spec-26133cf2 -->
@@ -187,6 +198,8 @@ Next: Continue implementation
 ## 3. DECISIONS
 
 decision_count: 0
+
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
 
 ---
 
@@ -278,69 +291,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774453028721-5da5c30b462a"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774453028721-5da5c30b462a
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "67a7651b34f3dff49632f283cee5e369762baddb"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 67a7651b34f3dff49632f283cee5e369762baddb
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-25"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-25'
 created_at_epoch: 1774453028
 last_accessed_epoch: 1774453028
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 0
 tool_count: 0
@@ -349,80 +331,64 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "phase system"
-  - "spec 014-agents-md-alignment"
-  - "014-agents-md-alignment via"
-  - "misleading partial-revert"
-  - "partial-revert downgraded"
-  - "implementation itself"
-  - "investigation showed"
-  - "verdict conditional"
-  - "sections misleading"
-  - "system conventions"
-  - "alignment current"
-  - "current agents.md"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- phase system
+- spec 014-agents-md-alignment
+- 014-agents-md-alignment via
+- misleading partial-revert
+- partial-revert downgraded
+- implementation itself
+- investigation showed
+- verdict conditional
+- sections misleading
+- system conventions
+- alignment current
+- current agents.md
 trigger_phrases:
-  - "agents md alignment review"
-  - "AGENTS.md review"
-  - "missing level"
-  - "missing review"
-  - "cli copilot"
-  - "partial revert"
-  - "revert note downgraded"
-  - "spec folder"
-  - "spec scope"
-  - "and phase system"
-  - "5-iteration deep"
-  - "deep review"
-  - "review spec"
-  - "folder 014-agents-md-alignment"
-  - "checked alignment"
-  - "alignment current"
-  - "current agents.md"
-  - "agents.md file"
-  - "file state"
-  - "state phase"
-  - "system conventions"
-  - "verdict conditional"
-  - "conditional p0=0"
-  - "p0=0 p1=2"
-  - "p1=2 p2=5"
-  - "key findings"
-  - "kit/022"
-  - "fusion/014"
-
+- agents md alignment review
+- AGENTS.md review
+- missing level
+- missing review
+- cli copilot
+- partial revert
+- revert note downgraded
+- spec folder
+- spec scope
+- and phase system
+- 5-iteration deep
+- deep review
+- review spec
+- folder 014-agents-md-alignment
+- checked alignment
+- alignment current
+- current agents.md
+- agents.md file
+- file state
+- state phase
+- system conventions
+- verdict conditional
+- conditional p0=0
+- p0=0 p1=2
+- p1=2 p2=5
+- key findings
+- kit/022
+- fusion/014
 key_files:
-  - "checklist.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "review-report.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- checklist.md
+- description.json
+- implementation-summary.md
+- plan.md
+- review-report.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

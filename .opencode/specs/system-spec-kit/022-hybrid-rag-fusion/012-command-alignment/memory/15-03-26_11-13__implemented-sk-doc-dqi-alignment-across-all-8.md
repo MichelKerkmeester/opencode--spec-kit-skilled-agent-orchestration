@@ -1,24 +1,31 @@
 ---
-title: "...m-spec-kit/022-hybrid-rag-fusion/012-command-alignment/15-03-26_11-13__implemented-sk-doc-dqi-alignment-across-all-8]"
+title: '...m-spec-kit/022-hybrid-rag-fusion/012-command-alignment/15-03-26_11-13__implemented-sk-doc-dqi-alignment-across-all-8]'
+description: 'Implemented Sk Doc Dqi Alignment Across All 8 SESSION SUMMARY Meta Data Value : : Session Date 2026'
 trigger_phrases:
-  - "sk doc"
-  - "implemented sk-doc dqi alignment"
-  - "sk-doc dqi alignment across"
-  - "dqi alignment across memory"
-  - "alignment across memory command"
-  - "across memory command files"
-  - "memory command files readme.txt"
-  - "command files readme.txt shared.md"
-  - "files readme.txt shared.md analyze.md"
-  - "readme.txt shared.md analyze.md context.md"
-  - "shared.md analyze.md context.md continue.md"
-  - "analyze.md context.md continue.md learn.md"
-importance_tier: "normal"
-contextType: "general"
+- sk doc
+- dqi alignment across memory
+- alignment across memory command
+- across memory command files
+- memory command files readme.txt
+- command files readme.txt shared.md
+- files readme.txt shared.md analyze.md
+- readme.txt shared.md analyze.md context.md
+- shared.md analyze.md context.md continue.md
+- analyze.md context.md continue.md learn.md
+- spec kit 022
+- kit 022 hybrid
+- 022 hybrid rag
+- implemented sk
+- doc dqi
+importance_tier: normal
+contextType: implementation
+quality_score: 0.9
 quality_flags:
-  - "has_tool_state_mismatch"
-quality_score: 0.90
+- has_tool_state_mismatch
+- retroactive_reviewed
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Implemented Sk Doc Dqi Alignment Across All 8
 
 ## SESSION SUMMARY
@@ -76,11 +83,11 @@ quality_score: 0.90
 
 **Phase:** RESEARCH
 
-**Recent:** Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,..., Decision: Tag selection for code blocks uses text for output/dashboards, yaml fo, Decision: Em dashes in display/output template blocks, frontmatter descriptions,
+**Recent:** Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,... [RETROACTIVE: auto-truncated], Decision: Tag selection for code blocks uses text for output/dashboards, yaml fo, Decision: Em dashes in display/output template blocks, frontmatter descriptions,
 
 **Decisions:** 2 decisions recorded
 
-**Summary:** Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code bloc...
+**Summary:** Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code bloc... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -192,7 +199,7 @@ Next: Continue implementation
 Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 012-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
 
 **Key Outcomes**:
-- Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,...
+- Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,... [RETROACTIVE: auto-truncated]
 - Decision: Tag selection for code blocks uses text for output/dashboards, yaml fo
 - Decision: Em dashes in display/output template blocks, frontmatter descriptions,
 
@@ -218,7 +225,7 @@ Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, 
 
 ## 3. DETAILED CHANGES
 
-### FEATURE: Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,...
+### FEATURE: Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,... [RETROACTIVE: auto-truncated]
 
 Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 012-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
 
@@ -445,112 +452,69 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1773569620744-e854b6e2dd8c"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/012-command-alignment"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1773569620744-e854b6e2dd8c
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/012-command-alignment
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-15"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-15'
 created_at_epoch: 1773569620
 last_accessed_epoch: 1773569620
-expires_at_epoch: 1781345620  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781345620
 message_count: 1
 decision_count: 10
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "not"
-  - "blocks"
-  - "output"
-  - "rationale"
-  - "actual"
-  - "spec"
-  - "spec folder"
-  - "commands not"
-  - "commands"
-  - "decision tag"
-  - "tag selection"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- spec folder
+- commands not
+- decision tag
+- tag selection
+- implemented sk
+- sk doc
+- doc dqi
+- dqi alignment
 trigger_phrases:
-  - "sk doc"
-  - "implemented sk-doc dqi alignment"
-  - "sk-doc dqi alignment across"
-  - "dqi alignment across memory"
-  - "alignment across memory command"
-  - "across memory command files"
-  - "memory command files readme.txt"
-  - "command files readme.txt shared.md"
-  - "files readme.txt shared.md analyze.md"
-  - "readme.txt shared.md analyze.md context.md"
-  - "shared.md analyze.md context.md continue.md"
-  - "analyze.md context.md continue.md learn.md"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/012-command-alignment"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- sk doc
+- implemented sk-doc dqi alignment
+- sk-doc dqi alignment across
+- dqi alignment across memory
+- alignment across memory command
+- across memory command files
+- memory command files readme.txt
+- command files readme.txt shared.md
+- files readme.txt shared.md analyze.md
+- readme.txt shared.md analyze.md context.md
+- shared.md analyze.md context.md continue.md
+- analyze.md context.md continue.md learn.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/012-command-alignment
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

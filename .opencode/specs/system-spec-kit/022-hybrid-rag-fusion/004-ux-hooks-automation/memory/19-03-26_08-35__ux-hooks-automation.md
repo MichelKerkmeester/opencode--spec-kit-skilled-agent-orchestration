@@ -1,32 +1,43 @@
 ---
-title: "Ux Hooks Automat [system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/19-03-26_08-35__ux-hooks-automation]"
+title: Ux Hooks Automat [system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation/19-03-26_08-35__ux-hooks-automation]
+description: 'Ux Hooks Automation SESSION SUMMARY Meta Data Value : : Session Date 2026 03 19 Session ID session 1'
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/004 ux hooks automation"
-  - "ux hooks automation"
-  - "post mutation hook"
-  - "mutation feedback"
-  - "confirm name"
-  - "memory indexer"
-  - "atomic save"
-  - "response hints"
-  - "kit/022"
-  - "fusion/004"
-  - "hooks"
-  - "automation"
-importance_tier: "normal"
-contextType: "general"
+- ux hooks automation
+- post mutation hook
+- mutation feedback
+- confirm name
+- memory indexer
+- atomic save
+- response hints
+- kit 022
+- fusion 004
+- hooks automat system
+- automat system spec
+- system spec kit
+- ux hooks
+- hooks automation
+- session summary
+importance_tier: normal
+contextType: implementation
+quality_score: 1
+quality_flags:
+- has_contamination
+- retroactive_reviewed
 _sourceSessionCreated: 1773899783403
-_sourceSessionId: "c98949ff-4611-4fef-b5b7-c3b4c2fcb962"
+_sourceSessionId: c98949ff-4611-4fef-b5b7-c3b4c2fcb962
 _sourceSessionUpdated: 1773903544239
-_sourceTranscriptPath: "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/c98949ff-4611-4fef-b5b7-c3b4c2fcb962.jsonl"
+_sourceTranscriptPath: /Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/c98949ff-4611-4fef-b5b7-c3b4c2fcb962.jsonl
 captured_file_count: 0
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_flags:
-  - "has_contamination"
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Ux Hooks Automation
 
 ## SESSION SUMMARY
@@ -116,7 +127,7 @@ Next: Continue implementation
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: Both background tasks completed successfully (exit 0). The work is done — all...
+- Last: Both background tasks completed successfully (exit 0). The work is done — all... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -171,13 +182,13 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` - Add shared post-mutation hook wiring and atomic-save...
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` - Add shared post-mutation hook wiring and atomic-save... [RETROACTIVE: auto-truncated]
 
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts` - Apply shared post-mutation hook behavior to update mutations
 
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts` - Apply shared post-mutation hook behavior to delete mutations
 
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts` - Apply shared post-mutation hook behavior to bulk delete...
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts` - Apply shared post-mutation hook behavior to bulk delete... [RETROACTIVE: auto-truncated]
 
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts` - Add optional autoRepair and repair metadata output
 
@@ -217,7 +228,7 @@ Implemented post-mutation hook wiring and atomic-save support across all 5 mutat
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)` | Tree-thinning merged 6 small files (memory-save.ts, memory-crud-update.ts, memory-crud-delete.ts, memory-bulk-delete.ts, memory-crud-health.ts, checkpoints.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts : Add shared post-mutation hook wiring and atomic-save... | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts : Apply shared post-mutation hook behavior to update mutations | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts : Apply shared post-mutation hook behavior to delete mutations | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts : Apply shared post-mutation hook behavior to bulk delete... | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/... |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)` | Tree-thinning merged 6 small files (memory-save.ts, memory-crud-update.ts, memory-crud-delete.ts, memory-bulk-delete.ts, memory-crud-health.ts, checkpoints.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts : Add shared post-mutation hook wiring and atomic-save... [RETROACTIVE: auto-truncated] | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts : Apply shared post-mutation hook behavior to update mutations | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts : Apply shared post-mutation hook behavior to delete mutations | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts : Apply shared post-mutation hook behavior to bulk delete... [RETROACTIVE: auto-truncated] | Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/... [RETROACTIVE: auto-truncated] |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/(merged-small-files)` | Tree-thinning merged 4 small files (mutation-feedback.ts, response-hints.ts, index.ts, README.md).  Merged from .opencode/skill/system-spec-kit/mcp_server/hooks/mutation-feedback.ts : Centralize mutation feedback metadata builder | Merged from .opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts : Centralize UX hint generation and append helpers | Merged from .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts : Updated index | Merged from .opencode/skill/system-spec-kit/mcp_server/hooks/README.md : Document hook contracts and usage |
 
 <!-- /ANCHOR:summary -->
@@ -272,7 +283,7 @@ Confirmed codex CLI is available at /Users/michelkerkmeester/.superset/bin/codex
 ```
 ╭────────────────────────────────────────────────────────────────╮
 │  DECISION: observation decision 146                            │
-│  Context: Delete call without matching confirmName is reje...  │
+│  Context: Delete call without matching confirmName is reje... [RETROACTIVE: auto-truncated]  │
 │  Confidence: 50%                                               │
 │  2026-03-19 @ 07:35:38                                         │
 ╰────────────────────────────────────────────────────────────────╯
@@ -425,69 +436,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1773905738712-82ffce0d2c58"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1773905738712-82ffce0d2c58
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "386e93082a4f462edb9a73f6e3833612716ad9d5"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 386e93082a4f462edb9a73f6e3833612716ad9d5
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-19"
+  - 146-c168b2a4
+created_at: '2026-03-19'
 created_at_epoch: 1773905738
 last_accessed_epoch: 1773905738
-expires_at_epoch: 1781681738  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781681738
 message_count: 3
 decision_count: 1
 tool_count: 1
@@ -496,67 +477,51 @@ captured_file_count: 0
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "fusion/004 hooks"
-  - "hooks automation"
-  - "kit/022 hybrid"
-  - "rag fusion/004"
-  - "spec kit/022"
-  - "system spec"
-  - "hybrid rag"
-  - "automation system"
-  - "observation decision"
-  - "doesn memory-indexer"
-  - "imports imports"
-  - "implementation summarized"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- fusion 004 hooks
+- hooks automation
+- kit 022 hybrid
+- rag fusion 004
+- spec kit 022
+- system spec
+- hybrid rag
+- automation system
+- observation decision
+- doesn memory-indexer
+- imports imports
+- implementation summarized
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/004 ux hooks automation"
-  - "ux hooks automation"
-  - "post mutation hook"
-  - "mutation feedback"
-  - "confirm name"
-  - "memory indexer"
-  - "atomic save"
-  - "response hints"
-  - "kit/022"
-  - "fusion/004"
-  - "hooks"
-  - "automation"
-
+- system spec kit/022 hybrid rag fusion/004 ux hooks automation
+- ux hooks automation
+- post mutation hook
+- mutation feedback
+- confirm name
+- memory indexer
+- atomic save
+- response hints
+- kit/022
+- fusion/004
+- hooks
+- automation
 key_files:
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/checkpoints.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/hooks/mutation-feedback.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/hooks/index.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/hooks/README.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/checkpoints.ts
+- .opencode/skill/system-spec-kit/mcp_server/hooks/mutation-feedback.ts
+- .opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts
+- .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts
+- .opencode/skill/system-spec-kit/mcp_server/hooks/README.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

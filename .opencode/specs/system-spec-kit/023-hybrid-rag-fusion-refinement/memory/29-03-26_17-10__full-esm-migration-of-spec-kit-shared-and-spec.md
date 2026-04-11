@@ -1,36 +1,39 @@
 ---
-title: "Full Esm [system-spec-kit/023-hybrid-rag-fusion-refinement/29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec]"
-description: "Full ESM migration of spec-kit-shared and mcp_server packages to native ESM with Node 25 CJS interop. Covers import.meta.dirname, fileURLToPath, superRefine schema fixes, and search-weights.json path fallback."
+title: Full Esm [system-spec-kit/023-hybrid-rag-fusion-refinement/29-03-26_17-10__full-esm-migration-of-spec-kit-shared-and-spec]
+description: Full ESM migration of spec-kit-shared and mcp_server packages to native ESM with Node 25 CJS interop. Covers import.meta.dirname, fileURLToPath, superRefine schema fixes, and search-weights.json path fallback.
 trigger_phrases:
-  - "esm module compliance"
-  - "esm migration complete"
-  - "shared mcp_server native esm"
-  - "type module nodenext"
-  - "cjs to esm interop node 25"
-  - "memory save hardening"
-  - "v8 descendant phase detection"
-  - "manual fallback save mode"
-  - "superrefine schema fix copilot"
-  - "search-weights.json path fallback"
-  - "v-rule bridge bypass warning"
-  - "super refine"
-  - "file u r l to path"
-  - "used import.meta.dirname"
-  - "codex parallel agents esm rewrite"
-  - "30 iteration deep review"
-  - "phase sequential migration"
-importance_tier: "critical"
-contextType: "planning"
+- esm module compliance
+- esm migration complete
+- type module nodenext
+- memory save hardening
+- v8 descendant phase detection
+- manual fallback save mode
+- superrefine schema fix copilot
+- search weights.json path fallback
+- super refine
+- used import.meta.dirname
+- 30 iteration deep review
+- phase sequential migration
+- full esm system
+- esm system spec
+- full esm
+importance_tier: critical
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
 # Full Esm Migration Of Spec Kit Shared And Spec
 
@@ -564,69 +567,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774800611089-f20ced19dc6a"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement"
-channel: "system-speckit/023-esm-module-compliance"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "decision"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774800611089-f20ced19dc6a
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement
+channel: system-speckit/023-esm-module-compliance
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: implementation
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.6 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.6
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "933aedcc09d420d0f6dc7331b7a93120d80c5e0e"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 933aedcc09d420d0f6dc7331b7a93120d80c5e0e
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-29"
+  - 023-esm-module-compliance
+created_at: '2026-03-29'
 created_at_epoch: 1774800611
 last_accessed_epoch: 1774800611
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 6
 decision_count: 6
 tool_count: 0
@@ -635,88 +608,72 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "v-rule bridge"
-  - "mcp server"
-  - "import.meta.dirname fileurltopath"
-  - "search-weights.json resolved"
-  - "import.meta.dirname pointing"
-  - "dist/configs then../configs"
-  - "fileurltopath simplicity"
-  - "esm import.meta.dirname"
-  - "structured unavailable"
-  - "then../configs handle"
-  - "simplicity engines"
-  - "removed wildcard./"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- v-rule bridge
+- mcp server
+- import.meta.dirname fileurltopath
+- search-weights.json resolved
+- import.meta.dirname pointing
+- dist configs then.. configs
+- fileurltopath simplicity
+- esm import.meta.dirname
+- structured unavailable
+- then.. configs handle
+- simplicity engines
+- removed wildcard.
 trigger_phrases:
-  - "esm module compliance"
-  - "esm migration complete"
-  - "shared mcp_server native esm"
-  - "type module nodenext"
-  - "CJS to ESM interop node 25"
-  - "memory save hardening"
-  - "V8 descendant phase detection"
-  - "manual fallback save mode"
-  - "superRefine schema fix copilot"
-  - "search-weights.json path fallback"
-  - "v-rule bridge bypass warning"
-  - "super refine"
-  - "file u r l to path"
-  - "mcp server"
-  - "system speckit"
-  - "search weights"
-  - "tree thinning"
-  - "system spec kit"
-  - "fix was removing"
-  - "evidence parser"
-  - "moved validation"
-  - "workflow decoupling"
-  - "modified config system"
-  - "used import.meta.dirname"
-  - "import.meta.dirname fileurltopath"
-  - "fileurltopath simplicity"
-  - "simplicity engines"
-  - "restricted mcp"
-  - "server exports"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance"
-
+- esm module compliance
+- esm migration complete
+- shared mcp_server native esm
+- type module nodenext
+- CJS to ESM interop node 25
+- memory save hardening
+- V8 descendant phase detection
+- manual fallback save mode
+- superRefine schema fix copilot
+- search-weights.json path fallback
+- v-rule bridge bypass warning
+- super refine
+- file u r l to path
+- mcp server
+- system speckit
+- search weights
+- tree thinning
+- system spec kit
+- fix was removing
+- evidence parser
+- moved validation
+- workflow decoupling
+- modified config system
+- used import.meta.dirname
+- import.meta.dirname fileurltopath
+- fileurltopath simplicity
+- simplicity engines
+- restricted mcp
+- server exports
+- kit/023
+- esm
+- module
+- compliance
 key_files:
-  - ".opencode/skill/system-spec-kit/shared/package.json"
-  - ".opencode/skill/system-spec-kit/shared/tsconfig.json"
-  - ".opencode/skill/system-spec-kit/shared/config.ts"
-  - ".opencode/skill/system-spec-kit/shared/paths.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/package.json"
-  - ".opencode/skill/system-spec-kit/mcp_server/tsconfig.json"
-  - ".opencode/skill/system-spec-kit/mcp_server/core/config.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/v-rule-bridge.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- .opencode/skill/system-spec-kit/shared/package.json
+- .opencode/skill/system-spec-kit/shared/tsconfig.json
+- .opencode/skill/system-spec-kit/shared/config.ts
+- .opencode/skill/system-spec-kit/shared/paths.ts
+- .opencode/skill/system-spec-kit/mcp_server/package.json
+- .opencode/skill/system-spec-kit/mcp_server/tsconfig.json
+- .opencode/skill/system-spec-kit/mcp_server/core/config.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/v-rule-bridge.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

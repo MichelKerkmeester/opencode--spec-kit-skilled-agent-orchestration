@@ -1,33 +1,32 @@
 ---
 title: Deep Research Run 8
-name: 06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot
 description: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on Claude Code token waste against Code Environment/Public state. Produced...
-type: episodic
 trigger_phrases:
 - claude code optimization
-- ENABLE_TOOL_SEARCH
+- enable tool search
 - cache expiry
 - reddit audit token waste
-- cli-copilot deep-research
+- cli copilot deep research
 - claude optimization settings
 - cache warning hooks
 - claude code field report
-- phase 005-claudest boundary
-- F1 ENABLE_TOOL_SEARCH baseline
-- F4 idle timestamp session-stop
-- F6 cache rebuild session-prime
-- F8 compact-inject reject
-- F14 transcript auditor prototype
+- phase 005 claudest boundary
+- f8 compact inject reject
+- f14 transcript auditor prototype
 - 858 sessions 926 audit
 - 18903 turns 11357 denominator
-- 232 cache cliffs 54% idle gap
 - 8 iteration synthesis blueprint
-- 17 deduplicated F1-F17 findings
-- 8 adopt-now 7 prototype-later 2 reject
 - research.md 12 sections
 - convergence 0.93 to 0.12
+- deep research run 8
+- deep research run
 importance_tier: important
 contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -35,14 +34,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: true
   score: 0.75
   errors: 0
   warnings: 5
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Deep Research Run 8 Iterations Via Cli Copilot
 
@@ -103,7 +101,7 @@ spec_folder_health:
 
 **Phase:** RESEARCH
 
-**Recent:** Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on...
+**Recent:** Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -120,7 +118,7 @@ spec_folder_health:
 ```
 CONTINUATION - Attempt 2
 Spec: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings
-Last: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on...
+Last: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on... [RETROACTIVE: auto-truncated]
 Next: Continue implementation
 ```
 
@@ -128,7 +126,7 @@ Next: Continue implementation
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the...
+- Last: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -159,7 +157,7 @@ Next: Continue implementation
 |-------|-------|
 | Phase | RESEARCH |
 | Active File | N/A |
-| Last Action | Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on... |
+| Last Action | Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on... [RETROACTIVE: auto-truncated] |
 | Next Action | Continue implementation |
 | Blockers | None |
 
@@ -219,9 +217,9 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-deepresearch-run-iterations-via-6686f5ea -->
-### FEATURE: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on...
+### FEATURE: Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on... [RETROACTIVE: auto-truncated]
 
-Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on Claude Code token waste against Code_Environment/Public state. Produced research/research.md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md). Key facts: ENABLE_TOOL_SEARCH=true is ALREADY enabled in...
+Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddit field-report on Claude Code token waste against Code_Environment/Public state. Produced research/research.md (12 sections, 17 deduplicated F1-F17 findings: 8 adopt-now / 7 prototype-later / 2 reject across 4 prioritization tiers) and the full Level 3 spec set (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md). Key facts: ENABLE_TOOL_SEARCH=true is ALREADY enabled in... [RETROACTIVE: auto-truncated]
 
 **Details:** claude code optimization | ENABLE_TOOL_SEARCH | cache expiry | reddit audit | token waste | cli-copilot deep-research | claude optimization settings | cache warning hooks | claude code field report | tool schema bloat | skill bloat detection | jsonl audit fragility | phase 005-claudest boundary
 <!-- /ANCHOR:implementation-deepresearch-run-iterations-via-6686f5ea -->
@@ -249,7 +247,7 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 ```
 ╭────────────────────────────────────────────────────────────────╮
 │  DECISION: observation decision 1                              │
-│  Context: md (12 sections, 17 deduplicated F1-F17 findings...  │
+│  Context: md (12 sections, 17 deduplicated F1-F17 findings... [RETROACTIVE: auto-truncated]  │
 │  Confidence: 70%                                               │
 │  2026-04-06 @ 11:05:13                                         │
 ╰────────────────────────────────────────────────────────────────╯
@@ -316,7 +314,7 @@ Deep-research run (8 iterations via cli-copilot gpt-5.4 high) auditing the Reddi
 ```
 ╭────────────────────────────────────────────────────────────────╮
 │  DECISION: user decision 1                                     │
-│  Context: md (12 sections, 17 deduplicated F1-F17 findings...  │
+│  Context: md (12 sections, 17 deduplicated F1-F17 findings... [RETROACTIVE: auto-truncated]  │
 │  Confidence: 70%                                               │
 │  2026-04-06 @ 11:05:13                                         │
 ╰────────────────────────────────────────────────────────────────╯
@@ -476,69 +474,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775473513209-30342fea6fbe"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775473513209-30342fea6fbe
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "d036b6a596e896cc863926b727028681d3ff5ea6"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: d036b6a596e896cc863926b727028681d3ff5ea6
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-06"
+  - 005-claudest
+created_at: '2026-04-06'
 created_at_epoch: 1775473513
 last_accessed_epoch: 1775473513
-expires_at_epoch: 1783249513  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1783249513
 message_count: 2
 decision_count: 2
 tool_count: 0
@@ -547,51 +515,43 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "claude code optimization"
-  - "ENABLE_TOOL_SEARCH baseline"
-  - "cache expiry waste signal"
-  - "858 sessions 232 cache cliffs"
-  - "F1-F17 deduplicated findings"
-  - "8 adopt-now 7 prototype-later 2 reject"
-  - "phase 005-claudest boundary"
-  - "cli-copilot gpt-5.4 high"
-  - "convergence trajectory"
-  - "source discrepancies preserved"
-  - "reddit field report audit"
-  - "12 section research synthesis"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- claude code optimization
+- enable tool search baseline
+- cache expiry waste signal
+- f1-f17 deduplicated findings
+- phase 005-claudest boundary
+- cli-copilot gpt-5.4 high
+- convergence trajectory
+- source discrepancies preserved
+- reddit field report audit
+- 12 section research synthesis
 trigger_phrases:
-  - "claude code optimization"
-  - "ENABLE_TOOL_SEARCH"
-  - "cache expiry"
-  - "reddit audit token waste"
-  - "cli-copilot deep-research"
-  - "claude optimization settings"
-  - "cache warning hooks"
-  - "claude code field report"
-  - "phase 005-claudest boundary"
-  - "F1 ENABLE_TOOL_SEARCH baseline"
-  - "F4 idle timestamp session-stop"
-  - "F6 cache rebuild session-prime"
-  - "F8 compact-inject reject"
-  - "F14 transcript auditor prototype"
-  - "858 sessions 926 audit"
-  - "18903 turns 11357 denominator"
-  - "232 cache cliffs 54% idle gap"
-  - "8 iteration synthesis blueprint"
-  - "17 deduplicated F1-F17 findings"
-  - "8 adopt-now 7 prototype-later 2 reject"
-  - "research.md 12 sections"
-  - "convergence 0.93 to 0.12"
+- claude code optimization
+- ENABLE_TOOL_SEARCH
+- cache expiry
+- reddit audit token waste
+- cli-copilot deep-research
+- claude optimization settings
+- cache warning hooks
+- claude code field report
+- phase 005-claudest boundary
+- F1 ENABLE_TOOL_SEARCH baseline
+- F4 idle timestamp session-stop
+- F6 cache rebuild session-prime
+- F8 compact-inject reject
+- F14 transcript auditor prototype
+- 858 sessions 926 audit
+- 18903 turns 11357 denominator
+- 232 cache cliffs 54% idle gap
+- 8 iteration synthesis blueprint
+- 17 deduplicated F1-F17 findings
+- 8 adopt-now 7 prototype-later 2 reject
+- research.md 12 sections
+- convergence 0.93 to 0.12
 ```
 
 <!-- /ANCHOR:metadata -->

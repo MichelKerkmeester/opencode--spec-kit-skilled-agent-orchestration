@@ -1,45 +1,53 @@
 ---
-title: "...tem-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5]"
+title: '...tem-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5]'
+description: 'Deep Review Of 10 Agent Definitions Across 5 SESSION SUMMARY Meta Data Value : : Session Date 2026 0'
 trigger_phrases:
-  - "hybrid rag fusion"
-  - "cross agent"
-  - "deep review"
-  - "review agent"
-  - "agent definitions"
-  - "definitions across"
-  - "across runtimes"
-  - "runtimes content"
-  - "content alignment"
-  - "alignment 022-hybrid-rag-fusion"
-  - "022-hybrid-rag-fusion changes"
-  - "used copilot"
-  - "copilot agents"
-  - "agents gpt-5.4"
-  - "gpt-5.4 high"
-  - "high gpt-5.3-codex"
-  - "gpt-5.3-codex xhigh"
-  - "xhigh partial"
-  - "partial cross-agent"
-  - "cross-agent grep"
-  - "grep analysis"
-  - "verdict conditional"
-  - "key findings"
-  - "findings stale"
-  - "kit/022"
-  - "fusion/013"
-importance_tier: "normal"
-contextType: "general"
+- hybrid rag fusion
+- cross agent
+- deep review
+- review agent
+- agent definitions
+- definitions across
+- across runtimes
+- runtimes content
+- content alignment
+- used copilot
+- copilot agents
+- agents gpt 5.4
+- gpt 5.4 high
+- high gpt 5.3 codex
+- gpt 5.3 codex xhigh
+- xhigh partial
+- partial cross agent
+- cross agent grep
+- grep analysis
+- verdict conditional
+- key findings
+- findings stale
+- kit 022
+- fusion 013
+- tem spec kit
+- spec kit 022
+importance_tier: normal
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1
+  errors: 0
+  warnings: 0
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Deep Review Of 10 Agent Definitions Across 5
 
 ## SESSION SUMMARY
@@ -99,7 +107,7 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 **Phase:** RESEARCH
 
-**Recent:** Deep review of 10 agent definitions across 5 runtimes for content alignment with..., Next Steps
+**Recent:** Deep review of 10 agent definitions across 5 runtimes for content alignment with... [RETROACTIVE: auto-truncated], Next Steps
 
 ### Pending Work
 
@@ -172,7 +180,7 @@ Next: /spec_kit:plan agents-content-remediation — Plan fixes for 7 P1 findings
 Deep review of 10 agent definitions across 5 runtimes for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high, GPT-5.3-Codex xhigh partial) + cross-agent grep analysis. Verdict: CONDITIONAL — 0 P0, 7 P1, 7 P2. Key findings: stale @explore/@general references, dead sk-code path (should be sk-code-review), incomplete memory command surface (only /memory:save, missing 5 others), unqualified template paths in speckit, and too-broad memory/ exception. Core behavioral instructions aligned. Convergence achieved in 4 iterations.
 
 **Key Outcomes**:
-- Deep review of 10 agent definitions across 5 runtimes for content alignment with...
+- Deep review of 10 agent definitions across 5 runtimes for content alignment with... [RETROACTIVE: auto-truncated]
 - Next Steps
 
 <!-- /ANCHOR:summary -->
@@ -185,9 +193,9 @@ Deep review of 10 agent definitions across 5 runtimes for content alignment with
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:discovery-deep-review-agent-definitions-312aeeb6 -->
-### FEATURE: Deep review of 10 agent definitions across 5 runtimes for content alignment with...
+### FEATURE: Deep review of 10 agent definitions across 5 runtimes for content alignment with... [RETROACTIVE: auto-truncated]
 
-Deep review of 10 agent definitions across 5 runtimes for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high, GPT-5.3-Codex xhigh partial) + cross-agent grep analysis. Verdict: CONDITIONAL — 0 P0, 7 P1, 7 P2. Key findings: stale @explore/@general references, dead sk-code path (should be sk-code-review), incomplete memory command surface (only /memory:save, missing 5 others), unqualified template paths in speckit, and too-broad memory/ exception. Core...
+Deep review of 10 agent definitions across 5 runtimes for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high, GPT-5.3-Codex xhigh partial) + cross-agent grep analysis. Verdict: CONDITIONAL — 0 P0, 7 P1, 7 P2. Key findings: stale @explore/@general references, dead sk-code path (should be sk-code-review), incomplete memory command surface (only /memory:save, missing 5 others), unqualified template paths in speckit, and too-broad memory/ exception. Core... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:discovery-deep-review-agent-definitions-312aeeb6 -->
 
@@ -209,6 +217,8 @@ Deep review of 10 agent definitions across 5 runtimes for content alignment with
 ## 3. DECISIONS
 
 decision_count: 0
+
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
 
 ---
 
@@ -300,69 +310,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774439752148-e73798437eef"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774439752148-e73798437eef
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: normal
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "d49ae0b775b91b52a44c74118f52539c51c48fba"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: d49ae0b775b91b52a44c74118f52539c51c48fba
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-25"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-25'
 created_at_epoch: 1774439752
 last_accessed_epoch: 1774439752
-expires_at_epoch: 1782215752  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1782215752
 message_count: 1
 decision_count: 0
 tool_count: 0
@@ -371,77 +350,61 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "alignment 022-hybrid-rag-fusion"
-  - "@explore/@general references"
-  - "sk-code-review incomplete"
-  - "stale @explore/@general"
-  - "sk-code sk-code-review"
-  - "behavioral instructions"
-  - "unqualified template"
-  - "instructions aligned"
-  - "convergence achieved"
-  - "achieved iterations."
-  - "gpt-5.3-codex xhigh"
-  - "partial cross-agent"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- alignment 022-hybrid-rag-fusion
+- explore general references
+- sk-code-review incomplete
+- stale explore general
+- sk-code sk-code-review
+- behavioral instructions
+- unqualified template
+- instructions aligned
+- convergence achieved
+- achieved iterations.
+- gpt-5.3-codex xhigh
+- partial cross-agent
 trigger_phrases:
-  - "hybrid rag fusion"
-  - "cross agent"
-  - "deep review"
-  - "review agent"
-  - "agent definitions"
-  - "definitions across"
-  - "across runtimes"
-  - "runtimes content"
-  - "content alignment"
-  - "alignment 022-hybrid-rag-fusion"
-  - "022-hybrid-rag-fusion changes"
-  - "used copilot"
-  - "copilot agents"
-  - "agents gpt-5.4"
-  - "gpt-5.4 high"
-  - "high gpt-5.3-codex"
-  - "gpt-5.3-codex xhigh"
-  - "xhigh partial"
-  - "partial cross-agent"
-  - "cross-agent grep"
-  - "grep analysis"
-  - "verdict conditional"
-  - "key findings"
-  - "findings stale"
-  - "kit/022"
-  - "fusion/013"
-
+- hybrid rag fusion
+- cross agent
+- deep review
+- review agent
+- agent definitions
+- definitions across
+- across runtimes
+- runtimes content
+- content alignment
+- alignment 022-hybrid-rag-fusion
+- 022-hybrid-rag-fusion changes
+- used copilot
+- copilot agents
+- agents gpt-5.4
+- gpt-5.4 high
+- high gpt-5.3-codex
+- gpt-5.3-codex xhigh
+- xhigh partial
+- partial cross-agent
+- cross-agent grep
+- grep analysis
+- verdict conditional
+- key findings
+- findings stale
+- kit/022
+- fusion/013
 key_files:
-  - "checklist.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- checklist.md
+- description.json
+- implementation-summary.md
+- plan.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

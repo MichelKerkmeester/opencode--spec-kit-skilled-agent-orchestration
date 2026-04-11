@@ -8,7 +8,7 @@ trigger_phrases:
   - "cognitive memory"
   - "memory_context"
   - "memory_search"
-  - "43 tools"
+  - "47 tools"
   - "FSRS decay"
 ---
 
@@ -52,7 +52,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 | What | Count | Details |
 |------|-------|---------|
-| **MCP tools** | 43 | Organized across core memory layers plus dedicated code-graph and CocoIndex dispatch groups |
+| **MCP tools** | 47 | Organized across core memory layers plus dedicated code-graph and CocoIndex dispatch groups |
 | **Search channels** | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree (+ CocoIndex semantic code search as external bridge) |
 | **Pipeline stages** | 4 | Gather (graph-first routing), Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
@@ -82,7 +82,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 ### How You Use It
 
-The memory system exposes 43 MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
+The memory system exposes 47 MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
@@ -241,13 +241,13 @@ When you search for something, the system checks several sources at once. Think 
 
 **Channel min-representation** guarantees every active channel gets at least one result in the final set, preventing a single dominant channel from drowning out useful evidence.
 
-**Quality-aware 3-tier fallback** escalates automatically when results are weak:
+**Quality-aware 3-tier fallback** activates when graph and semantic channels miss:
 
-| Fallback Tier | Channels Active | When It Kicks In |
-|---------------|----------------|------------------|
-| Tier 1 | Vector only | Default fast path for simple queries |
-| Tier 2 | Vector + BM25 | Results below confidence floor |
-| Tier 3 | All 5 channels | Still poor results after Tier 2 |
+| Fallback Tier | Channel | When It Kicks In |
+|---------------|---------|------------------|
+| Tier 1 | FTS5 full-text search | Graph and semantic channels return weak results |
+| Tier 2 | BM25 keyword scoring | FTS5 results below confidence floor |
+| Tier 3 | Grep/Glob filesystem search | Still poor results after BM25 |
 
 **Confidence truncation** cuts off results at 2x the median score gap so you never get a long tail of irrelevant items.
 
@@ -552,7 +552,7 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 ### 3.2 TOOL REFERENCE
 
-All 43 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
+All 47 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
 
 **Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
 
@@ -1241,7 +1241,7 @@ mcp_server/
 
 | File | What It Does |
 |------|-------------|
-| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 43 tools. |
+| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 47 tools. |
 | `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
@@ -1262,7 +1262,7 @@ Tools are organized into layers based on what they do. Lower layers handle every
 | L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/status/shared-space lifecycle |
 | L6 | Analysis | 10 | 1,200 | Trace decisions, measure learning, run evaluations |
 | L7 | Maintenance | 10 | 1,000 | Re-index files, review history, run bulk imports |
-| | **Total** | **43** | **7,600** | |
+| | **Total** | **47** | **7,600** | |
 
 Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
 

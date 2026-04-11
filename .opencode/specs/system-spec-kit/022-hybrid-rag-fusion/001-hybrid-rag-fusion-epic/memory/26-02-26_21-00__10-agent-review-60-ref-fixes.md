@@ -1,15 +1,27 @@
 ---
-title: "10-a [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/26-02-26_21-00__10-agent-review-60-ref-fixes]"
+title: "10 Agent Review 60 Ref Fixes"
+description: '10 Agent Review 60 Ref Fixes SESSION SUMMARY Meta Data Value : : Session Date 2026 02 26 Session ID'
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "ultra think"
-  - "agent review consolidated findings"
-  - "sub folders"
-  - "mr8 mr10"
-importance_tier: "critical"
-contextType: "implementation"
-quality_flags: []
-quality_score: 1.00
+- ultra think
+- agent review consolidated findings
+- sub folders
+- mr8 mr10
+- system spec kit
+- spec kit 022
+- kit 022 hybrid
+- 022 hybrid rag
+- hybrid rag fusion
+- rag fusion 001
+- fusion 001 hybrid
+- 001 hybrid rag
+- rag fusion epic
+- fusion epic agent
+- 10 agent
+importance_tier: critical
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 ---
 # 10 Agent Review 60 Ref Fixes
 
@@ -542,7 +554,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -569,111 +581,73 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772136018475-lb62847n9"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772136018475-lb62847n9
+spec_folder: system-spec-kit/022-hybrid-rag-fusion
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-26"
+  - 146-agent-review-consolidated-findings.md
+  - 146-agent-review-consolidated-findings
+  - 006-core-rag-sprints-0-to-8
+  - 002-sprint-4-feedback-loop
+  - 004-sprint-6-graph-deepening
+  - 032-036
+  - 002-004
+  - 316-472h
+created_at: '2026-02-26'
 created_at_epoch: 1772136018
 last_accessed_epoch: 1772136018
-expires_at_epoch: 1779912018  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779912018
 message_count: 1
 decision_count: 6
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "sprint"
-  - "decision"
-  - "items"
-  - "because"
-  - "agent"
-  - "spec"
-  - "applied edits"
-  - "gate"
-  - "ref"
-  - "applied"
-  - "agents"
-  - "plan"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- applied edits
+- 10 agent
+- agent review
+- review 60
+- 60 ref
+- ref fixes
+- 10 agent review
+- agent review 60
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "ultra think"
-  - "agent review consolidated findings"
-  - "sub folders"
-  - "mr8 mr10"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- system spec kit/022 hybrid rag fusion
+- ultra think
+- agent review consolidated findings
+- sub folders
+- mr8 mr10
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

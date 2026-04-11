@@ -1,55 +1,60 @@
 ---
-title: "Executed Phase 008 Compliance Audit Across 186 Spec Folders [008-spec-memory-compliance-audit]"
-description: "Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery...; Hybrid orchestration: automated scripts for bulk fixes + copilot agents..."
+title: Executed Phase 008 Compliance Audit Across 186 Spec Folders [008-spec-memory-compliance-audit]
+description: 'Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery...; Hybrid orchestration: automated scripts for bulk fixes + copilot agents...'
 trigger_phrases:
-  - "compliance audit"
-  - "spec validation"
-  - "memory cleanup"
-  - "database reindex"
-  - "trigger_phrases bug"
-  - "search bug"
-  - "trigger phrases"
-  - "hard block"
-  - "esm module compliance"
-  - "compact code graph"
-  - "tree thinning"
-  - "across 341 folders"
-  - "hybrid orchestration"
-  - "orchestration automated"
-  - "automated scripts"
-  - "scripts bulk"
-  - "bulk fixes"
-  - "fixes copilot"
-  - "copilot agents"
-  - "agents complex"
-  - "complex fixes"
-  - "deleted hard-block"
-  - "hard-block memories"
-  - "filesystem rebuild"
-  - "rebuild phase"
-  - "phase handles"
-  - "handles cleanup"
-  - "spec folders"
-  - "memory files"
-  - "spec document"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/008"
-  - "compliance"
-importance_tier: "important"
-contextType: "implementation"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- compliance audit
+- spec validation
+- memory cleanup
+- database reindex
+- trigger phrases bug
+- search bug
+- trigger phrases
+- hard block
+- esm module compliance
+- compact code graph
+- tree thinning
+- across 341 folders
+- hybrid orchestration
+- orchestration automated
+- automated scripts
+- scripts bulk
+- bulk fixes
+- fixes copilot
+- copilot agents
+- agents complex
+- complex fixes
+- deleted hard block
+- hard block memories
+- filesystem rebuild
+- rebuild phase
+- phase handles
+- handles cleanup
+- spec folders
+- memory files
+- spec document
+- kit 023
+- compliance 008
+- executed phase 008
+- phase 008 compliance
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 9
 filesystem_file_count: 9
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":true,"score":0.8,"errors":0,"warnings":4}
+spec_folder_health:
+  pass: true
+  score: 0.8
+  errors: 0
+  warnings: 4
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Executed Phase 008 Compliance Audit Across 186
 
@@ -195,7 +200,7 @@ Next: Fix remaining ~58 active folders with SPEC_DOC_INTEGRITY and TEMPLATE_HEAD
 
 - `4291 anchor markers added across 341 folders` - Modified 4291 anchor markers added across 341 folders
 
-- `135 implementation-summary files got Known Limitations sections` - Modified 135 implementation summary files got Known...
+- `135 implementation-summary files got Known Limitations sections` - Modified 135 implementation summary files got Known... [RETROACTIVE: auto-truncated]
 
 - `46 hard-block memory files deleted` - Modified 46 hard block memory files deleted
 
@@ -229,7 +234,7 @@ Next: Fix remaining ~58 active folders with SPEC_DOC_INTEGRITY and TEMPLATE_HEAD
 Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery...; Hybrid orchestration: automated scripts for bulk fixes + copilot agents for complex fixes; Deleted hard-block memories via filesystem rm (DB rebuild in Phase 4 handles cleanup)
 
 **Key Outcomes**:
-- Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery...
+- Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery... [RETROACTIVE: auto-truncated]
 - Hybrid orchestration: automated scripts for bulk fixes + copilot agents for complex fixes
 - Deleted hard-block memories via filesystem rm (DB rebuild in Phase 4 handles cleanup)
 - Documented trigger_phrases search bug as known limitation (code fix out of scope)
@@ -240,7 +245,7 @@ Executed Phase 008 compliance audit across 186 spec folders and 135 memory files
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `46 hard-block memory files deleted` | Modified 46 hard block memory files deleted | Tree-thinning merged 3 small files (2081 spec document frontmatter files normalized, 4291 anchor markers added across 341 folders, 135 implementation-summary files got Known Limitations sections).  Merged from 2081 spec document frontmatter files normalized : Modified 2081 spec document frontmatter files normalized | Merged from 4291 anchor markers added across 341 folders : Modified 4291 anchor markers added across 341 folders | Merged from 135 implementation-summary files got Known Limitations sections : Modified 135 implementation summary files got Known... |
+| `46 hard-block memory files deleted` | Modified 46 hard block memory files deleted | Tree-thinning merged 3 small files (2081 spec document frontmatter files normalized, 4291 anchor markers added across 341 folders, 135 implementation-summary files got Known Limitations sections).  Merged from 2081 spec document frontmatter files normalized : Modified 2081 spec document frontmatter files normalized | Merged from 4291 anchor markers added across 341 folders : Modified 4291 anchor markers added across 341 folders | Merged from 135 implementation-summary files got Known Limitations sections : Modified 135 implementation summary files got Known... [RETROACTIVE: auto-truncated] |
 | `context-index.sqlite rebuilt from zero (62.9MB)` | Modified context index.sqlite rebuilt from zero (62 |
 | `implementation-summary.md created` | Modified implementation summary |
 | `research/(merged-small-files)` | Tree-thinning merged 2 small files (discovery-summary.md created, hard-block-memories.txt created).  Merged from research/discovery-summary.md created : Modified discovery summary | Merged from research/hard-block-memories.txt created : Modified hard block memories |
@@ -256,9 +261,9 @@ Executed Phase 008 compliance audit across 186 spec folders and 135 memory files
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-executed-phase-008-compliance-c97c4867 -->
-### FEATURE: Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery...
+### FEATURE: Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery... [RETROACTIVE: auto-truncated]
 
-Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery complete: 97/122 active folders had errors, 65/65 archived had errors, 46 hard-block memories identified. Phase 2 Spec Fixes: applied backfill-frontmatter (2081 files), fix-anchors (4291 anchors), header renames, Known Limitations sections (135 files). 4 GPT-5.4 copilot agents dispatched — Cat 03 (38 folders) achieved 0 errors, Cat 04 (10) mostly clean. Phase 3 Memory Cleanup complete: 46...
+Executed Phase 008 compliance audit across 186 spec folders and 135 memory files. Phase 1 Discovery complete: 97/122 active folders had errors, 65/65 archived had errors, 46 hard-block memories identified. Phase 2 Spec Fixes: applied backfill-frontmatter (2081 files), fix-anchors (4291 anchors), header renames, Known Limitations sections (135 files). 4 GPT-5.4 copilot agents dispatched — Cat 03 (38 folders) achieved 0 errors, Cat 04 (10) mostly clean. Phase 3 Memory Cleanup complete: 46... [RETROACTIVE: auto-truncated]
 
 **Details:** compliance audit | spec validation | memory cleanup | database reindex | trigger_phrases bug
 <!-- /ANCHOR:implementation-executed-phase-008-compliance-c97c4867 -->
@@ -481,69 +486,41 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774944152083-e723b2612c99"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "decision"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774944152083-e723b2612c99
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "012c10941adb47da7e1b36d16b2815b614fdd194"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 012c10941adb47da7e1b36d16b2815b614fdd194
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-31"
+  - 024-compact-code-graph
+  - 023-esm-module-compliance
+  - 008-compliance-c97c4867
+created_at: '2026-03-31'
 created_at_epoch: 1774944152
 last_accessed_epoch: 1774944152
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 4
 tool_count: 0
@@ -552,89 +529,73 @@ captured_file_count: 9
 filesystem_file_count: 9
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "orchestration automated"
-  - "hybrid orchestration"
-  - "hard-block memories"
-  - "filesystem rebuild"
-  - "automated scripts"
-  - "handles cleanup"
-  - "copilot agents"
-  - "agents complex"
-  - "via filesystem"
-  - "fixes copilot"
-  - "complex fixes"
-  - "rebuild phase"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- orchestration automated
+- hybrid orchestration
+- hard-block memories
+- filesystem rebuild
+- automated scripts
+- handles cleanup
+- copilot agents
+- agents complex
+- via filesystem
+- fixes copilot
+- complex fixes
+- rebuild phase
 trigger_phrases:
-  - "compliance audit"
-  - "spec validation"
-  - "memory cleanup"
-  - "database reindex"
-  - "trigger_phrases bug"
-  - "search bug"
-  - "trigger phrases"
-  - "hard block"
-  - "esm module compliance"
-  - "compact code graph"
-  - "tree thinning"
-  - "across 341 folders"
-  - "hybrid orchestration"
-  - "orchestration automated"
-  - "automated scripts"
-  - "scripts bulk"
-  - "bulk fixes"
-  - "fixes copilot"
-  - "copilot agents"
-  - "agents complex"
-  - "complex fixes"
-  - "deleted hard-block"
-  - "hard-block memories"
-  - "filesystem rebuild"
-  - "rebuild phase"
-  - "phase handles"
-  - "handles cleanup"
-  - "spec folders"
-  - "memory files"
-  - "spec document"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/008"
-  - "compliance"
-
+- compliance audit
+- spec validation
+- memory cleanup
+- database reindex
+- trigger_phrases bug
+- search bug
+- trigger phrases
+- hard block
+- esm module compliance
+- compact code graph
+- tree thinning
+- across 341 folders
+- hybrid orchestration
+- orchestration automated
+- automated scripts
+- scripts bulk
+- bulk fixes
+- fixes copilot
+- copilot agents
+- agents complex
+- complex fixes
+- deleted hard-block
+- hard-block memories
+- filesystem rebuild
+- rebuild phase
+- phase handles
+- handles cleanup
+- spec folders
+- memory files
+- spec document
+- kit/023
+- esm
+- module
+- compliance/008
+- compliance
 key_files:
-  - "2081 spec document frontmatter files normalized"
-  - "4291 anchor markers added across 341 folders"
-  - "135 implementation-summary files got Known Limitations sections"
-  - "46 hard-block memory files deleted"
-  - "context-index.sqlite rebuilt from zero (62.9MB)"
-  - "research/discovery-summary.md created"
-  - "research/hard-block-memories.txt created"
-  - "scratch/fix-anchors.py created"
-  - "implementation-summary.md created"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- 2081 spec document frontmatter files normalized
+- 4291 anchor markers added across 341 folders
+- 135 implementation-summary files got Known Limitations sections
+- 46 hard-block memory files deleted
+- context-index.sqlite rebuilt from zero (62.9MB)
+- research/discovery-summary.md created
+- research/hard-block-memories.txt created
+- scratch/fix-anchors.py created
+- implementation-summary.md created
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

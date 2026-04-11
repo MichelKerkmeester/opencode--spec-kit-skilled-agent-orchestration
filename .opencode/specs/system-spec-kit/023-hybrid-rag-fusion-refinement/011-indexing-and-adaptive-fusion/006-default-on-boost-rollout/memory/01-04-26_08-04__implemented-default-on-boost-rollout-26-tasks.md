@@ -1,57 +1,55 @@
 ---
-title: "Implemented Default On [006-default-on-boost-rollout/01-04-26_08-04__implemented-default-on-boost-rollout-26-tasks]"
-description: "Implemented default-ON boost rollout (26 tasks) then fixed all 4 review findings from ultra-think...; Changed stage2-fusion metadata fallback from 'off' to 'enabled' for..."
+title: Implemented Default On [006-default-on-boost-rollout/01-04-26_08-04__implemented-default-on-boost-rollout-26-tasks]
+description: Implemented default-ON boost rollout (26 tasks) then fixed all 4 review findings from ultra-think...; Changed stage2-fusion metadata fallback from 'off' to 'enabled' for...
 trigger_phrases:
-  - "is expansion active"
-  - "build deep query variants"
-  - "is feature enabled"
-  - "get strategy for query"
-  - "intent to artifact"
-  - "ultra think"
-  - "stage2 fusion"
-  - "active but no match"
-  - "session boost"
-  - "causal boost"
-  - "search flags"
-  - "module level"
-  - "artifact routing"
-  - "single word"
-  - "tree thinning"
-  - "removed isexpansionactive"
-  - "isexpansionactive gate"
-  - "gate builddeepqueryvariants"
-  - "builddeepqueryvariants called"
-  - "called deep"
-  - "deep mode"
-  - "session-boost.ts causal-boost.ts"
-  - "mcp config"
-  - "context changed"
-  - "context removed"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/011"
-  - "indexing"
-  - "and"
-  - "adaptive"
-  - "fusion/006"
-  - "default"
-  - "boost"
-  - "rollout"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- is expansion active
+- build deep query variants
+- is feature enabled
+- get strategy for query
+- intent to artifact
+- ultra think
+- stage2 fusion
+- active but no match
+- session boost
+- causal boost
+- search flags
+- module level
+- artifact routing
+- single word
+- tree thinning
+- removed isexpansionactive
+- isexpansionactive gate
+- gate builddeepqueryvariants
+- builddeepqueryvariants called
+- called deep
+- deep mode
+- session boost.ts causal boost.ts
+- mcp config
+- context changed
+- context removed
+- kit 023
+- compliance 011
+- fusion 006
+- implemented default 006
+- default 006 default
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
-
 # Implemented Default On Boost Rollout 26 Tasks
 
 ## SESSION SUMMARY
@@ -570,69 +568,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775027081526-081df7edd292"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775027081526-081df7edd292
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "25689ecde46632c7e6cde7627ee6b608a1bcc774"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 25689ecde46632c7e6cde7627ee6b608a1bcc774
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-01"
+  - 024-compact-code-graph
+created_at: '2026-04-01'
 created_at_epoch: 1775027081
 last_accessed_epoch: 1775027081
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 7
 tool_count: 0
@@ -641,91 +609,75 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "builddeepqueryvariants called"
-  - "gate builddeepqueryvariants"
-  - "removed isexpansionactive"
-  - "isexpansionactive gate"
-  - "called deep"
-  - "deep mode"
-  - "session-boost.ts causal-boost.ts"
-  - "artifact-routing.ts consistency"
-  - "re-called getstrategyforquery"
-  - "constant artifact-routing.ts"
-  - "enabled active-but-no-match"
-  - "active-but-no-match boosts"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- builddeepqueryvariants called
+- gate builddeepqueryvariants
+- removed isexpansionactive
+- isexpansionactive gate
+- called deep
+- deep mode
+- session-boost.ts causal-boost.ts
+- artifact-routing.ts consistency
+- re-called getstrategyforquery
+- constant artifact-routing.ts
+- enabled active-but-no-match
+- active-but-no-match boosts
 trigger_phrases:
-  - "is expansion active"
-  - "build deep query variants"
-  - "is feature enabled"
-  - "get strategy for query"
-  - "intent to artifact"
-  - "ultra think"
-  - "stage2 fusion"
-  - "active but no match"
-  - "session boost"
-  - "causal boost"
-  - "search flags"
-  - "module level"
-  - "artifact routing"
-  - "single word"
-  - "tree thinning"
-  - "removed isexpansionactive"
-  - "isexpansionactive gate"
-  - "gate builddeepqueryvariants"
-  - "builddeepqueryvariants called"
-  - "called deep"
-  - "deep mode"
-  - "session-boost.ts causal-boost.ts"
-  - "mcp config"
-  - "context changed"
-  - "context removed"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/011"
-  - "indexing"
-  - "and"
-  - "adaptive"
-  - "fusion/006"
-  - "default"
-  - "boost"
-  - "rollout"
-
+- is expansion active
+- build deep query variants
+- is feature enabled
+- get strategy for query
+- intent to artifact
+- ultra think
+- stage2 fusion
+- active but no match
+- session boost
+- causal boost
+- search flags
+- module level
+- artifact routing
+- single word
+- tree thinning
+- removed isexpansionactive
+- isexpansionactive gate
+- gate builddeepqueryvariants
+- builddeepqueryvariants called
+- called deep
+- deep mode
+- session-boost.ts causal-boost.ts
+- mcp config
+- context changed
+- context removed
+- kit/023
+- esm
+- module
+- compliance/011
+- indexing
+- and
+- adaptive
+- fusion/006
+- default
+- boost
+- rollout
 key_files:
-  - "mcp_server/lib/search/session-boost.ts"
-  - "mcp_server/lib/search/causal-boost.ts"
-  - "mcp_server/lib/search/pipeline/stage2-fusion.ts"
-  - "mcp_server/lib/search/pipeline/stage1-candidate-gen.ts"
-  - "mcp_server/lib/search/pipeline/types.ts"
-  - "mcp_server/lib/search/search-flags.ts"
-  - "mcp_server/lib/search/artifact-routing.ts"
-  - "mcp_server/handlers/memory-search.ts"
-  - "mcp_server/lib/feedback/shadow-evaluation-runtime.ts"
-  - "mcp_server/tests/stage2-fusion.vitest.ts"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- mcp_server/lib/search/session-boost.ts
+- mcp_server/lib/search/causal-boost.ts
+- mcp_server/lib/search/pipeline/stage2-fusion.ts
+- mcp_server/lib/search/pipeline/stage1-candidate-gen.ts
+- mcp_server/lib/search/pipeline/types.ts
+- mcp_server/lib/search/search-flags.ts
+- mcp_server/lib/search/artifact-routing.ts
+- mcp_server/handlers/memory-search.ts
+- mcp_server/lib/feedback/shadow-evaluation-runtime.ts
+- mcp_server/tests/stage2-fusion.vitest.ts
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

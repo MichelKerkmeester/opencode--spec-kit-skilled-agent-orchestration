@@ -1,52 +1,56 @@
 ---
-title: "...kit/022-hybrid-rag-fusion/026-memory-database-refinement/28-03-26_16-18__fixed-two-root-cause-bugs-in-the-mcp-memory]"
+title: '...kit/022-hybrid-rag-fusion/026-memory-database-refinement/28-03-26_16-18__fixed-two-root-cause-bugs-in-the-mcp-memory]'
+description: 'Fixed Two Root Cause Bugs In The Mcp Memory SESSION SUMMARY Meta Data Value : : Session Date 2026 03'
 trigger_phrases:
-  - "active_memory_projection unique constraint"
-  - "cannot start a transaction within a transaction"
-  - "scan failures force re-index"
-  - "projection eviction stale rows"
-  - "nested transaction savepoint fix"
-  - "memory-save begin immediate bug"
-  - "t088 t088b fixes"
-  - "active memory id"
-  - "root cause"
-  - "better sqlite3"
-  - "content hash"
-  - "replace manual"
-  - "manual sql"
-  - "sql transaction"
-  - "transaction management"
-  - "management better-sqlite3"
-  - "better-sqlite3 transaction"
-  - "transaction api"
-  - "api enable"
-  - "enable proper"
-  - "proper savepoint"
-  - "savepoint nesting"
-  - "memory server"
-  - "memory database"
-  - "the callback system"
-  - "evict stale"
-  - "stale projection"
-  - "projection rows"
-  - "rows delete"
-  - "delete active"
-  - "logical key!=?"
-  - "key!=? insert"
-  - "memory database refinement"
-  - "scan pipeline transaction bug"
-importance_tier: "critical"
-contextType: "implementation"
+- projection eviction stale rows
+- nested transaction savepoint fix
+- t088 t088b fixes
+- active memory id
+- root cause
+- better sqlite3
+- content hash
+- replace manual
+- manual sql
+- sql transaction
+- transaction management
+- management better sqlite3
+- better sqlite3 transaction
+- transaction api
+- api enable
+- enable proper
+- proper savepoint
+- savepoint nesting
+- memory server
+- memory database
+- the callback system
+- evict stale
+- stale projection
+- projection rows
+- rows delete
+- delete active
+- logical key
+- key insert
+- memory database refinement
+- scan pipeline transaction bug
+- kit 022 hybrid
+- 022 hybrid rag
+importance_tier: critical
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 3
 filesystem_file_count: 3
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
 # Fixed Two Root Cause Bugs In The Mcp Memory
 

@@ -44,9 +44,9 @@ This plan keeps the current request bounded to packet hardening while preserving
 - [x] Runtime implementation remains out of scope
 
 ### Definition of Done
-- [ ] This child folder is fully documented at Level 3
-- [ ] Strict validation passes for the child folder
-- [ ] The later command-alignment pass can start from an authoritative-first review order
+- [x] This child folder is fully documented at Level 3
+- [x] Strict validation passes for the child folder
+- [x] The later command-alignment pass can start from an authoritative-first review order
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -76,15 +76,15 @@ The command map establishes the authoritative review categories and order. The L
 - [x] Add checklist, decision record, and implementation summary
 - [x] Normalize packet-local broken references
 
-### Phase 2: Command Review Planning
-- [ ] Review authoritative memory command docs first
-- [ ] Review authoritative `spec_kit` command docs next
-- [ ] Review repo guidance, agent surfaces, and wrappers after the authoritative docs align
+### Phase 2: Command Review (Completed 2026-04-10)
+- [x] Review authoritative memory command docs first
+- [x] Review authoritative `spec_kit` command docs next
+- [x] Review repo guidance, agent surfaces, and wrappers after the authoritative docs align
 
-### Phase 3: Verification
-- [ ] Re-run strict validation after packet edits
-- [ ] Preserve the command map as the evidence artifact
-- [ ] Confirm the later command pass stays documentation-only
+### Phase 3: Verification (Completed 2026-04-10)
+- [x] Re-run strict validation after packet edits
+- [x] Preserve the command map as the evidence artifact
+- [x] Confirm the later command pass stays documentation-only
 <!-- /ANCHOR:phases -->
 
 ---
@@ -157,7 +157,7 @@ Packet Hardening -> Command Review Planning -> Verification
 ### Pre-deployment Checklist
 - [x] Packet scope remains local to this child folder
 - [x] Command map content preserved
-- [ ] Strict validation rerun after final edits
+- [x] Strict validation rerun after final edits
 
 ### Rollback Procedure
 1. Revert the packet-local doc changes inside this child folder.

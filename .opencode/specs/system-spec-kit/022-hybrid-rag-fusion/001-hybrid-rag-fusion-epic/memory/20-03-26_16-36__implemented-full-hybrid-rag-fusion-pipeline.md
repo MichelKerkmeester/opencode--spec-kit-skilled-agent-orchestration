@@ -1,45 +1,46 @@
 ---
-title: "...pec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/20-03-26_16-36__implemented-full-hybrid-rag-fusion-pipeline]"
+title: '...pec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/20-03-26_16-36__implemented-full-hybrid-rag-fusion-pipeline]'
+description: 'Implemented Full Hybrid Rag Fusion Pipeline SESSION SUMMARY Meta Data Value : : Session Date 2026 03'
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
-  - "with timeout"
-  - "is pipeline v2 enabled"
-  - "search flags"
-  - "check then insert"
-  - "memory save"
-  - "defense in depth"
-  - "stage2b enrichment"
-  - "tree thinning"
-  - "stage1 candidate gen"
-  - "in prior work"
-  - "to memory aware tools"
-  - "sprint verified already implemented"
-  - "verified already implemented prior"
-  - "already implemented prior work"
-  - "orchestrator rewritten per-stage try/catch"
-  - "deep expansion timeout ms=5000"
-  - "expansion timeout ms=5000 withtimeout"
-  - "begin immediate transaction around"
-  - "immediate transaction around check-then-insert"
-  - "gpt-5.4 cross-ai review fix"
-  - "cross-ai review fix vi.fn"
-  - "review fix vi.fn typing"
-  - "fix for vi"
-  - "rewritten per-stage try/catch withtimeout"
-  - "per-stage try/catch withtimeout 10s"
-importance_tier: "important"
-contextType: "general"
+- with timeout
+- is pipeline v2 enabled
+- search flags
+- check then insert
+- memory save
+- defense in depth
+- stage2b enrichment
+- tree thinning
+- stage1 candidate gen
+- in prior work
+- to memory aware tools
+- sprint verified already implemented
+- verified already implemented prior
+- already implemented prior work
+- begin immediate transaction around
+- review fix vi.fn typing
+- fix for vi
+- pec kit 022
+- kit 022 hybrid
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1
+  errors: 0
+  warnings: 0
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Implemented Full Hybrid Rag Fusion Pipeline
 
 ## SESSION SUMMARY
@@ -104,7 +105,7 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 **Decisions:** 8 decisions recorded
 
-**Summary:** Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4...; Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already implemented in prior work; B1: Orchestrato...
+**Summary:** Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4...; Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already implemented in prior work; B1: Orchestrato... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -228,7 +229,7 @@ Next: Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop
 Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4...; Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already implemented in prior work; B1: Orchestrator rewritten with per-stage try/catch + withTimeout(10s) — Stage 1
 
 **Key Outcomes**:
-- Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4...
+- Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4... [RETROACTIVE: auto-truncated]
 - Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already implemented in prior work
 - B1: Orchestrator rewritten with per-stage try/catch + withTimeout(10s) — Stage 1
 - E3: memory_quick_search tool (3 params) — delegates to memory_search with Zod va
@@ -261,7 +262,7 @@ Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cle
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-full-hybrid-rag-fusion-b706596a -->
-### FEATURE: Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4...
+### FEATURE: Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4... [RETROACTIVE: auto-truncated]
 
 Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4 cross-AI review found 4 issues (1 P1, 3 P2), all fixed and verified. 7840 tests pass, tsc --noEmit clean.
 
@@ -296,11 +297,11 @@ Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop) need
 #### Options Considered
 
 1. **Chosen Approach**
-   Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already imp...
+   Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already imp... [RETROACTIVE: auto-truncated]
 
 #### Chosen Approach
 
-**Selected**: Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already imp...
+**Selected**: Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already imp... [RETROACTIVE: auto-truncated]
 
 **Rationale**: Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already implemented in prior work
 
@@ -324,11 +325,11 @@ Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop) need
 #### Options Considered
 
 1. **Chosen Approach**
-   B1: Orchestrator rewritten with per-stage try/catch + wit...
+   B1: Orchestrator rewritten with per-stage try/catch + wit... [RETROACTIVE: auto-truncated]
 
 #### Chosen Approach
 
-**Selected**: B1: Orchestrator rewritten with per-stage try/catch + wit...
+**Selected**: B1: Orchestrator rewritten with per-stage try/catch + wit... [RETROACTIVE: auto-truncated]
 
 **Rationale**: Stage 1 mandatory, Stages 2-4 degrade with 'failed' SignalStatus and timing metadata
 
@@ -408,11 +409,11 @@ Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop) need
 #### Options Considered
 
 1. **Chosen Approach**
-   F1: DEEP_EXPANSION_TIMEOUT_MS=5000 with withTimeout() aro...
+   F1: DEEP_EXPANSION_TIMEOUT_MS=5000 with withTimeout() aro... [RETROACTIVE: auto-truncated]
 
 #### Chosen Approach
 
-**Selected**: F1: DEEP_EXPANSION_TIMEOUT_MS=5000 with withTimeout() aro...
+**Selected**: F1: DEEP_EXPANSION_TIMEOUT_MS=5000 with withTimeout() aro... [RETROACTIVE: auto-truncated]
 
 **Rationale**: F1: DEEP_EXPANSION_TIMEOUT_MS=5000 with withTimeout() around Promise.all variant searches
 
@@ -436,11 +437,11 @@ Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop) need
 #### Options Considered
 
 1. **Chosen Approach**
-   A4: BEGIN IMMEDIATE transaction around check-then-insert ...
+   A4: BEGIN IMMEDIATE transaction around check-then-insert ... [RETROACTIVE: auto-truncated]
 
 #### Chosen Approach
 
-**Selected**: A4: BEGIN IMMEDIATE transaction around check-then-insert ...
+**Selected**: A4: BEGIN IMMEDIATE transaction around check-then-insert ... [RETROACTIVE: auto-truncated]
 
 **Rationale**: A4: BEGIN IMMEDIATE transaction around check-then-insert in memory-save.ts (defense-in-depth)
 
@@ -492,11 +493,11 @@ Epic items (B2 weight coherence, B5 flag governance, B3 eval feedback loop) need
 #### Options Considered
 
 1. **Chosen Approach**
-   GPT-5.4 cross-AI review: P1 fix for vi.fn() TS typing, P2...
+   GPT-5.4 cross-AI review: P1 fix for vi.fn() TS typing, P2... [RETROACTIVE: auto-truncated]
 
 #### Chosen Approach
 
-**Selected**: GPT-5.4 cross-AI review: P1 fix for vi.fn() TS typing, P2...
+**Selected**: GPT-5.4 cross-AI review: P1 fix for vi.fn() TS typing, P2... [RETROACTIVE: auto-truncated]
 
 **Rationale**: GPT-5.4 cross-AI review: P1 fix for vi.fn() TS typing, P2 fixes for Zod validation bypass, MEMORY_AWARE_TOOLS parity, and Stage 2 fallback 'off' → 'failed' tri-state correctness
 
@@ -606,69 +607,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774020966885-4570755e5b0d"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774020966885-4570755e5b0d
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "0b9ee671493a8c746f3b10708f4a833ab12252a7"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 0b9ee671493a8c746f3b10708f4a833ab12252a7
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-20"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-20'
 created_at_epoch: 1774020966
 last_accessed_epoch: 1774020966
-expires_at_epoch: 1781796966  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781796966
 message_count: 1
 decision_count: 8
 tool_count: 0
@@ -677,84 +647,68 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "hybrid rag"
-  - "already implemented"
-  - "fusion/001 hybrid"
-  - "implemented prior"
-  - "verified already"
-  - "sprint verified"
-  - "kit/022 hybrid"
-  - "rag fusion/001"
-  - "zod validation"
-  - "spec kit/022"
-  - "memory aware"
-  - "system spec"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- hybrid rag
+- already implemented
+- fusion 001 hybrid
+- implemented prior
+- verified already
+- sprint verified
+- kit 022 hybrid
+- rag fusion 001
+- zod validation
+- spec kit 022
+- memory aware
+- system spec
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
-  - "with timeout"
-  - "is pipeline v2 enabled"
-  - "search flags"
-  - "check then insert"
-  - "memory save"
-  - "defense in depth"
-  - "stage2b enrichment"
-  - "tree thinning"
-  - "stage1 candidate gen"
-  - "in prior work"
-  - "to memory aware tools"
-  - "sprint verified already implemented"
-  - "verified already implemented prior"
-  - "already implemented prior work"
-  - "orchestrator rewritten per-stage try/catch"
-  - "deep expansion timeout ms=5000"
-  - "expansion timeout ms=5000 withtimeout"
-  - "begin immediate transaction around"
-  - "immediate transaction around check-then-insert"
-  - "gpt-5.4 cross-ai review fix"
-  - "cross-ai review fix vi.fn"
-  - "review fix vi.fn typing"
-  - "fix for vi"
-  - "rewritten per-stage try/catch withtimeout"
-  - "per-stage try/catch withtimeout 10s"
-  - "kit/022"
-  - "fusion/001"
-  - "epic"
-
+- system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic
+- with timeout
+- is pipeline v2 enabled
+- search flags
+- check then insert
+- memory save
+- defense in depth
+- stage2b enrichment
+- tree thinning
+- stage1 candidate gen
+- in prior work
+- to memory aware tools
+- sprint verified already implemented
+- verified already implemented prior
+- already implemented prior work
+- orchestrator rewritten per-stage try/catch
+- deep expansion timeout ms=5000
+- expansion timeout ms=5000 withtimeout
+- begin immediate transaction around
+- immediate transaction around check-then-insert
+- gpt-5.4 cross-ai review fix
+- cross-ai review fix vi.fn
+- review fix vi.fn typing
+- fix for vi
+- rewritten per-stage try/catch withtimeout
+- per-stage try/catch withtimeout 10s
+- kit/022
+- fusion/001
+- epic
 key_files:
-  - "lib/search/pipeline/orchestrator.ts"
-  - "lib/search/pipeline/types.ts"
-  - "lib/search/pipeline/stage1-candidate-gen.ts"
-  - "lib/search/pipeline/stage2-fusion.ts"
-  - "lib/search/pipeline/stage2b-enrichment.ts"
-  - "lib/search/search-flags.ts"
-  - "tool-schemas.ts"
-  - "schemas/tool-input-schemas.ts"
-  - "tools/memory-tools.ts"
-  - "hooks/memory-surface.ts"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- lib/search/pipeline/orchestrator.ts
+- lib/search/pipeline/types.ts
+- lib/search/pipeline/stage1-candidate-gen.ts
+- lib/search/pipeline/stage2-fusion.ts
+- lib/search/pipeline/stage2b-enrichment.ts
+- lib/search/search-flags.ts
+- tool-schemas.ts
+- schemas/tool-input-schemas.ts
+- tools/memory-tools.ts
+- hooks/memory-surface.ts
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

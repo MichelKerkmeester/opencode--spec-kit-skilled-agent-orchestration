@@ -1,7 +1,28 @@
 ---
-title: "...22-hybrid-rag-fusion/026-memory-database-refinement/29-03-26_11-24__phase-13-deep-research-refinement-implementation]"
-importance_tier: "critical"
-contextType: "implementation"
+title: '...22-hybrid-rag-fusion/026-memory-database-refinement/29-03-26_11-24__phase-13-deep-research-refinement-implementation]'
+description: 'title: "Phase 13 Deep Research [026 memory database refinement/29 03 26 11 24 phase 13 deep research'
+trigger_phrases:
+- hybrid rag fusion
+- rag fusion 026
+- fusion 026 memory
+- 026 memory database
+- memory database refinement
+- database refinement phase
+- refinement phase deep
+- phase deep research
+- deep research refinement
+- research refinement implementation
+- hybrid rag
+- rag fusion
+- fusion 026
+- 026 memory
+- memory database
+importance_tier: critical
+contextType: implementation
+quality_score: 0.8
+quality_flags:
+- needs_review
+- retroactive_reviewed
 ---
 ---
 title: "Phase 13 Deep Research [026-memory-database-refinement/29-03-26_11-24__phase-13-deep-research-refinement-implementation]"

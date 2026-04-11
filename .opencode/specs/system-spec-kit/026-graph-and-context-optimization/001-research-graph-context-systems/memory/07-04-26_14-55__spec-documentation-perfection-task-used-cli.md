@@ -1,35 +1,35 @@
 ---
 title: Spec-Doc Perfection - Master Research Packet Closeout
-name: 07-04-26_14-55__spec-documentation-perfection-task-used-cli
 description: Three-phase spec-documentation hardening pass for the master graph-and-context research packet. The run created the root Level 3 packet, patched child-folder drift, and established the canonical current-plus-archive root research layout. This memory was manually refined on 2026-04-08 so the resume state reflects the current strict-clean packet rather than the earlier warning-only checkpoint.
-type: episodic
 trigger_phrases:
 - spec documentation perfection
 - spec doc perfection
 - spec doc audit
-- Level 3 spec docs
-- Level 3 packet
-- level_3 templates
-- system-spec-kit templates
+- level 3 spec docs
+- level 3 packet
+- level 3 templates
+- system spec kit templates
 - graph and context optimization
-- 026-graph-and-context-optimization
-- 001-research-graph-context-systems
-- PARENT spec docs
-- PARENT Level 3
-- cli-copilot autopilot
-- copilot gpt-5.4 high
-- copilot --effort high
-- copilot --allow-all-tools
+- parent spec docs
+- parent level 3
+- cli copilot autopilot
+- copilot gpt 5.4 high
+- copilot effort high
+- copilot allow all tools
 - phase 1 audit
 - phase 2 create patch
 - phase 3 validation
-- spec-doc-audit.md
-- spec-doc-phase-2-summary.md
-- spec-doc-phase-3-validation.md
+- spec doc audit.md
 - description.json schema
-- folder-discovery.ts
+- folder discovery.ts
+- doc perfection master
 importance_tier: important
-contextType: general
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 07-04-26_14-55__spec-documentation-perfection-task-used-cli
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,15 +37,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: true
   score: 0.8
   errors: 0
   warnings: 4
 ---
-> **Note:** This memory was saved via JSON-mode (`generate-context.js --json`) so the auto-extractor's quality score (0/100) reflects the absence of raw conversation messages, NOT the underlying session quality. The actual session orchestrated 3 cli-copilot phases producing 23+ file operations across the parent + 5 sub-folder spec packets. See sessionSummary, key decisions, and the phase reports under `scratch/` for full details.
+> **Note:** This memory was saved via JSON-mode (`generate-context.js --json`) so the auto-extractor's quality score (0 [RETROACTIVE: original 100-point scale]) reflects the absence of raw conversation messages, NOT the underlying session quality. The actual session orchestrated 3 cli-copilot phases producing 23+ file operations across the parent + 5 sub-folder spec packets. See sessionSummary, key decisions, and the phase reports under `scratch/` for full details.
 
 
 # Spec Documentation Perfection Task Used Cli
@@ -741,69 +739,43 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775570130802-92d65cd862d4"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775570130802-92d65cd862d4
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "aec8140ff3fd4f04072360bb1ad616ce3700f3cd"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: aec8140ff3fd4f04072360bb1ad616ce3700f3cd
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-07"
+  - 100-point
+  - 002-codesight
+  - 005-claudest
+  - 001-claude-optimization-settings
+  - 858-926
+created_at: '2026-04-07'
 created_at_epoch: 1775570130
 last_accessed_epoch: 1775570130
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 13
 decision_count: 10
 tool_count: 0
@@ -812,53 +784,43 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "editable packet"
-  - "phase audit"
-  - "packet docs"
-  - "phase phase"
-  - "phase one"
-  - "memorynamehistory description.json"
-  - "from.opencode/skill/system-spec-kit/mcp server/lib/search/folder-discovery.ts"
-  - "/users/michelkerkmeester/.superset/bin/copilot gpt-5.4"
-  - "binary /users/michelkerkmeester/.superset/bin/copilot"
-  - "discovered from.opencode/skill/system-spec-kit/mcp"
-  - "server/lib/search/folder-discovery.ts fields"
-  - "memorysequence memorynamehistory"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- editable packet
+- phase audit
+- packet docs
+- phase phase
+- phase one
+- memorynamehistory description.json
+- memorysequence memorynamehistory
+- spec documentation
 trigger_phrases:
-  - "spec documentation perfection"
-  - "spec doc perfection"
-  - "spec doc audit"
-  - "Level 3 spec docs"
-  - "Level 3 packet"
-  - "level_3 templates"
-  - "system-spec-kit templates"
-  - "graph and context optimization"
-  - "026-graph-and-context-optimization"
-  - "001-research-graph-context-systems"
-  - "PARENT spec docs"
-  - "PARENT Level 3"
-  - "cli-copilot autopilot"
-  - "copilot gpt-5.4 high"
-  - "copilot --effort high"
-  - "copilot --allow-all-tools"
-  - "phase 1 audit"
-  - "phase 2 create patch"
-  - "phase 3 validation"
-  - "spec-doc-audit.md"
-  - "spec-doc-phase-2-summary.md"
-  - "spec-doc-phase-3-validation.md"
-  - "description.json schema"
-  - "folder-discovery.ts"
+- spec documentation perfection
+- spec doc perfection
+- spec doc audit
+- Level 3 spec docs
+- Level 3 packet
+- level_3 templates
+- system-spec-kit templates
+- graph and context optimization
+- 026-graph-and-context-optimization
+- 001-research-graph-context-systems
+- PARENT spec docs
+- PARENT Level 3
+- cli-copilot autopilot
+- copilot gpt-5.4 high
+- copilot --effort high
+- copilot --allow-all-tools
+- phase 1 audit
+- phase 2 create patch
+- phase 3 validation
+- spec-doc-audit.md
+- spec-doc-phase-2-summary.md
+- spec-doc-phase-3-validation.md
+- description.json schema
+- folder-discovery.ts
 ```
 
 <!-- /ANCHOR:metadata -->

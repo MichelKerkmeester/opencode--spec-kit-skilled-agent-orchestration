@@ -1,57 +1,61 @@
 ---
-title: "Deep Research: Evaluating Codex-CLI Compact Dual-Graph [024-compact-code-graph]"
-description: "Deep research evaluating Codex-CLI-Compact (Dual-Graph) for upgrading Spec Kit Memory MCP. Investigated 10 approaches, rejected Dual-Graph (proprietary Cython), recommended clean-room structural indexer."
+title: 'Deep Research: Evaluating Codex-CLI Compact Dual-Graph [024-compact-code-graph]'
+description: Deep research evaluating Codex-CLI-Compact (Dual-Graph) for upgrading Spec Kit Memory MCP. Investigated 10 approaches, rejected Dual-Graph (proprietary Cython), recommended clean-room structural indexer.
 trigger_phrases:
-  - "code graph"
-  - "codex-cli-compact"
-  - "tree-sitter"
-  - "context optimization"
-  - "token reduction"
-  - "code structure graph"
-  - "import dependency graph"
-  - "AST parsing for search"
-  - "codex cli compact"
-  - "dual graph"
-  - "cython compiled"
-  - "clean room"
-  - "tree sitter"
-  - "rejected installing"
-  - "installing dual-graph"
-  - "dual-graph standalone"
-  - "rejected extracting"
-  - "extracting graperoot"
-  - "graperoot logic"
-  - "logic proprietary"
-  - "proprietary cython-compiled"
-  - "memory mcp"
-  - "workflow collision"
-  - "broader capability system"
-  - "cython-compiled rejected"
-  - "standalone claude.md"
-  - "claude.md conflict"
-  - "conflict workflow"
-  - "collision rejected"
-  - "recommended build"
-  - "build clean-room"
-  - "clean-room code"
-  - "dual-graph evaluation"
-  - "graperoot proprietary"
-  - "code graph channel"
-  - "hybrid search extension"
+- code graph
+- codex cli compact
+- tree sitter
+- context optimization
+- token reduction
+- code structure graph
+- import dependency graph
+- ast parsing for search
+- dual graph
+- cython compiled
+- clean room
+- rejected installing
+- installing dual graph
+- dual graph standalone
+- rejected extracting
+- extracting graperoot
+- graperoot logic
+- logic proprietary
+- proprietary cython compiled
+- memory mcp
+- workflow collision
+- broader capability system
+- cython compiled rejected
+- standalone claude.md
+- claude.md conflict
+- conflict workflow
+- collision rejected
+- recommended build
+- build clean room
+- clean room code
+- dual graph evaluation
+- graperoot proprietary
+- code graph channel
+- hybrid search extension
+- deep research evaluating
+- research evaluating codex
 importance_tier: important
-contextType: "research"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 3
+  warnings: 0
 ---
-
 # Deep Research Evaluating Codex Cli Compact Dual
 
 ## SESSION SUMMARY

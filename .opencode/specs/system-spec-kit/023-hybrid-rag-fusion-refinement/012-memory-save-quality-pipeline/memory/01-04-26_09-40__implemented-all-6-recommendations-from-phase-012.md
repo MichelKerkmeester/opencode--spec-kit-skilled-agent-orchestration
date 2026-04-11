@@ -1,57 +1,64 @@
 ---
-title: "Implemented All 6 [012-memory-save-quality-pipeline/01-04-26_09-40__implemented-all-6-recommendations-from-phase-012]"
-description: "Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the...; Used existing normalizeInputData() over new dual-source extractor - 12 LOC..."
+title: Implemented All 6 [012-memory-save-quality-pipeline/01-04-26_09-40__implemented-all-6-recommendations-from-phase-012]
+description: Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the...; Used existing normalizeInputData() over new dual-source extractor - 12 LOC...
 trigger_phrases:
-  - "memory save quality"
-  - "JSON-mode quality pipeline"
-  - "generate-context quality fix"
-  - "normalizeInputData bypass"
-  - "extractFromJsonPayload"
-  - "V8 sibling allowlist"
-  - "quality floor damping"
-  - "filesChanged alias"
-  - "decision 4x repetition"
-  - "key_files cap iterations"
-  - "normalize input data"
-  - "session summary"
-  - "user prompts"
-  - "json mode"
-  - "dual source"
-  - "dominance based"
-  - "merge conflicts"
-  - "used existing"
-  - "existing normalizeinputdata"
-  - "normalizeinputdata new"
-  - "new dual-source"
-  - "dual-source extractor"
-  - "roles without"
-  - "without synthetic"
-  - "synthetic flags"
-  - "spec detection"
-  - "for implementation system"
-  - "code existing"
-  - "existing normalization"
-  - "normalization already"
-  - "already handles"
-  - "handles sessionsummary→userprompts"
-  - "json quality floor"
-  - "sibling phase allowlist"
-  - "wave parallel implementation"
-  - "conversation extractor json"
-  - "workflow normalization bypass"
-importance_tier: "important"
-contextType: "implementation"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- memory save quality
+- json mode quality pipeline
+- generate context quality fix
+- normalizeinputdata bypass
+- v8 sibling allowlist
+- quality floor damping
+- fileschanged alias
+- decision 4x repetition
+- key files cap iterations
+- normalize input data
+- session summary
+- user prompts
+- json mode
+- dual source
+- dominance based
+- merge conflicts
+- used existing
+- existing normalizeinputdata
+- normalizeinputdata new
+- new dual source
+- dual source extractor
+- roles without
+- without synthetic
+- synthetic flags
+- spec detection
+- for implementation system
+- code existing
+- existing normalization
+- normalization already
+- already handles
+- handles sessionsummary userprompts
+- json quality floor
+- sibling phase allowlist
+- wave parallel implementation
+- conversation extractor json
+- workflow normalization bypass
+- implemented all 012
+- all 012 memory
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 9
 filesystem_file_count: 9
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":true,"score":0.7,"errors":0,"warnings":6}
+spec_folder_health:
+  pass: true
+  score: 0.7
+  errors: 0
+  warnings: 6
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Implemented All 6 Recommendations From Phase 012
 
@@ -142,7 +149,7 @@ Next: Continue implementation
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: Parallel 4-wave agent dispatch for implementation - Each wave touches...
+- Last: Parallel 4-wave agent dispatch for implementation - Each wave touches... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -199,7 +206,7 @@ Next: Continue implementation
 
 - `scripts/types/session-types.ts` - Type definitions
 
-- `scripts/utils/input-normalizer.ts` - FilesChanged in KNOWN_RAW_INPUT_FIELDS, fast/slow path...
+- `scripts/utils/input-normalizer.ts` - FilesChanged in KNOWN_RAW_INPUT_FIELDS, fast/slow path... [RETROACTIVE: auto-truncated]
 
 - `scripts/core/workflow.ts` - Import and call normalizeInputData() for preloaded data
 
@@ -233,7 +240,7 @@ Next: Continue implementation
 Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the...; Used existing normalizeInputData() over new dual-source extractor - 12 LOC activation vs 60-75 LOC new code — existing normalization already handles sessionSummary→userPrompts conversion; Messages use plain User/Assistant roles without _synthetic or _source flags - Simpler than planned since no downstream code filters by source flag
 
 **Key Outcomes**:
-- Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the...
+- Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the... [RETROACTIVE: auto-truncated]
 - Used existing normalizeInputData() over new dual-source extractor - 12 LOC activation vs 60-75 LOC new code — existing normalization already handles sessionSummary→userPrompts conversion
 - Messages use plain User/Assistant roles without _synthetic or _source flags - Simpler than planned since no downstream code filters by source flag
 - Quality floor uses 6-dimension threshold with 0.
@@ -245,7 +252,7 @@ Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save qu
 | **File** | **Description** |
 |:---------|:----------------|
 | `scripts/types/(merged-small-files)` | Tree-thinning merged 1 small files (session-types.ts).  Merged from scripts/types/session-types.ts : Added filesChanged field to CollectedDataBase |
-| `scripts/utils/(merged-small-files)` | Tree-thinning merged 1 small files (input-normalizer.ts).  Merged from scripts/utils/input-normalizer.ts : FilesChanged in KNOWN_RAW_INPUT_FIELDS, fast/slow path... |
+| `scripts/utils/(merged-small-files)` | Tree-thinning merged 1 small files (input-normalizer.ts).  Merged from scripts/utils/input-normalizer.ts : FilesChanged in KNOWN_RAW_INPUT_FIELDS, fast/slow path... [RETROACTIVE: auto-truncated] |
 | `scripts/core/(merged-small-files)` | Tree-thinning merged 3 small files (workflow.ts, workflow-path-utils.ts, quality-scorer.ts).  Merged from scripts/core/workflow.ts : 613 for preloaded JSON data | Merged from scripts/core/workflow-path-utils.ts : Iterations in ignoredDirs, slice(0,20), filter | Merged from scripts/core/quality-scorer.ts : JSON quality floor with 6-dimension check |
 | `scripts/extractors/(merged-small-files)` | Tree-thinning merged 3 small files (conversation-extractor.ts, collect-session-data.ts, decision-extractor.ts).  Merged from scripts/extractors/conversation-extractor.ts : ExtractFromJsonPayload() + JSON-mode branch + fallback guard | Merged from scripts/extractors/collect-session-data.ts : SessionSummary to SUMMARY and TITLE derivation | Merged from scripts/extractors/decision-extractor.ts : Empty CONTEXT/OPTIONS for plain-string decisions |
 | `scripts/lib/(merged-small-files)` | Tree-thinning merged 1 small files (validate-memory-quality.ts).  Merged from scripts/lib/validate-memory-quality.ts : Sibling allowlist, structured input guard, source param |
@@ -260,9 +267,9 @@ Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save qu
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-all-recommendations-phase-012-2c16c6b4 -->
-### FEATURE: Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the...
+### FEATURE: Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the... [RETROACTIVE: auto-truncated]
 
-Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the generate-context.js pipeline. Root cause was normalizeInputData() bypass at workflow.ts:613 for preloaded JSON data. Wave 1 wired normalization (filesChanged alias, fast/slow path mapping). Wave 2 added extractFromJsonPayload() for message synthesis. Wave 3 derived title/description from sessionSummary and fixed 4x decision repetition. Wave 4 added V8 sibling phase allowlist and JSON quality floor. All...
+Implemented all 6 recommendations from Phase 012 to fix JSON-mode memory save quality in the generate-context.js pipeline. Root cause was normalizeInputData() bypass at workflow.ts:613 for preloaded JSON data. Wave 1 wired normalization (filesChanged alias, fast/slow path mapping). Wave 2 added extractFromJsonPayload() for message synthesis. Wave 3 derived title/description from sessionSummary and fixed 4x decision repetition. Wave 4 added V8 sibling phase allowlist and JSON quality floor. All... [RETROACTIVE: auto-truncated]
 
 **Details:** memory save quality | JSON-mode quality pipeline | generate-context quality fix | normalizeInputData bypass | extractFromJsonPayload | V8 sibling allowlist | quality floor damping | filesChanged alias | decision 4x repetition | key_files cap iterations
 <!-- /ANCHOR:implementation-all-recommendations-phase-012-2c16c6b4 -->
@@ -521,69 +528,40 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775032852815-e061c5405e18"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "implementation"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775032852815-e061c5405e18
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "procedural"         # episodic|procedural|semantic|constitutional
-  half_life_days: 180     # decay half-life in days (0 = never decays)
+  memory_type: procedural
+  half_life_days: 180
   decay_factors:
-    base_decay_rate: 0.9962           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9962
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "116031cbb6d3985e91876b972c0fc2b48c2dce7b"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 116031cbb6d3985e91876b972c0fc2b48c2dce7b
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-01"
+  - 024-compact-code-graph
+  - 012-2c16c6b4
+created_at: '2026-04-01'
 created_at_epoch: 1775032852
 last_accessed_epoch: 1775032852
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 5
 tool_count: 0
@@ -592,91 +570,75 @@ captured_file_count: 9
 filesystem_file_count: 9
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "normalizeinputdata dual-source"
-  - "existing normalizeinputdata"
-  - "dual-source extractor"
-  - "plain user/assistant"
-  - "user/assistant roles"
-  - "without synthetic"
-  - "synthetic flags"
-  - "messages plain"
-  - "roles without"
-  - "sessionsummary→userprompts conversion"
-  - "handles sessionsummary→userprompts"
-  - "dispatch implementation"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- normalizeinputdata dual-source
+- existing normalizeinputdata
+- dual-source extractor
+- plain user assistant
+- user assistant roles
+- without synthetic
+- synthetic flags
+- messages plain
+- roles without
+- sessionsummary userprompts conversion
+- handles sessionsummary userprompts
+- dispatch implementation
 trigger_phrases:
-  - "memory save quality"
-  - "JSON-mode quality pipeline"
-  - "generate-context quality fix"
-  - "normalizeInputData bypass"
-  - "extractFromJsonPayload"
-  - "V8 sibling allowlist"
-  - "quality floor damping"
-  - "filesChanged alias"
-  - "decision 4x repetition"
-  - "key_files cap iterations"
-  - "normalize input data"
-  - "session summary"
-  - "user prompts"
-  - "json mode"
-  - "dual source"
-  - "dominance based"
-  - "merge conflicts"
-  - "used existing"
-  - "existing normalizeinputdata"
-  - "normalizeinputdata new"
-  - "new dual-source"
-  - "dual-source extractor"
-  - "roles without"
-  - "without synthetic"
-  - "synthetic flags"
-  - "spec detection"
-  - "for implementation system"
-  - "code existing"
-  - "existing normalization"
-  - "normalization already"
-  - "already handles"
-  - "handles sessionsummary→userprompts"
-  - "json quality floor"
-  - "sibling phase allowlist"
-  - "wave parallel implementation"
-  - "conversation extractor json"
-  - "workflow normalization bypass"
-
+- memory save quality
+- JSON-mode quality pipeline
+- generate-context quality fix
+- normalizeInputData bypass
+- extractFromJsonPayload
+- V8 sibling allowlist
+- quality floor damping
+- filesChanged alias
+- decision 4x repetition
+- key_files cap iterations
+- normalize input data
+- session summary
+- user prompts
+- json mode
+- dual source
+- dominance based
+- merge conflicts
+- used existing
+- existing normalizeinputdata
+- normalizeinputdata new
+- new dual-source
+- dual-source extractor
+- roles without
+- without synthetic
+- synthetic flags
+- spec detection
+- for implementation system
+- code existing
+- existing normalization
+- normalization already
+- already handles
+- "handles sessionsummary\u2192userprompts"
+- json quality floor
+- sibling phase allowlist
+- wave parallel implementation
+- conversation extractor json
+- workflow normalization bypass
 key_files:
-  - "scripts/types/session-types.ts"
-  - "scripts/utils/input-normalizer.ts"
-  - "scripts/core/workflow.ts"
-  - "scripts/extractors/conversation-extractor.ts"
-  - "scripts/extractors/collect-session-data.ts"
-  - "scripts/extractors/decision-extractor.ts"
-  - "scripts/core/workflow-path-utils.ts"
-  - "scripts/lib/validate-memory-quality.ts"
-  - "scripts/core/quality-scorer.ts"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- scripts/types/session-types.ts
+- scripts/utils/input-normalizer.ts
+- scripts/core/workflow.ts
+- scripts/extractors/conversation-extractor.ts
+- scripts/extractors/collect-session-data.ts
+- scripts/extractors/decision-extractor.ts
+- scripts/core/workflow-path-utils.ts
+- scripts/lib/validate-memory-quality.ts
+- scripts/core/quality-scorer.ts
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

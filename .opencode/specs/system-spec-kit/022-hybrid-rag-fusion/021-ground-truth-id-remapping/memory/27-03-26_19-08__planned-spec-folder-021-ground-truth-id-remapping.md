@@ -1,48 +1,53 @@
 ---
-title: "...22-hybrid-rag-fusion/021-ground-truth-id-remapping/27-03-26_19-08__planned-spec-folder-021-ground-truth-id-remapping]"
+title: '...22-hybrid-rag-fusion/021-ground-truth-id-remapping/27-03-26_19-08__planned-spec-folder-021-ground-truth-id-remapping]'
+description: 'Planned Spec Folder 021 Ground Truth Id Remapping SESSION SUMMARY Meta Data Value : : Session Date 2'
 trigger_phrases:
-  - "expected result description"
-  - "ground truth id remapping"
-  - "map ground truth ids"
-  - "context index"
-  - "phrase match"
-  - "tree thinning"
-  - "system spec kit"
-  - "hybrid rag fusion"
-  - "fts5 search"
-  - "plan system"
-  - "spec folder"
-  - "search against"
-  - "two-pass fts5"
-  - "search phrase-match"
-  - "phrase-match first"
-  - "first keyword"
-  - "keyword fallback"
-  - "atomic write"
-  - "write pattern"
-  - "pattern ground-truth.json"
-  - "ground-truth.json updates"
-  - "level documentation"
-  - "documentation complexity"
-  - "script location"
-  - "location mcp"
-  - "kit/022"
-  - "fusion/021"
-  - "ground"
-  - "truth"
-  - "remapping"
-importance_tier: "important"
-contextType: "planning"
+- expected result description
+- ground truth id remapping
+- map ground truth ids
+- context index
+- phrase match
+- tree thinning
+- system spec kit
+- hybrid rag fusion
+- fts5 search
+- plan system
+- spec folder
+- search against
+- two pass fts5
+- search phrase match
+- phrase match first
+- first keyword
+- keyword fallback
+- atomic write
+- write pattern
+- pattern ground truth.json
+- ground truth.json updates
+- level documentation
+- documentation complexity
+- script location
+- location mcp
+- kit 022
+- fusion 021
+- rag fusion 021
+- fusion 021 ground
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 4
 filesystem_file_count: 4
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
 # Planned Spec Folder 021 Ground Truth Id Remapping
 
@@ -461,69 +466,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774634927435-e6dc804ea41b"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "decision"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774634927435-e6dc804ea41b
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "7026ed666fd31b41adcd7153f8dca8f1211f20de"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 7026ed666fd31b41adcd7153f8dca8f1211f20de
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-27"
+  - 200-300
+created_at: '2026-03-27'
 created_at_epoch: 1774634927
 last_accessed_epoch: 1774634927
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 4
 tool_count: 0
@@ -532,79 +507,63 @@ captured_file_count: 4
 filesystem_file_count: 4
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "fts5 search"
-  - "mcp server/scripts/map-ground-truth-ids.ts"
-  - "pattern ground-truth.json"
-  - "ground-truth.json updates"
-  - "documentation complexity"
-  - "search phrase-match"
-  - "level documentation"
-  - "phrase-match first"
-  - "script location"
-  - "two-pass fts5"
-  - "first keyword"
-  - "write pattern"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- fts5 search
+- mcp server scripts map-ground-truth-ids.ts
+- pattern ground-truth.json
+- ground-truth.json updates
+- documentation complexity
+- search phrase-match
+- level documentation
+- phrase-match first
+- script location
+- two-pass fts5
+- first keyword
+- write pattern
 trigger_phrases:
-  - "expected result description"
-  - "ground truth id remapping"
-  - "map ground truth ids"
-  - "context index"
-  - "phrase match"
-  - "tree thinning"
-  - "system spec kit"
-  - "hybrid rag fusion"
-  - "fts5 search"
-  - "plan system"
-  - "spec folder"
-  - "search against"
-  - "two-pass fts5"
-  - "search phrase-match"
-  - "phrase-match first"
-  - "first keyword"
-  - "keyword fallback"
-  - "atomic write"
-  - "write pattern"
-  - "pattern ground-truth.json"
-  - "ground-truth.json updates"
-  - "level documentation"
-  - "documentation complexity"
-  - "script location"
-  - "location mcp"
-  - "kit/022"
-  - "fusion/021"
-  - "ground"
-  - "truth"
-  - "remapping"
-
+- expected result description
+- ground truth id remapping
+- map ground truth ids
+- context index
+- phrase match
+- tree thinning
+- system spec kit
+- hybrid rag fusion
+- fts5 search
+- plan system
+- spec folder
+- search against
+- two-pass fts5
+- search phrase-match
+- phrase-match first
+- first keyword
+- keyword fallback
+- atomic write
+- write pattern
+- pattern ground-truth.json
+- ground-truth.json updates
+- level documentation
+- documentation complexity
+- script location
+- location mcp
+- kit/022
+- fusion/021
+- ground
+- truth
+- remapping
 key_files:
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/spec.md"
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/plan.md"
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/tasks.md"
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/checklist.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/spec.md
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/plan.md
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/tasks.md
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping/checklist.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

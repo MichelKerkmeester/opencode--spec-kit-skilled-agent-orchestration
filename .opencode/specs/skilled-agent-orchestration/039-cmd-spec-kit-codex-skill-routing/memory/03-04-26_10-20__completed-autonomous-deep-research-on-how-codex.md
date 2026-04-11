@@ -1,49 +1,50 @@
 ---
-title: "Completed Autonomous [039-cmd-spec-kit-codex-skill-routing/03-04-26_10-20__completed-autonomous-deep-research-on-how-codex]"
-description: "Completed autonomous deep research on how Codex should discover spec kit and memory commands when system-spec-kit is selected by skill advisor. The research concluded that the..."
+title: Completed Autonomous [039-cmd-spec-kit-codex-skill-routing/03-04-26_10-20__completed-autonomous-deep-research-on-how-codex]
+description: Completed autonomous deep research on how Codex should discover spec kit and memory commands when system-spec-kit is selected by skill advisor. The research concluded that the...
 trigger_phrases:
-  - "missing command"
-  - "system spec kit"
-  - "always loaded"
-  - "first touch"
-  - "lower priority"
-  - "by skill advisor"
-  - "memory commands"
-  - "commands when system"
-  - "always-loaded quick"
-  - "first-touch codex"
-  - "codex surface"
-  - "surface always-loaded"
-  - "quick reference.md"
-  - "reference.md fix"
-  - "fix surface"
-  - "surface minimal"
-  - "minimal command"
-  - "command shortlist"
-  - "shortlist rather"
-  - "rather creating"
-  - "commands"
-  - "and"
-  - "skills/039"
-  - "cmd"
-  - "codex"
-  - "routing"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- missing command
+- system spec kit
+- always loaded
+- first touch
+- lower priority
+- by skill advisor
+- memory commands
+- commands when system
+- always loaded quick
+- first touch codex
+- codex surface
+- surface always loaded
+- quick reference.md
+- reference.md fix
+- fix surface
+- surface minimal
+- minimal command
+- command shortlist
+- shortlist rather
+- rather creating
+- skills 039
+- completed autonomous 039
+- autonomous 039 cmd
+importance_tier: important
+contextType: research
+quality_score: 0.96
+quality_flags:
+- has_placeholders
+- has_topical_mismatch
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 0.96
-quality_flags:
-  - "has_placeholders"
-  - "has_topical_mismatch"
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
-
 # Completed Autonomous Deep Research On How Codex
 
 ## SESSION SUMMARY
@@ -74,9 +75,9 @@ spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | 62/100 | Good |
-| Uncertainty Score | 34/100 | Low uncertainty |
-| Context Score | 58/100 | Moderate |
+| Knowledge Score | 62 [RETROACTIVE: original 100-point scale] | Good |
+| Uncertainty Score | 34 [RETROACTIVE: original 100-point scale] | Low uncertainty |
+| Context Score | 58 [RETROACTIVE: original 100-point scale] | Moderate |
 | Timestamp |  | Session start |
 
 **Initial Gaps Identified:**
@@ -456,7 +457,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03-
 | Uncertainty | 34 | 12 | +22 | ↓ |
 | Context | 58 | 90 | +32 | ↑ |
 
-**Learning Index:** 28/100
+**Learning Index:** 28 [RETROACTIVE: original 100-point scale]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -483,69 +484,39 @@ Significant knowledge gain (+29 points). Major uncertainty reduction (-22 points
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775208011507-49c9d56debcf"
-spec_folder: "03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775208011507-49c9d56debcf
+spec_folder: 03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "a99ceb12f44a5fedb5b69603771e3da6c29b0b9f"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: a99ceb12f44a5fedb5b69603771e3da6c29b0b9f
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-03"
+  - 100-point
+created_at: '2026-04-03'
 created_at_epoch: 1775208011
 last_accessed_epoch: 1775208011
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 2
 decision_count: 2
 tool_count: 0
@@ -554,79 +525,63 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "/spec kit"
-  - "discoverability placement"
-  - "recommended first-touch"
-  - "cause discoverability"
-  - "first-touch shortlist"
-  - "always-loaded quick"
-  - "/memory search"
-  - "search /memory"
-  - "resume /spec"
-  - "plan /memory"
-  - "/memory save"
-  - "root cause"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- spec kit
+- discoverability placement
+- recommended first-touch
+- cause discoverability
+- first-touch shortlist
+- always-loaded quick
+- memory search
+- search memory
+- resume spec
+- plan memory
+- memory save
+- root cause
 trigger_phrases:
-  - "missing command"
-  - "system spec kit"
-  - "always loaded"
-  - "first touch"
-  - "lower priority"
-  - "by skill advisor"
-  - "memory commands"
-  - "commands when system"
-  - "always-loaded quick"
-  - "first-touch codex"
-  - "codex surface"
-  - "surface always-loaded"
-  - "quick reference.md"
-  - "reference.md fix"
-  - "fix surface"
-  - "surface minimal"
-  - "minimal command"
-  - "command shortlist"
-  - "shortlist rather"
-  - "rather creating"
-  - "commands"
-  - "and"
-  - "skills/039"
-  - "cmd"
-  - "codex"
-  - "routing"
-
+- missing command
+- system spec kit
+- always loaded
+- first touch
+- lower priority
+- by skill advisor
+- memory commands
+- commands when system
+- always-loaded quick
+- first-touch codex
+- codex surface
+- surface always-loaded
+- quick reference.md
+- reference.md fix
+- fix surface
+- surface minimal
+- minimal command
+- command shortlist
+- shortlist rather
+- rather creating
+- commands
+- and
+- skills/039
+- cmd
+- codex
+- routing
 key_files:
-  - "implementation-summary.md"
-  - "plan.md"
-  - "research/deep-research-config.json"
-  - "research/deep-research-dashboard.md"
-  - "research/deep-research-strategy.md"
-  - "research/research.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- implementation-summary.md
+- plan.md
+- research/deep-research-config.json
+- research/deep-research-dashboard.md
+- research/deep-research-strategy.md
+- research/research.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: 03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

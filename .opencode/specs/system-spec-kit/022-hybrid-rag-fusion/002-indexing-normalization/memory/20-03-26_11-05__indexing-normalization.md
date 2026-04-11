@@ -1,51 +1,49 @@
 ---
-title: "Indexing [system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/20-03-26_11-05__indexing-normalization]"
+title: Indexing [system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/20-03-26_11-05__indexing-normalization]
+description: 'Note: This session had limited actionable content (quality score: [RETROACTIVE: estimated]). 0 noise entries and 0 dupl'
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/002 indexing normalization"
-  - "adr 001"
-  - "adr 002"
-  - "document type"
-  - "deterministic indexing even specs/"
-  - "indexing even specs/ .opencode/specs/"
-  - "even specs/ .opencode/specs/ file"
-  - "specs/ .opencode/specs/ file tree"
-  - "today roots contribute identical"
-  - "roots contribute identical files"
-  - "contribute identical files one"
-  - "identical files one scan"
-  - "creates duplicate indexing work"
-  - "duplicate indexing work unstable"
-  - "indexing work unstable scan"
-  - "work unstable scan metrics"
-  - "tier anomalies occur metadata"
-  - "anomalies occur metadata hints"
-  - "occur metadata hints inline"
-  - "metadata hints inline markers"
-  - "hints inline markers default"
-  - "inline markers default document-type"
-  - "markers default document-type mapping"
-  - "default document-type mapping interpreted"
-  - "document-type mapping interpreted inconsistently"
-  - "one precedence rule ranking"
-  - "kit/022"
-  - "fusion/002"
-  - "indexing"
-  - "normalization"
-importance_tier: "normal"
-contextType: "general"
+- adr 001
+- adr 002
+- document type
+- deterministic indexing even specs
+- today roots contribute identical
+- roots contribute identical files
+- contribute identical files one
+- identical files one scan
+- creates duplicate indexing work
+- duplicate indexing work unstable
+- indexing work unstable scan
+- work unstable scan metrics
+- tier anomalies occur metadata
+- anomalies occur metadata hints
+- occur metadata hints inline
+- metadata hints inline markers
+- hints inline markers default
+- one precedence rule ranking
+- kit 022
+- fusion 002
+- indexing system spec
+- system spec kit
+importance_tier: normal
+contextType: research
+quality_score: 0.8
+quality_flags:
+- has_contamination
+- retroactive_reviewed
 _sourceSessionCreated: 1773996424462
-_sourceSessionId: "05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2"
+_sourceSessionId: 05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2
 _sourceSessionUpdated: 1774001130859
-_sourceTranscriptPath: "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2.jsonl"
+_sourceTranscriptPath: /Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2.jsonl
 captured_file_count: 0
 filesystem_file_count: 10
 git_changed_file_count: 4
-quality_flags:
-  - "has_contamination"
-quality_score: 0.80
-spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
+spec_folder_health:
+  pass: true
+  score: 0.75
+  errors: 0
+  warnings: 5
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (quality score: 0 [RETROACTIVE: original 100-point scale]). 0 noise entries and 0 duplicates were filtered.
 
 
 # Indexing Normalization
@@ -598,69 +596,42 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774001142338-ede3ae0fc75e"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: "main"
-commit_ref: "ee7afb62dee2"
-repository_state: "dirty"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774001142338-ede3ae0fc75e
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization
+channel: main
+head_ref: main
+commit_ref: ee7afb62dee2
+repository_state: dirty
+is_detached_head: false
+importance_tier: normal
+context_type: research
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "cc072541d49eea96a56e8434b0724bbda1ae328b"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: cc072541d49eea96a56e8434b0724bbda1ae328b
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-20"
+  - 100-point
+  - 001-codex-
+  - 227-source-files-284-38de50c9
+  - 001-hybrid-rag-fusion-epic
+created_at: '2026-03-20'
 created_at_epoch: 1774001142
 last_accessed_epoch: 1774001142
-expires_at_epoch: 1781777142  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781777142
 message_count: 0
 decision_count: 3
 tool_count: 7
@@ -669,85 +640,69 @@ captured_file_count: 0
 filesystem_file_count: 10
 git_changed_file_count: 4
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "indexing normalization"
-  - "fusion/002 indexing"
-  - "adr-001 canonical"
-  - "kit/022 hybrid"
-  - "rag fusion/002"
-  - "spec kit/022"
-  - "system spec"
-  - "hybrid rag"
-  - "normalization system"
-  - "adr-002 deterministic"
-  - "canonical frontmatter"
-  - "frontmatter contract"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- indexing normalization
+- fusion 002 indexing
+- adr-001 canonical
+- kit 022 hybrid
+- rag fusion 002
+- spec kit 022
+- system spec
+- hybrid rag
+- normalization system
+- adr-002 deterministic
+- canonical frontmatter
+- frontmatter contract
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/002 indexing normalization"
-  - "adr 001"
-  - "adr 002"
-  - "document type"
-  - "deterministic indexing even specs/"
-  - "indexing even specs/ .opencode/specs/"
-  - "even specs/ .opencode/specs/ file"
-  - "specs/ .opencode/specs/ file tree"
-  - "today roots contribute identical"
-  - "roots contribute identical files"
-  - "contribute identical files one"
-  - "identical files one scan"
-  - "creates duplicate indexing work"
-  - "duplicate indexing work unstable"
-  - "indexing work unstable scan"
-  - "work unstable scan metrics"
-  - "tier anomalies occur metadata"
-  - "anomalies occur metadata hints"
-  - "occur metadata hints inline"
-  - "metadata hints inline markers"
-  - "hints inline markers default"
-  - "inline markers default document-type"
-  - "markers default document-type mapping"
-  - "default document-type mapping interpreted"
-  - "document-type mapping interpreted inconsistently"
-  - "one precedence rule ranking"
-  - "kit/022"
-  - "fusion/002"
-  - "indexing"
-  - "normalization"
-
+- system spec kit/022 hybrid rag fusion/002 indexing normalization
+- adr 001
+- adr 002
+- document type
+- deterministic indexing even specs/
+- indexing even specs/ .opencode/specs/
+- even specs/ .opencode/specs/ file
+- specs/ .opencode/specs/ file tree
+- today roots contribute identical
+- roots contribute identical files
+- contribute identical files one
+- identical files one scan
+- creates duplicate indexing work
+- duplicate indexing work unstable
+- indexing work unstable scan
+- work unstable scan metrics
+- tier anomalies occur metadata
+- anomalies occur metadata hints
+- occur metadata hints inline
+- metadata hints inline markers
+- hints inline markers default
+- inline markers default document-type
+- markers default document-type mapping
+- default document-type mapping interpreted
+- document-type mapping interpreted inconsistently
+- one precedence rule ranking
+- kit/022
+- fusion/002
+- indexing
+- normalization
 key_files:
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/importance-tiers.vitest.ts"
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md"
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A1.md"
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A2.md"
-  - ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A3.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- .opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts
+- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts
+- .opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts
+- .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts
+- .opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts
+- .opencode/skill/system-spec-kit/mcp_server/tests/importance-tiers.vitest.ts
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/research.md
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A1.md
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A2.md
+- .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/scratch/agent-output-iter-001-codex-A3.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

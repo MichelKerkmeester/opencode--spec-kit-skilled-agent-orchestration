@@ -1,13 +1,11 @@
 ---
 title: Implemented The 014 Code
-name: 09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime
 description: 'Implemented the 014 code graph upgrade runtime lane: detector provenance taxonomy, additive edge evidence and numeric confidence metadata, bounded blast-radius traversal with...'
-type: episodic
 trigger_phrases:
 - 014 implementation complete
 - code graph provenance taxonomy
-- blast-radius depth fix
-- evidence-tagged edges shipped
+- blast radius depth fix
+- evidence tagged edges shipped
 - upgrade runtime lane
 - implemented code
 - lane detector
@@ -19,17 +17,24 @@ trigger_phrases:
 - numeric confidence
 - confidence metadata
 - metadata bounded
-- bounded blast-radius
-- blast-radius traversal
-- traversal multi-file
-- multi-file union
+- bounded blast radius
+- blast radius traversal
+- traversal multi file
+- multi file union
 - union semantics
 - semantics honest
-- honest hot-file
-- hot-file breadcrumbs
+- honest hot file
+- hot file breadcrumbs
 - code graph upgrades
+- implemented the 014 code
+- implemented 014 code
 importance_tier: critical
 contextType: general
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,14 +42,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: true
   score: 0.95
   errors: 0
   warnings: 1
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Implemented The 014 Code Graph Upgrade Runtime
 
@@ -103,7 +107,7 @@ spec_folder_health:
 
 **Phase:** RESEARCH
 
-**Recent:** Targeted vitest coverage passed with 51 tests and npm run typecheck passed., Strict packet validation passed with 0 errors and 0 warnings., Implemented the 014 code graph upgrade runtime lane: detector provenance taxonomy, additive edge...
+**Recent:** Targeted vitest coverage passed with 51 tests and npm run typecheck passed., Strict packet validation passed with 0 errors and 0 warnings., Implemented the 014 code graph upgrade runtime lane: detector provenance taxonomy, additive edge... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -140,11 +144,11 @@ Implemented the 014 code graph upgrade runtime lane: detector provenance taxonom
 
 **Compact session-specific evidence that distinguishes this memory from the canonical static docs:**
 
-- Packet 007 and packet 011 were re-verified as hard predecessors before code...
+- Packet 007 and packet 011 were re-verified as hard predecessors before code... [RETROACTIVE: auto-truncated]
 
-- Runtime changes stayed bounded to code-graph detector, payload, query, and test...
+- Runtime changes stayed bounded to code-graph detector, payload, query, and test... [RETROACTIVE: auto-truncated]
 
-- Packet 007 and packet 011 were re-verified as hard predecessors before code...
+- Packet 007 and packet 011 were re-verified as hard predecessors before code... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:evidence -->
 

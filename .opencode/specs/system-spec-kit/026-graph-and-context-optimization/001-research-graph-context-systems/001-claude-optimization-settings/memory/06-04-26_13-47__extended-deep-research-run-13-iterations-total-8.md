@@ -1,20 +1,17 @@
 ---
 title: Extended Deep Research
-name: 06-04-26_13-47__extended-deep-research-run-13-iterations-total-8
 description: 'Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex gpt-5.4 high) auditing Reddit field-report on Claude Code token waste against...'
-type: episodic
 trigger_phrases:
 - claude code optimization
-- ENABLE_TOOL_SEARCH
+- enable tool search
 - cache expiry
 - reddit audit
 - token waste
-- cli-copilot deep-research
-- cli-codex deep-research
+- cli copilot deep research
+- cli codex deep research
 - claude optimization settings
 - cache warning hooks
 - f21 arithmetic inconsistency
-- f22 plugin remedy net-cost
 - f23 skill baseline window
 - f24 hook replay isolation
 - extended skeptical pass
@@ -24,12 +21,19 @@ trigger_phrases:
 - field report
 - prototype later
 - contains findings
-- findings t1=7
-- t1=7 t2=8
-- t2=8 t3=5
-- t3=5 t4=4
+- findings t1 7
+- t1 7 t2 8
+- t2 8 t3 5
+- t3 5 t4 4
+- extended deep research
+- extended deep
 importance_tier: critical
-contextType: general
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 06-04-26_13-47__extended-deep-research-run-13-iterations-total-8
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,14 +41,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: true
   score: 0.75
   errors: 0
   warnings: 5
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Extended Deep Research Run 13 Iterations Total 8
 
@@ -105,7 +108,7 @@ spec_folder_health:
 
 **Phase:** RESEARCH
 
-**Recent:** Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex...
+**Recent:** Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -122,7 +125,7 @@ spec_folder_health:
 ```
 CONTINUATION - Attempt 2
 Spec: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings
-Last: Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex...
+Last: Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex... [RETROACTIVE: auto-truncated]
 Next: Continue implementation
 ```
 
@@ -130,7 +133,7 @@ Next: Continue implementation
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4...
+- Last: Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -161,7 +164,7 @@ Next: Continue implementation
 |-------|-------|
 | Phase | RESEARCH |
 | Active File | N/A |
-| Last Action | Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex... |
+| Last Action | Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex... [RETROACTIVE: auto-truncated] |
 | Next Action | Continue implementation |
 | Blockers | None |
 
@@ -198,7 +201,7 @@ Next: Continue implementation
 Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex gpt-5.4 high) auditing Reddit field-report on Claude Code token waste against Code_Environment/Public state. The codex extension brought independent skeptical perspective and produced 7 new findings F18-F24. Final research/research.md now contains 24 findings: T1=7 / T2=8 / T3=5 / T4=4; recommendations split 11 adopt-now / 11 prototype-later / 2 reject. Critical new findings from codex pass: F21 (po
 
 **Key Outcomes**:
-- Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex...
+- Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:overview -->
 
@@ -210,9 +213,9 @@ Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high 
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:guide-extended-deepresearch-run-iterations-b58b609b -->
-### FEATURE: Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex...
+### FEATURE: Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex... [RETROACTIVE: auto-truncated]
 
-Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex gpt-5.4 high) auditing Reddit field-report on Claude Code token waste against Code_Environment/Public state. The codex extension brought independent skeptical perspective and produced 7 new findings F18-F24. Final research/research.md now contains 24 findings: T1=7 / T2=8 / T3=5 / T4=4; recommendations split 11 adopt-now / 11 prototype-later / 2 reject. Critical new findings from codex pass: F21...
+Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high + 5 via cli-codex gpt-5.4 high) auditing Reddit field-report on Claude Code token waste against Code_Environment/Public state. The codex extension brought independent skeptical perspective and produced 7 new findings F18-F24. Final research/research.md now contains 24 findings: T1=7 / T2=8 / T3=5 / T4=4; recommendations split 11 adopt-now / 11 prototype-later / 2 reject. Critical new findings from codex pass: F21... [RETROACTIVE: auto-truncated]
 
 **Details:** claude code optimization | ENABLE_TOOL_SEARCH | cache expiry | reddit audit | token waste | cli-copilot deep-research | cli-codex deep-research | claude optimization settings | cache warning hooks | f21 arithmetic inconsistency | f22 plugin remedy net-cost | f23 skill baseline window | f24 hook replay isolation | 13 iteration deep research | extended skeptical pass
 <!-- /ANCHOR:guide-extended-deepresearch-run-iterations-b58b609b -->
@@ -240,7 +243,7 @@ Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high 
 ```
 ╭────────────────────────────────────────────────────────────────╮
 │  DECISION: observation decision 1                              │
-│  Context: md now contains 24 findings: T1=7 / T2=8 / T3=5 ...  │
+│  Context: md now contains 24 findings: T1=7 / T2=8 / T3=5 ... [RETROACTIVE: auto-truncated]  │
 │  Confidence: 70%                                               │
 │  2026-04-06 @ 12:47:49                                         │
 ╰────────────────────────────────────────────────────────────────╯
@@ -308,7 +311,7 @@ Extended deep-research run: 13 iterations total (8 via cli-copilot gpt-5.4 high 
 ```
 ╭────────────────────────────────────────────────────────────────╮
 │  DECISION: user decision 1                                     │
-│  Context: md now contains 24 findings: T1=7 / T2=8 / T3=5 ...  │
+│  Context: md now contains 24 findings: T1=7 / T2=8 / T3=5 ... [RETROACTIVE: auto-truncated]  │
 │  Confidence: 70%                                               │
 │  2026-04-06 @ 12:47:49                                         │
 ╰────────────────────────────────────────────────────────────────╯
@@ -469,69 +472,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775479669266-fae07f0d6841"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775479669266-fae07f0d6841
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "bc63cc0e848fcef7435f1f9a6334bb43c79d5d73"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: bc63cc0e848fcef7435f1f9a6334bb43c79d5d73
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-06"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-04-06'
 created_at_epoch: 1775479669
 last_accessed_epoch: 1775479669
-expires_at_epoch: 1783255669  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1783255669
 message_count: 2
 decision_count: 2
 tool_count: 0
@@ -540,53 +512,47 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "adopt-now prototype-later"
-  - "prototype-later reject"
-  - "recommendations split"
-  - "t4=4 recommendations"
-  - "contains findings"
-  - "split adopt-now"
-  - "findings t1=7"
-  - "t1=7 t2=8"
-  - "t2=8 t3=5"
-  - "t3=5 t4=4"
-  - "observation decision"
-  - "decision contains"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- adopt-now prototype-later
+- prototype-later reject
+- recommendations split
+- t4 4 recommendations
+- contains findings
+- split adopt-now
+- findings t1 7
+- t1 7 t2 8
+- t2 8 t3 5
+- t3 5 t4 4
+- observation decision
+- decision contains
 trigger_phrases:
-  - "claude code optimization"
-  - "ENABLE_TOOL_SEARCH"
-  - "cache expiry"
-  - "reddit audit"
-  - "token waste"
-  - "cli-copilot deep-research"
-  - "cli-codex deep-research"
-  - "claude optimization settings"
-  - "cache warning hooks"
-  - "f21 arithmetic inconsistency"
-  - "f22 plugin remedy net-cost"
-  - "f23 skill baseline window"
-  - "f24 hook replay isolation"
-  - "extended skeptical pass"
-  - "deep research"
-  - "cli copilot"
-  - "cli codex"
-  - "field report"
-  - "prototype later"
-  - "contains findings"
-  - "findings t1=7"
-  - "t1=7 t2=8"
-  - "t2=8 t3=5"
-  - "t3=5 t4=4"
+- claude code optimization
+- ENABLE_TOOL_SEARCH
+- cache expiry
+- reddit audit
+- token waste
+- cli-copilot deep-research
+- cli-codex deep-research
+- claude optimization settings
+- cache warning hooks
+- f21 arithmetic inconsistency
+- f22 plugin remedy net-cost
+- f23 skill baseline window
+- f24 hook replay isolation
+- extended skeptical pass
+- deep research
+- cli copilot
+- cli codex
+- field report
+- prototype later
+- contains findings
+- findings t1=7
+- t1=7 t2=8
+- t2=8 t3=5
+- t3=5 t4=4
 ```
 
 <!-- /ANCHOR:metadata -->

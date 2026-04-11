@@ -1,15 +1,29 @@
 ---
-title: "Unified memory dashboard rollout [03--commands-and-skills/014-cmd-memory-output/20-02-26_14-44__memory-command-output]"
+title: "Memory Command Output"
+description: 'Memory Command Output SESSION SUMMARY Meta Data Value : : Session Date 2026 02 20 Session ID session'
 trigger_phrases:
-  - "unified memory dashboard rollout"
-  - "shared output components"
-  - "memory command templates"
-  - "workflow documentation review"
-importance_tier: "normal"
-contextType: "implementation"
+- unified memory dashboard rollout
+- shared output components
+- memory command templates
+- workflow documentation review
+- unified memory dashboard
+- memory dashboard rollout
+- dashboard rollout commands
+- rollout commands skills
+- commands skills 014
+- skills 014 cmd
+- 014 cmd memory
+- cmd memory output
+- memory output memory
+- output memory command
+- memory command output
+importance_tier: deprecated
+contextType: implementation
+quality_score: 0.8
 quality_flags:
-  - "needs_review"
-quality_score: 0.60
+- needs_review
+- deprecated_retroactive
+- retroactive_reviewed
 ---
 # Memory Command Output
 
@@ -42,9 +56,9 @@ quality_score: 0.60
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | /100 |  |
-| Uncertainty Score | /100 |  |
-| Context Score | /100 |  |
+| Knowledge Score | [RETROACTIVE: score unavailable] |  |
+| Uncertainty Score | [RETROACTIVE: score unavailable] |  |
+| Context Score | [RETROACTIVE: score unavailable] |  |
 | Timestamp |  | Session start |
 
 **Initial Gaps Identified:**
@@ -528,7 +542,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03-
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -555,108 +569,64 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1771595080985-xyti6xj7j"
-spec_folder: "03--commands-and-skills/014-cmd-memory-output"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1771595080985-xyti6xj7j
+spec_folder: 03--commands-and-skills/014-cmd-memory-output
+channel: main
+importance_tier: deprecated
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-20"
+  - 013-memory-command-output
+created_at: '2026-02-20'
 created_at_epoch: 1771595081
 last_accessed_epoch: 1771595081
-expires_at_epoch: 1779371081  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779371081
 message_count: 1
 decision_count: 5
 tool_count: 0
 file_count: 8
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "because"
-  - "section"
-  - "all"
-  - "memory"
-  - "sections"
-  - "commands"
-  - "command"
-  - "status"
-  - "template"
-  - "mandatory gate"
-  - "gate block"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- mandatory gate
+- gate block
+- memory command
+- command output
+- memory command output
+- session summary
+- preflight baseline
+- table contents
 trigger_phrases:
-  - "unified memory dashboard rollout"
-  - "shared output components"
-  - "memory command templates"
-  - "workflow documentation review"parent_spec: "03--commands-and-skills/014-cmd-memory-output"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- unified memory dashboard rollout
+- shared output components
+- memory command templates
+- workflow documentation review
+parent_spec: 03--commands-and-skills/014-cmd-memory-output
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

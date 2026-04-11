@@ -1,22 +1,27 @@
 ---
-title: "...-system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/26-02-26_22-17__importance-tier-frontmatter-bugfix]"
+title: '...-system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/26-02-26_22-17__importance-tier-frontmatter-bugfix]'
+description: 'Importance Tier Frontmatter Bugfix SESSION SUMMARY Meta Data Value : : Session Date 2026 02 26 Sessi'
 trigger_phrases:
-  - "bug where"
-  - "fixed memory export generated"
-  - "memory export generated two"
-  - "export generated two conflicting"
-  - "generated two conflicting importance"
-  - "two conflicting importance tier"
-  - "conflicting importance tier frontmatter"
-  - "importance tier frontmatter fields"
-  - "tier frontmatter fields hardcoded"
-  - "frontmatter fields hardcoded importance"
-  - "fields hardcoded importance tier"
-  - "hardcoded importance tier value"
-importance_tier: "important"
-contextType: "general"
-quality_flags: []
-quality_score: 1.00
+- bug where
+- fixed memory export generated
+- memory export generated two
+- export generated two conflicting
+- generated two conflicting importance
+- two conflicting importance tier
+- conflicting importance tier frontmatter
+- importance tier frontmatter fields
+- tier frontmatter fields hardcoded
+- frontmatter fields hardcoded importance
+- fields hardcoded importance tier
+- hardcoded importance tier value
+- system spec kit
+- spec kit 022
+- kit 022 hybrid
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 ---
 # Importance Tier Frontmatter Bugfix
 
@@ -485,7 +490,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -512,118 +517,73 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772140655565-ofy1lytph"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization"
-channel: "main"
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772140655565-ofy1lytph
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization
+channel: main
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-26"
+  - 00--opencode-environment
+created_at: '2026-02-26'
 created_at_epoch: 1772140655
 last_accessed_epoch: 1772140655
-expires_at_epoch: 1779916655  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779916655
 message_count: 1
 decision_count: 4
 tool_count: 0
 file_count: 4
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "because"
-  - "field"
-  - "default"
-  - "value"
-  - "resolveimportancetiervalue backward"
-  - "spec"
-  - "system spec kit/022 hybrid rag fusion"
-  - "single"
-  - "importancetieralias"
-  - "system"
-  - "kit/140"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- resolveimportancetiervalue backward
+- kit 140
+- importance tier
+- tier frontmatter
+- frontmatter bugfix
+- importance tier frontmatter
+- tier frontmatter bugfix
+- importance tier frontmatter bugfix
 trigger_phrases:
-  - "bug where"
-  - "fixed memory export generated"
-  - "memory export generated two"
-  - "export generated two conflicting"
-  - "generated two conflicting importance"
-  - "two conflicting importance tier"
-  - "conflicting importance tier frontmatter"
-  - "importance tier frontmatter fields"
-  - "tier frontmatter fields hardcoded"
-  - "frontmatter fields hardcoded importance"
-  - "fields hardcoded importance tier"
-  - "hardcoded importance tier value"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- bug where
+- fixed memory export generated
+- memory export generated two
+- export generated two conflicting
+- generated two conflicting importance
+- two conflicting importance tier
+- conflicting importance tier frontmatter
+- importance tier frontmatter fields
+- tier frontmatter fields hardcoded
+- frontmatter fields hardcoded importance
+- fields hardcoded importance tier
+- hardcoded importance tier value
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

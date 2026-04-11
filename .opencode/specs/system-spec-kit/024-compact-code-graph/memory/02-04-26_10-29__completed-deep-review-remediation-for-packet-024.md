@@ -1,25 +1,41 @@
 ---
-title: "Completed Deep Review [024-compact-code-graph/02-04-26_10-29__completed-deep-review-remediation-for-packet-024]"
-description: "Completed deep-review remediation for packet 024-compact-code-graph by resolving release-blocking documentation and runtime truth gaps, synchronizing packet metadata across..."
+title: Completed Deep Review [024-compact-code-graph/02-04-26_10-29__completed-deep-review-remediation-for-packet-024]
+description: Completed deep-review remediation for packet 024-compact-code-graph by resolving release-blocking documentation and runtime truth gaps, synchronizing packet metadata across...
 trigger_phrases:
-  - "024 compact code graph release readiness"
-  - "recursive validate zero errors zero warnings"
-  - "check full lint and test gate"
-  - "stop hook autosave truth sync"
-  - "feature catalog category 22 alignment"
-importance_tier: "critical"
-contextType: "implementation"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- completed deep review
+- deep review 024
+- review 024 compact
+- 024 compact code
+- compact code graph
+- code graph completed
+- graph completed deep
+- deep review remediation
+- review remediation packet
+- remediation packet 024
+- completed deep
+- deep review
+- review remediation
+- remediation packet
+- packet 024
+importance_tier: critical
+contextType: decision
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 5
 filesystem_file_count: 5
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Completed Deep Review Remediation For Packet 024
 
@@ -51,9 +67,9 @@ spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | 62/100 | Good |
-| Uncertainty Score | 48/100 | Moderate uncertainty |
-| Context Score | 58/100 | Moderate |
+| Knowledge Score | 62 [RETROACTIVE: original 100-point scale] | Good |
+| Uncertainty Score | 48 [RETROACTIVE: original 100-point scale] | Moderate uncertainty |
+| Context Score | 58 [RETROACTIVE: original 100-point scale] | Moderate |
 | Timestamp | 2026-04-02T09:29:48.763Z | Session start |
 
 **Initial Gaps Identified:**
@@ -201,10 +217,10 @@ Completed deep-review remediation for packet 024-compact-code-graph by resolving
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/(merged-small-files)` | Tree-thinning merged 2 small files (spec.md, plan.md).  Merged from .opencode/specs/system-spec-kit/024-compact-code-graph/spec.md : Aligned packet metadata and phase accounting references... | Merged from .opencode/specs/system-spec-kit/024-compact-code-graph/plan.md : Corrected cross-phase mapping and status summaries to... |
-| `.opencode/skill/system-spec-kit/feature_catalog/(merged-small-files)` | Tree-thinning merged 1 small files (feature_catalog.md).  Merged from .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md : Added and synchronized category coverage so root catalog... |
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/review/(merged-small-files)` | Tree-thinning merged 1 small files (review-report-2026-04-02-deep-review-findings.md).  Merged from .opencode/specs/system-spec-kit/024-compact-code-graph/review/review-report-2026-04-02-deep-review-findings.md : Updated release verdict, reconciled blocking and... |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/(merged-small-files)` | Tree-thinning merged 1 small files (261-mcp-auto-priming.md).  Merged from .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md : Reworked scenario steps to use supported tool inputs and... |
+| `.opencode/specs/system-spec-kit/024-compact-code-graph/(merged-small-files)` | Tree-thinning merged 2 small files (spec.md, plan.md).  Merged from .opencode/specs/system-spec-kit/024-compact-code-graph/spec.md : Aligned packet metadata and phase accounting references... [RETROACTIVE: auto-truncated] | Merged from .opencode/specs/system-spec-kit/024-compact-code-graph/plan.md : Corrected cross-phase mapping and status summaries to... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/system-spec-kit/feature_catalog/(merged-small-files)` | Tree-thinning merged 1 small files (feature_catalog.md).  Merged from .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md : Added and synchronized category coverage so root catalog... [RETROACTIVE: auto-truncated] |
+| `.opencode/specs/system-spec-kit/024-compact-code-graph/review/(merged-small-files)` | Tree-thinning merged 1 small files (review-report-2026-04-02-deep-review-findings.md).  Merged from .opencode/specs/system-spec-kit/024-compact-code-graph/review/review-report-2026-04-02-deep-review-findings.md : Updated release verdict, reconciled blocking and... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/(merged-small-files)` | Tree-thinning merged 1 small files (261-mcp-auto-priming.md).  Merged from .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md : Reworked scenario steps to use supported tool inputs and... [RETROACTIVE: auto-truncated] |
 
 <!-- /ANCHOR:summary -->
 
@@ -423,7 +439,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty | 48 | 14 | +34 | ↓ |
 | Context | 58 | 92 | +34 | ↑ |
 
-**Learning Index:** 32/100
+**Learning Index:** 32 [RETROACTIVE: original 100-point scale]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -454,69 +470,41 @@ Significant knowledge gain (+28 points). Major uncertainty reduction (-34 points
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775122193701-8845a7f5dc48"
-spec_folder: "system-spec-kit/024-compact-code-graph"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "implementation"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775122193701-8845a7f5dc48
+spec_folder: system-spec-kit/024-compact-code-graph
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: decision
 memory_classification:
-  memory_type: "procedural"         # episodic|procedural|semantic|constitutional
-  half_life_days: 180     # decay half-life in days (0 = never decays)
+  memory_type: procedural
+  half_life_days: 180
   decay_factors:
-    base_decay_rate: 0.9962           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.6 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9962
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.6
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "59fc3af1eb4f3fe838d5e988a5c4eefa88146fc6"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 59fc3af1eb4f3fe838d5e988a5c4eefa88146fc6
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-02"
+  - 100-point
+  - 261-mcp-auto-priming.md
+  - 024-warning-cleanup-pass5.log
+created_at: '2026-04-02'
 created_at_epoch: 1775122193
 last_accessed_epoch: 1775122193
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 3
 decision_count: 2
 tool_count: 0
@@ -525,83 +513,67 @@ captured_file_count: 5
 filesystem_file_count: 5
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "correctness defects"
-  - "claims correctness"
-  - "release readiness"
-  - "readiness command"
-  - "command evidence"
-  - "treat stale"
-  - "doc claims"
-  - "stale doc"
-  - "024-compact-code-graph resolving"
-  - "release-blocking documentation"
-  - "packet 024-compact-code-graph"
-  - "resolving release-blocking"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- correctness defects
+- claims correctness
+- release readiness
+- readiness command
+- command evidence
+- treat stale
+- doc claims
+- stale doc
+- 024-compact-code-graph resolving
+- release-blocking documentation
+- packet 024-compact-code-graph
+- resolving release-blocking
 trigger_phrases:
-  - "recursive validate zero errors zero warnings"
-  - "check full lint and test gate"
-  - "stop hook autosave truth sync"
-  - "feature catalog category 22 alignment"
-  - "manual playbook scenario 261d fix"
-  - "deep review"
-  - "compact code graph"
-  - "release blocking"
-  - "doc truth"
-  - "release readiness"
-  - "readiness command"
-  - "command evidence"
-  - "treat stale"
-  - "stale doc"
-  - "doc claims"
-  - "claims correctness"
-  - "correctness defects system"
-  - "evidence pass"
-  - "pass verdict"
-  - "verdict credible"
-  - "credible validate.sh"
-  - "validate.sh recursive"
-  - "recursive check"
-  - "full outputs"
-  - "outputs current"
-  - "current attached"
-  - "defects runtime"
-  - "runtime behavior"
-  - "behavior documentation"
-  - "kit/024"
-  - "compact"
-  - "code"
-  - "graph"
-
+- recursive validate zero errors zero warnings
+- check full lint and test gate
+- stop hook autosave truth sync
+- feature catalog category 22 alignment
+- manual playbook scenario 261d fix
+- deep review
+- compact code graph
+- release blocking
+- doc truth
+- release readiness
+- readiness command
+- command evidence
+- treat stale
+- stale doc
+- doc claims
+- claims correctness
+- correctness defects system
+- evidence pass
+- pass verdict
+- verdict credible
+- credible validate.sh
+- validate.sh recursive
+- recursive check
+- full outputs
+- outputs current
+- current attached
+- defects runtime
+- runtime behavior
+- behavior documentation
+- kit/024
+- compact
+- code
+- graph
 key_files:
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/spec.md"
-  - ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/review/review-report-2026-04-02-deep-review-findings.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/plan.md"
-  - ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/024-compact-code-graph"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- .opencode/specs/system-spec-kit/024-compact-code-graph/spec.md
+- .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/review/review-report-2026-04-02-deep-review-findings.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/plan.md
+- .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md
+related_sessions: []
+parent_spec: system-spec-kit/024-compact-code-graph
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

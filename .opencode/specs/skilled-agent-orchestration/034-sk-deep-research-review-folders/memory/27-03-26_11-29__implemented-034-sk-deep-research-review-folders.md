@@ -1,24 +1,42 @@
 ---
-title: "...mands-and-skills/034-sk-deep-research-review-folders/27-03-26_11-29__implemented-034-sk-deep-research-review-folders]"
+title: '...mands-and-skills/034-sk-deep-research-review-folders/27-03-26_11-29__implemented-034-sk-deep-research-review-folders]'
+description: 'Implemented 034 Sk Deep Research Review Folders SESSION SUMMARY Meta Data Value : : Session Date 202'
 trigger_phrases:
-  - "sk-deep-research review folder implementation"
-  - "deep-review review subfolder"
-  - "spec_kit deep-research review migration"
-  - "review packet contract"
-  - "legacy scratch-to-review migration"
-importance_tier: "important"
-contextType: "implementation"
+- deep review review subfolder
+- review packet contract
+- mands skills 034
+- skills 034 deep
+- 034 deep research
+- deep research review
+- research review folders
+- review folders implemented
+- folders implemented 034
+- implemented 034 deep
+- mands skills
+- skills 034
+- implemented 034
+- 034 sk
+- sk deep
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Implemented 034 Sk Deep Research Review Folders
 
 ## SESSION SUMMARY
@@ -110,7 +128,7 @@ Next: Run a fresh deep-review session and confirm it initializes durable state d
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: Use bounded migration instead of broad scratch cleanup - This protects...
+- Last: Use bounded migration instead of broad scratch cleanup - This protects... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -169,9 +187,9 @@ Next: Run a fresh deep-review session and confirm it initializes durable state d
 
 **Key Files and Their Roles**:
 
-- `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` - Moved the auto review workflow onto the review packet,...
+- `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` - Moved the auto review workflow onto the review packet,... [RETROACTIVE: auto-truncated]
 
-- `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml` - Aligned the confirm review workflow with the new review...
+- `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml` - Aligned the confirm review workflow with the new review... [RETROACTIVE: auto-truncated]
 
 - `.opencode/agent/deep-review.md` - Agent definition
 
@@ -224,13 +242,13 @@ Review workflows now treat review/ as the durable packet; Legacy review state mi
 |:---------|:----------------|
 | `.opencode/command/spec_kit/assets/(merged-small-files)` | Tree-thinning merged 2 small files (spec_kit_deep-research_review_auto.yaml, spec_kit_deep-research_review_confirm.yaml).  Merged from .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml : Updated spec kit deep research review auto | Merged from .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml : Updated spec kit deep research review confirm |
 | `.opencode/agent/(merged-small-files)` | Tree-thinning merged 1 small files (deep-review.md).  Merged from .opencode/agent/deep-review.md : Updated deep review |
-| `.opencode/command/spec_kit/(merged-small-files)` | Tree-thinning merged 1 small files (deep-research.md).  Merged from .opencode/command/spec_kit/deep-research.md : Synchronized the command entrypoint documentation so... |
-| `.opencode/skill/sk-deep-research/manual_testing_playbook/05--pause-resume-and-fault-tolerance/(merged-small-files)` | Tree-thinning merged 1 small files (015-pause-sentinel-halts-between-iterations.md).  Merged from .opencode/skill/sk-deep-research/manual_testing_playbook/05--pause-resume-and-fault-tolerance/015-pause-sentinel-halts-between-iterations.md : Updated the shared pause playbook so review mode uses... |
+| `.opencode/command/spec_kit/(merged-small-files)` | Tree-thinning merged 1 small files (deep-research.md).  Merged from .opencode/command/spec_kit/deep-research.md : Synchronized the command entrypoint documentation so... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/sk-deep-research/manual_testing_playbook/05--pause-resume-and-fault-tolerance/(merged-small-files)` | Tree-thinning merged 1 small files (015-pause-sentinel-halts-between-iterations.md).  Merged from .opencode/skill/sk-deep-research/manual_testing_playbook/05--pause-resume-and-fault-tolerance/015-pause-sentinel-halts-between-iterations.md : Updated the shared pause playbook so review mode uses... [RETROACTIVE: auto-truncated] |
 | `specs/03--commands-and-skills/034-sk-deep-research-review-folders/(merged-small-files)` | Tree-thinning merged 1 small files (checklist.md).  Merged from specs/03--commands-and-skills/034-sk-deep-research-review-folders/checklist.md : Updated checklist |
 | `.claude/agents/(merged-small-files)` | Tree-thinning merged 1 small files (deep-review.md).  Merged from .claude/agents/deep-review.md : Updated deep review |
 | `.codex/agents/(merged-small-files)` | Tree-thinning merged 1 small files (deep-review.toml).  Merged from .codex/agents/deep-review.toml : Updated deep review |
 | `.gemini/agents/(merged-small-files)` | Tree-thinning merged 1 small files (deep-review.md).  Merged from .gemini/agents/deep-review.md : Updated deep review |
-| `.opencode/skill/sk-deep-research/assets/(merged-small-files)` | Tree-thinning merged 1 small files (review_mode_contract.yaml).  Merged from .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml : Changed the shared review-mode asset contract so the... |
+| `.opencode/skill/sk-deep-research/assets/(merged-small-files)` | Tree-thinning merged 1 small files (review_mode_contract.yaml).  Merged from .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml : Changed the shared review-mode asset contract so the... [RETROACTIVE: auto-truncated] |
 
 <!-- /ANCHOR:summary -->
 
@@ -516,69 +534,41 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03-
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774607393856-33a5dadca278"
-spec_folder: "03--commands-and-skills/034-sk-deep-research-review-folders"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "implementation"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774607393856-33a5dadca278
+spec_folder: 03--commands-and-skills/034-sk-deep-research-review-folders
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "procedural"         # episodic|procedural|semantic|constitutional
-  half_life_days: 180     # decay half-life in days (0 = never decays)
+  memory_type: procedural
+  half_life_days: 180
   decay_factors:
-    base_decay_rate: 0.9962           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9962
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "10e02f416fe36d183b7520bab5cfd3cc7f7a3c07"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 10e02f416fe36d183b7520bab5cfd3cc7f7a3c07
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-27"
+  - 015-pause-sentinel-halts-between-iterations.md
+  - 039-review-report-synthesis-has-all-sections.md
+  - 016-resume-after-pause-sentinel-removal.md
+created_at: '2026-03-27'
 created_at_epoch: 1774607393
 last_accessed_epoch: 1774607393
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 4
 decision_count: 3
 tool_count: 0
@@ -587,91 +577,75 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "deep-review artifacts"
-  - "review-mode basenames"
-  - "review/ canonical"
-  - "canonical durable"
-  - "stable relocating"
-  - "relocating parent"
-  - "bounded migration"
-  - "migration instead"
-  - "home deep-review"
-  - "keep review-mode"
-  - "basenames stable"
-  - "scratch cleanup"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- deep-review artifacts
+- review-mode basenames
+- review canonical
+- canonical durable
+- stable relocating
+- relocating parent
+- bounded migration
+- migration instead
+- home deep-review
+- keep review-mode
+- basenames stable
+- scratch cleanup
 trigger_phrases:
-  - "sk-deep-research review folder implementation"
-  - "deep-review review subfolder"
-  - "spec_kit deep-research review migration"
-  - "review packet contract"
-  - "legacy scratch-to-review migration"
-  - "conflict safe"
-  - "deep review"
-  - "system spec kit"
-  - "review mode"
-  - "durable packet"
-  - "canonical durable"
-  - "durable home"
-  - "home deep-review"
-  - "deep-review artifacts"
-  - "keep review-mode"
-  - "review-mode basenames"
-  - "basenames stable"
-  - "stable relocating"
-  - "relocating parent"
-  - "parent directory"
-  - "bounded migration"
-  - "migration instead"
-  - "instead broad"
-  - "broad scratch"
-  - "scratch cleanup"
-  - "mode with system"
-  - "artifacts aligns"
-  - "aligns review"
-  - "mode system-spec-kit"
-  - "commands"
-  - "and"
-  - "skills/034"
-  - "deep"
-  - "research"
-  - "review"
-  - "folders"
-
+- sk-deep-research review folder implementation
+- deep-review review subfolder
+- spec_kit deep-research review migration
+- review packet contract
+- legacy scratch-to-review migration
+- conflict safe
+- deep review
+- system spec kit
+- review mode
+- durable packet
+- canonical durable
+- durable home
+- home deep-review
+- deep-review artifacts
+- keep review-mode
+- review-mode basenames
+- basenames stable
+- stable relocating
+- relocating parent
+- parent directory
+- bounded migration
+- migration instead
+- instead broad
+- broad scratch
+- scratch cleanup
+- mode with system
+- artifacts aligns
+- aligns review
+- mode system-spec-kit
+- commands
+- and
+- skills/034
+- deep
+- research
+- review
+- folders
 key_files:
-  - ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml"
-  - ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml"
-  - ".opencode/agent/deep-review.md"
-  - ".opencode/command/spec_kit/deep-research.md"
-  - ".opencode/skill/sk-deep-research/manual_testing_playbook/05--pause-resume-and-fault-tolerance/015-pause-sentinel-halts-between-iterations.md"
-  - "specs/03--commands-and-skills/034-sk-deep-research-review-folders/checklist.md"
-  - ".claude/agents/deep-review.md"
-  - ".codex/agents/deep-review.toml"
-  - ".gemini/agents/deep-review.md"
-  - ".opencode/skill/sk-deep-research/assets/review_mode_contract.yaml"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "03--commands-and-skills/034-sk-deep-research-review-folders"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml
+- .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml
+- .opencode/agent/deep-review.md
+- .opencode/command/spec_kit/deep-research.md
+- .opencode/skill/sk-deep-research/manual_testing_playbook/05--pause-resume-and-fault-tolerance/015-pause-sentinel-halts-between-iterations.md
+- specs/03--commands-and-skills/034-sk-deep-research-review-folders/checklist.md
+- .claude/agents/deep-review.md
+- .codex/agents/deep-review.toml
+- .gemini/agents/deep-review.md
+- .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml
+related_sessions: []
+parent_spec: 03--commands-and-skills/034-sk-deep-research-review-folders
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

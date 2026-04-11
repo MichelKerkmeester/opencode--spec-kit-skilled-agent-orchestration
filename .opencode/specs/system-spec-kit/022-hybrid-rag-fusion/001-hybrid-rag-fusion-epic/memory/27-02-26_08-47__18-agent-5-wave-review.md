@@ -1,22 +1,27 @@
 ---
-title: "18-agent [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_08-47__18-agent-5-wave-review]"
+title: 18-agent [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_08-47__18-agent-5-wave-review]
+description: '18 Agent 5 Wave Review SESSION SUMMARY Meta Data Value : : Session Date 2026 02 27 Session ID sessio'
 trigger_phrases:
-  - "ultra-think review"
-  - "multi-agent review"
-  - "spec 140 review"
-  - "hybrid rag fusion review"
-  - "circular evaluation bias"
-  - "ground truth bias"
-  - "trigger phrase bias"
-  - "hard scope cap"
-  - "sprint gate review"
-  - "feature flag governance"
-  - "premature graph sophistication"
-  - "pipeline refactor oversize"
-importance_tier: "critical"
-contextType: "research"
-quality_flags: []
-quality_score: 1.00
+- ultra think review
+- multi agent review
+- spec 140 review
+- hybrid rag fusion review
+- circular evaluation bias
+- ground truth bias
+- trigger phrase bias
+- hard scope cap
+- sprint gate review
+- feature flag governance
+- premature graph sophistication
+- pipeline refactor oversize
+- agent system spec
+- system spec kit
+- spec kit 022
+importance_tier: critical
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 ---
 # 18 Agent 5 Wave Review
 
@@ -455,7 +460,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -482,118 +487,77 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772178472049-cyhi16i4q"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion"
-channel: "main"
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772178472049-cyhi16i4q
+spec_folder: system-spec-kit/022-hybrid-rag-fusion
+channel: main
+importance_tier: critical
+context_type: research
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-27"
+  - 458-700h
+created_at: '2026-02-27'
 created_at_epoch: 1772178472
 last_accessed_epoch: 1772178472
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 18
 decision_count: 5
 tool_count: 5
 file_count: 9
 followup_count: 10
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "ultra-think review"
-  - "multi-agent analysis"
-  - "hybrid rag fusion refinement"
-  - "circular evaluation bias"
-  - "sprint gate review"
-  - "feature flag governance"
-  - "pipeline refactor"
-  - "graph deepening"
-  - "query intelligence"
-  - "scoring calibration"
-  - "epistemological foundation"
-  - "pre-implementation blockers"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- ultra-think review
+- multi-agent analysis
+- hybrid rag fusion refinement
+- circular evaluation bias
+- sprint gate review
+- feature flag governance
+- pipeline refactor
+- graph deepening
+- query intelligence
+- scoring calibration
+- epistemological foundation
+- pre-implementation blockers
 trigger_phrases:
-  - "ultra-think review"
-  - "multi-agent review"
-  - "spec 140 review"
-  - "hybrid rag fusion review"
-  - "circular evaluation bias"
-  - "ground truth bias"
-  - "trigger phrase bias"
-  - "hard scope cap"
-  - "sprint gate review"
-  - "feature flag governance"
-  - "premature graph sophistication"
-  - "pipeline refactor oversize"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- ultra-think review
+- multi-agent review
+- spec 140 review
+- hybrid rag fusion review
+- circular evaluation bias
+- ground truth bias
+- trigger phrase bias
+- hard scope cap
+- sprint gate review
+- feature flag governance
+- premature graph sophistication
+- pipeline refactor oversize
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

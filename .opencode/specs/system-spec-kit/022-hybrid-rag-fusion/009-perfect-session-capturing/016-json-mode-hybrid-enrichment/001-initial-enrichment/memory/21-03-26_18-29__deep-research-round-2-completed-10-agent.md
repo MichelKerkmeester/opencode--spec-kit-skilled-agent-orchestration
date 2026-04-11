@@ -1,30 +1,41 @@
 ---
-title: "...ring/016-json-mode-hybrid-enrichment/001-initial-enrichment/21-03-26_18-29__deep-research-round-2-completed-10-agent]"
+title: '...ring/016-json-mode-hybrid-enrichment/001-initial-enrichment/21-03-26_18-29__deep-research-round-2-completed-10-agent]'
+description: 'Note: This session had limited actionable content (quality score: [RETROACTIVE: estimated]). 0 noise entries and 0 dupl'
 trigger_phrases:
-  - "generate-context pipeline quality"
-  - "quality scorer bonus system"
-  - "contamination filter scope"
-  - "trigger phrase auto-extraction"
-  - "cross-session dedup verification"
-  - "v-rule coverage gaps"
-  - "json memory capturing flawless"
-  - "field propagation integrity"
-  - "template consumption gaps"
-  - "deep research round 2"
-importance_tier: "critical"
-contextType: "research"
+- generate context pipeline quality
+- quality scorer bonus system
+- contamination filter scope
+- trigger phrase auto extraction
+- cross session dedup verification
+- v rule coverage gaps
+- json memory capturing flawless
+- field propagation integrity
+- template consumption gaps
+- deep research round 2
+- ring 016 json
+- 016 json mode
+- json mode hybrid
+- mode hybrid enrichment
+- hybrid enrichment 001
+importance_tier: critical
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (quality score: 0 [RETROACTIVE: original 100-point scale]). 0 noise entries and 0 duplicates were filtered.
 
 
 # Deep Research Round 2 Completed 10 Agent
@@ -362,69 +373,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774114184123-5f366cc5049a"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774114184123-5f366cc5049a
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: research
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.6 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.6
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "4a952a84b737442539a85a272e1de25359776fa9"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 4a952a84b737442539a85a272e1de25359776fa9
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-21"
+  - 100-point
+created_at: '2026-03-21'
 created_at_epoch: 1774114184
 last_accessed_epoch: 1774114184
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 2
 decision_count: 1
 tool_count: 0
@@ -433,95 +414,79 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "json mode"
-  - "perfect capturing/016"
-  - "fusion/009 perfect"
-  - "capturing/016 json"
-  - "hybrid enrichment"
-  - "kit/022 hybrid"
-  - "rag fusion/009"
-  - "spec kit/022"
-  - "system spec"
-  - "mode hybrid"
-  - "hybrid rag"
-  - "enrichment system"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- json mode
+- perfect capturing 016
+- fusion 009 perfect
+- capturing 016 json
+- hybrid enrichment
+- kit 022 hybrid
+- rag fusion 009
+- spec kit 022
+- system spec
+- mode hybrid
+- hybrid rag
+- enrichment system
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/009 perfect session capturing/016 json mode hybrid enrichment"
-  - "deep research round 2"
-  - "template consumption gaps"
-  - "field propagation integrity"
-  - "json memory capturing flawless"
-  - "V-rule coverage gaps"
-  - "cross-session dedup verification"
-  - "trigger phrase auto-extraction"
-  - "contamination filter scope"
-  - "generate-context pipeline quality"
-  - "file based"
-  - "dispatched agents waves using"
-  - "agents waves using cwb"
-  - "waves using cwb pattern"
-  - "using cwb pattern file-based"
-  - "cwb pattern file-based collection"
-  - "pattern file-based collection parallel"
-  - "file-based collection parallel waves"
-  - "collection parallel waves maximize"
-  - "parallel waves maximize throughput"
-  - "waves maximize throughput file-based"
-  - "maximize throughput file-based output"
-  - "throughput file-based output prevents"
-  - "file-based output prevents overflow"
-  - "output prevents overflow per"
-  - "prevents overflow per orchestrate"
-  - "overflow per orchestrate agent"
-  - "per orchestrate agent budget"
-  - "context overflow"
-  - "quality scorer bonus system"
-  - "scorer bonus system makes"
-  - "bonus system makes score"
-  - "system makes score non-discriminative"
-  - "makes score non-discriminative pipeline"
-  - "score non-discriminative pipeline contamination"
-  - "kit/022"
-  - "fusion/009"
-  - "capturing/016"
-  - "json"
-  - "mode"
-  - "enrichment"
-
+- system spec kit/022 hybrid rag fusion/009 perfect session capturing/016 json mode hybrid enrichment
+- deep research round 2
+- template consumption gaps
+- field propagation integrity
+- json memory capturing flawless
+- V-rule coverage gaps
+- cross-session dedup verification
+- trigger phrase auto-extraction
+- contamination filter scope
+- generate-context pipeline quality
+- file based
+- dispatched agents waves using
+- agents waves using cwb
+- waves using cwb pattern
+- using cwb pattern file-based
+- cwb pattern file-based collection
+- pattern file-based collection parallel
+- file-based collection parallel waves
+- collection parallel waves maximize
+- parallel waves maximize throughput
+- waves maximize throughput file-based
+- maximize throughput file-based output
+- throughput file-based output prevents
+- file-based output prevents overflow
+- output prevents overflow per
+- prevents overflow per orchestrate
+- overflow per orchestrate agent
+- per orchestrate agent budget
+- context overflow
+- quality scorer bonus system
+- scorer bonus system makes
+- bonus system makes score
+- system makes score non-discriminative
+- makes score non-discriminative pipeline
+- score non-discriminative pipeline contamination
+- kit/022
+- fusion/009
+- capturing/016
+- json
+- mode
+- enrichment
 key_files:
-  - "checklist.md"
-  - "decision-record.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "prompts/flawless-json-memory-pipeline-research.md"
-  - "research.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- checklist.md
+- decision-record.md
+- description.json
+- implementation-summary.md
+- plan.md
+- prompts/flawless-json-memory-pipeline-research.md
+- research.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

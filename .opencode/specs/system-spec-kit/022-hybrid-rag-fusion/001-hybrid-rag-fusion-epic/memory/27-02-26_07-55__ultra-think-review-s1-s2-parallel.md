@@ -1,17 +1,27 @@
 ---
-title: "...--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_07-55__ultra-think-review-s1-s2-parallel]"
+title: '...--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_07-55__ultra-think-review-s1-s2-parallel]'
+description: 'Ultra Think Review S1 S2 Parallel SESSION SUMMARY Meta Data Value : : Session Date 2026 02 27 Sessio'
 trigger_phrases:
-  - "hybrid rag fusion refinement"
-  - "s1-s2 parallelization"
-  - "r6 monolithic pipeline"
-  - "sprint 4 split"
-  - "ground truth diversification"
-  - "feature flag sunset schedule"
-  - "sprint 6 underestimation"
-importance_tier: "normal"
-contextType: "general"
-quality_flags: []
-quality_score: 1.00
+- hybrid rag fusion refinement
+- s1 s2 parallelization
+- r6 monolithic pipeline
+- sprint 4 split
+- ground truth diversification
+- feature flag sunset schedule
+- sprint 6 underestimation
+- system spec kit
+- spec kit 022
+- kit 022 hybrid
+- 022 hybrid rag
+- hybrid rag fusion
+- rag fusion 001
+- fusion 001 hybrid
+- 001 hybrid rag
+importance_tier: normal
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 ---
 # Ultra Think Review S1 S2 Parallel
 
@@ -597,7 +607,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -624,111 +634,68 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772175347279-faax4c88o"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772175347279-faax4c88o
+spec_folder: system-spec-kit/022-hybrid-rag-fusion
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-27"
+  - 001-sprint-0-epistemological-foundation
+  - 458-700h
+  - 006-core-rag-sprints-0-to-8
+created_at: '2026-02-27'
 created_at_epoch: 1772175347
 last_accessed_epoch: 1772175347
-expires_at_epoch: 1779951347  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779951347
 message_count: 1
 decision_count: 8
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "sprint"
-  - "because"
-  - "risk"
-  - "into"
-  - "flag"
-  - "feature flag"
-  - "system"
-  - "ground"
-  - "truth"
-  - "hard"
-  - "fts5"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- feature flag
+- ultra think
+- think review
+- review s1
+- s1 s2
+- s2 parallel
+- ultra think review
+- think review s1
 trigger_phrases:
-  - "hybrid rag fusion refinement"
-  - "ultra-think review"
-  - "ground truth diversification"
-  - "s1-s2 parallelization"
-  - "sprint 4 split"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- hybrid rag fusion refinement
+- ultra-think review
+- ground truth diversification
+- s1-s2 parallelization
+- sprint 4 split
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

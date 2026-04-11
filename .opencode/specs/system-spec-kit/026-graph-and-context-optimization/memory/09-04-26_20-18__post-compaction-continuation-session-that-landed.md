@@ -1,38 +1,29 @@
 ---
-title: "026 graph and context optimization: batch remediation + audit closes 7 P1 findings across packets 002/003/008/010/013/014"
-description: "026 graph and context optimization follow-through session that landed 7 P1 review finding remediations across packets 002/003/008/010/013/014 (mix of docs-only and runtime fallback paths), then dispatched codex gpt-5.4 fast to audit the consolidated review/review-report.md against all 108 per-phase iteration files plus 13 per-phase review reports, patched it additively (D1-D4 coverage, 011/012 convergence rationale, 2 dimension corrections, Pattern 5, per-phase stop-reason table), pushed 2 commits to system-speckit/026-graph-and-context-optimization."
-# Canonical classification lives in frontmatter; MEMORY METADATA mirrors these values.
+title: '026 graph and context optimization: batch remediation + audit closes 7 P1 findings across packets 002/003/008/010/013/014'
+description: 026 graph and context optimization follow-through session that landed 7 P1 review finding remediations across packets 002/003/008/010/013/014 (mix of docs-only and runtime fallback paths), then dispatched codex gpt-5.4 fast to audit the consolidated review/review-report.md against all 108 per-phase iteration files plus 13 per-phase review reports, patched it additively (D1-D4 coverage, 011/012 convergence rationale, 2 dimension corrections, Pattern 5, per-phase stop-reason table), pushed 2 commits to system-speckit/026-graph-and-context-optimization.
 trigger_phrases:
-  - "026 graph and context optimization"
-  - "026 phase map"
-  - "026 batch remediation 7 p1 findings"
-  - "026 p1 remediation lanes 002 003 008 010 013 014"
-  - "codex audit consolidated review report"
-  - "per-phase iteration audit against consolidated report"
-  - "session-prime structural routing hint removal"
-  - "bm25_fallback rename unavailable"
-  - "008 graph-first routing nudge docs-only fallback rescope"
-  - "014 code-graph-upgrades docs-only rescope"
-  - "dr-002-i003-p1-001 blocked status drift"
-  - "dr-003 parent phase map 9 child phases"
-  - "dr-008-i001-p1-001 session-prime structural hint overclaim"
-  - "dr-010-i001-p1-001 bm25_fallback label overstatement"
-  - "dr-013-i003-p1-001 chk-022 pass 28 vs 38 40"
-  - "dr-014-i001-p1-001 resume bootstrap graph-edge enrichment overclaim"
-  - "pattern 5 scope waiver frozen-snapshot disclaimers missing"
-  - "per-phase stop-reason dimension coverage table"
-  - "dr-014 dimension correction d3 to d1 correctness"
-  - "dr-013 dimension normalized to d3 traceability"
-  - "batch-phase-review-consolidated merged into review-report"
-  - "lexicalpath type rename cascade sqlite-fts handler-memory-search"
-  - "buildstructuralroutingsection removal session-prime.ts"
-  - "026 conditional verdict 0 p0 7 p1 0 p2 unchanged"
-  - "codex gpt-5.4 fast audit additive only"
-  - "108 iteration files 13 phases review audit sweep"
-importance_tier: "important"
-contextType: "review"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- 026 phase map
+- bm25 fallback rename unavailable
+- buildstructuralroutingsection removal session prime.ts
+- 026 graph context
+- graph context optimization
+- post compaction
+- compaction continuation
+- continuation session
+- session landed
+- post compaction continuation
+- compaction continuation session
+- continuation session landed
+- post compaction continuation session
+- compaction continuation session landed
+- session summary
+importance_tier: important
+contextType: research
+quality_score: 0.7
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
@@ -40,10 +31,13 @@ filesystem_file_count: 0
 git_changed_file_count: 0
 render_quality_score: 0.97
 render_quality_flags:
-  - "has_topical_mismatch"
-spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
+- has_topical_mismatch
+spec_folder_health:
+  pass: true
+  score: 0.95
+  errors: 0
+  warnings: 1
 ---
-
 # Post Compaction Continuation Session That Landed
 
 ## SESSION SUMMARY
@@ -209,68 +203,46 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775762333919-4c83f266742f"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization"
-channel: "system-speckit/026-graph-and-context-optimization"
-
-# Git Provenance (M-007d)
-head_ref: "system-speckit/026-graph-and-context-optimization"
-commit_ref: "e7fe946b30c1"
-repository_state: "clean"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "review"        # mirrors frontmatter contextType
-
-# Memory Classification (v2.2)
+session_id: session-1775762333919-4c83f266742f
+spec_folder: system-spec-kit/026-graph-and-context-optimization
+channel: system-speckit/026-graph-and-context-optimization
+head_ref: system-speckit/026-graph-and-context-optimization
+commit_ref: e7fe946b30c1
+repository_state: clean
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "75e0d34eb3f3b67aeefcb50d85903a301f6ea662"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 75e0d34eb3f3b67aeefcb50d85903a301f6ea662
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
+  caused_by: []
+  supersedes: []
   derived_from:
-    - "session-1775716659098-be14cbc33dbe"
-
-  blocks:
-
-    []
-
+  - session-1775716659098-be14cbc33dbe
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-09"
+  - 002-implement-cache-warning-hooks
+  - 003-memory-quality-issues
+  - 008-graph-first-routing-nudge
+  - 010-fts-capability-cascade-floor
+  - 013-warm-start-bundle-conditional-validation
+  - 014-code-graph-upgrades
+  - 002-014
+created_at: '2026-04-09'
 created_at_epoch: 1775762334
 last_accessed_epoch: 1775762334
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 0
 tool_count: 0
@@ -279,71 +251,55 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "consolidated report"
-  - "against per-phase"
-  - "remediation prompt"
-  - "batch consolidated"
-  - "batch remediation"
-  - "docs-only rescope"
-  - "commit e7fe946b3"
-  - "decision rules"
-  - "report against"
-  - "finding counts"
-  - "combined cost"
-  - "merge batch"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- consolidated report
+- against per-phase
+- remediation prompt
+- batch consolidated
+- batch remediation
+- docs-only rescope
+- commit e7fe946b3
+- decision rules
+- report against
+- finding counts
+- combined cost
+- merge batch
 trigger_phrases:
-  - "026 graph and context optimization"
-  - "026 phase map"
-  - "026 batch remediation 7 p1 findings"
-  - "026 p1 remediation lanes 002 003 008 010 013 014"
-  - "codex audit consolidated review report"
-  - "per-phase iteration audit against consolidated report"
-  - "session-prime structural routing hint removal"
-  - "bm25_fallback rename unavailable"
-  - "008 graph-first routing nudge docs-only fallback rescope"
-  - "014 code-graph-upgrades docs-only rescope"
-  - "dr-002-i003-p1-001 blocked status drift"
-  - "dr-003 parent phase map 9 child phases"
-  - "dr-008-i001-p1-001 session-prime structural hint overclaim"
-  - "dr-010-i001-p1-001 bm25_fallback label overstatement"
-  - "dr-013-i003-p1-001 chk-022 pass 28 vs 38 40"
-  - "dr-014-i001-p1-001 resume bootstrap graph-edge enrichment overclaim"
-  - "pattern 5 scope waiver frozen-snapshot disclaimers missing"
-  - "per-phase stop-reason dimension coverage table"
-  - "dr-014 dimension correction d3 to d1 correctness"
-  - "dr-013 dimension normalized to d3 traceability"
-  - "batch-phase-review-consolidated merged into review-report"
-  - "lexicalpath type rename cascade sqlite-fts handler-memory-search"
-  - "buildstructuralroutingsection removal session-prime.ts"
-  - "026 conditional verdict 0 p0 7 p1 0 p2 unchanged"
-  - "codex gpt-5.4 fast audit additive only"
-  - "108 iteration files 13 phases review audit sweep"
-
-key_files:
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: ""
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- 026 graph and context optimization
+- 026 phase map
+- 026 batch remediation 7 p1 findings
+- 026 p1 remediation lanes 002 003 008 010 013 014
+- codex audit consolidated review report
+- per-phase iteration audit against consolidated report
+- session-prime structural routing hint removal
+- bm25_fallback rename unavailable
+- 008 graph-first routing nudge docs-only fallback rescope
+- 014 code-graph-upgrades docs-only rescope
+- dr-002-i003-p1-001 blocked status drift
+- dr-003 parent phase map 9 child phases
+- dr-008-i001-p1-001 session-prime structural hint overclaim
+- dr-010-i001-p1-001 bm25_fallback label overstatement
+- dr-013-i003-p1-001 chk-022 pass 28 vs 38 40
+- dr-014-i001-p1-001 resume bootstrap graph-edge enrichment overclaim
+- pattern 5 scope waiver frozen-snapshot disclaimers missing
+- per-phase stop-reason dimension coverage table
+- dr-014 dimension correction d3 to d1 correctness
+- dr-013 dimension normalized to d3 traceability
+- batch-phase-review-consolidated merged into review-report
+- lexicalpath type rename cascade sqlite-fts handler-memory-search
+- buildstructuralroutingsection removal session-prime.ts
+- 026 conditional verdict 0 p0 7 p1 0 p2 unchanged
+- codex gpt-5.4 fast audit additive only
+- 108 iteration files 13 phases review audit sweep
+key_files: null
+related_sessions: []
+parent_spec: ''
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

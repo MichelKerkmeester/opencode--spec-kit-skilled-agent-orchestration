@@ -238,3 +238,44 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 - **Phase 2**: See [./002-semantic-coverage-graph/spec.md](./002-semantic-coverage-graph/spec.md)
 - **Phase 3**: See [./003-wave-executor/spec.md](./003-wave-executor/spec.md)
 - **Phase 4**: See [./004-offline-loop-optimizer/spec.md](./004-offline-loop-optimizer/spec.md)
+
+---
+title: "phase parent section [template:addendum/phase/phase-parent-section.md]"
+description: "Template document for addendum/phase/phase-parent-section.md."
+trigger_phrases:
+  - "phase"
+  - "parent"
+  - "section"
+  - "template"
+  - "phase parent section"
+importance_tier: "normal"
+contextType: "general"
+---
+<!-- SPECKIT_ADDENDUM: Phase - Parent Section -->
+<!-- Append to parent spec.md after SCOPE section -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+| 7 | 007-skill-rename-improve-agent-prompt/ | [Phase 7 scope] | [deps] | Pending |
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
+- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+- Packet-local changelog files live under `changelog/`; root uses `changelog-<packet>-root.md` and phases use `changelog-<packet>-<phase-folder>.md`
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| 006-graph-testing-and-playbook-alignment | 007-skill-rename-improve-agent-prompt | [Criteria TBD] | [Verification TBD] |
+<!-- /ANCHOR:phase-map -->

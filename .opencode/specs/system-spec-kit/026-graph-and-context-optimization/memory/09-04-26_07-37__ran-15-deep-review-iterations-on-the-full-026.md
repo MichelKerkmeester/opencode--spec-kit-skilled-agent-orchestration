@@ -1,31 +1,29 @@
 ---
 title: '026 Deep Review (15 iter, CONDITIONAL): 6 P1 blockers cluster across packets 009/011/012/013'
-name: 09-04-26_07-37__ran-15-deep-review-iterations-on-the-full-026
 description: '15-iteration deep-review of 026 graph-and-context-optimization packet family via cli-codex gpt-5.4 high fast. Verdict CONDITIONAL: 6 P1 findings, 0 P0, 0 P2. 5 packets clean (005/006/007/008/010), 4 packets conditional (009/011/012/013) with 4 remediation lanes.'
-type: episodic
 trigger_phrases:
-- 026-graph-context deep review
 - 026 conditional verdict
-- 026 P1 remediation lanes
-- packet 011 resume trust preservation gap
-- packet 012 frozen corpus helper-only
-- packet 013 unfalsifiable bundle benchmark
-- packet 009 publication gate helper only
-- session-bootstrap fail-closed widening
+- 026 p1 remediation lanes
 - cached continuity unscoped selection
-- DR-026-I001 resume trust gap
-- DR-026-I003 unfalsifiable bench
-- cli-codex gpt-5.4 reviewer substitute
-- Task @deep-review model limitation
-- 9 consecutive thought-only iterations
-- verdict CONDITIONAL not FAIL
+- verdict conditional not fail
 - structural trust preservation overclaim
-- publication gate helper-only no consumer
-- cached continuity newest-by-mtime cross-session leak
-- warm-start variant runner constant pass-rate
-- doc-only rewrite downgrade path
+- 026 deep review
+- deep review iter
+- ran 15
+- 15 deep
+- deep review
+- review iterations
+- iterations full
+- full 026
+- ran 15 deep
+- 15 deep review
 importance_tier: important
 contextType: general
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 09-04-26_07-37__ran-15-deep-review-iterations-on-the-full-026
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -33,15 +31,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 7
 filesystem_file_count: 7
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: false
   score: 0.45
   errors: 3
   warnings: 2
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (quality score: 0 [RETROACTIVE: original 100-point scale]). 0 noise entries and 0 duplicates were filtered.
 
 
 # Ran 15 Deep Review Iterations On The Full 026
@@ -255,69 +251,40 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775716659098-be14cbc33dbe"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization"
-channel: "system-speckit/026-graph-and-context-optimization"
-
-# Git Provenance (M-007d)
-head_ref: "system-speckit/026-graph-and-context-optimization"
-commit_ref: "253081ee8841"
-repository_state: "dirty"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # mirrors frontmatter contextType
-
-# Memory Classification (v2.2)
+session_id: session-1775716659098-be14cbc33dbe
+spec_folder: system-spec-kit/026-graph-and-context-optimization
+channel: system-speckit/026-graph-and-context-optimization
+head_ref: system-speckit/026-graph-and-context-optimization
+commit_ref: 253081ee8841
+repository_state: dirty
+is_detached_head: false
+importance_tier: important
+context_type: general
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "d5579661e66e0c099bc56f49b8431ca4ab9e9a9e"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: d5579661e66e0c099bc56f49b8431ca4ab9e9a9e
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-09"
+  - 100-point
+  - 201-258
+created_at: '2026-04-09'
 created_at_epoch: 1775716659
 last_accessed_epoch: 1775716659
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 11
 decision_count: 4
 tool_count: 0
@@ -326,49 +293,43 @@ captured_file_count: 7
 filesystem_file_count: 7
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "verdict conditional"
-  - "cli-codex gpt-5.4"
-  - "task @deep-review"
-  - "gpt-5.4 high"
-  - "high fast"
-  - "consecutive thought-only"
-  - "adversarial spot-check"
-  - "consequential findings"
-  - "substitute cli-codex"
-  - "unfalsifiable bench"
-  - "@deep-review leaf"
-  - "resume trust"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- verdict conditional
+- cli-codex gpt-5.4
+- task deep-review
+- gpt-5.4 high
+- high fast
+- consecutive thought-only
+- adversarial spot-check
+- consequential findings
+- substitute cli-codex
+- unfalsifiable bench
+- deep-review leaf
+- resume trust
 trigger_phrases:
-  - "026-graph-context deep review"
-  - "026 conditional verdict"
-  - "026 P1 remediation lanes"
-  - "packet 011 resume trust preservation gap"
-  - "packet 012 frozen corpus helper-only"
-  - "packet 013 unfalsifiable bundle benchmark"
-  - "packet 009 publication gate helper only"
-  - "session-bootstrap fail-closed widening"
-  - "cached continuity unscoped selection"
-  - "DR-026-I001 resume trust gap"
-  - "DR-026-I003 unfalsifiable bench"
-  - "cli-codex gpt-5.4 reviewer substitute"
-  - "Task @deep-review model limitation"
-  - "9 consecutive thought-only iterations"
-  - "verdict CONDITIONAL not FAIL"
-  - "structural trust preservation overclaim"
-  - "publication gate helper-only no consumer"
-  - "cached continuity newest-by-mtime cross-session leak"
-  - "warm-start variant runner constant pass-rate"
-  - "doc-only rewrite downgrade path"
+- 026-graph-context deep review
+- 026 conditional verdict
+- 026 P1 remediation lanes
+- packet 011 resume trust preservation gap
+- packet 012 frozen corpus helper-only
+- packet 013 unfalsifiable bundle benchmark
+- packet 009 publication gate helper only
+- session-bootstrap fail-closed widening
+- cached continuity unscoped selection
+- DR-026-I001 resume trust gap
+- DR-026-I003 unfalsifiable bench
+- cli-codex gpt-5.4 reviewer substitute
+- Task @deep-review model limitation
+- 9 consecutive thought-only iterations
+- verdict CONDITIONAL not FAIL
+- structural trust preservation overclaim
+- publication gate helper-only no consumer
+- cached continuity newest-by-mtime cross-session leak
+- warm-start variant runner constant pass-rate
+- doc-only rewrite downgrade path
 ```
 
 <!-- /ANCHOR:metadata -->

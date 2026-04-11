@@ -1,43 +1,51 @@
 ---
-title: "Completed A 10 Iteration Deep Research Phase On"
-description: "Completed a 10-iteration deep research phase on Agent Lightning for system-spec-kit. Created and validated Level 3 phase docs, mapped the external repo against Public agent,..."
-# Canonical classification lives in frontmatter; MEMORY METADATA mirrors these values.
+title: Completed A 10 Iteration Deep Research Phase On
+description: Completed a 10-iteration deep research phase on Agent Lightning for system-spec-kit. Created and validated Level 3 phase docs, mapped the external repo against Public agent,...
 trigger_phrases:
-  - "deep review"
-  - "session session"
-  - "session modified"
-  - "lightning for system"
-  - "session merged"
-  - "merged sources"
-  - "sources session"
-  - "completed 10-iteration"
-  - "phase agent"
-  - "agent lightning"
-  - "lightning system-spec-kit"
-  - "validated level"
-  - "level phase"
-  - "phase docs"
-  - "docs mapped"
-  - "mapped external"
-  - "external repo"
-  - "repo against"
-  - "against public"
-  - "public agent"
-  - "agent command"
-  - "agent lightning main"
-importance_tier: "normal"
-contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- deep review
+- session session
+- session modified
+- lightning for system
+- session merged
+- merged sources
+- sources session
+- completed 10 iteration
+- phase agent
+- agent lightning
+- lightning system spec kit
+- validated level
+- level phase
+- phase docs
+- docs mapped
+- mapped external
+- external repo
+- repo against
+- against public
+- public agent
+- agent command
+- agent lightning main
+- completed iteration deep
+importance_tier: normal
+contextType: general
+quality_score: 0.7
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 124
 filesystem_file_count: 124
 git_changed_file_count: 124
-render_quality_score: 1.00
+render_quality_score: 1
 render_quality_flags: []
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Completed A 10 Iteration Deep Research Phase On
 
@@ -70,9 +78,9 @@ spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | 35/100 | Limited |
-| Uncertainty Score | 55/100 | Moderate uncertainty |
-| Context Score | 40/100 | Moderate |
+| Knowledge Score | 35 [RETROACTIVE: original 100-point scale] | Limited |
+| Uncertainty Score | 55 [RETROACTIVE: original 100-point scale] | Moderate uncertainty |
+| Context Score | 40 [RETROACTIVE: original 100-point scale] | Moderate |
 | Timestamp | 2026-04-09T22:30:00+02:00 | Session start |
 
 **Initial Gaps Identified:**
@@ -123,7 +131,7 @@ spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 
 **Phase:** RESEARCH
 
-**Recent:** The phase stayed within scope: only the phase folder changed; external/..., The final recommendation is to plan a follow-on packet around dashboard metrics..., Completed a 10-iteration deep research phase on Agent Lightning for system-spec-kit. Created and...
+**Recent:** The phase stayed within scope: only the phase folder changed; external/... [RETROACTIVE: auto-truncated], The final recommendation is to plan a follow-on packet around dashboard metrics... [RETROACTIVE: auto-truncated], Completed a 10-iteration deep research phase on Agent Lightning for system-spec-kit. Created and... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -163,9 +171,9 @@ Completed a 10-iteration deep research phase on Agent Lightning for system-spec-
 
 **Compact session-specific evidence that distinguishes this memory from the canonical static docs:**
 
-- Strict validation passed before research and again after synthesis with 0...
+- Strict validation passed before research and again after synthesis with 0... [RETROACTIVE: auto-truncated]
 
-- The phase stayed within scope: only the phase folder changed; external/...
+- The phase stayed within scope: only the phase folder changed; external/... [RETROACTIVE: auto-truncated]
 
 - 124 files modified
 
@@ -233,7 +241,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty | 55 | 18 | +37 | ↓ |
 | Context | 40 | 90 | +50 | ↑ |
 
-**Learning Index:** 48/100
+**Learning Index:** 48 [RETROACTIVE: original 100-point scale]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -269,70 +277,41 @@ Significant knowledge gain (+53 points). Major uncertainty reduction (-37 points
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775769968883-8357d68c326e"
-spec_folder: "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main"
-channel: "system-speckit/026-graph-and-context-optimization"
-title: "Completed A 10 Iteration Deep Research Phase On"
-
-# Git Provenance (M-007d)
-head_ref: "system-speckit/026-graph-and-context-optimization"
-commit_ref: "03d26e2e2f58"
-repository_state: "dirty"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # mirrors frontmatter contextType
-
-# Memory Classification (v2.2)
+session_id: session-1775769968883-8357d68c326e
+spec_folder: system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main
+channel: system-speckit/026-graph-and-context-optimization
+title: Completed A 10 Iteration Deep Research Phase On
+head_ref: system-speckit/026-graph-and-context-optimization
+commit_ref: 03d26e2e2f58
+repository_state: dirty
+is_detached_head: false
+importance_tier: normal
+context_type: general
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "59ee01defbbe7315ce8dff82fd0ca5a7a41b8cbf"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 59ee01defbbe7315ce8dff82fd0ca5a7a41b8cbf
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-09"
+  - 026-graph-and-context-optimization
+  - 100-point
+created_at: '2026-04-09'
 created_at_epoch: 1775769968
 last_accessed_epoch: 1775769968
-expires_at_epoch: 1783545968  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1783545968
 message_count: 2
 decision_count: 0
 tool_count: 0
@@ -341,67 +320,51 @@ captured_file_count: 124
 filesystem_file_count: 124
 git_changed_file_count: 124
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "adoption opportunity"
-  - "enrich deep-research"
-  - "iteration artifacts"
-  - "dashboard synthesis"
-  - "strongest adoption"
-  - "opportunity enrich"
-  - "10-iteration deep"
-  - "template surfaces"
-  - "citations instead"
-  - "agent lightning"
-  - "validated level"
-  - "dated iteration"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- adoption opportunity
+- enrich deep-research
+- iteration artifacts
+- dashboard synthesis
+- strongest adoption
+- opportunity enrich
+- 10-iteration deep
+- template surfaces
+- citations instead
+- agent lightning
+- validated level
+- dated iteration
 trigger_phrases:
-  - "deep review"
-  - "session session"
-  - "session modified"
-  - "lightning for system"
-  - "session merged"
-  - "merged sources"
-  - "sources session"
-  - "completed 10-iteration"
-  - "phase agent"
-  - "agent lightning"
-  - "lightning system-spec-kit"
-  - "validated level"
-  - "level phase"
-  - "phase docs"
-  - "docs mapped"
-  - "mapped external"
-  - "external repo"
-  - "repo against"
-  - "against public"
-  - "public agent"
-  - "agent command"
-  - "agent lightning main"
-
-key_files:
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: ""
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- deep review
+- session session
+- session modified
+- lightning for system
+- session merged
+- merged sources
+- sources session
+- completed 10-iteration
+- phase agent
+- agent lightning
+- lightning system-spec-kit
+- validated level
+- level phase
+- phase docs
+- docs mapped
+- mapped external
+- external repo
+- repo against
+- against public
+- public agent
+- agent command
+- agent lightning main
+key_files: null
+related_sessions: []
+parent_spec: ''
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

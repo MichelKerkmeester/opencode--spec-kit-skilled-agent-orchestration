@@ -561,11 +561,11 @@ Memory files are always saved to the child folder's `memory/` directory (e.g., `
 
 Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` with 43 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
+**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` with 47 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
 **Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, with shared-memory operations available under `/memory:manage shared`, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
-**MCP Tools (18 most-used of 43 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
+**MCP Tools (18 most-used of 47 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
 | Tool                            | Layer | Purpose                                           |
 | ------------------------------- | ----- | ------------------------------------------------- |
@@ -665,7 +665,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_ENTITY_LINKING`     | on      | Links memories sharing extracted entities during search |
 | `SPECKIT_QUALITY_LOOP`       | off     | Enables verify-fix-verify quality loop on save with up to 2 autofix retries |
 | `SPECKIT_RELATIONS`          | on      | Correction tracking with undo semantics (superseded/deprecated/refined/merged). Graduated to default ON |
-| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 43 MCP tools; rejects hallucinated parameters |
+| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 47 MCP tools; rejects hallucinated parameters |
 | `SPECKIT_DEGREE_BOOST`       | on      | Typed weighted-degree channel in graph signal scoring |
 | `SPECKIT_GRAPH_SIGNALS`      | on      | Graph momentum and causal depth scoring signals |
 | `SPECKIT_COMMUNITY_DETECTION` | on     | Community detection clustering for graph-aware retrieval |

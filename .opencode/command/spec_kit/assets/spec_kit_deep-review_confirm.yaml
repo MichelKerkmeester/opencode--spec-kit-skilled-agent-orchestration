@@ -513,11 +513,21 @@ workflow:
 
       step_reduce_review_state:
         action: "Run reducer to refresh the canonical findings registry before dashboard generation"
+        command: "node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {spec_folder}"
         read:
           - "{spec_folder}/review/deep-review-state.jsonl"
           - "{spec_folder}/review/iterations/iteration-{NNN}.md"
           - "{spec_folder}/review/deep-review-findings-registry.json"
-        write: "{spec_folder}/review/deep-review-findings-registry.json"
+          - "{spec_folder}/review/deep-review-strategy.md"
+        write:
+          - "{spec_folder}/review/deep-review-findings-registry.json"
+          - "{spec_folder}/review/deep-review-dashboard.md"
+          - "{spec_folder}/review/deep-review-strategy.md"
+        failure_modes:
+          malformed_delta: "skip + warn"
+          missing_iteration_file: "no-op + error"
+          schema_mismatch: "reject + conflict event"
+        guarantee: "Idempotent for identical inputs"
         note: "Reducer outputs findingsRegistry, dashboardMetrics, and strategyUpdates. Re-running the same inputs must be idempotent."
 
       # ─── APPROVAL GATE: Post-Iteration ───

@@ -76,10 +76,10 @@ The packet starts from `reference-map.md`, turns that map into Level 3 packet st
 - [x] Expand `spec.md`, `plan.md`, and `tasks.md` to Level 3 detail.
 - [x] Create `checklist.md`, `decision-record.md`, and `implementation-summary.md`.
 
-### Phase 2: Future Documentation Alignment Plan
-- [ ] Review mapped root skill contract docs first.
-- [ ] Review mapped workflow, memory, config, and template references next.
-- [ ] Review mapped MCP docs, then supporting catalog and playbook surfaces after the root/reference layer is aligned.
+### Phase 2: Documentation Alignment (Completed 2026-04-10)
+- [x] Review mapped root skill contract docs first.
+- [x] Review mapped workflow, memory, config, and template references next.
+- [x] Review mapped MCP docs, then supporting catalog and playbook surfaces after the root/reference layer is aligned.
 
 ### Phase 3: Packet Verification
 - [x] Fix packet-local reference issues needed for strict validation.

@@ -18,7 +18,7 @@ Reducer-generated observability surface for the active research packet.
 - Topic: Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and sk-improve-agent v1.1.0.0 (and their associated commands, agents, YAML workflows): self-compliance audit, coverage graph integration audit, and prioritized recommendations.
 - Started: 2026-04-11T08:02:52Z
 - Status: INITIALIZED
-- Iteration: 10 of 20
+- Iteration: 11 of 20
 - Session ID: rsr-2026-04-11T08-02-52Z
 - Parent Session: none
 - Lifecycle Mode: new
@@ -40,27 +40,28 @@ Reducer-generated observability surface for the active research packet.
 | 8 | D2 partial-failure reducer audit | - | 0.60 | 5 | complete |
 | 9 | D2 scale reducer stress audit | - | 0.60 | 5 | complete |
 | 10 | D2 dimension-coverage gate effectiveness audit | - | 0.40 | 5 | complete |
+| 11 | D3 mid-flight journal and recovery durability | - | 0.80 | 5 | complete |
 
-- iterationsCompleted: 10
-- keyFindings: 52
-- openQuestions: 6
-- resolvedQuestions: 10
+- iterationsCompleted: 11
+- keyFindings: 57
+- openQuestions: 5
+- resolvedQuestions: 11
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:questions -->
 ## 4. QUESTIONS
-- Answered: 10/16
+- Answered: 11/16
 - [x] D1: What undocumented edge cases, redundant reducer passes, journal-rollup gaps, or resume-flow drifts exist in the sk-deep-research v1.5.0.0 loop?
 - [x] D1: Are there convergence signals that should exist but currently don't (e.g., citation density, source diversity, contradiction frequency)?
 - [x] D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?
 - [x] D2: Does the new `scripts/reduce-state.cjs` correctly handle partial-failure iterations, severity transitions, and finding deduplication at scale (50+ findings)?
+- [x] D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?
 - [x] D4: Do the loops emit the full `STOP_REASONS` enum in practice, or are any values (`blockedStop`, `stuckRecovery`, `userPaused`) effectively dead code?
 - [x] D4: Do blocked-stop events always persist `gateResults` with the complete set of review-specific or research-specific gates, or are gates silently dropped?
 - [x] D4: Are resume flows (`resume`, `restart`, `fork`, `completed-continue`) actually exercised by the YAML workflows, or only documented?
 - [x] D5: Does any loop phase (init / iteration / convergence / synthesis) actively READ from the coverage graph (`coverage-graph-query.ts`, `coverage-graph-convergence.cjs`) to inform decisions, or only WRITE to it?
 - [x] D5: Is the `graphEvents` JSONL field consumed by the reducer or downstream tools, or is it write-only?
 - [x] D5: Do convergence gates consult `coverage-graph-contradictions.cjs` to block STOP on contradictions, or only consult ratio-based signals?
-- [ ] D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?
 - [ ] D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?
 - [ ] D3: Is the mutation coverage graph namespace (`loop_type: "improvement"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?
 - [ ] D4: Do the reducers ever write outside their declared machine-owned anchors, violating the contract?
@@ -70,11 +71,11 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.60 -> 0.60 -> 0.40
+- Last 3 ratios: 0.60 -> 0.40 -> 0.80
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
-- convergenceScore: 0.40
-- coverageBySources: {"code":112,"other":33}
+- convergenceScore: 0.80
+- coverageBySources: {"code":125,"other":39}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
@@ -136,11 +137,13 @@ Reducer-generated observability surface for the active research packet.
 - I did not find a packet-local `blocked_stop` example under `.opencode/specs` review state logs, so the dimension-skewed evidence had to come from the deep-loop optimizer fixture rather than a live spec review packet. (iteration 10)
 - This is not a bad gate taxonomy problem. The blocked-stop fixture uses the same gate names and recovery semantics the contract publishes, so the issue is persistence/consumption drift rather than mislabeled review gates (`.opencode/skill/sk-deep-review/references/convergence.md:362-419`, `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:4`). (iteration 10)
 - This is not another reducer merge-stability regression. Iteration 9 already established that finding dedup and transition ordering stay stable at 50+ findings, which leaves observability and recovery handoff as the remaining D2 weakness (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:7-11`). (iteration 10)
+- I did not find a packet-local `improvement-journal.jsonl` or `mutation-coverage.json` artifact to inspect directly, so this pass had to infer interrupted-session behavior from the shipped helper surfaces plus the remaining legacy self-test state. (iteration 11)
+- The main D3 risk is not proposal-agent side effects; the failure surface here is orchestrator wiring and persistence fidelity, not the proposal-only boundary itself. (iteration 11)
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-Rotate to D3 and test whether `sk-improve-agent` actually preserves orchestrator-only journal state when a candidate session stops mid-flight. The most productive next pass is to inspect the improvement journal emitter, mutation coverage namespace writes, and any existing interrupted-session artifacts to determine whether partial candidate runs lose benchmark/trade-off context before the reducer or orchestrator can recover it.
+Stay on D3 for one more pass, but shift from persistence primitives to the consumer side: inspect the orchestrator or reducer code paths that claim to replay journal + coverage graph + registry and verify whether they actually rebuild candidate lineage, blocked-stop evidence, benchmark stability warnings, and trade-off decisions from raw files. If no such reconstruction exists, that closes the remaining D3 questions around benchmark false positives versus stability gating and clarifies whether the current recovery design is merely under-documented or fundamentally under-persisted.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

@@ -1,15 +1,27 @@
 ---
-title: "...fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/27-02-26_16-26__sprint-0-closure-bm25-baseline]"
+title: '...fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/27-02-26_16-26__sprint-0-closure-bm25-baseline]'
+description: 'Sprint 0 Closure Bm25 Baseline SESSION SUMMARY Meta Data Value : : Session Date 2026 02 27 Session I'
 trigger_phrases:
-  - "sprint 0 closure"
-  - "bm25 baseline"
-  - "contingency decision proceed"
-  - "mrr@5 0.2083"
-  - "ground truth id mapping"
-importance_tier: "important"
-contextType: "general"
-quality_flags: []
-quality_score: 1.00
+- sprint 0 closure
+- bm25 baseline
+- contingency decision proceed
+- mrr 5 0.2083
+- ground truth id mapping
+- fusion 001 hybrid
+- 001 hybrid rag
+- hybrid rag fusion
+- rag fusion epic
+- fusion epic 001
+- epic 001 sprint
+- 001 sprint measurement
+- sprint measurement foundation
+- measurement foundation sprint
+- foundation sprint closure
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 ---
 # Sprint 0 Closure Bm25 Baseline
 
@@ -482,111 +494,64 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772205983019-asrcgom60"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation"
-channel: "main"
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772205983019-asrcgom60
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation
+channel: main
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-27"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-02-27'
 created_at_epoch: 1772205983
 last_accessed_epoch: 1772205983
-expires_at_epoch: 1779981983  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779981983
 message_count: 1
 decision_count: 5
 tool_count: 0
 file_count: 9
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "sprint"
-  - "ground truth"
-  - "because"
-  - "truth ids"
-  - "spec"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
-  - "bm25"
-  - "proceed"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- ground truth
+- truth ids
+- sprint 0
+- 0 closure
+- closure bm25
+- bm25 baseline
+- sprint 0 closure
+- 0 closure bm25
 trigger_phrases:
-  - "sprint 0 closure"
-  - "bm25 baseline"
-  - "contingency decision proceed"
-  - "mrr@5 0.2083"
-  - "ground truth id mapping"
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- sprint 0 closure
+- bm25 baseline
+- contingency decision proceed
+- mrr@5 0.2083
+- ground truth id mapping
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

@@ -1,59 +1,61 @@
 ---
-title: "Deep Research Synthesis On The [005-claudest/06-04-26_17-13__deep-research-synthesis-on-the-claudest-external]"
-description: "Deep research synthesis on the Claudest external repository (Claude Code plugin marketplace + claude-memory plugin + get-token-insights skill) for applicability to Code..."
+title: Deep Research Synthesis On The [005-claudest/06-04-26_17-13__deep-research-synthesis-on-the-claudest-external]
+description: Deep research synthesis on the Claudest external repository (Claude Code plugin marketplace + claude-memory plugin + get-token-insights skill) for applicability to Code...
 trigger_phrases:
-  - "Claudest research"
-  - "claude-memory plugin"
-  - "005-claudest"
-  - "FTS5 BM25 conversation recall"
-  - "SessionStart context injection cached summary"
-  - "extract-learnings consolidation auditor discoverer"
-  - "get-token-insights cache cliff dashboard contract"
-  - "Claude plugin marketplace structure"
-  - "deep research codex gpt-5.4"
-  - "issue does"
-  - "answered questions"
-  - "model reasoning effort"
-  - "delegation override"
-  - "claude memory"
-  - "get token insights"
-  - "cli codex"
-  - "full auto"
-  - "source backed"
-  - "extract learnings"
-  - "command substitution"
-  - "always loaded"
-  - "disable skill"
-  - "tree thinning"
-  - "deep research config"
-  - "deep research strategy"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
-  - "chosen approach"
-  - "version validation"
-  - "stdin pipe"
-  - "cli-codex gpt-5.4"
-  - "fast mode"
-  - "memory-auditor signal-discoverer"
-  - "branches_fts BM25 ranking"
-  - "detect_fts_support cascade"
-  - "cached context_summary fast path"
-  - "deterministic Python summarizer"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- claudest research
+- claude memory plugin
+- 005 claudest
+- fts5 bm25 conversation recall
+- claude plugin marketplace structure
+- issue does
+- answered questions
+- model reasoning effort
+- delegation override
+- claude memory
+- get token insights
+- cli codex
+- full auto
+- source backed
+- extract learnings
+- command substitution
+- always loaded
+- disable skill
+- tree thinning
+- deep research config
+- deep research strategy
+- system spec kit
+- graph and context optimization
+- research graph context systems
+- chosen approach
+- version validation
+- stdin pipe
+- cli codex gpt 5.4
+- fast mode
+- memory auditor signal discoverer
+- branches fts bm25 ranking
+- detect fts support cascade
+- deterministic python summarizer
+- deep research synthesis
+- research synthesis 005
+importance_tier: important
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":false,"score":0.55,"errors":3,"warnings":0}
+spec_folder_health:
+  pass: false
+  score: 0.55
+  errors: 3
+  warnings: 0
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (quality score: 0 [RETROACTIVE: original 100-point scale]). 0 noise entries and 0 duplicates were filtered.
 
 
 # Deep Research Synthesis On The Claudest External
@@ -519,69 +521,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775491997086-0401e16700a3"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775491997086-0401e16700a3
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "a0ffd7f73038f14478848f827aefb6cd2b792c92"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: a0ffd7f73038f14478848f827aefb6cd2b792c92
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-06"
+  - 100-point
+created_at: '2026-04-06'
 created_at_epoch: 1775491997
 last_accessed_epoch: 1775491997
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 12
 decision_count: 5
 tool_count: 0
@@ -590,93 +562,77 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "stdin pipe"
-  - "cli-codex gpt-5.4"
-  - "via cli-codex"
-  - "fast mode"
-  - "summarizer auditor/discoverer"
-  - "instead command-substitution"
-  - "command-substitution long"
-  - "deterministic summarizer"
-  - "auditor/discoverer split"
-  - "search/browse separation"
-  - "override @deep-research"
-  - "effort=high --full-auto"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- stdin pipe
+- cli-codex gpt-5.4
+- via cli-codex
+- fast mode
+- summarizer auditor discoverer
+- instead command-substitution
+- command-substitution long
+- deterministic summarizer
+- auditor discoverer split
+- search browse separation
+- override deep-research
+- effort high --full-auto
 trigger_phrases:
-  - "Claudest research"
-  - "claude-memory plugin"
-  - "005-claudest"
-  - "FTS5 BM25 conversation recall"
-  - "SessionStart context injection cached summary"
-  - "extract-learnings consolidation auditor discoverer"
-  - "get-token-insights cache cliff dashboard contract"
-  - "Claude plugin marketplace structure"
-  - "deep research codex gpt-5.4"
-  - "issue does"
-  - "answered questions"
-  - "model reasoning effort"
-  - "delegation override"
-  - "claude memory"
-  - "get token insights"
-  - "cli codex"
-  - "full auto"
-  - "source backed"
-  - "extract learnings"
-  - "command substitution"
-  - "always loaded"
-  - "disable skill"
-  - "tree thinning"
-  - "deep research config"
-  - "deep research strategy"
-  - "system spec kit"
-  - "graph and context optimization"
-  - "research graph context systems"
-  - "chosen approach"
-  - "version validation"
-  - "stdin pipe"
-  - "cli-codex gpt-5.4"
-  - "fast mode"
-  - "memory-auditor signal-discoverer"
-  - "branches_fts BM25 ranking"
-  - "detect_fts_support cascade"
-  - "cached context_summary fast path"
-  - "deterministic Python summarizer"
-
+- Claudest research
+- claude-memory plugin
+- 005-claudest
+- FTS5 BM25 conversation recall
+- SessionStart context injection cached summary
+- extract-learnings consolidation auditor discoverer
+- get-token-insights cache cliff dashboard contract
+- Claude plugin marketplace structure
+- deep research codex gpt-5.4
+- issue does
+- answered questions
+- model reasoning effort
+- delegation override
+- claude memory
+- get token insights
+- cli codex
+- full auto
+- source backed
+- extract learnings
+- command substitution
+- always loaded
+- disable skill
+- tree thinning
+- deep research config
+- deep research strategy
+- system spec kit
+- graph and context optimization
+- research graph context systems
+- chosen approach
+- version validation
+- stdin pipe
+- cli-codex gpt-5.4
+- fast mode
+- memory-auditor signal-discoverer
+- branches_fts BM25 ranking
+- detect_fts_support cascade
+- cached context_summary fast path
+- deterministic Python summarizer
 key_files:
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-config.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/findings-registry.json"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-dashboard.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-001.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-002.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-003.md"
-  - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-004.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-config.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-strategy.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-state.jsonl
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/findings-registry.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/deep-research-dashboard.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-001.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-002.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-003.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/iterations/iteration-004.md
+related_sessions: []
+parent_spec: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

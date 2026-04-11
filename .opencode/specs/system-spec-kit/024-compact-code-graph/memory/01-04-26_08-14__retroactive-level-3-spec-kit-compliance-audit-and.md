@@ -1,33 +1,40 @@
 ---
-title: "Retroactive Level 3 Compliance Audit [024-compact-code-graph/01-04-26_08-14__retroactive-level-3-spec-kit-compliance-audit-and]"
-description: "Created 30 missing spec docs (tasks.md + implementation-summary.md) across all 24 phases. Fixed 4 stale data issues. Achieved 120/120 phase files + 6/6 root files = full Level 3 compliance."
+title: Retroactive Level 3 Compliance Audit [024-compact-code-graph/01-04-26_08-14__retroactive-level-3-spec-kit-compliance-audit-and]
+description: Created 30 missing spec docs (tasks.md + implementation-summary.md) across all 24 phases. Fixed 4 stale data issues. Achieved 120/120 phase files + 6/6 root files = full Level 3 compliance.
 trigger_phrases:
-  - "level 3 compliance"
-  - "spec kit compliance"
-  - "missing documents"
-  - "retroactive audit"
-  - "tasks.md"
-  - "implementation-summary"
-  - "stale deferred"
-  - "phase compliance"
-  - "024 compact code graph"
-  - "spec documentation gaps"
-  - "compliance matrix"
-  - "verification spot-check"
-importance_tier: "important"
-contextType: "implementation"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- level 3 compliance
+- spec kit compliance
+- missing documents
+- retroactive audit
+- implementation summary
+- stale deferred
+- phase compliance
+- 024 compact code graph
+- spec documentation gaps
+- compliance matrix
+- verification spot check
+- retroactive level compliance
+- level compliance audit
+- compliance audit 024
+- retroactive level
+importance_tier: important
+contextType: implementation
+quality_score: 0.98
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 34
 filesystem_file_count: 126
 git_changed_file_count: 34
-quality_score: 0.98
-quality_flags: []
-spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
+spec_folder_health:
+  pass: true
+  score: 0.95
+  errors: 0
+  warnings: 1
 ---
-
 # Retroactive Level 3 Spec Kit Compliance Audit
 
 ## SESSION SUMMARY
@@ -207,40 +214,36 @@ Added missing deferred items to Phase 023 checklist to match tasks.md (F065, Pha
 ## MEMORY METADATA
 
 ```yaml
-session_id: "session-1775027692021-05d630ed3eb3"
-spec_folder: "system-spec-kit/024-compact-code-graph"
-channel: "system-speckit/024-compact-code-graph"
-
-importance_tier: "important"
-context_type: "implementation"
-
+session_id: session-1775027692021-05d630ed3eb3
+spec_folder: system-spec-kit/024-compact-code-graph
+channel: system-speckit/024-compact-code-graph
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"
+  memory_type: episodic
   half_life_days: 30
   decay_factors:
     base_decay_rate: 0.9772
     access_boost_factor: 0.1
     recency_weight: 0.5
     importance_multiplier: 1.3
-
 session_dedup:
   memories_surfaced: 0
   dedup_savings_tokens: 0
-  fingerprint_hash: "5821dac8554a2e00f3566b1e6c9d24c920f7ee36"
+  fingerprint_hash: 5821dac8554a2e00f3566b1e6c9d24c920f7ee36
   similar_memories: []
-
 causal_links:
   caused_by: []
   supersedes: []
   derived_from: []
   blocks: []
-  related_to: []
-
-created_at: "2026-04-01"
+  related_to:
+  - 001-012
+  - 013-016
+created_at: '2026-04-01'
 created_at_epoch: 1775027692
 last_accessed_epoch: 1775027692
 expires_at_epoch: 0
-
 message_count: 3
 decision_count: 4
 tool_count: 0
@@ -249,49 +252,43 @@ captured_file_count: 34
 filesystem_file_count: 126
 git_changed_file_count: 34
 followup_count: 1
-
 access_count: 1
-last_search_query: ""
+last_search_query: ''
 relevance_boost: 1
-
 key_topics:
-  - "level 3 compliance"
-  - "retroactive audit"
-  - "missing spec documents"
-  - "stale deferred fixes"
-  - "implementation summary"
-  - "tasks tracking"
-  - "compliance matrix"
-  - "verification"
-
+- level 3 compliance
+- retroactive audit
+- missing spec documents
+- stale deferred fixes
+- implementation summary
+- tasks tracking
+- compliance matrix
+- retroactive level
 trigger_phrases:
-  - "level 3 compliance"
-  - "spec kit compliance"
-  - "missing documents"
-  - "retroactive audit"
-  - "tasks.md"
-  - "implementation-summary"
-  - "stale deferred"
-  - "phase compliance"
-  - "024 compact code graph"
-  - "spec documentation gaps"
-  - "compliance matrix"
-  - "verification spot-check"
-
+- level 3 compliance
+- spec kit compliance
+- missing documents
+- retroactive audit
+- tasks.md
+- implementation-summary
+- stale deferred
+- phase compliance
+- 024 compact code graph
+- spec documentation gaps
+- compliance matrix
+- verification spot-check
 key_files:
-  - "tasks.md"
-  - "implementation-summary.md"
-  - "checklist.md"
-  - "015-tree-sitter-migration/checklist.md"
-  - "015-tree-sitter-migration/implementation-summary.md"
-  - "023-context-preservation-metrics/checklist.md"
-
+- tasks.md
+- implementation-summary.md
+- checklist.md
+- 015-tree-sitter-migration/checklist.md
+- 015-tree-sitter-migration/implementation-summary.md
+- 023-context-preservation-metrics/checklist.md
 related_sessions: []
-parent_spec: "system-spec-kit/024-compact-code-graph"
+parent_spec: system-spec-kit/024-compact-code-graph
 child_sessions: []
-
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

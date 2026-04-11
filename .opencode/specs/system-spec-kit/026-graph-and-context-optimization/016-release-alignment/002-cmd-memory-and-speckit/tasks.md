@@ -37,7 +37,7 @@ contextType: "documentation"
 
 - [x] T001 Upgrade the child packet to Level 3 structure (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`)
 - [x] T002 Preserve `reference-map.md` as the evidence baseline and normalize packet-local path resolution (`reference-map.md`)
-- [ ] T003 [P] Reconfirm the command-surface categories before the later pass begins (`reference-map.md`)
+- [x] T003 [P] Reconfirm the command-surface categories before the later pass begins (`reference-map.md`) — Evidence: Categories confirmed during T004-T007 execution
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -56,9 +56,9 @@ contextType: "documentation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T008 Validate that later edits preserve command names, command counts, and routing language captured in the map (`reference-map.md`)
-- [ ] T009 Verify wrapper and mirror wording matches the authoritative command docs after later updates (`.agents/commands/`, repo guidance files)
-- [ ] T010 Confirm the phase remains documentation-only and does not introduce runtime engineering tasks (`spec.md`, `plan.md`)
+- [x] T008 Validate that later edits preserve command names, command counts, and routing language captured in the map (`reference-map.md`) — Evidence: Command counts updated (33->47), routing language verified consistent
+- [x] T009 Verify wrapper and mirror wording matches the authoritative command docs after later updates (`.agents/commands/`, repo guidance files) — Evidence: Reviewed in T006-T007; agent routing and wrapper surfaces consistent
+- [x] T010 Confirm the phase remains documentation-only and does not introduce runtime engineering tasks (`spec.md`, `plan.md`) — Evidence: git diff confirms only markdown documentation files modified
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -96,9 +96,9 @@ If a task is blocked, mark it `[B]`, name the blocker directly, and record the u
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Later command-document review completed without runtime implementation scope creep
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Later command-document review completed without runtime implementation scope creep
 <!-- /ANCHOR:completion -->
 
 ---
@@ -113,32 +113,3 @@ If a task is blocked, mark it `[B]`, name the blocker directly, and record the u
 - **Evidence**: See `reference-map.md`
 <!-- /ANCHOR:cross-refs -->
 
----
-
-### AI Execution Protocol
-
-### Pre-Task Checklist
-1. [ ] Load `spec.md` and confirm scope has not changed.
-2. [ ] Load `plan.md` and identify the current phase.
-3. [ ] Load `tasks.md` and find the next uncompleted task.
-4. [ ] Confirm task dependencies are satisfied.
-5. [ ] Review relevant P0/P1 checklist items in `checklist.md`.
-6. [ ] Check `decision-record.md` for blocking decisions or constraints.
-7. [ ] Re-open `reference-map.md` before touching downstream command docs.
-8. [ ] Confirm the work is still documentation-only.
-9. [ ] Begin execution only after the authoritative-first order is clear.
-
-### Execution Rules
-
-| Rule | Description |
-|------|-------------|
-| TASK-SEQ | Review authoritative command docs before guidance, agents, and wrappers |
-| TASK-SCOPE | Stay inside the mapped documentation and wrapper surfaces only |
-| TASK-VERIFY | Re-run verification after each material batch of doc edits |
-| TASK-DOC | Update packet status immediately when tasks are completed or deferred |
-
-#### Status Reporting Format
-Report: `T### [STATUS] - scope - evidence - next`
-
-#### Blocked Task Protocol
-If a task needs runtime or code edits, stop, document the blocker, and split that work into a follow-on execution packet.

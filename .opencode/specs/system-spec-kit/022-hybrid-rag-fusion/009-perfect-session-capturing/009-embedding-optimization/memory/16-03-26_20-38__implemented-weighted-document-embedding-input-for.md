@@ -1,44 +1,49 @@
 ---
-title: "...rfect-session-capturing/009-embedding-optimization/16-03-26_20-38__implemented-weighted-document-embedding-input-for]"
+title: '...rfect-session-capturing/009-embedding-optimization/16-03-26_20-38__implemented-weighted-document-embedding-input-for]'
+description: 'Implemented Weighted Document Embedding Input For SESSION SUMMARY Meta Data Value : : Session Date 2'
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/009 embedding optimization"
-  - "generate document embedding"
-  - "decision heavy"
-  - "tree thinning"
-  - "semantic summarizer"
-  - "memory indexer weighting"
-  - "scripts side"
-  - "embedding weighting"
-  - "embedding pipeline weighting"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "for helper"
-  - "workflow and"
-  - "keeping section extraction"
-  - "the scripts workflow"
-  - "indexer mcp memory save"
-  - "keep rollout scoped scripts"
-  - "rollout scoped scripts indexer"
-  - "scoped scripts indexer mcp"
-  - "scripts indexer mcp memory"
-  - "mcp memory save path"
-  - "matches approved phase boundary"
-  - "approved phase boundary avoids"
-  - "phase boundary avoids widening"
-  - "boundary avoids widening changes"
-  - "avoids widening changes unrelated"
-  - "kit/022"
-  - "fusion/010"
-  - "capturing/009"
-  - "embedding"
-  - "optimization"
-importance_tier: "critical"
-contextType: "general"
+- generate document embedding
+- decision heavy
+- tree thinning
+- semantic summarizer
+- memory indexer weighting
+- scripts side
+- embedding weighting
+- embedding pipeline weighting
+- for helper
+- workflow and
+- keeping section extraction
+- the scripts workflow
+- indexer mcp memory save
+- keep rollout scoped scripts
+- rollout scoped scripts indexer
+- scoped scripts indexer mcp
+- scripts indexer mcp memory
+- mcp memory save path
+- matches approved phase boundary
+- approved phase boundary avoids
+- phase boundary avoids widening
+- boundary avoids widening changes
+- avoids widening changes unrelated
+- kit 022
+- fusion 010
+- capturing 009
+- rfect session capturing
+- session capturing 009
+importance_tier: critical
+contextType: implementation
+quality_score: 0.9
 quality_flags:
-  - "has_tool_state_mismatch"
-quality_score: 0.90
-spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
+- has_tool_state_mismatch
+- retroactive_reviewed
+spec_folder_health:
+  pass: true
+  score: 1
+  errors: 0
+  warnings: 0
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Implemented Weighted Document Embedding Input For
 
 ## SESSION SUMMARY
@@ -99,11 +104,11 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 **Phase:** RESEARCH
 
-**Recent:** Implemented weighted document embedding input for the scripts memory indexer and the MCP..., Keep the rollout scoped to the scripts indexer and the MCP memory_save path only, Centralize weighting and truncation in shared/embeddings.
+**Recent:** Implemented weighted document embedding input for the scripts memory indexer and the MCP... [RETROACTIVE: auto-truncated], Keep the rollout scoped to the scripts indexer and the MCP memory_save path only, Centralize weighting and truncation in shared/embeddings.
 
 **Decisions:** 2 decisions recorded
 
-**Summary:** Implemented weighted document embedding input for the scripts memory indexer and the MCP memory_save pipeline. Added a shared weighted text builder, routed scripts indexing through generateDocumentEmb...
+**Summary:** Implemented weighted document embedding input for the scripts memory indexer and the MCP memory_save pipeline. Added a shared weighted text builder, routed scripts indexing through generateDocumentEmb... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -181,17 +186,17 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/skill/system-spec-kit/scripts/lib/semantic-summarizer.ts` - Built weighted embedding sections from implementation...
+- `.opencode/skill/system-spec-kit/scripts/lib/semantic-summarizer.ts` - Built weighted embedding sections from implementation... [RETROACTIVE: auto-truncated]
 
-- `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` - Switched scripts indexing to generateDocumentEmbedding...
+- `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` - Switched scripts indexing to generateDocumentEmbedding... [RETROACTIVE: auto-truncated]
 
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/save/embedding-pipeline.ts` - Built save-path weighted sections from parsed memory...
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/save/embedding-pipeline.ts` - Built save-path weighted sections from parsed memory... [RETROACTIVE: auto-truncated]
 
-- `.opencode/skill/system-spec-kit/scripts/tests/memory-indexer-weighting.vitest.ts` - Added scripts-side routing coverage for weighted...
+- `.opencode/skill/system-spec-kit/scripts/tests/memory-indexer-weighting.vitest.ts` - Added scripts-side routing coverage for weighted... [RETROACTIVE: auto-truncated]
 
-- `.opencode/skill/system-spec-kit/mcp_server/tests/embedding-weighting.vitest.ts` - Added helper coverage and a deterministic...
+- `.opencode/skill/system-spec-kit/mcp_server/tests/embedding-weighting.vitest.ts` - Added helper coverage and a deterministic... [RETROACTIVE: auto-truncated]
 
-- `.opencode/skill/system-spec-kit/mcp_server/tests/embedding-pipeline-weighting.vitest.ts` - Added save-path coverage proving weighted input is used...
+- `.opencode/skill/system-spec-kit/mcp_server/tests/embedding-pipeline-weighting.vitest.ts` - Added save-path coverage proving weighted input is used... [RETROACTIVE: auto-truncated]
 
 - `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/spec.md` - Documentation
 
@@ -225,7 +230,7 @@ Next: Continue implementation
 Implemented weighted document embedding input for the scripts memory indexer and the MCP memory_save pipeline. Added a shared weighted text builder, routed scripts indexing through generateDocumentEmbedding with precomputed weighted sections, updated the save pipeline to derive the same weighted payload from parsed memory content, added focused tests for helper behavior and routing, and completed Level 2 spec validation.
 
 **Key Outcomes**:
-- Implemented weighted document embedding input for the scripts memory indexer and the MCP...
+- Implemented weighted document embedding input for the scripts memory indexer and the MCP... [RETROACTIVE: auto-truncated]
 - Keep the rollout scoped to the scripts indexer and the MCP memory_save path only
 - Centralize weighting and truncation in shared/embeddings.
 
@@ -233,13 +238,13 @@ Implemented weighted document embedding input for the scripts memory indexer and
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/skill/system-spec-kit/scripts/lib/(merged-small-files)` | Tree-thinning merged 1 small files (semantic-summarizer.ts).  Merged from .opencode/skill/system-spec-kit/scripts/lib/semantic-summarizer.ts : Built weighted embedding sections from implementation... |
-| `.opencode/skill/system-spec-kit/scripts/core/(merged-small-files)` | Tree-thinning merged 2 small files (memory-indexer.ts, workflow.ts).  Merged from .opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts : Switched scripts indexing to generateDocumentEmbedding... | Merged from .opencode/skill/system-spec-kit/scripts/core/workflow.ts : Passed precomputed weighted embedding sections into the... |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/save/(merged-small-files)` | Tree-thinning merged 1 small files (embedding-pipeline.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/save/embedding-pipeline.ts : Built save-path weighted sections from parsed memory... |
-| `.opencode/skill/system-spec-kit/scripts/tests/(merged-small-files)` | Tree-thinning merged 1 small files (memory-indexer-weighting.vitest.ts).  Merged from .opencode/skill/system-spec-kit/scripts/tests/memory-indexer-weighting.vitest.ts : Added scripts-side routing coverage for weighted... |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)` | Tree-thinning merged 2 small files (embedding-weighting.vitest.ts, embedding-pipeline-weighting.vitest.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/tests/embedding-weighting.vitest.ts : Added helper coverage and a deterministic... | Merged from .opencode/skill/system-spec-kit/mcp_server/tests/embedding-pipeline-weighting.vitest.ts : Added save-path coverage proving weighted input is used... |
-| `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/(merged-small-files)` | Tree-thinning merged 2 small files (spec.md, checklist.md).  Merged from .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/spec.md : Updated the phase spec to the real implementation seams... | Merged from .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/checklist.md : Recorded Level 2 verification evidence and added... |
-| `.opencode/skill/system-spec-kit/shared/(merged-small-files)` | Tree-thinning merged 1 small files (embeddings.ts).  Merged from .opencode/skill/system-spec-kit/shared/embeddings.ts : Added WeightedDocumentSections and... |
+| `.opencode/skill/system-spec-kit/scripts/lib/(merged-small-files)` | Tree-thinning merged 1 small files (semantic-summarizer.ts).  Merged from .opencode/skill/system-spec-kit/scripts/lib/semantic-summarizer.ts : Built weighted embedding sections from implementation... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/system-spec-kit/scripts/core/(merged-small-files)` | Tree-thinning merged 2 small files (memory-indexer.ts, workflow.ts).  Merged from .opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts : Switched scripts indexing to generateDocumentEmbedding... [RETROACTIVE: auto-truncated] | Merged from .opencode/skill/system-spec-kit/scripts/core/workflow.ts : Passed precomputed weighted embedding sections into the... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/save/(merged-small-files)` | Tree-thinning merged 1 small files (embedding-pipeline.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/handlers/save/embedding-pipeline.ts : Built save-path weighted sections from parsed memory... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/system-spec-kit/scripts/tests/(merged-small-files)` | Tree-thinning merged 1 small files (memory-indexer-weighting.vitest.ts).  Merged from .opencode/skill/system-spec-kit/scripts/tests/memory-indexer-weighting.vitest.ts : Added scripts-side routing coverage for weighted... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)` | Tree-thinning merged 2 small files (embedding-weighting.vitest.ts, embedding-pipeline-weighting.vitest.ts).  Merged from .opencode/skill/system-spec-kit/mcp_server/tests/embedding-weighting.vitest.ts : Added helper coverage and a deterministic... [RETROACTIVE: auto-truncated] | Merged from .opencode/skill/system-spec-kit/mcp_server/tests/embedding-pipeline-weighting.vitest.ts : Added save-path coverage proving weighted input is used... [RETROACTIVE: auto-truncated] |
+| `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/(merged-small-files)` | Tree-thinning merged 2 small files (spec.md, checklist.md).  Merged from .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/spec.md : Updated the phase spec to the real implementation seams... [RETROACTIVE: auto-truncated] | Merged from .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization/checklist.md : Recorded Level 2 verification evidence and added... [RETROACTIVE: auto-truncated] |
+| `.opencode/skill/system-spec-kit/shared/(merged-small-files)` | Tree-thinning merged 1 small files (embeddings.ts).  Merged from .opencode/skill/system-spec-kit/shared/embeddings.ts : Added WeightedDocumentSections and... [RETROACTIVE: auto-truncated] |
 
 <!-- /ANCHOR:summary -->
 
@@ -251,7 +256,7 @@ Implemented weighted document embedding input for the scripts memory indexer and
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-weighted-document-embedding-input-5aee93d4 -->
-### FEATURE: Implemented weighted document embedding input for the scripts memory indexer and the MCP...
+### FEATURE: Implemented weighted document embedding input for the scripts memory indexer and the MCP... [RETROACTIVE: auto-truncated]
 
 Implemented weighted document embedding input for the scripts memory indexer and the MCP memory_save pipeline. Added a shared weighted text builder, routed scripts indexing through generateDocumentEmbedding with precomputed weighted sections, updated the save pipeline to derive the same weighted payload from parsed memory content, added focused tests for helper behavior and routing, and completed Level 2 spec validation.
 
@@ -459,138 +464,93 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1773689884621-64e9ad066ccd"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization"
-channel: "main"
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1773689884621-64e9ad066ccd
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization
+channel: main
+importance_tier: critical
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-16"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-16'
 created_at_epoch: 1773689884
 last_accessed_epoch: 1773689884
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 3
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "capturing/009 embedding"
-  - "embedding optimization"
-  - "perfect capturing/009"
-  - "fusion/010 perfect"
-  - "kit/022 hybrid"
-  - "rag fusion/010"
-  - "spec kit/022"
-  - "system spec"
-  - "hybrid rag"
-  - "optimization system"
-  - "save pipeline"
-  - "indexer mcp"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- capturing 009 embedding
+- embedding optimization
+- perfect capturing 009
+- fusion 010 perfect
+- kit 022 hybrid
+- rag fusion 010
+- spec kit 022
+- system spec
+- hybrid rag
+- optimization system
+- save pipeline
+- indexer mcp
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/009 embedding optimization"
-  - "generate document embedding"
-  - "decision heavy"
-  - "tree thinning"
-  - "semantic summarizer"
-  - "memory indexer weighting"
-  - "scripts side"
-  - "embedding weighting"
-  - "embedding pipeline weighting"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "for helper"
-  - "workflow and"
-  - "keeping section extraction"
-  - "the scripts workflow"
-  - "indexer mcp memory save"
-  - "keep rollout scoped scripts"
-  - "rollout scoped scripts indexer"
-  - "scoped scripts indexer mcp"
-  - "scripts indexer mcp memory"
-  - "mcp memory save path"
-  - "matches approved phase boundary"
-  - "approved phase boundary avoids"
-  - "phase boundary avoids widening"
-  - "boundary avoids widening changes"
-  - "avoids widening changes unrelated"
-  - "kit/022"
-  - "fusion/010"
-  - "capturing/009"
-  - "embedding"
-  - "optimization"
-
-key_files:
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- system spec kit/022 hybrid rag fusion/010 perfect session capturing/009 embedding optimization
+- generate document embedding
+- decision heavy
+- tree thinning
+- semantic summarizer
+- memory indexer weighting
+- scripts side
+- embedding weighting
+- embedding pipeline weighting
+- merged-small-files tree-thinning merged small
+- tree-thinning merged small files
+- for helper
+- workflow and
+- keeping section extraction
+- the scripts workflow
+- indexer mcp memory save
+- keep rollout scoped scripts
+- rollout scoped scripts indexer
+- scoped scripts indexer mcp
+- scripts indexer mcp memory
+- mcp memory save path
+- matches approved phase boundary
+- approved phase boundary avoids
+- phase boundary avoids widening
+- boundary avoids widening changes
+- avoids widening changes unrelated
+- kit/022
+- fusion/010
+- capturing/009
+- embedding
+- optimization
+key_files: null
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

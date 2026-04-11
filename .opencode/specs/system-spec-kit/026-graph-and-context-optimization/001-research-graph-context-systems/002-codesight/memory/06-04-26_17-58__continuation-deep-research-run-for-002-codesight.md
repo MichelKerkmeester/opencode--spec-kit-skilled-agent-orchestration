@@ -1,35 +1,29 @@
 ---
 title: Continuation Deep Research Run For
-name: 06-04-26_17-58__continuation-deep-research-run-for-002-codesight
 description: 'Continuation deep-research run for 002-codesight: 5 additional iterations (6-10) executed via cli-codex (gpt-5.4 high, sandbox=read-only) in parallel as background processes....'
-type: episodic
 trigger_phrases:
-- 002-codesight continuation iterations 6 to 10
-- codesight contract enrichment regex-only Hono-biased tRPC
-- codesight Python Go AST extraction parity SQLAlchemy GORM
-- codesight tokens.ts heuristic linear formula no tokenizer
-- codesight monorepo pnpm yarn config plugin contract
-- codesight telemetry NOT adoption blocker local opt-in
-- codesight cumulative risk inventory adoption decision matrix
-- cli-codex sandbox read-only blocked tmp write workaround stdout extraction
-- deep research continuation charter Q13 Q14 Q15 Q16 Q17
-- codesight 52 findings 10 iterations final synthesis
-- codesight enrichRouteContracts post-detection regex mutator
-- codesight extract-python subprocess ast.parse genuine AST
-- codesight extract-go brace-tracking regex no go parser mislabel
-- codesight calculateTokenStats hand-tuned linear formula no tokenizer
-- codesight scanner.ts pnpm-workspace.yaml monorepo aggregation
-- codesight CodesightPlugin contract typed but untested in-tree
-- codesight components.ts React-biased shallow no Solid Qwik
-- codesight telemetry.ts no HTTP no postinstall opt-in only
-- codesight 22-row adoption decision matrix research.md section 18.3
-- codesight SQLAlchemy index extraction richer than Drizzle
-- codesight blast-radius depth-cap off-by-one bug
-- codesight 11.2x token reduction README-only not in fixtures
-- codesight FastAPI fixture ground-truth tautology missing prefix composition
-- codesight zero-dependency claim AST loader project-local typescript
+- continuation deep research
+- continuation deep
+- deep research
+- research run
+- run 002
+- 002 codesight
+- deep research run
+- research run 002
+- run 002 codesight
+- continuation deep research run
+- deep research run 002
+- research run 002 codesight
+- session summary
+- table contents
+- continue session
 importance_tier: critical
-contextType: general
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 06-04-26_17-58__continuation-deep-research-run-for-002-codesight
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,15 +31,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 8
 filesystem_file_count: 8
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: false
   score: 0.55
   errors: 3
   warnings: 0
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (quality score: 0 [RETROACTIVE: original 100-point scale]). 0 noise entries and 0 duplicates were filtered.
 
 
 # Continuation Deep Research Run For 002 Codesight
@@ -614,69 +606,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775494688373-f8cba7188053"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775494688373-f8cba7188053
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.6 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.6
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "f19ed65708553e089b49061113c98ec37467b643"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: f19ed65708553e089b49061113c98ec37467b643
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-06"
+  - 100-point
+created_at: '2026-04-06'
 created_at_epoch: 1775494688
 last_accessed_epoch: 1775494688
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 13
 decision_count: 6
 tool_count: 0
@@ -685,53 +647,47 @@ captured_file_count: 8
 filesystem_file_count: 8
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "read-only sandbox"
-  - "codex agents"
-  - "reconstructed iteration"
-  - "background processes"
-  - "last-message capture"
-  - "parallel background"
-  - "iter reconstructed"
-  - "iteration verbatim"
-  - "cli-codex gpt-5.4"
-  - "assembled reports"
-  - "stdout reasoning"
-  - "sandbox blocked"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- read-only sandbox
+- codex agents
+- reconstructed iteration
+- background processes
+- last-message capture
+- parallel background
+- iter reconstructed
+- iteration verbatim
+- cli-codex gpt-5.4
+- assembled reports
+- stdout reasoning
+- sandbox blocked
 trigger_phrases:
-  - "002-codesight continuation iterations 6 to 10"
-  - "codesight contract enrichment regex-only Hono-biased tRPC"
-  - "codesight Python Go AST extraction parity SQLAlchemy GORM"
-  - "codesight tokens.ts heuristic linear formula no tokenizer"
-  - "codesight monorepo pnpm yarn config plugin contract"
-  - "codesight telemetry NOT adoption blocker local opt-in"
-  - "codesight cumulative risk inventory adoption decision matrix"
-  - "cli-codex sandbox read-only blocked tmp write workaround stdout extraction"
-  - "deep research continuation charter Q13 Q14 Q15 Q16 Q17"
-  - "codesight 52 findings 10 iterations final synthesis"
-  - "codesight enrichRouteContracts post-detection regex mutator"
-  - "codesight extract-python subprocess ast.parse genuine AST"
-  - "codesight extract-go brace-tracking regex no go parser mislabel"
-  - "codesight calculateTokenStats hand-tuned linear formula no tokenizer"
-  - "codesight scanner.ts pnpm-workspace.yaml monorepo aggregation"
-  - "codesight CodesightPlugin contract typed but untested in-tree"
-  - "codesight components.ts React-biased shallow no Solid Qwik"
-  - "codesight telemetry.ts no HTTP no postinstall opt-in only"
-  - "codesight 22-row adoption decision matrix research.md section 18.3"
-  - "codesight SQLAlchemy index extraction richer than Drizzle"
-  - "codesight blast-radius depth-cap off-by-one bug"
-  - "codesight 11.2x token reduction README-only not in fixtures"
-  - "codesight FastAPI fixture ground-truth tautology missing prefix composition"
-  - "codesight zero-dependency claim AST loader project-local typescript"
+- 002-codesight continuation iterations 6 to 10
+- codesight contract enrichment regex-only Hono-biased tRPC
+- codesight Python Go AST extraction parity SQLAlchemy GORM
+- codesight tokens.ts heuristic linear formula no tokenizer
+- codesight monorepo pnpm yarn config plugin contract
+- codesight telemetry NOT adoption blocker local opt-in
+- codesight cumulative risk inventory adoption decision matrix
+- cli-codex sandbox read-only blocked tmp write workaround stdout extraction
+- deep research continuation charter Q13 Q14 Q15 Q16 Q17
+- codesight 52 findings 10 iterations final synthesis
+- codesight enrichRouteContracts post-detection regex mutator
+- codesight extract-python subprocess ast.parse genuine AST
+- codesight extract-go brace-tracking regex no go parser mislabel
+- codesight calculateTokenStats hand-tuned linear formula no tokenizer
+- codesight scanner.ts pnpm-workspace.yaml monorepo aggregation
+- codesight CodesightPlugin contract typed but untested in-tree
+- codesight components.ts React-biased shallow no Solid Qwik
+- codesight telemetry.ts no HTTP no postinstall opt-in only
+- codesight 22-row adoption decision matrix research.md section 18.3
+- codesight SQLAlchemy index extraction richer than Drizzle
+- codesight blast-radius depth-cap off-by-one bug
+- codesight 11.2x token reduction README-only not in fixtures
+- codesight FastAPI fixture ground-truth tautology missing prefix composition
+- codesight zero-dependency claim AST loader project-local typescript
 ```
 
 <!-- /ANCHOR:metadata -->

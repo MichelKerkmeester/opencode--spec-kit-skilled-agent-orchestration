@@ -1,17 +1,32 @@
 ---
-title: "Implemented the complete SpecKit [system-spec-kit/021-spec-kit-phase-system/20-02-26_18-04__spec-kit-phase-system]"
+title: Implemented the complete SpecKit [system-spec-kit/021-spec-kit-phase-system/20-02-26_18-04__spec-kit-phase-system]
+description: 'Spec Kit Phase System SESSION SUMMARY Meta Data Value : : Session Date 2026 02 20 Session ID session'
 trigger_phrases:
-  - "spec kit phase system"
-  - "spec 139"
-  - "phase decomposition workflow"
-  - "spec kit:phase"
-  - "recommend-level phasing"
-importance_tier: "important"
-contextType: "general"
+- spec kit phase system
+- spec 139
+- phase decomposition workflow
+- spec kit phase
+- recommend level phasing
+- implemented complete speckit
+- complete speckit system
+- speckit system spec
+- system spec kit
+- spec kit 021
+- kit 021 spec
+- 021 spec kit
+- kit phase system
+- phase system spec
+- spec kit
+importance_tier: important
+contextType: implementation
+quality_score: 0.8
 quality_flags:
-  - "legacy_migration"
-quality_score: 0.6
+- legacy_migration
+- needs_review
+- retroactive_reviewed
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Spec Kit Phase System
 
 ## SESSION SUMMARY
@@ -43,9 +58,9 @@ quality_score: 0.6
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | /100 |  |
-| Uncertainty Score | /100 |  |
-| Context Score | /100 |  |
+| Knowledge Score | [RETROACTIVE: score unavailable] |  |
+| Uncertainty Score | [RETROACTIVE: score unavailable] |  |
+| Context Score | [RETROACTIVE: score unavailable] |  |
 | Timestamp |  | Session start |
 
 **Initial Gaps Identified:**
@@ -99,7 +114,7 @@ quality_score: 0.6
 
 **Decisions:** 7 decisions recorded
 
-**Summary:** Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that formalizes phase decomposition as a first-class SpecKit capability. Executed 28 of 34 tasks across 4 phase...
+**Summary:** Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that formalizes phase decomposition as a first-class SpecKit capability. Executed 28 of 34 tasks across 4 phase... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -222,7 +237,7 @@ Next: Continue implementation
 Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that formalizes phase decomposition as a first-class SpecKit capability. Executed 28 of 34 tasks across 4 phases using Multi-Agent (1+3) dispatch in 3 waves. Phase 1 added 5-signal scoring to recommend-level.sh (threshold 25/50 AND level>=3). Phase 2 added --phase flag to create.sh with parent/child folder creation, Phase Documentation Map injection, and back-references. Phase 3 added PHASE intent to SKILL.md smart router, created /spec_kit:phase command with auto+confirm YAML workflows, and updated 4 existing commands (plan/implement/complete/resume) with Gate 3 Option E. Phase 4 added --recursive validation to validate.sh with per-phase aggregation, check-phase-links.sh rule plugin, phase_definitions.md reference, phase-system.md node, and updated 5 reference docs plus CLAUDE.md. Fixed validate.sh set -e safety issue and JSON-safe level quoting. 3 test fixture tasks (T005/T028/T033) deferred as P1.
 
 **Key Outcomes**:
-- Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that...
+- Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that... [RETROACTIVE: auto-truncated]
 - Decision: Phase system is a behavioral overlay on existing levels, not a new lev
 - Decision: 5-signal scoring dimensions (architectural=15, files>15=10, LOC>800=10
 - Decision: Multi-Agent 1+3 dispatch in 3 waves organized by dependency graph — be
@@ -239,7 +254,7 @@ Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavior
 | `.opencode/.../spec/recommend-level.sh` | (threshold 25/50 AND level>=3) |
 | `.opencode/skill/system-spec-kit/scripts/spec/create.sh` | With parent/child folder creation |
 | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Set -e safety issue |
-| `.opencode/skill/system-spec-kit/SKILL.md` | Smart router, created /spec_kit:phase command with auto+c... |
+| `.opencode/skill/system-spec-kit/SKILL.md` | Smart router, created /spec_kit:phase command with auto+c... [RETROACTIVE: auto-truncated] |
 | `.opencode/command/spec_kit/plan.md` | File modified (description pending) |
 | `.opencode/command/spec_kit/implement.md` | File modified (description pending) |
 | `.opencode/command/spec_kit/complete.md` | File modified (description pending) |
@@ -279,7 +294,7 @@ Nodes: 416 | Edges: 630 | Skills: 9
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-complete-speckit-phase-system-c49cb51b -->
-### FEATURE: Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that...
+### FEATURE: Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that... [RETROACTIVE: auto-truncated]
 
 Implemented the complete SpecKit Phase System (Spec 139) — a Level 3+ behavioral overlay that formalizes phase decomposition as a first-class SpecKit capability. Executed 28 of 34 tasks across 4 phases using Multi-Agent (1+3) dispatch in 3 waves. Phase 1 added 5-signal scoring to recommend-level.sh (threshold 25/50 AND level>=3). Phase 2 added --phase flag to create.sh with parent/child folder creation, Phase Documentation Map injection, and back-references. Phase 3 added PHASE intent to SKILL.md smart router, created /spec_kit:phase command with auto+confirm YAML workflows, and updated 4 existing commands (plan/implement/complete/resume) with Gate 3 Option E. Phase 4 added --recursive validation to validate.sh with per-phase aggregation, check-phase-links.sh rule plugin, phase_definitions.md reference, phase-system.md node, and updated 5 reference docs plus CLAUDE.md. Fixed validate.sh set -e safety issue and JSON-safe level quoting. 3 test fixture tasks (T005/T028/T033) deferred as P1.
 
@@ -599,7 +614,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -626,111 +641,64 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1771607055284-tsm22p7d4"
-spec_folder: "system-spec-kit/021-spec-kit-phase-system"
-channel: "main"
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1771607055284-tsm22p7d4
+spec_folder: system-spec-kit/021-spec-kit-phase-system
+channel: main
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-20"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-02-20'
 created_at_epoch: 1771607055
 last_accessed_epoch: 1771607055
-expires_at_epoch: 1779383055  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779383055
 message_count: 1
 decision_count: 7
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "phase"
-  - "decision"
-  - "system"
-  - "spec"
-  - "because"
-  - "existing"
-  - "level"
-  - "phase system"
-  - "tasks"
-  - "wave"
-  - "behavioral overlay"
-  - "gate option"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- phase system
+- behavioral overlay
+- gate option
+- spec kit
+- kit phase
+- spec kit phase
+- kit phase system
+- spec kit phase system
 trigger_phrases:
-  - "spec kit phase system"
-  - "spec 139"
-  - "phase decomposition workflow"
-  - "spec kit:phase"
-  - "recommend-level phasing"
-
-parent_spec: "system-spec-kit/021-spec-kit-phase-system"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- spec kit phase system
+- spec 139
+- phase decomposition workflow
+- spec kit:phase
+- recommend-level phasing
+parent_spec: system-spec-kit/021-spec-kit-phase-system
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

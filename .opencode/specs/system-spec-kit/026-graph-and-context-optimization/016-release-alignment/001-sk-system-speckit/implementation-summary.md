@@ -44,7 +44,7 @@ The packet also received targeted reference normalization inside `reference-map.
 
 ### Phase 2: Documentation Alignment (2026-04-10)
 
-The mapped `system-spec-kit` documentation was reviewed and aligned with 026 graph-and-context-optimization findings. Five files were updated and one was skipped (already current):
+The mapped `system-spec-kit` documentation was reviewed and aligned with 026 graph-and-context-optimization findings. Six files were updated and one was skipped (already current):
 
 | # | File | Change |
 |---|------|--------|
@@ -53,7 +53,10 @@ The mapped `system-spec-kit` documentation was reviewed and aligned with 026 gra
 | 3 | save_workflow.md | Added POST-SAVE QUALITY REVIEW section with 026 heuristic calibration |
 | 4 | trigger_config.md | Added "Trigger Sanitization (026 Remediation)" subsection |
 | 5 | execution_methods.md | Added Post-Save Quality Review subsection |
-| 6 | README.md | Already current — skipped |
+| 6 | ARCHITECTURE.md | Updated Mermaid diagram: replaced context-prime.toml with session_bootstrap() MCP tool |
+| 7 | README.md | Already current — skipped |
+
+**Tool count correction (Phase 2 addendum):** SKILL.md tool count references were updated from 43 to 47. The 4 deep_loop_graph tools (deep_loop_graph_upsert, deep_loop_graph_query, deep_loop_graph_status, deep_loop_graph_convergence) were added to tool-schemas.ts after the initial 026 count. Total MCP tools: 47 memory + 7 code_mode + 1 CocoIndex + 1 sequential_thinking = 56.
 
 **Verification:** strict validation PASSED, `git diff --check` PASSED.
 <!-- /ANCHOR:what-built -->
@@ -74,7 +77,7 @@ The work started by reading the existing child packet, the curated `reference-ma
 | Decision | Why |
 |----------|-----|
 | Upgrade the child packet now instead of leaving it at Level 1 | The mapped review surface is broad enough that architecture, verification, and decision context were worth documenting before execution |
-| Keep the packet planning-only | The user asked for packet uplift, not live `system-spec-kit` documentation edits |
+| Phase 1 planning-only, Phase 2 live doc edits | Phase 1 focused on packet structure; Phase 2 executed the documentation alignment pass on mapped surfaces |
 | Fix packet-local evidence references only where validation required it | That keeps the curated map useful while removing strict-validation blockers |
 <!-- /ANCHOR:decisions -->
 

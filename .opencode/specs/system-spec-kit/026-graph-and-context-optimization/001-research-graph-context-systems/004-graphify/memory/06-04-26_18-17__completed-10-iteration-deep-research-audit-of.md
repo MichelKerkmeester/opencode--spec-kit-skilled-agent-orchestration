@@ -1,25 +1,20 @@
 ---
 title: Completed 10 Iteration Deep Research
-name: 06-04-26_18-17__completed-10-iteration-deep-research-audit-of
 description: Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4 high engine for iters 1, 8, 9, 10 and claude-opus-direct fallback for iters...
-type: episodic
 trigger_phrases:
 - graphify research
 - graphify external repo
 - graphify deep research
 - graphify export wiki serve
-- graphify per-language extractor
-- graphify cli-codex extension
-- graphify K13 K32
-- two-pass extraction adopt adapt reject
+- graphify per language extractor
+- graphify cli codex extension
+- graphify k13 k32
 - code graph mcp
-- evidence tagging EXTRACTED INFERRED AMBIGUOUS
-- PreToolUse hook graph-first
-- Leiden community detection
-- per-language extractor inventory
+- pretooluse hook graph first
+- leiden community detection
+- per language extractor inventory
 - validate.py portable validator
-- modality-aware rebuild policy
-- cross-corpus validation karpathy mixed-corpus
+- modality aware rebuild policy
 - composite converged
 - model reasoning effort
 - engine switch
@@ -28,8 +23,14 @@ trigger_phrases:
 - claude opus direct
 - line cited
 - mixed corpus
+- completed iteration deep
 importance_tier: critical
 contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 06-04-26_18-17__completed-10-iteration-deep-research-audit-of
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,15 +38,14 @@ _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: true
-  score: 1.0
+  score: 1
   errors: 0
   warnings: 0
   strictPassed: true
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Completed 10 Iteration Deep Research Audit Of
 
@@ -251,7 +251,7 @@ Next: Optional: Inline the 4 new section 12 rows (A5 validate.py validator, A6 w
 Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4 high engine for iters 1, 8, 9, 10 and claude-opus-direct fallback for iters 2-7. Final coverage 100 percent (12 of 12 questions answered). Produced research/research.md with 32 K-findings (K1 to K32) all line-cited from external/graphify source files, plus a comprehensive Adopt/Adapt/Reject table grounded in file:line evidence. User explicitly overrode iter 7 composite_converged stop with three forced cli-codex iterations (8 to 10) covering export/wiki/serve surface, build orchestration plus mixed-corpus cross-validation, and per-language extractor inventory plus final Q12 grounding. All Level 3 spec docs (spec.md, plan.md, tasks.md, implementation-summary.md, decision-record.md, checklist.md) rewritten to template compliance and validate.sh --strict passes with zero errors and zero warnings.
 
 **Key Outcomes**:
-- Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4...
+- Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4... [RETROACTIVE: auto-truncated]
 - Use cli-codex gpt-5.
 - Switch to claude-opus-direct for iters 2-7 after iter 2 codex parallel-job API contention starvation (ADR-002).
 - Override iter 7 composite_converged stop (coverage 91.
@@ -265,7 +265,7 @@ Completed 10-iteration deep-research audit of graphify external Python skill wit
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/implementation-summary.md` | Zero errors and zero warnings | Tree-thinning merged 3 small files (spec.md, plan.md, tasks.md).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/spec.md : Zero errors and zero warnings | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/plan.md : Zero errors and zero warnings | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/tasks.md : Zero errors and zero warnings |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/(merged-small-files)` | Tree-thinning merged 3 small files (research.md, deep-research-state.jsonl, deep-research-config.json).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md : 32 K-findings (K1 to K32) all line-cited from... | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-state.jsonl : Modified deep research state | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-config.json : Modified deep research config |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/(merged-small-files)` | Tree-thinning merged 3 small files (research.md, deep-research-state.jsonl, deep-research-config.json).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md : 32 K-findings (K1 to K32) all line-cited from... [RETROACTIVE: auto-truncated] | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-state.jsonl : Modified deep research state | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/deep-research-config.json : Modified deep research config |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/(merged-small-files)` | Tree-thinning merged 3 small files (iteration-008.md, iteration-009.md, iteration-010.md).  Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-008.md : Modified iteration 008 | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-009.md : Modified iteration 009 | Merged from .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/iterations/iteration-010.md : Modified iteration 010 |
 
 <!-- /ANCHOR:overview -->
@@ -278,9 +278,9 @@ Completed 10-iteration deep-research audit of graphify external Python skill wit
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:files-completed-10iteration-deepresearch-audit-e0f4265f -->
-### FEATURE: Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4...
+### FEATURE: Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4... [RETROACTIVE: auto-truncated]
 
-Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4 high engine for iters 1, 8, 9, 10 and claude-opus-direct fallback for iters 2-7. Final coverage 100 percent (12 of 12 questions answered). Produced research/research.md with 32 K-findings (K1 to K32) all line-cited from external/graphify source files, plus a comprehensive Adopt/Adapt/Reject table grounded in file:line evidence. User explicitly overrode iter 7 composite_converged stop with three...
+Completed 10-iteration deep-research audit of graphify external Python skill with cli-codex gpt-5.4 high engine for iters 1, 8, 9, 10 and claude-opus-direct fallback for iters 2-7. Final coverage 100 percent (12 of 12 questions answered). Produced research/research.md with 32 K-findings (K1 to K32) all line-cited from external/graphify source files, plus a comprehensive Adopt/Adapt/Reject table grounded in file:line evidence. User explicitly overrode iter 7 composite_converged stop with three... [RETROACTIVE: auto-truncated]
 
 **Details:** graphify research | graphify external repo | graphify deep research | graphify export wiki serve | graphify per-language extractor | graphify cli-codex extension | graphify K13 K32 | two-pass extraction adopt adapt reject | code graph mcp | evidence tagging EXTRACTED INFERRED AMBIGUOUS | PreToolUse hook graph-first | Leiden community detection | per-language extractor inventory | validate.py portable validator | modality-aware rebuild policy | cross-corpus validation karpathy mixed-corpus
 <!-- /ANCHOR:files-completed-10iteration-deepresearch-audit-e0f4265f -->
@@ -569,69 +569,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775495830386-029617d3079d"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775495830386-029617d3079d
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.6 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.6
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "2c6aa52d84a2671e36092c05e2892eebc248f7f8"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 2c6aa52d84a2671e36092c05e2892eebc248f7f8
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-06"
+  - 810-findings-b678d794
+created_at: '2026-04-06'
 created_at_epoch: 1775495830
 last_accessed_epoch: 1775495830
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 6
 tool_count: 0
@@ -640,53 +610,47 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "per-language extractor"
-  - "cli-codex iterations"
-  - "composite converged"
-  - "cli-codex gpt-5.4"
-  - "coverage percent"
-  - "forced cli-codex"
-  - "iter composite"
-  - "final coverage"
-  - "spec docs"
-  - "sandbox mode=workspace-write"
-  - "mode=workspace-write fast"
-  - "fragments domain-specific"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- per-language extractor
+- cli-codex iterations
+- composite converged
+- cli-codex gpt-5.4
+- coverage percent
+- forced cli-codex
+- iter composite
+- final coverage
+- spec docs
+- sandbox mode workspace-write
+- mode workspace-write fast
+- fragments domain-specific
 trigger_phrases:
-  - "graphify research"
-  - "graphify external repo"
-  - "graphify deep research"
-  - "graphify export wiki serve"
-  - "graphify per-language extractor"
-  - "graphify cli-codex extension"
-  - "graphify K13 K32"
-  - "two-pass extraction adopt adapt reject"
-  - "code graph mcp"
-  - "evidence tagging EXTRACTED INFERRED AMBIGUOUS"
-  - "PreToolUse hook graph-first"
-  - "Leiden community detection"
-  - "per-language extractor inventory"
-  - "validate.py portable validator"
-  - "modality-aware rebuild policy"
-  - "cross-corpus validation karpathy mixed-corpus"
-  - "composite converged"
-  - "model reasoning effort"
-  - "engine switch"
-  - "trigger phrases"
-  - "cli codex"
-  - "claude opus direct"
-  - "line cited"
-  - "mixed corpus"
+- graphify research
+- graphify external repo
+- graphify deep research
+- graphify export wiki serve
+- graphify per-language extractor
+- graphify cli-codex extension
+- graphify K13 K32
+- two-pass extraction adopt adapt reject
+- code graph mcp
+- evidence tagging EXTRACTED INFERRED AMBIGUOUS
+- PreToolUse hook graph-first
+- Leiden community detection
+- per-language extractor inventory
+- validate.py portable validator
+- modality-aware rebuild policy
+- cross-corpus validation karpathy mixed-corpus
+- composite converged
+- model reasoning effort
+- engine switch
+- trigger phrases
+- cli codex
+- claude opus direct
+- line cited
+- mixed corpus
 ```
 
 <!-- /ANCHOR:metadata -->

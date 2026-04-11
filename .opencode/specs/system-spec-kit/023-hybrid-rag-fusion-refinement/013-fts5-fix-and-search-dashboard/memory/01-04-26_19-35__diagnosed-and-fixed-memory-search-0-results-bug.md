@@ -1,53 +1,54 @@
 ---
-title: "Diagnosed And Fixed [013-fts5-fix-and-search-dashboard/01-04-26_19-35__diagnosed-and-fixed-memory-search-0-results-bug]"
-description: "Diagnosed and fixed memory search 0-results bug. Root cause: resolve database path() in...; Stabilize DB path over migration; Design 10 dashboard selected"
+title: Diagnosed And Fixed [013-fts5-fix-and-search-dashboard/01-04-26_19-35__diagnosed-and-fixed-memory-search-0-results-bug]
+description: 'Diagnosed and fixed memory search 0-results bug. Root cause: resolve database path() in...; Stabilize DB path over migration; Design 10 dashboard selected'
 trigger_phrases:
-  - "results bug"
-  - "resolve database path"
-  - "resolve_database_path"
-  - "defense in depth"
-  - "tree thinning"
-  - "vector index store"
-  - "db state"
-  - "context server"
-  - "provider specific"
-  - "stabilize db path"
-  - "fix and search dashboard"
-  - "stabilize path"
-  - "path migration"
-  - "design dashboard"
-  - "dashboard selected"
-  - "chosen approach"
-  - "memory search"
-  - "index queries"
-  - "search modified"
-  - "modified search system"
-  - "defense-in-depth 4-layer"
-  - "4-layer fix"
-  - "fix strategy"
-  - "diagnosed fixed"
-  - "fixed memory"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/013"
-  - "fts5"
-  - "and"
-  - "dashboard"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- results bug
+- resolve database path
+- defense in depth
+- tree thinning
+- vector index store
+- db state
+- context server
+- provider specific
+- stabilize db path
+- fix and search dashboard
+- stabilize path
+- path migration
+- design dashboard
+- dashboard selected
+- chosen approach
+- memory search
+- index queries
+- search modified
+- modified search system
+- 4 layer fix
+- fix strategy
+- diagnosed fixed
+- fixed memory
+- kit 023
+- compliance 013
+- diagnosed fixed 013
+- fixed 013 fts5
+importance_tier: important
+contextType: implementation
+quality_score: 0.97
+quality_flags:
+- has_topical_mismatch
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 9
 filesystem_file_count: 9
 git_changed_file_count: 0
-quality_score: 0.97
-quality_flags:
-  - "has_topical_mismatch"
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Diagnosed And Fixed Memory Search 0 Results Bug
 
@@ -138,7 +139,7 @@ Next: Continue implementation
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: Diagnosed and fixed memory search 0-results bug. Root cause:...
+- Last: Diagnosed and fixed memory search 0-results bug. Root cause:... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:continue-session -->
 
@@ -227,7 +228,7 @@ Next: Continue implementation
 Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_path() in...; Stabilize DB path over migration; Design 10 dashboard selected
 
 **Key Outcomes**:
-- Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_path() in...
+- Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_path() in... [RETROACTIVE: auto-truncated]
 - Stabilize DB path over migration
 - Design 10 dashboard selected
 - Defense-in-depth 4-layer fix strategy
@@ -236,7 +237,7 @@ Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_pa
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `hybrid-search.ts` | Modified hybrid search | Tree-thinning merged 3 small files (vector-index-store.ts, db-state.ts, context-server.ts).  Merged from vector-index-store.ts : Drifts to empty provider-specific DB after lazy Voyage-4... | Merged from db-state.ts : Modified db state | Merged from context-server.ts : Modified context server |
+| `hybrid-search.ts` | Modified hybrid search | Tree-thinning merged 3 small files (vector-index-store.ts, db-state.ts, context-server.ts).  Merged from vector-index-store.ts : Drifts to empty provider-specific DB after lazy Voyage-4... [RETROACTIVE: auto-truncated] | Merged from db-state.ts : Modified db state | Merged from context-server.ts : Modified context server |
 | `stage1-candidate-gen.ts` | Modified stage1 candidate gen |
 | `vector-index-queries.ts` | Modified vector index queries |
 | `sqlite-fts.ts` | Modified sqlite fts |
@@ -253,7 +254,7 @@ Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_pa
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:discovery-diagnosed-memory-search-0results-ee3ffeb3 -->
-### FEATURE: Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_path() in...
+### FEATURE: Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_path() in... [RETROACTIVE: auto-truncated]
 
 Diagnosed and fixed memory search 0-results bug. Root cause: resolve_database_path() in vector-index-store.ts drifts to empty provider-specific DB after lazy Voyage-4 init. Applied 4 P0 fixes (path stabilization, rebind guard, startup health check, warning logs) and 5 P1 fixes (FTS scope, silent failures). Also redesigned search dashboard (Design 10: folder-as-tree-group). 20 deep research/review iterations via Copilot GPT 5.4. Fixes compiled, awaiting runtime verification.
 
@@ -437,69 +438,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775068550361-854ab6c55641"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775068550361-854ab6c55641
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "9ab95f34c83d216b806746698127e11567a28b88"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 9ab95f34c83d216b806746698127e11567a28b88
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-01"
+  - 024-compact-code-graph
+created_at: '2026-04-01'
 created_at_epoch: 1775068550
 last_accessed_epoch: 1775068550
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 3
 tool_count: 0
@@ -508,86 +479,70 @@ captured_file_count: 9
 filesystem_file_count: 9
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "stabilize migration"
-  - "dashboard selected"
-  - "design dashboard"
-  - "defense-in-depth 4-layer"
-  - "fix strategy"
-  - "4-layer fix"
-  - "strategy defense-in-depth"
-  - "migration stabilize"
-  - "migration design"
-  - "selected design"
-  - "selected defense-in-depth"
-  - "strategy diagnosed"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- stabilize migration
+- dashboard selected
+- design dashboard
+- defense-in-depth 4-layer
+- fix strategy
+- 4-layer fix
+- strategy defense-in-depth
+- migration stabilize
+- migration design
+- selected design
+- selected defense-in-depth
+- strategy diagnosed
 trigger_phrases:
-  - "results bug"
-  - "resolve database path"
-  - "resolve_database_path"
-  - "defense in depth"
-  - "tree thinning"
-  - "vector index store"
-  - "db state"
-  - "context server"
-  - "provider specific"
-  - "stabilize db path"
-  - "fix and search dashboard"
-  - "stabilize path"
-  - "path migration"
-  - "design dashboard"
-  - "dashboard selected"
-  - "chosen approach"
-  - "memory search"
-  - "index queries"
-  - "search modified"
-  - "modified search system"
-  - "defense-in-depth 4-layer"
-  - "4-layer fix"
-  - "fix strategy"
-  - "diagnosed fixed"
-  - "fixed memory"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/013"
-  - "fts5"
-  - "and"
-  - "dashboard"
-
+- results bug
+- resolve database path
+- resolve_database_path
+- defense in depth
+- tree thinning
+- vector index store
+- db state
+- context server
+- provider specific
+- stabilize db path
+- fix and search dashboard
+- stabilize path
+- path migration
+- design dashboard
+- dashboard selected
+- chosen approach
+- memory search
+- index queries
+- search modified
+- modified search system
+- defense-in-depth 4-layer
+- 4-layer fix
+- fix strategy
+- diagnosed fixed
+- fixed memory
+- kit/023
+- esm
+- module
+- compliance/013
+- fts5
+- and
+- dashboard
 key_files:
-  - "vector-index-store.ts"
-  - "db-state.ts"
-  - "context-server.ts"
-  - "hybrid-search.ts"
-  - "stage1-candidate-gen.ts"
-  - "vector-index-queries.ts"
-  - "sqlite-fts.ts"
-  - "search.md"
-  - "search.toml"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- vector-index-store.ts
+- db-state.ts
+- context-server.ts
+- hybrid-search.ts
+- stage1-candidate-gen.ts
+- vector-index-queries.ts
+- sqlite-fts.ts
+- search.md
+- search.toml
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

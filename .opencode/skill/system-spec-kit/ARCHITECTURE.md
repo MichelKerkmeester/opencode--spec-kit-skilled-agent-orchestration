@@ -455,7 +455,7 @@ flowchart TB
         claude["Claude SessionStart<br/>hooks/claude/session-prime.ts"]
         gemini["Gemini SessionStart<br/>hooks/gemini/session-prime.ts"]
         opencode["OpenCode transport plan<br/>lib/context/opencode-transport.ts"]
-        codex["Codex bootstrap parity<br/>.codex/agents/context-prime.toml"]
+        codex["Codex bootstrap parity<br/>session_bootstrap() MCP tool"]
         copilot["Copilot local hook config / wrappers<br/>.github/hooks/*"]
         surfacedetect["Runtime detection<br/>runtime-detection.ts"]
 

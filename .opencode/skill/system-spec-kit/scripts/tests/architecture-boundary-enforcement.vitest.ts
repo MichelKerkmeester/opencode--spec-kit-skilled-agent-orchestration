@@ -5,7 +5,9 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { checkSharedNeutrality, checkWrapperOnly } from '../evals/check-architecture-boundaries';
 
-const ARCHITECTURE_CHECK_SCRIPT = path.resolve(process.cwd(), 'scripts', 'evals', 'check-architecture-boundaries.ts');
+// Resolve relative to the test file so the path is stable regardless of which
+// workspace (mcp_server vs scripts) vitest treats as process.cwd().
+const ARCHITECTURE_CHECK_SCRIPT = path.resolve(__dirname, '..', 'evals', 'check-architecture-boundaries.ts');
 
 describe('Architecture Boundary Enforcement', () => {
   const fixtureRoots: string[] = [];

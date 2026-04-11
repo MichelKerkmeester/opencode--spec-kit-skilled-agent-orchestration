@@ -1,45 +1,52 @@
 ---
-title: "Completed 10-Iteration Deep Review of Spec 023 [023-esm-module-compliance]"
-description: "10-iteration deep review of spec 023 ESM module compliance. Found security findings (fail-open v-rule, CWD-steerable paths, unproven transport assumption), traceability drift, and administrative packet staleness."
+title: Completed 10-Iteration Deep Review of Spec 023 [023-esm-module-compliance]
+description: 10-iteration deep review of spec 023 ESM module compliance. Found security findings (fail-open v-rule, CWD-steerable paths, unproven transport assumption), traceability drift, and administrative packet staleness.
 trigger_phrases:
-  - "self check"
-  - "fail open"
-  - "security findings"
-  - "findings admin"
-  - "admin auth"
-  - "auth v-rule"
-  - "v-rule fail-open"
-  - "fail-open cwd-steerable"
-  - "cwd-steerable paths"
-  - "paths assessed"
-  - "assessed trusted"
-  - "trusted local"
-  - "local transport"
-  - "transport assumption"
-  - "assumption unproven"
-  - "unproven repo"
-  - "repo evidence"
-  - "level system"
-  - "findings confirmed"
-  - "confirmed level"
-  - "traceability drift"
-  - "drift administrative"
-  - "administrative packet"
-  - "packet docs"
-  - "docs stale"
-  - "kit/023"
-importance_tier: "important"
-contextType: "planning"
+- self check
+- fail open
+- security findings
+- findings admin
+- admin auth
+- auth v rule
+- v rule fail open
+- fail open cwd steerable
+- cwd steerable paths
+- paths assessed
+- assessed trusted
+- trusted local
+- local transport
+- transport assumption
+- assumption unproven
+- unproven repo
+- repo evidence
+- level system
+- findings confirmed
+- confirmed level
+- traceability drift
+- drift administrative
+- administrative packet
+- packet docs
+- docs stale
+- kit 023
+- completed iteration deep
+- iteration deep review
+importance_tier: important
+contextType: decision
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
+spec_folder_health:
+  pass: true
+  score: 0.9
+  errors: 0
+  warnings: 2
 ---
 # Completed 10 Iteration Deep Review Of Spec 023
 
@@ -419,69 +426,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774864515767-7c29abfdaf34"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement"
-channel: "system-speckit/023-esm-module-compliance"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "decision"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774864515767-7c29abfdaf34
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement
+channel: system-speckit/023-esm-module-compliance
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: decision
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "a34c8bd33aea6a06580b1b5c4252f6e3ec8371e6"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: a34c8bd33aea6a06580b1b5c4252f6e3ec8371e6
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-30"
+  - 023-esm-module-compliance
+created_at: '2026-03-30'
 created_at_epoch: 1774864515
 last_accessed_epoch: 1774864515
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 4
 tool_count: 0
@@ -490,159 +467,143 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "fail-open cwd-steerable"
-  - "transport assumption"
-  - "cwd-steerable paths"
-  - "assumption unproven"
-  - "security findings"
-  - "v-rule fail-open"
-  - "assessed trusted"
-  - "local transport"
-  - "findings admin"
-  - "paths assessed"
-  - "trusted local"
-  - "unproven repo"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- fail-open cwd-steerable
+- transport assumption
+- cwd-steerable paths
+- assumption unproven
+- security findings
+- v-rule fail-open
+- assessed trusted
+- local transport
+- findings admin
+- paths assessed
+- trusted local
+- unproven repo
 trigger_phrases:
-  - "self check"
-  - "fail open"
-  - "security findings"
-  - "findings admin"
-  - "admin auth"
-  - "auth v-rule"
-  - "v-rule fail-open"
-  - "fail-open cwd-steerable"
-  - "cwd-steerable paths"
-  - "paths assessed"
-  - "assessed trusted"
-  - "trusted local"
-  - "local transport"
-  - "transport assumption"
-  - "assumption unproven"
-  - "unproven repo"
-  - "repo evidence"
-  - "level system"
-  - "findings confirmed"
-  - "confirmed level"
-  - "traceability drift"
-  - "drift administrative"
-  - "administrative packet"
-  - "packet docs"
-  - "docs stale"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance"
-
+- self check
+- fail open
+- security findings
+- findings admin
+- admin auth
+- auth v-rule
+- v-rule fail-open
+- fail-open cwd-steerable
+- cwd-steerable paths
+- paths assessed
+- assessed trusted
+- trusted local
+- local transport
+- transport assumption
+- assumption unproven
+- unproven repo
+- repo evidence
+- level system
+- findings confirmed
+- confirmed level
+- traceability drift
+- drift administrative
+- administrative packet
+- packet docs
+- docs stale
+- kit/023
+- esm
+- module
+- compliance
 key_files:
-  - "001-shared-esm-migration/description.json"
-  - "001-shared-esm-migration/implementation-summary.md"
-  - "001-shared-esm-migration/plan.md"
-  - "001-shared-esm-migration/README.md"
-  - "001-shared-esm-migration/spec.md"
-  - "001-shared-esm-migration/tasks.md"
-  - "002-mcp-server-esm-migration/description.json"
-  - "002-mcp-server-esm-migration/implementation-summary.md"
-  - "002-mcp-server-esm-migration/plan.md"
-  - "002-mcp-server-esm-migration/README.md"
-  - "002-mcp-server-esm-migration/spec.md"
-  - "002-mcp-server-esm-migration/tasks.md"
-  - "003-scripts-interop-refactor/description.json"
-  - "003-scripts-interop-refactor/implementation-summary.md"
-  - "003-scripts-interop-refactor/plan.md"
-  - "003-scripts-interop-refactor/README.md"
-  - "003-scripts-interop-refactor/spec.md"
-  - "003-scripts-interop-refactor/tasks.md"
-  - "004-verification-and-standards/description.json"
-  - "004-verification-and-standards/implementation-summary.md"
-  - "004-verification-and-standards/plan.md"
-  - "004-verification-and-standards/README.md"
-  - "004-verification-and-standards/spec.md"
-  - "004-verification-and-standards/tasks.md"
-  - "005-test-and-scenario-remediation/description.json"
-  - "005-test-and-scenario-remediation/implementation-summary.md"
-  - "005-test-and-scenario-remediation/plan.md"
-  - "005-test-and-scenario-remediation/README.md"
-  - "005-test-and-scenario-remediation/spec.md"
-  - "005-test-and-scenario-remediation/tasks.md"
-  - "checklist.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "research/deep-research-config.json"
-  - "research/deep-research-dashboard.md"
-  - "research/deep-research-strategy.md"
-  - "research/iterations/iteration-001.md"
-  - "research/iterations/iteration-002.md"
-  - "research/iterations/iteration-003.md"
-  - "research/iterations/iteration-004.md"
-  - "research/iterations/iteration-005.md"
-  - "research/iterations/iteration-006.md"
-  - "research/iterations/iteration-007.md"
-  - "research/iterations/iteration-008.md"
-  - "research/iterations/iteration-009.md"
-  - "research/iterations/iteration-010.md"
-  - "research/iterations/iteration-011.md"
-  - "research/iterations/iteration-012.md"
-  - "research/iterations/iteration-013.md"
-  - "research/iterations/iteration-014.md"
-  - "research/iterations/iteration-015.md"
-  - "research/iterations/iteration-016.md"
-  - "research/iterations/iteration-017.md"
-  - "research/iterations/iteration-018.md"
-  - "research/iterations/iteration-019.md"
-  - "research/iterations/iteration-020.md"
-  - "research/research-ideas.md"
-  - "research/research.md"
-  - "review/deep-research-config.json"
-  - "review/deep-review-dashboard.md"
-  - "review/deep-review-strategy.md"
-  - "review/iterations/iteration-001.md"
-  - "review/iterations/iteration-002.md"
-  - "review/iterations/iteration-003.md"
-  - "review/iterations/iteration-004.md"
-  - "review/iterations/iteration-005.md"
-  - "review/iterations/iteration-006.md"
-  - "review/iterations/iteration-007.md"
-  - "review/iterations/iteration-008.md"
-  - "review/iterations/iteration-009.md"
-  - "review/iterations/iteration-010.md"
-  - "review/prompts/iter-001.md"
-  - "review/prompts/iter-002.md"
-  - "review/prompts/iter-003.md"
-  - "review/prompts/iter-004.md"
-  - "review/prompts/iter-005.md"
-  - "review/prompts/iter-006.md"
-  - "review/prompts/iter-007.md"
-  - "review/prompts/iter-008.md"
-  - "review/prompts/iter-009.md"
-  - "review/prompts/iter-010.md"
-  - "review/review-report.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- 001-shared-esm-migration/description.json
+- 001-shared-esm-migration/implementation-summary.md
+- 001-shared-esm-migration/plan.md
+- 001-shared-esm-migration/README.md
+- 001-shared-esm-migration/spec.md
+- 001-shared-esm-migration/tasks.md
+- 002-mcp-server-esm-migration/description.json
+- 002-mcp-server-esm-migration/implementation-summary.md
+- 002-mcp-server-esm-migration/plan.md
+- 002-mcp-server-esm-migration/README.md
+- 002-mcp-server-esm-migration/spec.md
+- 002-mcp-server-esm-migration/tasks.md
+- 003-scripts-interop-refactor/description.json
+- 003-scripts-interop-refactor/implementation-summary.md
+- 003-scripts-interop-refactor/plan.md
+- 003-scripts-interop-refactor/README.md
+- 003-scripts-interop-refactor/spec.md
+- 003-scripts-interop-refactor/tasks.md
+- 004-verification-and-standards/description.json
+- 004-verification-and-standards/implementation-summary.md
+- 004-verification-and-standards/plan.md
+- 004-verification-and-standards/README.md
+- 004-verification-and-standards/spec.md
+- 004-verification-and-standards/tasks.md
+- 005-test-and-scenario-remediation/description.json
+- 005-test-and-scenario-remediation/implementation-summary.md
+- 005-test-and-scenario-remediation/plan.md
+- 005-test-and-scenario-remediation/README.md
+- 005-test-and-scenario-remediation/spec.md
+- 005-test-and-scenario-remediation/tasks.md
+- checklist.md
+- description.json
+- implementation-summary.md
+- plan.md
+- research/deep-research-config.json
+- research/deep-research-dashboard.md
+- research/deep-research-strategy.md
+- research/iterations/iteration-001.md
+- research/iterations/iteration-002.md
+- research/iterations/iteration-003.md
+- research/iterations/iteration-004.md
+- research/iterations/iteration-005.md
+- research/iterations/iteration-006.md
+- research/iterations/iteration-007.md
+- research/iterations/iteration-008.md
+- research/iterations/iteration-009.md
+- research/iterations/iteration-010.md
+- research/iterations/iteration-011.md
+- research/iterations/iteration-012.md
+- research/iterations/iteration-013.md
+- research/iterations/iteration-014.md
+- research/iterations/iteration-015.md
+- research/iterations/iteration-016.md
+- research/iterations/iteration-017.md
+- research/iterations/iteration-018.md
+- research/iterations/iteration-019.md
+- research/iterations/iteration-020.md
+- research/research-ideas.md
+- research/research.md
+- review/deep-research-config.json
+- review/deep-review-dashboard.md
+- review/deep-review-strategy.md
+- review/iterations/iteration-001.md
+- review/iterations/iteration-002.md
+- review/iterations/iteration-003.md
+- review/iterations/iteration-004.md
+- review/iterations/iteration-005.md
+- review/iterations/iteration-006.md
+- review/iterations/iteration-007.md
+- review/iterations/iteration-008.md
+- review/iterations/iteration-009.md
+- review/iterations/iteration-010.md
+- review/prompts/iter-001.md
+- review/prompts/iter-002.md
+- review/prompts/iter-003.md
+- review/prompts/iter-004.md
+- review/prompts/iter-005.md
+- review/prompts/iter-006.md
+- review/prompts/iter-007.md
+- review/prompts/iter-008.md
+- review/prompts/iter-009.md
+- review/prompts/iter-010.md
+- review/review-report.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

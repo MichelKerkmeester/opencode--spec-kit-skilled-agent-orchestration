@@ -1,33 +1,39 @@
 ---
-title: "Updated All 15 Spec Documentation Files in 024 [024-compact-code-graph]"
+title: Updated All 15 Spec Documentation Files in 024 [024-compact-code-graph]
+description: 'Updated All 15 Spec Documentation Files In 024 SESSION SUMMARY Meta Data Value : : Session Date 2026'
 trigger_phrases:
-  - "cocoindex integration"
-  - "code graph cocoindex"
-  - "semantic vs structural separation"
-  - "query-intent routing"
-  - "cocoindex complementary layer"
-  - "three-system architecture"
-  - "decision record cocoindex code graph"
-  - "code graph implementation phases"
-  - "revised compaction pipeline cocoindex"
-  - "query intent routing"
-  - "structural queries route"
-  - "cocoindex bridge enrichment"
-  - "complementary semantic layer"
-  - "routing tables system"
-  - "semantic neighbors"
-importance_tier: "important"
-contextType: "implementation"
+- cocoindex integration
+- code graph cocoindex
+- semantic vs structural separation
+- query intent routing
+- cocoindex complementary layer
+- three system architecture
+- code graph implementation phases
+- revised compaction pipeline cocoindex
+- structural queries route
+- cocoindex bridge enrichment
+- complementary semantic layer
+- routing tables system
+- semantic neighbors
+- updated all spec
+- all spec documentation
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":false,"score":0.45,"errors":2,"warnings":5}
+spec_folder_health:
+  pass: false
+  score: 0.45
+  errors: 2
+  warnings: 5
 ---
 # Updated All 15 Spec Documentation Files In 024
 
@@ -502,69 +508,42 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774886029082-3a45ee41c3d4"
-spec_folder: "system-spec-kit/024-compact-code-graph"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "decision"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774886029082-3a45ee41c3d4
+spec_folder: system-spec-kit/024-compact-code-graph
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "0365c4f31d52a57adac0f6f9b090246f98384aaf"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 0365c4f31d52a57adac0f6f9b090246f98384aaf
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-30"
+  - 036-045
+  - 001-precompact-hook
+  - 001-007
+  - 002-session-start-hook
+created_at: '2026-03-30'
 created_at_epoch: 1774886029
 last_accessed_epoch: 1774886029
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 2
 decision_count: 5
 tool_count: 0
@@ -573,87 +552,71 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "query-intent routing"
-  - "compaction pipeline"
-  - "revised compaction"
-  - "024-compact-code-graph dr-011"
-  - "stays 024-compact-code-graph"
-  - "structural relationships"
-  - "cocoindex complementary"
-  - "complementary semantic"
-  - "implementation phases"
-  - "cocoindex integration"
-  - "graph implementation"
-  - "includes cocoindex"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- query-intent routing
+- compaction pipeline
+- revised compaction
+- 024-compact-code-graph dr-011
+- stays 024-compact-code-graph
+- structural relationships
+- cocoindex complementary
+- complementary semantic
+- implementation phases
+- cocoindex integration
+- graph implementation
+- includes cocoindex
 trigger_phrases:
-  - "CocoIndex integration"
-  - "code graph CocoIndex"
-  - "semantic vs structural separation"
-  - "query-intent routing"
-  - "CocoIndex complementary layer"
-  - "three-system architecture"
-  - "decision record CocoIndex code graph"
-  - "code graph implementation phases"
-  - "revised compaction pipeline CocoIndex"
-  - "compact code graph"
-  - "deep research"
-  - "decision record"
-  - "query intent"
-  - "tree thinning"
-  - "system spec kit"
-  - "layer 3 to spec"
-  - "structural queries route"
-  - "spec documentation"
-  - "semantic code"
-  - "semantic layer"
-  - "search needed"
-  - "search across"
-  - "spec folder"
-  - "semantic queries"
-  - "session queries"
-  - "semantic neighbors"
-  - "routing tables system"
-  - "complementary semantic"
-  - "complementary semantic layer"
-  - "graph research"
-  - "024 compact code graph spec"
-  - "CocoIndex bridge enrichment"
-
+- CocoIndex integration
+- code graph CocoIndex
+- semantic vs structural separation
+- query-intent routing
+- CocoIndex complementary layer
+- three-system architecture
+- decision record CocoIndex code graph
+- code graph implementation phases
+- revised compaction pipeline CocoIndex
+- compact code graph
+- deep research
+- decision record
+- query intent
+- tree thinning
+- system spec kit
+- layer 3 to spec
+- structural queries route
+- spec documentation
+- semantic code
+- semantic layer
+- search needed
+- search across
+- spec folder
+- semantic queries
+- session queries
+- semantic neighbors
+- routing tables system
+- complementary semantic
+- complementary semantic layer
+- graph research
+- 024 compact code graph spec
+- CocoIndex bridge enrichment
 key_files:
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/spec.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/plan.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/decision-record.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/research/research.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/research/deep-research-strategy.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/001-precompact-hook/spec.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/001-precompact-hook/plan.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/spec.md"
-  - ".opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/plan.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/024-compact-code-graph"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- .opencode/specs/system-spec-kit/024-compact-code-graph/spec.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/plan.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/decision-record.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/research/research.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/research/deep-research-strategy.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/001-precompact-hook/spec.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/001-precompact-hook/plan.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/spec.md
+- .opencode/specs/system-spec-kit/024-compact-code-graph/002-session-start-hook/plan.md
+related_sessions: []
+parent_spec: system-spec-kit/024-compact-code-graph
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

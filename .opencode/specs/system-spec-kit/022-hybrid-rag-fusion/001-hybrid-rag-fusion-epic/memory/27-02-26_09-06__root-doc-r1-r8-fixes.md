@@ -1,16 +1,30 @@
 ---
-title: "Root docs [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_09-06__root-doc-r1-r8-fixes]"
+title: Root docs [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_09-06__root-doc-r1-r8-fixes]
+description: 'Root Doc R1 R8 Fixes SESSION SUMMARY Meta Data Value : : Session Date 2026 02 27 Session ID session'
 trigger_phrases:
-  - "tm-04 sprint assignment"
-  - "chk-s0f3 validation effort"
-  - "r1-r8 root spec fixes"
-  - "root doc ultra-think fixes"
-  - "channel drop spec 140"
-importance_tier: "normal"
-contextType: "implementation"
-quality_flags: []
-quality_score: 1.00
+- tm 04 sprint assignment
+- chk s0f3 validation effort
+- channel drop spec 140
+- root docs system
+- docs system spec
+- system spec kit
+- spec kit 022
+- kit 022 hybrid
+- 022 hybrid rag
+- hybrid rag fusion
+- rag fusion 001
+- fusion 001 hybrid
+- 001 hybrid rag
+- root doc
+- doc r1
+importance_tier: normal
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Root Doc R1 R8 Fixes
 
 ## SESSION SUMMARY
@@ -98,7 +112,7 @@ quality_score: 1.00
 
 **Decisions:** 5 decisions recorded
 
-**Summary:** Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md, checklist.md). Changes include: resol...
+**Summary:** Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md, checklist.md). Changes include: resol... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -207,7 +221,7 @@ Next: Continue implementation
 Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md, checklist.md). Changes include: resolving recommendation count narrative ambiguity (R1), fixing 4 cross-reference errors in tasks.md (R2), updating stale checklist frontmatter count from ~147 to ~127 (R3), adding INCONCLUSIVE governance state to T000b and all 7 T-FS feature flag sunset tasks (R4), adding BM25 50-80% channel-drop criterion with Exclusive Contribution Rate metric (R5), elevating CHK-111 latency budget from P1 to P0 with blocking rationale (R6), moving TM-04 from Sprint 4b to Sprint 4a for earlier quality gate data delivery (R7), and adding 8-15h effort notes for ground truth hand-labeling work (R8). Verification confirmed S4a+S4b effort ranges still sum to 72-109h and all cross-references point to correct files.
 
 **Key Outcomes**:
-- Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root...
+- Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root... [RETROACTIVE: auto-truncated]
 - Decision: Applied all R1-R8 fixes as documentation-only changes because the ultr
 - Decision: Used replace_all for R4 T-FS INCONCLUSIVE clause because all 7 T-FS ta
 - Decision: Updated checklist P0/P1 counts to 31/84 (from 30/85) because R6 promot
@@ -221,7 +235,7 @@ Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 14
 |:---------|:----------------|
 | `.opencode/.../022-hybrid-rag-fusion/spec.md` | Resolving recommendation count narrative ambiguity (R1) |
 | `.opencode/.../022-hybrid-rag-fusion/plan.md` | Resolving recommendation count narrative ambiguity (R1) |
-| `.opencode/.../022-hybrid-rag-fusion/tasks.md` | (R2), updating stale checklist frontmatter count from ~14... |
+| `.opencode/.../022-hybrid-rag-fusion/tasks.md` | (R2), updating stale checklist frontmatter count from ~14... [RETROACTIVE: auto-truncated] |
 | `.opencode/.../022-hybrid-rag-fusion/checklist.md` | Resolving recommendation count narrative ambiguity (R1) |
 
 <!-- /ANCHOR:summary -->
@@ -234,7 +248,7 @@ Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 14
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-all-recommendations-r1r8-ultrathink-cd7c8e29 -->
-### FEATURE: Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root...
+### FEATURE: Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root... [RETROACTIVE: auto-truncated]
 
 Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md, checklist.md). Changes include: resolving recommendation count narrative ambiguity (R1), fixing 4 cross-reference errors in tasks.md (R2), updating stale checklist frontmatter count from ~147 to ~127 (R3), adding INCONCLUSIVE governance state to T000b and all 7 T-FS feature flag sunset tasks (R4), adding BM25 50-80% channel-drop criterion with Exclusive Contribution Rate metric (R5), elevating CHK-111 latency budget from P1 to P0 with blocking rationale (R6), moving TM-04 from Sprint 4b to Sprint 4a for earlier quality gate data delivery (R7), and adding 8-15h effort notes for ground truth hand-labeling work (R8). Verification confirmed S4a+S4b effort ranges still sum to 72-109h and all cross-references point to correct files.
 
@@ -500,7 +514,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -527,111 +541,65 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772179603578-n3bew2e06"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772179603578-n3bew2e06
+spec_folder: system-spec-kit/022-hybrid-rag-fusion
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-27"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-02-27'
 created_at_epoch: 1772179603
 last_accessed_epoch: 1772179603
-expires_at_epoch: 1779955603  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779955603
 message_count: 1
 decision_count: 5
 tool_count: 0
 file_count: 4
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "all"
-  - "because"
-  - "spec"
-  - "chk"
-  - "system spec kit/022 hybrid rag fusion"
-  - "tasks"
-  - "checklist"
-  - "effort"
-  - "system"
-  - "kit/140"
-  - "hybrid"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- kit 140
+- root doc
+- doc r1
+- r1 r8
+- r8 fixes
+- root doc r1
+- doc r1 r8
+- r1 r8 fixes
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "replace all"
-  - "r1 r8"
-  - "ultra think"
-  - "channel drop"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- system spec kit/022 hybrid rag fusion
+- replace all
+- r1 r8
+- ultra think
+- channel drop
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

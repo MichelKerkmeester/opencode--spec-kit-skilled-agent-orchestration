@@ -1,27 +1,39 @@
 ---
-title: "...t/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/20-03-26_15-24__sprint-1-quick-wins-implemented-6-p0-p1-fixes-for]"
+title: '...t/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/20-03-26_15-24__sprint-1-quick-wins-implemented-6-p0-p1-fixes-for]'
+description: 'Sprint 1 Quick Wins Implemented 6 P0 P1 Fixes For SESSION SUMMARY Meta Data Value : : Session Date 2'
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
-  - "compare deterministic rows"
-  - "extract scoring value"
-  - "resolve effective score"
-  - "feedback signals applied"
-  - "bm25 search"
-  - "circuit breakers"
-  - "cross encoder"
-  - "fixed 100x similarity scale"
-importance_tier: "normal"
-contextType: "general"
+- compare deterministic rows
+- extract scoring value
+- resolve effective score
+- feedback signals applied
+- bm25 search
+- circuit breakers
+- cross encoder
+- fixed 100x similarity scale
+- 022 hybrid rag
+- hybrid rag fusion
+- rag fusion 001
+- fusion 001 hybrid
+- 001 hybrid rag
+- rag fusion epic
+- sprint 1
+importance_tier: normal
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1
+  errors: 0
+  warnings: 0
 ---
 # Sprint 1 Quick Wins Implemented 6 P0 P1 Fixes For
 
@@ -470,69 +482,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774016685892-d5bbf11e0037"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774016685892-d5bbf11e0037
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "588cd88f9c921d67b0ad13a7cff75631d7f32d1e"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 588cd88f9c921d67b0ad13a7cff75631d7f32d1e
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-20"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-20'
 created_at_epoch: 1774016685
 last_accessed_epoch: 1774016685
-expires_at_epoch: 1781792685  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781792685
 message_count: 1
 decision_count: 4
 tool_count: 0
@@ -541,64 +522,48 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "hybrid rag"
-  - "fusion/001 hybrid"
-  - "kit/022 hybrid"
-  - "rag fusion/001"
-  - "spec kit/022"
-  - "system spec"
-  - "fusion epic"
-  - "comparedeterministicrows extractscoringvalue"
-  - "extractscoringvalue resolveeffectivescore"
-  - "memory-search.ts feedbacksignalsapplied"
-  - "delegating comparedeterministicrows"
-  - "resolveeffectivescore canonical"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- hybrid rag
+- fusion 001 hybrid
+- kit 022 hybrid
+- rag fusion 001
+- spec kit 022
+- system spec
+- fusion epic
+- comparedeterministicrows extractscoringvalue
+- extractscoringvalue resolveeffectivescore
+- memory-search.ts feedbacksignalsapplied
+- delegating comparedeterministicrows
+- resolveeffectivescore canonical
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
-  - "compare deterministic rows"
-  - "extract scoring value"
-  - "resolve effective score"
-  - "feedback signals applied"
-  - "bm25 search"
-  - "circuit breakers"
-  - "cross encoder"
-  - "fixed 100x similarity scale"
-
+- system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic
+- compare deterministic rows
+- extract scoring value
+- resolve effective score
+- feedback signals applied
+- bm25 search
+- circuit breakers
+- cross encoder
+- fixed 100x similarity scale
 key_files:
-  - "mcp_server/lib/search/pipeline/ranking-contract.ts — A1: rewrite compareDeterministicRows to delegate to resolveEffectiveScore"
-  - "mcp_server/lib/search/pipeline/stage4-filter.ts — A1: rewrite extractScoringValue to delegate to resolveEffectiveScore"
-  - "mcp_server/lib/search/pipeline/types.ts — B6: add SignalStatus type, change Stage2Output metadata fields from boolean to SignalStatus"
-  - "mcp_server/lib/search/pipeline/stage2-fusion.ts — B6: update init ('off'), success paths ('applied'), catch blocks ('failed')"
-  - "mcp_server/lib/search/hybrid-search.ts — B7: batch SELECT for spec_folder resolution in bm25Search"
-  - "mcp_server/lib/search/cross-encoder.ts — G3: add __testables export for circuit breaker"
-  - "mcp_server/handlers/memory-search.ts — B6: update feedbackSignalsApplied check to === 'applied'"
-  - "mcp_server/tests/pipeline-v2.vitest.ts — B6: update boolean assertions to tri-state"
-  - "mcp_server/tests/memory-search-eval-channels.vitest.ts — B6: update boolean assertions to tri-state"
-  - "mcp_server/tests/hybrid-search.vitest.ts — B7: fix vacuously-true test assertion for spec_folder filter"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- "mcp_server/lib/search/pipeline/ranking-contract.ts \u2014 A1: rewrite compareDeterministicRows to delegate to resolveEffectiveScore"
+- "mcp_server/lib/search/pipeline/stage4-filter.ts \u2014 A1: rewrite extractScoringValue to delegate to resolveEffectiveScore"
+- "mcp_server/lib/search/pipeline/types.ts \u2014 B6: add SignalStatus type, change Stage2Output metadata fields from boolean to SignalStatus"
+- "mcp_server/lib/search/pipeline/stage2-fusion.ts \u2014 B6: update init ('off'), success paths ('applied'), catch blocks ('failed')"
+- "mcp_server/lib/search/hybrid-search.ts \u2014 B7: batch SELECT for spec_folder resolution in bm25Search"
+- "mcp_server/lib/search/cross-encoder.ts \u2014 G3: add __testables export for circuit breaker"
+- "mcp_server/handlers/memory-search.ts \u2014 B6: update feedbackSignalsApplied check to === 'applied'"
+- "mcp_server/tests/pipeline-v2.vitest.ts \u2014 B6: update boolean assertions to tri-state"
+- "mcp_server/tests/memory-search-eval-channels.vitest.ts \u2014 B6: update boolean assertions to tri-state"
+- "mcp_server/tests/hybrid-search.vitest.ts \u2014 B7: fix vacuously-true test assertion for spec_folder filter"
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

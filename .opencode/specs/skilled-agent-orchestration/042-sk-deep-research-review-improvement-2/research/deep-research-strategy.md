@@ -38,7 +38,7 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - [x] D1: Are there convergence signals that should exist but currently don't (e.g., citation density, source diversity, contradiction frequency)?
 - [x] D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?
 - [x] D2: Does the new `scripts/reduce-state.cjs` correctly handle partial-failure iterations, severity transitions, and finding deduplication at scale (50+ findings)?
-- [ ] D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?
+- [x] D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?
 - [ ] D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?
 - [ ] D3: Is the mutation coverage graph namespace (`loop_type: "improvement"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?
 - [x] D4: Do the loops emit the full `STOP_REASONS` enum in practice, or are any values (`blockedStop`, `stuckRecovery`, `userPaused`) effectively dead code?
@@ -83,6 +83,7 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - D1: Are there convergence signals that should exist but currently don't (e.g., citation density, source diversity, contradiction frequency)?
 - D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?
 - D2: Does the new `scripts/reduce-state.cjs` correctly handle partial-failure iterations, severity transitions, and finding deduplication at scale (50+ findings)?
+- D3: How fault-tolerant is the orchestrator-only journal emission in sk-improve-agent v1.1.0.0 when a candidate session is interrupted mid-flight?
 - D4: Do the loops emit the full `STOP_REASONS` enum in practice, or are any values (`blockedStop`, `stuckRecovery`, `userPaused`) effectively dead code?
 - D4: Do blocked-stop events always persist `gateResults` with the complete set of review-specific or research-specific gates, or are gates silently dropped?
 - D4: Are resume flows (`resume`, `restart`, `fork`, `completed-continue`) actually exercised by the YAML workflows, or only documented?
@@ -104,6 +105,7 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - A disposable temp review packet made it possible to separate "malformed JSONL is skipped" from the more important registry/dashboard divergence caused by partially written markdown. (iteration 8)
 - The disposable 60-bullet harness turned the scale question into an observed reducer run instead of a code-reading inference, which made the stable merge behavior and missing blocked-stop summaries easy to separate. (iteration 9)
 - Using the existing blocked-stop fixture kept this pass read-only while still giving me a concrete uneven-dimension packet to compare against the live workflow and reducer surfaces. (iteration 10)
+- Tracing the documented emit commands against the actual helper interfaces exposed the mid-flight recovery gap much faster than searching for every possible artifact. (iteration 11)
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
@@ -118,6 +120,7 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - A lightly truncated finding bullet still parsed successfully, so I had to tighten the reproduction to an interruption that occurred before the finding line became syntactically valid. (iteration 8)
 - Static inspection alone could not tell whether transition histories would stay ordered under heavy churn, so the evidence needed a real reducer pass rather than another pure source audit. (iteration 9)
 - I could not anchor the analysis to a packet-local review state log because no `blocked_stop` example surfaced under `.opencode/specs`, which limited the runtime evidence to the published path plus fixture coverage. (iteration 10)
+- There was no persisted `improvement-journal.jsonl` fixture in the repo to validate against, so the evidence had to come from runtime helper surfaces rather than a completed interrupted-session replay. (iteration 11)
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
@@ -297,6 +300,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: I did not find a packet-local `blocked_stop` example under `.opencode/specs` review state logs, so the dimension-skewed evidence had to come from the deep-loop optimizer fixture rather than a live spec review packet.
 
+### I did not find a packet-local `improvement-journal.jsonl` or `mutation-coverage.json` artifact to inspect directly, so this pass had to infer interrupted-session behavior from the shipped helper surfaces plus the remaining legacy self-test state. -- BLOCKED (iteration 11, 1 attempts)
+- What was tried: I did not find a packet-local `improvement-journal.jsonl` or `mutation-coverage.json` artifact to inspect directly, so this pass had to infer interrupted-session behavior from the shipped helper surfaces plus the remaining legacy self-test state.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: I did not find a packet-local `improvement-journal.jsonl` or `mutation-coverage.json` artifact to inspect directly, so this pass had to infer interrupted-session behavior from the shipped helper surfaces plus the remaining legacy self-test state.
+
 ### I did not inspect confirm-mode workflows in this pass because the question was whether the active deep-research runtime currently bridges to the shared graph signal set; the auto workflow, convergence reference, reducer, and shared graph handler were sufficient to classify the signal gaps. -- BLOCKED (iteration 7, 1 attempts)
 - What was tried: I did not inspect confirm-mode workflows in this pass because the question was whether the active deep-research runtime currently bridges to the shared graph signal set; the auto workflow, convergence reference, reducer, and shared graph handler were sufficient to classify the signal gaps.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -341,6 +349,11 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - What was tried: The graph layer is not purely nominal overall; the shared MCP convergence handler can block STOP on graph-derived coverage gaps, contradictions, unverified claims, source diversity, and evidence depth when it is actually invoked (.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:122-163; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:225-275; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:330-355).
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: The graph layer is not purely nominal overall; the shared MCP convergence handler can block STOP on graph-derived coverage gaps, contradictions, unverified claims, source diversity, and evidence depth when it is actually invoked (.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:122-163; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:225-275; .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:330-355).
+
+### The main D3 risk is not proposal-agent side effects; the failure surface here is orchestrator wiring and persistence fidelity, not the proposal-only boundary itself. -- BLOCKED (iteration 11, 1 attempts)
+- What was tried: The main D3 risk is not proposal-agent side effects; the failure surface here is orchestrator wiring and persistence fidelity, not the proposal-only boundary itself.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: The main D3 risk is not proposal-agent side effects; the failure surface here is orchestrator wiring and persistence fidelity, not the proposal-only boundary itself.
 
 ### The shared graph capability itself is not missing; the missing piece is runtime wiring. The MCP tool layer already exposes both `deep_loop_graph_upsert` and `deep_loop_graph_convergence` with reducer-oriented contracts (.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:779-823; .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:856-869). -- BLOCKED (iteration 3, 1 attempts)
 - What was tried: The shared graph capability itself is not missing; the missing piece is runtime wiring. The MCP tool layer already exposes both `deep_loop_graph_upsert` and `deep_loop_graph_convergence` with reducer-oriented contracts (.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:779-823; .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:856-869).
@@ -452,11 +465,13 @@ Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and 
 - I did not find a packet-local `blocked_stop` example under `.opencode/specs` review state logs, so the dimension-skewed evidence had to come from the deep-loop optimizer fixture rather than a live spec review packet. (iteration 10)
 - This is not a bad gate taxonomy problem. The blocked-stop fixture uses the same gate names and recovery semantics the contract publishes, so the issue is persistence/consumption drift rather than mislabeled review gates (`.opencode/skill/sk-deep-review/references/convergence.md:362-419`, `.opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl:4`). (iteration 10)
 - This is not another reducer merge-stability regression. Iteration 9 already established that finding dedup and transition ordering stay stable at 50+ findings, which leaves observability and recovery handoff as the remaining D2 weakness (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:7-11`). (iteration 10)
+- I did not find a packet-local `improvement-journal.jsonl` or `mutation-coverage.json` artifact to inspect directly, so this pass had to infer interrupted-session behavior from the shipped helper surfaces plus the remaining legacy self-test state. (iteration 11)
+- The main D3 risk is not proposal-agent side effects; the failure surface here is orchestrator wiring and persistence fidelity, not the proposal-only boundary itself. (iteration 11)
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Rotate to D3 and test whether `sk-improve-agent` actually preserves orchestrator-only journal state when a candidate session stops mid-flight. The most productive next pass is to inspect the improvement journal emitter, mutation coverage namespace writes, and any existing interrupted-session artifacts to determine whether partial candidate runs lose benchmark/trade-off context before the reducer or orchestrator can recover it.
+Stay on D3 for one more pass, but shift from persistence primitives to the consumer side: inspect the orchestrator or reducer code paths that claim to replay journal + coverage graph + registry and verify whether they actually rebuild candidate lineage, blocked-stop evidence, benchmark stability warnings, and trade-off decisions from raw files. If no such reconstruction exists, that closes the remaining D3 questions around benchmark false positives versus stability gating and clarifies whether the current recovery design is merely under-documented or fundamentally under-persisted.
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->

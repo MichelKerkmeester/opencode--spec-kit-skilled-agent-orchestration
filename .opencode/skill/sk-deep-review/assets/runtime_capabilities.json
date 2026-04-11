@@ -1,0 +1,92 @@
+{
+  "version": "1.0",
+  "docPath": ".opencode/skill/sk-deep-review/references/quick_reference.md",
+  "resolverScript": ".opencode/skill/sk-deep-review/scripts/runtime-capabilities.cjs",
+  "runtimes": [
+    {
+      "id": "opencode",
+      "label": "OpenCode / Copilot",
+      "mirrorPath": ".opencode/agent/deep-review.md",
+      "toolSurface": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "memory"
+      ],
+      "hookBootstrap": false,
+      "schemaAdaptation": "low",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "mirrorPath": ".claude/agents/deep-review.md",
+      "toolSurface": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "memory"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "low",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "mirrorPath": ".codex/agents/deep-review.toml",
+      "toolSurface": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "memory"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "medium",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "mirrorPath": ".gemini/agents/deep-review.md",
+      "toolSurface": [
+        "read_file",
+        "write_file",
+        "replace",
+        "run_shell_command",
+        "grep_search",
+        "list_directory"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "high",
+      "fallbackBridgeEligible": true
+    },
+    {
+      "id": "agents",
+      "label": "Legacy .agents wrapper",
+      "mirrorPath": ".agents/agents/deep-review.md",
+      "commandWrapperPath": ".agents/commands/spec_kit/deep-review.toml",
+      "toolSurface": [
+        "read_file",
+        "write_file",
+        "replace",
+        "run_shell_command",
+        "grep_search",
+        "list_directory"
+      ],
+      "hookBootstrap": true,
+      "schemaAdaptation": "high",
+      "fallbackBridgeEligible": true,
+      "compatibilityWrapper": true
+    }
+  ]
+}

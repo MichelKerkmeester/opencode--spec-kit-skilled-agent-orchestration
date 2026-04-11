@@ -1,55 +1,55 @@
 ---
-title: "Created Phase 009 And [009-reindex-validator-false-positives/31-03-26_15-13__created-phase-009-and-implemented-16-fixes-for]"
-description: "Created phase 009 and implemented 16 fixes for reindex validator false positives and contextType...; contextType 'decision' fully retired as default — mapped to 'planning'..."
+title: Created Phase 009 And [009-reindex-validator-false-positives/31-03-26_15-13__created-phase-009-and-implemented-16-fixes-for]
+description: "Created phase 009 and implemented 16 fixes for reindex validator false positives and contextType...; contextType 'decision' fully retired as default \u2014 mapped to 'planning'..."
 trigger_phrases:
-  - "empty critical"
-  - "empty file"
-  - "context type"
-  - "spec folder"
-  - "context template"
-  - "warn only"
-  - "pseudo code"
-  - "force reindex"
-  - "reindex validator"
-  - "spec docs"
-  - "file path extraction"
-  - "new values system"
-  - "contexttype decision"
-  - "decision fully"
-  - "fully retired"
-  - "retired default"
-  - "reindex uses"
-  - "uses warn-only"
-  - "warn-only quality"
-  - "quality gate"
-  - "gate files"
-  - "template.md detection"
-  - "detection pseudo-code"
-  - "pseudo-code match"
-  - "match new"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/009"
-  - "reindex"
-  - "validator"
-  - "false"
-  - "positives"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- empty critical
+- empty file
+- context type
+- spec folder
+- context template
+- warn only
+- pseudo code
+- force reindex
+- reindex validator
+- spec docs
+- file path extraction
+- new values system
+- contexttype decision
+- decision fully
+- fully retired
+- retired default
+- reindex uses
+- uses warn only
+- warn only quality
+- quality gate
+- gate files
+- template.md detection
+- detection pseudo code
+- pseudo code match
+- match new
+- kit 023
+- compliance 009
+- created phase 009
+- phase 009 009
+importance_tier: important
+contextType: implementation
+quality_score: 0.97
+quality_flags:
+- has_topical_mismatch
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 0.97
-quality_flags:
-  - "has_topical_mismatch"
-spec_folder_health: {"pass":false,"score":0.65,"errors":1,"warnings":4}
+spec_folder_health:
+  pass: false
+  score: 0.65
+  errors: 1
+  warnings: 4
 ---
-
 # Created Phase 009 And Implemented 16 Fixes For
 
 ## SESSION SUMMARY
@@ -509,69 +509,40 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774966424134-0499a34fda5f"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1774966424134-0499a34fda5f
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "c7f81d9b1860d91bcde7f586e973f7c8084e597f"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: c7f81d9b1860d91bcde7f586e973f7c8084e597f
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-31"
+  - 024-compact-code-graph
+  - 009-fixes-reindex-76cdfa13
+created_at: '2026-03-31'
 created_at_epoch: 1774966424
 last_accessed_epoch: 1774966424
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 5
 tool_count: 0
@@ -580,88 +551,72 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "force reindex"
-  - "template.md detection"
-  - "detection pseudo-code"
-  - "contexttype decision"
-  - "warn-only quality"
-  - "pseudo-code match"
-  - "decision fully"
-  - "uses warn-only"
-  - "fully retired"
-  - "reindex uses"
-  - "quality gate"
-  - "match values"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- force reindex
+- template.md detection
+- detection pseudo-code
+- contexttype decision
+- warn-only quality
+- pseudo-code match
+- decision fully
+- uses warn-only
+- fully retired
+- reindex uses
+- quality gate
+- match values
 trigger_phrases:
-  - "empty critical"
-  - "empty file"
-  - "context type"
-  - "spec folder"
-  - "context template"
-  - "warn only"
-  - "pseudo code"
-  - "force reindex"
-  - "reindex validator"
-  - "spec docs"
-  - "file path extraction"
-  - "new values system"
-  - "contexttype decision"
-  - "decision fully"
-  - "fully retired"
-  - "retired default"
-  - "reindex uses"
-  - "uses warn-only"
-  - "warn-only quality"
-  - "quality gate"
-  - "gate files"
-  - "template.md detection"
-  - "detection pseudo-code"
-  - "pseudo-code match"
-  - "match new"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/009"
-  - "reindex"
-  - "validator"
-  - "false"
-  - "positives"
-
+- empty critical
+- empty file
+- context type
+- spec folder
+- context template
+- warn only
+- pseudo code
+- force reindex
+- reindex validator
+- spec docs
+- file path extraction
+- new values system
+- contexttype decision
+- decision fully
+- fully retired
+- retired default
+- reindex uses
+- uses warn-only
+- warn-only quality
+- quality gate
+- gate files
+- template.md detection
+- detection pseudo-code
+- pseudo-code match
+- match new
+- kit/023
+- esm
+- module
+- compliance/009
+- reindex
+- validator
+- 'false'
+- positives
 key_files:
-  - "scripts/lib/validate-memory-quality.ts"
-  - "scripts/lib/frontmatter-migration.ts"
-  - "scripts/extractors/session-extractor.ts"
-  - "mcp_server/handlers/v-rule-bridge.ts"
-  - "mcp_server/handlers/memory-save.ts"
-  - "mcp_server/handlers/memory-index.ts"
-  - "mcp_server/lib/parsing/memory-parser.ts"
-  - "mcp_server/lib/search/vector-index-schema.ts"
-  - "mcp_server/lib/search/intent-classifier.ts"
-  - "mcp_server/lib/storage/schema-downgrade.ts"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- scripts/lib/validate-memory-quality.ts
+- scripts/lib/frontmatter-migration.ts
+- scripts/extractors/session-extractor.ts
+- mcp_server/handlers/v-rule-bridge.ts
+- mcp_server/handlers/memory-save.ts
+- mcp_server/handlers/memory-index.ts
+- mcp_server/lib/parsing/memory-parser.ts
+- mcp_server/lib/search/vector-index-schema.ts
+- mcp_server/lib/search/intent-classifier.ts
+- mcp_server/lib/storage/schema-downgrade.ts
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

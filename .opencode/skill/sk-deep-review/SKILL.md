@@ -5,7 +5,7 @@ allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memor
 # Note: Task tool is for the command executor (loop management). The @deep-review agent itself does NOT have Task (LEAF-only).
 # No WebFetch: review is code-only and read-only. No external resource fetching.
 argument-hint: "[target] [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.0.0.0
+version: 1.2.0.0
 ---
 
 <!-- Keywords: deep-review, code-audit, iterative-review, review-loop, convergence-detection, externalized-state, fresh-context, review-agent, JSONL-state, severity-findings, P0-P1-P2, release-readiness, spec-alignment -->

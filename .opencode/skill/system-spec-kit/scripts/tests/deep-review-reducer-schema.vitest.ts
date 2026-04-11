@@ -76,10 +76,19 @@ describe('deep-review reducer and schema contract', () => {
       expect(content, `${docPath} workflow should read the findings registry`).toContain(
         '"{spec_folder}/review/deep-review-findings-registry.json"',
       );
-      expect(content, `${docPath} workflow should write the findings registry`).toContain(
-        'write: "{spec_folder}/review/deep-review-findings-registry.json"',
+      // The write: field may be a scalar or a YAML list. Accept both forms
+      // so the reducer can evolve from single-file to multi-file writes
+      // without breaking the contract.
+      expect(
+        content,
+        `${docPath} workflow should write the findings registry`,
+      ).toMatch(
+        /write:[ \t]*(?:"[^"]*deep-review-findings-registry\.json"|\n(?:[ \t]+-[ \t]+"[^"]*"\n)*?[ \t]+-[ \t]+"[^"]*deep-review-findings-registry\.json")/,
       );
-      expect(content, `${docPath} workflow should treat reducer reruns as idempotent`).toContain('idempotent');
+      expect(content, `${docPath} workflow should invoke the reducer script`).toContain(
+        'node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs',
+      );
+      expect(content, `${docPath} workflow should treat reducer reruns as idempotent`).toMatch(/[Ii]dempotent/);
       expect(content, `${docPath} workflow should carry release readiness through synthesis`).toContain(
         'releaseReadinessState',
       );

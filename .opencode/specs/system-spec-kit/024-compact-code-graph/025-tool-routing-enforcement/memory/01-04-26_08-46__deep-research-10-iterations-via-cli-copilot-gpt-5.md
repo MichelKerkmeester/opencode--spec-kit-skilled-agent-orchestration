@@ -1,35 +1,41 @@
 ---
-title: "Deep Research 10 [025-tool-routing-enforcement/01-04-26_08-46__deep-research-10-iterations-via-cli-copilot-gpt-5]"
-description: "Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:..."
+title: Deep Research 10 [025-tool-routing-enforcement/01-04-26_08-46__deep-research-10-iterations-via-cli-copilot-gpt-5]
+description: Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:...
 trigger_phrases:
-  - "cli copilot"
-  - "tool routing"
-  - "routing enforcement"
-  - "deep research"
-  - "research iterations"
-  - "high tool"
-  - "root cause"
-  - "system spec"
-  - "compact code"
-  - "kit/024"
-  - "compact"
-  - "code"
-  - "graph/025"
-  - "tool"
-  - "routing"
-importance_tier: "normal"
-contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- cli copilot
+- tool routing
+- routing enforcement
+- deep research
+- research iterations
+- high tool
+- root cause
+- system spec
+- compact code
+- kit 024
+- graph 025
+- deep research 025
+- research 025 tool
+- research 10
+- 10 iterations
+importance_tier: normal
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
+spec_folder_health:
+  pass: true
+  score: 0.75
+  errors: 0
+  warnings: 5
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Deep Research 10 Iterations Via Cli Copilot Gpt 5
 
@@ -90,7 +96,7 @@ spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
 
 **Phase:** RESEARCH
 
-**Recent:** Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:..., Next Steps
+**Recent:** Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:... [RETROACTIVE: auto-truncated], Next Steps
 
 ### Pending Work
 
@@ -166,10 +172,10 @@ Next: Implement Layer 1: buildServerInstructions() routing section in context-se
 
 ## 1. OVERVIEW
 
-Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:...
+Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:... [RETROACTIVE: auto-truncated]
 
 **Key Outcomes**:
-- Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:...
+- Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:... [RETROACTIVE: auto-truncated]
 - Next Steps
 
 <!-- /ANCHOR:summary -->
@@ -182,7 +188,7 @@ Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enfor
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-deep-iterations-via-clicopilot-212a6117 -->
-### FEATURE: Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:...
+### FEATURE: Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause:... [RETROACTIVE: auto-truncated]
 
 Deep research (10 iterations via cli-copilot GPT 5.4 High) on tool routing enforcement. Root cause: passive instruction model lets AI default to Grep/Glob over CocoIndex/Code Graph. Solution: 3-layer enforcement via MCP server instructions, PrimePackage routing directives, and response hints. 327-497 LOC across 15 files. All 10 key questions answered. Ready for implementation.
 
@@ -206,6 +212,8 @@ Implement Layer 1: buildServerInstructions() routing section in context-server.t
 ## 3. DECISIONS
 
 decision_count: 0
+
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
 
 ---
 
@@ -297,69 +305,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775029607939-54cea99978ae"
-spec_folder: "system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775029607939-54cea99978ae
+spec_folder: system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: normal
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "a6f9755406e1f7724c13bc3a009f5f5a1cf72e3e"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: a6f9755406e1f7724c13bc3a009f5f5a1cf72e3e
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-01"
+  - 327-497
+created_at: '2026-04-01'
 created_at_epoch: 1775029607
 last_accessed_epoch: 1775029607
-expires_at_epoch: 1782805607  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1782805607
 message_count: 1
 decision_count: 0
 tool_count: 0
@@ -368,78 +346,62 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "research iterations"
-  - "routing enforcement"
-  - "via cli-copilot"
-  - "cli-copilot gpt"
-  - "iterations via"
-  - "deep research"
-  - "high routing"
-  - "root cause"
-  - "gpt high"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- research iterations
+- routing enforcement
+- via cli-copilot
+- cli-copilot gpt
+- iterations via
+- deep research
+- high routing
+- root cause
+- gpt high
 trigger_phrases:
-  - "cli copilot"
-  - "tool routing"
-  - "routing enforcement"
-  - "deep research"
-  - "research iterations"
-  - "high tool"
-  - "root cause"
-  - "system spec"
-  - "compact code"
-  - "kit/024"
-  - "compact"
-  - "code"
-  - "graph/025"
-  - "tool"
-  - "routing"
-
+- cli copilot
+- tool routing
+- routing enforcement
+- deep research
+- research iterations
+- high tool
+- root cause
+- system spec
+- compact code
+- kit/024
+- compact
+- code
+- graph/025
+- tool
+- routing
 key_files:
-  - "checklist.md"
-  - "decision-record.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "README.md"
-  - "research/deep-research-config.json"
-  - "research/deep-research-strategy.md"
-  - "research/iterations/iteration-001.md"
-  - "research/iterations/iteration-002.md"
-  - "research/iterations/iteration-003.md"
-  - "research/iterations/iteration-004.md"
-  - "research/iterations/iteration-005.md"
-  - "research/iterations/iteration-006.md"
-  - "research/iterations/iteration-007.md"
-  - "research/iterations/iteration-008.md"
-  - "research/iterations/iteration-009.md"
-  - "research/iterations/iteration-010.md"
-  - "research/research.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- checklist.md
+- decision-record.md
+- description.json
+- implementation-summary.md
+- plan.md
+- README.md
+- research/deep-research-config.json
+- research/deep-research-strategy.md
+- research/iterations/iteration-001.md
+- research/iterations/iteration-002.md
+- research/iterations/iteration-003.md
+- research/iterations/iteration-004.md
+- research/iterations/iteration-005.md
+- research/iterations/iteration-006.md
+- research/iterations/iteration-007.md
+- research/iterations/iteration-008.md
+- research/iterations/iteration-009.md
+- research/iterations/iteration-010.md
+- research/research.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

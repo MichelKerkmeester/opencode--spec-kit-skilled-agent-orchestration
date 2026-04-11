@@ -1,39 +1,39 @@
 ---
-title: "...id-rag-fusion/009-perfect-session-capturing/004-type-consolidation/17-03-26_14-47__canonical-subset-typing-completed]"
+title: '...id-rag-fusion/009-perfect-session-capturing/004-type-consolidation/17-03-26_14-47__canonical-subset-typing-completed]'
+description: 'Canonical Subset Typing Completed SESSION SUMMARY Meta Data Value : : Session Date 2026 03 17 Sessio'
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/004 type consolidation"
-  - "real remaining work phase"
-  - "remaining work phase much"
-  - "work phase much smaller"
-  - "phase much smaller original"
-  - "much smaller original placeholder"
-  - "smaller original placeholder plan"
-  - "original placeholder plan suggested"
-  - "system spec kit/022 hybrid"
-  - "spec kit/022 hybrid rag"
-  - "kit/022 hybrid rag fusion/010"
-  - "hybrid rag fusion/010 perfect"
-  - "rag fusion/010 perfect session"
-  - "fusion/010 perfect session capturing/004"
-  - "perfect session capturing/004 type"
-  - "session capturing/004 type consolidation"
-  - "kit/022"
-  - "fusion/010"
-  - "capturing/004"
-  - "type"
-  - "consolidation"
-importance_tier: "normal"
-contextType: "general"
+- real remaining work phase
+- remaining work phase much
+- work phase much smaller
+- phase much smaller original
+- much smaller original placeholder
+- smaller original placeholder plan
+- original placeholder plan suggested
+- kit 022
+- fusion 010
+- capturing 004
+- rag fusion 009
+- fusion 009 perfect
+- canonical subset
+- subset typing
+- typing completed
+importance_tier: normal
+contextType: implementation
+quality_score: 0.9
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 3
 filesystem_file_count: 3
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 0.90
-spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1
+  errors: 0
+  warnings: 0
 ---
 # Canonical Subset Typing Completed
 
@@ -252,6 +252,8 @@ The package typecheck, scripts build, extractor suite, and spec-affinity regress
 
 decision_count: 0
 
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
+
 ---
 
 <!-- /ANCHOR:decisions -->
@@ -356,63 +358,35 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1773755231662-db5a1d8b702a"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1773755231662-db5a1d8b702a
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "a68453912198d911e75ff4f4dc7b6140806d0f09"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: a68453912198d911e75ff4f4dc7b6140806d0f09
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-17"
+  - 004-runtime-evidence-966ca83a
+created_at: '2026-03-17'
 created_at_epoch: 1773755231
 last_accessed_epoch: 1773755231
-expires_at_epoch: 1781531231  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781531231
 message_count: 2
 decision_count: 0
 tool_count: 0
@@ -421,72 +395,56 @@ captured_file_count: 3
 filesystem_file_count: 3
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "capturing/004 consolidation"
-  - "perfect capturing/004"
-  - "fusion/010 perfect"
-  - "kit/022 hybrid"
-  - "rag fusion/010"
-  - "spec kit/022"
-  - "system spec"
-  - "hybrid rag"
-  - "consolidation system"
-  - "consolidation real"
-  - "smaller original"
-  - "remaining phase"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- capturing 004 consolidation
+- perfect capturing 004
+- fusion 010 perfect
+- kit 022 hybrid
+- rag fusion 010
+- spec kit 022
+- system spec
+- hybrid rag
+- consolidation system
+- consolidation real
+- smaller original
+- remaining phase
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/004 type consolidation"
-  - "real remaining work phase"
-  - "remaining work phase much"
-  - "work phase much smaller"
-  - "phase much smaller original"
-  - "much smaller original placeholder"
-  - "smaller original placeholder plan"
-  - "original placeholder plan suggested"
-  - "system spec kit/022 hybrid"
-  - "spec kit/022 hybrid rag"
-  - "kit/022 hybrid rag fusion/010"
-  - "hybrid rag fusion/010 perfect"
-  - "rag fusion/010 perfect session"
-  - "fusion/010 perfect session capturing/004"
-  - "perfect session capturing/004 type"
-  - "session capturing/004 type consolidation"
-  - "kit/022"
-  - "fusion/010"
-  - "capturing/004"
-  - "type"
-  - "consolidation"
-
+- system spec kit/022 hybrid rag fusion/010 perfect session capturing/004 type consolidation
+- real remaining work phase
+- remaining work phase much
+- work phase much smaller
+- phase much smaller original
+- much smaller original placeholder
+- smaller original placeholder plan
+- original placeholder plan suggested
+- system spec kit/022 hybrid
+- spec kit/022 hybrid rag
+- kit/022 hybrid rag fusion/010
+- hybrid rag fusion/010 perfect
+- rag fusion/010 perfect session
+- fusion/010 perfect session capturing/004
+- perfect session capturing/004 type
+- session capturing/004 type consolidation
+- kit/022
+- fusion/010
+- capturing/004
+- type
+- consolidation
 key_files:
-  - "checklist.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- checklist.md
+- description.json
+- implementation-summary.md
+- plan.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

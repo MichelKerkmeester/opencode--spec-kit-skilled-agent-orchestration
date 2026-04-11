@@ -1,35 +1,29 @@
 ---
 title: 12-iteration Claudest deep-research audit complete (005-claudest)
-name: 06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of
 description: 'Completed a 12-iteration deep-research audit of the external Claudest Claude Code plugin marketplace and the flagship claude-memory plugin. Original 7-iteration charter answered Q1-Q9 (composite_converged 0.84); user-requested continuation iterations 8-12 deepened Q10 into a usable handoff package: matrix synthesis, sequencing against existing Public packets, smallest-safe-v1 slicing per adopt-now lane, packet-ready briefs for FTS capability cascade and normalized analytics tables, and uncertainty closeout against Public''s actual mcp_server source. All 12 iterations dispatched cleanly via cli-codex gpt-5.4 high in fast mode.'
-type: episodic
 trigger_phrases:
-- 005-claudest deep research complete
-- Claudest claude-memory plugin research
-- FTS5 BM25 cascade research
-- Claudest SessionStart cached summary
-- extract-learnings auditor discoverer split
-- get-token-insights cache cliff dashboard
-- Claude Code plugin marketplace research
-- FTS capability cascade packet brief
-- normalized analytics tables packet brief
-- claude-memory v3 SQLite branch BM25
-- deep research codex gpt-5.4 fast mode
-- cli-codex full-auto workspace-write
+- fts5 bm25 cascade research
+- claudest sessionstart cached summary
 - memory hierarchy placement rubric
-- branches_fts BM25 ranking aggregated_content
-- summarizer deterministic Python no LLM
-- memory-auditor STALE CONTRADICT MERGE DATE_FIX
-- signal-discoverer UPDATE FILL_GAP NOISE
-- model_pricing cache tier normalized cost
-- fts5_bm25 like_scan fallback narrowed
-- transcriptPath replay fingerprint hook state
-- memory_fts USING fts5 schema gap
-- hybrid-search graph-search-fn capability helper
-- Claudest cross-phase boundary 001-claude-optimization-settings
-- claudest adopt prototype reject matrix
+- iteration claudest deep
+- claudest deep research
+- 12-iteration claudest
+- claudest deep-research
+- deep-research audit
+- audit complete
+- 12-iteration claudest deep-research
+- claudest deep-research audit
+- deep-research audit complete
+- 12-iteration claudest deep-research audit
+- claudest deep-research audit complete
+- session summary
 importance_tier: critical
 contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,8 +31,6 @@ _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: true
   score: 0.75
@@ -75,9 +67,9 @@ spec_folder_health:
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | 60/100 | Good |
-| Uncertainty Score | 40/100 | Low uncertainty |
-| Context Score | 65/100 | Good |
+| Knowledge Score | 60 [RETROACTIVE: original 100-point scale] | Good |
+| Uncertainty Score | 40 [RETROACTIVE: original 100-point scale] | Low uncertainty |
+| Context Score | 65 [RETROACTIVE: original 100-point scale] | Good |
 | Timestamp | 2026-04-06T14:35:44Z | Session start |
 
 **Initial Gaps Identified:**
@@ -755,7 +747,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty | 40 | 8 | +32 | ↓ |
 | Context | 65 | 95 | +30 | ↑ |
 
-**Learning Index:** 33/100
+**Learning Index:** 33 [RETROACTIVE: original 100-point scale]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -792,69 +784,42 @@ Significant knowledge gain (+35 points). Major uncertainty reduction (-32 points
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775501807632-87c0ba20a237"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775501807632-87c0ba20a237
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.6 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.6
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "8ef133aac88b38021b701a58bee2491082029773"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 8ef133aac88b38021b701a58bee2491082029773
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-06"
+  - 100-point
+  - 001-claude-optimization-settings
+  - 002-codesight
+  - 812-dispatched-802b762e
+created_at: '2026-04-06'
 created_at_epoch: 1775501807
 last_accessed_epoch: 1775501807
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 13
 decision_count: 10
 tool_count: 0
@@ -863,53 +828,46 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "packet recommendation"
-  - "cli-codex gpt-5.4"
-  - "follow-on packet"
-  - "gpt-5.4 high"
-  - "phase owns"
-  - "mcp server/lib/search/sqlite-fts.ts"
-  - "--sandbox workspace-write"
-  - "continuation iterations"
-  - "--full-auto --sandbox"
-  - "original 7-iteration"
-  - "requested iterations"
-  - "normalized analytics"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- packet recommendation
+- cli-codex gpt-5.4
+- follow-on packet
+- gpt-5.4 high
+- phase owns
+- --sandbox workspace-write
+- continuation iterations
+- --full-auto --sandbox
+- original 7-iteration
+- requested iterations
+- normalized analytics
 trigger_phrases:
-  - "005-claudest deep research complete"
-  - "Claudest claude-memory plugin research"
-  - "FTS5 BM25 cascade research"
-  - "Claudest SessionStart cached summary"
-  - "extract-learnings auditor discoverer split"
-  - "get-token-insights cache cliff dashboard"
-  - "Claude Code plugin marketplace research"
-  - "FTS capability cascade packet brief"
-  - "normalized analytics tables packet brief"
-  - "claude-memory v3 SQLite branch BM25"
-  - "deep research codex gpt-5.4 fast mode"
-  - "cli-codex full-auto workspace-write"
-  - "memory hierarchy placement rubric"
-  - "branches_fts BM25 ranking aggregated_content"
-  - "summarizer deterministic Python no LLM"
-  - "memory-auditor STALE CONTRADICT MERGE DATE_FIX"
-  - "signal-discoverer UPDATE FILL_GAP NOISE"
-  - "model_pricing cache tier normalized cost"
-  - "fts5_bm25 like_scan fallback narrowed"
-  - "transcriptPath replay fingerprint hook state"
-  - "memory_fts USING fts5 schema gap"
-  - "hybrid-search graph-search-fn capability helper"
-  - "Claudest cross-phase boundary 001-claude-optimization-settings"
-  - "claudest adopt prototype reject matrix"
+- 005-claudest deep research complete
+- Claudest claude-memory plugin research
+- FTS5 BM25 cascade research
+- Claudest SessionStart cached summary
+- extract-learnings auditor discoverer split
+- get-token-insights cache cliff dashboard
+- Claude Code plugin marketplace research
+- FTS capability cascade packet brief
+- normalized analytics tables packet brief
+- claude-memory v3 SQLite branch BM25
+- deep research codex gpt-5.4 fast mode
+- cli-codex full-auto workspace-write
+- memory hierarchy placement rubric
+- branches_fts BM25 ranking aggregated_content
+- summarizer deterministic Python no LLM
+- memory-auditor STALE CONTRADICT MERGE DATE_FIX
+- signal-discoverer UPDATE FILL_GAP NOISE
+- model_pricing cache tier normalized cost
+- fts5_bm25 like_scan fallback narrowed
+- transcriptPath replay fingerprint hook state
+- memory_fts USING fts5 schema gap
+- hybrid-search graph-search-fn capability helper
+- Claudest cross-phase boundary 001-claude-optimization-settings
+- claudest adopt prototype reject matrix
 ```
 
 <!-- /ANCHOR:metadata -->

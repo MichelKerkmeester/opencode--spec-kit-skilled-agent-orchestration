@@ -1,50 +1,53 @@
 ---
-title: "Implemented 45 Item V2 [024-compact-code-graph/31-03-26_17-35__implemented-45-item-v2-remediation-across-phases]"
-description: "Implemented 45-item v2 remediation across phases 013-016 of spec 024 (Hybrid Context Injection +...; DR-016: Expanded remediation from 26 to 45 items based on 30-iteration..."
+title: Implemented 45 Item V2 [024-compact-code-graph/31-03-26_17-35__implemented-45-item-v2-remediation-across-phases]
+description: 'Implemented 45-item v2 remediation across phases 013-016 of spec 024 (Hybrid Context Injection +...; DR-016: Expanded remediation from 26 to 45 items based on 30-iteration...'
 trigger_phrases:
-  - "include trace"
-  - "file mtime ms"
-  - "code graph metadata"
-  - "idx file line"
-  - "cli codex"
-  - "gate skip"
-  - "spec folder"
-  - "tree sitter"
-  - "tree thinning"
-  - "structural indexer"
-  - "code graph db"
-  - "budget allocator"
-  - "work adapter"
-  - "context injection"
-  - "indexer types system"
-  - "dr-016 expanded"
-  - "expanded remediation"
-  - "remediation items"
-  - "items based"
-  - "based 30-iteration"
-  - "30-iteration deep"
-  - "deep review"
-  - "review codex+copilot"
-  - "agents dispatched"
-  - "codex+copilot gpt-5.4"
-  - "kit/024"
-  - "compact"
-  - "code"
-  - "graph"
-importance_tier: "important"
-contextType: "planning"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- include trace
+- file mtime ms
+- code graph metadata
+- idx file line
+- cli codex
+- gate skip
+- spec folder
+- tree sitter
+- tree thinning
+- structural indexer
+- code graph db
+- budget allocator
+- work adapter
+- context injection
+- indexer types system
+- dr 016 expanded
+- expanded remediation
+- remediation items
+- items based
+- based 30 iteration
+- 30 iteration deep
+- deep review
+- review codex+copilot
+- agents dispatched
+- codex+copilot gpt 5.4
+- kit 024
+- implemented item 024
+- item 024 compact
+importance_tier: important
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":false,"score":0.6,"errors":1,"warnings":5}
+spec_folder_health:
+  pass: false
+  score: 0.6
+  errors: 1
+  warnings: 5
 ---
-
 # Implemented 45 Item V2 Remediation Across Phases
 
 ## SESSION SUMMARY
@@ -507,69 +510,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774974936748-cf53aa61fccb"
-spec_folder: "system-spec-kit/024-compact-code-graph"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "planning"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1774974936748-cf53aa61fccb
+spec_folder: system-spec-kit/024-compact-code-graph
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "e5e6733d816b9c461947b4c4afc5b4a172598db8"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: e5e6733d816b9c461947b4c4afc5b4a172598db8
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-31"
+  - 013-016
+created_at: '2026-03-31'
 created_at_epoch: 1774974936
 last_accessed_epoch: 1774974936
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 5
 tool_count: 0
@@ -578,84 +551,68 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "expanded remediation"
-  - "review codex+copilot"
-  - "items 30-iteration"
-  - "remediation items"
-  - "30-iteration deep"
-  - "dr-016 expanded"
-  - "deep review"
-  - "codex+copilot gpt-5.4"
-  - "findings confirmed"
-  - "confirmed findings"
-  - "original findings"
-  - "agents dispatched"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- expanded remediation
+- review codex+copilot
+- items 30-iteration
+- remediation items
+- 30-iteration deep
+- dr-016 expanded
+- deep review
+- codex+copilot gpt-5.4
+- findings confirmed
+- confirmed findings
+- original findings
+- agents dispatched
 trigger_phrases:
-  - "include trace"
-  - "file mtime ms"
-  - "code graph metadata"
-  - "idx file line"
-  - "cli codex"
-  - "gate skip"
-  - "spec folder"
-  - "tree sitter"
-  - "tree thinning"
-  - "structural indexer"
-  - "code graph db"
-  - "budget allocator"
-  - "work adapter"
-  - "context injection"
-  - "indexer types system"
-  - "dr-016 expanded"
-  - "expanded remediation"
-  - "remediation items"
-  - "items based"
-  - "based 30-iteration"
-  - "30-iteration deep"
-  - "deep review"
-  - "review codex+copilot"
-  - "agents dispatched"
-  - "codex+copilot gpt-5.4"
-  - "kit/024"
-  - "compact"
-  - "code"
-  - "graph"
-
+- include trace
+- file mtime ms
+- code graph metadata
+- idx file line
+- cli codex
+- gate skip
+- spec folder
+- tree sitter
+- tree thinning
+- structural indexer
+- code graph db
+- budget allocator
+- work adapter
+- context injection
+- indexer types system
+- dr-016 expanded
+- expanded remediation
+- remediation items
+- items based
+- based 30-iteration
+- 30-iteration deep
+- deep review
+- review codex+copilot
+- agents dispatched
+- codex+copilot gpt-5.4
+- kit/024
+- compact
+- code
+- graph
 key_files:
-  - "mcp_server/lib/code-graph/structural-indexer.ts"
-  - "mcp_server/lib/code-graph/code-graph-db.ts"
-  - "mcp_server/lib/code-graph/budget-allocator.ts"
-  - "mcp_server/lib/code-graph/compact-merger.ts"
-  - "mcp_server/lib/code-graph/seed-resolver.ts"
-  - "mcp_server/lib/code-graph/working-set-tracker.ts"
-  - "mcp_server/lib/code-graph/indexer-types.ts"
-  - "mcp_server/lib/response/envelope.ts"
-  - "mcp_server/handlers/code-graph/query.ts"
-  - "mcp_server/handlers/code-graph/context.ts"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/024-compact-code-graph"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- mcp_server/lib/code-graph/structural-indexer.ts
+- mcp_server/lib/code-graph/code-graph-db.ts
+- mcp_server/lib/code-graph/budget-allocator.ts
+- mcp_server/lib/code-graph/compact-merger.ts
+- mcp_server/lib/code-graph/seed-resolver.ts
+- mcp_server/lib/code-graph/working-set-tracker.ts
+- mcp_server/lib/code-graph/indexer-types.ts
+- mcp_server/lib/response/envelope.ts
+- mcp_server/handlers/code-graph/query.ts
+- mcp_server/handlers/code-graph/context.ts
+related_sessions: []
+parent_spec: system-spec-kit/024-compact-code-graph
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

@@ -1,24 +1,31 @@
 ---
-title: "...m-spec-kit/022-hybrid-rag-fusion/012-command-alignment/15-03-26_08-26__implemented-016-command-alignment-aligned-the]"
+title: '...m-spec-kit/022-hybrid-rag-fusion/012-command-alignment/15-03-26_08-26__implemented-016-command-alignment-aligned-the]'
+description: 'Implemented 016 Command Alignment Aligned The SESSION SUMMARY Meta Data Value : : Session Date 2026'
 trigger_phrases:
-  - "command alignment"
-  - "implemented 012-command-alignment aligned memory"
-  - "012-command-alignment aligned memory command"
-  - "aligned memory command documentation"
-  - "memory command documentation suite"
-  - "command documentation suite current"
-  - "documentation suite current 31-tool"
-  - "suite current 31-tool spec"
-  - "current 31-tool spec kit"
-  - "31-tool spec kit memory"
-  - "spec kit memory mcp"
-  - "kit memory mcp surface"
-importance_tier: "normal"
-contextType: "general"
+- command alignment
+- aligned memory command documentation
+- memory command documentation suite
+- command documentation suite current
+- spec kit memory mcp
+- kit memory mcp surface
+- spec kit 022
+- kit 022 hybrid
+- 022 hybrid rag
+- implemented 016
+- 016 command
+- alignment aligned
+- implemented 016 command
+- 016 command alignment
+- command alignment aligned
+importance_tier: normal
+contextType: implementation
+quality_score: 0.9
 quality_flags:
-  - "has_tool_state_mismatch"
-quality_score: 0.90
+- has_tool_state_mismatch
+- retroactive_reviewed
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Implemented 016 Command Alignment Aligned The
 
 ## SESSION SUMMARY
@@ -76,11 +83,11 @@ quality_score: 0.90
 
 **Phase:** RESEARCH
 
-**Recent:** Implemented 012-command-alignment: aligned the memory command documentation suite with the current..., Decision: Governance scoping params (tenantId, userId, etc., Decision: memory_get_learning_history owned by /memory:manage history <specFolde
+**Recent:** Implemented 012-command-alignment: aligned the memory command documentation suite with the current... [RETROACTIVE: auto-truncated], Decision: Governance scoping params (tenantId, userId, etc., Decision: memory_get_learning_history owned by /memory:manage history <specFolde
 
 **Decisions:** 2 decisions recorded
 
-**Summary:** Implemented 012-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md...
+**Summary:** Implemented 012-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -188,7 +195,7 @@ Next: Continue implementation
 Implemented 012-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
 
 **Key Outcomes**:
-- Implemented 012-command-alignment: aligned the memory command documentation suite with the current...
+- Implemented 012-command-alignment: aligned the memory command documentation suite with the current... [RETROACTIVE: auto-truncated]
 - Decision: Governance scoping params (tenantId, userId, etc.
 - Decision: memory_get_learning_history owned by /memory:manage history <specFolde
 
@@ -214,7 +221,7 @@ Implemented 012-command-alignment: aligned the memory command documentation suit
 
 ## 3. DETAILED CHANGES
 
-### FEATURE: Implemented 012-command-alignment: aligned the memory command documentation suite with the current...
+### FEATURE: Implemented 012-command-alignment: aligned the memory command documentation suite with the current... [RETROACTIVE: auto-truncated]
 
 Implemented 012-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
 
@@ -415,112 +422,69 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1773559562812-29965e65077b"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/012-command-alignment"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1773559562812-29965e65077b
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/012-command-alignment
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-15"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-15'
 created_at_epoch: 1773559562
 last_accessed_epoch: 1773559562
-expires_at_epoch: 1781335562  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781335562
 message_count: 1
 decision_count: 8
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "decision"
-  - "memory"
-  - "command"
-  - "analyze"
-  - "spec"
-  - "eval"
-  - "commands"
-  - "manage"
-  - "separate"
-  - "per"
-  - "all commands"
-  - "analyze shared"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- all commands
+- analyze shared
+- implemented 016
+- 016 command
+- command alignment
+- alignment aligned
+- implemented 016 command
+- 016 command alignment
 trigger_phrases:
-  - "command alignment"
-  - "implemented 012-command-alignment aligned memory"
-  - "012-command-alignment aligned memory command"
-  - "aligned memory command documentation"
-  - "memory command documentation suite"
-  - "command documentation suite current"
-  - "documentation suite current 31-tool"
-  - "suite current 31-tool spec"
-  - "current 31-tool spec kit"
-  - "31-tool spec kit memory"
-  - "spec kit memory mcp"
-  - "kit memory mcp surface"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/012-command-alignment"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- command alignment
+- implemented 012-command-alignment aligned memory
+- 012-command-alignment aligned memory command
+- aligned memory command documentation
+- memory command documentation suite
+- command documentation suite current
+- documentation suite current 31-tool
+- suite current 31-tool spec
+- current 31-tool spec kit
+- 31-tool spec kit memory
+- spec kit memory mcp
+- kit memory mcp surface
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/012-command-alignment
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

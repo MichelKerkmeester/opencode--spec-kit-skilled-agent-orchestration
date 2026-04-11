@@ -1,34 +1,42 @@
 ---
-title: "Deep Research 20 Iterations [023-esm-module-compliance/01-04-26_11-04__deep-research-20-iterations-auditing-spec-kit]"
-description: "Deep research: 20 iterations auditing Spec Kit Memory features, search quality,..."
+title: Deep Research 20 Iterations [023-esm-module-compliance/01-04-26_11-04__deep-research-20-iterations-auditing-spec-kit]
+description: 'Deep research: 20 iterations auditing Spec Kit Memory features, search quality,...'
 trigger_phrases:
-  - "deep research"
-  - "research iterations"
-  - "iterations auditing"
-  - "auditing spec"
-  - "memory features"
-  - "features search"
-  - "search quality"
-  - "system spec"
-  - "module compliance"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance"
-importance_tier: "normal"
-contextType: "general"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- deep research
+- research iterations
+- iterations auditing
+- auditing spec
+- memory features
+- features search
+- search quality
+- system spec
+- module compliance
+- kit 023
+- deep research iterations
+- research iterations 023
+- research 20
+- 20 iterations
+- spec kit
+importance_tier: normal
+contextType: research
+quality_score: 0.97
+quality_flags:
+- has_topical_mismatch
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 0.97
-quality_flags:
-  - "has_topical_mismatch"
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
 
 # Deep Research 20 Iterations Auditing Spec Kit
 
@@ -89,7 +97,7 @@ spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
 
 **Phase:** RESEARCH
 
-**Recent:** Deep research: 20 iterations auditing Spec Kit Memory features, search quality,..., Next Steps
+**Recent:** Deep research: 20 iterations auditing Spec Kit Memory features, search quality,... [RETROACTIVE: auto-truncated], Next Steps
 
 ### Pending Work
 
@@ -163,10 +171,10 @@ Next: Phase A: Enable RECONSOLIDATION + QUALITY_LOOP by default (~1.5h)
 
 ## 1. OVERVIEW
 
-Deep research: 20 iterations auditing Spec Kit Memory features, search quality,...
+Deep research: 20 iterations auditing Spec Kit Memory features, search quality,... [RETROACTIVE: auto-truncated]
 
 **Key Outcomes**:
-- Deep research: 20 iterations auditing Spec Kit Memory features, search quality,...
+- Deep research: 20 iterations auditing Spec Kit Memory features, search quality,... [RETROACTIVE: auto-truncated]
 - Next Steps
 
 <!-- /ANCHOR:summary -->
@@ -179,9 +187,9 @@ Deep research: 20 iterations auditing Spec Kit Memory features, search quality,.
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-deep-iterations-auditing-spec-9cfef860 -->
-### FEATURE: Deep research: 20 iterations auditing Spec Kit Memory features, search quality,...
+### FEATURE: Deep research: 20 iterations auditing Spec Kit Memory features, search quality,... [RETROACTIVE: auto-truncated]
 
-Deep research: 20 iterations auditing Spec Kit Memory features, search quality, UX/auto-utilization, and bugs across specs 009-011. All 10 key questions answered. 14 actionable items identified across 5 implementation phases (~7.25h for phases A-D). Key findings: 50/56 features default ON, 2 should be promoted (RECONSOLIDATION, QUALITY_LOOP), 1 dead code (NOVELTY_BOOST), no critical bugs, all spec fixes working, 3 fusion refinements designed (recency signal, graph cap, doc-type shift), 3 UX...
+Deep research: 20 iterations auditing Spec Kit Memory features, search quality, UX/auto-utilization, and bugs across specs 009-011. All 10 key questions answered. 14 actionable items identified across 5 implementation phases (~7.25h for phases A-D). Key findings: 50/56 features default ON, 2 should be promoted (RECONSOLIDATION, QUALITY_LOOP), 1 dead code (NOVELTY_BOOST), no critical bugs, all spec fixes working, 3 fusion refinements designed (recency signal, graph cap, doc-type shift), 3 UX... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:implementation-deep-iterations-auditing-spec-9cfef860 -->
 
@@ -203,6 +211,8 @@ Phase A: Enable RECONSOLIDATION + QUALITY_LOOP by default (~1.5h) Phase B: Recen
 ## 3. DECISIONS
 
 decision_count: 0
+
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
 
 ---
 
@@ -294,69 +304,40 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775037889805-b7916e7bec15"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement"
-channel: "system-speckit/024-compact-code-graph"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775037889805-b7916e7bec15
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement
+channel: system-speckit/024-compact-code-graph
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: normal
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "f1b47628efbe8c31cfe250b231deb78f36c8de01"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: f1b47628efbe8c31cfe250b231deb78f36c8de01
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-01"
+  - 024-compact-code-graph
+  - 009-011
+created_at: '2026-04-01'
 created_at_epoch: 1775037889
 last_accessed_epoch: 1775037889
-expires_at_epoch: 1782813889  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1782813889
 message_count: 1
 decision_count: 0
 tool_count: 0
@@ -365,75 +346,59 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "research iterations"
-  - "iterations auditing"
-  - "memory features"
-  - "features search"
-  - "search quality"
-  - "deep research"
-  - "auditing spec"
-  - "kit memory"
-  - "spec kit"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- research iterations
+- iterations auditing
+- memory features
+- features search
+- search quality
+- deep research
+- auditing spec
+- kit memory
+- spec kit
 trigger_phrases:
-  - "deep research"
-  - "research iterations"
-  - "iterations auditing"
-  - "auditing spec"
-  - "memory features"
-  - "features search"
-  - "search quality"
-  - "system spec"
-  - "module compliance"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance"
-
+- deep research
+- research iterations
+- iterations auditing
+- auditing spec
+- memory features
+- features search
+- search quality
+- system spec
+- module compliance
+- kit/023
+- esm
+- module
+- compliance
 key_files:
-  - "001-shared-esm-migration/description.json"
-  - "001-shared-esm-migration/implementation-summary.md"
-  - "001-shared-esm-migration/plan.md"
-  - "001-shared-esm-migration/spec.md"
-  - "001-shared-esm-migration/tasks.md"
-  - "002-mcp-server-esm-migration/description.json"
-  - "002-mcp-server-esm-migration/implementation-summary.md"
-  - "002-mcp-server-esm-migration/plan.md"
-  - "002-mcp-server-esm-migration/spec.md"
-  - "002-mcp-server-esm-migration/tasks.md"
-  - "003-scripts-interop-refactor/description.json"
-  - "003-scripts-interop-refactor/implementation-summary.md"
-  - "003-scripts-interop-refactor/plan.md"
-  - "003-scripts-interop-refactor/spec.md"
-  - "003-scripts-interop-refactor/tasks.md"
-  - "004-verification-and-standards/description.json"
-  - "004-verification-and-standards/implementation-summary.md"
-  - "004-verification-and-standards/plan.md"
-  - "004-verification-and-standards/spec.md"
-  - "004-verification-and-standards/tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- 001-shared-esm-migration/description.json
+- 001-shared-esm-migration/implementation-summary.md
+- 001-shared-esm-migration/plan.md
+- 001-shared-esm-migration/spec.md
+- 001-shared-esm-migration/tasks.md
+- 002-mcp-server-esm-migration/description.json
+- 002-mcp-server-esm-migration/implementation-summary.md
+- 002-mcp-server-esm-migration/plan.md
+- 002-mcp-server-esm-migration/spec.md
+- 002-mcp-server-esm-migration/tasks.md
+- 003-scripts-interop-refactor/description.json
+- 003-scripts-interop-refactor/implementation-summary.md
+- 003-scripts-interop-refactor/plan.md
+- 003-scripts-interop-refactor/spec.md
+- 003-scripts-interop-refactor/tasks.md
+- 004-verification-and-standards/description.json
+- 004-verification-and-standards/implementation-summary.md
+- 004-verification-and-standards/plan.md
+- 004-verification-and-standards/spec.md
+- 004-verification-and-standards/tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

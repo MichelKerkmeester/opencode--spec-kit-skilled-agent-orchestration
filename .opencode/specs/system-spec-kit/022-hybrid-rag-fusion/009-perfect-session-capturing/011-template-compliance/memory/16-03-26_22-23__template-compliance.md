@@ -1,30 +1,45 @@
 ---
-title: "...-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/16-03-26_22-23__template-compliance]"
+title: '...-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/16-03-26_22-23__template-compliance]'
+description: 'Warning: Memory quality score is [RETROACTIVE: estimated] (0.55), which is below the recommended threshold of 0.60. Co'
 trigger_phrases:
-  - "risk-1 validate.sh"
-  - "chk-052 deferred"
-  - "template structure"
-  - "template compliance"
-  - "check template headers"
-  - "check anchors"
-  - "post write validation"
-  - "implementation summary"
-  - "inline scaffold strict"
-importance_tier: "normal"
-contextType: "general"
-_sourceSessionCreated:
-_sourceSessionId: ""
-_sourceSessionUpdated:
-_sourceTranscriptPath: ""
-captured_file_count:
-filesystem_file_count:
-git_changed_file_count:
+- risk 1 validate.sh
+- chk 052 deferred
+- template structure
+- template compliance
+- check template headers
+- check anchors
+- post write validation
+- implementation summary
+- inline scaffold strict
+- kit 022 hybrid
+- 022 hybrid rag
+- hybrid rag fusion
+- rag fusion 009
+- fusion 009 perfect
+- 009 perfect session
+importance_tier: normal
+contextType: implementation
+quality_score: 0.8
 quality_flags:
-  - "has_contamination"
-quality_score: 0.60
-spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
+- has_contamination
+- needs_review
+- retroactive_reviewed
+_sourceSessionCreated: null
+_sourceSessionId: ''
+_sourceSessionUpdated: null
+_sourceTranscriptPath: ''
+captured_file_count: null
+filesystem_file_count: null
+git_changed_file_count: null
+spec_folder_health:
+  pass: true
+  score: 1
+  errors: 0
+  warnings: 0
 ---
-> **Warning:** Memory quality score is 55/100 (0.55), which is below the recommended threshold of 0.60. Content may have issues with: 0/7 files missing descriptions; Observation titles remain too generic — semantic diversity reduced; Contamination detected — quality score penalized and capped at 0.60.
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
+> **Warning:** Memory quality score is 55 [RETROACTIVE: original 100-point scale] (0.55), which is below the recommended threshold of 0.60. Content may have issues with: 0/7 files missing descriptions; Observation titles remain too generic — semantic diversity reduced; Contamination detected — quality score penalized and capped at 0.60.
 
 # Template Compliance
 
@@ -92,7 +107,7 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 Outstanding items:
 1. **Level 1 + Level 3 compliant fixtures** (P2 #10 — deferred as "future work")
-2. **Pre-existing RISK-1...
+2. **Pre-existing RISK-1... [RETROACTIVE: auto-truncated]
 
 ### Pending Work
 
@@ -182,7 +197,7 @@ Next: Continue implementation
 
 - `Inline scaffold and strict post-write validation rules` - Claude and Gemini runtime speckit agent docs
 
-- `Match runtime prompt contract with inline scaffolds and strict validation` - .opencode/command/spec_kit/assets/spec_kit_{plan,implemen...
+- `Match runtime prompt contract with inline scaffolds and strict validation` - .opencode/command/spec_kit/assets/spec_kit_{plan,implemen... [RETROACTIVE: auto-truncated]
 
 - `.opencode/skill/system-spec-kit/scripts/tests/template-structure.vitest.ts` - Template file
 
@@ -233,7 +248,7 @@ Outstanding items:
 | `.opencode/skill/system-spec-kit/scripts/utils/(merged-small-files)` | Tree-thinning merged 1 small files (template-structure.js).  Merged from .opencode/skill/system-spec-kit/scripts/utils/template-structure.js : 009-perfect-session-capturing frozen in place |
 | `.opencode/skill/system-spec-kit/scripts/rules/(merged-small-files)` | Tree-thinning merged 2 small files (check-template-headers.sh, check-anchors.sh).  Merged from .opencode/skill/system-spec-kit/scripts/rules/check-template-headers.sh : 009-perfect-session-capturing frozen in place | Merged from .opencode/skill/system-spec-kit/scripts/rules/check-anchors.sh : 009-perfect-session-capturing frozen in place |
 | `.opencode/skill/system-spec-kit/scripts/spec/(merged-small-files)` | Tree-thinning merged 1 small files (validate.sh).  Merged from .opencode/skill/system-spec-kit/scripts/spec/validate.sh : Updated validate |
-| `(merged-small-files)` | Tree-thinning merged 2 small files (Inline scaffold and strict post-write validation rules, Match runtime prompt contract with inline scaffolds and strict validation).  Merged from Inline scaffold and strict post-write validation rules : Claude and Gemini runtime speckit agent docs | Merged from Match runtime prompt contract with inline scaffolds and strict validation : .opencode/command/spec_kit/assets/spec_kit_{plan,implemen... |
+| `(merged-small-files)` | Tree-thinning merged 2 small files (Inline scaffold and strict post-write validation rules, Match runtime prompt contract with inline scaffolds and strict validation).  Merged from Inline scaffold and strict post-write validation rules : Claude and Gemini runtime speckit agent docs | Merged from Match runtime prompt contract with inline scaffolds and strict validation : .opencode/command/spec_kit/assets/spec_kit_{plan,implemen... [RETROACTIVE: auto-truncated] |
 | `.opencode/skill/system-spec-kit/scripts/tests/(merged-small-files)` | Tree-thinning merged 1 small files (template-structure.vitest.ts).  Merged from .opencode/skill/system-spec-kit/scripts/tests/template-structure.vitest.ts : Updated template structure.vitest |
 | `skill/system-spec-kit/scripts/tests/(merged-small-files)` | Tree-thinning merged 1 small files (template-structure.vitest.ts).  Merged from skill/system-spec-kit/scripts/tests/template-structure.vitest.ts : Edit |
 | `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, implementation-summary.md).  Merged from .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/checklist.md : 009-perfect-session-capturing frozen in place | Merged from .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance/implementation-summary.md : 009-perfect-session-capturing frozen in place |
@@ -281,6 +296,8 @@ read
 
 decision_count: 0
 
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
+
 ---
 
 <!-- /ANCHOR:decisions -->
@@ -308,13 +325,13 @@ This session followed a **Linear Sequential** conversation pattern with **1** ph
 
 > **User** | 2026-03-16 @ 21:26:32
 
-Review all work done in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance make sure all works as expected, is bug free, aligned with sk-code-opencode etc. Think really hard about this... Use Sequential Thinking According to [runtime_agent_path]/orchestrate.md logic (resolve [runtime_agent_path] per AGENTS.md §7), delegate up to 2 opus agents and 2 sonnet agents
+Review all work done in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance make sure all works as expected, is bug free, aligned with sk-code-opencode etc. Think really hard about this... [RETROACTIVE: auto-truncated] Use Sequential Thinking According to [runtime_agent_path]/orchestrate.md logic (resolve [runtime_agent_path] per AGENTS.md §7), delegate up to 2 opus agents and 2 sonnet agents
 
 ---
 
 > **Assistant** | 2026-03-16 @ 21:26:32
 
-Review all work done in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance ma... → Let me first resolve the runtime agent path and understand the spec folder structure.  read List spec folder contents toolsearch read read read read read Opus agent reviews the core implementation files for bugs, correctness, and sk-code-opencode alignment: - template-structure. Used tools: read, bash, toolsearch and 13 more.
+Review all work done in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance ma... [RETROACTIVE: auto-truncated] → Let me first resolve the runtime agent path and understand the spec folder structure.  read List spec folder contents toolsearch read read read read read Opus agent reviews the core implementation files for bugs, correctness, and sk-code-opencode alignment: - template-structure. Used tools: read, bash, toolsearch and 13 more.
 
 **Tool: read**
 Tool: read
@@ -419,119 +436,75 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1773696235860-7f25c1ff6aad"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1773696235860-7f25c1ff6aad
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-16"
+  - 100-point
+created_at: '2026-03-16'
 created_at_epoch: 1773696235
 last_accessed_epoch: 1773696235
-expires_at_epoch: 1781472235  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781472235
 message_count: 2
 decision_count: 0
 tool_count: 1
 file_count: 10
-captured_file_count: 
-filesystem_file_count: 
-git_changed_file_count: 
+captured_file_count: null
+filesystem_file_count: null
+git_changed_file_count: null
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "capturing/011 template"
-  - "perfect capturing/011"
-  - "template compliance"
-  - "fusion/010 perfect"
-  - "kit/022 hybrid"
-  - "rag fusion/010"
-  - "spec kit/022"
-  - "system spec"
-  - "hybrid rag"
-  - "compliance system"
-  - "remaining deferred/outstanding"
-  - "deferred/outstanding items"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- capturing 011 template
+- perfect capturing 011
+- template compliance
+- fusion 010 perfect
+- kit 022 hybrid
+- rag fusion 010
+- spec kit 022
+- system spec
+- hybrid rag
+- compliance system
+- remaining deferred outstanding
+- deferred outstanding items
 trigger_phrases:
-  - "RISK-1 validate.sh"
-  - "CHK-052 deferred"
-  - "template structure"
-  - "template compliance"
-  - "check template headers"
-  - "check anchors"
-  - "post write validation"
-  - "implementation summary"
-  - "inline scaffold strict"
-
-key_files:
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- RISK-1 validate.sh
+- CHK-052 deferred
+- template structure
+- template compliance
+- check template headers
+- check anchors
+- post write validation
+- implementation summary
+- inline scaffold strict
+key_files: null
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

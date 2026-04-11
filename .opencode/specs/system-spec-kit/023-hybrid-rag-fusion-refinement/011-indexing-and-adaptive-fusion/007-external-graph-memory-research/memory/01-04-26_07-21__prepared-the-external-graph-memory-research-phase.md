@@ -1,57 +1,56 @@
 ---
-title: "Prepared The External [007-external-graph-memory-research/01-04-26_07-21__prepared-the-external-graph-memory-research-phase]"
-description: "Baseline facts captured; Keep the findings document as a stub; Packet validates cleanly"
+title: Prepared The External [007-external-graph-memory-research/01-04-26_07-21__prepared-the-external-graph-memory-research-phase]
+description: Baseline facts captured; Keep the findings document as a stub; Packet validates cleanly
 trigger_phrases:
-  - "tree thinning"
-  - "implementation summary"
-  - "system spec kit"
-  - "esm module compliance"
-  - "indexing and adaptive fusion"
-  - "external graph memory research"
-  - "findings document"
-  - "session should"
-  - "zero warnings system"
-  - "keep findings"
-  - "document stub"
-  - "document intentionally"
-  - "intentionally structured"
-  - "structured populated"
-  - "populated conclusions"
-  - "later research"
-  - "research session"
-  - "session gather"
-  - "gather sources"
-  - "sources fill"
-  - "fill comparison"
-  - "comparison matrix"
-  - "matrix instead"
-  - "instead inventing"
-  - "inventing results"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/011"
-  - "indexing"
-  - "and"
-  - "adaptive"
-  - "fusion/007"
-  - "external"
-  - "graph"
-  - "research"
-importance_tier: "important"
-contextType: "research"
-_sourceTranscriptPath: ""
-_sourceSessionId: ""
+- tree thinning
+- implementation summary
+- system spec kit
+- esm module compliance
+- indexing and adaptive fusion
+- external graph memory research
+- findings document
+- session should
+- zero warnings system
+- keep findings
+- document stub
+- document intentionally
+- intentionally structured
+- structured populated
+- populated conclusions
+- later research
+- research session
+- session gather
+- gather sources
+- sources fill
+- fill comparison
+- comparison matrix
+- matrix instead
+- instead inventing
+- inventing results
+- kit 023
+- compliance 011
+- fusion 007
+- prepared external 007
+- external 007 external
+importance_tier: important
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+_sourceTranscriptPath: ''
+_sourceSessionId: ''
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
 captured_file_count: 5
 filesystem_file_count: 5
 git_changed_file_count: 0
-quality_score: 1.00
-quality_flags: []
-spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
+spec_folder_health:
+  pass: true
+  score: 0.75
+  errors: 0
+  warnings: 5
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (quality score: 0 [RETROACTIVE: original 100-point scale]). 0 noise entries and 0 duplicates were filtered.
 
 
 # Prepared The External Graph Memory Research Phase
@@ -410,69 +409,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775024467199-bf541bfd53ce"
-spec_folder: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research"
-channel: "default"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "research"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775024467199-bf541bfd53ce
+spec_folder: system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research
+channel: default
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "cc957517f98be235d8f85f120cff6c80b1a92d23"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: cc957517f98be235d8f85f120cff6c80b1a92d23
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-01"
+  - 100-point
+created_at: '2026-04-01'
 created_at_epoch: 1775024467
 last_accessed_epoch: 1775024467
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 1
 tool_count: 0
@@ -481,86 +450,70 @@ captured_file_count: 5
 filesystem_file_count: 5
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "findings document"
-  - "keep findings"
-  - "document stub"
-  - "intentionally structured"
-  - "document intentionally"
-  - "populated conclusions"
-  - "structured populated"
-  - "comparison matrix"
-  - "instead inventing"
-  - "inventing results"
-  - "validates cleanly"
-  - "packet validates"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- findings document
+- keep findings
+- document stub
+- intentionally structured
+- document intentionally
+- populated conclusions
+- structured populated
+- comparison matrix
+- instead inventing
+- inventing results
+- validates cleanly
+- packet validates
 trigger_phrases:
-  - "tree thinning"
-  - "implementation summary"
-  - "system spec kit"
-  - "esm module compliance"
-  - "indexing and adaptive fusion"
-  - "external graph memory research"
-  - "findings document"
-  - "session should"
-  - "zero warnings system"
-  - "keep findings"
-  - "document stub"
-  - "document intentionally"
-  - "intentionally structured"
-  - "structured populated"
-  - "populated conclusions"
-  - "later research"
-  - "research session"
-  - "session gather"
-  - "gather sources"
-  - "sources fill"
-  - "fill comparison"
-  - "comparison matrix"
-  - "matrix instead"
-  - "instead inventing"
-  - "inventing results"
-  - "kit/023"
-  - "esm"
-  - "module"
-  - "compliance/011"
-  - "indexing"
-  - "and"
-  - "adaptive"
-  - "fusion/007"
-  - "external"
-  - "graph"
-  - "research"
-
+- tree thinning
+- implementation summary
+- system spec kit
+- esm module compliance
+- indexing and adaptive fusion
+- external graph memory research
+- findings document
+- session should
+- zero warnings system
+- keep findings
+- document stub
+- document intentionally
+- intentionally structured
+- structured populated
+- populated conclusions
+- later research
+- research session
+- session gather
+- gather sources
+- sources fill
+- fill comparison
+- comparison matrix
+- matrix instead
+- instead inventing
+- inventing results
+- kit/023
+- esm
+- module
+- compliance/011
+- indexing
+- and
+- adaptive
+- fusion/007
+- external
+- graph
+- research
 key_files:
-  - ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/spec.md"
-  - ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/research/research.md"
-  - ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/implementation-summary.md"
-  - ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/plan.md"
-  - ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/checklist.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/spec.md
+- .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/research/research.md
+- .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/implementation-summary.md
+- .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/plan.md
+- .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/checklist.md
+related_sessions: []
+parent_spec: system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

@@ -248,9 +248,9 @@ The `/memory:manage` command accepts these subcommands:
 <!-- ANCHOR:tool-coverage -->
 ## 6. TOOL COVERAGE MATRIX
 
-All 43 MCP tools mapped to their primary command home:
+All 47 MCP tools mapped to their primary command home:
 
-> **026 Note:** Tool count increased from 33 to 43 with the addition of session management tools (`session_bootstrap`, `session_health`, `session_resume`), code graph tools (`code_graph_query`, `code_graph_scan`, `code_graph_status`, `code_graph_context`), and CCC tools (`ccc_status`, `ccc_feedback`, `ccc_reindex`). Graph-first retrieval routing (026) means `code_graph_query` is now the preferred first channel for structural code search before semantic/vector or FTS5/BM25 fallback.
+> **026 Note:** Tool count increased from 33 to 47 with the addition of session management tools (`session_bootstrap`, `session_health`, `session_resume`), code graph tools (`code_graph_query`, `code_graph_scan`, `code_graph_status`, `code_graph_context`), and CCC tools (`ccc_status`, `ccc_feedback`, `ccc_reindex`). Graph-first retrieval routing (026) means `code_graph_query` is now the preferred first channel for structural code search before semantic/vector or FTS5/BM25 fallback.
 
 | # | Tool | Layer | Primary Command |
 |---|------|-------|-----------------|
@@ -307,7 +307,7 @@ All 43 MCP tools mapped to their primary command home:
 | `/memory:manage` | 24 | 1 (search) | L3, L4, L5, L7 |
 | `/memory:learn` | 0 | uses manage/save tools | (none) |
 | `/spec_kit:resume` | 3 | uses search/manage tools | L1 |
-| **Total** | **43** | | **L1-L7** |
+| **Total** | **47** | | **L1-L7** |
 
 > **Note:** Commands may include helper tools in their `allowed-tools` frontmatter beyond their primary ownership. Helper tools are borrowed from other command scopes for operational needs (e.g., `/memory:save` uses `memory_index_scan` from `/memory:manage` for post-save indexing). The coverage matrix above shows primary ownership. Each command file's `allowed-tools` shows the full operational set.
 
@@ -369,7 +369,7 @@ The scan re-indexes all memory files regardless of whether their content has cha
 | [Parent: OpenCode Commands](../README.md) | Overview of all command groups |
 | [system-spec-kit SKILL.md](../../skill/system-spec-kit/SKILL.md) | Memory system architecture and spec folder workflow |
 | [Spec Kit Memory MCP](../../skill/system-spec-kit/mcp_server/) | MCP server implementation for memory operations |
-| [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 43-tool inventory and property definitions |
+| [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 47-tool inventory and property definitions |
 | [Tool Input Schemas](../../skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts) | Zod validation schemas and ALLOWED_PARAMETERS |
 
 <!-- /ANCHOR:related-documents -->

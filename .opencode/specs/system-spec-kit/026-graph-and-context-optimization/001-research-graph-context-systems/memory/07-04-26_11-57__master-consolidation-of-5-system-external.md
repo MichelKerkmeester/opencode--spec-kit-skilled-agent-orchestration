@@ -1,35 +1,33 @@
 ---
 title: "Master Consolidation v1 \u2014 5-System External Research (8 Codex Iterations)"
-name: 07-04-26_11-57__master-consolidation-of-5-system-external
 description: "v1 master consolidation of 5-system external research (Claude Optimization Settings, CodeSight, Contextador, Graphify, Claudest). 8 codex/gpt-5.4/high iterations in --full-auto orchestrated by Claude. Built upon 5 first-pass packets without redoing them. Closed 16/26 gaps, partially closed 8, marked 2 UNKNOWN. Answered all 6 cross-phase questions Q-A through Q-F. Final composite 0.94. Produced research.md (6015w/11 sections/125 citations), findings-registry.json (65 findings), recommendations.md (10 ranked), cross-phase-matrix.md (9 caps \xD7 6 systems). Charter at scratch/deep-research-prompt-master-consolidation.md."
-type: episodic
 trigger_phrases:
 - graph and context optimization
-- 026-graph-and-context-optimization
-- 001-research-graph-context-systems
 - master consolidation
-- second-pass deep research
-- deep-research second pass
+- second pass deep research
+- deep research second pass
 - external systems research
 - claude optimization settings
-- codesight
-- contextador
-- graphify
-- claudest
 - token honesty audit
 - capability matrix
-- cross-phase capability matrix
+- cross phase capability matrix
 - composition risk
 - adoption sequencing
 - killer combo
 - license runtime feasibility
-- AGPL Contextador
-- Public split topology
-- CocoIndex Code Graph Spec Kit Memory
+- agpl contextador
+- public split topology
 - frozen task methodology
-- provider-counted tokens
+- provider counted tokens
+- master consolidation system
+- consolidation system external
 importance_tier: important
-contextType: general
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 07-04-26_11-57__master-consolidation-of-5-system-external
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,15 +35,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 8
 filesystem_file_count: 8
 git_changed_file_count: 0
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: false
   score: 0.55
   errors: 3
   warnings: 0
 ---
-> **Note:** This memory was saved via JSON-mode (`generate-context.js --json`) so the auto-extractor's quality score (0/100) reflects the absence of raw conversation messages, NOT the underlying session quality. The actual session orchestrated 8 codex iterations and produced 4 master deliverables under research/. See sessionSummary and key decisions below.
+> **Note:** This memory was saved via JSON-mode (`generate-context.js --json`) so the auto-extractor's quality score (0 [RETROACTIVE: original 100-point scale]) reflects the absence of raw conversation messages, NOT the underlying session quality. The actual session orchestrated 8 codex iterations and produced 4 master deliverables under research/. See sessionSummary and key decisions below.
 
 
 # Master Consolidation v1 — 5-System External Research
@@ -632,69 +628,39 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775559464003-5e66b21c8e56"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775559464003-5e66b21c8e56
+spec_folder: system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "3eaef08a0df826eddd693661ac05cc07a29eaeef"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 3eaef08a0df826eddd693661ac05cc07a29eaeef
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-07"
+  - 100-point
+created_at: '2026-04-07'
 created_at_epoch: 1775559464
 last_accessed_epoch: 1775559464
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 13
 decision_count: 8
 tool_count: 0
@@ -703,53 +669,47 @@ captured_file_count: 8
 filesystem_file_count: 8
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "bootstrap facade"
-  - "research/ root"
-  - "claude opus"
-  - "codesight/graphify/claudest mixed"
-  - "orchestrator codex/gpt-5.4/high"
-  - "codex/gpt-5.4/high --full-auto"
-  - "frozen-task provider-counted"
-  - "provider-counted methodology"
-  - "routing/freshness authority"
-  - "relocate routing/freshness"
-  - "re-detect already-written"
-  - "authority orchestration"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- bootstrap facade
+- research root
+- claude opus
+- codesight graphify claudest mixed
+- orchestrator codex gpt-5.4 high
+- codex gpt-5.4 high --full-auto
+- frozen-task provider-counted
+- provider-counted methodology
+- routing freshness authority
+- relocate routing freshness
+- re-detect already-written
+- authority orchestration
 trigger_phrases:
-  - "graph and context optimization"
-  - "026-graph-and-context-optimization"
-  - "001-research-graph-context-systems"
-  - "master consolidation"
-  - "second-pass deep research"
-  - "deep-research second pass"
-  - "external systems research"
-  - "claude optimization settings"
-  - "codesight"
-  - "contextador"
-  - "graphify"
-  - "claudest"
-  - "token honesty audit"
-  - "capability matrix"
-  - "cross-phase capability matrix"
-  - "composition risk"
-  - "adoption sequencing"
-  - "killer combo"
-  - "license runtime feasibility"
-  - "AGPL Contextador"
-  - "Public split topology"
-  - "CocoIndex Code Graph Spec Kit Memory"
-  - "frozen task methodology"
-  - "provider-counted tokens"
+- graph and context optimization
+- 026-graph-and-context-optimization
+- 001-research-graph-context-systems
+- master consolidation
+- second-pass deep research
+- deep-research second pass
+- external systems research
+- claude optimization settings
+- codesight
+- contextador
+- graphify
+- claudest
+- token honesty audit
+- capability matrix
+- cross-phase capability matrix
+- composition risk
+- adoption sequencing
+- killer combo
+- license runtime feasibility
+- AGPL Contextador
+- Public split topology
+- CocoIndex Code Graph Spec Kit Memory
+- frozen task methodology
+- provider-counted tokens
 ```
 
 <!-- /ANCHOR:metadata -->

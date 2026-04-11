@@ -34,11 +34,11 @@ triggerPhrases:
 
 Route code search queries using this priority order:
 
-| Priority | Query Type | Primary Tool | Fallback |
-|----------|-----------|-------------|----------|
-| **1st** | **Semantic/concept** (meaning-based) | `mcp__cocoindex_code__search` (CocoIndex) | `memory_search` |
-| **2nd** | **Structural** (callers, imports, deps) | `code_graph_query` (Code Graph) | `Grep` / `Glob` |
-| **3rd** | **Exact text/regex** (string literal) | `Grep` | `Glob` |
+| Query Type | Primary Tool | Fallback |
+|-----------|-------------|----------|
+| **Semantic/concept** (meaning-based) | `mcp__cocoindex_code__search` (CocoIndex) | `memory_search` |
+| **Structural** (callers, imports, deps) | `code_graph_query` (Code Graph) | `Grep` / `Glob` |
+| **Exact text/regex** (string literal) | `Grep` | `Glob` |
 
 ## Memory & Context Search
 

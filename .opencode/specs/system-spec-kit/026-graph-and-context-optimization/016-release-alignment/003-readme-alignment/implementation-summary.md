@@ -45,11 +45,11 @@ This phase aligned 6 live README surfaces with the 026 graph-and-context-optimiz
 
 | # | File | Changes |
 |---|------|---------|
-| 1 | `.opencode/README.md` | Updated tool counts (33->43, 40->52), added graph-first routing to memory-system section, updated channel list with CocoIndex |
+| 1 | `.opencode/README.md` | Updated tool counts (33->47 memory, 40->56 total; corrected from 43/52 after 4 deep_loop_graph tools were added to tool-schemas.ts), added graph-first routing to memory-system section, updated channel list with CocoIndex |
 | 2 | mcp_server/README.md | Updated key numbers table (search channels, pipeline stages), expanded RAG comparison table, added CocoIndex bridge channel, graph-first routing explanation |
 | 3 | mcp_server/INSTALL_GUIDE.md | Expanded architecture diagram with code-graph.sqlite, removed stale context-prime.toml reference, added web-tree-sitter dependency |
 | 4 | mcp_server/ENV_REFERENCE.md | Added graph-first-class feature family note |
-| 5 | `README.md` (root) | Updated Code Graph description, memory engine description, hybrid search intro, RRF description, query routing section |
+| 5 | `README.md` (root) | Updated Code Graph description, memory engine description, hybrid search intro, RRF description, query routing section; tool counts corrected to 47 memory / 56 total |
 | 6 | scripts/memory/README.md | Expanded validate-memory-quality.ts and post-render quality validation descriptions |
 <!-- /ANCHOR:what-built -->
 
@@ -94,6 +94,6 @@ This phase aligned 6 live README surfaces with the 026 graph-and-context-optimiz
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Phase 3 verification pending** T008-T010 (cross-check against audit, final validation rerun, documentation-only confirmation) are not yet completed.
-2. **Command README indexes** T005 covered scripts/memory/README.md but the `.opencode/command/` README indexes were not modified because they did not require 026-specific updates.
+1. **MEDIUM-priority README surfaces deferred** Install guide READMEs, subsystem READMEs (graph/, database/), and other MEDIUM/LOW surfaces from the audit were verified as current or deferred.
+2. **Command README indexes** T005 covered scripts/memory/README.md; the `.opencode/command/` README indexes were handled in the sibling 002 packet.
 <!-- /ANCHOR:limitations -->

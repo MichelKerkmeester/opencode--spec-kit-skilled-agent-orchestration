@@ -32,7 +32,7 @@ contextType: "documentation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This request hardened the packet, not the live command surfaces. You now have a Level 3 planning packet for `002-cmd-memory-and-speckit`, which means the later command-document pass can start from an explicit hierarchy: authoritative command docs first, then repo guidance, then agent surfaces, then wrappers.
+Phase 1 hardened the packet structure to Level 3. Phase 2 then executed the command-document alignment pass, updating authoritative command docs to reflect 026 graph-and-context-optimization changes.
 
 ### Level 3 Packet Upgrade
 
@@ -50,7 +50,7 @@ The authoritative command docs were reviewed and updated to reflect 026 graph-an
 
 1. **search.md** — Rewrote "Hybrid Retrieval Runtime" section with graph-first routing precedence, CocoIndex integration, FTS5 3-tier fallback, and evidence-gap detection
 2. **save.md** — Added 026 memory-quality note, deferred indexing note, updated MCP recovery table, added 026 compaction note to session dedup
-3. **`memory/README.txt`** — Updated tool count 33→43, added 10 new tools to coverage matrix, added 026 retrieval context note
+3. **`memory/README.txt`** — Updated tool count 33→47 (corrected from 43; the 4 deep_loop_graph tools were added to tool-schemas.ts after the initial 026 count, bringing 10 + 4 = 14 new tools total since the original 33), added coverage matrix entries, added 026 retrieval context note
 4. **`resume_confirm.yaml`** — Updated Memory Selection options with 026 context, added confidence framework comments
 
 **Files skipped (3, already current):**
@@ -65,7 +65,7 @@ The authoritative command docs were reviewed and updated to reflect 026 graph-an
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The packet was rebuilt against the Level 3 templates and kept strictly inside this child folder. The command-review sequence stayed grounded in the existing map, and the completed work in this request remained documentation-only from start to finish.
+Phase 1 rebuilt the packet against Level 3 templates inside this child folder. Phase 2 executed the command-review sequence grounded in the reference map, updating 4 authoritative command docs and verifying 3 others as already current.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -77,7 +77,7 @@ The packet was rebuilt against the Level 3 templates and kept strictly inside th
 |----------|-----|
 | Upgrade to Level 3 instead of keeping Level 1 | The command-surface scope crosses enough categories to justify stronger architecture and verification framing |
 | Preserve `reference-map.md` as the baseline | The current map already captures the right command categories and review order |
-| Keep the packet planning-only | The request was to harden the packet, not implement the command-doc changes |
+| Phase 1 planning-only, Phase 2 live doc edits | Phase 1 focused on packet structure; Phase 2 executed the command-document alignment pass on mapped surfaces |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -96,6 +96,6 @@ The packet was rebuilt against the Level 3 templates and kept strictly inside th
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Live command docs not updated** The later release-alignment pass still needs to edit the authoritative command docs, mirrors, and wrappers.
-2. **Validation status depends on final rerun** The packet is structured for strict validation, but the final validator output still needs to be captured after all edits land.
+1. **Wrapper and mirror surfaces remain** Agent routing docs (.opencode/agent/) and alternate-runtime TOML wrappers (.agents/commands/) were not updated in Phase 2 and remain as future scope.
+2. **MEDIUM-priority command docs deferred** The 7 medium-priority spec_kit command docs (plan, implement, complete, deep-research, deep-review, debug, handover) were verified as current and skipped.
 <!-- /ANCHOR:limitations -->

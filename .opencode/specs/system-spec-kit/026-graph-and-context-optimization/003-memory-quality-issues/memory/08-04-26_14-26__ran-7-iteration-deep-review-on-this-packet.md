@@ -1,12 +1,8 @@
 ---
 title: Ran 7 Iteration Deep Review On
-name: 08-04-26_14-26__ran-7-iteration-deep-review-on-this-packet
 description: Ran 7-iteration deep-review on this packet delegating every iteration to cli-codex exec with...; Delegate every deep-review iteration to cli-codex gpt-5.; Use...
-type: episodic
 trigger_phrases:
-- deep review 003 memory quality
-- cli-codex deep review
-- gpt-5.4 high fast mode review
+- cli codex deep review
 - review report planning packet
 - rollup drift review
 - shipped code bug cluster
@@ -19,17 +15,23 @@ trigger_phrases:
 - setup prompt
 - superset wrapper
 - review config
-- iteration cli-codex
+- iteration cli codex
 - delegate every
-- every deep-review
-- deep-review iteration
+- every deep review
+- deep review iteration
 - directly instead
 - instead superset
 - wrapper superset
 - wrapper stalled
 - stalled sanity
+- ran iteration deep
 importance_tier: important
-contextType: general
+contextType: research
+quality_score: 0.97
+quality_flags:
+- retroactive_reviewed
+name: 08-04-26_14-26__ran-7-iteration-deep-review-on-this-packet
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -37,15 +39,12 @@ _sourceSessionUpdated: 0
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_score: 0.97
-quality_flags: []
 spec_folder_health:
   pass: true
   score: 0.85
   errors: 0
   warnings: 3
 ---
-
 # Ran 7 Iteration Deep Review On This Packet
 
 ## SESSION SUMMARY
@@ -543,69 +542,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775654789138-1836dc33f384"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues"
-channel: "system-speckit/026-graph-and-context-optimization"
-
-# Git Provenance (M-007d)
-head_ref: "system-speckit/026-graph-and-context-optimization"
-commit_ref: "b0afc1071176"
-repository_state: "dirty"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # mirrors frontmatter contextType
-
-# Memory Classification (v2.2)
+session_id: session-1775654789138-1836dc33f384
+spec_folder: system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues
+channel: system-speckit/026-graph-and-context-optimization
+head_ref: system-speckit/026-graph-and-context-optimization
+commit_ref: b0afc1071176
+repository_state: dirty
+is_detached_head: false
+importance_tier: important
+context_type: research
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "381a9c2a75a578516d75fb26901e1474bb9f426a"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 381a9c2a75a578516d75fb26901e1474bb9f426a
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-08"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-04-08'
 created_at_epoch: 1775654789
 last_accessed_epoch: 1775654789
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 6
 tool_count: 0
@@ -614,53 +582,47 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "superset wrapper"
-  - "deep-review iteration"
-  - "every deep-review"
-  - "directly instead"
-  - "delegate every"
-  - "remediation organized"
-  - "lettered workstreams"
-  - "cli-codex gpt-5.4"
-  - "review dimensions"
-  - "wrapper superset"
-  - "wrapper stalled"
-  - "transient stall"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- superset wrapper
+- deep-review iteration
+- every deep-review
+- directly instead
+- delegate every
+- remediation organized
+- lettered workstreams
+- cli-codex gpt-5.4
+- review dimensions
+- wrapper superset
+- wrapper stalled
+- transient stall
 trigger_phrases:
-  - "deep review 003 memory quality"
-  - "cli-codex deep review"
-  - "gpt-5.4 high fast mode review"
-  - "review report planning packet"
-  - "rollup drift review"
-  - "shipped code bug cluster"
-  - "operator contract drift"
-  - "hook blocked"
-  - "blocked inside"
-  - "verdict fail"
-  - "read only"
-  - "test in ten seconds"
-  - "setup prompt"
-  - "superset wrapper"
-  - "review config"
-  - "iteration cli-codex"
-  - "delegate every"
-  - "every deep-review"
-  - "deep-review iteration"
-  - "directly instead"
-  - "instead superset"
-  - "wrapper superset"
-  - "wrapper stalled"
-  - "stalled sanity"
+- deep review 003 memory quality
+- cli-codex deep review
+- gpt-5.4 high fast mode review
+- review report planning packet
+- rollup drift review
+- shipped code bug cluster
+- operator contract drift
+- hook blocked
+- blocked inside
+- verdict fail
+- read only
+- test in ten seconds
+- setup prompt
+- superset wrapper
+- review config
+- iteration cli-codex
+- delegate every
+- every deep-review
+- deep-review iteration
+- directly instead
+- instead superset
+- wrapper superset
+- wrapper stalled
+- stalled sanity
 ```
 
 <!-- /ANCHOR:metadata -->

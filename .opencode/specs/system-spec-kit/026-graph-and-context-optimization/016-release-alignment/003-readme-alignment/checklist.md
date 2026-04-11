@@ -95,9 +95,9 @@ contextType: "documentation"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 | 7/7 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 3 | 3/3 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 20 | 20/20 |
+| P2 Items | 10 | 6/10 |
 
 **Verification Date**: 2026-04-10
 <!-- /ANCHOR:summary -->

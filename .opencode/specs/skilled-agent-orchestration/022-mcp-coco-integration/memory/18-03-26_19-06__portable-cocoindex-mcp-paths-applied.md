@@ -1,38 +1,44 @@
 ---
-title: "Portable Cocoind [03--commands-and-skills/022-mcp-coco-integration/18-03-26_19-06__portable-cocoindex-mcp-paths-applied]"
+title: "Portable Cocoindex Mcp Paths Applied"
+description: 'Portable Cocoindex Mcp Paths Applied SESSION SUMMARY Meta Data Value : : Session Date 2026 03 18 Ses'
 trigger_phrases:
-  - "commands and skills/022 mcp coco integration"
-  - "json mode"
-  - "memory generator needs explicit"
-  - "generator needs explicit files"
-  - "needs explicit files structured"
-  - "explicit files structured observations"
-  - "files structured observations treat"
-  - "structured observations treat json-mode"
-  - "observations treat json-mode save"
-  - "treat json-mode save primary"
-  - "json-mode save primary evidence"
-  - "commands skills/022 mcp coco"
-  - "skills/022 mcp coco integration"
-  - "commands"
-  - "and"
-  - "skills/022"
-  - "mcp"
-  - "coco"
-importance_tier: "normal"
-contextType: "general"
+- json mode
+- memory generator needs explicit
+- generator needs explicit files
+- needs explicit files structured
+- explicit files structured observations
+- files structured observations treat
+- skills 022
+- portable cocoind commands
+- cocoind commands skills
+- portable cocoindex
+- cocoindex mcp
+- mcp paths
+- paths applied
+- portable cocoindex mcp
+- cocoindex mcp paths
+importance_tier: normal
+contextType: implementation
+quality_score: 0.8
+quality_flags:
+- has_contamination
+- needs_review
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
-quality_flags:
-  - "has_contamination"
-quality_score: 0.60
-spec_folder_health: {"pass":true,"score":0.85,"errors":0,"warnings":3}
+spec_folder_health:
+  pass: true
+  score: 0.85
+  errors: 0
+  warnings: 3
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Portable Cocoindex Mcp Paths Applied
 
 ## SESSION SUMMARY
@@ -175,11 +181,11 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.agents/settings.json` - Changed the agents CLI CocoIndex server to use...
+- `.agents/settings.json` - Changed the agents CLI CocoIndex server to use... [RETROACTIVE: auto-truncated]
 
-- `.gemini/settings.json` - Changed the Gemini CLI CocoIndex server to use...
+- `.gemini/settings.json` - Changed the Gemini CLI CocoIndex server to use... [RETROACTIVE: auto-truncated]
 
-- `.claude/mcp.json` - Changed the Claude CLI CocoIndex command path to a...
+- `.claude/mcp.json` - Changed the Claude CLI CocoIndex command path to a... [RETROACTIVE: auto-truncated]
 
 - `.codex/config.toml` - Configuration
 
@@ -187,7 +193,7 @@ Next: Continue implementation
 
 - `.opencode/specs/03--commands-and-skills/022-mcp-coco-integration/checklist.md` - Documentation
 
-- `.mcp.json` - Changed the CocoIndex MCP command and root path to...
+- `.mcp.json` - Changed the CocoIndex MCP command and root path to... [RETROACTIVE: auto-truncated]
 
 - `.opencode/specs/03--commands-and-skills/022-mcp-coco-integration/spec.md` - Documentation
 
@@ -221,7 +227,7 @@ The memory generator needs explicit FILES and structured observations to treat a
 |:---------|:----------------|
 | `.agents/(merged-small-files)` | Tree-thinning merged 1 small files (settings.json).  Merged from .agents/settings.json : Updated settings |
 | `.gemini/(merged-small-files)` | Tree-thinning merged 1 small files (settings.json).  Merged from .gemini/settings.json : Updated settings |
-| `.claude/(merged-small-files)` | Tree-thinning merged 1 small files (mcp.json).  Merged from .claude/mcp.json : Configs so the integration no longer depends on Michel's... |
+| `.claude/(merged-small-files)` | Tree-thinning merged 1 small files (mcp.json).  Merged from .claude/mcp.json : Configs so the integration no longer depends on Michel's... [RETROACTIVE: auto-truncated] |
 | `.codex/(merged-small-files)` | Tree-thinning merged 1 small files (config.toml).  Merged from .codex/config.toml : Updated config |
 | `.opencode/specs/03--commands-and-skills/022-mcp-coco-integration/(merged-small-files)` | Tree-thinning merged 5 small files (tasks.md, checklist.md, spec.md, plan.md, implementation-summary.md).  Merged from .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/tasks.md : Updated tasks | Merged from .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/checklist.md : This spec folder | Merged from .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/spec.md : Updated spec | Merged from .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/plan.md : Updated plan | Merged from .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/implementation-summary.md : Updated implementation summary |
 | `(merged-small-files)` | Tree-thinning merged 1 small files (.mcp.json).  Merged from .mcp.json : Updated .mcp |
@@ -241,7 +247,7 @@ The memory generator needs explicit FILES and structured observations to treat a
 Replaced user-specific absolute CocoIndex command paths and project-root env values with repo-relative values across the checked-in MCP configs so the integration no longer depends on Michel's checkout location.
 
 **Files:** .agents/settings.json, .claude/mcp.json, .codex/config.toml, .gemini/settings.json, .mcp.json
-**Details:** Review finding 1 fixed. | The configs now point at.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc and COCOINDEX_CODE_ROOT_PATH='.' instead of /Users/michelkerkmeester/... absolute paths.
+**Details:** Review finding 1 fixed. | The configs now point at.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc and COCOINDEX_CODE_ROOT_PATH='.' instead of /Users/michelkerkmeester/... [RETROACTIVE: auto-truncated] absolute paths.
 <!-- /ANCHOR:integration-portable-cocoindex-mcp-paths-52de475a -->
 
 <!-- ANCHOR:implementation-spec-docs-aligned-install-bc5f5723 -->
@@ -272,6 +278,8 @@ Adjusted the checklist so it no longer claims scratch is empty or that missing m
 ## 4. DECISIONS
 
 decision_count: 0
+
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
 
 ---
 
@@ -376,69 +384,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03-
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1773857211644-d8b0ecc1c42b"
-spec_folder: "03--commands-and-skills/022-mcp-coco-integration"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1773857211644-d8b0ecc1c42b
+spec_folder: 03--commands-and-skills/022-mcp-coco-integration
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "73c5f9740511d7936a0d4971519e094276abaf3a"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 73c5f9740511d7936a0d4971519e094276abaf3a
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-18"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-18'
 created_at_epoch: 1773857211
 last_accessed_epoch: 1773857211
-expires_at_epoch: 1781633211  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1781633211
 message_count: 2
 decision_count: 0
 tool_count: 0
@@ -447,73 +424,57 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "commands skills/022"
-  - "coco integration"
-  - "skills/022 mcp"
-  - "mcp coco"
-  - "integration commands"
-  - "structured observations"
-  - "explicit structured"
-  - "integration memory"
-  - "generator explicit"
-  - "observations treat"
-  - "primary evidence."
-  - "memory generator"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- commands skills 022
+- coco integration
+- skills 022 mcp
+- mcp coco
+- integration commands
+- structured observations
+- explicit structured
+- integration memory
+- generator explicit
+- observations treat
+- primary evidence.
+- memory generator
 trigger_phrases:
-  - "commands and skills/022 mcp coco integration"
-  - "json mode"
-  - "memory generator needs explicit"
-  - "generator needs explicit files"
-  - "needs explicit files structured"
-  - "explicit files structured observations"
-  - "files structured observations treat"
-  - "structured observations treat json-mode"
-  - "observations treat json-mode save"
-  - "treat json-mode save primary"
-  - "json-mode save primary evidence"
-  - "commands skills/022 mcp coco"
-  - "skills/022 mcp coco integration"
-  - "commands"
-  - "and"
-  - "skills/022"
-  - "mcp"
-  - "coco"
-
+- commands and skills/022 mcp coco integration
+- json mode
+- memory generator needs explicit
+- generator needs explicit files
+- needs explicit files structured
+- explicit files structured observations
+- files structured observations treat
+- structured observations treat json-mode
+- observations treat json-mode save
+- treat json-mode save primary
+- json-mode save primary evidence
+- commands skills/022 mcp coco
+- skills/022 mcp coco integration
+- commands
+- and
+- skills/022
+- mcp
+- coco
 key_files:
-  - ".agents/settings.json"
-  - ".gemini/settings.json"
-  - ".claude/mcp.json"
-  - ".codex/config.toml"
-  - ".opencode/specs/03--commands-and-skills/022-mcp-coco-integration/tasks.md"
-  - ".opencode/specs/03--commands-and-skills/022-mcp-coco-integration/checklist.md"
-  - ".mcp.json"
-  - ".opencode/specs/03--commands-and-skills/022-mcp-coco-integration/spec.md"
-  - ".opencode/specs/03--commands-and-skills/022-mcp-coco-integration/plan.md"
-  - ".opencode/specs/03--commands-and-skills/022-mcp-coco-integration/implementation-summary.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "03--commands-and-skills/022-mcp-coco-integration"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- .agents/settings.json
+- .gemini/settings.json
+- .claude/mcp.json
+- .codex/config.toml
+- .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/tasks.md
+- .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/checklist.md
+- .mcp.json
+- .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/spec.md
+- .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/plan.md
+- .opencode/specs/03--commands-and-skills/022-mcp-coco-integration/implementation-summary.md
+related_sessions: []
+parent_spec: 03--commands-and-skills/022-mcp-coco-integration
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

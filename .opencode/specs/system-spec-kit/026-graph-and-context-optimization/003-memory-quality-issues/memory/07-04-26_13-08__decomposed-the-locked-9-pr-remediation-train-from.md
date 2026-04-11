@@ -1,23 +1,29 @@
 ---
 title: 'Phase Decomposition: 9-PR Memory-Quality Remediation Train Split into 5 Priority Bands'
-name: 07-04-26_13-08__decomposed-the-locked-9-pr-remediation-train-from
 description: "Decomposed the locked 9-PR remediation train from the 25-iteration deep-research synthesis into a 5-phase child structure under .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/. Phases align to the P0/P1/P2/P3/P4 priority bands of research.md \xA710. All 5 child phase folders populated by cli-codex gpt-5.4 in fast mode."
-type: episodic
 trigger_phrases:
-- memory quality 5 phase decomposition
-- 9 PR train phase split priority bands
-- cli-codex gpt-5.4 phase population delegation
-- spec_kit plan with-phases memory quality
-- phase documentation map populated parent
-- memory-quality-issues phase children scaffold
-- create.sh phase phase-parent five children
-- AC fixture handoff criteria F-AC1 F-AC8
-- 9 PR remediation train P0 P1 P2 P3 P4 priority bands
-- PR-1 D8 PR-2 D1 PR-3 D4 PR-4 D7 PR-5 D3 PR-6 D2 PR-7 D5
-- phase decomposition codex full-auto background dispatch
-- iter 16 AC fixture catalog F-AC1 through F-AC8
+- phase decomposition memory
+- decomposition memory quality
+- memory quality remediation
+- phase decomposition
+- decomposition 9-pr
+- 9-pr memory-quality
+- memory-quality remediation
+- remediation train
+- train split
+- split 5
+- 5 priority
+- priority bands
+- phase decomposition 9-pr
+- decomposition 9-pr memory-quality
+- 9-pr memory-quality remediation
 importance_tier: important
-contextType: general
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
+name: 07-04-26_13-08__decomposed-the-locked-9-pr-remediation-train-from
+type: episodic
 _sourceTranscriptPath: ''
 _sourceSessionId: ''
 _sourceSessionCreated: 0
@@ -25,15 +31,13 @@ _sourceSessionUpdated: 0
 captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 66
-quality_score: 1.0
-quality_flags: []
 spec_folder_health:
   pass: false
   score: 0.55
   errors: 2
   warnings: 3
 ---
-> **Note:** This session had limited actionable content (quality score: 0/100). 4 noise entries and 0 duplicates were filtered.
+> **Note:** This session had limited actionable content (quality score: 0 [RETROACTIVE: original 100-point scale]). 4 noise entries and 0 duplicates were filtered.
 
 
 # Phase Decomposition: 9-PR Memory-Quality Remediation Train Split into 5 Priority Bands
@@ -675,70 +679,47 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1775563721610-5997033c924f"
-spec_folder: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: "main"
-commit_ref: "354086dc11e01b81f2c6283379a38b84ac828d1e"
-repository_state: "modified"
-is_detached_head: No
-
-# Classification
-importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # implementation|planning|research|general
-
-# Memory Classification (v2.2)
+session_id: session-1775563721610-5997033c924f
+spec_folder: system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues
+channel: main
+head_ref: main
+commit_ref: 354086dc11e01b81f2c6283379a38b84ac828d1e
+repository_state: modified
+is_detached_head: false
+importance_tier: important
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.3 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.3
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "127c41e2a278e539b192fbc57d07632bea8a8f48"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 127c41e2a278e539b192fbc57d07632bea8a8f48
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
+  caused_by: []
   supersedes:
-    - session_id: "session-1775496609649-e889d9e6d167"
-      file: "06-04-26_18-30__completed-a-10-iteration-deep-research.md"
-      reason: "Phase decomposition is the planned next step after the 25-iteration deep research convergence and the research.md expansion that the predecessor session captured. Manually linked because the auto-supersedes gate (PR-7 D5) is not yet implemented and the title does not contain the 'extended'/'continuation' continuation signal."
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
+  - session_id: session-1775496609649-e889d9e6d167
+    file: 06-04-26_18-30__completed-a-10-iteration-deep-research.md
+    reason: Phase decomposition is the planned next step after the 25-iteration deep research convergence and the research.md expansion that the predecessor session captured. Manually linked because the auto-supersedes gate (PR-7 D5) is not yet implemented and the title does not contain the 'extended'/'continuation' continuation signal.
+  derived_from: []
+  blocks: []
   related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-04-07"
+  - 100-point
+  - 001-foundation-templates-truncation
+  - 002-single-owner-metadata
+  - 003-sanitization-precedence
+  - 004-heuristics-refactor-guardrails
+  - 005-operations-tail-prs
+created_at: '2026-04-07'
 created_at_epoch: 1775563721
 last_accessed_epoch: 1775563721
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 4
 decision_count: 9
 tool_count: 0
@@ -747,41 +728,34 @@ captured_file_count: 10
 filesystem_file_count: 10
 git_changed_file_count: 66
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "phase decomposition"
-  - "9-PR remediation train"
-  - "priority bands P0 to P4"
-  - "cli-codex gpt-5.4 fast mode"
-  - "spec_kit plan with-phases"
-  - "F-AC1 through F-AC8 fixtures"
-  - "phase documentation map"
-  - "phase handoff criteria"
-  - "create.sh phase-parent scaffolding"
-  - "Level 2 checklist authoring"
-  - "parallel codex background dispatch"
-  - "research.md PR train table"
-
-# Trigger Phrases (mirrors the canonical frontmatter list for fast <50ms matching)
+- phase decomposition
+- 9-pr remediation train
+- cli-codex gpt-5.4 fast mode
+- spec kit plan with-phases
+- f-ac1 through f-ac8 fixtures
+- phase documentation map
+- phase handoff criteria
+- create.sh phase-parent scaffolding
+- level 2 checklist authoring
+- parallel codex background dispatch
+- research.md pr train table
 trigger_phrases:
-  - "memory quality 5 phase decomposition"
-  - "9 PR train phase split priority bands"
-  - "cli-codex gpt-5.4 phase population delegation"
-  - "spec_kit plan with-phases memory quality"
-  - "phase documentation map populated parent"
-  - "memory-quality-issues phase children scaffold"
-  - "create.sh phase phase-parent five children"
-  - "AC fixture handoff criteria F-AC1 F-AC8"
-  - "9 PR remediation train P0 P1 P2 P3 P4 priority bands"
-  - "PR-1 D8 PR-2 D1 PR-3 D4 PR-4 D7 PR-5 D3 PR-6 D2 PR-7 D5"
-  - "phase decomposition codex full-auto background dispatch"
-  - "iter 16 AC fixture catalog F-AC1 through F-AC8"
+- memory quality 5 phase decomposition
+- 9 PR train phase split priority bands
+- cli-codex gpt-5.4 phase population delegation
+- spec_kit plan with-phases memory quality
+- phase documentation map populated parent
+- memory-quality-issues phase children scaffold
+- create.sh phase phase-parent five children
+- AC fixture handoff criteria F-AC1 F-AC8
+- 9 PR remediation train P0 P1 P2 P3 P4 priority bands
+- PR-1 D8 PR-2 D1 PR-3 D4 PR-4 D7 PR-5 D3 PR-6 D2 PR-7 D5
+- phase decomposition codex full-auto background dispatch
+- iter 16 AC fixture catalog F-AC1 through F-AC8
 ```
 
 <!-- /ANCHOR:metadata -->

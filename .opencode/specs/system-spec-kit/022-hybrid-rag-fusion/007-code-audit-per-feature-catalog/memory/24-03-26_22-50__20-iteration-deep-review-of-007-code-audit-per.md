@@ -1,50 +1,57 @@
 ---
-title: "...-hybrid-rag-fusion/007-code-audit-per-feature-catalog/24-03-26_22-50__20-iteration-deep-review-of-007-code-audit-per]"
+title: '...-hybrid-rag-fusion/007-code-audit-per-feature-catalog/24-03-26_22-50__20-iteration-deep-review-of-007-code-audit-per]'
+description: '20 Iteration Deep Review Of 007 Code Audit Per SESSION SUMMARY Meta Data Value : : Session Date 2026'
 trigger_phrases:
-  - "deep review 007"
-  - "code audit review"
-  - "feature catalog review"
-  - "code audit per feature catalog"
-  - "quick mode"
-  - "file write before commit"
-  - "pending file"
-  - "review report"
-  - "previously reported"
-  - "verdict conditional"
-  - "temporal contiguity"
-  - "needs freshening system"
-  - "conditional findings"
-  - "findings require"
-  - "require remediation"
-  - "previously-reported mismatches"
-  - "mismatches re-audit"
-  - "re-audit re-evaluated"
-  - "re-evaluated downgraded"
-  - "downgraded temporal"
-  - "contiguity actually"
-  - "actually live"
-  - "live confirmed"
-  - "confirmed corrected"
-  - "corrected rationale"
-  - "pipeline connections"
-  - "connections verified"
-  - "verified clean"
-  - "007 review report"
-  - "deep review findings"
-  - "governance bypass"
-  - "stale audit verdicts"
-importance_tier: "critical"
-contextType: "planning"
+- deep review 007
+- code audit review
+- feature catalog review
+- quick mode
+- file write before commit
+- pending file
+- review report
+- previously reported
+- verdict conditional
+- temporal contiguity
+- needs freshening system
+- conditional findings
+- findings require
+- require remediation
+- previously reported mismatches
+- mismatches re audit
+- re audit re evaluated
+- re evaluated downgraded
+- downgraded temporal
+- contiguity actually
+- actually live
+- live confirmed
+- confirmed corrected
+- corrected rationale
+- pipeline connections
+- connections verified
+- verified clean
+- 007 review report
+- deep review findings
+- governance bypass
+- stale audit verdicts
+- hybrid rag fusion
+- rag fusion 007
+importance_tier: critical
+contextType: research
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
+spec_folder_health:
+  pass: true
+  score: 0.95
+  errors: 0
+  warnings: 1
 ---
 # 20 Iteration Deep Review Of 007 Code Audit Per
 
@@ -417,69 +424,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774389057853-cd34230c24ec"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "decision"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774389057853-cd34230c24ec
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: critical
+context_type: research
 memory_classification:
-  memory_type: "semantic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 365     # decay half-life in days (0 = never decays)
+  memory_type: semantic
+  half_life_days: 365
   decay_factors:
-    base_decay_rate: 0.9981           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1.6 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9981
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1.6
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "3c34ec83d8ec5398e0ce27c67a9402073bd8c898"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 3c34ec83d8ec5398e0ce27c67a9402073bd8c898
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-24"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-24'
 created_at_epoch: 1774389057
 last_accessed_epoch: 1774389057
-expires_at_epoch: 0  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 0
 message_count: 1
 decision_count: 4
 tool_count: 0
@@ -488,217 +464,201 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "verdict conditional"
-  - "temporal contiguity"
-  - "previously-reported mismatches"
-  - "re-evaluated downgraded"
-  - "re-audit re-evaluated"
-  - "conditional findings"
-  - "findings remediation"
-  - "pipeline connections"
-  - "connections verified"
-  - "mismatches re-audit"
-  - "downgraded temporal"
-  - "contiguity actually"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- verdict conditional
+- temporal contiguity
+- previously-reported mismatches
+- re-evaluated downgraded
+- re-audit re-evaluated
+- conditional findings
+- findings remediation
+- pipeline connections
+- connections verified
+- mismatches re-audit
+- downgraded temporal
+- contiguity actually
 trigger_phrases:
-  - "deep review 007"
-  - "code audit review"
-  - "feature catalog review"
-  - "code audit per feature catalog"
-  - "quick mode"
-  - "file write before commit"
-  - "pending file"
-  - "review report"
-  - "previously reported"
-  - "verdict conditional"
-  - "temporal contiguity"
-  - "needs freshening system"
-  - "conditional findings"
-  - "findings require"
-  - "require remediation"
-  - "previously-reported mismatches"
-  - "mismatches re-audit"
-  - "re-audit re-evaluated"
-  - "re-evaluated downgraded"
-  - "downgraded temporal"
-  - "contiguity actually"
-  - "actually live"
-  - "live confirmed"
-  - "confirmed corrected"
-  - "corrected rationale"
-  - "pipeline connections"
-  - "connections verified"
-  - "verified clean"
-  - "kit/022"
-  - "fusion/007"
-  - "code"
-  - "per"
-  - "catalog"
-
+- deep review 007
+- code audit review
+- feature catalog review
+- code audit per feature catalog
+- quick mode
+- file write before commit
+- pending file
+- review report
+- previously reported
+- verdict conditional
+- temporal contiguity
+- needs freshening system
+- conditional findings
+- findings require
+- require remediation
+- previously-reported mismatches
+- mismatches re-audit
+- re-audit re-evaluated
+- re-evaluated downgraded
+- downgraded temporal
+- contiguity actually
+- actually live
+- live confirmed
+- confirmed corrected
+- corrected rationale
+- pipeline connections
+- connections verified
+- verified clean
+- kit/022
+- fusion/007
+- code
+- per
+- catalog
 key_files:
-  - "001-retrieval/checklist.md"
-  - "001-retrieval/description.json"
-  - "001-retrieval/implementation-summary.md"
-  - "001-retrieval/plan.md"
-  - "001-retrieval/spec.md"
-  - "001-retrieval/tasks.md"
-  - "002-mutation/checklist.md"
-  - "002-mutation/description.json"
-  - "002-mutation/implementation-summary.md"
-  - "002-mutation/plan.md"
-  - "002-mutation/spec.md"
-  - "002-mutation/tasks.md"
-  - "003-discovery/checklist.md"
-  - "003-discovery/description.json"
-  - "003-discovery/implementation-summary.md"
-  - "003-discovery/plan.md"
-  - "003-discovery/spec.md"
-  - "003-discovery/tasks.md"
-  - "004-maintenance/checklist.md"
-  - "004-maintenance/description.json"
-  - "004-maintenance/implementation-summary.md"
-  - "004-maintenance/plan.md"
-  - "004-maintenance/spec.md"
-  - "004-maintenance/tasks.md"
-  - "005-lifecycle/checklist.md"
-  - "005-lifecycle/description.json"
-  - "005-lifecycle/implementation-summary.md"
-  - "005-lifecycle/plan.md"
-  - "005-lifecycle/spec.md"
-  - "005-lifecycle/tasks.md"
-  - "006-analysis/checklist.md"
-  - "006-analysis/description.json"
-  - "006-analysis/implementation-summary.md"
-  - "006-analysis/plan.md"
-  - "006-analysis/spec.md"
-  - "006-analysis/tasks.md"
-  - "007-evaluation/checklist.md"
-  - "007-evaluation/description.json"
-  - "007-evaluation/implementation-summary.md"
-  - "007-evaluation/plan.md"
-  - "007-evaluation/spec.md"
-  - "007-evaluation/tasks.md"
-  - "008-bug-fixes-and-data-integrity/checklist.md"
-  - "008-bug-fixes-and-data-integrity/description.json"
-  - "008-bug-fixes-and-data-integrity/implementation-summary.md"
-  - "008-bug-fixes-and-data-integrity/plan.md"
-  - "008-bug-fixes-and-data-integrity/spec.md"
-  - "008-bug-fixes-and-data-integrity/tasks.md"
-  - "009-evaluation-and-measurement/checklist.md"
-  - "009-evaluation-and-measurement/description.json"
-  - "009-evaluation-and-measurement/implementation-summary.md"
-  - "009-evaluation-and-measurement/plan.md"
-  - "009-evaluation-and-measurement/spec.md"
-  - "009-evaluation-and-measurement/tasks.md"
-  - "010-graph-signal-activation/checklist.md"
-  - "010-graph-signal-activation/description.json"
-  - "010-graph-signal-activation/implementation-summary.md"
-  - "010-graph-signal-activation/plan.md"
-  - "010-graph-signal-activation/spec.md"
-  - "010-graph-signal-activation/tasks.md"
-  - "011-scoring-and-calibration/checklist.md"
-  - "011-scoring-and-calibration/description.json"
-  - "011-scoring-and-calibration/implementation-summary.md"
-  - "011-scoring-and-calibration/plan.md"
-  - "011-scoring-and-calibration/spec.md"
-  - "011-scoring-and-calibration/tasks.md"
-  - "012-query-intelligence/checklist.md"
-  - "012-query-intelligence/description.json"
-  - "012-query-intelligence/implementation-summary.md"
-  - "012-query-intelligence/plan.md"
-  - "012-query-intelligence/spec.md"
-  - "012-query-intelligence/tasks.md"
-  - "013-memory-quality-and-indexing/checklist.md"
-  - "013-memory-quality-and-indexing/description.json"
-  - "013-memory-quality-and-indexing/implementation-summary.md"
-  - "013-memory-quality-and-indexing/plan.md"
-  - "013-memory-quality-and-indexing/spec.md"
-  - "013-memory-quality-and-indexing/tasks.md"
-  - "014-pipeline-architecture/checklist.md"
-  - "014-pipeline-architecture/description.json"
-  - "014-pipeline-architecture/implementation-summary.md"
-  - "014-pipeline-architecture/plan.md"
-  - "014-pipeline-architecture/spec.md"
-  - "014-pipeline-architecture/tasks.md"
-  - "015-retrieval-enhancements/checklist.md"
-  - "015-retrieval-enhancements/description.json"
-  - "015-retrieval-enhancements/implementation-summary.md"
-  - "015-retrieval-enhancements/plan.md"
-  - "015-retrieval-enhancements/spec.md"
-  - "015-retrieval-enhancements/tasks.md"
-  - "016-tooling-and-scripts/checklist.md"
-  - "016-tooling-and-scripts/description.json"
-  - "016-tooling-and-scripts/implementation-summary.md"
-  - "016-tooling-and-scripts/plan.md"
-  - "016-tooling-and-scripts/spec.md"
-  - "016-tooling-and-scripts/tasks.md"
-  - "017-governance/checklist.md"
-  - "017-governance/description.json"
-  - "017-governance/implementation-summary.md"
-  - "017-governance/plan.md"
-  - "017-governance/spec.md"
-  - "017-governance/tasks.md"
-  - "018-ux-hooks/checklist.md"
-  - "018-ux-hooks/description.json"
-  - "018-ux-hooks/implementation-summary.md"
-  - "018-ux-hooks/plan.md"
-  - "018-ux-hooks/spec.md"
-  - "018-ux-hooks/tasks.md"
-  - "019-decisions-and-deferrals/checklist.md"
-  - "019-decisions-and-deferrals/description.json"
-  - "019-decisions-and-deferrals/implementation-summary.md"
-  - "019-decisions-and-deferrals/plan.md"
-  - "019-decisions-and-deferrals/spec.md"
-  - "019-decisions-and-deferrals/tasks.md"
-  - "020-feature-flag-reference/checklist.md"
-  - "020-feature-flag-reference/description.json"
-  - "020-feature-flag-reference/implementation-summary.md"
-  - "020-feature-flag-reference/plan.md"
-  - "020-feature-flag-reference/spec.md"
-  - "020-feature-flag-reference/tasks.md"
-  - "021-remediation-revalidation/checklist.md"
-  - "021-remediation-revalidation/description.json"
-  - "021-remediation-revalidation/implementation-summary.md"
-  - "021-remediation-revalidation/plan.md"
-  - "021-remediation-revalidation/spec.md"
-  - "021-remediation-revalidation/tasks.md"
-  - "022-implement-and-remove-deprecated-features/checklist.md"
-  - "022-implement-and-remove-deprecated-features/plan.md"
-  - "022-implement-and-remove-deprecated-features/spec.md"
-  - "022-implement-and-remove-deprecated-features/tasks.md"
-  - "checklist.md"
-  - "decision-record.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "research.md"
-  - "review-report.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- 001-retrieval/checklist.md
+- 001-retrieval/description.json
+- 001-retrieval/implementation-summary.md
+- 001-retrieval/plan.md
+- 001-retrieval/spec.md
+- 001-retrieval/tasks.md
+- 002-mutation/checklist.md
+- 002-mutation/description.json
+- 002-mutation/implementation-summary.md
+- 002-mutation/plan.md
+- 002-mutation/spec.md
+- 002-mutation/tasks.md
+- 003-discovery/checklist.md
+- 003-discovery/description.json
+- 003-discovery/implementation-summary.md
+- 003-discovery/plan.md
+- 003-discovery/spec.md
+- 003-discovery/tasks.md
+- 004-maintenance/checklist.md
+- 004-maintenance/description.json
+- 004-maintenance/implementation-summary.md
+- 004-maintenance/plan.md
+- 004-maintenance/spec.md
+- 004-maintenance/tasks.md
+- 005-lifecycle/checklist.md
+- 005-lifecycle/description.json
+- 005-lifecycle/implementation-summary.md
+- 005-lifecycle/plan.md
+- 005-lifecycle/spec.md
+- 005-lifecycle/tasks.md
+- 006-analysis/checklist.md
+- 006-analysis/description.json
+- 006-analysis/implementation-summary.md
+- 006-analysis/plan.md
+- 006-analysis/spec.md
+- 006-analysis/tasks.md
+- 007-evaluation/checklist.md
+- 007-evaluation/description.json
+- 007-evaluation/implementation-summary.md
+- 007-evaluation/plan.md
+- 007-evaluation/spec.md
+- 007-evaluation/tasks.md
+- 008-bug-fixes-and-data-integrity/checklist.md
+- 008-bug-fixes-and-data-integrity/description.json
+- 008-bug-fixes-and-data-integrity/implementation-summary.md
+- 008-bug-fixes-and-data-integrity/plan.md
+- 008-bug-fixes-and-data-integrity/spec.md
+- 008-bug-fixes-and-data-integrity/tasks.md
+- 009-evaluation-and-measurement/checklist.md
+- 009-evaluation-and-measurement/description.json
+- 009-evaluation-and-measurement/implementation-summary.md
+- 009-evaluation-and-measurement/plan.md
+- 009-evaluation-and-measurement/spec.md
+- 009-evaluation-and-measurement/tasks.md
+- 010-graph-signal-activation/checklist.md
+- 010-graph-signal-activation/description.json
+- 010-graph-signal-activation/implementation-summary.md
+- 010-graph-signal-activation/plan.md
+- 010-graph-signal-activation/spec.md
+- 010-graph-signal-activation/tasks.md
+- 011-scoring-and-calibration/checklist.md
+- 011-scoring-and-calibration/description.json
+- 011-scoring-and-calibration/implementation-summary.md
+- 011-scoring-and-calibration/plan.md
+- 011-scoring-and-calibration/spec.md
+- 011-scoring-and-calibration/tasks.md
+- 012-query-intelligence/checklist.md
+- 012-query-intelligence/description.json
+- 012-query-intelligence/implementation-summary.md
+- 012-query-intelligence/plan.md
+- 012-query-intelligence/spec.md
+- 012-query-intelligence/tasks.md
+- 013-memory-quality-and-indexing/checklist.md
+- 013-memory-quality-and-indexing/description.json
+- 013-memory-quality-and-indexing/implementation-summary.md
+- 013-memory-quality-and-indexing/plan.md
+- 013-memory-quality-and-indexing/spec.md
+- 013-memory-quality-and-indexing/tasks.md
+- 014-pipeline-architecture/checklist.md
+- 014-pipeline-architecture/description.json
+- 014-pipeline-architecture/implementation-summary.md
+- 014-pipeline-architecture/plan.md
+- 014-pipeline-architecture/spec.md
+- 014-pipeline-architecture/tasks.md
+- 015-retrieval-enhancements/checklist.md
+- 015-retrieval-enhancements/description.json
+- 015-retrieval-enhancements/implementation-summary.md
+- 015-retrieval-enhancements/plan.md
+- 015-retrieval-enhancements/spec.md
+- 015-retrieval-enhancements/tasks.md
+- 016-tooling-and-scripts/checklist.md
+- 016-tooling-and-scripts/description.json
+- 016-tooling-and-scripts/implementation-summary.md
+- 016-tooling-and-scripts/plan.md
+- 016-tooling-and-scripts/spec.md
+- 016-tooling-and-scripts/tasks.md
+- 017-governance/checklist.md
+- 017-governance/description.json
+- 017-governance/implementation-summary.md
+- 017-governance/plan.md
+- 017-governance/spec.md
+- 017-governance/tasks.md
+- 018-ux-hooks/checklist.md
+- 018-ux-hooks/description.json
+- 018-ux-hooks/implementation-summary.md
+- 018-ux-hooks/plan.md
+- 018-ux-hooks/spec.md
+- 018-ux-hooks/tasks.md
+- 019-decisions-and-deferrals/checklist.md
+- 019-decisions-and-deferrals/description.json
+- 019-decisions-and-deferrals/implementation-summary.md
+- 019-decisions-and-deferrals/plan.md
+- 019-decisions-and-deferrals/spec.md
+- 019-decisions-and-deferrals/tasks.md
+- 020-feature-flag-reference/checklist.md
+- 020-feature-flag-reference/description.json
+- 020-feature-flag-reference/implementation-summary.md
+- 020-feature-flag-reference/plan.md
+- 020-feature-flag-reference/spec.md
+- 020-feature-flag-reference/tasks.md
+- 021-remediation-revalidation/checklist.md
+- 021-remediation-revalidation/description.json
+- 021-remediation-revalidation/implementation-summary.md
+- 021-remediation-revalidation/plan.md
+- 021-remediation-revalidation/spec.md
+- 021-remediation-revalidation/tasks.md
+- 022-implement-and-remove-deprecated-features/checklist.md
+- 022-implement-and-remove-deprecated-features/plan.md
+- 022-implement-and-remove-deprecated-features/spec.md
+- 022-implement-and-remove-deprecated-features/tasks.md
+- checklist.md
+- decision-record.md
+- description.json
+- implementation-summary.md
+- plan.md
+- research.md
+- review-report.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

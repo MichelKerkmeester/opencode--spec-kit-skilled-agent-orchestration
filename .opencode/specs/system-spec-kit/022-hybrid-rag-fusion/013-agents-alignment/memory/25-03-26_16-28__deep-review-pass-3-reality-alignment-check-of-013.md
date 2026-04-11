@@ -1,46 +1,56 @@
 ---
-title: "...pec-kit/022-hybrid-rag-fusion/013-agents-alignment/25-03-26_16-28__deep-review-pass-3-reality-alignment-check-of-013]"
+title: '...pec-kit/022-hybrid-rag-fusion/013-agents-alignment/25-03-26_16-28__deep-review-pass-3-reality-alignment-check-of-013]'
+description: 'Deep Review Pass 3 Reality Alignment Check Of 013 SESSION SUMMARY Meta Data Value : : Session Date 2'
 trigger_phrases:
-  - "validation fails"
-  - "agents alignment"
-  - "cli copilot"
-  - "deep review"
-  - "implementation summary"
-  - "review pass"
-  - "pass reality"
-  - "reality alignment"
-  - "alignment check"
-  - "check 013-agents-alignment"
-  - "013-agents-alignment spec"
-  - "spec folder"
-  - "gpt-5.4 high"
-  - "high cli-copilot"
-  - "verdict conditional"
-  - "active findings"
-  - "findings file"
-  - "file family"
-  - "family count"
-  - "count drifted"
-  - "drifted deep-review"
-  - "deep-review agent"
-  - "agent added"
-  - "added spec"
-  - "spec still"
-  - "kit/022"
-  - "fusion/013"
-importance_tier: "normal"
-contextType: "general"
+- validation fails
+- agents alignment
+- cli copilot
+- deep review
+- implementation summary
+- review pass
+- pass reality
+- reality alignment
+- alignment check
+- check 013 agents alignment
+- 013 agents alignment spec
+- spec folder
+- gpt 5.4 high
+- high cli copilot
+- verdict conditional
+- active findings
+- findings file
+- file family
+- family count
+- count drifted
+- drifted deep review
+- deep review agent
+- agent added
+- added spec
+- spec still
+- kit 022
+- fusion 013
+- pec kit 022
+- kit 022 hybrid
+importance_tier: normal
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 _sourceSessionCreated: 0
-_sourceSessionId: ""
+_sourceSessionId: ''
 _sourceSessionUpdated: 0
-_sourceTranscriptPath: ""
+_sourceTranscriptPath: ''
 captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
-quality_flags: []
-quality_score: 1.00
-spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
+spec_folder_health:
+  pass: true
+  score: 1
+  errors: 0
+  warnings: 0
 ---
+> [RETROACTIVE: body contains auto-truncated summary text from the memory generator. Ellipsis markers (...) are known truncation points, not typos.]
+
 # Deep Review Pass 3 Reality Alignment Check Of 013
 
 ## SESSION SUMMARY
@@ -101,7 +111,7 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 **Phase:** RESEARCH
 
-**Recent:** Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via..., Next Steps
+**Recent:** Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via... [RETROACTIVE: auto-truncated], Next Steps
 
 ### Pending Work
 
@@ -199,7 +209,7 @@ Next: Remediate 2 P1 findings: update 9 to 10, fix scratch paths, rerun validati
 Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via GPT-5.4 high (cli-copilot). Verdict: CONDITIONAL. 2 active P1 findings: file family count drifted from 9 to 10 after deep-review agent was added but spec still claims 9; strict validation fails because implementation-summary references archived scratch artifacts. 7 P2 advisories including stale metadata, non-auditable evidence, overclaimed remediation count. 1 false positive eliminated (section numbering gap matches Level 2 template). All 4 review dimensions covered (correctness, security, traceability, maintainability). Agent parity across 5 runtimes verified with 10 agents each. Core lineage model remains sound.
 
 **Key Outcomes**:
-- Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via...
+- Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via... [RETROACTIVE: auto-truncated]
 - Next Steps
 
 <!-- /ANCHOR:summary -->
@@ -212,9 +222,9 @@ Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder.
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-deep-review-pass-reality-61a07b43 -->
-### FEATURE: Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via...
+### FEATURE: Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via... [RETROACTIVE: auto-truncated]
 
-Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via GPT-5.4 high (cli-copilot). Verdict: CONDITIONAL. 2 active P1 findings: file family count drifted from 9 to 10 after deep-review agent was added but spec still claims 9; strict validation fails because implementation-summary references archived scratch artifacts. 7 P2 advisories including stale metadata, non-auditable evidence, overclaimed remediation count. 1 false positive eliminated (section...
+Deep review Pass 3: Reality alignment check of 013-agents-alignment spec folder. 5 iterations via GPT-5.4 high (cli-copilot). Verdict: CONDITIONAL. 2 active P1 findings: file family count drifted from 9 to 10 after deep-review agent was added but spec still claims 9; strict validation fails because implementation-summary references archived scratch artifacts. 7 P2 advisories including stale metadata, non-auditable evidence, overclaimed remediation count. 1 false positive eliminated (section... [RETROACTIVE: auto-truncated]
 
 <!-- /ANCHOR:implementation-deep-review-pass-reality-61a07b43 -->
 
@@ -236,6 +246,8 @@ Remediate 2 P1 findings: update 9 to 10, fix scratch paths, rerun validation Add
 ## 4. DECISIONS
 
 decision_count: 0
+
+> [RETROACTIVE: No explicit decisions were recorded in this session. This note was added during the body content audit pass.]
 
 ---
 
@@ -327,69 +339,38 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1774452512304-7178b0321ac2"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment"
-channel: "main"
-
-# Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
-is_detached_head: No
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1774452512304-7178b0321ac2
+spec_folder: system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment
+channel: main
+head_ref: ''
+commit_ref: ''
+repository_state: unavailable
+is_detached_head: false
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: "episodic"         # episodic|procedural|semantic|constitutional
-  half_life_days: 30     # decay half-life in days (0 = never decays)
+  memory_type: episodic
+  half_life_days: 30
   decay_factors:
-    base_decay_rate: 0.9772           # 0.0-1.0, daily decay multiplier
-    access_boost_factor: 0.1   # boost per access (default 0.1)
-    recency_weight: 0.5             # weight for recent accesses (default 0.5)
-    importance_multiplier: 1 # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: 0.9772
+    access_boost_factor: 0.1
+    recency_weight: 0.5
+    importance_multiplier: 1
 session_dedup:
-  memories_surfaced: 0   # count of memories shown this session
-  dedup_savings_tokens: 0   # tokens saved via deduplication
-  fingerprint_hash: "1a4cc69b0f9af175d912a5204a14faaad1c2e1c4"         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: 0
+  dedup_savings_tokens: 0
+  fingerprint_hash: 1a4cc69b0f9af175d912a5204a14faaad1c2e1c4
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-03-25"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-03-25'
 created_at_epoch: 1774452512
 last_accessed_epoch: 1774452512
-expires_at_epoch: 1782228512  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1782228512
 message_count: 1
 decision_count: 0
 tool_count: 0
@@ -398,79 +379,63 @@ captured_file_count: 0
 filesystem_file_count: 0
 git_changed_file_count: 0
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "implementation-summary references"
-  - "alignment 013-agents-alignment"
-  - "fails implementation-summary"
-  - "traceability maintainability"
-  - "013-agents-alignment spec"
-  - "overclaimed remediation"
-  - "metadata non-auditable"
-  - "non-auditable evidence"
-  - "security traceability"
-  - "advisories including"
-  - "evidence overclaimed"
-  - "eliminated numbering"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- implementation-summary references
+- alignment 013-agents-alignment
+- fails implementation-summary
+- traceability maintainability
+- 013-agents-alignment spec
+- overclaimed remediation
+- metadata non-auditable
+- non-auditable evidence
+- security traceability
+- advisories including
+- evidence overclaimed
+- eliminated numbering
 trigger_phrases:
-  - "validation fails"
-  - "agents alignment"
-  - "cli copilot"
-  - "deep review"
-  - "implementation summary"
-  - "review pass"
-  - "pass reality"
-  - "reality alignment"
-  - "alignment check"
-  - "check 013-agents-alignment"
-  - "013-agents-alignment spec"
-  - "spec folder"
-  - "gpt-5.4 high"
-  - "high cli-copilot"
-  - "verdict conditional"
-  - "active findings"
-  - "findings file"
-  - "file family"
-  - "family count"
-  - "count drifted"
-  - "drifted deep-review"
-  - "deep-review agent"
-  - "agent added"
-  - "added spec"
-  - "spec still"
-  - "kit/022"
-  - "fusion/013"
-
+- validation fails
+- agents alignment
+- cli copilot
+- deep review
+- implementation summary
+- review pass
+- pass reality
+- reality alignment
+- alignment check
+- check 013-agents-alignment
+- 013-agents-alignment spec
+- spec folder
+- gpt-5.4 high
+- high cli-copilot
+- verdict conditional
+- active findings
+- findings file
+- file family
+- family count
+- count drifted
+- drifted deep-review
+- deep-review agent
+- agent added
+- added spec
+- spec still
+- kit/022
+- fusion/013
 key_files:
-  - "checklist.md"
-  - "description.json"
-  - "implementation-summary.md"
-  - "plan.md"
-  - "review-report.md"
-  - "spec.md"
-  - "tasks.md"
-
-# Relationships
-related_sessions:
-
-  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "voyage-4"
-embedding_version: "1.0"
+- checklist.md
+- description.json
+- implementation-summary.md
+- plan.md
+- review-report.md
+- spec.md
+- tasks.md
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment
+child_sessions: []
+embedding_model: voyage-4
+embedding_version: '1.0'
 chunk_count: 1
 ```
 

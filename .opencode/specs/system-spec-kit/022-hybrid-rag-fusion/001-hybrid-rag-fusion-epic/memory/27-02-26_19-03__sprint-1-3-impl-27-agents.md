@@ -1,15 +1,27 @@
 ---
-title: "Sprint [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/27-02-26_19-03__sprint-1-3-impl-27-agents]"
+title: "Sprint 1-3 Impl 27 Agents"
+description: 'Sprint 1 3 Impl 27 Agents SESSION SUMMARY Meta Data Value : : Session Date 2026 02 27 Session ID ses'
 trigger_phrases:
-  - "sprint 3 query intelligence"
-  - "query complexity router"
-  - "rsf fusion"
-  - "channel min-representation"
-  - "confidence truncation"
-importance_tier: "critical"
-contextType: "general"
-quality_flags: []
-quality_score: 1.00
+- sprint 3 query intelligence
+- query complexity router
+- rsf fusion
+- channel min representation
+- confidence truncation
+- sprint system spec
+- system spec kit
+- spec kit 022
+- kit 022 hybrid
+- 022 hybrid rag
+- hybrid rag fusion
+- rag fusion 001
+- fusion 001 hybrid
+- 001 hybrid rag
+- rag fusion epic
+importance_tier: critical
+contextType: implementation
+quality_score: 1
+quality_flags:
+- retroactive_reviewed
 ---
 # Sprint 1-3 Impl 27 Agents
 
@@ -514,7 +526,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js sys
 | Uncertainty |  |  |  | → |
 | Context |  |  |  | → |
 
-**Learning Index:** /100
+**Learning Index:** [RETROACTIVE: score unavailable]
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -541,111 +553,65 @@ Learning metrics will be calculated when both preflight and postflight data are 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
-# Core Identifiers
-session_id: "session-1772215381742-emmpfm0k9"
-spec_folder: "system-spec-kit/022-hybrid-rag-fusion"
-channel: "main"
-
-# Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
-context_type: "general"        # research|implementation|decision|discovery|general
-
-# Memory Classification (v2.2)
+session_id: session-1772215381742-emmpfm0k9
+spec_folder: system-spec-kit/022-hybrid-rag-fusion
+channel: main
+importance_tier: normal
+context_type: implementation
 memory_classification:
-  memory_type: ""         # episodic|procedural|semantic|constitutional
-  half_life_days:      # decay half-life in days (0 = never decays)
+  memory_type: ''
+  half_life_days: null
   decay_factors:
-    base_decay_rate:            # 0.0-1.0, daily decay multiplier
-    access_boost_factor:    # boost per access (default 0.1)
-    recency_weight:              # weight for recent accesses (default 0.5)
-    importance_multiplier:  # tier-based multiplier
-
-# Session Deduplication (v2.2)
+    base_decay_rate: null
+    access_boost_factor: null
+    recency_weight: null
+    importance_multiplier: null
 session_dedup:
-  memories_surfaced:    # count of memories shown this session
-  dedup_savings_tokens:    # tokens saved via deduplication
-  fingerprint_hash: ""         # content hash for dedup detection
-  similar_memories:
-
-    []
-
-# Causal Links (v2.2)
+  memories_surfaced: null
+  dedup_savings_tokens: null
+  fingerprint_hash: ''
+  similar_memories: []
 causal_links:
-  caused_by:
-
-    []
-
-  supersedes:
-
-    []
-
-  derived_from:
-
-    []
-
-  blocks:
-
-    []
-
-  related_to:
-
-    []
-
-# Timestamps (for decay calculations)
-created_at: "2026-02-27"
+  caused_by: []
+  supersedes: []
+  derived_from: []
+  blocks: []
+  related_to: []
+created_at: '2026-02-27'
 created_at_epoch: 1772215381
 last_accessed_epoch: 1772215381
-expires_at_epoch: 1779991381  # 0 for critical (never expires)
-
-# Session Metrics
+expires_at_epoch: 1779991381
 message_count: 1
 decision_count: 5
 tool_count: 0
 file_count: 10
 followup_count: 0
-
-# Access Analytics
 access_count: 1
-last_search_query: ""
-relevance_boost: 1  # 1.0 default, increased by access patterns
-
-# Content Indexing
+last_search_query: ''
+relevance_boost: 1
 key_topics:
-  - "rsf"
-  - "sprint"
-  - "wave"
-  - "kendall tau"
-  - "confidence truncation"
-  - "query router"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "system spec kit/022 hybrid rag fusion"
-  - "kendall"
-  - "tau"
-
-# Trigger Phrases (auto-extracted for fast <50ms matching)
+- kendall tau
+- confidence truncation
+- query router
+- sprint 1-3
+- 1-3 impl
+- impl 27
+- 27 agents
+- sprint 1-3 impl
 trigger_phrases:
-  - "sprint 3 query intelligence"
-  - "query complexity router"
-  - "rsf fusion"
-  - "channel min-representation"
-  - "confidence truncation"  []
-
-parent_spec: "system-spec-kit/022-hybrid-rag-fusion"
-child_sessions:
-
-  []
-
-# Embedding Info (populated by indexer)
-embedding_model: "nomic-ai/nomic-embed-text-v1.5"
-embedding_version: "1.0"
+- sprint 3 query intelligence
+- query complexity router
+- rsf fusion
+- channel min-representation
+- confidence truncation
+related_sessions: []
+parent_spec: system-spec-kit/022-hybrid-rag-fusion
+child_sessions: []
+embedding_model: nomic-ai/nomic-embed-text-v1.5
+embedding_version: '1.0'
 chunk_count: 1
-
-# Quality Signals
-quality_score: 1.00
-quality_flags:
-  []
+quality_score: 1
+quality_flags: []
 ```
 
 <!-- /ANCHOR:metadata -->

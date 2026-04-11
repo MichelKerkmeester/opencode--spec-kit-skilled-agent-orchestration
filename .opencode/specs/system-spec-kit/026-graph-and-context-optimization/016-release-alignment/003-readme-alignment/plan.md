@@ -76,10 +76,10 @@ The packet starts from `readme-audit.md`, upgrades the packet itself to Level 3,
 - [x] Expand `spec.md`, `plan.md`, and `tasks.md` to Level 3 detail.
 - [x] Create `checklist.md`, `decision-record.md`, and `implementation-summary.md`.
 
-### Phase 2: Future README Alignment Plan
-- [ ] Review root README entrypoints first.
-- [ ] Review `system-spec-kit` and MCP server README surfaces next.
-- [ ] Review command indexes and lower-priority subsystem READMEs after the highest-risk surfaces are aligned.
+### Phase 2: README Alignment (Completed 2026-04-10)
+- [x] Review root README entrypoints first.
+- [x] Review `system-spec-kit` and MCP server README surfaces next.
+- [x] Review command indexes and lower-priority subsystem READMEs after the highest-risk surfaces are aligned.
 
 ### Phase 3: Packet Verification
 - [x] Fix packet-local README-audit references needed for strict validation.
