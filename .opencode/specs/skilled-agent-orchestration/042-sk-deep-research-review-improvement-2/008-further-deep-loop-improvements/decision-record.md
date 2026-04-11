@@ -26,9 +26,10 @@ Three architectural decisions gate this phase. All three MUST be finalized (with
 
 ## ADR-001 — Canonical Graph-Convergence Regime
 
-**Status**: 🟡 Draft (recommendation ready, owner sign-off pending)
+**Status**: ✅ **ACCEPTED** (2026-04-11)
+**Decision**: **Option A — MCP handler canonical**
 **Owners**: phase 008 lead
-**Impact**: Blocks Part B (graph wiring) tasks T021 onward.
+**Impact**: Blocks Part B (graph wiring) tasks T021 onward. **Unblocked.**
 
 ### Context
 
@@ -78,9 +79,10 @@ If MCP handler latency cannot be brought under 500ms per iteration, flip to **Op
 
 ## ADR-002 — `sk-improve-agent` Replay Strategy
 
-**Status**: 🟡 Draft (recommendation ready, owner sign-off pending)
+**Status**: ✅ **ACCEPTED** (2026-04-11)
+**Decision**: **Option A — Implement replay consumers**
 **Owners**: phase 008 lead
-**Impact**: Blocks Part C task T042 (reducer consumer implementation vs. docs downgrade).
+**Impact**: Blocks Part C task T042 (reducer consumer implementation vs. docs downgrade). **Unblocked.**
 
 ### Context
 
@@ -122,9 +124,10 @@ If the timebox overruns:
 
 ## ADR-003 — Tool-Routing Parity Approach
 
-**Status**: 🟡 Draft (recommendation ready, owner sign-off pending)
+**Status**: ✅ **ACCEPTED** (2026-04-11)
+**Decision**: **Option A — Provision the tools on the live path**
 **Owners**: phase 008 lead
-**Impact**: Blocks Part B tasks T033–T035.
+**Impact**: Blocks Part B tasks T033–T035. **Unblocked.**
 
 ### Context
 
@@ -173,9 +176,9 @@ These are not ADRs; they are constraints that apply to all three decisions and t
 
 | Decision | Drafted | Owner sign-off | Implementation start |
 |----------|---------|----------------|----------------------|
-| ADR-001 | 2026-04-11 | (pending) | Blocks Part B tasks T021+ |
-| ADR-002 | 2026-04-11 | (pending) | Blocks Part C task T042 |
-| ADR-003 | 2026-04-11 | (pending) | Blocks Part B tasks T033+ |
+| ADR-001 | 2026-04-11 | 2026-04-11 ✅ MCP handler canonical | Part B tasks T021+ unblocked |
+| ADR-002 | 2026-04-11 | 2026-04-11 ✅ Implement replay consumers | Part C task T042 unblocked |
+| ADR-003 | 2026-04-11 | 2026-04-11 ✅ Provision tools on live path | Part B tasks T033+ unblocked |
 
 ---
 
