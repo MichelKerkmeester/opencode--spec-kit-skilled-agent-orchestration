@@ -1,7 +1,7 @@
 ---
 title: "Phase 018 Autonomous Execution — Live Handover"
 purpose: "Resume document for the orchestrator session running Gates A→F via cli-codex gpt-5.4 high fast. Updated after each gate close. Read this first if context was compacted."
-last_updated: 2026-04-11T21:30:00Z
+last_updated: 2026-04-11T22:30:00Z
 session_role: orchestrator (claude-opus-4-6 in Claude Code)
 worker: cli-codex gpt-5.4 high fast (primary), cli-copilot gpt-5.4 high (fallback after 3 codex failures)
 branch: system-speckit/026-graph-and-context-optimization
@@ -26,29 +26,28 @@ directives:
 |:-:|---|---|---|---|
 | A — Pre-work | ✅ DONE | `bm7rb2730` | `d35fc6e9a` + `63e5a0635` | template anchor fixes, validator exclusion, backup, status flip follow-up |
 | B — Foundation | ✅ DONE | `b8bwxd5tk` (v2) | `b69b44bec` | schema migration (causal_edges anchor cols + 2 indexes), archive flip 183→184, 199 tests passing. **Note: ranking ×0.3 + archived_hit_rate metric will be removed in B-cleanup.** |
-| B-cleanup — Delete legacy memory rows + files | ⏳ queued | — | — | NEW STEP. DELETE the 183 archived rows + rm the .md files + remove ranking penalty + remove archived_hit_rate. Prompt at /tmp/execute-gate-b-cleanup.prompt |
-| **C — Writer Ready** | 🟡 **IN FLIGHT** | `bnvwpmjwt` | — | 4 new modules + memory-save.ts XL rewrite + template _memory.continuity + 243-test catalog. **Skip the shadow_only activation step in post-processing — observation framework removed.** |
+| B-cleanup — Delete legacy memory rows + files | ⏳ queued | — | — | DELETE the 184 archived rows + rm the .md files + remove ranking penalty + remove archived_hit_rate metric. Prompt at /tmp/execute-gate-b-cleanup.prompt |
+| C — Writer Ready (Part 1) | ✅ DONE PARTIAL | `bnvwpmjwt` | `e802a9072` | rollout control plane + shadow telemetry (`canonical-continuity-shadow.ts`) + save-path integration. 14 tests + 103 prior tests passed. Cumulative ~1925 LOC across 10 files. |
+| **C-continuation — Helper wave + template rollout** | 🟡 **NEXT** | — | — | NEW STEP. Helper adaptation wave + `_memory.continuity` template rollout (~30 templates) + `validate.sh --strict` pass + `implementation-summary.md` updates + golden-set parity. Skip 7-day observation per "no observation windows" directive. |
 | D — Reader Ready | ⏳ ready | — | — | 6 reader handlers + 3-level resumeLadder (no archived fallback) + 13-feature regression + perf benchmarks. NO D0 observation. |
 | E — Runtime Migration | ⏳ ready | — | — | Single canonical flip (no state machine, no observation gates) + 160+ doc/cmd/agent/skill updates |
 | F — Cleanup Verification | ⏳ ready | — | — | REPURPOSED. Verify Gate B cleanup completeness, remove deprecated archived-tier code, no orphan edges. NO 180-day observation. NO retire/keep/investigate decision. |
 | G — Shared Memory Feature Audit | ⏳ ready | — | — | NEW. Audit `SHARED_MEMORY_DATABASE.md` features for post-refactor relevance. Verify 4 MCP tools still wired, access-control still gates new spec-doc rows, constitutional tier still works. Recommendation: keep-as-is / patch / rework / deprecate. Prompt at `/tmp/execute-gate-g-shared-memory.prompt`. |
 
-**Pipeline order**: Gate A ✅ → Gate B ✅ → **Gate C 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F → Gate G → deep-review × 7 per gate × 7 gates = 49 iterations → fix findings → final completion marking
+**Pipeline order**: Gate A ✅ → Gate B ✅ → Gate C Part 1 ✅ → **Gate C-continuation 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F-cleanup → Gate G → deep-review × 7 per gate × 7 gates = 49 iterations → fix findings → final completion marking
 
-**Pipeline order**: Gate A ✅ → Gate B ✅ → **Gate C 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F → deep-review × 7 per gate × 6 gates = 42 iterations → fix findings → final completion marking
-
-**Next action when Gate C notification fires**: read tail of `/private/tmp/claude-501/-Users-michelkerkmeester-MEGA-Development-Code-Environment-Public/6a7d3112-89bf-442b-92c2-4d3557d832db/tasks/bnvwpmjwt.output`, verify (skip shadow_only step), commit Gate C scope, push, launch Gate B-cleanup, then Gate D.
+**Next action**: Launch `/tmp/execute-gate-c-continuation.prompt` via cli-codex. After it lands, commit + push, then Gate B-cleanup, then Gate D.
 
 ---
 
 ## 2. Active Background Tasks + Cron Jobs
 
 **Codex execution**:
-- `bnvwpmjwt` — Gate C populate (running, ~120-240 min wall clock)
+- (none — Gate C Part 1 done as `bnvwpmjwt`, committed `e802a9072`. Gate C-continuation pending launch.)
 
 **Status check cron**:
-- `2dc90c4c` — every 5 min, polls `bnvwpmjwt` output. Reports "still running" or extracts final status.
-- Previous crons (deleted): `421e424b` (Gate B), pre-existing per-gate.
+- `2dc90c4c` — STALE, was polling `bnvwpmjwt` (now done). Needs rotation to next gate's background ID after launch.
+- Previous crons (deleted): `421e424b` (Gate B v1), pre-existing per-gate.
 - Rotate cron when launching next gate: `CronDelete` old, `CronCreate` new pointing at next background ID.
 
 ---
@@ -128,7 +127,8 @@ All Codex execution prompts live at (rewritten 2026-04-11T21:30Z to remove obser
 - `/tmp/execute-gate-b.prompt` — Foundation v1 (halted, superseded)
 - `/tmp/execute-gate-b-v2.prompt` — Foundation rebaselined (DONE)
 - `/tmp/execute-gate-b-cleanup.prompt` — DELETE legacy memory rows + files (NEW, queued after Gate C)
-- `/tmp/execute-gate-c.prompt` — Writer Ready (IN FLIGHT as `bnvwpmjwt`, may still produce shadow_only step which we skip in post-processing)
+- `/tmp/execute-gate-c.prompt` — Writer Ready Part 1 (DONE as `bnvwpmjwt`, commit `e802a9072`)
+- `/tmp/execute-gate-c-continuation.prompt` — Writer Ready continuation (NEW, queued — helper wave + template rollout + validate strict + impl-summary + golden-set parity)
 - `/tmp/execute-gate-d.prompt` — Reader Ready (REWRITTEN: 3-level resumeLadder, no D0)
 - `/tmp/execute-gate-e.prompt` — Runtime Migration (REWRITTEN: single canonical flip, no state machine)
 - `/tmp/execute-gate-f-cleanup.prompt` — Cleanup Verification (NEW, replaces the old execute-gate-f-setup.prompt)
