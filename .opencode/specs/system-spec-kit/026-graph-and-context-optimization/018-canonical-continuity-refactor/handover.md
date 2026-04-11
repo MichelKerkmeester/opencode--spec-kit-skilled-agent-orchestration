@@ -32,9 +32,11 @@ directives:
 | D — Reader Ready | ⏳ ready | — | — | 6 reader handlers + 3-level resumeLadder (no archived fallback) + 13-feature regression + perf benchmarks. NO D0 observation. |
 | E — Runtime Migration | ⏳ ready | — | — | Single canonical flip (no state machine, no observation gates) + 160+ doc/cmd/agent/skill updates |
 | F — Cleanup Verification | ⏳ ready | — | — | REPURPOSED. Verify Gate B cleanup completeness, remove deprecated archived-tier code, no orphan edges. NO 180-day observation. NO retire/keep/investigate decision. |
-| G — Shared Memory Feature Audit | ⏳ ready | — | — | NEW. Audit `SHARED_MEMORY_DATABASE.md` features for post-refactor relevance. Verify 4 MCP tools still wired, access-control still gates new spec-doc rows, constitutional tier still works. Recommendation: keep-as-is / patch / rework / deprecate. Prompt at `/tmp/execute-gate-g-shared-memory.prompt`. |
+| G — Shared Memory Feature Audit | ⏳ ready | — | — | Audit `SHARED_MEMORY_DATABASE.md` features for post-refactor relevance. Verify 4 MCP tools still wired, access-control still gates new spec-doc rows, constitutional tier still works. Recommendation: keep-as-is / patch / rework / deprecate. Prompt at `/tmp/execute-gate-g-shared-memory.prompt`. |
+| H — Feature Catalog + Manual Testing Playbook Audit | ⏳ ready | — | — | NEW. Audit + update `feature_catalog/` (606 .md files across 22 categories) and `manual_testing_playbook/` for post-018 relevance. KEEP / PATCH / REWORK / DEPRECATE / NEW per entry. 22 parallel sub-agents (one per category) + 1 master-index pass. Prompt at `/tmp/execute-gate-h-feature-catalog-playbook.prompt`. |
+| I — Manual Playbook Execution + Full Automated Suite | ⏳ ready | — | — | NEW. Build `scripts/tests/manual-playbook-runner.ts` that drives every manual scenario through the actual handlers with a deterministic fixture, plus run the full vitest suite across `mcp_server` + `scripts` workspaces. Acceptance bar: ≥95% manual scenario PASS, ≥98% automated PASS. Prompt at `/tmp/execute-gate-i-playbook-execution.prompt`. |
 
-**Pipeline order**: Gate A ✅ → Gate B ✅ → Gate C Part 1 ✅ → **Gate C-continuation 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F-cleanup → Gate G → deep-review × 7 per gate × 7 gates = 49 iterations → fix findings → final completion marking
+**Pipeline order**: Gate A ✅ → Gate B ✅ → Gate C Part 1 ✅ → **Gate C-continuation 🟡** → Gate B-cleanup → Gate D → Gate E → Gate F-cleanup → Gate G → Gate H → Gate I → deep-review × 7 per gate × 9 gates = 63 iterations → fix findings → final completion marking
 
 **Next action**: Launch `/tmp/execute-gate-c-continuation.prompt` via cli-codex. After it lands, commit + push, then Gate B-cleanup, then Gate D.
 
@@ -129,6 +131,8 @@ All Codex execution prompts live at (rewritten 2026-04-11T21:30Z to remove obser
 - `/tmp/execute-gate-b-cleanup.prompt` — DELETE legacy memory rows + files (NEW, queued after Gate C)
 - `/tmp/execute-gate-c.prompt` — Writer Ready Part 1 (DONE as `bnvwpmjwt`, commit `e802a9072`)
 - `/tmp/execute-gate-c-continuation.prompt` — Writer Ready continuation (NEW, queued — helper wave + template rollout + validate strict + impl-summary + golden-set parity)
+- `/tmp/execute-gate-h-feature-catalog-playbook.prompt` — Feature catalog + manual testing playbook post-018 audit (NEW, queued)
+- `/tmp/execute-gate-i-playbook-execution.prompt` — Manual playbook execution + full automated suite (NEW, queued, after H)
 - `/tmp/execute-gate-d.prompt` — Reader Ready (REWRITTEN: 3-level resumeLadder, no D0)
 - `/tmp/execute-gate-e.prompt` — Runtime Migration (REWRITTEN: single canonical flip, no state machine)
 - `/tmp/execute-gate-f-cleanup.prompt` — Cleanup Verification (NEW, replaces the old execute-gate-f-setup.prompt)
