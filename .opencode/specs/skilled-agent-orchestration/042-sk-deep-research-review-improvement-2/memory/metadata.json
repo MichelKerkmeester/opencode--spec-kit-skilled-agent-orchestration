@@ -1,5 +1,5 @@
 {
-  "timestamp": "11-04-26 10-29",
+  "timestamp": "11-04-26 15-40",
   "messageCount": 1,
   "decisionCount": 0,
   "diagramCount": 0,
@@ -12,7 +12,7 @@
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-11T09:29:48.724Z",
+        "timestamp": "2026-04-11T14:40:37.374Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-11T09:29:48.253Z",
+      "timestamp": "2026-04-11T14:40:36.900Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:16"
+        "processed_fields:15"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-11T09:29:48.724Z",
+      "timestamp": "2026-04-11T14:40:37.374Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-11T09:29:48.773Z",
+      "timestamp": "2026-04-11T14:40:37.417Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,10 +191,10 @@
       ],
       "passedThrough": [
         "current_spec:042-sk-deep-research-review-improvement-2",
-        "trigger_phrases:12",
-        "key_topics:6",
-        "captured_file_count:8",
-        "filesystem_file_count:8"
+        "trigger_phrases:11",
+        "key_topics:8",
+        "captured_file_count:55",
+        "filesystem_file_count:55"
       ]
     }
   ],
@@ -213,10 +213,10 @@
     }
   },
   "fileCounts": {
-    "fileCount": 8,
-    "capturedFileCount": 8,
-    "filesystemFileCount": 8,
-    "gitChangedFileCount": 8
+    "fileCount": 55,
+    "capturedFileCount": 55,
+    "filesystemFileCount": 55,
+    "gitChangedFileCount": 55
   },
   "sourceProvenance": {
     "transcriptPath": "",
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 2626,
-    "updatedAt": "2026-04-11T09:29:49.803Z",
-    "generatedAt": "2026-04-11T09:29:49.803Z",
+    "memoryId": 2629,
+    "updatedAt": "2026-04-11T14:40:47.036Z",
+    "generatedAt": "2026-04-11T14:40:47.036Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }
