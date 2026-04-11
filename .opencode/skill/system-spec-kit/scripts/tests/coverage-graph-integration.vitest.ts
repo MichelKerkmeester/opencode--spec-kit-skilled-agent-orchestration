@@ -343,13 +343,18 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
       expect(convergenceModule.computeSourceDiversity(graph)).toBe(0);
     });
 
-    it('computeSourceDiversity returns correct ratio for populated graph', () => {
+    it('computeSourceDiversity returns canonical per-question average for populated graph', () => {
+      // ADR-001 canonical semantics: for each question, count distinct source
+      // quality classes reachable via ANSWERS → CITES paths, then average.
       const graph = coreModule.createGraph();
-      coreModule.insertEdge(graph, 'a', 'b', 'ANSWERS');
-      coreModule.insertEdge(graph, 'a', 'c', 'CITES');
-      // 2 nodes are sources (a), 3 total nodes → diversity = 1/3
+      graph.nodes.set('q-1', { id: 'q-1', kind: 'QUESTION' });
+      graph.nodes.set('f-1', { id: 'f-1', kind: 'FINDING' });
+      graph.nodes.set('s-1', { id: 's-1', kind: 'SOURCE', metadata: { quality_class: 'primary' } });
+      coreModule.insertEdge(graph, 'f-1', 'q-1', 'ANSWERS');
+      coreModule.insertEdge(graph, 'f-1', 's-1', 'CITES');
+      // q-1 reaches 1 quality class → average 1.0
       const diversity = convergenceModule.computeSourceDiversity(graph);
-      expect(diversity).toBeCloseTo(1 / 3, 5);
+      expect(diversity).toBe(1);
     });
 
     it('computeEvidenceDepth returns 0 for empty graph', () => {
@@ -357,10 +362,12 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
       expect(convergenceModule.computeEvidenceDepth(graph)).toBe(0);
     });
 
-    it('computeQuestionCoverage returns 1.0 when no questions exist', () => {
+    it('computeQuestionCoverage returns 0 when no questions exist (ADR-001 fail-closed default)', () => {
       const graph = coreModule.createGraph();
       coreModule.insertEdge(graph, 'f-1', 'f-2', 'SUPPORTS');
-      expect(convergenceModule.computeQuestionCoverage(graph)).toBe(1.0);
+      // Canonical semantics: empty question set short-circuits to 0, not 1.
+      // Fail-closed default so stop gates block when there is no coverage target.
+      expect(convergenceModule.computeQuestionCoverage(graph)).toBe(0);
     });
 
     it('computeGraphConvergence produces valid score range [0, 1]', () => {
@@ -389,8 +396,8 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
       expect(withPhase1.blendedScore).toBeGreaterThanOrEqual(withoutPhase1.graphScore * 0.5);
     });
 
-    it('convergence thresholds are accessible', () => {
-      expect(convergenceModule.SOURCE_DIVERSITY_THRESHOLD).toBe(0.4);
+    it('convergence thresholds are accessible (ADR-001 canonical values)', () => {
+      expect(convergenceModule.SOURCE_DIVERSITY_THRESHOLD).toBe(1.5);
       expect(convergenceModule.EVIDENCE_DEPTH_THRESHOLD).toBe(1.5);
     });
 

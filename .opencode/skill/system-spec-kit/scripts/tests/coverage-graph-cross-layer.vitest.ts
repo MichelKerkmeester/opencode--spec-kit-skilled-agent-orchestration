@@ -188,8 +188,9 @@ describe('coverage-graph cross-layer integration', () => {
     expect(cjsContradictionsModule.scanContradictions(graph)).toEqual([]);
     expect(cjsContradictionsModule.reportContradictions(graph).total).toBe(0);
     expect(cjsContradictionsModule.contradictionDensity(graph)).toBe(0);
+    // ADR-001 canonical thresholds: sourceDiversity 1.5, evidenceDepth 1.5
     expect(cjsConvergenceModule.evaluateGraphGates(graph)).toMatchObject({
-      sourceDiversity: { pass: false, value: 0, threshold: 0.4 },
+      sourceDiversity: { pass: false, value: 0, threshold: 1.5 },
       evidenceDepth: { pass: false, value: 0, threshold: 1.5 },
       allPass: false,
     });
