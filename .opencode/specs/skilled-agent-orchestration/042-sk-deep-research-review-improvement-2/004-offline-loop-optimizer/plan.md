@@ -219,7 +219,29 @@ Collect historical traces
 
 ---
 
-## 8. SESSION BREAKDOWN
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
+
+```text
+Replay corpus intake
+  -> rubric scoring
+  -> deterministic replay runner
+  -> bounded search
+  -> audit trail and advisory promotion
+```
+
+| Workstream | Depends On | Produces | Blocks |
+|------------|------------|----------|--------|
+| Corpus builder | Real packet-family traces plus runtime contracts | Replayable corpus fixtures | rubric, replay |
+| Rubric engine | Corpus builder | Scored baseline and candidate evaluations | replay, search, promotion |
+| Replay runner | Corpus builder and rubric | Deterministic baseline-vs-candidate comparisons | search, promotion |
+| Search engine | Replay runner and optimizer manifest | Bounded candidate configs | audit, promotion |
+| Advisory promotion gate | Search, replay, and audit outputs | Patch-style recommendations without live mutation | completion |
+<!-- /ANCHOR:dependency-graph -->
+
+---
+
+### Session Breakdown
 
 - **Session 1**: confirm corpus intake boundaries, build the `040` extractor, and wire compatibility grading for optional `028` holdout ingestion.
 - **Session 2**: implement rubric scoring and deterministic replay against stored traces.

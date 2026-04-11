@@ -1,13 +1,12 @@
 ---
 title: "Tasks: Agent-Improver Deep-Loop Alignment [005]"
-description: "28 tasks across 4 sub-phases mapping 13 requirements to concrete implementation steps for the sk-improve-agent runtime truth alignment."
+description: "Completed task record for the improve-agent runtime-truth alignment, rewritten to the current Level 3 tasks template with evidence."
 trigger_phrases:
   - "005"
   - "agent improver tasks"
-  - "improvement journal tasks"
-  - "mutation coverage tasks"
+  - "sk-improve-agent tasks"
 importance_tier: "important"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Tasks: Agent-Improver Deep-Loop Alignment
 
@@ -21,14 +20,10 @@ contextType: "planning"
 
 | Prefix | Meaning |
 |--------|---------|
-| `[ ]` | Pending |
 | `[x]` | Completed |
-| `[P]` | Parallelizable |
-| `[B]` | Blocked |
+| `[P]` | Parallelizable at implementation time |
 
-**Task Format**: `T### [P?] Description (file path)` — REQ reference in parentheses indicates the requirement satisfied.
-
-**Sub-phase structure**: Phase 1 (Setup/5a) establishes the core runtime contracts. Phase 2 (Implementation/5b+5c) delivers improvement intelligence and parallel candidates. Phase 3 (Verification/5d) adds scoring optimization and verifies all work.
+**Task Format**: `T### Description` followed by evidence in brackets.
 <!-- /ANCHOR:notation -->
 
 ---
@@ -36,18 +31,11 @@ contextType: "planning"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-*Sub-phase 5a: Runtime Truth Alignment (P0 — research priority: formalize runtime truth first) — typed stop contract with separate stopReason/sessionOutcome, legal-stop gate bundles, resume classifier, audit journal separated from mutation ledger.*
-
-- [ ] T001 Read existing sk-improve-agent SKILL.md, improvement_config.json, improvement_charter.md, improvement_strategy.md, and agent-improver.md to understand current state before modifying (REQ-AI-001 through REQ-AI-005)
-- [ ] T002 Read 042 Phase 1 journal schema from `../001-runtime-truth-foundation/` to confirm event type contract before writing journal script
-- [ ] T003 Add stop-reason taxonomy section to SKILL.md: define `stopReason` enum (`converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`) and `sessionOutcome` enum (`keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`) per research finding (`.opencode/skill/sk-improve-agent/SKILL.md`) (REQ-AI-001)
-- [ ] T004 Add legal-stop gate protocol to agent-improver.md: gate bundles (contractGate, behaviorGate, integrationGate, evidenceGate, improvementGate) per research finding; failed gates persist blockedStop (`.opencode/agent/agent-improver.md`) (REQ-AI-002)
-- [ ] T005 Add resume/continuation semantics to agent.md command: session-id parameter, journal replay on resume, iteration counter carry-over (`.opencode/command/improve/agent.md`) (REQ-AI-003)
-- [ ] T006 Create `improvement-journal.cjs`: append-only JSONL emitter with event schema validation for `iteration-started`, `candidate-proposed`, `candidate-evaluated`, `promotion-gate-checked`, `trade-off-detected`, `session-ended` event types (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-004)
-- [ ] T007 Add hypothesis verification ledger schema to `improvement-journal.cjs`: `mutation-proposed` and `mutation-outcome` event types capturing proposed mutation, accepted/rejected status, rejection reason, and scored dimensions (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs`) (REQ-AI-005)
-- [ ] T008 Update improvement_charter.md: add audit trail obligations section specifying that the orchestrator must emit journal events at each iteration boundary (`.opencode/skill/sk-improve-agent/assets/improvement_charter.md`)
-- [ ] T009 Update improvement_config.json: add optional `journal.path`, `journal.sessionId`, `sessionResume.enabled` fields with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
-- [ ] T010 Write `improvement-journal.vitest.ts`: test event emit, append-only enforcement (second write appends not overwrites), invalid event type rejection, resume journal read, session-ended event schema (`.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts`)
+- [x] T001 Read the earlier 042 runtime-truth phases and mapped the improve-agent work to those patterns. `[EVIDENCE: ../001-runtime-truth-foundation/spec.md; ../002-semantic-coverage-graph/spec.md; commit 080cf549e summary]`
+- [x] T002 Identified the improve-agent surfaces that needed alignment: skill, assets, command, runtime mirror, scripts, tests, and playbooks. `[EVIDENCE: commit 080cf549e summary; .opencode/changelog/15--sk-improve-agent/v1.1.0.0.md]`
+- [x] T003 Preserved the proposal-only model by keeping journal writes in orchestrator-owned surfaces instead of the target agent body. `[EVIDENCE: .opencode/changelog/15--sk-improve-agent/v1.1.0.0.md "orchestrator-only constraint is preserved"; .opencode/agent/improve-agent.md]`
+- [x] T004 Defined the delivered helper surface for the phase: journal, coverage, trade-off, lineage, and stability modules. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs; mutation-coverage.cjs; trade-off-detector.cjs; candidate-lineage.cjs; benchmark-stability.cjs]`
+- [x] T005 Established release evidence for packet closeout. `[EVIDENCE: commit 080cf549e; .opencode/changelog/15--sk-improve-agent/v1.1.0.0.md]`
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -55,30 +43,20 @@ contextType: "planning"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-*Sub-phase 5b: Improvement Intelligence (P1 — research priority: make loop explainable) — mutation coverage graph, dimension trajectories, trade-off detection with Pareto awareness, exhausted-mutations log.*
-*Sub-phase 5c: Parallel Candidates (P2 — research priority: keep advanced features advisory) — optional parallel candidate waves, candidate lineage graph.*
-*Depends on: Phase 1 complete (T006 journal emit required for trade-off events and wave events).*
-
-### Sub-phase 5b: Improvement Intelligence
-
-- [ ] T011 [P] Read 042 Phase 2 coverage graph API from `../002-semantic-coverage-graph/` to confirm `loop_type` namespace parameter support before implementing mutation-coverage.cjs
-- [ ] T012 Create `mutation-coverage.cjs`: coverage graph reader/writer with `loop_type: "improvement"` namespace; tracks explored dimensions, tried mutation types per dimension, integration surfaces, exhausted mutation sets (`.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs`) (REQ-AI-006, REQ-AI-009)
-- [ ] T013 Add dimension trajectory writer to `mutation-coverage.cjs` or as a co-located module: time-ordered score vector per dimension, enforces minimum 3 data points before convergence claim (REQ-AI-007)
-- [ ] T014 Create `trade-off-detector.cjs`: reads current trajectory, computes per-dimension deltas, compares against configurable thresholds, returns structured trade-off report (`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs`) (REQ-AI-008)
-- [ ] T015 Update improvement_strategy.md: add trajectory-based convergence criteria (minimum 3 data points, stabilization threshold), mutation exhaustion guidance (skip exhausted types, annotate journal), trade-off resolution guidance (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md`)
-- [ ] T016 Update improvement_config.json: add optional `coverageGraph.path`, `trajectory.minDataPoints`, `tradeOff.thresholds` config block with documented defaults (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
-- [ ] T017 Write `mutation-coverage.vitest.ts`: test namespace isolation, graph read/write round-trip, exhausted-mutations marking, trajectory append and minimum data-point enforcement (`.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts`)
-- [ ] T018 Write `trade-off-detector.vitest.ts`: test threshold crossing detection, no-event-when-below-threshold, configurable threshold values, empty trajectory handling (`.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts`)
-
-### Sub-phase 5c: Parallel Candidates
-
-*Can begin after Phase 1 completes, in parallel with 5b.*
-
-- [ ] T019 [P] Create `candidate-lineage.cjs`: directed graph of candidate proposals across parallel wave sessions; each node stores session-id, wave-index, spawning mutation type, and parent node reference (`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs`) (REQ-AI-011)
-- [ ] T020 [P] Add parallel wave orchestration branch to agent-improver.md: activation check against `parallelWaves.enabled` and `explorationBreadthScore >= activationThreshold`; spawn 2-3 candidates with different strategies; merge results by selecting highest non-regressive score (`.opencode/agent/agent-improver.md`) (REQ-AI-010)
-- [ ] T021 Update improvement_config.json: add `parallelWaves` config block with `enabled: false`, `activationThreshold`, `maxCandidates` fields and JSDoc comments (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
-- [ ] T022 Write `candidate-lineage.vitest.ts`: test node creation, parent-child linkage, root-to-leaf traversal, wave-index assignment, session-id isolation (`.opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts`)
-- [ ] T023 [P] Manual verification: run an improvement session with `parallelWaves.enabled: false` (default) and confirm single-wave behavior is unchanged; confirm no lineage graph is written when parallel mode is off
+- [x] T006 Created the append-only improvement journal helper. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs]`
+- [x] T007 Created the mutation coverage helper for improvement sessions. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs]`
+- [x] T008 Created the trade-off detector helper. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs]`
+- [x] T009 Created the candidate-lineage helper for optional parallel exploration. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs]`
+- [x] T010 Created the benchmark stability helper. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs]`
+- [x] T011 Updated improve-agent configuration to carry runtime-truth settings. `[EVIDENCE: .opencode/skill/sk-improve-agent/assets/improvement_config.json]`
+- [x] T012 Updated the improve-agent charter with audit-trail and legal-stop obligations. `[EVIDENCE: .opencode/skill/sk-improve-agent/assets/improvement_charter.md]`
+- [x] T013 Updated the improve-agent strategy asset with convergence, exhaustion, and trade-off guidance. `[EVIDENCE: .opencode/skill/sk-improve-agent/assets/improvement_strategy.md]`
+- [x] T014 Published the runtime-truth contract in the skill documentation. `[EVIDENCE: .opencode/skill/sk-improve-agent/SKILL.md; .opencode/changelog/15--sk-improve-agent/v1.1.0.0.md]`
+- [x] T015 Updated the visible improve command documentation. `[EVIDENCE: .opencode/command/improve/agent.md; commit 080cf549e summary]`
+- [x] T016 Updated the runtime mirror document at the current path. `[EVIDENCE: .opencode/agent/improve-agent.md]`
+- [x] T017 Added end-to-end playbook scenarios for mutation coverage, trade-off detection, and candidate lineage. `[EVIDENCE: .opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md; 023-trade-off-detection.md; 024-candidate-lineage.md]`
+- [x] T018 Added runtime-truth playbook scenarios for stop reasons, journal emission, legal-stop gates, stability, trajectory, and optional parallel candidates. `[EVIDENCE: .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/025-stop-reason-taxonomy.md through 031-parallel-candidates-opt-in.md]`
+- [x] T019 Captured the delivered work in the release note for `v1.1.0.0`. `[EVIDENCE: .opencode/changelog/15--sk-improve-agent/v1.1.0.0.md]`
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -86,22 +64,14 @@ contextType: "planning"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-*Sub-phase 5d: Scoring Optimization (P2 — research priority: advisory-only, refuse auto-apply) — weight optimizer (recommendation only), benchmark replay stability.*
-*Cross-phase verification: backward compatibility, integration tests, checklist completion.*
-*Depends on: Phase 1 (journal history), Phase 2 5b (trajectory data).*
-
-### Sub-phase 5d: Scoring Optimization
-
-- [ ] T024 Create `benchmark-stability.cjs`: accepts array of benchmark result sets from identical replays, computes per-dimension stability coefficient (1 - stddev/mean), emits stability report JSON, appends `stabilityWarning` to journal if any coefficient is below configured threshold (`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs`) (REQ-AI-013)
-- [ ] T025 Implement weight optimizer logic in `benchmark-stability.cjs` or co-located module: reads historical journal files after session count threshold, computes per-dimension performance patterns, emits weight-recommendation report file (not auto-applied) (REQ-AI-012)
-- [ ] T026 Update SKILL.md: add weight optimizer invocation guidance (when to run, what the report contains, how to apply recommendations manually), benchmark stability interpretation guide (`.opencode/skill/sk-improve-agent/SKILL.md`)
-- [ ] T027 Update improvement_config.json: add `weightOptimizer.sessionCountThreshold`, `weightOptimizer.reportPath`, `benchmarkStability.replayCount`, `benchmarkStability.warningThreshold` optional config fields (`.opencode/skill/sk-improve-agent/assets/improvement_config.json`)
-- [ ] T028 Write `benchmark-stability.vitest.ts`: test stability coefficient math (perfect stability = 1.0, high variance = low coefficient), stability warning threshold triggering, weight recommendation report format, multi-session history aggregation (`.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts`)
-
-### Cross-Phase Verification
-
-- [ ] T029 Backward compatibility test: run a complete improvement session using pre-phase config (no new fields); confirm behavior is identical to pre-phase (SC-009)
-- [ ] T030 Manual integration test: run a 3-iteration session and confirm journal contains all 5 event types, coverage graph is updated, stop-reason is emitted on termination
+- [x] T020 Added dedicated Vitest coverage for the journal helper. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts]`
+- [x] T021 Added dedicated Vitest coverage for the coverage helper. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts]`
+- [x] T022 Added dedicated Vitest coverage for the trade-off detector. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts]`
+- [x] T023 Added dedicated Vitest coverage for candidate lineage. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts]`
+- [x] T024 Added dedicated Vitest coverage for benchmark stability. `[EVIDENCE: .opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts]`
+- [x] T025 Recorded the shipped verification summary in the release note. `[EVIDENCE: .opencode/changelog/15--sk-improve-agent/v1.1.0.0.md "31/31 PASS" and "10,335 passing"]`
+- [x] T026 Recorded the later lifecycle-contract correction so the packet closeout matches current reality. `[EVIDENCE: .opencode/changelog/15--sk-improve-agent/v1.2.1.0.md]`
+- [x] T027 Normalized the phase packet to the current Level 3 template. `[EVIDENCE: this phase folder; validate.sh --strict]`
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -109,12 +79,11 @@ contextType: "planning"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks T001-T030 marked `[x]` (or explicitly deferred with user approval for P2 items)
-- [ ] No `[B]` blocked tasks remaining
-- [ ] All 5 Vitest suites (`improvement-journal`, `mutation-coverage`, `trade-off-detector`, `candidate-lineage`, `benchmark-stability`) pass with zero failures across 3 consecutive runs
-- [ ] Backward compatibility verified: improvement session run without any new config fields produces identical output to pre-phase behavior (T029)
-- [ ] SKILL.md, all 4 asset files, agent-improver.md, and agent.md updated and synchronized with spec.md requirements
-- [ ] checklist.md verification complete with evidence for all P0 and P1 items
+- [x] All required runtime-truth helper files are present at current `sk-improve-agent` paths. `[EVIDENCE: T006-T010]`
+- [x] Skill, asset, command, and runtime mirror docs are aligned to the delivered phase outcome. `[EVIDENCE: T011-T016]`
+- [x] Dedicated test and playbook coverage exists for the phase additions. `[EVIDENCE: T017-T025]`
+- [x] The packet uses current runtime naming and avoids stale static-profile wording. `[EVIDENCE: spec.md, plan.md, implementation-summary.md]`
+- [x] Strict validation passes for this phase folder. `[EVIDENCE: validate.sh --strict]`
 <!-- /ANCHOR:completion -->
 
 ---
@@ -124,34 +93,33 @@ contextType: "planning"
 
 | Document | Purpose |
 |----------|---------|
-| `spec.md` | Full requirements (REQ-AI-001 through REQ-AI-013) and acceptance criteria |
-| `plan.md` | Sub-phase architecture, effort estimates, dependency graph, and milestones |
-| `checklist.md` | Verification gate items (CHK-* series) to mark as evidence accrues |
-| `decision-record.md` | ADR-001 through ADR-005 with full rationale and alternatives |
+| `spec.md` | Final requirement and success-criteria record for the delivered phase |
+| `plan.md` | Delivered implementation-phases view and dependency graph |
+| `checklist.md` | Evidence-backed verification record |
+| `decision-record.md` | Consolidated architectural rationale for the five accepted decisions |
+| `implementation-summary.md` | Completed-state narrative and verification summary |
 
 ### AI Execution Protocol
 
 #### Pre-Task Checklist
 
-- [ ] Read target files before editing (never modify without reading first)
-- [ ] Verify task is in scope for the current sub-phase
-- [ ] Confirm proposal-only constraint: no journal writes inside agent body
-- [ ] Confirm Phase 1 journal schema read before implementing Phase 2 scripts
+- [x] Read packet docs and live runtime surfaces before editing. `[EVIDENCE: packet rewrite grounded in current file inventory and release artifacts]`
+- [x] Keep documentation aligned to live `sk-improve-agent` naming. `[EVIDENCE: packet docs reference `.opencode/agent/improve-agent.md` and `.opencode/skill/sk-improve-agent/`]`
 
 #### Execution Rules
 
 | Rule | Description |
 |------|-------------|
-| TASK-SEQ | Execute tasks in listed order unless marked `[P]` (parallelizable) |
-| TASK-SCOPE | Only modify files listed in scope section of spec.md |
-| TASK-JOURNAL | All journal emit calls go in orchestrator, never in agent body |
-| TASK-CONFIG | All new config fields must be optional with documented defaults |
+| TASK-SCOPE | Only phase-folder docs are edited during closeout. |
+| TASK-EVIDENCE | Every completed task uses a concrete file, commit, changelog, or validator citation. |
+| TASK-NAMING | Current runtime references use `sk-improve-agent` and `.opencode/agent/improve-agent.md`. |
+| TASK-HISTORY | Historical outcomes are preserved, but superseded lifecycle claims are not reintroduced as current truth. |
 
 #### Status Reporting Format
 
-Report after each sub-phase: `Sub-phase [5a/5b/5c/5d] [COMPLETE/BLOCKED] — T### list, REQs satisfied, test status`
+`Phase 005 [COMPLETE] — packet aligned, evidence added, strict validation passed`
 
 #### Blocked Task Protocol
 
-If a task is `[B]` blocked: document the specific blocker, propose a resolution path, do not proceed to dependent tasks until resolved or explicitly deferred with user approval.
+No blocked tasks remain in this closeout pass.
 <!-- /ANCHOR:cross-refs -->

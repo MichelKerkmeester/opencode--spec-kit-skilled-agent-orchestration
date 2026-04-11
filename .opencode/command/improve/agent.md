@@ -272,12 +272,12 @@ Copy config, strategy, charter, and manifest from skill assets into runtime root
 ### Step 5: Execute Loop
 
 Load the matching YAML workflow based on execution mode:
-- **AUTONOMOUS** -> `assets/improve_agent-improver_auto.yaml`
-- **INTERACTIVE** -> `assets/improve_agent-improver_confirm.yaml`
+- **AUTONOMOUS** -> `assets/improve_improve-agent_auto.yaml`
+- **INTERACTIVE** -> `assets/improve_improve-agent_confirm.yaml`
 
 Execute the YAML workflow step by step. Each iteration:
 1. Scan integration surfaces (refresh)
-2. Dispatch `@agent-improver` to write one bounded candidate
+2. Dispatch `@improve-agent` to write one bounded candidate
 3. Score candidate (dynamic 5D or static profile)
 4. Run benchmark fixtures
 5. Append results to JSONL ledger

@@ -12,12 +12,12 @@ Validates that a previously paused improvement session can be resumed with `resu
 
 Step 1 -- Run initial session (2 iterations):
 ```text
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder={spec} --iterations=2
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2
 ```
 
 Step 2 -- Resume the session:
 ```text
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder={spec} --iterations=2 --resume
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2 --resume
 ```
 
 ### Verification (copy-paste)

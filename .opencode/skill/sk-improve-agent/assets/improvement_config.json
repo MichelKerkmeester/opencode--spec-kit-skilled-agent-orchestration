@@ -1,7 +1,7 @@
 {
-  "target": ".opencode/agent/handover.md",
-  "targetProfile": "handover",
-  "targetKind": "canonical-agent",
+  "target": "",
+  "targetProfile": "dynamic",
+  "targetKind": "dynamic",
   "maxIterations": 5,
   "maxCandidatesPerIteration": 1,
   "executionMode": "confirm",
@@ -37,14 +37,9 @@
     "fixtureCatalog": ".opencode/skill/sk-improve-agent/assets/fixtures"
   },
   "targets": {
-    "activeProfile": "handover",
-    "supportedProfiles": [
-      "handover",
-      "context-prime"
-    ],
-    "promotionEligibleProfiles": [
-      "handover"
-    ]
+    "activeProfile": "dynamic",
+    "supportedProfiles": [],
+    "promotionEligibleProfiles": []
   },
   "scoring": {
     "thresholdDelta": 2,
@@ -61,10 +56,7 @@
     }
   },
   "benchmarks": {
-    "requiredForProfiles": [
-      "handover",
-      "context-prime"
-    ],
+    "requiredForProfiles": [],
     "minimumAggregateScore": 85,
     "minimumFixtureScore": 70,
     "repeatabilityTolerance": 0

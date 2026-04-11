@@ -12,7 +12,7 @@ triggers:
   - dynamic profiling
 ---
 
-<!-- Keywords: sk-improve-agent, agent-improver, agent-improvement, benchmark-harness, score-candidate, promote-candidate, rollback-candidate -->
+<!-- Keywords: sk-improve-agent, improve-agent, agent-improvement, benchmark-harness, score-candidate, promote-candidate, rollback-candidate -->
 
 # Recursive Agent: Evaluator-First Improvement Orchestrator
 
@@ -36,7 +36,7 @@ Use this skill when:
 
 #### Bounded Agent Improvement
 
-Use this skill to set up a proposal-first loop for a single target such as `.opencode/agent/handover.md` or `.opencode/agent/context-prime.md`, write packet-local candidates, and record append-only evidence.
+Use this skill to set up a proposal-first loop for any bounded agent file, write packet-local candidates, and record append-only evidence.
 
 #### Benchmark-Backed Evaluation
 
@@ -66,7 +66,6 @@ The router discovers markdown resources recursively from `references/` and `asse
 
 - `references/` for operator workflows, evaluator policy, promotion or rollback rules, target onboarding, and quick-reference guidance
 - `assets/` for reusable runtime templates such as the charter and strategy markdown files
-- `assets/target-profiles/` and `assets/fixtures/` for non-markdown runtime inputs loaded directly by the workflow, not by markdown discovery
 - `scripts/` for deterministic benchmark, scoring, reduction, promotion, rollback, and drift-check helpers
 
 ### Resource Loading Levels
@@ -110,10 +109,6 @@ RESOURCE_MAP = {
 
 RUNTIME_ASSETS = {
     "ALWAYS": ["assets/improvement_config.json", "assets/target_manifest.jsonc"],
-    "PROFILE_RUNTIME": {
-        "handover": ["assets/target-profiles/handover.json", "assets/fixtures/handover/"],
-        "context-prime": ["assets/target-profiles/context-prime.json", "assets/fixtures/context-prime/"],
-    },
 }
 
 def _task_text(task) -> str:
@@ -155,7 +150,7 @@ def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_i
         selected.append(ranked[1][0])
     return selected[:max_intents]
 
-def route_recursive_agent_resources(task, profile_id: str | None = None):
+def route_recursive_agent_resources(task):
     inventory = discover_markdown_resources()
     intents = select_intents(score_intents(task))
     loaded = []
@@ -174,8 +169,6 @@ def route_recursive_agent_resources(task, profile_id: str | None = None):
             load_if_available(relative_path)
 
     runtime_assets = list(RUNTIME_ASSETS["ALWAYS"])
-    if profile_id in RUNTIME_ASSETS["PROFILE_RUNTIME"]:
-        runtime_assets.extend(RUNTIME_ASSETS["PROFILE_RUNTIME"][profile_id])
 
     return {"intents": intents, "resources": loaded, "runtime_assets": runtime_assets}
 ```
@@ -198,14 +191,14 @@ def route_recursive_agent_resources(task, profile_id: str | None = None):
 1. Read the charter, manifest, target profile, and canonical target surface.
 2. Run `scripts/scan-integration.cjs` to discover all surfaces the target agent touches.
 3. Write exactly one bounded candidate under the packet-local `candidates/` directory.
-4. Run `scripts/score-candidate.cjs` to compare the candidate to the baseline. Use `--dynamic` for 5-dimension scoring or `--profile` for legacy keyword checks.
+4. Run `scripts/score-candidate.cjs` to evaluate the candidate via dynamic-mode 5-dimension scoring (the sole supported path).
 5. Run `scripts/run-benchmark.cjs` to measure produced outputs against the active fixture set.
 6. Append score and benchmark results to the packet-local ledger.
 7. Run `scripts/reduce-state.cjs` to refresh the dashboard and experiment registry.
 
 ### 5-Dimension Evaluation Framework
 
-When `--dynamic` is used, scoring evaluates five dimensions instead of keyword presence:
+Dynamic mode is the only scoring path. Scoring evaluates five dimensions:
 
 | Dimension | Weight | What It Measures |
 | --- | --- | --- |
@@ -215,7 +208,7 @@ When `--dynamic` is used, scoring evaluates five dimensions instead of keyword p
 | Output Quality | 0.15 | Output verification items present, no placeholder content |
 | System Fitness | 0.15 | Permission-capability alignment, resource references valid, frontmatter complete |
 
-Dynamic profiles are generated on the fly from any agent file via `scripts/generate-profile.cjs`, eliminating the need for hardcoded target profiles.
+Profiles are generated on the fly from any agent file via `scripts/generate-profile.cjs`. No static profiles are shipped; every target is evaluated against its own derived structure and rules.
 
 ### Mode 3: Promotion and Recovery
 
@@ -293,7 +286,7 @@ Sessions support a single lineage mode today: `new`. Every invocation of the `/i
 
 Operators who want to continue evaluating an agent after a prior session SHOULD archive the prior session folder (e.g. move `improve/` to `improve_archive/{timestamp}/`) and re-invoke the command, which starts a new `new`-mode session. The reducer treats each session independently and does not carry ancestry across sessions.
 
-If the long-form lineage feature is implemented later, it will arrive with first-class event emission in `improve_agent-improver_{auto,confirm}.yaml`, reducer ancestry handling in `sk-improve-agent/scripts/reduce-state.cjs`, and replay fixtures. Until then, treat every session as a standalone evaluation.
+If the long-form lineage feature is implemented later, it will arrive with first-class event emission in `improve_improve-agent_{auto,confirm}.yaml`, reducer ancestry handling in `sk-improve-agent/scripts/reduce-state.cjs`, and replay fixtures. Until then, treat every session as a standalone evaluation.
 
 ### Mutation Coverage Graph
 
@@ -434,14 +427,11 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 | `references/mirror_drift_policy.md` | Packaging drift handling after canonical mutation |
 | `references/no_go_conditions.md` | Explicit stop and expansion blockers |
 | `references/target_onboarding.md` | Safe onboarding of new bounded targets |
-| `references/second_target_evaluation.md` | Why `context-prime` is the current second target |
 | `assets/improvement_charter.md` | Fixed policy charter template |
 | `assets/improvement_strategy.md` | Mutable runtime strategy template |
 | `assets/improvement_config.json` | Runtime configuration template |
 | `assets/improvement_config_reference.md` | Field-level config documentation |
 | `assets/target_manifest.jsonc` | Surface classification and guardrail manifest |
-| `assets/target-profiles/` | Target-specific benchmark and prompt metadata |
-| `assets/fixtures/` | Reusable packet-local fixture inputs |
 | `scripts/run-benchmark.cjs` | Deterministic benchmark runner |
 | `scripts/score-candidate.cjs` | Deterministic prompt-surface scorer |
 | `scripts/reduce-state.cjs` | Ledger reducer and dashboard generator |
@@ -463,8 +453,8 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 <!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
-- `/improve:agent-improver` initializes and runs the bounded workflow
-- `.opencode/agent/agent-improver.md` provides the mutator surface for agent-improver runs
+- `/improve:improve-agent` initializes and runs the bounded workflow
+- `.opencode/agent/improve-agent.md` provides the mutator surface for improve-agent runs
 - `sk-doc` validators enforce package-shape, README, and markdown document consistency
 - `system-spec-kit` packet validation proves phase records remain truthful
 

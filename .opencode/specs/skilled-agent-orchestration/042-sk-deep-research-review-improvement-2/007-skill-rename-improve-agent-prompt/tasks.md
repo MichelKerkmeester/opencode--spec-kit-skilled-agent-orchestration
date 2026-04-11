@@ -1,28 +1,40 @@
 ---
-title: "Phase 7 Tasks: Skill Rename Breakdown"
-description: "Ordered task list for the sk-improve-agent / sk-improve-prompt rename."
+title: "Tasks: Skill Rename Closeout [042.007]"
+description: "Completed documentation closeout tasks for the improver-skill rename."
 trigger_phrases:
-  - "phase 7 tasks"
+  - "042.007"
   - "skill rename tasks"
 importance_tier: "normal"
 contextType: "tasks"
 ---
-# Tasks: Skill Rename — sk-improve-agent & sk-improve-prompt
+# Tasks: Skill Rename Closeout
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
 
 <!-- ANCHOR:notation -->
 ## Task Notation
-- `[ ]` open, `[x]` completed
-- `[P]` parallelizable
-- Tasks must be marked `[x]` as each one completes.
+
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup (Pre-flight)
+## Phase 1: Setup
 
-- [x] T001 Verify no pre-existing collisions for `sk-improve-agent` and `sk-improve-prompt` outside phase folder.
-- [x] T002 Capture authoritative file list (`grep -rl`) for both old names. [EVIDENCE: 240 files for sk-agent-improver, 63 files for sk-prompt-improver]
+- [x] T001 Read the phase packet and identify stale metadata, missing template markers, and broken README links. (`spec.md`; `plan.md`; `tasks.md`; `checklist.md`; `implementation-summary.md`; `README.md`)
+- [x] T002 Verify the live renamed skill and runtime-agent paths before rewriting packet references. (`.opencode/skill/sk-improve-agent/`; `.opencode/skill/sk-improve-prompt/`; `.opencode/agent/improve-agent.md`; `.claude/agents/improve-agent.md`; `.gemini/agents/improve-agent.md`; `.codex/agents/improve-agent.toml`)
+- [x] T003 Confirm the renamed changelog directories are the canonical closeout targets. (`.opencode/changelog/14--sk-improve-prompt/`; `.opencode/changelog/15--sk-improve-agent/`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -30,15 +42,13 @@ contextType: "tasks"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-### Folder renames (must run before text replace)
-- [x] T003 `git mv .opencode/skill/sk-agent-improver .opencode/skill/sk-improve-agent`
-- [x] T004 `git mv .opencode/skill/sk-prompt-improver .opencode/skill/sk-improve-prompt`
-- [x] T005 `git mv .opencode/changelog/14--sk-prompt-improver .opencode/changelog/14--sk-improve-prompt`
-- [x] T006 `git mv .opencode/changelog/15--sk-agent-improver .opencode/changelog/15--sk-improve-agent`
-
-### Mass text replace
-- [x] T007 [P] Replace `sk-agent-improver` → `sk-improve-agent` across all text files via sed pipeline. [EVIDENCE: 240 files updated, residual count = 0]
-- [x] T008 [P] Replace `sk-prompt-improver` → `sk-improve-prompt` across all text files via sed pipeline. [EVIDENCE: 63 files updated, residual count = 0]
+- [x] T004 Rewrite `spec.md` into the current Level 2 template and record the completed rename truth. (`spec.md`)
+- [x] T005 Rewrite `plan.md` so the packet describes the delivered rename sequence and validation path. (`plan.md`)
+- [x] T006 Rewrite `tasks.md` as completed work with path-based evidence. (`tasks.md`)
+- [x] T007 Refresh `checklist.md` with concrete evidence for renamed folders, updated references, and packet closeout. (`checklist.md`)
+- [x] T008 Fix `implementation-summary.md` metadata and path references so it matches the completed rename state. (`implementation-summary.md`)
+- [x] T009 Create a decision record capturing why `sk-improve-*` stays canonical and why runtime-agent filenames remain unchanged. (`decision-record.md`)
+- [x] T010 Repair `README.md` template-reference links to the current system-spec-kit locations. (`README.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -46,10 +56,9 @@ contextType: "tasks"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T009 Grep residuals: zero matches outside `.git/` and phase-007 folder. [EVIDENCE: both grep counts = 0]
-- [x] T010 Spot-check high-value files: all contain new name references (agent.md=8, prompt.md=10, skill_advisor.py=73, descriptions.json=5, README.md=2, .opencode/README.md=2).
-- [x] T011 `.opencode/skill/sk-improve-agent/SKILL.md` (19977 bytes) and `.opencode/skill/sk-improve-prompt/SKILL.md` (16078 bytes) both exist.
-- [x] T012 `git status` shows 87 rename (R) entries covering the four folder renames.
+- [x] T011 Verify the packet references the live runtime-agent files and renamed changelog folders. (`spec.md`; `implementation-summary.md`; `decision-record.md`)
+- [x] T012 Verify all checklist items include evidence and reflect the completed rename state. (`checklist.md`)
+- [x] T013 Run strict validation on the phase folder until it passes cleanly. (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt --strict`)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -57,11 +66,10 @@ contextType: "tasks"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- All tasks `[x]`.
-- Zero residual matches for old names (excluding `.git/`).
-- Both renamed skill folders load via SKILL.md.
-- `implementation-summary.md` created with file counts and verification evidence.
-- Memory save via `generate-context.js`.
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Runtime-agent and changelog references resolve cleanly
+- [x] Strict validation passes for the phase packet
 <!-- /ANCHOR:completion -->
 
 ---
@@ -69,8 +77,9 @@ contextType: "tasks"
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- Parent spec: `../spec.md`
-- Phase spec: `spec.md`
-- Phase plan: `plan.md`
-- Verification checklist: `checklist.md`
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Verification Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
+- **Decision Record**: See `decision-record.md`
 <!-- /ANCHOR:cross-refs -->

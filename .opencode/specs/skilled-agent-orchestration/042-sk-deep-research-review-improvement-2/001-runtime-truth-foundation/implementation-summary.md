@@ -22,7 +22,7 @@ contextType: "planning"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation |
+| **Spec Folder** | 001-runtime-truth-foundation |
 | **Completed** | 2026-04-10 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->

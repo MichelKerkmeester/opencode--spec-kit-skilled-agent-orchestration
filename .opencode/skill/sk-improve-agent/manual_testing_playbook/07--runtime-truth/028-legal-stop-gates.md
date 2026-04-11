@@ -11,7 +11,7 @@ Validates that when convergence math signals stop but one or more of the 5 gate 
 ## Prompt / Command
 
 ```text
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder={spec} --iterations=5
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=5
 ```
 
 ### Verification (copy-paste)

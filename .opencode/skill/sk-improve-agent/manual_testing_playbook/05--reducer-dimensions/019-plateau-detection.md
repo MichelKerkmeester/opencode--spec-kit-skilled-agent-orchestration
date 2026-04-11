@@ -13,7 +13,7 @@ Validates that three or more consecutive identical dimension scores trigger the 
 ```bash
 # Setup: create a test JSONL with 3 identical dimension score entries
 mkdir -p /tmp/reducer-test-plateau
-RECORD='{"type":"scored","profileId":"handover","score":85,"recommendation":"tie","dimensions":[{"name":"structural","score":90},{"name":"ruleCoherence","score":80},{"name":"integration","score":95},{"name":"outputQuality","score":75},{"name":"systemFitness","score":85}]}'
+RECORD='{"type":"scored","profileId":"debug","score":85,"recommendation":"tie","dimensions":[{"name":"structural","score":90},{"name":"ruleCoherence","score":80},{"name":"integration","score":95},{"name":"outputQuality","score":75},{"name":"systemFitness","score":85}]}'
 echo "$RECORD" > /tmp/reducer-test-plateau/agent-improvement-state.jsonl
 echo "$RECORD" >> /tmp/reducer-test-plateau/agent-improvement-state.jsonl
 echo "$RECORD" >> /tmp/reducer-test-plateau/agent-improvement-state.jsonl

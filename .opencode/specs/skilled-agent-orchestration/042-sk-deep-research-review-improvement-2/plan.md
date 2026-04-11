@@ -151,3 +151,17 @@ Phase 1: Runtime Truth Foundation
 
 Parent rollback rule: later phases should be reversible without invalidating the planning basis of earlier completed phases.
 <!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | Runtime truth foundation complete | Phase 1 validated; stop-reason taxonomy, legal-stop gate, resume lineage, and reducer ownership aligned across both loops | Phase 1 closeout |
+| M2 | Semantic coverage graph complete | Phase 2 validated; `deep-loop-graph.sqlite`, four MCP tools, reducer/MCP contract, and graph event shapes in place | Phase 2 closeout |
+| M3 | Wave executor complete | Phase 3 validated; fan-out/join proof, deterministic + graph-enhanced segmentation, keyed merge, and activation gates wired | Phase 3 closeout |
+| M4 | Offline deterministic optimizer complete | Phase 4a validated; replay corpus, multi-dim rubric, advisory-only candidate patches, audit trails shipped with `4b` explicitly blocked | Phase 4a closeout |
+| M5 | Deep-loop alignment follow-ups landed | Phases 5–8 validated; agent-improver parity, graph test coverage, playbook alignment, graph-aware stop gate, and closing-audit Lane 1–5 remediation in place | Phase 8 closeout |
+<!-- /ANCHOR:milestones -->

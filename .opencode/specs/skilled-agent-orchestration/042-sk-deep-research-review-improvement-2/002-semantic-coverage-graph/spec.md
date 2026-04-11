@@ -35,14 +35,12 @@ The design target is explicit reuse, not greenfield invention. Research findings
 | **Branch** | `042-sk-deep-research-review-improvement-2` |
 | **Parent Packet** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
-| **Phase** | 2 of 4 |
+| **Phase** | 2 of 8 |
 | **Predecessor** | `../001-runtime-truth-foundation/spec.md` |
 | **Successor** | `../003-wave-executor/spec.md` |
 | **Handoff Criteria** | Phase 003 can consume graph-backed coverage, contradiction, provenance, and convergence signals without introducing a second graph model. |
-<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:phase-context -->
-## 2. PHASE CONTEXT
+### Phase Context
 
 **Role in Packet 042**: Phase 001 established legal stop reasons, typed convergence traces, and reducer ownership. Phase 002 adds the semantic substrate needed to explain whether the loop has actually covered the problem space. Phase 003 depends on this phase to drive wave and segment decisions. Phase 004 depends on the persisted graph and snapshots for offline optimization and replay analysis.
 
@@ -56,8 +54,8 @@ The design target is explicit reuse, not greenfield invention. Research findings
 - A dedicated `deep-loop-graph.sqlite` store with `coverage_nodes`, `coverage_edges`, and `coverage_snapshots`.
 - Four new `deep_loop_graph_*` MCP tools on the existing Spec Kit Memory MCP server: `upsert`, `query`, `status`, and `convergence`.
 - Reducer integration that defines the reducer/MCP seam explicitly, writes graph deltas after each iteration, and queries graph-aware convergence.
-- Deep-research and deep-review contract updates so iterations emit `graphEvents` and dashboards can render graph summaries.
-<!-- /ANCHOR:phase-context -->
+- Deep-research and deep-review contract updates so iterations emit `graphEvents` and the reducer can render graph summaries.
+<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -419,7 +417,6 @@ When MCP is unavailable, truth flows in this order: append-only iteration JSONL 
 
 ---
 
-<!-- ANCHOR:edge-cases -->
 ## 9. EDGE CASES
 
 - A node is emitted with the same ID but updated metadata on a later iteration. Upsert must merge the update without duplicating the node.
@@ -428,11 +425,9 @@ When MCP is unavailable, truth flows in this order: append-only iteration JSONL 
 - A graph contains zero questions or zero dimensions. Convergence code must return safe zero-state metrics instead of dividing by zero.
 - Contradictions exist but are only partially resolved. Convergence must surface unresolved blockers instead of treating any contradiction edge as a full stop.
 - A provenance chain spans repeated nodes. Traversal must detect cycles and return cumulative path strength without infinite recursion.
-<!-- /ANCHOR:edge-cases -->
 
 ---
 
-<!-- ANCHOR:complexity -->
 ## 10. COMPLEXITY ASSESSMENT
 
 | Axis | Assessment |
@@ -442,12 +437,28 @@ When MCP is unavailable, truth flows in this order: append-only iteration JSONL 
 | **Reducer Integration** | High: graph writes, convergence reads, fallback behavior, and `newInfoRatio` interplay all converge in `reduce-state.cjs`. |
 | **MCP Surface** | High: four tools plus the reducer/MCP contract still add meaningful handler and schema surface area, even with visualization deferred. |
 | **Overall** | High: this phase is foundational for downstream wave execution and offline optimization, so ambiguity costs compound quickly. |
-<!-- /ANCHOR:complexity -->
+
+## 10. RISK MATRIX
+
+| Risk | Likelihood | Impact | Response |
+|------|------------|--------|----------|
+| Reuse assumptions hide required adaptation work | Medium | High | Keep reuse percentages explicit and verify shared helper extraction through targeted tests. |
+| Graph convergence drifts away from Phase 001 stop legality | Low | High | Treat graph convergence as additive and preserve the typed legal-stop trace as the authority boundary. |
+| MCP latency or availability weakens iteration closeout | Medium | Medium | Document the reducer/MCP latency budget and keep the local JSON fallback path explicit. |
+| Research and review ontologies diverge in undocumented ways | Medium | Medium | Centralize relation maps and convergence formulas in the shared coverage-graph layer. |
+
+---
+
+## 11. USER STORIES
+
+- As a maintainer of deep research, I want graph-backed convergence signals so I can see unanswered questions, unverified claims, and contradiction hotspots before STOP becomes legal.
+- As a maintainer of deep review, I want coverage graph queries that show which files, dimensions, and findings still need evidence so reducer decisions stay explainable.
+- As a runtime owner, I want the graph substrate to reuse proven graph primitives with an explicit fallback path so MCP loss does not erase packet-local truth.
 
 ---
 
 <!-- ANCHOR:questions -->
-## 11. OPEN QUESTIONS
+## 12. OPEN QUESTIONS
 
 - No blocking product-scope questions remain for planning.
 - Implementation MUST still define the reducer/MCP seam precisely: sync vs async handoff, latency budget, fallback authority behavior, and replay semantics.
@@ -456,7 +467,7 @@ When MCP is unavailable, truth flows in this order: append-only iteration JSONL 
 
 ---
 
-## 12. RELATED DOCUMENTS
+## 13. RELATED DOCUMENTS
 
 - Parent packet specification: `../spec.md`
 - Parent packet plan: `../plan.md`

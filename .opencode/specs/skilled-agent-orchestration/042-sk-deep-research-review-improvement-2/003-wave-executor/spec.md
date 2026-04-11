@@ -36,10 +36,9 @@ Critical prerequisite: workflow fan-out/join capability must be proven before wa
 | **Parent Packet** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 3 of 4 |
-| **Predecessor** | `002-semantic-coverage-graph` |
-| **Successor** | `004-offline-loop-optimizer` |
+| **Predecessor** | `../002-semantic-coverage-graph/spec.md` |
+| **Successor** | `../004-offline-loop-optimizer/spec.md` |
 | **Handoff Criteria** | Phase 004 can replay wave runs as deterministic, segment-aware traces with stable board and merge artifacts. |
-<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:phase-context -->
 **Phase Context**: This phase adds orchestrator-managed parallel batches on top of the coverage-graph substrate from Phase 002. The goal is scale without architectural drift: the workers stay LEAF, while orchestration logic handles segmentation, fan-out, pruning, promotion, and merge.
@@ -56,10 +55,11 @@ Critical prerequisite: workflow fan-out/join capability must be proven before wa
 - v2 graph/cluster-enhanced segmentation using the Phase 002 coverage graph once the graph surfaces are operational.
 - Wave lifecycle orchestration for plan, fan-out, prune, promote, and merge.
 - Mandatory decomposition prepass artifacts: `hotspot-inventory.json` for review and `domain-ledger.json` for research.
-- Reducer-owned `board.json` execution ledger plus derived human-readable `dashboard.md` render.
+- Reducer-owned `board.json` execution ledger plus a derived human-readable dashboard render.
 - Segment JSONL contract and merge rules keyed by explicit identifiers rather than append order.
 - Verification for segment isolation, merge correctness, and default-path preservation.
 <!-- /ANCHOR:phase-context -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -86,7 +86,7 @@ Define an orchestrator-layer wave execution model that segments large review and
 - Add shared CommonJS planners for v1 deterministic review-file segmentation and research-domain segmentation.
 - Add v2 graph/cluster-enhanced segmentation that refines decomposition using the Phase 002 coverage graph once it is operational.
 - Define wave lifecycle steps: plan, fan-out, prune, promote, and merge.
-- Introduce machine-first, reducer-owned packet-local coordination tracking with `board.json` as the canonical execution ledger and `dashboard.md` as a derived human-readable render.
+- Introduce machine-first, reducer-owned packet-local coordination tracking with `board.json` as the canonical execution ledger and a derived human-readable dashboard render.
 - Define mandatory decomposition prepass artifacts: `hotspot-inventory.json` for review and `domain-ledger.json` for research.
 - Define segment-local JSONL or state artifacts and deterministic merge rules into the main packet lineage using explicit keys: `sessionId`, `generation`, `segment`, `wave`, and `findingId`.
 - Apply Phase 002 graph convergence per segment so pruning and promotion decisions are evidence-backed.
@@ -143,7 +143,7 @@ Define an orchestrator-layer wave execution model that segments large review and
 | REQ-000 | Workflow fan-out/join capability MUST be proven before wave execution can be built. | The packet defines and verifies one canonical path for parallel dispatch plus join, either through helper-module orchestration or a YAML engine extension; until that proof exists, wave execution remains blocked and the default sequential path stays authoritative. |
 | REQ-001 | The phase MUST define two segmentation versions for both large review scopes and large research scopes. | v1 uses deterministic heuristics such as file-count thresholds, directory grouping, simple hotspot ranking, domain counts, authority levels, and stable cluster assignment; v2 explicitly layers Phase 002 coverage-graph or cluster signals on top of v1 once the graph surfaces are operational. |
 | REQ-002 | Parallelism MUST live at the orchestrator layer while LEAF agents remain non-spawning workers. | Wave lifecycle steps are owned by shared orchestration logic and YAML workflows; no requirement or task asks `@deep-research` or `@deep-review` workers to spawn child agents directly. |
-| REQ-003 | The phase MUST define a packet-local coordination board that is reducer-owned and machine-first. | `board.json` is the canonical execution ledger for per-segment state, conflict notes, deduplication markers, and promotion outcomes; `dashboard.md` is a derived human-readable render and not a human-edited strategy surface. |
+| REQ-003 | The phase MUST define a packet-local coordination board that is reducer-owned and machine-first. | `board.json` is the canonical execution ledger for per-segment state, conflict notes, deduplication markers, and promotion outcomes; the dashboard is a derived human-readable render and not a human-edited strategy surface. |
 | REQ-004 | Segment-local JSONL and merge rules MUST preserve auditability when wave results are merged back into the main packet lineage. | Segment artifacts remain replayable on their own, merged records always include explicit keys `sessionId`, `generation`, `segment`, `wave`, and `findingId`, and merge logic never relies on append order as the source of truth. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -165,7 +165,7 @@ Define an orchestrator-layer wave execution model that segments large review and
 - **SC-001**: Fan-out/join capability is proven before wave mode is wired into deep research or deep review.
 - **SC-002**: Research and review each have documented v1 heuristic segmentation plus v2 graph-enhanced segmentation that scale to the large-target examples in the phase brief.
 - **SC-003**: The wave lifecycle is explicit and ordered: prepass, plan, fan-out, prune, promote, join, then merge.
-- **SC-004**: `board.json` is treated as the canonical packet-local execution ledger and `dashboard.md` is clearly derived from it.
+- **SC-004**: `board.json` is treated as the canonical packet-local execution ledger and the dashboard is clearly derived from it.
 - **SC-005**: `hotspot-inventory.json` and `domain-ledger.json` are mandatory prepass artifacts before wave dispatch.
 - **SC-006**: Segment-local artifacts remain replayable and mergeable without losing segment provenance or keyed identity.
 - **SC-007**: Phase 002 graph convergence is reused per segment in v2 rather than redefined for wave mode.
@@ -196,7 +196,7 @@ Define an orchestrator-layer wave execution model that segments large review and
 | Dependency | Phase 001 resume semantics remain the lineage authority | Medium | Build wave resume on top of the same typed stop and journal model rather than creating a second checkpoint system. |
 | Risk | Segment planners produce unstable partitions between runs | Medium | Require deterministic ranking and stable segment IDs based on scope metadata. |
 | Risk | Merge behavior duplicates or overwrites findings across segments | High | Preserve segment provenance, conflict markers, and dedupe metadata through merge rules and tests. |
-| Risk | Coordination-board maintenance becomes manual busywork | Medium | Keep `board.json` reducer-owned and generate `dashboard.md` as a derived render, not a human-maintained strategy surface. |
+| Risk | Coordination-board maintenance becomes manual busywork | Medium | Keep `board.json` reducer-owned and generate the dashboard as a derived render, not a human-maintained strategy surface. |
 | Risk | Wave mode leaks into small-target defaults and makes normal runs harder to understand | Medium | Gate wave mode behind explicit large-target criteria and keep the default path unchanged. |
 | Risk | YAML workflow engine needs extension work before fan-out/join is trustworthy | High | Treat engine extension or helper-orchestration proof as the biggest implementation risk and keep sequential execution as the fallback until it is validated. |
 <!-- /ANCHOR:risks -->
@@ -223,7 +223,6 @@ Define an orchestrator-layer wave execution model that segments large review and
 
 ---
 
-<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 - A repo hotspot spans multiple clusters and appears in more than one planned segment. Deduplication and promotion rules must prevent the same finding from being merged twice.
@@ -233,12 +232,10 @@ Define an orchestrator-layer wave execution model that segments large review and
 - Small targets accidentally trigger the wave planner. Activation criteria must fall back to the single-stream path when segmentation adds no value.
 - The YAML engine still cannot prove a safe join path for parallel branches. Wave execution must stay blocked and sequential mode must remain authoritative.
 - JSONL append order differs from logical merge order after retries or resumed segments. Merge must sort and dedupe by explicit keys rather than line position.
-<!-- /ANCHOR:edge-cases -->
 
 ---
 
-<!-- ANCHOR:complexity -->
-## 9. COMPLEXITY & FEASIBILITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
 | Axis | Assessment |
 |------|------------|
@@ -249,7 +246,6 @@ Define an orchestrator-layer wave execution model that segments large review and
 | **Research Feasibility** | Medium: research-side wave execution needs a discovery artifact that does not exist yet today, and there is no init-time source inventory to segment from without first building `domain-ledger.json`. |
 | **Operator UX** | Medium: complexity is acceptable only if the default path remains simple. |
 | **Overall** | High: this phase introduces parallel execution semantics and must do so without weakening auditability. |
-<!-- /ANCHOR:complexity -->
 
 ---
 

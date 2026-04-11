@@ -1,23 +1,23 @@
 ---
-title: "Scan Known Agent (Handover)"
+title: "Scan Known Agent (Debug)"
 feature_id: "IS-001"
 category: "Integration Scanner"
 ---
 
-# Scan Known Agent (Handover)
+# Scan Known Agent (Debug)
 
 Validates that scanning a known agent discovers all integration surfaces and confirms mirror alignment.
 
 ## Prompt / Command
 
 ```bash
-node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=handover
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
 ```
 
 ### Verification (copy-paste)
 
 ```bash
-node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=handover | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['summary']['mirrorSyncStatus']=='all-aligned'; print('PASS')"
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['summary']['mirrorSyncStatus']=='all-aligned'; print('PASS')"
 ```
 
 ## Expected Signals
@@ -37,9 +37,9 @@ All mirrors report `syncStatus: "aligned"`, `summary.mirrorSyncStatus` equals `"
 
 ## Failure Triage
 
-- If `surfaces.canonical.exists` is `false`: check that the handover agent file exists at `.opencode/agent/handover.md`
+- If `surfaces.canonical.exists` is `false`: check that the debug agent file exists at `.opencode/agent/debug.md`
 - If any mirror has `syncStatus` other than `"aligned"`: compare agent definitions across `.claude/agents/`, `.codex/agents/`, `.opencode/agent/`, and `.gemini/agents/` for inconsistencies
-- If `summary.commandCount` is 0: verify handover-related command definitions exist in `.opencode/skill/*/commands/` or `.agents/commands/`
+- If `summary.commandCount` is 0: verify debug-related command definitions exist in `.opencode/skill/*/commands/` or `.agents/commands/`
 - If the script errors: verify Node.js version and that `scan-integration.cjs` has no syntax errors
 
 ## Evidence Template

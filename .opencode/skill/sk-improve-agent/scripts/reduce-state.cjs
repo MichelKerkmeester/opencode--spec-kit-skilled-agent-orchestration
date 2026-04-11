@@ -162,16 +162,11 @@ function inferProfileId(record) {
   if (record.profileId) {
     return record.profileId;
   }
-  if (/context-prime/i.test(record.path || '') || /context-prime/i.test(record.target || '')) {
-    return 'context-prime';
-  }
-  return 'handover';
+  return 'dynamic';
 }
 
 function inferFamily(record, profileId) {
   if (record.family) return record.family;
-  if (profileId === 'context-prime') return 'session-bootstrap';
-  if (profileId === 'handover') return 'session-handover';
   return profileId;
 }
 
@@ -800,8 +795,7 @@ ${renderSampleQualitySection(sampleQuality)}
 
 ## Guardrails
 
-- Canonical promotion target remains ".opencode/agent/handover.md"
-- Candidate-only target remains ".opencode/agent/context-prime.md"
+- All targets evaluated via dynamic mode; promotion requires explicit per-target approval
 - Mirror sync stays downstream packaging and is not counted as benchmark truth
 
 ## Stop Status

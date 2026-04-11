@@ -1,0 +1,25 @@
+{
+  "specFolder": "042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment",
+  "description": "Phase 5: Agent-improver deep-loop alignment closeout packet for the runtime-truth helper rollout now published under sk-improve-agent.",
+  "keywords": [
+    "phase",
+    "agent-improver-deep-loop-alignment",
+    "sk-improve-agent",
+    "runtime-truth",
+    "improvement-journal",
+    "mutation-coverage",
+    "trade-off-detector",
+    "candidate-lineage",
+    "benchmark-stability"
+  ],
+  "lastUpdated": "2026-04-11T16:00:00.000Z",
+  "specId": "005",
+  "folderSlug": "agent-improver-deep-loop-alignment",
+  "parentChain": [
+    "042-sk-deep-research-review-improvement-2"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "11-04-26_05-00__phase-005-agent-improver-deep-loop-alignment-closeout.md"
+  ]
+}

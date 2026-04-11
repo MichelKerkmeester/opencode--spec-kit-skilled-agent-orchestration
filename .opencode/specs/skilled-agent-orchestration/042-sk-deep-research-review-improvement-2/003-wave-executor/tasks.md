@@ -50,7 +50,7 @@ contextType: "planning"
 | `LEAF-SAFE` | No task may move orchestration responsibilities into LEAF workers. |
 | `SEGMENT-DETERMINISTIC` | Segment identity and order must be reproducible from the same inputs. |
 | `GATED-ACTIVATION` | Wave mode must activate only for 1000+ file review targets with hotspot spread or 50+ domain research targets with cluster diversity. |
-| `BOARD-MACHINE-FIRST` | `board.json` is reducer-owned and `dashboard.md` is derived; neither is a human-maintained strategy surface. |
+| `BOARD-MACHINE-FIRST` | `board.json` is reducer-owned and the dashboard is derived; neither is a human-maintained strategy surface. |
 | `MERGE-KEYED` | Merge contracts must key by `sessionId`, `generation`, `segment`, `wave`, and `findingId`, not append order. |
 | `MERGE-AUDITABLE` | Segment merge must preserve provenance, dedupe, and conflict metadata. |
 
@@ -70,9 +70,9 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 3-pre: Workflow Prerequisite
+## Phase 1: Setup
 
-### Phase 3-pre: Fan-Out/Join Proof
+### Fan-Out/Join Proof
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -84,9 +84,9 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 3a: Heuristic Segmentation and Prepass Artifacts
+## Phase 2: Implementation
 
-### Phase 3a: v1 Deterministic Heuristic Segmentation
+### v1 Deterministic Heuristic Segmentation
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -100,7 +100,7 @@ contextType: "planning"
 
 - [x] T001 Define v1 deterministic heuristic segmentation for review files and research domains, keeping segment identity and ordering reproducible.
 - [x] T002 Add segment-plan versioning, activation-gate configuration, and strategy surfaces for research and review.
-- [x] T003 Define reducer-owned `board.json`, derived `dashboard.md`, and segment-state artifact contracts.
+- [x] T003 Define reducer-owned `board.json`, a derived dashboard render, and segment-state artifact contracts.
 - [x] T-WE-NEW-2 Build `hotspot-inventory.json` generation for review with file ranking, directory clusters, and coverage priorities.
 - [x] T-WE-NEW-3 Build `domain-ledger.json` generation for research with source domains, authority levels, and cluster assignments.
 - [x] T-WE-NEW-4 Define the JSONL merge contract with explicit key ordering and keyed dedupe semantics.
@@ -110,9 +110,9 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3b: Graph-Enhanced Segmentation and Lifecycle Integration
+### Phase 2b: Graph-Enhanced Segmentation and Lifecycle Integration
 
-### Phase 3b: v2 Graph-Enhanced Segmentation and Wave Lifecycle
+### v2 Graph-Enhanced Segmentation and Wave Lifecycle
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -133,9 +133,9 @@ contextType: "planning"
 
 ---
 
-## Phase 3c: Verification
+## Phase 3: Verification
 
-### Phase 3c: Merge Proof and Recovery Hardening
+### Merge Proof and Recovery Hardening
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -156,7 +156,7 @@ contextType: "planning"
 - [x] Fan-out/join proof remains a hard prerequisite for all wave-mode execution work.
 - [x] Wave orchestration stays outside LEAF worker responsibilities.
 - [x] Segment provenance, dedupe, and conflict tracking survive merge.
-- [x] `board.json` remains reducer-owned and `dashboard.md` remains derived.
+- [x] `board.json` remains reducer-owned and the dashboard remains derived.
 - [x] Default single-stream deep research and deep review remain intact.
 <!-- /ANCHOR:completion -->
 

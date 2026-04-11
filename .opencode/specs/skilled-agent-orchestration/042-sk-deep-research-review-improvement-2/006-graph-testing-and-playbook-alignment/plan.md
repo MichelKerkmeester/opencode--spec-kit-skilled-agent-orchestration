@@ -1,8 +1,8 @@
 ---
-title: "Implementation Plan: Graph Testing and Playbook Alignment [006]"
-description: "3-part plan covering integration tests, stress tests, manual testing playbook updates, and README alignment for coverage graph capabilities."
+title: "Implementation Plan: Graph Testing and Playbook Alignment [042.006]"
+description: "Record the delivered verification strategy for cross-layer graph testing, stress coverage, manual playbook updates, and README alignment."
 trigger_phrases:
-  - "006"
+  - "042.006"
   - "graph testing plan"
   - "playbook alignment plan"
 importance_tier: "important"
@@ -22,18 +22,13 @@ contextType: "planning"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript (Vitest tests), Markdown (playbook + READMEs) |
-| **Framework** | Vitest for integration/stress tests |
-| **Source Modules** | CJS: coverage-graph-core.cjs, coverage-graph-signals.cjs, coverage-graph-convergence.cjs, coverage-graph-contradictions.cjs; TS: coverage-graph-db.ts |
-| **Testing** | Vitest integration + stress suites; manual operator testing playbooks |
+| **Language/Stack** | TypeScript or Vitest test surfaces plus Markdown playbooks and READMEs |
+| **Framework** | Spec Kit verification workflow over the Phase 002 graph runtime |
+| **Storage** | Existing graph runtime files, playbook trees, and skill README files |
+| **Testing** | Vitest integration and stress suites plus strict packet validation |
 
 ### Overview
-
-This plan delivers three parts:
-
-- **Part A**: Rigorous integration and stress tests that verify CJS-to-TS API contract alignment, namespace isolation, and performance at scale
-- **Part B**: Manual testing playbook updates adding graph-specific test cases to sk-deep-research, sk-deep-review, and sk-improve-agent
-- **Part C**: README updates for skills missing graph capability references
+This phase delivered the graph-verification layer that Phase 002 still needed after the runtime landed. The implementation grouped naturally into three workstreams: build dedicated integration and stress suites, add graph-specific manual playbook scenarios across the deep-loop skills, and update README surfaces so operators can discover the new graph capabilities.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,70 +37,135 @@ This plan delivers three parts:
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-
-- [x] Coverage graph CJS modules exist and have passing unit tests
-- [x] Coverage graph TS DB module exists with type definitions
-- [x] Existing playbook files read for format patterns
-- [x] Existing READMEs checked for graph references
+- [x] Phase 002 graph runtime files already existed.
+- [x] The target playbook trees for research, review, and improve-agent were already present.
+- [x] The affected README files were identified before documentation edits began.
 
 ### Definition of Done
-
-- [ ] Integration test suite passes with zero failures
-- [ ] Stress test suite passes with acceptable performance
-- [ ] 4 new playbook files in sk-deep-research and sk-deep-review
-- [ ] 3 new playbook files in sk-improve-agent
-- [ ] Skill READMEs updated where graph references are missing
-- [ ] Checklist items verified with evidence
+- [x] Dedicated integration and stress suites exist for the graph runtime.
+- [x] The seven graph-specific playbook files exist at the live paths.
+- [x] The three targeted skill READMEs include graph capability references.
+- [x] The phase packet validates cleanly under the current Level 2 template.
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:plan -->
-## 3. IMPLEMENTATION PLAN
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-### Part A: Integration and Stress Tests
+### Pattern
+Verification-first support phase over an existing runtime.
 
-1. Create `coverage-graph-integration.vitest.ts` with test suites for:
-   - CJS-TS relation name alignment (research and review)
-   - Weight clamping consistency
-   - Self-loop prevention in both layers
-   - Namespace isolation
-   - Convergence signal alignment
+### Key Components
+- **Integration suite**: verifies cross-layer graph contract alignment.
+- **Stress suite**: verifies graph behavior at higher scale.
+- **Manual playbooks**: make graph behaviors operator-testable in each loop family.
+- **README alignment**: makes the graph surface discoverable in the skill docs.
 
-2. Create `coverage-graph-stress.vitest.ts` with test suites for:
-   - 1000+ node graph construction and query
-   - Contradiction scanning at scale
-   - Provenance traversal performance
-   - Cluster metrics at scale
-
-### Part B: Manual Testing Playbooks
-
-3. Add research playbook test cases:
-   - `031-graph-convergence-signals.md` in `04--convergence-and-recovery/`
-   - `029-graph-events-emission.md` in `03--iteration-execution-and-state-discipline/`
-
-4. Add review playbook test cases:
-   - `021-graph-convergence-review.md` in `04--convergence-and-recovery/`
-   - `015-graph-events-review.md` in `03--iteration-execution-and-state-discipline/`
-
-5. Add agent-improver playbook test cases:
-   - `022-mutation-coverage-graph-tracking.md` in `06--end-to-end-loop/`
-   - `023-trade-off-detection.md` in `06--end-to-end-loop/`
-   - `024-candidate-lineage.md` in `06--end-to-end-loop/`
-
-### Part C: README Updates
-
-6. Update READMEs for sk-deep-research, sk-deep-review, and sk-improve-agent to reference graph capabilities where missing.
-<!-- /ANCHOR:plan -->
+### Data Flow
+Phase 002 graph runtime -> automated verification suites -> manual playbook scenarios -> README discovery surface -> strict phase validation.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:risks -->
-## 4. RISKS
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-| Risk | Mitigation |
-|------|------------|
-| TS DB module requires better-sqlite3 which may not be available in test env | Integration tests import types only from TS; contract checks use string comparison on exported constants |
-| CJS relation sets intentionally differ from TS (TS has additional relations) | Tests document the superset relationship explicitly |
-| Playbook format evolution | All new playbooks follow the latest pattern from existing files |
-<!-- /ANCHOR:risks -->
+### Phase 1: Setup
+- [x] Inventory the live graph runtime surfaces and the existing playbook trees.
+- [x] Confirm the exact test and playbook files this phase must add.
+
+### Phase 2: Core Implementation
+- [x] Add `coverage-graph-integration.vitest.ts` and `coverage-graph-stress.vitest.ts`.
+- [x] Add graph-specific playbook scenarios to `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent`.
+- [x] Update the three skill README files to surface graph capability coverage.
+
+### Phase 3: Verification
+- [x] Confirm the new tests and playbook files exist at the documented paths.
+- [x] Confirm the packet reflects the current Level 2 template and completed-state evidence.
+- [x] Re-run strict validation on the phase folder.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Integration | Cross-layer graph relation, clamp, self-loop, namespace, and convergence alignment | Vitest |
+| Stress | Large graph construction, contradiction scanning, traversal behavior | Vitest |
+| Manual | Research, review, and improve-agent graph scenarios | manual testing playbooks |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Phase 002 graph runtime files | Internal | Green | Without them the verification suites and playbooks would have no live target. |
+| Deep-loop playbook trees | Internal | Green | Without them the graph scenarios would have nowhere canonical to live. |
+| Skill README surfaces | Internal | Green | Graph capability discovery would stay incomplete. |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: The phase packet points to stale verification surfaces or strict validation still fails.
+- **Procedure**: Keep the delivered tests and playbooks intact, repair only the packet documentation, and re-run strict validation until the closeout packet matches the shipped verification surface.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```text
+Phase 1 (inventory verification surfaces)
+  -> Phase 2 (record delivered tests and playbooks)
+  -> Phase 3 (validate and close out)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | Live graph runtime and playbook trees | Core implementation |
+| Core implementation | Setup | Verification |
+| Verification | Core implementation | Parent closeout |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 20-30 minutes |
+| Core Implementation | Medium | 1-2 hours |
+| Verification | Low | 20-30 minutes |
+| **Total** | | **1.5-3 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [x] Live test and playbook paths verified
+- [x] Packet scope kept within the phase folder
+- [x] Validation command identified before closeout
+
+### Rollback Procedure
+1. Revert only packet-doc changes if they create new drift.
+2. Keep the shipped tests, playbooks, and README updates intact.
+3. Re-run strict validation after each documentation correction.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: Not applicable; this phase is verification and documentation only.
+<!-- /ANCHOR:enhanced-rollback -->

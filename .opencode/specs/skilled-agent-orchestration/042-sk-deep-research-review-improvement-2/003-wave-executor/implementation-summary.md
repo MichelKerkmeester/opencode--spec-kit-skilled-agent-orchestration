@@ -22,7 +22,7 @@ contextType: "planning"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 042-sk-deep-research-review-improvement-2/003-wave-executor |
+| **Spec Folder** | 003-wave-executor |
 | **Completed** | 2026-04-10 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -44,7 +44,7 @@ The v1 deterministic heuristic segmentation produces reproducible segment identi
 
 ### Graph-Enhanced Segmentation and Lifecycle
 
-The v2 graph-enhanced segmentation wraps Phase 002 graph signals for per-segment convergence, pruning, and promotion decisions. The shared wave lifecycle manager handles fan-out, join, prune, promote, and merge transitions. The reducer-owned `board.json` tracks conflicts, dedupe, and promoted findings, while `dashboard.md` is derived and never directly maintained.
+The v2 graph-enhanced segmentation wraps Phase 002 graph signals for per-segment convergence, pruning, and promotion decisions. The shared wave lifecycle manager handles fan-out, join, prune, promote, and merge transitions. The reducer-owned `board.json` tracks conflicts, dedupe, and promoted findings, while the human-facing dashboard stays a derived render and is never directly maintained.
 
 ### Activation Gates
 
@@ -72,7 +72,7 @@ Implementation proceeded through 3 sub-phases: fan-out/join prerequisite proof, 
 |----------|-----|
 | Helper-module orchestration for fan-out/join | The YAML workflow engine has no native parallel dispatch, so orchestration logic lives in CJS helpers |
 | Orchestrator-layer parallelism, not LEAF-agent spawning | Workers stay LEAF; orchestration handles segmentation, fan-out, pruning, promotion, and merge |
-| Reducer-owned `board.json` with derived `dashboard.md` | Board is the machine source of truth; dashboard is a human-readable projection |
+| Reducer-owned `board.json` with a derived dashboard render | Board is the machine source of truth; the dashboard is a human-readable projection |
 | Deterministic keyed merge by explicit identifiers | Append-order dependence would break replay and produce non-deterministic merged outputs |
 | Activation gates with explicit large-target thresholds | Prevents wave overhead for small targets where single-stream execution is already optimal |
 <!-- /ANCHOR:decisions -->
@@ -88,7 +88,7 @@ Implementation proceeded through 3 sub-phases: fan-out/join prerequisite proof, 
 | Deterministic v1 segmentation for review and research | PASS (97 tests) |
 | Activation gates prevent wave mode for small targets | PASS |
 | Keyed merge preserves provenance, dedupe, and conflict metadata | PASS |
-| `board.json` is reducer-owned, `dashboard.md` is derived | PASS |
+| `board.json` is reducer-owned and the dashboard is derived | PASS |
 | Default single-stream paths remain intact | PASS |
 | Resume and fallback regression tests | PASS |
 <!-- /ANCHOR:verification -->

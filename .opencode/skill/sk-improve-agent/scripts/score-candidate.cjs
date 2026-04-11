@@ -68,10 +68,7 @@ function inferProfileId(targetPath, explicitProfile, manifest) {
   if (manifestTarget?.profileId) {
     return manifestTarget.profileId;
   }
-  if (/context-prime/i.test(targetPath || '')) {
-    return 'context-prime';
-  }
-  return 'handover';
+  return 'dynamic';
 }
 
 function inferFamily(profileId, manifest, targetPath) {
@@ -79,253 +76,7 @@ function inferFamily(profileId, manifest, targetPath) {
   if (manifestTarget?.family) {
     return manifestTarget.family;
   }
-  return profileId === 'context-prime' ? 'session-bootstrap' : 'session-handover';
-}
-
-function buildScore(checkSpecs, content) {
-  const lower = content.toLowerCase();
-  const checks = [];
-  const reasons = [];
-  let total = 0;
-  let hardReject = false;
-
-  for (const spec of checkSpecs.weightedChecks) {
-    const pass = spec.test(content, lower);
-    checks.push({ key: spec.key, pass, weight: spec.weight });
-    if (pass) {
-      total += spec.weight;
-    } else {
-      reasons.push(`Missing or weak: ${spec.key}`);
-      if (spec.hardReject) {
-        reasons.push(`Hard reject: ${spec.key}`);
-        hardReject = true;
-      }
-    }
-  }
-
-  for (const spec of checkSpecs.warningChecks) {
-    const pass = spec.test(content, lower);
-    checks.push({ key: spec.key, pass, weight: 0 });
-    if (!pass) {
-      reasons.push(`Warning: ${spec.key}`);
-    }
-  }
-
-  for (const spec of checkSpecs.forbiddenChecks) {
-    const pass = !spec.test(content, lower);
-    checks.push({ key: spec.key, pass, weight: 0 });
-    if (!pass) {
-      reasons.push(`Hard reject: ${spec.key}`);
-      hardReject = true;
-    }
-  }
-
-  return {
-    total,
-    checks,
-    reasons,
-    hardReject,
-  };
-}
-
-function createHandoverChecks() {
-  return {
-    weightedChecks: [
-      {
-        key: 'mentions-spec-files',
-        weight: 15,
-        hardReject: true,
-        test: (_content, lower) => /spec\.md/.test(lower) && /plan\.md/.test(lower) && /tasks\.md/.test(lower),
-      },
-      {
-        key: 'mentions-checklist-and-memory',
-        weight: 15,
-        hardReject: true,
-        test: (_content, lower) => /checklist\.md/.test(lower) && /memory\//.test(lower),
-      },
-      {
-        key: 'references-template',
-        weight: 15,
-        hardReject: true,
-        test: (content) => /\.opencode\/skill\/system-spec-kit\/templates\/handover\.md/.test(content),
-      },
-      {
-        key: 'leaf-only',
-        weight: 10,
-        test: (_content, lower) => /leaf-only/.test(lower) || /illegal nesting/.test(lower),
-      },
-      {
-        key: 'no-fabrication-rule',
-        weight: 10,
-        test: (content) => /never create handovers without reading actual session state/i.test(content) || /never fabricate/i.test(content),
-      },
-      {
-        key: 'path-convention',
-        weight: 10,
-        test: (content) => /path convention/i.test(content) && /\.opencode\/agent\/\*\.md/i.test(content),
-      },
-      {
-        key: 'structured-output',
-        weight: 10,
-        test: (content, lower) => /"status"/.test(content) && /filepath/.test(lower) && /attempt_number/.test(lower),
-      },
-      {
-        key: 'actual-source-reading',
-        weight: 10,
-        test: (_content, lower) => /read spec folder files before/i.test(lower) || /required context sources/i.test(lower),
-      },
-      {
-        key: 'capability-scan',
-        weight: 3,
-        test: (_content, lower) => /capability scan/.test(lower),
-      },
-      {
-        key: 'output-verification',
-        weight: 3,
-        test: (_content, lower) => /output verification/.test(lower) || /verification before return/.test(lower),
-      },
-      {
-        key: 'related-resources',
-        weight: 3,
-        test: (_content, lower) => /related resources/.test(lower),
-      },
-      {
-        key: 'simplicity',
-        weight: 5,
-        test: (content) => content.length < 14000,
-      },
-    ],
-    warningChecks: [
-      {
-        key: 'placeholder-heavy',
-        test: (content) => (content.match(/\[(actual extracted value|spec_path|spec_folder|action|task|N|extracted from context)\]/gi) || []).length <= 10,
-      },
-      {
-        key: 'no-permissive-skip-context-language',
-        test: (content) => !/(you may|can|should).{0,40}(skip reading|without reading)/i.test(content),
-      },
-    ],
-    forbiddenChecks: [
-      {
-        key: 'nested-delegation',
-        test: (content, lower) => /dispatch sub-agents/i.test(content) && !/illegal/.test(lower),
-      },
-    ],
-  };
-}
-
-function createContextPrimeChecks() {
-  return {
-    weightedChecks: [
-      {
-        key: 'session-bootstrap-tools',
-        weight: 20,
-        hardReject: true,
-        test: (_content, lower) => /session_bootstrap/.test(lower) && /session_health/.test(lower),
-      },
-      {
-        key: 'read-only-contract',
-        weight: 15,
-        hardReject: true,
-        test: (content, lower) => /read-only/.test(lower) || /cannot modify files/.test(lower),
-      },
-      {
-        key: 'prime-package-format',
-        weight: 15,
-        hardReject: true,
-        test: (content) =>
-          content.includes('## Session Context') &&
-          content.includes('## System Health') &&
-          content.includes('## Structural Context') &&
-          content.includes('## Recommended Next Steps') &&
-          content.includes('## Tool Routing'),
-      },
-      {
-        key: 'urgency-skip',
-        weight: 10,
-        test: (_content, lower) => /urgent/.test(lower) && /skip bootstrap/.test(lower),
-      },
-      {
-        key: 'time-budget',
-        weight: 10,
-        test: (_content, lower) => /under 15 seconds/.test(lower),
-      },
-      {
-        key: 'graceful-failure',
-        weight: 10,
-        test: (_content, lower) => /unavailable/.test(lower) && /never block/i.test(lower),
-      },
-      {
-        key: 'bootstrap-fallback',
-        weight: 5,
-        test: (_content, lower) => /session_resume/.test(lower) && /fallback/.test(lower),
-      },
-      {
-        key: 'routing-guidance',
-        weight: 5,
-        test: (_content, lower) => /mcp__cocoindex_code__search/.test(lower) && /code_graph_query/.test(lower),
-      },
-      {
-        key: 'no-indexing',
-        weight: 5,
-        test: (_content, lower) => /never trigger indexing/.test(lower) || /no code_graph_scan/.test(lower),
-      },
-      {
-        key: 'simplicity',
-        weight: 5,
-        test: (content) => content.length < 13000,
-      },
-    ],
-    warningChecks: [
-      {
-        key: 'placeholder-heavy',
-        test: (content) => (content.match(/\[(your_value_here|actual extracted value)\]/gi) || []).length === 0,
-      },
-    ],
-    forbiddenChecks: [
-      {
-        key: 'resume-primary-bootstrap',
-        test: (_content, lower) =>
-          /2-step bootstrap:\s*session_resume\s*\+\s*session_health/.test(lower) ||
-          /\|\s*`session_resume`\s*\|[^\n]{0,80}always\s*[—-]\s*step 1/i.test(_content),
-      },
-      {
-        key: 'writes-files',
-        test: (_content, lower) =>
-          /(write files|edit files|modify(?: any)? files)/.test(lower) &&
-          !/(read-only|never modify(?: any)? files|cannot modify(?: any)? files|can't modify(?: any)? files|no file modification|no file modifications)/.test(lower),
-      },
-      {
-        key: 'runs-indexing',
-        test: (_content, lower) =>
-          /(code_graph_scan|memory_save)/.test(lower) &&
-          !/(no code_graph_scan|never trigger indexing|only check status|no memory_save|skip unchanged files)/.test(lower),
-      },
-    ],
-  };
-}
-
-function scorePrompt(content, manifestTarget, profileId) {
-  const profileChecks = profileId === 'context-prime' ? createContextPrimeChecks() : createHandoverChecks();
-  const result = buildScore(profileChecks, content);
-
-  if (manifestTarget && manifestTarget.mutableInPhase1 === true) {
-    result.reasons.push('Hard reject: manifest allows phase-1 mutation for target; current packet expects bounded runs only');
-    result.hardReject = true;
-  }
-
-  if (manifestTarget?.classification === 'fixed' || manifestTarget?.classification === 'forbidden') {
-    result.reasons.push(`Hard reject: manifest marks target as ${manifestTarget.classification}`);
-    result.hardReject = true;
-  }
-
-  return result;
-}
-
-function collectFailureModes(scoreResult) {
-  return scoreResult.checks
-    .filter((entry) => !entry.pass)
-    .map((entry) => entry.key);
+  return profileId;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -509,9 +260,8 @@ function scoreDynamic(candidateContent, agentName, profile, weights) {
 function main() {
   const args = parseArgs(process.argv.slice(2));
   const candidatePath = args.candidate;
-  const baselinePath = args.baseline;
   const manifestPath = args.manifest;
-  const targetPath = args.target || '.opencode/agent/handover.md';
+  const targetPath = args.target || candidatePath;
   const outputPath = args.output;
 
   if (!candidatePath) {
@@ -525,7 +275,7 @@ function main() {
       status: 'infra_failure',
       profileId: args.profile || null,
       family: null,
-      evaluationMode: 'prompt-surface',
+      evaluationMode: 'dynamic-5d',
       target: targetPath,
       candidate: candidatePath,
       error: candidateContent.error,
@@ -539,70 +289,16 @@ function main() {
     process.exit(1);
   }
 
-  // Dynamic mode: use generate-profile.cjs + 5-dimension scoring
-  if (args.dynamic) {
-    const profile = runScript('generate-profile.cjs', [`--agent=${candidatePath}`]);
-    if (!profile || !profile.id) {
-      const failure = {
-        status: 'infra_failure',
-        evaluationMode: 'dynamic-5d',
-        target: targetPath,
-        candidate: candidatePath,
-        error: 'Failed to generate dynamic profile',
-        failureModes: ['profile-generation-failure'],
-      };
-      if (outputPath) { writeJson(outputPath, failure); } else { process.stdout.write(`${JSON.stringify(failure, null, 2)}\n`); }
-      process.exit(1);
-    }
-    const agentName = profile.id;
-    // Accept optional --weights=<json> to override DIMENSION_WEIGHTS (ADR-005)
-    let weightsOverride = null;
-    if (args.weights) {
-      try {
-        weightsOverride = JSON.parse(args.weights);
-      } catch (_err) {
-        process.stderr.write('Warning: failed to parse --weights JSON, using defaults\n');
-      }
-    }
-    const dynamicResult = scoreDynamic(candidateContent, agentName, profile, weightsOverride);
-
-    // Also run legacy scoring if profile matches a known profile
-    let legacyScore = null;
-    if (profile.id === 'handover' || profile.id === 'context-prime') {
-      legacyScore = scorePrompt(candidateContent, null, profile.id);
-    }
-
-    const result = {
-      status: 'scored',
-      profileId: profile.id,
-      family: profile.family,
-      evaluationMode: 'dynamic-5d',
-      target: targetPath,
-      candidate: candidatePath,
-      score: dynamicResult.weightedScore,
-      dimensions: dynamicResult.dimensions,
-      legacyScore: legacyScore ? { total: legacyScore.hardReject ? 0 : legacyScore.total, checks: legacyScore.checks } : null,
-      recommendation: dynamicResult.weightedScore >= 70 ? 'candidate-acceptable' : 'needs-improvement',
-      failureModes: dynamicResult.dimensions
-        .filter((d) => d.score < 60)
-        .map((d) => `weak-${d.name}`),
-    };
-
-    if (outputPath) { writeJson(outputPath, result); } else { process.stdout.write(`${JSON.stringify(result, null, 2)}\n`); }
-    return;
-  }
-
-  const baselineContent = baselinePath ? safeRead(baselinePath) : null;
+  // Dynamic mode is the only evaluation path. generate-profile.cjs + 5-dimension scoring.
   const manifest = loadManifest(manifestPath);
   if (manifest && manifest.error) {
     const failure = {
       status: 'infra_failure',
       profileId: args.profile || null,
       family: null,
-      evaluationMode: 'prompt-surface',
+      evaluationMode: 'dynamic-5d',
       target: targetPath,
       candidate: candidatePath,
-      baseline: baselinePath || null,
       error: manifest.error,
       failureModes: ['manifest-parse-failure'],
     };
@@ -614,52 +310,54 @@ function main() {
     process.exit(1);
   }
 
-  const profileId = inferProfileId(targetPath, args.profile, manifest);
-  const family = inferFamily(profileId, manifest, targetPath);
-  const manifestTarget = manifest?.targets?.find((entry) => entry.path === targetPath) || null;
-  const candidateScore = scorePrompt(candidateContent, manifestTarget, profileId);
-  const baselineScore =
-    typeof baselineContent === 'string'
-      ? scorePrompt(baselineContent, manifestTarget, profileId)
-      : null;
-
-  const candidateTotal = candidateScore.hardReject ? 0 : candidateScore.total;
-  const baselineTotal = baselineScore ? (baselineScore.hardReject ? 0 : baselineScore.total) : null;
-  const delta = baselineTotal === null ? null : candidateTotal - baselineTotal;
-
-  let recommendation = 'candidate-better';
-  if (candidateScore.hardReject) {
-    recommendation = 'reject-candidate';
-  } else if (baselineTotal !== null && delta < 0) {
-    recommendation = 'keep-baseline';
-  } else if (baselineTotal !== null && delta === 0) {
-    recommendation = 'tie';
+  const profile = runScript('generate-profile.cjs', [`--agent=${candidatePath}`]);
+  if (!profile || !profile.id) {
+    const failure = {
+      status: 'infra_failure',
+      evaluationMode: 'dynamic-5d',
+      target: targetPath,
+      candidate: candidatePath,
+      error: 'Failed to generate dynamic profile',
+      failureModes: ['profile-generation-failure'],
+    };
+    if (outputPath) {
+      writeJson(outputPath, failure);
+    } else {
+      process.stdout.write(`${JSON.stringify(failure, null, 2)}\n`);
+    }
+    process.exit(1);
   }
+
+  const manifestProfileId = inferProfileId(targetPath, args.profile, manifest);
+  const resolvedProfileId = manifestProfileId !== 'dynamic' ? manifestProfileId : profile.id;
+  const family = inferFamily(resolvedProfileId, manifest, targetPath);
+  const agentName = profile.id;
+
+  // Accept optional --weights=<json> to override DIMENSION_WEIGHTS (ADR-005)
+  let weightsOverride = null;
+  if (args.weights) {
+    try {
+      weightsOverride = JSON.parse(args.weights);
+    } catch (_err) {
+      process.stderr.write('Warning: failed to parse --weights JSON, using defaults\n');
+    }
+  }
+  const dynamicResult = scoreDynamic(candidateContent, agentName, profile, weightsOverride);
 
   const result = {
     status: 'scored',
-    profileId,
-    family,
-    evaluationMode: 'prompt-surface',
+    profileId: resolvedProfileId,
+    family: family || profile.family,
+    evaluationMode: 'dynamic-5d',
     target: targetPath,
     candidate: candidatePath,
-    baseline: baselinePath || null,
-    score: candidateTotal,
-    totals: {
-      candidate: candidateTotal,
-      baseline: baselineTotal,
-    },
-    delta,
-    recommendation,
-    checks: {
-      candidate: candidateScore.checks,
-      baseline: baselineScore ? baselineScore.checks : [],
-    },
-    reasons: {
-      candidate: candidateScore.reasons,
-      baseline: baselineScore ? baselineScore.reasons : [],
-    },
-    failureModes: collectFailureModes(candidateScore),
+    score: dynamicResult.weightedScore,
+    dimensions: dynamicResult.dimensions,
+    legacyScore: null,
+    recommendation: dynamicResult.weightedScore >= 70 ? 'candidate-acceptable' : 'needs-improvement',
+    failureModes: dynamicResult.dimensions
+      .filter((d) => d.score < 60)
+      .map((d) => `weak-${d.name}`),
   };
 
   if (outputPath) {

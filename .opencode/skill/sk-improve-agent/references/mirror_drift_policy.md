@@ -1,6 +1,6 @@
 ---
 title: Mirror Drift Policy
-description: Policy for handling runtime mirror drift after canonical agent-improver promotion.
+description: Policy for handling runtime mirror drift after canonical improve-agent promotion.
 ---
 
 # Mirror Drift Policy
@@ -53,7 +53,7 @@ After a canonical promotion:
 Use `scan-integration.cjs` as the primary tool for detecting mirror drift. It replaces manual file-by-file comparison with automated signal-matching across all 3 runtime mirrors:
 
 ```text
-node scripts/scan-integration.cjs --agent=handover
+node scripts/scan-integration.cjs --agent={agent-name}
 ```
 
 The scanner reports `aligned`, `diverged`, or `missing` for each mirror surface based on signal string matching against the canonical body.

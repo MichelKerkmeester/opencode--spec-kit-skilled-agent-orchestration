@@ -64,7 +64,7 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 2a: Extract Graph Primitives
+## Phase 1: Setup
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -84,7 +84,7 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2b: Build Coverage Graph Database
+## Phase 2: Implementation
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -102,7 +102,7 @@ contextType: "planning"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 2c: Add MCP Tools
+### Phase 2c: Add MCP Tools
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -121,8 +121,7 @@ Visualization is deferred to a follow-up phase and is intentionally removed from
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 2d: Define Reducer/MCP Contract and Integrate Reducer
+### Phase 2d: Define Reducer/MCP Contract and Integrate Reducer
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -137,12 +136,10 @@ Visualization is deferred to a follow-up phase and is intentionally removed from
 - [x] T-CG-NEW-2 Calibrate coverage-specific edge weights and guard thresholds so inherited memory weights are replaced by coverage-aware values before convergence is finalized. (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs`; `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts`; `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs`)
 - [x] T016 Query `deep_loop_graph_convergence`, merge graph blockers into `shouldContinue`, and preserve a local JSON graph fallback when MCP is unavailable. (`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs`)
 - [x] T-CG-NEW-3 Implement the fallback authority chain `JSONL -> local JSON graph -> SQLite projection` so MCP loss degrades cleanly without changing truth ownership. (`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs`; `.opencode/skill/sk-deep-research/references/state_format.md`)
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
-## Phase 2e: Agent and Convergence Integration
+### Phase 2e: Agent and Convergence Integration
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -155,12 +152,11 @@ Visualization is deferred to a follow-up phase and is intentionally removed from
 - [x] T018 Document the review `graphEvents` JSONL contract and the graph-aware review convergence model. (`.opencode/skill/sk-deep-review/references/state_format.md`; `.opencode/skill/sk-deep-review/references/convergence.md`)
 - [x] T019 Update the deep-research agent prompt so iterations emit question, finding, claim, and source graph events in structured form. (`.opencode/agent/deep-research.md`)
 - [x] T020 Update the deep-review agent prompt so iterations emit dimension, file, finding, evidence, and remediation graph events in structured form. (`.opencode/agent/deep-review.md`)
-<!-- /ANCHOR:phase-5 -->
 
 ---
 
 <!-- ANCHOR:completion -->
-## Verification and Completion
+## Phase 3: Verification
 
 | Task ID | Status | Parent REQ | Files |
 |---------|--------|------------|-------|
@@ -171,6 +167,10 @@ Visualization is deferred to a follow-up phase and is intentionally removed from
 - [x] T021 Create the shared-library unit tests for edge management, signals, and graph-aware convergence. (`.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-core.vitest.ts`; `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-signals.vitest.ts`; `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts`)
 - [x] T022 Create the MCP DB and tool integration tests for schema behavior, upsert/query/status/convergence behavior, and the deferred-visualization boundary. (`.opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-db.vitest.ts`; `.opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-tools.vitest.ts`)
 - [x] T023 Run strict phase validation and the targeted graph test suites before calling the phase implementation-ready. (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph --strict`; targeted `vitest` runs for the five named test files)
+
+---
+
+## Completion Criteria
 
 - [x] Every task remains mapped to a named requirement and concrete file surface.
 - [x] Extraction and integration tasks preserve the explicit `35-45%` direct reuse / `25-30%` adapted reuse posture instead of drifting into greenfield implementation or pretending reducer/convergence work is plug-and-play.

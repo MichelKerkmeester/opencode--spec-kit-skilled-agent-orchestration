@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Graph Testing and Playbook Alignment [006]"
-description: "16 tasks across 3 parts covering integration tests, stress tests, playbook updates, and README alignment for coverage graph capabilities."
+title: "Tasks: Graph Testing and Playbook Alignment [042.006]"
+description: "Completed task log for the graph verification and playbook alignment phase."
 trigger_phrases:
-  - "006"
+  - "042.006"
   - "graph testing tasks"
-  - "playbook alignment tasks"
 importance_tier: "important"
-contextType: "planning"
+contextType: "tasks"
 ---
 # Tasks: Graph Testing and Playbook Alignment
 
@@ -25,42 +24,60 @@ contextType: "planning"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)` -- REQ reference indicates requirement satisfied.
+**Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
 
 ---
 
-<!-- ANCHOR:part-a -->
-## Part A: Integration and Stress Tests
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-- [ ] T001 Read CJS coverage-graph-core.cjs relation weights and TS coverage-graph-db.ts VALID_RELATIONS to identify alignment contract
-- [ ] T002 Create `coverage-graph-integration.vitest.ts` with CJS-TS relation name alignment tests (REQ-GT-001, REQ-GT-002)
-- [ ] T003 Add weight clamping consistency tests to integration suite (REQ-GT-003)
-- [ ] T004 Add self-loop prevention tests for both layers (REQ-GT-004)
-- [ ] T005 Add namespace isolation tests for research/review/improvement loop types (REQ-GT-005)
-- [ ] T006 Add convergence signal alignment tests (REQ-GT-006)
-- [ ] T007 Create `coverage-graph-stress.vitest.ts` with 1000+ node tests (REQ-GT-007)
-- [ ] T008 Add contradiction scanning stress test (REQ-GT-008)
-- [ ] T009 Add provenance traversal and cluster metrics stress tests
-<!-- /ANCHOR:part-a -->
+- [x] T001 Read the Phase 002 graph-runtime surfaces and identify the CommonJS and TypeScript contracts that need integration coverage. (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-*.cjs`; `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts`)
+- [x] T002 Locate the live playbook trees and README files that need graph capability updates. (`sk-deep-research`; `sk-deep-review`; `sk-improve-agent`)
+- [x] T003 Confirm the exact playbook filenames and verification-surface paths before packet closeout. (the seven graph-related playbook files plus the two Vitest suites)
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- ANCHOR:part-b -->
-## Part B: Manual Testing Playbooks
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-- [ ] T010 [P] Create `031-graph-convergence-signals.md` in sk-deep-research playbook (REQ-GT-009)
-- [ ] T011 [P] Create `029-graph-events-emission.md` in sk-deep-research playbook (REQ-GT-010)
-- [ ] T012 [P] Create `021-graph-convergence-review.md` in sk-deep-review playbook (REQ-GT-011)
-- [ ] T013 [P] Create `015-graph-events-review.md` in sk-deep-review playbook (REQ-GT-012)
-- [ ] T014 [P] Create agent-improver playbook test cases: mutation coverage, trade-off detection, candidate lineage (REQ-GT-013)
-<!-- /ANCHOR:part-b -->
+- [x] T004 Add the graph integration suite. (`.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts`)
+- [x] T005 Add the graph stress suite. (`.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts`)
+- [x] T006 Add research graph playbooks. (`.opencode/skill/sk-deep-research/manual_testing_playbook/04--convergence-and-recovery/031-graph-convergence-signals.md`; `.opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-discipline/029-graph-events-emission.md`)
+- [x] T007 Add review graph playbooks. (`.opencode/skill/sk-deep-review/manual_testing_playbook/04--convergence-and-recovery/021-graph-convergence-review.md`; `.opencode/skill/sk-deep-review/manual_testing_playbook/03--iteration-execution-and-state-discipline/015-graph-events-review.md`)
+- [x] T008 Add improve-agent graph-adjacent playbooks. (`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md`; `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md`; `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md`)
+- [x] T009 Update graph capability references in the three affected skill READMEs. (`.opencode/skill/sk-deep-research/README.md`; `.opencode/skill/sk-deep-review/README.md`; `.opencode/skill/sk-improve-agent/README.md`)
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:part-c -->
-## Part C: README Updates
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-- [ ] T015 [P] Update sk-deep-research and sk-deep-review READMEs with graph capability references (REQ-GT-014)
-- [ ] T016 [P] Update sk-improve-agent README with graph capability references (REQ-GT-014)
-<!-- /ANCHOR:part-c -->
+- [x] T010 Confirm the two Vitest suites and seven playbook files exist at the documented paths. (all paths cited in `spec.md` and `implementation-summary.md`)
+- [x] T011 Record the verification surfaces and README updates in the packet docs with evidence. (`checklist.md`; `implementation-summary.md`)
+- [x] T012 Run strict validation on the phase folder until it passes cleanly. (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --strict`)
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Graph verification surfaces and playbook files recorded at live repo paths
+- [x] Strict validation passes for the phase packet
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Verification Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->

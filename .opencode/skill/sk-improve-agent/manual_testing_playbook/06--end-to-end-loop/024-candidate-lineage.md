@@ -11,7 +11,7 @@ Validates that the improvement loop maintains a candidate lineage graph that tra
 ## Prompt / Command
 
 ```text
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
 ```
 
 ## Expected Signals

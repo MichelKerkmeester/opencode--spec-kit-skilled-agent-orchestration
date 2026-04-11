@@ -13,13 +13,13 @@ Validates that running a benchmark with --integration-report adds integrationSco
 ```bash
 # Step 1: Generate the integration report
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs \
-  --agent=handover \
+  --agent=debug \
   --output=/tmp/integration-for-bench.json
 
 # Step 2: Run benchmark with the integration report
 mkdir -p /tmp/bench-test-int && \
 node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
-  --profile=handover \
+  --profile=debug \
   --outputs-dir=/tmp/bench-test-int \
   --output=/tmp/bench-with-integration.json \
   --integration-report=/tmp/integration-for-bench.json

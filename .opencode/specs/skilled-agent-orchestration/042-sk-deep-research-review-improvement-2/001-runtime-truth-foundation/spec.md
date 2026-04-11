@@ -30,6 +30,7 @@ This revision also incorporates five newly identified packet gaps from `scratch/
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -39,11 +40,13 @@ This revision also incorporates five newly identified packet gaps from `scratch/
 | **Status** | Implemented |
 | **Created** | 2026-04-10 |
 | **Branch** | `042-sk-deep-research-review-improvement-2` |
+| **Parent Spec** | `../spec.md` |
 | **Dependencies** | `.opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md`; current deep-loop assets, YAML workflows, reducer/tests |
 | **Predecessor** | Related background packets: `028-auto-deep-research-review-improvement`, `040-sk-auto-deep-research-review-improvement` |
-| **Successor** | Phase 002 (semantic coverage graph), Phase 003 (wave executor), Phase 004 (offline loop optimizer) |
+| **Successor** | `../002-semantic-coverage-graph/spec.md` (Phase 002 — semantic coverage graph); downstream Phase 003 (wave executor), Phase 004 (offline loop optimizer) |
 
 ---
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

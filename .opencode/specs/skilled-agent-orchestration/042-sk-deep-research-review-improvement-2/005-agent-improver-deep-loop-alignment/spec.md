@@ -1,16 +1,15 @@
 ---
 title: "Feature Specification: Agent-Improver Deep-Loop Alignment [005]"
-description: "Transfer the proven deep-loop runtime truth contracts from 042 Phases 1-4 to the sk-improve-agent skill, adding stop-reason taxonomy, audit journaling, mutation coverage tracking, trade-off detection, optional parallel candidates, and scoring weight optimization."
+description: "Completed Level 3 phase packet for the deep-loop runtime-truth alignment that introduced journal wiring, mutation coverage, trade-off detection, candidate lineage, and benchmark stability for the skill now published as sk-improve-agent."
 trigger_phrases:
   - "005"
   - "agent improver"
+  - "sk-improve-agent"
   - "deep loop alignment"
-  - "improvement journal"
   - "mutation coverage"
-  - "trade-off detection"
   - "benchmark stability"
 importance_tier: "important"
-contextType: "planning"
+contextType: "implementation"
 ---
 # Feature Specification: Agent-Improver Deep-Loop Alignment
 
@@ -21,11 +20,9 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-The sk-improve-agent skill runs bounded improvement loops over agent packets, but it currently lacks the runtime truth infrastructure proven in 042 Phases 1-4 for deep-research and deep-review. This phase ports those contracts into agent-improver: a well-formed stop-reason taxonomy, legal-stop gates, audit journaling, mutation coverage tracking, dimension trajectory analysis, trade-off detection, optional parallel candidate waves, and scoring weight optimization based on session history.
+Phase 005 completed the runtime-truth alignment for the improve-agent skill family. The delivered work added an append-only audit journal, an improvement-scoped mutation coverage graph, dimension trade-off detection, candidate lineage tracking for optional parallel waves, and benchmark stability scoring so the improver loop could behave like the deeper research and review loops instead of remaining an isolated evaluator.
 
-**Key Decisions**: emit journal events in the orchestrator (not in the proposal-only agent); reuse the existing coverage graph infrastructure with an improvement-specific namespace; treat dimension trajectory as a first-class convergence signal; keep parallel candidate waves opt-in behind an exploration-breadth gate.
-
-**Critical Dependencies**: 042 Phase 1 runtime truth foundation (stop-reason taxonomy, event journal schema); 042 Phase 2 semantic coverage graph (reused with `loop_type: "improvement"`); existing sk-improve-agent 5-dimension scoring and packet-local candidate generation discipline.
+The implementation landed in commit `080cf549e` and shipped in `.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md`. Phase 007 later renamed the live skill surface from `sk-agent-improver` to `sk-improve-agent`, so this closeout packet now points at the current runtime paths while preserving the historical phase slug.
 
 ---
 
@@ -36,12 +33,17 @@ The sk-improve-agent skill runs bounded improvement loops over agent packets, bu
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-10 |
+| **Completed** | 2026-04-11 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
-| **Parent Packet** | `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/` |
-| **Predecessor Phases** | `001-runtime-truth-foundation`, `002-semantic-coverage-graph`, `003-wave-executor`, `004-offline-loop-optimizer` |
-| **Skill Target** | `.opencode/skill/sk-improve-agent/` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Phase** | 5 of 8 |
+| **Predecessor** | `../004-offline-loop-optimizer/spec.md` |
+| **Successor** | `../006-graph-testing-and-playbook-alignment/spec.md` |
+| **Runtime Target** | `.opencode/skill/sk-improve-agent/` |
+| **Historical Note** | The phase slug keeps `agent-improver`, but the active runtime surface was renamed to `sk-improve-agent` in Phase 007. |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -51,11 +53,19 @@ The sk-improve-agent skill runs bounded improvement loops over agent packets, bu
 
 ### Problem Statement
 
-The sk-improve-agent skill runs bounded improvement loops that surface no reliable stop-reason, leave no audit trail, do not track which mutation dimensions have been explored, and cannot detect when one dimension improves at the cost of another. Sessions are opaque, non-resumable, and produce no data that could inform future scoring weight calibration. The 042 bundle already solved these problems for deep-research and deep-review, but agent-improver was left behind.
+Before this phase shipped, the improve-agent loop had strong evaluator logic but weak runtime truth. It lacked a dedicated audit journal, had no improvement-scoped coverage graph, could not detect cross-dimension trade-offs, had no candidate-lineage model for parallel exploration, and could not measure benchmark replay stability. That left the loop harder to audit, less explainable, and less aligned with the runtime-truth contracts already established for `sk-deep-research` and `sk-deep-review`.
 
 ### Purpose
 
-Apply the same runtime truth contracts to agent-improver so that every improvement session is auditable, resumable, convergence-aware, and self-improving over time.
+Record the delivered alignment work as a completed Level 3 packet so the spec accurately reflects what landed:
+
+- append-only journal wiring through `improvement-journal.cjs`
+- coverage tracking through `mutation-coverage.cjs`
+- trade-off analysis through `trade-off-detector.cjs`
+- optional parallel-wave lineage through `candidate-lineage.cjs`
+- stability and advisory optimizer support through `benchmark-stability.cjs`
+
+This closeout packet also avoids reintroducing stale static-profile wording. The current packet describes the shipped runtime in current `sk-improve-agent` terms and uses dynamic target-family language rather than freezing older `context-prime` or static `handover` examples as the canonical contract.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -65,47 +75,34 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 ### In Scope
 
-- Stop-reason taxonomy and legal-stop gates adapted for improvement loop semantics
-- Audit journal (`improvement-journal.jsonl`) capturing all session events
-- Hypothesis verification ledger for mutation outcomes
-- Mutation coverage graph tracking explored dimensions, tried mutations, and integration surfaces
-- Dimension trajectory tracking (per-dimension score trends across iterations)
-- Trade-off detector flagging when one dimension improves while another regresses
-- Exhausted-mutations log to prevent redundant exploration
-- Optional parallel candidate waves (2-3 strategies, opt-in via exploration-breadth gate)
-- Candidate lineage graph for parallel waves
-- Scoring weight optimizer using historical session data
-- Benchmark replay stability measurement
-- 5 new CJS scripts and 5 matching Vitest test suites
-- Updates to SKILL.md, improvement_config.json, improvement_strategy.md, improvement_charter.md, agent-improver.md, and agent.md command
+- Document the delivered journal, coverage, trade-off, lineage, and stability runtime surfaces now living under `.opencode/skill/sk-improve-agent/`.
+- Document the delivered command and runtime-agent updates for `.opencode/command/improve/agent.md` and `.opencode/agent/improve-agent.md`.
+- Record the shipped verification surfaces: 5 dedicated Vitest suites, playbook scenarios, changelog evidence, and implementation commit.
+- Bring the phase packet into current Level 3 template alignment with completed-state metadata, evidence-backed tasks, and verification checklist items.
 
 ### Out of Scope
 
-- Changes to the 5-dimension scoring formula itself (weights only, not formula)
-- Changes to the packet-local candidate generation model (proposal-only constraint preserved)
-- Full council/synthesis layer (deep-research/review feature, not relevant here)
-- New UI or dashboard surfaces (runtime data emitted to JSONL; visualization is a separate concern)
+- Changing the shipped improve-agent runtime behavior.
+- Reopening the later lifecycle-contract retraction captured in `.opencode/changelog/15--sk-improve-agent/v1.2.1.0.md`.
+- Updating current repo files outside this phase folder.
+- Renaming the historical phase slug.
 
-### Files to Change
+### Files Delivered by the Phase
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/sk-improve-agent/SKILL.md` | Modify | Add stop-reason taxonomy, journal protocol, coverage graph, trajectory, trade-off, parallel wave, and weight-optimizer sections |
-| `.opencode/skill/sk-improve-agent/assets/improvement_config.json` | Modify | Add config fields for journal path, coverage graph path, wave activation gate, weight optimizer settings (all optional with defaults) |
-| `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md` | Modify | Add mutation exhaustion guidance, trajectory-based convergence criteria, trade-off resolution guidance |
-| `.opencode/skill/sk-improve-agent/assets/improvement_charter.md` | Modify | Add audit trail requirements, legal-stop gate obligations |
-| `.opencode/agent/agent-improver.md` | Modify | Add journal emission protocol, legal-stop gate checks, coverage graph update calls |
-| `.opencode/command/improve/agent.md` | Modify | Add resume semantics, session-id propagation, weight optimizer invocation |
-| `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs` | Create | Append-only JSONL event emitter for improvement session events |
-| `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs` | Create | Coverage graph reader/writer for explored dimensions and tried mutations |
-| `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs` | Create | Cross-dimension regression detector using trajectory data |
-| `.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs` | Create | Lineage graph for parallel candidate waves |
-| `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs` | Create | Benchmark replay stability measurement and reporting |
-| `.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts` | Create | Tests for journal emit, append-only enforcement, event schema |
-| `.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts` | Create | Tests for coverage graph read/write and namespace isolation |
-| `.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts` | Create | Tests for regression detection and threshold configuration |
-| `.opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts` | Create | Tests for lineage graph construction and parent-child linkage |
-| `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts` | Create | Tests for stability scoring and replay consistency |
+| `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs` | Created | Append-only improvement-session journal with validated event types. |
+| `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs` | Created | Improvement-scoped coverage graph and exhausted-mutation tracking. |
+| `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs` | Created | Pareto-aware cross-dimension trade-off detection. |
+| `.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs` | Created | Directed lineage graph for optional parallel candidates. |
+| `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs` | Created | Replay stability scoring and advisory optimizer support. |
+| `.opencode/skill/sk-improve-agent/scripts/tests/*.vitest.ts` | Created | Dedicated tests for each new runtime-truth helper. |
+| `.opencode/skill/sk-improve-agent/assets/improvement_config.json` | Modified | Added journal, coverage, trajectory, parallel-wave, and optimizer settings. |
+| `.opencode/skill/sk-improve-agent/assets/improvement_charter.md` | Modified | Added audit-trail and legal-stop obligations. |
+| `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md` | Modified | Added convergence, trade-off, and exhaustion guidance. |
+| `.opencode/skill/sk-improve-agent/SKILL.md` | Modified | Published the runtime-truth contract for improve-agent. |
+| `.opencode/agent/improve-agent.md` | Modified | Kept journaling orchestrator-side and aligned the runtime mirror. |
+| `.opencode/command/improve/agent.md` | Modified | Documented journal emission, stop-state reporting, and runtime-truth workflow steps. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -113,38 +110,26 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-### Tier 1: Runtime Truth Alignment (from 042 Phase 1)
+### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-AI-001 | Stop-reason taxonomy: `converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`. Separate `sessionOutcome`: `keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`. Research finding: do not overload stopReason with outcome semantics (P0). | Every session termination emits exactly one stop-reason matching the taxonomy plus one session outcome; no session ends without both logged |
-| REQ-AI-002 | Legal-stop gates organized as gate bundles: `contractGate` (structural >= 90, systemFitness >= 90), `behaviorGate` (ruleCoherence >= 85, outputQuality >= 85), `integrationGate` (integration >= 90, no drift), `evidenceGate` (benchmark+repeatability pass), `improvementGate` (weighted delta >= threshold). Research finding: map dimensions into gate bundles, not one-gate-per-score (P0). | A session may not claim `converged` unless all gate bundles pass; failed gates persist `blockedStop` with gate results rather than inventing new stop labels |
-| REQ-AI-003 | Resume/continuation semantics with classifier: `new`, `resume`, `restart`, `fork`, `completed-continue`. Add `continuedFromIteration` field. Research finding: port Phase 001's classifier directly; archive old runtime on restart; replay journal + coverage graph + registry before dispatch (P0). | A session started with a prior session-id replays journal state and resumes from the last checkpoint without repeating completed iterations |
-| REQ-AI-004 | Audit journal (`improvement-journal.jsonl`) separated from mutation ledger. Journal captures lifecycle events: `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempted`, `promotion_result`, `rollback_result`, `session_ended`. Research finding: today's state log mixes baseline/candidate/benchmark records; split into journal (lifecycle+stop) vs ledger (proposal/evaluation outcomes) (P0). | All lifecycle event types appear in the journal for every completed session; file is append-only and survives process restart |
-| REQ-AI-005 | Hypothesis verification ledger tracking mutation outcomes (proposed, accepted, rejected with reason) | Every candidate proposal appears in the ledger with its final outcome and the scored dimensions |
+| REQ-001 | The phase must add a dedicated audit journal for improve-agent sessions. | `improvement-journal.cjs` exists and the release notes describe orchestrator-owned journal emission. |
+| REQ-002 | The phase must add improvement-scoped mutation coverage tracking. | `mutation-coverage.cjs` exists and uses the improvement loop namespace described in the release evidence. |
+| REQ-003 | The phase must add dimension-aware trade-off detection. | `trade-off-detector.cjs` exists and shipped with dedicated test coverage. |
+| REQ-004 | The phase must add candidate-lineage tracking for optional parallel exploration. | `candidate-lineage.cjs` exists, with supporting tests and playbook coverage. |
+| REQ-005 | The phase must add benchmark stability measurement for replay quality. | `benchmark-stability.cjs` exists and is referenced in changelog and test evidence. |
+| REQ-006 | The phase packet must reflect the current runtime surface names. | Phase documentation points to `.opencode/skill/sk-improve-agent/` and `.opencode/agent/improve-agent.md`, not missing `agent-improver` runtime paths. |
+| REQ-007 | The phase packet must satisfy the current Level 3 contract. | `validate.sh --strict` passes for this phase folder with all required headings, anchors, and template markers present. |
 
-### Tier 2: Improvement Intelligence (from 042 Phase 2 + unique)
-
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-AI-006 | Mutation coverage graph tracking explored dimensions, tried mutations, and integration surfaces using `loop_type: "improvement"` namespace | After each iteration the coverage graph is updated; querying it returns accurate explored/remaining sets per dimension |
-| REQ-AI-007 | Dimension trajectory tracking (per-dimension score history across iterations) | For each active session the trajectory file contains a time-ordered score vector per dimension; minimum 3 data points before convergence can be claimed |
-| REQ-AI-008 | Trade-off detection with Pareto awareness: flag when improvement > +3 in one dimension causes regression < -3 in hard dimensions (structural, integration, systemFitness) or < -5 in soft dimensions. Research finding: weighted totals hide dominated candidates; block promotion for Pareto-dominated candidates even when weighted sum increases (P1). | The detector emits a `trade-off-detected` event to the journal whenever thresholds are crossed; thresholds are configurable with separate hard/soft dimension defaults |
-| REQ-AI-009 | Exhausted-mutations log preventing redundant exploration | The coverage graph writer records exhausted mutation types per dimension; the orchestrator skips mutation types already in the exhausted log |
-
-### Tier 3: Parallel Experimentation (from 042 Phase 3, adapted)
+### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-AI-010 | Optional parallel candidate waves (2-3 candidates with different strategies), activated when exploration-breadth config gate is met | Parallel waves only activate when `parallelWaves.enabled: true` and `explorationBreadthScore` exceeds `activationThreshold`; single-wave behavior is unchanged when gate is not met |
-| REQ-AI-011 | Candidate lineage graph linking each candidate to its parent session, wave index, and spawning mutation | The lineage graph for any parallel-wave session can be traversed from root to leaf; each node contains session-id, wave-index, and mutation-type |
-
-### Tier 4: Scoring Optimization (from 042 Phase 4)
-
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-AI-012 | Scoring weight optimizer using historical session data to recommend per-dimension weight adjustments. Research finding: real data exists in 041 artifacts but is sparse; follow Phase 004's advisory-only model, refuse auto-apply until 2+ compatible target families and sufficient run history (P2). | After a configurable number of sessions the optimizer reads the journal history and emits a weight-recommendation report; recommendations do not auto-apply without explicit approval |
-| REQ-AI-013 | Benchmark replay stability measurement confirming consistent scores across identical replays | The benchmark-stability script reports a stability coefficient for each dimension; sessions with coefficient below threshold emit a `stabilityWarning` to the journal |
+| REQ-008 | The packet must preserve the five architectural decisions from the original phase. | `decision-record.md` captures journal ownership, graph reuse, trajectory gating, opt-in parallel waves, and backward-compatible config defaults. |
+| REQ-009 | Verification evidence must show the work landed, not just that files exist. | Tasks and checklist entries cite commit `080cf549e`, changelog `v1.1.0.0`, post-release note `v1.2.1.0`, or concrete repo paths. |
+| REQ-010 | The packet must use current dynamic-mode language. | The packet avoids presenting `context-prime` or static `handover` profiles as the live canonical contract. |
+| REQ-011 | The packet must record follow-on reality where later releases narrowed unsupported lifecycle promises. | `implementation-summary.md` and `decision-record.md` mention the later `v1.2.1.0` retraction so this packet does not re-freeze superseded lifecycle wording. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -152,25 +137,20 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Every improvement session termination produces a journal entry with exactly one stop-reason from the approved taxonomy.
-- **SC-002**: Legal-stop gates block premature `converged` or `promoted` claims in all test scenarios.
-- **SC-003**: A session resumed from a prior session-id replays correctly and does not duplicate iteration events.
-- **SC-004**: The mutation coverage graph accurately reflects explored and remaining mutation space after each iteration.
-- **SC-005**: Trade-off detection fires within the same iteration that the threshold crossing occurs.
-- **SC-006**: Parallel candidate waves do not activate unless the exploration-breadth gate condition is satisfied.
-- **SC-007**: The scoring weight optimizer produces a recommendation report after the configured session count threshold is reached.
-- **SC-008**: All 5 new scripts have passing Vitest suites with zero flaky tests across 3 consecutive runs.
-- **SC-009**: Backward compatibility is maintained: existing improvement sessions with no new config fields behave identically to pre-phase behavior.
+- **SC-001**: The phase packet validates strictly as a Level 3 child phase.
+- **SC-002**: The packet records the five delivered runtime-truth helpers and their live `sk-improve-agent` paths.
+- **SC-003**: The packet shows evidence for the landing commit, release note, playbook additions, and dedicated test surfaces.
+- **SC-004**: The packet preserves the important design choices without reintroducing stale static-profile or unsupported lifecycle claims.
+- **SC-005**: Parent and successor cross-links resolve cleanly for downstream packet navigation.
 
 ### Acceptance Scenarios
 
-1. **Given** a completed improvement session, **When** I read the journal file, **Then** it contains exactly one `session-ended` event with a stop-reason matching the approved taxonomy and at least one event per completed iteration.
-2. **Given** a session where convergence math would trigger `converged` but a 5-dimension stability check fails, **When** the legal-stop gate evaluates, **Then** the gate blocks the stop and the session continues rather than terminating prematurely.
-3. **Given** a prior session-id from an interrupted improvement session, **When** I start a new session with that id, **Then** the orchestrator replays journal state and the iteration counter starts where the prior run left off without duplicating already-completed events.
-4. **Given** an improvement session where dimension clarity improves by 0.15 and dimension integration regresses by 0.12 (above default threshold), **When** the trade-off detector runs, **Then** a `trade-off-detected` event appears in the journal within the same iteration.
-5. **Given** `parallelWaves.enabled: false` in improvement_config.json (the default), **When** an improvement session runs, **Then** no parallel wave is spawned and no candidate lineage graph is written.
-6. **Given** all mutation types for a dimension are marked exhausted, **When** the orchestrator selects the next mutation, **Then** it skips exhausted types and annotates the journal with the exhausted-mutations set rather than looping on spent strategies.
-7. **Given** a normal improvement session run without any new config fields present, **When** the session completes, **Then** behavior is identical to the pre-phase baseline and no errors are thrown for missing config blocks.
+1. **Given** a maintainer opens Phase 005 to understand the improve-agent runtime-truth work, **when** they inspect the packet, **then** they see the current `sk-improve-agent` paths, the shipped helper files, and the release evidence in one place.
+2. **Given** a validator checks this phase, **when** strict validation runs, **then** the packet satisfies the Level 3 template with no blocking integrity errors.
+3. **Given** a reader needs the architectural rationale, **when** they open `decision-record.md`, **then** they can see why journal writes stayed in the orchestrator, why coverage graph reuse was chosen, and how backward compatibility was protected.
+4. **Given** a future audit compares phase docs against current runtime naming, **when** it reads this packet, **then** it is not sent to retired runtime-mirror paths or static-profile wording that no longer represents the live surface.
+5. **Given** a release auditor wants proof that the phase shipped, **when** they inspect the packet, **then** they can trace the delivery through commit `080cf549e`, `v1.1.0.0`, and the live helper files.
+6. **Given** a maintainer checks whether later packet work changed the Phase 005 story, **when** they read this packet, **then** they can see that Phase 007 renamed live surfaces and `v1.2.1.0` narrowed unsupported lifecycle wording without undoing the runtime delivery.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -180,13 +160,11 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | 042 Phase 1 journal schema | Journal emit contract must be compatible | Use same event schema from Phase 1; document any improvement-specific extensions |
-| Dependency | 042 Phase 2 coverage graph | Coverage graph namespace and API must support `loop_type: "improvement"` | Add namespace field to existing graph writers; verify no breaking change to deep-research/review paths |
-| Dependency | sk-improve-agent proposal-only constraint | Orchestrator must own journal emission; agent must not write state | ADR-001 enforces this; enforce via code review gate |
-| Risk | Trajectory-based convergence false positives | Session terminates too early on noisy score data | Require minimum 3 trajectory data points before convergence claim (REQ-AI-007) |
-| Risk | Parallel wave complexity overloading LLM context | Parallel waves increase context length per session | Keep parallel waves strictly opt-in; default config disables them |
-| Risk | Weight optimizer recommendations applied without review | Auto-applied weight changes could degrade scoring over time | REQ-AI-012 explicitly blocks auto-apply; require explicit approval |
-| Risk | Backward compatibility breakage | New config fields could change default behavior | All new config fields are optional with documented defaults (ADR-005) |
+| Dependency | Commit `080cf549e` is the primary landing point for the phase. | High | Cite the commit directly and tie closeout evidence to live repo paths plus `v1.1.0.0`. |
+| Dependency | Phase 007 renamed the active runtime surfaces after Phase 005 landed. | Medium | Preserve historical context in prose, but point all live references at `sk-improve-agent` and `.opencode/agent/improve-agent.md`. |
+| Risk | Packet docs can accidentally reintroduce the retired `agent-improver` runtime path. | Medium | Use only live runtime paths in specs, tasks, checklist, and implementation summary. |
+| Risk | Packet docs can freeze unsupported lifecycle wording that `v1.2.1.0` later retracted. | Medium | Explicitly note that the later patch release narrowed the lifecycle surface and keep this packet aligned to current reality. |
+| Risk | Static-profile examples from older improve-agent docs could be copied forward as canon. | Low | Use dynamic target-family wording and cite current `supportedProfiles: []` state in the active config. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -195,218 +173,93 @@ Apply the same runtime truth contracts to agent-improver so that every improveme
 
 ### Performance
 
-- **NFR-P01**: Journal append operations must complete in under 50ms per event to avoid blocking iteration cycles.
-- **NFR-P02**: Coverage graph read/write must not add more than 100ms total overhead per iteration.
+- **NFR-P01**: The packet remains documentation-only and does not introduce runtime changes.
+- **NFR-P02**: Verification remains file-, commit-, changelog-, and validator-driven so packet closeout stays fast and auditable.
 
 ### Reliability
 
-- **NFR-R01**: Journal file must be append-only and survive process restart without data loss; no in-memory-only buffering.
-- **NFR-R02**: All new scripts must be idempotent: running them twice with the same input produces the same output.
+- **NFR-R01**: The packet must be sufficient for future maintainers to locate the shipped helper files and release evidence without reconstructing repo history.
+- **NFR-R02**: Cross-links to parent and successor phases must remain valid after strict validation.
 
 ### Maintainability
 
-- **NFR-M01**: All new CJS scripts must follow the same module pattern used in 042 Phase 1-4 scripts.
-- **NFR-M02**: Config fields introduced in this phase must include JSDoc comments documenting type, default, and valid range.
-
+- **NFR-M01**: The packet must preserve substantive phase content while normalizing it to the current Level 3 template.
+- **NFR-M02**: The packet must avoid stale terminology that no longer matches current improve-agent naming and dynamic-mode positioning.
 ---
 
 ## 8. EDGE CASES
 
-### Session Boundaries
+### Historical Naming
 
-- Session with zero completed iterations hitting `maxIterationsReached`: emit stop-reason with 0-iteration count and empty trajectory.
-- Resume of a session that previously ended with `error`: replay up to the last successful checkpoint, then continue.
+- The phase slug still says `agent-improver`, but the active skill and runtime files are now `sk-improve-agent` and `.opencode/agent/improve-agent.md`.
+- The landing commit created files under the pre-rename skill path; Phase 007 later renamed those runtime surfaces without invalidating the phase outcome.
 
-### Coverage Graph
+### Lifecycle Drift
 
-- All mutation types exhausted before convergence: emit `maxIterationsReached` with exhausted-mutations annotation; do not loop indefinitely.
-- Coverage graph file missing at session start: create a fresh graph; do not error.
+- `v1.1.0.0` documented broader lifecycle semantics that `v1.2.1.0` later retracted. The packet must not present those superseded lifecycle modes as current runtime truth.
 
-### Trade-Off Detection
+### Verification Drift
 
-- All dimensions improving simultaneously: no trade-off event emitted; this is the ideal case.
-- Threshold set to 0.0: every score change triggers trade-off detection; document this footgun in config comments.
-
-### Parallel Waves
-
-- Parallel wave with 2 candidates where both produce regressions: select the least-regressive candidate; emit `regressionDetected` stop-reason if neither exceeds baseline.
-- Wave executor unavailable: fall back to single-wave behavior silently; emit a `parallelWaveFallback` journal event.
-
+- A file can exist without proving the phase shipped correctly. This packet treats file existence as supporting evidence and relies on commit/release evidence for closure, not on filename checks alone.
 ---
 
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Files: 16, LOC estimate: ~700, Systems: sk-improve-agent + coverage graph + journal |
-| Risk | 15/25 | No auth/API risk; breaking: medium (proposal-only constraint must hold) |
-| Research | 12/20 | 042 Phases 1-4 provide proven patterns; adaptation needed, not invention |
-| Multi-Agent | 10/15 | Orchestrator + proposal-only agent + journal emit separation |
-| Coordination | 10/15 | Dependencies on 042 Phase 1 journal schema and Phase 2 graph API |
-| **Total** | **67/100** | **Level 3** |
-
+| Scope | 18/25 | 5 new runtime helpers, 5 dedicated test files, multiple asset and command updates. |
+| Risk | 15/25 | Runtime-truth changes touched promotion, journaling, coverage, and benchmark evaluation. |
+| Research | 12/20 | The phase adapted patterns from earlier 042 work and introduced improve-agent-specific decisions. |
+| Multi-Agent | 9/15 | Orchestrator-owned journaling and optional parallel candidates created coordination complexity. |
+| Coordination | 9/15 | Later rename and lifecycle retraction required careful closeout wording. |
+| **Total** | **63/100** | **Level 3** |
 ---
 
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | Proposal-only constraint violated if journal emit moves into agent | High | Low | ADR-001; orchestrator-only journal write enforced via code review |
-| R-002 | Coverage graph namespace collision with deep-research/review paths | Medium | Low | `loop_type: "improvement"` namespace isolation; tested in mutation-coverage.vitest.ts |
-| R-003 | Weight optimizer recommendations auto-applied | High | Low | Explicit approval gate in REQ-AI-012; no auto-apply code path |
-| R-004 | Parallel wave activation in low-exploration sessions causing noise | Medium | Medium | Exploration-breadth gate (REQ-AI-010); default `enabled: false` |
-| R-005 | Trajectory false convergence on noisy scores | Medium | Medium | Minimum 3 data points requirement (REQ-AI-007) |
-
+| R-001 | Packet points to retired `agent-improver` runtime paths. | High | All live references now target `.opencode/agent/improve-agent.md` and `.opencode/skill/sk-improve-agent/`. |
+| R-002 | Packet repeats unsupported multi-session lifecycle promises. | Medium | Current packet cites the `v1.2.1.0` retraction and avoids freezing superseded wording. |
+| R-003 | Architectural rationale is lost during template cleanup. | Medium | `decision-record.md` consolidates the five accepted phase decisions with rationale and consequences. |
+| R-004 | Phase evidence appears weak because the packet only cites files. | Medium | Tasks and checklist items cite commit `080cf549e`, `v1.1.0.0`, current file paths, and strict validation. |
+| R-005 | Parent packet navigation breaks. | Low | Parent and successor links use explicit relative spec paths. |
 ---
 
 ## 11. USER STORIES
 
-### US-001: Auditable Improvement Session (Priority: P0)
-
-**As a** developer running an agent improvement session, **I want** every session to produce a structured audit journal, **so that** I can reconstruct exactly what mutations were tried, how they scored, and why the session stopped.
-
-**Acceptance Criteria**:
-1. Given a completed improvement session, When I read the journal file, Then it contains at least one event per iteration plus a session-ended event with a stop-reason.
-2. Given a session that terminated due to a regression, When I read the journal, Then the stop-reason is `regressionDetected` and the offending dimension scores are recorded.
-
+- As a maintainer, I want a single packet that shows what Phase 005 actually delivered so I can audit improve-agent runtime-truth work without replaying git history.
+- As a validator, I want the phase packet to follow the current Level 3 contract so recursive strict validation passes cleanly.
+- As a future closeout editor, I want the packet to use current runtime names so I do not get sent to retired improve-agent runtime paths.
+- As a release auditor, I want commit and changelog evidence embedded in the packet so completed-state checklist items are traceable.
 ---
 
-### US-002: Resumable Improvement Session (Priority: P0)
-
-**As a** developer whose improvement session was interrupted, **I want** to resume from the last checkpoint by passing the prior session-id, **so that** I do not repeat completed iterations.
-
-**Acceptance Criteria**:
-1. Given a session-id from a prior partial run, When I start a new session with that id, Then the orchestrator replays journal state and the iteration counter starts where the prior run left off.
-2. Given a resumed session, When it completes, Then the final journal contains events from both the prior run and the resumed run in chronological order.
-
----
-
-### US-003: Trade-Off Awareness (Priority: P1)
-
-**As a** developer reviewing improvement results, **I want** the system to flag when one dimension improves at the cost of another, **so that** I can make an informed decision about whether to accept the trade-off.
-
-**Acceptance Criteria**:
-1. Given a candidate where clarity improves by 0.15 and integration regresses by 0.12 (above default threshold), When the trade-off detector runs, Then a `trade-off-detected` event appears in the journal with both dimensions named.
-2. Given thresholds configured at 0.20, When both deltas are below 0.20, Then no trade-off event is emitted.
-
----
-
-### US-004: Mutation Space Exhaustion (Priority: P1)
-
-**As a** developer running long improvement sessions, **I want** the system to track which mutation types have been fully explored, **so that** the session terminates cleanly rather than looping on exhausted strategies.
-
-**Acceptance Criteria**:
-1. Given all mutation types for a dimension marked exhausted, When the orchestrator selects the next mutation, Then it skips exhausted types and annotates the journal with the exhausted-mutations set.
-2. Given all dimensions fully exhausted, When the session evaluates stop conditions, Then it emits `maxIterationsReached` with an exhausted-mutations annotation rather than looping.
-
----
-
-### US-005: Scoring Weight Optimization (Priority: P1)
-
-**As a** developer who has run 10+ improvement sessions, **I want** the system to analyze historical session data and recommend per-dimension weight adjustments, **so that** future sessions score more accurately against the patterns I care about.
-
-**Acceptance Criteria**:
-1. Given the configured session count threshold is reached, When the weight optimizer runs, Then it emits a weight-recommendation report showing current vs. recommended weights with supporting evidence.
-2. Given the report is produced, When I review it, Then no weights are auto-applied until I explicitly approve them.
-
----
-
-### US-006: Benchmark Stability Verification (Priority: P2)
-
-**As a** developer calibrating the scoring system, **I want** a benchmark replay stability measurement, **so that** I know whether score variability comes from the agent or from scoring noise.
-
-**Acceptance Criteria**:
-1. Given a benchmark replayed 3 times with identical input, When stability is measured, Then the script reports a stability coefficient per dimension.
-2. Given a coefficient below the configured threshold, When the session runs, Then a `stabilityWarning` event appears in the journal.
-
----
-
-## 12. OPEN QUESTIONS
 <!-- ANCHOR:questions -->
+## 12. OPEN QUESTIONS
 
-- Should the improvement journal share the same file path convention as the deep-research/deep-review journals, or use a separate directory under the skill? Recommendation: use a skill-local path (`~/.agent-improver/sessions/{session-id}/`) consistent with the packet-local discipline.
-- What is the correct exploration-breadth score formula for the parallel wave activation gate? The 042 Phase 3 wave executor provides a reference; align or adapt?
-- Should the weight optimizer write its recommendations into the journal or into a separate report file? Separate file is cleaner for human review; journal entry for machine auditability.
+- None for packet closeout. The delivered runtime work is already shipped; this phase only needed documentation alignment to current template and naming reality.
 <!-- /ANCHOR:questions -->
 
 ---
 
-## RESEARCH FINDINGS (codex-gpt54-deep-research)
-
-Research source: `scratch/codex-gpt54-deep-research.md` (10-iteration deep research pass, 167K tokens)
-
-### P0: Formalize Runtime Truth First
-
-1. **Typed stop contract**: Split current implicit stops into `stopReason` (converged, maxIterationsReached, blockedStop, manualStop, error, stuckRecovery) and `sessionOutcome` (keptBaseline, promoted, rolledBack, advisoryOnly). Pattern: `const STOP_REASONS = Object.freeze({...})`.
-2. **Resume classifier**: Port Phase 001's classifier directly — `new | resume | restart | fork | completed-continue` with `continuedFromIteration` field. Archive old runtime on restart. Replay journal + coverage graph + registry before dispatch.
-3. **Separate journal vs mutation ledger**: Today's state log mixes baseline/candidate/benchmark records. Split into `improvement-journal.jsonl` (lifecycle events + stop decisions) and mutation outcomes tracked per-candidate in the journal itself.
-
-### P1: Make Loop Explainable
-
-4. **Mutation coverage**: Reuse Phase 002 namespace model (`spec_folder + loop_type + session_id`). Improvement-specific nodes: TARGET, CANDIDATE, MUTATION, DIMENSION, INTEGRATION_SURFACE, BENCHMARK_FIXTURE, FAILURE_MODE, HYPOTHESIS.
-5. **Dimension trajectories**: Full per-iteration vectors, weighted score, benchmark aggregate, and gate outcomes. "Stable" = 3+ scored iterations with all dimension deltas within +/-2.
-6. **Trade-off detection**: Pareto awareness — flag when improvement > +3 in one dimension causes regression < -3 in hard dimensions or < -5 in soft ones. Block promotion for dominated candidates.
-7. **Integration-scan constraints**: Pin `integrationReportHash` into score/benchmark/journal events. Require rescan before scoring if candidate changes routing. Treat missing coverage as promotion block.
-
-### P2: Keep Advanced Features Advisory
-
-8. **Parallel candidates**: Off by default. Activation gate: 3+ unresolved mutation families, 2 consecutive tie/plateau iterations, wide integration surface. Persist reducer-owned `candidate-board.json`.
-9. **Weight optimization**: Advisory-only, following Phase 004 model. Refuse auto-apply until 2+ compatible target families and materially larger run history.
-
-### Implementation Order (research-recommended)
-
-`stop contract -> resume/journal split -> coverage/trajectory/trade-off -> integration-hash gating -> optional parallel board -> advisory optimizer`
-
 ---
 
-## AI EXECUTION PROTOCOL
+## 13. RELATED DOCUMENTS
 
-### Pre-Task Checklist
-
-Before beginning any implementation task in this phase:
-
-- [ ] Read the target file before modifying it (CLAUDE.md Gate 1)
-- [ ] Confirm the spec folder is `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/`
-- [ ] Verify the proposal-only constraint: agent-improver.md agent section must not write state
-- [ ] Confirm 042 Phase 1 journal schema is read before writing improvement-journal.cjs
-- [ ] Confirm 042 Phase 2 coverage graph API is read before writing mutation-coverage.cjs
-
-### Execution Rules
-
-| Rule | Requirement |
-|------|------------|
-| Journal emit | Orchestrator only; no emit calls inside agent-improver agent body |
-| Config fields | All new fields optional with defaults; no required fields added |
-| Scripts | CJS module pattern; no auto-import into existing skill code paths |
-| Parallel waves | `enabled: false` default; only activate when gate condition met |
-| Weight optimizer | Emit recommendation report only; no auto-apply code path |
-
-### Status Reporting Format
-
-After completing each sub-phase, report:
-- Tasks completed (T### list)
-- REQs satisfied
-- Test suite status (pass/fail counts)
-- Any deferred items with justification
-
-### Blocked Task Protocol
-
-If a task is blocked (e.g., Phase 2 API does not support `loop_type`):
-1. Mark the task `[B]` in tasks.md
-2. Document the blocker with specific detail
-3. Propose a resolution path (e.g., thin wrapper instead of direct API call)
-4. Do not proceed to dependent tasks until blocker is resolved or explicitly deferred
-
----
-
-## RELATED DOCUMENTS
-
-- **Implementation Plan**: See `plan.md`
-- **Task Breakdown**: See `tasks.md`
-- **Verification Checklist**: See `checklist.md`
-- **Decision Records**: See `decision-record.md`
-- **Parent Packet**: `.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/spec.md`
-- **Phase 1 (Runtime Truth Foundation)**: `../001-runtime-truth-foundation/spec.md`
-- **Phase 2 (Semantic Coverage Graph)**: `../002-semantic-coverage-graph/spec.md`
-- **Phase 3 (Wave Executor)**: `../003-wave-executor/spec.md`
-- **Phase 4 (Offline Loop Optimizer)**: `../004-offline-loop-optimizer/spec.md`
+- `.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md`
+- `.opencode/changelog/15--sk-improve-agent/v1.2.1.0.md`
+- `.opencode/skill/sk-improve-agent/SKILL.md`
+- `.opencode/skill/sk-improve-agent/assets/improvement_config.json`
+- `.opencode/skill/sk-improve-agent/assets/improvement_charter.md`
+- `.opencode/skill/sk-improve-agent/assets/improvement_strategy.md`
+- `.opencode/skill/sk-improve-agent/references/loop_protocol.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/025-stop-reason-taxonomy.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/026-audit-journal-emission.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/027-resume-continuation.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/028-legal-stop-gates.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/029-benchmark-stability.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/030-dimension-trajectory.md`
+- `.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/031-parallel-candidates-opt-in.md`

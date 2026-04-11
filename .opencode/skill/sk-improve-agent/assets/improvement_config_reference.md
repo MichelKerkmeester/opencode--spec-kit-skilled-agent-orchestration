@@ -5,7 +5,7 @@ description: Field-level documentation for improvement_config.json runtime confi
 
 # Improvement Config Reference
 
-Field-level reference for `improvement_config.json`. Use this when modifying runtime configuration for a agent-improver packet.
+Field-level reference for `improvement_config.json`. Use this when modifying runtime configuration for a improve-agent packet.
 
 ---
 
@@ -32,8 +32,8 @@ Use this reference when:
 | Field | Type | Description |
 | --- | --- | --- |
 | `target` | string | Path to the canonical target agent file |
-| `targetProfile` | string | Active profile ID (handover, context-prime, or dynamic) |
-| `targetKind` | string | Classification: canonical, derived, or candidate-only |
+| `targetProfile` | string | Active profile ID (always `dynamic` in the current release) |
+| `targetKind` | string | Classification: `dynamic` (default), `derived`, or `candidate-only` |
 | `maxIterations` | number | Maximum loop iterations before forced stop |
 | `executionMode` | string | AUTONOMOUS or INTERACTIVE |
 | `proposalOnly` | boolean | When true, candidates cannot be promoted |
@@ -47,7 +47,7 @@ Use this reference when:
 | `hardRejectOnMissingTemplate` | boolean | Reject if required template references are absent |
 | `hardRejectOnNestedDelegation` | boolean | Reject if nested delegation is detected |
 | `simplicityTieBreak` | boolean | Prefer simpler candidate when scores tie |
-| `dynamicProfileEnabled` | boolean | Allow --dynamic mode with generate-profile.cjs |
+| `dynamicProfileEnabled` | boolean | Must remain `true`; dynamic mode is the sole scoring path via generate-profile.cjs |
 | `dimensionWeights` | object | Per-dimension weights for 5D scoring (must sum to 1.0) |
 
 ### Stop Rules

@@ -5,7 +5,7 @@ description: Step-by-step guide for running repeatable fixture benchmarks for sk
 
 # Benchmark Operator Guide
 
-Operational guide for running agent-improver benchmarks against packet-local outputs. Use it when you need deterministic evidence that a target profile still behaves consistently across repeated runs.
+Operational guide for running improve-agent benchmarks against packet-local outputs. Use it when you need deterministic evidence that a target profile still behaves consistently across repeated runs.
 
 ---
 
@@ -19,7 +19,7 @@ Explains how to run deterministic fixture benchmarks, where to store the resulti
 ### When to Use
 
 Use this reference when:
-- Running the benchmark runner for `handover` or `context-prime`
+- Running the benchmark runner for any dynamic-mode target
 - Building repeatability evidence for a promotion gate
 - Checking whether a target profile is stable enough to trust
 
@@ -37,11 +37,11 @@ The copied runtime templates use the `improvement_*` asset names, but the packet
 
 ```text
 node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
-  --profile=handover \
-  --outputs-dir={spec_folder}/improvement/benchmark-runs/handover/baseline \
-  --output={spec_folder}/improvement/benchmark-runs/handover/run-001.json \
+  --profile={agent-name} \
+  --outputs-dir={spec_folder}/improvement/benchmark-runs/{agent-name}/baseline \
+  --output={spec_folder}/improvement/benchmark-runs/{agent-name}/run-001.json \
   --state-log={spec_folder}/improvement/agent-improvement-state.jsonl \
-  --label=handover-baseline-run-001
+  --label={agent-name}-baseline-run-001
 ```
 
 ### Integration Benchmark
@@ -49,7 +49,7 @@ node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
 When running with an integration report, add the `--integration-report` flag:
 
 ```text
-node scripts/run-benchmark.cjs --profile=handover --outputs-dir=... --output=... --integration-report=integration-report.json
+node scripts/run-benchmark.cjs --profile={agent-name} --outputs-dir=... --output=... --integration-report=integration-report.json
 ```
 
 The integration report adds `integrationScore` and `integrationDetails` to the benchmark output:
@@ -66,13 +66,10 @@ The integration report adds `integrationScore` and `integrationDetails` to the b
 
 ```text
 {spec_folder}/improvement/benchmark-runs/
-  handover/
+  {agent-name}/
     baseline/
     candidate-weak/
     candidate-strong/
-  context-prime/
-    baseline/
-    candidate-weak/
 ```
 
 ---
@@ -111,6 +108,5 @@ Benchmark success does not mean:
 - `evaluator_contract.md`
 - `loop_protocol.md`
 - `promotion_rules.md`
-- `../assets/target-profiles/`
 
 <!-- /ANCHOR:related-resources -->

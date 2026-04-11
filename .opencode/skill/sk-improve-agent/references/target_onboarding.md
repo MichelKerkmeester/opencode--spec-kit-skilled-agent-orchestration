@@ -5,7 +5,7 @@ description: How to add a new bounded target to sk-improve-agent without weakeni
 
 # Target Onboarding Guide
 
-Workflow for onboarding new agent-improver targets while keeping evaluator discipline, manifest clarity, and promotion safety intact. Use it when a new target is genuinely needed rather than just interesting.
+Workflow for onboarding new improve-agent targets while keeping evaluator discipline, manifest clarity, and promotion safety intact. Use it when a new target is genuinely needed rather than just interesting.
 
 ---
 
@@ -46,22 +46,18 @@ Only add a target when all of the following are true:
 <!-- ANCHOR:required-steps -->
 ## 3. REQUIRED STEPS
 
-1. Add a target profile under `assets/target-profiles/`
-2. Add fixture definitions under `assets/fixtures/{profile-id}/`
-3. Add the manifest entry in `assets/target_manifest.jsonc`
-4. Extend `score-candidate.cjs` prompt checks for the new profile if needed
-5. Run `run-benchmark.cjs` against packet-local outputs for the new profile
-6. Confirm reducer output still separates target families cleanly
+1. (Optional) Add the manifest entry in `assets/target_manifest.jsonc` if the target needs explicit classification or guardrail protections
+2. Run `generate-profile.cjs` to derive a scoring profile from the agent's own structure and rules:
 
-### Dynamic Profile Alternative
+   ```text
+   node scripts/generate-profile.cjs --agent=.opencode/agent/{name}.md
+   ```
 
-For quick evaluation without creating a static profile, use `generate-profile.cjs`:
+3. Run `score-candidate.cjs` against the target for a dynamic-mode 5-dimension baseline
+4. Run `run-benchmark.cjs` against packet-local outputs for the new target if benchmark evidence is required
+5. Confirm reducer output still separates target families cleanly
 
-```text
-node scripts/generate-profile.cjs --agent=.opencode/agent/{name}.md
-```
-
-This derives a scoring profile from the agent's own structure, rules, and permissions. Dynamic profiles are suitable for initial assessment but not for promotion-eligible targets (which require static profiles with hardcoded fixture sets).
+Dynamic mode is the only scoring path. There are no static profiles to maintain.
 
 ---
 
@@ -79,8 +75,8 @@ This derives a scoring profile from the agent's own structure, rules, and permis
 <!-- ANCHOR:current-recommendation -->
 ## 5. CURRENT RECOMMENDATION
 
-- keep `handover` as the only promotion-eligible target
-- keep `context-prime` as candidate-only until a later packet proves the rollout path
+- every target is onboarded through dynamic mode; there is no static, automatically promotion-eligible profile
+- promotion remains a per-target decision requiring explicit operator approval, repeatability evidence, and manifest boundary compliance
 
 ---
 

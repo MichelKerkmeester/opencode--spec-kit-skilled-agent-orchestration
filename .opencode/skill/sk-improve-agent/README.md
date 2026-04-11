@@ -39,8 +39,7 @@ Evaluator-first workflow for improving agents across their full integration surf
 | --- | --- |
 | Primary mode | Proposal-only by default |
 | Evaluation | 5-dimension integration-aware scoring |
-| Target support | Any agent in `.opencode/agent/` (dynamic profiling) |
-| Static profiles | `handover` (promotion-eligible) |
+| Target support | Any agent in `.opencode/agent/` (dynamic profiling is the only mode) |
 | Runtime area | `{spec_folder}/improvement/` |
 | Evidence style | Append-only JSONL ledger + reducer dashboard |
 
@@ -73,7 +72,7 @@ Evaluator-first workflow for improving agents across their full integration surf
 
 - An existing spec folder for the improvement run
 - Node.js 18+ (for running `.cjs` scripts)
-- A target agent file in `.opencode/agent/` (any agent, not just handover)
+- A target agent file in `.opencode/agent/` (any agent)
 - Packet-local runtime write access
 
 ---
@@ -87,11 +86,8 @@ Evaluator-first workflow for improving agents across their full integration surf
 3. Run the loop command
 
 ```text
-# Evaluate handover agent (static profile)
-/improve:agent-improver ".opencode/agent/handover.md" :confirm --spec-folder={spec_folder}
-
-# Evaluate any agent (dynamic profile)
-/improve:agent-improver ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
+# Evaluate any agent (dynamic profile is the only mode)
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
 ```
 
 ### Standalone Script Usage
@@ -100,16 +96,13 @@ Run individual scripts without the full loop:
 
 ```text
 # Scan integration surfaces
-node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=handover
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
 
 # Generate dynamic profile from any agent
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
 
-# Score with 5 dimensions
-node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --dynamic
-
-# Score with legacy profile (backward compatible)
-node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --profile=handover --target=.opencode/agent/handover.md
+# Score with 5 dimensions (dynamic mode, the only supported path)
+node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
 ```
 
 ### Verify the Runtime Area
@@ -184,10 +177,9 @@ The scorer evaluates candidates across 5 weighted dimensions. All checks are det
 
 ### Scoring Modes
 
-| Mode | Flag | Profiles | Use When |
-| --- | --- | --- | --- |
-| Dynamic | `--dynamic` | Any agent (generated on-the-fly) | Evaluating arbitrary agents, integration health checks |
-| Legacy | `--profile=ID` | handover (hardcoded) | Promotion workflows with static fixture sets |
+| Mode | Profiles | Use When |
+| --- | --- | --- |
+| Dynamic (only mode) | Any agent (generated on-the-fly) | All agent evaluations, including promotion workflows |
 
 ### Weighted Score
 
@@ -223,11 +215,7 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 |   |-- improvement_strategy.md       Mutable runtime strategy template
 |   |-- improvement_config.json       Runtime configuration
 |   |-- improvement_config_reference.md  Config field documentation
-|   |-- target_manifest.jsonc         Surface classification manifest
-|   |-- target-profiles/
-|   |   |-- handover.json             Canonical handover profile
-|   `-- fixtures/
-|       |-- handover/                 Handover output fixtures
+|   `-- target_manifest.jsonc         Surface classification manifest
 |-- scripts/
 |   |-- scan-integration.cjs          Integration surface scanner
 |   |-- generate-profile.cjs          Dynamic target profile generator
@@ -255,12 +243,12 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 | --- | --- | --- |
 | `scan-integration.cjs` | Discover all surfaces an agent touches | `--agent=NAME [--output=PATH]` |
 | `generate-profile.cjs` | Derive scoring profile from any agent | `--agent=PATH [--output=PATH]` |
-| `score-candidate.cjs` | Score candidate across 5 dimensions | `--candidate=PATH --dynamic` or `--profile=ID --target=PATH` |
+| `score-candidate.cjs` | Score candidate across 5 dimensions (dynamic mode only) | `--candidate=PATH [--target=PATH] [--manifest=PATH]` |
 | `run-benchmark.cjs` | Run fixture tests + integration checks | `--profile=ID --outputs-dir=PATH --output=PATH [--integration-report=PATH]` |
 | `reduce-state.cjs` | Refresh dashboard + registry from ledger | `RUNTIME_ROOT` (positional) |
 | `promote-candidate.cjs` | Guarded canonical promotion | `--candidate=PATH --target=PATH --score=PATH --approve` |
 | `rollback-candidate.cjs` | Restore pre-promotion backup | `--target=PATH --backup=PATH` |
-| `check-mirror-drift.cjs` | Report mirror alignment status | `--canonical=PATH --mirrors=A,B,C --output=PATH` |
+| `check-mirror-drift.cjs` | Report declared-surface alignment status | `--output=PATH [--canonical=PATH] [--mirrors=A,B,C] [--manifest=PATH]` |
 
 ---
 
@@ -271,14 +259,13 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 | `assets/improvement_config.json` | Runtime config: scoring weights, stop rules, feature flags |
 | `assets/improvement_config_reference.md` | Field-level config documentation |
 | `assets/target_manifest.jsonc` | Target classification, mutability, and dynamic profile settings |
-| `assets/target-profiles/handover.json` | Canonical handover evaluation profile |
 
 ### Key Configuration
 
 | Setting | Default | Effect |
 | --- | --- | --- |
 | `proposalOnly` | `true` | Candidates cannot be promoted until flipped |
-| `dynamicProfileEnabled` | `true` | Allows `--dynamic` mode for any agent |
+| `dynamicProfileEnabled` | `true` | Required; dynamic mode is the sole scoring path |
 | `dimensionWeights` | `{structural: 0.20, ruleCoherence: 0.25, ...}` | Weights for 5D scoring |
 | `stopOnDimensionPlateau` | `true` | Stop when all dimensions plateau |
 | `thresholdDelta` | `2` | Minimum score improvement for candidate-better |
@@ -288,39 +275,31 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 
 ## 8. USAGE EXAMPLES
 
-### Example 1: Evaluate Handover Agent (Static Profile)
+### Example 1: Evaluate Any Agent (Dynamic Mode)
 
 ```text
-/improve:agent-improver ".opencode/agent/handover.md" :confirm --spec-folder={spec_folder}
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
 ```
 
-Uses the hardcoded handover profile with fixture-based benchmarks. This is the only promotion-eligible path.
+Generates a scoring profile on-the-fly from the debug agent's own rules and structure, then produces 5-dimension scores. Dynamic mode is the only evaluation path; promotion requires explicit per-target approval.
 
-### Example 2: Evaluate Any Agent (Dynamic Profile)
+### Example 2: Quick Integration Health Check
 
 ```text
-/improve:agent-improver ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
 ```
 
-Generates a scoring profile on-the-fly from the debug agent's own rules and structure. Produces 5-dimension scores but is not promotion-eligible.
+Discovers all surfaces the target agent touches and reports mirror sync status, command coverage, and skill references.
 
-### Example 3: Quick Integration Health Check
-
-```text
-node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=handover
-```
-
-Discovers all surfaces the handover agent touches and reports mirror sync status, command coverage, and skill references.
-
-### Example 4: Score Without Running the Full Loop
+### Example 3: Score Without Running the Full Loop
 
 ```text
-node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate=.opencode/agent/review.md --dynamic
+node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate=.opencode/agent/review.md
 ```
 
 Produces a 5-dimension score for the review agent without initializing a full improvement packet.
 
-### Example 5: Inspect Runtime Evidence
+### Example 4: Inspect Runtime Evidence
 
 After running the loop, inspect:
 - `{spec_folder}/improvement/agent-improvement-dashboard.md` — Dimensional progress and stop status
@@ -340,7 +319,7 @@ The skill runs across all supported runtimes. Path resolution uses the active ru
 | Codex | `.codex/agents/` | (uses agent mirror) |
 | .agents | `.agents/agents/` | `.agents/commands/spec_kit/` |
 
-The `@agent-improver` agent and `/improve:agent-improver` command are mirrored across all runtimes. The integration scanner checks mirror parity automatically.
+The `@improve-agent` agent and `/improve:improve-agent` command are mirrored across all runtimes. The integration scanner checks mirror parity automatically.
 
 ---
 
@@ -355,7 +334,7 @@ The `@agent-improver` agent and `/improve:agent-improver` command are mirrored a
 | Dynamic scorer returns 0 on all dimensions | Profile generation failed | Run `generate-profile.cjs` directly and check for parse errors |
 | Integration dimension scores low | Mirrors diverged or missing | Run `scan-integration.cjs`, sync diverged mirrors, then rescore |
 | All dimensions plateaued | Improvement loop has exhausted current hypothesis | Stop, reassess the hypothesis in `improvement_strategy.md` |
-| `--dynamic` flag produces `infra_failure` | Agent file not found or unreadable | Verify the `--candidate` path exists and is a valid agent `.md` file |
+| Scorer produces `infra_failure` | Agent file not found or unreadable | Verify the `--candidate` path exists and is a valid agent `.md` file |
 
 ---
 
@@ -365,17 +344,17 @@ The `@agent-improver` agent and `/improve:agent-improver` command are mirrored a
 
 The point of the skill is to prove improvement before mutation. Ad-hoc edits skip the evidence trail that makes promotion decisions auditable and rollbacks possible.
 
-### Why is only handover promotion-eligible?
+### How is promotion eligibility decided?
 
-Because it has the strongest evaluator contract with static fixtures and proven rollback. Dynamic profiles are useful for assessment but not for guarded canonical mutation.
+Promotion is a per-target decision made under dynamic mode. A candidate becomes promotion-eligible only when prompt scoring, benchmark status, repeatability evidence, manifest boundary compliance, and explicit operator approval all pass for that specific target.
 
 ### What does the integration scanner check?
 
 It discovers all files that reference a given agent: canonical definition, 3 runtime mirrors, command dispatch files, YAML workflow references, skill SKILL.md mentions, global docs (CLAUDE.md), and skill_advisor routing entries.
 
-### Can I evaluate an agent that has no static profile?
+### How are agents evaluated?
 
-Yes. Use `--dynamic` mode. The profile generator derives scoring checks from the agent's own ALWAYS/NEVER rules, output verification checklist, capability scan, and anti-patterns. Any agent in `.opencode/agent/` is a valid target.
+Dynamic mode is the only path. The profile generator derives scoring checks from the agent's own ALWAYS/NEVER rules, output verification checklist, capability scan, and anti-patterns. Any agent in `.opencode/agent/` is a valid target.
 
 ### What happens when all dimensions plateau?
 

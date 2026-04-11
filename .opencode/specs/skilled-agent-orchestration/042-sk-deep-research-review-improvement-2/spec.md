@@ -41,7 +41,7 @@ This parent packet coordinates **eight child implementation phases plus a post-p
 **Critical dependencies**: consolidated research findings `CF-004`, `CF-010`, `CF-014`, `CF-021`, `CF-027`, and `CF-030`; existing deep-loop reducer/parity surfaces; packet-local append-only state; the child phase plans under this packet; `review/review-report.md` for the 16 closing-audit findings and their Lane 1–5 remediation mapping.
 
 ---
-
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -54,6 +54,7 @@ This parent packet coordinates **eight child implementation phases plus a post-p
 | **Dependencies** | Consolidated research packet; child phase folders `001`–`008`; existing deep-loop assets, YAML workflows, reducers, and tests; `review/` closing-audit artifacts |
 | **Predecessor** | Related background packets: `028-auto-deep-research-review-improvement`, `040-sk-auto-deep-research-review-improvement` |
 | **Successor** | All child phases `001`–`008` implemented; Phase 4b (prompt-pack generation + meta-learning) remains explicitly deferred; no new follow-up packet is required for the closing audit because its 16 findings (REQ-026 through REQ-034) were absorbed into Lanes 1–5 inside this same packet |
+<!-- /ANCHOR:metadata -->
 
 ---
 

@@ -110,7 +110,7 @@ This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with alig
 | `@write` | Documentation generation (READMEs, guides, skills) | Project-level docs outside spec folders |
 | `@handover` | Session continuation and context preservation | Ending sessions, branching work, team handoffs |
 | `@ultra-think` | Multi-strategy planning architect | Complex planning that benefits from comparing multiple solution strategies |
-| `@agent-improver` | Proposal-only mutator for bounded agent improvement | Agent evaluation via `/improve:agent` command loop |
+| `@improve-agent` | Proposal-only mutator for bounded agent improvement | Agent evaluation via `/improve:agent` command loop |
 
 **Agent Routing:** Automatic via Gate 2 (`skill_advisor.py`) or manual via `@agent_name` syntax. Current agent state includes model-agnostic `@review`, Haiku-tier `@handover` and Codex profile-based agent frontmatter.
 

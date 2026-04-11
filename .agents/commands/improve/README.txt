@@ -80,7 +80,7 @@ Both commands support `:auto` and `:confirm` execution modes.
 ```text
 improve/
 +-- README.txt                              # This file
-+-- agent-improver.toml                     # /improve:agent command (TOML format)
++-- improve-agent.toml                     # /improve:agent command (TOML format)
 ```
 
 > **Note:** This runtime uses TOML command files. The canonical `.opencode/command/improve/` directory also includes `prompt.md` (`/improve:prompt`) and YAML workflow assets. See the OpenCode canonical for the full command surface.
@@ -139,7 +139,7 @@ Delivery: enhanced prompt + transparency report + optional save
 
 | Command | Delegates To |
 |---------|-------------|
-| agent | @agent-improver (proposal-only candidate generation) |
+| agent | @improve-agent (proposal-only candidate generation) |
 | prompt | Inline @general workflow (no sub-agent dispatch) |
 
 <!-- /ANCHOR:workflow-progression -->
@@ -155,8 +155,8 @@ Delivery: enhanced prompt + transparency report + optional save
 | **Confirm** | `:confirm` | Pause at each step and wait for user approval |
 
 Each mode maps to a YAML workflow file in `assets/`:
-- Auto: `improve_agent-improver_auto.yaml`
-- Confirm: `improve_agent-improver_confirm.yaml`
+- Auto: `improve_improve-agent_auto.yaml`
+- Confirm: `improve_improve-agent_confirm.yaml`
 
 `/improve:prompt` is an inline command that does not load YAML assets.
 

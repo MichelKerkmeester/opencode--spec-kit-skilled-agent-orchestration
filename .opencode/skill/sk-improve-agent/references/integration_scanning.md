@@ -22,7 +22,7 @@ Use this reference when:
 - Setting up a new agent as an evaluation target
 - Understanding why the integration dimension scored low
 - Debugging mirror drift or missing command references
-- Onboarding a new agent into the agent-improver loop
+- Onboarding a new agent into the improve-agent loop
 
 ### Core Principle
 
@@ -66,7 +66,7 @@ Mirror sync is determined by signal matching, not byte-identical comparison:
 ## 4. USAGE
 
 ```bash
-node scripts/scan-integration.cjs --agent=handover [--repo-root=.] [--output=path.json]
+node scripts/scan-integration.cjs --agent={agent-name} [--repo-root=.] [--output=path.json]
 ```
 
 The output JSON includes a `summary` with `totalSurfaces`, `existingCount`, `missingCount`, `mirrorSyncStatus`, `commandCount`, and `skillCount`.
@@ -76,15 +76,15 @@ The output JSON includes a `summary` with `totalSurfaces`, `existingCount`, `mis
 ```json
 {
   "status": "complete",
-  "agent": "handover",
+  "agent": "{agent-name}",
   "surfaces": {
-    "canonical": { "path": ".opencode/agent/handover.md", "exists": true },
+    "canonical": { "path": ".opencode/agent/{agent-name}.md", "exists": true },
     "mirrors": [
-      { "path": ".claude/agents/handover.md", "syncStatus": "aligned" },
-      { "path": ".codex/agents/handover.toml", "syncStatus": "aligned" },
-      { "path": ".agents/agents/handover.md", "syncStatus": "aligned" }
+      { "path": ".claude/agents/{agent-name}.md", "syncStatus": "aligned" },
+      { "path": ".codex/agents/{agent-name}.toml", "syncStatus": "aligned" },
+      { "path": ".agents/agents/{agent-name}.md", "syncStatus": "aligned" }
     ],
-    "commands": [{ "path": ".opencode/command/spec_kit/handover.md", "references": ["@handover"] }],
+    "commands": [{ "path": ".opencode/command/spec_kit/{agent-name}.md", "references": ["@{agent-name}"] }],
     "skills": [{ "path": ".opencode/skill/sk-improve-agent/SKILL.md", "referenceCount": 2 }]
   },
   "summary": {

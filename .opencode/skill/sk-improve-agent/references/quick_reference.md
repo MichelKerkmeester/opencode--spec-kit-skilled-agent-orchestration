@@ -14,7 +14,7 @@ Quick reminder for running `sk-improve-agent` without re-reading the full protoc
 
 ### Purpose
 
-Provides a compact reminder of the agent-improver workflow, the canonical command shape, and the packet-local runtime layout.
+Provides a compact reminder of the improve-agent workflow, the canonical command shape, and the packet-local runtime layout.
 
 ### When to Use
 
@@ -36,25 +36,21 @@ The workflow copies `improvement_*` assets into the runtime, but the packet-loca
 ## 2. COMMANDS
 
 ```text
-# Legacy profiles (handover, context-prime)
-/improve:agent-improver ".opencode/agent/handover.md" :confirm --spec-folder={spec_folder}
-/improve:agent-improver ".opencode/agent/context-prime.md" :confirm --spec-folder={spec_folder}
-
-# Dynamic mode (any agent)
-/improve:agent-improver ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
+# Dynamic mode (the only evaluation path; works for any agent)
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
 ```
 
 ### Standalone Scripts
 
 ```text
 # Scan integration surfaces
-node scripts/scan-integration.cjs --agent=handover
+node scripts/scan-integration.cjs --agent=debug
 
 # Generate dynamic profile
 node scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
 
-# 5-dimension scoring
-node scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --dynamic
+# 5-dimension scoring (dynamic mode, the only supported path)
+node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
 ```
 
 ### Dimension Weights (Dynamic Mode)
@@ -91,8 +87,8 @@ node scripts/score-candidate.cjs --candidate=.opencode/agent/handover.md --dynam
 ## 4. KEY GUARDS
 
 - proposal-only by default
-- one canonical promotion target only
-- target profiles drive scoring and benchmarks
+- promotion is a per-target decision under dynamic mode
+- dynamic profiles drive scoring and benchmarks
 - append-only ledger
 - scorer independent from mutator
 - benchmark evidence separate from mirror-sync packaging

@@ -13,7 +13,7 @@ Validates backward compatibility: JSONL records that lack dimension fields still
 ```bash
 # Setup: create a minimal test JSONL without dimensions
 mkdir -p /tmp/reducer-test-nodim
-echo '{"type":"scored","profileId":"handover","score":85,"recommendation":"candidate-better"}' > /tmp/reducer-test-nodim/agent-improvement-state.jsonl
+echo '{"type":"scored","profileId":"debug","score":85,"recommendation":"candidate-better"}' > /tmp/reducer-test-nodim/agent-improvement-state.jsonl
 echo '{}' > /tmp/reducer-test-nodim/agent-improvement-config.json
 
 # Run the reducer

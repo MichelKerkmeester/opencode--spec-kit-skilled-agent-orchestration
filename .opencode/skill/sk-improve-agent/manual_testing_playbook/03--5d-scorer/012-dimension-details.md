@@ -12,7 +12,7 @@ Validates that each dimension in the 5D scorer output includes a details array s
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs \
-  --candidate=.opencode/agent/handover.md --dynamic
+  --candidate=.opencode/agent/debug.md
 ```
 
 ## Expected Signals

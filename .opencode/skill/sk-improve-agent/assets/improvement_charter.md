@@ -1,11 +1,11 @@
 ---
 title: Recursive Agent Charter
-description: Fixed policy charter for a agent-improver run.
+description: Fixed policy charter for a improve-agent run.
 ---
 
 # Recursive Agent Charter
 
-Fixed policy template for a agent-improver run. Use it as the non-negotiable control layer that tells the mutator, scorer, reducer, and operator what kind of improvement workflow is allowed.
+Fixed policy template for a improve-agent run. Use it as the non-negotiable control layer that tells the mutator, scorer, reducer, and operator what kind of improvement workflow is allowed.
 
 ---
 
@@ -14,7 +14,7 @@ Fixed policy template for a agent-improver run. Use it as the non-negotiable con
 
 ### Purpose
 
-Defines the fixed policy boundary for a agent-improver run.
+Defines the fixed policy boundary for a improve-agent run.
 
 ### Usage
 
@@ -34,15 +34,10 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 <!-- ANCHOR:targets -->
 ## 3. TARGETS
 
-### Canonical Benchmark Seed
+### Dynamic Targets
 
-- canonical source under test: `.opencode/agent/handover.md`
-- reason: structured prompt surface, narrow scope, clear downstream artifact contract
-
-### Additional Bounded Target
-
-- candidate-only source under test: `.opencode/agent/context-prime.md`
-- reason: structured, read-only Prime Package contract with a smaller and safer output surface than broad orchestration agents
+- targets are bounded agent files selected at initialization time (any `.opencode/agent/*.md`)
+- no canonical pre-selected target; every run picks its target explicitly and evaluates it through dynamic mode
 
 ---
 
@@ -56,7 +51,7 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 - all attempts are logged append-only
 - runtime mirrors are downstream packaging surfaces, not benchmark truth
 - human approval is required before any canonical promotion
-- only the handover target is promotion-eligible in this packet
+- promotion is a per-target decision under dynamic mode; no static profile is automatically promotion-eligible
 - evaluation uses 5 deterministic dimensions (structural integrity, rule coherence, integration consistency, output quality, system fitness) — each scored independently, weighted, and tracked per iteration
 
 ---

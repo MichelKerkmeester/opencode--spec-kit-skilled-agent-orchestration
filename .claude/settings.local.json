@@ -4,6 +4,20 @@
     "ENABLE_TOOL_SEARCH": "true",
     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1"
   },
+  "permissions": {
+    "allow": [
+      "mcp__sequential_thinking__sequentialthinking",
+      "Bash(bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/999-compliance-test\" --strict)",
+      "Bash(echo \"EXIT_CODE=$?\")",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(mv .opencode/agent/agent-improver.md .opencode/agent/improve-agent.md)",
+      "Bash(mv .claude/agents/agent-improver.md .claude/agents/improve-agent.md)",
+      "Bash(mv .codex/agents/agent-improver.toml .codex/agents/improve-agent.toml)",
+      "Bash(mv .agents/agents/agent-improver.md .agents/agents/improve-agent.md)",
+      "Bash(mv .agents/commands/improve/agent-improver.toml .agents/commands/improve/improve-agent.toml)"
+    ]
+  },
   "hooks": {
     "PreCompact": [
       {
@@ -33,20 +47,11 @@
           {
             "type": "command",
             "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-stop.js'",
-            "async": true,
-            "timeout": 10
+            "timeout": 10,
+            "async": true
           }
         ]
       }
-    ]
-  },
-  "permissions": {
-    "allow": [
-      "mcp__sequential_thinking__sequentialthinking",
-      "Bash(bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/999-compliance-test\" --strict)",
-      "Bash(echo \"EXIT_CODE=$?\")",
-      "Skill(update-config)",
-      "Skill(update-config:*)"
     ]
   }
 }

@@ -1,77 +1,89 @@
 ---
-title: "Implementation Summary: Graph Testing and Playbook Alignment [006]"
-description: "Post-implementation summary documenting what was built, key decisions, and verification evidence."
+title: "Implementation Summary: Graph Testing and Playbook Alignment [042.006]"
+description: "This phase records the delivered graph verification surface: dedicated integration and stress suites, graph-specific manual playbooks, and README updates that expose the graph runtime to operators."
 trigger_phrases:
-  - "006"
-  - "graph testing summary"
-  - "playbook alignment summary"
+  - "042.006"
+  - "graph testing implementation summary"
 importance_tier: "important"
-contextType: "implementation"
+contextType: "implementation-summary"
 ---
 # Implementation Summary: Graph Testing and Playbook Alignment
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 
-## WHAT WAS BUILT
+<!-- ANCHOR:metadata -->
+## Metadata
 
-### Part A: Integration and Stress Tests
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 006-graph-testing-and-playbook-alignment |
+| **Completed** | 2026-04-10 |
+| **Level** | 2 |
+<!-- /ANCHOR:metadata -->
 
-1. **`coverage-graph-integration.vitest.ts`** (38 tests, all passing)
-   - CJS-TS research relation name alignment (7 relations match exactly)
-   - CJS-TS review relation alignment: documented the superset/subset relationship
-     - Shared core relations: COVERS, EVIDENCE_FOR, CONTRADICTS, RESOLVES, CONFIRMS
-     - CJS-only (in-memory): SUPPORTS, DERIVED_FROM
-     - TS-only (DB projection): ESCALATES, IN_DIMENSION, IN_FILE
-   - Weight clamping consistency: both layers clamp to [0.0, 2.0]
-   - Self-loop prevention: CJS insertEdge rejects, TS CHECK constraint rejects
-   - Namespace isolation: research/review/improvement operate independently
-   - Convergence signal alignment: all signal functions produce consistent results
-   - Contradiction scanning contract: scanContradictions and reportContradictions verified
-   - Fallback authority chain: CJS layers work standalone without MCP/SQLite
+---
 
-2. **`coverage-graph-stress.vitest.ts`** (17 tests, all passing)
-   - 1000+ and 2000+ node graph construction (<2s)
-   - Degree computation, depth computation, cluster metrics at scale
-   - Source diversity and evidence depth at 1000+ nodes
-   - Full convergence computation at scale (<10s)
-   - Contradiction scanning with 500+ edges (200 contradictions, <1s)
-   - Provenance traversal with 50+ depth chains
-   - 100 disconnected components and 200 isolated nodes
-   - Question coverage across 500 questions
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### Part B: Manual Testing Playbooks
+This phase gave the coverage-graph runtime the verification layer it needed after the Phase 002 runtime landed. You can now find dedicated automated suites for graph contract alignment and larger-graph stress coverage, plus graph-specific manual playbook scenarios across the research, review, and improve-agent loop families.
 
-3. **sk-deep-research playbook** (2 new test cases)
-   - `04--convergence-and-recovery/031-graph-convergence-signals.md` (DR-031)
-   - `03--iteration-execution-and-state-discipline/029-graph-events-emission.md` (DR-029)
+### Verification Surface
 
-4. **sk-deep-review playbook** (2 new test cases)
-   - `04--convergence-and-recovery/021-graph-convergence-review.md` (DRV-021)
-   - `03--iteration-execution-and-state-discipline/015-graph-events-review.md` (DRV-015)
+| File | Action | Purpose |
+|------|--------|---------|
+| `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts` | Created | Verifies cross-layer graph contract alignment |
+| `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts` | Created | Exercises larger graph workloads and contradiction scanning |
+| Research graph playbooks | Created | Add operator scenarios for graph convergence and `graphEvents` emission |
+| Review graph playbooks | Created | Add operator scenarios for graph convergence and `graphEvents` emission |
+| Improve-agent graph playbooks | Created | Add operator scenarios for mutation coverage, trade-off detection, and candidate lineage |
+| Three skill READMEs | Modified | Surface graph capability coverage where it was previously missing |
+<!-- /ANCHOR:what-built -->
 
-5. **sk-improve-agent playbook** (3 new test cases)
-   - `06--end-to-end-loop/022-mutation-coverage-graph-tracking.md` (E2E-022)
-   - `06--end-to-end-loop/023-trade-off-detection.md` (E2E-023)
-   - `06--end-to-end-loop/024-candidate-lineage.md` (E2E-024)
+---
 
-### Part C: README Updates
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
 
-6. **sk-deep-research README.md** -- Added 3 new feature rows: Semantic coverage graph, Graph convergence guards, Question coverage tracking
-7. **sk-deep-review README.md** -- Added new "Semantic Coverage Graph" subsection in Features
-8. **sk-improve-agent README.md** -- Added 3 new capability rows: Mutation coverage graph, Trade-off detection, Candidate lineage
+The work followed the verification surface itself. First, the CommonJS and TypeScript graph layers were identified as the two sides of the contract that needed automated coverage. Then the graph-specific playbook files were located and confirmed under the live skill trees. Finally, the packet was rebuilt in the current Level 2 template so the delivered verification surface, README alignment, and phase-closeout evidence all live in one place.
+<!-- /ANCHOR:how-delivered -->
 
-## KEY FINDINGS
+---
 
-- **Contract mismatch discovered**: CJS `REVIEW_RELATION_WEIGHTS` includes SUPPORTS and DERIVED_FROM which are not in the TS `VALID_RELATIONS.review`. This is intentional: the CJS layer uses these for in-memory graph operations while the TS DB projection adds its own structural relations (ESCALATES, IN_DIMENSION, IN_FILE). The integration test documents this relationship explicitly.
-- **Performance**: All graph operations scale well to 1000+ nodes. Full convergence computation on a 1000-node graph completes in under 10 seconds. Contradiction scanning on 500 edges completes in under 1 second.
-- **Contradictions module**: The function is named `reportContradictions` (not `generateReport`), returning `{ total, pairs, byNode }`.
+<!-- ANCHOR:decisions -->
+## Key Decisions
 
-## VERIFICATION
+| Decision | Why |
+|----------|-----|
+| Keep Phase 006 verification-only | The graph runtime already existed; this phase needed to prove and document it rather than widen scope into new graph features. |
+| Cite the live playbook files directly | Those paths are the operator-facing verification surface and should stay obvious in the packet. |
+| Treat README updates as part of the verification surface | Graph capability coverage is incomplete if operators cannot discover it in the skill docs. |
+<!-- /ANCHOR:decisions -->
 
-- Integration tests: 38/38 passing
-- Stress tests: 17/17 passing
-- All playbook files follow existing format patterns (frontmatter, 5-section structure)
-- All README updates preserve existing content and add graph capability references only
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+| Check | Result |
+|-------|--------|
+| Graph integration suite present | PASS - `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts` |
+| Graph stress suite present | PASS - `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts` |
+| Research graph playbooks present | PASS - `.opencode/skill/sk-deep-research/manual_testing_playbook/04--convergence-and-recovery/031-graph-convergence-signals.md` and `.opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-discipline/029-graph-events-emission.md` |
+| Review graph playbooks present | PASS - `.opencode/skill/sk-deep-review/manual_testing_playbook/04--convergence-and-recovery/021-graph-convergence-review.md` and `.opencode/skill/sk-deep-review/manual_testing_playbook/03--iteration-execution-and-state-discipline/015-graph-events-review.md` |
+| Improve-agent graph playbooks present | PASS - `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md`, `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md`, and `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md` |
+| README graph references captured | PASS - `.opencode/skill/sk-deep-research/README.md`, `.opencode/skill/sk-deep-review/README.md`, and `.opencode/skill/sk-improve-agent/README.md` cited in the packet |
+| Strict phase validation | PASS after packet rewrite |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **This packet records the delivered verification surface, not the original test-command output.** It is meant to preserve closeout truth, not replay the original implementation session verbatim.
+2. **If later phases move playbook or README paths, this packet will need another documentation pass.** The paths cited here match the delivered state captured by Phase 006.
+<!-- /ANCHOR:limitations -->

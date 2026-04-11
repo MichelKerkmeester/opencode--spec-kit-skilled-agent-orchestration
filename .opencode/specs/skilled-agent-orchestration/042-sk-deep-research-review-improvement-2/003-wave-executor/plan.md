@@ -26,7 +26,7 @@ contextType: "planning"
 |--------|-------|
 | **Language/Stack** | YAML workflows, CommonJS orchestration helpers, Markdown runtime contracts, JSONL artifacts |
 | **Framework** | Spec Kit deep-loop orchestrator over LEAF research and review workers |
-| **Storage** | Packet-local segment JSONL, reducer-owned `board.json`, derived `dashboard.md`, merged lineage outputs, and Phase 002 graph state |
+| **Storage** | Packet-local segment JSONL, reducer-owned `board.json`, a derived dashboard render, merged lineage outputs, and Phase 002 graph state |
 | **Testing** | Vitest lifecycle and merge suites plus strict packet validation |
 
 ### Overview
@@ -52,7 +52,7 @@ This phase scales deep research and deep review by adding orchestrator-managed w
 - [x] Deterministic segment planning exists for both review files and research domains.
 - [x] `hotspot-inventory.json` and `domain-ledger.json` are defined as mandatory prepass artifacts.
 - [x] Wave lifecycle ownership is explicit at the orchestrator or workflow layer.
-- [x] Coordination-board state is documented as reducer-owned `board.json` with derived `dashboard.md`.
+- [x] Coordination-board state is documented as reducer-owned `board.json` with a derived dashboard render.
 - [x] Merge behavior preserves provenance, conflict metadata, and explicit keyed identity.
 - [x] Wave mode remains bounded to large targets and does not replace the default path.
 - [x] Tests prove planner determinism, lifecycle correctness, merge idempotence, and resume behavior.
@@ -74,7 +74,7 @@ Segmented fan-out orchestration with packet-local state, reducer-owned execution
 - **Decomposition prepass**: emits `hotspot-inventory.json` for review and `domain-ledger.json` for research before any wave dispatch.
 - **Wave lifecycle manager**: owns fan-out, join, prune, promote, merge, and resume transitions.
 - **Wave convergence layer**: wraps Phase 002 graph signals for per-segment decisions.
-- **Coordination board**: keeps `board.json` as the canonical execution ledger and `dashboard.md` as a derived human-readable render.
+- **Coordination board**: keeps `board.json` as the canonical execution ledger and a derived human-readable dashboard render.
 - **Segment state and merge layer**: keeps segment JSONL replayable and mergeable into the main lineage.
 
 ### Data Flow
@@ -191,7 +191,7 @@ Inventory target
 **Verification strategy**:
 - Prove segment-local lineage survives interruption and resume.
 - Prove merge stays idempotent and preserves keyed identity, conflict, or dedupe metadata across repeated runs.
-- Prove `board.json` remains reducer-owned and `dashboard.md` remains a derived render.
+- Prove `board.json` remains reducer-owned and the dashboard remains a derived render.
 
 **Estimated effort**: Medium-High because lifecycle, merge, and recovery now depend on the prerequisite orchestration path as well as keyed merge guarantees.
 <!-- /ANCHOR:phases -->
@@ -235,7 +235,27 @@ Inventory target
 
 ---
 
-## 8. EFFORT ESTIMATES
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
+
+```text
+Phase 3-pre fan-out/join proof
+  -> Phase 3a heuristic segmentation and prepass
+  -> Phase 3b graph-enhanced segmentation
+  -> Phase 3c lifecycle, merge, and recovery hardening
+```
+
+| Workstream | Depends On | Produces | Blocks |
+|------------|------------|----------|--------|
+| Phase 3-pre workflow proof | Existing YAML workflow engine and command flows | Canonical fan-out/join path | 3a, 3b, 3c |
+| Phase 3a prepass and v1 planner | Phase 3-pre | Stable segments, inventories, `board.json` contract | 3b, 3c |
+| Phase 3b graph-enhanced segmentation | Phase 3a plus Phase 002 graph readiness | v2 graph-aware segment refinement | 3c |
+| Phase 3c lifecycle and merge hardening | Phases 3-pre through 3b | Safe wave execution, merge, and resume behavior | verification |
+<!-- /ANCHOR:dependency-graph -->
+
+---
+
+### Effort Estimates
 
 | Workstream | Estimate | Notes |
 |------------|----------|-------|

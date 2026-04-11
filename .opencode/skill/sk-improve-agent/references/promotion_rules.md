@@ -1,11 +1,11 @@
 ---
 title: Promotion Rules
-description: Keep, reject, and guarded promotion rules for agent-improver candidates.
+description: Keep, reject, and guarded promotion rules for improve-agent candidates.
 ---
 
 # Promotion Rules
 
-Policy reference for deciding whether a agent-improver candidate stays baseline-only, is rejected, or becomes promotion-eligible. Use it when score and benchmark evidence exist and you need the decision rule, not just the raw metrics.
+Policy reference for deciding whether a improve-agent candidate stays baseline-only, is rejected, or becomes promotion-eligible. Use it when score and benchmark evidence exist and you need the decision rule, not just the raw metrics.
 
 ---
 
@@ -33,17 +33,13 @@ Promotion stays intentionally narrower than scoring and benchmarking. A candidat
 <!-- ANCHOR:current-posture -->
 ## 2. CURRENT PROMOTION POSTURE
 
-Candidates may be scored and benchmarked across two profiles, but only the canonical handover target may be promoted in the current packet.
+All agent targets are evaluated via dynamic mode. Promotion is a per-target decision made under dynamic mode; there are no static, automatically promotion-eligible profiles.
 
 When promotion is enabled, the shipped promotion script enforces:
-- `candidate-better` prompt scoring
-- a matching `benchmark-pass` report for the active profile
-- a passing repeatability report for that same profile
-- explicit approval plus single-canonical-target manifest enforcement
-
-### Dynamic Profiles and Promotion
-
-Agents evaluated via dynamic profiles (`--dynamic` mode) are not currently promotion-eligible. Dynamic scoring provides integration health assessment but does not replace the hardcoded profile checks required for canonical mutation. Only targets with static profiles (handover) can be promoted.
+- `candidate-acceptable` dynamic-mode 5-dimension scoring above `scoring.thresholdDelta`
+- a matching `benchmark-pass` report (when benchmarks are configured for the target)
+- a passing repeatability report
+- explicit operator approval plus manifest boundary enforcement for the specific target
 
 ---
 
@@ -85,11 +81,11 @@ When scores tie, prefer the simpler option:
 ## 5. PROMOTION PREREQUISITES
 
 Promotion is allowed only when:
-- artifact-level fixtures exist
+- artifact-level fixtures exist (or are waived for the specific target)
 - repeatability is proven for the active benchmark set
 - rollback steps are documented
 - the explicit approval gate is passed
-- the target manifest still marks exactly one canonical target as mutable
+- the target is not classified `fixed` or `forbidden` in the manifest
 
 ---
 

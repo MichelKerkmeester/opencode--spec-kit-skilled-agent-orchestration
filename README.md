@@ -737,7 +737,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 **Improve Agent**
 - Evaluates and improves any agent across 5 integration-aware dimensions with deterministic scoring
-- Runs a bounded loop: scan integration surfaces → generate dynamic profile → dispatch `@agent-improver` → score candidate → reduce state → check stop conditions
+- Runs a bounded loop: scan integration surfaces → generate dynamic profile → dispatch `@improve-agent` → score candidate → reduce state → check stop conditions
 - All scoring is regex/string/file-existence based (no LLM-as-judge) for promotion gate reliability
 - Modes: `:auto`, `:confirm`. Supports any agent in `.opencode/agent/` as target
 

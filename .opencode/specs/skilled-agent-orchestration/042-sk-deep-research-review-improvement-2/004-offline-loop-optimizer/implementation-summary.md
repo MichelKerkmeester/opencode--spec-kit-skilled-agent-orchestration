@@ -22,7 +22,7 @@ contextType: "planning"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer |
+| **Spec Folder** | 004-offline-loop-optimizer |
 | **Completed** | 2026-04-10 (Phase 4a); Phase 4b deferred |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->

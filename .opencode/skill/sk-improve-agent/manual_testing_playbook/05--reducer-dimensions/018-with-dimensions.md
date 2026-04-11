@@ -13,7 +13,7 @@ Validates that JSONL records containing dimension data produce a Dimensional Pro
 ```bash
 # Setup: create a test JSONL WITH dimensions
 mkdir -p /tmp/reducer-test-dim
-echo '{"type":"scored","profileId":"handover","score":85,"recommendation":"candidate-better","dimensions":[{"name":"structural","score":90},{"name":"ruleCoherence","score":80},{"name":"integration","score":95},{"name":"outputQuality","score":75},{"name":"systemFitness","score":85}]}' > /tmp/reducer-test-dim/agent-improvement-state.jsonl
+echo '{"type":"scored","profileId":"debug","score":85,"recommendation":"candidate-better","dimensions":[{"name":"structural","score":90},{"name":"ruleCoherence","score":80},{"name":"integration","score":95},{"name":"outputQuality","score":75},{"name":"systemFitness","score":85}]}' > /tmp/reducer-test-dim/agent-improvement-state.jsonl
 echo '{}' > /tmp/reducer-test-dim/agent-improvement-config.json
 
 # Run the reducer

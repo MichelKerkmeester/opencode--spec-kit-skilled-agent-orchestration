@@ -9,19 +9,19 @@ category: "Runtime Truth"
 Validates that the `/improve:agent` autonomous workflow wires `improvement-journal.cjs` at every required boundary: `session_start`, per-iteration lifecycle checkpoints, and `session_end`.
 
 Given: a fresh `/improve:agent` `:auto` session.
-When: the operator runs the session end-to-end or inspects `.opencode/command/improve/assets/improve_agent-improver_auto.yaml`.
+When: the operator runs the session end-to-end or inspects `.opencode/command/improve/assets/improve_improve-agent_auto.yaml`.
 Then: journal events appear in `improvement-journal.jsonl` for every boundary, the CLI example in `.opencode/command/improve/agent.md` executes as written against a temp target, and the frozen `STOP_REASONS` / `SESSION_OUTCOMES` enums match the helper validator.
 
 ## Prompt / Command
 
 ```text
-/improve:agent ".opencode/agent/handover.md" :auto --spec-folder={spec} --iterations=2
+/improve:agent ".opencode/agent/debug.md" :auto --spec-folder={spec} --iterations=2
 ```
 
 ### Verification (copy-paste)
 
 ```bash
-AUTO_YAML=.opencode/command/improve/assets/improve_agent-improver_auto.yaml
+AUTO_YAML=.opencode/command/improve/assets/improve_improve-agent_auto.yaml
 TMP_SPEC="$(mktemp -d /tmp/improve-agent-journal-XXXXXX)"
 TMP_JOURNAL="$TMP_SPEC/improvement/improvement-journal.jsonl"
 
@@ -29,7 +29,7 @@ grep -n "improvement-journal.cjs\|--emit" "$AUTO_YAML"
 
 python3 - <<'PY'
 from pathlib import Path
-yaml_text = Path(".opencode/command/improve/assets/improve_agent-improver_auto.yaml").read_text()
+yaml_text = Path(".opencode/command/improve/assets/improve_improve-agent_auto.yaml").read_text()
 required = [
     "session_start",
     "candidate_generated",
@@ -82,7 +82,7 @@ rm -rf "$TMP_SPEC"
 
 ## Expected Signals
 
-- `.opencode/command/improve/assets/improve_agent-improver_auto.yaml` contains `improvement-journal.cjs` emission steps for:
+- `.opencode/command/improve/assets/improve_improve-agent_auto.yaml` contains `improvement-journal.cjs` emission steps for:
   - `session_start` before the first loop iteration
   - `candidate_generated`, `candidate_scored`, and `gate_evaluation` inside each iteration
   - `session_end` after synthesis completes
@@ -97,7 +97,7 @@ The autonomous YAML contains journal emission coverage for all three boundary gr
 
 ## Failure Triage
 
-- If any boundary is missing from the YAML: add or restore the missing `step_emit_journal_event*` command in `improve_agent-improver_auto.yaml`
+- If any boundary is missing from the YAML: add or restore the missing `step_emit_journal_event*` command in `improve_improve-agent_auto.yaml`
 - If the CLI example exits non-zero: copy the exact example from `.opencode/command/improve/agent.md` and reconcile the helper CLI contract (`--emit`, `--journal`, `--details`)
 - If `session_end` is emitted but validation fails: compare the emitted `details.stopReason` / `details.sessionOutcome` values against the frozen enums in `improvement-journal.cjs`
 - If the doc taxonomy drifts from the helper: update the command doc and helper together so the runtime contract stays frozen

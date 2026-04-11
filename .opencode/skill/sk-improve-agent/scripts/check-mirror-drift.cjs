@@ -36,17 +36,11 @@ function stripFrontmatter(content) {
   return content.replace(/^---[\s\S]*?---\n/, '');
 }
 
-function walk(dir, acc) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name === 'node_modules' || entry.name === '.git') {
-      continue;
-    }
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      walk(full, acc);
-    } else {
-      acc.push(full);
-    }
+function safeReadBody(file) {
+  try {
+    return stripFrontmatter(fs.readFileSync(file, 'utf8'));
+  } catch (_err) {
+    return null;
   }
 }
 
@@ -56,46 +50,43 @@ function walk(dir, acc) {
 
 function main() {
   const args = parseArgs(process.argv.slice(2));
-  const canonical = args.canonical;
+  // Canonical + mirrors are optional now. When absent, the scanner operates
+  // purely on the manifest contents (dynamic-mode friendly).
+  const canonical = args.canonical || null;
   const mirrors = (args.mirrors || '').split(',').filter(Boolean);
   const output = args.output;
   const manifestPath = args.manifest;
 
-  if (!canonical || mirrors.length === 0 || !output) {
-    process.stderr.write('Usage: node check-mirror-drift.cjs --canonical=... --mirrors=a,b,c --output=... [--manifest=...]\n');
+  if (!output) {
+    process.stderr.write('Usage: node check-mirror-drift.cjs --output=... [--canonical=...] [--mirrors=a,b,c] [--manifest=...]\n');
     process.exit(2);
   }
 
-  const canonicalBody = stripFrontmatter(fs.readFileSync(canonical, 'utf8'));
-  const lines = ['# Mirror Drift Report', '', `Canonical target: \`${canonical}\``, ''];
-
-  const repoRoot = process.cwd();
-  const files = [];
-  for (const root of ['.opencode', '.claude', '.codex', '.gemini', '.agents']) {
-    if (fs.existsSync(root)) {
-      walk(root, files);
-    }
+  const canonicalBody = canonical && fs.existsSync(canonical)
+    ? stripFrontmatter(fs.readFileSync(canonical, 'utf8'))
+    : null;
+  const lines = ['# Mirror Drift Report', ''];
+  if (canonical) {
+    lines.push(`Canonical target: \`${canonical}\``);
+    lines.push('');
+  } else {
+    lines.push('Canonical target: not specified (manifest-driven scan).');
+    lines.push('');
   }
-  const relevantRoots = [
-    '.opencode/agent/',
-    '.claude/agents/',
-    '.codex/agents/',
-    '.gemini/agents/',
-    '.agents/agents/',
-    '.opencode/command/spec_kit/',
-    '.agents/commands/spec_kit/',
-    '.gemini/commands/spec_kit/',
-    '.opencode/skill/system-spec-kit/templates/',
-  ];
-  const discovered = files
-    .filter((file) => /handover(\.md|\.toml)$/i.test(file))
-    .filter((file) => relevantRoots.some((root) => file.startsWith(root)))
-    .sort();
-  const manifest = manifestPath ? parseJsonc(manifestPath) : null;
-  const declared = new Set([canonical, ...mirrors]);
+
+  const manifest = manifestPath && fs.existsSync(manifestPath) ? parseJsonc(manifestPath) : null;
+  const declared = new Set();
+  if (canonical) {
+    declared.add(canonical);
+  }
+  for (const mirror of mirrors) {
+    declared.add(mirror);
+  }
   if (manifest) {
     for (const target of manifest.targets || []) {
-      declared.add(target.path);
+      if (target?.path) {
+        declared.add(target.path);
+      }
     }
     for (const fixed of manifest.fixed || []) {
       declared.add(fixed);
@@ -104,45 +95,52 @@ function main() {
       declared.add(forbidden);
     }
   }
-  const undisclosed = discovered.filter((file) => !declared.has(file));
 
   lines.push('## Surface Coverage');
   lines.push('');
   lines.push(`- Declared surfaces: ${declared.size}`);
-  lines.push(`- Discovered handover surfaces: ${discovered.length}`);
-  lines.push(`- Undisclosed surfaces: ${undisclosed.length}`);
-  if (undisclosed.length > 0) {
-    for (const extra of undisclosed) {
-      lines.push(`- Undisclosed: \`${extra}\``);
+  lines.push(`- Manifest targets: ${(manifest?.targets || []).length}`);
+  lines.push(`- Manifest fixed entries: ${(manifest?.fixed || []).length}`);
+  lines.push(`- Manifest forbidden entries: ${(manifest?.forbidden || []).length}`);
+  lines.push('');
+  lines.push('## Declared Surfaces');
+  lines.push('');
+  if (declared.size === 0) {
+    lines.push('- none');
+  } else {
+    for (const file of [...declared].sort()) {
+      const exists = fs.existsSync(file) ? 'present' : 'missing';
+      lines.push(`- \`${file}\` — ${exists}`);
     }
   }
   lines.push('');
-  lines.push('## Discovered Surfaces');
-  lines.push('');
-  for (const file of discovered) {
-    lines.push(`- \`${file}\``);
-  }
-  lines.push('');
-  lines.push('## Known Mirrors');
-  lines.push('');
 
-  for (const mirror of mirrors) {
-    let status = 'manual-review-required';
-    if (fs.existsSync(mirror)) {
-      const body = stripFrontmatter(fs.readFileSync(mirror, 'utf8'));
-      const signalCount = [
-        'Session handover specialist responsible for creating continuation documents',
-        'Never create handovers without reading actual session state',
-        '.opencode/skill/system-spec-kit/templates/handover.md',
-      ].filter((signal) => canonicalBody.includes(signal) && body.includes(signal)).length;
-      status = signalCount >= 2 ? 'aligned-in-intent' : 'manual-review-required';
-    } else {
-      status = 'missing';
+  if (mirrors.length > 0) {
+    lines.push('## Known Mirrors');
+    lines.push('');
+    for (const mirror of mirrors) {
+      let status;
+      const body = safeReadBody(mirror);
+      if (body === null) {
+        status = 'missing';
+      } else if (canonicalBody) {
+        // Generic similarity check: count shared non-trivial paragraphs.
+        const canonicalChunks = canonicalBody
+          .split(/\n\n+/)
+          .map((chunk) => chunk.trim())
+          .filter((chunk) => chunk.length > 40);
+        const shared = canonicalChunks.filter((chunk) => body.includes(chunk)).length;
+        status = shared >= 2 ? 'aligned-in-intent' : 'manual-review-required';
+      } else {
+        status = 'manual-review-required';
+      }
+      lines.push(`- \`${mirror}\`: ${status}`);
     }
-    lines.push(`- \`${mirror}\`: ${status}`);
+    lines.push('');
   }
 
-  lines.push('', 'Policy: mirrors remain derived surfaces and are not experiment targets in phase 1.');
+  lines.push('Policy: mirrors remain derived surfaces and are not experiment targets. ' +
+    'All evaluation runs through dynamic mode; promotion requires explicit per-target approval.');
   fs.writeFileSync(output, `${lines.join('\n')}\n`, 'utf8');
 }
 

@@ -1,23 +1,23 @@
 ---
-title: "ALWAYS/NEVER Rules Extraction (Handover)"
+title: "ALWAYS/NEVER Rules Extraction"
 feature_id: "PG-005"
 category: "Profile Generator"
 ---
 
-# ALWAYS/NEVER Rules Extraction (Handover)
+# ALWAYS/NEVER Rules Extraction
 
-Validates that the profile generator correctly extracts ALWAYS and NEVER behavioral rules from the handover agent definition.
+Validates that the profile generator correctly extracts ALWAYS and NEVER behavioral rules from a target agent definition.
 
 ## Prompt / Command
 
 ```bash
-node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/handover.md
+node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
 ```
 
 ### Verification (copy-paste)
 
 ```bash
-node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/handover.md | python3 -c "import sys,json; d=json.load(sys.stdin); rc=d['derivedChecks']['ruleCoherence']; a=sum(1 for r in rc if r['type']=='always'); n=sum(1 for r in rc if r['type']=='never'); assert a>=3 and n>=2; print(f'PASS: {a} always, {n} never')"
+node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md | python3 -c "import sys,json; d=json.load(sys.stdin); rc=d['derivedChecks']['ruleCoherence']; a=sum(1 for r in rc if r['type']=='always'); n=sum(1 for r in rc if r['type']=='never'); assert a>=3 and n>=2; print(f'PASS: {a} always, {n} never')"
 ```
 
 ## Expected Signals
@@ -36,7 +36,7 @@ node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.open
 
 - If `derivedChecks.ruleCoherence` is missing or empty: check the regex patterns used to detect ALWAYS/NEVER keywords in the agent file
 - If `type` field is missing: verify the profile generator annotates each rule with its `type` classification
-- If counts are below threshold: inspect the handover agent file for ALWAYS/NEVER patterns and confirm the parser covers all formats (bold, uppercase, inline)
+- If counts are below threshold: inspect the target agent file for ALWAYS/NEVER patterns and confirm the parser covers all formats (bold, uppercase, inline)
 - If the script errors on file path: confirm the `--agent` path is resolved relative to the project root
 
 ## Evidence Template

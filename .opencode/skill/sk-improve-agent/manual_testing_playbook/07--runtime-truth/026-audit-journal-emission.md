@@ -11,7 +11,7 @@ Validates that the improvement journal captures events for each lifecycle bounda
 ## Prompt / Command
 
 ```text
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder={spec} --iterations=1
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=1
 ```
 
 ### Verification (copy-paste)

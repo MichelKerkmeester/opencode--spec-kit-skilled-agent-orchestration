@@ -1,101 +1,42 @@
 {
   // Full-skill surface classification for sk-improve-agent.
-  "version": 2,
+  // All targets are now evaluated exclusively via dynamic mode
+  // (generate-profile.cjs + 5-dimension scoring). No static profiles
+  // are shipped; the targets array is intentionally empty. Promotion
+  // requires explicit per-target approval under dynamic mode.
+  "version": 3,
   "defaultMode": "proposal-first",
 
-  // When true, agents without a static profile in profileCatalog can be
-  // evaluated using generate-profile.cjs to derive scoring from the agent's
-  // own structure and rules. Dynamic profiles are not promotion-eligible.
+  // Dynamic profile generation is the canonical (and only) evaluation path.
+  // Agents are evaluated against their own derived structure and rules.
+  // Dynamic profiles are not automatically promotion-eligible.
   "dynamicProfileEnabled": true,
 
   // Path to the script that generates a dynamic target profile on the fly.
-  // Called with --dynamic <agent-path> when dynamicProfileEnabled is true
-  // and no static profile matches the target.
   "dynamicProfileScript": ".opencode/skill/sk-improve-agent/scripts/generate-profile.cjs",
 
   // Path to the integration-surface scanner that checks mirror parity,
   // command coverage, permission alignment, and resource references
   // for a given target agent across all runtime directories.
   "integrationScanScript": ".opencode/skill/sk-improve-agent/scripts/scan-integration.cjs",
+
+  // profileCatalog remains referenced for path consistency with config, but
+  // the directory is intentionally empty (contains only .gitkeep).
   "profileCatalog": ".opencode/skill/sk-improve-agent/assets/target-profiles",
-  "targets": [
-    {
-      "id": "handover-canonical",
-      "profileId": "handover",
-      "family": "session-handover",
-      "path": ".opencode/agent/handover.md",
-      "classification": "canonical",
-      "mutableInPhase1": false,
-      "candidateOnly": false,
-      "promotionEligible": true,
-      "evaluationMode": "prompt-surface+benchmark",
-      "requiredReferences": [
-        "spec.md",
-        "plan.md",
-        "tasks.md",
-        "checklist.md",
-        "memory/",
-        ".opencode/skill/system-spec-kit/templates/handover.md"
-      ]
-    },
-    {
-      "id": "handover-claude",
-      "profileId": "handover",
-      "family": "session-handover",
-      "path": ".claude/agents/handover.md",
-      "classification": "derived",
-      "mutableInPhase1": false
-    },
-    {
-      "id": "handover-codex",
-      "profileId": "handover",
-      "family": "session-handover",
-      "path": ".codex/agents/handover.toml",
-      "classification": "derived",
-      "mutableInPhase1": false
-    },
-    {
-      "id": "handover-gemini",
-      "profileId": "handover",
-      "family": "session-handover",
-      "path": ".gemini/agents/handover.md",
-      "classification": "derived",
-      "mutableInPhase1": false
-    },
-    {
-      "id": "handover-agents-runtime",
-      "profileId": "handover",
-      "family": "session-handover",
-      "path": ".agents/agents/handover.md",
-      "classification": "derived",
-      "mutableInPhase1": false
-    },
-    {
-      "id": "context-prime-candidate-only",
-      "profileId": "context-prime",
-      "family": "session-bootstrap",
-      "path": ".opencode/agent/context-prime.md",
-      "classification": "candidate-only",
-      "mutableInPhase1": false,
-      "candidateOnly": true,
-      "promotionEligible": false,
-      "evaluationMode": "prompt-surface+benchmark",
-      "requiredReferences": [
-        "session_bootstrap",
-        "session_health",
-        "fallback",
-        "Prime Package",
-        "read-only",
-        "under 15 seconds"
-      ]
-    }
-  ],
+  "targets": [],
+
+  // `fixed` declares files sk-improve-agent MUST NEVER mutate. These paths
+  // belong to LIVE spec-kit surfaces (commands + templates) outside this
+  // skill; they are protections, not static profiles for the handover agent.
   "fixed": [
     ".opencode/command/spec_kit/handover.md",
     ".agents/commands/spec_kit/handover.toml",
     ".gemini/commands/spec_kit/handover.toml",
     ".opencode/skill/system-spec-kit/templates/handover.md"
   ],
+
+  // `forbidden` declares files sk-improve-agent MUST NEVER write to even
+  // when a candidate superficially matches. Same rationale as `fixed`.
   "forbidden": [
     ".opencode/command/spec_kit/handover.md",
     ".agents/commands/spec_kit/handover.toml",

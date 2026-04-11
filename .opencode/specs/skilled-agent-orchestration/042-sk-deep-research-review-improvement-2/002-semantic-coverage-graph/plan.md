@@ -288,7 +288,7 @@ iteration JSONL append
 
 ---
 
-## 7. IMPLEMENTATION ASSUMPTIONS
+### Implementation Assumptions
 
 - The current MCP server already has a registration path that can expose the new tool schemas without opening a second server surface.
 - Phase 001 reducer ownership remains authoritative for legal STOP decisions and final `shouldContinue` synthesis.
@@ -299,7 +299,7 @@ iteration JSONL append
 ---
 
 <!-- ANCHOR:rollback -->
-## 8. ROLLBACK PLAN
+## 7. ROLLBACK PLAN
 
 - **Trigger**: Graph extraction breaks existing graph behavior, or graph convergence produces incorrect legal STOP decisions.
 - **Procedure**:
@@ -308,3 +308,26 @@ iteration JSONL append
   3. Leave the dedicated graph store and extracted helper files isolated until behavior is corrected and replay-tested.
 - **Safety Note**: Rollback must not modify or corrupt the existing memory causal graph or code structural graph stores. `deep-loop-graph.sqlite` is additive and can be recreated independently.
 <!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
+
+```text
+Phase 2a (Extract shared graph helpers)
+  -> Phase 2b (Create SQLite storage and query layer)
+  -> Phase 2c (Expose four MCP tools)
+  -> Phase 2d (Define reducer/MCP contract and integrate reducer)
+  -> Phase 2e (Update agents and runtime references)
+  -> Phase 3 verification
+```
+
+| Workstream | Depends On | Produces | Blocks |
+|------------|------------|----------|--------|
+| Phase 2a graph helper extraction | Existing graph primitives | Shared coverage-graph libraries | 2b, 2c, 2d |
+| Phase 2b DB/query layer | Phase 2a helpers | SQLite schema, query engine, snapshot support | 2c, 2d |
+| Phase 2c MCP tool surface | Phases 2a-2b | `deep_loop_graph_*` handlers and schemas | 2d, verification |
+| Phase 2d reducer integration | Phases 2a-2c plus Phase 001 runtime truth | Graph-aware reducer flow and fallback authority chain | 2e, verification |
+| Phase 2e agent and reference alignment | Phase 2d contract | Canonical `graphEvents` runtime contract | verification |
+<!-- /ANCHOR:dependency-graph -->

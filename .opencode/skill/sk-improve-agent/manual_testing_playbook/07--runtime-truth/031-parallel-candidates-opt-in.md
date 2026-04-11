@@ -20,7 +20,7 @@ console.log('parallelWaves config:', JSON.stringify(config.parallelWaves, null, 
 
 Then run an improvement session with default settings:
 ```text
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder={spec} --iterations=2
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2
 ```
 
 ### Verification (copy-paste)

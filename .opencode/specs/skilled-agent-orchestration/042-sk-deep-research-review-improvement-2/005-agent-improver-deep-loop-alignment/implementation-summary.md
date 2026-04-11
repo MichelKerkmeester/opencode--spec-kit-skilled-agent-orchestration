@@ -1,18 +1,17 @@
 ---
 title: "Implementation Summary: Agent-Improver Deep-Loop Alignment [005]"
-description: "Post-implementation record for the deep-loop alignment of sk-improve-agent. Filled after all 4 sub-phases complete."
+description: "Completed implementation summary for the improve-agent runtime-truth alignment phase, grounded in the landing commit, release note, and current runtime paths."
 trigger_phrases:
   - "005"
   - "agent improver implementation summary"
-  - "improvement journal summary"
+  - "sk-improve-agent implementation summary"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 # Implementation Summary: Agent-Improver Deep-Loop Alignment
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -22,8 +21,11 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 005-agent-improver-deep-loop-alignment |
-| **Completed** | [YYYY-MM-DD] |
+| **Completed** | 2026-04-11 |
 | **Level** | 3 |
+| **Landing Commit** | `080cf549e` |
+| **Primary Release Note** | `.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md` |
+| **Follow-on Correction** | `.opencode/changelog/15--sk-improve-agent/v1.2.1.0.md` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -31,23 +33,23 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-[To be filled after implementation completes. Open with a hook: what changed in sk-improve-agent and why it matters. Lead with impact on improvement session auditability and convergence reliability.]
+Phase 005 brought the improve-agent loop into the same runtime-truth family as the deeper research and review loops. The work landed five helper modules, dedicated tests, supporting playbook scenarios, and command plus skill documentation updates so improve-agent sessions could be audited, reasoned about, and explained with concrete artifacts instead of opaque reducer-only summaries.
 
 ### Stop-Reason Taxonomy and Audit Journal
 
-[Describe what the journal and stop-reason taxonomy deliver to developers running improvement sessions.]
+The phase added `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs` and published the surrounding runtime-truth contract through `.opencode/skill/sk-improve-agent/SKILL.md`, `.opencode/command/improve/agent.md`, and `.opencode/agent/improve-agent.md`. The journal gave the loop an append-only event stream and kept the write path outside the proposal agent so the evaluator-first model stayed intact.
 
 ### Mutation Coverage and Trade-Off Detection
 
-[Describe how coverage graph and trade-off detector change the improvement loop behavior.]
+The phase added `.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs` and `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs`. Together they made the loop explainable: maintainers could see which dimensions and mutation types had already been explored, and they could detect when a candidate improved one dimension by regressing another.
 
-### Parallel Candidate Waves
+### Optional Parallel Candidate Waves
 
-[Describe the opt-in parallel wave feature and when it activates.]
+The phase added `.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs` plus supporting playbook scenarios. That let the loop track optional branch exploration without turning parallelism into the mandatory default path.
 
-### Scoring Weight Optimizer and Benchmark Stability
+### Stability Scoring and Advisory Optimization
 
-[Describe what the weight optimizer report contains and how benchmark stability is measured.]
+The phase added `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs` so repeated benchmark behavior could be measured instead of assumed. The same helper family also exposed advisory optimizer-facing outputs, which later phases refined further rather than replacing.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -55,7 +57,14 @@ contextType: "general"
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-[To be filled after implementation completes. Describe the sub-phase delivery order, testing approach, and how backward compatibility was verified.]
+The implementation landed in commit `080cf549e`, which records the five helper scripts, the five dedicated test files, and the asset plus command updates. The shipped outcome was then documented in `v1.1.0.0`, which records:
+
+- the runtime-truth helper surface
+- the improve-agent rename completion
+- the 31/31 manual playbook pass
+- the 10,335-test Vitest result recorded at ship time
+
+Later on the packet family corrected one important documentation drift: `v1.2.1.0` explicitly retracted a multi-session lifecycle contract that had been documented but not actually wired. This closeout packet reflects that later correction so Phase 005 is recorded as shipped without silently preserving superseded lifecycle claims.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -65,7 +74,11 @@ contextType: "general"
 
 | Decision | Why |
 |----------|-----|
-| [To be filled] | [To be filled after implementation] |
+| Journal writes stay orchestrator-owned | Preserves the proposal-only target-agent boundary while still recording session lifecycle evidence. |
+| Coverage tracking is part of improve-agent runtime truth | Makes the loop explainable instead of opaque. |
+| Trajectory and trade-off analysis belong in the shipped loop | Prevents aggregate scores from hiding unstable or regressive improvements. |
+| Parallel candidates stay opt-in | Keeps advanced exploration available without forcing extra complexity into every run. |
+| New runtime-truth settings remain additive | Protects existing improve-agent usage while allowing the runtime surface to grow. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -75,13 +88,17 @@ contextType: "general"
 
 | Check | Result |
 |-------|--------|
-| improvement-journal.vitest.ts | [PENDING] |
-| mutation-coverage.vitest.ts | [PENDING] |
-| trade-off-detector.vitest.ts | [PENDING] |
-| candidate-lineage.vitest.ts | [PENDING] |
-| benchmark-stability.vitest.ts | [PENDING] |
-| Backward compatibility (session without new config fields) | [PENDING] |
-| Manual integration test (full session with journal inspection) | [PENDING] |
+| `improvement-journal.vitest.ts` exists | PASS |
+| `mutation-coverage.vitest.ts` exists | PASS |
+| `trade-off-detector.vitest.ts` exists | PASS |
+| `candidate-lineage.vitest.ts` exists | PASS |
+| `benchmark-stability.vitest.ts` exists | PASS |
+| Runtime-truth playbook category `07--runtime-truth/` exists | PASS |
+| End-to-end playbook scenarios `022-024` exist | PASS |
+| Landing release note recorded shipped verification | PASS |
+| Phase packet strict validation | PASS |
+
+Verification evidence for the shipped runtime lives in `.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md`. Verification evidence for the later lifecycle wording correction lives in `.opencode/changelog/15--sk-improve-agent/v1.2.1.0.md`.
 <!-- /ANCHOR:verification -->
 
 ---
@@ -89,5 +106,7 @@ contextType: "general"
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **[To be filled after implementation]** Document any limitations, workarounds, or deferred items discovered during implementation.
+1. The historical phase slug still uses `agent-improver`, while the live runtime surface is now `sk-improve-agent`.
+2. `v1.1.0.0` documented broader lifecycle semantics than the runtime actually shipped; `v1.2.1.0` later narrowed that wording to current reality.
+3. This closeout pass documents shipped evidence and packet validity; it does not re-run the original Phase 005 runtime implementation work.
 <!-- /ANCHOR:limitations -->

@@ -1,11 +1,11 @@
 ---
 title: Recursive Agent Strategy Template
-description: Mutable runtime strategy template for agent-improver sessions.
+description: Mutable runtime strategy template for improve-agent sessions.
 ---
 
 # Recursive Agent Strategy
 
-Mutable strategy template for a agent-improver run. Use it to capture the operator-owned goal and hypothesis while reserving the machine-owned sections for reducer updates after scoring and benchmarking.
+Mutable strategy template for a improve-agent run. Use it to capture the operator-owned goal and hypothesis while reserving the machine-owned sections for reducer updates after scoring and benchmarking.
 
 ---
 
@@ -14,7 +14,7 @@ Mutable strategy template for a agent-improver run. Use it to capture the operat
 
 ### Purpose
 
-Provides the working strategy file for a agent-improver run.
+Provides the working strategy file for a improve-agent run.
 
 ### Usage
 
@@ -32,7 +32,7 @@ Copy this file into the runtime area, fill the operator-owned fields before the 
 
 ### Target Profile
 
-[handover, context-prime, or dynamic (any agent)]
+[dynamic (any agent)]
 
 ### Goal
 
@@ -40,7 +40,7 @@ Copy this file into the runtime area, fill the operator-owned fields before the 
 
 ### Constraints
 
-- promotion allowed only for the single canonical handover target
+- promotion allowed only with explicit per-target approval under dynamic mode
 - candidate-only targets must never be promoted
 - runtime mirrors excluded from benchmark truth
 - no promotion without explicit later-phase gate

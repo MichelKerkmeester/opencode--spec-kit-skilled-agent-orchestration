@@ -11,7 +11,7 @@ Validates that every completed improvement session emits a `session_ended` event
 ## Prompt / Command
 
 ```text
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder={spec} --iterations=2
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2
 ```
 
 ### Verification (copy-paste)

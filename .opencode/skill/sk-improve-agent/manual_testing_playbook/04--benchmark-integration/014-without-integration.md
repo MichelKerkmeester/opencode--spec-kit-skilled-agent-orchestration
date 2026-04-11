@@ -13,7 +13,7 @@ Validates that running a benchmark without the --integration-report flag produce
 ```bash
 mkdir -p /tmp/bench-test-empty && \
 node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
-  --profile=handover \
+  --profile=debug \
   --outputs-dir=/tmp/bench-test-empty \
   --output=/tmp/bench-no-integration.json
 ```
@@ -37,7 +37,7 @@ Output has `status: "benchmark-complete"` with `aggregateScore` and `fixtures` b
 ## Failure Triage
 
 - If `integrationScore` or `integrationDetails` fields appear: check whether the benchmark unconditionally includes integration data regardless of the flag
-- If the benchmark fails to run: verify the `--outputs-dir` exists (the `mkdir -p` above should handle this) and the handover profile is available
+- If the benchmark fails to run: verify the `--outputs-dir` exists (the `mkdir -p` above should handle this) and the debug profile is available
 - If the output file is not created: check the `--output` path handling logic in `run-benchmark.cjs`
 
 ## Evidence Template

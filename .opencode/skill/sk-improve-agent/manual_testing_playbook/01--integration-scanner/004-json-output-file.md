@@ -11,13 +11,13 @@ Validates that the --output flag writes scan results to a valid JSON file at the
 ## Prompt / Command
 
 ```bash
-node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=handover --output=/tmp/test-scan-output.json && cat /tmp/test-scan-output.json | python3 -c "import sys,json; json.load(sys.stdin); print('Valid JSON')"
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug --output=/tmp/test-scan-output.json && cat /tmp/test-scan-output.json | python3 -c "import sys,json; json.load(sys.stdin); print('Valid JSON')"
 ```
 
 ### Verification (copy-paste)
 
 ```bash
-node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=handover --output=/tmp/test-scan-output.json && python3 -c "import json; d=json.load(open('/tmp/test-scan-output.json')); assert d['status']=='complete'; assert 'surfaces' in d; assert 'summary' in d; print('PASS: valid JSON with expected structure')"
+node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug --output=/tmp/test-scan-output.json && python3 -c "import json; d=json.load(open('/tmp/test-scan-output.json')); assert d['status']=='complete'; assert 'surfaces' in d; assert 'summary' in d; print('PASS: valid JSON with expected structure')"
 ```
 
 ## Expected Signals

@@ -44,8 +44,8 @@ contextType: "planning"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-PARENT-010 [P1] Phase 2 root routing points to graph extraction, MCP tooling, and reducer/MCP seam sources in the child packet.
-- [x] CHK-PARENT-011 [P1] Phase 3 root routing points to fan-out/join proof, keyed merge, and reducer-owned board sources in the child packet.
+- [x] CHK-PARENT-010 [P1] Phase 2 root routing points to graph extraction, MCP tooling, and reducer/MCP seam sources in the child packet. ✓ Verified in: ./002-semantic-coverage-graph/implementation-summary.md and ./002-semantic-coverage-graph/tasks.md
+- [x] CHK-PARENT-011 [P1] Phase 3 root routing points to fan-out/join proof, keyed merge, and reducer-owned board sources in the child packet. ✓ Verified in: ./003-wave-executor/implementation-summary.md and ./003-wave-executor/tasks.md
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -53,8 +53,8 @@ contextType: "planning"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-PARENT-020 [P1] Phase 3 verification references remain aligned with wave planner, merge, and resume test surfaces.
-- [x] CHK-PARENT-021 [P1] Phase 4 verification references continue to show advisory-only promotion and deferred `4b` prerequisites.
+- [x] CHK-PARENT-020 [P1] Phase 3 verification references remain aligned with wave planner, merge, and resume test surfaces. ✓ Verified in: ./003-wave-executor/checklist.md and ./003-wave-executor/implementation-summary.md
+- [x] CHK-PARENT-021 [P1] Phase 4 verification references continue to show advisory-only promotion and deferred `4b` prerequisites. ✓ Verified in: ./004-offline-loop-optimizer/checklist.md and ./004-offline-loop-optimizer/implementation-summary.md
 <!-- /ANCHOR:testing -->
 
 ---
@@ -62,7 +62,7 @@ contextType: "planning"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-PARENT-030 [P1] Parent docs continue to mark Phase 4b as blocked until replay fixtures, behavioral suites, and corpus prerequisites exist.
+- [x] CHK-PARENT-030 [P1] Parent docs continue to mark Phase 4b as blocked until replay fixtures, behavioral suites, and corpus prerequisites exist. ✓ Verified in: implementation-summary.md §Known Limitations and ./004-offline-loop-optimizer/implementation-summary.md
 <!-- /ANCHOR:security -->
 
 ---
@@ -70,10 +70,10 @@ contextType: "planning"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-PARENT-040 [P1] Parent overview docs summarize the child phases without duplicating child implementation detail.
-- [x] CHK-PARENT-041 [P1] Phase 1 child checklist remains the verification source of truth and is linked correctly.
-- [x] CHK-PARENT-042 [P1] Phases 2–8 are clearly marked with their verification mechanism (child task completion, phase-scoped checklists where present, and deep review rounds).
-- [x] CHK-PARENT-043 [P1] `review/review-report.md` is linked from this checklist and from the root `implementation-summary.md` so operators can trace the 16 closing-audit findings to the Lane 1–5 remediation commits.
+- [x] CHK-PARENT-040 [P1] Parent overview docs summarize the child phases without duplicating child implementation detail. ✓ Verified in: spec.md, plan.md, and implementation-summary.md §What Was Built
+- [x] CHK-PARENT-041 [P1] Phase 1 child checklist remains the verification source of truth and is linked correctly. ✓ Verified in: ./001-runtime-truth-foundation/checklist.md (linked from this checklist §Pre-Implementation)
+- [x] CHK-PARENT-042 [P1] Phases 2–8 are clearly marked with their verification mechanism (child task completion, phase-scoped checklists where present, and deep review rounds). ✓ Verified in: §Pre-Implementation table (rows Phase 2–4) and implementation-summary.md §Verification rows Phase 5–8
+- [x] CHK-PARENT-043 [P1] `review/review-report.md` is linked from this checklist and from the root `implementation-summary.md` so operators can trace the 16 closing-audit findings to the Lane 1–5 remediation commits. ✓ Verified in: ./review/review-report.md and implementation-summary.md §How It Was Delivered (Lane 1–5 paragraphs with commits be79ed0a0, 17b5f28ed, 86c7fbc9d, 2c4f74b9f, f99739742)
 <!-- /ANCHOR:docs -->
 
 ---
@@ -81,9 +81,9 @@ contextType: "planning"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-PARENT-050 [P1] Root packet links resolve to the intended child folders and parent summary files.
-- [x] CHK-PARENT-051 [P1] Parent packet status/count summaries match the child task sources they summarize.
-- [x] CHK-PARENT-052 [P1] Packet-root spec.md, tasks.md, checklist.md, and implementation-summary.md are reconciled with phases 5–8 and the closing-audit Lane 1–5 remediation (not the original four-phase topology).
+- [x] CHK-PARENT-050 [P1] Root packet links resolve to the intended child folders and parent summary files. ✓ Verified in: spec.md, plan.md §IMPLEMENTATION PHASES child-plan links, and §Pre-Implementation child checklist links
+- [x] CHK-PARENT-051 [P1] Parent packet status/count summaries match the child task sources they summarize. ✓ Verified in: §Verification Summary table rows reconciled against ./001-runtime-truth-foundation/ through ./008-further-deep-loop-improvements/
+- [x] CHK-PARENT-052 [P1] Packet-root spec.md, tasks.md, checklist.md, and implementation-summary.md are reconciled with phases 5–8 and the closing-audit Lane 1–5 remediation (not the original four-phase topology). ✓ Verified in: implementation-summary.md §How It Was Delivered (Phases 005–008 + Lane 1–5) and commit f99739742 (Lane 5 release-readiness reconciliation); also commit e0417a643 (post-remediation sync)
 <!-- /ANCHOR:file-org -->
 
 ---

@@ -1,6 +1,6 @@
 ---
 title: Evaluator Contract
-description: Deterministic scoring and benchmark contract for target-profiled agent-improver experiments.
+description: Deterministic scoring and benchmark contract for target-profiled improve-agent experiments.
 ---
 
 # Evaluator Contract
@@ -14,7 +14,7 @@ Contract for how `sk-improve-agent` scores candidates and benchmarks packet-loca
 
 ### Purpose
 
-Defines the input and output contract for the prompt-surface scorer and the output benchmark runner so agent-improver runs remain deterministic enough for bounded local experimentation.
+Defines the input and output contract for the prompt-surface scorer and the output benchmark runner so improve-agent runs remain deterministic enough for bounded local experimentation.
 
 ### When to Use
 
@@ -33,14 +33,9 @@ Weak candidates and infrastructure failures must be distinguishable. The contrac
 <!-- ANCHOR:evaluated-surfaces -->
 ## 2. EVALUATED SURFACES
 
-### Static Profiles (legacy)
+### Dynamic Profiles (only mode)
 
-- `handover`: `.opencode/agent/handover.md`, hardcoded keyword and structure checks
-- `context-prime`: `.opencode/agent/context-prime.md`, hardcoded keyword and structure checks
-
-### Dynamic Profiles (any agent)
-
-Any agent file in `.opencode/agent/*.md` can be evaluated using `--dynamic` mode. The scorer generates a profile on the fly from the agent's own structure, rules, and permissions using `generate-profile.cjs`.
+Every agent file in `.opencode/agent/*.md` is evaluated using dynamic mode. The scorer generates a profile on the fly from the agent's own structure, rules, and permissions using `generate-profile.cjs`. No static profiles are shipped; dynamic mode is the sole scoring path.
 
 ---
 
@@ -48,21 +43,13 @@ Any agent file in `.opencode/agent/*.md` can be evaluated using `--dynamic` mode
 <!-- ANCHOR:input-contract -->
 ## 3. INPUT CONTRACT
 
-### Legacy Mode (prompt-surface)
+### Dynamic Mode (5-dimension, only mode)
 
-The prompt scorer expects:
-- `--candidate=PATH`
-- `--baseline=PATH` optional
-- `--manifest=PATH` optional
-- `--target=PATH` optional
-- `--profile=ID` optional
-- `--output=PATH` optional
-
-### Dynamic Mode (5-dimension)
-
-The scorer accepts `--dynamic` to enable integration-aware evaluation:
+The scorer runs dynamic 5-dimension evaluation by default:
 - `--candidate=PATH` required (path to the agent .md file)
-- `--dynamic` flag to enable 5-dimension scoring
+- `--target=PATH` optional (defaults to candidate path)
+- `--manifest=PATH` optional
+- `--weights=JSON` optional (override default dimension weights)
 - `--output=PATH` optional
 
 The benchmark runner expects:
@@ -82,14 +69,14 @@ The scorer emits JSON with:
 - `status`
 - `profileId`
 - `family`
+- `evaluationMode` (always `"dynamic-5d"`)
 - `target`
 - `candidate`
-- `baseline`
-- `totals`
-- `delta`
+- `score` (weighted dynamic score)
+- `dimensions` (array of 5 dimension objects)
 - `recommendation`
-- `checks`
-- `reasons`
+- `failureModes`
+- `legacyScore` (always `null`; retained for schema compatibility)
 
 The benchmark runner emits JSON with:
 - `status`
@@ -102,13 +89,9 @@ The benchmark runner emits JSON with:
 - `fixtures`
 - `failureModes`
 
-### Dynamic Mode Output (additional fields)
+### Dimension Details
 
-When `--dynamic` is used, the scorer additionally emits:
-- `evaluationMode`: `"dynamic-5d"`
-- `dimensions`: array of 5 dimension objects, each with `name`, `score`, `weight`, `details`
-- `legacyScore`: legacy scorer result (only for handover/context-prime targets)
-- `recommendation`: `"candidate-acceptable"` or `"needs-improvement"` (based on weighted score >= 70)
+Each entry in the `dimensions` array contains `name`, `score`, `weight`, and `details`. The recommendation is `"candidate-acceptable"` when the weighted score is at least 70, otherwise `"needs-improvement"`.
 
 ---
 
@@ -125,16 +108,6 @@ When `--dynamic` is used, the scorer additionally emits:
 | Integration Consistency | 0.25 | Runtime mirrors in sync, commands reference agent, skills reference agent; scored via `scan-integration.cjs` (mirror 60%, command 20%, skill 20%) |
 | Output Quality | 0.15 | Output verification checklist items present in instructions; no placeholder content ([TODO], [TBD], [YOUR_VALUE_HERE]) |
 | System Fitness | 0.15 | Permission-capability alignment (no tools listed but denied); resource references valid (commands and skills exist); frontmatter completeness (name, mode, permission) |
-
-### Legacy Prompt-Surface Rubric (static profiles)
-
-| Dimension | Weight | What It Checks |
-| --- | --- | --- |
-| Structure | 0.30 | Required sections and target-specific prompt anchors |
-| Safety | 0.25 | Read-only or no-fabrication rules, no nested dispatch, bounded scope |
-| Scope | 0.20 | Candidate stays inside the declared target and manifest boundary |
-| Operability | 0.15 | Concrete instructions, explicit source reads, and reusable operator-facing sections such as verification or related resources |
-| Simplicity | 0.10 | Avoids redundant or conflicting directives |
 
 ### Benchmark Rubric
 

@@ -86,6 +86,8 @@ code-graph.sqlite
 
 # Not part of framework
 # ───────────────────────────────────────────
+/anobel.com
+
 .opencode/specs/00--ai-systems
 .claude/specs/00--ai-systems
 .codex/specs/00--ai-systems
