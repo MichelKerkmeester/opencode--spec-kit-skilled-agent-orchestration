@@ -78,6 +78,7 @@ Deliver an implementation-ready, governed plan for the canonical writer so phase
 | `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts` | Create | 3-tier classifier using iter 002, 021, and 031 |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts` | Create | Five canonical merge modes modeled after `nested-changelog.ts` (row C10, iter 023) |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts` | Create | Atomic index commit that replaces `atomicSaveMemory` without changing the folder lock |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts` | Create | Typed reader/writer for the `_memory.continuity` YAML sub-block with 14-field schema + 2048-byte budget enforcement (iter 005, iter 024) |
 | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modify | Routed save wrapper over the new writer path (row C1) |
 | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Modify | Shell exposure for new rule aliases and debug hooks (rows C11, D1) |
 | `.opencode/skill/system-spec-kit/templates/level_{1,2,3,3+}/*.md` | Modify | `_memory.continuity` rollout across the 30 template surfaces (rows D9-D30) |
@@ -93,7 +94,7 @@ Deliver an implementation-ready, governed plan for the canonical writer so phase
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | The validator stack must gain the five Gate C rules in the iter 022 order. | `spec-doc-structure.ts` exists, `validate.sh` exposes the rules, and fixtures prove hard-fail vs warn behavior for all five rules. |
-| REQ-002 | The writer core must ship as four explicit modules plus the `memory-save.ts` rewrite. | `contentRouter`, `anchorMergeOperation`, `atomicIndexMemory`, and continuity-aware `types/schema` wiring exist; `withSpecFolderLock` remains unchanged. |
+| REQ-002 | The writer core must ship as four explicit modules plus the `memory-save.ts` rewrite. | `contentRouter`, `anchorMergeOperation`, `thinContinuityRecord`, and `atomicIndexMemory` all exist as first-class modules with passing unit tests; `withSpecFolderLock` remains unchanged. |
 | REQ-003 | Canonical spec-doc writes must replace standalone writer assumptions without changing Gate B storage guarantees. | `atomicSaveMemory` is replaced by `atomicIndexMemory`, `generate-context.ts` uses the routed path, and the six adapted stages keep their documented behavior (rows B2-B16, C1). |
 | REQ-004 | Gate C must prove shadow safety before any reader-path promotion. | `shadow_only` is active via the iter 034 state machine, routing/shadow spans follow iter 033/038, parity is >=95 percent on the golden set, and auto-disable never fires during the required window. |
 

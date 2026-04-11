@@ -132,10 +132,6 @@ Ship a one-week pre-work lane that removes template and packet-prep blockers, pr
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
 <!-- ANCHOR:nfr -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
@@ -187,6 +183,7 @@ Ship a one-week pre-work lane that removes template and packet-prep blockers, pr
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Which exact root packets make up the "approximately five" backfill set once the Gate A audit is run? Iteration 016 defines the prerequisite, but the concrete packet list is not enumerated in the current research packet.

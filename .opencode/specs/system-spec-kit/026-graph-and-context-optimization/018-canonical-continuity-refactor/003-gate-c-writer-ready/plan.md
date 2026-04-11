@@ -65,6 +65,7 @@ Strangler-style refactor inside the existing save pipeline.
 - **`contentRouter`**: Tier 1 rules, Tier 2 prototypes, Tier 3 strict JSON fallback for the eight categories (iters 002, 021, 031).
 - **`anchorMergeOperation`**: five canonical merge modes under the existing folder mutex (iters 003, 023; row C10).
 - **`atomicIndexMemory`**: atomic index commit that replaces file-creation assumptions without changing the concurrency envelope (row B1).
+- **`thinContinuityRecord`**: typed reader/writer for the `_memory.continuity` YAML sub-block with 14-field schema + 2048-byte budget enforcement (iters 005, 024).
 - **Adapted carriers**: `memory-save.ts`, `generate-context.ts`, `create-record`, `dedup`, `post-insert`, `types`, `tool-input-schemas`, and template surfaces.
 
 ### Data Flow
@@ -81,7 +82,7 @@ Strangler-style refactor inside the existing save pipeline.
 - [ ] Add `AtomicIndex*` types and save-schema fields (`route-as`, merge hints, continuity metadata) before touching the XL writer.
 
 ### Phase 2: Writer Core
-- [ ] Implement `contentRouter`, `anchorMergeOperation`, and `atomicIndexMemory`.
+- [ ] Implement `contentRouter`, `anchorMergeOperation`, `thinContinuityRecord`, and `atomicIndexMemory`.
 - [ ] Rewrite `memory-save.ts` around the new modules while preserving `withSpecFolderLock` and the documented pass-through stages.
 - [ ] Adapt save helpers, trigger handling, causal-link processing, and quality gating to doc-anchor identity.
 

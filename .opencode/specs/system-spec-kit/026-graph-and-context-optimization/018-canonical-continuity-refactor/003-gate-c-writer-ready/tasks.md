@@ -42,6 +42,7 @@ parent: "018-canonical-continuity-refactor"
 - [ ] T002 [P] Build `contentRouter` with Tier 1 rules, Tier 2 prototype support, and Tier 3 strict JSON fallback (`mcp_server/lib/routing/content-router.ts`)
 - [ ] T003 [P] Build `anchorMergeOperation` with the five canonical merge modes and post-merge legality checks (`mcp_server/lib/merge/anchor-merge-operation.ts`)
 - [ ] T004 Build `atomicIndexMemory` as the drop-in replacement for `atomicSaveMemory` (`mcp_server/handlers/save/atomic-index-memory.ts`)
+- [ ] T004b [P] Build `thinContinuityRecord` as the typed reader/writer for the `_memory.continuity` YAML sub-block with 14-field schema + 2048-byte budget enforcement per iter 005/024 (`mcp_server/lib/continuity/thin-continuity-record.ts`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -71,7 +72,7 @@ parent: "018-canonical-continuity-refactor"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All twelve tasks marked `[x]`
+- [ ] All thirteen tasks marked `[x]`
 - [ ] No `[B]` blocked tasks remain on validator, writer core, templates, or shadow proving
 - [ ] Checklist evidence proves Gate C exit criteria and leaves Gate D as the next gate
 <!-- /ANCHOR:completion -->
