@@ -11,24 +11,6 @@
       "text": "D3: Is the mutation coverage graph namespace (`loop_type: \"improvement\"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?",
       "addedAtIteration": 0,
       "resolvedAtIteration": null
-    },
-    {
-      "id": "question-11-d4-do-the-reducers-ever-write-outside-their-declared-machine-owned-anchors-viola",
-      "text": "D4: Do the reducers ever write outside their declared machine-owned anchors, violating the contract?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-15-d5-does-the-coverage-graph-s-contribution-to-the-3-signal-convergence-math-excee",
-      "text": "D5: Does the coverage graph's contribution to the 3-signal convergence math exceed its weight, or is it merely nominal?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
-    },
-    {
-      "id": "question-16-d5-are-there-missing-mcp-tool-calls-e-g-code-graph-query-for-semantic-neighbors-",
-      "text": "D5: Are there missing MCP tool calls (e.g., `code_graph_query` for semantic neighbors) that the loops should be making but aren't?",
-      "addedAtIteration": 0,
-      "resolvedAtIteration": null
     }
   ],
   "resolvedQuestions": [
@@ -81,6 +63,12 @@
       "resolvedAtIteration": 4
     },
     {
+      "id": "question-11-d4-do-the-reducers-ever-write-outside-their-declared-machine-owned-anchors-viola",
+      "text": "D4: Do the reducers ever write outside their declared machine-owned anchors, violating the contract?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 13
+    },
+    {
       "id": "question-12-d5-does-any-loop-phase-init-iteration-convergence-synthesis-actively-read-from-t",
       "text": "D5: Does any loop phase (init / iteration / convergence / synthesis) actively READ from the coverage graph (`coverage-graph-query.ts`, `coverage-graph-convergence.cjs`) to inform decisions, or only WRITE to it?",
       "addedAtIteration": 0,
@@ -97,6 +85,18 @@
       "text": "D5: Do convergence gates consult `coverage-graph-contradictions.cjs` to block STOP on contradictions, or only consult ratio-based signals?",
       "addedAtIteration": 0,
       "resolvedAtIteration": 6
+    },
+    {
+      "id": "question-15-d5-does-the-coverage-graph-s-contribution-to-the-3-signal-convergence-math-excee",
+      "text": "D5: Does the coverage graph's contribution to the 3-signal convergence math exceed its weight, or is it merely nominal?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 14
+    },
+    {
+      "id": "question-16-d5-are-there-missing-mcp-tool-calls-e-g-code-graph-query-for-semantic-neighbors-",
+      "text": "D5: Are there missing MCP tool calls (e.g., `code_graph_query` for semantic neighbors) that the loops should be making but aren't?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 15
     }
   ],
   "keyFindings": [
@@ -1212,6 +1212,502 @@
         "`.opencode/skill/sk-improve-agent/assets/improvement_config.json:124-129`",
         "`.opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/improvement/agent-improvement-state.jsonl:1-3`"
       ]
+    },
+    {
+      "id": "finding-12-5-benchmark-stability-gating-is-similarly-under-consumed-on-the-recovery-side-the-",
+      "text": "Benchmark-stability gating is similarly under-consumed on the recovery side. The module can compute per-dimension `stabilityWarning` messages only when a caller supplies replay result arrays, and the changelog says this should gate promotion on measurement reliability, but the reducer only counts benchmark pass/fail records from the state log and never reads stability coefficients or warning payloads. As shipped, post-run recovery can say “weak benchmark runs” while still losing the evidence needed to distinguish unstable measurement from ordinary benchmark failure (`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:27-35`, `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:95-171`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:173-186`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:286-289`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:431-437`).",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:41-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-011.md:37-40`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:270-322`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:47-67`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:168-203`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-503`",
+        "`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs:47-109`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:130-172`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:95-171`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:20-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md:20-34`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:24-35`"
+      ]
+    },
+    {
+      "id": "finding-12-3-candidate-lineage-is-persisted-but-not-rebuilt-or-consumed-by-any-shipped-recove",
+      "text": "Candidate lineage is persisted but not rebuilt or consumed by any shipped recovery/reporting path I inspected. `candidate-lineage.cjs` is a standalone JSON helper that records nodes and can answer lineage queries, but the reducer never reads `candidate-lineage.json`, and the runtime-truth playbook frames lineage creation as something the orchestrator must invoke after each evaluation rather than something a downstream consumer can reconstruct from existing state (`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs:47-109`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`, `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md:28-34`).",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:41-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-011.md:37-40`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:270-322`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:47-67`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:168-203`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-503`",
+        "`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs:47-109`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:130-172`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:95-171`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:20-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md:20-34`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:24-35`"
+      ]
+    },
+    {
+      "id": "finding-12-1-the-published-resume-contract-promises-more-reconstruction-than-the-shipped-reco",
+      "text": "The published resume contract promises more reconstruction than the shipped recovery helper exposes. Both the command and skill say resume replays the journal, coverage graph, and registry before dispatch, but the only recovery-facing journal helpers return the max iteration number and the terminal `stopReason/sessionOutcome`; there is no helper that rebuilds blocked-stop payloads, trade-off state, benchmark warnings, or lineage context from raw journal events (`.opencode/command/improve/agent.md:334-339`, `.opencode/skill/sk-improve-agent/SKILL.md:290-295`, `.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:168-203`).",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:41-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-011.md:37-40`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:270-322`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:47-67`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:168-203`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-503`",
+        "`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs:47-109`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:130-172`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:95-171`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:20-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md:20-34`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:24-35`"
+      ]
+    },
+    {
+      "id": "finding-12-2-the-shipped-reducer-is-not-that-missing-reconstruction-layer-reduce-state-cjs-bu",
+      "text": "The shipped reducer is not that missing reconstruction layer. `reduce-state.cjs` builds its registry solely from `agent-improvement-state.jsonl`, then derives stop status from recommendation tallies, benchmark fail counts, plateau detection, and mirror-drift text; its `main()` reads only the state log, config, and optional drift report before writing the dashboard and registry. That leaves journal-only events such as `blocked_stop`, `trade_off_detected`, or `benchmark_completed` details outside reducer-owned recovery surfaces (`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`).",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:41-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-011.md:37-40`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:270-322`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:47-67`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:168-203`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-503`",
+        "`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs:47-109`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:130-172`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:95-171`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:20-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md:20-34`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:24-35`"
+      ]
+    },
+    {
+      "id": "finding-12-4-trade-off-decisions-are-documented-as-reducer-visible-but-the-shipped-consumer-p",
+      "text": "Trade-off decisions are documented as reducer-visible, but the shipped consumer path does not ingest them. The strategy asset says the reducer populates the trade-off table when `trade-off-detector.cjs` flags a Pareto trade-off, and the playbook expects dashboard trade-off annotations, yet the actual reducer renders only dimensional score tables, failure modes, benchmark counts, and generic stop recommendations. The detector itself can only reconstruct trajectory from `candidate_scored` journal events, not from the reducer’s state log (`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`, `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:20-28`, `.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:130-172`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-475`).",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:41-43`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-011.md:37-40`",
+        "`.opencode/command/improve/agent.md:294-339`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:270-322`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:47-67`",
+        "`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:168-203`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:259-332`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:371-503`",
+        "`.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs:47-109`",
+        "`.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs:130-172`",
+        "`.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs:95-171`",
+        "`.opencode/skill/sk-improve-agent/assets/improvement_strategy.md:123-136`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md:20-35`",
+        "`.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md:20-34`",
+        "`.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md:24-35`"
+      ]
+    },
+    {
+      "id": "finding-13-1-sk-deep-research-is-anchor-scoped-and-fail-closed-on-strategy-writes-its-reducer",
+      "text": "`sk-deep-research` is anchor-scoped and fail-closed on strategy writes. Its reducer only replaces the `key-questions`, `answered-questions`, `what-worked`, `what-failed`, `exhausted-approaches`, `ruled-out-directions`, and `next-focus` anchor blocks, and it throws if any requested anchor is missing; that matches the research strategy contract declaring sections 3 and 6-11 reducer-rewritten while leaving sections 1, 2, 4, 5, 12, and 13 stable (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:20-21`, `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:317-331`, `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:353-366`).",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:20-21`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:317-366`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:478-507`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:431-481`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-645`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:20-25`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:292-327`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:461-479`",
+        "`.opencode/skill/sk-improve-agent/references/quick_reference.md:74-85`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:203-204`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:374-382`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:482-503`"
+      ]
+    },
+    {
+      "id": "finding-13-3-sk-deep-review-also-stays-inside-declared-reducer-surfaces-during-normal-refresh",
+      "text": "`sk-deep-review` also stays inside declared reducer surfaces during normal refresh: `reduceReviewState()` writes only `deep-review-findings-registry.json`, `deep-review-strategy.md`, and `deep-review-dashboard.md`, while the state-format contract separately classifies `review-report.md` as a synthesis-time mutable artifact and the dashboard as fully auto-generated/read-only (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-645`, `.opencode/skill/sk-deep-review/references/state_format.md:20-25`, `.opencode/skill/sk-deep-review/references/state_format.md:461-479`).",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:20-21`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:317-366`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:478-507`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:431-481`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-645`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:20-25`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:292-327`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:461-479`",
+        "`.opencode/skill/sk-improve-agent/references/quick_reference.md:74-85`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:203-204`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:374-382`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:482-503`"
+      ]
+    },
+    {
+      "id": "finding-13-5-sk-deep-review-is-fail-open-where-sk-deep-research-is-fail-closed-if-an-expected",
+      "text": "`sk-deep-review` is fail-open where `sk-deep-research` is fail-closed: if an expected anchor is missing, `replaceAnchorSection()` returns the original content instead of halting, and the reducer still writes the resulting strategy file back out. That prevents cross-anchor spill into adjacent human-owned sections, but it also means corrupted or missing machine-owned zones can silently persist (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:431-445`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:640-645`).",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:20-21`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:317-366`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:478-507`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:431-481`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-645`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:20-25`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:292-327`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:461-479`",
+        "`.opencode/skill/sk-improve-agent/references/quick_reference.md:74-85`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:203-204`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:374-382`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:482-503`"
+      ]
+    },
+    {
+      "id": "finding-13-4-sk-deep-review-under-implements-its-own-per-iteration-strategy-contract-while-re",
+      "text": "`sk-deep-review` under-implements its own per-iteration strategy contract while remaining anchor-bounded. The state format says each iteration updates `what-worked`, `what-failed`, `ruled-out-directions`, `cross-reference-status`, and `files-under-review`, but `updateStrategyContent()` actually rewrites only `review-dimensions`, `completed-dimensions`, `running-findings`, `exhausted-approaches`, and `next-focus` (`.opencode/skill/sk-deep-review/references/state_format.md:292-327`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:447-481`).",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:20-21`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:317-366`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:478-507`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:431-481`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-645`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:20-25`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:292-327`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:461-479`",
+        "`.opencode/skill/sk-improve-agent/references/quick_reference.md:74-85`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:203-204`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:374-382`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:482-503`"
+      ]
+    },
+    {
+      "id": "finding-13-6-sk-improve-agent-has-no-mixed-ownership-anchor-write-path-in-the-shipped-reducer",
+      "text": "`sk-improve-agent` has no mixed-ownership anchor write path in the shipped reducer. The runtime layout includes a mutable `agent-improvement-strategy.md`, but the reducer only regenerates `experiment-registry.json` and `agent-improvement-dashboard.md`, and the skill explicitly frames `reduce-state.cjs` as the dashboard/registry refresh step after ledger appends (`.opencode/skill/sk-improve-agent/references/quick_reference.md:74-85`, `.opencode/skill/sk-improve-agent/SKILL.md:203-204`, `.opencode/skill/sk-improve-agent/SKILL.md:374-382`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:482-503`).",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:20-21`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:317-366`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:478-507`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:431-481`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-645`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:20-25`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:292-327`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:461-479`",
+        "`.opencode/skill/sk-improve-agent/references/quick_reference.md:74-85`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:203-204`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:374-382`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:482-503`"
+      ]
+    },
+    {
+      "id": "finding-13-2-the-same-sk-deep-research-reducer-only-writes-three-outputs-in-its-normal-pass-f",
+      "text": "The same `sk-deep-research` reducer only writes three outputs in its normal pass: `findings-registry.json`, `deep-research-strategy.md`, and `deep-research-dashboard.md`. I found no reducer path that touches iteration markdown or any other human-authored research asset during refresh (`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:478-507`).",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:20-21`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:317-366`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:478-507`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:431-481`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:614-645`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:20-25`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:292-327`",
+        "`.opencode/skill/sk-deep-review/references/state_format.md:461-479`",
+        "`.opencode/skill/sk-improve-agent/references/quick_reference.md:74-85`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:203-204`",
+        "`.opencode/skill/sk-improve-agent/SKILL.md:374-382`",
+        "`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:482-503`"
+      ]
+    },
+    {
+      "id": "finding-14-2-that-same-helper-keeps-graph-stop-vetoes-outside-the-weighted-blend-evaluategrap",
+      "text": "That same helper keeps graph STOP vetoes outside the weighted blend. `evaluateGraphGates()` separately enforces `sourceDiversity >= 0.4` and `evidenceDepth >= 1.5`, returning `allPass` independently of `blendedScore`. In other words, the CJS layer has two graph pathways: a 40%-capped score and a hard blocker pair (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:220-258`).",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-013.md:38-39`",
+        "`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`",
+        "`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:661-683`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-14-6-the-live-graph-convergence-path-exists-but-as-a-separate-mcp-decision-engine-rat",
+      "text": "The \"live\" graph convergence path exists, but as a separate MCP decision engine rather than the reducer math the loops visibly consume here. The handler computes research/review thresholds, classifies signals as `weighted` vs `blocking_guard`, and can return `STOP_ALLOWED` only \"pending newInfoRatio agreement.\" That means graph convergence is architecturally downstream-compatible with loop stop logic, but still not the same thing as the reducer's current `compositeStop` pass-through (`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-239`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:290-379`).",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-013.md:38-39`",
+        "`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`",
+        "`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:661-683`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-14-5-the-published-convergence-docs-currently-overstate-reducer-side-graph-usage-rese",
+      "text": "The published convergence docs currently overstate reducer-side graph usage. Research docs say the reducer builds an in-memory graph from `graphEvents` and adds a `graphCoverage` sub-check to legal-stop evaluation; review docs make the same claim for `graphEvidence` under `findingStability`. But the workflow path I traced tells the LEAF agent to emit optional `graphEvents` and then runs `reduce-state.cjs`, while the inspected reducers themselves do not implement the documented graph rebuild or extra gate expansion (`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`, `.opencode/skill/sk-deep-review/references/convergence.md:661-683`, `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`).",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-013.md:38-39`",
+        "`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`",
+        "`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:661-683`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-14-3-the-shipped-deep-research-reducer-does-not-consume-either-of-those-graph-specifi",
+      "text": "The shipped deep-research reducer does not consume either of those graph-specific outputs directly. Its registry `convergenceScore` is set from `latestIteration.convergenceSignals.compositeStop ?? latestIteration.newInfoRatio ?? 0`, and the trend block only prints that scalar plus `coverageBySources`. I found no reducer path in the inspected ranges that reads `graphScore`, `blendedScore`, or graph gate results, so graph math only reaches research state if some earlier producer already collapsed it into `convergenceSignals.compositeStop` (`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`, `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`).",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-013.md:38-39`",
+        "`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`",
+        "`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:661-683`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-14-4-the-shipped-deep-review-reducer-mirrors-the-same-pattern-computeconvergencescore",
+      "text": "The shipped deep-review reducer mirrors the same pattern. `computeConvergenceScore()` reads `latest.convergenceSignals.compositeStop` or falls back to `1 - newFindingsRatio`, and the reducer then publishes only that scalar as `convergenceScore`. No inspected review reducer code reconstructs a coverage graph or invokes graph convergence logic before writing the dashboard/registry (`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`, `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:671-680`).",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-013.md:38-39`",
+        "`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`",
+        "`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:661-683`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-14-1-the-standalone-graph-helper-does-have-bounded-weight-not-runaway-influence-compu",
+      "text": "The standalone graph helper does have bounded weight, not runaway influence: `computeGraphConvergence()` builds `graphScore` from fragmentation (0.25), normalized depth (0.25), question coverage (0.30), and source diversity (0.20), then limits the merged result to `blendedScore = compositeStop * 0.6 + graphScore * 0.4`. Inside this helper, the coverage graph cannot contribute more than 40% of the final blended scalar (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-205`).",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-013.md:38-39`",
+        "`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`",
+        "`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:661-683`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-14-7-the-two-graph-convergence-implementations-are-also-not-numerically-interchangeab",
+      "text": "The two graph-convergence implementations are also not numerically interchangeable. The CJS helper defines `sourceDiversity` as a 0-1 ratio of unique source nodes to total nodes and blocks below `0.4`, while the MCP signal layer defines `sourceDiversity` as the average number of distinct source quality classes per question and the handler blocks below `1.5`. So even before caller wiring is considered, the repo currently ships two different graph-convergence regimes rather than one unified weight that the loops can rely on consistently (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:30-68`, `.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-64`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:208-239`).",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-013.md:38-39`",
+        "`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts:167-227`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:58-118`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:244-273`",
+        "`.opencode/skill/sk-deep-research/scripts/reduce-state.cjs:438-443`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:360-390`",
+        "`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:579-583`",
+        "`.opencode/skill/sk-deep-research/references/convergence.md:1183-1205`",
+        "`.opencode/skill/sk-deep-review/references/convergence.md:661-683`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:322-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:432-437`"
+      ]
+    },
+    {
+      "id": "finding-15-1-the-code-graph-routing-promise-is-present-in-the-agent-prompts-but-only-there-in",
+      "text": "The Code Graph routing promise is present in the agent prompts, but only there in the inspected loop surfaces: `@deep-research` says to route structural navigation through `code_graph_query`/`code_graph_context` at `.opencode/agent/deep-research.md:442`, and `@deep-review` repeats the same instruction at `.opencode/agent/deep-review.md:572`.",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-014.md:1-33`",
+        "`.opencode/agent/deep-research.md:437-442`",
+        "`.opencode/agent/deep-review.md:567-572`",
+        "`.opencode/command/spec_kit/deep-research.md:201-203`",
+        "`.opencode/command/spec_kit/deep-review.md:237-239`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:72`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:326-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:76`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:436-473`",
+        "`.opencode/skill/sk-deep-research/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:474-479`"
+      ]
+    },
+    {
+      "id": "finding-15-2-the-command-docs-do-not-carry-that-structural-routing-contract-forward-their-cod",
+      "text": "The command docs do not carry that structural-routing contract forward. Their \"Code Context Bootstrap\" sections tell operators to use only CocoIndex before starting the loop, at `.opencode/command/spec_kit/deep-research.md:203` and `.opencode/command/spec_kit/deep-review.md:239`; neither command doc mentions `code_graph_query`, `code_graph_context`, or `deep_loop_graph_convergence`.",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-014.md:1-33`",
+        "`.opencode/agent/deep-research.md:437-442`",
+        "`.opencode/agent/deep-review.md:567-572`",
+        "`.opencode/command/spec_kit/deep-research.md:201-203`",
+        "`.opencode/command/spec_kit/deep-review.md:237-239`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:72`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:326-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:76`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:436-473`",
+        "`.opencode/skill/sk-deep-research/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:474-479`"
+      ]
+    },
+    {
+      "id": "finding-15-3-the-executable-auto-yaml-wrappers-also-omit-structural-graph-tools-from-the-live",
+      "text": "The executable auto-YAML wrappers also omit structural graph tools from the live LEAF-tool budget. Deep research exposes `[Read, Write, Edit, Bash, Grep, Glob, WebFetch, mcp__cocoindex_code__search]` at `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:72`, and deep review exposes `[Read, Write, Edit, Bash, Grep, Glob, mcp__cocoindex_code__search]` at `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:76`; neither wrapper provisions `code_graph_query`, `code_graph_context`, or `deep_loop_graph_convergence`.",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-014.md:1-33`",
+        "`.opencode/agent/deep-research.md:437-442`",
+        "`.opencode/agent/deep-review.md:567-572`",
+        "`.opencode/command/spec_kit/deep-research.md:201-203`",
+        "`.opencode/command/spec_kit/deep-review.md:237-239`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:72`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:326-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:76`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:436-473`",
+        "`.opencode/skill/sk-deep-research/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:474-479`"
+      ]
+    },
+    {
+      "id": "finding-15-4-the-live-wrapper-path-after-each-iteration-is-still-emit-optional-graphevents-th",
+      "text": "The live wrapper path after each iteration is still \"emit optional `graphEvents`, then run `reduce-state.cjs`,\" not \"call structural graph tools before convergence.\" The deep-research workflow says to include optional `graphEvents` at `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:326` and then runs `node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs` at `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:331`; deep review mirrors that pattern at `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:436`, `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:437`, and `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:473`.",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-014.md:1-33`",
+        "`.opencode/agent/deep-research.md:437-442`",
+        "`.opencode/agent/deep-review.md:567-572`",
+        "`.opencode/command/spec_kit/deep-research.md:201-203`",
+        "`.opencode/command/spec_kit/deep-review.md:237-239`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:72`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:326-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:76`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:436-473`",
+        "`.opencode/skill/sk-deep-research/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:474-479`"
+      ]
+    },
+    {
+      "id": "finding-15-5-the-skill-level-contracts-undercut-the-agent-doc-promise-further-sk-deep-researc",
+      "text": "The skill-level contracts undercut the agent-doc promise further. `sk-deep-research`'s `allowed-tools` list includes memory tools but no CocoIndex or Code Graph at `.opencode/skill/sk-deep-research/SKILL.md:4`, while `sk-deep-review` includes CocoIndex but still no structural graph tools at `.opencode/skill/sk-deep-review/SKILL.md:4`; its integration guidance likewise documents only semantic search via `mcp__cocoindex_code__search` at `.opencode/skill/sk-deep-review/SKILL.md:476`.",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-014.md:1-33`",
+        "`.opencode/agent/deep-research.md:437-442`",
+        "`.opencode/agent/deep-review.md:567-572`",
+        "`.opencode/command/spec_kit/deep-research.md:201-203`",
+        "`.opencode/command/spec_kit/deep-review.md:237-239`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:72`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:326-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:76`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:436-473`",
+        "`.opencode/skill/sk-deep-research/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:474-479`"
+      ]
+    },
+    {
+      "id": "finding-15-6-within-the-inspected-deep-research-deep-review-skill-command-and-agent-materials",
+      "text": "Within the inspected deep-research/deep-review skill, command, and agent materials, the only literal `code_graph_query`/`code_graph_context` mentions I found were the two agent-doc routing lines at `.opencode/agent/deep-research.md:442` and `.opencode/agent/deep-review.md:572`. That is enough evidence to close the remaining D5 question: missing structural MCP tool calls are not just absent from live iterations, they are not provisioned anywhere except the agent prompt prose.",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/deep-research-strategy.md:48-52`",
+        "`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-014.md:1-33`",
+        "`.opencode/agent/deep-research.md:437-442`",
+        "`.opencode/agent/deep-review.md:567-572`",
+        "`.opencode/command/spec_kit/deep-research.md:201-203`",
+        "`.opencode/command/spec_kit/deep-review.md:237-239`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:72`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:326-331`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:76`",
+        "`.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:436-473`",
+        "`.opencode/skill/sk-deep-research/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:1-4`",
+        "`.opencode/skill/sk-deep-review/SKILL.md:474-479`"
+      ]
     }
   ],
   "ruledOutDirections": [
@@ -1509,17 +2005,77 @@
       "id": "ruled-out-11-2-the-main-d3-risk-is-not-proposal-agent-side-effects-the-failure-surface-here-is-",
       "text": "The main D3 risk is not proposal-agent side effects; the failure surface here is orchestrator wiring and persistence fidelity, not the proposal-only boundary itself.",
       "addedAtIteration": 11
+    },
+    {
+      "id": "ruled-out-12-1-i-did-not-find-a-shipped-orchestrator-implementation-file-that-performs-the-prom",
+      "text": "I did not find a shipped orchestrator implementation file that performs the promised “replay journal + coverage graph + registry before dispatch,” so this pass had to prove absence via reducer inputs and helper interfaces rather than a single end-to-end resume driver.",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-12-2-repo-wide-symbol-search-for-the-new-d3-modules-surfaced-mostly-docs-specs-change",
+      "text": "Repo-wide symbol search for the new D3 modules surfaced mostly docs, specs, changelog entries, and tests, which limited negative-proof evidence to the runtime files that do exist.",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-12-3-this-is-not-just-a-missing-event-taxonomy-problem-the-journal-already-recognizes",
+      "text": "This is not just a missing-event-taxonomy problem. The journal already recognizes `benchmark_completed`, `blocked_stop`, and `trade_off_detected`, so the main gap is consumer reconstruction and surfacing rather than missing event names (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:47-67`).",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-12-4-this-is-not-merely-reducer-documentation-drift-the-reducer-s-own-file-inputs-and",
+      "text": "This is not merely reducer documentation drift. The reducer’s own file inputs and registry builder omit the journal, lineage graph, and mutation-coverage artifacts entirely, so the current recovery gap is structural, not just under-explained (`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`).",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-13-2-a-normal-pass-reducer-path-that-rewrites-review-report-md-the-deep-review-reduce",
+      "text": "A normal-pass reducer path that rewrites `review-report.md`; the deep-review reducer writes strategy, registry, and dashboard only.",
+      "addedAtIteration": 13
+    },
+    {
+      "id": "ruled-out-13-3-a-shipped-sk-improve-agent-reducer-path-that-mutates-agent-improvement-strategy-",
+      "text": "A shipped `sk-improve-agent` reducer path that mutates `agent-improvement-strategy.md`; the reducer never opens or writes that file.",
+      "addedAtIteration": 13
+    },
+    {
+      "id": "ruled-out-13-1-i-did-not-inspect-synthesis-only-report-generators-or-yaml-wrappers-in-this-pass",
+      "text": "I did not inspect synthesis-only report generators or YAML wrappers in this pass because the open D4 question was specifically about reducer write boundaries, and the reducer entry points were sufficient to answer it.",
+      "addedAtIteration": 13
+    },
+    {
+      "id": "ruled-out-14-2-coverage-graph-convergence-is-purely-decorative-in-the-codebase-ruled-out-becaus",
+      "text": "\"Coverage graph convergence is purely decorative in the codebase.\" Ruled out because both the CJS helper and the MCP handler contain real thresholds, weighted signals, and STOP-blocking branches; the gap is caller integration, not total absence (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`).",
+      "addedAtIteration": 14
+    },
+    {
+      "id": "ruled-out-14-1-proving-every-possible-runtime-call-site-for-deep-loop-graph-convergence-from-th",
+      "text": "Proving every possible runtime call site for `deep_loop_graph_convergence` from the workflow layer alone. The inspected YAML sections were enough to show the visible reducer path, but not enough to prove whether any hidden wrapper invokes the MCP handler elsewhere, so this pass stayed grounded in reducers plus directly cited workflow instructions.",
+      "addedAtIteration": 14
+    },
+    {
+      "id": "ruled-out-15-2-a-command-doc-requirement-to-invoke-structural-graph-tools-before-or-during-iter",
+      "text": "A command-doc requirement to invoke structural graph tools before or during iterations; the inspected command surfaces only bootstrap CocoIndex.",
+      "addedAtIteration": 15
+    },
+    {
+      "id": "ruled-out-15-3-a-wrapper-level-deep-loop-graph-convergence-step-on-the-visible-research-review-",
+      "text": "A wrapper-level `deep_loop_graph_convergence` step on the visible research/review iteration path; the cited YAML paths go from iteration output to reducer execution without a graph-convergence call.",
+      "addedAtIteration": 15
+    },
+    {
+      "id": "ruled-out-15-1-i-did-not-inspect-hidden-executor-internals-outside-the-published-skill-command-",
+      "text": "I did not inspect hidden executor internals outside the published skill, command, agent, and auto-YAML surfaces, so the negative claim stays scoped to the visible live iteration materials that actually define the LEAF-agent budget and workflow.",
+      "addedAtIteration": 15
     }
   ],
   "metrics": {
-    "iterationsCompleted": 11,
-    "openQuestions": 5,
-    "resolvedQuestions": 11,
-    "keyFindings": 57,
+    "iterationsCompleted": 15,
+    "openQuestions": 2,
+    "resolvedQuestions": 14,
+    "keyFindings": 81,
     "convergenceScore": 0.8,
     "coverageBySources": {
-      "code": 125,
-      "other": 39
+      "code": 175,
+      "other": 55
     }
   }
 }

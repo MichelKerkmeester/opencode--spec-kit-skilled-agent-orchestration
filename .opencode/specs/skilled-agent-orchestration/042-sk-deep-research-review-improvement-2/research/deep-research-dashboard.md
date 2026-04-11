@@ -18,7 +18,7 @@ Reducer-generated observability surface for the active research packet.
 - Topic: Further improvements to sk-deep-research v1.5.0.0, sk-deep-review v1.2.0.0, and sk-improve-agent v1.1.0.0 (and their associated commands, agents, YAML workflows): self-compliance audit, coverage graph integration audit, and prioritized recommendations.
 - Started: 2026-04-11T08:02:52Z
 - Status: INITIALIZED
-- Iteration: 11 of 20
+- Iteration: 15 of 20
 - Session ID: rsr-2026-04-11T08-02-52Z
 - Parent Session: none
 - Lifecycle Mode: new
@@ -41,16 +41,20 @@ Reducer-generated observability surface for the active research packet.
 | 9 | D2 scale reducer stress audit | - | 0.60 | 5 | complete |
 | 10 | D2 dimension-coverage gate effectiveness audit | - | 0.40 | 5 | complete |
 | 11 | D3 mid-flight journal and recovery durability | - | 0.80 | 5 | complete |
+| 12 | D3 recovery consumer reconstruction audit | - | 0.60 | 5 | complete |
+| 13 | D4 reducer anchor boundary audit | - | 0.80 | 6 | complete |
+| 14 | D5 convergence weight vs live callers | - | 0.80 | 6 | complete |
+| 15 | D5 structural tool routing gap | - | 0.80 | 6 | complete |
 
-- iterationsCompleted: 11
-- keyFindings: 57
-- openQuestions: 5
-- resolvedQuestions: 11
+- iterationsCompleted: 15
+- keyFindings: 81
+- openQuestions: 2
+- resolvedQuestions: 14
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:questions -->
 ## 4. QUESTIONS
-- Answered: 11/16
+- Answered: 14/16
 - [x] D1: What undocumented edge cases, redundant reducer passes, journal-rollup gaps, or resume-flow drifts exist in the sk-deep-research v1.5.0.0 loop?
 - [x] D1: Are there convergence signals that should exist but currently don't (e.g., citation density, source diversity, contradiction frequency)?
 - [x] D2: How effective is the legal-stop gate bundle in sk-deep-review v1.2.0.0 under real review sessions, and where do dimension coverage gates still allow drift?
@@ -59,23 +63,23 @@ Reducer-generated observability surface for the active research packet.
 - [x] D4: Do the loops emit the full `STOP_REASONS` enum in practice, or are any values (`blockedStop`, `stuckRecovery`, `userPaused`) effectively dead code?
 - [x] D4: Do blocked-stop events always persist `gateResults` with the complete set of review-specific or research-specific gates, or are gates silently dropped?
 - [x] D4: Are resume flows (`resume`, `restart`, `fork`, `completed-continue`) actually exercised by the YAML workflows, or only documented?
+- [x] D4: Do the reducers ever write outside their declared machine-owned anchors, violating the contract?
 - [x] D5: Does any loop phase (init / iteration / convergence / synthesis) actively READ from the coverage graph (`coverage-graph-query.ts`, `coverage-graph-convergence.cjs`) to inform decisions, or only WRITE to it?
 - [x] D5: Is the `graphEvents` JSONL field consumed by the reducer or downstream tools, or is it write-only?
 - [x] D5: Do convergence gates consult `coverage-graph-contradictions.cjs` to block STOP on contradictions, or only consult ratio-based signals?
+- [x] D5: Does the coverage graph's contribution to the 3-signal convergence math exceed its weight, or is it merely nominal?
+- [x] D5: Are there missing MCP tool calls (e.g., `code_graph_query` for semantic neighbors) that the loops should be making but aren't?
 - [ ] D3: Does the trade-off detector produce false positives on small benchmark samples, and does benchmark-stability gating compensate?
 - [ ] D3: Is the mutation coverage graph namespace (`loop_type: "improvement"`) properly isolated from the deep-research/deep-review namespaces in the shared SQLite store?
-- [ ] D4: Do the reducers ever write outside their declared machine-owned anchors, violating the contract?
-- [ ] D5: Does the coverage graph's contribution to the 3-signal convergence math exceed its weight, or is it merely nominal?
-- [ ] D5: Are there missing MCP tool calls (e.g., `code_graph_query` for semantic neighbors) that the loops should be making but aren't?
 
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.60 -> 0.40 -> 0.80
+- Last 3 ratios: 0.80 -> 0.80 -> 0.80
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
 - convergenceScore: 0.80
-- coverageBySources: {"code":125,"other":39}
+- coverageBySources: {"code":175,"other":55}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
@@ -139,11 +143,23 @@ Reducer-generated observability surface for the active research packet.
 - This is not another reducer merge-stability regression. Iteration 9 already established that finding dedup and transition ordering stay stable at 50+ findings, which leaves observability and recovery handoff as the remaining D2 weakness (`.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/research/iterations/iteration-009.md:7-11`). (iteration 10)
 - I did not find a packet-local `improvement-journal.jsonl` or `mutation-coverage.json` artifact to inspect directly, so this pass had to infer interrupted-session behavior from the shipped helper surfaces plus the remaining legacy self-test state. (iteration 11)
 - The main D3 risk is not proposal-agent side effects; the failure surface here is orchestrator wiring and persistence fidelity, not the proposal-only boundary itself. (iteration 11)
+- I did not find a shipped orchestrator implementation file that performs the promised “replay journal + coverage graph + registry before dispatch,” so this pass had to prove absence via reducer inputs and helper interfaces rather than a single end-to-end resume driver. (iteration 12)
+- Repo-wide symbol search for the new D3 modules surfaced mostly docs, specs, changelog entries, and tests, which limited negative-proof evidence to the runtime files that do exist. (iteration 12)
+- This is not just a missing-event-taxonomy problem. The journal already recognizes `benchmark_completed`, `blocked_stop`, and `trade_off_detected`, so the main gap is consumer reconstruction and surfacing rather than missing event names (`.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs:47-67`). (iteration 12)
+- This is not merely reducer documentation drift. The reducer’s own file inputs and registry builder omit the journal, lineage graph, and mutation-coverage artifacts entirely, so the current recovery gap is structural, not just under-explained (`.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:145-235`, `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs:489-503`). (iteration 12)
+- A normal-pass reducer path that rewrites `review-report.md`; the deep-review reducer writes strategy, registry, and dashboard only. (iteration 13)
+- A shipped `sk-improve-agent` reducer path that mutates `agent-improvement-strategy.md`; the reducer never opens or writes that file. (iteration 13)
+- I did not inspect synthesis-only report generators or YAML wrappers in this pass because the open D4 question was specifically about reducer write boundaries, and the reducer entry points were sufficient to answer it. (iteration 13)
+- "Coverage graph convergence is purely decorative in the codebase." Ruled out because both the CJS helper and the MCP handler contain real thresholds, weighted signals, and STOP-blocking branches; the gap is caller integration, not total absence (`.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs:141-258`, `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts:183-379`). (iteration 14)
+- Proving every possible runtime call site for `deep_loop_graph_convergence` from the workflow layer alone. The inspected YAML sections were enough to show the visible reducer path, but not enough to prove whether any hidden wrapper invokes the MCP handler elsewhere, so this pass stayed grounded in reducers plus directly cited workflow instructions. (iteration 14)
+- A command-doc requirement to invoke structural graph tools before or during iterations; the inspected command surfaces only bootstrap CocoIndex. (iteration 15)
+- A wrapper-level `deep_loop_graph_convergence` step on the visible research/review iteration path; the cited YAML paths go from iteration output to reducer execution without a graph-convergence call. (iteration 15)
+- I did not inspect hidden executor internals outside the published skill, command, agent, and auto-YAML surfaces, so the negative claim stays scoped to the visible live iteration materials that actually define the LEAF-agent budget and workflow. (iteration 15)
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-Stay on D3 for one more pass, but shift from persistence primitives to the consumer side: inspect the orchestrator or reducer code paths that claim to replay journal + coverage graph + registry and verify whether they actually rebuild candidate lineage, blocked-stop evidence, benchmark stability warnings, and trade-off decisions from raw files. If no such reconstruction exists, that closes the remaining D3 questions around benchmark false positives versus stability gating and clarifies whether the current recovery design is merely under-documented or fundamentally under-persisted.
+Rotate to the remaining D3 namespace-isolation question and trace how `sk-improve-agent` persists `loop_type: "improvement"` into the shared coverage-graph store versus how the research/review loops namespace their own writes. The most productive next pass is to read `sk-improve-agent/scripts/mutation-coverage.cjs` beside the shared coverage-graph DB/query handlers and confirm whether any query or convergence surface can accidentally co-mingle improvement-session nodes with research/review sessions.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->
