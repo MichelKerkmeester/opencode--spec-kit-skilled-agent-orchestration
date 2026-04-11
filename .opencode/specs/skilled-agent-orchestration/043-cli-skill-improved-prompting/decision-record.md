@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 ---
 title: "Decision Record: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
 description: "Decision index for the mirror-card architecture, escalation agent, runtime parity, and command routing split."
@@ -6,7 +7,28 @@ trigger_phrases:
   - "mirror card adr"
 importance_tier: "important"
 contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/043-cli-skill-improved-prompting"
+    last_updated_at: "2026-04-11T19:30:00Z"
+    last_updated_by: "codex"
+    recent_action: "Recorded two-tier architecture, runtime parity, and drift-management decisions"
+    next_safe_action: "Keep README and changelog language consistent with the ADRs"
+    blockers: []
+    key_files:
+      - ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/decision-record.md"
+      - ".opencode/command/improve/prompt.md"
+    session_dedup:
+      fingerprint: "sha256:043-cli-skill-improved-prompting"
+      session_id: "043-cli-skill-improved-prompting"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Use a guard-safe mirror-card pattern rather than cross-skill resource references"
+      - "Use a dedicated improve-prompt agent for deep-path escalation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: CLI Skill Prompt-Quality Integration via Mirror Cards
 
 <!-- SPECKIT_LEVEL: 3 -->

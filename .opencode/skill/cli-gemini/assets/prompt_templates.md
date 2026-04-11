@@ -41,6 +41,8 @@ This asset provides structured, copy-paste ready prompt templates for invoking G
 
 ### Single-File Application
 
+Framework: RCAF
+
 Generate a complete single-file application from a description.
 
 ```bash
@@ -55,6 +57,8 @@ gemini "Create a REST API server application in TypeScript. Requirements: Expres
 
 ### Multi-File Project
 
+Framework: RCAF
+
 Generate a multi-file project structure with coordinated files.
 
 ```bash
@@ -68,6 +72,8 @@ gemini "Create a CLI tool project in TypeScript with the following structure: co
 ```
 
 ### Component / Module
+
+Framework: RCAF
 
 Generate a single component or module that fits into an existing codebase.
 
@@ -89,6 +95,8 @@ gemini "Create a TypeScript module for rate-limiting middleware with sliding win
 
 ### Comprehensive Review
 
+Framework: TIDD-EC
+
 Full code review covering correctness, style, maintainability, and performance.
 
 ```bash
@@ -97,6 +105,8 @@ gemini "Review @./[file] thoroughly. Check for: 1) Logic errors and edge cases, 
 
 ### Security-Focused Review
 
+Framework: TIDD-EC
+
 Review focused on security vulnerabilities and attack surfaces.
 
 ```bash
@@ -104,6 +114,8 @@ gemini "Perform a security audit of @./[file]. Check for: 1) Injection vulnerabi
 ```
 
 ### Performance Review
+
+Framework: TIDD-EC
 
 Review focused on performance bottlenecks and optimization opportunities.
 
@@ -119,6 +131,8 @@ gemini "Analyze @./[file] for performance issues. Check for: 1) Unnecessary re-r
 
 ### Fix Identified Bugs
 
+Framework: RCAF + TIDD-EC
+
 Fix a known bug with description and reproduction context.
 
 ```bash
@@ -126,6 +140,8 @@ gemini "Fix this bug in @./[file]: [description]. The expected behavior is [requ
 ```
 
 ### Auto-Detect and Fix
+
+Framework: RCAF + TIDD-EC
 
 Let Gemini scan a file for potential bugs and apply fixes.
 
@@ -141,6 +157,8 @@ gemini "Scan @./[file] for bugs. Look for: null/undefined access, off-by-one err
 
 ### Unit Tests
 
+Framework: RCAF
+
 Generate unit tests for a specific file or module.
 
 ```bash
@@ -154,6 +172,8 @@ gemini "Generate comprehensive Jest unit tests for @./src/utils/validator.ts. Co
 ```
 
 ### Integration Tests
+
+Framework: RCAF
 
 Generate integration tests that test multiple components working together.
 
@@ -169,6 +189,8 @@ gemini "Generate [framework] integration tests for the [description] workflow. T
 
 ### JSDoc / TSDoc Generation
 
+Framework: RCAF
+
 Add inline documentation to source code.
 
 ```bash
@@ -177,6 +199,8 @@ gemini "Add complete JSDoc documentation to @./[file]. For every exported functi
 
 ### README Generation
 
+Framework: RCAF
+
 Generate a project or module README from source code.
 
 ```bash
@@ -184,6 +208,8 @@ gemini "Generate a comprehensive README.md for the project in [directory]. Analy
 ```
 
 ### API Documentation
+
+Framework: RCAF
 
 Generate API documentation from route definitions or endpoint handlers.
 
@@ -199,6 +225,8 @@ gemini "Generate API documentation for @./[file]. For each endpoint: document th
 
 ### Refactoring
 
+Framework: RCAF + TIDD-EC
+
 Refactor code for improved structure without changing behavior.
 
 ```bash
@@ -207,6 +235,8 @@ gemini "Refactor @./[file] to [description]. Requirements: 1) Preserve all exist
 
 ### Language Translation
 
+Framework: RCAF + TIDD-EC
+
 Translate code from one language to another.
 
 ```bash
@@ -214,6 +244,8 @@ gemini "Translate @./[file] from [language] to [language]. Requirements: 1) Pres
 ```
 
 ### Framework Migration
+
+Framework: RCAF + TIDD-EC
 
 Migrate code from one framework to another.
 
@@ -229,6 +261,8 @@ gemini "Migrate @./[file] from [framework] to [framework]. Requirements: 1) Pres
 
 ### Current Information
 
+Framework: CRISPE
+
 Fetch up-to-date information using Google Search grounding.
 
 ```bash
@@ -237,6 +271,8 @@ gemini "Use Google Search to find current information about [topic] as of [date]
 
 ### Library / API Research
 
+Framework: CRISPE
+
 Research a specific library, API, or technology.
 
 ```bash
@@ -244,6 +280,8 @@ gemini "Use Google Search to research [topic]. Find: 1) Current stable version a
 ```
 
 ### Comparison Research
+
+Framework: CRISPE
 
 Compare technologies, libraries, or approaches.
 
@@ -259,6 +297,8 @@ gemini "Use Google Search to compare [topic] vs [topic] as of [date]. Compare on
 
 ### Project Analysis
 
+Framework: CRAFT
+
 Analyze overall project architecture and structure.
 
 ```bash
@@ -266,6 +306,8 @@ gemini "Use codebase_investigator to analyze the project in [directory]. Provide
 ```
 
 ### Dependency Analysis
+
+Framework: CRAFT
 
 Map dependencies and identify coupling issues.
 
@@ -281,6 +323,8 @@ gemini "Use codebase_investigator to analyze dependencies in [directory]. Identi
 
 ### Git Commit Message
 
+Framework: RCAF
+
 Generate a commit message from staged changes.
 
 ```bash
@@ -289,6 +333,8 @@ gemini "Based on the following git diff, write a commit message following Conven
 
 ### Code Explanation
 
+Framework: CRAFT
+
 Get a detailed explanation of unfamiliar code.
 
 ```bash
@@ -296,6 +342,8 @@ gemini "Explain @./[file] in detail. Cover: 1) What the code does at a high leve
 ```
 
 ### Error Diagnosis
+
+Framework: TIDD-EC
 
 Diagnose an error message with full context.
 

@@ -54,7 +54,7 @@ Both commands support `:auto` and `:confirm` execution modes.
 | Command | Invocation | Description |
 |---------|------------|-------------|
 | **agent** | `/improve:agent <agent_path> [:auto\|:confirm] [--spec-folder=PATH] [--iterations=N]` | Evaluate and improve any agent across 5 dimensions (structural, ruleCoherence, integration, outputQuality, systemFitness) with proposal-first candidates and guarded promotion |
-| **prompt** | `/improve:prompt <prompt_or_topic> [$mode] [:auto\|:confirm]` | Create or improve AI prompts using 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking, and CLEAR scoring |
+| **prompt** | `/improve:prompt <prompt_or_topic> [$mode] [:auto\|:confirm]` | Create or improve AI prompts using 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking, CLEAR scoring, and optional fresh-context agent dispatch |
 
 ### Command Dependencies
 
@@ -142,7 +142,7 @@ Delivery: enhanced prompt + transparency report + optional save
 | Command | Delegates To |
 |---------|-------------|
 | agent | @improve-agent (proposal-only candidate generation) |
-| prompt | Inline @general workflow (no sub-agent dispatch) |
+| prompt | @general workflow with optional `@improve-prompt` escalation |
 
 <!-- /ANCHOR:workflow-progression -->
 
@@ -160,7 +160,7 @@ Each mode maps to a YAML workflow file in `assets/`:
 - Auto: `improve_improve-agent_auto.yaml`
 - Confirm: `improve_improve-agent_confirm.yaml`
 
-`/improve:prompt` is an inline command that does not load YAML assets.
+`/improve:prompt` is a general-agent command that stays inline by default and optionally dispatches `@improve-prompt` for complex or isolation-sensitive cases. It does not load YAML assets.
 
 ### Agent Improvement Scoring Modes
 
@@ -217,7 +217,7 @@ When max iterations is reached, all 5 dimensions plateau (3+ identical scores), 
 
 **Q: What is the difference between `/improve:prompt` and `/improve:agent`?**
 
-`/improve:prompt` enhances text prompts using frameworks and DEPTH methodology. `/improve:agent` evaluates and improves agent definition files across their full integration surface.
+`/improve:prompt` enhances text prompts using frameworks and DEPTH methodology, with optional `@improve-prompt` escalation for complex cases. `/improve:agent` evaluates and improves agent definition files across their full integration surface.
 
 <!-- /ANCHOR:faq -->
 

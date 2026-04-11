@@ -154,6 +154,25 @@ describe('Tool Input Schema Validation', () => {
       } as Record<string, unknown>);
     }).toThrow();
   });
+
+  it('accepts canonical continuity route hints for memory_save', () => {
+    expect(() => {
+      validateToolArgs('memory_save', {
+        filePath: '/tmp/example.md',
+        routeAs: 'decision',
+        mergeModeHint: 'insert-new-adr',
+      });
+    }).not.toThrow();
+  });
+
+  it('rejects unknown canonical continuity mergeModeHint values for memory_save', () => {
+    expect(() => {
+      validateToolArgs('memory_save', {
+        filePath: '/tmp/example.md',
+        mergeModeHint: 'append-new-session',
+      } as Record<string, unknown>);
+    }).toThrow();
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

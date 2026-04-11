@@ -2,7 +2,7 @@
 name: sk-improve-prompt
 description: "Prompt engineering specialist that transforms vague requests into structured, scored AI prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, and CLEAR scoring across text modes."
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
-version: 1.2.0.0
+version: 1.3.0.0
 ---
 
 <!-- Keywords: prompt-engineering, prompt-improvement, DEPTH, RICCE, CLEAR-scoring, framework-selection, RCAF, COSTAR, CRAFT, TIDD-EC, CRISPE -->
@@ -25,6 +25,7 @@ Transforms vague or basic inputs into highly effective, structured AI prompts. P
 - Evaluating prompt quality with CLEAR scoring
 - Selecting the right prompt framework for a given task
 - Transforming vague requests into structured, effective prompts
+- Supporting indirect invocation from `@improve-prompt` agent dispatches and `cli_prompt_quality_card.md` fast-path escalation flows
 
 **Keyword Triggers**:
 - `$improve`, `$text`, `$short`, `$refine`, `$json`, `$yaml`
@@ -339,6 +340,7 @@ See [depth_framework.md](./references/depth_framework.md) for the DEPTH methodol
 
 - [depth_framework.md](./references/depth_framework.md) - DEPTH methodology (Discover, Engineer, Prototype, Test, Harmonize), RICCE integration
 - [patterns_evaluation.md](./references/patterns_evaluation.md) - 7 framework definitions, CLEAR scoring
+- [cli_prompt_quality_card.md](./assets/cli_prompt_quality_card.md) - External consumption entry point for CLI orchestrator mirrors; update all four mirrors when editing
 
 ### Asset Files
 
@@ -375,8 +377,72 @@ See [depth_framework.md](./references/depth_framework.md) for the DEPTH methodol
 ---
 
 <!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:agent-invocation-contract -->
+## 7. AGENT INVOCATION CONTRACT
+
+`@improve-prompt` is the fresh-context escalation surface for this skill. The agent loads the references in this skill, applies the same framework-selection and CLEAR rules, and returns a structured block that the caller can inject into a CLI dispatch without loading the full skill inline.
+
+### Expected Input Payload
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `raw_task` | Yes | Raw task description or draft prompt to improve |
+| `task_type` | No | One of `generation`, `review`, `research`, `edit`, `analyze` |
+| `target_cli` | No | One of `claude-code`, `codex`, `copilot`, `gemini` |
+| `complexity_hint` | No | Integer `1-10` used to choose Quick vs Standard DEPTH energy |
+| `constraints` | No | Compliance, security, audience, or output requirements |
+
+### Deterministic Agent Rules
+
+- Use `references/patterns_evaluation.md` as the framework-selection source of truth.
+- Use `references/depth_framework.md` for DEPTH flow and CLEAR dimension floors.
+- Choose Quick DEPTH energy for low-complexity routine prompts and Standard DEPTH energy for escalated prompts.
+- Require `CLEAR >= 40/50` and all per-dimension floors before returning success.
+- If the first pass scores below threshold, iterate once and then return the best validated prompt with explicit escalation notes.
+
+### Structured Output Block
+
+```text
+FRAMEWORK: <name>
+CLEAR_SCORE: <n>/50 (C:<n> L:<n> E:<n> A:<n> R:<n>)
+RATIONALE: <1-2 lines>
+ENHANCED_PROMPT: |
+  <multi-line ready-to-dispatch prompt>
+ESCALATION_NOTES: <remaining ambiguity, risk, or follow-up>
+```
+
+### Contract Guarantees
+
+- The returned prompt is ready for CLI handoff without another framework-selection pass.
+- The output preserves caller-supplied constraints unless the agent flags them as contradictory or underspecified.
+- The agent remains read-only and leaf-only; it does not write files or spawn other sub-agents.
+
+---
+
+<!-- /ANCHOR:agent-invocation-contract -->
+<!-- ANCHOR:fast-path-asset -->
+## 8. FAST-PATH ASSET: `cli_prompt_quality_card.md`
+
+`assets/cli_prompt_quality_card.md` is the lightweight external-consumption surface for routine CLI prompt construction.
+
+### Purpose
+
+- Keep routine `cli-*` dispatches inside the calling skill tree
+- Provide a compact framework-selection table and CLEAR 5-question check
+- Trigger escalation to `@improve-prompt` only when complexity, compliance, or ambiguity warrants the heavier path
+
+### Two-Tier Behavior
+
+- **Fast path**: CLI skills load the local mirror card from their own `assets/` tree and apply the checklist inline.
+- **Deep path**: CLI skills dispatch `@improve-prompt`, which loads this skill's full reference set in fresh context and returns a structured enhancement block.
+
+The card is intentionally compact and mirrors this skill's core routing heuristics rather than duplicating the full framework deep dives.
+
+---
+
+<!-- /ANCHOR:fast-path-asset -->
 <!-- ANCHOR:integration-points -->
-## 7. INTEGRATION POINTS
+## 9. INTEGRATION POINTS
 
 ### Framework Integration
 
@@ -405,7 +471,7 @@ Key integrations:
 
 <!-- /ANCHOR:integration-points -->
 <!-- ANCHOR:related-resources -->
-## 8. RELATED RESOURCES
+## 10. RELATED RESOURCES
 
 ### Reference Files
 - [depth_framework.md](./references/depth_framework.md) - DEPTH thinking methodology

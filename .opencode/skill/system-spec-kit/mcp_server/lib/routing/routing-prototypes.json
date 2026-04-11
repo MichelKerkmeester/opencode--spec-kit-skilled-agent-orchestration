@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "embeddingProfile": "ambiguous-save-chunk",
+  "categories": {
+    "narrative_progress": [
+      {
+        "id": "NP-01",
+        "label": "build story command merge",
+        "sourceShape": "implementation-summary",
+        "tags": ["build", "command", "merge", "feature"],
+        "negativeHints": ["narrative_delivery", "decision"],
+        "chunk": "Merged the standalone phase surface into the plan and complete workflows so phase decomposition now follows the same optional flag pattern as the research flow. The shipped change added with-phases handling, wired a phase_decomposition block into workflow assets, removed obsolete command files, and updated the primary command docs. This paragraph is about what changed in the system, not rollout sequencing."
+      },
+      {
+        "id": "NP-02",
+        "label": "new generator capability",
+        "sourceShape": "implementation-summary",
+        "tags": ["generator", "capability", "packet", "output"],
+        "negativeHints": ["narrative_delivery", "research_finding"],
+        "chunk": "Packet-local changelog generation now lives beside the implementation-summary workflow. The generator resolves packet roots versus child phases, reads packet documents such as spec.md, tasks.md, and checklist.md, and derives final changelog structure from those sources instead of asking operators to hand-assemble markdown. The point of this chunk is the new capability and its moving parts."
+      },
+      {
+        "id": "NP-03",
+        "label": "runtime fix concrete delta",
+        "sourceShape": "implementation-summary",
+        "tags": ["runtime", "fix", "search", "behavior"],
+        "negativeHints": ["decision", "narrative_delivery"],
+        "chunk": "The search pipeline now keeps folder discovery as a scoring boost instead of promoting the discovered folder into an exact-match filter, and stage one no longer treats sessionId as a governance scope boundary. Together those changes unblock focused-mode searches that were returning zero candidates. The chunk is about the substantive runtime correction and the precise behavior that changed."
+      },
+      {
+        "id": "NP-04",
+        "label": "foundation refactor contract surface",
+        "sourceShape": "implementation-summary",
+        "tags": ["refactor", "contract", "shared", "core"],
+        "negativeHints": ["decision", "narrative_delivery"],
+        "chunk": "Phase one established a canonical review manifest, normalized severity handling, and split shared review doctrine from single-pass UX rules. The resulting package now has one source of truth for the review-mode contract and a narrower shared core that downstream review agents can reuse. This explains structural work that now exists in the repository."
+      },
+      {
+        "id": "NP-05",
+        "label": "packet capability expansion",
+        "sourceShape": "implementation-summary",
+        "tags": ["packet", "changelog", "behavior", "output"],
+        "negativeHints": ["narrative_delivery", "task_update"],
+        "chunk": "The workflow can now create nested changelog output for packet roots and child phases without inventing filenames or scattering release history across phase folders. Root packets write a packet-root changelog and child phases write packet-phase changelogs in the parent packet. The emphasis is on the new productized behavior and its output shape."
+      }
+    ],
+    "narrative_delivery": [
+      {
+        "id": "ND-01",
+        "label": "sequencing paragraph",
+        "sourceShape": "implementation-summary",
+        "tags": ["sequence", "phases", "verification", "delivery"],
+        "negativeHints": ["narrative_progress", "task_update"],
+        "chunk": "The work was delivered in three passes: first analyze existing packet examples, then add the generator and templates, then align command, skill, and reference surfaces in the same packet. Closure only happened after the first Vitest failure exposed template-path resolution drift and the generator was patched. This is about delivery sequence and verification gating, not feature substance."
+      },
+      {
+        "id": "ND-02",
+        "label": "verification first rollout",
+        "sourceShape": "implementation-summary",
+        "tags": ["verification", "rollout", "evidence", "gating"],
+        "negativeHints": ["narrative_progress", "research_finding"],
+        "chunk": "Verification stayed intentionally narrow and honest. The scripts workspace build was rerun after the generator fix, a focused Vitest suite covered both packet-root and phase-child output, and only then were the packet docs synchronized so the workflow change was auditable. The distinctive cue is delivery mechanics and evidence path."
+      },
+      {
+        "id": "ND-03",
+        "label": "staged runtime remediation",
+        "sourceShape": "implementation-summary",
+        "tags": ["runtime", "attempt", "pending", "verification"],
+        "negativeHints": ["handover_state", "narrative_progress"],
+        "chunk": "Attempt one confirmed that semantic search returned results again, but attempt two kept the work pending until the MCP server could be restarted and the new focused-mode fix rechecked in a fresh session. The implementation compiled before handover, yet the delivery story deliberately stopped at awaiting runtime verification after restart."
+      },
+      {
+        "id": "ND-04",
+        "label": "same pass alignment",
+        "sourceShape": "implementation-summary",
+        "tags": ["alignment", "same-pass", "docs", "runtime"],
+        "negativeHints": ["narrative_progress", "decision"],
+        "chunk": "Commands, templates, validators, and reference docs were updated together because a packet-local workflow is only useful if every surface points at the same runtime truth. The team deliberately avoided shipping the generator first and documentation later. That same-pass alignment language is a delivery pattern."
+      },
+      {
+        "id": "ND-05",
+        "label": "feature flag rollout shape",
+        "sourceShape": "implementation-summary",
+        "tags": ["feature-flag", "shadow", "gate", "rollout"],
+        "negativeHints": ["decision", "narrative_progress"],
+        "chunk": "The recommended implementation path keeps the new writer behind a dual-write feature flag, runs shadow comparison before any default flip, and treats schema migration plus archive weighting as Gate B rather than post-merge cleanup. This chunk is about rollout discipline, gates, and deployment sequencing."
+      }
+    ],
+    "decision": [
+      {
+        "id": "DE-01",
+        "label": "playbook first adr",
+        "sourceShape": "decision-record",
+        "tags": ["choice", "alternatives", "why", "defer"],
+        "negativeHints": ["research_finding", "narrative_progress"],
+        "chunk": "We chose to build the manual testing playbook first and state the missing feature catalog explicitly rather than invent a companion package. The future playbook can ship truthfully today, while any catalog linkage is deferred to a later decision. Alternatives considered were catalog-first and dual-package release, both rejected because they expand scope and delay the operator-facing validation surface."
+      },
+      {
+        "id": "DE-02",
+        "label": "integrated package shape",
+        "sourceShape": "decision-record",
+        "tags": ["integrated", "package", "structure", "tradeoff"],
+        "negativeHints": ["narrative_progress", "research_finding"],
+        "chunk": "We chose the integrated root-guidance package shape and mapped the approved scenario inventory into six named category folders. The reason is structural: it is the only option that preserves the shipped contract and the approved scenario order at the same time. The chunk includes alternatives, rationale, and rollback language."
+      },
+      {
+        "id": "DE-03",
+        "label": "orchestrator owns side effects",
+        "sourceShape": "decision-record",
+        "tags": ["orchestrator", "safety", "rule", "ownership"],
+        "negativeHints": ["task_update", "narrative_delivery"],
+        "chunk": "We chose to keep all journal write operations in the orchestrator, never in the proposal agent. If the agent can emit journal entries directly, it is no longer honestly proposal-only, which breaks the safety guarantee of bounded improvement loops. The consequence is that the orchestrator must call emit hooks at every lifecycle boundary."
+      },
+      {
+        "id": "DE-04",
+        "label": "namespace reuse adr",
+        "sourceShape": "decision-record",
+        "tags": ["namespace", "architecture", "reuse", "consequence"],
+        "negativeHints": ["research_finding", "narrative_progress"],
+        "chunk": "We chose to reuse the existing coverage-graph infrastructure by namespacing all writes with loop_type improvement instead of building a second graph system. Separate infrastructure would isolate data but duplicate persistence, query, and maintenance burden. Namespace reuse keeps the API surface stable while preserving data isolation."
+      },
+      {
+        "id": "DE-05",
+        "label": "backward compatible defaults",
+        "sourceShape": "decision-record",
+        "tags": ["backward-compatible", "defaults", "migration", "tradeoff"],
+        "negativeHints": ["narrative_delivery", "research_finding"],
+        "chunk": "We chose to make all new configuration fields optional with documented defaults so the skill behaves exactly like its pre-phase version when fields are absent. The explicit goal is backward compatibility during rollout. The alternative would have been a mandatory config migration, but that would turn a bounded improvement packet into a breaking-change packet."
+      }
+    ],
+    "handover_state": [
+      {
+        "id": "HS-01",
+        "label": "continuation header progress",
+        "sourceShape": "handover",
+        "tags": ["continuation", "progress", "next-session", "resume"],
+        "negativeHints": ["task_update", "narrative_progress"],
+        "chunk": "Continuation attempt one. Objective: improve deep-review logic and then implement the accepted roadmap. Progress is roughly eighty-five percent: research is complete, the foundation phase is complete, and later phases were dispatched as parallel agents. The next session needs to verify the agent outputs, inspect git diff, and finish the remaining template update."
+      },
+      {
+        "id": "HS-02",
+        "label": "current state blocker",
+        "sourceShape": "handover",
+        "tags": ["current-state", "blocker", "verification", "fresh-session"],
+        "negativeHints": ["research_finding", "task_update"],
+        "chunk": "Current state: implementation fixes are compiled, the MCP server was killed to force a clean restart, and runtime verification must happen in a fresh session before the packet can be closed. Active files are the focused handler fix and the stage one and stage two search pipeline modules. The handoff is about what is live right now and what blocks closure."
+      },
+      {
+        "id": "HS-03",
+        "label": "pending work checklist",
+        "sourceShape": "handover",
+        "tags": ["next", "verify", "immediate", "deferred"],
+        "negativeHints": ["task_update", "narrative_delivery"],
+        "chunk": "Immediate next session work: verify the Phase two and three agent output, verify the Phase four and five agent output, update the deep-review strategy template, run git diff, and then commit. Deferred work remains explicitly separated from immediate work. The phrasing is operational and time-bound."
+      },
+      {
+        "id": "HS-04",
+        "label": "quick start resume instructions",
+        "sourceShape": "handover",
+        "tags": ["resume", "instructions", "order", "quick-start"],
+        "negativeHints": ["task_update", "drop"],
+        "chunk": "To resume, run the resume command and then review the handover's listed files in order: the focused handler fix, the stage one scope fix, the stage two graph diagnostic warning, and the packet docs that still need verification evidence. This is a restart recipe for the next session."
+      },
+      {
+        "id": "HS-05",
+        "label": "risks and effort estimate",
+        "sourceShape": "handover",
+        "tags": ["risk", "remaining-effort", "blocker", "estimate"],
+        "negativeHints": ["research_finding", "decision"],
+        "chunk": "Current blockers are limited to runtime restart verification, but there is still risk that removing sessionId from scope enforcement has an unintended side effect in consumers that expected session-scoped filtering. Estimated remaining effort is about thirty minutes for verification, documentation closure, memory save, and commit."
+      }
+    ],
+    "research_finding": [
+      {
+        "id": "RF-01",
+        "label": "smallest correct recommendation",
+        "sourceShape": "research",
+        "tags": ["finding", "recommendation", "evidence", "quick-reference"],
+        "negativeHints": ["decision", "narrative_progress"],
+        "chunk": "The repo already has the needed command docs; the actual discoverability problem is that the quick reference spends its prime space on documentation mechanics instead of a first-touch command shortlist. The smallest correct recommendation is a compact start-here command block, not a new generated registry."
+      },
+      {
+        "id": "RF-02",
+        "label": "architecture conclusion",
+        "sourceShape": "research",
+        "tags": ["architecture", "research", "conclusion", "hybrid"],
+        "negativeHints": ["decision", "narrative_progress"],
+        "chunk": "The compact code graph work should use a clean-room tree-sitter plus SQLite approach rather than a full graph database. The research across tooling and academic sources points to a hybrid retrieval system: embeddings for recall, structural graph signals for precision, and a compact projection layer for model-facing context. This is a research synthesis chunk."
+      },
+      {
+        "id": "RF-03",
+        "label": "overlap matrix insight",
+        "sourceShape": "research",
+        "tags": ["overlap", "continuity", "metadata", "insight"],
+        "negativeHints": ["metadata_only", "decision"],
+        "chunk": "Across the sampled memory corpus, the majority of bytes are high-overlap narrative that maps cleanly to implementation-summary, decision-record, handover, and tasks. The unique long-term value is concentrated in metadata, preflight baselines, and postflight learning deltas. That finding narrows the thin continuity layer to a small machine-owned surface."
+      },
+      {
+        "id": "RF-04",
+        "label": "archive viability finding",
+        "sourceShape": "research",
+        "tags": ["archive", "metric", "decision-rule", "finding"],
+        "negativeHints": ["decision", "narrative_delivery"],
+        "chunk": "The bounded-archive strategy is viable because archived memories can be weighted down to zero point three and surfaced only when fresh spec-doc results are sparse. The critical signal is archived_hit_rate: if it drops below zero point five percent for a sustained window, the archive stops being load-bearing."
+      },
+      {
+        "id": "RF-05",
+        "label": "prerequisite blocker finding",
+        "sourceShape": "research",
+        "tags": ["blocker", "dependency", "finding", "order-of-operations"],
+        "negativeHints": ["handover_state", "task_update"],
+        "chunk": "The biggest migration blocker is not schema complexity; it is the small set of root packets whose memory files are still the only narrative artifact. If those packets are archived before root-level canonical docs are backfilled, the implementation story is lost. This identifies a hidden dependency and reframes the order of operations."
+      }
+    ],
+    "task_update": [
+      {
+        "id": "TU-01",
+        "label": "completed implementation slice",
+        "sourceShape": "tasks",
+        "tags": ["checkbox", "task-id", "phase", "complete"],
+        "negativeHints": ["handover_state", "narrative_progress"],
+        "chunk": "[x] T004 Add with-phases flag to the plan command. [x] T005 Add the phase decomposition section to the plan command. [x] T008 Wire phase_decomposition into the auto plan workflow asset. These lines are direct status mutations against scoped task IDs."
+      },
+      {
+        "id": "TU-02",
+        "label": "verification still open",
+        "sourceShape": "tasks",
+        "tags": ["open", "task-id", "verification", "checklist"],
+        "negativeHints": ["handover_state", "narrative_delivery"],
+        "chunk": "[x] T015 Update README text to remove the phase command row. [x] T016 Update quick reference wording. [ ] T017 Verify the plan command without with-phases works unchanged. Completion criteria remain open until manual verification passes."
+      },
+      {
+        "id": "TU-03",
+        "label": "packet wide completion",
+        "sourceShape": "tasks",
+        "tags": ["packet", "complete", "verification", "task"],
+        "negativeHints": ["narrative_progress", "handover_state"],
+        "chunk": "[x] T012 Fix template path resolution in the generator after the first test failure. [x] T013 Run scripts build verification. [x] T014 Run focused nested changelog Vitest verification. [x] T015 Update packet documentation to match the shipped workflow."
+      },
+      {
+        "id": "TU-04",
+        "label": "structural parent packet work",
+        "sourceShape": "tasks",
+        "tags": ["pending", "parent", "task", "structural"],
+        "negativeHints": ["handover_state", "research_finding"],
+        "chunk": "[ ] T004 Add the minimal summary of the child phase to the root packet. [ ] T005 Ensure the parent-child relationship resolves through the child spec. [ ] T006 Keep parent scope structural only. The wording is sparse on purpose because task updates often name exact to-dos without rationale paragraphs."
+      },
+      {
+        "id": "TU-05",
+        "label": "completion criteria block",
+        "sourceShape": "tasks",
+        "tags": ["completion", "criteria", "status", "verification"],
+        "negativeHints": ["narrative_delivery", "handover_state"],
+        "chunk": "[x] All implementation and workflow-alignment tasks marked complete. [x] No blocked tasks remain in this packet. [x] Verification captured in implementation-summary and checklist. This mutates packet status directly even though it looks summary-like."
+      }
+    ],
+    "metadata_only": [
+      {
+        "id": "MO-01",
+        "label": "frontmatter-only classification",
+        "sourceShape": "legacy-memory",
+        "tags": ["frontmatter", "trigger_phrases", "metadata", "indexing"],
+        "negativeHints": ["drop", "narrative_progress"],
+        "chunk": "title: Implementation Summary Nested Changelog Per Spec; trigger_phrases: implementation summary, nested changelog, phase changelog, 025; importance_tier: important; contextType: implementation. There is no session narrative here, only retrieval metadata that improves indexing and ranking."
+      },
+      {
+        "id": "MO-02",
+        "label": "continuity block",
+        "sourceShape": "legacy-memory",
+        "tags": ["continuity", "recent_action", "next_safe_action", "fingerprint"],
+        "negativeHints": ["handover_state", "drop"],
+        "chunk": "_memory.continuity recent_action phase two fixes compiled; next_safe_action restart MCP server and rerun focused-mode query; blockers server disconnected after pkill; completion_pct 95; fingerprint sha256 value. This is thin continuity state: machine-owned, highly structured, and intentionally compact."
+      },
+      {
+        "id": "MO-03",
+        "label": "causal and decay payload",
+        "sourceShape": "legacy-memory",
+        "tags": ["causal_links", "decay", "provenance", "state"],
+        "negativeHints": ["drop", "research_finding"],
+        "chunk": "memory_classification memory_type semantic; half_life_days 365; decay_factors base_decay_rate 0.9981; access_boost_factor 0.1; causal_links supersedes F-017-004; provenance session_id 018-impl-design. The chunk is valuable to retrieval, but it is not readable narrative."
+      },
+      {
+        "id": "MO-04",
+        "label": "preflight baseline",
+        "sourceShape": "legacy-memory",
+        "tags": ["preflight", "scores", "baseline", "gaps"],
+        "negativeHints": ["research_finding", "handover_state"],
+        "chunk": "preflight knowledgeScore 42; uncertaintyScore 71; contextScore 38; knowledgeGaps root packet backfill count, dedup key shape, resume fallback latency; taskId implementation. This belongs in continuity metadata even though it captures session state."
+      },
+      {
+        "id": "MO-05",
+        "label": "postflight learning delta",
+        "sourceShape": "legacy-memory",
+        "tags": ["postflight", "learning", "scores", "delta"],
+        "negativeHints": ["research_finding", "handover_state"],
+        "chunk": "postflight knowledgeScore 88; uncertaintyScore 24; contextScore 84; gapsClosed routing overlap confirmed, schema blocker isolated; newGapsDiscovered prototype confusion tests still needed; learningIndex 0.74. The structure is score-heavy and field-heavy."
+      }
+    ],
+    "drop": [
+      {
+        "id": "DR-01",
+        "label": "conversation transcript",
+        "sourceShape": "legacy-memory",
+        "tags": ["transcript", "dialogue", "tool", "timeline"],
+        "negativeHints": ["handover_state", "narrative_progress"],
+        "chunk": "2026-04-11 user continue anyway and keep scope on packet 026. 2026-04-11 assistant found two more findings. 2026-04-11 tool git diff name only. 2026-04-11 assistant applying targeted fix. This is timestamped dialogue and tool telemetry."
+      },
+      {
+        "id": "DR-02",
+        "label": "recovery hints boilerplate",
+        "sourceShape": "legacy-memory",
+        "tags": ["recovery", "boilerplate", "generic", "resume"],
+        "negativeHints": ["metadata_only", "handover_state"],
+        "chunk": "Recovery scenarios context loss run resume, state mismatch check git status, memory not found call memory_search, stale context compare timestamps, diagnostic commands list memories, verify file integrity, force re-index. This is generic operator boilerplate repeated across many memory files."
+      },
+      {
+        "id": "DR-03",
+        "label": "table of contents wrapper",
+        "sourceShape": "legacy-memory",
+        "tags": ["table-of-contents", "wrapper", "framing", "boilerplate"],
+        "negativeHints": ["metadata_only", "research_finding"],
+        "chunk": "Table of contents continue session, project state snapshot, overview, detailed changes, decisions, conversation, recovery hints, memory metadata. The chunk exists only to help a human scan a long legacy memory file and carries almost no semantic retrieval value by itself."
+      },
+      {
+        "id": "DR-04",
+        "label": "auto truncated summary",
+        "sourceShape": "legacy-memory",
+        "tags": ["truncated", "retroactive", "ellipsis", "wrapper"],
+        "negativeHints": ["narrative_progress", "handover_state"],
+        "chunk": "Retroactive body contains auto-truncated summary text from the memory generator. Ellipsis markers are known truncation points, not typos. Recent deep research improving review logic in sk-deep-research auto-truncated. This looks summary-like but the truncation marker and repair-note framing make it poor canonical content."
+      },
+      {
+        "id": "DR-05",
+        "label": "raw tool telemetry",
+        "sourceShape": "legacy-memory",
+        "tags": ["telemetry", "file-count", "tool-executions", "repo-state"],
+        "negativeHints": ["metadata_only", "task_update"],
+        "chunk": "Captured file count 8. Files modified memory-context.ts, stage1-candidate-gen.ts, stage2-fusion.ts, types.ts. Tool executions zero. Repository state clean. Channel system-speckit 026-graph-and-context-optimization. On its own this is operational telemetry rather than canonical content."
+      }
+    ]
+  }
+}

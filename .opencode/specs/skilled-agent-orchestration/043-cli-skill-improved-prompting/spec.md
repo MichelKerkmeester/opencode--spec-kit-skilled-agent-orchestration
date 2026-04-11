@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 ---
 title: "Feature Specification: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
 description: "Add a lightweight prompt-quality layer to the four CLI orchestrator skills by using in-skill mirror cards for routine dispatches and an isolated improve-prompt agent for high-complexity escalations."
@@ -9,7 +10,29 @@ trigger_phrases:
   - "prompt quality card"
 importance_tier: "important"
 contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/043-cli-skill-improved-prompting"
+    last_updated_at: "2026-04-11T19:30:00Z"
+    last_updated_by: "codex"
+    recent_action: "Implemented mirror-card prompt-quality routing and synced packet closeout docs"
+    next_safe_action: "Commit validated packet and implementation surfaces on the 026 branch"
+    blockers: []
+    key_files:
+      - ".opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md"
+      - ".opencode/agent/improve-prompt.md"
+      - ".opencode/command/improve/prompt.md"
+    session_dedup:
+      fingerprint: "sha256:043-cli-skill-improved-prompting"
+      session_id: "043-cli-skill-improved-prompting"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Use local mirror cards instead of cross-skill paths because _guard_in_skill rejects ..-prefixed routes"
+      - "Auto-select agent mode in /improve:prompt when complexity_hint >= 7 or isolation is requested"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 # Feature Specification: CLI Skill Prompt-Quality Integration via Mirror Cards
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -34,7 +57,7 @@ The four CLI orchestration skills currently build dispatch prompts ad hoc from t
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-04-11 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
 | **Spec Folder** | `.opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/` |
@@ -69,7 +92,7 @@ Define and implement a guard-safe two-tier prompt-quality architecture that impr
 - Add a new `@improve-prompt` runtime agent across all active runtime directories.
 - Update `/improve:prompt` so it can route either through inline skill loading or the isolated agent path.
 - Document the new `sk-improve-prompt` agent-consumption contract and fast-path asset.
-- Optionally add a lightweight drift-detection fixture if it fits without widening scope.
+- Add a lightweight drift-detection shell check for prompt-quality-card mirror sync verification.
 
 ### Out of Scope
 
@@ -98,7 +121,7 @@ Define and implement a guard-safe two-tier prompt-quality architecture that impr
 | `.codex/agents/` | Create | Codex runtime mirror |
 | `.gemini/agents/` | Create | Gemini runtime mirror |
 | `.opencode/command/improve/prompt.md` | Modify | Add dispatch-mode branch and agent routing documentation |
-| `.opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Modify or defer | Optional drift-check fixture if selected |
+| `.opencode/skill/scripts/check-prompt-quality-card-sync.sh` | Create | Drift-check script that hashes the framework-selection table across the canonical card and four mirrors |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -267,8 +290,10 @@ Define and implement a guard-safe two-tier prompt-quality architecture that impr
 <!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
-- Should the optional drift-detection fixture land in this packet, or should the mirror sync footer plus maintenance note be treated as sufficient for the first release?
-- Should `/improve:prompt` expose complexity hints only through arguments, or also infer them from prompt analysis before choosing agent mode?
+No open questions remain for packet closeout.
+
+- Resolved: the optional drift check landed as `.opencode/skill/scripts/check-prompt-quality-card-sync.sh`, and `bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh` reports `SYNC OK`.
+- Resolved: `/improve:prompt` now auto-selects Agent mode from `complexity_hint >= 7` and from explicit isolation or fresh-context requests, while keeping Inline mode as the default otherwise.
 <!-- /ANCHOR:questions -->
 
 ---

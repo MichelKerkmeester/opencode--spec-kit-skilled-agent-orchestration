@@ -92,6 +92,25 @@ const relationEnum = z.enum([
   'supports',
 ]);
 
+const routeCategoryEnum = z.enum([
+  'narrative_progress',
+  'narrative_delivery',
+  'decision',
+  'handover_state',
+  'research_finding',
+  'task_update',
+  'metadata_only',
+  'drop',
+]);
+
+const mergeModeHintEnum = z.enum([
+  'append-as-paragraph',
+  'insert-new-adr',
+  'append-table-row',
+  'update-in-place',
+  'append-section',
+]);
+
 /* ───────────────────────────────────────────────────────────────
    5. SCHEMA DEFINITIONS
 ──────────────────────────────────────────────────────────────── */
@@ -182,6 +201,8 @@ const memorySaveSchema = getSchema({
   dryRun: z.boolean().optional(),
   skipPreflight: z.boolean().optional(),
   asyncEmbedding: z.boolean().optional(),
+  routeAs: routeCategoryEnum.optional(),
+  mergeModeHint: mergeModeHintEnum.optional(),
   // Governance args — accepted by tool-schemas.ts tool definition and
   // validated at runtime by scope-governance.ts (F3.04 fix).
   tenantId: z.string().optional(),

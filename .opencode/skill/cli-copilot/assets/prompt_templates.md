@@ -43,6 +43,8 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ### Single-File Module
 
+Framework: RCAF
+
 Generate a complete single-file component or backend module.
 
 ```bash
@@ -58,6 +60,8 @@ copilot -p "Create a TypeScript utility for advanced date formatting. Requiremen
 ```
 
 ### Feature Implementation
+
+Framework: RCAF
 
 Generate coordinated files for a new feature.
 
@@ -80,6 +84,8 @@ copilot -p "Implement a file upload service in Node.js. Create necessary files: 
 
 ### Security Audit
 
+Framework: TIDD-EC
+
 ```bash
 copilot -p "Security review of @./[file]. Scan for: OWASP Top 10, hardcoded secrets, and insecure dependencies. Rate findings by severity." \
  --model gemini-3.1-pro-preview --allow-all-tools 2>&1
@@ -94,6 +100,8 @@ copilot -p "Security review of @./src/api/auth.ts. Scan for: OWASP Top 10, hardc
 
 ### Performance Review
 
+Framework: TIDD-EC
+
 ```bash
 copilot -p "Analyze performance of @./[file]. Identify bottlenecks, O(n) complexity issues, and memory leaks. Suggest optimizations." \
   --agent review--model claude-opus-4.6 --allow-all-tools 2>&1
@@ -105,6 +113,8 @@ copilot -p "Analyze performance of @./[file]. Identify bottlenecks, O(n) complex
 ## 4. ARCHITECTURE & PLANNING
 
 ### Architecture Proposal
+
+Framework: CRAFT
 
 ```bash
 copilot -p "Propose an architecture for [system]. Consider: [constraints]. Compare 3 different approaches and recommend the best one." \
@@ -120,6 +130,8 @@ copilot -p "Propose an architecture for a real-time collaborative editor. Consid
 
 ### Migration Plan
 
+Framework: CRAFT
+
 ```bash
 copilot -p "Create a step-by-step plan to migrate @./[dir] from [old-stack] to [new-stack]. Identify risks and rollback strategies." \
  --model gpt-5.4 --allow-all-tools 2>&1
@@ -131,6 +143,8 @@ copilot -p "Create a step-by-step plan to migrate @./[dir] from [old-stack] to [
 ## 5. BUG FIXING
 
 ### Root Cause & Fix
+
+Framework: RCAF + TIDD-EC
 
 ```bash
 copilot -p "Fix [issue] in @./[file]. Error: [error message]. Reproduce the failure first, then apply the minimal fix." \
@@ -146,6 +160,8 @@ copilot -p "Fix memory leak in @./src/workers/processor.ts. Error: Heap out of m
 
 ### Regression Analysis
 
+Framework: RCAF + TIDD-EC
+
 ```bash
 copilot -p "Investigate why [feature] stopped working after recent changes in @./[dir]. Check git history and identify the breaking commit." \
   --agent debug --model claude-sonnet-4.6 --allow-all-tools 2>&1
@@ -158,12 +174,16 @@ copilot -p "Investigate why [feature] stopped working after recent changes in @.
 
 ### Unit Test Suite
 
+Framework: RCAF
+
 ```bash
 copilot -p "Generate Vitest unit tests for @./[file]. Aim for 90%+ coverage. Mock external dependencies as seen in @./[example-test]." \
   --model gpt-5.3-codex --allow-all-tools 2>&1
 ```
 
 ### E2E Scenario
+
+Framework: RCAF
 
 ```bash
 copilot -p "Create a Playwright E2E test for the [user flow]. Test files: @./[relevant-files]. Include setup and teardown steps." \
@@ -177,12 +197,16 @@ copilot -p "Create a Playwright E2E test for the [user flow]. Test files: @./[re
 
 ### Technical Spec
 
+Framework: RCAF
+
 ```bash
 copilot -p "Write a technical specification for @./[dir]. Include: data models, API signatures, and sequence diagrams in Mermaid format." \
   --agent write --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 ### Documentation Sync
+
+Framework: RCAF
 
 ```bash
 copilot -p "Update documentation in @./docs to match code changes in @./src. Ensure all examples are functional." \
@@ -195,6 +219,8 @@ copilot -p "Update documentation in @./docs to match code changes in @./src. Ens
 ## 8. CODE TRANSFORMATION
 
 ### Modernization
+
+Framework: RCAF + TIDD-EC
 
 ```bash
 copilot -p "Convert @./[file] to use [modern-syntax]. Update dependencies and ensure all tests pass." \
@@ -210,6 +236,8 @@ copilot -p "Convert @./src/legacy/db.js to use ESM modules and top-level await. 
 
 ### CSS to Tailwind
 
+Framework: RCAF + TIDD-EC
+
 ```bash
 copilot -p "Transform styles in @./[component] from CSS Modules to Tailwind classes. Maintain exact visual fidelity." \
   --model gpt-5.3-codex --allow-all-tools 2>&1
@@ -222,12 +250,16 @@ copilot -p "Transform styles in @./[component] from CSS Modules to Tailwind clas
 
 ### Dependency Graph
 
+Framework: CRAFT
+
 ```bash
 copilot -p "Map all internal dependencies for @./[dir]. Output as a JSON object showing import relationships." \
   --output-format json--model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 ### API Surface Analysis
+
+Framework: CRAFT
 
 ```bash
 copilot -p "Extract all public API methods from @./[dir]. Include types, descriptions, and deprecation status." \
@@ -240,6 +272,8 @@ copilot -p "Extract all public API methods from @./[dir]. Include types, descrip
 ## 10. CLOUD DELEGATION
 
 ### Infra-as-Code Generation
+
+Framework: CRAFT
 
 ```bash
 copilot -p "Generate Terraform modules for [cloud-resource]. Requirements: [specs]. Follow security best practices for [provider]." \
@@ -255,6 +289,8 @@ copilot -p "Generate Terraform modules for an AWS EKS cluster. Requirements: pri
 
 ### CI/CD Pipeline
 
+Framework: CRAFT
+
 ```bash
 copilot -p "Create a GitHub Action workflow for [project-type]. Include: linting, testing, and deployment to [environment]." \
   --model gpt-5.4 --allow-all-tools 2>&1
@@ -267,12 +303,16 @@ copilot -p "Create a GitHub Action workflow for [project-type]. Include: linting
 
 ### Multi-Agent Strategy
 
+Framework: CRAFT
+
 ```bash
 copilot -p "Execute a complex refactor of @./[dir]. Use @context to map dependencies, @debug to fix errors, and @review to verify quality." \
   --agent orchestrate --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 ### Session Handover
+
+Framework: RCAF
 
 ```bash
 copilot -p "Summarize progress for the current task. List: completed files, remaining work, and context for the next developer." \

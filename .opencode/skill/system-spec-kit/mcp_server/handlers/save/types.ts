@@ -96,16 +96,35 @@ export interface CausalLinksResult {
   errors: { type: string; reference: string; error: string }[];
 }
 
-export interface AtomicSaveParams {
+export type RouteCategory =
+  | 'narrative_progress'
+  | 'narrative_delivery'
+  | 'decision'
+  | 'handover_state'
+  | 'research_finding'
+  | 'task_update'
+  | 'metadata_only'
+  | 'drop';
+
+export type MergeModeHint =
+  | 'append-as-paragraph'
+  | 'insert-new-adr'
+  | 'append-table-row'
+  | 'update-in-place'
+  | 'append-section';
+
+export interface AtomicIndexParams {
   file_path: string;
   content: string;
+  routeAs?: RouteCategory;
+  mergeModeHint?: MergeModeHint;
 }
 
-export interface AtomicSaveOptions {
+export interface AtomicIndexOptions {
   force?: boolean;
 }
 
-export interface AtomicSaveResult {
+export interface AtomicIndexResult {
   success: boolean;
   filePath: string;
   error?: string;
@@ -120,7 +139,16 @@ export interface AtomicSaveResult {
   embeddingStatus?: string;
   postMutationHooks?: ReturnType<typeof buildMutationHookFeedback>['data'];
   hints?: string[];
+  routeCategory?: RouteCategory;
+  mergeMode?: MergeModeHint;
+  targetDocPath?: string;
+  targetAnchorId?: string;
 }
+
+// Backward-compatible aliases retained while the writer path migrates.
+export type AtomicSaveParams = AtomicIndexParams;
+export type AtomicSaveOptions = AtomicIndexOptions;
+export type AtomicSaveResult = AtomicIndexResult;
 
 export interface SaveArgs {
   filePath: string;
@@ -128,6 +156,8 @@ export interface SaveArgs {
   dryRun?: boolean;
   skipPreflight?: boolean;
   asyncEmbedding?: boolean; // When true, embedding generation is deferred (non-blocking)
+  routeAs?: RouteCategory;
+  mergeModeHint?: MergeModeHint;
   tenantId?: string;
   userId?: string;
   agentId?: string;

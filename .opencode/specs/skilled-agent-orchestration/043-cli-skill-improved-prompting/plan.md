@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
 title: "Implementation Plan: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
 description: "Add a canonical prompt-quality card, four local CLI mirrors, a shared improve-prompt escalation agent, and matching command/skill contracts without breaking the current same-skill routing invariant."
@@ -7,7 +8,29 @@ trigger_phrases:
   - "mirror card plan"
 importance_tier: "important"
 contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/043-cli-skill-improved-prompting"
+    last_updated_at: "2026-04-11T19:30:00Z"
+    last_updated_by: "codex"
+    recent_action: "Implemented the planned mirror-card and escalation-agent architecture"
+    next_safe_action: "Keep command, runtime, and README parity aligned before release"
+    blockers: []
+    key_files:
+      - ".opencode/skill/cli-claude-code/SKILL.md"
+      - ".opencode/skill/cli-codex/SKILL.md"
+      - ".opencode/skill/cli-copilot/SKILL.md"
+      - ".opencode/skill/cli-gemini/SKILL.md"
+    session_dedup:
+      fingerprint: "sha256:043-cli-skill-improved-prompting"
+      session_id: "043-cli-skill-improved-prompting"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Land the drift check as a shell script rather than a fixture"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: CLI Skill Prompt-Quality Integration via Mirror Cards
 
 <!-- SPECKIT_LEVEL: 3 -->

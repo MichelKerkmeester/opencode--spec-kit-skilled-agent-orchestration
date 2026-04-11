@@ -50,6 +50,8 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ### Single-File Application
 
+Framework: RCAF
+
 Generate a complete single-file application from a description.
 
 ```bash
@@ -65,6 +67,8 @@ codex exec "Create a REST API server application in TypeScript. Requirements: Ex
 ```
 
 ### Multi-File Project
+
+Framework: RCAF
 
 Generate a multi-file project structure with coordinated files.
 
@@ -82,6 +86,8 @@ codex exec "Create a CLI tool project in TypeScript with the following structure
 
 ### Component / Module
 
+Framework: RCAF
+
 Generate a single component or module that fits into an existing codebase.
 
 ```bash
@@ -97,6 +103,8 @@ codex exec "Create a TypeScript module for rate-limiting middleware with sliding
 ```
 
 ### Design-to-Code (with Image)
+
+Framework: RCAF
 
 Implement a UI component from a design mockup or screenshot.
 
@@ -121,6 +129,8 @@ codex exec "Implement a React TypeScript component to match the attached design.
 
 ### Comprehensive Review
 
+Framework: TIDD-EC
+
 Full code review covering correctness, style, maintainability, and performance.
 
 ```bash
@@ -129,6 +139,8 @@ codex exec "Review @./[file] thoroughly. Check for: 1) Logic errors and edge cas
 ```
 
 ### Security-Focused Review
+
+Framework: TIDD-EC
 
 Review focused on security vulnerabilities and attack surfaces.
 
@@ -139,6 +151,8 @@ codex exec "Perform a security audit of @./[file]. Check for: 1) Injection vulne
 
 ### Performance Review
 
+Framework: TIDD-EC
+
 Review focused on performance bottlenecks and optimization opportunities.
 
 ```bash
@@ -147,6 +161,8 @@ codex exec "Analyze @./[file] for performance issues. Check for: 1) Unnecessary 
 ```
 
 ### Staged Changes Review (Interactive /review)
+
+Framework: TIDD-EC
 
 Review only the currently staged changes using the diff-aware `/review` command.
 
@@ -160,6 +176,8 @@ codex
 ```
 
 ### Branch Comparison Review (Interactive /review)
+
+Framework: TIDD-EC
 
 Review all changes between two branches.
 
@@ -178,6 +196,8 @@ codex
 
 ### Fix Identified Bugs
 
+Framework: RCAF + TIDD-EC
+
 Fix a known bug with description and reproduction context.
 
 ```bash
@@ -187,6 +207,8 @@ codex exec "Fix this bug in @./[file]: [description]. The expected behavior is [
 
 ### Auto-Detect and Fix
 
+Framework: RCAF + TIDD-EC
+
 Let Codex scan a file for potential bugs and apply fixes.
 
 ```bash
@@ -195,6 +217,8 @@ codex exec "Scan @./[file] for bugs. Look for: null/undefined access, off-by-one
 ```
 
 ### Fix from Screenshot
+
+Framework: RCAF + TIDD-EC
 
 Diagnose and fix a bug shown in a screenshot.
 
@@ -212,6 +236,8 @@ codex exec "This screenshot shows a bug in the application. Analyze @./[file] an
 
 ### Unit Tests
 
+Framework: RCAF
+
 Generate unit tests for a specific file or module.
 
 ```bash
@@ -228,6 +254,8 @@ codex exec "Generate comprehensive Jest unit tests for @./src/utils/validator.ts
 
 ### Integration Tests
 
+Framework: RCAF
+
 Generate integration tests that test multiple components working together.
 
 ```bash
@@ -236,6 +264,8 @@ codex exec "Generate [framework] integration tests for the [description] workflo
 ```
 
 ### Test Coverage Analysis
+
+Framework: RCAF
 
 Identify missing test coverage in an existing test suite.
 
@@ -253,6 +283,8 @@ codex exec "Analyze @./[test-file] against the implementation in @./[source-file
 
 ### JSDoc / TSDoc Generation
 
+Framework: RCAF
+
 Add inline documentation to source code.
 
 ```bash
@@ -262,6 +294,8 @@ codex exec "Add complete JSDoc documentation to @./[file]. For every exported fu
 
 ### README Generation
 
+Framework: RCAF
+
 Generate a project or module README from source code.
 
 ```bash
@@ -270,6 +304,8 @@ codex exec "Generate a comprehensive README.md for the project in [directory]. A
 ```
 
 ### API Documentation
+
+Framework: RCAF
 
 Generate API documentation from route definitions or endpoint handlers.
 
@@ -287,6 +323,8 @@ codex exec "Generate API documentation for @./[file]. For each endpoint: documen
 
 ### Refactoring
 
+Framework: RCAF + TIDD-EC
+
 Refactor code for improved structure without changing behavior.
 
 ```bash
@@ -296,6 +334,8 @@ codex exec "Refactor @./[file] to [description]. Requirements: 1) Preserve all e
 
 ### Language Translation
 
+Framework: RCAF + TIDD-EC
+
 Translate code from one language to another.
 
 ```bash
@@ -304,6 +344,8 @@ codex exec "Translate @./[file] from [language] to [language]. Requirements: 1) 
 ```
 
 ### Framework Migration
+
+Framework: RCAF + TIDD-EC
 
 Migrate code from one framework to another.
 
@@ -321,6 +363,8 @@ codex exec "Migrate @./[file] from [framework] to [framework]. Requirements: 1) 
 
 ### Current Information
 
+Framework: CRISPE
+
 Fetch up-to-date information using web search.
 
 ```bash
@@ -329,6 +373,8 @@ codex exec "Search the web for current information about [topic] as of [date]. P
 ```
 
 ### Library / API Research
+
+Framework: CRISPE
 
 Research a specific library, API, or technology.
 
@@ -339,6 +385,8 @@ codex exec "Search the web to research [topic]. Find: 1) Current stable version 
 
 ### Comparison Research
 
+Framework: CRISPE
+
 Compare technologies, libraries, or approaches with current data.
 
 ```bash
@@ -347,6 +395,8 @@ codex exec "Search the web to compare [topic] vs [topic] as of [date]. Compare o
 ```
 
 ### Security Advisory Research
+
+Framework: CRISPE
 
 Research security vulnerabilities for a specific package or technology.
 
@@ -364,6 +414,8 @@ codex exec "Search the web for security advisories and CVEs for [package]@[versi
 
 ### Project Analysis
 
+Framework: CRAFT
+
 Analyze overall project architecture and structure.
 
 ```bash
@@ -373,6 +425,8 @@ codex exec "Analyze the project structure in [directory]. Provide: 1) High-level
 
 ### Dependency Analysis
 
+Framework: CRAFT
+
 Map dependencies and identify coupling issues.
 
 ```bash
@@ -381,6 +435,8 @@ codex exec "Analyze dependencies in [directory]. Identify: 1) Direct and transit
 ```
 
 ### Impact Analysis
+
+Framework: CRAFT
 
 Assess the impact of a planned change before implementing it.
 
@@ -398,6 +454,8 @@ codex exec "Analyze the impact of [description of planned change] on @./[file]. 
 
 ### Git Commit Message
 
+Framework: RCAF
+
 Generate a commit message from staged changes.
 
 ```bash
@@ -406,6 +464,8 @@ codex exec "Based on the following git diff, write a commit message following Co
 ```
 
 ### Code Explanation
+
+Framework: CRAFT
 
 Get a detailed explanation of unfamiliar code.
 
@@ -416,6 +476,8 @@ codex exec "Explain @./[file] in detail. Cover: 1) What the code does at a high 
 
 ### Error Diagnosis
 
+Framework: TIDD-EC
+
 Diagnose an error message with full context.
 
 ```bash
@@ -424,6 +486,8 @@ codex exec "Diagnose this error: [error message]. It occurs when running [descri
 ```
 
 ### Session-Based Multi-Step Task
+
+Framework: CRAFT
 
 Orchestrate a complex multi-step task across sessions.
 
@@ -442,6 +506,8 @@ codex fork [session-id]
 
 ### Research-Then-Implement
 
+Framework: CRISPE + RCAF
+
 Research best practices, then apply them to the codebase.
 
 ```bash
@@ -455,6 +521,8 @@ codex exec "Based on best practices for [topic], implement [description] in @./[
 ```
 
 ### Agent-Delegated Ultra-Think
+
+Framework: CRAFT
 
 Use the ultra-think agent for multi-strategy planning.
 

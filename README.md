@@ -4,11 +4,11 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 20 skills, 21 command entry points, 56 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 11 agents, 20 skills, 21 command entry points, 56 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
-**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 12 Specialized Agents** • **⚡ 4 Mirrored Runtimes + Copilot Support**
+**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 11 Specialized Agents** • **⚡ 5 Mirrored Runtimes**
 
 <!-- ANCHOR:table-of-contents -->
 
@@ -49,7 +49,7 @@ The framework adds three layers on top of the base platform:
 
 1. **Structured documentation** (Spec Kit) - every file change gets a spec folder recording what changed, why and how. Like a lab notebook for software.
 2. **Cognitive memory** (MCP server) - a local-first memory engine storing decisions, context and project history in a searchable database. Like a personal librarian who remembers every conversation.
-3. **Coordinated agents** -12 specialized agents routed by a gate system that loads the right skills at the right time. Like a team where the project manager delegates to the right specialist.
+3. **Coordinated agents** -11 specialized agents routed by a gate system that loads the right skills at the right time. Like a team where the project manager delegates to the right specialist.
 
 **Who it is for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
@@ -58,7 +58,7 @@ The framework adds three layers on top of the base platform:
 
 | | |
 |---|---|
-| **🤖 12 Agents** | 12 custom specialists, multi-runtime |
+| **🤖 11 Agents** | 11 custom specialists, multi-runtime |
 | **🎯 20 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
 | **⌨️ 21 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility |
 | **🔧 56 MCP Tools** | 47 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
@@ -556,7 +556,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🤖 Agent Network
 
-12 custom specialist agents. Defined in `.opencode/agent/` (source of truth), adapted per runtime for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`). Copilot currently relies on the shared MCP/startup surfaces rather than a dedicated agent mirror directory.
+11 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for the `.agents/agents/`, Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
 
 **Orchestrate**
 - Senior task commander with full authority over decomposition, delegation and quality evaluation
@@ -624,6 +624,12 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Reads the target agent's charter, manifest and integration surface, then writes ONE candidate to a packet-local runtime area
 - Never scores, promotes, benchmarks or edits canonical targets - leaves that to the `/improve:agent` command loop
 - Loop orchestration: scan integration surfaces → generate dynamic profile → dispatch this agent → score candidate across 5 dimensions (structural, ruleCoherence, integration, outputQuality, systemFitness) → reduce state → check stop conditions
+
+**Improve-Prompt**
+- Prompt-escalation specialist for high-stakes external CLI invocations and other sensitive AI prompt work
+- Selects the best-fit framework from `sk-improve-prompt`, applies DEPTH at the right energy level, and validates the result with CLEAR
+- Returns a structured prompt package with `FRAMEWORK`, `CLEAR_SCORE`, `RATIONALE`, `ENHANCED_PROMPT`, and `ESCALATION_NOTES`
+- Used by the CLI mirror-card pipeline and `/improve:prompt` agent mode when complexity, compliance, or stakeholder spread makes inline prompting too weak
 
 ---
 
@@ -1076,7 +1082,7 @@ A: The memory database is a SQLite file on your local machine. No session data, 
 
 **Q: How do I contribute a new agent definition?**
 
-A: Define the agent in `.opencode/agent/` (the source of truth), then copy the adapter to `.claude/agents/`, `.codex/agents/` and `.gemini/agents/`. Use `/create:agent` to scaffold the file from the agent template.
+A: Define the agent in `.opencode/agent/` (the source of truth), then copy the adapter to `.agents/agents/`, `.claude/agents/`, `.codex/agents/`, and `.gemini/agents/`. Use `/create:agent` to scaffold the file from the agent template.
 
 ---
 
@@ -1122,4 +1128,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.2 | Last updated: 2026-04-04 | Framework: 12 agents, 20 skills, 21 commands, 56 MCP tools (47 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.2 | Last updated: 2026-04-11 | Framework: 11 agents, 20 skills, 21 commands, 56 MCP tools (47 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

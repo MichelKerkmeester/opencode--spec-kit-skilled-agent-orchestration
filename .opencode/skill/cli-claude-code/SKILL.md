@@ -102,13 +102,14 @@ references/integration_patterns.md   — Cross-AI orchestration patterns (revers
 references/claude_tools.md           — Unique capabilities and comparison table
 references/agent_delegation.md       — Claude Code agent routing and invocation
 assets/prompt_templates.md           — Copy-paste ready templates
+assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-check, escalation triggers
 ```
 
 ### Resource Loading Levels
 
 | Level       | When to Load            | Resources                      |
 | ----------- | ----------------------- | ------------------------------ |
-| ALWAYS      | Every skill invocation  | `references/cli_reference.md`  |
+| ALWAYS      | Every skill invocation  | `references/cli_reference.md`, `assets/prompt_quality_card.md` |
 | CONDITIONAL | If intent signals match | Intent-mapped reference docs   |
 | ON_DEMAND   | Only on explicit request| Extended templates and patterns |
 
@@ -142,7 +143,7 @@ RESOURCE_MAP = {
 }
 
 LOADING_LEVELS = {
-    "ALWAYS": [DEFAULT_RESOURCE],
+    "ALWAYS": [DEFAULT_RESOURCE, "assets/prompt_quality_card.md"],
     "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide"],
     "ON_DEMAND": ["references/claude_tools.md", "assets/prompt_templates.md"],
 }
@@ -424,6 +425,12 @@ claude -p "Now refactor the auth module based on the review" --continue --output
    - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
    - This prevents the delegated agent from halting at the Gate 3 spec folder question in non-interactive mode
    - Example prompt suffix: `\n\nSpec folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
+
+10. **ALWAYS load `assets/prompt_quality_card.md` before building any dispatch prompt**
+   - Apply the CLEAR 5-question check from the card
+   - Tag the selected framework in the Bash invocation comment
+   - If complexity is `>= 7/10` or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline
+   - Use the returned `ENHANCED_PROMPT` as the final Claude Code prompt
 
 ### NEVER
 

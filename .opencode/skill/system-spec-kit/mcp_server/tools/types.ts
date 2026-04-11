@@ -153,6 +153,21 @@ export interface SaveArgs {
   dryRun?: boolean;
   skipPreflight?: boolean;
   asyncEmbedding?: boolean; // T306: When true, embedding generation is deferred (non-blocking)
+  routeAs?:
+    | 'narrative_progress'
+    | 'narrative_delivery'
+    | 'decision'
+    | 'handover_state'
+    | 'research_finding'
+    | 'task_update'
+    | 'metadata_only'
+    | 'drop';
+  mergeModeHint?:
+    | 'append-as-paragraph'
+    | 'insert-new-adr'
+    | 'append-table-row'
+    | 'update-in-place'
+    | 'append-section';
   tenantId?: string;
   userId?: string;
   agentId?: string;

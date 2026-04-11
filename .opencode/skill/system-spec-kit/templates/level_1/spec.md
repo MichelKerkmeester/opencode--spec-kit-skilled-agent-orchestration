@@ -9,6 +9,22 @@ trigger_phrases:
   - "spec core"
 importance_tier: "normal"
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "000-feature-name"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialize continuity block"
+    next_safe_action: "Replace template defaults on first save"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
 ---
 # Feature Specification: [NAME]
 

@@ -32,10 +32,90 @@ import type { PeDecision, MemoryScopeMatch } from './types.js';
 import { normalizeScopeMatchValue } from './types.js';
 export type { MemoryScopeMatch };
 
+export const CONTINUITY_ANCHOR_ID = '_memory.continuity';
+
+export interface CreateRecordIdentityHints {
+  targetDocPath?: string | null;
+  canonicalFilePath?: string | null;
+  targetAnchorId?: string | null;
+  routeAs?: string | null;
+  continuitySourceKey?: string | null;
+}
+
+export interface ResolvedCreateRecordIdentity {
+  targetDocPath: string;
+  canonicalFilePath: string;
+  targetAnchorId: string | null;
+  routeAs: string | null;
+  continuitySourceKey: string | null;
+}
+
 interface LineageRoutingDecision {
   predecessorMemoryId: number | null;
   transitionEvent: 'CREATE' | 'UPDATE' | 'SUPERSEDE';
   causalSupersedesMemoryId: number | null;
+}
+
+function normalizeOptionalString(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function pickFirstString(...values: unknown[]): string | null {
+  for (const value of values) {
+    const normalized = normalizeOptionalString(value);
+    if (normalized) {
+      return normalized;
+    }
+  }
+  return null;
+}
+
+function getParsedIdentityValue(parsed: ReturnType<typeof memoryParser.parseMemoryFile>, ...keys: string[]): string | null {
+  const parsedRecord = parsed as unknown as Record<string, unknown>;
+  for (const key of keys) {
+    const normalized = normalizeOptionalString(parsedRecord[key]);
+    if (normalized) {
+      return normalized;
+    }
+  }
+  return null;
+}
+
+export function resolveCreateRecordIdentity(
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  filePath: string,
+  hints: CreateRecordIdentityHints = {},
+): ResolvedCreateRecordIdentity {
+  const targetDocPath = pickFirstString(
+    hints.targetDocPath,
+    getParsedIdentityValue(parsed, 'targetDocPath', 'target_doc_path', 'targetFilePath', 'target_file_path', 'routedDocPath', 'routed_doc_path'),
+    filePath,
+  ) ?? filePath;
+
+  const routeAs = pickFirstString(
+    hints.routeAs,
+    getParsedIdentityValue(parsed, 'routeAs', 'route_as'),
+  );
+  const continuitySourceKey = pickFirstString(
+    hints.continuitySourceKey,
+    getParsedIdentityValue(parsed, 'continuitySourceKey', 'continuity_source_key', 'sourceKey', 'source_key'),
+  );
+  const targetAnchorId = pickFirstString(
+    hints.targetAnchorId,
+    getParsedIdentityValue(parsed, 'targetAnchorId', 'target_anchor_id', 'anchorId', 'anchor_id'),
+  ) ?? ((routeAs === 'metadata_only' || continuitySourceKey !== null) ? CONTINUITY_ANCHOR_ID : null);
+
+  return {
+    targetDocPath,
+    canonicalFilePath: pickFirstString(hints.canonicalFilePath, getCanonicalPathKey(targetDocPath)) ?? getCanonicalPathKey(targetDocPath),
+    targetAnchorId,
+    routeAs,
+    continuitySourceKey,
+  };
 }
 
 export function resolveCreateRecordLineage(
@@ -98,12 +178,48 @@ export function findSamePathExistingMemory(
   canonicalFilePath: string,
   filePath: string,
   scope: MemoryScopeMatch = {},
+  identityHints: CreateRecordIdentityHints = {},
 ): { id: number; title: string | null; content_hash?: string | null } | undefined {
   const tenantId = normalizeScopeMatchValue(scope.tenantId);
   const userId = normalizeScopeMatchValue(scope.userId);
   const agentId = normalizeScopeMatchValue(scope.agentId);
   const sessionId = normalizeScopeMatchValue(scope.sessionId);
   const sharedSpaceId = normalizeScopeMatchValue(scope.sharedSpaceId);
+  const resolvedCanonicalFilePath = normalizeOptionalString(identityHints.canonicalFilePath) ?? canonicalFilePath;
+  const resolvedFilePath = normalizeOptionalString(identityHints.targetDocPath) ?? filePath;
+  const resolvedAnchorId = normalizeOptionalString(identityHints.targetAnchorId);
+  const hasIdentityOverride = resolvedCanonicalFilePath !== canonicalFilePath
+    || resolvedFilePath !== filePath
+    || identityHints.targetAnchorId !== undefined
+    || identityHints.canonicalFilePath !== undefined
+    || identityHints.targetDocPath !== undefined;
+
+  const anchorClause = resolvedAnchorId !== null
+    ? 'AND (anchor_id = ? OR (anchor_id IS NULL AND ? IS NULL))'
+    : hasIdentityOverride
+      ? 'AND anchor_id IS NULL'
+      : '';
+
+  const params: Array<string | null> = [
+    specFolder,
+    resolvedCanonicalFilePath,
+    resolvedFilePath,
+  ];
+  if (resolvedAnchorId !== null) {
+    params.push(resolvedAnchorId, resolvedAnchorId);
+  }
+  params.push(
+    tenantId,
+    tenantId,
+    userId,
+    userId,
+    agentId,
+    agentId,
+    sessionId,
+    sessionId,
+    sharedSpaceId,
+    sharedSpaceId,
+  );
 
   return database.prepare(`
     SELECT id, title, content_hash
@@ -111,6 +227,7 @@ export function findSamePathExistingMemory(
     WHERE spec_folder = ?
       AND parent_id IS NULL
       AND (canonical_file_path = ? OR file_path = ?)
+      ${anchorClause}
       AND ((? IS NULL AND tenant_id IS NULL) OR tenant_id = ?)
       AND ((? IS NULL AND user_id IS NULL) OR user_id = ?)
       AND ((? IS NULL AND agent_id IS NULL) OR agent_id = ?)
@@ -118,21 +235,7 @@ export function findSamePathExistingMemory(
       AND ((? IS NULL AND shared_space_id IS NULL) OR shared_space_id = ?)
     ORDER BY id DESC
     LIMIT 1
-  `).get(
-    specFolder,
-    canonicalFilePath,
-    filePath,
-    tenantId,
-    tenantId,
-    userId,
-    userId,
-    agentId,
-    agentId,
-    sessionId,
-    sessionId,
-    sharedSpaceId,
-    sharedSpaceId,
-  ) as { id: number; title: string | null; content_hash?: string | null } | undefined;
+  `).get(...params) as { id: number; title: string | null; content_hash?: string | null } | undefined;
 }
 
 /**
@@ -147,31 +250,34 @@ export function createMemoryRecord(
   embeddingFailureReason: string | null,
   peDecision: PeDecision,
   scope: MemoryScopeMatch = {},
+  identityHints: CreateRecordIdentityHints = {},
 ): number {
+  const recordIdentity = resolveCreateRecordIdentity(parsed, filePath, identityHints);
+
   if (!embedding) {
-    console.error(`[memory-save] Using deferred indexing for ${path.basename(filePath)}`);
+    console.error(`[memory-save] Using deferred indexing for ${path.basename(recordIdentity.targetDocPath)}`);
   }
 
   // Detect spec level for spec documents.
   const specLevel = isSpecDocumentType(parsed.documentType)
-    ? detectSpecLevelFromParsed(filePath)
+    ? detectSpecLevelFromParsed(recordIdentity.targetDocPath)
     : null;
   const encodingIntent = isEncodingIntentEnabled()
     ? classifyEncodingIntent(parsed.content)
     : undefined;
-  const canonicalFilePath = getCanonicalPathKey(filePath);
   // Security: raw provider errors sanitized before persistence/response
   const persistedEmbeddingFailureReason = sanitizeEmbeddingFailureMessage(embeddingFailureReason);
 
   const indexWithMetadata = database.transaction(() => {
     // Determine importance weight based on document type.
-    const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
+    const importanceWeight = calculateDocumentWeight(recordIdentity.targetDocPath, parsed.documentType);
     const samePathExisting = findSamePathExistingMemory(
       database,
       parsed.specFolder,
-      canonicalFilePath,
-      filePath,
+      recordIdentity.canonicalFilePath,
+      recordIdentity.targetDocPath,
       scope,
+      recordIdentity,
     );
     const lineageRouting = resolveCreateRecordLineage(peDecision, samePathExisting?.id ?? null);
     const predecessorMemoryId = lineageRouting.predecessorMemoryId;
@@ -180,7 +286,8 @@ export function createMemoryRecord(
     const memory_id: number = embedding
       ? vectorIndex.indexMemory({
           specFolder: parsed.specFolder,
-          filePath,
+          filePath: recordIdentity.targetDocPath,
+          anchorId: recordIdentity.targetAnchorId,
           title: parsed.title,
           triggerPhrases: parsed.triggerPhrases,
           importanceWeight,
@@ -195,7 +302,8 @@ export function createMemoryRecord(
         })
       : vectorIndex.indexMemoryDeferred({
           specFolder: parsed.specFolder,
-          filePath,
+          filePath: recordIdentity.targetDocPath,
+          anchorId: recordIdentity.targetAnchorId,
           title: parsed.title,
           triggerPhrases: parsed.triggerPhrases,
           importanceWeight,
@@ -209,7 +317,7 @@ export function createMemoryRecord(
           appendOnly: predecessorMemoryId != null,
         });
 
-    const fileMetadata = incrementalIndex.getFileMetadata(filePath);
+    const fileMetadata = incrementalIndex.getFileMetadata(recordIdentity.targetDocPath);
     const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
     applyPostInsertMetadata(database, memory_id, {
@@ -287,7 +395,7 @@ export function createMemoryRecord(
           predecessorMemoryId,
           'UPDATE',
           samePathExisting?.title ?? null,
-          parsed.title ?? filePath,
+          parsed.title ?? recordIdentity.targetDocPath,
           'mcp:memory_save',
         );
       }

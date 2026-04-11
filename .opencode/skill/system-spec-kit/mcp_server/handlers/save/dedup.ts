@@ -26,6 +26,7 @@ const SCOPE_COLUMNS = [
 interface SamePathDedupExclusion {
   canonicalFilePath: string;
   filePath: string;
+  targetAnchorId?: string | null;
 }
 
 import type { MemoryScopeMatch } from './types.js';
@@ -81,6 +82,7 @@ function selectLatestExistingRow(
   parsed: ParsedMemory,
   pathColumn: ScopeColumnName | 'canonical_file_path' | 'file_path',
   pathValue: string,
+  targetAnchorId: string | null,
   scopeClauses: string[],
   scopeParams: string[],
 ): LatestMemoryLookupRow | undefined {
@@ -88,6 +90,7 @@ function selectLatestExistingRow(
     'spec_folder = ?',
     'parent_id IS NULL',
     `${pathColumn} = ?`,
+    targetAnchorId !== null ? 'anchor_id = ?' : 'anchor_id IS NULL',
     ...scopeClauses,
   ];
 
@@ -100,6 +103,7 @@ function selectLatestExistingRow(
   `).get(
     parsed.specFolder,
     pathValue,
+    ...(targetAnchorId !== null ? [targetAnchorId] : []),
     ...scopeParams,
   ) as LatestMemoryLookupRow | undefined;
 }
@@ -184,6 +188,7 @@ export function checkExistingRow(
   parsed: ParsedMemory,
   canonicalFilePath: string,
   filePath: string,
+  targetAnchorId: string | null,
   force: boolean,
   warnings: string[] | undefined,
   scope: MemoryScopeMatch = {},
@@ -195,6 +200,7 @@ export function checkExistingRow(
       parsed,
       'canonical_file_path',
       canonicalFilePath,
+      targetAnchorId,
       scopeClauses,
       scopeParams,
     ),
@@ -207,6 +213,7 @@ export function checkExistingRow(
         parsed,
         'file_path',
         filePath,
+        targetAnchorId,
         scopeClauses,
         scopeParams,
       ),
@@ -265,6 +272,13 @@ export function checkContentHashDedup(
       ...DEDUP_ELIGIBLE_EMBEDDING_STATUSES,
       ...scopeParams,
     ];
+
+    if (samePathExclusion?.targetAnchorId != null) {
+      whereClauses.push('anchor_id = ?');
+      duplicateParams.push(samePathExclusion.targetAnchorId);
+    } else {
+      whereClauses.push('anchor_id IS NULL');
+    }
 
     if (samePathExclusion) {
       whereClauses.push('file_path != ?');

@@ -19,6 +19,7 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly RULES_DIR="$SCRIPT_DIR/../rules"
+readonly SPEC_DOC_STRUCTURE_TS="$SCRIPT_DIR/../../mcp_server/lib/validation/spec-doc-structure.ts"
 readonly VERSION="2.0.0"
 
 # Source shared libraries
@@ -92,8 +93,9 @@ OPTIONS:
 EXIT CODES: 0=pass, 1=warnings, 2=errors
 
 RULES: FILE_EXISTS, PLACEHOLDER_FILLED, SECTIONS_PRESENT, LEVEL_DECLARED,
-       PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, TOC_POLICY, PHASE_LINKS,
-       SPEC_DOC_INTEGRITY
+       PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, FRONTMATTER_MEMORY_BLOCK,
+       MERGE_LEGALITY, SPEC_DOC_SUFFICIENCY, CROSS_ANCHOR_CONTAMINATION,
+       POST_SAVE_FINGERPRINT, TOC_POLICY, PHASE_LINKS, SPEC_DOC_INTEGRITY
 
 LEVELS: 1=spec+plan+tasks+impl-summary*, 2=+checklist, 3=+decision-record
         *impl-summary required after tasks completed
@@ -317,6 +319,7 @@ get_rule_severity() {
         FILE_EXISTS|FILES|PLACEHOLDER_FILLED|PLACEHOLDERS|ANCHORS_VALID|ANCHORS|TOC_POLICY|TEMPLATE_HEADERS) echo "error" ;;
         SECTIONS_PRESENT|SECTIONS|PRIORITY_TAGS|EVIDENCE_CITED|EVIDENCE|PRIORITY|PHASE_LINKS|LINKS_VALID|LINKS) echo "warn" ;;
         SPEC_DOC_INTEGRITY|DOC_INTEGRITY) echo "error" ;;
+        FRONTMATTER_MEMORY_BLOCK|MERGE_LEGALITY|SPEC_DOC_SUFFICIENCY|CROSS_ANCHOR_CONTAMINATION|POST_SAVE_FINGERPRINT) echo "error" ;;
         LEVEL_DECLARED|LEVEL) echo "info" ;;
         *) echo "error" ;;
     esac
@@ -336,6 +339,11 @@ canonicalize_rule_name() {
         PRIORITY|PRIORITY_TAGS) echo "PRIORITY_TAGS" ;;
         EVIDENCE|EVIDENCE_CITED) echo "EVIDENCE_CITED" ;;
         ANCHOR|ANCHORS|ANCHOR_MATCHED|ANCHORS_VALID) echo "ANCHORS_VALID" ;;
+        MEMORY_BLOCK|FRONTMATTER_MEMORY_BLOCK|FRONTMATTER_MEMORY) echo "FRONTMATTER_MEMORY_BLOCK" ;;
+        MERGE|MERGE_LEGALITY) echo "MERGE_LEGALITY" ;;
+        SUFFICIENCY|SPEC_DOC_SUFFICIENCY|DOC_SUFFICIENCY) echo "SPEC_DOC_SUFFICIENCY" ;;
+        CONTAMINATION|CROSS_ANCHOR_CONTAMINATION|CROSS_ANCHOR) echo "CROSS_ANCHOR_CONTAMINATION" ;;
+        FINGERPRINT|POST_SAVE_FINGERPRINT|POST_SAVE) echo "POST_SAVE_FINGERPRINT" ;;
         TOC|TOC_POLICY) echo "TOC_POLICY" ;;
         PHASE_LINKS) echo "PHASE_LINKS" ;;
         LINKS|LINKS_VALID) echo "LINKS_VALID" ;;
@@ -362,6 +370,7 @@ rule_name_to_script() {
         PRIORITY_TAGS) echo "priority-tags" ;;
         EVIDENCE_CITED) echo "evidence" ;;
         ANCHORS_VALID) echo "anchors" ;;
+        FRONTMATTER_MEMORY_BLOCK|MERGE_LEGALITY|SPEC_DOC_SUFFICIENCY|CROSS_ANCHOR_CONTAMINATION|POST_SAVE_FINGERPRINT) echo "TS_RULE:$rule" ;;
         TOC_POLICY) echo "toc-policy" ;;
         PHASE_LINKS) echo "phase-links" ;;
         AI_PROTOCOLS) echo "ai-protocols" ;;
@@ -385,6 +394,10 @@ get_rule_scripts() {
         for rule_name in "${RULE_ORDER[@]}"; do
             local script_name; script_name=$(rule_name_to_script "$rule_name")
             [[ -z "$script_name" ]] && continue
+            if [[ "$script_name" == TS_RULE:* ]]; then
+                echo "$script_name"
+                continue
+            fi
             local script="$RULES_DIR/check-${script_name}.sh"
             if [[ -f "$script" ]]; then
                 echo "$script"
@@ -395,7 +408,74 @@ get_rule_scripts() {
     else
         for script in "$RULES_DIR"/check-*.sh; do
             [[ -f "$script" ]] && echo "$script"
+            if [[ "$(basename "$script")" == "check-anchors.sh" ]]; then
+                echo "TS_RULE:FRONTMATTER_MEMORY_BLOCK"
+                echo "TS_RULE:MERGE_LEGALITY"
+                echo "TS_RULE:SPEC_DOC_SUFFICIENCY"
+                echo "TS_RULE:CROSS_ANCHOR_CONTAMINATION"
+                echo "TS_RULE:POST_SAVE_FINGERPRINT"
+            fi
         done
+    fi
+}
+
+run_spec_doc_ts_rule() {
+    local folder="$1"
+    local level="$2"
+    local rule_name="$3"
+
+    RULE_NAME="$rule_name"
+    RULE_STATUS="pass"
+    RULE_MESSAGE=""
+    RULE_DETAILS=()
+    RULE_REMEDIATION=""
+
+    if [[ ! -f "$SPEC_DOC_STRUCTURE_TS" ]]; then
+        RULE_STATUS="fail"
+        RULE_MESSAGE="TS rule bridge missing: $SPEC_DOC_STRUCTURE_TS"
+        RULE_DETAILS=("Expected spec-doc validation bridge was not found on disk")
+        return
+    fi
+
+    local cmd=(
+        node
+        --experimental-strip-types
+        "$SPEC_DOC_STRUCTURE_TS"
+        --folder "$folder"
+        --level "$level"
+        --rule "$rule_name"
+    )
+
+    [[ -n "${SPECKIT_MERGE_PLAN_JSON:-}" ]] && cmd+=(--merge-plan-json "$SPECKIT_MERGE_PLAN_JSON")
+    [[ -n "${SPECKIT_CONTAMINATION_JSON:-}" ]] && cmd+=(--contamination-json "$SPECKIT_CONTAMINATION_JSON")
+    [[ -n "${SPECKIT_POST_SAVE_JSON:-}" ]] && cmd+=(--post-save-json "$SPECKIT_POST_SAVE_JSON")
+
+    local output=""
+    local exit_code=0
+    output=$("${cmd[@]}" 2>&1) || exit_code=$?
+
+    if [[ $exit_code -ne 0 ]]; then
+        RULE_STATUS="fail"
+        RULE_MESSAGE="TS rule bridge failed for $rule_name"
+        RULE_DETAILS=("$output")
+        RULE_REMEDIATION="Fix the TypeScript validation bridge or its runtime inputs before rerunning validation."
+        return
+    fi
+
+    while IFS=$'\t' read -r kind value; do
+        [[ -z "$kind" ]] && continue
+        case "$kind" in
+            rule) RULE_NAME="$value" ;;
+            status) RULE_STATUS="$value" ;;
+            message) RULE_MESSAGE="$value" ;;
+            detail) RULE_DETAILS+=("$value") ;;
+        esac
+    done <<< "$output"
+
+    if [[ -z "$RULE_MESSAGE" ]]; then
+        RULE_STATUS="fail"
+        RULE_MESSAGE="TS rule bridge returned no parseable output"
+        RULE_DETAILS=("Raw output: $output")
     fi
 }
 
@@ -413,6 +493,33 @@ run_all_rules() {
     
     while IFS= read -r rule_script; do
         [[ -z "$rule_script" ]] && continue
+        if [[ "$rule_script" == TS_RULE:* ]]; then
+            local ts_rule_name="${rule_script#TS_RULE:}"
+            should_run_rule "$ts_rule_name" || continue
+            local start_ms; start_ms=$(get_time_ms)
+            run_spec_doc_ts_rule "$folder" "$level" "$ts_rule_name"
+            local end_ms; end_ms=$(get_time_ms)
+            local elapsed_ms=$(( end_ms - start_ms ))
+            local timing_str=""
+            if $VERBOSE && ! $JSON_MODE && ! $QUIET_MODE; then
+                if [[ $elapsed_ms -lt 1000 ]]; then
+                    timing_str=" [${elapsed_ms}ms]"
+                else
+                    timing_str=" [$((elapsed_ms / 1000)).$((elapsed_ms % 1000 / 100))s]"
+                fi
+            fi
+            local sev; sev="$(get_rule_severity "$ts_rule_name")"
+            case "${RULE_STATUS:-pass}" in
+                pass) log_pass "${RULE_NAME:-$ts_rule_name}" "${RULE_MESSAGE:-OK}${timing_str}" ;;
+                fail) case "$sev" in error) log_error "${RULE_NAME:-$ts_rule_name}" "${RULE_MESSAGE:-Failed}${timing_str}" ;; warn) log_warn "${RULE_NAME:-$ts_rule_name}" "${RULE_MESSAGE:-Warning}${timing_str}" ;; info) $VERBOSE && log_info "${RULE_NAME:-$ts_rule_name}" "${RULE_MESSAGE:-Info}${timing_str}" ;; esac ;;
+                warn) log_warn "${RULE_NAME:-$ts_rule_name}" "${RULE_MESSAGE:-Warning}${timing_str}" ;;
+                info) $VERBOSE && log_info "${RULE_NAME:-$ts_rule_name}" "${RULE_MESSAGE:-Info}${timing_str}" ;;
+            esac
+            if [[ -n "${RULE_DETAILS[*]-}" ]]; then
+                for d in "${RULE_DETAILS[@]}"; do log_detail "$d"; done
+            fi
+            continue
+        fi
         [[ ! -f "$rule_script" ]] && continue
         # P1-14 FIX: Validate rule script before sourcing
         # Ensure it's a regular file with .sh extension within RULES_DIR

@@ -1,20 +1,21 @@
 ---
-description: Create or improve AI prompts using proven frameworks, DEPTH thinking, and CLEAR scoring via sk-improve-prompt - supports :auto and :confirm modes
+description: Create or improve AI prompts using proven frameworks, DEPTH thinking, and CLEAR scoring via sk-improve-prompt, with optional fresh-context agent dispatch for complex cases
 argument-hint: "<prompt_or_topic> [$mode] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
 >
-> This command runs a structured workflow. Do NOT dispatch agents from this document.
+> This command runs a structured workflow. Only dispatch `@improve-prompt` when the resolved dispatch mode is Agent.
 >
 > **YOUR FIRST ACTION:**
 > 1. Run Phase 0: @general agent self-verification (below)
 > 2. Run Setup Phase: consolidated prompt to gather inputs
 > 3. Determine execution mode from user input (`:auto` or `:confirm`)
-> 4. Execute the workflow steps defined in INSTRUCTIONS
+> 4. Resolve dispatch mode (Inline or Agent)
+> 5. Execute the workflow steps defined in INSTRUCTIONS
 >
-> This command is **general-agent based** and does **not** require `@write`.
+> This command is **general-agent based**. In Agent mode, `@general` dispatches `@improve-prompt` after setup.
 
 ---
 
@@ -44,10 +45,10 @@ SELF-CHECK: Are you operating as the @general agent?
     │   │ ⛔ GENERAL AGENT REQUIRED                                  │
     │   │                                                            │
     │   │ This command orchestrates sk-improve-prompt skill         │
-    │   │ invocation and does not require @write routing.            │
+    │   │ invocation and optional @improve-prompt dispatch.         │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
-    │   │   /create:prompt [arguments]                               │
+    │   │   /improve:prompt [arguments]                              │
     │   └────────────────────────────────────────────────────────────┘
     │
     └─ RETURN: STATUS=FAIL ERROR="General agent required"
@@ -84,10 +85,15 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    ├─ IF present → prompt_input = extracted text, omit Q0
    └─ IF missing or empty → include Q0 in prompt
 
-4. Search for related spec folders:
+4. CHECK dispatch-mode defaults:
+   ├─ IF `complexity_hint >= 7` is present in caller context or arguments → dispatch_mode = "AGENT" (pre-set, omit Q4)
+   ├─ IF user explicitly requests isolation, fresh context, or parallelism → dispatch_mode = "AGENT" (pre-set, omit Q4)
+   └─ OTHERWISE → dispatch_mode = "ASK" (include Q4 in prompt)
+
+5. Search for related spec folders:
    $ ls -d specs/*/ 2>/dev/null | tail -10
 
-5. ASK user with SINGLE consolidated prompt (include only applicable questions):
+6. ASK user with SINGLE consolidated prompt (include only applicable questions):
 
    ┌────────────────────────────────────────────────────────────────┐
    │ **Before proceeding, please answer:**                          │
@@ -113,24 +119,30 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │    A) Autonomous — run end-to-end (Recommended)                │
    │    B) Interactive — confirm at each DEPTH phase                 │
    │                                                                │
-   │ Reply format: "A, A, D, A" or "my prompt text here, B, A, A"   │
+   │ **Q4. Dispatch Mode** (if not auto-selected):                  │
+   │    A) Inline skill — direct, in-context (default)              │
+   │    B) Agent — fresh context, structured return                 │
+   │                                                                │
+   │ Reply format: "A, A, D, A, A" or                               │
+   │ "my prompt text here, B, A, A, B"                              │
    └────────────────────────────────────────────────────────────────┘
 
-6. WAIT for user response (DO NOT PROCEED)
+7. WAIT for user response (DO NOT PROCEED)
 
-7. Parse response and store ALL results:
+8. Parse response and store ALL results:
    - prompt_input = [from Q0 or $ARGUMENTS]
    - enhancement_mode = [auto|text|improve|refine|short|json|yaml|raw from Q1 or prefix]
    - save_choice = [A/B/C/D from Q2]
    - save_path = [derived path from Q2 choice, or null if D]
    - execution_mode = [AUTONOMOUS/INTERACTIVE from suffix or Q3]
+   - dispatch_mode = [INLINE/AGENT from Q4 or auto-selection]
 
-8. Execute background operations based on choices:
+9. Execute background operations based on choices:
    - IF save_choice == A: Validate spec folder exists
    - IF save_choice == B: Find next number and create: specs/[NNN]-[topic]/
    - IF save_choice == C: Validate custom path exists
 
-9. SET STATUS: ✅ PASSED
+10. SET STATUS: ✅ PASSED
 
 **STOP HERE** - Wait for user to answer ALL applicable questions before continuing.
 
@@ -147,6 +159,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 - `enhancement_mode = ________________`
 - `save_choice = ___` | `save_path = ________________`
 - `execution_mode = ________________`
+- `dispatch_mode = ________________`
 
 ---
 
@@ -162,6 +175,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 | save_choice            | ✅ Yes         | ______     | Q2                      |
 | save_path              | ○ Conditional | ______     | Derived from Q2 (A/B/C) |
 | execution_mode         | ✅ Yes         | ______     | Suffix or Q3            |
+| dispatch_mode          | ✅ Yes         | ______     | Q4 or auto-selection    |
 
 ```
 VERIFICATION CHECK:
@@ -184,14 +198,15 @@ After Phase 0 and Setup Phase pass, execute the following workflow steps:
 
 ## CONSTRAINTS
 
-- **DO NOT** dispatch any agent from this document
+- **DO NOT** dispatch unrelated agents from this document
 - **DO NOT** infer prompt text from context, screenshots, or conversation history
 - **DO NOT** save to a spec folder without explicit user choice from Q2
+- **ONLY** dispatch `@improve-prompt` when `dispatch_mode = AGENT`
 - **FIRST ACTION** is always: run Phase 0, run Setup, then execute steps below
 
 ---
 
-# Create Prompt
+# Improve Prompt
 
 Create or improve AI prompts by invoking the **sk-improve-prompt** skill. Transforms vague requests into structured, scored prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, and CLEAR quality scoring.
 
@@ -199,7 +214,7 @@ Create or improve AI prompts by invoking the **sk-improve-prompt** skill. Transf
 
 ## 1. PURPOSE
 
-This command provides a streamlined entry point for prompt engineering via the `sk-improve-prompt` skill. Instead of manually loading the skill and navigating its pipeline, users invoke `/create:prompt` with their text and receive an enhanced, framework-structured, CLEAR-scored prompt — with the option to save it to a spec folder's `prompts/` directory.
+This command provides a streamlined entry point for prompt engineering via the `sk-improve-prompt` skill. Instead of manually loading the skill and navigating its pipeline, users invoke `/improve:prompt` with their text and receive either an inline enhancement or a fresh-context `@improve-prompt` result — with the option to save it to a spec folder's `prompts/` directory.
 
 **When to use:**
 - Enhancing a vague or basic AI prompt
@@ -212,7 +227,7 @@ This command provides a streamlined entry point for prompt engineering via the `
 
 ## 2. CONTRACT
 
-**Inputs:** `$ARGUMENTS` — Prompt text or topic, optional mode prefix, optional execution mode
+**Inputs:** `$ARGUMENTS` — Prompt text or topic, optional mode prefix, optional execution mode, optional complexity hints
 **Outputs:** Enhanced prompt + CLEAR score + transparency report + optional file save + `STATUS=<OK|FAIL|CANCELLED>`
 
 ### User Input
@@ -274,6 +289,12 @@ enhancement_mode (from Setup Phase)
   - **JSON**: Additionally load `assets/format_guide_json.md`
   - **YAML**: Additionally load `assets/format_guide_yaml.md`
   - **RAW**: No additional references needed
+
+### Step 1b: Resolve Dispatch Mode
+
+- **Inline mode**: default for ordinary interactive prompt work
+- **Agent mode**: recommended when complexity is `>= 7/10`, when the caller explicitly wants isolation or parallelism, or when compliance/security constraints make a fresh context window safer
+- The command and the CLI mirror-card pipeline share the same escalation surface: `@improve-prompt`
 
 ### Step 1a: Interactive Behavior (INTERACTIVE/auto modes only)
 
@@ -341,7 +362,24 @@ Your preference? (A or B)
 
 ### Step 2: Execute Enhancement Pipeline
 
-Follow the sk-improve-prompt pipeline for the resolved mode:
+Follow the branch selected by `dispatch_mode`:
+
+**If `dispatch_mode = AGENT`:**
+1. Dispatch `Task(subagent_type="improve-prompt")` with:
+   - `raw_task = prompt_input`
+   - `task_type = best-fit task family`
+   - `complexity_hint = inferred or supplied complexity`
+   - `constraints = execution mode, output needs, compliance or audience notes`
+2. Capture the structured return block:
+   - `FRAMEWORK`
+   - `CLEAR_SCORE`
+   - `RATIONALE`
+   - `ENHANCED_PROMPT`
+   - `ESCALATION_NOTES`
+3. Use the returned `ENHANCED_PROMPT` as the command result and optional saved artifact.
+
+**If `dispatch_mode = INLINE`:**
+Follow the inline `sk-improve-prompt` pipeline for the resolved mode:
 
 **For Standard/Deep energy levels (TEXT, IMPROVE, REFINE, INTERACTIVE):**
 1. **Discover**: Analyze prompt from 3-5 perspectives, audit assumptions, select framework
@@ -389,6 +427,7 @@ Present the enhanced prompt with:
    ```
    Framework: [SELECTED]
    Mode: $[MODE] | Energy: [LEVEL]
+   Dispatch: [INLINE|AGENT]
    DEPTH Rounds: [N]
    Perspectives: [COUNT] ([LIST])
    CLEAR Score: [TOTAL]/50
@@ -447,49 +486,49 @@ created: [YYYY-MM-DD]
 ### Basic Prompt Improvement
 
 ```
-/create:prompt "Write a blog post about AI"
+/improve:prompt "Write a blog post about AI"
 ```
-→ Setup asks Q1 (mode), Q2 (save location), Q3 (execution mode)
+→ Setup asks Q1 (mode), Q2 (save location), Q3 (execution mode), Q4 (dispatch mode)
 
 ### With Mode Prefix and Auto Mode
 
 ```
-/create:prompt $improve "Help users understand our API authentication flow" :auto
+/improve:prompt $improve "Help users understand our API authentication flow" :auto
 ```
-→ Skips Q1 and Q3; only asks Q2 (save location)
+→ Skips Q1 and Q3; still resolves Q2 and Q4 as needed
 
 ### Quick Enhancement
 
 ```
-/create:prompt $short "Generate test data for user registration"
+/improve:prompt $short "Generate test data for user registration"
 ```
 → Quick 3-round DEPTH (D-P-H only), fast enhancement
 
 ### JSON Format Output
 
 ```
-/create:prompt $json "Create a customer support chatbot system prompt"
+/improve:prompt $json "Create a customer support chatbot system prompt"
 ```
 → Full DEPTH processing, outputs as JSON-structured prompt
 
 ### Raw Passthrough
 
 ```
-/create:prompt $raw "Analyze the sentiment of customer reviews and categorize them"
+/improve:prompt $raw "Analyze the sentiment of customer reviews and categorize them"
 ```
 → No DEPTH processing, formats only
 
 ### Interactive with Confirmation
 
 ```
-/create:prompt "Design a prompt for code review automation" :confirm
+/improve:prompt "Design a prompt for code review automation" :confirm
 ```
 → Pauses at each DEPTH phase for user approval
 
 ### Save to Spec Folder
 
 ```
-/create:prompt $improve "Build a system prompt for onboarding new developers"
+/improve:prompt $improve "Build a system prompt for onboarding new developers"
 ```
 → User selects Q2=A → Saved to `specs/012-onboarding/prompts/developer-onboarding-system-prompt.md`
 

@@ -45,7 +45,13 @@ import { runPostMutationHooks } from './mutation-hooks.js';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
 import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator.js';
 import { applyPostInsertMetadata } from './save/db-helpers.js';
-import { createMemoryRecord, findSamePathExistingMemory, type MemoryScopeMatch } from './save/create-record.js';
+import {
+  createMemoryRecord,
+  findSamePathExistingMemory,
+  resolveCreateRecordIdentity,
+  type CreateRecordIdentityHints,
+  type MemoryScopeMatch,
+} from './save/create-record.js';
 import {
   buildGovernancePostInsertFields,
   ensureGovernanceRuntime,
@@ -73,6 +79,8 @@ import {
 // Save pipeline modules (CR-P2-4 decomposition)
 import type {
   IndexResult,
+  RouteCategory,
+  MergeModeHint,
   SaveArgs,
   AtomicSaveParams,
   AtomicSaveOptions,
@@ -84,6 +92,7 @@ import { evaluateAndApplyPeDecision } from './save/pe-orchestration.js';
 import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge.js';
 import { runPostInsertEnrichment } from './save/post-insert.js';
 import { buildIndexResult, buildSaveResponse } from './save/response-builder.js';
+import { atomicIndexMemory } from './save/atomic-index-memory.js';
 import { createMCPErrorResponse } from '../lib/response/envelope.js';
 
 // Extracted sub-modules
@@ -125,6 +134,11 @@ type ParsedMemoryWithIndexHints = ReturnType<typeof memoryParser.parseMemoryFile
   _skipIndex?: boolean;
   _vRuleIndexBlockIds?: string[];
 };
+
+interface RoutedSaveOptions extends CreateRecordIdentityHints {
+  routeAs?: RouteCategory;
+  mergeModeHint?: MergeModeHint;
+}
 
 const STANDARD_MEMORY_TEMPLATE_MARKERS = [
   '## continue session',
@@ -597,6 +611,32 @@ function cleanupAtomicSavePendingFile(
   }
 }
 
+function applyRoutedSaveHints(
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  routing: RoutedSaveOptions,
+): ReturnType<typeof memoryParser.parseMemoryFile> {
+  const parsedWithHints = parsed as ParsedMemoryWithIndexHints & Record<string, unknown>;
+  if (routing.targetDocPath) {
+    parsedWithHints.targetDocPath = routing.targetDocPath;
+    parsedWithHints.target_doc_path = routing.targetDocPath;
+  }
+  if (routing.targetAnchorId) {
+    parsedWithHints.targetAnchorId = routing.targetAnchorId;
+    parsedWithHints.target_anchor_id = routing.targetAnchorId;
+    parsedWithHints.anchorId = routing.targetAnchorId;
+    parsedWithHints.anchor_id = routing.targetAnchorId;
+  }
+  if (routing.routeAs) {
+    parsedWithHints.routeAs = routing.routeAs;
+    parsedWithHints.route_as = routing.routeAs;
+  }
+  if (routing.continuitySourceKey) {
+    parsedWithHints.continuitySourceKey = routing.continuitySourceKey;
+    parsedWithHints.continuity_source_key = routing.continuitySourceKey;
+  }
+  return parsedWithHints;
+}
+
 async function processPreparedMemory(
   prepared: PreparedParsedMemory,
   filePath: string,
@@ -608,6 +648,7 @@ async function processPreparedMemory(
     specFolderLockAlreadyHeld?: boolean;
     scope?: MemoryScopeMatch;
     qualityGateMode?: 'enforce' | 'warn-only';
+    routing?: RoutedSaveOptions;
   } = {},
 ): Promise<IndexResult> {
   const {
@@ -618,6 +659,7 @@ async function processPreparedMemory(
     specFolderLockAlreadyHeld = false,
     scope = {},
     qualityGateMode = 'enforce',
+    routing = {},
   } = options;
 
   const evaluatePreparedMemory = (currentPrepared: PreparedParsedMemory): IndexResult | null => {
@@ -698,24 +740,37 @@ async function processPreparedMemory(
       validation,
       finalizedFileContent,
     } = activePrepared;
-    const canonicalFilePath = getCanonicalPathKey(filePath);
+    const routedFilePath = routing.targetDocPath ?? filePath;
+    const routedParsed = Object.keys(routing).length > 0
+      ? applyRoutedSaveHints(parsed, {
+          ...routing,
+          targetDocPath: routedFilePath,
+        })
+      : parsed;
+    const recordIdentity = resolveCreateRecordIdentity(routedParsed, routedFilePath, {
+      ...routing,
+      targetDocPath: routedFilePath,
+    });
+    const canonicalFilePath = recordIdentity.canonicalFilePath;
     const samePathExisting = findSamePathExistingMemory(
       database,
-      parsed.specFolder,
+      routedParsed.specFolder,
       canonicalFilePath,
-      filePath,
+      routedFilePath,
       scope,
+      recordIdentity,
     );
-    const shouldChunkContent = needsChunking(parsed.content);
+    const shouldChunkContent = needsChunking(routedParsed.content);
     const shouldPersistFinalizedFile = persistQualityLoopContent && typeof finalizedFileContent === 'string';
     let finalizeWarning: string | null = null;
 
     // DEDUP: Check existing row by file path
     const existingResult = checkExistingRow(
       database,
-      parsed,
+      routedParsed,
       canonicalFilePath,
-      filePath,
+      routedFilePath,
+      recordIdentity.targetAnchorId,
       force,
       validation.warnings,
       scope,
@@ -726,7 +781,7 @@ async function processPreparedMemory(
     // to eliminate TOCTOU race between check and insert.
 
     // EMBEDDING GENERATION (with persistent SQLite cache — REQ-S2-001)
-    const embeddingResult = await generateOrCacheEmbedding(database, parsed, filePath, asyncEmbedding);
+    const embeddingResult = await generateOrCacheEmbedding(database, routedParsed, routedFilePath, asyncEmbedding);
     const {
       embedding,
       status: embeddingStatus,
@@ -738,11 +793,11 @@ async function processPreparedMemory(
     if (isSaveQualityGateEnabled() && isQualityGateEnabled()) {
       try {
         const qualityGateResult = runQualityGate({
-          title: parsed.title,
-          content: parsed.content,
-          specFolder: parsed.specFolder,
-          triggerPhrases: parsed.triggerPhrases,
-          contextType: parsed.contextType,
+          title: routedParsed.title,
+          content: routedParsed.content,
+          specFolder: routedParsed.specFolder,
+          triggerPhrases: routedParsed.triggerPhrases,
+          contextType: routedParsed.contextType,
           embedding: embedding,
           findSimilar: embedding ? (emb, gateOptions) => {
             return findSimilarMemories(emb as Float32Array, {
@@ -762,14 +817,14 @@ async function processPreparedMemory(
         });
 
         if (!qualityGateResult.pass && !qualityGateResult.warnOnly && qualityGateMode !== 'warn-only') {
-          console.error(`[memory-save] TM-04: Quality gate REJECTED save for ${path.basename(filePath)}: ${qualityGateResult.reasons.join('; ')}`);
+          console.error(`[memory-save] TM-04: Quality gate REJECTED save for ${path.basename(routedFilePath)}: ${qualityGateResult.reasons.join('; ')}`);
           return {
             status: 'rejected',
             id: 0,
-            specFolder: parsed.specFolder,
-            title: parsed.title ?? '',
-            qualityScore: parsed.qualityScore,
-            qualityFlags: parsed.qualityFlags,
+            specFolder: routedParsed.specFolder,
+            title: routedParsed.title ?? '',
+            qualityScore: routedParsed.qualityScore,
+            qualityFlags: routedParsed.qualityFlags,
             rejectionReason: `Quality gate rejected: ${qualityGateResult.reasons.join('; ')}`,
             message: `Quality gate rejected: ${qualityGateResult.reasons.join('; ')}`,
             qualityGate: {
@@ -781,11 +836,11 @@ async function processPreparedMemory(
         }
 
         if (!qualityGateResult.pass && qualityGateMode === 'warn-only') {
-          console.warn(`[memory-save] TM-04: Quality gate warn-only (spec doc) for ${path.basename(filePath)}: ${qualityGateResult.reasons.join('; ')}`);
+          console.warn(`[memory-save] TM-04: Quality gate warn-only (spec doc) for ${path.basename(routedFilePath)}: ${qualityGateResult.reasons.join('; ')}`);
         }
 
         if (qualityGateResult.wouldReject) {
-          console.warn(`[memory-save] TM-04: Quality gate WARN-ONLY for ${path.basename(filePath)}: ${qualityGateResult.reasons.join('; ')}`);
+          console.warn(`[memory-save] TM-04: Quality gate WARN-ONLY for ${path.basename(routedFilePath)}: ${qualityGateResult.reasons.join('; ')}`);
         }
       } catch (qgErr: unknown) {
         const message = qgErr instanceof Error ? qgErr.message : String(qgErr);
@@ -796,17 +851,18 @@ async function processPreparedMemory(
 
     const duplicatePrecheck = checkContentHashDedup(database, parsed, force, validation.warnings, {
       canonicalFilePath,
-      filePath,
+      filePath: routedFilePath,
+      targetAnchorId: recordIdentity.targetAnchorId,
     }, scope);
     if (duplicatePrecheck) {
       return duplicatePrecheck;
     }
 
-    persistPendingEmbeddingCacheWrite(database, pendingCacheWrite, filePath);
+    persistPendingEmbeddingCacheWrite(database, pendingCacheWrite, routedFilePath);
 
     // PE GATING
     const peResult = evaluateAndApplyPeDecision(
-      database, parsed, embedding, force, validation.warnings, embeddingStatus, filePath, scope,
+      database, routedParsed, embedding, force, validation.warnings, embeddingStatus, routedFilePath, scope,
     );
     if (peResult.earlyReturn) return peResult.earlyReturn;
 
@@ -820,8 +876,8 @@ async function processPreparedMemory(
     // and BEGIN IMMEDIATE only covers synchronous DB mutation work.
     reconResult = await runReconsolidationIfEnabled(
       database,
-      parsed,
-      filePath,
+      routedParsed,
+      routedFilePath,
       force,
       embedding,
       scope,
@@ -829,9 +885,9 @@ async function processPreparedMemory(
     if (reconResult.earlyReturn) return reconResult.earlyReturn;
 
     if (shouldChunkContent) {
-      console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
+      console.error(`[memory-save] File exceeds chunking threshold (${routedParsed.content.length} chars), using chunked indexing`);
       const chunkedInsertTracker = createChunkedInsertTracker();
-      const chunkedResult = await indexChunkedMemoryFile(filePath, parsed, {
+      const chunkedResult = await indexChunkedMemoryFile(routedFilePath, routedParsed, {
         force,
         applyPostInsertMetadata: (db, memoryId, fields) => {
           applyPostInsertMetadata(db, memoryId, fields);
@@ -881,7 +937,7 @@ async function processPreparedMemory(
         && (chunkedResult.status === 'indexed' || chunkedResult.status === 'updated')
       ) {
         try {
-          await finalizeMemoryFileContent(filePath, finalizedFileContent);
+          await finalizeMemoryFileContent(routedFilePath, finalizedFileContent);
         } catch (finalizeErr: unknown) {
           finalizeWarning = `Quality-loop file persistence failed after chunked indexing: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}`;
           console.warn(`[memory-save] ${finalizeWarning}`);
@@ -928,17 +984,18 @@ async function processPreparedMemory(
       // CREATE NEW MEMORY
       existing = findSamePathExistingMemory(
         database,
-        parsed.specFolder,
+        routedParsed.specFolder,
         canonicalFilePath,
-        filePath,
+        routedFilePath,
         scope,
+        recordIdentity,
       ) as { id: number; content_hash: string } | undefined;
 
       const memoryId = existing && existing.content_hash !== parsed.contentHash
         ? createAppendOnlyMemoryRecord({
             database,
-            parsed,
-            filePath,
+            parsed: routedParsed,
+            filePath: routedFilePath,
             embedding,
             embeddingFailureReason,
             predecessorMemoryId: existing.id,
@@ -946,12 +1003,13 @@ async function processPreparedMemory(
           })
         : createMemoryRecord(
             database,
-            parsed,
-            filePath,
+            routedParsed,
+            routedFilePath,
             embedding,
             embeddingFailureReason,
             peResult.decision,
             scope,
+            recordIdentity,
           );
 
       // F1.01 fix: Mark superseded memory AFTER new record creation, inside
@@ -982,7 +1040,7 @@ async function processPreparedMemory(
 
     if (shouldPersistFinalizedFile && finalizedFileContent) {
       try {
-        await finalizeMemoryFileContent(filePath, finalizedFileContent);
+        await finalizeMemoryFileContent(routedFilePath, finalizedFileContent);
       } catch (finalizeErr: unknown) {
         finalizeWarning = `[file-persistence-failed] Quality-loop file persistence failed after DB commit: ${finalizeErr instanceof Error ? finalizeErr.message : String(finalizeErr)}. DB row committed — manual file recovery may be needed.`;
         console.warn(`[memory-save] ${finalizeWarning}`);
@@ -1019,7 +1077,7 @@ async function processPreparedMemory(
       existing,
       embeddingStatus,
       id,
-      parsed,
+      parsed: routedParsed,
       validation,
       reconWarnings: reconResult.warnings,
       peDecision: peResult.decision,
@@ -1027,7 +1085,7 @@ async function processPreparedMemory(
       asyncEmbedding,
       causalLinksResult,
       enrichmentStatus,
-      filePath,
+      filePath: routedFilePath,
     }), finalizeWarning);
   };
 
