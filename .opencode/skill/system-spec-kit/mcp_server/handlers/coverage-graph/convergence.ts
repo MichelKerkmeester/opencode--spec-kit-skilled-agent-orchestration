@@ -6,16 +6,24 @@
 // and trace.
 
 import {
-  getStats,
+  createSnapshot,
+  getEdges,
+  getNodes,
+  getSnapshots,
   type LoopType,
+  type CoverageNode,
+  type Namespace,
 } from '../../lib/coverage-graph/coverage-graph-db.js';
 import {
   computeSignals,
-  computeMomentum,
-  createSignalSnapshot,
-  type Namespace,
+  type ConvergenceSignals,
   type ResearchConvergenceSignals,
   type ReviewConvergenceSignals,
+  computeResearchQuestionCoverageFromData,
+  computeResearchClaimVerificationRateFromData,
+  computeResearchContradictionDensityFromData,
+  computeResearchSourceDiversityFromData,
+  computeResearchEvidenceDepthFromData,
 } from '../../lib/coverage-graph/coverage-graph-signals.js';
 import {
   findCoverageGaps,
@@ -47,8 +55,17 @@ export interface ConvergenceTraceEntry {
 export interface ConvergenceArgs {
   specFolder: string;
   loopType: LoopType;
+  sessionId?: string;
   iteration?: number;
   persistSnapshot?: boolean;
+}
+
+export interface ScopedCoverageStats {
+  totalNodes: number;
+  totalEdges: number;
+  nodesByKind: Record<string, number>;
+  edgesByRelation: Record<string, number>;
+  lastIteration: number | null;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -89,8 +106,12 @@ export async function handleCoverageGraphConvergence(
       return errorResponse('loopType must be "research" or "review"');
     }
 
-    const ns: Namespace = { specFolder: args.specFolder, loopType: args.loopType };
-    const stats = getStats(args.specFolder, args.loopType);
+    const ns: Namespace = {
+      specFolder: args.specFolder,
+      loopType: args.loopType,
+      sessionId: args.sessionId,
+    };
+    const stats = computeScopedStats(ns);
 
     // Empty graph: can't make convergence decisions
     if (stats.totalNodes === 0) {
@@ -100,19 +121,34 @@ export async function handleCoverageGraphConvergence(
         signals: null,
         blockers: [],
         trace: [],
-        namespace: { specFolder: args.specFolder, loopType: args.loopType },
+        namespace: buildNamespacePayload(ns),
+        scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
         nodeCount: 0,
         edgeCount: 0,
       });
     }
 
     // Compute signals
-    const signals = computeSignals(ns);
-    const momentum = computeMomentum(args.specFolder, args.loopType);
+    const signals = computeScopedSignals(ns);
+    const momentum = computeScopedMomentum(ns);
 
     // Persist snapshot if requested
     if (args.persistSnapshot && args.iteration !== undefined) {
-      createSignalSnapshot(ns, args.iteration);
+      if (args.sessionId) {
+        createSnapshot({
+          specFolder: args.specFolder,
+          loopType: args.loopType,
+          sessionId: args.sessionId,
+          iteration: args.iteration,
+          metrics: {
+            ...signals,
+            nodeCount: stats.totalNodes,
+            edgeCount: stats.totalEdges,
+          },
+          nodeCount: stats.totalNodes,
+          edgeCount: stats.totalEdges,
+        });
+      }
     }
 
     // Evaluate convergence
@@ -156,7 +192,14 @@ export async function handleCoverageGraphConvergence(
       blockers,
       trace,
       momentum,
-      namespace: { specFolder: args.specFolder, loopType: args.loopType },
+      namespace: buildNamespacePayload(ns),
+      scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+      notes: args.sessionId
+        ? ['Convergence signals were computed from the session-scoped subgraph only.']
+        : ['No sessionId provided; convergence falls back to specFolder + loopType aggregation across all sessions for bootstrap/debugging use.'],
+      snapshotPersistence: args.persistSnapshot && !args.sessionId
+        ? 'skipped_without_sessionId'
+        : (args.persistSnapshot ? 'persisted' : 'not_requested'),
       nodeCount: stats.totalNodes,
       edgeCount: stats.totalEdges,
       lastIteration: stats.lastIteration,
@@ -166,6 +209,139 @@ export async function handleCoverageGraphConvergence(
       `Convergence assessment failed: ${err instanceof Error ? err.message : String(err)}`,
     );
   }
+}
+
+function buildNamespacePayload(ns: Namespace): Record<string, unknown> {
+  return {
+    specFolder: ns.specFolder,
+    loopType: ns.loopType,
+    ...(ns.sessionId ? { sessionId: ns.sessionId } : {}),
+  };
+}
+
+function parseMetadata(metadata: CoverageNode['metadata']): Record<string, unknown> {
+  return metadata && typeof metadata === 'object' ? metadata : {};
+}
+
+export function computeScopedStats(ns: Namespace): ScopedCoverageStats {
+  const nodes = getNodes(ns);
+  const edges = getEdges(ns);
+  const snapshots = getSnapshots(ns.specFolder, ns.loopType, ns.sessionId);
+
+  const nodesByKind: Record<string, number> = {};
+  for (const node of nodes) {
+    nodesByKind[node.kind] = (nodesByKind[node.kind] ?? 0) + 1;
+  }
+
+  const edgesByRelation: Record<string, number> = {};
+  for (const edge of edges) {
+    edgesByRelation[edge.relation] = (edgesByRelation[edge.relation] ?? 0) + 1;
+  }
+
+  return {
+    totalNodes: nodes.length,
+    totalEdges: edges.length,
+    nodesByKind,
+    edgesByRelation,
+    lastIteration: snapshots.length > 0 ? snapshots[snapshots.length - 1].iteration : null,
+  };
+}
+
+function computeScopedResearchSignals(ns: Namespace): ResearchConvergenceSignals {
+  const nodes = getNodes(ns);
+  const edges = getEdges(ns);
+
+  return {
+    questionCoverage: computeResearchQuestionCoverageFromData(nodes, edges),
+    claimVerificationRate: computeResearchClaimVerificationRateFromData(nodes),
+    contradictionDensity: computeResearchContradictionDensityFromData(edges),
+    sourceDiversity: computeResearchSourceDiversityFromData(nodes, edges),
+    evidenceDepth: computeResearchEvidenceDepthFromData(nodes, edges),
+  };
+}
+
+function computeScopedReviewSignals(ns: Namespace): ReviewConvergenceSignals {
+  const nodes = getNodes(ns);
+  const edges = getEdges(ns);
+
+  const dimensionIds = new Set(nodes.filter(node => node.kind === 'DIMENSION').map(node => node.id));
+  const findingNodes = nodes.filter(node => node.kind === 'FINDING');
+  const fileNodes = nodes.filter(node => node.kind === 'FILE');
+
+  const coversEdges = edges.filter(edge => edge.relation === 'COVERS');
+  const contradictionEdges = edges.filter(edge => edge.relation === 'CONTRADICTS');
+  const evidenceEdges = edges.filter(edge => edge.relation === 'EVIDENCE_FOR');
+  const resolvesTargetIds = new Set(
+    edges.filter(edge => edge.relation === 'RESOLVES').map(edge => edge.targetId),
+  );
+
+  const coveredDimensionIds = new Set(
+    coversEdges.map(edge => edge.sourceId).filter(sourceId => dimensionIds.has(sourceId)),
+  );
+
+  const contradictionNodeIds = new Set<string>();
+  for (const edge of contradictionEdges) {
+    contradictionNodeIds.add(edge.sourceId);
+    contradictionNodeIds.add(edge.targetId);
+  }
+
+  const p0Findings = findingNodes.filter(node => parseMetadata(node.metadata).severity === 'P0');
+
+  const hotspotFiles = fileNodes.filter(node => {
+    const hotspotScore = parseMetadata(node.metadata).hotspot_score;
+    return typeof hotspotScore === 'number' && hotspotScore > 0;
+  });
+
+  let saturatedHotspots = 0;
+  for (const file of hotspotFiles) {
+    const coveringDimensions = new Set(
+      coversEdges
+        .filter(edge => edge.targetId === file.id)
+        .map(edge => edge.sourceId)
+        .filter(sourceId => dimensionIds.has(sourceId)),
+    );
+    if (coveringDimensions.size >= 2) saturatedHotspots++;
+  }
+
+  return {
+    dimensionCoverage: dimensionIds.size > 0 ? coveredDimensionIds.size / dimensionIds.size : 0,
+    findingStability: findingNodes.length > 0
+      ? findingNodes.filter(node => !contradictionNodeIds.has(node.id)).length / findingNodes.length
+      : 0,
+    p0ResolutionRate: p0Findings.length > 0
+      ? p0Findings.filter(node => resolvesTargetIds.has(node.id)).length / p0Findings.length
+      : 1,
+    evidenceDensity: findingNodes.length > 0 ? evidenceEdges.length / findingNodes.length : 0,
+    hotspotSaturation: hotspotFiles.length > 0 ? saturatedHotspots / hotspotFiles.length : 1,
+  };
+}
+
+export function computeScopedSignals(ns: Namespace): ConvergenceSignals {
+  if (!ns.sessionId) {
+    return computeSignals(ns);
+  }
+  return ns.loopType === 'research'
+    ? computeScopedResearchSignals(ns)
+    : computeScopedReviewSignals(ns);
+}
+
+export function computeScopedMomentum(ns: Namespace): Record<string, number> | null {
+  const snapshots = getSnapshots(ns.specFolder, ns.loopType, ns.sessionId);
+  if (snapshots.length < 2) return null;
+
+  const latest = snapshots[snapshots.length - 1]?.metrics ?? {};
+  const previous = snapshots[snapshots.length - 2]?.metrics ?? {};
+  const momentum: Record<string, number> = {};
+
+  for (const key of Object.keys(latest)) {
+    const latestValue = latest[key];
+    const previousValue = previous[key];
+    if (typeof latestValue === 'number' && typeof previousValue === 'number') {
+      momentum[key] = latestValue - previousValue;
+    }
+  }
+
+  return Object.keys(momentum).length > 0 ? momentum : null;
 }
 
 // ───────────────────────────────────────────────────────────────

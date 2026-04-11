@@ -5,7 +5,6 @@
 // research and review convergence metrics.
 // Follows graph-signals.ts patterns for degree, depth, and momentum.
 
-import type Database from 'better-sqlite3';
 import {
   getDb,
   getNodes,
@@ -57,6 +56,18 @@ export interface SignalSnapshot {
   nodeCount: number;
   edgeCount: number;
 }
+
+type ResearchSignalNodeLike = {
+  id: string;
+  kind: string;
+  metadata?: CoverageNode['metadata'] | string | null;
+};
+
+type ResearchSignalEdgeLike = {
+  sourceId: string;
+  targetId: string;
+  relation: string;
+};
 
 // ───────────────────────────────────────────────────────────────
 // 2. NODE-LEVEL SIGNALS
@@ -161,63 +172,14 @@ function computeDepths(nodes: CoverageNode[], edges: CoverageEdge[]): Map<string
  * Compute research convergence signals.
  */
 export function computeResearchSignals(ns: Namespace): ResearchConvergenceSignals {
-  const d = getDb();
-  const { specFolder, loopType } = ns;
+  const nodes = getNodes(ns);
+  const edges = getEdges(ns);
 
-  // questionCoverage: questions with >= 2 ANSWERS edges / all questions
-  const allQuestions = d.prepare(
-    `SELECT COUNT(*) as c FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND kind = 'QUESTION'`,
-  ).get(specFolder, loopType) as { c: number };
-
-  const coveredQuestions = d.prepare(`
-    SELECT COUNT(*) as c FROM coverage_nodes n
-    WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = 'QUESTION'
-      AND (SELECT COUNT(*) FROM coverage_edges e WHERE e.target_id = n.id AND e.relation = 'ANSWERS') >= 2
-  `).get(specFolder, loopType) as { c: number };
-
-  const questionCoverage = allQuestions.c > 0
-    ? coveredQuestions.c / allQuestions.c
-    : 0;
-
-  // claimVerificationRate: claims with status != 'unresolved' / all claims
-  const allClaims = d.prepare(
-    `SELECT id, metadata FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND kind = 'CLAIM'`,
-  ).all(specFolder, loopType) as Array<{ id: string; metadata: string | null }>;
-
-  let verifiedClaims = 0;
-  for (const claim of allClaims) {
-    if (claim.metadata) {
-      try {
-        const meta = JSON.parse(claim.metadata);
-        if (meta.verification_status && meta.verification_status !== 'unresolved') {
-          verifiedClaims++;
-        }
-      } catch { /* skip invalid JSON */ }
-    }
-  }
-
-  const claimVerificationRate = allClaims.length > 0
-    ? verifiedClaims / allClaims.length
-    : 0;
-
-  // contradictionDensity: CONTRADICTS edges / all edges
-  const allEdgeCount = (d.prepare(
-    `SELECT COUNT(*) as c FROM coverage_edges WHERE spec_folder = ? AND loop_type = ?`,
-  ).get(specFolder, loopType) as { c: number }).c;
-
-  const contradictEdgeCount = (d.prepare(
-    `SELECT COUNT(*) as c FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND relation = 'CONTRADICTS'`,
-  ).get(specFolder, loopType) as { c: number }).c;
-
-  const contradictionDensity = allEdgeCount > 0
-    ? contradictEdgeCount / allEdgeCount
-    : 0;
-
-  // sourceDiversity: average distinct source quality classes per question
-  const sourceDiversity = computeSourceDiversity(d, specFolder, loopType);
-
-  // evidenceDepth: average path length from question -> finding -> source
-  const evidenceDepth = computeEvidenceDepth(d, specFolder, loopType);
+  const questionCoverage = computeResearchQuestionCoverageFromData(nodes, edges);
+  const claimVerificationRate = computeResearchClaimVerificationRateFromData(nodes);
+  const contradictionDensity = computeResearchContradictionDensityFromData(edges);
+  const sourceDiversity = computeResearchSourceDiversityFromData(nodes, edges);
+  const evidenceDepth = computeResearchEvidenceDepthFromData(nodes, edges);
 
   return {
     questionCoverage,
@@ -228,38 +190,143 @@ export function computeResearchSignals(ns: Namespace): ResearchConvergenceSignal
   };
 }
 
-function computeSourceDiversity(d: Database.Database, specFolder: string, loopType: string): number {
-  // For each question, find all sources reachable via ANSWERS->CITES paths
-  // and count distinct quality_class values
-  const questions = d.prepare(
-    `SELECT id FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND kind = 'QUESTION'`,
-  ).all(specFolder, loopType) as Array<{ id: string }>;
+function parseNodeMetadata(metadata: CoverageNode['metadata'] | string | null | undefined): Record<string, unknown> | null {
+  if (!metadata) return null;
+  if (typeof metadata === 'string') {
+    try {
+      const parsed = JSON.parse(metadata) as unknown;
+      return parsed && typeof parsed === 'object' ? parsed as Record<string, unknown> : null;
+    } catch {
+      return null;
+    }
+  }
+  return typeof metadata === 'object' ? metadata as Record<string, unknown> : null;
+}
 
-  if (questions.length === 0) return 0;
+function buildAnsweringFindingsByQuestion(edges: ReadonlyArray<ResearchSignalEdgeLike>): Map<string, string[]> {
+  const answeringFindings = new Map<string, string[]>();
+
+  for (const edge of edges) {
+    if (edge.relation !== 'ANSWERS') continue;
+    if (!answeringFindings.has(edge.targetId)) answeringFindings.set(edge.targetId, []);
+    answeringFindings.get(edge.targetId)!.push(edge.sourceId);
+  }
+
+  return answeringFindings;
+}
+
+function buildCitedSourcesByFinding(edges: ReadonlyArray<ResearchSignalEdgeLike>): Map<string, string[]> {
+  const citedSources = new Map<string, string[]>();
+
+  for (const edge of edges) {
+    if (edge.relation !== 'CITES') continue;
+    if (!citedSources.has(edge.sourceId)) citedSources.set(edge.sourceId, []);
+    citedSources.get(edge.sourceId)!.push(edge.targetId);
+  }
+
+  return citedSources;
+}
+
+/**
+ * Canonical research question coverage: questions with at least two ANSWERS
+ * edges divided by all research questions in the graph.
+ */
+export function computeResearchQuestionCoverageFromData(
+  nodes: ReadonlyArray<ResearchSignalNodeLike>,
+  edges: ReadonlyArray<ResearchSignalEdgeLike>,
+): number {
+  const questionIds = nodes
+    .filter(node => node.kind === 'QUESTION')
+    .map(node => node.id);
+
+  if (questionIds.length === 0) return 0;
+
+  const answeringFindings = buildAnsweringFindingsByQuestion(edges);
+  let coveredQuestions = 0;
+
+  for (const questionId of questionIds) {
+    if ((answeringFindings.get(questionId) ?? []).length >= 2) {
+      coveredQuestions++;
+    }
+  }
+
+  return coveredQuestions / questionIds.length;
+}
+
+/**
+ * Canonical research claim verification rate: verified claims divided by all
+ * claim nodes, where verified means verification_status exists and is not
+ * "unresolved".
+ */
+export function computeResearchClaimVerificationRateFromData(
+  nodes: ReadonlyArray<ResearchSignalNodeLike>,
+): number {
+  const claims = nodes.filter(node => node.kind === 'CLAIM');
+  if (claims.length === 0) return 0;
+
+  let verifiedClaims = 0;
+  for (const claim of claims) {
+    const meta = parseNodeMetadata(claim.metadata);
+    if (meta?.verification_status && meta.verification_status !== 'unresolved') {
+      verifiedClaims++;
+    }
+  }
+
+  return verifiedClaims / claims.length;
+}
+
+/**
+ * Canonical research contradiction density: CONTRADICTS edges divided by all
+ * research edges in the graph.
+ */
+export function computeResearchContradictionDensityFromData(
+  edges: ReadonlyArray<ResearchSignalEdgeLike>,
+): number {
+  if (edges.length === 0) return 0;
+  let contradictionCount = 0;
+
+  for (const edge of edges) {
+    if (edge.relation === 'CONTRADICTS') contradictionCount++;
+  }
+
+  return contradictionCount / edges.length;
+}
+
+/**
+ * Canonical research source diversity: for each question, count distinct
+ * source metadata quality classes reachable through ANSWERS -> CITES paths,
+ * then average that count across all questions.
+ */
+export function computeResearchSourceDiversityFromData(
+  nodes: ReadonlyArray<ResearchSignalNodeLike>,
+  edges: ReadonlyArray<ResearchSignalEdgeLike>,
+): number {
+  const questionIds = nodes
+    .filter(node => node.kind === 'QUESTION')
+    .map(node => node.id);
+
+  if (questionIds.length === 0) return 0;
+
+  const answeringFindings = buildAnsweringFindingsByQuestion(edges);
+  const citedSources = buildCitedSourcesByFinding(edges);
+  const sourceMetadataById = new Map<string, Record<string, unknown>>();
+
+  for (const node of nodes) {
+    if (node.kind !== 'SOURCE') continue;
+    const meta = parseNodeMetadata(node.metadata);
+    if (meta) sourceMetadataById.set(node.id, meta);
+  }
 
   let totalDiversity = 0;
 
-  for (const q of questions) {
-    // Find findings that ANSWER this question
-    const findings = d.prepare(
-      `SELECT e.source_id FROM coverage_edges e WHERE e.target_id = ? AND e.relation = 'ANSWERS'`,
-    ).all(q.id) as Array<{ source_id: string }>;
-
+  for (const questionId of questionIds) {
     const qualityClasses = new Set<string>();
-    for (const f of findings) {
-      // Find sources cited by this finding
-      const sources = d.prepare(`
-        SELECT n.metadata FROM coverage_edges e
-        JOIN coverage_nodes n ON n.id = e.target_id
-        WHERE e.source_id = ? AND e.relation = 'CITES' AND n.kind = 'SOURCE'
-      `).all(f.source_id) as Array<{ metadata: string | null }>;
 
-      for (const s of sources) {
-        if (s.metadata) {
-          try {
-            const meta = JSON.parse(s.metadata);
-            if (meta.quality_class) qualityClasses.add(meta.quality_class);
-          } catch { /* skip */ }
+    for (const findingId of answeringFindings.get(questionId) ?? []) {
+      for (const sourceId of citedSources.get(findingId) ?? []) {
+        const qualityClass = sourceMetadataById.get(sourceId)?.quality_class;
+        if (typeof qualityClass === 'string' && qualityClass.length > 0) {
+          qualityClasses.add(qualityClass);
         }
       }
     }
@@ -267,37 +334,33 @@ function computeSourceDiversity(d: Database.Database, specFolder: string, loopTy
     totalDiversity += qualityClasses.size;
   }
 
-  return questions.length > 0 ? totalDiversity / questions.length : 0;
+  return totalDiversity / questionIds.length;
 }
 
-function computeEvidenceDepth(d: Database.Database, specFolder: string, loopType: string): number {
-  // Average path length from question -> finding -> source via ANSWERS + CITES
-  const questions = d.prepare(
-    `SELECT id FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND kind = 'QUESTION'`,
-  ).all(specFolder, loopType) as Array<{ id: string }>;
+/**
+ * Canonical research evidence depth: average path length across all
+ * question -> finding paths, scoring 2 when the finding cites at least one
+ * source and 1 when it does not.
+ */
+export function computeResearchEvidenceDepthFromData(
+  nodes: ReadonlyArray<ResearchSignalNodeLike>,
+  edges: ReadonlyArray<ResearchSignalEdgeLike>,
+): number {
+  const questionIds = nodes
+    .filter(node => node.kind === 'QUESTION')
+    .map(node => node.id);
 
-  if (questions.length === 0) return 0;
+  if (questionIds.length === 0) return 0;
 
+  const answeringFindings = buildAnsweringFindingsByQuestion(edges);
+  const citedSources = buildCitedSourcesByFinding(edges);
   let totalDepth = 0;
   let pathCount = 0;
 
-  for (const q of questions) {
-    const findings = d.prepare(
-      `SELECT e.source_id FROM coverage_edges e WHERE e.target_id = ? AND e.relation = 'ANSWERS'`,
-    ).all(q.id) as Array<{ source_id: string }>;
-
-    for (const f of findings) {
-      const sources = d.prepare(
-        `SELECT COUNT(*) as c FROM coverage_edges e WHERE e.source_id = ? AND e.relation = 'CITES'`,
-      ).get(f.source_id) as { c: number };
-
-      if (sources.c > 0) {
-        totalDepth += 2; // question -> finding -> source = depth 2
-        pathCount++;
-      } else {
-        totalDepth += 1; // question -> finding only = depth 1
-        pathCount++;
-      }
+  for (const questionId of questionIds) {
+    for (const findingId of answeringFindings.get(questionId) ?? []) {
+      totalDepth += (citedSources.get(findingId) ?? []).length > 0 ? 2 : 1;
+      pathCount++;
     }
   }
 

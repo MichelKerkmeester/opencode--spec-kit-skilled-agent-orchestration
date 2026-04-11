@@ -1,7 +1,7 @@
 ---
 description: Autonomous deep research loop - iterative investigation with convergence detection. Supports :auto and :confirm modes
 argument-hint: "<topic> [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search, mcp__cocoindex_code__search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search, mcp__cocoindex_code__search, code_graph_query, code_graph_context
 ---
 
 > **EXECUTION PROTOCOL -- READ FIRST**

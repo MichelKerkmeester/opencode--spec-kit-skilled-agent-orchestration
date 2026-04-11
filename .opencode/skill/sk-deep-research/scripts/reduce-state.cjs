@@ -190,6 +190,29 @@ function uniqueById(items) {
   return result;
 }
 
+function buildGraphConvergenceRollup(eventRecords) {
+  const latestGraphConvergence = eventRecords.filter((record) => record.event === 'graph_convergence').at(-1);
+  const signals = latestGraphConvergence?.signals && typeof latestGraphConvergence.signals === 'object'
+    ? latestGraphConvergence.signals
+    : {};
+  const blockers = Array.isArray(latestGraphConvergence?.blockers)
+    ? latestGraphConvergence.blockers
+    : [];
+  const blendedScore = Number.isFinite(signals.blendedScore)
+    ? signals.blendedScore
+    : Number.isFinite(signals.score)
+      ? signals.score
+      : 0;
+
+  return {
+    graphConvergenceScore: blendedScore,
+    graphDecision: typeof latestGraphConvergence?.decision === 'string'
+      ? latestGraphConvergence.decision
+      : null,
+    graphBlockers: blockers,
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. CORE LOGIC
 // ─────────────────────────────────────────────────────────────────────────────
@@ -256,6 +279,7 @@ function buildRegistry(strategyQuestions, iterationFiles, iterationRecords, even
       recoveryStrategy: typeof record.recoveryStrategy === 'string' ? record.recoveryStrategy : '',
       timestamp: typeof record.timestamp === 'string' ? record.timestamp : '',
     }));
+  const graphConvergence = buildGraphConvergenceRollup(eventRecords);
 
   return {
     openQuestions: keyedQuestions.filter((question) => !question.resolved).map((question) => ({
@@ -273,6 +297,9 @@ function buildRegistry(strategyQuestions, iterationFiles, iterationRecords, even
     keyFindings,
     ruledOutDirections,
     blockedStopHistory,
+    graphConvergenceScore: graphConvergence.graphConvergenceScore,
+    graphDecision: graphConvergence.graphDecision,
+    graphBlockers: graphConvergence.graphBlockers,
     metrics: {
       iterationsCompleted: iterationRecords.filter((record) => record.type === 'iteration').length,
       openQuestions: keyedQuestions.filter((question) => !question.resolved).length,
@@ -562,6 +589,7 @@ if (require.main === module) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
+  buildGraphConvergenceRollup,
   parseIterationFile,
   parseJsonl,
   reduceResearchState,

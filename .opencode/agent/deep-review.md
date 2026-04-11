@@ -12,6 +12,8 @@ permission:
   glob: allow
   webfetch: deny
   memory: allow
+  code_graph_query: allow
+  code_graph_context: allow
   chrome_devtools: deny
   task: deny
   list: allow

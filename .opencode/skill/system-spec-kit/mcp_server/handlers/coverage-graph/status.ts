@@ -4,12 +4,12 @@
 // MCP tool handler for deep_loop_graph_status — reports graph
 // health, counts, relation breakdowns, and signal summaries.
 
-import { getStats, type LoopType } from '../../lib/coverage-graph/coverage-graph-db.js';
+import type { LoopType, Namespace } from '../../lib/coverage-graph/coverage-graph-db.js';
 import {
-  computeSignals,
-  computeMomentum,
-  type Namespace,
-} from '../../lib/coverage-graph/coverage-graph-signals.js';
+  computeScopedMomentum,
+  computeScopedSignals,
+  computeScopedStats,
+} from './convergence.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -18,6 +18,7 @@ import {
 export interface StatusArgs {
   specFolder: string;
   loopType: LoopType;
+  sessionId?: string;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -36,8 +37,12 @@ export async function handleCoverageGraphStatus(
       return errorResponse('loopType must be "research" or "review"');
     }
 
-    const stats = getStats(args.specFolder, args.loopType);
-    const ns: Namespace = { specFolder: args.specFolder, loopType: args.loopType };
+    const ns: Namespace = {
+      specFolder: args.specFolder,
+      loopType: args.loopType,
+      sessionId: args.sessionId,
+    };
+    const stats = computeScopedStats(ns);
 
     // Compute current signals (safe for empty graphs)
     let signals = null;
@@ -45,8 +50,8 @@ export async function handleCoverageGraphStatus(
 
     if (stats.totalNodes > 0) {
       try {
-        signals = computeSignals(ns);
-        momentum = computeMomentum(args.specFolder, args.loopType);
+        signals = computeScopedSignals(ns);
+        momentum = computeScopedMomentum(ns);
       } catch {
         // Non-blocking: continue with null signals
       }
@@ -61,14 +66,17 @@ export async function handleCoverageGraphStatus(
             namespace: {
               specFolder: args.specFolder,
               loopType: args.loopType,
+              ...(args.sessionId ? { sessionId: args.sessionId } : {}),
             },
+            scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+            notes: args.sessionId
+              ? ['Status metrics were computed from the session-scoped subgraph only.']
+              : ['No sessionId provided; status falls back to specFolder + loopType aggregation across all sessions for bootstrap/debugging use.'],
             totalNodes: stats.totalNodes,
             totalEdges: stats.totalEdges,
             nodesByKind: stats.nodesByKind,
             edgesByRelation: stats.edgesByRelation,
             lastIteration: stats.lastIteration,
-            schemaVersion: stats.schemaVersion,
-            dbFileSize: stats.dbFileSize,
             signals,
             momentum,
           },

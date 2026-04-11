@@ -267,13 +267,33 @@ workflow:
         if_not_exists:
           proceed: true
 
+      step_graph_convergence:
+        action: "Evaluate coverage-graph convergence before the inline 3-signal vote and persist the graph decision snapshot"
+        mcp_tool:
+          name: mcp__spec_kit_memory__deep_loop_graph_convergence
+          note: "Run before the inline vote. STOP from the inline 3-signal vote is allowed only when the graph decision is STOP_ALLOWED or absent."
+          parameters:
+            specFolder: "{spec_folder}"
+            loopType: "research"
+            sessionId: "{config.lineage.sessionId}"
+        outputs:
+          - graph_decision: "Tool decision value (CONTINUE | STOP_ALLOWED | STOP_BLOCKED), else null when unavailable"
+          - graph_decision_json: "JSON-encoded graph decision string, else null"
+          - graph_signals_json: "Tool signals object, else {}"
+          - graph_blockers_json: "Tool blockers array, else []"
+          - graph_trace_json: "Tool trace payload, else []"
+          - graph_convergence_score: "signals.blendedScore when present, else the best available graph score, else 0"
+        append_to_jsonl: '{"type":"event","event":"graph_convergence","mode":"research","run":{current_iteration},"decision":{graph_decision_json},"signals":{graph_signals_json},"blockers":{graph_blockers_json},"timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
+
       step_check_convergence:
-        action: "Evaluate stop conditions"
+        action: "Evaluate stop conditions and combine the inline 3-signal vote with graph convergence"
         algorithm: |
           1. if iteration_count >= max_iterations: STOP (max_iterations_reached)
           2. if remaining_questions == 0: STOP (all_questions_answered)
           3. if stuck_count >= config.stuckThreshold: STUCK_RECOVERY
-          4. COMPOSITE CONVERGENCE (3-signal weighted vote):
+          4. GRAPH-ASSISTED COMPOSITE CONVERGENCE:
+               step_graph_convergence already recorded graph_decision, graph_signals_json, graph_blockers_json, and graph_convergence_score for this run.
+               The existing inline 3-signal vote still computes the inline STOP candidate and is not replaced.
                signals = []
                Filter: exclude iterations where status == thought from signal inputs (use only evidence iterations)
                a) Rolling average (w=0.30, needs 3+ iterations):
@@ -286,7 +306,25 @@ workflow:
                   coverage = answered / total questions
                   stop if coverage >= 0.85
                Redistribute weights for unavailable signals.
-               if weighted_stop_score > 0.60: STOP (composite_converged)
+               if weighted_stop_score > 0.60: inline_stop_candidate = true
+               Combined stop rule: STOP only if the inline 3-signal vote says STOP AND graph_decision is STOP_ALLOWED or absent.
+               if inline_stop_candidate and graph_decision == "STOP_BLOCKED":
+                 decision = "BLOCKED"
+                 reason = "blockedStop"
+                 stop_blocked = true
+                 blocked_by_json = JSON array derived from graph_blockers_json
+                 blocked_by_csv = comma-separated blocker names derived from graph_blockers_json
+                 gate_convergence_pass = false
+                 gate_convergence_score = graph_convergence_score
+                 gate_key_question_coverage_pass = no blocker named questionCoverage
+                 gate_evidence_density_pass = no blocker named sourceDiversity or evidenceDepth
+                 gate_evidence_density_sources = graph_signals_json.sourceDiversity or 0
+                 gate_hotspot_saturation_pass = true
+                 recovery_strategy = first blocker reason/message, else "Collect deeper graph evidence before stopping."
+               else if inline_stop_candidate and (graph_decision == "STOP_ALLOWED" or graph_decision is absent):
+                 decision = "STOP"
+                 reason = "composite_converged"
+                 stop_blocked = false
           5. else: CONTINUE
           6. if decision == "STOP":
                guardResult = checkQualityGuards(state, strategy)
@@ -296,16 +334,28 @@ workflow:
           See convergence.md for full pseudocode and signal definitions.
           Segment-aware convergence is experimental/reference-only; live workflow uses the current session as a single segment.
         outputs:
-          - decision: "STOP | STUCK_RECOVERY | CONTINUE"
+          - decision: "STOP | BLOCKED | STUCK_RECOVERY | CONTINUE"
           - reason: "Human-readable stop reason"
+          - stop_blocked: "Boolean marker set when graph convergence vetoes an inline STOP candidate"
+          - blocked_by_json: "JSON array of graph blocker names when decision == BLOCKED"
+          - blocked_by_csv: "Comma-separated graph blocker names when decision == BLOCKED"
+          - gate_convergence_pass: "Boolean pass/fail for the graph-assisted convergence gate"
+          - gate_convergence_score: "Numeric score recorded from graph convergence"
+          - gate_key_question_coverage_pass: "Boolean pass/fail derived from graph blocker coverage signals"
+          - gate_evidence_density_pass: "Boolean pass/fail derived from graph blocker evidence-depth signals"
+          - gate_evidence_density_sources: "Source-diversity count or equivalent evidence-depth proxy"
+          - gate_hotspot_saturation_pass: "Research placeholder gate; true unless an explicit blocker sets otherwise"
+          - recovery_strategy: "One-line hint describing the next research action when decision == BLOCKED or STUCK_RECOVERY"
 
       step_emit_blocked_stop:
         action: "Persist a first-class blocked_stop event when the legal-stop decision tree returns blocked"
         if_blocked:
           append_to_jsonl: '{"type":"event","event":"blocked_stop","mode":"research","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergence":{"pass":{gate_convergence_pass},"score":{gate_convergence_score}},"keyQuestionCoverage":{"pass":{gate_key_question_coverage_pass},"answered":{answered_count},"total":{total_questions}},"evidenceDensity":{"pass":{gate_evidence_density_pass},"sources":{gate_evidence_density_sources}},"hotspotSaturation":{"pass":{gate_hotspot_saturation_pass}}},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
+          log: "Graph convergence blocked STOP. Failed blockers: {blocked_by_csv}. Recovery strategy: {recovery_strategy}"
           set:
             decision: "CONTINUE"
             reason: "blockedStop"
+            stop_blocked: false
 
       step_handle_convergence:
         action: "Act on convergence decision"
@@ -385,6 +435,7 @@ workflow:
             CONSTRAINT: Target 3-5 research actions. Max 12 tool calls total.
             CONSTRAINT: Write ALL findings to files. Do not hold in context.
             CONSTRAINT: The workflow reducer owns strategy machine-owned sections, registry, and dashboard synchronization.
+            CONSTRAINT: When emitting the iteration JSONL record, include an optional `graphEvents` array of {type, id, label, relation?, source?, target?} objects representing coverage graph nodes and edges discovered this iteration. Omit the field when no graph events are produced.
         wait_for_completion: true
 
       step_reduce_state:
@@ -403,6 +454,28 @@ workflow:
           missing_iteration_file: "no-op + error"
           schema_mismatch: "reject + conflict event"
         guarantee: "Idempotent for identical inputs"
+
+      step_graph_upsert:
+        action: "Persist the latest iteration graph delta after the reducer refresh and after the iteration file exists"
+        read:
+          - "{spec_folder}/research/deep-research-state.jsonl"
+        extract:
+          - latest_graph_events: "Read graphEvents from the latest iteration record, else []"
+          - graph_upsert_nodes_json: "Map latest_graph_events where type == 'node' to node payloads with label -> name and preserve remaining node fields"
+          - graph_upsert_edges_json: "Map latest_graph_events where type == 'edge' to edge payloads with source -> sourceId, target -> targetId, relation -> uppercase(relation), and preserve remaining edge fields"
+          - graph_upsert_event_count: "Count mapped node and edge events"
+        if_graph_events_present:
+          mcp_tool:
+            name: mcp__spec_kit_memory__deep_loop_graph_upsert
+            note: "Skip silently when graphEvents is missing or empty."
+            parameters:
+              specFolder: "{spec_folder}"
+              loopType: "research"
+              sessionId: "{config.lineage.sessionId}"
+              nodes: "{graph_upsert_nodes_json}"
+              edges: "{graph_upsert_edges_json}"
+        if_graph_events_missing:
+          proceed: true
 
       step_evaluate_results:
         action: "Verify iteration outputs and extract metrics"

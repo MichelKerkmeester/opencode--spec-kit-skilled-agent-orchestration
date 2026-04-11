@@ -369,6 +369,50 @@ function computeConvergenceScore(iterationRecords) {
   );
 }
 
+function computeGraphConvergenceScore(signals) {
+  if (!signals || typeof signals !== 'object' || Array.isArray(signals)) {
+    return 0;
+  }
+
+  const namedScore = signals.score
+    ?? signals.convergenceScore
+    ?? signals.compositeScore
+    ?? signals.stopScore
+    ?? signals.decisionScore;
+  if (typeof namedScore === 'number' && Number.isFinite(namedScore)) {
+    return namedScore;
+  }
+
+  const numericSignals = Object.values(signals)
+    .filter((value) => typeof value === 'number' && Number.isFinite(value));
+  if (!numericSignals.length) {
+    return 0;
+  }
+
+  const sum = numericSignals.reduce((total, value) => total + value, 0);
+  return sum / numericSignals.length;
+}
+
+function buildGraphConvergenceRollup(records) {
+  const latest = records
+    .filter((record) => record?.type === 'event' && record?.event === 'graph_convergence')
+    .at(-1);
+
+  if (!latest) {
+    return {
+      score: 0,
+      decision: null,
+      blockers: [],
+    };
+  }
+
+  return {
+    score: computeGraphConvergenceScore(latest.signals),
+    decision: normalizeText(latest.decision || '') || null,
+    blockers: Array.isArray(latest.blockers) ? latest.blockers : [],
+  };
+}
+
 function buildBlockedStopHistory(records) {
   return records
     .filter((record) => record?.type === 'event' && record?.event === 'blocked_stop')
@@ -399,6 +443,7 @@ function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, con
   const dimensionCoverage = buildDimensionCoverage(iterationRecords, strategyDimensions);
   const findingsBySeverity = buildFindingsBySeverity(openFindings);
   const convergenceScore = computeConvergenceScore(iterationRecords);
+  const graphConvergence = buildGraphConvergenceRollup(iterationRecords);
   const blockedStopHistory = buildBlockedStopHistory(iterationRecords);
 
   const repeatedFindings = openFindings.filter((finding) => finding.lastSeen - finding.firstSeen >= 1);
@@ -416,6 +461,9 @@ function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, con
     openFindingsCount: openFindings.length,
     resolvedFindingsCount: resolvedFindings.length,
     convergenceScore,
+    graphConvergenceScore: graphConvergence.score,
+    graphDecision: graphConvergence.decision,
+    graphBlockers: graphConvergence.blockers,
   };
 }
 
@@ -721,6 +769,7 @@ module.exports = {
   REQUIRED_DIMENSIONS,
   SEVERITY_KEYS,
   SEVERITY_WEIGHTS,
+  buildGraphConvergenceRollup,
   parseIterationFile,
   parseJsonl,
   parseFindingLine,

@@ -8,6 +8,8 @@ tools:
   - Bash
   - Grep
   - Glob
+  - code_graph_query
+  - code_graph_context
 model: opus
 mcpServers:
   - spec_kit_memory

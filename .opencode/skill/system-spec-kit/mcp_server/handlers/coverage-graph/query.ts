@@ -66,7 +66,8 @@ export async function handleCoverageGraphQuery(
         const gaps = findCoverageGaps(ns);
         return okResponse({
           queryType: args.queryType,
-          namespace: { specFolder: args.specFolder, loopType: args.loopType },
+          namespace: buildNamespacePayload(ns),
+          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
           gaps: gaps.slice(0, limit),
           totalGaps: gaps.length,
         });
@@ -76,7 +77,8 @@ export async function handleCoverageGraphQuery(
         const claims = findUnverifiedClaims(ns);
         return okResponse({
           queryType: 'unverified_claims',
-          namespace: { specFolder: args.specFolder, loopType: args.loopType },
+          namespace: buildNamespacePayload(ns),
+          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
           claims: claims.slice(0, limit).map(c => ({
             id: c.id,
             kind: c.kind,
@@ -92,7 +94,8 @@ export async function handleCoverageGraphQuery(
         const contradictions = findContradictions(ns);
         return okResponse({
           queryType: 'contradictions',
-          namespace: { specFolder: args.specFolder, loopType: args.loopType },
+          namespace: buildNamespacePayload(ns),
+          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
           contradictions: contradictions.slice(0, limit),
           totalContradictions: contradictions.length,
         });
@@ -106,7 +109,8 @@ export async function handleCoverageGraphQuery(
         const chain = findProvenanceChain(ns, args.nodeId, maxDepth);
         return okResponse({
           queryType: 'provenance_chain',
-          namespace: { specFolder: args.specFolder, loopType: args.loopType },
+          namespace: buildNamespacePayload(ns),
+          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
           rootNodeId: args.nodeId,
           chain: chain.slice(0, limit),
           totalSteps: chain.length,
@@ -118,7 +122,8 @@ export async function handleCoverageGraphQuery(
         const hotNodes = rankHotNodes(ns, limit);
         return okResponse({
           queryType: 'hot_nodes',
-          namespace: { specFolder: args.specFolder, loopType: args.loopType },
+          namespace: buildNamespacePayload(ns),
+          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
           hotNodes,
           totalReturned: hotNodes.length,
         });
@@ -134,6 +139,14 @@ export async function handleCoverageGraphQuery(
       `Query failed: ${err instanceof Error ? err.message : String(err)}`,
     );
   }
+}
+
+function buildNamespacePayload(ns: Namespace): Record<string, unknown> {
+  return {
+    specFolder: ns.specFolder,
+    loopType: ns.loopType,
+    ...(ns.sessionId ? { sessionId: ns.sessionId } : {}),
+  };
 }
 
 // ───────────────────────────────────────────────────────────────

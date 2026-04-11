@@ -34,6 +34,32 @@ function isValidGraph(graph) {
     graph.edges instanceof Map;
 }
 
+function getNodeSessionId(node) {
+  if (!node || typeof node !== 'object') return null;
+  if (typeof node.sessionId === 'string' && node.sessionId) return node.sessionId;
+  if (node.metadata && typeof node.metadata === 'object' && typeof node.metadata.sessionId === 'string' && node.metadata.sessionId) {
+    return node.metadata.sessionId;
+  }
+  return null;
+}
+
+function getEdgeSessionId(graph, edge) {
+  if (!edge || typeof edge !== 'object') return null;
+  if (typeof edge.sessionId === 'string' && edge.sessionId) return edge.sessionId;
+  if (edge.metadata && typeof edge.metadata === 'object' && typeof edge.metadata.sessionId === 'string' && edge.metadata.sessionId) {
+    return edge.metadata.sessionId;
+  }
+  const sourceSessionId = getNodeSessionId(graph.nodes.get(edge.source));
+  const targetSessionId = getNodeSessionId(graph.nodes.get(edge.target));
+  if (sourceSessionId && (!targetSessionId || targetSessionId === sourceSessionId)) return sourceSessionId;
+  return targetSessionId;
+}
+
+function matchesSession(graph, edge, sessionId) {
+  if (!sessionId) return true;
+  return getEdgeSessionId(graph, edge) === sessionId;
+}
+
 /**
  * Scan the graph for all CONTRADICTS edges and return contradiction pairs.
  * Each pair includes the source node, target node, edge details, and any
@@ -47,12 +73,13 @@ function isValidGraph(graph) {
  * @param {{ nodes: Map, edges: Map }} graph - In-memory coverage graph
  * @returns {Array<{ edgeId: string, source: string, target: string, weight: number, metadata: object }>}
  */
-function scanContradictions(graph) {
+function scanContradictions(graph, sessionId) {
   if (!isValidGraph(graph)) return [];
   const contradictions = [];
 
   for (const edge of graph.edges.values()) {
     if (edge.relation !== CONTRADICTION_RELATION) continue;
+    if (!matchesSession(graph, edge, sessionId)) continue;
 
     contradictions.push({
       edgeId: edge.id,
@@ -82,11 +109,11 @@ function scanContradictions(graph) {
  * @param {{ nodes: Map, edges: Map }} graph - In-memory coverage graph
  * @returns {{ total: number, pairs: Array<object>, byNode: Map<string, object[]> }}
  */
-function reportContradictions(graph) {
+function reportContradictions(graph, sessionId) {
   if (!isValidGraph(graph)) {
     return { total: 0, pairs: [], byNode: new Map() };
   }
-  const raw = scanContradictions(graph);
+  const raw = scanContradictions(graph, sessionId);
 
   const pairs = raw.map((c) => {
     const sourceNode = graph.nodes.get(c.source) || { id: c.source };
@@ -142,19 +169,25 @@ function reportContradictions(graph) {
  * @param {{ nodes: Map, edges: Map }} graph - In-memory coverage graph
  * @returns {number} Contradiction density in [0.0, 1.0]
  */
-function contradictionDensity(graph) {
+function contradictionDensity(graph, sessionId) {
   if (!isValidGraph(graph)) return 0;
-  if (graph.nodes.size === 0) return 0;
+  const scopedNodeIds = new Set();
+  for (const [nodeId, node] of graph.nodes.entries()) {
+    if (sessionId && getNodeSessionId(node) !== sessionId) continue;
+    scopedNodeIds.add(nodeId);
+  }
+  if (scopedNodeIds.size === 0) return 0;
 
   const contradictedNodes = new Set();
 
   for (const edge of graph.edges.values()) {
     if (edge.relation !== CONTRADICTION_RELATION) continue;
+    if (!matchesSession(graph, edge, sessionId)) continue;
     contradictedNodes.add(edge.source);
     contradictedNodes.add(edge.target);
   }
 
-  return contradictedNodes.size / graph.nodes.size;
+  return contradictedNodes.size / scopedNodeIds.size;
 }
 
 /* ---------------------------------------------------------------

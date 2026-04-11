@@ -360,15 +360,42 @@ workflow:
         if_not_exists:
           proceed: true
 
+      step_graph_convergence:
+        action: "Evaluate coverage-graph convergence before the inline review convergence vote"
+        inspect:
+          - "{spec_folder}/review/deep-review-state.jsonl"
+          - "{spec_folder}/review/deep-review-findings-registry.json"
+        transform: |
+          1. Call graph convergence on the current review lineage before the inline 3-signal vote.
+          2. Record the decision as one of CONTINUE, STOP_ALLOWED, STOP_BLOCKED.
+          3. Preserve raw graph signals and blockers for reducer rollup and blocked-stop evidence.
+          4. Normalize blockers to both JSON array and CSV forms for downstream stop handling.
+          5. Set graph_stop_blocked = true only when graph_decision == "STOP_BLOCKED".
+        mcp_tool:
+          name: mcp__spec_kit_memory__deep_loop_graph_convergence
+          note: "Call directly - NEVER through Code Mode. Review-side graph convergence must run before the inline review stop vote."
+          parameters: { specFolder: "{spec_folder}", loopType: "review", sessionId: "{session_id}" }
+        append_jsonl: '{"type":"event","event":"graph_convergence","mode":"review","run":{current_iteration},"decision":"{graph_decision}","signals":{graph_signals_json},"blockers":{graph_blockers_json},"timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+        outputs:
+          - graph_decision: "CONTINUE | STOP_ALLOWED | STOP_BLOCKED"
+          - graph_signals_json: "JSON object returned by deep_loop_graph_convergence"
+          - graph_blockers_json: "JSON array of graph blockers when present, else []"
+          - graph_blockers_csv: "Comma-separated blocker summary when graph blocks STOP, else empty string"
+          - graph_stop_blocked: "Boolean true when graph_decision == STOP_BLOCKED"
+
       step_check_convergence:
-        action: "Evaluate review-specific stop conditions and the legal-stop decision tree"
+        action: "Evaluate graph-assisted review stop conditions and the legal-stop decision tree"
         algorithm: |
           1. HARD STOPS:
              a) if iteration_count >= max_iterations: STOP (max_iterations_reached)
              b) if all dimensions clean AND required traceability protocols are covered AND p0_count == 0 AND p1_count == 0 AND coverage_age >= 1 AND all quality gates pass (evidence: every P0/P1 has file:line; scope: all findings within target; coverage: all dimensions reviewed): STOP (all_dimensions_clean)
           2. STUCK DETECTION (threshold 2):
              if stuck_count >= 2: STUCK_RECOVERY
-          3. COMPOSITE CONVERGENCE (3-signal weighted vote with split thresholds):
+          3. GRAPH CONVERGENCE PREREQUISITE:
+               graph_decision, graph_signals_json, and graph_blockers_json are already populated by step_graph_convergence.
+               Final STOP is never legal unless the inline review vote says STOP AND graph_decision == "STOP_ALLOWED".
+               If graph_decision == "STOP_BLOCKED", set stop_blocked = true and route through blocked_stop emission instead of stopping.
+          4. COMPOSITE CONVERGENCE (3-signal weighted vote with split thresholds):
                signals = []
                a) Rolling average (w=0.30, window=2, needs 2+ iterations):
                   avg = mean(last 2 newFindingsRatios)
@@ -381,15 +408,16 @@ workflow:
                   stop if coverage >= 1.0 AND required traceability protocols are covered AND coverage_age >= 1
                Redistribute weights for unavailable signals.
                if latest ratio <= 0.05: mark no_progress_threshold_reached
-               if weighted_stop_score >= 0.60: check binary gates
-          4. LEGAL-STOP DECISION TREE (review-specific gates; only runs when STOP is a candidate):
+               if weighted_stop_score >= 0.60: inline STOP becomes a candidate and binary gates must run
+          5. LEGAL-STOP DECISION TREE (review-specific gates; only runs when inline STOP is a candidate):
                a) convergenceGate: pass when a hard-stop condition is met OR weighted_stop_score >= 0.60; record score
                b) dimensionCoverageGate: pass when configured dimensions and required traceability coverage are complete and coverage_age >= 1; record covered and missing dimensions
                c) p0ResolutionGate: pass when activeP0 == 0; record activeP0
                d) evidenceDensityGate: pass when every active P0/P1 has concrete file:line evidence and no active P0/P1 relies only on inference; record avgEvidencePerFinding
                e) hotspotSaturationGate: pass when review hotspots have been revisited enough times to satisfy the saturation heuristic
-             if STOP is a candidate and any gate fails:
+             if inline STOP is a candidate and any gate fails:
                decision = "BLOCKED"
+               stop_blocked = true
                stopReason = "blockedStop"
                blocked_by_json = JSON array of failing gate names
                blocked_by_csv = comma-separated list of failing gate names
@@ -404,10 +432,24 @@ workflow:
                avg_evidence_per_finding = numeric evidence density
                hotspot_saturation_gate_pass = boolean
                recovery_strategy = one-line hint describing the next review action needed to satisfy the failed gates
-          5. else: CONTINUE
+          6. COMBINED STOP RULE:
+               a) if inline STOP is legal AND graph_decision == "STOP_ALLOWED": decision = "STOP"
+               b) if inline STOP is legal AND graph_decision == "STOP_BLOCKED":
+                    decision = "BLOCKED"
+                    stop_blocked = true
+                    stopReason = "blockedStop"
+                    blocked_by_json = graph_blockers_json
+                    blocked_by_csv = graph_blockers_csv
+                    recovery_strategy = "Resolve review coverage-graph blockers before stopping."
+               c) if inline STOP is legal AND graph_decision == "CONTINUE":
+                    decision = "CONTINUE"
+                    stop_blocked = false
+                    reason = "graph_convergence_continue"
+               d) else keep the existing STUCK_RECOVERY or CONTINUE outcome
         outputs:
           - decision: "STOP | BLOCKED | STUCK_RECOVERY | CONTINUE"
           - reason: "Human-readable stop reason"
+          - stop_blocked: "Boolean true when STOP is vetoed by inline legal-stop gates or graph_decision == STOP_BLOCKED"
           - blocked_by_json: "JSON array of failed legal-stop gates when decision == BLOCKED"
           - blocked_by_csv: "Comma-separated list of failed legal-stop gates when decision == BLOCKED"
           - convergence_gate_pass: "Boolean pass/fail for convergenceGate"
@@ -420,6 +462,10 @@ workflow:
           - evidence_density_gate_pass: "Boolean pass/fail for evidenceDensityGate"
           - avg_evidence_per_finding: "Numeric evidence density for active findings"
           - hotspot_saturation_gate_pass: "Boolean pass/fail for hotspotSaturationGate"
+          - graph_decision: "CONTINUE | STOP_ALLOWED | STOP_BLOCKED from step_graph_convergence"
+          - graph_signals_json: "JSON object returned by graph convergence"
+          - graph_blockers_json: "JSON array of graph blockers"
+          - graph_blockers_csv: "Comma-separated graph blocker summary"
           - recovery_strategy: "One-line hint describing the next review action when decision == BLOCKED or STUCK_RECOVERY"
 
       step_emit_blocked_stop:
@@ -542,7 +588,8 @@ workflow:
             CONSTRAINT: Target 9 tool calls. Soft max 12, hard max 13.
             CONSTRAINT: Write ALL findings to files. Do not hold in context.
             CONSTRAINT: Review target is READ-ONLY. Do not modify reviewed files.
-            CONSTRAINT: Append JSONL record with dimensions, filesReviewed, findingsSummary, findingsNew, traceabilityChecks, and newFindingsRatio.
+            CONSTRAINT: Append JSONL record with dimensions, filesReviewed, findingsSummary, findingsNew, traceabilityChecks, newFindingsRatio, and optional graphEvents.
+            CONSTRAINT: When emitting the iteration JSONL record, include an optional `graphEvents` array of {type, id, label, relation?, source?, target?} objects representing coverage graph nodes and edges discovered this iteration. Omit the field when no graph events are produced.
             CONSTRAINT: Update strategy.md dimension coverage, traceability status, and running findings.
         wait_for_completion: true
 
@@ -593,6 +640,29 @@ workflow:
           schema_mismatch: "reject + conflict event"
         guarantee: "Idempotent for identical inputs"
         note: "Reducer outputs findingsRegistry, dashboardMetrics, and strategyUpdates. Re-running the same inputs must be idempotent."
+
+      step_graph_upsert:
+        action: "Transform the latest iteration graphEvents delta into review graph nodes and edges, then upsert it"
+        read:
+          - "{spec_folder}/review/deep-review-state.jsonl"
+          - "{spec_folder}/review/deep-review-findings-registry.json"
+        transform: |
+          1. Read the latest iteration JSONL record after reducer completion.
+          2. If graphEvents is absent or empty, set graph_nodes_json = [] and graph_edges_json = [] and skip the upsert.
+          3. For each graph event without relation/source/target, normalize kind = uppercase(event.kind || event.nodeKind || event.type) and keep only DIMENSION, FILE, FINDING, EVIDENCE, REMEDIATION.
+          4. Emit nodes as { id, kind, name, iteration, metadata } using the event label (or id fallback) and review metadata for run/current focus.
+          5. For each graph event with relation + source + target, normalize relation = uppercase(event.relation) and keep only COVERS, EVIDENCE_FOR, CONTRADICTS, RESOLVES, CONFIRMS, ESCALATES, IN_DIMENSION, IN_FILE.
+          6. Emit edges as { id, relation, sourceId, targetId, metadata } and deduplicate the batch by id.
+          7. Discard malformed or unknown graph events instead of failing the review iteration.
+        mcp_tool:
+          name: mcp__spec_kit_memory__deep_loop_graph_upsert
+          note: "Call directly - NEVER through Code Mode. Upsert only the latest iteration graph delta."
+          parameters: { specFolder: "{spec_folder}", loopType: "review", sessionId: "{session_id}", nodes: "{graph_nodes_json}", edges: "{graph_edges_json}" }
+        outputs:
+          - graph_nodes_json: "JSON array of normalized review graph nodes for the latest iteration"
+          - graph_edges_json: "JSON array of normalized review graph edges for the latest iteration"
+        skip_conditions:
+          - "Latest iteration record has no graphEvents array"
 
       # ─── APPROVAL GATE: Post-Iteration ───
       gate_post_iteration:

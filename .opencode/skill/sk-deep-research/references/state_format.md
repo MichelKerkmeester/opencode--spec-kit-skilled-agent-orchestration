@@ -241,6 +241,7 @@ Events are written by the YAML workflow or diagnostics layer for lifecycle track
 | restarted | workflow | active | Start a new generation from prior state | sessionId, parentSessionId, generation, timestamp |
 | forked | workflow | active | Create a new branch from current packet state | sessionId, parentSessionId, generation, timestamp |
 | completed_continue | workflow | active | Reopen a completed lineage after immutable snapshotting | sessionId, parentSessionId, generation, continuedFromRun, completedAt, reopenedAt, timestamp |
+| graph_convergence | workflow + graph MCP | active | Persist the coverage-graph stop verdict for the current research run before the inline convergence vote is merged | mode, run, decision, signals, blockers, timestamp, sessionId, generation |
 | blocked_stop | workflow | active | Legal-stop candidate was blocked and the loop must continue | mode, run, blockedBy, gateResults, recoveryStrategy, timestamp, sessionId, generation |
 | userPaused | workflow | active | Pause sentinel detected and normalized to the frozen stop-reason enum | mode, run, stopReason, sentinelPath, timestamp, sessionId, generation |
 | migration | workflow | active | Legacy artifact consumed and canonical name written | legacyPath, canonicalPath, timestamp |
@@ -265,6 +266,34 @@ Guard violation events are emitted when a research guard detects a quality const
 Supported guard values: `source_diversity`, `focus_alignment`, `single_weak_source`. These events are informational and do not halt the loop, but the orchestrator may use them to adjust subsequent iteration focus.
 
 Additional event-specific fields may appear on the JSON line, but the table above is the canonical coverage for emitted events.
+
+#### Canonical graph_convergence event
+
+```json
+{"type":"event","event":"graph_convergence","mode":"research","run":7,"decision":"STOP_BLOCKED","signals":{"questionCoverage":0.86,"claimVerificationRate":0.78,"contradictionDensity":0.04,"blendedScore":0.68},"blockers":[{"name":"sourceDiversity","severity":"high","detail":"Only 2 distinct corroborating sources cover the active claim cluster."}],"timestamp":"2026-04-11T11:55:00Z","sessionId":"dr-2026-04-11T12-00-00Z","generation":2}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| type | string | Yes | Always `event` |
+| event | string | Yes | Always `graph_convergence` |
+| mode | string | Yes | Always `research` for this loop family |
+| run | number | Yes | 1-indexed loop iteration whose graph convergence vote was evaluated |
+| decision | string or null | Yes | Graph verdict: `CONTINUE`, `STOP_ALLOWED`, `STOP_BLOCKED`, or null when unavailable |
+| signals | object | Yes | Graph signal bundle returned by `deep_loop_graph_convergence`, including `blendedScore` when available |
+| blockers | array | Yes | Blocking guards returned by the graph convergence tool; empty array when STOP is not blocked |
+| timestamp | ISO 8601 | Yes | Event creation time |
+| sessionId | string | Yes | Active lineage session identifier |
+| generation | number | Yes | Active lineage generation |
+
+#### Combined-stop rule
+
+Research mode now evaluates two stop layers in order:
+
+1. The graph MCP writes a single-line `graph_convergence` event before the inline convergence vote runs.
+2. The existing inline 3-signal convergence vote still computes the inline STOP candidate.
+3. The loop may STOP for `composite_converged` only when the inline vote says STOP and the latest graph decision is `STOP_ALLOWED` or absent.
+4. If the inline vote says STOP but the latest graph decision is `STOP_BLOCKED`, the workflow must emit `blocked_stop` and continue with the recovery strategy instead of stopping.
 
 #### Canonical blocked-stop event
 

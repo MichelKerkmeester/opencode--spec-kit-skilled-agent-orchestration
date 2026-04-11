@@ -7,9 +7,9 @@
 
 import {
   getDb,
-  getEdgesFrom,
   type Namespace,
   type CoverageNode,
+  type CoverageEdge,
 } from './coverage-graph-db.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -51,6 +51,14 @@ export interface HotNode {
   score: number;
 }
 
+function buildSessionFilter(column: string, sessionId?: string): { clause: string; params: unknown[] } {
+  if (!sessionId) return { clause: '', params: [] };
+  return {
+    clause: ` AND ${column} = ?`,
+    params: [sessionId],
+  };
+}
+
 // ───────────────────────────────────────────────────────────────
 // 2. COVERAGE GAPS
 // ───────────────────────────────────────────────────────────────
@@ -62,7 +70,7 @@ export interface HotNode {
  */
 export function findCoverageGaps(ns: Namespace): CoverageGap[] {
   const d = getDb();
-  const { specFolder, loopType } = ns;
+  const { specFolder, loopType, sessionId } = ns;
 
   const coverageRelations = loopType === 'research'
     ? ['ANSWERS', 'COVERS']
@@ -78,16 +86,27 @@ export function findCoverageGaps(ns: Namespace): CoverageGap[] {
     // Review mode: dimensions/files are sources of outgoing COVERS edges.
     // A gap means the node has no outgoing coverage edges.
     for (const kind of targetKinds) {
+      const nodeFilter = buildSessionFilter('n.session_id', sessionId);
+      const edgeFilter = buildSessionFilter('e.session_id', sessionId);
       const nodeRows = d.prepare(`
         SELECT n.id, n.kind, n.name
         FROM coverage_nodes n
         WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = ?
+          ${nodeFilter.clause}
           AND NOT EXISTS (
             SELECT 1 FROM coverage_edges e
             WHERE e.source_id = n.id
+              ${edgeFilter.clause}
               AND e.relation IN (${coverageRelations.map(() => '?').join(',')})
           )
-      `).all(specFolder, loopType, kind, ...coverageRelations) as Array<{ id: string; kind: string; name: string }>;
+      `).all(
+        specFolder,
+        loopType,
+        kind,
+        ...nodeFilter.params,
+        ...edgeFilter.params,
+        ...coverageRelations,
+      ) as Array<{ id: string; kind: string; name: string }>;
 
       for (const row of nodeRows) {
         gaps.push({
@@ -101,16 +120,27 @@ export function findCoverageGaps(ns: Namespace): CoverageGap[] {
   } else {
     // Research mode: questions should have incoming ANSWERS edges.
     for (const kind of targetKinds) {
+      const nodeFilter = buildSessionFilter('n.session_id', sessionId);
+      const edgeFilter = buildSessionFilter('e.session_id', sessionId);
       const nodeRows = d.prepare(`
         SELECT n.id, n.kind, n.name
         FROM coverage_nodes n
         WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = ?
+          ${nodeFilter.clause}
           AND NOT EXISTS (
             SELECT 1 FROM coverage_edges e
             WHERE e.target_id = n.id
+              ${edgeFilter.clause}
               AND e.relation IN (${coverageRelations.map(() => '?').join(',')})
           )
-      `).all(specFolder, loopType, kind, ...coverageRelations) as Array<{ id: string; kind: string; name: string }>;
+      `).all(
+        specFolder,
+        loopType,
+        kind,
+        ...nodeFilter.params,
+        ...edgeFilter.params,
+        ...coverageRelations,
+      ) as Array<{ id: string; kind: string; name: string }>;
 
       for (const row of nodeRows) {
         gaps.push({
@@ -135,7 +165,8 @@ export function findCoverageGaps(ns: Namespace): CoverageGap[] {
  */
 export function findContradictions(ns: Namespace): ContradictionPair[] {
   const d = getDb();
-  const { specFolder, loopType } = ns;
+  const { specFolder, loopType, sessionId } = ns;
+  const edgeFilter = buildSessionFilter('e.session_id', sessionId);
 
   const rows = d.prepare(`
     SELECT e.id, e.source_id, e.target_id, e.weight, e.metadata,
@@ -144,7 +175,8 @@ export function findContradictions(ns: Namespace): ContradictionPair[] {
     JOIN coverage_nodes s ON s.id = e.source_id
     JOIN coverage_nodes t ON t.id = e.target_id
     WHERE e.spec_folder = ? AND e.loop_type = ? AND e.relation = 'CONTRADICTS'
-  `).all(specFolder, loopType) as Array<{
+      ${edgeFilter.clause}
+  `).all(specFolder, loopType, ...edgeFilter.params) as Array<{
     id: string;
     source_id: string;
     target_id: string;
@@ -191,12 +223,12 @@ export function findProvenanceChain(ns: Namespace, nodeId: string, maxDepth: num
       if (visited.has(item.id) || item.depth >= maxDepth) continue;
       visited.add(item.id);
 
-      const edges = getEdgesFrom(item.id);
+      const edges = getEdgesFromNode(item.id, ns.sessionId);
       for (const edge of edges) {
         if (!provenanceRelations.includes(edge.relation)) continue;
         if (visited.has(edge.targetId)) continue;
 
-        const targetNode = getNodeById(edge.targetId);
+        const targetNode = getNodeById(edge.targetId, ns.sessionId);
         if (!targetNode) continue;
 
         const cumWeight = item.cumulativeWeight * edge.weight;
@@ -220,10 +252,38 @@ export function findProvenanceChain(ns: Namespace, nodeId: string, maxDepth: num
 }
 
 /** Internal helper: get node by ID for provenance chain */
-function getNodeById(id: string): { kind: string; name: string } | null {
+function getNodeById(id: string, sessionId?: string): { kind: string; name: string } | null {
   const d = getDb();
-  const row = d.prepare('SELECT kind, name FROM coverage_nodes WHERE id = ?').get(id) as { kind: string; name: string } | undefined;
+  const sessionFilter = buildSessionFilter('session_id', sessionId);
+  const row = d.prepare(`
+    SELECT kind, name
+    FROM coverage_nodes
+    WHERE id = ?${sessionFilter.clause}
+  `).get(id, ...sessionFilter.params) as { kind: string; name: string } | undefined;
   return row ?? null;
+}
+
+function getEdgesFromNode(sourceId: string, sessionId?: string): CoverageEdge[] {
+  const d = getDb();
+  const sessionFilter = buildSessionFilter('session_id', sessionId);
+  const rows = d.prepare(`
+    SELECT *
+    FROM coverage_edges
+    WHERE source_id = ?${sessionFilter.clause}
+  `).all(sourceId, ...sessionFilter.params) as Record<string, unknown>[];
+
+  return rows.map(row => ({
+    id: row.id as string,
+    specFolder: row.spec_folder as string,
+    loopType: row.loop_type as Namespace['loopType'],
+    sessionId: row.session_id as string,
+    sourceId: row.source_id as string,
+    targetId: row.target_id as string,
+    relation: row.relation as CoverageEdge['relation'],
+    weight: row.weight as number,
+    metadata: row.metadata ? JSON.parse(row.metadata as string) : undefined,
+    createdAt: row.created_at as string | undefined,
+  }));
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -237,14 +297,18 @@ function getNodeById(id: string): { kind: string; name: string } | null {
  */
 export function findUnverifiedClaims(ns: Namespace): CoverageNode[] {
   const d = getDb();
-  const { specFolder, loopType } = ns;
+  const { specFolder, loopType, sessionId } = ns;
+  const nodeFilter = buildSessionFilter('session_id', sessionId);
 
   if (loopType === 'research') {
+    // Schema note: coverage graph tables already include a real session_id
+    // column, so session-scoped reads can stay in SQL.
     // Research: CLAIM nodes where metadata.verification_status != 'verified'
     const rows = d.prepare(`
       SELECT * FROM coverage_nodes
       WHERE spec_folder = ? AND loop_type = ? AND kind = 'CLAIM'
-    `).all(specFolder, loopType) as Record<string, unknown>[];
+        ${nodeFilter.clause}
+    `).all(specFolder, loopType, ...nodeFilter.params) as Record<string, unknown>[];
 
     return rows
       .map(r => ({
@@ -267,14 +331,24 @@ export function findUnverifiedClaims(ns: Namespace): CoverageNode[] {
   }
 
   // Review: FINDING nodes with no RESOLVES incoming edge
+  const reviewNodeFilter = buildSessionFilter('n.session_id', sessionId);
+  const reviewEdgeFilter = buildSessionFilter('e.session_id', sessionId);
   const rows = d.prepare(`
     SELECT n.* FROM coverage_nodes n
     WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = 'FINDING'
+      ${reviewNodeFilter.clause}
       AND NOT EXISTS (
         SELECT 1 FROM coverage_edges e
-        WHERE e.target_id = n.id AND e.relation = 'RESOLVES'
+        WHERE e.target_id = n.id
+          ${reviewEdgeFilter.clause}
+          AND e.relation = 'RESOLVES'
       )
-  `).all(specFolder, loopType) as Record<string, unknown>[];
+  `).all(
+    specFolder,
+    loopType,
+    ...reviewNodeFilter.params,
+    ...reviewEdgeFilter.params,
+  ) as Record<string, unknown>[];
 
   return rows.map(r => ({
     id: r.id as string,
@@ -301,7 +375,9 @@ export function findUnverifiedClaims(ns: Namespace): CoverageNode[] {
  */
 export function rankHotNodes(ns: Namespace, limit: number = 10): HotNode[] {
   const d = getDb();
-  const { specFolder, loopType } = ns;
+  const { specFolder, loopType, sessionId } = ns;
+  const edgeFilter = buildSessionFilter('e.session_id', sessionId);
+  const nodeFilter = buildSessionFilter('n.session_id', sessionId);
 
   const rows = d.prepare(`
     WITH node_edges AS (
@@ -310,14 +386,17 @@ export function rankHotNodes(ns: Namespace, limit: number = 10): HotNode[] {
           SELECT COUNT(*) FROM coverage_edges e
           WHERE (e.source_id = n.id OR e.target_id = n.id)
             AND e.spec_folder = ? AND e.loop_type = ?
+            ${edgeFilter.clause}
         ) AS edge_count,
         (
           SELECT COALESCE(SUM(e.weight), 0) FROM coverage_edges e
           WHERE (e.source_id = n.id OR e.target_id = n.id)
             AND e.spec_folder = ? AND e.loop_type = ?
+            ${edgeFilter.clause}
         ) AS weight_sum
       FROM coverage_nodes n
       WHERE n.spec_folder = ? AND n.loop_type = ?
+        ${nodeFilter.clause}
     )
     SELECT id, kind, name, edge_count, weight_sum,
       (edge_count * 1.0 + weight_sum * 0.5) AS score
@@ -325,7 +404,18 @@ export function rankHotNodes(ns: Namespace, limit: number = 10): HotNode[] {
     WHERE edge_count > 0
     ORDER BY score DESC
     LIMIT ?
-  `).all(specFolder, loopType, specFolder, loopType, specFolder, loopType, limit) as Array<{
+  `).all(
+    specFolder,
+    loopType,
+    ...edgeFilter.params,
+    specFolder,
+    loopType,
+    ...edgeFilter.params,
+    specFolder,
+    loopType,
+    ...nodeFilter.params,
+    limit,
+  ) as Array<{
     id: string;
     kind: string;
     name: string;

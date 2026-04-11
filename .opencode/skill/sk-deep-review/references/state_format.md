@@ -261,6 +261,37 @@ When the review legal-stop decision tree returns `blocked`, append a first-class
 
 **Required:** `type`, `event`, `mode`, `run`, `blockedBy`, `gateResults`, `recoveryStrategy`, `timestamp`, `sessionId`, `generation`
 
+### Graph Convergence Event
+
+Before the inline 3-signal review vote is allowed to finalize STOP, the workflow must append a `graph_convergence` event for the current review lineage.
+
+```json
+{
+  "type": "event",
+  "event": "graph_convergence",
+  "mode": "review",
+  "run": 4,
+  "decision": "STOP_ALLOWED",
+  "signals": {
+    "dimensionCoverage": 1,
+    "findingStability": 0.88,
+    "p0ResolutionRate": 1,
+    "evidenceDensity": 1.4,
+    "hotspotSaturation": 0.75
+  },
+  "blockers": [],
+  "timestamp": "2026-04-11T09:44:00Z",
+  "sessionId": "rvw-2026-04-11T09-00-00Z",
+  "generation": 1
+}
+```
+
+**Required:** `type`, `event`, `mode`, `run`, `decision`, `signals`, `blockers`, `timestamp`, `sessionId`, `generation`
+
+**Decision enum:** `CONTINUE`, `STOP_ALLOWED`, `STOP_BLOCKED`
+
+**Combined-stop rule:** Final STOP is legal only when the inline review convergence decision says STOP and the latest `graph_convergence.decision == "STOP_ALLOWED"`. If the latest graph decision is `STOP_BLOCKED`, set `stop_blocked=true`, emit `blocked_stop`, and continue recovery instead of stopping. If the latest graph decision is `CONTINUE`, downgrade the inline STOP candidate to CONTINUE.
+
 ### Normalized Pause and Recovery Events
 
 Pause and recovery events MUST use the frozen shared stop-reason enum at emission time:
@@ -427,11 +458,16 @@ Reducer-owned JSON document regenerated after every iteration and lifecycle tran
   },
   "openFindingsCount": 3,
   "resolvedFindingsCount": 1,
-  "convergenceScore": 0.44
+  "convergenceScore": 0.44,
+  "graphConvergenceScore": 1.01,
+  "graphDecision": "STOP_ALLOWED",
+  "graphBlockers": []
 }
 ```
 
 This file is machine-owned and must stay synchronized with the latest iteration delta, dashboard metrics, and synthesized review report.
+
+When no `graph_convergence` event has been recorded yet, defaults are `graphConvergenceScore: 0`, `graphDecision: null`, and `graphBlockers: []`.
 
 ---
 

@@ -24,6 +24,53 @@ function isValidGraph(graph) {
     graph.edges instanceof Map;
 }
 
+function getNodeSessionId(node) {
+  if (!node || typeof node !== 'object') return null;
+  if (typeof node.sessionId === 'string' && node.sessionId) return node.sessionId;
+  if (node.metadata && typeof node.metadata === 'object' && typeof node.metadata.sessionId === 'string' && node.metadata.sessionId) {
+    return node.metadata.sessionId;
+  }
+  return null;
+}
+
+function getEdgeSessionId(graph, edge) {
+  if (!edge || typeof edge !== 'object') return null;
+  if (typeof edge.sessionId === 'string' && edge.sessionId) return edge.sessionId;
+  if (edge.metadata && typeof edge.metadata === 'object' && typeof edge.metadata.sessionId === 'string' && edge.metadata.sessionId) {
+    return edge.metadata.sessionId;
+  }
+  const sourceSessionId = getNodeSessionId(graph.nodes.get(edge.source));
+  const targetSessionId = getNodeSessionId(graph.nodes.get(edge.target));
+  if (sourceSessionId && (!targetSessionId || targetSessionId === sourceSessionId)) return sourceSessionId;
+  return targetSessionId;
+}
+
+function matchesSession(graph, record, sessionId, recordType) {
+  if (!sessionId) return true;
+  const actualSessionId = recordType === 'edge'
+    ? getEdgeSessionId(graph, record)
+    : getNodeSessionId(record);
+  return actualSessionId === sessionId;
+}
+
+function getFilteredNodeIds(graph, sessionId) {
+  const results = [];
+  if (!isValidGraph(graph)) return results;
+  for (const [nodeId, node] of graph.nodes.entries()) {
+    if (matchesSession(graph, node, sessionId, 'node')) results.push(nodeId);
+  }
+  return results;
+}
+
+function getFilteredEdges(graph, sessionId) {
+  const results = [];
+  if (!isValidGraph(graph)) return results;
+  for (const edge of graph.edges.values()) {
+    if (matchesSession(graph, edge, sessionId, 'edge')) results.push(edge);
+  }
+  return results;
+}
+
 /**
  * Compute the degree of a node (in-degree + out-degree).
  *
@@ -35,14 +82,18 @@ function isValidGraph(graph) {
  * @param {string} nodeId - Node identifier
  * @returns {{ inDegree: number, outDegree: number, total: number }}
  */
-function computeDegree(graph, nodeId) {
+function computeDegree(graph, nodeId, sessionId) {
   if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) {
+    return { inDegree: 0, outDegree: 0, total: 0 };
+  }
+  const node = graph.nodes.get(nodeId);
+  if (!node || !matchesSession(graph, node, sessionId, 'node')) {
     return { inDegree: 0, outDegree: 0, total: 0 };
   }
   let inDegree = 0;
   let outDegree = 0;
 
-  for (const edge of graph.edges.values()) {
+  for (const edge of getFilteredEdges(graph, sessionId)) {
     if (edge.target === nodeId) inDegree++;
     if (edge.source === nodeId) outDegree++;
   }
@@ -63,7 +114,7 @@ function computeDegree(graph, nodeId) {
  * @param {{ nodes: Map, edges: Map }} graph
  * @returns {{ adjacency: Map<string, string[]>, inDegree: Map<string, number> }}
  */
-function buildAdjacencyList(graph) {
+function buildAdjacencyList(graph, sessionId) {
   if (!isValidGraph(graph)) {
     return { adjacency: new Map(), inDegree: new Map() };
   }
@@ -71,12 +122,13 @@ function buildAdjacencyList(graph) {
   const inDegree = new Map();
 
   // Initialize all nodes
-  for (const nodeId of graph.nodes.keys()) {
+  for (const nodeId of getFilteredNodeIds(graph, sessionId)) {
     adjacency.set(nodeId, []);
     if (!inDegree.has(nodeId)) inDegree.set(nodeId, 0);
   }
 
-  for (const edge of graph.edges.values()) {
+  for (const edge of getFilteredEdges(graph, sessionId)) {
+    if (!adjacency.has(edge.source) || !adjacency.has(edge.target)) continue;
     if (!adjacency.has(edge.source)) adjacency.set(edge.source, []);
     adjacency.get(edge.source).push(edge.target);
 
@@ -100,11 +152,12 @@ function buildAdjacencyList(graph) {
  * @param {string} nodeId - Node identifier
  * @returns {number} Longest path depth from any root to this node
  */
-function computeDepth(graph, nodeId) {
+function computeDepth(graph, nodeId, sessionId) {
   if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return 0;
   if (!graph.nodes.has(nodeId)) return 0;
+  if (!matchesSession(graph, graph.nodes.get(nodeId), sessionId, 'node')) return 0;
 
-  const { adjacency, inDegree } = buildAdjacencyList(graph);
+  const { adjacency, inDegree } = buildAdjacencyList(graph, sessionId);
 
   // Kahn's algorithm with longest-path tracking
   const depths = new Map();
@@ -148,9 +201,9 @@ function computeDepth(graph, nodeId) {
  * @param {{ nodes: Map, edges: Map }} graph - In-memory coverage graph
  * @returns {Map<string, number>} Map of nodeId -> depth
  */
-function computeAllDepths(graph) {
+function computeAllDepths(graph, sessionId) {
   if (!isValidGraph(graph)) return new Map();
-  const { adjacency, inDegree } = buildAdjacencyList(graph);
+  const { adjacency, inDegree } = buildAdjacencyList(graph, sessionId);
   const depths = new Map();
   const remaining = new Map(inDegree);
   const queue = [];
@@ -182,7 +235,7 @@ function computeAllDepths(graph) {
   }
 
   // Ensure every node has a depth entry
-  for (const nodeId of graph.nodes.keys()) {
+  for (const nodeId of getFilteredNodeIds(graph, sessionId)) {
     if (!depths.has(nodeId)) depths.set(nodeId, 0);
   }
 
@@ -206,8 +259,10 @@ function computeAllDepths(graph) {
  * @param {number} [windowSize=300000] - Window in milliseconds (default 5 minutes)
  * @returns {number} Count of edges involving this node within the window
  */
-function computeMomentum(graph, nodeId, windowSize) {
+function computeMomentum(graph, nodeId, windowSize, sessionId) {
   if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return 0;
+  const node = graph.nodes.get(nodeId);
+  if (!node || !matchesSession(graph, node, sessionId, 'node')) return 0;
   if (windowSize === undefined || windowSize === null) windowSize = 300000; // 5 min default
   if (typeof windowSize !== 'number' || !Number.isFinite(windowSize) || windowSize < 0) {
     windowSize = 300000;
@@ -216,7 +271,7 @@ function computeMomentum(graph, nodeId, windowSize) {
   const cutoff = Date.now() - windowSize;
   let count = 0;
 
-  for (const edge of graph.edges.values()) {
+  for (const edge of getFilteredEdges(graph, sessionId)) {
     if (edge.source !== nodeId && edge.target !== nodeId) continue;
 
     const edgeTime = edge.createdAt ? new Date(edge.createdAt).getTime() : 0;
@@ -243,23 +298,23 @@ function computeMomentum(graph, nodeId, windowSize) {
  * @param {{ nodes: Map, edges: Map }} graph - In-memory coverage graph
  * @returns {{ componentCount: number, sizes: number[], largestSize: number, isolatedNodes: number }}
  */
-function computeClusterMetrics(graph) {
+function computeClusterMetrics(graph, sessionId) {
   if (!isValidGraph(graph)) {
     return { componentCount: 0, sizes: [], largestSize: 0, isolatedNodes: 0 };
   }
-  if (graph.nodes.size === 0) {
+  const filteredNodeIds = getFilteredNodeIds(graph, sessionId);
+  if (filteredNodeIds.length === 0) {
     return { componentCount: 0, sizes: [], largestSize: 0, isolatedNodes: 0 };
   }
 
   // Build undirected adjacency
   const undirected = new Map();
-  for (const nodeId of graph.nodes.keys()) {
+  for (const nodeId of filteredNodeIds) {
     undirected.set(nodeId, new Set());
   }
 
-  for (const edge of graph.edges.values()) {
-    if (!undirected.has(edge.source)) undirected.set(edge.source, new Set());
-    if (!undirected.has(edge.target)) undirected.set(edge.target, new Set());
+  for (const edge of getFilteredEdges(graph, sessionId)) {
+    if (!undirected.has(edge.source) || !undirected.has(edge.target)) continue;
     undirected.get(edge.source).add(edge.target);
     undirected.get(edge.target).add(edge.source);
   }
@@ -268,7 +323,7 @@ function computeClusterMetrics(graph) {
   const sizes = [];
   let isolatedNodes = 0;
 
-  for (const nodeId of graph.nodes.keys()) {
+  for (const nodeId of filteredNodeIds) {
     if (visited.has(nodeId)) continue;
 
     // BFS from this node

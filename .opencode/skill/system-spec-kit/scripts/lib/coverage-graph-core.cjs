@@ -86,6 +86,35 @@ function createGraph() {
   };
 }
 
+function getNodeSessionId(node) {
+  if (!node || typeof node !== 'object') return null;
+  if (typeof node.sessionId === 'string' && node.sessionId) return node.sessionId;
+  if (node.metadata && typeof node.metadata === 'object' && typeof node.metadata.sessionId === 'string' && node.metadata.sessionId) {
+    return node.metadata.sessionId;
+  }
+  return null;
+}
+
+function getEdgeSessionId(graph, edge) {
+  if (!edge || typeof edge !== 'object') return null;
+  if (typeof edge.sessionId === 'string' && edge.sessionId) return edge.sessionId;
+  if (edge.metadata && typeof edge.metadata === 'object' && typeof edge.metadata.sessionId === 'string' && edge.metadata.sessionId) {
+    return edge.metadata.sessionId;
+  }
+  const sourceSessionId = getNodeSessionId(graph.nodes.get(edge.source));
+  const targetSessionId = getNodeSessionId(graph.nodes.get(edge.target));
+  if (sourceSessionId && (!targetSessionId || targetSessionId === sourceSessionId)) return sourceSessionId;
+  return targetSessionId;
+}
+
+function matchesSession(graph, record, sessionId, recordType) {
+  if (!sessionId) return true;
+  const actualSessionId = recordType === 'edge'
+    ? getEdgeSessionId(graph, record)
+    : getNodeSessionId(record);
+  return actualSessionId === sessionId;
+}
+
 /* ---------------------------------------------------------------
    3. EDGE OPERATIONS
 ----------------------------------------------------------------*/
@@ -142,6 +171,7 @@ function insertEdge(graph, source, target, relation, weight, metadata) {
     relation,
     weight: clamped,
     metadata,
+    sessionId: typeof metadata.sessionId === 'string' && metadata.sessionId ? metadata.sessionId : undefined,
     createdAt: new Date().toISOString(),
   });
 
@@ -278,11 +308,29 @@ function traverseProvenance(graph, nodeId, maxDepth) {
  * @param {string} nodeId - Source node ID
  * @returns {Array<object>} Edges from this node
  */
-function getEdgesFrom(graph, nodeId) {
+function getNodes(graph, sessionId) {
+  if (!isValidGraph(graph)) return [];
+  const results = [];
+  for (const node of graph.nodes.values()) {
+    if (matchesSession(graph, node, sessionId, 'node')) results.push(node);
+  }
+  return results;
+}
+
+function getEdges(graph, sessionId) {
+  if (!isValidGraph(graph)) return [];
+  const results = [];
+  for (const edge of graph.edges.values()) {
+    if (matchesSession(graph, edge, sessionId, 'edge')) results.push(edge);
+  }
+  return results;
+}
+
+function getEdgesFrom(graph, nodeId, sessionId) {
   if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return [];
   const results = [];
   for (const edge of graph.edges.values()) {
-    if (edge.source === nodeId) results.push(edge);
+    if (edge.source === nodeId && matchesSession(graph, edge, sessionId, 'edge')) results.push(edge);
   }
   return results;
 }
@@ -294,11 +342,11 @@ function getEdgesFrom(graph, nodeId) {
  * @param {string} nodeId - Target node ID
  * @returns {Array<object>} Edges to this node
  */
-function getEdgesTo(graph, nodeId) {
+function getEdgesTo(graph, nodeId, sessionId) {
   if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return [];
   const results = [];
   for (const edge of graph.edges.values()) {
-    if (edge.target === nodeId) results.push(edge);
+    if (edge.target === nodeId && matchesSession(graph, edge, sessionId, 'edge')) results.push(edge);
   }
   return results;
 }
@@ -330,6 +378,8 @@ module.exports = {
 
   // Traversal
   traverseProvenance,
+  getNodes,
+  getEdges,
   getEdgesFrom,
   getEdgesTo,
 
