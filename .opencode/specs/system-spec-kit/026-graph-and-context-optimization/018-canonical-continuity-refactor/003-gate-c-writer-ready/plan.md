@@ -122,14 +122,14 @@ Source: `../scratch/resource-map/02-handlers.md`, "Save Pipeline Stage Matrix".
 
 ---
 
-## AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
-### Pre-Task Checklist
+#### Pre-Task Checklist
 - [ ] Re-read `spec.md`, this plan, and `decision-record.md` before touching any Gate C runtime file.
 - [ ] Confirm the workstream stays inside Gate C writer scope and does not reopen Gate B storage or Gate D reader behavior.
 - [ ] Recheck `../scratch/resource-map/02-handlers.md`, `../scratch/resource-map/03-scripts.md`, and `../scratch/resource-map/04-templates.md` before changing the routed save, generator, or template surfaces.
 
-### Execution Rules
+#### Execution Rules
 
 | Rule | Description |
 |------|-------------|
@@ -138,10 +138,10 @@ Source: `../scratch/resource-map/02-handlers.md`, "Save Pipeline Stage Matrix".
 | TASK-PARITY | Preserve the documented 16-stage save pipeline split: 8 pass-through, 6 adapt, 2 rewrite. |
 | TASK-VERIFY | Run targeted tests plus `validate.sh --strict` before claiming any Gate C closeout step is complete. |
 
-### Status Reporting Format
+#### Status Reporting Format
 Report progress as `Gate C [STATUS] - workstream - evidence`, for example `Gate C DONE - validator bridge - fixtures + strict validate clean`.
 
-### Blocked Task Protocol
+#### Blocked Task Protocol
 If a blocker appears, stop the affected workstream, record the exact file/rule/test causing it, keep other Gate C streams read-only until the blocker is resolved, and escalate with the smallest viable next action.
 
 ---

@@ -30,7 +30,6 @@ Gate C is the code-critical path of phase 018. It replaces standalone memory-fil
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,7 +39,6 @@ Gate C is the code-critical path of phase 018. It replaces standalone memory-fil
 | **Status** | Draft |
 | **Created** | 2026-04-11 |
 | **Branch** | `018-canonical-continuity-refactor/003-gate-c-writer-ready` |
-<!-- /ANCHOR:metadata -->
 
 ---
 
