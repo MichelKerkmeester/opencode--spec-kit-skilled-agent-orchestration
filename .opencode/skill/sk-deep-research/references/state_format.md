@@ -271,10 +271,10 @@ Events are written by the YAML workflow or diagnostics layer for lifecycle track
 
 | Event | Emitted By | Status | Purpose | Key Fields |
 |-------|------------|--------|---------|------------|
-| resumed | workflow | active | Resume after a prior active session | sessionId, continuedFromRun, timestamp |
-| restarted | workflow | active | Start a new generation from prior state | sessionId, parentSessionId, generation, timestamp |
-| forked | workflow | active | Create a new branch from current packet state | sessionId, parentSessionId, generation, timestamp |
-| completed_continue | workflow | active | Reopen a completed lineage after immutable snapshotting | sessionId, parentSessionId, generation, continuedFromRun, completedAt, reopenedAt, timestamp |
+| resumed | workflow | active | Resume after a prior active session (same sessionId, no archive) | mode, sessionId, parentSessionId, lineageMode, continuedFromRun, generation, archivedPath (null), timestamp |
+| restarted | workflow | active | Archive the prior packet and start a new generation with a fresh sessionId | mode, sessionId, parentSessionId, lineageMode, continuedFromRun, generation, archivedPath, timestamp |
+| forked | workflow | deferred | Reserved for a future lineage feature; not emitted by the current runtime | — |
+| completed_continue | workflow | deferred | Reserved for a future lineage feature; not emitted by the current runtime | — |
 | graph_convergence | workflow + graph MCP | active | Persist the coverage-graph stop verdict for the current research run before the inline convergence vote is merged | mode, run, decision, signals, blockers, timestamp, sessionId, generation |
 | blocked_stop | workflow | active | Legal-stop candidate was blocked and the loop must continue | mode, run, blockedBy, gateResults, recoveryStrategy, timestamp, sessionId, generation |
 | userPaused | workflow | active | Pause sentinel detected and normalized to the frozen stop-reason enum | mode, run, stopReason, sentinelPath, timestamp, sessionId, generation |

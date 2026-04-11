@@ -140,12 +140,28 @@ workflow:
           - session_state: "fresh | resume | completed-session | invalid-state"
         on_resume:
           show_dashboard: "{spec_folder}/research/deep-research-dashboard.md"
-          ask: "Resume, restart (archive old state), fork (new angle from current state), or completed-continue (snapshot prior synthesis and reopen)?"
-          options: [resume, restart, fork, completed-continue]
-          log: "Interactive lifecycle selection: existing state is consistent. Review current files before choosing the next lineage branch."
-          skip_to: gate_init_approval
+          ask: "Existing research session is consistent. Resume where it left off, or restart (archive the current research/ tree and start a fresh session)?"
+          options: [resume, restart, cancel]
+          on_resume_choice:
+            set:
+              lineage_mode: "resume"
+              parent_session_id: "{session_id}"
+            append_jsonl: '{"type":"event","event":"resumed","mode":"research","sessionId":"{session_id}","parentSessionId":"{session_id}","lineageMode":"resume","continuedFromRun":{iteration_count},"timestamp":"{ISO_8601_NOW}","generation":{generation}}'
+            skip_to: gate_init_approval
+          on_restart_choice:
+            archive: "{spec_folder}/research -> {spec_folder}/research_archive/{timestamp_slug}"
+            set:
+              lineage_mode: "restart"
+              parent_session_id: "{prior_session_id}"
+              generation: "{prior_generation + 1}"
+            append_jsonl: '{"type":"event","event":"restarted","mode":"research","sessionId":"{session_id}","parentSessionId":"{prior_session_id}","lineageMode":"restart","generation":{generation},"archivedPath":"{spec_folder}/research_archive/{timestamp_slug}","timestamp":"{ISO_8601_NOW}"}'
+            skip_to: step_create_config
+          on_cancel_choice:
+            halt: true
+            message: "Research session preserved. Manually archive or edit research/ before re-running."
+          note: "fork and completed-continue branches are deferred. The reducer still reads `lineageMode` from config for dashboards and analysis, but only `new`, `resume`, and `restart` are runtime-supported in this release. See sk-deep-research/references/loop_protocol.md `Session Lifecycle` for the canonical one-session model."
         on_completed_session:
-          log: "Prior session already completed. Present completed-continue, restart, or fork choices rather than recreating state."
+          log: "Prior session already completed. Either archive the completed research/ tree and start a fresh session, or jump straight to synthesis with the existing artifacts."
           skip_to: phase_synthesis
         on_invalid_state:
           halt: true

@@ -110,10 +110,10 @@ Created during initialization. Not modified after creation.
 | reviewTargetType | string | `"spec-folder"` | `spec-folder`, `skill`, `agent`, `track`, `files` |
 | reviewDimensions | string[] | all 4 | Dimensions to evaluate |
 | sessionId | string | -- | Stable identifier for the current review lineage |
-| parentSessionId | string \| null | `null` | Parent lineage reference for restart/fork flows |
-| lineageMode | string | `"new"` | `new`, `resume`, `restart`, `fork`, `completed-continue` |
-| generation | number | 1 | Lineage generation number |
-| continuedFromRun | number \| null | `null` | Prior completed run reopened by completed-continue |
+| parentSessionId | string \| null | `null` | Parent lineage reference for restart flows |
+| lineageMode | string | `"new"` | `new`, `resume`, `restart`. `fork` and `completed-continue` are deferred and not emitted by the current runtime |
+| generation | number | 1 | Lineage generation number — incremented on `restart`, unchanged on `resume` |
+| continuedFromRun | number \| null | `null` | Count of completed iteration records at the lifecycle boundary (set on `resume` and `restart`) |
 | maxIterations | number | 7 | Hard cap on loop iterations |
 | convergenceThreshold | number | 0.10 | Stop when severity-weighted new findings ratio below this |
 | stuckThreshold | number | 2 | Consecutive no-progress iterations before recovery |

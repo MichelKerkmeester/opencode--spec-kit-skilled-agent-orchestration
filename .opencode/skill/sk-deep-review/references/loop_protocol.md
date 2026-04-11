@@ -519,20 +519,40 @@ If state files already exist from a prior session:
 2. **Count progress**: Read JSONL, count iteration records, determine last completed iteration
 3. **Read strategy**: Load current dimension progress, findings, and next focus from `deep-review-strategy.md`
 4. **Set counter**: Set iteration counter to last completed + 1
-5. **Log resume**: Append resume event to JSONL with lineage metadata:
+5. **Log resume**: Append the canonical resume event to `deep-review-state.jsonl`. The reducer requires every field below:
    ```json
-   {"type":"event","event":"resumed","lineageMode":"resume","sessionId":"rvw-...","generation":1,"fromIteration":N}
+   {"type":"event","event":"resumed","mode":"review","sessionId":"rvw-2026-03-24T10-00-00Z","parentSessionId":"rvw-2026-03-24T10-00-00Z","lineageMode":"resume","continuedFromRun":4,"generation":1,"archivedPath":null,"timestamp":"2026-03-24T14:05:00Z"}
    ```
 6. **Continue**: Enter the iteration loop from step_read_state
 
-### Lifecycle Branches
+### Lifecycle Branches (current release)
 
-| Mode | Contract |
-|------|----------|
-| `resume` | Continue the same `sessionId` and generation. |
-| `restart` | Archive current review state, start a new `sessionId`, increment generation, and set `parentSessionId`. |
-| `fork` | Copy current state as baseline, create a new `sessionId`, preserve ancestry, and continue on a new branch. |
-| `completed-continue` | Snapshot `review-report-v{generation}.md`, record `completedAt`/`reopenedAt`, and continue with amendment-only additions. |
+The runtime supports three lineage modes today. `fork` and `completed-continue` were described in earlier drafts but have no workflow wiring in this release, so they MUST NOT be exposed to operators. If the long-form lineage feature is picked up later it will arrive with first-class event emission, reducer ancestry handling, and replay fixtures; until then treat the contract below as canonical.
+
+| Mode | Session id | Generation | Archive | JSONL event | When to pick |
+|------|-----------|-----------|---------|-------------|--------------|
+| `new` | fresh | 1 | n/a | implicit (config record) | no existing state |
+| `resume` | same | same | none | `resumed` (see example above) | operator wants to continue the current lineage boundary |
+| `restart` | fresh | `prior + 1` | prior `review/` tree moved under `review_archive/{timestamp}/` | `restarted` (same field set plus non-null `archivedPath`) | operator wants to clear the workspace and replay with a new angle |
+
+**Contract for every persisted lifecycle event**:
+
+```json
+{
+  "type": "event",
+  "event": "resumed | restarted",
+  "mode": "review",
+  "sessionId": "<session id of the new or continuing lineage>",
+  "parentSessionId": "<session id of the prior lineage (equals sessionId on resume)>",
+  "lineageMode": "resume | restart",
+  "generation": <number>,
+  "continuedFromRun": <number or null>,
+  "archivedPath": "<path or null>",
+  "timestamp": "<ISO 8601>"
+}
+```
+
+Every field in the contract MUST be present on every persisted lifecycle event. `archivedPath` is null for `resumed` and set to the archive destination for `restarted`. `continuedFromRun` is the number of completed iteration records before the lifecycle boundary. Reducer parity tests ensure the dashboard `Lifecycle` section reads exactly those fields.
 
 ### State Validation on Resume
 

@@ -287,11 +287,13 @@ A session may NOT claim `converged` unless ALL gate bundles pass:
 
 Failed gates persist `blockedStop` with full gate results in the journal.
 
-### Resume/Continuation Semantics
+### Resume/Continuation Semantics (current release)
 
-Sessions support the following lineage modes: `new`, `resume`, `restart`, `fork`, `completed-continue`.
+Sessions support a single lineage mode today: `new`. Every invocation of the `/improve:agent` workflow starts a fresh session with a new session id and generation 1. Multi-generation lineage modes (`resume`, `restart`, `fork`, `completed-continue`) were described in earlier drafts but have no shipped runtime wiring in the improve-agent workflow, reducer, or journal consumer.
 
-On resume, the orchestrator replays the journal + coverage graph + registry before dispatch. The `continuedFromIteration` field tracks where the prior session left off.
+Operators who want to continue evaluating an agent after a prior session SHOULD archive the prior session folder (e.g. move `improve/` to `improve_archive/{timestamp}/`) and re-invoke the command, which starts a new `new`-mode session. The reducer treats each session independently and does not carry ancestry across sessions.
+
+If the long-form lineage feature is implemented later, it will arrive with first-class event emission in `improve_agent-improver_{auto,confirm}.yaml`, reducer ancestry handling in `sk-improve-agent/scripts/reduce-state.cjs`, and replay fixtures. Until then, treat every session as a standalone evaluation.
 
 ### Mutation Coverage Graph
 

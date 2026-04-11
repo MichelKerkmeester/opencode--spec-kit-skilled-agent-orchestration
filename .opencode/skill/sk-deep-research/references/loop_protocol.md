@@ -80,15 +80,42 @@ If state files already exist from a prior session:
 2. Read JSONL, count iteration records
 3. Read strategy.md for current state
 4. Set iteration counter to last completed + 1
-5. Log resume event to JSONL: `{"type":"event","event":"resumed","fromIteration":N}`
-6. Continue loop from step_read_state
+5. Append the canonical resume event to `deep-research-state.jsonl` (all fields below are required by the reducer):
 
-### Lifecycle Branch Contract
+```json
+{"type":"event","event":"resumed","mode":"research","sessionId":"rsr-2026-03-18T10-00-00Z","parentSessionId":"rsr-2026-03-18T10-00-00Z","lineageMode":"resume","continuedFromRun":4,"generation":1,"timestamp":"2026-03-18T14:05:00Z"}
+```
 
-- `resume`: same `sessionId`, no archive, continue from the active lineage boundary
-- `restart`: new `sessionId`, incremented `generation`, archive prior packet under `research/archive/{oldSessionId}/`
-- `fork`: new `sessionId`, preserve parent linkage, copy current state as branch baseline
-- `completed-continue`: snapshot `research/research.md` to `research/synthesis-v{generation}.md`, record `completedAt` and `reopenedAt`, then reopen as a new segment with parent linkage
+6. Continue loop from `step_read_state`.
+
+### Lifecycle Branch Contract (current release)
+
+The runtime supports three lineage modes today. `fork` and `completed-continue` were described in earlier drafts but have no workflow wiring in this release, so they MUST NOT be exposed to operators. If the long-form lineage feature is picked up later it will arrive with first-class event emission, reducer ancestry handling, and replay fixtures; until then treat the contract below as canonical.
+
+| Mode | Session id | Generation | Archive | JSONL event | When to pick |
+|------|-----------|-----------|---------|-------------|--------------|
+| `new` | fresh | 1 | n/a | implicit (config record) | no existing state |
+| `resume` | same | same | none | `resumed` (see example above) | operator wants to continue the current lineage boundary |
+| `restart` | fresh | `prior + 1` | prior `research/` tree moved under `research_archive/{timestamp}/` | `restarted` (same field set plus `archivedPath`) | operator wants to clear the workspace and replay with a new angle |
+
+**Contract for every persisted lifecycle event**:
+
+```json
+{
+  "type": "event",
+  "event": "resumed | restarted",
+  "mode": "research",
+  "sessionId": "<session id of the new or continuing lineage>",
+  "parentSessionId": "<session id of the prior lineage (equals sessionId on resume)>",
+  "lineageMode": "resume | restart",
+  "generation": <number>,
+  "continuedFromRun": <number or null>,
+  "archivedPath": "<path or null>",
+  "timestamp": "<ISO 8601>"
+}
+```
+
+Every field in the contract MUST be present on every persisted lifecycle event. `archivedPath` is null for `resumed` and set to the archive destination for `restarted`. `continuedFromRun` is the number of completed iteration records before the lifecycle boundary. Reducer parity tests ensure the dashboard `Lifecycle` section reads exactly those fields.
 
 ---
 
