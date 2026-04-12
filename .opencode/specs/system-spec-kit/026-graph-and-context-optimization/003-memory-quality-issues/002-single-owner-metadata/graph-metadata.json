@@ -49,7 +49,7 @@
       "plan"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "session-extractor.ts",
       "frontmatter-migration.ts",
@@ -62,9 +62,6 @@
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase2-pr4.test.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC4-importance-tier.json",
       ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json",
-      "npx vitest run tests/memory-quality-phase2-pr3.test.ts",
-      "npx vitest run tests/memory-quality-phase2-pr4.test.ts",
-      "git diff --stat -- .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
       "checklist.md",
       "implementation-summary.md",
       "workflow.ts",
@@ -137,24 +134,6 @@
         "name": "F-AC6-provenance.json",
         "kind": "config",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase2-pr3.test.ts",
-        "kind": "test",
-        "path": "npx vitest run tests/memory-quality-phase2-pr3.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase2-pr4.test.ts",
-        "kind": "test",
-        "path": "npx vitest run tests/memory-quality-phase2-pr4.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "workflow.ts",
-        "kind": "code",
-        "path": "git diff --stat -- .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
         "source": "derived"
       },
       {

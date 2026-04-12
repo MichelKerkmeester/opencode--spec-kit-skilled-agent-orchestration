@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "verification"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/009-readme-alignment-revisit"
@@ -31,6 +32,10 @@ _memory:
 | Status | Complete |
 | Created | 2026-04-12 |
 | Updated | 2026-04-12 |
+| Parent Spec | `../spec.md` |
+| Parent Plan | `../plan.md` |
+| Predecessor | `008-cmd-memory-speckit-revisit` |
+| Successor | `010-remove-shared-memory` |
 | Parent Packet | `006-canonical-continuity-refactor` |
 | Source Map | [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md) |
 <!-- /ANCHOR:metadata -->

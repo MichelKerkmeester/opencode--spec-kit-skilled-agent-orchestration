@@ -8,6 +8,15 @@ scope: final_rollout_plan_and_synthesis
 status: complete
 focus: "Phased rollout with validation checkpoints. Top 10 risks. Go/no-go criteria per phase. Cross-iteration synthesis."
 maps_to_questions: [Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-020.md"]
+
 ---
 
 # Iteration 020 — Rollout Plan + Final Synthesis

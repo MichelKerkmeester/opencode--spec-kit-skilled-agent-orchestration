@@ -20,18 +20,28 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a memory-quality validation operator, validate Outsourced Agent Memory Capture Round-Trip against cli-codex. Verify agent output contains structured memory section; saved context is discoverable via search. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Commands:
-  - Dispatch task via `cli-codex` (or any cli-* skill) with memory epilogue in prompt
+### Prompt
+
+`As a memory-quality validation operator, validate Outsourced Agent Memory Capture Round-Trip against cli-codex. Verify agent output contains structured memory section; saved context is discoverable via search. Return a concise pass/fail verdict with the main reason and cited evidence.`
+### Commands
+- Dispatch task via `cli-codex` (or any cli-* skill) with memory epilogue in prompt
   - Extract structured memory section from agent stdout
   - Write JSON to `/tmp/save-context-data.json`
   - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
   - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
   - `memory_search({ query: "<key term from agent session>", specFolder: "specs/<target-spec>" })`
-- Expected: Agent output contains structured memory section; saved context is discoverable via search.
-- Evidence: agent stdout with memory section + generate-context output + search result showing saved memory.
-- Pass: Saved memory from outsourced agent session is searchable and contains session summary, files modified, decisions.
-- Fail triage: Check memory epilogue in prompt template → Verify generate-context.js JSON mode input → Inspect agent stdout for structured section → Verify index scan ran post-save.
+### Expected
+
+Agent output contains structured memory section; saved context is discoverable via search.
+### Evidence
+
+agent stdout with memory section + generate-context output + search result showing saved memory.
+### Pass/Fail
+
+Saved memory from outsourced agent session is searchable and contains session summary, files modified, decisions.
+### Failure Triage
+
+Check memory epilogue in prompt template → Verify generate-context.js JSON mode input → Inspect agent stdout for structured section → Verify index scan ran post-save.
 
 #### M-005a: JSON-mode hard-fail (REQ-001)
 1. Create an invalid JSON file: `echo "not json" > /tmp/save-context-data.json`

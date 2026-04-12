@@ -44,11 +44,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level test contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-029 | Research iterations emit flat graphEvents | Verify completed research iterations emit `graphEvents` with flat `type` coverage (`question`, `finding`, `source`, `edge`). | As a manual-testing orchestrator, validate the flat graphEvents contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph-aware research convergence expects graphEvents in iteration records, and that the shipped state-format contract plus active graph tests use flat event types such as question, finding, source, and edge rather than question_node/finding_node wrappers. Return a concise operator-facing verdict. | 1. `bash: rg -n 'graphEvents|Graph Events|type \\| \"question\"|type \\| \"finding\"|type \\| \"source\"|type \\| \"edge\"' .opencode/skill/sk-deep-research/references/state_format.md` -> 2. `bash: rg -n 'graphEvents|iteration records|graph-aware convergence' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: rg -n \"type: 'question'|type: 'finding'|type: 'source'\" .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts` | `graphEvents` documented as iteration-record input; the state-format example uses flat `type` values; active graph tests use `question`, `finding`, and `source` node types. | Capture the state-format example row for `graphEvents`, the convergence reference lines that describe `graphEvents` in iteration records, and one active test snippet showing flat node types. | PASS if the state-format contract, convergence reference, and active graph tests agree that completed research iterations emit flat `graphEvents`; FAIL if any of those pieces are missing or still point at the older nested schema. | Privilege `references/state_format.md` for the payload contract, `references/convergence.md` for consumption semantics, and the active graph tests for implementation truth. If they diverge, treat the active tests plus state-format doc as current reality and flag any remaining nested-schema wording as drift. |
-
+### Prompt
+As a manual-testing orchestrator, validate the flat graphEvents contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph-aware research convergence expects graphEvents in iteration records, and that the shipped state-format contract plus active graph tests use flat event types such as question, finding, source, and edge rather than question_node/finding_node wrappers. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'graphEvents|Graph Events|type \\| \"question\"|type \\| \"finding\"|type \\| \"source\"|type \\| \"edge\"' .opencode/skill/sk-deep-research/references/state_format.md`
+2. `bash: rg -n 'graphEvents|iteration records|graph-aware convergence' .opencode/skill/sk-deep-research/references/convergence.md`
+3. `bash: rg -n \"type: 'question'|type: 'finding'|type: 'source'\" .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts`
+### Expected
+`graphEvents` documented as iteration-record input; the state-format example uses flat `type` values; active graph tests use `question`, `finding`, and `source` node types.
+### Evidence
+Capture the state-format example row for `graphEvents`, the convergence reference lines that describe `graphEvents` in iteration records, and one active test snippet showing flat node types.
+### Pass/Fail
+PASS if the state-format contract, convergence reference, and active graph tests agree that completed research iterations emit flat `graphEvents`; FAIL if any of those pieces are missing or still point at the older nested schema.
+### Failure Triage
+Privilege `references/state_format.md` for the payload contract, `references/convergence.md` for consumption semantics, and the active graph tests for implementation truth. If they diverge, treat the active tests plus state-format doc as current reality and flag any remaining nested-schema wording as drift.
 ---
 
 ## 4. SOURCE FILES

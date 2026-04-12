@@ -8,6 +8,16 @@ trigger_phrases:
   - "codesight AST detector research"
 importance_tier: critical
 contextType: spec
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: 002-codesight Research Phase
 
@@ -26,6 +36,7 @@ Phase 2 of `001-research-graph-context-systems` is a read-only audit of the code
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -37,6 +48,8 @@ Phase 2 of `001-research-graph-context-systems` is a read-only audit of the code
 | **Branch** | `main` (research-only phase, no branch needed) |
 | **Parent Spec** | `../spec.md` |
 | **Predecessor Phase** | `../001-claude-optimization-settings/spec.md` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

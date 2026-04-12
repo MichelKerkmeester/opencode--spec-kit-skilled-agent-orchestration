@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-007 | Iteration reads state before research | Verify that each dispatched iteration reads JSONL and strategy state before performing research actions. | As a manual-testing orchestrator, validate the read-state-first iteration contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop dispatch and the @deep-research agent both require reading JSONL and strategy state before any research actions. Return a concise operator verdict. | 1. `bash: rg -n 'Step 1: Read State|Read current state|read state first' .opencode/skill/sk-deep-research/references/loop_protocol.md .opencode/skill/sk-deep-research/SKILL.md` -> 2. `bash: rg -n 'step_read_state|current_iteration|next_focus' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` -> 3. `bash: sed -n '1,220p' .opencode/skill/sk-deep-research/references/quick_reference.md && sed -n '1,220p' .codex/agents/deep-research.toml` | Loop step order begins with state reads, the quick reference checklist says the same, and the agent definition starts with JSONL plus strategy reads. | Capture the loop step order, the quick-reference checklist, and the runtime agent step sequence. | PASS if all sources agree that state is read before research actions; FAIL if any source allows research before rehydrating state. | Check the agent sequence under `Single Iteration Protocol` if the higher-level docs look ambiguous. |
-
+### Prompt
+As a manual-testing orchestrator, validate the read-state-first iteration contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop dispatch and the @deep-research agent both require reading JSONL and strategy state before any research actions. Return a concise operator verdict.
+### Commands
+1. `bash: rg -n 'Step 1: Read State|Read current state|read state first' .opencode/skill/sk-deep-research/references/loop_protocol.md .opencode/skill/sk-deep-research/SKILL.md`
+2. `bash: rg -n 'step_read_state|current_iteration|next_focus' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+3. `bash: sed -n '1,220p' .opencode/skill/sk-deep-research/references/quick_reference.md && sed -n '1,220p' .codex/agents/deep-research.toml`
+### Expected
+Loop step order begins with state reads, the quick reference checklist says the same, and the agent definition starts with JSONL plus strategy reads.
+### Evidence
+Capture the loop step order, the quick-reference checklist, and the runtime agent step sequence.
+### Pass/Fail
+PASS if all sources agree that state is read before research actions; FAIL if any source allows research before rehydrating state.
+### Failure Triage
+Check the agent sequence under `Single Iteration Protocol` if the higher-level docs look ambiguous.
 ---
 
 ## 4. SOURCE FILES

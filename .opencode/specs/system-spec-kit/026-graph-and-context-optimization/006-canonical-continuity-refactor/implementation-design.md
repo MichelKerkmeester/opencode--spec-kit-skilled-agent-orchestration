@@ -1,7 +1,7 @@
 # Implementation Design — Phase 018 Canonical Continuity Refactor
 
 > **One-page executive summary** of the 20-iteration implementation design research.
-> Based on: `research/research.md` + `research/iterations/iteration-001.md` through `iteration-020.md` + `../scratch/phase-017-rerun-seed.md`
+> Based on: `research/research.md` + `research/iterations/iteration-001.md` through `research/iterations/iteration-020.md` + `scratch/phase-017-rerun-seed.md`
 
 ## The Recommendation
 
@@ -105,10 +105,10 @@ Phase 018 implementation should:
 1. Run the companion 5-iteration impact analysis research (`prompts/research-prompt-impact.md`) to get file-level change matrix
 2. Start with Gate A pre-work
 3. Use findings files under `findings/` for specific design decisions:
-   - `findings/routing-rules.md` — content classification rules
-   - `findings/feature-retargeting-map.md` — 13 features × retarget mechanism
-   - `findings/resume-journey.md` — resume UX walkthrough
-   - `findings/rollout-plan.md` — 6-gate rollout
+   - `003-gate-c-writer-ready/spec.md` — writer routing and merge contract
+   - `research/research.md` — feature-preservation and migration synthesis
+   - `004-gate-d-reader-ready/spec.md` — reader-ready resume journey
+   - `plan.md` — parent six-gate rollout plan
 4. Cite this document as the executive summary for sprint planning
 
 ## Decision

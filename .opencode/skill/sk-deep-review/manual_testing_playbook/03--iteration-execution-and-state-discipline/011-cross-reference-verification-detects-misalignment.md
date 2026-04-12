@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-011 | Cross-reference verification detects misalignment | Verify that cross-reference checks (spec_code, checklist_evidence, skill_agent protocols) detect misalignment. | As a manual-testing orchestrator, validate the cross-reference verification contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify traceability protocols (core: spec_code, checklist_evidence; overlay: skill_agent, agent_cross_runtime, feature_catalog_code, playbook_capability) are configured in the review config and that the traceability dimension dispatches cross-reference checks. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'crossReference|cross_reference|spec_code|checklist_evidence|skill_agent|agent_cross_runtime|feature_catalog_code|playbook_capability' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 2. `bash: rg -n 'traceability|cross.reference|TRACEABILITY PROTOCOLS' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 3. `bash: rg -n 'cross.reference|traceability|spec_code|checklist_evidence' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml` | The config includes crossReference with core and overlay protocols; the dispatch prompt includes traceability constraints; the quality guards require cross-reference checks before convergence. | Capture the crossReference config block, the traceability protocol list from the dispatch prompt, and the quality guard requirements. | PASS if core and overlay cross-reference protocols are configured and the traceability dimension dispatches them; FAIL if cross-reference checks are undocumented or not enforced. | Check the review_mode_contract.yaml for the full cross-reference protocol definitions and verify the YAML step_order_dimensions derives the traceability protocol plan. |
-
+### Prompt
+As a manual-testing orchestrator, validate the cross-reference verification contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify traceability protocols (core: spec_code, checklist_evidence; overlay: skill_agent, agent_cross_runtime, feature_catalog_code, playbook_capability) are configured in the review config and that the traceability dimension dispatches cross-reference checks. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'crossReference|cross_reference|spec_code|checklist_evidence|skill_agent|agent_cross_runtime|feature_catalog_code|playbook_capability' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+2. `bash: rg -n 'traceability|cross.reference|TRACEABILITY PROTOCOLS' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+3. `bash: rg -n 'cross.reference|traceability|spec_code|checklist_evidence' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml`
+### Expected
+The config includes crossReference with core and overlay protocols; the dispatch prompt includes traceability constraints; the quality guards require cross-reference checks before convergence.
+### Evidence
+Capture the crossReference config block, the traceability protocol list from the dispatch prompt, and the quality guard requirements.
+### Pass/Fail
+PASS if core and overlay cross-reference protocols are configured and the traceability dimension dispatches them; FAIL if cross-reference checks are undocumented or not enforced.
+### Failure Triage
+Check the review_mode_contract.yaml for the full cross-reference protocol definitions and verify the YAML step_order_dimensions derives the traceability protocol plan.
 ---
 
 ## 4. SOURCE FILES

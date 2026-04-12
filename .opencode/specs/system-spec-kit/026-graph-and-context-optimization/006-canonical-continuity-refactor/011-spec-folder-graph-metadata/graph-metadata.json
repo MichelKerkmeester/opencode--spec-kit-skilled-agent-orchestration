@@ -54,7 +54,7 @@
       "plan"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "graph-metadata.json",
       "spec.md",

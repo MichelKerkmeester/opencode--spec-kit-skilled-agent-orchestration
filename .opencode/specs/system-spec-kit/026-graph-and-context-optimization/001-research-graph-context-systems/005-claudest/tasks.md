@@ -7,6 +7,16 @@ trigger_phrases:
   - "claudest deep-research tasks"
 importance_tier: critical
 contextType: tasks
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["tasks.md"]
+
 ---
 # Tasks: 005-claudest Research Phase
 
@@ -132,8 +142,8 @@ contextType: tasks
 - **implementation-summary.md** — Outcome summary with the 20-row iteration log and roadmap highlights
 - **research/research.md** — Canonical synthesis (19 sections including continuation §18.1-§18.5 and roadmap §19)
 - **research/iterations/iteration-001.md** through **research/iterations/iteration-020.md** — Per-iteration findings
-- **memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md** — Indexed generation-1 memory artifact (memory #1845)
-- **memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md** — Generation-2 continuation memory artifact retained as a write-only persistence record under the current indexing policy
+- **research/research.md** — Canonical generation-1 synthesis plus generation-2 roadmap
+- **implementation-summary.md** — Canonical generation-2 continuation closeout and caveat record
 
 
 <!-- /ANCHOR:cross-refs -->

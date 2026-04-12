@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "implementation"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/004-gate-d-reader-ready"

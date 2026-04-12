@@ -1,0 +1,33 @@
+{
+  "sessionId": "2026-04-12T17:10:00Z-009-readme-alignment-revisit",
+  "openFindings": [
+    {
+      "id": "DR-009-I005-P1-001",
+      "severity": "P1",
+      "title": "lib/graph/README.md omits the live graph-metadata parser and schema files from the module inventory",
+      "dimension": "traceability",
+      "status": "open"
+    },
+    {
+      "id": "DR-009-I006-P1-002",
+      "severity": "P1",
+      "title": "lib/config/README.md still describes an 8-document spec inventory and removed memory-folder examples",
+      "dimension": "maintainability",
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 0
+  },
+  "convergenceScore": 1.0
+}

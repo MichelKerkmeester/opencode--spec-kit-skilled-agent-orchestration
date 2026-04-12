@@ -172,6 +172,37 @@ describe('Gate D resume ladder in memory-context', () => {
     expect(memorySearchSpy).not.toHaveBeenCalled();
   });
 
+  it('still prefers handover when implementation-summary.md is missing entirely', async () => {
+    const specFolder = makeTempSpecFolder();
+    tempFolders.push(specFolder);
+
+    writeMarkdown(
+      path.join(specFolder, 'handover.md'),
+      buildBaseMarkdown('Handover', '# Latest Handover\nResume from the handover when continuity is unavailable.'),
+    );
+    writeMarkdown(
+      path.join(specFolder, 'tasks.md'),
+      buildBaseMarkdown('Tasks', '# Tasks\n- [ ] Gate D should still resume from handover.'),
+    );
+
+    const response = await handleMemoryContext({
+      input: 'resume previous work',
+      mode: 'resume',
+      specFolder,
+    });
+
+    const nested = parseResumeEnvelope(response);
+    const data = nested.data as Record<string, unknown>;
+    const results = data.results as Array<Record<string, unknown>>;
+    const resumeLadder = data.resumeLadder as Record<string, unknown>;
+
+    expect(resumeLadder.source).toBe('handover');
+    expect(results).toHaveLength(1);
+    expect(results[0].documentType).toBe('handover');
+    expect(results[0].filePath).toContain('handover.md');
+    expect(memorySearchSpy).not.toHaveBeenCalled();
+  });
+
   // Deep-review regression coverage for spec-doc fallback when continuity is malformed.
   it('falls back to spec docs when continuity is malformed', async () => {
     const specFolder = makeTempSpecFolder();
@@ -218,6 +249,43 @@ describe('Gate D resume ladder in memory-context', () => {
     expect(results.some((row) => String(row.filePath).includes('spec.md'))).toBe(true);
     expect(results.some((row) => String(row.filePath).includes('tasks.md'))).toBe(true);
     expect((resumeLadder.warnings as string[]).length).toBeGreaterThan(0);
+    expect(memorySearchSpy).not.toHaveBeenCalled();
+  });
+
+  it('falls back to other canonical spec docs when implementation-summary.md is absent', async () => {
+    const specFolder = makeTempSpecFolder();
+    tempFolders.push(specFolder);
+
+    writeMarkdown(
+      path.join(specFolder, 'spec.md'),
+      buildBaseMarkdown('Spec', '# Spec\nFallback to canonical spec docs when continuity is missing.'),
+    );
+    writeMarkdown(
+      path.join(specFolder, 'decision-record.md'),
+      buildBaseMarkdown('Decision Record', '# Decision\nKeep resume readable from spec docs alone.'),
+    );
+    writeMarkdown(
+      path.join(specFolder, 'checklist.md'),
+      buildBaseMarkdown('Checklist', '# Checklist\n- [ ] Confirm Gate D spec-doc fallback.'),
+    );
+
+    const response = await handleMemoryContext({
+      input: 'resume previous work',
+      mode: 'resume',
+      specFolder,
+    });
+
+    const nested = parseResumeEnvelope(response);
+    const data = nested.data as Record<string, unknown>;
+    const results = data.results as Array<Record<string, unknown>>;
+    const resumeLadder = data.resumeLadder as Record<string, unknown>;
+
+    expect(resumeLadder.source).toBe('spec_docs');
+    expect(results.length).toBeGreaterThanOrEqual(3);
+    expect(results.every((row) => row.documentType === 'spec_doc')).toBe(true);
+    expect(results.some((row) => String(row.filePath).includes('spec.md'))).toBe(true);
+    expect(results.some((row) => String(row.filePath).includes('decision-record.md'))).toBe(true);
+    expect(results.some((row) => String(row.filePath).includes('checklist.md'))).toBe(true);
     expect(memorySearchSpy).not.toHaveBeenCalled();
   });
 });

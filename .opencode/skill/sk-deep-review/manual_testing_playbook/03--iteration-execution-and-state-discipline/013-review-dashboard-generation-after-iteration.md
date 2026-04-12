@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-013 | Review dashboard generation after iteration | Verify that the dashboard with Findings Summary, Progress Table, Coverage, and Trend is generated after each iteration. | As a manual-testing orchestrator, validate the dashboard generation contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify step_generate_dashboard runs after each iteration, reads from JSONL and strategy, and writes deep-review-dashboard.md with Findings Summary, Progress Table, Coverage, and Trend sections. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'step_generate_dashboard|dashboard' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 2. `bash: sed -n '1,220p' .opencode/skill/sk-deep-review/assets/deep_review_dashboard.md` -> 3. `bash: rg -n 'dashboard|deep-review-dashboard' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | The step_generate_dashboard runs after validation; it reads JSONL and strategy; it writes deep-review-dashboard.md; the output includes Findings Summary, Progress Table, Coverage, and Next Focus sections. | Capture the dashboard step position in the loop, the output template format, and the state_paths dashboard entry. | PASS if the dashboard step runs after each iteration and produces all expected sections; FAIL if the step is missing from the loop or the output template is incomplete. | Compare the dashboard template in assets/ with the YAML step_generate_dashboard format block to verify they agree on section structure. |
-
+### Prompt
+As a manual-testing orchestrator, validate the dashboard generation contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify step_generate_dashboard runs after each iteration, reads from JSONL and strategy, and writes deep-review-dashboard.md with Findings Summary, Progress Table, Coverage, and Trend sections. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'step_generate_dashboard|dashboard' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+2. `bash: sed -n '1,220p' .opencode/skill/sk-deep-review/assets/deep_review_dashboard.md`
+3. `bash: rg -n 'dashboard|deep-review-dashboard' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+### Expected
+The step_generate_dashboard runs after validation; it reads JSONL and strategy; it writes deep-review-dashboard.md; the output includes Findings Summary, Progress Table, Coverage, and Next Focus sections.
+### Evidence
+Capture the dashboard step position in the loop, the output template format, and the state_paths dashboard entry.
+### Pass/Fail
+PASS if the dashboard step runs after each iteration and produces all expected sections; FAIL if the step is missing from the loop or the output template is incomplete.
+### Failure Triage
+Compare the dashboard template in assets/ with the YAML step_generate_dashboard format block to verify they agree on section structure.
 ---
 
 ## 4. SOURCE FILES

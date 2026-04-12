@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-006 | Invalid or contradictory review state halts for repair | Verify that invalid state (missing JSONL, corrupted config, contradictory artifacts) halts with a repair message instead of proceeding. | As a manual-testing orchestrator, validate the invalid-state detection contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify step_classify_session classifies partial, missing, or contradictory review state as "invalid-state" and halts with a repair message. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'invalid.state|on_invalid|halt|repair|contradictory|partial' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 2. `bash: rg -n 'invalid.state|on_invalid|halt|repair' .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'on_conflict|on_canonical_present|contradictory' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | The classify step has an explicit "invalid-state" classification for partial or contradictory combinations; it halts with a descriptive message; the migration step halts on canonical/legacy conflicts. | Capture the classify step invalid-state rule, the halt message text, and the migration conflict handling. | PASS if invalid state consistently triggers a halt with an actionable repair message; FAIL if any invalid state combination proceeds silently. | Enumerate all possible partial-state combinations (config only, JSONL only, strategy only, pairs without the third) and verify each maps to invalid-state. |
-
+### Prompt
+As a manual-testing orchestrator, validate the invalid-state detection contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify step_classify_session classifies partial, missing, or contradictory review state as "invalid-state" and halts with a repair message. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'invalid.state|on_invalid|halt|repair|contradictory|partial' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+2. `bash: rg -n 'invalid.state|on_invalid|halt|repair' .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'on_conflict|on_canonical_present|contradictory' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+### Expected
+The classify step has an explicit "invalid-state" classification for partial or contradictory combinations; it halts with a descriptive message; the migration step halts on canonical/legacy conflicts.
+### Evidence
+Capture the classify step invalid-state rule, the halt message text, and the migration conflict handling.
+### Pass/Fail
+PASS if invalid state consistently triggers a halt with an actionable repair message; FAIL if any invalid state combination proceeds silently.
+### Failure Triage
+Enumerate all possible partial-state combinations (config only, JSONL only, strategy only, pairs without the third) and verify each maps to invalid-state.
 ---
 
 ## 4. SOURCE FILES

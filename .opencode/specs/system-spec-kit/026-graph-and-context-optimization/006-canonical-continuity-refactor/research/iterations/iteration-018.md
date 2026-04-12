@@ -8,6 +8,15 @@ scope: synthesis_user_journey
 status: complete
 focus: "Compose a single narrative walkthrough of a complete packet lifecycle under Option C: plan → work → save → resume → search → close."
 maps_to_questions: [Q1, Q2, Q3, Q4, Q5, Q6, Q9]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-018.md"]
+
 ---
 
 # Iteration 018 — End-to-End User Journey

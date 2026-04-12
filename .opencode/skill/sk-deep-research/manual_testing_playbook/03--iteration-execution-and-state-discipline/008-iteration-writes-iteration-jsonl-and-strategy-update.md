@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-008 | Iteration writes iteration-NNN.md, JSONL record, and reducer refresh | Verify that each completed iteration writes the detailed iteration file, appends JSONL, and enables reducer-owned packet synchronization. | As a manual-testing orchestrator, validate the iteration write-back contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify each iteration writes iteration-NNN.md, appends a JSONL iteration record, and triggers reducer-owned refresh of deep-research-strategy.md, findings-registry.json, and deep-research-dashboard.md. Return a concise operator-facing verdict. | 1. `bash: rg -n 'iteration-{NNN}|Verify JSONL was appended|reducer refreshed' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: rg -n 'iteration-NNN|deep-research-state.jsonl|findings-registry.json|Reducer Contract' .opencode/skill/sk-deep-research/references/state_format.md .codex/agents/deep-research.toml` -> 3. `bash: rg -n 'step_reduce_state|reduce-state.cjs|findings-registry.json|deep-research-dashboard.md' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Iteration file creation, JSONL append, and reducer refresh are all mandatory parts of the loop, not optional side effects. | Capture the iteration artifact, the JSONL append, and the reducer-owned refresh surfaces. | PASS if all sources require the iteration file, JSONL append, and reducer refresh together; FAIL if any source treats one of them as optional. | Use the reducer script and runtime agent write contract as the lower-level source of truth when the overview docs are concise. |
-
+### Prompt
+As a manual-testing orchestrator, validate the iteration write-back contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify each iteration writes iteration-NNN.md, appends a JSONL iteration record, and triggers reducer-owned refresh of deep-research-strategy.md, findings-registry.json, and deep-research-dashboard.md. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'iteration-{NNN}|Verify JSONL was appended|reducer refreshed' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+2. `bash: rg -n 'iteration-NNN|deep-research-state.jsonl|findings-registry.json|Reducer Contract' .opencode/skill/sk-deep-research/references/state_format.md .codex/agents/deep-research.toml`
+3. `bash: rg -n 'step_reduce_state|reduce-state.cjs|findings-registry.json|deep-research-dashboard.md' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+### Expected
+Iteration file creation, JSONL append, and reducer refresh are all mandatory parts of the loop, not optional side effects.
+### Evidence
+Capture the iteration artifact, the JSONL append, and the reducer-owned refresh surfaces.
+### Pass/Fail
+PASS if all sources require the iteration file, JSONL append, and reducer refresh together; FAIL if any source treats one of them as optional.
+### Failure Triage
+Use the reducer script and runtime agent write contract as the lower-level source of truth when the overview docs are concise.
 ---
 
 ## 4. SOURCE FILES

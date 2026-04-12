@@ -5,6 +5,7 @@ trigger_phrases: ["018 010 spec", "remove shared memory", "hard delete shared me
 importance_tier: "critical"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/010-remove-shared-memory"
@@ -31,6 +32,10 @@ _memory:
 | **Status** | Complete |
 | **Created** | 2026-04-12 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `009-readme-alignment-revisit` |
+| **Successor** | `011-spec-folder-graph-metadata` |
 <!-- /ANCHOR:metadata -->
 
 ---

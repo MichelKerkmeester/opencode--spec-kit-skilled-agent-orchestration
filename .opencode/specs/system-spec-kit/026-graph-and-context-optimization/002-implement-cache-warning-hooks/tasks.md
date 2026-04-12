@@ -8,6 +8,16 @@ trigger_phrases:
   - "idempotency"
 importance_tier: "normal"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["tasks.md"]
+
 ---
 # Tasks: Cache-Warning Hook System
 
@@ -56,7 +66,7 @@ contextType: "planning"
 - [x] T009 [P0] Extend `HookState` with additive producer metadata only (`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`) [EVIDENCE: `HookState` now carries `producerMetadata` with `lastClaudeTurnAt`, transcript reference, and cache-token fields.]
 - [x] T010 [P0] Keep `claudeSessionId` primary and `speckitSessionId` nullable in the updated seam (`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`) [EVIDENCE: `speckitSessionId` is now nullable and replay tests assert the Stop-path state keeps `claudeSessionId` primary.]
 - [x] T011 [P0] Persist bounded transcript identity or reference and cache-token carry-forward fields in Stop writer flow (`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`) [EVIDENCE: `session-stop.ts` writes transcript fingerprint/path/mtime/size plus cache token carry-forward data into hook state.]
-- [x] T012 [P0] Confirm `session-stop.ts` remains a producer boundary, not an analytics reader (`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`) [EVIDENCE: the implementation only writes additive state and replay tests target writer behavior; no analytics reader or startup consumer was added.]
+- [x] T012 [P0] Confirm `session-stop.ts` remains a producer boundary, not an analytics reader (`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`) [EVIDENCE: the implementation keeps autosave on by default, writes additive producer state, and replay tests target writer behavior; no analytics reader or startup consumer was added.]
 - [x] T013 [P1] Verify `session-prime.ts` stays unchanged in active scope or additive-safe only (read-only check) [EVIDENCE: `git diff --name-only -- .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts .claude/settings.local.json` returned no changes.]
 
 ### Phase C: Idempotent Verification and Handoff
@@ -85,7 +95,7 @@ contextType: "planning"
 - [x] All P0 tasks marked `[x]` with evidence
 - [x] No `[B]` blocked tasks remaining
 - [x] Packet no longer claims active `UserPromptSubmit` or settings mutation work
-- [x] Producer-only boundary is explicit across all packet docs
+- [x] Producer-only boundary is explicit across all packet docs, with Stop-hook autosave described as the default writer behavior
 - [x] Predecessor and follow-on order are documented honestly
 <!-- /ANCHOR:completion -->
 

@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-009 | Review iteration writes findings, JSONL, and strategy update | Verify that each iteration writes iteration-NNN.md with P0/P1/P2 findings, appends a JSONL record, and updates the strategy. | As a manual-testing orchestrator, validate the per-iteration write contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify each iteration writes iteration-NNN.md with P0/P1/P2 classified findings, appends a JSONL record with severity counts, and updates deep-review-strategy.md. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'iteration-NNN\|iteration-{NNN}\|iteration_pattern\|Write.*iteration' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 2. `bash: rg -n 'step_validate_iteration\|iteration_file_written\|jsonl_appended\|strategy_updated\|on_missing_outputs' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 3. `bash: rg -n 'iteration-NNN\|JSONL\|strategy\|Write.*findings\|P0.*P1.*P2' .opencode/skill/sk-deep-review/references/quick_reference.md` | The dispatch prompt requires writing iteration-NNN.md, appending JSONL, and updating strategy; the post-dispatch validation checks for all three; the quick reference checklist documents the same outputs. | Capture the dispatch constraints, the validation step required outputs, and the quick reference iteration checklist. | PASS if all sources agree on the three required outputs and their formats; FAIL if any output is undocumented or the validation step does not check for it. | Inspect the on_missing_outputs fallback to verify that error handling still appends a JSONL record even when the agent fails to complete its outputs. |
-
+### Prompt
+As a manual-testing orchestrator, validate the per-iteration write contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify each iteration writes iteration-NNN.md with P0/P1/P2 classified findings, appends a JSONL record with severity counts, and updates deep-review-strategy.md. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'iteration-NNN\|iteration-{NNN}\|iteration_pattern\|Write.*iteration' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+2. `bash: rg -n 'step_validate_iteration\|iteration_file_written\|jsonl_appended\|strategy_updated\|on_missing_outputs' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+3. `bash: rg -n 'iteration-NNN\|JSONL\|strategy\|Write.*findings\|P0.*P1.*P2' .opencode/skill/sk-deep-review/references/quick_reference.md`
+### Expected
+The dispatch prompt requires writing iteration-NNN.md, appending JSONL, and updating strategy; the post-dispatch validation checks for all three; the quick reference checklist documents the same outputs.
+### Evidence
+Capture the dispatch constraints, the validation step required outputs, and the quick reference iteration checklist.
+### Pass/Fail
+PASS if all sources agree on the three required outputs and their formats; FAIL if any output is undocumented or the validation step does not check for it.
+### Failure Triage
+Inspect the on_missing_outputs fallback to verify that error handling still appends a JSONL record even when the agent fails to complete its outputs.
 ---
 
 ## 4. SOURCE FILES

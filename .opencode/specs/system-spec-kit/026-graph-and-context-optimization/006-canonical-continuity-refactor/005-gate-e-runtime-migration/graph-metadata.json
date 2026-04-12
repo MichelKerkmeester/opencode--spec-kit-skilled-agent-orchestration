@@ -43,7 +43,7 @@
       "decision-record.md",
       "implementation-summary.md",
       "tests/memory-save-integration.vitest.ts",
-      "node ./scripts/node_modules/vitest/vitest.mjs run --config ./mcp_server/vitest.config.ts scripts/tests/outsourced-agent-handback-docs.vitest.ts scripts/tests/generate-context-cli-authority.vitest.ts",
+      "scripts/tests/generate-context-cli-authority.vitest.ts",
       "_memory.continuity",
       "generate-context.js",
       "scripts/tests/outsourced-agent-handback-docs.vitest.ts",
@@ -96,7 +96,7 @@
       {
         "name": "generate-context-cli-authority.vitest.ts",
         "kind": "test",
-        "path": "node ./scripts/node_modules/vitest/vitest.mjs run --config ./mcp_server/vitest.config.ts scripts/tests/outsourced-agent-handback-docs.vitest.ts scripts/tests/generate-context-cli-authority.vitest.ts",
+        "path": "scripts/tests/generate-context-cli-authority.vitest.ts",
         "source": "derived"
       },
       {

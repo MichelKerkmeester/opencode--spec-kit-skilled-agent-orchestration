@@ -1,0 +1,26 @@
+{
+  "sessionId": "2026-04-12T17:15:00Z-010-remove-shared-memory",
+  "openFindings": [
+    {
+      "id": "DR-010-I007-P1-001",
+      "severity": "P1",
+      "title": "Live runtime still ships shared_space_id schema-column identifiers in vector-index-schema.ts",
+      "dimension": "correctness",
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "convergenceScore": 1.0
+}

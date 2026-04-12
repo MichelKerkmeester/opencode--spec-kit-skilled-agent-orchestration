@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-022 | Resume after pause sentinel removal | Verify removing pause sentinel lets review resume from read-state without re-running completed iterations. | As a manual-testing orchestrator, validate the resume-after-pause contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify when the operator removes review/.deep-review-pause, the review loop re-reads deep-review-state.jsonl and deep-review-strategy.md, determines the correct iteration number, and resumes dispatching from the next iteration without re-running completed iterations. Return a concise operator-facing verdict. | 1. `bash: rg -n 'resume|re-read|read.state|iteration.*count|last.*iteration|Delete.*pause|sentinel.*removal' .opencode/skill/sk-deep-review/references/loop_protocol.md .opencode/skill/sk-deep-review/references/state_format.md` -> 2. `bash: rg -n 'resume|read_state|re_read|iteration_count|last_iteration|pause.*removed|sentinel.*delete' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'resume|pause.*delete|pick up|restart|continue.*review' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md .opencode/command/spec_kit/deep-review.md` | Removing sentinel triggers loop re-entry, JSONL re-read determines last iteration, strategy.md provides dimension state, no iterations re-run, and resume event logged. | Capture the resume flow from loop protocol, the YAML state re-read mechanism, and the user-facing resume instructions. | PASS if removing the sentinel resumes correctly from persisted state; FAIL if the loop restarts from iteration 1 or loses prior findings. | Privilege the loop protocol for resume flow and the state format reference for JSONL iteration counting; use YAML as enforcement confirmation. |
-
+### Prompt
+As a manual-testing orchestrator, validate the resume-after-pause contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify when the operator removes review/.deep-review-pause, the review loop re-reads deep-review-state.jsonl and deep-review-strategy.md, determines the correct iteration number, and resumes dispatching from the next iteration without re-running completed iterations. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'resume|re-read|read.state|iteration.*count|last.*iteration|Delete.*pause|sentinel.*removal' .opencode/skill/sk-deep-review/references/loop_protocol.md .opencode/skill/sk-deep-review/references/state_format.md`
+2. `bash: rg -n 'resume|read_state|re_read|iteration_count|last_iteration|pause.*removed|sentinel.*delete' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'resume|pause.*delete|pick up|restart|continue.*review' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md .opencode/command/spec_kit/deep-review.md`
+### Expected
+Removing sentinel triggers loop re-entry, JSONL re-read determines last iteration, strategy.md provides dimension state, no iterations re-run, and resume event logged.
+### Evidence
+Capture the resume flow from loop protocol, the YAML state re-read mechanism, and the user-facing resume instructions.
+### Pass/Fail
+PASS if removing the sentinel resumes correctly from persisted state; FAIL if the loop restarts from iteration 1 or loses prior findings.
+### Failure Triage
+Privilege the loop protocol for resume flow and the state format reference for JSONL iteration counting; use YAML as enforcement confirmation.
 ---
 
 ## 4. SOURCE FILES

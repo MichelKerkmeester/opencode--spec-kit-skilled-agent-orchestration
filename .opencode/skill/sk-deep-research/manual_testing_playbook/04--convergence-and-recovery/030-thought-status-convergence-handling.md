@@ -41,11 +41,21 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-030 | Thought status handling in convergence | Verify that thought iterations are handled correctly in convergence and do not count as stuck or toward rolling average. | As a manual-testing orchestrator, validate the thought-status convergence contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify state_format.md defines "thought" as a valid iteration status marking analytical-only iterations, that convergence.md documents how thought iterations are excluded from stuck counting and the rolling average, and that SKILL.md lists it in the status taxonomy. Return a concise operator-facing verdict. | 1. `bash: rg -n 'thought' .opencode/skill/sk-deep-research/references/state_format.md` -> 2. `bash: rg -n 'thought\|rolling.average\|stuckCount' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: rg -n 'thought\|insight\|stuck' .opencode/skill/sk-deep-research/SKILL.md` -> 4. `bash: rg -n 'stuck_count\|thought' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Iteration with status="thought", convergence treats it appropriately (does not count as stuck, does not count toward rolling average). | Capture the state_format.md thought status definition, the convergence.md handling rules for thought iterations, and the SKILL.md iteration status taxonomy. | PASS if state_format.md defines "thought" status AND convergence.md confirms thought iterations are excluded from stuck counting and rolling average; FAIL if thought iterations affect convergence signals or the documentation is contradictory. | Privilege state_format.md for the status taxonomy and convergence.md for the algorithm; use SKILL.md and YAML only as secondary confirmation. |
-
+### Prompt
+As a manual-testing orchestrator, validate the thought-status convergence contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify state_format.md defines "thought" as a valid iteration status marking analytical-only iterations, that convergence.md documents how thought iterations are excluded from stuck counting and the rolling average, and that SKILL.md lists it in the status taxonomy. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'thought' .opencode/skill/sk-deep-research/references/state_format.md`
+2. `bash: rg -n 'thought\|rolling.average\|stuckCount' .opencode/skill/sk-deep-research/references/convergence.md`
+3. `bash: rg -n 'thought\|insight\|stuck' .opencode/skill/sk-deep-research/SKILL.md`
+4. `bash: rg -n 'stuck_count\|thought' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+### Expected
+Iteration with status="thought", convergence treats it appropriately (does not count as stuck, does not count toward rolling average).
+### Evidence
+Capture the state_format.md thought status definition, the convergence.md handling rules for thought iterations, and the SKILL.md iteration status taxonomy.
+### Pass/Fail
+PASS if state_format.md defines "thought" status AND convergence.md confirms thought iterations are excluded from stuck counting and rolling average; FAIL if thought iterations affect convergence signals or the documentation is contradictory.
+### Failure Triage
+Privilege state_format.md for the status taxonomy and convergence.md for the algorithm; use SKILL.md and YAML only as secondary confirmation.
 ---
 
 ## 4. SOURCE FILES

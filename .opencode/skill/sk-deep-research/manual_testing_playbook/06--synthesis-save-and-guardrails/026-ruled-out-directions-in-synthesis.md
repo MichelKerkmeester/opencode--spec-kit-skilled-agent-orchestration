@@ -41,11 +41,21 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-026 | Ruled-out directions synthesized | Verify that iteration ruledOut data is consolidated into Eliminated Alternatives in research/research.md. | As a manual-testing orchestrator, validate the ruled-out directions synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the synthesis phase consolidates ruledOut entries from JSONL records and ## Dead Ends sections from iteration files into a mandatory "Eliminated Alternatives" section in research/research.md. Verify that strategy.md also tracks ruled-out directions per iteration. Return a concise operator-facing verdict. | 1. `bash: rg -n 'Eliminated Alternatives\|ruledOut\|Dead Ends\|negative knowledge' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: rg -n 'ruledOut\|Ruled Out\|Dead Ends' .opencode/skill/sk-deep-research/references/state_format.md` -> 3. `bash: sed -n '/ANCHOR:ruled-out-directions/,/\/ANCHOR:ruled-out-directions/p' .opencode/skill/sk-deep-research/assets/deep_research_strategy.md` -> 4. `bash: rg -n 'rule.*10\|ruled-out' .opencode/skill/sk-deep-research/SKILL.md` | research/research.md has mandatory "Eliminated Alternatives" section as a table; iteration files have `## Ruled Out` and `## Dead Ends` sections; strategy.md has `## 10. Ruled Out Directions` section; JSONL records include `ruledOut` array; ALWAYS rule 10 mandates per-iteration documentation of ruled-out directions. | Capture the loop protocol synthesis rules (Step 3 with Eliminated Alternatives), the state format ruledOut array schema and iteration file requirements, the strategy template Ruled Out Directions section, and SKILL.md ALWAYS rule 10. | PASS if the synthesis phase produces an "Eliminated Alternatives" section in research/research.md consolidating all ruledOut and Dead Ends data, and upstream sources consistently feed this section; FAIL if the section is missing, data is not consolidated, or upstream sources lack the required fields. | Privilege the loop protocol synthesis rules for the canonical consolidation contract; use state_format.md for the ruledOut schema and strategy template for the per-iteration tracking surface. |
-
+### Prompt
+As a manual-testing orchestrator, validate the ruled-out directions synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the synthesis phase consolidates ruledOut entries from JSONL records and ## Dead Ends sections from iteration files into a mandatory "Eliminated Alternatives" section in research/research.md. Verify that strategy.md also tracks ruled-out directions per iteration. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'Eliminated Alternatives\|ruledOut\|Dead Ends\|negative knowledge' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+2. `bash: rg -n 'ruledOut\|Ruled Out\|Dead Ends' .opencode/skill/sk-deep-research/references/state_format.md`
+3. `bash: sed -n '/ANCHOR:ruled-out-directions/,/\/ANCHOR:ruled-out-directions/p' .opencode/skill/sk-deep-research/assets/deep_research_strategy.md`
+4. `bash: rg -n 'rule.*10\|ruled-out' .opencode/skill/sk-deep-research/SKILL.md`
+### Expected
+research/research.md has mandatory "Eliminated Alternatives" section as a table; iteration files have `## Ruled Out` and `## Dead Ends` sections; strategy.md has `## 10. Ruled Out Directions` section; JSONL records include `ruledOut` array; ALWAYS rule 10 mandates per-iteration documentation of ruled-out directions.
+### Evidence
+Capture the loop protocol synthesis rules (Step 3 with Eliminated Alternatives), the state format ruledOut array schema and iteration file requirements, the strategy template Ruled Out Directions section, and SKILL.md ALWAYS rule 10.
+### Pass/Fail
+PASS if the synthesis phase produces an "Eliminated Alternatives" section in research/research.md consolidating all ruledOut and Dead Ends data, and upstream sources consistently feed this section; FAIL if the section is missing, data is not consolidated, or upstream sources lack the required fields.
+### Failure Triage
+Privilege the loop protocol synthesis rules for the canonical consolidation contract; use state_format.md for the ruledOut schema and strategy template for the per-iteration tracking surface.
 ---
 
 ## 4. SOURCE FILES

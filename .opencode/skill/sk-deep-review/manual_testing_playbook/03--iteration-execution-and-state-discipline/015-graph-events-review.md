@@ -44,11 +44,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level test contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-015 | Review iterations emit structured graphEvents | Verify completed review iterations emit `graphEvents` with `dimension_node`, `file_node`, and `finding_node` coverage. | As a manual-testing orchestrator, validate the structured graphEvents contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph-aware review convergence expects graphEvents in iteration records, and that graph replay tests show review JSONL records carrying dimension_node, file_node, and finding_node entries. Return a concise operator-facing verdict. | 1. `bash: rg -n 'graphEvents|review iteration records|graph-aware review convergence' .opencode/skill/sk-deep-review/references/convergence.md` -> 2. `bash: rg -n 'graphEvents|dimension_node|file_node|finding_node|reviewNodeTypes' .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-db.vitest.ts` -> 3. `bash: rg -n 'graphEvents|finding_node' .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts` | `graphEvents` used as iteration-record input; replay tests show review node-type coverage including `dimension_node`, `file_node`, and `finding_node`. | Capture the convergence reference lines that describe `graphEvents` in review iteration records, the review node-type list, and one replay example showing JSONL-shaped `graphEvents`. | PASS if the convergence reference and replay tests agree that completed review iterations emit `graphEvents` and that review graph node coverage includes `dimension_node`, `file_node`, and `finding_node`; FAIL if any of those pieces are missing or contradictory. | Privilege the convergence reference for the contract and the replay tests for concrete review node-type evidence. |
-
+### Prompt
+As a manual-testing orchestrator, validate the structured graphEvents contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph-aware review convergence expects graphEvents in iteration records, and that graph replay tests show review JSONL records carrying dimension_node, file_node, and finding_node entries. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'graphEvents|review iteration records|graph-aware review convergence' .opencode/skill/sk-deep-review/references/convergence.md`
+2. `bash: rg -n 'graphEvents|dimension_node|file_node|finding_node|reviewNodeTypes' .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-db.vitest.ts`
+3. `bash: rg -n 'graphEvents|finding_node' .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts`
+### Expected
+`graphEvents` used as iteration-record input; replay tests show review node-type coverage including `dimension_node`, `file_node`, and `finding_node`.
+### Evidence
+Capture the convergence reference lines that describe `graphEvents` in review iteration records, the review node-type list, and one replay example showing JSONL-shaped `graphEvents`.
+### Pass/Fail
+PASS if the convergence reference and replay tests agree that completed review iterations emit `graphEvents` and that review graph node coverage includes `dimension_node`, `file_node`, and `finding_node`; FAIL if any of those pieces are missing or contradictory.
+### Failure Triage
+Privilege the convergence reference for the contract and the replay tests for concrete review node-type evidence.
 ---
 
 ## 4. SOURCE FILES

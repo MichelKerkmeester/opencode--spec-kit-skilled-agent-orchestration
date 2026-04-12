@@ -8,6 +8,15 @@ scope: q5_q6_q9_instrumentation
 status: complete
 focus: "Turn the iter 027 latency budget and iter 017 dashboard metrics into a canonical instrumentation contract: exact span names, required tags, sampling rates, cardinality budget, alert thresholds tied to gate close criteria."
 maps_to_questions: [Q5, Q6, Q9]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-033.md"]
+
 ---
 
 # Iteration 033 — Instrumentation Spec

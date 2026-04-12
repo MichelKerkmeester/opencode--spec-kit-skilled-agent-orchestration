@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "verification"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/007-sk-system-speckit-revisit"
@@ -47,7 +48,7 @@ _memory:
 
 ### Content Updates
 
-- [x] T005 Update the 26 drifted files to the Phase 018 contract.
+- [x] T005 Update the 32 drifted files to the Phase 018 contract.
 - [x] T006 Re-read every edited file to confirm the new wording landed.
 <!-- /ANCHOR:phase-2 -->
 
@@ -62,7 +63,7 @@ _memory:
 ## Completion Criteria
 
 - [x] The 63-file target set was reviewed.
-- [x] The 26-file drift subset was updated.
+- [x] The 32-file drift subset was updated.
 - [x] The packet contains explicit evidence and passes strict validation.
 <!-- /ANCHOR:completion -->
 

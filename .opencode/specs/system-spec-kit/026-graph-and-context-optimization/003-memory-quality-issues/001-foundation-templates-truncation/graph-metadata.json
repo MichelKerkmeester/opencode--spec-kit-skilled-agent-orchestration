@@ -36,7 +36,7 @@
       "fix"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "memory-template-contract.ts",
       "mcp_server/lib/parsing/memory-parser.ts",

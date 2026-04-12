@@ -8,6 +8,16 @@ trigger_phrases:
   - "post-save wrapper contract"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/009-post-save-render-fixes"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: Post-Save Render Fixes
 
@@ -26,6 +36,7 @@ Packet `009-post-save-render-fixes` repairs the nine systematic render-layer def
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -38,8 +49,10 @@ Packet `009-post-save-render-fixes` repairs the nine systematic render-layer def
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | `008-input-normalizer-fastpath-fix` |
-| **Successor** | Optional future historical-memory patching only; no required new packet |
+| **Successor** | `010-memory-save-heuristic-calibration` |
 | **Motivating Audit** | `005-code-graph-upgrades/memory/*` plus the manually patched positive reference at `026-graph-and-context-optimization/memory/09-04-26_07-37__...` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

@@ -250,39 +250,66 @@ function insertEdge(
       const existing = (database.prepare(`
         SELECT id, strength FROM causal_edges
         WHERE source_id = ? AND target_id = ? AND relation = ?
-      `) as Database.Statement).get(sourceId, targetId, relation) as { id: number; strength: number } | undefined;
-
-      (database.prepare(`
-        INSERT INTO causal_edges (
-          source_id,
-          target_id,
-          source_anchor,
-          target_anchor,
-          relation,
-          strength,
-          evidence,
-          created_by
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(source_id, target_id, relation) DO UPDATE SET
-          strength = excluded.strength,
-          evidence = COALESCE(excluded.evidence, causal_edges.evidence),
-          source_anchor = COALESCE(excluded.source_anchor, causal_edges.source_anchor),
-          target_anchor = COALESCE(excluded.target_anchor, causal_edges.target_anchor)
-      `) as Database.Statement).run(
+          AND COALESCE(source_anchor, '') = COALESCE(?, '')
+          AND COALESCE(target_anchor, '') = COALESCE(?, '')
+      `) as Database.Statement).get(
         sourceId,
         targetId,
+        relation,
         anchors.sourceAnchor ?? null,
         anchors.targetAnchor ?? null,
-        relation,
-        clampedStrength,
-        evidence,
-        createdBy,
-      );
+      ) as { id: number; strength: number } | undefined;
+
+      if (existing) {
+        (database.prepare(`
+          UPDATE causal_edges
+          SET strength = ?,
+              evidence = COALESCE(?, evidence),
+              created_by = ?
+          WHERE id = ?
+        `) as Database.Statement).run(
+          clampedStrength,
+          evidence,
+          createdBy,
+          existing.id,
+        );
+      } else {
+        (database.prepare(`
+          INSERT INTO causal_edges (
+            source_id,
+            target_id,
+            source_anchor,
+            target_anchor,
+            relation,
+            strength,
+            evidence,
+            created_by
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `) as Database.Statement).run(
+          sourceId,
+          targetId,
+          anchors.sourceAnchor ?? null,
+          anchors.targetAnchor ?? null,
+          relation,
+          clampedStrength,
+          evidence,
+          createdBy,
+        );
+      }
 
       const row = (database.prepare(`
-        SELECT id FROM causal_edges WHERE source_id = ? AND target_id = ? AND relation = ?
-      `) as Database.Statement).get(sourceId, targetId, relation) as { id: number } | undefined;
+        SELECT id FROM causal_edges
+        WHERE source_id = ? AND target_id = ? AND relation = ?
+          AND COALESCE(source_anchor, '') = COALESCE(?, '')
+          AND COALESCE(target_anchor, '') = COALESCE(?, '')
+      `) as Database.Statement).get(
+        sourceId,
+        targetId,
+        relation,
+        anchors.sourceAnchor ?? null,
+        anchors.targetAnchor ?? null,
+      ) as { id: number } | undefined;
       const rowId = row ? row.id : 0;
 
       // T001d: Log weight change on conflict update

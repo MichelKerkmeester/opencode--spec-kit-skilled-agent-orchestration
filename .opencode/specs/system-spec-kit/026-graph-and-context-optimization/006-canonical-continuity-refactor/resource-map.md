@@ -8,6 +8,15 @@ authors:
 notes:
   - Current-reality map for packet 006 and follow-on audits
   - Replaces older phase-018 migration framing with the live canonical continuity surfaces
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["resource-map.md"]
+
 ---
 
 # Phase 006 Canonical Continuity Refactor - Resource Map
@@ -39,7 +48,7 @@ This resource map is the quick-reference index for the live packet-006 implement
 | Surface | Key Files | Purpose |
 |---|---|---|
 | Package architecture | `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | Current-reality architecture across scripts, runtime, and shared modules |
-| Runtime overview | `mcp_server/README.md`, `mcp_server/lib/README.md`, `mcp_server/handlers/README.md`, `mcp_server/hooks/README.md` | Human-readable orientation for the active runtime tree |
+| Runtime overview | `.opencode/skill/system-spec-kit/README.md`, `.opencode/skill/system-spec-kit/ARCHITECTURE.md`, `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`, `.opencode/skill/system-spec-kit/nodes/phase-system.md` | Human-readable orientation for the active runtime tree |
 | Subdirectory READMEs | `mcp_server/**/README.md` | Directory-level ownership, purpose, and related-module pointers |
 | Packet docs | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` under packet 006 and phase subfolders | Packet-local execution truth |
 
@@ -64,4 +73,4 @@ This resource map is the quick-reference index for the live packet-006 implement
 
 - `013-dead-code-and-architecture-audit/`
 - `.opencode/skill/system-spec-kit/ARCHITECTURE.md`
-- `.opencode/skill/system-spec-kit/mcp_server/README.md`
+- `.opencode/skill/system-spec-kit/ARCHITECTURE.md`

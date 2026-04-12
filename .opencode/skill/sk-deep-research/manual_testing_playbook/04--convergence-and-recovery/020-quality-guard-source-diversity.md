@@ -41,11 +41,22 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-020 | Quality Guard — Source Diversity | Verify that convergence STOP is blocked when an answered question cites <2 independent sources. | As a manual-testing orchestrator, validate the source diversity quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question for >= 2 independent sources, and that a violation emits a guard_violation event and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence. | 1. `bash: sed -n '104,139p' .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: rg -n 'source_diversity\|guard_violation\|collectSources' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: sed -n '97,107p' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 4. `bash: rg -n 'guard_violation\|source_diversity' .opencode/skill/sk-deep-research/references/state_format.md` -> 5. `bash: sed -n '236,243p' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | guard_violation event logged with guard="source_diversity", STOP decision overridden to CONTINUE, violated question targeted in next iteration focus. | Capture the guard rule table row for Source Diversity, the pseudocode branch for len(sources) < 2, the YAML override logic, and the state_format event schema example. | PASS if the source_diversity guard rule (>= 2 independent sources), its violation logging, and its STOP-override behavior are consistent across convergence.md, loop_protocol.md, auto.yaml, and state_format.md; FAIL if any of those elements drift or contradict. | Privilege convergence.md §2.4 for the canonical guard definition; use loop_protocol.md Step 2c and auto.yaml step_check_convergence as secondary confirmation of the override flow. |
-
+### Prompt
+As a manual-testing orchestrator, validate the source diversity quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question for >= 2 independent sources, and that a violation emits a guard_violation event and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.
+### Commands
+1. `bash: sed -n '104,139p' .opencode/skill/sk-deep-research/references/convergence.md`
+2. `bash: rg -n 'source_diversity\|guard_violation\|collectSources' .opencode/skill/sk-deep-research/references/convergence.md`
+3. `bash: sed -n '97,107p' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+4. `bash: rg -n 'guard_violation\|source_diversity' .opencode/skill/sk-deep-research/references/state_format.md`
+5. `bash: sed -n '236,243p' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+### Expected
+guard_violation event logged with guard="source_diversity", STOP decision overridden to CONTINUE, violated question targeted in next iteration focus.
+### Evidence
+Capture the guard rule table row for Source Diversity, the pseudocode branch for len(sources) < 2, the YAML override logic, and the state_format event schema example.
+### Pass/Fail
+PASS if the source_diversity guard rule (>= 2 independent sources), its violation logging, and its STOP-override behavior are consistent across convergence.md, loop_protocol.md, auto.yaml, and state_format.md; FAIL if any of those elements drift or contradict.
+### Failure Triage
+Privilege convergence.md §2.4 for the canonical guard definition; use loop_protocol.md Step 2c and auto.yaml step_check_convergence as secondary confirmation of the override flow.
 ---
 
 ## 4. SOURCE FILES

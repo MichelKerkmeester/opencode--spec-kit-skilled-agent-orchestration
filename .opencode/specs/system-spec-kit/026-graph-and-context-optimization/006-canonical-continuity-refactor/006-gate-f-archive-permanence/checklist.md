@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "verification"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/006-gate-f-archive-permanence"
@@ -86,8 +87,8 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 8 | 8/8 |
+| P0 Items | 9 | 9/9 |
+| P1 Items | 9 | 9/9 |
 | P2 Items | 2 | 2/2 |
 
 **Verification Date**: 2026-04-12

@@ -45,9 +45,26 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 3. Inspect registry, dashboard, and workflow YAML in that order so reducer outputs are verified before orchestration wiring.
 4. Return a short user-facing explanation, not just raw implementation notes.
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-033 | Research graph-aware stop gate surfaces convergence verdict and workflow hooks | Verify `graph_convergence` output appears in reducer artifacts and the auto workflow calls graph tools before the inline stop vote. | As a manual-testing orchestrator, validate graph-aware stop-gate integration for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph_convergence reducer output populates graphConvergenceScore, graphDecision, and graphBlockers, that the dashboard renders GRAPH CONVERGENCE, and that the research auto workflow calls deep_loop_graph_upsert plus deep_loop_graph_convergence before the inline 3-signal vote. Return a concise operator-facing verdict. | 1. `bash: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs {spec_folder}` -> 2. `bash: cat {spec_folder}/research/findings-registry.json | jq '.graphConvergenceScore, .graphDecision, .graphBlockers'` -> 3. `bash: grep -A 3 "GRAPH CONVERGENCE" {spec_folder}/research/deep-research-dashboard.md` -> 4. `bash: grep -n "deep_loop_graph_upsert\\|deep_loop_graph_convergence" .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Registry surfaces `graphConvergenceScore`, `graphDecision`, and `graphBlockers`; dashboard renders `GRAPH CONVERGENCE`; workflow YAML calls both graph tools before the inline 3-signal vote. | Capture the registry graph fields, the dashboard `GRAPH CONVERGENCE` excerpt, and the YAML lines that show `deep_loop_graph_upsert` and `deep_loop_graph_convergence`. | PASS if graph signals appear in the registry and dashboard and the workflow YAML still calls the graph tools in the graph-aware stop path; FAIL if graph data is missing from any reducer surface or the YAML no longer shows the graph-tool hooks. | Privilege reducer-owned registry output for surfaced state and the workflow YAML for live orchestration order. If reducer fields exist but the YAML lacks graph-tool calls, treat that as graph-aware stop-gate wiring drift rather than a reducer regression. |
+### Prompt
+As a manual-testing orchestrator, validate graph-aware stop-gate integration for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify `graph_convergence` reducer output populates `graphConvergenceScore`, `graphDecision`, and `graphBlockers`, that the dashboard renders `GRAPH CONVERGENCE`, and that the research auto workflow calls `deep_loop_graph_upsert` plus `deep_loop_graph_convergence` before the inline 3-signal vote. Return a concise operator-facing verdict.
+
+### Commands
+1. `bash: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs {spec_folder}`
+2. `bash: cat {spec_folder}/research/findings-registry.json | jq '.graphConvergenceScore, .graphDecision, .graphBlockers'`
+3. `bash: grep -A 3 "GRAPH CONVERGENCE" {spec_folder}/research/deep-research-dashboard.md`
+4. `bash: grep -n "deep_loop_graph_upsert\\|deep_loop_graph_convergence" .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+
+### Expected
+Registry surfaces `graphConvergenceScore`, `graphDecision`, and `graphBlockers`; dashboard renders `GRAPH CONVERGENCE`; workflow YAML calls both graph tools before the inline 3-signal vote.
+
+### Evidence
+Capture the registry graph fields, the dashboard `GRAPH CONVERGENCE` excerpt, and the YAML lines that show `deep_loop_graph_upsert` and `deep_loop_graph_convergence`.
+
+### Pass/Fail
+PASS if graph signals appear in the registry and dashboard and the workflow YAML still calls the graph tools in the graph-aware stop path; FAIL if graph data is missing from any reducer surface or the YAML no longer shows the graph-tool hooks.
+
+### Failure Triage
+Privilege reducer-owned registry output for surfaced state and the workflow YAML for live orchestration order. If reducer fields exist but the YAML lacks graph-tool calls, treat that as graph-aware stop-gate wiring drift rather than a reducer regression.
 
 ---
 

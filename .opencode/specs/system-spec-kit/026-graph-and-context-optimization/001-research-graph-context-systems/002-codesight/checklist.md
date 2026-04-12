@@ -7,6 +7,16 @@ trigger_phrases:
   - "codesight verification"
 importance_tier: critical
 contextType: checklist
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["checklist.md"]
+
 ---
 # Verification Checklist: 002-codesight Research Phase
 
@@ -90,7 +100,7 @@ contextType: checklist
 
 - [x] CHK-050 [P1] Temp files in scratch/ only (`scratch/phase-research-prompt.md` is in scratch/; iteration prompts at `/tmp/codex-iter-{006..010}-prompt.md` are outside the spec folder) (verified)
 - [x] CHK-051 [P1] scratch/ cleaned before completion (only phase-research-prompt.md remains in scratch/; no stale temp files inside the spec folder) (verified)
-- [x] CHK-052 [P2] Findings saved to memory/ (three chronological saved-memory artifacts exist; the newest `memory/08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md` is retained with a documented `has_topical_mismatch` quality caveat rather than being hand-edited) (verified)
+- [x] CHK-052 [P2] Findings preserved in canonical research artifacts (`research/research.md` and `implementation-summary.md` retain the chronological closeout evidence and the documented `has_topical_mismatch` caveat) (verified)
 
 ---
 

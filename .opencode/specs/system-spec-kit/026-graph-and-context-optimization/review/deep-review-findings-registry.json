@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "lastUpdated": "2026-04-12T18:40:00Z",
+  "summary": {
+    "P0": { "total": 1, "fixed": 1, "open": 0 },
+    "P1": { "total": 15, "fixed": 13, "open": 2 },
+    "P2": { "total": 9, "fixed": 6, "open": 3 }
+  },
+  "findings": [
+    { "id": "P0-001", "severity": "P0", "status": "fixed", "iteration": 2, "title": "Root graph-metadata has 12 ghost children_ids", "dimension": "graph-metadata-accuracy", "file": "graph-metadata.json" },
+    { "id": "P1-001", "severity": "P1", "status": "fixed", "iteration": 1, "title": "001 graph-metadata status planned on completed packet", "dimension": "status-accuracy", "file": "001-research-graph-context-systems/graph-metadata.json" },
+    { "id": "P1-002", "severity": "P1", "status": "fixed", "iteration": 1, "title": "Ghost entity memory/metadata.json in 001", "dimension": "graph-metadata-accuracy", "file": "001-research-graph-context-systems/graph-metadata.json" },
+    { "id": "P1-003", "severity": "P1", "status": "fixed", "iteration": 2, "title": "Root graph-metadata status planned", "dimension": "status-accuracy", "file": "graph-metadata.json" },
+    { "id": "P1-004", "severity": "P1", "status": "fixed", "iteration": 3, "title": "002 graph-metadata status planned", "dimension": "status-accuracy", "file": "002-implement-cache-warning-hooks/graph-metadata.json" },
+    { "id": "P1-005", "severity": "P1", "status": "fixed", "iteration": 3, "title": "002 shell command in entities/key_files", "dimension": "graph-metadata-accuracy", "file": "002-implement-cache-warning-hooks/graph-metadata.json" },
+    { "id": "P1-006", "severity": "P1", "status": "open", "iteration": 5, "title": "003 parent missing decision-record.md", "dimension": "packet-doc-completeness", "file": "003-memory-quality-issues/" },
+    { "id": "P1-007", "severity": "P1", "status": "fixed", "iteration": 5, "title": "Ghost entity gpt-5.4 in 003 parent", "dimension": "graph-metadata-accuracy", "file": "003-memory-quality-issues/graph-metadata.json" },
+    { "id": "P1-008", "severity": "P1", "status": "fixed", "iteration": 5, "title": "Shell-command entities in 003 children 002-004", "dimension": "graph-metadata-accuracy", "file": "003-memory-quality-issues/002-004 graph-metadata.json" },
+    { "id": "P1-009", "severity": "P1", "status": "fixed", "iteration": 6, "title": "Five 003 children (006-010) missing description.json", "dimension": "packet-doc-completeness", "file": "003-memory-quality-issues/006-010/" },
+    { "id": "P1-010", "severity": "P1", "status": "fixed", "iteration": 6, "title": "Shell-command entities in 003 children 006, 008", "dimension": "graph-metadata-accuracy", "file": "003-memory-quality-issues/006,008 graph-metadata.json" },
+    { "id": "P1-011", "severity": "P1", "status": "fixed", "iteration": 8, "title": "004 graph-metadata leaks absolute personal paths", "dimension": "graph-metadata-accuracy", "file": "004-agent-execution-guardrails/graph-metadata.json" },
+    { "id": "P1-012", "severity": "P1", "status": "fixed", "iteration": 8, "title": "004 graph-metadata has duplicate entities", "dimension": "graph-metadata-accuracy", "file": "004-agent-execution-guardrails/graph-metadata.json" },
+    { "id": "P1-013", "severity": "P1", "status": "open", "iteration": 8, "title": "004 missing decision-record.md", "dimension": "packet-doc-completeness", "file": "004-agent-execution-guardrails/" },
+    { "id": "P1-014", "severity": "P1", "status": "fixed", "iteration": 9, "title": "005 shell commands in key_files and entities", "dimension": "graph-metadata-accuracy", "file": "005-code-graph-upgrades/graph-metadata.json" },
+    { "id": "P1-015", "severity": "P1", "status": "fixed", "iteration": 9, "title": "005 graph-metadata status planned", "dimension": "status-accuracy", "file": "005-code-graph-upgrades/graph-metadata.json" },
+    { "id": "P2-001", "severity": "P2", "status": "fixed", "iteration": 1, "title": "All 001 children status planned", "dimension": "status-accuracy", "file": "001-research-graph-context-systems/*/graph-metadata.json" },
+    { "id": "P2-002", "severity": "P2", "status": "fixed", "iteration": 2, "title": "Malformed newline entities in root graph-metadata", "dimension": "graph-metadata-accuracy", "file": "graph-metadata.json" },
+    { "id": "P2-003", "severity": "P2", "status": "fixed", "iteration": 5, "title": "003 parent + children 001-005 status planned", "dimension": "status-accuracy", "file": "003-memory-quality-issues/*/graph-metadata.json" },
+    { "id": "P2-004", "severity": "P2", "status": "open", "iteration": 6, "title": "008 missing checklist.md (Level 1 acceptable)", "dimension": "packet-doc-completeness", "file": "003-memory-quality-issues/008-input-normalizer-fastpath-fix/" },
+    { "id": "P2-005", "severity": "P2", "status": "fixed", "iteration": 6, "title": "003 children 006-010 status planned", "dimension": "status-accuracy", "file": "003-memory-quality-issues/006-010/graph-metadata.json" },
+    { "id": "P2-006", "severity": "P2", "status": "open", "iteration": 7, "title": "003 parent graph-metadata bare filename entities", "dimension": "graph-metadata-accuracy", "file": "003-memory-quality-issues/graph-metadata.json" },
+    { "id": "P2-007", "severity": "P2", "status": "fixed", "iteration": 8, "title": "004 status planned", "dimension": "status-accuracy", "file": "004-agent-execution-guardrails/graph-metadata.json" },
+    { "id": "P2-008", "severity": "P2", "status": "fixed", "iteration": 9, "title": "005 self-referencing absolute spec path in key_files", "dimension": "graph-metadata-accuracy", "file": "005-code-graph-upgrades/graph-metadata.json" },
+    { "id": "P2-009", "severity": "P2", "status": "open", "iteration": 10, "title": "003 and 004 missing decision-record.md (retained)", "dimension": "packet-doc-completeness", "file": "003-memory-quality-issues/, 004-agent-execution-guardrails/" }
+  ]
+}

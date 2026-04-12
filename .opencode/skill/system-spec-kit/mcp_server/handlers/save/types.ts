@@ -122,6 +122,7 @@ export interface AtomicIndexParams {
   content: string;
   routeAs?: RouteCategory;
   mergeModeHint?: MergeModeHint;
+  targetAnchorId?: string;
 }
 
 export interface AtomicIndexOptions {
@@ -162,6 +163,7 @@ export interface SaveArgs {
   asyncEmbedding?: boolean; // When true, embedding generation is deferred (non-blocking)
   routeAs?: RouteCategory;
   mergeModeHint?: MergeModeHint;
+  targetAnchorId?: string;
   tenantId?: string;
   userId?: string;
   agentId?: string;

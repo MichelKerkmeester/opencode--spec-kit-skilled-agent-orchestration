@@ -7,6 +7,7 @@ contextType: "implementation"
 level: "3+"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "026-graph-and-context-optimization/006-canonical-continuity-refactor/003-gate-c-writer-ready"
@@ -42,6 +43,10 @@ Gate C is the code-critical path of phase 018. It replaces standalone memory-fil
 | **Status** | Complete |
 | **Created** | 2026-04-11 |
 | **Branch** | `006-canonical-continuity-refactor/003-gate-c-writer-ready` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `002-gate-b-foundation` |
+| **Successor** | `004-gate-d-reader-ready` |
 <!-- /ANCHOR:metadata -->
 
 ---

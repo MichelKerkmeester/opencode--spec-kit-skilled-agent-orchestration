@@ -5,8 +5,9 @@ trigger_phrases: ["implementation", "summary", "phase 014"]
 importance_tier: "important"
 contextType: "implementation"
 level: 2
-status: "review"
+status: "complete"
 parent: "006-canonical-continuity-refactor"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite"
@@ -92,7 +93,7 @@ The packet repair was delivered by reading the active Level 2 templates, rebuild
 ## Known Limitations
 
 1. **Prompt quality spot-checking is not repeated here.** This repair fixes packet structure and references only.
-2. **`graph-metadata.json` is still absent.** The validator treats that as a warning, not a blocker for this markdown repair.
+2. **`graph-metadata.json` is present.** The validator no longer reports a missing metadata warning for this packet.
 <!-- /ANCHOR:limitations -->
 
 ---

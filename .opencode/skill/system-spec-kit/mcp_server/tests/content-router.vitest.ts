@@ -27,7 +27,7 @@ function makeContext(overrides: Record<string, unknown> = {}) {
   return {
     specFolder: '026-graph-and-context-optimization/006-canonical-continuity-refactor/003-gate-c-writer-ready',
     packetLevel: 'L3+' as const,
-    existingAnchors: ['phase-1', 'phase-2', 'what-built', 'how-delivered'],
+    existingAnchors: ['phase-1', 'phase-2', 'phase-3', 'what-built', 'how-delivered'],
     sessionMeta: {
       packet_kind: 'phase' as const,
       save_mode: 'auto' as const,
@@ -141,6 +141,25 @@ describe('content-router tier 1 classification', () => {
     expect(decision.target).toMatchObject({
       docPath: 'tasks.md',
       anchorId: 'phase-2',
+      mergeMode: 'update-in-place',
+    });
+  });
+
+  it('infers phase-3 task updates from the routed chunk text when session hints are absent', async () => {
+    const decision = await router.classifyContent({
+      id: 'chunk-7b',
+      text: 'Phase 3 - [x] T125 Finalize the remediation packet evidence and verification.',
+      sourceField: 'observations',
+      structuredType: 'task_update',
+    }, makeContext({
+      likely_phase_anchor: null,
+      recent_anchors_touched: [],
+    }));
+
+    expect(decision.category).toBe('task_update');
+    expect(decision.target).toMatchObject({
+      docPath: 'tasks.md',
+      anchorId: 'phase-3',
       mergeMode: 'update-in-place',
     });
   });

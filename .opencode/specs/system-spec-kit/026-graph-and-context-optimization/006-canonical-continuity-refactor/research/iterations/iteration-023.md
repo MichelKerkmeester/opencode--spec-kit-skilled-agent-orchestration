@@ -8,6 +8,15 @@ scope: q2_merge_pseudocode
 status: complete
 focus: "Detailed language-agnostic pseudocode for the five canonical merge modes, including regex, idempotency, edge cases, and atomic-envelope hooks."
 maps_to_questions: [Q2]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-023.md"]
+
 ---
 # Iteration 023 — Q2: Merge-Mode Pseudocode
 ## Goal

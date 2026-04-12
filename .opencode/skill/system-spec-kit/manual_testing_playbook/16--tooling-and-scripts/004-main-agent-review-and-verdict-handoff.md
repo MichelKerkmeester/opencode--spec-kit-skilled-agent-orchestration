@@ -19,11 +19,21 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a tooling validation operator, validate Main-Agent Review and Verdict Handoff against @review. Verify severity-ranked findings and final verdict. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected: severity-ranked findings and final verdict.
-- Evidence: review output with file:line findings.
-- Pass: deterministic verdict issued with rationale.
-- Fail triage: collect missing evidence and rerun review.
+### Prompt
+
+`As a tooling validation operator, validate Main-Agent Review and Verdict Handoff against @review. Verify severity-ranked findings and final verdict. Return a concise pass/fail verdict with the main reason and cited evidence.`
+### Expected
+
+severity-ranked findings and final verdict.
+### Evidence
+
+review output with file:line findings.
+### Pass/Fail
+
+deterministic verdict issued with rationale.
+### Failure Triage
+
+collect missing evidence and rerun review.
 
 ---
 

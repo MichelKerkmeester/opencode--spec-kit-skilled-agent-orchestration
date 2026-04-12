@@ -430,8 +430,8 @@ function deriveEntities(docs: ParsedSpecDoc[], keyFiles: string[]): GraphEntityR
   for (const doc of docs) {
     const extracted = extractEntities(doc.content).slice(0, 6);
     for (const entity of extracted) {
-      const normalizedName = entity.text.trim();
-      if (!normalizedName || entities.has(normalizedName)) {
+      const normalizedName = entity.text.replace(/[\r\n]+/g, ' ').trim();
+      if (!normalizedName || normalizedName.length > 80 || entities.has(normalizedName)) {
         continue;
       }
       entities.set(normalizedName, {

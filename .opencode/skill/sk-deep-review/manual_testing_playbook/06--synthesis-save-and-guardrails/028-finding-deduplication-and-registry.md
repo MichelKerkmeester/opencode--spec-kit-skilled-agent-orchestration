@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-028 | Finding deduplication and registry | Verify finding deduplication uses adjudicated finalSeverity and produces clean Active Finding Registry. | As a manual-testing orchestrator, validate the finding deduplication contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify during synthesis, findings from all review/iterations/iteration-NNN.md files are compared for duplicates, that duplicate resolution uses adjudicated finalSeverity (taking the highest severity when the same finding appears at different levels), that the Active Finding Registry in review-report.md contains only unique findings with their final severity and evidence, and that deduplication does not discard P0 findings. Return a concise operator-facing verdict. | 1. `bash: rg -n 'dedup|deduplic|finalSeverity|adjudic|Active Finding Registry|unique.*finding|merge.*finding|duplicate' .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` -> 2. `bash: rg -n 'dedup|deduplic|finalSeverity|adjudic|active_finding|merge|duplicate|unique' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'Active Finding Registry|Dedup|finalSeverity|finding.*registry|finding.*evidence|unique.*finding' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/deep-review.md .opencode/skill/sk-deep-review/assets/deep_review_strategy.md` | Findings compared across iterations, `finalSeverity` is highest severity encountered, Active Finding Registry has unique entries, P0 never downgraded, evidence included. | Capture the deduplication rules from SKILL.md, the YAML synthesis deduplication logic, and the Active Finding Registry section definition from quick reference. | PASS if deduplication produces a clean registry with adjudicated severities; FAIL if duplicates appear in the registry or P0 findings are lost during deduplication. | Privilege the SKILL.md rules for deduplication logic and the quick reference for the Active Finding Registry section definition. |
-
+### Prompt
+As a manual-testing orchestrator, validate the finding deduplication contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify during synthesis, findings from all review/iterations/iteration-NNN.md files are compared for duplicates, that duplicate resolution uses adjudicated finalSeverity (taking the highest severity when the same finding appears at different levels), that the Active Finding Registry in review-report.md contains only unique findings with their final severity and evidence, and that deduplication does not discard P0 findings. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'dedup|deduplic|finalSeverity|adjudic|Active Finding Registry|unique.*finding|merge.*finding|duplicate' .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md`
+2. `bash: rg -n 'dedup|deduplic|finalSeverity|adjudic|active_finding|merge|duplicate|unique' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'Active Finding Registry|Dedup|finalSeverity|finding.*registry|finding.*evidence|unique.*finding' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/deep-review.md .opencode/skill/sk-deep-review/assets/deep_review_strategy.md`
+### Expected
+Findings compared across iterations, `finalSeverity` is highest severity encountered, Active Finding Registry has unique entries, P0 never downgraded, evidence included.
+### Evidence
+Capture the deduplication rules from SKILL.md, the YAML synthesis deduplication logic, and the Active Finding Registry section definition from quick reference.
+### Pass/Fail
+PASS if deduplication produces a clean registry with adjudicated severities; FAIL if duplicates appear in the registry or P0 findings are lost during deduplication.
+### Failure Triage
+Privilege the SKILL.md rules for deduplication logic and the quick reference for the Active Finding Registry section definition.
 ---
 
 ## 4. SOURCE FILES

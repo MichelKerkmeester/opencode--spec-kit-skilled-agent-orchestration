@@ -7,6 +7,15 @@ trigger_phrases:
   - "phase 5 concurrency rationale"
 importance_tier: important
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/005-operations-tail-prs"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["pr11-defer-rationale.md"]
+
 ---
 # PR-11 Defer Rationale
 

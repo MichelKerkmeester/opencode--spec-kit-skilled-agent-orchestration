@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-004 | Fresh review initialization creates canonical state files | Verify that a fresh session creates the canonical config, JSONL, registry, strategy, and iteration directory from the shipped assets. | As a manual-testing orchestrator, validate the fresh-initialization contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization creates review/deep-review-config.json, review/deep-review-state.jsonl, review/deep-review-findings-registry.json, review/deep-review-strategy.md, and review/iterations/ from the live templates. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'step_create_directories|step_create_config|step_create_state_log|step_create_findings_registry|step_create_strategy' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 2. `bash: sed -n '1,220p' .opencode/skill/sk-deep-review/assets/deep_review_config.json && sed -n '1,220p' .opencode/skill/sk-deep-review/assets/deep_review_strategy.md` -> 3. `bash: rg -n 'state_paths|config:|state_log:|findings_registry:|strategy:|iteration_pattern' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | The review/ directory is created, config comes from the shared config template, the findings registry comes from the reducer contract, strategy comes from the sk-deep-review strategy template, and the JSONL begins with a config record. | Capture the initialization step names, the live template files, and the state_paths contract in one evidence bundle. | PASS if protocol, YAML, and asset templates agree on the initial review artifacts and their roles; FAIL if the artifact list or template sources drift. | Check both YAML variants, verify the JSONL init step writes a config record, confirm the reducer registry is created, and confirm the assets live under `assets/`. |
-
+### Prompt
+As a manual-testing orchestrator, validate the fresh-initialization contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization creates review/deep-review-config.json, review/deep-review-state.jsonl, review/deep-review-findings-registry.json, review/deep-review-strategy.md, and review/iterations/ from the live templates. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'step_create_directories|step_create_config|step_create_state_log|step_create_findings_registry|step_create_strategy' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+2. `bash: sed -n '1,220p' .opencode/skill/sk-deep-review/assets/deep_review_config.json && sed -n '1,220p' .opencode/skill/sk-deep-review/assets/deep_review_strategy.md`
+3. `bash: rg -n 'state_paths|config:|state_log:|findings_registry:|strategy:|iteration_pattern' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+### Expected
+The review/ directory is created, config comes from the shared config template, the findings registry comes from the reducer contract, strategy comes from the sk-deep-review strategy template, and the JSONL begins with a config record.
+### Evidence
+Capture the initialization step names, the live template files, and the state_paths contract in one evidence bundle.
+### Pass/Fail
+PASS if protocol, YAML, and asset templates agree on the initial review artifacts and their roles; FAIL if the artifact list or template sources drift.
+### Failure Triage
+Check both YAML variants, verify the JSONL init step writes a config record, confirm the reducer registry is created, and confirm the assets live under `assets/`.
 ---
 
 ## 4. SOURCE FILES

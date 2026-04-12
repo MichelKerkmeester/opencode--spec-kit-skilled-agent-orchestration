@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-003 | Parameterized invocation max-iterations and convergence | Verify that `--max-iterations` (default 7) and `--convergence` (default 0.10) parameters are documented consistently and flow through to the review config. | As a manual-testing orchestrator, validate the parameter contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify --max-iterations (default 7) and --convergence (default 0.10) are documented consistently across the quick reference, command entrypoint, and both YAML workflows. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'max.iterations|convergence.*0\.10|convergence_threshold|maxIterations' .opencode/skill/sk-deep-review/references/quick_reference.md` -> 2. `bash: rg -n 'max.iterations|convergence|argument-hint' .opencode/command/spec_kit/deep-review.md` -> 3. `bash: rg -n 'max_iterations|convergence_threshold|maxIterations|convergenceThreshold' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | Default values of 7 and 0.10 appear consistently across all sources; the YAML writes these into `deep-review-config.json` during init. | Capture the parameter table from the quick reference, the argument-hint line, and the YAML user_inputs and config-creation steps. | PASS if all sources agree on defaults and the config init step propagates overrides; FAIL if defaults drift or the override path is broken. | Cross-reference the quick reference parameter table with the YAML `step_create_config` to verify the values flow through. |
-
+### Prompt
+As a manual-testing orchestrator, validate the parameter contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify --max-iterations (default 7) and --convergence (default 0.10) are documented consistently across the quick reference, command entrypoint, and both YAML workflows. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'max.iterations|convergence.*0\.10|convergence_threshold|maxIterations' .opencode/skill/sk-deep-review/references/quick_reference.md`
+2. `bash: rg -n 'max.iterations|convergence|argument-hint' .opencode/command/spec_kit/deep-review.md`
+3. `bash: rg -n 'max_iterations|convergence_threshold|maxIterations|convergenceThreshold' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+### Expected
+Default values of 7 and 0.10 appear consistently across all sources; the YAML writes these into `deep-review-config.json` during init.
+### Evidence
+Capture the parameter table from the quick reference, the argument-hint line, and the YAML user_inputs and config-creation steps.
+### Pass/Fail
+PASS if all sources agree on defaults and the config init step propagates overrides; FAIL if defaults drift or the override path is broken.
+### Failure Triage
+Cross-reference the quick reference parameter table with the YAML `step_create_config` to verify the values flow through.
 ---
 
 ## 4. SOURCE FILES

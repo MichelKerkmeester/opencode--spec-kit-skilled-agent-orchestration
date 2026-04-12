@@ -7,6 +7,15 @@ trigger_phrases:
   - "memory duplication key_topics and files table"
 importance_tier: important
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-003.md"]
+
 ---
 
 # Iteration 003: key_topics and FILES table duplication

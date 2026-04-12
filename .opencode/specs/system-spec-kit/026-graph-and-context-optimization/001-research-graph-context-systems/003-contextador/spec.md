@@ -9,6 +9,16 @@ trigger_phrases:
   - "token efficient navigation"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: Contextador Research Phase
 
@@ -27,6 +37,7 @@ Phase 003 of the graph-and-context-optimization research track investigates Cont
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -39,6 +50,8 @@ Phase 003 of the graph-and-context-optimization research track investigates Cont
 | **Parent Spec** | `../spec.md` |
 | **Predecessor Phase** | `../002-codesight/spec.md` |
 | **Successor Phase** | `../004-graphify/spec.md` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

@@ -49,7 +49,7 @@
       "checks"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "causal_links.supersedes",
       ".opencode/skill/system-spec-kit/scripts/core/find-predecessor-memory.ts",
@@ -60,9 +60,6 @@
       ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase4-pr7.test.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase4-pr9.test.ts",
-      "npx vitest run tests/memory-quality-phase4-pr7.test.ts",
-      "npx vitest run tests/memory-quality-phase4-pr9.test.ts",
-      "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase1.vitest.ts tests/memory-quality-phase2-pr3.test.ts tests/memory-quality-phase2-pr4.test.ts tests/memory-quality-phase3-pr5.vitest.ts tests/memory-quality-phase3-pr6.vitest.ts tests/memory-quality-phase4-pr7.test.ts",
       "checklist.md",
       "workflow.ts",
       "memory-metadata.ts",
@@ -125,24 +122,6 @@
         "name": "memory-quality-phase4-pr9.test.ts",
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase4-pr9.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase4-pr7.test.ts",
-        "kind": "test",
-        "path": "npx vitest run tests/memory-quality-phase4-pr7.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase4-pr9.test.ts",
-        "kind": "test",
-        "path": "npx vitest run tests/memory-quality-phase4-pr9.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase4-pr7.test.ts",
-        "kind": "test",
-        "path": "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase1.vitest.ts tests/memory-quality-phase2-pr3.test.ts tests/memory-quality-phase2-pr4.test.ts tests/memory-quality-phase3-pr5.vitest.ts tests/memory-quality-phase3-pr6.vitest.ts tests/memory-quality-phase4-pr7.test.ts",
         "source": "derived"
       },
       {

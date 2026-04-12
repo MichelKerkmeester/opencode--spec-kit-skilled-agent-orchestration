@@ -6,6 +6,16 @@ trigger_phrases:
   - "memory save calibration summary"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/010-memory-save-heuristic-calibration"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["implementation-summary.md"]
+
 ---
 # Implementation Summary: Memory Save Heuristic Calibration
 
@@ -99,7 +109,7 @@ The packet moved in one bounded sequence. First, the runtime schema and metadata
 ### Real Save Evidence
 
 - Verification payload: `/tmp/verification-save-data.json`
-- Verification memory file: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/memory/09-04-26_21-41__verified-the-026-graph-and-context-optimization-1.md`
+- Verification memory file: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/implementation-summary.md`
 - Frontmatter title: `026 Memory Save Heuristic Calibration Verification Snapshot`
 - Frontmatter description: explicit authored description preserved verbatim
 - Trigger list: all five `DR-026-I00x-P1-00x` phrases present

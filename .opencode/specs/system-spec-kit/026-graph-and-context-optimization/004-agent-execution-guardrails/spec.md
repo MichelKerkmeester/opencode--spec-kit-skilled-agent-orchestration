@@ -8,6 +8,16 @@ trigger_phrases:
   - "barter coder agents guardrails"
 importance_tier: important
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: Phase 4 — Agent Execution Guardrails
 
@@ -34,7 +44,7 @@ Phase 4 is the narrow execution-guidance packet for `026-graph-and-context-optim
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 4 |
 | **Predecessor** | `003-memory-quality-issues` |
-| **Successor** | `005-provisional-measurement-contract` |
+| **Successor** | `005-code-graph-upgrades` |
 | **Validation Target** | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails --strict` |
 | **Handoff Criteria** | All three AGENTS files are updated, packet docs stay aligned to those edits, and phase validation is captured. |
 <!-- /ANCHOR:metadata -->

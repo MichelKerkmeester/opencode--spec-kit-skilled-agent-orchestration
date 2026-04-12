@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-018 | Review quality guards block premature stop | Verify 3 binary gates (evidence, scope, coverage) must all pass before STOP. | As a manual-testing orchestrator, validate the quality guard contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify 3 binary gates are enforced before STOP: (1) Evidence gate -- every active finding has file:line evidence and is not inference-only, (2) Scope gate -- findings and reviewed files stay within declared review scope, (3) Coverage gate -- configured dimensions plus required traceability protocols are covered. Verify these gates are distinct from research mode guards. Return a concise operator-facing verdict. | 1. `bash: rg -n 'quality.guard|binary.gate|evidence.*gate|scope.*gate|coverage.*gate|QUALITY_GUARD|gate.*pass' .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: rg -n 'quality_guard|binary_gate|evidence_gate|scope_gate|coverage_gate|guard.*check|gate.*pass' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'Quality Guard|Evidence|Scope|Coverage|binary gate|gate.*pass|inference.only' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` | Three named binary gates (evidence, scope, coverage), each must return true, enforcement happens after convergence check but before STOP, and gates are review-specific. | Capture the gate definitions from convergence.md, the YAML enforcement path, and the user-facing documentation of each gate. | PASS if all three gates are enforced before STOP and documented as review-specific; FAIL if any gate can be bypassed or is missing from the enforcement path. | Privilege the convergence reference for gate definitions and the YAML workflow for enforcement ordering; use quick reference for user-facing confirmation. |
-
+### Prompt
+As a manual-testing orchestrator, validate the quality guard contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify 3 binary gates are enforced before STOP: (1) Evidence gate -- every active finding has file:line evidence and is not inference-only, (2) Scope gate -- findings and reviewed files stay within declared review scope, (3) Coverage gate -- configured dimensions plus required traceability protocols are covered. Verify these gates are distinct from research mode guards. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'quality.guard|binary.gate|evidence.*gate|scope.*gate|coverage.*gate|QUALITY_GUARD|gate.*pass' .opencode/skill/sk-deep-research/references/convergence.md`
+2. `bash: rg -n 'quality_guard|binary_gate|evidence_gate|scope_gate|coverage_gate|guard.*check|gate.*pass' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'Quality Guard|Evidence|Scope|Coverage|binary gate|gate.*pass|inference.only' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md`
+### Expected
+Three named binary gates (evidence, scope, coverage), each must return true, enforcement happens after convergence check but before STOP, and gates are review-specific.
+### Evidence
+Capture the gate definitions from convergence.md, the YAML enforcement path, and the user-facing documentation of each gate.
+### Pass/Fail
+PASS if all three gates are enforced before STOP and documented as review-specific; FAIL if any gate can be bypassed or is missing from the enforcement path.
+### Failure Triage
+Privilege the convergence reference for gate definitions and the YAML workflow for enforcement ordering; use quick reference for user-facing confirmation.
 ---
 
 ## 4. SOURCE FILES

@@ -8,6 +8,15 @@ scope: q8_q9_feature_flag_state_machine
 status: complete
 focus: "Define the exact feature-flag state machine for dual-write cutover: states, transitions, trigger conditions, automatic rollback rules, flag storage/caching, and incident playbook."
 maps_to_questions: [Q8, Q9]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-034.md"]
+
 ---
 
 # Iteration 034 — Feature-flag state machine and rollback transitions

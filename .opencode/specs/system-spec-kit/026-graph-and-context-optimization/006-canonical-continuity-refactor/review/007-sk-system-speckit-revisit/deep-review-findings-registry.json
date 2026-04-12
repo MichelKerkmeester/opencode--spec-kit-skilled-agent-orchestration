@@ -1,0 +1,26 @@
+{
+  "sessionId": "2026-04-12T17:00:00Z-007-sk-system-speckit-revisit",
+  "openFindings": [
+    {
+      "id": "DR-007-I001-P2-001",
+      "severity": "P2",
+      "title": "SKILL.md does not mention that canonical saves now refresh graph-metadata.json",
+      "dimension": "traceability",
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "convergenceScore": 1.0
+}

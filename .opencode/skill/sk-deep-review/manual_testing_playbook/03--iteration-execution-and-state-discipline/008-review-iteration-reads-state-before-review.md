@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-008 | Review iteration reads state before review | Verify that each dispatched @deep-review iteration reads JSONL and strategy state before performing any review actions. | As a manual-testing orchestrator, validate the read-state-first iteration contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop dispatch and the @deep-review agent both require reading JSONL and strategy state before any review actions. Return a concise operator verdict. | 1. `bash: rg -n 'step_read_state|current_iteration|next_focus|Read.*state' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 2. `bash: rg -n 'Read.*state\|Read.*strategy\|Read.*JSONL\|step 1\|1\. Read' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md` -> 3. `bash: sed -n '1,220p' .codex/agents/deep-review.toml && sed -n '1,220p' .claude/agents/deep-review.md` | Loop step order begins with state reads, the quick reference checklist says the same, and the agent definition starts with JSONL plus strategy reads. | Capture the loop step order, the quick-reference checklist, and the runtime agent step sequence. | PASS if all sources agree that state is read before review actions; FAIL if any source allows review before rehydrating state. | Check the agent sequence under the iteration checklist if the higher-level docs look ambiguous. |
-
+### Prompt
+As a manual-testing orchestrator, validate the read-state-first iteration contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop dispatch and the @deep-review agent both require reading JSONL and strategy state before any review actions. Return a concise operator verdict.
+### Commands
+1. `bash: rg -n 'step_read_state|current_iteration|next_focus|Read.*state' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+2. `bash: rg -n 'Read.*state\|Read.*strategy\|Read.*JSONL\|step 1\|1\. Read' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md`
+3. `bash: sed -n '1,220p' .codex/agents/deep-review.toml && sed -n '1,220p' .claude/agents/deep-review.md`
+### Expected
+Loop step order begins with state reads, the quick reference checklist says the same, and the agent definition starts with JSONL plus strategy reads.
+### Evidence
+Capture the loop step order, the quick-reference checklist, and the runtime agent step sequence.
+### Pass/Fail
+PASS if all sources agree that state is read before review actions; FAIL if any source allows review before rehydrating state.
+### Failure Triage
+Check the agent sequence under the iteration checklist if the higher-level docs look ambiguous.
 ---
 
 ## 4. SOURCE FILES

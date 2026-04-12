@@ -1,0 +1,33 @@
+{
+  "sessionId": "2026-04-12T14:35:00Z-001-research-graph-context-systems",
+  "openFindings": [
+    {
+      "id": "DR-001-I001-P1-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "summary": "Archived `research-v1-iter-8.md` still carries `phase-N/research/research.md` source aliases, so the archive is no longer fully auditable under the packet's literal-folder-path contract.",
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/spec.md:148",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/implementation-summary.md:43",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/archive/research-v1-iter-8.md:18",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/archive/research-v1-iter-8.md:21",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/archive/research-v1-iter-8.md:30",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/archive/research-v1-iter-8.md:142",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/archive/research-v1-iter-8.md:163"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "convergenceScore": 0.95
+}

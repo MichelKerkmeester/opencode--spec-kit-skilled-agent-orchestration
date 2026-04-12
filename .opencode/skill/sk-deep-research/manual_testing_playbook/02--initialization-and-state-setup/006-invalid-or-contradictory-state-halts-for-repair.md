@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-006 | Invalid or contradictory state halts for repair | Verify that partial or contradictory scratch artifacts trigger a halt for repair instead of a guessed resume path. | As a manual-testing orchestrator, validate the invalid-state halt contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify contradictory or partial deep-research artifacts stop the workflow for repair instead of guessing through initialization. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'invalid-state|halt for repair|contradictory|guessing' .opencode/skill/sk-deep-research/references/loop_protocol.md .opencode/skill/sk-deep-research/SKILL.md` -> 2. `bash: rg -n 'on_invalid_state|halt: true|incomplete or contradictory' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` -> 3. `bash: rg -n 'State file corrupt|repair|recover' .opencode/skill/sk-deep-research/README.md` | Invalid-state is a named class, both YAML files halt with a repair message, and the docs do not promise silent guessing for contradictory state. | Capture the invalid-state rules, the YAML halt messages, and the troubleshooting wording together. | PASS if the contract consistently halts on contradictory state; FAIL if any source implies silent auto-repair for invalid-state. | Distinguish invalid-state from recoverable JSONL corruption and verify both YAML files stop rather than continue. |
-
+### Prompt
+As a manual-testing orchestrator, validate the invalid-state halt contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify contradictory or partial deep-research artifacts stop the workflow for repair instead of guessing through initialization. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'invalid-state|halt for repair|contradictory|guessing' .opencode/skill/sk-deep-research/references/loop_protocol.md .opencode/skill/sk-deep-research/SKILL.md`
+2. `bash: rg -n 'on_invalid_state|halt: true|incomplete or contradictory' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+3. `bash: rg -n 'State file corrupt|repair|recover' .opencode/skill/sk-deep-research/README.md`
+### Expected
+Invalid-state is a named class, both YAML files halt with a repair message, and the docs do not promise silent guessing for contradictory state.
+### Evidence
+Capture the invalid-state rules, the YAML halt messages, and the troubleshooting wording together.
+### Pass/Fail
+PASS if the contract consistently halts on contradictory state; FAIL if any source implies silent auto-repair for invalid-state.
+### Failure Triage
+Distinguish invalid-state from recoverable JSONL corruption and verify both YAML files stop rather than continue.
 ---
 
 ## 4. SOURCE FILES

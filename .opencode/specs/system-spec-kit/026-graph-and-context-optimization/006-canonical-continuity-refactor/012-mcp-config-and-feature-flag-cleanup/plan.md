@@ -5,6 +5,7 @@ trigger_phrases: ["018 012 plan", "mcp config cleanup plan", "feature flag clean
 importance_tier: "important"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/012-mcp-config-and-feature-flag-cleanup"

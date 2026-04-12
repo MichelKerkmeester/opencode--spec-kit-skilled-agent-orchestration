@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-003 | Parameterized invocation with --max-iterations and --convergence | Verify that the command binds topic, spec folder, execution mode, max iterations, and convergence threshold before the YAML workflow starts. | As a manual-testing orchestrator, validate the setup-binding contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the command entrypoint gathers required values before loading YAML and that the YAML preflight rejects missing bindings or invalid spec-folder scope. Return a concise pass/fail verdict. | 1. `bash: sed -n '1,220p' .opencode/command/spec_kit/deep-research.md` -> 2. `bash: rg -n 'step_preflight_contract|required_values_present|spec_folder_is_within|max_iterations|convergence_threshold' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` -> 3. `bash: sed -n '1,180p' .opencode/skill/sk-deep-research/references/state_format.md` | The command explicitly names topic, spec folder, execution mode, max iterations, and convergence threshold; YAML preflight verifies them before file writes. | Capture the setup prompt, both preflight guards, and the config schema fields together. | PASS if setup requirements and YAML preflight align on the required bindings and spec-folder scope; FAIL if one surface allows missing bindings the other forbids. | Compare both YAML files, not just one, and verify the config schema still names the same parameter fields. |
-
+### Prompt
+As a manual-testing orchestrator, validate the setup-binding contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the command entrypoint gathers required values before loading YAML and that the YAML preflight rejects missing bindings or invalid spec-folder scope. Return a concise pass/fail verdict.
+### Commands
+1. `bash: sed -n '1,220p' .opencode/command/spec_kit/deep-research.md`
+2. `bash: rg -n 'step_preflight_contract|required_values_present|spec_folder_is_within|max_iterations|convergence_threshold' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+3. `bash: sed -n '1,180p' .opencode/skill/sk-deep-research/references/state_format.md`
+### Expected
+The command explicitly names topic, spec folder, execution mode, max iterations, and convergence threshold; YAML preflight verifies them before file writes.
+### Evidence
+Capture the setup prompt, both preflight guards, and the config schema fields together.
+### Pass/Fail
+PASS if setup requirements and YAML preflight align on the required bindings and spec-folder scope; FAIL if one surface allows missing bindings the other forbids.
+### Failure Triage
+Compare both YAML files, not just one, and verify the config schema still names the same parameter fields.
 ---
 
 ## 4. SOURCE FILES

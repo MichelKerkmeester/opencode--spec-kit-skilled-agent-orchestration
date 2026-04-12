@@ -47,7 +47,7 @@
       "execution"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "research/research.md",
       "external/src/ast/loader.ts",

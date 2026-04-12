@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-025 | Novelty justification present in JSONL | Verify every iteration JSONL record includes noveltyJustification alongside newInfoRatio. | As a manual-testing orchestrator, validate the novelty justification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL iteration record schema requires both newInfoRatio and noveltyJustification, that the justification is a human-readable sentence, and that ALWAYS rule 11 and the agent Step 6 mandate their inclusion. Return a concise operator-facing verdict. | 1. `bash: rg -n 'noveltyJustification\|Novelty Justification' .opencode/skill/sk-deep-research/references/state_format.md` -> 2. `bash: rg -n 'rule.*11\|novelty.*justification\|newInfoRatio.*novelty' .opencode/skill/sk-deep-research/SKILL.md` -> 3. `bash: rg -n 'noveltyJustification\|Required fields' .opencode/agent/deep-research.md` | JSONL record has both `newInfoRatio` and `noveltyJustification` fields; justification is a human-readable sentence (e.g., "2 new findings on reconnection backoff, 1 refinement of prior keepalive finding"); field is listed as required in v1.1.0 agent instructions (Step 6); ALWAYS rule 11 mandates both. | Capture the state format field definition, SKILL.md ALWAYS rule 11 text, and agent Step 6 required fields list with the example JSONL record. | PASS if the field schema, ALWAYS rule 11, and agent Step 6 all consistently require both fields and the justification is a human-readable sentence; FAIL if any source omits the requirement or defines the field as optional without enforcement. | Privilege the SKILL.md ALWAYS rules as the normative contract; use state_format.md for schema details and agent files for implementation enforcement. Note: state_format.md marks the field as `No` (not required) in the schema table but SKILL.md ALWAYS rule 11 and agent v1.1.0 instructions override this to required. |
-
+### Prompt
+As a manual-testing orchestrator, validate the novelty justification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL iteration record schema requires both newInfoRatio and noveltyJustification, that the justification is a human-readable sentence, and that ALWAYS rule 11 and the agent Step 6 mandate their inclusion. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'noveltyJustification\|Novelty Justification' .opencode/skill/sk-deep-research/references/state_format.md`
+2. `bash: rg -n 'rule.*11\|novelty.*justification\|newInfoRatio.*novelty' .opencode/skill/sk-deep-research/SKILL.md`
+3. `bash: rg -n 'noveltyJustification\|Required fields' .opencode/agent/deep-research.md`
+### Expected
+JSONL record has both `newInfoRatio` and `noveltyJustification` fields; justification is a human-readable sentence (e.g., "2 new findings on reconnection backoff, 1 refinement of prior keepalive finding"); field is listed as required in v1.1.0 agent instructions (Step 6); ALWAYS rule 11 mandates both.
+### Evidence
+Capture the state format field definition, SKILL.md ALWAYS rule 11 text, and agent Step 6 required fields list with the example JSONL record.
+### Pass/Fail
+PASS if the field schema, ALWAYS rule 11, and agent Step 6 all consistently require both fields and the justification is a human-readable sentence; FAIL if any source omits the requirement or defines the field as optional without enforcement.
+### Failure Triage
+Privilege the SKILL.md ALWAYS rules as the normative contract; use state_format.md for schema details and agent files for implementation enforcement. Note: state_format.md marks the field as `No` (not required) in the schema table but SKILL.md ALWAYS rule 11 and agent v1.1.0 instructions override this to required.
 ---
 
 ## 4. SOURCE FILES

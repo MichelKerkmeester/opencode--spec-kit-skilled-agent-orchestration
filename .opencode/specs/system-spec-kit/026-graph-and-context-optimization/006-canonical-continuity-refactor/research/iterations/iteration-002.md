@@ -8,6 +8,15 @@ scope: q1_routing_rules
 status: complete
 focus: "Design the contentRouter component. Enumerate content categories. Define the classifier contract, the refuse-to-route signal, and the user-override path."
 maps_to_questions: [Q1]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-002.md"]
+
 ---
 
 # Iteration 002 — Q1: Content Routing Rules

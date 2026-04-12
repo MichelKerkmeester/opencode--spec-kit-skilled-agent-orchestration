@@ -8,6 +8,15 @@ scope: q5_resume_journey
 status: complete
 focus: "Complete UX narrative for /spec_kit:resume under Option C. Side-by-side with current path. Measure steps, tokens, latency."
 maps_to_questions: [Q5]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-013.md"]
+
 ---
 
 # Iteration 013 — Q5: Resume User Journey

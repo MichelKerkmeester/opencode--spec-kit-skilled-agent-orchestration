@@ -45,9 +45,26 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 3. Capture evidence from the registry, dashboard, and strategy anchor in that order so another operator can replay the exact reducer surfacing chain.
 4. Return a short user-facing explanation, not just raw implementation notes.
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-032 | Research reducer surfaces blocked-stop history across registry, dashboard, and next-focus | Verify `blocked_stop` reducer output appears in `blockedStopHistory`, `BLOCKED STOPS`, and the strategy recovery anchor. | As a manual-testing orchestrator, validate blocked-stop reducer surfacing for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify running node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs <spec-folder> on a research packet with at least one blocked_stop event populates blockedStopHistory, renders BLOCKED STOPS in the dashboard, and rewrites the strategy next-focus anchor with the recovery strategy. Return a concise operator-facing verdict. | 1. `bash: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs {spec_folder}` -> 2. `bash: cat {spec_folder}/research/findings-registry.json | jq '.blockedStopHistory'` -> 3. `bash: grep -A 5 "BLOCKED STOPS" {spec_folder}/research/deep-research-dashboard.md` -> 4. `bash: sed -n '/ANCHOR:next-focus/,/\/ANCHOR:next-focus/p' {spec_folder}/research/deep-research-strategy.md` | `blockedStopHistory` contains reducer-promoted blocked-stop entries; `BLOCKED STOPS` renders each blocked-stop event; `ANCHOR:next-focus` includes the recovery strategy from the latest blocked-stop record. | Capture the populated `blockedStopHistory` array, the dashboard `BLOCKED STOPS` excerpt, and the strategy `next-focus` anchor showing the recovery guidance. | PASS if all three surfaces show the same blocked-stop data and recovery hint; FAIL if any surface is missing the blocked-stop data or shows stale content after the reducer run. | Privilege `findings-registry.json` as the reducer-owned source of truth. If the registry is correct but the dashboard or strategy anchor is stale, treat that as reducer surfacing drift. If no canonical interrupted-session fixture exists yet, use a hand-constructed minimal packet and note the fixture gap in the operator verdict. |
+### Prompt
+As a manual-testing orchestrator, validate blocked-stop reducer surfacing for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify running node `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs <spec-folder>` on a research packet with at least one `blocked_stop` event populates `blockedStopHistory`, renders `BLOCKED STOPS` in the dashboard, and rewrites the strategy `next-focus` anchor with the recovery strategy. Return a concise operator-facing verdict.
+
+### Commands
+1. `bash: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs {spec_folder}`
+2. `bash: cat {spec_folder}/research/findings-registry.json | jq '.blockedStopHistory'`
+3. `bash: grep -A 5 "BLOCKED STOPS" {spec_folder}/research/deep-research-dashboard.md`
+4. `bash: sed -n '/ANCHOR:next-focus/,/\/ANCHOR:next-focus/p' {spec_folder}/research/deep-research-strategy.md`
+
+### Expected
+`blockedStopHistory` contains reducer-promoted blocked-stop entries; `BLOCKED STOPS` renders each blocked-stop event; `ANCHOR:next-focus` includes the recovery strategy from the latest blocked-stop record.
+
+### Evidence
+Capture the populated `blockedStopHistory` array, the dashboard `BLOCKED STOPS` excerpt, and the strategy `next-focus` anchor showing the recovery guidance.
+
+### Pass/Fail
+PASS if all three surfaces show the same blocked-stop data and recovery hint; FAIL if any surface is missing the blocked-stop data or shows stale content after the reducer run.
+
+### Failure Triage
+Privilege `findings-registry.json` as the reducer-owned source of truth. If the registry is correct but the dashboard or strategy anchor is stale, treat that as reducer surfacing drift. If no canonical interrupted-session fixture exists yet, use a hand-constructed minimal packet and note the fixture gap in the operator verdict.
 
 ---
 

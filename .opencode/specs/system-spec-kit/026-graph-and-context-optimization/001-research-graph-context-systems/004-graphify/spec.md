@@ -8,6 +8,16 @@ trigger_phrases:
   - "graphify Adopt Adapt Reject"
 importance_tier: critical
 contextType: spec
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: 004-graphify Research Phase
 
@@ -26,6 +36,7 @@ Phase 4 of `001-research-graph-context-systems` is a read-only audit of the grap
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -38,6 +49,8 @@ Phase 4 of `001-research-graph-context-systems` is a read-only audit of the grap
 | **Parent Spec** | `../spec.md` |
 | **Predecessor Phase** | `../003-contextador/spec.md` |
 | **Successor Phase** | `../005-claudest/spec.md` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

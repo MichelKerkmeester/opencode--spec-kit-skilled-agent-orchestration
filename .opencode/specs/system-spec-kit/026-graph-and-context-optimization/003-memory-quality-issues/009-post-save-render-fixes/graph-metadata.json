@@ -41,7 +41,7 @@
       "plan"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "scripts/core/title-builder.ts",
       "generate-context.ts",

@@ -7,6 +7,7 @@ contextType: "implementation"
 status: "complete"
 level: 3
 parent: "006-canonical-continuity-refactor"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "026/006/013-dead-code-and-architecture-audit"

@@ -1,10 +1,10 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "Tasks: Phase 015 Full Playbook Execution"
-description: "Completed execution tasks and per-category results for the Phase 015 playbook run."
+title: "Tasks: Phase 015 Playbook Coverage Accounting and Partial Execution"
+description: "Coverage-accounting tasks and per-category results for the Phase 015 playbook run, including the reclassified partial and failing scenarios."
 trigger_phrases:
   - "phase 015 tasks"
-  - "full playbook execution tasks"
+  - "playbook coverage accounting tasks"
   - "manual playbook results"
 importance_tier: "important"
 contextType: "verification"
@@ -13,7 +13,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Recorded the completed task inventory and category result matrix"
+    recent_action: "Recorded the coverage-accounting task inventory and category result matrix"
     next_safe_action: "Use the failure inventory to drive follow-on remediation"
     blockers:
       - "Automated suite still has two concrete MCP-side failures"
@@ -30,7 +30,7 @@ _memory:
     answered_questions:
       - "Did the final runner pass account for every live scenario file"
 ---
-# Tasks: Phase 015 Full Playbook Execution
+# Tasks: Phase 015 Playbook Coverage Accounting and Partial Execution
 
 <!-- SPECKIT_LEVEL: 2 -->
 
@@ -89,36 +89,36 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-| Category | Total | PASS | FAIL | SKIP | UNAUTOMATABLE |
-|---|---:|---:|---:|---:|---:|
-| 01--retrieval | 16 | 3 | 0 | 0 | 13 |
-| 02--mutation | 10 | 5 | 0 | 0 | 5 |
-| 03--discovery | 3 | 3 | 0 | 0 | 0 |
-| 04--maintenance | 2 | 1 | 0 | 0 | 1 |
-| 05--lifecycle | 9 | 3 | 0 | 0 | 6 |
-| 06--analysis | 7 | 6 | 0 | 0 | 1 |
-| 07--evaluation | 2 | 0 | 0 | 0 | 2 |
-| 08--bug-fixes-and-data-integrity | 12 | 0 | 0 | 0 | 12 |
-| 09--evaluation-and-measurement | 15 | 0 | 0 | 0 | 15 |
-| 10--graph-signal-activation | 17 | 0 | 0 | 0 | 17 |
-| 11--scoring-and-calibration | 23 | 0 | 0 | 0 | 23 |
-| 12--query-intelligence | 9 | 0 | 0 | 0 | 9 |
-| 13--memory-quality-and-indexing | 29 | 0 | 0 | 0 | 29 |
-| 14--pipeline-architecture | 23 | 0 | 0 | 0 | 23 |
-| 15--retrieval-enhancements | 11 | 0 | 0 | 0 | 11 |
-| 16--tooling-and-scripts | 50 | 0 | 0 | 0 | 50 |
-| 17--governance | 3 | 0 | 0 | 0 | 3 |
-| 18--ux-hooks | 18 | 0 | 0 | 0 | 18 |
-| 19--feature-flag-reference | 10 | 0 | 0 | 0 | 10 |
-| 20--remediation-revalidation | 3 | 0 | 0 | 0 | 3 |
-| 21--implement-and-remove-deprecated-features | 5 | 0 | 0 | 0 | 5 |
-| 22--context-preservation-and-code-graph | 20 | 3 | 0 | 0 | 17 |
-| **TOTAL** | **297** | **24** | **0** | **0** | **273** |
+| Category | Total | PASS | PARTIAL | FAIL | SKIP | UNAUTOMATABLE |
+|---|---:|---:|---:|---:|---:|---:|
+| 01--retrieval | 16 | 2 | 1 | 0 | 0 | 13 |
+| 02--mutation | 10 | 4 | 0 | 1 | 0 | 5 |
+| 03--discovery | 3 | 3 | 0 | 0 | 0 | 0 |
+| 04--maintenance | 2 | 1 | 0 | 0 | 0 | 1 |
+| 05--lifecycle | 9 | 3 | 0 | 0 | 0 | 6 |
+| 06--analysis | 7 | 6 | 0 | 0 | 0 | 1 |
+| 07--evaluation | 2 | 0 | 0 | 0 | 0 | 2 |
+| 08--bug-fixes-and-data-integrity | 12 | 0 | 0 | 0 | 0 | 12 |
+| 09--evaluation-and-measurement | 15 | 0 | 0 | 0 | 0 | 15 |
+| 10--graph-signal-activation | 17 | 0 | 0 | 0 | 0 | 17 |
+| 11--scoring-and-calibration | 23 | 0 | 0 | 0 | 0 | 23 |
+| 12--query-intelligence | 9 | 0 | 0 | 0 | 0 | 9 |
+| 13--memory-quality-and-indexing | 29 | 0 | 0 | 0 | 0 | 29 |
+| 14--pipeline-architecture | 23 | 0 | 0 | 0 | 0 | 23 |
+| 15--retrieval-enhancements | 11 | 0 | 0 | 0 | 0 | 11 |
+| 16--tooling-and-scripts | 50 | 0 | 0 | 0 | 0 | 50 |
+| 17--governance | 3 | 0 | 0 | 0 | 0 | 3 |
+| 18--ux-hooks | 18 | 0 | 0 | 0 | 0 | 18 |
+| 19--feature-flag-reference | 10 | 0 | 0 | 0 | 0 | 10 |
+| 20--remediation-revalidation | 3 | 0 | 0 | 0 | 0 | 3 |
+| 21--implement-and-remove-deprecated-features | 5 | 0 | 0 | 0 | 0 | 5 |
+| 22--context-preservation-and-code-graph | 20 | 3 | 0 | 0 | 0 | 17 |
+| **TOTAL** | **297** | **22** | **1** | **1** | **0** | **273** |
 
-### Pass Inventory
+### Execution Inventory
 
-- [x] T008 Retrieval passes captured: `EX-001`, `EX-002`, `EX-005`
-- [x] T009 Mutation passes captured: `EX-006`, `EX-007`, `EX-008`, `EX-009`, `EX-010`
+- [x] T008 Retrieval verdicts captured: `EX-002` and `EX-005` remain `PASS`; `EX-001` was reclassified to `PARTIAL` because the resume surfaces returned diagnostics but no recovery context.
+- [x] T009 Mutation verdicts captured: `EX-007`, `EX-008`, `EX-009`, and `EX-010` remain `PASS`; `EX-006` was reclassified to `FAIL` because the save was rejected before indexing and no searchable result appeared.
 - [x] T010 Discovery and maintenance passes captured: `EX-011`, `EX-012`, `EX-013`, `EX-014`
 - [x] T011 Lifecycle and analysis passes captured: `EX-015`, `EX-016`, `EX-018`, `EX-020`, `EX-021`, `EX-022`, `EX-023`, `EX-024`, `EX-025`
 - [x] T012 Context-preservation passes captured: `262`, `263`, `266`

@@ -44,11 +44,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level implementation helpers.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-031 | Graph convergence signals act as STOP-blocking guards | Verify low `sourceDiversity` vetoes STOP and records blocked-stop evidence. | As a manual-testing orchestrator, validate the graph stop-blocking guard contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify SOURCE_DIVERSITY_THRESHOLD = 0.4 blocks STOP when unmet, and that the research convergence reference records blocked-stop persistence with stopReason: "blockedStop" when legal-stop gates fail. Return a concise operator-facing verdict. | 1. `bash: rg -n 'SOURCE_DIVERSITY_THRESHOLD|evaluateGraphGates|sourceDiversityGate|allPass' .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs` -> 2. `bash: rg -n 'blockedStop|blocked_stop|graph-aware convergence|graphEvents|sourceDiversity' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: rg -n 'sourceDiversity|threshold: 0.4|blocking' .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts` | `SOURCE_DIVERSITY_THRESHOLD = 0.4`; low `sourceDiversity` fails the guard; deep-research convergence persists blocked-stop state when legal-stop gates fail. | Capture the helper threshold definition, the `evaluateGraphGates()` pass/fail logic, the convergence reference blocked-stop persistence lines, and one test assertion showing the `0.4` threshold. | PASS if low `sourceDiversity` fails the graph stop gate and blocked-stop persistence is documented for failed legal-stop evaluation; FAIL if either the threshold enforcement or blocked-stop persistence is missing or contradictory. | Privilege `coverage-graph-convergence.cjs` for the enforcement contract and `references/convergence.md` for the deep-research stop-state behavior. If wording differs between `blocked_stop` event name and `blockedStop` stop reason, treat both as the same blocked-stop pathway and note the distinction in the operator verdict. |
-
+### Prompt
+As a manual-testing orchestrator, validate the graph stop-blocking guard contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify SOURCE_DIVERSITY_THRESHOLD = 0.4 blocks STOP when unmet, and that the research convergence reference records blocked-stop persistence with stopReason: "blockedStop" when legal-stop gates fail. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'SOURCE_DIVERSITY_THRESHOLD|evaluateGraphGates|sourceDiversityGate|allPass' .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs`
+2. `bash: rg -n 'blockedStop|blocked_stop|graph-aware convergence|graphEvents|sourceDiversity' .opencode/skill/sk-deep-research/references/convergence.md`
+3. `bash: rg -n 'sourceDiversity|threshold: 0.4|blocking' .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts`
+### Expected
+`SOURCE_DIVERSITY_THRESHOLD = 0.4`; low `sourceDiversity` fails the guard; deep-research convergence persists blocked-stop state when legal-stop gates fail.
+### Evidence
+Capture the helper threshold definition, the `evaluateGraphGates()` pass/fail logic, the convergence reference blocked-stop persistence lines, and one test assertion showing the `0.4` threshold.
+### Pass/Fail
+PASS if low `sourceDiversity` fails the graph stop gate and blocked-stop persistence is documented for failed legal-stop evaluation; FAIL if either the threshold enforcement or blocked-stop persistence is missing or contradictory.
+### Failure Triage
+Privilege `coverage-graph-convergence.cjs` for the enforcement contract and `references/convergence.md` for the deep-research stop-state behavior. If wording differs between `blocked_stop` event name and `blockedStop` stop reason, treat both as the same blocked-stop pathway and note the distinction in the operator verdict.
 ---
 
 ## 4. SOURCE FILES

@@ -45,9 +45,26 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 3. Capture evidence from the registry, dashboard, and strategy anchor in that order so another operator can replay the reducer surfacing chain.
 4. Return a short user-facing explanation, not just raw implementation notes.
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-022 | Review reducer surfaces blocked-stop history across registry, dashboard, and next-focus | Verify review `blocked_stop` output appears in `blockedStopHistory`, `BLOCKED STOPS`, and the strategy recovery anchor. | As a manual-testing orchestrator, validate blocked-stop reducer surfacing for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify running node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs <spec-folder> on a review packet with at least one blocked_stop event preserves the review gate bundle in blockedStopHistory, renders BLOCKED STOPS in the dashboard, and rewrites the strategy next-focus anchor with the recovery strategy. Return a concise operator-facing verdict. | 1. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {spec_folder}` -> 2. `bash: cat {spec_folder}/review/deep-review-findings-registry.json | jq '.blockedStopHistory'` -> 3. `bash: grep -A 5 "BLOCKED STOPS" {spec_folder}/review/deep-review-dashboard.md` -> 4. `bash: sed -n '/ANCHOR:next-focus/,/\/ANCHOR:next-focus/p' {spec_folder}/review/deep-review-strategy.md` | `blockedStopHistory` contains reducer-promoted blocked-stop entries with the review gate names; `BLOCKED STOPS` renders each blocked-stop event; `ANCHOR:next-focus` includes the recovery strategy from the latest blocked-stop record. | Capture the populated `blockedStopHistory` array, the dashboard `BLOCKED STOPS` excerpt, and the strategy `next-focus` anchor showing the recovery guidance. | PASS if all three review surfaces show the same blocked-stop data and preserve the review gate names; FAIL if any surface is missing blocked-stop data or the gate bundle is incomplete after the reducer run. | Privilege `deep-review-findings-registry.json` as the reducer-owned source of truth. If the registry is correct but the dashboard or strategy anchor is stale, treat that as reducer surfacing drift rather than JSONL input failure. |
+### Prompt
+As a manual-testing orchestrator, validate blocked-stop reducer surfacing for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify running node `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs <spec-folder>` on a review packet with at least one `blocked_stop` event preserves the review gate bundle in `blockedStopHistory`, renders `BLOCKED STOPS` in the dashboard, and rewrites the strategy `next-focus` anchor with the recovery strategy. Return a concise operator-facing verdict.
+
+### Commands
+1. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {spec_folder}`
+2. `bash: cat {spec_folder}/review/deep-review-findings-registry.json | jq '.blockedStopHistory'`
+3. `bash: grep -A 5 "BLOCKED STOPS" {spec_folder}/review/deep-review-dashboard.md`
+4. `bash: sed -n '/ANCHOR:next-focus/,/\/ANCHOR:next-focus/p' {spec_folder}/review/deep-review-strategy.md`
+
+### Expected
+`blockedStopHistory` contains reducer-promoted blocked-stop entries with the review gate names; `BLOCKED STOPS` renders each blocked-stop event; `ANCHOR:next-focus` includes the recovery strategy from the latest blocked-stop record.
+
+### Evidence
+Capture the populated `blockedStopHistory` array, the dashboard `BLOCKED STOPS` excerpt, and the strategy `next-focus` anchor showing the recovery guidance.
+
+### Pass/Fail
+PASS if all three review surfaces show the same blocked-stop data and preserve the review gate names; FAIL if any surface is missing blocked-stop data or the gate bundle is incomplete after the reducer run.
+
+### Failure Triage
+Privilege `deep-review-findings-registry.json` as the reducer-owned source of truth. If the registry is correct but the dashboard or strategy anchor is stale, treat that as reducer surfacing drift rather than JSONL input failure.
 
 ---
 

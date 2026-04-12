@@ -5,6 +5,7 @@ trigger_phrases: ["018 010 implementation summary", "shared memory removal summa
 importance_tier: "important"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/010-remove-shared-memory"

@@ -8,6 +8,15 @@ scope: q5_q6_latency_budget
 status: complete
 focus: "Set concrete stage budgets for Option C write/read/resume paths, identify dominant bottlenecks, and define dashboard regression alerts."
 maps_to_questions: [Q5, Q6]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-027.md"]
+
 ---
 
 # Iteration 027 — Q5/Q6 Latency Budget

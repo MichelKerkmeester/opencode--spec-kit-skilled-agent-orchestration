@@ -49,7 +49,7 @@
       "continuation"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "decision-record.md",
       "implementation-summary.md",
@@ -57,7 +57,6 @@
       "session-stop.ts",
       "session-prime.ts",
       ".claude/settings.local.json",
-      "TMPDIR=$PWD/.tmp/vitest-tmp npx vitest run tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/session-token-resume.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/hook-stop-token-tracking.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
       ".opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts",
@@ -67,7 +66,6 @@
       "tasks.md",
       "research.md",
       "checklist.md",
-      "git diff --name-only -- .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts .claude/settings.local.json",
       "mcp_server/test/hooks/replay-harness.ts",
       "tests/fixtures/hooks/session-stop-replay.jsonl",
       "tests/hook-session-stop-replay.vitest.ts"
@@ -107,12 +105,6 @@
         "name": "settings.local.json",
         "kind": "config",
         "path": ".claude/settings.local.json",
-        "source": "derived"
-      },
-      {
-        "name": "hook-stop-token-tracking.vitest.ts",
-        "kind": "test",
-        "path": "TMPDIR=$PWD/.tmp/vitest-tmp npx vitest run tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/session-token-resume.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/hook-stop-token-tracking.vitest.ts",
         "source": "derived"
       },
       {
@@ -170,7 +162,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md §1; §2].",
+    "causal_summary": "This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md \u00a71; \u00a72].",
     "created_at": "2026-04-12T09:02:53.453Z",
     "last_save_at": "2026-04-12T09:06:03.497Z",
     "last_accessed_at": null,

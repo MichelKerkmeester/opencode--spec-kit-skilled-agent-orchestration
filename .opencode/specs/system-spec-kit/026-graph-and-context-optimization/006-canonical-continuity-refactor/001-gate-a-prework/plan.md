@@ -1,5 +1,5 @@
 ---
-#SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
+
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
@@ -16,6 +16,7 @@ trigger_phrases:
   - "rollback rehearsal"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/001-gate-a-prework"
@@ -68,7 +69,7 @@ The technical approach is to keep Gate A narrow and evidence-driven. We will har
 
 ### Definition of Done
 - [x] Template anchor repairs and special-template anchor additions are implemented and verified against anchor validation.
-- [x] Root packets missing canonical `implementation-summary.md` are backfilled and reviewed. [Evidence: `../../z_archive/z_archive/016-release-alignment/implementation-summary.md` remains present in tree and is cited in `implementation-summary.md`]
+- [x] Root packets missing canonical `implementation-summary.md` are backfilled and reviewed. [Evidence: `../../z_archive/016-release-alignment/implementation-summary.md` remains present in tree and is cited in `implementation-summary.md`]
 - [x] SQLite backup exists, restore-on-copy passes, rollback-on-copy passes, and the later doc-first resume path is benchmarked under five seconds. [Evidence: `.opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db`; Gate D suite `21` files / `30` tests passed on 2026-04-12]
 - [x] Gate A scope remains limited to blocker removal; no Gate B, C, D, or E implementation work is pulled in prematurely.
 <!-- /ANCHOR:quality-gates -->
@@ -106,7 +107,7 @@ Research and resource-map findings freeze the Gate A target set first. That froz
 - [x] Repair orphan `metadata` anchor handling in Level 3 and Level 3+ spec templates.
 - [x] Add baseline anchors to `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md`.
 - [x] Update validator behavior so anchorless changelog/sharded templates do not run `ANCHORS_VALID` by default.
-- [x] Generate and human-review canonical `implementation-summary.md` backfills for the audited root packets. [Evidence: `../../z_archive/z_archive/016-release-alignment/implementation-summary.md` with `_provenance gate-a-retroactive-backfill`]
+- [x] Generate and human-review canonical `implementation-summary.md` backfills for the audited root packets. [Evidence: `../../z_archive/016-release-alignment/implementation-summary.md` with `_provenance gate-a-retroactive-backfill`]
 
 ### Phase 3: Safety verification and closeout
 - [x] Create the Gate A SQLite backup and verify restore-on-copy.
@@ -203,7 +204,7 @@ The estimate matches the week-0 pacing in iteration 020 and the one-week Gate A 
 ### Pre-deployment Checklist
 - [x] Gate A snapshot file exists before any rehearsal begins.
 - [x] Restore target is a copy, not the live SQLite file.
-- [x] Root packet backfill remains isolated enough to review or revert cleanly if narrative drift is found. [Evidence: only `../../z_archive/z_archive/016-release-alignment/implementation-summary.md` was needed for the audited set]
+- [x] Root packet backfill remains isolated enough to review or revert cleanly if narrative drift is found. [Evidence: only `../../z_archive/016-release-alignment/implementation-summary.md` was needed for the audited set]
 - [x] Validator failures introduced by template edits can be traced back to a bounded change set. [Evidence: repaired surfaces stayed inside the named template and validator files]
 
 ### Rollback Procedure

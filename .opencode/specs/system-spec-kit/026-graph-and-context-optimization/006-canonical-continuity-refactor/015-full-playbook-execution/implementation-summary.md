@@ -1,10 +1,10 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Phase 015 Full Playbook Execution"
-description: "This phase turned the live system-spec-kit playbook into packet-local evidence, showed where handler automation really works, and exposed the first automated-suite blockers that still need remediation."
+title: "Implementation Summary: Phase 015 Playbook Coverage Accounting and Partial Execution"
+description: "This phase turned the live system-spec-kit playbook into packet-local evidence, showed where handler automation really works, and documented the large partial-execution surface that still needs follow-on work."
 trigger_phrases:
   - "phase 015 implementation summary"
-  - "full playbook execution summary"
+  - "playbook coverage accounting summary"
 importance_tier: "critical"
 contextType: "verification"
 _memory:
@@ -12,7 +12,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Published"
+    recent_action: "Published coverage accounting and partial execution results"
     next_safe_action: "Fix the two automated-suite failures and decide whether to expand playbook automation"
     blockers:
       - "handler-helpers suite import failure"
@@ -30,7 +30,7 @@ _memory:
     answered_questions:
       - "How many live playbook files are still truthfully direct-handler automatable"
 ---
-# Implementation Summary: Phase 015 Full Playbook Execution
+# Implementation Summary: Phase 015 Playbook Coverage Accounting and Partial Execution
 
 <!-- SPECKIT_LEVEL: 2 -->
 
@@ -51,11 +51,11 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase replaced assumptions with a live execution record. The runner now writes packet-local evidence for Phase 015, understands the current playbook prose formats, and can account for every active scenario file in the live filesystem instead of dropping edge cases like split Section 2/Section 3 scenarios.
+This phase replaced assumptions with a live coverage-accounting record. The runner now writes packet-local evidence for Phase 015, understands the current playbook prose formats, and can account for every active scenario file in the live filesystem instead of dropping edge cases like split Section 2/Section 3 scenarios.
 
 ### Execution outcome
 
-You can now inspect a packet-local manual result set for all `297` active scenario files. That run produced `24 PASS`, `0 FAIL`, `0 SKIP`, and `273 UNAUTOMATABLE`, which makes the current automation boundary obvious instead of pretending shell-, source-, or transport-driven scenarios are cleanly handler-automatable.
+You can now inspect a packet-local manual result set for all `297` active scenario files. That run produced `22 PASS`, `1 PARTIAL`, `1 FAIL`, `0 SKIP`, and `273 UNAUTOMATABLE`, which makes the current automation boundary obvious instead of pretending shell-, source-, or transport-driven scenarios are cleanly handler-automatable.
 
 ### Files Changed
 
@@ -99,9 +99,9 @@ The delivery path stayed deliberately narrow. First, the existing runner and fix
 | Check | Result |
 |-------|--------|
 | `npm run build` | PASS |
-| Requested Vitest command | PASS with caveat: raw run executed, but packet totals use the bail-stable subset |
-| Automated executed subset | PASS/FAIL mixed: `345` pass, `1` fail across `346` executed tests |
-| Manual runner full sweep | PASS: `297/297` active scenario files accounted for |
+| Requested Vitest command | PARTIAL: raw run executed, but packet totals use the bail-stable subset |
+| Automated executed subset | PARTIAL: `345` pass and `1` fail across `346` executed tests |
+| Manual runner full sweep | PARTIAL: `297/297` active scenario files accounted for, but most remain `UNAUTOMATABLE` |
 | Strict phase validation | See checklist for current packet-template status after the first validation pass and follow-up alignment |
 <!-- /ANCHOR:verification -->
 
@@ -113,5 +113,5 @@ The delivery path stayed deliberately narrow. First, the existing runner and fix
 1. **Automated suite not green.** `mcp_server/tests/handler-helpers.vitest.ts` fails at import time because its config mock no longer exports `resolveDatabasePaths`.
 2. **Strict-validation fixture drift remains.** `mcp_server/tests/spec-doc-structure.vitest.ts` expects `validate.sh --strict` to return `0`, but the live result is `2`.
 3. **Manual automation coverage is low.** `273/297` active scenarios are still truthful `UNAUTOMATABLE` cases under direct-handler execution.
-4. **One weak pass exists.** `EX-006` passed under majority-signal matching even though the evidence still contains a template-contract rejection.
+4. **Two optimistic PASS rows were corrected.** `EX-001` is now `PARTIAL` because the resume surfaces only returned unresolved diagnostics, and `EX-006` is now `FAIL` because the save was rejected before indexing.
 <!-- /ANCHOR:limitations -->

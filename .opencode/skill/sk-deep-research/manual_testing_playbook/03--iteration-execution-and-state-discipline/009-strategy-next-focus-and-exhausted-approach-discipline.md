@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-009 | Strategy “Next Focus” and exhausted-approach discipline | Verify that the loop honors the strategy file’s Next Focus and avoids approaches marked exhausted or blocked. | As a manual-testing orchestrator, validate the strategy-discipline contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify iteration focus comes from Next Focus and that exhausted or blocked approaches are not retried. Return a concise user-facing verdict. | 1. `bash: rg -n 'Next Focus|Exhausted Approaches|What Worked|What Failed' .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: rg -n 'Exhausted Approaches|MANDATORY PRE-CHECK|RECOVERY' .codex/agents/deep-research.toml` -> 3. `bash: rg -n 'least_explored|next_focus|remaining_questions_list' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Next Focus is read explicitly, exhausted approaches are treated as do-not-retry, and recovery mode consults deferred ideas instead of repeating blocked tactics. | Capture the strategy-file sections, the runtime pre-check, and the loop’s extracted focus fields. | PASS if the workflow and runtime both treat `Next Focus` as primary and exhausted approaches as non-retriable; FAIL if focus selection is unconstrained or blocked tactics can be reused. | If wording differs between docs, privilege the runtime pre-check plus the state-format required sections. |
-
+### Prompt
+As a manual-testing orchestrator, validate the strategy-discipline contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify iteration focus comes from Next Focus and that exhausted or blocked approaches are not retried. Return a concise user-facing verdict.
+### Commands
+1. `bash: rg -n 'Next Focus|Exhausted Approaches|What Worked|What Failed' .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/references/loop_protocol.md`
+2. `bash: rg -n 'Exhausted Approaches|MANDATORY PRE-CHECK|RECOVERY' .codex/agents/deep-research.toml`
+3. `bash: rg -n 'least_explored|next_focus|remaining_questions_list' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+### Expected
+Next Focus is read explicitly, exhausted approaches are treated as do-not-retry, and recovery mode consults deferred ideas instead of repeating blocked tactics.
+### Evidence
+Capture the strategy-file sections, the runtime pre-check, and the loop’s extracted focus fields.
+### Pass/Fail
+PASS if the workflow and runtime both treat `Next Focus` as primary and exhausted approaches as non-retriable; FAIL if focus selection is unconstrained or blocked tactics can be reused.
+### Failure Triage
+If wording differs between docs, privilege the runtime pre-check plus the state-format required sections.
 ---
 
 ## 4. SOURCE FILES

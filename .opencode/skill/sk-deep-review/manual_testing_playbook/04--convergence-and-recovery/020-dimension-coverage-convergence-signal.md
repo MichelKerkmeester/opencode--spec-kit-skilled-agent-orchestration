@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-020 | Dimension coverage convergence signal | Verify dimension coverage signal (weight 0.45) requires all 4 dimensions + minStabilizationPasses >= 1. | As a manual-testing orchestrator, validate the dimension coverage convergence signal for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the signal has weight 0.45, requires all 4 review dimensions (Correctness, Security, Traceability, Maintainability) to be covered in strategy.md, requires minStabilizationPasses >= 1 (at least one iteration after full coverage where no new dimension-first findings appear), and only then contributes its weight to the composite stop score. Return a concise operator-facing verdict. | 1. `bash: rg -n 'dimension.coverage|Dimension Coverage|0\.45|minStabilization|stabilization|all.*dimension|4.*dimension' .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: rg -n 'dimension_coverage|0\.45|minStabilization|stabilization|all_dimensions|dimension.*covered' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'Dimension Coverage|0\.45|minStabilization|stabilization|Covered|D1|D2|D3|D4|Correctness|Security|Traceability|Maintainability' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/assets/deep_review_strategy.md` | Weight 0.45, all 4 dimensions required, `minStabilizationPasses=1`, signal contributes 0 until conditions are met, strategy.md "Covered" list tracks dimension coverage. | Capture the signal definition from convergence.md, the YAML enforcement, the 4-dimension list, and the strategy template tracking coverage. | PASS if the dimension coverage signal requires all 4 dimensions and stabilization before contributing; FAIL if the signal can fire with incomplete dimension coverage or without stabilization. | Privilege the convergence reference for the signal formula and use the strategy template and YAML for enforcement confirmation. |
-
+### Prompt
+As a manual-testing orchestrator, validate the dimension coverage convergence signal for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the signal has weight 0.45, requires all 4 review dimensions (Correctness, Security, Traceability, Maintainability) to be covered in strategy.md, requires minStabilizationPasses >= 1 (at least one iteration after full coverage where no new dimension-first findings appear), and only then contributes its weight to the composite stop score. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'dimension.coverage|Dimension Coverage|0\.45|minStabilization|stabilization|all.*dimension|4.*dimension' .opencode/skill/sk-deep-research/references/convergence.md`
+2. `bash: rg -n 'dimension_coverage|0\.45|minStabilization|stabilization|all_dimensions|dimension.*covered' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'Dimension Coverage|0\.45|minStabilization|stabilization|Covered|D1|D2|D3|D4|Correctness|Security|Traceability|Maintainability' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/assets/deep_review_strategy.md`
+### Expected
+Weight 0.45, all 4 dimensions required, `minStabilizationPasses=1`, signal contributes 0 until conditions are met, strategy.md "Covered" list tracks dimension coverage.
+### Evidence
+Capture the signal definition from convergence.md, the YAML enforcement, the 4-dimension list, and the strategy template tracking coverage.
+### Pass/Fail
+PASS if the dimension coverage signal requires all 4 dimensions and stabilization before contributing; FAIL if the signal can fire with incomplete dimension coverage or without stabilization.
+### Failure Triage
+Privilege the convergence reference for the signal formula and use the strategy template and YAML for enforcement confirmation.
 ---
 
 ## 4. SOURCE FILES

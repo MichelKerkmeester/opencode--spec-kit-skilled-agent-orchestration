@@ -1,5 +1,5 @@
 ---
-#SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
@@ -16,6 +16,7 @@ trigger_phrases:
   - "template hardening"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/001-gate-a-prework"
@@ -41,6 +42,10 @@ _memory:
 | **Status** | Complete |
 | **Created** | 2026-04-11 |
 | **Branch** | TBD — assigned when Gate A implementation kicks off |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | N/A |
+| **Successor** | `002-gate-b-foundation` |
 <!-- /ANCHOR:metadata -->
 
 ---

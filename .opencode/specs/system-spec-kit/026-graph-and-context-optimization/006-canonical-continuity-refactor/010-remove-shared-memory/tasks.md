@@ -5,6 +5,7 @@ trigger_phrases: ["018 010 tasks", "shared memory removal tasks", "hard delete s
 importance_tier: "critical"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/010-remove-shared-memory"

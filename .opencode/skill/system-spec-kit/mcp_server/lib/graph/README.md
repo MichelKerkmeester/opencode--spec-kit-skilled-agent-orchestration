@@ -68,6 +68,8 @@ graph/
   community-summaries.ts      # Template-based community summary generation
   community-storage.ts        # Community persistence and retrieval
   contradiction-detection.ts  # Superseding/conflicting edge detection + auto-invalidation
+  graph-metadata-parser.ts    # Parse packet graph-metadata.json into graph-aware runtime signals
+  graph-metadata-schema.ts    # Shared schema + validation for graph-metadata.json
   graph-signals.ts            # Momentum and causal depth scoring, degree snapshots
   temporal-edges.ts           # valid_at/invalid_at edge validity management
   usage-ranking-signal.ts     # Log-scale usage boost computation
@@ -83,6 +85,8 @@ graph/
 | `community-summaries.ts` | Generates text summaries per community from member titles/topics, stores in `community_summaries` table | `SPECKIT_COMMUNITY_SUMMARIES` |
 | `community-storage.ts` | Stores and retrieves community data (assignments, membership) | `SPECKIT_COMMUNITY_SUMMARIES` |
 | `contradiction-detection.ts` | Detects superseding and conflicting edge relations, auto-invalidates old edges via `temporal-edges.ts` | `SPECKIT_TEMPORAL_EDGES` |
+| `graph-metadata-parser.ts` | Reads `graph-metadata.json` packet artifacts and normalizes derived graph fields for runtime use | Always on |
+| `graph-metadata-schema.ts` | Defines the schema and validators that keep `graph-metadata.json` contract-stable | Always on |
 | `graph-signals.ts` | Degree snapshots, momentum scoring (recent degree delta), causal depth via SCC condensation | `SPECKIT_GRAPH_SIGNALS` |
 | `temporal-edges.ts` | Adds `valid_at`/`invalid_at` columns to `causal_edges`, provides `invalidateEdge()` and `getValidEdges()` | `SPECKIT_TEMPORAL_EDGES` |
 | `usage-ranking-signal.ts` | `computeUsageBoost()` — log-scale normalization producing 0.0-0.10 boost | `SPECKIT_USAGE_RANKING` |

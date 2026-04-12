@@ -39,7 +39,7 @@ Canonical packet continuity still lives in `handover.md`, `_memory.continuity`, 
 | Feature | Description |
 |---------|-------------|
 | **9 Memory Types** | From working (1-day half-life) to meta-cognitive (never decays) |
-| **8 Spec Document Types** | `spec`, `plan`, `tasks`, `checklist`, `decision_record`, `implementation_summary`, `research`, `handover` |
+| **10 Spec Document Types** | `spec`, `plan`, `tasks`, `checklist`, `decision_record`, `implementation_summary`, `research`, `handover`, `description_json`, `graph_metadata` |
 | **Automatic Inference** | Detect memory type from path, frontmatter, or keywords |
 | **Document Inference** | Detect `documentType` from spec-folder filenames and location |
 | **Tier Mapping** | Link importance tiers to appropriate memory types |
@@ -50,7 +50,7 @@ Canonical packet continuity still lives in `handover.md`, `_memory.continuity`, 
 | Category | Count | Details |
 |----------|-------|---------|
 | Memory Types | 9 | Cognitive categories with differentiated decay |
-| Spec Document Types | 8 | Canonical spec folder docs recognized by filename |
+| Spec Document Types | 10 | Canonical spec folder docs recognized by filename |
 | Path Patterns | 30+ | Regex patterns for type inference |
 | Keyword Mappings | 40+ | Title/trigger phrase to type mapping |
 | Half-Life Range | 1-365 days | Plus null for never-decay |
@@ -104,8 +104,8 @@ The system infers memory type using this precedence:
 | Pattern | Type | Example Paths |
 |---------|------|---------------|
 | `/scratch/`, `/temp/` | working | `specs/<###-spec-name>/scratch/debug.md` |
-| `session-\d+`, `debug-log` | episodic | `memory/session-1.md` |
-| `todo`, `next-steps` | prospective | `memory/next-steps.md` |
+| `session-\d+`, `debug-log` | episodic | `.opencode/specs/<target-spec>/handover.md` |
+| `todo`, `next-steps` | prospective | `.opencode/specs/<target-spec>/tasks.md` |
 | `guide`, `checklist` | procedural | `docs/install-guide.md` |
 | `architecture`, `adr-\d+` | semantic | `docs/adr-001.md` |
 | `constitutional`, `claude.md` | meta-cognitive | `AGENTS.md`, `AGENTS.md` |
@@ -186,12 +186,12 @@ const result3 = inferMemoryType({
 import { inferMemoryTypesBatch } from './type-inference';
 
 const memories = [
-  { file_path: 'memory/session-1.md', title: 'Debug Session' },
-  { file_path: 'docs/architecture.md', title: 'System Design' },
+  { file_path: '.opencode/specs/123-example/handover.md', title: 'Debug Session' },
+  { file_path: '.opencode/specs/123-example/graph-metadata.json', title: 'Graph Metadata' },
 ];
 
 const results = inferMemoryTypesBatch(memories);
-// Returns: Map { 'memory/session-1.md' => { type: 'episodic', ... }, ... }
+// Returns: Map { '.opencode/specs/123-example/handover.md' => { type: 'episodic', ... }, ... }
 ```
 
 ### Example 4: Validate Inferred Type

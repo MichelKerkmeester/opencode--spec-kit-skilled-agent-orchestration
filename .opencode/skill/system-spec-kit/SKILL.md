@@ -508,7 +508,8 @@ specs/007-auth-system/
 **Manual context save (MANDATORY workflow):**
 - Trigger: `/memory:save`, "save context", or "save memory"
 - **MUST use:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
-- **NEVER:** Author canonical continuity surfaces manually via Write/Edit (AGENTS.md Memory Save Rule)
+- Canonical saves via `generate-context.js` also refresh `graph-metadata.json` derived fields in the spec folder.
+- AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` for session continuity updates.
 - **JSON mode (PREFERRED):** AI composes structured JSON → pass via `--json`, `--stdin`, or temp file. The AI has strictly better information about its own session than any DB query.
 - **Structured JSON fields:** The JSON payload supports optional structured summary fields that improve memory quality:
   - `toolCalls[]` — AI-composed tool call records (`tool`, `inputSummary`, `outputSummary`, `status`)
@@ -538,7 +539,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --j
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"system-spec-kit","sessionSummary":"..."}' system-spec-kit
 ```
 
-Explicit CLI targets update the selected root-spec or phase packet. The canonical recovery ladder is `handover.md -> _memory.continuity -> spec docs`; `generate-context.js` refreshes that packet continuity instead of authoring a standalone `memory/*.md` primary artifact. If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
+Explicit CLI targets update the selected root-spec or phase packet. The canonical recovery ladder is `handover.md -> _memory.continuity -> spec docs`; `generate-context.js` refreshes packet continuity and `graph-metadata.json` instead of authoring a standalone `memory/*.md` primary artifact. If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
 
 **Canonical Continuity Shape:**
 ```markdown
@@ -862,7 +863,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 
 ### Context Preservation
 
-- [ ] Context saved via `generate-context.js` script (NEVER manual Write/Edit)
+- [ ] Context saved via `generate-context.js` script or a direct `_memory.continuity` update in `implementation-summary.md`
 - [ ] Canonical continuity surfaces record recent action and next safe action
 - [ ] Manual saves triggered via `/memory:save` or keywords
 - [ ] Anchor pairs properly formatted and closed

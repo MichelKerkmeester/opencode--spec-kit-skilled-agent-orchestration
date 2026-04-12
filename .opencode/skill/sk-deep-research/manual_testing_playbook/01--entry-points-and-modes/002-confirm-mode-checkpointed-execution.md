@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-002 | Confirm mode checkpointed execution | Verify that confirm mode adds approval checkpoints without changing the core loop phases or artifact contract. | As a manual-testing orchestrator, validate the confirm-mode contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:confirm is documented as interactive, approval-gated, and still uses the same core loop and output artifacts as auto mode. Return a concise operator-facing verdict. | 1. `bash: rg -n ':confirm|approval|interactive' .opencode/command/spec_kit/deep-research.md .opencode/skill/sk-deep-research/README.md` -> 2. `bash: sed -n '1,300p' .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` -> 3. `bash: rg -n 'gate_init_approval|phase_loop|phase_synthesis|research_output|research/iterations' .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Confirm mode is interactive, approval-gated, and still routes through initialization, loop, synthesis, and save rather than a separate workflow. | Capture the confirm-mode description, the explicit approval gate names, and the shared artifact paths. | PASS if confirm mode is approval-gated and still preserves the same loop/artifact contract as auto mode; FAIL if the docs or YAML describe a materially different behavior. | Inspect `gate_init_approval` first, then compare `phase_loop` and `state_paths` to the auto workflow and README wording. |
-
+### Prompt
+As a manual-testing orchestrator, validate the confirm-mode contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:confirm is documented as interactive, approval-gated, and still uses the same core loop and output artifacts as auto mode. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n ':confirm|approval|interactive' .opencode/command/spec_kit/deep-research.md .opencode/skill/sk-deep-research/README.md`
+2. `bash: sed -n '1,300p' .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+3. `bash: rg -n 'gate_init_approval|phase_loop|phase_synthesis|research_output|research/iterations' .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+### Expected
+Confirm mode is interactive, approval-gated, and still routes through initialization, loop, synthesis, and save rather than a separate workflow.
+### Evidence
+Capture the confirm-mode description, the explicit approval gate names, and the shared artifact paths.
+### Pass/Fail
+PASS if confirm mode is approval-gated and still preserves the same loop/artifact contract as auto mode; FAIL if the docs or YAML describe a materially different behavior.
+### Failure Triage
+Inspect `gate_init_approval` first, then compare `phase_loop` and `state_paths` to the auto workflow and README wording.
 ---
 
 ## 4. SOURCE FILES

@@ -5,6 +5,7 @@ trigger_phrases: ["018 011 decision record", "graph metadata adr", "graph metada
 importance_tier: "critical"
 contextType: "planning"
 status: "planned"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/011-spec-folder-graph-metadata"

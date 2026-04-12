@@ -20,13 +20,23 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a retrieval validation operator, validate Targeted Memory Lookup against memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]}). Verify precise fact-level retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Commands:
-  - `memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]})`
-- Expected: precise fact-level retrieval.
-- Evidence: fact + source snippet.
-- Pass: question answered with traceable result.
-- Fail triage: refine query terms; use focused mode.
+### Prompt
+
+`As a retrieval validation operator, validate Targeted Memory Lookup against memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]}). Verify precise fact-level retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.`
+### Commands
+- `memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]})`
+### Expected
+
+precise fact-level retrieval.
+### Evidence
+
+fact + source snippet.
+### Pass/Fail
+
+question answered with traceable result.
+### Failure Triage
+
+refine query terms; use focused mode.
 
 ---
 

@@ -8,6 +8,15 @@ scope: q8_q9_shadow_compare
 status: complete
 focus: "Define what shadow-compare equivalence means, acceptance thresholds per query class, divergence detection, auto-disable rules, golden-set fixture design, and shadow-only → dual-write state transitions."
 maps_to_questions: [Q8, Q9]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-032.md"]
+
 ---
 # Iteration 032 — Shadow-compare equivalence metric and activation rules
 

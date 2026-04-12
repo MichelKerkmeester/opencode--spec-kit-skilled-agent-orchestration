@@ -5,6 +5,7 @@ trigger_phrases: ["018 010 checklist", "shared memory removal checklist", "hard 
 importance_tier: "important"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/010-remove-shared-memory"

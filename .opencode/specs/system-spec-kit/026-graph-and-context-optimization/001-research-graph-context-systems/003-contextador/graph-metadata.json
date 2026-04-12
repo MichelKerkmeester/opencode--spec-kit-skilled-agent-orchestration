@@ -48,7 +48,7 @@
       "navigation"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "mcp.ts",
       "headmaster.ts",

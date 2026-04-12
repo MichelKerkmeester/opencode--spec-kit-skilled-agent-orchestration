@@ -1,12 +1,16 @@
 # Phase 018 Implementation Design Research — Progressive Synthesis
 
+<!-- ANCHOR:summary -->
+This research packet is anchored in the rerun seed and the converged 20-iteration design loop. [SOURCE: scratch/phase-017-rerun-seed.md:1-20] [SOURCE: research/iterations/iteration-020.md:1-24]
+<!-- /ANCHOR:summary -->
+
 > **Lineage**: Generation 1, in-session 20-iteration rerun (orchestrator+worker: claude-opus-4-6), 2026-04-11T13:30:00Z — 15:10:00Z
 > **Based on**: phase 017 rerun findings (`../scratch/phase-017-rerun-seed.md`) + 20 iterations of design work
 > **Status**: Loop complete, composite score 0.95, all 9 key questions answered
 
 ## Executive Summary
 
-Option C (Wiki-Style Spec Kit Updates + thin continuity layer) is implementable with **4 new components**, **2 rewritten pipeline stages**, and **~147 surgical file edits** across the codebase. The design preserves all 13 advanced memory features via retargeting (zero deletions). Resume latency improves 4x on the happy path. The migration strategy M4 is a 1-week change that lets FSRS decay retire the legacy corpus over 180 days. The only hard prerequisite is backfilling canonical `implementation-summary.md` for ~5 root packets that currently have no narrative except memory files.
+Option C (Wiki-Style Spec Kit Updates + thin continuity layer) is implementable with **4 new components**, **2 rewritten pipeline stages**, and **~147 surgical file edits** across the codebase. The design preserves all 13 advanced memory features via retargeting (zero deletions). Resume latency improves 4x on the happy path. The migration strategy M4 is a 1-week change that lets FSRS decay retire the legacy corpus over 180 days. The only hard prerequisite is backfilling canonical `implementation-summary.md` for ~5 root packets that currently have no narrative except memory files. [SOURCE: research/iterations/iteration-020.md:1-24] [SOURCE: scratch/phase-017-rerun-seed.md:1-20]
 
 ## The 4 new components
 

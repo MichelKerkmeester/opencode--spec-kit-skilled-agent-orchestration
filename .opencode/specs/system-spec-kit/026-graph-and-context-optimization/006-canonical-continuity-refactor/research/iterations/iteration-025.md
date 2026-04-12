@@ -8,6 +8,15 @@ scope: q4_q9_feature_regression_tests
 status: complete
 focus: "Define concrete plain-language regression scenarios for all 13 preserved advanced memory features so phase 018 has a merge-blocking acceptance set."
 maps_to_questions: [Q4, Q9]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-025.md"]
+
 ---
 # Iteration 025 — Q4 + Q9: Feature Regression Test Scenarios
 ## Goal

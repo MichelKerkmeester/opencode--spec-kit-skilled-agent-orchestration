@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-018 | JSONL reconstruction from iteration files | Verify that missing or unusable JSONL can be reconstructed from `iteration-NNN.md` files. | As a manual-testing orchestrator, validate the state-reconstruction contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the workflow can scan iteration-NNN.md files, reconstruct JSONL iteration records, and log a state_reconstructed event. Return a concise operator-facing verdict. | 1. `bash: rg -n 'State Recovery from Iteration Files|state_reconstructed|iterationsRecovered' .opencode/skill/sk-deep-research/references/state_format.md` -> 2. `bash: rg -n 'State file missing|Reconstruct from iteration files' .opencode/command/spec_kit/deep-research.md .opencode/skill/sk-deep-research/README.md` -> 3. `bash: rg -n 'iteration-{NNN}|reconstructed' .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/references/convergence.md` | The reconstruction algorithm scans iteration files, extracts assessment data, writes reconstructed records, and logs a `state_reconstructed` event. | Capture the reconstruction steps, the emitted event, and the command or README references to recovery from iteration files. | PASS if iteration-file reconstruction is explicitly documented and evented; FAIL if recovery is implied but not specified well enough to execute. | Use the detailed state-format reconstruction algorithm as primary truth and treat command/README references as supporting evidence only. |
-
+### Prompt
+As a manual-testing orchestrator, validate the state-reconstruction contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the workflow can scan iteration-NNN.md files, reconstruct JSONL iteration records, and log a state_reconstructed event. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'State Recovery from Iteration Files|state_reconstructed|iterationsRecovered' .opencode/skill/sk-deep-research/references/state_format.md`
+2. `bash: rg -n 'State file missing|Reconstruct from iteration files' .opencode/command/spec_kit/deep-research.md .opencode/skill/sk-deep-research/README.md`
+3. `bash: rg -n 'iteration-{NNN}|reconstructed' .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/references/convergence.md`
+### Expected
+The reconstruction algorithm scans iteration files, extracts assessment data, writes reconstructed records, and logs a `state_reconstructed` event.
+### Evidence
+Capture the reconstruction steps, the emitted event, and the command or README references to recovery from iteration files.
+### Pass/Fail
+PASS if iteration-file reconstruction is explicitly documented and evented; FAIL if recovery is implied but not specified well enough to execute.
+### Failure Triage
+Use the detailed state-format reconstruction algorithm as primary truth and treat command/README references as supporting evidence only.
 ---
 
 ## 4. SOURCE FILES

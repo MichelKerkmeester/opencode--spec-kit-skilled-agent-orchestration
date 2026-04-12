@@ -41,11 +41,23 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-022 | Quality Guard — No Single-Weak-Source | Verify that convergence STOP is blocked when an answered question relies solely on a tentative source. | As a manual-testing orchestrator, validate the no-single-weak-source quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question backed by exactly one source for sourceStrength == "tentative", and that a violation emits a guard_violation event with guard="single_weak_source" and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence. | 1. `bash: sed -n '104,139p' .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: rg -n 'single_weak_source\|tentative\|sourceStrength' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: sed -n '183,195p' .opencode/skill/sk-deep-research/references/state_format.md` -> 4. `bash: rg -n 'guard_violation\|single_weak_source' .opencode/skill/sk-deep-research/references/state_format.md` -> 5. `bash: sed -n '97,107p' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 6. `bash: sed -n '236,243p' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | guard_violation event logged with guard="single_weak_source", STOP decision overridden to CONTINUE, violated question targeted for stronger sourcing in next iteration. | Capture the guard rule table row for No Single-Weak-Source, the pseudocode branch for len(sources) == 1 and sources[0].strength == "tentative", the sourceStrength classification table from state_format.md, and the YAML override logic. | PASS if the single_weak_source guard rule (no answered question can rely solely on one tentative source), the sourceStrength classification, its violation logging, and its STOP-override behavior are consistent across convergence.md, state_format.md, loop_protocol.md, and auto.yaml; FAIL if any of those elements drift or contradict. | Privilege convergence.md §2.4 for the canonical guard definition and state_format.md for the sourceStrength classification; use loop_protocol.md Step 2c and auto.yaml as secondary confirmation. |
-
+### Prompt
+As a manual-testing orchestrator, validate the no-single-weak-source quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question backed by exactly one source for sourceStrength == "tentative", and that a violation emits a guard_violation event with guard="single_weak_source" and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.
+### Commands
+1. `bash: sed -n '104,139p' .opencode/skill/sk-deep-research/references/convergence.md`
+2. `bash: rg -n 'single_weak_source\|tentative\|sourceStrength' .opencode/skill/sk-deep-research/references/convergence.md`
+3. `bash: sed -n '183,195p' .opencode/skill/sk-deep-research/references/state_format.md`
+4. `bash: rg -n 'guard_violation\|single_weak_source' .opencode/skill/sk-deep-research/references/state_format.md`
+5. `bash: sed -n '97,107p' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+6. `bash: sed -n '236,243p' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+### Expected
+guard_violation event logged with guard="single_weak_source", STOP decision overridden to CONTINUE, violated question targeted for stronger sourcing in next iteration.
+### Evidence
+Capture the guard rule table row for No Single-Weak-Source, the pseudocode branch for len(sources) == 1 and sources[0].strength == "tentative", the sourceStrength classification table from state_format.md, and the YAML override logic.
+### Pass/Fail
+PASS if the single_weak_source guard rule (no answered question can rely solely on one tentative source), the sourceStrength classification, its violation logging, and its STOP-override behavior are consistent across convergence.md, state_format.md, loop_protocol.md, and auto.yaml; FAIL if any of those elements drift or contradict.
+### Failure Triage
+Privilege convergence.md §2.4 for the canonical guard definition and state_format.md for the sourceStrength classification; use loop_protocol.md Step 2c and auto.yaml as secondary confirmation.
 ---
 
 ## 4. SOURCE FILES

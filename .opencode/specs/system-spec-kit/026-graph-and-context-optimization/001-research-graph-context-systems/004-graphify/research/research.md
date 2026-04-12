@@ -11,8 +11,22 @@ trigger_phrases:
   - "multimodal codebase extraction"
 importance_tier: "critical"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/research.md"]
+
 ---
 # Research: graphify External Repo Survey — Two-Pass AST + LLM Knowledge Graph Patterns for Public
+
+<!-- ANCHOR:summary -->
+This survey stays grounded in the audited graphify extraction, export, and serving codepaths. [SOURCE: external/graphify/extract.py:2367-2505] [SOURCE: external/graphify/serve.py:103-188]
+<!-- /ANCHOR:summary -->
 
 Comprehensive analysis of graphify (external Python skill) identifying concrete improvements for Code_Environment/Public around two-pass AST + LLM extraction, Leiden community detection, EXTRACTED/INFERRED/AMBIGUOUS evidence tagging, multimodal artifact processing, and PreToolUse hook patterns for steering Claude toward graph-based context.
 

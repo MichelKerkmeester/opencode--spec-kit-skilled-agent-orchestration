@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-001 | Auto mode deep-review kickoff | Verify that autonomous mode is exposed consistently across the README, quick reference, command entrypoint, and auto YAML workflow. | As a manual-testing orchestrator, validate the autonomous entrypoint for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-review:auto is documented consistently across the README, quick reference, command entrypoint, and autonomous YAML workflow. Return a concise user-facing pass/fail verdict with the expected artifact summary. | 1. `bash: rg -n '/spec_kit:deep-review:auto|review/review-report.md|review/iterations' .opencode/skill/sk-deep-review/README.md .opencode/skill/sk-deep-review/references/quick_reference.md` -> 2. `bash: sed -n '1,220p' .opencode/command/spec_kit/deep-review.md` -> 3. `bash: sed -n '1,260p' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | The same autonomous command appears across sources, autonomous mode is approval-free, and the workflow points to config, JSONL, strategy, iteration files, and `review/review-report.md`. | Capture the command examples, the mode-routing block, and the `state_paths` contract together. | PASS if all inspected sources agree on command shape, autonomous behavior, and output artifacts; FAIL if any source materially contradicts the others. | Start with the README examples, confirm the Markdown command maps `:auto` to the autonomous YAML, then inspect YAML `state_paths` if the artifact contract is unclear. |
-
+### Prompt
+As a manual-testing orchestrator, validate the autonomous entrypoint for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-review:auto is documented consistently across the README, quick reference, command entrypoint, and autonomous YAML workflow. Return a concise user-facing pass/fail verdict with the expected artifact summary.
+### Commands
+1. `bash: rg -n '/spec_kit:deep-review:auto|review/review-report.md|review/iterations' .opencode/skill/sk-deep-review/README.md .opencode/skill/sk-deep-review/references/quick_reference.md`
+2. `bash: sed -n '1,220p' .opencode/command/spec_kit/deep-review.md`
+3. `bash: sed -n '1,260p' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+### Expected
+The same autonomous command appears across sources, autonomous mode is approval-free, and the workflow points to config, JSONL, strategy, iteration files, and `review/review-report.md`.
+### Evidence
+Capture the command examples, the mode-routing block, and the `state_paths` contract together.
+### Pass/Fail
+PASS if all inspected sources agree on command shape, autonomous behavior, and output artifacts; FAIL if any source materially contradicts the others.
+### Failure Triage
+Start with the README examples, confirm the Markdown command maps `:auto` to the autonomous YAML, then inspect YAML `state_paths` if the artifact contract is unclear.
 ---
 
 ## 4. SOURCE FILES

@@ -5,6 +5,7 @@ trigger_phrases: ["018 012 spec", "mcp config cleanup", "feature flag cleanup"]
 importance_tier: "important"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/012-mcp-config-and-feature-flag-cleanup"
@@ -31,6 +32,10 @@ _memory:
 | **Status** | Complete |
 | **Created** | 2026-04-12 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `011-spec-folder-graph-metadata` |
+| **Successor** | `013-dead-code-and-architecture-audit` |
 <!-- /ANCHOR:metadata -->
 
 ---

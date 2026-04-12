@@ -5,8 +5,9 @@ trigger_phrases: ["implementation plan", "phase 014 plan", "manual testing playb
 importance_tier: "important"
 contextType: "implementation"
 level: 2
-status: "review"
+status: "complete"
 parent: "006-canonical-continuity-refactor"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite"

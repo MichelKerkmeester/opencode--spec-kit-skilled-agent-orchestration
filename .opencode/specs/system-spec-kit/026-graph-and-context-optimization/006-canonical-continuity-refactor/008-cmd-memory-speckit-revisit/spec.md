@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "verification"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/008-cmd-memory-speckit-revisit"
@@ -31,6 +32,10 @@ _memory:
 | Status | Complete |
 | Created | 2026-04-12 |
 | Updated | 2026-04-12 |
+| Parent Spec | `../spec.md` |
+| Parent Plan | `../plan.md` |
+| Predecessor | `007-sk-system-speckit-revisit` |
+| Successor | `009-readme-alignment-revisit` |
 | Parent Packet | `006-canonical-continuity-refactor` |
 | Source Map | [016 002 reference map](../../z_archive/z_archive/016-release-alignment/002-cmd-memory-and-speckit/reference-map.md) |
 <!-- /ANCHOR:metadata -->

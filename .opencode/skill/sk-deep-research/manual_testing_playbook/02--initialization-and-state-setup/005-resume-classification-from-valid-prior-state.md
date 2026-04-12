@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-005 | Resume classification from valid prior state | Verify that the workflow classifies an existing valid scratch state as resumable before writing new files. | As a manual-testing orchestrator, validate the resume-classification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify config, JSONL, and strategy are inspected before new files are written and that a valid prior state skips re-initialization. Return a concise pass/fail verdict. | 1. `bash: rg -n 'Auto-Resume Protocol|resume|completed-session|invalid-state' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: rg -n 'step_classify_session|on_resume|on_completed_session|on_invalid_state' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` -> 3. `bash: rg -n 'Auto-resume|resume' .opencode/skill/sk-deep-research/README.md` | A four-state classification model exists, resume skips init writes, and completed sessions route differently from active resumes. | Capture the classification states, the YAML branch names, and the user-facing auto-resume wording. | PASS if protocol, YAML, and README align on classification and resume semantics; FAIL if resume behavior is underdefined or contradictory. | Verify completed sessions route differently from active resumes and that both YAML files use the same classification model. |
-
+### Prompt
+As a manual-testing orchestrator, validate the resume-classification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify config, JSONL, and strategy are inspected before new files are written and that a valid prior state skips re-initialization. Return a concise pass/fail verdict.
+### Commands
+1. `bash: rg -n 'Auto-Resume Protocol|resume|completed-session|invalid-state' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+2. `bash: rg -n 'step_classify_session|on_resume|on_completed_session|on_invalid_state' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+3. `bash: rg -n 'Auto-resume|resume' .opencode/skill/sk-deep-research/README.md`
+### Expected
+A four-state classification model exists, resume skips init writes, and completed sessions route differently from active resumes.
+### Evidence
+Capture the classification states, the YAML branch names, and the user-facing auto-resume wording.
+### Pass/Fail
+PASS if protocol, YAML, and README align on classification and resume semantics; FAIL if resume behavior is underdefined or contradictory.
+### Failure Triage
+Verify completed sessions route differently from active resumes and that both YAML files use the same classification model.
 ---
 
 ## 4. SOURCE FILES

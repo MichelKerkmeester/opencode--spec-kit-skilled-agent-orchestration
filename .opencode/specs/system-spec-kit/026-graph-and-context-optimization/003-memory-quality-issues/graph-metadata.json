@@ -57,7 +57,7 @@
       "map"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "checklist.md",
@@ -69,7 +69,6 @@
       "005-operations-tail-prs/checklist.md",
       "plan.md",
       "tasks.md",
-      "gpt-5.4",
       "workflow.ts",
       "post-save-review.ts",
       "find-predecessor-memory.ts",
@@ -141,13 +140,7 @@
         "path": "tasks.md",
         "source": "derived"
       },
-      {
-        "name": "gpt-5.4",
-        "kind": "file",
-        "path": "gpt-5.4",
-        "source": "derived"
-      },
-      {
+{
         "name": "workflow.ts",
         "kind": "code",
         "path": "workflow.ts",

@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "verification"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/004-gate-d-reader-ready"
@@ -100,9 +101,9 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 9/9 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 3 | 3/3 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 20 | 20/20 |
+| P2 Items | 10 | 10/10 |
 
 **Verification Date**: 2026-04-12
 <!-- /ANCHOR:summary -->

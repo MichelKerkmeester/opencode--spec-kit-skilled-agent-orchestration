@@ -124,7 +124,7 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 
 **Related templates:**
 - Use after exhausting fixes in current session
-- Create memory file to preserve context for specialist
+- Use `generate-context.js` for indexed saves. Edit `_memory.continuity` frontmatter in `implementation-summary.md` for quick continuity updates.
 - Reference spec.md and plan.md for original requirements
 - Update tasks.md with delegation status
 <!-- /ANCHOR:template-instructions -->

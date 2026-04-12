@@ -7,6 +7,16 @@ trigger_phrases:
   - "claudest research complete"
 importance_tier: critical
 contextType: summary
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["implementation-summary.md"]
+
 ---
 # Implementation Summary
 
@@ -121,8 +131,8 @@ The full 9-track matrix lives in `research/research.md` §13, §18.1-§18.5, and
 
 ### Memory Artifact
 
-- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — generation-1 memory rebuilt via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores), `importance_tier=critical`, 34 clean semantic trigger phrases, and indexed as memory #1845. Prior thin saves (06-04-26_17-13 and 06-04-26_19-41) remain archived under `memory/.archive-pre-quality-rebuild/`.
-- `memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md` — generation-2 continuation capture for the 20-iteration extension. It was persisted successfully but the current metadata shows `embedding.status = skipped_index_policy` and `quality_flags = ["has_topical_mismatch"]`, so it is retained as a continuation artifact rather than treated as the canonical indexed memory.
+- `research/research.md` — generation-1 findings and the later roadmap are preserved in the canonical synthesis without requiring the archived memory artifact
+- `implementation-summary.md` — generation-2 continuation closeout and its quality caveats are preserved in the canonical packet docs rather than in the historical write-only artifact.
 - `memory/metadata.json` — current memory save metadata confirms file counts are consistent, but indexing is intentionally skipped for the latest continuation save under the active write-only policy.
 
 ---
@@ -170,8 +180,8 @@ The full 9-track matrix lives in `research/research.md` §13, §18.1-§18.5, and
 - **Continuation iterations were intentionally sequential**: both continuations were dependency chains rather than independent module sweeps, so parallelism would mostly have created merge work or duplicate synthesis.
 - **`fts4_match` lane is gated on schema work**: The Brief A v1 was narrowed to `fts5_bm25 → like_scan` because Public still provisions only `memory_fts USING fts5` (`mcp_server/lib/search/vector-index-schema.ts:2382-2412`). Restoring an `fts4_match` lane requires alternate FTS4 schema creation in the same packet.
 - **Brief B entry conditions are not yet met**: `024/003` does not persist `transcript_path` into `HookState`, leaves `speckitSessionId` empty, drops parsed cache token fields, and emits only session-level `lastTranscriptOffset` (not turn-level offsets). The normalized analytics packet must add a bounded producer metadata patch first.
-- **Memory file rebuilt after thin saves archived**: Two prior memory saves (06-04-26_17-13 and 06-04-26_19-41) were created with thin input data and were auto-classified as IN_PROGRESS / 25-95% / Phase PLANNING because the script's session-status logic interpreted unprefixed nextSteps as pending work. Both files were moved to `memory/.archive-pre-quality-rebuild/` and a new memory was saved via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores). The new file `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` captures the complete 12-iteration session with COMPLETED status / 100% completion and is indexed as memory #1845. Manual patches were applied to the title, trigger_phrases (removed auto-extracted path fragments), Session Status, and OVERVIEW section per post-save quality review HIGH-severity guidance.
-- **Latest continuation memory is not a clean indexed replacement**: `memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md` persists the 20-iteration extension, but `memory/metadata.json` records `embedding.status = skipped_index_policy`, `memoryId = null`, and `quality_flags = ["has_topical_mismatch"]`. Because memory markdown should not be hand-edited outside the save workflow, the file is left in place and documented rather than rewritten manually.
+- **Memory file rebuilt after thin saves archived**: Two prior memory saves (06-04-26_17-13 and 06-04-26_19-41) were created with thin input data and were auto-classified as IN_PROGRESS / 25-95% / Phase PLANNING because the script's session-status logic interpreted unprefixed nextSteps as pending work. Both files were moved to `memory/.archive-pre-quality-rebuild/` and a new memory was saved via `generate-context.js` with rich JSON (10 keyDecisions, 17 filesModified, 12 toolCalls, 4 exchanges, preflight + postflight scores). The canonical research and implementation-summary docs now capture the complete 12-iteration session, its quality-review fixes, and the later 20-iteration extension without requiring the legacy memory artifact path.
+- **Latest continuation capture remains advisory only**: the 20-iteration extension is documented in `research/research.md` and this implementation summary, while the historical write-only artifact is no longer required for packet integrity.
 
 
 <!-- /ANCHOR:limitations -->

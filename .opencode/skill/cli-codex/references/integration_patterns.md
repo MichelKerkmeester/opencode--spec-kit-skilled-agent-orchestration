@@ -186,6 +186,31 @@ tail -f /tmp/generated-tests.ts
 - Do not background tasks with `--sandbox workspace-write` or higher that write to the same files (race conditions)
 - Background `--sandbox read-only` tasks are safe to parallelize freely
 
+### False-Completion Trap When Launching from Another AI's Bash Tool
+
+When an orchestrating AI (Claude Code, Copilot, etc.) uses its `Bash` tool to launch `codex exec ... &`, the shell command returns exit 0 immediately because the `&` backgrounds the process and the parent shell exits. The orchestrating AI's task system reports "completed" even though the codex process is still running.
+
+**Symptom:** All 5 parallel codex sessions "complete" in under 2 seconds. Output files are empty or missing.
+
+**Root cause:** The Bash tool wraps the command in a subshell. `codex exec ... &` forks the process, the subshell exits, and the task system sees exit 0.
+
+```bash
+# BAD: Reports instant "completion" to the orchestrator
+codex exec "..." --full-auto -o /tmp/result.txt &
+echo "PID: $!"
+# Shell exits immediately. Orchestrator thinks task is done.
+
+# GOOD: Let the Bash tool wait for codex to finish
+codex exec "..." --full-auto -o /tmp/result.txt
+# Bash tool blocks until codex completes. Use run_in_background on the Bash call itself.
+```
+
+**Correct pattern for parallel codex from an orchestrating AI:**
+1. Launch each `codex exec` as a separate `Bash` call (no `&` suffix)
+2. Set `run_in_background: true` on each Bash tool call — this backgrounds the *tool call*, not the shell process
+3. The orchestrator gets notified when each codex process genuinely finishes
+4. Verify output files exist and have content before reading results
+
 <!-- /ANCHOR:background-execution -->
 
 <!-- ANCHOR:model-selection-strategy -->
@@ -677,7 +702,24 @@ codex exec "Fix the authentication bug" --oss --model gpt-5.3-codex
 codex exec "Fix the authentication bug" --model gpt-5.3-codex
 ```
 
-### 7. Forgetting Context in Stateless exec Calls
+### 7. Backgrounding codex exec Inside Shell Scripts Called by Another AI
+
+```bash
+# BAD: & inside the shell command — orchestrator sees instant exit 0
+codex exec "Deep review all phases" --full-auto -o /tmp/result.txt 2>&1 &
+echo "PID: $!"
+# The Bash tool reports "completed" in <2 seconds. Codex is still running.
+
+# GOOD: No & — use the orchestrator's own background mechanism instead
+# In Claude Code: Bash(command="codex exec ...", run_in_background=true)
+# In Copilot: background delegation
+# The orchestrator waits for the actual codex process to finish.
+codex exec "Deep review all phases" --full-auto -o /tmp/result.txt 2>&1
+```
+
+This is the most common false-completion trap in cross-AI orchestration. The orchestrating AI reads empty output files and either hallucinates results or reports stale data from a prior run.
+
+### 8. Forgetting Context in Stateless exec Calls
 
 ```bash
 # BAD: Follow-up without re-providing context

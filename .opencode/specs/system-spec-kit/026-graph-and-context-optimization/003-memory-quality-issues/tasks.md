@@ -7,6 +7,16 @@ trigger_phrases:
   - "remediation task placeholder"
 importance_tier: important
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["tasks.md"]
+
 ---
 
 # Tasks: Memory Quality Backend Improvements
@@ -52,9 +62,9 @@ contextType: "planning"
 | T010 | Iter 9 — Skeptical pass + D6 verification | DONE | `research/iterations/iteration-009.md` |
 | T011 | Iter 10 — Final synthesis pass + research.md | DONE | `research/iterations/iteration-010.md`, `research/research.md` |
 | T012 | Run reducer + mark research config complete | DONE | `research/findings-registry.json`, `research/deep-research-config.json` (status="complete") |
-| T013 | Save memory via generate-context.js | DONE | `memory/06-04-26_18-30__completed-a-10-iteration-deep-research.md` |
-| T014 | Patch post-save quality issues (title bracket, importance_tier double-quote, garbage trigger phrases reproducing D3) | DONE | Manual edits to memory file + reindex |
-| T015 | Reindex memory via memory_index_scan | DONE | indexer reports id 1837 (memory) + 1838 (research.md) |
+| T013 | Save memory via generate-context.js | DONE | `research/research.md` and `implementation-summary.md` |
+| T014 | Patch post-save quality issues (title bracket, importance_tier double-quote, garbage trigger phrases reproducing D3) | DONE | Findings rolled into `research/research.md` and packet closeout docs |
+| T015 | Reindex memory via memory_index_scan | DONE | indexer results summarized in `implementation-summary.md` |
 | T016 | Author Level 2 spec docs (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) | DONE | This folder's spec docs |
 <!-- /ANCHOR:phase-1 -->
 

@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "verification"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/006-gate-f-archive-permanence"
@@ -31,7 +32,11 @@ _memory:
 | Status | Complete |
 | Created | 2026-04-11 |
 | Updated | 2026-04-12 |
-| Branch | `system-speckit/026-graph-and-context-optimization` |
+| Branch |
+| Parent Spec | `../spec.md` |
+| Parent Plan | `../plan.md` |
+| Predecessor | `005-gate-e-runtime-migration` |
+| Successor | `007-sk-system-speckit-revisit` | `system-speckit/026-graph-and-context-optimization` |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->

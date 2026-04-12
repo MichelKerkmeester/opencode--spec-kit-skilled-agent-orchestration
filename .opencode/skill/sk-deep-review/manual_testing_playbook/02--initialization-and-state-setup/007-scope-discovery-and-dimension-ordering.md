@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-007 | Scope discovery and dimension ordering | Verify that scope discovery resolves target type to a file list and dimensions are ordered by risk priority. | As a manual-testing orchestrator, validate the scope discovery and dimension ordering contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify step_scope_discovery resolves different target types to file lists, and step_order_dimensions orders them as Correctness > Security > Traceability > Maintainability. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'step_scope_discovery|step_order_dimensions' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 2. `bash: sed -n '/step_scope_discovery/,/step_order_dimensions/p' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 3. `bash: rg -n 'correctness.*security.*traceability.*maintainability|priority.*1|priority.*2|priority.*3|priority.*4|D1|D2|D3|D4' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | The scope discovery step has resolution rules for each target type; the dimension ordering step enforces correctness > security > traceability > maintainability; the quick reference dimension table matches. | Capture the scope resolution rules for each target type, the dimension ordering step, and the quick reference dimension table. | PASS if scope resolution covers all target types and dimension ordering matches the documented priority; FAIL if any target type lacks resolution rules or dimensions are misordered. | Check the YAML step_scope_discovery resolve block for each target type (spec-folder, skill, agent, track, files) and verify step_order_dimensions has the correct priority sequence. |
-
+### Prompt
+As a manual-testing orchestrator, validate the scope discovery and dimension ordering contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify step_scope_discovery resolves different target types to file lists, and step_order_dimensions orders them as Correctness > Security > Traceability > Maintainability. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'step_scope_discovery|step_order_dimensions' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+2. `bash: sed -n '/step_scope_discovery/,/step_order_dimensions/p' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+3. `bash: rg -n 'correctness.*security.*traceability.*maintainability|priority.*1|priority.*2|priority.*3|priority.*4|D1|D2|D3|D4' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+### Expected
+The scope discovery step has resolution rules for each target type; the dimension ordering step enforces correctness > security > traceability > maintainability; the quick reference dimension table matches.
+### Evidence
+Capture the scope resolution rules for each target type, the dimension ordering step, and the quick reference dimension table.
+### Pass/Fail
+PASS if scope resolution covers all target types and dimension ordering matches the documented priority; FAIL if any target type lacks resolution rules or dimensions are misordered.
+### Failure Triage
+Check the YAML step_scope_discovery resolve block for each target type (spec-folder, skill, agent, track, files) and verify step_order_dimensions has the correct priority sequence.
 ---
 
 ## 4. SOURCE FILES

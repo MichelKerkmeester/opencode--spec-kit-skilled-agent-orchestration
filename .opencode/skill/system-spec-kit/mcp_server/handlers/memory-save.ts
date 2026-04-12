@@ -685,8 +685,9 @@ function buildRoutedSaveOptions(
   filePath: string,
   routeAs?: RouteCategory,
   mergeModeHint?: MergeModeHint,
+  targetAnchorId?: string,
 ): RoutedSaveOptions | undefined {
-  if (!routeAs && !mergeModeHint) {
+  if (!routeAs && !mergeModeHint && !targetAnchorId) {
     return undefined;
   }
 
@@ -694,6 +695,7 @@ function buildRoutedSaveOptions(
     targetDocPath: filePath,
     ...(routeAs ? { routeAs } : {}),
     ...(mergeModeHint ? { mergeModeHint } : {}),
+    ...(targetAnchorId ? { targetAnchorId } : {}),
   };
 }
 
@@ -767,6 +769,34 @@ function normalizeForFingerprint(content: string): string {
 
 function buildContinuityFingerprint(content: string): string {
   return `sha256:${createHash('sha256').update(normalizeForFingerprint(content), 'utf8').digest('hex')}`;
+}
+
+function normalizePhaseAnchor(value: string | null | undefined): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const trimmed = value.trim();
+  const match = trimmed.match(/^phase(?:[\s_-]+)?(\d+)$/iu);
+  return match ? `phase-${match[1]}` : null;
+}
+
+function inferPhaseAnchorFromText(text: string): string | null {
+  const match = text.match(/\bphase(?:[\s_-]+)?(\d+)\b/iu);
+  return match ? `phase-${match[1]}` : null;
+}
+
+function inferPhaseAnchorFromSpecFolder(specFolder: string): string | null {
+  return inferPhaseAnchorFromText(specFolder.replace(/\//g, ' '));
+}
+
+function deriveLikelyPhaseAnchorForCanonicalRouting(params: {
+  routingChunkText: string;
+  specFolder: string;
+  targetAnchorId?: string;
+}): string | null {
+  return normalizePhaseAnchor(params.targetAnchorId)
+    ?? inferPhaseAnchorFromText(params.routingChunkText)
+    ?? inferPhaseAnchorFromSpecFolder(params.specFolder);
 }
 
 function stripMarkdownFrontmatter(markdown: string): string {
@@ -977,12 +1007,18 @@ async function buildCanonicalAtomicPreparedSave(
   const packetLevel = toCanonicalPacketLevel(detectSpecLevelFromParsed(path.join(specFolderAbsolute, 'spec.md')));
   const router = createContentRouter();
   const routingChunkText = normalizeRoutingChunkText(params.content);
+  const likelyPhaseAnchor = deriveLikelyPhaseAnchorForCanonicalRouting({
+    routingChunkText,
+    specFolder: preparedMemory.parsed.specFolder,
+    targetAnchorId: params.targetAnchorId,
+  });
   const decision = await router.classifyContent(
     {
       id: path.basename(params.file_path),
       text: routingChunkText,
       sourceField: params.routeAs === 'metadata_only' ? 'preflight' : 'observations',
       routeAs: params.routeAs,
+      metadata: params.targetAnchorId ? { targetAnchorId: params.targetAnchorId } : undefined,
     },
     {
       specFolder: preparedMemory.parsed.specFolder,
@@ -994,7 +1030,7 @@ async function buildCanonicalAtomicPreparedSave(
         save_mode: 'route-as',
         recent_docs_touched: [],
         recent_anchors_touched: [],
-        likely_phase_anchor: 'phase-1',
+        likely_phase_anchor: likelyPhaseAnchor,
       },
     },
   );
@@ -1828,6 +1864,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     asyncEmbedding = false,
     routeAs,
     mergeModeHint,
+    targetAnchorId,
     tenantId,
     userId,
     agentId,
@@ -2131,7 +2168,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
       parsedOverride: parsedForPreflight,
       asyncEmbedding,
       scope: saveScope,
-      routing: buildRoutedSaveOptions(validatedPath, routeAs, mergeModeHint),
+      routing: buildRoutedSaveOptions(validatedPath, routeAs, mergeModeHint, targetAnchorId),
     });
   } catch (error: unknown) {
     if (error instanceof VRuleUnavailableError) {
@@ -2194,13 +2231,13 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
  * is restored before the error is returned and before the lock is released.
  */
 async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOptions = {}): Promise<AtomicSaveResult> {
-  const { file_path, routeAs, mergeModeHint } = params;
+  const { file_path, routeAs, mergeModeHint, targetAnchorId } = params;
   const database = requireDb();
-  const routing = buildRoutedSaveOptions(file_path, routeAs, mergeModeHint);
+  const routing = buildRoutedSaveOptions(file_path, routeAs, mergeModeHint, targetAnchorId);
 
   return atomicIndexMemory<PreparedParsedMemory | CanonicalAtomicPrepared>(params, options, {
     prepare: async (currentParams, _context) => {
-      if (currentParams.routeAs || currentParams.mergeModeHint) {
+      if (currentParams.routeAs || currentParams.mergeModeHint || currentParams.targetAnchorId) {
         const canonicalPrepared = await buildCanonicalAtomicPreparedSave(currentParams, database);
         if (canonicalPrepared.status !== 'ready') {
           return canonicalPrepared;
@@ -2279,7 +2316,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         asyncEmbedding: true,
         persistQualityLoopContent: false,
         specFolderLockAlreadyHeld: true,
-        routing: buildRoutedSaveOptions(currentParams.file_path, currentParams.routeAs, currentParams.mergeModeHint),
+        routing: buildRoutedSaveOptions(currentParams.file_path, currentParams.routeAs, currentParams.mergeModeHint, currentParams.targetAnchorId),
       });
     },
     getPendingPath: (currentFilePath) => `${transactionManager.getPendingPath(currentFilePath)}.${randomUUID().slice(0, 8)}`,

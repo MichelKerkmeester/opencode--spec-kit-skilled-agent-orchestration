@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-027 | Research charter validated at init | Verify strategy.md contains Non-Goals and Stop Conditions sections after initialization. | As a manual-testing orchestrator, validate the research charter validation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization Step 5a verifies the presence of "Non-Goals" and "Stop Conditions" sections in strategy.md, appends empty placeholders if missing, and presents the charter for user review in confirm mode. Return a concise operator-facing verdict. | 1. `bash: rg -n 'Step 5a\|Validate Research Charter\|Non-Goals\|Stop Conditions\|charter' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: sed -n '/ANCHOR:non-goals/,/\/ANCHOR:stop-conditions/p' .opencode/skill/sk-deep-research/assets/deep_research_strategy.md` -> 3. `bash: rg -n 'Non-Goals\|Stop Conditions\|charter' .opencode/skill/sk-deep-research/README.md` | strategy.md has "## 4. Non-Goals" section (may be empty but must exist); strategy.md has "## 5. Stop Conditions" section (may be empty but must exist); missing sections are appended as empty placeholders; confirm mode presents the charter for user review before proceeding; auto mode accepts the charter automatically. | Capture the loop protocol Step 5a excerpt, the strategy template sections 4 and 5 with their ANCHOR tags, and any README feature summary referencing charter validation. | PASS if initialization consistently produces strategy.md with both sections present and confirm mode surfaces the charter for review; FAIL if either section is absent after initialization, or confirm mode skips the charter review gate. | Privilege the loop protocol Step 5a for the canonical charter validation contract; use the strategy template as the structural reference for section numbering and anchor names. |
-
+### Prompt
+As a manual-testing orchestrator, validate the research charter validation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization Step 5a verifies the presence of "Non-Goals" and "Stop Conditions" sections in strategy.md, appends empty placeholders if missing, and presents the charter for user review in confirm mode. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'Step 5a\|Validate Research Charter\|Non-Goals\|Stop Conditions\|charter' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+2. `bash: sed -n '/ANCHOR:non-goals/,/\/ANCHOR:stop-conditions/p' .opencode/skill/sk-deep-research/assets/deep_research_strategy.md`
+3. `bash: rg -n 'Non-Goals\|Stop Conditions\|charter' .opencode/skill/sk-deep-research/README.md`
+### Expected
+strategy.md has "## 4. Non-Goals" section (may be empty but must exist); strategy.md has "## 5. Stop Conditions" section (may be empty but must exist); missing sections are appended as empty placeholders; confirm mode presents the charter for user review before proceeding; auto mode accepts the charter automatically.
+### Evidence
+Capture the loop protocol Step 5a excerpt, the strategy template sections 4 and 5 with their ANCHOR tags, and any README feature summary referencing charter validation.
+### Pass/Fail
+PASS if initialization consistently produces strategy.md with both sections present and confirm mode surfaces the charter for review; FAIL if either section is absent after initialization, or confirm mode skips the charter review gate.
+### Failure Triage
+Privilege the loop protocol Step 5a for the canonical charter validation contract; use the strategy template as the structural reference for section numbering and anchor names.
 ---
 
 ## 4. SOURCE FILES

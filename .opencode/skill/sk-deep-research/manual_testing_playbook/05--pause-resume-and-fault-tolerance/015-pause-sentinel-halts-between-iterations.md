@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-015 | Pause sentinel halts between iterations | Verify that the pause sentinel halts the loop between iterations and logs a pause event. | As a manual-testing orchestrator, validate the pause-sentinel contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/.deep-research-pause is checked between research iterations, {spec_folder}/review/.deep-research-pause is checked between review iterations, both emit a paused event, and both halt the loop without entering synthesis. Return a concise operator-facing verdict. | 1. `bash: rg -n '.deep-research-pause|paused|Delete .*\\.deep-research-pause|review/.deep-research-pause' .opencode/skill/sk-deep-research/references/loop_protocol.md .opencode/skill/sk-deep-research/README.md` -> 2. `bash: rg -n 'step_check_pause_sentinel|paused|halt: true|review/.deep-research-pause|research/.deep-research-pause' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml` -> 3. `bash: rg -n 'pause|sentinel|review/.deep-research-pause' .opencode/skill/sk-deep-research/references/quick_reference.md .opencode/skill/sk-deep-research/SKILL.md` | The sentinel is checked before dispatch, a paused event is logged, and the loop halts rather than flowing into synthesis in both research and review mode. | Capture both sentinel locations, the paused-event contract, and the halt behavior for research and review flows. | PASS if both pause sentinels pause between iterations and do not route to synthesis; FAIL if either path is undocumented or modeled as a hard stop to completion. | Use the loop protocol pause subsection as the canonical flow and verify both research and review YAMLs mirror it exactly. |
-
+### Prompt
+As a manual-testing orchestrator, validate the pause-sentinel contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/.deep-research-pause is checked between research iterations, {spec_folder}/review/.deep-research-pause is checked between review iterations, both emit a paused event, and both halt the loop without entering synthesis. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n '.deep-research-pause|paused|Delete .*\\.deep-research-pause|review/.deep-research-pause' .opencode/skill/sk-deep-research/references/loop_protocol.md .opencode/skill/sk-deep-research/README.md`
+2. `bash: rg -n 'step_check_pause_sentinel|paused|halt: true|review/.deep-research-pause|research/.deep-research-pause' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml`
+3. `bash: rg -n 'pause|sentinel|review/.deep-research-pause' .opencode/skill/sk-deep-research/references/quick_reference.md .opencode/skill/sk-deep-research/SKILL.md`
+### Expected
+The sentinel is checked before dispatch, a paused event is logged, and the loop halts rather than flowing into synthesis in both research and review mode.
+### Evidence
+Capture both sentinel locations, the paused-event contract, and the halt behavior for research and review flows.
+### Pass/Fail
+PASS if both pause sentinels pause between iterations and do not route to synthesis; FAIL if either path is undocumented or modeled as a hard stop to completion.
+### Failure Triage
+Use the loop protocol pause subsection as the canonical flow and verify both research and review YAMLs mirror it exactly.
 ---
 
 ## 4. SOURCE FILES

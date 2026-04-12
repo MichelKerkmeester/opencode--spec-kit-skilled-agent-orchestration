@@ -12,6 +12,16 @@ feature: "phase-006-canonical-continuity-refactor"
 level: 2
 status: planned
 parent: "026-graph-and-context-optimization"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["plan.md"]
+
 ---
 # Implementation Plan: Phase 018 — Canonical Continuity Refactor
 
@@ -45,7 +55,7 @@ The root packet does not replace the child folders. It defines how they fit toge
 
 ### Definition of Ready
 - [ ] Root `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all describe the same overall goal and gate order.
-- [ ] The parent packet cites the actual grounding set that exists in this folder: `implementation-design.md`, `resource-map.md`, `research/research.md`, `phase-017-rerun-seed.md`, `verify-phases-review.md`, and `scratch/resource-map/*`.
+- [ ] The parent packet cites the actual grounding set that exists in this folder: `implementation-design.md`, `resource-map.md`, `research/research.md`, `scratch/phase-017-rerun-seed.md`, `scratch/verify-phases-review.md`, and `scratch/resource-map/*`.
 - [ ] Each child phase remains the owner of gate-level requirements and verification evidence.
 
 ### Definition of Done
@@ -66,7 +76,7 @@ Parent coordination packet over six child execution phases
 - **Executive design layer**: `implementation-design.md` captures the overall recommendation, components, migration strategy, and gate intent.
 - **Execution map layer**: `resource-map.md` and `scratch/resource-map/*` define the actual file surfaces, dependencies, and critical path.
 - **Gate execution layer**: `001-gate-a-prework/` through `006-gate-f-archive-permanence/` hold the detailed specs, plans, tasks, and checklists for each gate.
-- **Verification layer**: `verify-phases-review.md` records plan-review findings, while each child phase owns gate-level verification and eventual completion evidence.
+- **Verification layer**: `scratch/verify-phases-review.md` records plan-review findings, while each child phase owns gate-level verification and eventual completion evidence.
 
 ### Data Flow
 Root research and mapping artifacts define the target state first. The parent packet converts that material into a gate sequence. Each child phase then executes its gate-specific work and verification. Once a gate closes, the parent packet advances the next dependency boundary and eventually records the full packet closeout.

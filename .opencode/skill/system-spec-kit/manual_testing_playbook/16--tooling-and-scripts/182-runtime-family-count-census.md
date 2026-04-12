@@ -19,18 +19,29 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a tooling validation operator, validate Runtime Family Count Census against the documented validation surface. Verify all four commands return 9. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Commands:
-  ```bash
+### Prompt
+
+`As a tooling validation operator, validate Runtime Family Count Census against the documented validation surface. Verify all four commands return 9. Return a concise pass/fail verdict with the main reason and cited evidence.`
+### Commands
+
+```bash
   find .opencode/agent -maxdepth 1 -type f -name '*.md' | wc -l
   find .claude/agents -maxdepth 1 -type f -name '*.md' | wc -l
   find .codex/agents -maxdepth 1 -type f -name '*.toml' | wc -l
   find -L .gemini/agents -maxdepth 1 -type f -name '*.md' | wc -l
   ```
-- Expected: all four commands return `9`.
-- Evidence: command output showing each family count.
-- Pass: every family count is `9`.
-- Fail triage: any family missing files or has extras; collect counts and identify discrepancy.
+### Expected
+
+all four commands return `9`.
+### Evidence
+
+command output showing each family count.
+### Pass/Fail
+
+every family count is `9`.
+### Failure Triage
+
+any family missing files or has extras; collect counts and identify discrepancy.
 
 ---
 

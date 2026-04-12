@@ -266,6 +266,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     function createCanonicalRoutingFixture(): {
       sourcePath: string;
       targetPath: string;
+      tasksPath: string;
     } {
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atomic-canonical-fi-'));
       tempDirs.push(root);
@@ -289,6 +290,18 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         anchorId: 'phase-1',
         heading: '## Phase 1',
         body: '- [x] T001 Prepare the canonical writer fixture.\n- [ ] T002 Verify routed save behavior.',
+        extraAnchors: [
+          {
+            id: 'phase-2',
+            heading: '## Phase 2',
+            body: '- [ ] T002 Verify routed save behavior.\n- [ ] T003 Prepare the phase-aware regression coverage.',
+          },
+          {
+            id: 'phase-3',
+            heading: '## Phase 3',
+            body: '- [ ] T003 Prepare the phase-aware regression coverage.\n- [ ] T004 Publish the final verification summary.',
+          },
+        ],
       });
       writeCanonicalFixtureDoc(path.join(specFolder, 'checklist.md'), {
         title: 'Checklist',
@@ -323,6 +336,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       return {
         sourcePath,
         targetPath: path.join(specFolder, 'implementation-summary.md'),
+        tasksPath: path.join(specFolder, 'tasks.md'),
       };
     }
 
@@ -1096,6 +1110,90 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         getCanonicalPathKey(fixture.targetPath),
         fixture.targetPath,
         'what-built',
+        true,
+        expect.anything(),
+        expect.anything(),
+      );
+    });
+
+    it('routes task updates into phase-2 when the content names the phase', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 445,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'Phase 2 - [x] T002 Verify routed save behavior.',
+          routeAs: 'task_update',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.filePath).toBe(fixture.tasksPath);
+      expect(result.targetDocPath).toBe(fixture.tasksPath);
+      expect(result.routeCategory).toBe('task_update');
+      expect(fs.readFileSync(fixture.tasksPath, 'utf8')).toContain('[x] T002 Verify routed save behavior.');
+      expect(checkExistingRowMock).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        getCanonicalPathKey(fixture.tasksPath),
+        fixture.tasksPath,
+        'phase-2',
+        true,
+        expect.anything(),
+        expect.anything(),
+      );
+    });
+
+    it('routes task updates into an explicit phase-3 anchor when provided', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 446,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: '- [x] T003 Prepare the phase-aware regression coverage.',
+          routeAs: 'task_update',
+          targetAnchorId: 'phase-3',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.filePath).toBe(fixture.tasksPath);
+      expect(result.targetDocPath).toBe(fixture.tasksPath);
+      expect(fs.readFileSync(fixture.tasksPath, 'utf8')).toContain('[x] T003 Prepare the phase-aware regression coverage.');
+      expect(checkExistingRowMock).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        getCanonicalPathKey(fixture.tasksPath),
+        fixture.tasksPath,
+        'phase-3',
         true,
         expect.anything(),
         expect.anything(),

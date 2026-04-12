@@ -1,6 +1,16 @@
 ---
 title: "Implementation Plan: Phase 1: Foundation (Templates & Truncation)"
 description: "Execution plan for PR-1 and PR-2: align OVERVIEW anchors, extract the shared truncation helper, migrate the OVERVIEW and observation-summary callsites, update the contract validator + memory parser couplings, and verify both fixture-driven acceptance checks before Phase 2 begins."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["plan.md"]
+
 ---
 # Implementation Plan: Phase 1: Foundation (Templates & Truncation)
 

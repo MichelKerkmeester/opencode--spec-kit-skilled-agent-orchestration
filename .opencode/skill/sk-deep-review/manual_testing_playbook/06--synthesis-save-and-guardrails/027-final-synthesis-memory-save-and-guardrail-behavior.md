@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-027 | Final synthesis memory save and guardrail behavior | Verify memory save via generate-context.js after review completion, LEAF-only enforcement, and read-only contract. | As a manual-testing orchestrator, validate the finalization and guardrail contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify synthesis produces canonical review/review-report.md, memory save uses generate-context.js (not manual Write tool), the runtime agent remains LEAF-only (no sub-agent dispatch), and that the review agent does not modify target files under review (read-only contract). Return a concise operator-facing verdict. | 1. `bash: rg -n 'generate-context.js|memory.*save|synthesis_complete|review-report|memory' .opencode/command/spec_kit/deep-review.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` -> 2. `bash: rg -n 'LEAF-only|Task tool|NEVER.*sub|NEVER.*dispatch|read.only|NEVER.*modify|observation.*only' .claude/agents/deep-review.md .codex/agents/deep-review.toml .opencode/skill/sk-deep-review/SKILL.md` -> 3. `bash: rg -n 'phase_synthesis|phase_save|generate-context.js|synthesis_complete|memory_save|review-report' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | Synthesis produces `review/review-report.md`, memory save calls `generate-context.js`, agent is LEAF-only, target files are read-only. | Capture the synthesis/save contract, the LEAF-only prohibition from agent definitions, and the read-only rule from SKILL.md. | PASS if finalization and memory save use the supported contract and LEAF-only plus read-only behavior remain enforced; FAIL if memory is saved via Write tool, the agent dispatches sub-agents, or target files are modified. | Privilege the agent definitions for LEAF-only behavior and the skill rules for read-only and memory save contracts. |
-
+### Prompt
+As a manual-testing orchestrator, validate the finalization and guardrail contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify synthesis produces canonical review/review-report.md, memory save uses generate-context.js (not manual Write tool), the runtime agent remains LEAF-only (no sub-agent dispatch), and that the review agent does not modify target files under review (read-only contract). Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'generate-context.js|memory.*save|synthesis_complete|review-report|memory' .opencode/command/spec_kit/deep-review.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md`
+2. `bash: rg -n 'LEAF-only|Task tool|NEVER.*sub|NEVER.*dispatch|read.only|NEVER.*modify|observation.*only' .claude/agents/deep-review.md .codex/agents/deep-review.toml .opencode/skill/sk-deep-review/SKILL.md`
+3. `bash: rg -n 'phase_synthesis|phase_save|generate-context.js|synthesis_complete|memory_save|review-report' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+### Expected
+Synthesis produces `review/review-report.md`, memory save calls `generate-context.js`, agent is LEAF-only, target files are read-only.
+### Evidence
+Capture the synthesis/save contract, the LEAF-only prohibition from agent definitions, and the read-only rule from SKILL.md.
+### Pass/Fail
+PASS if finalization and memory save use the supported contract and LEAF-only plus read-only behavior remain enforced; FAIL if memory is saved via Write tool, the agent dispatches sub-agents, or target files are modified.
+### Failure Triage
+Privilege the agent definitions for LEAF-only behavior and the skill rules for read-only and memory save contracts.
 ---
 
 ## 4. SOURCE FILES

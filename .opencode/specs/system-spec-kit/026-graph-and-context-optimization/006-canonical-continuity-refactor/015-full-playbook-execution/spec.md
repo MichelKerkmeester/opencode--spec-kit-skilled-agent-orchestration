@@ -1,9 +1,9 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
-title: "Feature Specification: Phase 015 Full Manual Testing Playbook Execution"
-description: "Execute the live system-spec-kit playbook inventory against the post-006 codebase, capture real handler-level evidence, and expose any gaps between the documented playbook surface and what the current runtime can truthfully automate."
+title: "Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution"
+description: "Account for the live system-spec-kit playbook inventory against the post-006 codebase, capture real handler-level evidence, and document where current runtime automation is only partial instead of complete."
 trigger_phrases:
-  - "full playbook execution"
+  - "playbook coverage accounting"
   - "manual testing run"
   - "phase 015 spec"
 importance_tier: "critical"
@@ -13,7 +13,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Completed the full playbook execution packet and documented the live results"
+    recent_action: "Completed the playbook coverage accounting packet and documented the live results"
     next_safe_action: "Use the failure inventory to drive follow-on remediation"
     blockers:
       - "Automated suite has two concrete failures"
@@ -36,7 +36,7 @@ level: 2
 status: "completed"
 parent: "006-canonical-continuity-refactor"
 ---
-# Feature Specification: Phase 015 Full Manual Testing Playbook Execution
+# Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution
 
 <!-- SPECKIT_LEVEL: 2 -->
 
@@ -51,7 +51,11 @@ parent: "006-canonical-continuity-refactor"
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-04-12 |
-| **Branch** | `015-full-playbook-execution` |
+| **Branch** | `system-speckit/026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `014-playbook-prompt-rewrite` |
+| **Successor** | N/A |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -60,10 +64,10 @@ parent: "006-canonical-continuity-refactor"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The root playbook inventory and earlier packet notes no longer match current reality closely enough to trust without execution. Phase 015 exists to run the live playbook against the current Phase 006 codebase, capture packet-local evidence, and show exactly where handler automation stops being truthful.
+The root playbook inventory and earlier packet notes no longer match current reality closely enough to trust without execution. Phase 015 exists to account for the live playbook against the current Phase 006 codebase, capture packet-local evidence, and show exactly where handler automation stops being truthful or fully executable.
 
 ### Purpose
-Produce an execution-backed report for the full playbook surface and the requested automated suite.
+Produce an execution-backed coverage report for the full playbook surface and the requested automated suite, including honest partial-execution boundaries.
 <!-- /ANCHOR:problem -->
 
 ---

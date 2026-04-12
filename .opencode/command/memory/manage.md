@@ -237,15 +237,16 @@ spec_kit_memory_memory_index_scan({ force: true })
 
 Recommended order: **normalize → verify → rebuild**.
 
-### 3-Source Pipeline
+### 4-Source Pipeline
 
-The scan discovers memory-eligible files from three sources:
+The scan discovers memory-eligible files from four sources:
 
 | #   | Source         | Key                 | Location                              |
 | --- | -------------- | ------------------- | ------------------------------------- |
 | 1   | Spec Memories  | specFiles           | specs/*/memory/*.{md,txt}             |
 | 2   | Constitutional | constitutionalFiles | .opencode/skill/*/constitutional/*.md |
-| 3   | Spec Documents | specDocFiles        | .opencode/specs/**/*.md               |
+| 3   | Spec Documents | specDocFiles        | .opencode/specs/**/*.md including `description.json` and `_memory.continuity` extraction from canonical docs |
+| 4   | Graph Metadata | graphMetadataFiles  | .opencode/specs/**/graph-metadata.json |
 
 ### Canonical Path Deduplication
 

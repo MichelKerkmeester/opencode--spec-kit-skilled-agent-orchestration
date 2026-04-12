@@ -46,7 +46,7 @@
       "save"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "migrate-historical-json-mode-memories.js",
       ".opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts",

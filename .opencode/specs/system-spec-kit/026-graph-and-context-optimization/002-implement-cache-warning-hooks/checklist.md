@@ -8,6 +8,16 @@ trigger_phrases:
   - "replay isolation"
 importance_tier: "normal"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["checklist.md"]
+
 ---
 # Verification Checklist: Cache-Warning Hook System
 
@@ -48,7 +58,7 @@ contextType: "planning"
 - [x] CHK-011 [P0] Producer metadata remains additive-only in `HookState` [EVIDENCE: `producerMetadata` was added without replacing existing session metrics or continuity fields.]
 - [x] CHK-012 [P0] `claudeSessionId` remains the primary persisted identity [EVIDENCE: replay suite asserts the persisted state keeps `claudeSessionId` for the active session.]
 - [x] CHK-013 [P1] `speckitSessionId` remains nullable rather than becoming a forced primary contract in this packet [EVIDENCE: `HookState.speckitSessionId` is nullable and tests assert `null` by default.]
-- [x] CHK-014 [P0] No analytics reader, dashboard, or publication logic is introduced in the Stop writer lane [EVIDENCE: `session-stop.ts` only writes additive metadata and the runtime scope excludes analytics readers.]
+- [x] CHK-014 [P0] No analytics reader, dashboard, or publication logic is introduced in the Stop writer lane [EVIDENCE: `session-stop.ts` keeps default autosave behavior, only writes additive metadata, and the runtime scope excludes analytics readers.]
 <!-- /ANCHOR:code-quality -->
 
 ---

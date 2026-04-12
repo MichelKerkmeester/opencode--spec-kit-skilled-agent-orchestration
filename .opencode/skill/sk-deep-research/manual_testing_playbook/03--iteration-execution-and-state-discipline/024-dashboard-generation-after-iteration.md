@@ -41,11 +41,22 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-024 | Dashboard generation after iteration | Verify dashboard.md is auto-generated after iteration evaluation with correct content. | As a manual-testing orchestrator, validate the dashboard generation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the dashboard file is created at the correct path, contains the required sections (iteration table, question status, trend, dead ends, next focus, active risks), and is regenerated after each iteration. Return a concise operator-facing verdict. | 1. `bash: rg -n 'Step 4a\|Generate Dashboard\|dashboard_generated' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: sed -n '/ANCHOR:dashboard/,/\/ANCHOR:dashboard/p' .opencode/skill/sk-deep-research/references/state_format.md` -> 3. `bash: cat .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md` -> 4. `bash: rg -n 'step_reduce_state\|step_generate_dashboard\|reduce-state.cjs' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` -> 5. `bash: rg -n 'renderDashboard\|dashboardPath' .opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | `research/deep-research-dashboard.md` exists after iteration evaluation; contains iteration table, question status (X/Y answered), trend (last 3 ratios with direction), dead ends (from ruledOut), next focus (from strategy.md), and active risks; file is overwritten (not appended) each iteration; dashboard generation is reducer-owned and idempotent. | Capture the loop protocol Step 4a excerpt, the state format dashboard section, the template content, the YAML step definitions for both reducer and dashboard, and the reducer script's `renderDashboard` function. | PASS if the dashboard file exists after iteration evaluation, contains all required sections, and is regenerated (not appended) each iteration; FAIL if the file is missing, sections are absent, or stale data persists from a prior iteration. | Privilege the loop protocol Step 4a for the generation contract, the reducer script for the live implementation, and the state format dashboard section for content requirements; use the template asset as the structural reference. |
-
+### Prompt
+As a manual-testing orchestrator, validate the dashboard generation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the dashboard file is created at the correct path, contains the required sections (iteration table, question status, trend, dead ends, next focus, active risks), and is regenerated after each iteration. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'Step 4a\|Generate Dashboard\|dashboard_generated' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+2. `bash: sed -n '/ANCHOR:dashboard/,/\/ANCHOR:dashboard/p' .opencode/skill/sk-deep-research/references/state_format.md`
+3. `bash: cat .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md`
+4. `bash: rg -n 'step_reduce_state\|step_generate_dashboard\|reduce-state.cjs' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+5. `bash: rg -n 'renderDashboard\|dashboardPath' .opencode/skill/sk-deep-research/scripts/reduce-state.cjs`
+### Expected
+`research/deep-research-dashboard.md` exists after iteration evaluation; contains iteration table, question status (X/Y answered), trend (last 3 ratios with direction), dead ends (from ruledOut), next focus (from strategy.md), and active risks; file is overwritten (not appended) each iteration; dashboard generation is reducer-owned and idempotent.
+### Evidence
+Capture the loop protocol Step 4a excerpt, the state format dashboard section, the template content, the YAML step definitions for both reducer and dashboard, and the reducer script's `renderDashboard` function.
+### Pass/Fail
+PASS if the dashboard file exists after iteration evaluation, contains all required sections, and is regenerated (not appended) each iteration; FAIL if the file is missing, sections are absent, or stale data persists from a prior iteration.
+### Failure Triage
+Privilege the loop protocol Step 4a for the generation contract, the reducer script for the live implementation, and the state format dashboard section for content requirements; use the template asset as the structural reference.
 ---
 
 ## 4. SOURCE FILES

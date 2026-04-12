@@ -1,5 +1,5 @@
 ---
-#SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
+
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
@@ -16,6 +16,7 @@ trigger_phrases:
   - "root packet backfill"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/001-gate-a-prework"
@@ -53,7 +54,7 @@ Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A
 
 - [x] T001 Confirm the Gate A target set from `../resource-map.md` F-3, `../resource-map.md` §4, and `../scratch/resource-map/04-templates.md`.
 - [x] T002 Audit all Level 1/2/3/3+ templates for anchor integrity in a read-only scan, then limit remediation to Level 3, Level 3+, and `.opencode/skill/system-spec-kit/templates/{handover.md,research.md,debug-delegation.md}`.
-- [x] T003 Identify the root packets missing canonical `implementation-summary.md`, using iteration 016's M4 prerequisite as the audit rubric. [Evidence: audit resolved to `../../z_archive/z_archive/016-release-alignment/implementation-summary.md`]
+- [x] T003 Identify the root packets missing canonical `implementation-summary.md`, using iteration 016's M4 prerequisite as the audit rubric. [Evidence: audit resolved to `../../z_archive/016-release-alignment/implementation-summary.md`]
 - [x] T004 Freeze the default validator scope decision: `changelog/*` and `sharded/*` are exempt from merge-target validation unless a later phase expands their contract.
 - [x] T005 Decide whether Gate A will create an empty `mcp_server/database/migrations/` convention or record inline migration ownership in `vector-index-schema.ts`. [Decision: Option A inline in `mcp_server/lib/search/vector-index-schema.ts`]
 - [x] T006 [P] Pre-stage the copy-only backup/restore rehearsal plan and confirm the backup artifact name (`memory-018-pre.db`). [Evidence: backup created at `.opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db`]
@@ -70,9 +71,9 @@ Task ordering follows `../resource-map.md` §4 Gate A and iteration 028's Gate A
 - [x] T010 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/research.md`.
 - [x] T011 Add baseline anchors to `.opencode/skill/system-spec-kit/templates/debug-delegation.md`.
 - [x] T012 Update validator behavior or validator policy notes so `changelog/*` and `sharded/*` remain outside merge-target validation by default. [Evidence: `scripts/spec/validate.sh` exempts `templates/changelog` and `templates/sharded` under `ANCHORS_VALID`]
-- [x] T013 Generate canonical `implementation-summary.md` backfills for each packet found by T003. [Evidence: `../../z_archive/z_archive/016-release-alignment/implementation-summary.md` backfilled with `_provenance gate-a-retroactive-backfill`]
+- [x] T013 Generate canonical `implementation-summary.md` backfills for each packet found by T003. [Evidence: `../../z_archive/016-release-alignment/implementation-summary.md` backfilled with `_provenance gate-a-retroactive-backfill`]
 - [x] T014 Human-review every generated root-packet backfill and tighten wording until the packet narrative is canonical rather than memory-only.
-- [x] T015 Verify the root-packet backfill remains present and reviewable before any later archive-state or schema work depends on it. [Evidence: `../../z_archive/z_archive/016-release-alignment/implementation-summary.md` remains present in tree]
+- [x] T015 Verify the root-packet backfill remains present and reviewable before any later archive-state or schema work depends on it. [Evidence: `../../z_archive/016-release-alignment/implementation-summary.md` remains present in tree]
 - [x] T016 [P] Record the Gate A answer for migration-file ownership if T005 resolves it.
 <!-- /ANCHOR:phase-2 -->
 

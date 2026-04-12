@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction",
+  "description": "Feature Specification: Phase 6 — Memory Duplication Reduction",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "memory",
+    "duplication",
+    "reduction"
+  ],
+  "lastUpdated": "2026-04-12T18:30:00Z",
+  "specId": "006",
+  "folderSlug": "memory-duplication-reduction",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-memory-quality-issues"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

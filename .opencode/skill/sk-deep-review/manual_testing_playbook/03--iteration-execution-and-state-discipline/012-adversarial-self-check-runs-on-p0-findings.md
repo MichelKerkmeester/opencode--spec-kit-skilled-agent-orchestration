@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-012 | Adversarial self-check runs on P0 findings | Verify that the Hunter/Skeptic/Referee adversarial self-check runs on P0 candidates before recording them. | As a manual-testing orchestrator, validate the adversarial self-check contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify Rule 10 (adversarial self-check on P0 findings) is documented in the SKILL.md rules, enforced in the quick reference iteration checklist, and checked in the YAML post-iteration claim adjudication. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'adversarial\|self.check\|Hunter\|Skeptic\|Referee\|Rule 10\|re-read.*P0' .opencode/skill/sk-deep-review/SKILL.md` -> 2. `bash: rg -n 'adversarial\|self.check\|P0.*check\|claim_adjudication' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 3. `bash: rg -n 'adversarial\|self.check\|P0\|Hunter\|Skeptic\|Referee' .opencode/skill/sk-deep-review/references/quick_reference.md .codex/agents/deep-review.toml .claude/agents/deep-review.md` | Rule 10 in SKILL.md mandates adversarial self-check; iteration checklist includes it as step 5; YAML has claim adjudication; agent definitions describe the protocol. | Capture Rule 10, the checklist step, the claim adjudication YAML step, and the agent self-check instructions. | PASS if the adversarial self-check is documented, enforced in the iteration checklist, and checked in the YAML; FAIL if P0 findings can be recorded without a self-check. | If the agent definition lacks explicit Hunter/Skeptic/Referee roles, check whether the SKILL.md Rule 10 wording is sufficient to trigger the behavior implicitly. |
-
+### Prompt
+As a manual-testing orchestrator, validate the adversarial self-check contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify Rule 10 (adversarial self-check on P0 findings) is documented in the SKILL.md rules, enforced in the quick reference iteration checklist, and checked in the YAML post-iteration claim adjudication. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'adversarial\|self.check\|Hunter\|Skeptic\|Referee\|Rule 10\|re-read.*P0' .opencode/skill/sk-deep-review/SKILL.md`
+2. `bash: rg -n 'adversarial\|self.check\|P0.*check\|claim_adjudication' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+3. `bash: rg -n 'adversarial\|self.check\|P0\|Hunter\|Skeptic\|Referee' .opencode/skill/sk-deep-review/references/quick_reference.md .codex/agents/deep-review.toml .claude/agents/deep-review.md`
+### Expected
+Rule 10 in SKILL.md mandates adversarial self-check; iteration checklist includes it as step 5; YAML has claim adjudication; agent definitions describe the protocol.
+### Evidence
+Capture Rule 10, the checklist step, the claim adjudication YAML step, and the agent self-check instructions.
+### Pass/Fail
+PASS if the adversarial self-check is documented, enforced in the iteration checklist, and checked in the YAML; FAIL if P0 findings can be recorded without a self-check.
+### Failure Triage
+If the agent definition lacks explicit Hunter/Skeptic/Referee roles, check whether the SKILL.md Rule 10 wording is sufficient to trigger the behavior implicitly.
 ---
 
 ## 4. SOURCE FILES

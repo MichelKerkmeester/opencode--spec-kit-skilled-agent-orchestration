@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-028 | Focus track labels in dashboard | Verify optional focusTrack labels appear in JSONL and dashboard iteration table. | As a manual-testing orchestrator, validate the focusTrack label contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL state format defines focusTrack as an optional field on iteration records, and that the dashboard Progress table surfaces a Track column. Return a concise operator-facing verdict. | 1. `bash: rg -n 'focusTrack' .opencode/skill/sk-deep-research/references/state_format.md` -> 2. `bash: rg -n 'Track\|focusTrack' .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md` -> 3. `bash: rg -n 'focusTrack' .opencode/skill/sk-deep-research/README.md` | JSONL iteration records with an optional focusTrack field, dashboard Progress table with a Track column. | Capture the state_format.md focusTrack field definition, the dashboard Progress table header row, and any README mention of focus track grouping. | PASS if focusTrack is defined in state_format.md as optional on iteration records AND the dashboard Progress table includes a Track column; FAIL if the field is missing from either location or the two definitions contradict. | Privilege state_format.md as the canonical schema; use the dashboard asset and README only as secondary confirmation of propagation. |
-
+### Prompt
+As a manual-testing orchestrator, validate the focusTrack label contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL state format defines focusTrack as an optional field on iteration records, and that the dashboard Progress table surfaces a Track column. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'focusTrack' .opencode/skill/sk-deep-research/references/state_format.md`
+2. `bash: rg -n 'Track\|focusTrack' .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md`
+3. `bash: rg -n 'focusTrack' .opencode/skill/sk-deep-research/README.md`
+### Expected
+JSONL iteration records with an optional focusTrack field, dashboard Progress table with a Track column.
+### Evidence
+Capture the state_format.md focusTrack field definition, the dashboard Progress table header row, and any README mention of focus track grouping.
+### Pass/Fail
+PASS if focusTrack is defined in state_format.md as optional on iteration records AND the dashboard Progress table includes a Track column; FAIL if the field is missing from either location or the two definitions contradict.
+### Failure Triage
+Privilege state_format.md as the canonical schema; use the dashboard asset and README only as secondary confirmation of propagation.
 ---
 
 ## 4. SOURCE FILES

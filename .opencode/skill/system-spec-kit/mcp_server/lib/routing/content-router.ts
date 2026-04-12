@@ -396,7 +396,7 @@ export function createContentRouter(dependencies: RouterDependencies = {}) {
 
   return {
     async classifyContent(chunk: ContentChunk, context: RouterContext): Promise<RoutingDecision> {
-      const normalizedContext = normalizeContext(context);
+      const normalizedContext = resolveSessionHintsForChunk(context, chunk);
       const normalizedText = normalizeChunkText(chunk.text);
       const chunkHash = createRoutingCacheKey(normalizedText);
       const tier1 = runTier1Rules(chunk, normalizedText);
@@ -1008,8 +1008,63 @@ function normalizeContext(context: RouterContext): SessionHints {
   };
 }
 
+function resolveSessionHintsForChunk(context: RouterContext, chunk: ContentChunk): SessionHints {
+  const normalizedContext = normalizeContext(context);
+  return {
+    ...normalizedContext,
+    likely_phase_anchor: resolveLikelyPhaseAnchor(chunk, context, normalizedContext),
+  };
+}
+
+function resolveLikelyPhaseAnchor(
+  chunk: ContentChunk,
+  context: RouterContext,
+  normalizedContext: SessionHints,
+): string | null {
+  return (
+    extractPhaseAnchorFromMetadata(chunk.metadata)
+    ?? extractPhaseAnchorFromText(chunk.text)
+    ?? context.sessionMeta?.recent_anchors_touched
+      ?.map((anchor) => normalizePhaseAnchor(anchor))
+      .find((anchor): anchor is string => anchor !== null)
+    ?? normalizePhaseAnchor(context.sessionMeta?.likely_phase_anchor ?? null)
+    ?? extractPhaseAnchorFromText(context.specFolder)
+    ?? inferLikelyPhaseAnchor(context.existingAnchors)
+    ?? normalizedContext.likely_phase_anchor
+  );
+}
+
 function inferLikelyPhaseAnchor(existingAnchors?: string[]): string | null {
   return existingAnchors?.find((anchor) => /^phase-\d+$/i.test(anchor)) ?? null;
+}
+
+function extractPhaseAnchorFromMetadata(metadata?: Record<string, unknown>): string | null {
+  if (!metadata) {
+    return null;
+  }
+
+  return normalizePhaseAnchor(readString(metadata.targetAnchorId))
+    ?? normalizePhaseAnchor(readString(metadata.target_anchor_id))
+    ?? normalizePhaseAnchor(readString(metadata.phaseAnchor))
+    ?? normalizePhaseAnchor(readString(metadata.phase_anchor));
+}
+
+function extractPhaseAnchorFromText(text: string): string | null {
+  const match = text.match(/\bphase(?:[\s_-]+)?(\d+)\b/iu);
+  return match ? `phase-${match[1]}` : null;
+}
+
+function normalizePhaseAnchor(value: string | null | undefined): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const trimmed = value.trim();
+  const match = trimmed.match(/^phase(?:[\s_-]+)?(\d+)$/iu);
+  return match ? `phase-${match[1]}` : null;
+}
+
+function readString(value: unknown): string | null {
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
 }
 
 function normalizeTier3Category(category: Tier3Category | RoutingCategory): RoutingCategory {

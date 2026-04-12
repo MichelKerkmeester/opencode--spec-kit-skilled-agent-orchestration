@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-017 | P0 override blocks convergence | Verify new P0 finding sets newFindingsRatio >= 0.50, blocking convergence. | As a manual-testing orchestrator, validate the P0 override contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify any new P0 finding forces newFindingsRatio >= 0.50, that this value is high enough to prevent the composite stop score from reaching the 0.60 threshold, and that this behavior is documented as review-specific. Return a concise operator-facing verdict. | 1. `bash: rg -n 'P0.*override|P0.*block|P0.*convergence|newFindingsRatio.*0\.50|severity.*override|P0.*ratio' .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: rg -n 'P0|severity_override|newFindingsRatio|p0_override|p0_block' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'P0 override|P0.*block.*convergence|newFindingsRatio.*0\.50|severity.*override' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` | P0 finding sets `newFindingsRatio >= 0.50`, this blocks the rolling average signal, the composite score cannot reach 0.60, and the review continues. | Capture the P0 override rule from convergence.md, the YAML enforcement, and user-facing documentation of the override behavior. | PASS if the P0 override is enforced and documented as blocking convergence; FAIL if convergence can trigger despite an active new P0 finding. | Privilege the convergence reference for the exact P0 override rule and verify it is mirrored in both YAML workflows and user-facing docs. |
-
+### Prompt
+As a manual-testing orchestrator, validate the P0 override contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify any new P0 finding forces newFindingsRatio >= 0.50, that this value is high enough to prevent the composite stop score from reaching the 0.60 threshold, and that this behavior is documented as review-specific. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'P0.*override|P0.*block|P0.*convergence|newFindingsRatio.*0\.50|severity.*override|P0.*ratio' .opencode/skill/sk-deep-research/references/convergence.md`
+2. `bash: rg -n 'P0|severity_override|newFindingsRatio|p0_override|p0_block' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'P0 override|P0.*block.*convergence|newFindingsRatio.*0\.50|severity.*override' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md`
+### Expected
+P0 finding sets `newFindingsRatio >= 0.50`, this blocks the rolling average signal, the composite score cannot reach 0.60, and the review continues.
+### Evidence
+Capture the P0 override rule from convergence.md, the YAML enforcement, and user-facing documentation of the override behavior.
+### Pass/Fail
+PASS if the P0 override is enforced and documented as blocking convergence; FAIL if convergence can trigger despite an active new P0 finding.
+### Failure Triage
+Privilege the convergence reference for the exact P0 override rule and verify it is mirrored in both YAML workflows and user-facing docs.
 ---
 
 ## 4. SOURCE FILES

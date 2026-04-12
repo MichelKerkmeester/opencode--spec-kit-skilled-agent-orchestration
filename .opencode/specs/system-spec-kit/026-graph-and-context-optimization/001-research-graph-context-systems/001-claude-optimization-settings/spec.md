@@ -9,6 +9,16 @@ trigger_phrases:
   - "reddit field report audit"
 importance_tier: "important"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Spec: Phase 001 - Claude Optimization Settings (Reddit field-report audit)
 
@@ -27,6 +37,7 @@ This phase audited a Reddit primary-source field report covering 858-926 Claude 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,6 +51,8 @@ This phase audited a Reddit primary-source field report covering 858-926 Claude 
 | **Findings** | 24 (F1-F24), 56 raw across 13 iterations |
 | **Parent Spec** | `../spec.md` |
 | **Successor Phase** | `../002-codesight/spec.md` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

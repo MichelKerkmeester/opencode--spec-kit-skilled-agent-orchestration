@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-011 | Stop on max iterations | Verify that max iterations is a hard stop checked before softer convergence signals. | As a manual-testing orchestrator, validate the max-iterations stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the hard cap is checked before softer convergence logic and that the stop reason is surfaced as max_iterations_reached. Return a concise operator verdict. | 1. `bash: rg -n 'max iterations|Hard stop|max_iterations_reached' .opencode/skill/sk-deep-research/references/convergence.md .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 2. `bash: rg -n 'iteration_count >= max_iterations|max_iterations_reached' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` -> 3. `bash: rg -n -- '--max-iterations|Maximum loop iterations' .opencode/skill/sk-deep-research/README.md .opencode/skill/sk-deep-research/references/quick_reference.md` | Max iterations is checked first, the stop reason is named explicitly, and the parameter is exposed consistently in the docs. | Capture the convergence pseudocode, the YAML decision branch, and the user-facing parameter description. | PASS if max iterations is consistently treated as a first-priority hard stop; FAIL if it is demoted below softer signals or described inconsistently. | Resolve any ambiguity by privileging the convergence pseudocode and YAML algorithm order. |
-
+### Prompt
+As a manual-testing orchestrator, validate the max-iterations stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the hard cap is checked before softer convergence logic and that the stop reason is surfaced as max_iterations_reached. Return a concise operator verdict.
+### Commands
+1. `bash: rg -n 'max iterations|Hard stop|max_iterations_reached' .opencode/skill/sk-deep-research/references/convergence.md .opencode/skill/sk-deep-research/references/loop_protocol.md`
+2. `bash: rg -n 'iteration_count >= max_iterations|max_iterations_reached' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+3. `bash: rg -n -- '--max-iterations|Maximum loop iterations' .opencode/skill/sk-deep-research/README.md .opencode/skill/sk-deep-research/references/quick_reference.md`
+### Expected
+Max iterations is checked first, the stop reason is named explicitly, and the parameter is exposed consistently in the docs.
+### Evidence
+Capture the convergence pseudocode, the YAML decision branch, and the user-facing parameter description.
+### Pass/Fail
+PASS if max iterations is consistently treated as a first-priority hard stop; FAIL if it is demoted below softer signals or described inconsistently.
+### Failure Triage
+Resolve any ambiguity by privileging the convergence pseudocode and YAML algorithm order.
 ---
 
 ## 4. SOURCE FILES

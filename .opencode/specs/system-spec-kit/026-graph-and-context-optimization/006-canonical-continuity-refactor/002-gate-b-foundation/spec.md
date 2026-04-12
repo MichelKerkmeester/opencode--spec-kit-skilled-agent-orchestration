@@ -48,6 +48,10 @@ The grounding corrects two early research assumptions. First, `memory_index.is_a
 | **Status** | Complete |
 | **Created** | 2026-04-11 |
 | **Branch** | `[UNCERTAIN: branch not assigned for Gate B implementation]` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `001-gate-a-prework` |
+| **Successor** | `003-gate-c-writer-ready` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -73,8 +77,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 - Run the iteration 037 dry-run pipeline against a production-copy snapshot, capture JSON evidence, rerun for idempotence, and pass the hard rollback drill before the production window opens.
 - Apply the approved Gate B schema delta in `mcp_server/lib/search/vector-index-schema.ts`: add `source_anchor TEXT` and `target_anchor TEXT` to `causal_edges`, plus the anchor indexes required for mixed pre/post migration traversal.
 - Thread the new causal-edge fields through `mcp_server/lib/storage/causal-edges.ts`, `mcp_server/lib/storage/checkpoints.ts`, and `mcp_server/lib/storage/reconsolidation.ts`.
-- Execute the Day 0 archive flip so `UPDATE memory_index SET is_archived=1 WHERE source_path LIKE '%/memory/%.md'` marks exactly 155 legacy memory rows as archived.
-- Update ranking in `mcp_server/lib/search/pipeline/stage2-fusion.ts` or the equivalent fusion surface so archived rows score at `x0.3`, and expose `archived_hit_rate` in `mcp_server/handlers/memory-crud-stats.ts` using the presented-slot definition from iterations 027 and 036.
+- Archive-ranking was removed per DELETE-not-archive directive; Gate B no longer owns archive flip, archived-hit-rate reporting, or archive-specific fusion weighting.
 - Verify whether `mcp_server/lib/storage/schema-downgrade.ts` needs a matching update or an explicit exclusion note for the narrowed Gate B schema delta.
 
 ### Out of Scope

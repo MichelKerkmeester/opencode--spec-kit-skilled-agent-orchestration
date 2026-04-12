@@ -19,18 +19,29 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a tooling validation operator, validate Runtime Lineage Naming Parity against the documented validation surface. Verify all diff commands produce no output; rg finds no active research/research.md. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Commands:
-  ```bash
+### Prompt
+
+`As a tooling validation operator, validate Runtime Lineage Naming Parity against the documented validation surface. Verify all diff commands produce no output; rg finds no active research/research.md. Return a concise pass/fail verdict with the main reason and cited evidence.`
+### Commands
+
+```bash
   diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .claude/agents -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort)
   diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find -L .gemini/agents -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort)
   diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .codex/agents -maxdepth 1 -type f -name '*.toml' -exec basename {} \; | sed 's/\.toml$/.md/' | sort)
   rg -n 'research\.md' .opencode/agent .claude/agents .codex/agents .gemini/agents
   ```
-- Expected: all diff commands produce no output; rg finds no active `research/research.md`.
-- Evidence: diff output (empty on pass) and rg output (empty on pass).
-- Pass: normalized basenames match and no stale naming.
-- Fail triage: any mismatch or `research/research.md` hit; collect diff output and identify divergence.
+### Expected
+
+all diff commands produce no output; rg finds no active `research/research.md`.
+### Evidence
+
+diff output (empty on pass) and rg output (empty on pass).
+### Pass/Fail
+
+normalized basenames match and no stale naming.
+### Failure Triage
+
+any mismatch or `research/research.md` hit; collect diff output and identify divergence.
 
 ---
 

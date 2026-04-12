@@ -5,6 +5,7 @@ trigger_phrases: ["018 011 plan", "graph metadata implementation plan", "graph m
 importance_tier: "critical"
 contextType: "planning"
 status: "planned"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/011-spec-folder-graph-metadata"

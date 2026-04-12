@@ -423,7 +423,7 @@ function getMigrationAllowedBasePaths(): string[] {
 // V23: One-time spec_folder re-canonicalization + session_state migration
 // V24: Add trigger-cache source and temporal contiguity indexes
 /** Current schema version for vector-index migrations. */
-export const SCHEMA_VERSION = 26;
+export const SCHEMA_VERSION = 27;
 
 // Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
@@ -618,7 +618,7 @@ export function run_migrations(database: Database.Database, from_version: number
             extracted_at TEXT DEFAULT (datetime('now')),
             created_by TEXT DEFAULT 'manual',
             last_accessed TEXT,
-            UNIQUE(source_id, target_id, relation)
+            UNIQUE(source_id, target_id, relation, source_anchor, target_anchor)
           )
         `);
         logger.info('Migration v8: Created causal_edges table');
@@ -1253,6 +1253,74 @@ export function run_migrations(database: Database.Database, from_version: number
     }
   };
 
+  migrations[27] = () => {
+    const tableInfo = database.prepare(
+      "SELECT sql FROM sqlite_master WHERE type='table' AND name='causal_edges'"
+    ).get() as { sql?: string } | undefined;
+    const expectedConstraint = 'UNIQUE(source_id, target_id, relation, source_anchor, target_anchor)';
+    if (!tableInfo?.sql || tableInfo.sql.includes(expectedConstraint)) {
+      logger.info('Migration v27: causal_edges uniqueness already anchor-aware, skipping rebuild');
+      return;
+    }
+
+    const columnNames = getTableColumns(database, 'causal_edges');
+    const hasValidAt = columnNames.includes('valid_at');
+    const hasInvalidAt = columnNames.includes('invalid_at');
+    const indexes = database.prepare(
+      "SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name='causal_edges' AND sql IS NOT NULL"
+    ).all() as Array<{ sql: string }>;
+
+    database.exec('ALTER TABLE causal_edges RENAME TO causal_edges_v27_backup');
+    database.exec(`
+      CREATE TABLE causal_edges (
+        id INTEGER PRIMARY KEY,
+        source_id TEXT NOT NULL,
+        target_id TEXT NOT NULL,
+        source_anchor TEXT,
+        target_anchor TEXT,
+        relation TEXT NOT NULL CHECK(relation IN (
+          'caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'
+        )),
+        strength REAL DEFAULT 1.0 CHECK(strength >= 0.0 AND strength <= 1.0),
+        evidence TEXT,
+        extracted_at TEXT DEFAULT (datetime('now')),
+        created_by TEXT DEFAULT 'manual',
+        last_accessed TEXT${hasValidAt ? ',\n        valid_at TEXT' : ''}${hasInvalidAt ? ',\n        invalid_at TEXT' : ''},
+        UNIQUE(source_id, target_id, relation, source_anchor, target_anchor)
+      )
+    `);
+
+    const copyColumns = [
+      'id',
+      'source_id',
+      'target_id',
+      'source_anchor',
+      'target_anchor',
+      'relation',
+      'strength',
+      'evidence',
+      'extracted_at',
+      'created_by',
+      'last_accessed',
+      ...(hasValidAt ? ['valid_at'] : []),
+      ...(hasInvalidAt ? ['invalid_at'] : []),
+    ].join(', ');
+    database.exec(`INSERT INTO causal_edges (${copyColumns}) SELECT ${copyColumns} FROM causal_edges_v27_backup`);
+    database.exec('DROP TABLE causal_edges_v27_backup');
+
+    for (const index of indexes) {
+      try {
+        database.exec(index.sql);
+      } catch {
+        // Index may already exist after rebuild or reference legacy structure.
+      }
+    }
+
+    database.exec('CREATE INDEX IF NOT EXISTS idx_causal_edges_source_anchor ON causal_edges(source_anchor)');
+    database.exec('CREATE INDEX IF NOT EXISTS idx_causal_edges_target_anchor ON causal_edges(target_anchor)');
+    logger.info('Migration v27: Rebuilt causal_edges with anchor-aware uniqueness');
+  };
+
   // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
   const run_all_migrations = database.transaction(() => {
     for (let v = from_version + 1; v <= to_version; v++) {
@@ -1445,8 +1513,7 @@ function ensureMemoryIndexGovernanceColumns(database: Database.Database): void {
     { name: 'tenant_id', sql: 'ALTER TABLE memory_index ADD COLUMN tenant_id TEXT' },
     { name: 'user_id', sql: 'ALTER TABLE memory_index ADD COLUMN user_id TEXT' },
     { name: 'agent_id', sql: 'ALTER TABLE memory_index ADD COLUMN agent_id TEXT' },
-    // unused after Phase 018/010 shared-memory removal
-    { name: 'shared_space_id', sql: 'ALTER TABLE memory_index ADD COLUMN shared_space_id TEXT' },
+    { name: 'shared_space_id', sql: 'ALTER TABLE memory_index ADD COLUMN shared_space_id TEXT' }, // RETAINED: shared_space_id kept for backward-compatible DB migration. Not used by runtime. See 010-remove-shared-memory.
     { name: 'provenance_source', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_source TEXT' },
     { name: 'provenance_actor', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_actor TEXT' },
     { name: 'governed_at', sql: 'ALTER TABLE memory_index ADD COLUMN governed_at TEXT' },
@@ -2300,8 +2367,7 @@ export function create_schema(
       user_id TEXT,
       agent_id TEXT,
       session_id TEXT,
-      -- unused after Phase 018/010 shared-memory removal
-      shared_space_id TEXT,
+      shared_space_id TEXT, -- RETAINED: shared_space_id kept for backward-compatible DB migration. Not used by runtime. See 010-remove-shared-memory.
       context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general')),
       channel TEXT DEFAULT 'default',
       content_hash TEXT,

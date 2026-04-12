@@ -8,6 +8,15 @@ scope: q4_features_2_12_13
 status: complete
 focus: "Retarget intent-aware retrieval + modes + embedding search + RRF fusion."
 maps_to_questions: [Q4]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-007.md"]
+
 ---
 
 # Iteration 007 — Features 2, 12, 13: Retrieval Substrate

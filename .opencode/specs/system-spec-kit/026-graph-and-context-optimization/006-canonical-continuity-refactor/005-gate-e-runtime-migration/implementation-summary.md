@@ -6,14 +6,15 @@ importance_tier: "important"
 contextType: "implementation"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Gate E sync"
-    next_safe_action: "Attach"
-    key_files: ["implementation-summary.md"]
+    recent_action: "Synced Gate E evidence"
+    next_safe_action: "Add commit hash once final commit lands"
+    key_files: ["implementation-summary.md", "checklist.md"]
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

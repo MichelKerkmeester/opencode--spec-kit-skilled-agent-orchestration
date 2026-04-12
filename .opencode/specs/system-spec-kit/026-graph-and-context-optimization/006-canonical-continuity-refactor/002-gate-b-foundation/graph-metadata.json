@@ -53,10 +53,6 @@
       "stage2-fusion.ts",
       "memory-crud-stats.ts",
       "memory.db",
-      "026.018",
-      "x 0.3",
-      "memory_index.is_archived",
-      "x0.3",
       "mcp_server/lib/search/vector-index-schema.ts",
       "mcp_server/lib/storage/causal-edges.ts",
       "mcp_server/lib/storage/checkpoints.ts",
@@ -98,30 +94,6 @@
         "name": "memory.db",
         "kind": "file",
         "path": "memory.db",
-        "source": "derived"
-      },
-      {
-        "name": "026.018",
-        "kind": "file",
-        "path": "026.018",
-        "source": "derived"
-      },
-      {
-        "name": "x 0.3",
-        "kind": "file",
-        "path": "x 0.3",
-        "source": "derived"
-      },
-      {
-        "name": "memory_index.is_archived",
-        "kind": "file",
-        "path": "memory_index.is_archived",
-        "source": "derived"
-      },
-      {
-        "name": "x0.3",
-        "kind": "file",
-        "path": "x0.3",
         "source": "derived"
       },
       {

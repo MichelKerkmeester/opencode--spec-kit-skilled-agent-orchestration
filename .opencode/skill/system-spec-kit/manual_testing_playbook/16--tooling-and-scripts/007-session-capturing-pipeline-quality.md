@@ -19,7 +19,9 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a tooling validation operator, validate Session Capturing Pipeline Quality against grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts. Verify part I hardening remains active.; Native fallback ordering behaves deterministically across all five configured capture backends.; Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain. Return a concise pass/fail verdict with the main reason and cited evidence.`
+### Prompt
+
+`As a tooling validation operator, validate Session Capturing Pipeline Quality against grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts. Verify part I hardening remains active.; Native fallback ordering behaves deterministically across all five configured capture backends.; Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Canonical workspace rule:
   - Native capture targets the repo-local `.opencode` workspace identity.
   - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.
@@ -58,8 +60,8 @@ This scenario remains prose-first because it carries compound operator logic, su
   - Treat the MCP-side baseline as the targeted save-quality lanes plus package-level `npm run check`.
   - Require the source/dist alignment lane to report zero violations for both `mcp_server/dist/lib` and `scripts/dist`.
   - Automated parity is not, by itself, proof that every supported CLI has been exercised live. Universal live-proof claims require fresh per-CLI and per-save-mode artifacts generated during this run.
-- Commands:
-  - Part I hardening spot checks:
+### Commands
+- Part I hardening spot checks:
     - `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`
     - `grep -n 'qualityAbortThreshold' .opencode/skill/system-spec-kit/scripts/core/workflow.ts .opencode/skill/system-spec-kit/scripts/core/config.ts`
     - `grep -n 'claude-code-capture\|codex-cli-capture\|copilot-cli-capture\|gemini-cli-capture' .opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
@@ -101,8 +103,9 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `M-007o` Claude contamination downgrade: compare a Claude structured/captured-session input containing `tool title with path` content against a non-Claude source with the same text and verify Claude avoids the old 0.60 cap while the non-Claude path remains capped.
     - `M-007p` Structured-summary and file-authority verification: run a rich structured JSON save and confirm `toolCalls` and `exchanges` are accepted and preserved, then verify a file-backed payload remains on the structured path rather than reopening the runtime-derived enrichment branch. Also run a structured JSON save with a legacy payload that omits `toolCalls` and `exchanges` entirely and confirm it still succeeds through backward-compatible defaults.
     - `M-007q` Phase 018 output-quality hardening: inspect a generated memory or targeted regression evidence and confirm decision fields are no longer duplicated, completion status can recover from normalized `Next Steps`, blocker extraction ignores generic failure words, trigger/code-pattern filler is suppressed, `key_files` parsing accepts em dash/en dash/colon separators, tree thinning uses the `150`-token and `3`-child safeguards, and structured-data conversation synthesis adds assistant content when prompts are sparse.
-- Expected:
-  - Part I hardening remains active.
+### Expected
+
+- Part I hardening remains active.
   - Native fallback ordering behaves deterministically across all five configured capture backends.
   - Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain.
   - Native discovery uses canonical `.opencode` workspace identity rather than raw path equality.
@@ -118,8 +121,9 @@ This scenario remains prose-first because it carries compound operator logic, su
   - Direct positional saves exit non-zero with clear migration guidance to the structured JSON contract.
   - Rendered files preserve ANCHOR tags and frontmatter trigger phrases are session-specific.
   - Indexing succeeds when validation passes.
-- Evidence:
-  - Grep output for crypto IDs, quality abort threshold, five-backend loader wiring, caller-aware source preference wiring, ANCHOR cleanup regex, trigger-phrase template wiring, and sufficiency-gate wiring.
+### Evidence
+
+- Grep output for crypto IDs, quality abort threshold, five-backend loader wiring, caller-aware source preference wiring, ANCHOR cleanup regex, trigger-phrase template wiring, and sufficiency-gate wiring.
   - Passing `npm test` targeted Vitest output.
   - Passing JS suite summaries from `scripts/tests/`.
   - Passing `mcp_server` lint/build/targeted/full-test output for the package-clean closure bar.
@@ -128,8 +132,9 @@ This scenario remains prose-first because it carries compound operator logic, su
   - Fresh per-CLI transcripts or artifacts generated during this run for OpenCode, Claude Code, Codex CLI, Copilot CLI, and Gemini CLI whenever a universal live-proof claim is made.
   - `generate-context.js` output or capture logs showing results for `M-007a` through `M-007j`.
   - `generate-context.js` output or targeted Vitest evidence showing results for `M-007k` through `M-007q`.
-- Pass:
-  - All automated commands pass.
+### Pass/Fail
+
+- All automated commands pass.
   - Package-clean MCP verification passes alongside the scripts-side closure suite.
   - `M-007a` validates and indexes successfully.
   - `M-007b` proves thin aligned JSON now fails `INSUFFICIENT_CONTEXT_ABORT` with lower diagnostic quality than `M-007a` and with no new memory file written.
@@ -140,8 +145,9 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `M-007f` through `M-007i` prove per-backend native capture selection and save-gate behavior under canonical `.opencode` workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or `V5` corruption. They are not, by themselves, full Hydra end-to-end proof for those CLIs.
   - `M-007j` proves final `NO_DATA_FILE` behavior.
   - `M-007k` through `M-007q` prove the Phase 017 captured-session soft-warning vs hard-block split, structured-input authority, shipped `toolCalls` / `exchanges` support, file-backed JSON authority, Claude-only contamination downgrade, and the Phase 018 output-quality hardening.
-- Fail triage:
-  - Check `data-loader.ts` fallback ordering.
+### Failure Triage
+
+- Check `data-loader.ts` fallback ordering.
   - Check project-matching logic inside the relevant native extractor.
   - Check `shared/parsing/memory-sufficiency.ts` evidence counting rules.
   - Check `quality-scorer.ts` scoring heuristics versus sufficiency and boolean validation.

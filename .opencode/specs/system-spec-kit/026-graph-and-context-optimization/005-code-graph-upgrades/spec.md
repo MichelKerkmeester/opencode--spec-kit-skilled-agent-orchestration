@@ -7,6 +7,16 @@ trigger_phrases:
   - "026-graph-and-context-optimization"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: Code Graph Upgrades
 
@@ -25,6 +35,7 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -36,9 +47,11 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 | **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
-| **Predecessor** | `013-warm-start-bundle-conditional-validation` |
-| **Successor** | Optional future graph-local rollout only; no new R-chain prerequisite |
+| **Predecessor** | `004-agent-execution-guardrails` |
+| **Successor** | `006-canonical-continuity-refactor` |
 | **Research Citation** | `002-codesight/research/research.md:924-1033` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

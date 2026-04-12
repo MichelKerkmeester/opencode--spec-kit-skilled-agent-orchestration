@@ -66,9 +66,9 @@ Save the current conversation context, including session summary, key decisions,
 
 - `handover.md` remains the top recovery document for active-session state and pending work.
 - `_memory.continuity` stores the compact continuity block used by `/spec_kit:resume`.
-- AI may directly edit `_memory.continuity` frontmatter blocks in canonical spec docs when only those doc-local continuity hints need updating.
+- AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` when only those doc-local continuity hints need updating.
 - Canonical spec docs such as `implementation-summary.md` and `decision-record.md` receive the durable narrative content when the route applies.
-- `generate-context.js` remains the primary save mechanism when the workflow also needs DB indexing, embedding generation, `description.json` refresh, or anchor-managed compatibility output.
+- `generate-context.js` remains the primary save mechanism when the workflow also needs DB indexing, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, or anchor-managed compatibility output.
 - Standalone memory markdown is not the primary operator-facing destination for this command.
 
 ---
@@ -357,6 +357,7 @@ rm "$TEMP_FILE"
 - `implementation-summary.md`
 - `decision-record.md`
 - frontmatter `_memory.continuity`
+- `graph-metadata.json`
 
 If compatibility artifacts are emitted during migration cleanup, they remain secondary to the canonical packet update and should not be treated as the source of truth.
 
@@ -504,7 +505,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ## APPENDIX A: MCP TOOL REFERENCE
 
-> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` remains intentionally excluded. `Edit` is allowed only for direct `_memory.continuity` frontmatter updates inside canonical spec docs. Use `generate-context.js` for indexed saves, embedding generation, `description.json` refresh, anchor-managed compatibility output, and any workflow that would otherwise create standalone continuity artifacts. See AGENTS.md Memory Save Rule.
+> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` remains intentionally excluded. `Edit` is allowed only for direct `_memory.continuity` frontmatter updates inside `implementation-summary.md`. Use `generate-context.js` for indexed saves, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, anchor-managed compatibility output, and any workflow that would otherwise create standalone continuity artifacts. See AGENTS.md Memory Save Rule.
 
 > **Mutation Ledger & Artifact Routing:** Every save operation is now recorded in the mutation ledger, an append-only audit trail that captures the file path, spec folder, timestamp, and indexing outcome. Artifact metadata associated with the saved memory may also be classified via artifact-class routing before indexing, ensuring consistent type tagging across the database.
 

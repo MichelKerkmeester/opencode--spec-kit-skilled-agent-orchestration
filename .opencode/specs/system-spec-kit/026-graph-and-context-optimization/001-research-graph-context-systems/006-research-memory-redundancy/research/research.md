@@ -1,5 +1,9 @@
 # Research: Memory Save Redundancy vs Static Spec Docs
 
+<!-- ANCHOR:summary -->
+This redundancy audit is grounded in the sampled memory artifacts and the generator pipeline sources. [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1416-1509] [SOURCE: .opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts:44-57]
+<!-- /ANCHOR:summary -->
+
 ## 1. Executive Summary
 
 - Generated memory saves are currently over-owning packet narrative. In the chartered sample set, `002` and `003/001` are high-overlap cases and the `003` root packet is a medium-overlap case. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/memory/06-04-26_17-14__created-level-3-speckit-folder-002-implement.md:114-150] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/memory/06-04-26_17-14__created-level-3-speckit-folder-002-implement.md:194-217] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/memory/06-04-26_17-14__created-level-3-speckit-folder-002-implement.md:262-390] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/memory/08-04-26_14-26__ran-7-iteration-deep-review-on-this-packet.md:204-233] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/memory/08-04-26_14-26__ran-7-iteration-deep-review-on-this-packet.md:242-426] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/memory/07-04-26_20-24__closed-out-phase-1-of-the-memory-quality.md:175-249] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation/memory/07-04-26_20-24__closed-out-phase-1-of-the-memory-quality.md:275-518]

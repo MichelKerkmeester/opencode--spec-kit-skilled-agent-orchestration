@@ -49,7 +49,7 @@
       "payload"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
       ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
@@ -58,7 +58,6 @@
       ".opencode/skill/system-spec-kit/scripts/tests/trigger-phrase-sanitizer.vitest.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase3-pr5.vitest.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase3-pr6.vitest.ts",
-      "npx vitest run --config ../mcp_server/vitest.config.ts tests/trigger-phrase-sanitizer.vitest.ts tests/memory-quality-phase3-pr5.vitest.ts",
       "checklist.md",
       "implementation-summary.md",
       "lib/trigger-phrase-sanitizer.ts",
@@ -113,12 +112,6 @@
         "name": "memory-quality-phase3-pr6.vitest.ts",
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase3-pr6.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase3-pr5.vitest.ts",
-        "kind": "test",
-        "path": "npx vitest run --config ../mcp_server/vitest.config.ts tests/trigger-phrase-sanitizer.vitest.ts tests/memory-quality-phase3-pr5.vitest.ts",
         "source": "derived"
       },
       {

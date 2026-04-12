@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-014 | Severity classification in JSONL | Verify that findingsSummary and findingsNew fields in JSONL include P0/P1/P2 counts for every iteration record. | As a manual-testing orchestrator, validate the severity classification JSONL contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify Rule 11 mandates findingsSummary (cumulative) and findingsNew (this iteration) fields with P0/P1/P2 counts in every JSONL iteration record, that the YAML dispatch prompt constrains this, and that the convergence algorithm uses severity weights. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'findingsSummary|findingsNew|Rule 11|severity counts' .opencode/skill/sk-deep-review/SKILL.md` -> 2. `bash: rg -n 'findingsSummary|findingsNew|severity_weights|p0_override|newFindingsRatio' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 3. `bash: rg -n 'findingsSummary|findingsNew|P0.*10|P1.*5|P2.*1|severity.*weight' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-research/references/state_format.md` | Rule 11 mandates the fields; the YAML dispatch constrains them; the convergence algorithm references severity_weights with P0=10.0, P1=5.0, P2=1.0; the P0 override sets newFindingsRatio >= 0.50. | Capture Rule 11, the dispatch JSONL constraint, the severity_weights block, and the P0 override rule. | PASS if findingsSummary and findingsNew with P0/P1/P2 are mandated, constrained, and consumed by convergence; FAIL if either field is missing from the contract or not used in convergence. | Check the on_missing_outputs fallback JSONL template to verify it also includes findingsSummary and findingsNew with zeroed P0/P1/P2 counts. |
-
+### Prompt
+As a manual-testing orchestrator, validate the severity classification JSONL contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify Rule 11 mandates findingsSummary (cumulative) and findingsNew (this iteration) fields with P0/P1/P2 counts in every JSONL iteration record, that the YAML dispatch prompt constrains this, and that the convergence algorithm uses severity weights. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'findingsSummary|findingsNew|Rule 11|severity counts' .opencode/skill/sk-deep-review/SKILL.md`
+2. `bash: rg -n 'findingsSummary|findingsNew|severity_weights|p0_override|newFindingsRatio' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+3. `bash: rg -n 'findingsSummary|findingsNew|P0.*10|P1.*5|P2.*1|severity.*weight' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-research/references/state_format.md`
+### Expected
+Rule 11 mandates the fields; the YAML dispatch constrains them; the convergence algorithm references severity_weights with P0=10.0, P1=5.0, P2=1.0; the P0 override sets newFindingsRatio >= 0.50.
+### Evidence
+Capture Rule 11, the dispatch JSONL constraint, the severity_weights block, and the P0 override rule.
+### Pass/Fail
+PASS if findingsSummary and findingsNew with P0/P1/P2 are mandated, constrained, and consumed by convergence; FAIL if either field is missing from the contract or not used in convergence.
+### Failure Triage
+Check the on_missing_outputs fallback JSONL template to verify it also includes findingsSummary and findingsNew with zeroed P0/P1/P2 counts.
 ---
 
 ## 4. SOURCE FILES

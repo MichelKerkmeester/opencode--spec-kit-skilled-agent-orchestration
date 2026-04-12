@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-010 | Progressive synthesis behavior for research/research.md | Verify that `research/research.md` remains workflow-owned while progressive updates are allowed when `progressiveSynthesis` is enabled. | As a manual-testing orchestrator, validate the progressive-synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/research.md is workflow-owned canonical output, that incremental updates are allowed when progressiveSynthesis is true, and that synthesis still finalizes the document. Return a concise verdict. | 1. `bash: rg -n 'progressiveSynthesis|workflow-owned|research/research.md' .opencode/skill/sk-deep-research/README.md .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/SKILL.md` -> 2. `bash: rg -n 'progressiveSynthesis|Update Research|research/research.md' .codex/agents/deep-research.toml` -> 3. `bash: rg -n 'phase_synthesis|research_output|synthesis_complete' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | The docs describe `research/research.md` as workflow-owned, `progressiveSynthesis` defaults to true, and the final synthesis phase still runs. | Capture the ownership wording, the progressive update rule, and the synthesis-phase contract together. | PASS if all sources agree that progressive updates may occur but final synthesis still owns canonical completion; FAIL if ownership of `research/research.md` is contradictory. | Use the runtime agent’s Step 7 and the README configuration table to resolve terse wording. |
-
+### Prompt
+As a manual-testing orchestrator, validate the progressive-synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/research.md is workflow-owned canonical output, that incremental updates are allowed when progressiveSynthesis is true, and that synthesis still finalizes the document. Return a concise verdict.
+### Commands
+1. `bash: rg -n 'progressiveSynthesis|workflow-owned|research/research.md' .opencode/skill/sk-deep-research/README.md .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/SKILL.md`
+2. `bash: rg -n 'progressiveSynthesis|Update Research|research/research.md' .codex/agents/deep-research.toml`
+3. `bash: rg -n 'phase_synthesis|research_output|synthesis_complete' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml`
+### Expected
+The docs describe `research/research.md` as workflow-owned, `progressiveSynthesis` defaults to true, and the final synthesis phase still runs.
+### Evidence
+Capture the ownership wording, the progressive update rule, and the synthesis-phase contract together.
+### Pass/Fail
+PASS if all sources agree that progressive updates may occur but final synthesis still owns canonical completion; FAIL if ownership of `research/research.md` is contradictory.
+### Failure Triage
+Use the runtime agent’s Step 7 and the README configuration table to resolve terse wording.
 ---
 
 ## 4. SOURCE FILES

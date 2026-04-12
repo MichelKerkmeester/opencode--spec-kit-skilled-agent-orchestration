@@ -8,6 +8,15 @@ scope: q7_validator_detail
 status: complete
 focus: "Deepen the six spec-doc-structure validator rules into an implementable contract with concrete order, error codes, edge cases, validate.sh integration, and unit-test sketches."
 maps_to_questions: [Q7]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-022.md"]
+
 ---
 
 # Iteration 022 — Spec-doc-structure validator detail

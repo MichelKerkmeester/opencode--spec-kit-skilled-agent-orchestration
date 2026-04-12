@@ -1,6 +1,16 @@
 ---
 title: "Tasks: Phase 1: Foundation (Templates & Truncation)"
 description: "Ordered Phase 1 execution tasks for PR-1 and PR-2, including helper extraction, call-site migration, contract validator + memory parser alignment, fixture authoring, validation, and parent packet status handoff."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/001-foundation-templates-truncation"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["tasks.md"]
+
 ---
 # Tasks: Phase 1: Foundation (Templates & Truncation)
 

@@ -8,6 +8,15 @@ scope: q6_save_flow
 status: complete
 focus: "UX walkthrough for /memory:save under the new model. Interactive and auto modes. Confirmation screen. Routing transparency."
 maps_to_questions: [Q6]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-014.md"]
+
 ---
 
 # Iteration 014 — Q6: /memory:save User Flow

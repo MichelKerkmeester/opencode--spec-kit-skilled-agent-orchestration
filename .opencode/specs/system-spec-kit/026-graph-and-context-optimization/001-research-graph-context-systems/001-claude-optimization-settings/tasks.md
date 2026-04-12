@@ -7,6 +7,16 @@ trigger_phrases:
   - "iteration tasks"
 importance_tier: "normal"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["tasks.md"]
+
 ---
 # Tasks: Phase 001 - Claude Optimization Settings (Reddit field-report audit)
 
@@ -105,7 +115,7 @@ If a task is BLOCKED:
 - [x] T024 Create `decision-record.md` from Level 3 template; document ADR-001 through ADR-004 with context, options, decision, consequences, and the iteration-extension amendment inside ADR-003 (`decision-record.md`)
 - [x] T025 Create `implementation-summary.md` from Level 3 template; document delivered artifacts, stats (13 iterations, 56 raw -> 24 deduplicated findings, recommendation split 11/11/2), convergence stop signal, and next-phase ownership boundary (`implementation-summary.md`)
 - [x] T026 Run `validate.sh --strict` on the phase folder; acceptable result is exit code 2 with only the intentional `ANCHORS_VALID` warning on repeated ADR anchors (`bash /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/spec/validate.sh /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings --strict`) [Evidence: exit code 2; Errors: 0; Warnings: 1; only `decision-record.md` repeated-anchor `ANCHORS_VALID` deviations preserved intentionally]
-- [x] T027 Save packet memory with `generate-context.js` after validation; if the post-save quality review raises HIGH severity issues, patch the generated memory file before closing (`node /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings`) [Evidence: `memory/07-04-26_16-18__this-session-closed-out-the-research-only-level-3.md` written; post-save HIGH trigger-phrase issue patched; indexing skipped after embedding fetch retries]
+- [x] T027 Save packet memory with `generate-context.js` after validation; if the post-save quality review raises HIGH severity issues, patch the generated memory file before closing (`node /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings`) [Evidence: `research/research.md` and `implementation-summary.md` record the closeout; post-save HIGH trigger-phrase issue patched; indexing skipped after embedding fetch retries]
 <!-- /ANCHOR:phase-3 -->
 
 ---

@@ -5,6 +5,7 @@ trigger_phrases: ["018 010 plan", "shared memory removal plan", "hard delete sha
 importance_tier: "critical"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/010-remove-shared-memory"

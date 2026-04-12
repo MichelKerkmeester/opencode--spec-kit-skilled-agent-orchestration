@@ -41,10 +41,33 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
+### Prompt
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-023 | Composite Convergence Passes but Guard Fails → CONTINUE | Verify the full override path: composite score >0.60 → STOP → guards check → guard fails → override to CONTINUE. | As a manual-testing orchestrator, validate the convergence-guard override path for sk-deep-research. Trace the full sequence: composite convergence votes STOP (score >0.60), then checkQualityGuards runs, then a guard violation is detected, then the STOP is overridden to CONTINUE and the loop resumes against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify this flow exists in convergence.md Decision Priority step 4.5, the YAML algorithm, and loop_protocol.md Step 2c. Return a concise operator-facing PASS/FAIL verdict with the key evidence. | 1. `bash: sed -n '165,175p' .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: sed -n '104,139p' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: sed -n '218,247p' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` -> 4. `bash: sed -n '97,107p' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 5. `bash: rg -n 'guard_violation' .opencode/skill/sk-deep-research/references/state_format.md` | convergence_check with decision STOP and score >0.60, followed by guard_violation event, followed by decision override to CONTINUE and loop resumption. | Capture the Decision Priority list showing step 4.5, the checkQualityGuards pseudocode, the YAML step 6 override block (guardResult = checkQualityGuards; if not passed, decision = CONTINUE), the loop_protocol Step 2c flow, and the guard_violation event schema. | PASS if the full override path (composite STOP → guard check → guard fail → override to CONTINUE) is documented consistently across convergence.md Decision Priority step 4.5, auto.yaml step_check_convergence step 6, and loop_protocol.md Step 2c; FAIL if any part of the chain is missing or contradicts the others. | Trace the path from convergence.md Decision Priority (canonical order) through auto.yaml (runtime implementation) to loop_protocol.md (orchestrator instructions). Discrepancies in the override direction or guard evaluation order are critical failures. |
+As a manual-testing orchestrator, validate the convergence-guard override path for sk-deep-research. Trace the full sequence: composite convergence votes STOP (score >0.60), then checkQualityGuards runs, then a guard violation is detected, then the STOP is overridden to CONTINUE and the loop resumes against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify this flow exists in convergence.md Decision Priority step 4.5, the YAML algorithm, and loop_protocol.md Step 2c. Return a concise operator-facing PASS/FAIL verdict with the key evidence.
+
+### Commands
+
+1. `bash: sed -n '165,175p' .opencode/skill/sk-deep-research/references/convergence.md`
+2. `bash: sed -n '104,139p' .opencode/skill/sk-deep-research/references/convergence.md`
+3. `bash: sed -n '218,247p' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+4. `bash: sed -n '97,107p' .opencode/skill/sk-deep-research/references/loop_protocol.md`
+5. `bash: rg -n 'guard_violation' .opencode/skill/sk-deep-research/references/state_format.md`
+
+### Expected
+
+convergence_check with decision STOP and score >0.60, followed by guard_violation event, followed by decision override to CONTINUE and loop resumption.
+
+### Evidence
+
+Capture the Decision Priority list showing step 4.5, the checkQualityGuards pseudocode, the YAML step 6 override block (guardResult = checkQualityGuards; if not passed, decision = CONTINUE), the loop_protocol Step 2c flow, and the guard_violation event schema.
+
+### Pass/Fail
+
+PASS if the full override path (composite STOP → guard check → guard fail → override to CONTINUE) is documented consistently across convergence.md Decision Priority step 4.5, auto.yaml step_check_convergence step 6, and loop_protocol.md Step 2c; FAIL if any part of the chain is missing or contradicts the others.
+
+### Failure Triage
+
+Trace the path from convergence.md Decision Priority (canonical order) through auto.yaml (runtime implementation) to loop_protocol.md (orchestrator instructions). Discrepancies in the override direction or guard evaluation order are critical failures.
 
 ---
 

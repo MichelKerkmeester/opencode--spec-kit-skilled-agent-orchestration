@@ -9,6 +9,16 @@ trigger_phrases:
   - "claudest continuation"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: Cache-Warning Hook System
 
@@ -27,6 +37,7 @@ This packet no longer treats the earlier six-phase warning-hook prototype as the
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,6 +51,8 @@ This packet no longer treats the earlier six-phase warning-hook prototype as the
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | `001-research-graph-context-systems` |
 | **Successor** | `003-memory-quality-issues` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 
@@ -48,7 +61,7 @@ This packet no longer treats the earlier six-phase warning-hook prototype as the
 
 ### Problem Statement
 
-Packet `002` was originally framed as a six-phase cache-warning rollout with `SessionStart` estimator and `UserPromptSubmit` behavior. The canonical research now says that framing is too aggressive: warm-start and warning consumers are conditional, additive, and later in the continuity lane, while the defensible near-term work is a bounded producer-side metadata patch plus replay-safe verification [SOURCE: research.md §1; §2; §4].
+Packet `002` was originally framed as a six-phase cache-warning rollout with `SessionStart` estimator and `UserPromptSubmit` behavior. The canonical research now says that framing is too aggressive: warning consumers are later in the continuity lane, while the defensible near-term work is a bounded producer-side metadata patch plus replay-safe verification. The Stop-hook producer boundary still performs its default autosave path; the additive constraint applies to the metadata and authority boundary, not to disabling autosave itself. [SOURCE: research.md §1; §2; §4].
 
 ### Purpose
 
@@ -108,7 +121,7 @@ Define a research-aligned Level 3 packet that captures the producer-side continu
 | REQ-001 | Packet `002` records the FTS helper plus forced-degrade matrix as a hard predecessor. | `spec.md`, `plan.md`, and `tasks.md` all state that this packet is not the first continuity implementation packet and depends on the earlier FTS hardening lane [SOURCE: research.md §2]. |
 | REQ-002 | Replay validation is isolated before any producer patch is treated as trustworthy. | Harness provisions isolated temp state, fences autosave side effects, and reports out-of-bound writes as failures rather than warnings [SOURCE: research.md §2]. |
 | REQ-003 | `hook-state.ts` gains additive producer metadata for continuity handoff. | State keeps `claudeSessionId` primary, leaves `speckitSessionId` nullable, and adds bounded fields for `lastClaudeTurnAt`, transcript identity or reference, and cache-token carry-forward without introducing a reader schema here [SOURCE: research.md §2]. |
-| REQ-004 | `session-stop.ts` persists the producer metadata after transcript parsing without becoming an analytics reader or second narrative owner. | Stop remains a writer-only boundary, persists bounded metadata after parse, emits a compact continuity wrapper, and does not absorb normalized reader, dashboard, publication logic, or canonical packet-doc ownership [SOURCE: research.md §2; §4]. |
+| REQ-004 | `session-stop.ts` persists the producer metadata after transcript parsing without becoming an analytics reader or second narrative owner. | Stop remains a writer-only boundary with autosave enabled by default, persists bounded metadata after parse, emits a compact continuity wrapper, and does not absorb normalized reader, dashboard, publication logic, or canonical packet-doc ownership [SOURCE: research.md §2; §4]. |
 | REQ-005 | Replay verification includes idempotency, not just one-pass success. | Replaying the same transcript twice proves stable session-level totals and no duplicate turn ingestion or duplicate producer state rows [SOURCE: research.md §2]. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -116,7 +129,7 @@ Define a research-aligned Level 3 packet that captures the producer-side continu
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-006 | This packet must preserve startup authority boundaries. | No doc or code path in this packet claims cached summary or Stop metadata replaces `session_bootstrap()` or `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` [SOURCE: research.md §4]. |
-| REQ-007 | `session-prime.ts` remains additive or unchanged in this packet. | Verification shows no new `resume`, `compact`, or startup consumer fast path is introduced here [SOURCE: research.md §2]. |
+| REQ-007 | `session-prime.ts` remains additive or unchanged in this packet. | Verification shows no new `resume`, `compact`, or startup consumer fast path is introduced here, while the Stop-hook producer boundary continues to run autosave by default [SOURCE: research.md §2]. |
 | REQ-008 | The packet explicitly hands off deferred work to later continuity packets. | Follow-on notes name the later packets for normalized analytics reader, cached-summary consumer, workflow split, and token-observability contracts [SOURCE: research.md §2]. |
 
 ### P2 - Nice-to-have (ship if low-risk)

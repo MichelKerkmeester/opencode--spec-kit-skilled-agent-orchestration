@@ -6,14 +6,15 @@ importance_tier: "important"
 contextType: "implementation"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Spec sync"
-    next_safe_action: "Run"
-    key_files: ["spec.md"]
+    recent_action: "Rewrote Gate E spec to immediate canonical cutover model, removed all rollout-era framing"
+    next_safe_action: "Use implementation-summary.md as the closeout evidence ledger"
+    key_files: ["spec.md", "implementation-summary.md"]
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
@@ -37,7 +38,11 @@ The operator-facing recovery surface is `/spec_kit:resume`. Canonical continuity
 | Status | Complete |
 | Created | 2026-04-11 |
 | Updated | 2026-04-12 |
-| Branch | `main` |
+| Branch |
+| Parent Spec | `../spec.md` |
+| Parent Plan | `../plan.md` |
+| Predecessor | `004-gate-d-reader-ready` |
+| Successor | `006-gate-f-archive-permanence` | `main` |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->

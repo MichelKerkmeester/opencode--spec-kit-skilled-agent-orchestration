@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-010 | Strategy next focus and dimension rotation | Verify that the strategy rotates through dimensions and respects exhausted approaches. | As a manual-testing orchestrator, validate the dimension rotation contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop manager rotates through dimensions based on the strategy "Next Focus" and that exhausted dimensions are skipped. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'next_dimension|next_focus|dimensions_covered|dimension_queue|Next Focus' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 2. `bash: rg -n 'Next Focus|dimension.*rotation|dimension.*coverage|exhausted' .opencode/skill/sk-deep-review/assets/deep_review_strategy.md` -> 3. `bash: rg -n 'Dimension Coverage|dimensions.*covered|minStabilization' .opencode/skill/sk-deep-review/references/quick_reference.md` | The read-state step extracts the next uncovered dimension; the dispatch step injects it as the focus; the strategy template has a "Next Focus" section; convergence requires all dimensions covered. | Capture the next_dimension extraction logic, the dispatch focus injection, and the convergence dimension coverage signal. | PASS if dimension rotation is explicit in the loop and the strategy tracks coverage; FAIL if the next dimension is not derived from state or if exhausted dimensions are re-checked unnecessarily. | Check the strategy template for explicit dimension tracking sections and verify the convergence algorithm includes dimension coverage as a weighted signal. |
-
+### Prompt
+As a manual-testing orchestrator, validate the dimension rotation contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop manager rotates through dimensions based on the strategy "Next Focus" and that exhausted dimensions are skipped. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'next_dimension|next_focus|dimensions_covered|dimension_queue|Next Focus' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+2. `bash: rg -n 'Next Focus|dimension.*rotation|dimension.*coverage|exhausted' .opencode/skill/sk-deep-review/assets/deep_review_strategy.md`
+3. `bash: rg -n 'Dimension Coverage|dimensions.*covered|minStabilization' .opencode/skill/sk-deep-review/references/quick_reference.md`
+### Expected
+The read-state step extracts the next uncovered dimension; the dispatch step injects it as the focus; the strategy template has a "Next Focus" section; convergence requires all dimensions covered.
+### Evidence
+Capture the next_dimension extraction logic, the dispatch focus injection, and the convergence dimension coverage signal.
+### Pass/Fail
+PASS if dimension rotation is explicit in the loop and the strategy tracks coverage; FAIL if the next dimension is not derived from state or if exhausted dimensions are re-checked unnecessarily.
+### Failure Triage
+Check the strategy template for explicit dimension tracking sections and verify the convergence algorithm includes dimension coverage as a weighted signal.
 ---
 
 ## 4. SOURCE FILES

@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-021 | Pause sentinel halts between review iterations | Verify that `review/.deep-review-pause` sentinel halts the review loop between iterations and logs a pause event. | As a manual-testing orchestrator, validate the pause sentinel contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify {spec_folder}/review/.deep-review-pause is checked between review iterations, that a paused event is emitted to the JSONL state log, and that the loop halts without entering synthesis. Return a concise operator-facing verdict. | 1. `bash: rg -n '.deep-review-pause|paused|Delete.*pause|review/.deep-review-pause' .opencode/skill/sk-deep-review/references/loop_protocol.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md` -> 2. `bash: rg -n 'step_check_pause_sentinel|paused|halt.*true|review/.deep-review-pause|pause.*sentinel' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'pause|sentinel|review/.deep-review-pause|Pause' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/deep-review.md` | The sentinel is checked before dispatch, a paused event is logged to JSONL, the loop halts rather than flowing into synthesis, and the sentinel location is `review/.deep-review-pause`. | Capture the sentinel location, the paused-event contract, and the halt behavior from both YAML workflows and user-facing docs. | PASS if the pause sentinel halts between iterations and does not route to synthesis; FAIL if pause is undocumented or modeled as a hard stop to completion. | Use the loop protocol pause subsection as the canonical flow and verify both review YAML workflows mirror it. |
-
+### Prompt
+As a manual-testing orchestrator, validate the pause sentinel contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify {spec_folder}/review/.deep-review-pause is checked between review iterations, that a paused event is emitted to the JSONL state log, and that the loop halts without entering synthesis. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n '.deep-review-pause|paused|Delete.*pause|review/.deep-review-pause' .opencode/skill/sk-deep-review/references/loop_protocol.md .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md`
+2. `bash: rg -n 'step_check_pause_sentinel|paused|halt.*true|review/.deep-review-pause|pause.*sentinel' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'pause|sentinel|review/.deep-review-pause|Pause' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/command/spec_kit/deep-review.md`
+### Expected
+The sentinel is checked before dispatch, a paused event is logged to JSONL, the loop halts rather than flowing into synthesis, and the sentinel location is `review/.deep-review-pause`.
+### Evidence
+Capture the sentinel location, the paused-event contract, and the halt behavior from both YAML workflows and user-facing docs.
+### Pass/Fail
+PASS if the pause sentinel halts between iterations and does not route to synthesis; FAIL if pause is undocumented or modeled as a hard stop to completion.
+### Failure Triage
+Use the loop protocol pause subsection as the canonical flow and verify both review YAML workflows mirror it.
 ---
 
 ## 4. SOURCE FILES

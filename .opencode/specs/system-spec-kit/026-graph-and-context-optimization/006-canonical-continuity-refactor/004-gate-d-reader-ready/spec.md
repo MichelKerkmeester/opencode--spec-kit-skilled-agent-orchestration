@@ -6,6 +6,7 @@ importance_tier: "important"
 contextType: "implementation"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/004-gate-d-reader-ready"
@@ -42,6 +43,10 @@ Gate D moves the phase 018 read path onto the canonical continuity substrate def
 | **Created** | 2026-04-11 |
 | **Updated** | 2026-04-12 |
 | **Branch** | `006-canonical-continuity-refactor` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `003-gate-c-writer-ready` |
+| **Successor** | `005-gate-e-runtime-migration` |
 <!-- /ANCHOR:metadata -->
 
 ---

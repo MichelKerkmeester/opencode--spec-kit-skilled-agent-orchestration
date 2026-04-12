@@ -21,13 +21,23 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a memory-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Commands:
-  - `memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" })`
-- Expected: the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
-- Evidence: save stdout showing the continuity ladder, absence of false alignment aborts for matching code files, and saved memory content/search hits reflecting handover/continuity/spec-derived context.
-- Pass: captured-session save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
-- Fail triage: inspect `input-normalizer.ts` relevance filtering, compare captured file paths to the spec's files-to-change table, verify handover/continuity precedence, then rerun.
+### Prompt
+
+`As a memory-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
+### Commands
+- `memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" })`
+### Expected
+
+the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
+### Evidence
+
+save stdout showing the continuity ladder, absence of false alignment aborts for matching code files, and saved memory content/search hits reflecting handover/continuity/spec-derived context.
+### Pass/Fail
+
+captured-session save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
+### Failure Triage
+
+inspect `input-normalizer.ts` relevance filtering, compare captured file paths to the spec's files-to-change table, verify handover/continuity precedence, then rerun.
 
 #### M-006a: Unborn-HEAD and dirty snapshot fallback
 1. Initialize a sandbox repo without creating a commit yet, then create one in-scope file.

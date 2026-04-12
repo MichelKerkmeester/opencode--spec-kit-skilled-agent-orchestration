@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-017 | Malformed JSONL lines are skipped with defaults | Verify that malformed JSONL lines are skipped and missing fields are defaulted instead of crashing the loop. | As a manual-testing orchestrator, validate the JSONL fault-tolerance contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify malformed lines are skipped, missing fields are defaulted, and a warning is emitted instead of crashing the loop. Return a concise operator-facing verdict. | 1. `bash: rg -n 'Fault Tolerance|skip malformed|defaults|Warning:' .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/references/convergence.md` -> 2. `bash: rg -n 'missing_newInfoRatio|malformed|skipped' .opencode/skill/sk-deep-research/references/state_format.md` -> 3. `bash: rg -n 'State file corrupt|Validate JSONL' .opencode/skill/sk-deep-research/README.md` | Per-line parse protection exists, defaults are specified, skipped-line warnings are documented, and convergence operates on valid entries only. | Capture the defensive parse rules, the default values, and the troubleshooting guidance. | PASS if malformed lines are skipped with documented defaults and warnings; FAIL if the contract implies full-loop failure for any parse error. | Use the state-format reference as the primary source and the convergence reference as secondary confirmation of valid-entry-only behavior. |
-
+### Prompt
+As a manual-testing orchestrator, validate the JSONL fault-tolerance contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify malformed lines are skipped, missing fields are defaulted, and a warning is emitted instead of crashing the loop. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'Fault Tolerance|skip malformed|defaults|Warning:' .opencode/skill/sk-deep-research/references/state_format.md .opencode/skill/sk-deep-research/references/convergence.md`
+2. `bash: rg -n 'missing_newInfoRatio|malformed|skipped' .opencode/skill/sk-deep-research/references/state_format.md`
+3. `bash: rg -n 'State file corrupt|Validate JSONL' .opencode/skill/sk-deep-research/README.md`
+### Expected
+Per-line parse protection exists, defaults are specified, skipped-line warnings are documented, and convergence operates on valid entries only.
+### Evidence
+Capture the defensive parse rules, the default values, and the troubleshooting guidance.
+### Pass/Fail
+PASS if malformed lines are skipped with documented defaults and warnings; FAIL if the contract implies full-loop failure for any parse error.
+### Failure Triage
+Use the state-format reference as the primary source and the convergence reference as secondary confirmation of valid-entry-only behavior.
 ---
 
 ## 4. SOURCE FILES

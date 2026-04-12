@@ -78,7 +78,7 @@ Session handover template for preserving context and enabling seamless continuat
 3. [YOUR_VALUE_HERE: third_priority_task]
 
 ### 3.3 Critical Context to Load
-- [ ] Memory file: `memory/[YOUR_VALUE_HERE: filename].md`
+- [ ] Indexed save or continuity target: use `generate-context.js` for indexed saves. Edit `_memory.continuity` frontmatter in `implementation-summary.md` for quick continuity updates.
 - [ ] Spec file: `spec.md` (sections [YOUR_VALUE_HERE: X, Y, Z])
 - [ ] Plan file: `plan.md` (phase [YOUR_VALUE_HERE: N])
 <!-- /ANCHOR:next-session -->
@@ -90,7 +90,7 @@ Session handover template for preserving context and enabling seamless continuat
 
 Before handover, verify:
 - [ ] All in-progress work committed or stashed
-- [ ] Memory file saved with current context
+- [ ] Current context saved via `generate-context.js` or `_memory.continuity` in `implementation-summary.md`
 - [ ] No breaking changes left mid-implementation
 - [ ] Tests passing (if applicable)
 - [ ] This handover document is complete
@@ -124,9 +124,9 @@ Before handover, verify:
 
 **Related templates:**
 - Use with `/spec_kit:handover` command for automated context saving
-- Reference memory files from `memory/` folder for context recovery
+- Reference `handover.md`, `_memory.continuity` in `implementation-summary.md`, and canonical spec docs for context recovery
 - Link to spec.md, plan.md, and tasks.md for complete picture
-- Create new memory file via `generate-context.js` before handover
+- Run `generate-context.js` before handover when the session also needs an indexed save
 <!-- /ANCHOR:template-instructions -->
 
 ---

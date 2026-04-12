@@ -1,5 +1,9 @@
 # Research: Claude Code Optimization Settings (phase 001)
 
+<!-- ANCHOR:summary -->
+This research synthesis preserves the source discrepancies and repo-state cross-checks from the phase-001 audit. [SOURCE: external/reddit_post.md:1-40] [SOURCE: .claude/settings.local.json:1-40]
+<!-- /ANCHOR:summary -->
+
 ## 1. Executive Summary
 
 Code_Environment/Public should **adopt now** the documentation and rule-clarity moves that the Reddit field report supports directly: keep `ENABLE_TOOL_SEARCH=true` as the validated baseline, preserve the post's denominator discrepancies explicitly, and strengthen guidance around stale-session recovery, native-tool routing, reread discipline, and edit-miss recovery. The repo already has `ENABLE_TOOL_SEARCH=true` in `.claude/settings.local.json`, so the highest-leverage config recommendation from the post is already present; the dominant remaining external waste signal is cache expiry, which the post describes with 54% idle-gap turns and 232 cache-cliff events rather than with a new one-line setting. Immediate wins here are therefore mostly **documentation and rule clarity**, not new code. Cache-warning hook work remains a **prototype lane** because Stop and SessionStart responsibilities exist already but the `UserPromptSubmit` UX is explicitly unshipped in the source packet. Transcript auditing also remains a **prototype lane**: this phase owns the what/why, while phase `005-claudest` owns the implementation provenance for the auditor pipeline and plugin internals. The resulting recommendation split is simple: adopt the repo-facing workflow guidance now, prototype hook and observability layers later, and reject undocumented Claude JSONL as stable core infrastructure.

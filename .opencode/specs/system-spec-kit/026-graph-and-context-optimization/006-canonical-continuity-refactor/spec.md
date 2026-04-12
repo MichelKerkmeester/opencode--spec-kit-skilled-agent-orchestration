@@ -11,8 +11,18 @@ importance_tier: "critical"
 contextType: "planning"
 feature: "phase-006-canonical-continuity-refactor"
 level: 2
-status: planned
+status: in_progress
 parent: "026-graph-and-context-optimization"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "claude-opus-4-6"
+    recent_action: "Deep review completed; child phases 007-011 complete, gates A-F still planned"
+    next_safe_action: "Execute gates A-F in sequence"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: Phase 018 — Canonical Continuity Refactor
 
@@ -28,9 +38,13 @@ parent: "026-graph-and-context-optimization"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Planned |
+| **Status** | In Progress |
 | **Created** | 2026-04-11 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `005-code-graph-upgrades` |
+| **Successor** | N/A |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -54,7 +68,7 @@ Turn `006-canonical-continuity-refactor/` into a real parent coordination packet
 
 ### In Scope
 - Define the overall phase 018 objective: move continuity from standalone memory-file primacy to canonical spec-doc continuity with a bounded legacy archive.
-- Document the role of the root packet artifacts that already exist: `implementation-design.md`, `resource-map.md`, `research/research.md`, `verify-phases-review.md`, `phase-017-rerun-seed.md`, and `scratch/resource-map/*`.
+- Document the role of the root packet artifacts that already exist: `implementation-design.md`, `resource-map.md`, `research/research.md`, `scratch/verify-phases-review.md`, `scratch/phase-017-rerun-seed.md`, and `scratch/resource-map/*`.
 - Add a phase documentation map that explains the purpose, order, and current status of Gates A through F.
 - Define packet-wide sequencing, handoff, and completion rules so the six child phases can be executed as one coordinated program.
 
@@ -99,7 +113,7 @@ Turn `006-canonical-continuity-refactor/` into a real parent coordination packet
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | The root packet must define phase 018 as one coordinated refactor, not six unrelated folders. | `spec.md`, `plan.md`, and `tasks.md` describe the same overall goal and reference the six gates as the execution structure. |
-| REQ-002 | The root packet must identify the real source artifacts that drive execution. | Parent docs explicitly point to `implementation-design.md`, `resource-map.md`, `research/research.md`, `phase-017-rerun-seed.md`, and `scratch/resource-map/*` as the grounding set. |
+| REQ-002 | The root packet must identify the real source artifacts that drive execution. | Parent docs explicitly point to `implementation-design.md`, `resource-map.md`, `research/research.md`, `scratch/phase-017-rerun-seed.md`, and `scratch/resource-map/*` as the grounding set. |
 | REQ-003 | The six child folders must remain the detailed execution surfaces. | Parent docs summarize each gate but do not duplicate gate-level requirements, task breakdowns, or checklist evidence already owned by the child folders. |
 | REQ-004 | The parent packet must make sequencing and completion rules explicit. | Parent docs state the gate order, major dependencies, and the packet-wide condition for closing phase 018. |
 

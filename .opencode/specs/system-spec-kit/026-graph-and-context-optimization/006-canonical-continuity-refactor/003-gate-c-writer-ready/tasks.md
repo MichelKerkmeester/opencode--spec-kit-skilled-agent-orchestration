@@ -7,6 +7,7 @@ contextType: "implementation"
 level: "3+"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "026-graph-and-context-optimization/006-canonical-continuity-refactor/003-gate-c-writer-ready"

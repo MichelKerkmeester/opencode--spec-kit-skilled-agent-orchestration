@@ -6,14 +6,15 @@ importance_tier: "important"
 contextType: "implementation"
 status: complete
 closed_by_commit: TBD
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "ADR sync"
-    next_safe_action: "Keep"
-    key_files: ["decision-record.md"]
+    recent_action: "Recorded three ADRs for canonical cutover, spec-first continuity, and evidence-backed closeout"
+    next_safe_action: "Keep as historical record; no further edits expected"
+    key_files: ["decision-record.md", "spec.md"]
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->

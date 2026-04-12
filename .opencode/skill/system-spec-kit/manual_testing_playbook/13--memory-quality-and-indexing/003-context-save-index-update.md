@@ -22,13 +22,21 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Commands:
-  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
+### Commands
+- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
   - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
-- Expected: saved context artifacts are discoverable.
-- Evidence: save output + index output.
-- Pass: context appears in retrieval post-index.
-- Fail triage: rerun save; inspect path/permissions.
+### Expected
+
+saved context artifacts are discoverable.
+### Evidence
+
+save output + index output.
+### Pass/Fail
+
+context appears in retrieval post-index.
+### Failure Triage
+
+rerun save; inspect path/permissions.
 
 ---
 

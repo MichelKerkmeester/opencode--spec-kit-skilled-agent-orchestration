@@ -8,6 +8,15 @@ scope: q4_features_9_10_11
 status: complete
 focus: "Retarget governance, provenance, constitutional memory, ablation studies, drift analysis. Complete Band B."
 maps_to_questions: [Q4, Q9]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-012.md"]
+
 ---
 
 # Iteration 012 — Features 9, 10, 11: Governance, Ablation, Constitutional

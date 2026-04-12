@@ -28,7 +28,7 @@
       "args": [
         ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
-      "cwd": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public",
+      "cwd": ".",
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
         "_NOTE_1_DATABASE": "DB path auto-derived from provider profile (no MEMORY_DB_PATH needed)",

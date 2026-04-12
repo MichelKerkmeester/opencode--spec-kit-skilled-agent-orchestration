@@ -7,15 +7,28 @@ trigger_phrases:
   - "producer boundary"
 importance_tier: "normal"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research.md"]
+
 ---
 
 # Research Pointer: Cache-Warning Hook System
+
+<!-- ANCHOR:summary -->
+This packet inherits its active boundary from the canonical synthesis and the Claudest continuation lane. [SOURCE: ../001-research-graph-context-systems/research/research.md:22-36] [SOURCE: ../001-research-graph-context-systems/005-claudest/research/research.md:628-648]
+<!-- /ANCHOR:summary -->
 
 <!-- SPECKIT_LEVEL: 3 -->
 
 ## 1. Authoritative Sources
 
-The current source of truth for this packet is no longer the older phase-001-only hook findings.
+The current source of truth for this packet is no longer the older phase-001-only hook findings. [SOURCE: ../001-research-graph-context-systems/research/research.md:22-36]
 
 - **Canonical synthesis:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/research.md`
 - **Canonical ranked guidance:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md`
@@ -25,7 +38,7 @@ These sources establish the 2026-04-08 packet order and acceptance gates that no
 
 ## 2. Packet-002 Rescope
 
-Packet `002` is now scoped to the **bounded producer-side prerequisite lane**, not the earlier six-phase warning prototype.
+Packet `002` is now scoped to the **bounded producer-side prerequisite lane**, not the earlier six-phase warning prototype. [SOURCE: ../001-research-graph-context-systems/005-claudest/research/research.md:628-648]
 
 ### Adopted now
 
@@ -66,10 +79,10 @@ The canonical research adds four packet-level rules that this folder now follows
 
 ## 5. Packet Boundary
 
-This packet keeps the existing folder name for continuity, but its active scope is now:
+This packet keeps the existing folder name for continuity, but its active scope is now: [SOURCE: ../001-research-graph-context-systems/005-claudest/research/research.md:636-648]
 
 - replay-safe producer scaffolding
 - bounded Stop-hook metadata persistence
 - idempotent verification and handoff to later continuity packets
 
-It no longer claims an active six-phase warning-hook rollout.
+It no longer claims an active six-phase warning-hook rollout. [SOURCE: ../001-research-graph-context-systems/research/research.md:34-35]

@@ -7,6 +7,7 @@ contextType: "implementation"
 status: "complete"
 level: 3
 parent: "006-canonical-continuity-refactor"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "026/006/013-dead-code-and-architecture-audit"
@@ -42,6 +43,10 @@ Phases 010-012 changed the canonical continuity runtime quickly enough that the 
 | **Status** | Complete |
 | **Created** | 2026-04-12 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Plan** | `../plan.md` |
+| **Predecessor** | `012-mcp-config-and-feature-flag-cleanup` |
+| **Successor** | `014-playbook-prompt-rewrite` |
 <!-- /ANCHOR:metadata -->
 
 ---

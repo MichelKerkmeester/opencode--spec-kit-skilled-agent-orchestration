@@ -44,11 +44,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level fixtures.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-021 | Review graph convergence signals participate in legal-stop gates | Verify graph-backed dimension coverage can veto STOP after stability points toward convergence. | As a manual-testing orchestrator, validate the graph-backed legal-stop gate contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph-aware review convergence tracks graph dimension coverage, and that when legal-stop evaluation fails dimension coverage the review persists blocked-stop state instead of stopping. Return a concise operator-facing verdict. | 1. `bash: rg -n 'blockedStop|dimensionCoverage|buildReviewLegalStop|graphEvents|graph-aware review convergence' .opencode/skill/sk-deep-review/references/convergence.md` -> 2. `bash: rg -n 'dimensionCoverage|threshold|STOP_BLOCKED|blocking' .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts` -> 3. `bash: rg -n 'blocked_stop|blockedStop|dimensionCoverage' .opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl` | Legal-stop docs map failed gate evaluation to `blockedStop`; the graph convergence handler evaluates review `dimensionCoverage`; fixture evidence shows persisted `blocked_stop` blocked by `dimensionCoverage`. | Capture the review convergence legal-stop wording, the handler threshold/check for review `dimensionCoverage`, and the sample blocked-stop JSONL record naming `dimensionCoverage` in `blockedBy`. | PASS if the review docs, graph convergence handler, and blocked-stop fixture all agree that dimension-coverage failure prevents STOP even when other signals are favorable; FAIL if dimension-coverage failure is only advisory or not persisted. | Privilege `references/convergence.md` for the review stop contract and the fixture for concrete JSONL persistence. If the handler threshold and packet-level wording differ, flag threshold drift for follow-up. |
-
+### Prompt
+As a manual-testing orchestrator, validate the graph-backed legal-stop gate contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph-aware review convergence tracks graph dimension coverage, and that when legal-stop evaluation fails dimension coverage the review persists blocked-stop state instead of stopping. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'blockedStop|dimensionCoverage|buildReviewLegalStop|graphEvents|graph-aware review convergence' .opencode/skill/sk-deep-review/references/convergence.md`
+2. `bash: rg -n 'dimensionCoverage|threshold|STOP_BLOCKED|blocking' .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts`
+3. `bash: rg -n 'blocked_stop|blockedStop|dimensionCoverage' .opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jsonl`
+### Expected
+Legal-stop docs map failed gate evaluation to `blockedStop`; the graph convergence handler evaluates review `dimensionCoverage`; fixture evidence shows persisted `blocked_stop` blocked by `dimensionCoverage`.
+### Evidence
+Capture the review convergence legal-stop wording, the handler threshold/check for review `dimensionCoverage`, and the sample blocked-stop JSONL record naming `dimensionCoverage` in `blockedBy`.
+### Pass/Fail
+PASS if the review docs, graph convergence handler, and blocked-stop fixture all agree that dimension-coverage failure prevents STOP even when other signals are favorable; FAIL if dimension-coverage failure is only advisory or not persisted.
+### Failure Triage
+Privilege `references/convergence.md` for the review stop contract and the fixture for concrete JSONL persistence. If the handler threshold and packet-level wording differ, flag threshold drift for follow-up.
 ---
 
 ## 4. SOURCE FILES

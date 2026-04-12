@@ -5,6 +5,7 @@ trigger_phrases: ["018 011 checklist", "graph metadata checklist", "graph metada
 importance_tier: "important"
 contextType: "implementation"
 status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/011-spec-folder-graph-metadata"

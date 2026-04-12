@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-002 | Confirm mode checkpointed review | Verify that `/spec_kit:deep-review:confirm` pauses at each phase for user approval before proceeding. | As a manual-testing orchestrator, validate the against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify entrypoint for sk-deep-review. Confirm that /spec_kit:deep-review:confirm is documented consistently across the README, quick reference, command entrypoint, and confirm YAML workflow, and that approval gates are present at each phase transition. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n '/spec_kit:deep-review:confirm|approval|multi_gate' .opencode/skill/sk-deep-review/README.md .opencode/skill/sk-deep-review/references/quick_reference.md` -> 2. `bash: rg -n 'confirm|approval|gate|pause' .opencode/command/spec_kit/deep-review.md` -> 3. `bash: rg -n 'approvals|approval_gate|wait_for_approval|interactive' .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | The confirm YAML has `approvals: multi_gate`, approval steps appear in the loop, and the command entrypoint routes `:confirm` to the confirm YAML. | Capture the mode-routing block, the confirm YAML operating_mode, and the approval gate steps together. | PASS if confirm mode has explicit approval gates at phase transitions; FAIL if any phase transition runs without an approval gate. | Compare the auto and confirm YAMLs side by side to verify the confirm variant adds approval gates that the auto variant omits. |
-
+### Prompt
+As a manual-testing orchestrator, validate the against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify entrypoint for sk-deep-review. Confirm that /spec_kit:deep-review:confirm is documented consistently across the README, quick reference, command entrypoint, and confirm YAML workflow, and that approval gates are present at each phase transition. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n '/spec_kit:deep-review:confirm|approval|multi_gate' .opencode/skill/sk-deep-review/README.md .opencode/skill/sk-deep-review/references/quick_reference.md`
+2. `bash: rg -n 'confirm|approval|gate|pause' .opencode/command/spec_kit/deep-review.md`
+3. `bash: rg -n 'approvals|approval_gate|wait_for_approval|interactive' .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+### Expected
+The confirm YAML has `approvals: multi_gate`, approval steps appear in the loop, and the command entrypoint routes `:confirm` to the confirm YAML.
+### Evidence
+Capture the mode-routing block, the confirm YAML operating_mode, and the approval gate steps together.
+### Pass/Fail
+PASS if confirm mode has explicit approval gates at phase transitions; FAIL if any phase transition runs without an approval gate.
+### Failure Triage
+Compare the auto and confirm YAMLs side by side to verify the confirm variant adds approval gates that the auto variant omits.
 ---
 
 ## 4. SOURCE FILES

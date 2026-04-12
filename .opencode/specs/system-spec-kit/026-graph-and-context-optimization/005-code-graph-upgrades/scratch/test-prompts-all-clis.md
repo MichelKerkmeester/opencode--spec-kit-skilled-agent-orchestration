@@ -10,7 +10,7 @@ These prompts exercise the code graph upgrades shipped in packet 014. Run each p
 |------|---------|----------------|-------------------|
 | T1 | Graph scan + status | `code_graph_scan`, `code_graph_status` | Graph is populated, status shows ready |
 | T2 | Basic query | `code_graph_query` | Returns callers/imports/outline |
-| T3 | Detector provenance | `code_graph_scan`, `code_graph_status` | Provenance summary with dominant detector + counts |
+| T3 | Detector provenance | `code_graph_scan` | Provenance summary with dominant detector + counts |
 | T4 | Blast-radius depth cap | `code_graph_query` | Traversal stops at maxDepth, no out-of-bound nodes |
 | T5 | Multi-file union mode | `code_graph_query` | Multiple files merged without duplicates |
 | T6 | Hot-file breadcrumbs | `code_graph_query` | High-degree files get advisory hotFileBreadcrumb |
@@ -41,7 +41,7 @@ and line numbers of each caller.
 ### T3-CC: Detector Provenance
 
 ```
-After running code_graph_scan, check code_graph_status and tell me:
+After running code_graph_scan, inspect the code_graph_scan response and tell me:
 1. What is the dominant detector provenance (AST, regex, or heuristic)?
 2. What are the counts per detector type?
 3. Is the provenance summary stored and retrievable?

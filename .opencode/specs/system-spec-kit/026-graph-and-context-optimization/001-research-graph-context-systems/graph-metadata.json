@@ -55,7 +55,7 @@
       "trust-axis"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "research/research.md",
       "research/recommendations.md",
@@ -70,7 +70,6 @@
       "checklist.md",
       "decision-record.md",
       "implementation-summary.md",
-      "memory/metadata.json",
       "002-codesight/description.json",
       "scratch/spec-doc-phase-2-summary.md",
       "003-contextador/CONTEXT.md",
@@ -155,12 +154,6 @@
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "metadata.json",
-        "kind": "config",
-        "path": "memory/metadata.json",
         "source": "derived"
       },
       {

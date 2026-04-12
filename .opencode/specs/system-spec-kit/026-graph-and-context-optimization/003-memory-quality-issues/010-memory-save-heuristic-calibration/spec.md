@@ -8,6 +8,16 @@ trigger_phrases:
   - "v8 v12 validator calibration"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/010-memory-save-heuristic-calibration"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: Memory Save Heuristic Calibration
 
@@ -26,6 +36,7 @@ Packet `010-memory-save-heuristic-calibration` closes the defects that remained 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,6 +51,8 @@ Packet `010-memory-save-heuristic-calibration` closes the defects that remained 
 | **Predecessor** | `009-post-save-render-fixes` |
 | **Successor** | `011-historical-memory-repair-apply-mode` only if historical rewrite work is later approved |
 | **Motivating Audits** | `../../scratch/codex-root-cause-memory-quality-gates.md`; `../../scratch/codex-skipped-research-recommendations.md` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

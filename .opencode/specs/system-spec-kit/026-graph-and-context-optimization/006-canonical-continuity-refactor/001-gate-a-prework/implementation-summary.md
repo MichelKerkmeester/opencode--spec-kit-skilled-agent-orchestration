@@ -1,5 +1,5 @@
 ---
-#SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
+
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
@@ -16,6 +16,7 @@ trigger_phrases:
   - "blocked summary"
 importance_tier: "important"
 contextType: "documentation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "018/001-gate-a-prework"
@@ -57,7 +58,7 @@ The original Gate A landing fixed the template/validator blockers, backfilled th
 1. `.opencode/skill/system-spec-kit/templates/level_3/spec.md` and `.opencode/skill/system-spec-kit/templates/level_3+/spec.md` now have the missing `metadata` anchor opener, and the Level 3+ template also has governance anchors.
 2. `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md` now expose baseline anchor regions.
 3. `scripts/spec/validate.sh` now skips `ANCHORS_VALID` for `templates/changelog` and `templates/sharded`, which preserves the default exemption boundary.
-4. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/z_archive/016-release-alignment/implementation-summary.md` now exists as a retroactive root backfill with `_provenance: "gate-a-retroactive-backfill"`.
+4. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/implementation-summary.md` now exists as a retroactive root backfill with `_provenance: "gate-a-retroactive-backfill"`.
 5. The active SQLite store was backed up to `.opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db`, and both restore-on-copy and rollback-on-copy passed.
 
 ### Files Changed
@@ -68,7 +69,7 @@ The original Gate A landing fixed the template/validator blockers, backfilled th
 | `.opencode/skill/system-spec-kit/templates/level_3+/spec.md` | Modified | Added the missing `metadata` anchor opener and governance anchors. |
 | `.opencode/skill/system-spec-kit/templates/{handover.md,research.md,debug-delegation.md}` | Modified | Added baseline anchors for merge-safe writes. |
 | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Modified | Exempted `templates/changelog` and `templates/sharded` from `ANCHORS_VALID`. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/z_archive/016-release-alignment/implementation-summary.md` | Added | Backfilled the one in-scope root packet still missing a canonical summary. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/implementation-summary.md` | Added | Backfilled the one in-scope root packet still missing a canonical summary. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/001-gate-a-prework/{plan.md,tasks.md,checklist.md,implementation-summary.md}` | Modified | Recorded factual Gate A status, evidence, and blockers. |
 <!-- /ANCHOR:what-built -->
 

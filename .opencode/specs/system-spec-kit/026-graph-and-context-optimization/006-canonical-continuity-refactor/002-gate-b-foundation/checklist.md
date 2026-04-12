@@ -112,9 +112,9 @@ Checklist priorities follow the Gate B close criteria in `../implementation-desi
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 13 | 13/13 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 15 | 15/15 |
+| P1 Items | 21 | 21/21 |
+| P2 Items | 10 | 10/10 |
 
 **Verification Date**: 2026-04-12
 <!-- /ANCHOR:summary -->

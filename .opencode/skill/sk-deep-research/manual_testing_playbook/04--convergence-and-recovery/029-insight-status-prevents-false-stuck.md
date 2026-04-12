@@ -41,11 +41,21 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DR-029 | Insight status prevents false stuck detection | Verify that an iteration with status insight does not increment stuck count despite low newInfoRatio. | As a manual-testing orchestrator, validate the insight-status contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify state_format.md defines "insight" as a valid iteration status, that convergence.md documents how stuckCount is computed, and that insight iterations are excluded from stuck counting. Return a concise operator-facing verdict. | 1. `bash: rg -n 'insight' .opencode/skill/sk-deep-research/references/state_format.md` -> 2. `bash: rg -n 'stuckCount\|stuck_count\|insight' .opencode/skill/sk-deep-research/references/convergence.md` -> 3. `bash: rg -n 'insight\|thought\|stuck' .opencode/skill/sk-deep-research/SKILL.md` -> 4. `bash: rg -n 'stuck_count.*insight\|insight.*stuck' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Iteration with status="insight" and low newInfoRatio, stuck_count NOT incremented. | Capture the state_format.md insight status definition, the convergence.md stuckCount computation rule, and the SKILL.md iteration status summary showing insight as a recognized status. | PASS if state_format.md defines "insight" status as preventing stuck counting AND convergence.md confirms stuckCount excludes insight iterations; FAIL if insight iterations are counted toward stuck or the documentation is contradictory. | Privilege state_format.md for the status taxonomy and convergence.md for the stuckCount algorithm; use SKILL.md only as secondary confirmation. |
-
+### Prompt
+As a manual-testing orchestrator, validate the insight-status contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify state_format.md defines "insight" as a valid iteration status, that convergence.md documents how stuckCount is computed, and that insight iterations are excluded from stuck counting. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'insight' .opencode/skill/sk-deep-research/references/state_format.md`
+2. `bash: rg -n 'stuckCount\|stuck_count\|insight' .opencode/skill/sk-deep-research/references/convergence.md`
+3. `bash: rg -n 'insight\|thought\|stuck' .opencode/skill/sk-deep-research/SKILL.md`
+4. `bash: rg -n 'stuck_count.*insight\|insight.*stuck' .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`
+### Expected
+Iteration with status="insight" and low newInfoRatio, stuck_count NOT incremented.
+### Evidence
+Capture the state_format.md insight status definition, the convergence.md stuckCount computation rule, and the SKILL.md iteration status summary showing insight as a recognized status.
+### Pass/Fail
+PASS if state_format.md defines "insight" status as preventing stuck counting AND convergence.md confirms stuckCount excludes insight iterations; FAIL if insight iterations are counted toward stuck or the documentation is contradictory.
+### Failure Triage
+Privilege state_format.md for the status taxonomy and convergence.md for the stuckCount algorithm; use SKILL.md only as secondary confirmation.
 ---
 
 ## 4. SOURCE FILES

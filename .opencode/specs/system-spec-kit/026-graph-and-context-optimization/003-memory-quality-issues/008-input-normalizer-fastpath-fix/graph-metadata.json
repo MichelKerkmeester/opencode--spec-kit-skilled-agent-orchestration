@@ -38,7 +38,7 @@
       "tasks"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "generate-context.js",
       "/tmp/save-context-data.json",
@@ -51,7 +51,6 @@
       "scripts/memory/generate-context.ts",
       "/tmp/003mq-complete/b4-output.md",
       "generate-context.ts",
-      "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/input-normalizer-unit.vitest.ts",
       "input-normalizer.ts",
       "spec.md",
       "plan.md",
@@ -123,12 +122,6 @@
         "name": "generate-context.ts",
         "kind": "code",
         "path": "generate-context.ts",
-        "source": "derived"
-      },
-      {
-        "name": "input-normalizer-unit.vitest.ts",
-        "kind": "test",
-        "path": "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/input-normalizer-unit.vitest.ts",
         "source": "derived"
       },
       {

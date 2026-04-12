@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-005 | Resume classification from valid prior review state | Verify that resume detects existing review state and continues from the last completed iteration. | As a manual-testing orchestrator, validate the resume classification contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the step_classify_session logic detects existing config, JSONL, and strategy files in review/ and classifies the session as "resume", skipping to phase_loop. Return a concise user-facing pass/fail verdict. | 1. `bash: rg -n 'step_classify_session|classify:|fresh|resume|invalid.state|completed.session' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` -> 2. `bash: rg -n 'step_classify_session|resume|skip_to' .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'resume|prior state|existing state|pick up' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md` | The classify step checks for config, JSONL, and strategy presence; classifies as "resume" when all three exist and are consistent; and skips to phase_loop. | Capture the classify step logic, the resume skip_to target, and the user-facing resume documentation. | PASS if the classify step reliably detects valid prior state and routes to phase_loop; FAIL if resume classification is missing or routes to re-initialization. | Verify the classify step inspects all three state files (config, JSONL, strategy) and that the on_resume action points to phase_loop. |
-
+### Prompt
+As a manual-testing orchestrator, validate the resume classification contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify the step_classify_session logic detects existing config, JSONL, and strategy files in review/ and classifies the session as "resume", skipping to phase_loop. Return a concise user-facing pass/fail verdict.
+### Commands
+1. `bash: rg -n 'step_classify_session|classify:|fresh|resume|invalid.state|completed.session' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`
+2. `bash: rg -n 'step_classify_session|resume|skip_to' .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'resume|prior state|existing state|pick up' .opencode/skill/sk-deep-review/references/quick_reference.md .opencode/skill/sk-deep-review/SKILL.md`
+### Expected
+The classify step checks for config, JSONL, and strategy presence; classifies as "resume" when all three exist and are consistent; and skips to phase_loop.
+### Evidence
+Capture the classify step logic, the resume skip_to target, and the user-facing resume documentation.
+### Pass/Fail
+PASS if the classify step reliably detects valid prior state and routes to phase_loop; FAIL if resume classification is missing or routes to re-initialization.
+### Failure Triage
+Verify the classify step inspects all three state files (config, JSONL, strategy) and that the on_resume action points to phase_loop.
 ---
 
 ## 4. SOURCE FILES

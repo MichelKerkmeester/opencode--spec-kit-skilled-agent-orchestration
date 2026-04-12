@@ -8,6 +8,16 @@ trigger_phrases:
   - "FTS5 BM25 cascade research"
 importance_tier: critical
 contextType: spec
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md"]
+
 ---
 # Feature Specification: 005-claudest Research Phase
 
@@ -26,6 +36,7 @@ Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Clau
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -39,6 +50,8 @@ Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Clau
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | `004-graphify` |
 | **Successor** | `006-research-memory-redundancy` |
+<!-- /ANCHOR:metadata -->
+
 
 ---
 
@@ -277,8 +290,8 @@ None — all 18 questions (Q1-Q18) answered. See `research/research.md` §13 for
 - `plan.md` — implementation plan
 - `tasks.md` — task tracking
 - `implementation-summary.md` — outcome summary
-- `memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md` — generation-1 synthesis memory artifact (12-iteration snapshot, importance_tier=critical, indexed via Voyage 768-dim embeddings as memory #1845)
-- `memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md` — generation-2 continuation memory artifact (20-iteration extension summary, persisted under the current write-only indexing policy)
+- `research/research.md` — generation-1 synthesis and generation-2 roadmap are now preserved in the canonical research report
+- `implementation-summary.md` — canonical implementation-facing closeout for the 20-iteration extension
 
 
 <!-- /ANCHOR:questions -->

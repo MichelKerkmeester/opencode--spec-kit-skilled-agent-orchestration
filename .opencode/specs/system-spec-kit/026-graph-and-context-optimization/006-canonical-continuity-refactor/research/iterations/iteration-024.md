@@ -8,6 +8,15 @@ scope: q3_continuity_validation
 status: complete
 focus: "Define field-level validation rules for _memory.continuity, including 2KB budget enforcement, prose rejection, and legacy degradation behavior."
 maps_to_questions: [Q3, Q7]
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["research/iterations/iteration-024.md"]
+
 ---
 # Iteration 024 — Q3 + Q7: Thin Continuity Validation Rules
 ## Goal

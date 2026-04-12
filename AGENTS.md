@@ -49,9 +49,9 @@
 ### Tools & Search
 
 **MANDATORY TOOLS:**
-- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in spec docs.
+- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md`.
   - Full save: `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` → handles DB indexing, embeddings, description.json, graph-metadata.json refresh.
-  - Quick continuity: directly edit `_memory.continuity` YAML in spec doc frontmatter (no script round-trip needed).
+  - Quick continuity: directly edit `_memory.continuity` YAML in `implementation-summary.md` frontmatter (no script round-trip needed).
 - **CocoIndex Code MCP** — semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 - **Git (sk-git)** — worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
 
@@ -205,7 +205,7 @@ Trigger: "save context", "save memory", `/memory:save`, continuity update
 - **Full save (DB + embeddings + graph):** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
   - AI composes structured JSON with session context, writes to `/tmp/save-context-data.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`.
   - Also refreshes `graph-metadata.json` and `description.json` for the spec folder.
-- **Quick continuity update:** AI may directly edit `_memory.continuity` YAML frontmatter blocks in spec docs without running generate-context.js (per ADR-004).
+- **Quick continuity update:** AI may directly edit `_memory.continuity` YAML frontmatter blocks in `implementation-summary.md` without running generate-context.js (per ADR-004). The resume ladder only reads continuity from `implementation-summary.md`.
 - **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
 - **Violation:** Creating standalone `.md` files in a `memory/` directory → those directories no longer exist. All continuity lives in spec doc frontmatter + `graph-metadata.json`.
 - **Post-Save Review:** After `generate-context.js` completes, check the POST-SAVE QUALITY REVIEW output.

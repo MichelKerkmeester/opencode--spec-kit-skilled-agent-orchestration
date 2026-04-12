@@ -41,11 +41,20 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 2. Follow the listed command sequence in order so higher-level docs are checked before lower-level workflow contracts.
 3. Capture evidence that would let another operator reproduce the verdict without re-deriving the scenario.
 4. Return a short user-facing explanation, not just raw implementation notes.
-
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-025 | Review report synthesis has all 9 sections | Verify review-report.md contains all 9 required sections. | As a manual-testing orchestrator, validate the review report synthesis contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify review/review-report.md contains all 9 sections: (1) Executive Summary with verdict and severity counts, (2) Planning Trigger with routing rationale, (3) Active Finding Registry with deduped findings, (4) Remediation Workstreams with grouped action lanes, (5) Spec Seed with minimal spec delta, (6) Plan Seed with action-ready starter, (7) Traceability Status with protocol coverage, (8) Deferred Items with P2 advisories, (9) Audit Appendix with convergence evidence. Return a concise operator-facing verdict. | 1. `bash: rg -n 'Executive Summary|Planning Trigger|Active Finding Registry|Remediation Workstreams|Spec Seed|Plan Seed|Traceability Status|Deferred Items|Audit Appendix|review-report' .opencode/skill/sk-deep-review/references/quick_reference.md` -> 2. `bash: rg -n 'review-report|synthesis|9.*section|Executive Summary|Planning Trigger|Active Finding|Remediation|Spec Seed|Plan Seed|Traceability|Deferred|Audit Appendix' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` -> 3. `bash: rg -n 'review-report|synthesis|9.*section|report.*section|Executive Summary|verdict|hasAdvisories' .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md .opencode/command/spec_kit/deep-review.md` | All 9 section headers present, Executive Summary contains verdict and P0/P1/P2 counts, Active Finding Registry has deduplicated findings, Audit Appendix includes convergence data. | Capture the 9-section table from quick reference, the YAML synthesis step, and the report structure documentation from SKILL.md. | PASS if all 9 sections are documented and enforced by the synthesis step; FAIL if any section is missing from the template or synthesis contract. | Privilege the quick reference section table as the canonical list and verify the YAML synthesis step produces all 9 sections. |
-
+### Prompt
+As a manual-testing orchestrator, validate the review report synthesis contract for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify review/review-report.md contains all 9 sections: (1) Executive Summary with verdict and severity counts, (2) Planning Trigger with routing rationale, (3) Active Finding Registry with deduped findings, (4) Remediation Workstreams with grouped action lanes, (5) Spec Seed with minimal spec delta, (6) Plan Seed with action-ready starter, (7) Traceability Status with protocol coverage, (8) Deferred Items with P2 advisories, (9) Audit Appendix with convergence evidence. Return a concise operator-facing verdict.
+### Commands
+1. `bash: rg -n 'Executive Summary|Planning Trigger|Active Finding Registry|Remediation Workstreams|Spec Seed|Plan Seed|Traceability Status|Deferred Items|Audit Appendix|review-report' .opencode/skill/sk-deep-review/references/quick_reference.md`
+2. `bash: rg -n 'review-report|synthesis|9.*section|Executive Summary|Planning Trigger|Active Finding|Remediation|Spec Seed|Plan Seed|Traceability|Deferred|Audit Appendix' .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml`
+3. `bash: rg -n 'review-report|synthesis|9.*section|report.*section|Executive Summary|verdict|hasAdvisories' .opencode/skill/sk-deep-review/SKILL.md .opencode/skill/sk-deep-review/README.md .opencode/command/spec_kit/deep-review.md`
+### Expected
+All 9 section headers present, Executive Summary contains verdict and P0/P1/P2 counts, Active Finding Registry has deduplicated findings, Audit Appendix includes convergence data.
+### Evidence
+Capture the 9-section table from quick reference, the YAML synthesis step, and the report structure documentation from SKILL.md.
+### Pass/Fail
+PASS if all 9 sections are documented and enforced by the synthesis step; FAIL if any section is missing from the template or synthesis contract.
+### Failure Triage
+Privilege the quick reference section table as the canonical list and verify the YAML synthesis step produces all 9 sections.
 ---
 
 ## 4. SOURCE FILES

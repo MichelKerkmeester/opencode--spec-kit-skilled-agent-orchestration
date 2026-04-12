@@ -7,6 +7,16 @@ trigger_phrases:
   - "codesight research complete"
 importance_tier: critical
 contextType: summary
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["implementation-summary.md"]
+
 ---
 # Implementation Summary
 
@@ -104,9 +114,9 @@ The full 22-row matrix lives in `research/research.md` §18.3. High-level breakd
 
 ### Memory Artifacts
 
-- `memory/06-04-26_16-34__5-iteration-deep-research-session-investigating.md` — original 5-iteration checkpoint; historically useful but superseded
-- `memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md` — cleanest high-signal resume snapshot for the first 10-iteration closeout
-- `memory/08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md` — latest 20-iteration extension snapshot; retained as history, but its metadata flags `has_topical_mismatch`, so `research/research.md` remains the canonical source of truth
+- `research/research.md` — canonical research synthesis for the original 5-iteration checkpoint and later closeouts
+- `implementation-summary.md` — canonical closeout summary for the first 10-iteration extension
+- `research/research.md` — canonical 20-iteration extension synthesis; the historical memory artifact is no longer required for packet integrity
 - `memory/metadata.json` — latest packet metadata; current policy skipped embedding for the newest save (`skipped_index_policy`)
 
 ---

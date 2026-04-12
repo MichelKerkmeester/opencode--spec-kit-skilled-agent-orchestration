@@ -51,8 +51,6 @@
       "create-record.ts",
       "anchor-merge-operation.ts",
       "decision-record.md",
-      "node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts",
-      "node ./scripts/node_modules/vitest/vitest.mjs run scripts/tests/generate-context-cli-authority.vitest.ts --config ./mcp_server/vitest.config.ts",
       "memory-save.ts",
       "spec-doc-structure.ts",
       "validate.sh",
@@ -116,18 +114,6 @@
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
-        "source": "derived"
-      },
-      {
-        "name": "create-record-identity.vitest.ts --config vitest.config.ts",
-        "kind": "code",
-        "path": "node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts",
-        "source": "derived"
-      },
-      {
-        "name": "vitest.config.ts",
-        "kind": "code",
-        "path": "node ./scripts/node_modules/vitest/vitest.mjs run scripts/tests/generate-context-cli-authority.vitest.ts --config ./mcp_server/vitest.config.ts",
         "source": "derived"
       },
       {

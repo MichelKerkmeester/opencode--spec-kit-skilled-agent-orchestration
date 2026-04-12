@@ -45,9 +45,29 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 3. Capture exit codes, stderr, registry warnings, and the anchor block so another operator can replay both fail-closed paths and both explicit recovery paths.
 4. Return a short user-facing explanation, not just raw implementation notes.
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| DRV-023 | Review reducer fails closed on corruption and missing anchors | Verify corruption and missing anchors fail closed by default, with `--lenient` and `--create-missing-anchors` as explicit escape hatches. | As a manual-testing orchestrator, validate fail-closed reducer behavior for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify malformed JSONL exits with code 2 unless --lenient is passed, that missing machine-owned anchors throw Missing machine-owned anchor ... unless --create-missing-anchors is used, and that corruptionWarnings remains present after lenient recovery. Return a concise operator-facing verdict. | 1. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {corrupt_fixture}; echo "exit: $?"` -> 2. `bash: cat {corrupt_fixture}/review/deep-review-findings-registry.json | jq '.corruptionWarnings'` -> 3. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {anchor_fixture}; echo "exit: $?"` -> 4. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {corrupt_fixture} --lenient; echo "exit: $?"` -> 5. `bash: cat {corrupt_fixture}/review/deep-review-findings-registry.json | jq '.corruptionWarnings'` -> 6. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {anchor_fixture} --create-missing-anchors; echo "exit: $?"` -> 7. `bash: sed -n '/ANCHOR:next-focus/,/\/ANCHOR:next-focus/p' {anchor_fixture}/review/deep-review-strategy.md` | Without `--lenient`, corrupt JSONL exits `2` and preserves `corruptionWarnings`; without `--create-missing-anchors`, the reducer throws `Missing machine-owned anchor ...`; with `--lenient`, the reducer exits `0` but preserves `corruptionWarnings`; with `--create-missing-anchors`, the missing anchor is created and the reducer proceeds. | Capture both exit codes, the missing-anchor stderr, the populated `.corruptionWarnings` field before and after `--lenient`, and the strategy `next-focus` anchor after `--create-missing-anchors`. | PASS if all four exit conditions match the documented contract and warning state is still visible after lenient recovery; FAIL if any exit code, error string, warning surface, or anchor bootstrap behavior differs. | Privilege `reduce-state.cjs` for exit semantics and `review-reducer-fail-closed.vitest.ts` for concrete expected behavior. If fixture preparation accidentally combines both failures in one directory, split into two fixture copies before judging the reducer. |
+### Prompt
+As a manual-testing orchestrator, validate fail-closed reducer behavior for sk-deep-review against the current sk-deep-review docs, command entrypoint, YAML workflow, and runtime anchors. Verify malformed JSONL exits with code `2` unless `--lenient` is passed, that missing machine-owned anchors throw `Missing machine-owned anchor ...` unless `--create-missing-anchors` is used, and that `corruptionWarnings` remains present after lenient recovery. Return a concise operator-facing verdict.
+
+### Commands
+1. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {corrupt_fixture}; echo "exit: $?"`
+2. `bash: cat {corrupt_fixture}/review/deep-review-findings-registry.json | jq '.corruptionWarnings'`
+3. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {anchor_fixture}; echo "exit: $?"`
+4. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {corrupt_fixture} --lenient; echo "exit: $?"`
+5. `bash: cat {corrupt_fixture}/review/deep-review-findings-registry.json | jq '.corruptionWarnings'`
+6. `bash: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {anchor_fixture} --create-missing-anchors; echo "exit: $?"`
+7. `bash: sed -n '/ANCHOR:next-focus/,/\/ANCHOR:next-focus/p' {anchor_fixture}/review/deep-review-strategy.md`
+
+### Expected
+Without `--lenient`, corrupt JSONL exits `2` and preserves `corruptionWarnings`; without `--create-missing-anchors`, the reducer throws `Missing machine-owned anchor ...`; with `--lenient`, the reducer exits `0` but preserves `corruptionWarnings`; with `--create-missing-anchors`, the missing anchor is created and the reducer proceeds.
+
+### Evidence
+Capture both exit codes, the missing-anchor stderr, the populated `.corruptionWarnings` field before and after `--lenient`, and the strategy `next-focus` anchor after `--create-missing-anchors`.
+
+### Pass/Fail
+PASS if all four exit conditions match the documented contract and warning state is still visible after lenient recovery; FAIL if any exit code, error string, warning surface, or anchor bootstrap behavior differs.
+
+### Failure Triage
+Privilege `reduce-state.cjs` for exit semantics and `review-reducer-fail-closed.vitest.ts` for concrete expected behavior. If fixture preparation accidentally combines both failures in one directory, split into two fixture copies before judging the reducer.
 
 ---
 
